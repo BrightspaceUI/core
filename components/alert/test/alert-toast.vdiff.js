@@ -1,5 +1,6 @@
+import { defineCE, expect, fixture, focusElem, hoverElem, html, oneEvent, setViewport } from '@brightspace-ui/testing';
 import { disableReducedMotionForTesting, restoreReducedMotionForTesting } from '../alert-toast.js';
-import { expect, fixture, focusElem, hoverElem, html, oneEvent, setViewport } from '@brightspace-ui/testing';
+import { LitElement } from 'lit';
 import sinon from 'sinon';
 
 const alertWithSubtextAndCloseButton = html`
@@ -26,6 +27,14 @@ const multipleAlertsAutoClose = html`
 `;
 
 const viewport = { width: 700, height: 400 };
+
+const tag = defineCE(
+	class extends LitElement {
+		render() {
+			return multipleAlerts;
+		}
+	}
+);
 
 describe('alert-toast', () => {
 
@@ -70,11 +79,26 @@ describe('alert-toast', () => {
 			await expect(document).to.be.golden();
 		});
 
+		it('open all from component', async() => {
+			const elem = await fixture(`<${tag}></${tag}>`, { viewport });
+			await openAlerts(elem.shadowRoot);
+			await expect(document).to.be.golden();
+		});
+
 		['top', 'middle', 'bottom'].forEach(position => {
 			it(`open all then close ${position}`, async() => {
 				const elem = await fixture(multipleAlerts, { viewport: { width: 700, height: 300 } });
 				await openAlerts(elem);
 				const alert = elem.querySelector(`#alert-${position}`);
+				alert.open = false;
+				await oneEvent(alert, 'd2l-alert-toast-close');
+				await expect(document).to.be.golden();
+			});
+
+			it(`open all from component then close ${position}`, async() => {
+				const elem = await fixture(`<${tag}></${tag}>`, { viewport: { width: 700, height: 300 } });
+				await openAlerts(elem.shadowRoot);
+				const alert = elem.shadowRoot.querySelector(`#alert-${position}`);
 				alert.open = false;
 				await oneEvent(alert, 'd2l-alert-toast-close');
 				await expect(document).to.be.golden();

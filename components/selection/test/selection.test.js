@@ -8,7 +8,7 @@ import '../selection-input.js';
 import '../selection-select-all.js';
 import '../selection-select-all-pages.js';
 import '../selection-summary.js';
-import { expect, fixture, html, nextFrame, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, nextFrame, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { SelectionInfo } from '../selection-mixin.js';
 import Sinon from 'sinon';
 
@@ -20,7 +20,7 @@ describe('d2l-selection-action', () => {
 
 	it('dispatches d2l-selection-action-click event when clicked', async() => {
 		const el = await fixture(html`<d2l-selection-action></d2l-selection-action>`);
-		setTimeout(() => el.shadowRoot.querySelector('d2l-button-subtle').click());
+		clickElem(el);
 		await oneEvent(el, 'd2l-selection-action-click');
 	});
 
@@ -33,7 +33,7 @@ describe('d2l-selection-action', () => {
 	it('dispatches d2l-selection-action-click event if requires selection and has selected', async() => {
 		const el = await fixture(html`<d2l-selection-action requires-selection></d2l-selection-action>`);
 		el.selectionInfo = { state: 'some', keys: [] };
-		setTimeout(() => el.shadowRoot.querySelector('d2l-button-subtle').click());
+		clickElem(el);
 		await oneEvent(el, 'd2l-selection-action-click');
 	});
 
@@ -41,7 +41,39 @@ describe('d2l-selection-action', () => {
 		const el = await fixture(html`<d2l-selection-action requires-selection></d2l-selection-action>`);
 		let dispatched = false;
 		el.addEventListener('d2l-selection-action-click', () => dispatched = true);
-		el.shadowRoot.querySelector('d2l-button-subtle').click();
+		clickElem(el);
+		expect(dispatched).to.be.false;
+	});
+
+	it('dispatches d2l-selection-action-click event if less than max-selection-count is selected', async() => {
+		const el = await fixture(html`<d2l-selection-action max-selection-count="2"></d2l-selection-action>`);
+		el.selectionInfo = { state: 'some', keys: [ 'first' ] };
+		clickElem(el);
+		await oneEvent(el, 'd2l-selection-action-click');
+	});
+
+	it('dispatches d2l-selection-action-click event if max-selection-count is selected', async() => {
+		const el = await fixture(html`<d2l-selection-action max-selection-count="2"></d2l-selection-action>`);
+		el.selectionInfo = { state: 'some', keys: [ 'first', 'second' ] };
+		clickElem(el);
+		await oneEvent(el, 'd2l-selection-action-click');
+	});
+
+	it('does not dispatch d2l-selection-action-click event if greater than max-selection-count is selected', async() => {
+		const el = await fixture(html`<d2l-selection-action max-selection-count="2"></d2l-selection-action>`);
+		let dispatched = false;
+		el.addEventListener('d2l-selection-action-click', () => dispatched = true);
+		el.selectionInfo = { state: 'some', keys: [ 'first', 'second', 'third' ] };
+		clickElem(el);
+		expect(dispatched).to.be.false;
+	});
+
+	it('does not dispatch d2l-selection-action-click event if disabled', async() => {
+		const el = await fixture(html`<d2l-selection-action disabled></d2l-selection-action>`);
+		let dispatched = false;
+		el.addEventListener('d2l-selection-action-click', () => dispatched = true);
+		el.selectionInfo = { state: 'some', keys: [ 'first', 'second', 'third' ] };
+		clickElem(el);
 		expect(dispatched).to.be.false;
 	});
 
@@ -63,7 +95,8 @@ describe('d2l-selection-action-menu-item', () => {
 
 	it('dispatches d2l-selection-action-click event when clicked', async() => {
 		const el = await fixture(html`<d2l-menu label="Actions"><d2l-selection-action-menu-item text="Action"></d2l-selection-action-menu-item></d2l-menu>`);
-		setTimeout(() => el.querySelector('d2l-selection-action-menu-item').click());
+		const item = el.querySelector('d2l-selection-action-menu-item');
+		clickElem(item);
 		await oneEvent(el, 'd2l-selection-action-click');
 	});
 
@@ -71,7 +104,7 @@ describe('d2l-selection-action-menu-item', () => {
 		const el = await fixture(html`<d2l-menu label="Actions"><d2l-selection-action-menu-item text="Action" requires-selection></d2l-selection-action-menu-item></d2l-menu>`);
 		const item = el.querySelector('d2l-selection-action-menu-item');
 		item.selectionInfo = { state: 'some', keys: [] };
-		setTimeout(() => item.click());
+		clickElem(item);
 		await oneEvent(el, 'd2l-selection-action-click');
 	});
 
@@ -80,7 +113,43 @@ describe('d2l-selection-action-menu-item', () => {
 		const item = el.querySelector('d2l-selection-action-menu-item');
 		let dispatched = false;
 		item.addEventListener('d2l-selection-action-click', () => dispatched = true);
-		item.click();
+		clickElem(item);
+		expect(dispatched).to.be.false;
+	});
+
+	it('dispatches d2l-selection-action-click event if less than max-selection-count is selected', async() => {
+		const el = await fixture(html`<d2l-menu label="Actions"><d2l-selection-action-menu-item text="Action" max-selection-count="2"></d2l-selection-action-menu-item></d2l-menu>`);
+		const item = el.querySelector('d2l-selection-action-menu-item');
+		item.selectionInfo = { state: 'some', keys: [ 'first' ] };
+		clickElem(item);
+		await oneEvent(el, 'd2l-selection-action-click');
+	});
+
+	it('dispatches d2l-selection-action-click event if max-selection-count is selected', async() => {
+		const el = await fixture(html`<d2l-menu label="Actions"><d2l-selection-action-menu-item text="Action" max-selection-count="2"></d2l-selection-action-menu-item></d2l-menu>`);
+		const item = el.querySelector('d2l-selection-action-menu-item');
+		item.selectionInfo = { state: 'some', keys: [ 'first', 'second' ] };
+		clickElem(item);
+		await oneEvent(el, 'd2l-selection-action-click');
+	});
+
+	it('does not dispatch d2l-selection-action-click event if greater than max-selection-count is selected', async() => {
+		const el = await fixture(html`<d2l-menu label="Actions"><d2l-selection-action-menu-item text="Action" max-selection-count="2"></d2l-selection-action-menu-item></d2l-menu>`);
+		const item = el.querySelector('d2l-selection-action-menu-item');
+		let dispatched = false;
+		item.addEventListener('d2l-selection-action-click', () => dispatched = true);
+		item.selectionInfo = { state: 'some', keys: [ 'first', 'second', 'third' ] };
+		clickElem(item);
+		expect(dispatched).to.be.false;
+	});
+
+	it('does not dispatch d2l-selection-action-click event if disabled', async() => {
+		const el = await fixture(html`<d2l-menu label="Actions"><d2l-selection-action-menu-item text="Action" disabled></d2l-selection-action-menu-item></d2l-menu>`);
+		const item = el.querySelector('d2l-selection-action-menu-item');
+		let dispatched = false;
+		item.addEventListener('d2l-selection-action-click', () => dispatched = true);
+		item.selectionInfo = { state: 'some', keys: [ 'first', 'second', 'third' ] };
+		clickElem(item);
 		expect(dispatched).to.be.false;
 	});
 

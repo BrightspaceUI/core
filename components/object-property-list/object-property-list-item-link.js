@@ -1,7 +1,7 @@
+import '../link/link.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { linkStyles } from '../link/link.js';
 import { ObjectPropertyListItem } from './object-property-list-item.js';
 
 /**
@@ -29,29 +29,20 @@ class ObjectPropertyListItemLink extends FocusMixin(ObjectPropertyListItem) {
 		};
 	}
 
-	static get styles() {
-		return [
-			...super.styles,
-			linkStyles
-		];
-	}
-
 	static get focusElementSelector() {
-		return '.d2l-link';
+		return 'd2l-link';
 	}
 
 	render() {
 		return html`
 			${this._renderIcon()}
 			${!this.skeleton ? html`
-				<a
+				<d2l-link
 					?download="${this.download}"
-					class="d2l-link"
 					href="${ifDefined(this.href)}"
-					target="${ifDefined(this.target)}"
-				>
+					target="${ifDefined(this.target)}">
 					${this._renderText()}
-				</a>
+				</d2l-link>
 			` : this._renderText()}
 			${this._renderSeparator()}
 		`;
