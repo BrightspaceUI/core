@@ -10,12 +10,6 @@ const keyCodes = {
 };
 
 export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
-	#selected;
-	#handleClickBound;
-	#handleKeydownBound;
-	#handleKeyupBound;
-	#resizeObserver;
-
 	static get properties() {
 		return {
 			ariaSelected: { type: String, reflect: true, attribute: 'aria-selected' },
@@ -24,7 +18,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 			selected: { type: Boolean, reflect: true },
 			tabIndex: { type: Number, reflect: true },
 		};
-	};
+	}
 
 	static styles = css`
         :host {
@@ -94,30 +88,30 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		this.#handleKeyupBound = this.#handleKeyup.bind(this);
 	}
 
-	get selected() {
-        return this.#selected;
-    }
-
-    set selected(value) {
-        const oldVal = this.#selected;
-        const newVal = Boolean(value);
-        if (oldVal !== newVal) {
-            this.#selected = newVal;
-            this.requestUpdate('selected', oldVal);
-            this.setAttribute('aria-selected', this.ariaSelected);
-            if (newVal) {
-                this.dispatchEvent(new CustomEvent('d2l-tab-selected', { bubbles: true, composed: true }));
-            }
-        }
+	get ariaSelected() {
+		return this.selected;
 	}
 
-    get ariaSelected() {
-        return this.selected;
-    }
+	set ariaSelected(_) {
+		// ariaSelected is a derivative of `selected` and should not be set directly
+	}
 
-    set ariaSelected(_) {
-        // ariaSelected is a derivative of `selected` and should not be set directly
-    }
+	get selected() {
+		return this.#selected;
+	}
+
+	set selected(value) {
+		const oldVal = this.#selected;
+		const newVal = Boolean(value);
+		if (oldVal !== newVal) {
+			this.#selected = newVal;
+			this.requestUpdate('selected', oldVal);
+			this.setAttribute('aria-selected', this.ariaSelected);
+			if (newVal) {
+				this.dispatchEvent(new CustomEvent('d2l-tab-selected', { bubbles: true, composed: true }));
+			}
+		}
+	}
 
 	connectedCallback() {
 		super.connectedCallback();
@@ -175,6 +169,12 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		return html`<div>Default Tab Content</div>`;
 	}
 
+	#selected;
+	#handleClickBound;
+	#handleKeydownBound;
+	#handleKeyupBound;
+	#resizeObserver;
+
 	#addEventHandlers() {
 		if (!this._eventListenersAdded) {
 			this.addEventListener('click', this.#handleClickBound);
@@ -207,7 +207,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	}
 
 	#removeEventHandlers() {
-		if (!!this._eventListenersAdded) {
+		if (this._eventListenersAdded) {
 			this.removeEventListener('click', this.#handleClickBound);
 			this.removeEventListener('keydown', this.#handleKeydownBound);
 			this.removeEventListener('keyup', this.#handleKeyupBound);
