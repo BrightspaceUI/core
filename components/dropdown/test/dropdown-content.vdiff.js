@@ -67,6 +67,7 @@ describe('dropdown-content', () => {
 		{ name: 'no-padding-no-pointer', content: html`<d2l-dropdown-content no-padding no-pointer opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'scroll-bottom-shadow', content: html`<d2l-dropdown-content opened>${scroll}</d2l-dropdown-content>` },
 		{ name: 'vertical-offset', dropdownStyles: { left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="100" opened>${basicText}</d2l-dropdown-content>` },
+		{ name: 'vertical-offset-above', dropdownStyles: { bottom: '30px', left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="100" opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'vertical-offset-edge', dropdownStyles: { left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="100" opened>${longerText}</d2l-dropdown-content>` },
 		{ name: 'vertical-offset-negative', dropdownStyles: { left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="-25" opened>${blockText}</d2l-dropdown-content>` },
 		{ name: 'boundary-left-below', dropdownStyles: { left: '50%', top: '50%' }, content: html`<d2l-dropdown-content boundary="{&quot;left&quot;:50, &quot;below&quot;:20}" opened>${longerText}</d2l-dropdown-content>` },
