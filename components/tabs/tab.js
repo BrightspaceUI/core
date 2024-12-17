@@ -1,13 +1,9 @@
-import { LitElement } from 'lit';
+import { html, LitElement } from 'lit';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { TabMixin } from './tab-mixin.js';
 
 class Tab extends TabMixin(SkeletonMixin(RtlMixin(LitElement))) {
-
-	renderContent() {
-		return html`<slot></slot>`;
-	}
 
 	render() {
 		return html`
@@ -16,6 +12,10 @@ class Tab extends TabMixin(SkeletonMixin(RtlMixin(LitElement))) {
 			</div>
 		`;
 	}
+	renderContent() {
+		return html`<slot></slot>`;
+	}
+
 }
 
 customElements.define('d2l-tab-wip', Tab);
