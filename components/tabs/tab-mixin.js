@@ -12,11 +12,7 @@ const keyCodes = {
 export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	static get properties() {
 		return {
-			ariaSelected: { type: String, reflect: true, attribute: 'aria-selected' },
-			// eslint-disable-next-line lit/no-native-attributes
-			role: { type: String, reflect: true },
 			selected: { type: Boolean, reflect: true },
-			tabIndex: { type: Number, reflect: true },
 		};
 	}
 
@@ -79,38 +75,14 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	constructor() {
 		super();
+		this.ariaSelected = false;
 		this.role = 'tab';
-		this.#selected = false;
+		this.selected = false;
 		this.tabIndex = -1;
 
 		this.#handleClickBound = this.#handleClick.bind(this);
 		this.#handleKeydownBound = this.#handleKeydown.bind(this);
 		this.#handleKeyupBound = this.#handleKeyup.bind(this);
-	}
-
-	get ariaSelected() {
-		return this.selected;
-	}
-
-	set ariaSelected(_) {
-		// ariaSelected is a derivative of `selected` and should not be set directly
-	}
-
-	get selected() {
-		return this.#selected;
-	}
-
-	set selected(value) {
-		const oldVal = this.#selected;
-		const newVal = Boolean(value);
-		if (oldVal !== newVal) {
-			this.#selected = newVal;
-			this.requestUpdate('selected', oldVal);
-			this.setAttribute('aria-selected', this.ariaSelected);
-			if (newVal) {
-				this.dispatchEvent(new CustomEvent('d2l-tab-selected', { bubbles: true, composed: true }));
-			}
-		}
 	}
 
 	connectedCallback() {
@@ -154,10 +126,13 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	update(changedProperties) {
 		super.update(changedProperties);
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === 'selected' && this.selected === 'true') {
-				this.dispatchEvent(new CustomEvent(
-					'd2l-tab-selected', { bubbles: true, composed: true }
-				));
+			if (prop === 'selected') {
+				this.ariaSelected = this.selected;
+				if (this.selected === 'true') {
+					this.dispatchEvent(new CustomEvent(
+						'd2l-tab-selected', { bubbles: true, composed: true }
+					));
+				}
 			} else if (prop === 'text') {
 				this.title = this.text;
 			}
@@ -169,7 +144,6 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		return html`<div>Default Tab Content</div>`;
 	}
 
-	#selected;
 	#handleClickBound;
 	#handleKeydownBound;
 	#handleKeyupBound;
