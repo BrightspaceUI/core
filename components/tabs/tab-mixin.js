@@ -1,7 +1,5 @@
 import '../colors/colors.js';
-import { css, html, unsafeCSS } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { css, html } from 'lit';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const keyCodes = {
@@ -10,6 +8,7 @@ const keyCodes = {
 };
 
 export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
+
 	static get properties() {
 		return {
 			selected: { type: Boolean, reflect: true },
@@ -24,17 +23,6 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 			outline: none;
 			position: relative;
 			vertical-align: middle;
-		}
-		.d2l-tab-text {
-			margin: 0.5rem;
-			overflow: hidden;
-			padding: 0.1rem;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-		}
-		:host(:first-child) .d2l-tab-text {
-			margin-inline-end: 0.6rem;
-			margin-inline-start: 0;
 		}
 		.d2l-tab-selected-indicator {
 			border-top: 4px solid var(--d2l-color-celestine);
@@ -51,11 +39,6 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 			margin-inline-end: 0.6rem;
 			margin-inline-start: 0;
 			width: calc(100% - 0.6rem);
-		}
-		:host(:${unsafeCSS(getFocusPseudoClass())}) > .d2l-tab-text {
-			border-radius: 0.3rem;
-			box-shadow: 0 0 0 2px var(--d2l-color-celestine);
-			color: var(--d2l-color-celestine);
 		}
 		:host([aria-selected="true"]:focus) {
 			text-decoration: none;
@@ -104,15 +87,8 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	}
 
 	render() {
-		const overrideSkeletonText = this.skeleton && (!this.text || this.text.length === 0);
-		const contentClasses = {
-			'd2l-tab-text': true,
-			'd2l-skeletize': true,
-			'd2l-tab-text-skeletize-override': overrideSkeletonText
-		};
-
 		return html`
-			<div class="${classMap(contentClasses)}">
+			<div class="d2l-skeletize">
 				${this.renderContent()}
 			</div>
 			<div class="d2l-tab-selected-indicator d2l-skeletize-container"></div>
@@ -129,8 +105,6 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 						'd2l-tab-selected', { bubbles: true, composed: true }
 					));
 				}
-			} else if (prop === 'text') {
-				this.title = this.text;
 			}
 		});
 	}
