@@ -1144,7 +1144,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			}
 		}
 		if (this.openedAbove) {
-			position.bottom = window.innerHeight - targetRect.top + 8;
+			position.bottom = window.innerHeight - targetRect.top + this._verticalOffset - 8;
 		} else {
 			position.top = targetRect.top + targetRect.height + this._verticalOffset - 7;
 		}

@@ -479,7 +479,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		}
 
 		if (this._location === 'block-start') {
-			position.bottom = window.innerHeight - openerRect.top + 8;
+			position.bottom = window.innerHeight - openerRect.top + this._offset - 8;
 		} else {
 			position.top = openerRect.top + openerRect.height + this._offset - 7;
 		}
