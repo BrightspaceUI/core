@@ -6,6 +6,11 @@ export const TabPanelMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
 			/**
+			 * Hooks tab-panel to associated tab
+			 * @type {string}
+			 */
+			labelledBy: { type: String },
+			/**
 			 * Opt out of default padding/whitespace around the panel
 			 * @type {boolean}
 			 */
@@ -76,6 +81,8 @@ export const TabPanelMixin = superclass => class extends superclass {
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tab-panel-text-changed', { bubbles: true, composed: true, detail: { text: this.text } }
 				));
+			} else if (prop === 'labelledBy') {
+				this.setAttribute('aria-labelledby', this.labelledBy);
 			}
 		});
 	}
