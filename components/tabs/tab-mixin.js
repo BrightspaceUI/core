@@ -160,13 +160,9 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	};
 
 	#addEventHandlers() {
-		if (!this._eventListenersAdded) {
-			this.addEventListener('click', this.#handleClick);
-			this.addEventListener('keydown', this.#handleKeydown);
-			this.addEventListener('keyup', this.#handleKeyup);
-
-			this._eventListenersAdded = true;
-		}
+		this.addEventListener('click', this.#handleClick);
+		this.addEventListener('keydown', this.#handleKeydown);
+		this.addEventListener('keyup', this.#handleKeyup);
 	}
 
 	#handleResize() {
@@ -174,13 +170,9 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	}
 
 	#removeEventHandlers() {
-		if (this._eventListenersAdded) {
-			this.removeEventListener('click', this.#handleClick);
-			this.removeEventListener('keydown', this.#handleKeydown);
-			this.removeEventListener('keyup', this.#handleKeyup);
-
-			this._eventListenersAdded = false;
-		}
+		this.removeEventListener('click', this.#handleClick);
+		this.removeEventListener('keydown', this.#handleKeydown);
+		this.removeEventListener('keyup', this.#handleKeyup);
 	}
 
 };
