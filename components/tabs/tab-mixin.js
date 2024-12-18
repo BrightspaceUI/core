@@ -79,10 +79,6 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		this.role = 'tab';
 		this.selected = false;
 		this.tabIndex = -1;
-
-		this.#handleClickBound = this.#handleClick.bind(this);
-		this.#handleKeydownBound = this.#handleKeydown.bind(this);
-		this.#handleKeyupBound = this.#handleKeyup.bind(this);
 	}
 
 	connectedCallback() {
@@ -144,35 +140,32 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		return html`<div>Default Tab Content</div>`;
 	}
 
-	#handleClickBound;
-	#handleKeydownBound;
-	#handleKeyupBound;
 	#resizeObserver;
 
-	#addEventHandlers() {
-		if (!this._eventListenersAdded) {
-			this.addEventListener('click', this.#handleClickBound);
-			this.addEventListener('keydown', this.#handleKeydownBound);
-			this.addEventListener('keyup', this.#handleKeyupBound);
-
-			this._eventListenersAdded = true;
-		}
-	}
-
-	#handleClick() {
+	#handleClick = () => {
 		this.selected = true;
-	}
+	};
 
-	#handleKeydown(e) {
+	#handleKeydown = e => {
 		if (e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER) {
 			e.stopPropagation();
 			e.preventDefault();
 		}
-	}
+	};
 
-	#handleKeyup(e) {
+	#handleKeyup = e => {
 		if (e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER) {
 			this.#handleClick();
+		}
+	};
+
+	#addEventHandlers() {
+		if (!this._eventListenersAdded) {
+			this.addEventListener('click', this.#handleClick);
+			this.addEventListener('keydown', this.#handleKeydown);
+			this.addEventListener('keyup', this.#handleKeyup);
+
+			this._eventListenersAdded = true;
 		}
 	}
 
@@ -182,9 +175,9 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	#removeEventHandlers() {
 		if (this._eventListenersAdded) {
-			this.removeEventListener('click', this.#handleClickBound);
-			this.removeEventListener('keydown', this.#handleKeydownBound);
-			this.removeEventListener('keyup', this.#handleKeyupBound);
+			this.removeEventListener('click', this.#handleClick);
+			this.removeEventListener('keydown', this.#handleKeydown);
+			this.removeEventListener('keyup', this.#handleKeyup);
 
 			this._eventListenersAdded = false;
 		}
