@@ -1,5 +1,15 @@
 import { findComposedAncestor } from '../../helpers/dom.js';
 
+/**
+ * @typedef {typeof import('lit').ReactiveElement} ReactiveElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
+ */
+
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const ListItemRoleMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -14,8 +24,8 @@ export const ListItemRoleMixin = superclass => class extends superclass {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._nested = false;
 	}
 

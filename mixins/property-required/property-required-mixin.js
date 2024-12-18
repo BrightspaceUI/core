@@ -22,10 +22,20 @@ export function createInvalidPropertyTypeMessage(elem, propertyName) {
 	);
 }
 
-export const PropertyRequiredMixin = dedupeMixin(superclass => class extends superclass {
+/**
+ * @typedef {typeof import('lit').ReactiveElement} ReactiveElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
+ */
 
-	constructor() {
-		super();
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
+const InternalPropertyRequiredMixin = superclass => class extends superclass {
+
+	constructor(...args) {
+		super(...args);
 		this._requiredProperties = new Map();
 		this._initProperties(Object.getPrototypeOf(this));
 	}
@@ -115,4 +125,6 @@ export const PropertyRequiredMixin = dedupeMixin(superclass => class extends sup
 		info.timeout = setTimeout(() => this._flushRequiredPropertyError(name), TIMEOUT_DURATION);
 	}
 
-});
+};
+
+export const PropertyRequiredMixin = dedupeMixin(InternalPropertyRequiredMixin);

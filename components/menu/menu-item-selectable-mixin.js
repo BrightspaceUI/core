@@ -1,5 +1,15 @@
 import { MenuItemMixin } from './menu-item-mixin.js';
 
+/**
+ * @typedef {typeof import('lit').ReactiveElement} ReactiveElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
+ */
+
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const MenuItemSelectableMixin = superclass => class extends MenuItemMixin(superclass) {
 
 	static get properties() {
@@ -17,8 +27,8 @@ export const MenuItemSelectableMixin = superclass => class extends MenuItemMixin
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.selected = false;
 	}
 

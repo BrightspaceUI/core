@@ -9,6 +9,16 @@ const keyCodes = Object.freeze({
 	DOWN: 40,
 });
 
+/**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const ArrowKeysMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -24,8 +34,8 @@ export const ArrowKeysMixin = superclass => class extends superclass {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.arrowKeysDirection = 'leftright';
 		this.arrowKeysNoWrap = false;
 	}

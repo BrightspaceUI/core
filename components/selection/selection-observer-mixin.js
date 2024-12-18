@@ -1,6 +1,16 @@
 import { cssEscape } from '../../helpers/dom.js';
 import { SelectionInfo } from './selection-mixin.js';
 
+/**
+ * @typedef {typeof import('lit').ReactiveElement} ReactiveElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
+ */
+
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const SelectionObserverMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -20,8 +30,8 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.selectionInfo = new SelectionInfo();
 		this._provider = null;
 	}

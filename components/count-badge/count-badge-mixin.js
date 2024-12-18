@@ -11,6 +11,16 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 const maxBadgeDigits = 5;
 
+/**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(SkeletonMixin(RtlMixin(superclass))) {
 
 	static get properties() {
@@ -143,8 +153,8 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 		`];
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.announceChanges = false;
 		this.forceFocusRing = false;
 		this.hasTooltip = false;

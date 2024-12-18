@@ -1,9 +1,17 @@
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
-export const FocusMixin = dedupeMixin(superclass => class extends superclass {
+/**
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ */
 
-	constructor() {
-		super();
+/**
+ * @template {ReactiveElementConstructor} S
+ * @param {S} superclass
+ */
+export const InternalFocusMixin = superclass => class extends superclass {
+
+	constructor(...args) {
+		super(...args);
 		this._focusOnFirstRender = false;
 	}
 
@@ -40,4 +48,6 @@ export const FocusMixin = dedupeMixin(superclass => class extends superclass {
 
 	}
 
-});
+};
+
+export const FocusMixin = dedupeMixin(InternalFocusMixin);

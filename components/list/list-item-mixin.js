@@ -40,7 +40,15 @@ function addTabListener() {
 let hasDisplayedKeyboardTooltip = false;
 
 /**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
  * @property label - The hidden label for the checkbox and expand collapse control
+ * @template {LitElementClassType} S
+ * @param {S} superclass
  */
 export const ListItemMixin = superclass => class extends composeMixins(
 	superclass,
@@ -433,8 +441,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		return styles;
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.first = false;
 		this.noPrimaryAction = false;
 		this.paddingType = 'normal';

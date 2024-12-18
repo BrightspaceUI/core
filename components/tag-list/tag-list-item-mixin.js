@@ -38,6 +38,16 @@ export function resetHasDisplayedKeyboardTooltip() {
 	hasDisplayedKeyboardTooltip = false;
 }
 
+/**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const TagListItemMixin = superclass => class extends LocalizeCoreElement(PropertyRequiredMixin(RtlMixin(superclass))) {
 
 	static get properties() {
@@ -164,8 +174,8 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 		`];
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.clearable = false;
 		/** @ignore */
 		this.keyboardTooltipItem = false;
