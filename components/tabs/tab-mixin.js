@@ -113,7 +113,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 		return html`
 			<div class="${classMap(contentClasses)}">
-				${this.renderContent}
+				${this.renderContent()}
 			</div>
 			<div class="d2l-tab-selected-indicator d2l-skeletize-container"></div>
 		`;
