@@ -5,15 +5,12 @@ import { TabMixin } from './tab-mixin.js';
 
 class Tab extends TabMixin(SkeletonMixin(RtlMixin(LitElement))) {
 
-	render() {
+	renderContent() {
 		return html`
 			<div class="tab-handler">
-				${this.renderContent()}
+				<slot></slot>
 			</div>
 		`;
-	}
-	renderContent() {
-		return html`<slot></slot>`;
 	}
 
 }
