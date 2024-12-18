@@ -17,57 +17,57 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	}
 
 	static styles = css`
-        :host {
-            box-sizing: border-box;
-            display: inline-block;
-            max-width: 200px;
-            outline: none;
-            position: relative;
-            vertical-align: middle;
-        }
-        .d2l-tab-text {
-            margin: 0.5rem;
-            overflow: hidden;
-            padding: 0.1rem;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        :host(:first-child) .d2l-tab-text {
-        	margin-inline-start: 0;
+		:host {
+			box-sizing: border-box;
+			display: inline-block;
+			max-width: 200px;
+			outline: none;
+			position: relative;
+			vertical-align: middle;
+		}
+		.d2l-tab-text {
+			margin: 0.5rem;
+			overflow: hidden;
+			padding: 0.1rem;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		:host(:first-child) .d2l-tab-text {
 			margin-inline-end: 0.6rem;
-        }
-        .d2l-tab-selected-indicator {
-            border-top: 4px solid var(--d2l-color-celestine);
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
-            bottom: 0;
-            display: none;
-            margin: 1px 0.6rem 0 0.6rem;
-            position: absolute;
-            transition: box-shadow 0.2s;
-            width: calc(100% - 1.2rem);
-        }
-        :host(:first-child) .d2l-tab-selected-indicator {
 			margin-inline-start: 0;
+		}
+		.d2l-tab-selected-indicator {
+			border-top: 4px solid var(--d2l-color-celestine);
+			border-top-left-radius: 4px;
+			border-top-right-radius: 4px;
+			bottom: 0;
+			display: none;
+			margin: 1px 0.6rem 0 0.6rem;
+			position: absolute;
+			transition: box-shadow 0.2s;
+			width: calc(100% - 1.2rem);
+		}
+		:host(:first-child) .d2l-tab-selected-indicator {
 			margin-inline-end: 0.6rem;
+			margin-inline-start: 0;
 			width: calc(100% - 0.6rem);
 		}
-        :host(:${unsafeCSS(getFocusPseudoClass())}) > .d2l-tab-text {
-            border-radius: 0.3rem;
-            box-shadow: 0 0 0 2px var(--d2l-color-celestine);
-            color: var(--d2l-color-celestine);
-        }
-        :host([aria-selected="true"]:focus) {
-            text-decoration: none;
-        }
-        :host(:hover) {
-            color: var(--d2l-color-celestine);
-            cursor: pointer;
-        }
-        :host([aria-selected="true"]:hover) {
-            color: inherit;
-            cursor: default;
-        }
+		:host(:${unsafeCSS(getFocusPseudoClass())}) > .d2l-tab-text {
+			border-radius: 0.3rem;
+			box-shadow: 0 0 0 2px var(--d2l-color-celestine);
+			color: var(--d2l-color-celestine);
+		}
+		:host([aria-selected="true"]:focus) {
+			text-decoration: none;
+		}
+		:host(:hover) {
+			color: var(--d2l-color-celestine);
+			cursor: pointer;
+		}
+		:host([aria-selected="true"]:hover) {
+			color: inherit;
+			cursor: default;
+		}
 		:host([aria-selected="true"]) .d2l-tab-selected-indicator {
 			display: block;
 		}
