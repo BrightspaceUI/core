@@ -15,6 +15,7 @@ import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 /**
  * A button component that can be used just like the native button for instances where only an icon is displayed.
  * @slot icon - Optional slot for a custom icon
+ * @typedef {ButtonIcon} ButtonIconExported
  */
 class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement))))) {
 

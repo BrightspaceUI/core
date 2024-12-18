@@ -19,6 +19,7 @@ const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px
  * @fires d2l-dialog-before-close - Dispatched with the action value before the dialog is closed for any reason, providing an opportunity to prevent the dialog from closing
  * @slot - Default slot for content inside dialog
  * @slot footer - Slot for footer content such as workflow buttons
+ * @typedef {Dialog} DialogExported
  */
 class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement)))) {
 

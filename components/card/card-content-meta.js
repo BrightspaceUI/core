@@ -4,6 +4,7 @@ import { css, html, LitElement } from 'lit';
 /**
  * A helper for providing layout/style for meta data within the `content` slot.
  * @slot - Slot for meta data text
+ * @typedef {CardContentMeta} CardContentMetaExported
  */
 class CardContentMeta extends LitElement {
 

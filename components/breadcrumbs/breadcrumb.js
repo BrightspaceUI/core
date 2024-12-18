@@ -8,6 +8,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * An entry within a <d2l-breadcrumbs> parent.
+ * @typedef {Breadcrumb} BreadcrumbExported
  */
 class Breadcrumb extends RtlMixin(FocusMixin(LitElement)) {
 

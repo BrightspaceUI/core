@@ -4,6 +4,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 /**
  * Used to align related content below radio buttons
  * @slot - Additional related content
+ * @typedef {InputRadioSpacer} InputRadioSpacerExported
  */
 class InputRadioSpacer extends RtlMixin(LitElement) {
 

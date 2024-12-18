@@ -7,6 +7,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 /**
  * A menu item component used for selection. Multiple checkboxes can be selected at once.
  * @slot supporting - Allows supporting information to be displayed on the right-most side of the menu item
+ * @typedef {MenuItemCheckbox} MenuItemCheckboxExported
  */
 class MenuItemCheckbox extends RtlMixin(MenuItemSelectableMixin(LitElement)) {
 

@@ -15,6 +15,7 @@ import { styleMap } from 'lit/directives/style-map.js';
  * @slot badge - Slot for badge content, such as a profile image or status indicator
  * @slot footer - Slot for footer content, such secondary actions
  * @slot header - Slot for header content, such as course image (no actionable elements)
+ * @typedef {Card} CardExported
  */
 class Card extends FocusMixin(RtlMixin(LitElement)) {
 

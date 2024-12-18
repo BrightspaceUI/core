@@ -22,6 +22,7 @@ window.isD2LDemoPage = true;
 	document.body.removeAttribute('unresolved');
 })();
 
+/** @typedef {DemoPage} DemoPageExported */
 class DemoPage extends LitElement {
 
 	static get properties() {

@@ -5,6 +5,7 @@ import { linkStyles } from '../link/link.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
+/** @typedef {FormErrorSummary} FormErrorSummaryExported */
 class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	static get properties() {

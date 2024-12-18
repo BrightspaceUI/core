@@ -8,6 +8,7 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
  * `d2l-empty-state-action-button` is an empty state action component that can be placed inside of the default slot of `empty-state-simple` or `empty-state-illustrated` to add a button action to the component.
  * @fires d2l-empty-state-action - Dispatched when the action button is clicked
  * @fires d2l-empty-state-illustrated-check - Internal event
+ * @typedef {EmptyStateActionButton} EmptyStateActionButtonExported
  */
 class EmptyStateActionButton extends PropertyRequiredMixin(LitElement) {
 

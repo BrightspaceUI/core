@@ -52,6 +52,7 @@ if (!Array.prototype.findIndex) {
  * @slot - Contains the tab panels (e.g., "d2l-tab-panel" components)
  * @slot ext - Additional content (e.g., a button) positioned at right
  * @fires d2l-tabs-initialized - Dispatched when the component is initialized
+ * @typedef {Tabs} TabsExported
  */
 class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(LitElement)))) {
 

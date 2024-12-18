@@ -3,6 +3,7 @@ import { LitElement } from 'lit';
 /**
  * A component to represent a possible value that can be selected for a dimension set (the main filter dimension type).
  * This component does not render anything, but instead gathers data needed for the d2l-filter.
+ * @typedef {FilterDimensionSetValue} FilterDimensionSetValueExported
  */
 class FilterDimensionSetValue extends LitElement {
 

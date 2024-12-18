@@ -19,6 +19,7 @@ const keyCodes = {
  * A wrapper component for a menu containing menu items.
  * @slot - Menu items
  * @fires d2l-menu-resize - Dispatched when size of menu changes (e.g., when nested menu of a different size is opened)
+ * @typedef {Menu} MenuExported
  */
 class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 
