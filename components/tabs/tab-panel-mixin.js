@@ -6,7 +6,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
 			/**
-			 * Hooks tab-panel to associated tab
+			 * Id of the tab that labels this panel
 			 * @type {string}
 			 */
 			labelledBy: { type: String },
