@@ -1,10 +1,9 @@
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
-import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { TabMixin } from './tab-mixin.js';
 
-class Tab extends TabMixin(SkeletonMixin(LitElement)) {
+class Tab extends TabMixin(LitElement) {
 
 	static get styles() {
 		const styles = [ css`
@@ -34,7 +33,6 @@ class Tab extends TabMixin(SkeletonMixin(LitElement)) {
 		const contentClasses = {
 			'd2l-tab-handler': true,
 			'd2l-tab-text': true,
-			'd2l-skeletize': true,
 		};
 
 		return html`
@@ -43,7 +41,6 @@ class Tab extends TabMixin(SkeletonMixin(LitElement)) {
 			</div>
 		`;
 	}
-
 }
 
 customElements.define('d2l-tab-wip', Tab);
