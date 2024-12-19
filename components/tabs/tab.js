@@ -31,12 +31,10 @@ class Tab extends TabMixin(SkeletonMixin(LitElement)) {
 	}
 
 	renderContent() {
-		const overrideSkeletonText = this.skeleton && (!this.text || this.text.length === 0);
 		const contentClasses = {
 			'd2l-tab-handler': true,
 			'd2l-tab-text': true,
 			'd2l-skeletize': true,
-			'd2l-tab-text-skeletize-override': overrideSkeletonText
 		};
 
 		return html`
