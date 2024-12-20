@@ -7,7 +7,7 @@
 	],
 	"system": {
 		"platform": "linux",
-		"release": "6.5.0-1025-azure",
+		"release": "6.8.0-1017-azure",
 		"arch": "x64"
 	}
 }
