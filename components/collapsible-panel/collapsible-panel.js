@@ -62,8 +62,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			 */
 			expanded: { type: Boolean, reflect: true },
 			/**
-			 * Optional label describing the contents of the header.
-			 * Used for screen readers.
+			 * ACCESSIBILITY: Label describing the contents of the header for screen reader users
 			 * @type {string}
 			 */
 			expandCollapseLabel: { attribute: 'expand-collapse-label', type: String, reflect: true },
