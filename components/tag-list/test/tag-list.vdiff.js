@@ -179,8 +179,11 @@ describe('tag-list', () => {
 		});
 
 		it('click clear all', async() => {
-			await clickElem(elem.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button'));
-			await waitUntil(() => elem.clientHeight === 30, 'Element did not reach expected height', { timeout: 2000 });
+			const button = elem.shadowRoot.querySelector('d2l-button-subtle.d2l-tag-list-clear-button');
+			await clickElem(button);
+			await elem.updateComplete;
+
+			await waitUntil(() => elem.querySelector('d2l-tag-list-item, d2l-tag-list-item-mixin-consumer') === null, 'Element did not remove children', { timeout: 2000 });
 			await expect(elem).to.be.golden();
 		});
 	});
