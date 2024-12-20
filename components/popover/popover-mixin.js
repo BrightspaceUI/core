@@ -926,7 +926,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	}
 
 	#removeMediaQueryHandlers() {
-		this.#mediaQueryList.removeEventListener?.('change', this.#handleMobileResizeBound);
+		this.#mediaQueryList?.removeEventListener?.('change', this.#handleMobileResizeBound);
 	}
 
 	#removeRepositionHandlers() {
