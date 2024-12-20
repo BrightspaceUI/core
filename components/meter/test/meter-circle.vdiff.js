@@ -18,7 +18,7 @@ describe('meter-circle', () => {
 	[
 		{ name: 'no-progress', template: html`<d2l-meter-circle value="0" max="10"></d2l-meter-circle>` },
 		{ name: 'complete', template: html`<d2l-meter-circle value="5" max="5"></d2l-meter-circle>` },
-		{ name: 'round-to-zero', template: html`<d2l-meter-circle value="0.004" max="100"></d2l-meter-circle>` },
+		{ name: 'round-to-zero', template: html`<d2l-meter-circle value="0.004" max="100" percent></d2l-meter-circle>` },
 		{ name: 'max-zero-with-value', template: html`<d2l-meter-circle value="10" max="0"></d2l-meter-circle>` },
 		{ name: '100-percent', template: html`<d2l-meter-circle value="10" max="10" percent></d2l-meter-circle>` },
 		{ name: 'text', template: html`<d2l-meter-circle value="10" max="10" text="Done!"></d2l-meter-circle>` },
