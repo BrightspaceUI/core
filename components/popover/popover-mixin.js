@@ -152,36 +152,36 @@ export const PopoverMixin = superclass => class extends superclass {
 
 			:host([_mobile][_mobile-tray-location="inline-start"]) .content-width,
 			:host([_mobile][_mobile-tray-location="inline-end"]) .content-width {
-				bottom: 0;
-				top: 0;
+				inset-block-end: 0;
+				inset-block-start: 0;
 			}
 
 			:host([_mobile][_mobile-tray-location="inline-start"]) .content-width {
-				border-bottom-left-radius: 0;
-				border-top-left-radius: 0;
+				border-end-start-radius: 0;
+				border-start-start-radius: 0;
 			}
 
 			:host([_mobile][_mobile-tray-location="inline-end"]) .content-width {
-				border-bottom-right-radius: 0;
-				border-top-right-radius: 0;
+				border-end-end-radius: 0;
+				border-start-end-radius: 0;
 			}
 
 			:host([_mobile][_mobile-tray-location="block-end"]) .content-width {
-				border-bottom-left-radius: 0;
-				border-bottom-right-radius: 0;
-				left: 0;
+				border-end-end-radius: 0;
+				border-end-start-radius: 0;
+				inset-inline-start: 0;
 			}
 
 			:host([_mobile][_mobile-tray-location="inline-end"][opened]) .content-width {
-				right: 0;
+				inset-inline-end: 0;
 			}
 
 			:host([_mobile][_mobile-tray-location="inline-start"][opened]) .content-width {
-				left: 0;
+				inset-inline-start: 0;
 			}
 
 			:host([_mobile][_mobile-tray-location="block-end"][opened]) .content-width {
-				bottom: 0;
+				inset-block-end: 0;
 			}
 
 			:host([_mobile][_mobile-tray-location="inline-start"][opened]) .content-container,
@@ -594,16 +594,16 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		const topOverride = (window.innerHeight > window.screen.height) ? window.pageYOffset : undefined;
 
-		let rightOverride;
-		let leftOverride;
+		let inlineEndOverride;
+		let inlineStartOverride;
 		if (this._mobileTrayLocation === 'inline-end') {
 			// On non-responsive pages, the innerWidth may be wider than the screen,
 			// override right to stick to right of viewport
-			rightOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
+			inlineEndOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
 		} else if (this._mobileTrayLocation === 'inline-start') {
 			// On non-responsive pages, the innerWidth may be wider than the screen,
 			// override left to stick to left of viewport
-			leftOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
+			inlineStartOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
 		}
 
 		if (minWidthOverride > maxWidthOverride) {
@@ -614,8 +614,8 @@ export const PopoverMixin = superclass => class extends superclass {
 			minWidth: minWidthOverride,
 			width: containerWidth,
 			top: topOverride,
-			right: rightOverride,
-			left: leftOverride,
+			insetInlineStart: inlineStartOverride,
+			insetInlineEnd: inlineEndOverride
 		};
 
 		const contentWidthStyle = {
