@@ -28,6 +28,11 @@ class Popover extends PopoverMixin(LitElement) {
 			 */
 			minWidth: { type: Number, reflect: true, attribute: 'min-width' },
 			/**
+			 * Mobile tray location.
+			 * @type {'inline-start'|'inline-end'|'block-end'}
+			 */
+			mobileTrayLocation: { type: String, reflect: true, attribute: 'mobile-tray-location' },
+			/**
 			 * Whether to disable auto-close/light-dismiss
 			 * @type {boolean}
 			 */
@@ -148,6 +153,7 @@ class Popover extends PopoverMixin(LitElement) {
 				noAutoClose: this.noAutoClose,
 				noAutoFocus: this.noAutoFocus,
 				noPointer: this.noPointer,
+				mobileTrayLocation: this.mobileTrayLocation,
 				position: { location: this.positionLocation, span: this.positionSpan },
 				trapFocus: this.trapFocus
 			});
