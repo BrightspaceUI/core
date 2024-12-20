@@ -7,6 +7,16 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { localizeFormElement } from './form-element-localize-helper.js';
 
+/**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const FormMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {
@@ -20,8 +30,8 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._onUnload = this._onUnload.bind(this);
 		this._onNativeSubmit = this._onNativeSubmit.bind(this);
 

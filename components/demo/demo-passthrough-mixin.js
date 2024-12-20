@@ -1,10 +1,17 @@
 import { LitElement } from 'lit';
 
 /**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
  * Creates a Lit component that mirrors properties of another, and passes its properties through to
  * a specific rendered element.
+ * @template {LitElementClassType} S
  *
- * @param superclass The Lit class to mirror (will copy all its properties).
+ * @param {S} superclass The Lit class to mirror (will copy all its properties).
  * @param { String } target The element name or other selector string of the element to pass properties to.
  */
 export const DemoPassthroughMixin = (superclass, target) => class extends LitElement {

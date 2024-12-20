@@ -2,6 +2,16 @@ import { CollectionMixin } from '../../mixins/collection/collection-mixin.js';
 import { html } from 'lit';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
+/**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const PageableMixin = superclass => class extends CollectionMixin(superclass) {
 
 	static get properties() {
@@ -10,8 +20,8 @@ export const PageableMixin = superclass => class extends CollectionMixin(supercl
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 
 		this._itemShowingCount = 0;
 		this._pageableSubscriberRegistry = new SubscriberRegistryController(this, 'pageable', {

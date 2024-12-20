@@ -7,6 +7,16 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const __nativeFocus = document.createElement('div').focus;
 const escapeKeyCode = 27;
 
+/**
+ * @typedef {typeof import('lit').ReactiveElement} ReactiveElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
+ */
+
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const HierarchicalViewMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -96,8 +106,8 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		`;
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 
 		/** @ignore */
 		this.hierarchicalView = true;

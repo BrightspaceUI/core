@@ -148,7 +148,17 @@ export const skeletonStyles = css`
 	}
 `;
 
-export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(superclass) {
+/**
+ * @typedef {typeof import('lit').ReactiveElement} ReactiveElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
+ */
+
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
+const InternalSkeletonMixin = superclass => class extends RtlMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -166,8 +176,8 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 		return styles;
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._skeletonSetByParent = false;
 		this._skeletonSetExplicitly = false;
 		this._skeletonActive = false;
@@ -217,4 +227,6 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(su
 		this.requestUpdate('skeleton', this._skeletonSetExplicitly);
 	}
 
-});
+};
+
+export const SkeletonMixin = dedupeMixin(InternalSkeletonMixin);

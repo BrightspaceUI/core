@@ -7,6 +7,16 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 const dragIntervalDelay = 100;
 const dragHoverDropTime = 1000;
 
+/**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const ListItemExpandCollapseMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	static get properties() {
@@ -73,8 +83,8 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 		return styles;
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._siblingHasNestedItems = false;
 		this._renderExpandCollapseSlot = false;
 		this._showNestedLoadingSpinner = false;

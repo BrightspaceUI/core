@@ -3,6 +3,16 @@ import { css, html } from 'lit';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ListItemMixin } from './list-item-mixin.js';
 
+/**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const ListItemButtonMixin = superclass => class extends ListItemMixin(superclass) {
 	static get properties() {
 		return {
@@ -50,8 +60,8 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 		return styles;
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._primaryActionId = getUniqueId();
 		this.buttonDisabled = false;
 	}

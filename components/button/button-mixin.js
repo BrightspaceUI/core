@@ -1,5 +1,15 @@
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 
+/**
+ * @typedef {typeof import('lit').ReactiveElement} ReactiveElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
+ */
+
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 
 	static get properties() {
@@ -66,8 +76,8 @@ export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.disabled = false;
 
 		/** @ignore */

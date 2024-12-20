@@ -3,10 +3,18 @@ import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinBaseClass extends getLocalizeClass(superclass) {
+/**
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ */
 
-	constructor() {
-		super();
+/**
+ * @template {LitElementConstructor} S
+ * @param {S} superclass
+ */
+const _InternalLocalizeMixinBase = superclass => class LocalizeMixinBaseClass extends getLocalizeClass(superclass) {
+
+	constructor(...args) {
+		super(...args);
 		super.constructor.setLocalizeMarkup(localizeMarkup);
 	}
 
@@ -63,8 +71,14 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinB
 
 	#updatedProperties = new Map();
 
-});
+};
 
+export const _LocalizeMixinBase = dedupeMixin(_InternalLocalizeMixinBase);
+
+/**
+ * @template {LitElementConstructor} S
+ * @param {S} superclass
+ */
 export const LocalizeMixin = superclass => class extends _LocalizeMixinBase(superclass) {
 
 	static getLocalizeResources() {
