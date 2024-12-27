@@ -2,7 +2,8 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import '../../helpers/queueMicrotask.js';
 import './tab-internal.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import './tab.js';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { cssEscape, findComposedAncestor } from '../../helpers/dom.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
@@ -244,6 +245,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		this.maxToShow = -1;
 		this._allowScrollNext = false;
 		this._allowScrollPrevious = false;
+		this._hasPanelsSlotContent = false;
+		this._hasTabsSlotContent = false;
 		this._loadingCompleteResolve = undefined;
 		this._loadingCompletePromise = new Promise(resolve => this._loadingCompleteResolve = resolve);
 		this._maxWidth = null;
@@ -351,7 +354,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 							@focusout="${this._handleFocusOut}"
 							role="tablist"
 							style="${styleMap(tabsContainerListStyles)}">
-							${repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
+							${!this._hasTabsSlotContent ? repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
 								<d2l-tab-internal aria-selected="${tabInfo.selected ? 'true' : 'false'}"
 									.controlsPanel="${tabInfo.id}"
 									data-state="${tabInfo.state}"
@@ -359,7 +362,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 									tabindex="${tabInfo.activeFocusable ? 0 : -1}"
 									text="${tabInfo.text}">
 								</d2l-tab-internal>
-							`)}
+							`) : nothing}
+							<slot name="tabs" @slotchange="${this._handleTabsSlotChange}"></slot>
 						</div>
 					`)}
 					<div class="d2l-tabs-scroll-next-container">
@@ -375,7 +379,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 			<div class="${classMap(panelContainerClasses)}"
 				@d2l-tab-panel-selected="${this._handlePanelSelected}"
 				@d2l-tab-panel-text-changed="${this._handlePanelTextChange}">
-				<slot @slotchange="${this._handlePanelsSlotChange}"></slot>
+				<slot @slotchange="${this._handlePanelSlotChange}"></slot>
+				<slot name="panels" @slotChange="${this._handlePanelsSlotChange}"></slot>
 			</div>
 		`;
 	}
@@ -540,7 +545,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 	_getPanel(id) {
 		if (!this.shadowRoot) return;
 		// use simple selector for slot (Edge)
-		const slot = this.shadowRoot.querySelector('.d2l-panels-container').querySelector('slot');
+		const panelsContainer = this.shadowRoot.querySelector('.d2l-panels-container');
+		const slot = this._hasPanelsSlotContent ? panelsContainer.querySelector('slot[name="panels"]') : panelsContainer.querySelector('slot');
 		const panels = this._getPanels(slot);
 		for (let i = 0; i < panels.length; i++) {
 			if (panels[i].nodeType === Node.ELEMENT_NODE && panels[i].role === 'tabpanel' && panels[i].id === id) {
@@ -580,7 +586,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		this.requestUpdate();
 	}
 
-	async _handlePanelsSlotChange(e) {
+	async _handlePanelSlotChange(e) {
 
 		const panels = this._getPanels(e.target);
 
@@ -664,6 +670,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 			'd2l-tabs-initialized', { bubbles: true, composed: true }
 		));
 
+	}
+
+	_handlePanelsSlotChange() {
+		this._hasPanelsSlotContent = this._hasPanelsSlotContent.assignedNodes().length > 0;
 	}
 
 	async _handlePanelTextChange(e) {
@@ -786,6 +796,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		});
 
 		this.requestUpdate();
+	}
+
+	_handleTabsSlotChange() {
+		this._hasTabsSlotContent = this._tabsSlot.assignedNodes().length > 0;
 	}
 
 	_isPositionInLeftScrollArea(position) {
