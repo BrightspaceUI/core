@@ -3,6 +3,7 @@ import { SelectionControls } from '../selection/selection-controls.js';
 
 /**
  * Controls for table components containing a selection summary and selection actions.
+ * @typedef {TableControls} TableControlsExported
  */
 class TableControls extends SelectionControls {
 	static get properties() {

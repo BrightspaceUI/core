@@ -4,6 +4,7 @@ import { styles } from './code-view-styles.js';
 import { themeStyles } from './code-dark-plus-styles.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
+/** @typedef {CodeView} CodeViewExported */
 class CodeView extends LitElement {
 
 	static get properties() {

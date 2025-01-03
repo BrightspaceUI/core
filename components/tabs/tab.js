@@ -3,6 +3,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { TabMixin } from './tab-mixin.js';
 
+/** @typedef {Tab} TabExported */
 class Tab extends TabMixin(LitElement) {
 
 	static get styles() {

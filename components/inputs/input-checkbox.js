@@ -63,6 +63,7 @@ export const checkboxStyles = css`
  * @slot - Checkbox information (e.g., text)
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when the checkbox's state changes
+ * @typedef {InputCheckbox} InputCheckboxExported
  */
 class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMixin(LitElement)))) {
 

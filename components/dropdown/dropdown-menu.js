@@ -11,6 +11,7 @@ const dropdownDelay = 300;
  * @slot header - Sticky container at the top of the dropdown
  * @slot footer - Sticky container at the bottom of the dropdown
  * @fires d2l-dropdown-open - Dispatched when the dropdown is opened
+ * @typedef {DropdownMenu} DropdownMenuExported
  */
 class DropdownMenu extends ThemeMixin(DropdownContentMixin(LitElement)) {
 

@@ -12,6 +12,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
  * @slot - Default content placed inside of the component
  * @fires d2l-alert-close - Dispatched when the alert's close button is clicked
  * @fires d2l-alert-button-press - Dispatched when the alert's action button is clicked
+ * @typedef {Alert} AlertExported
  */
 class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 

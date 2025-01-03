@@ -7,6 +7,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 /**
  * A menu item component used for radio selection. Only one radio item in a given d2l-menu may be selected at once (i.e., selecting one option will deselect the other selected "d2l-menu-item-radio" item).
  * @slot supporting - Allows supporting information to be displayed on the right-most side of the menu item
+ * @typedef {MenuItemRadio} MenuItemRadioExported
  */
 class MenuItemRadio extends RtlMixin(MenuItemRadioMixin(LitElement)) {
 

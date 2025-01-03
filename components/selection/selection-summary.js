@@ -7,6 +7,7 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
 /**
  * A summary showing the current selected count.
  * @fires d2l-selection-observer-subscribe - Internal event
+ * @typedef {Summary} SummaryExported
  */
 class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 

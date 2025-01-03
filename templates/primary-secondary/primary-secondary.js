@@ -545,6 +545,7 @@ class MobileTouchResizer extends Resizer {
  * @slot secondary - Supplementary page content
  * @fires d2l-template-primary-secondary-resize-start - Dispatched when a user begins moving the divider.
  * @fires d2l-template-primary-secondary-resize-end - Dispatched when a user finishes moving the divider.
+ * @typedef {TemplatePrimarySecondary} TemplatePrimarySecondaryExported
  */
 class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement)) {
 

@@ -5,6 +5,7 @@ import { SkeletonGroupMixin } from '../skeleton/skeleton-group-mixin.js';
 /**
  * A component that renders a container and layout for collapsible panels
  * @slot default - Slot for panels. Only accepts `d2l-collapsible-panel`
+ * @typedef {CollapsiblePanelGroup} CollapsiblePanelGroupExported
  */
 class CollapsiblePanelGroup extends SkeletonGroupMixin(LitElement) {
 

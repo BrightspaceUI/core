@@ -9,6 +9,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
  * @fires d2l-menu-item-change - Internal event
  * @fires d2l-menu-item-select - Internal event
  * @fires d2l-menu-item-visibility-change - Internal event
+ * @typedef {TableColSortButtonItem} TableColSortButtonItemExported
  */
 class TableColSortButtonItem extends RtlMixin(MenuItemRadioMixin(LitElement)) {
 

@@ -57,6 +57,7 @@ function createMenuItemSeparator() {
  * @slot - Buttons, dropdown buttons, links or other items to be added to the container
  * @attr {'default'|'icon'} [opener-type="default"] - Set the opener type to 'icon' for a `...` menu icon instead of `More actions` text
  * @attr {boolean} auto-show - Use predefined classes on slot elements to set min and max buttons to show
+ * @typedef {OverflowGroup} OverflowGroupExported
 */
 class OverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 

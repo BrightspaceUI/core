@@ -32,6 +32,7 @@ export const descriptionListStyles = [
 /**
  * Wraps a native <dl> element, providing styling and resize behavior.
  * @slot - Content to wrap
+ * @typedef {DescriptionListWrapper} DescriptionListWrapperExported
  */
 class DescriptionListWrapper extends LitElement {
 	static get properties() {

@@ -34,6 +34,7 @@ const defaultHeading = 3;
  * @slot actions - Slot for buttons and dropdown openers to be placed in top right corner of header
  * @fires d2l-collapsible-panel-expand - Dispatched when the panel is expanded
  * @fires d2l-collapsible-panel-collapse - Dispatched when the panel is collapsed
+ * @typedef {CollapsiblePanel} CollapsiblePanelExported
  */
 class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 

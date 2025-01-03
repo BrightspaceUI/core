@@ -7,6 +7,7 @@ import { menuItemStyles } from './menu-item-styles.js';
  * A menu item component used with JS handlers.
  * @slot - Default content placed inside of the component
  * @slot supporting - Allows supporting information to be displayed on the right-most side of the menu item
+ * @typedef {MenuItem} MenuItemExported
  */
 class MenuItem extends MenuItemMixin(LitElement) {
 

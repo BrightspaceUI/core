@@ -1,6 +1,7 @@
 import { LitElement } from 'lit';
 import { TagListItemMixin } from './tag-list-item-mixin.js';
 
+/** @typedef {TagListItem} TagListItemExported */
 class TagListItem extends TagListItemMixin(LitElement) {
 
 	static get properties() {

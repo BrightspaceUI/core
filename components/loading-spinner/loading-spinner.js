@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit';
 
 /**
  * A loading spinner component.
+ * @typedef {LoadingSpinner} LoadingSpinnerExported
  */
 class LoadingSpinner extends LitElement {
 
