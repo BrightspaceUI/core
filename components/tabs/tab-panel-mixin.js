@@ -16,6 +16,11 @@ export const TabPanelMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
 			/**
+			 * Id of the tab that labels this panel
+			 * @type {string}
+			 */
+			labelledBy: { type: String },
+			/**
 			 * Opt out of default padding/whitespace around the panel
 			 * @type {boolean}
 			 */
@@ -71,7 +76,9 @@ export const TabPanelMixin = superclass => class extends superclass {
 		super.updated(changedProperties);
 
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === 'selected') {
+			if (prop === 'labelledBy') {
+				this.setAttribute('aria-labelledby', this.labelledBy);
+			} else if (prop === 'selected') {
 				if (this.selected) {
 					requestAnimationFrame(() => {
 						/** Dispatched when a tab is selected */
