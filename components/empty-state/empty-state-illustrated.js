@@ -2,6 +2,7 @@ import { emptyStateIllustratedStyles, emptyStateStyles } from './empty-state-sty
 import { html, LitElement, nothing } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { LoadingCompleteMixin } from '../../mixins/loading-complete/loading-complete-mixin.js';
 import { loadSvg } from '../../generated/empty-state/presetIllustrationLoader.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -16,7 +17,7 @@ const illustrationAspectRatio = 500 / 330;
  * @slot - Slot for empty state actions
  * @slot illustration - Slot for custom SVG content if `illustration-name` property is not set
  */
-class EmptyStateIllustrated extends PropertyRequiredMixin(LitElement) {
+class EmptyStateIllustrated extends LoadingCompleteMixin(PropertyRequiredMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -53,61 +54,29 @@ class EmptyStateIllustrated extends PropertyRequiredMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('d2l-empty-state-illustrated-check', this._handleEmptyStateIllustratedCheck);
+		this.addEventListener('d2l-empty-state-illustrated-check', this.#handleEmptyStateIllustratedCheck);
 		this._resizeObserver.observe(this);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this.removeEventListener('d2l-empty-state-illustrated-check', this._handleEmptyStateIllustratedCheck);
+		this.removeEventListener('d2l-empty-state-illustrated-check', this.#handleEmptyStateIllustratedCheck);
 		this._resizeObserver.disconnect();
 	}
 
 	render() {
-		const illustrationContainerStyle = this._getIllustrationContainerStyle();
-		const titleClass = this._getTitleClass();
-
-		return html`
-			${this.illustrationName
-		? html`
-			<div style="${styleMap(illustrationContainerStyle)}">
-				${runAsync(this.illustrationName, () => this._getIllustration(this.illustrationName), { success: (illustration) => illustration }, { pendingState: false })}
-			</div>`
-		: html`<slot class="illustration-slot" name="illustration"></slot>`}
-
-			<p class="${classMap(titleClass)}">${this.titleText}</p>
-			<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
-			<slot class="action-slot"></slot>
-		`;
-	}
-
-	async _getIllustration(illustrationName) {
-		if (!illustrationName) return;
-
-		const svg = await loadSvg(illustrationName);
-		if (!svg) setTimeout(() => {
-			throw new Error(`<d2l-empty-state-illustrated-${this._illustratedComponentType}>: Unable to retrieve requested illustration.`);
-		});
-		return svg ? html`${unsafeSVG(svg.val)}` : nothing;
-	}
-
-	_getIllustrationContainerStyle() {
-		return {
-			height: `${this._contentHeight}px`,
-		};
-	}
-
-	_getTitleClass() {
-		return {
+		const titleClass = {
 			'd2l-empty-state-title': true,
 			'd2l-empty-state-title-small': this._titleSmall,
 			'd2l-empty-state-title-large': !this._titleSmall,
 		};
-	}
 
-	_handleEmptyStateIllustratedCheck(e) {
-		e.stopPropagation();
-		e.detail.illustrated = true;
+		return html`
+			${this.#renderIllustration()}
+			<p class="${classMap(titleClass)}">${this.titleText}</p>
+			<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
+			<slot class="action-slot"></slot>
+		`;
 	}
 
 	_onResize(entries) {
@@ -117,6 +86,43 @@ class EmptyStateIllustrated extends PropertyRequiredMixin(LitElement) {
 			this._contentHeight = Math.min(entry.contentRect.right / illustrationAspectRatio, 330);
 			this._titleSmall = entry.contentRect.right <= 615;
 		});
+	}
+
+	async #getIllustration(illustrationName) {
+		if (!illustrationName) return;
+
+		const svg = await loadSvg(illustrationName);
+		if (!svg) setTimeout(() => {
+			throw new Error(`<d2l-empty-state-illustrated-${this._illustratedComponentType}>: Unable to retrieve requested illustration.`);
+		});
+		return svg ? html`${unsafeSVG(svg.val)}` : nothing;
+	}
+
+	#handleEmptyStateIllustratedCheck(e) {
+		e.stopPropagation();
+		e.detail.illustrated = true;
+	}
+
+	#renderIllustration() {
+		if (!this.illustrationName) {
+			this.resolveLoadingComplete();
+			return html`<slot class="illustration-slot" name="illustration"></slot>`;
+		}
+		const illustrationContainerStyle = {
+			height: `${this._contentHeight}px`,
+		};
+		const asyncVal = runAsync(
+			this.illustrationName,
+			async() => this.#getIllustration(this.illustrationName),
+			{
+				success: illustration => {
+					this.resolveLoadingComplete();
+					return illustration;
+				}
+			},
+			{ pendingState: false }
+		);
+		return html`<div style="${styleMap(illustrationContainerStyle)}">${asyncVal}</div>`;
 	}
 
 }
