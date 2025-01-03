@@ -113,7 +113,7 @@ class EmptyStateIllustrated extends LoadingCompleteMixin(PropertyRequiredMixin(L
 		};
 		const asyncVal = runAsync(
 			this.illustrationName,
-			async() => this.#getIllustration(this.illustrationName),
+			() => this.#getIllustration(this.illustrationName),
 			{
 				success: illustration => {
 					this.resolveLoadingComplete();
