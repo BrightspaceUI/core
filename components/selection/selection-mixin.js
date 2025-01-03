@@ -44,6 +44,16 @@ export class SelectionInfo {
 
 }
 
+/**
+ * @typedef {typeof import('lit').ReactiveElement} ReactiveElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
+ */
+
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const SelectionMixin = superclass => class extends RtlMixin(CollectionMixin(superclass)) {
 
 	static get properties() {
@@ -60,8 +70,8 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.selectionNoInputArrowKeyBehaviour = false;
 		this.selectionSingle = false;
 		this._selectAllPages = false;

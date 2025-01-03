@@ -21,6 +21,16 @@ const defaultVerticalOffset = 16;
 const pointerLength = 16;
 const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
 
+/**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const DropdownContentMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
 	static get properties() {
@@ -262,8 +272,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 
 		this.noAutoClose = false;
 		this.noAutoFit = false;

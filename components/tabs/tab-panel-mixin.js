@@ -1,6 +1,16 @@
 import { css } from 'lit';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 
+/**
+ * @typedef {typeof import('lit').ReactiveElement} ReactiveElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
+ */
+
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const TabPanelMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -49,8 +59,8 @@ export const TabPanelMixin = superclass => class extends superclass {
 		`;
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.noPadding = false;
 		/** @ignore */
 		this.role = 'tabpanel';

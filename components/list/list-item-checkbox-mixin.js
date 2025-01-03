@@ -4,6 +4,16 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { SelectionInfo } from '../selection/selection-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
+/**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	static get properties() {
@@ -53,8 +63,8 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		return styles;
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.selectable = false;
 		this.selected = false;
 		this.selectionDisabled = false;

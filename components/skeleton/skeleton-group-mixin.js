@@ -2,7 +2,17 @@ import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { SkeletonMixin } from './skeleton-mixin.js';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
-export const SkeletonGroupMixin = dedupeMixin(superclass => class extends SkeletonMixin(superclass) {
+/**
+ * @typedef {typeof import('lit').ReactiveElement} ReactiveElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
+ */
+
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
+const InternalSkeletonGroupMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -10,8 +20,8 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends Skelet
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._anySubscribersWithSkeletonActive = false;
 		this._skeletonSubscribers = new SubscriberRegistryController(this, 'skeleton', {
 			onSubscribe: this.onSubscriberChange.bind(this),
@@ -46,4 +56,6 @@ export const SkeletonGroupMixin = dedupeMixin(superclass => class extends Skelet
 		this._parentSkeleton?.registry?.onSubscriberChange();
 	}
 
-});
+};
+
+export const SkeletonGroupMixin = dedupeMixin(InternalSkeletonGroupMixin);

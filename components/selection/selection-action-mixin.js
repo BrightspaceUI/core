@@ -3,6 +3,16 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SelectionInfo } from './selection-mixin.js';
 import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
+/**
+ * @typedef {typeof import('lit').ReactiveElement} ReactiveElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
+ */
+
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
 export const SelectionActionMixin = superclass => class extends LocalizeCoreElement(SelectionObserverMixin(superclass)) {
 
 	static get properties() {
@@ -21,8 +31,8 @@ export const SelectionActionMixin = superclass => class extends LocalizeCoreElem
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.maxSelectionCount = Infinity;
 		this.requiresSelection = false;
 	}

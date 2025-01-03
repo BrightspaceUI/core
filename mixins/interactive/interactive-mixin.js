@@ -15,6 +15,16 @@ export function isInteractiveDescendant(node) {
 	});
 }
 
+/**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const InteractiveMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
 
 	static get properties() {
@@ -35,8 +45,8 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 		`];
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._dismissibleId = null;
 		this._focusingToggle = false;
 		this._hasInteractiveAncestor = false;

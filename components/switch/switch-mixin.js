@@ -7,6 +7,16 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
+/**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(superclass)) {
 
 	static get properties() {
@@ -165,8 +175,8 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 		`;
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.disabled = false;
 		this.labelHidden = false;
 		this.on = false;

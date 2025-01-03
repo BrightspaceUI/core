@@ -21,6 +21,16 @@ const isSupported = ('popover' in HTMLElement.prototype);
 // eslint-disable-next-line no-console
 console.log('Popover', isSupported);
 
+/**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const PopoverMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -203,8 +213,8 @@ export const PopoverMixin = superclass => class extends superclass {
 		`;
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.configure();
 		this._mobile = false;
 		this._useNativePopover = isSupported ? 'manual' : undefined;

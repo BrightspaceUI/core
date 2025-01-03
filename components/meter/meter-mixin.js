@@ -1,6 +1,16 @@
 import { formatPercent } from '@brightspace-ui/intl/lib/number.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
+/**
+ * @typedef {typeof import('lit').LitElement} LitElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').LitElement>} LitElementConstructor
+ * @typedef {LitElementConstructor & Pick<LitElementType, keyof LitElementType>} LitElementClassType
+ */
+
+/**
+ * @template {LitElementClassType} S
+ * @param {S} superclass
+ */
 export const MeterMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {
@@ -35,8 +45,8 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this.max = 100;
 		this.percent = false;
 		this.textHidden = false;

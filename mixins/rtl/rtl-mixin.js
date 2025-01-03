@@ -1,8 +1,17 @@
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 
-export const RtlMixin = dedupeMixin(superclass => class extends superclass {
+/**
+ * @typedef {typeof import('lit').ReactiveElement} ReactiveElementType
+ * @typedef {import('@open-wc/dedupe-mixin').Constructor<import('lit').ReactiveElement>} ReactiveElementConstructor
+ * @typedef {ReactiveElementConstructor & Pick<ReactiveElementType, keyof ReactiveElementType>} ReactiveElementClassType
+ */
 
+/**
+ * @template {ReactiveElementClassType} S
+ * @param {S} superclass
+ */
+const InternalRtlMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
 			/**
@@ -13,8 +22,8 @@ export const RtlMixin = dedupeMixin(superclass => class extends superclass {
 		};
 	}
 
-	constructor() {
-		super();
+	constructor(...args) {
+		super(...args);
 		this._localeSettings = getDocumentLocaleSettings();
 		this._handleLanguageChange = this._handleLanguageChange.bind(this);
 		this._handleLanguageChange();
@@ -38,4 +47,6 @@ export const RtlMixin = dedupeMixin(superclass => class extends superclass {
 		}
 	}
 
-});
+};
+
+export const RtlMixin = dedupeMixin(InternalRtlMixin);
