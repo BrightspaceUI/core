@@ -16,21 +16,21 @@ export class SelectionInfo {
 		if (!allEnabledSelected) allEnabledSelected = false;
 		if (!keys) keys = [];
 		if (!state) state = SelectionInfo.states.none;
-		this._allEnabledSelected = allEnabledSelected;
-		this._keys = keys;
-		this._state = state;
+		this.#allEnabledSelected = allEnabledSelected;
+		this.#keys = keys;
+		this.#state = state;
 	}
 
 	get allEnabledSelected() {
-		return this._allEnabledSelected;
+		return this.#allEnabledSelected;
 	}
 
 	get keys() {
-		return this._keys;
+		return this.#keys;
 	}
 
 	get state() {
-		return this._state;
+		return this.#state;
 	}
 
 	static get states() {
@@ -41,6 +41,10 @@ export class SelectionInfo {
 			allPages: 'all-pages'
 		};
 	}
+
+	#allEnabledSelected;
+	#keys;
+	#state;
 
 }
 
