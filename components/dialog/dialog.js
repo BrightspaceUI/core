@@ -14,14 +14,83 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px) and (max-width: 900px)');
 
-/**
- * A generic dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
- * @fires d2l-dialog-before-close - Dispatched with the action value before the dialog is closed for any reason, providing an opportunity to prevent the dialog from closing
- * @slot - Default slot for content inside dialog
- * @slot footer - Slot for footer content such as workflow buttons
- */
-class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement)))) {
+function getComposedChildren(node) {
 
+	if (node?.nodeType !== Node.ELEMENT_NODE) {
+		return [];
+	}
+
+	let nodes;
+	const children = [];
+
+	if (node.tagName === 'SLOT') {
+		nodes = node.assignedNodes({ flatten: true });
+	} else {
+		if (node.shadowRoot) {
+			node = node.shadowRoot;
+		}
+		nodes = node.children || node.childNodes;
+	}
+
+	for (let i = 0; i < nodes.length; i++) {
+		if (nodes[i].nodeType === 1) {
+			children.push(nodes[i]);
+		}
+	}
+
+	return children;
+
+}
+
+function nextFrame() {
+	return new Promise(resolve => {
+	  requestAnimationFrame(() => resolve());
+	});
+}
+
+async function waitForElem(elem, awaitLoadingComplete = true) {
+
+	if (!elem) return;
+
+	const doWait = async() => {
+
+		const update = elem.updateComplete;
+		if (typeof update === 'object' && Promise.resolve(update) === update) {
+			await update;
+			await nextFrame();
+		}
+
+		if (awaitLoadingComplete && typeof elem.getLoadingComplete === 'function') {
+			await elem.getLoadingComplete();
+			await nextFrame();
+		}
+
+		const children = getComposedChildren(elem);
+		await Promise.all(children.map(e => waitForElem(e, awaitLoadingComplete)));
+
+	};
+
+	await new Promise((resolve) => {
+		const observer = new MutationObserver((records) => {
+			for (const record of records) {
+				for (const removedNode of record.removedNodes) {
+					if (removedNode === elem) {
+						observer.disconnect();
+						resolve();
+						return;
+					}
+				}
+			}
+		});
+		observer.observe(elem.parentNode, { childList: true });
+		doWait()
+			.then(() => observer.disconnect())
+			.then(resolve);
+	});
+
+}
+
+class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement)))) {
 	static get properties() {
 		return {
 			/**
@@ -64,7 +133,6 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 			:host([critical]) .d2l-dialog-header {
 				padding-bottom: 15px;
 			}
-
 			.d2l-dialog-header > div > d2l-button-icon {
 				flex: none;
 				margin: -4px -15px 0 15px;
@@ -74,13 +142,11 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 				margin-left: -15px;
 				margin-right: 15px;
 			}
-
 			.d2l-dialog-content > div {
 				/* required to properly calculate preferred height when there are bottom
 				margins at the end of the slotted content */
 				border-bottom: 1px solid transparent;
 			}
-
 			.d2l-dialog-content-loading {
 				text-align: center;
 			}
@@ -146,11 +212,11 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 			`;
 		}
 
-		const heightOverride = {} ;
+		const heightOverride = {};
 		let topOverride = null;
 		if (mediaQueryList.matches) {
 			if (this._ifrauContextInfo) {
-				// in iframes, use calculated available height from dialog mixin minus padding
+
 				heightOverride.minHeight = `${this._ifrauContextInfo.availableHeight - 42}px`;
 				heightOverride.top = `${this._top + this._margin.top + 42}px`;
 				const iframeTop = this._ifrauContextInfo.top < 0
@@ -207,6 +273,14 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		if (this.asyncState === asyncStates.complete) {
 			this.resize();
 		}
+		this.waitForChildrenLoading().then(() => {
+			this.resize();
+		});
+	}
+
+	async waitForChildrenLoading() {
+		const children = getComposedChildren(this);
+		await Promise.all(children.map(child => waitForElem(child)));
 	}
 
 	_abort() {
@@ -222,7 +296,5 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		this._autoSize = !mediaQueryList.matches;
 		this.resize();
 	}
-
 }
-
 customElements.define('d2l-dialog', Dialog);
