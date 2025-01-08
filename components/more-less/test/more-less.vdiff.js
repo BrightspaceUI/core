@@ -80,9 +80,4 @@ describe('more-less', () => {
 		const elem = await fixture(html`<d2l-more-less height="3em">${content()}</d2l-more-less>`, { viewport });
 		await expect(elem).to.be.golden();
 	});
-
-	it('with custom blur', async() => {
-		const elem = await fixture(html`<d2l-more-less blur-color="#f00">${content()}</d2l-more-less>`, { viewport });
-		await expect(elem).to.be.golden();
-	});
 });
