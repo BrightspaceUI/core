@@ -61,7 +61,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 				transition: max-height ${transitionDur}ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
 			:host(:not([expanded]):not([inactive])) .d2l-more-less-content {
-				mask-image: linear-gradient(to top, transparent, rgb(0 0 0 / 100%) 1em);
+				-webkit-mask-image: linear-gradient(to top, transparent, #000000 1em);
+				mask-image: linear-gradient(to top, transparent, #000000 1em);
 			}
 			:host([inactive]) .d2l-more-less-toggle {
 				display: none;
