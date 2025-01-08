@@ -34,7 +34,9 @@ function getComposedChildren(node) {
 
 	for (let i = 0; i < nodes.length; i++) {
 		if (nodes[i].nodeType === 1) {
-			children.push(nodes[i]);
+			if (!nodes[i].hasAttribute('data-subtree-skip')) {
+				children.push(nodes[i]);
+			}
 		}
 	}
 
