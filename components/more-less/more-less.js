@@ -21,12 +21,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * The gradient color of the blurring effect
-			 * @type {string}
-			 */
-			blurColor: { type: String, attribute: 'blur-color' },
-
-			/**
 			 * Indicates whether element is in "more" state
 			 * @type {boolean}
 			 */
@@ -49,7 +43,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			 * @type {boolean}
 			 */
 			inactive: { type: Boolean, reflect: true },
-			__blurBackground: { state: true },
 			__maxHeight: { state: true },
 			__transitionAdded: { state: true }
 		};
@@ -67,16 +60,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			.d2l-more-less-transition {
 				transition: max-height ${transitionDur}ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
-			.d2l-more-less-blur {
-				display: none;
-			}
-			:host(:not([expanded]):not([inactive])) .d2l-more-less-blur {
-				bottom: 1em;
-				content: "";
-				display: block;
-				height: 1em;
-				margin-bottom: -0.75em;
-				position: relative;
+			:host(:not([expanded]):not([inactive])) .d2l-more-less-content {
+				mask-image: linear-gradient(to top, transparent, rgb(0 0 0 / 100%) 1em);
 			}
 			:host([inactive]) .d2l-more-less-toggle {
 				display: none;
@@ -96,7 +81,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.height = '4em';
 		this.inactive = false;
 
-		this.__blurBackground = 'linear-gradient(rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 100%)';
 		this.__transitionAdded = false;
 		this.__maxHeight = this.height;
 
@@ -145,7 +129,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 		this.__content = this.shadowRoot.querySelector('.d2l-more-less-content');
 		this.__contentSlot = this.shadowRoot.querySelector('.d2l-more-less-content slot');
-		this.__init_setupBlurColour();
 		this.__init_setupListeners();
 
 		this.__bound_transitionEvents = this.__transitionEvents.bind(this);
@@ -164,7 +147,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			<div id="${this.__contentId}" class=${classMap(contentClasses)} style=${styleMap({ maxHeight: `${this.__maxHeight}` })}>
 				<slot></slot>
 			</div>
-			<div class="d2l-more-less-blur" style=${styleMap({ background: `${this.__blurBackground}` })}></div>
 			<d2l-button-subtle
 				class="d2l-more-less-toggle"
 				icon="${this.__computeIcon()}"
@@ -298,33 +280,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		requestAnimationFrame(() => {
 			this.__init_measureBaseHeight();
 		});
-	}
-
-	__init_setupBlurColour() {
-		if (!this.blurColor
-			|| this.blurColor[0] !== '#'
-			|| (this.blurColor.length !== 4 && this.blurColor.length !== 7)
-		) {
-			return;
-		}
-
-		let hex = this.blurColor.substring(1);
-
-		// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-		if (hex.length === 3) {
-			const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-			hex = hex.replace(shorthandRegex, (m, r, g, b) => {
-				return r + r + g + g + b + b;
-			});
-		}
-
-		const bigint = parseInt(hex, 16);
-		const r = (bigint >> 16) & 255;
-		const g = (bigint >> 8) & 255;
-		const b = bigint & 255;
-
-		this.__blurBackground =
-			`linear-gradient(rgba(${r}, ${g}, ${b}, 0) 0%, rgb(${r}, ${g}, ${b}) 100%)`;
 	}
 
 	__init_setupListeners() {

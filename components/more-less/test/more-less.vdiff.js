@@ -84,7 +84,7 @@ describe('more-less', () => {
 	it('with custom blur', async() => {
 		const elem = await fixture(html`
 			<div style="background-color: #ff0000; padding: 10px;">
-				<d2l-more-less blur-color="#ff0000">${content()}</d2l-more-less>
+				<d2l-more-less>${content()}</d2l-more-less>
 			</div>
 		`, { viewport });
 		await expect(elem).to.be.golden();
