@@ -298,7 +298,7 @@ describe('d2l-list-item', () => {
 
 	});
 
-	it('has clickable drag arrows', async () => {
+	it('has clickable drag arrows', async() => {
 		const list = await fixture(html`
 		<d2l-list>
 			<d2l-list-item draggable key="1">Item 1</d2l-list-item>
