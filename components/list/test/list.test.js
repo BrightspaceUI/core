@@ -298,6 +298,27 @@ describe('d2l-list-item', () => {
 
 	});
 
+	it('has clickable drag arrows', async () => {
+		const list = await fixture(html`
+		<d2l-list>
+			<d2l-list-item draggable key="1">Item 1</d2l-list-item>
+			<d2l-list-item draggable key="2">Item 2</d2l-list-item>
+		</d2l-list>`);
+
+		const item = list.children[0];
+		expect(item.innerText).to.equal('Item 1');
+		const handle = item.shadowRoot.querySelector('d2l-list-item-drag-handle');
+		let handleRealClicks = 0;
+		handle.addEventListener('click', () => ++handleRealClicks);
+		await clickElem(handle.shadowRoot.querySelector('button')); // focus drag handle
+		expect(handleRealClicks).to.equal(0);
+		await clickElem(handle.shadowRoot.querySelector('button')); // enable keyboard mode
+		const downArrow = handle.shadowRoot.querySelector('d2l-button-move').shadowRoot.querySelector('.down-layer');
+		expect(downArrow).to.exist;
+		clickElem(downArrow);
+		await oneEvent(item, 'd2l-list-item-position-change');
+	});
+
 });
 
 describe('d2l-list-item-button', () => {
