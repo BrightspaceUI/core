@@ -317,6 +317,7 @@ describe('d2l-list-item', () => {
 		expect(downArrow).to.exist;
 		clickElem(downArrow);
 		await oneEvent(item, 'd2l-list-item-position-change');
+		expect(handleRealClicks).to.equal(0);
 	});
 
 });
