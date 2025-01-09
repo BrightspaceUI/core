@@ -42,7 +42,9 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 			selectAllPagesAllowed: { type: Boolean, attribute: 'select-all-pages-allowed' },
 			_hasActions: { state: true },
 			_noSelectionText: { state: true },
-			_scrolled: { type: Boolean, reflect: true }
+			_scrolled: { type: Boolean, reflect: true },
+			_top: { state: true },
+			stickTo: { type: Object }
 		};
 	}
 
@@ -51,7 +53,7 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 			:host {
 				display: block;
 				position: sticky;
-				top: 0;
+				top: 0px;
 			}
 			:host([no-sticky]) {
 				position: static;
@@ -132,6 +134,7 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 		this.noSticky = false;
 		this.selectAllPagesAllowed = false;
 		this._scrolled = false;
+		this._top = 0;
 	}
 
 	disconnectedCallback() {
@@ -160,11 +163,26 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 		if (changedProperties.has('noSticky')) {
 			this._stickyObserverUpdate();
 		}
+
+		if (changedProperties.has('_top')) {
+			this.style.top = `${this._top ?? 0}px`;
+			this._stickyObserverUpdate();
+		}
 	}
 
-	willUpdate(changedProperties) {
+	async willUpdate(changedProperties) {
 		if (changedProperties.has('noSelectionText') || changedProperties.has('_pageableInfo')) {
 			this._noSelectionText = this.noSelectionText || this._getNoSelectionText();
+		}
+
+		if (changedProperties.has('stickTo')) {
+			if (this.stickTo) {
+				await this.stickTo.updateComplete;
+				const top = this.stickTo.computedStyleMap?.().get('top');
+				this._top = top.unit === 'px' ? top.value + this.stickTo.getBoundingClientRect().height : 0;
+			} else {
+				this._top = 0;
+			}
 		}
 	}
 
@@ -214,7 +232,7 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 		if (!this.noSticky && typeof(IntersectionObserver) === 'function') {
 			this._stickyIntersectionObserver = new IntersectionObserver(([e]) => {
 				this._scrolled = !e.isIntersecting;
-			});
+			}, { rootMargin: `-${this._top ?? 0}px 0px ${this._top ?? 0}px 0px` });
 
 			const target = this.shadowRoot.querySelector('.d2l-sticky-edge');
 			this._stickyIntersectionObserver.observe(target);

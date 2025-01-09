@@ -27,6 +27,14 @@
 			d2l-tag-list {
 				margin-top: 0.3rem;
 			}
+			header {
+				padding: 1rem;
+				border-bottom: 1px solid grey;
+				background: white;
+				position: fixed;
+				inset: 0 0 auto 0;
+				z-index: 10;
+			}
 		</style>
 	</head>
 	<body unresolved>
@@ -73,11 +81,47 @@
 
 			<h2>List with Grid Actions</h2>
 
+			<d2l-switch
+				text="Fixed Header"
+				style="margin-bottom:1rem;"
+				onchange="toggleHeader()">
+			</d2l-switch>
+
+			<header hidden>Header</header>
+
 			<d2l-demo-snippet>
 				<template>
-					<d2l-demo-list grid></d2l-demo-list>
+					<d2l-demo-list id="top-list" grid></d2l-demo-list>
 				</template>
 			</d2l-demo-snippet>
+
+			<div id="sticky-stack">
+				<d2l-list-controls></d2l-list-controls>
+				<div>Space</div>
+				<d2l-list-controls></d2l-list-controls>
+				<div>Space</div>
+				<d2l-list-controls></d2l-list-controls>
+				<div>Space</div>
+				<d2l-list-controls></d2l-list-controls>
+				<div>Space</div>
+				<d2l-list-controls></d2l-list-controls>
+			</div>
+
+			<script>
+				let prev;
+				[...document.querySelectorAll('#sticky-stack d2l-list-controls')].forEach(async el => {
+					await prev?.updateComplete;
+					el.stickTo = prev;
+					prev = el;
+				});
+
+				function toggleHeader() {
+					const header = document.querySelector('header');
+					header.hidden = !header.hidden;
+					const listControls = document.querySelector('#top-list').shadowRoot.querySelector('d2l-list-controls');
+					listControls.stickTo = header.hidden ? null : header;
+				}
+			</script>
 
 			<h2>List with add button</h2>
 
