@@ -585,8 +585,8 @@ export const PopoverMixin = superclass => class extends superclass {
 		};
 
 		return {
-			width : widthStyle,
-			content : contentStyle
+			width: widthStyle,
+			content: contentStyle
 		};
 	}
 
@@ -676,8 +676,8 @@ export const PopoverMixin = superclass => class extends superclass {
 		};
 
 		return {
-			width : widthStyle,
-			content : contentStyle
+			width: widthStyle,
+			content: contentStyle
 		};
 	}
 
@@ -814,8 +814,8 @@ export const PopoverMixin = superclass => class extends superclass {
 		};
 
 		return {
-			width : widthStyle,
-			content : contentStyle
+			width: widthStyle,
+			content: contentStyle
 		};
 	}
 
