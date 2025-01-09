@@ -6,91 +6,15 @@ import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
+import { getComposedChildren } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { waitForElem } from '../../helpers/internal/waitForElem.js';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px) and (max-width: 900px)');
-
-function getComposedChildren(node) {
-
-	if (node?.nodeType !== Node.ELEMENT_NODE) {
-		return [];
-	}
-
-	let nodes;
-	const children = [];
-
-	if (node.tagName === 'SLOT') {
-		nodes = node.assignedNodes({ flatten: true });
-	} else {
-		if (node.shadowRoot) {
-			node = node.shadowRoot;
-		}
-		nodes = node.children || node.childNodes;
-	}
-
-	for (let i = 0; i < nodes.length; i++) {
-		if (nodes[i].nodeType === 1) {
-			if (!nodes[i].hasAttribute('data-subtree-skip')) {
-				children.push(nodes[i]);
-			}
-		}
-	}
-
-	return children;
-
-}
-
-function nextFrame() {
-	return new Promise(resolve => {
-	  requestAnimationFrame(() => resolve());
-	});
-}
-
-async function waitForElem(elem, awaitLoadingComplete = true) {
-
-	if (!elem) return;
-
-	const doWait = async() => {
-
-		const update = elem.updateComplete;
-		if (typeof update === 'object' && Promise.resolve(update) === update) {
-			await update;
-			await nextFrame();
-		}
-
-		if (awaitLoadingComplete && typeof elem.getLoadingComplete === 'function') {
-			await elem.getLoadingComplete();
-			await nextFrame();
-		}
-
-		const children = getComposedChildren(elem);
-		await Promise.all(children.map(e => waitForElem(e, awaitLoadingComplete)));
-
-	};
-
-	await new Promise((resolve) => {
-		const observer = new MutationObserver((records) => {
-			for (const record of records) {
-				for (const removedNode of record.removedNodes) {
-					if (removedNode === elem) {
-						observer.disconnect();
-						resolve();
-						return;
-					}
-				}
-			}
-		});
-		observer.observe(elem.parentNode, { childList: true });
-		doWait()
-			.then(() => observer.disconnect())
-			.then(resolve);
-	});
-
-}
 
 class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement)))) {
 	static get properties() {
@@ -110,6 +34,10 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 			 */
 			describeContent: { type: Boolean, attribute: 'describe-content' },
 
+			/**
+			 * will walk dom tree for children elements as long as predicate(node) evaluates to true for said branch
+			 */
+			predicate: { type: Function },
 			/**
 			 * Whether to render the dialog at the maximum height
 			 */
@@ -175,6 +103,7 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		this.critical = false;
 		this.describeContent = false;
 		this.fullHeight = false;
+		this.predicate = () => true;
 		this.width = 600;
 		this._criticalLabelId = getUniqueId();
 		this._handleResize = this._handleResize.bind(this);
@@ -269,24 +198,22 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		);
 	}
 
-	updated(changedProperties) {
+	async updated(changedProperties) {
 		super.updated(changedProperties);
-		if (!changedProperties.has('asyncState')) return;
-		if (this.asyncState === asyncStates.complete) {
+
+		if (changedProperties.has('asyncState') && this.asyncState === asyncStates.complete) {
+			await this._handleAsyncChildren();
 			this.resize();
 		}
-		this.waitForChildrenLoading().then(() => {
-			this.resize();
-		});
-	}
-
-	async waitForChildrenLoading() {
-		const children = getComposedChildren(this);
-		await Promise.all(children.map(child => waitForElem(child)));
 	}
 
 	_abort() {
 		this._close('abort');
+	}
+
+	async _handleAsyncChildren() {
+		const composedChildren = getComposedChildren(this, this.predicate);
+		await Promise.all(composedChildren.map(child => waitForElem(child, this.predicate)));
 	}
 
 	_handleFooterSlotChange(e) {

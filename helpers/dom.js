@@ -79,7 +79,7 @@ export function getBoundingAncestor(node) {
 	});
 }
 
-export function getComposedChildren(node) {
+export function getComposedChildren(node, predicate = () => true) {
 
 	if (!node) {
 		return null;
@@ -104,7 +104,9 @@ export function getComposedChildren(node) {
 
 	for (let i = 0; i < nodes.length; i++) {
 		if (nodes[i].nodeType === 1) {
-			children.push(nodes[i]);
+			if (predicate(nodes[i])) {
+				children.push(nodes[i]);
+			}
 		}
 	}
 
