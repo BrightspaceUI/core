@@ -626,8 +626,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		// add 2 to content width since scrollWidth does not include border
 		const containerWidth = `${widthOverride + 20}px`;
 
-		let maxHeightOverride = '';
-		if (this.#ifrauContextInfo) maxHeightOverride = `${this.#ifrauContextInfo.availableHeight}px`;
+		const maxHeightOverride = this.#ifrauContextInfo ? `${this.#ifrauContextInfo.availableHeight}px` : '';
 
 		let topOverride;
 		if (this.#ifrauContextInfo) {
