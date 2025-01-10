@@ -381,11 +381,10 @@ export const PopoverMixin = superclass => class extends superclass {
 			</div>
 		` : nothing;
 
-		return this._mobileTrayLocation ? html`
-			${content}
-			<d2l-backdrop for-target="content-wrapper" ?shown="${this._showBackdrop}"></d2l-backdrop>
-			${pointer}
-		` : html`${content}${pointer}`;
+		const backdrop = this._mobileTrayLocation ?
+			html`<d2l-backdrop for-target="content-wrapper" ?shown="${this._showBackdrop}"></d2l-backdrop>` :
+			nothing;
+		return html`${content}${backdrop}${pointer}`;
 
 	}
 
