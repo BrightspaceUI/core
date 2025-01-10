@@ -1,3 +1,4 @@
+import '../backdrop/backdrop.js';
 import '../colors/colors.js';
 import '../focus-trap/focus-trap.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
@@ -6,6 +7,7 @@ import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocus
 import { getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
 import { _offscreenStyleDeclarations } from '../offscreen/offscreen.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 
 const defaultPreferredPosition = {
 	location: 'block-end', // block-start, block-end
@@ -46,6 +48,7 @@ export const PopoverMixin = superclass => class extends superclass {
 			_position: { state: true },
 			_preferredPosition: { state: true },
 			_rtl: { state: true },
+			_showBackdrop: { state: true },
 			_trapFocus: { state: true },
 			_useNativePopover: { type: String, reflect: true, attribute: 'popover' },
 			_width: { state: true }
@@ -207,6 +210,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		super();
 		this.configure();
 		this._mobile = false;
+		this._showBackdrop = false;
 		this._useNativePopover = isSupported ? 'manual' : undefined;
 		this.#handleAncestorMutationBound = this.#handleAncestorMutation.bind(this);
 		this.#handleAutoCloseClickBound = this.#handleAutoCloseClick.bind(this);
@@ -236,8 +240,9 @@ export const PopoverMixin = superclass => class extends superclass {
 	async close() {
 		if (!this._opened) return;
 
-		this._opened = false;
+		const ifrauBackdropService = await tryGetIfrauBackdropService();
 
+		this._opened = false;
 		if (this._useNativePopover) this.hidePopover();
 
 		this._previousFocusableAncestor = null;
@@ -245,6 +250,13 @@ export const PopoverMixin = superclass => class extends superclass {
 		this.#removeMediaQueryHandlers();
 		this.#removeRepositionHandlers();
 		this.#clearDismissible();
+
+		if (ifrauBackdropService && this._showBackdrop) {
+			ifrauBackdropService.hideBackdrop();
+			this.#ifrauContextInfo = null;
+		}
+		this._showBackdrop = false;
+
 		await this.updateComplete; // wait before applying focus to opener
 		this.#focusOpener();
 		this.dispatchEvent(new CustomEvent('d2l-popover-close', { bubbles: true, composed: true }));
@@ -281,6 +293,8 @@ export const PopoverMixin = superclass => class extends superclass {
 	async open(applyFocus = true) {
 		if (this._opened) return;
 
+		const ifrauBackdropService = await tryGetIfrauBackdropService();
+
 		this.#addMediaQueryHandlers();
 
 		this._rtl = document.documentElement.getAttribute('dir') === 'rtl';
@@ -296,6 +310,11 @@ export const PopoverMixin = superclass => class extends superclass {
 		this.#addAutoCloseHandlers();
 
 		await this.#position();
+
+		this._showBackdrop = this._mobile && this._mobileTrayLocation;
+		if (ifrauBackdropService && this._showBackdrop) {
+			this.#ifrauContextInfo = await ifrauBackdropService.showBackdrop();
+		}
 
 		this._dismissibleId = setDismissible(() => this.close());
 
@@ -323,7 +342,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		const contentStyle = stylesMap['content'];
 
 		content = html`
-			<div class="content-width vdiff-target" style=${styleMap(widthStyle)}>
+			<div id="content-wrapper" class="content-width vdiff-target" style=${styleMap(widthStyle)}>
 				<div class="content-container" style=${styleMap(contentStyle)}>${content}</div>
 			</div>
 		`;
@@ -362,12 +381,16 @@ export const PopoverMixin = superclass => class extends superclass {
 			</div>
 		` : nothing;
 
-		return html`${content}${pointer}`;
+		const backdrop = this._mobileTrayLocation ?
+			html`<d2l-backdrop for-target="content-wrapper" ?shown="${this._showBackdrop}"></d2l-backdrop>` :
+			nothing;
+		return html`${content}${backdrop}${pointer}`;
 
 	}
 
 	async resize() {
 		if (!this._opened) return;
+		this._showBackdrop = this._mobile && this._mobileTrayLocation;
 		await this.#position();
 	}
 
@@ -376,6 +399,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		else return this.open(!this._noAutoFocus && applyFocus);
 	}
 
+	#ifrauContextInfo;
 	#mediaQueryList;
 	#handleAncestorMutationBound;
 	#handleAutoCloseClickBound;
@@ -520,7 +544,8 @@ export const PopoverMixin = superclass => class extends superclass {
 	#getMobileTrayBlockStyleMaps() {
 
 		let maxHeightOverride;
-		const availableHeight = Math.min(window.innerHeight, window.screen.height);
+		let availableHeight = Math.min(window.innerHeight, window.screen.height);
+		if (this.#ifrauContextInfo) availableHeight = this.#ifrauContextInfo.availableHeight;
 
 		// default maximum height for bottom tray (42px margin)
 		const mobileTrayMaxHeightDefault = availableHeight - minBackdropHeightMobile;
@@ -532,12 +557,20 @@ export const PopoverMixin = superclass => class extends superclass {
 		}
 		maxHeightOverride = `${maxHeightOverride}px`;
 
+		let bottomOverride;
+		if (this.#ifrauContextInfo) {
+			// the bottom override is measured as the distance from the bottom of the screen
+			const screenHeight = window.innerHeight - this.#ifrauContextInfo.availableHeight + Math.min(this.#ifrauContextInfo.top, 0);
+			bottomOverride = `${screenHeight}px`;
+		}
+
 		const widthOverride = '100vw';
 
 		const widthStyle = {
 			minWidth: widthOverride,
 			width: widthOverride,
 			maxHeight: maxHeightOverride,
+			bottom: bottomOverride
 		};
 
 		const contentWidthStyle = {
@@ -552,14 +585,15 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		return {
 			width: widthStyle,
-			content: contentStyle,
+			content: contentStyle
 		};
 	}
 
 	#getMobileTrayInlineStyleMaps() {
 
 		let maxWidthOverride = this._maxWidth;
-		const availableWidth = Math.min(window.innerWidth, window.screen.width);
+		let availableWidth = Math.min(window.innerWidth, window.screen.width);
+		if (this.#ifrauContextInfo) availableWidth = this.#ifrauContextInfo.availableWidth;
 
 		// default maximum width for tray (30px margin)
 		const mobileTrayMaxWidthDefault = Math.min(availableWidth - minBackdropWidthMobile, 420);
@@ -592,7 +626,16 @@ export const PopoverMixin = superclass => class extends superclass {
 		// add 2 to content width since scrollWidth does not include border
 		const containerWidth = `${widthOverride + 20}px`;
 
-		const topOverride = (window.innerHeight > window.screen.height) ? window.pageYOffset : undefined;
+		const maxHeightOverride = this.#ifrauContextInfo ? `${this.#ifrauContextInfo.availableHeight}px` : '';
+
+		let topOverride;
+		if (this.#ifrauContextInfo) {
+			// if inside iframe, use ifrauContext top as top of screen
+			topOverride = `${this.#ifrauContextInfo.top < 0 ? -this.#ifrauContextInfo.top : 0}px`;
+		} else if (window.innerHeight > window.screen.height) {
+			// non-responsive page, manually override top to scroll distance
+			topOverride = window.pageYOffset;
+		}
 
 		let inlineEndOverride;
 		let inlineStartOverride;
@@ -614,6 +657,7 @@ export const PopoverMixin = superclass => class extends superclass {
 			minWidth: minWidthOverride,
 			width: containerWidth,
 			top: topOverride,
+			maxHeight: maxHeightOverride,
 			insetInlineStart: inlineStartOverride,
 			insetInlineEnd: inlineEndOverride
 		};
@@ -626,11 +670,12 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		const contentStyle = {
 			...contentWidthStyle,
+			maxHeight: maxHeightOverride,
 		};
 
 		return {
-			width : widthStyle,
-			content : contentStyle,
+			width: widthStyle,
+			content: contentStyle
 		};
 	}
 
@@ -767,8 +812,8 @@ export const PopoverMixin = superclass => class extends superclass {
 		};
 
 		return {
-			width : widthStyle,
-			content : contentStyle
+			width: widthStyle,
+			content: contentStyle
 		};
 	}
 
@@ -824,7 +869,10 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	async #handleMobileResize() {
 		this._mobile = this.#mediaQueryList.matches;
-		if (this._opened) await this.#position();
+		if (this._opened) {
+			this._showBackdrop = this._mobile && this._mobileTrayLocation;
+			await this.#position();
+		}
 	}
 
 	#handleResize() {

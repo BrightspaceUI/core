@@ -211,7 +211,7 @@ class DemoSnippet extends LitElement {
 
 		return lines.join('\n')
 			.replace(/ class=""/g, '') // replace empty class attributes (class="")
-			.replace(/_[^=]*="[^"]*"/, '') // replace private reflected properties (_attr="value")
+			.replace(/\s+_[^\s/>"'=]*(=(?<q>['"]).*?(?<!\\)\k<q>)?/g, '') // replace private reflected properties (_attr, _attr="value", but not target="_blank")
 			.replace(/=""/g, ''); // replace empty strings for boolean attributes (="")
 	}
 
