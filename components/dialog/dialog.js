@@ -203,7 +203,9 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 
 		if (changedProperties.has('asyncState') && this.asyncState === asyncStates.complete) {
 			await this._handleAsyncChildren();
-			this.resize();
+			setTimeout(() => {
+				this.resize();
+			}, 0);
 		}
 	}
 
