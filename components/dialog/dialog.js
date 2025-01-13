@@ -16,6 +16,12 @@ import { waitForElem } from '../../helpers/internal/waitForElem.js';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px) and (max-width: 900px)');
 
+/**
+ * A generic dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
+ * @fires d2l-dialog-before-close - Dispatched with the action value before the dialog is closed for any reason, providing an opportunity to prevent the dialog from closing
+ * @slot - Default slot for content inside dialog
+ * @slot footer - Slot for footer content such as workflow buttons
+ */
 class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement)))) {
 	static get properties() {
 		return {
@@ -34,10 +40,6 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 			 */
 			describeContent: { type: Boolean, attribute: 'describe-content' },
 
-			/**
-			 * will walk dom tree for children elements as long as predicate(node) evaluates to true for said branch
-			 */
-			predicate: { type: Function },
 			/**
 			 * Whether to render the dialog at the maximum height
 			 */
@@ -147,7 +149,7 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		let topOverride = null;
 		if (mediaQueryList.matches) {
 			if (this._ifrauContextInfo) {
-
+				// in iframes, use calculated available height from dialog mixin minus padding
 				heightOverride.minHeight = `${this._ifrauContextInfo.availableHeight - 42}px`;
 				heightOverride.top = `${this._top + this._margin.top + 42}px`;
 				const iframeTop = this._ifrauContextInfo.top < 0
@@ -202,20 +204,13 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		super.updated(changedProperties);
 
 		if (changedProperties.has('asyncState') && this.asyncState === asyncStates.complete) {
-			await this._handleAsyncChildren();
-			setTimeout(() => {
-				this.resize();
-			}, 0);
+			await this._waitForUpdateComplete();
+			setTimeout(() => this.resize());
 		}
 	}
 
 	_abort() {
 		this._close('abort');
-	}
-
-	async _handleAsyncChildren() {
-		const composedChildren = getComposedChildren(this, this.predicate);
-		await Promise.all(composedChildren.map(child => waitForElem(child, this.predicate)));
 	}
 
 	_handleFooterSlotChange(e) {
@@ -226,6 +221,11 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 	_handleResize() {
 		this._autoSize = !mediaQueryList.matches;
 		this.resize();
+	}
+
+	async _waitForUpdateComplete() {
+		const composedChildren = getComposedChildren(this, this.predicate);
+		await Promise.all(composedChildren.map(child => waitForElem(child, this.predicate)));
 	}
 }
 customElements.define('d2l-dialog', Dialog);

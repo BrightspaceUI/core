@@ -33,7 +33,6 @@
     "/directives",
     "/generated",
     "/helpers",
-    "!/helpers/internal",
     "/lang",
     "/mixins",
     "/templates",
