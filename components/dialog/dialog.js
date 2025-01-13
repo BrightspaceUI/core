@@ -105,7 +105,6 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		this.critical = false;
 		this.describeContent = false;
 		this.fullHeight = false;
-		this.predicate = () => true;
 		this.width = 600;
 		this._criticalLabelId = getUniqueId();
 		this._handleResize = this._handleResize.bind(this);
@@ -224,8 +223,9 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 	}
 
 	async _waitForUpdateComplete() {
-		const composedChildren = getComposedChildren(this, this.predicate);
-		await Promise.all(composedChildren.map(child => waitForElem(child, this.predicate)));
+		const predicate = () => true;
+		const composedChildren = getComposedChildren(this, predicate);
+		await Promise.all(composedChildren.map(child => waitForElem(child, predicate)));
 	}
 }
 customElements.define('d2l-dialog', Dialog);
