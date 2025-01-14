@@ -2,7 +2,7 @@ import { getComposedChildren } from '../dom.js';
 
 export async function waitForElem(elem, predicate = () => true) {
 
-	if (!elem || !elem.parentNode) return;
+	if (!elem) return;
 
 	const doWait = async() => {
 
@@ -23,7 +23,25 @@ export async function waitForElem(elem, predicate = () => true) {
 
 		const children = getComposedChildren(elem, predicate);
 		await Promise.all(children.map(e => waitForElem(e, predicate)));
+
 	};
 
-	await doWait();
+	await new Promise((resolve) => {
+		const observer = new MutationObserver((records) => {
+			for (const record of records) {
+				for (const removedNode of record.removedNodes) {
+					if (removedNode === elem) {
+						observer.disconnect();
+						resolve();
+						return;
+					}
+				}
+			}
+		});
+		observer.observe(elem.parentNode, { childList: true });
+		doWait()
+			.then(() => observer.disconnect())
+			.then(resolve);
+	});
+
 }
