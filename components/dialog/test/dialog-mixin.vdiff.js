@@ -78,20 +78,17 @@ describe('dialog-mixin', () => {
 			});
 
 			it('delayed-content', async() => {
-				const el = await fixture(
-					`<d2l-dialog title-text="Delayed Dialog"><${delayedTag}></${delayedTag}></d2l-dialog>`,
+				let el = null;
+				setTimeout(async() => {
+					await waitUntil(() => el?.querySelector(delayedTag) !== null);
+					el.querySelector(delayedTag).finishLoading();
+				}, 100);
+				el = await fixture(
+					`<d2l-dialog title-text="Delayed Dialog" opened><${delayedTag}></${delayedTag}></d2l-dialog>`,
 					{
 						awaitLoadingComplete: false
 					}
 				);
-				await waitUntil(() => el.querySelector(delayedTag) !== null);
-				const delayedEl = el.querySelector(delayedTag);
-				await delayedEl.updateComplete;
-
-				setTimeout(() => el.opened = true);
-				setTimeout(() => delayedEl.finishLoading(), 100);
-				await oneEvent(el, 'd2l-dialog-open');
-
 				await expect(document).to.be.golden();
 			});
 		});
