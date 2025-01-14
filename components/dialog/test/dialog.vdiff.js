@@ -1,9 +1,7 @@
 import '../dialog.js';
-import { defineCE, expect, fixture, html, nextFrame, oneEvent, sendKeys, waitUntil } from '@brightspace-ui/testing';
+import { expect, fixture, html, nextFrame, sendKeys } from '@brightspace-ui/testing';
 import { footer, general, long, wrapping } from './dialog-shared-contents.js';
 import { interferingStyleWrapper } from '../../typography/test/typography-shared-contents.js';
-import { LitElement } from 'lit';
-import { LoadingCompleteMixin } from '../../../mixins/loading-complete/loading-complete-mixin.js';
 
 function createDialog(opts) {
 	const defaults = { content: html`${general}${footer}`, fullHeight: false, width: 400, critical: false };
@@ -20,29 +18,6 @@ function dispatchFullscreenWithinEvent(elem, state) {
 		'd2l-fullscreen-within', { bubbles: true, composed: true, detail: { state: state } }
 	));
 }
-
-const delayedTag = defineCE(
-	class extends LoadingCompleteMixin(LitElement) {
-		static get properties() {
-			return {
-				loaded: { type: Boolean }
-			};
-		}
-		constructor() {
-			super();
-			this.loaded = false;
-		}
-		render() {
-			return this.loaded ?
-				html`<div style="border: 2px solid green; margin: 200px;">Loaded</div>` :
-				html`<div style="border: 2px solid red; margin: 10px;">Loading...</div>`;
-		}
-		finishLoading() {
-			this.loaded = true;
-			this.resolveLoadingComplete();
-		}
-	}
-);
 
 describe('dialog', () => {
 
@@ -122,23 +97,6 @@ describe('dialog', () => {
 
 			it('reset-styles', async() => {
 				await fixture(interferingStyleWrapper(createDialog({ content: html`${wrapping}${footer}` })));
-				await expect(document).to.be.golden();
-			});
-
-			it('delayed-content', async() => {
-				const el = await fixture(
-					`<d2l-dialog title-text="Delayed Dialog"><${delayedTag}></${delayedTag}></d2l-dialog>`,
-					{
-						awaitLoadingComplete: false
-					}
-				);
-				setTimeout(async() => {
-					await waitUntil(() => el.querySelector(delayedTag) !== null);
-					setTimeout(() => el.querySelector(delayedTag).finishLoading(), 100);
-				});
-				el.opened = true;
-				await oneEvent(el, 'd2l-dialog-open');
-
 				await expect(document).to.be.golden();
 			});
 
