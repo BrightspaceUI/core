@@ -150,10 +150,10 @@ class Popover extends PopoverMixin(LitElement) {
 				maxWidth: this.maxWidth,
 				minHeight: this.minHeight,
 				minWidth: this.minWidth,
+				mobileTrayLocation: this.mobileTrayLocation,
 				noAutoClose: this.noAutoClose,
 				noAutoFocus: this.noAutoFocus,
 				noPointer: this.noPointer,
-				mobileTrayLocation: this.mobileTrayLocation,
 				position: { location: this.positionLocation, span: this.positionSpan },
 				trapFocus: this.trapFocus
 			});
