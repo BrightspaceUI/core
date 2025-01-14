@@ -2,7 +2,7 @@ import '../focus-trap/focus-trap.js';
 import '../../helpers/viewport-size.js';
 import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
-import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
+import { findComposedAncestor, getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getNextFocusable, isFocusable } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -11,6 +11,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
+import { waitForElem } from '../../helpers/internal/waitForElem.js';
 
 window.D2L = window.D2L || {};
 window.D2L.DialogMixin = window.D2L.DialogMixin || {};
@@ -452,6 +453,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			if (reduceMotion) await new Promise(resolve => requestAnimationFrame(resolve));
 			else await animPromise;
 
+			await this.#waitForUpdateComplete();
+			await this._updateSize();
 			/** Dispatched when the dialog is opened */
 			this.dispatchEvent(new CustomEvent(
 				'd2l-dialog-open', { bubbles: true, composed: true }
@@ -579,5 +582,11 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 				resolve();
 			});
 		});
+	}
+
+	async #waitForUpdateComplete() {
+		const predicate = () => true;
+		const composedChildren = getComposedChildren(this, predicate);
+		await Promise.all(composedChildren.map(child => waitForElem(child, predicate)));
 	}
 };

@@ -6,13 +6,11 @@ import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
-import { getComposedChildren } from '../../helpers/dom.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
-import { waitForElem } from '../../helpers/internal/waitForElem.js';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px) and (max-width: 900px)');
 
@@ -23,6 +21,7 @@ const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px
  * @slot footer - Slot for footer content such as workflow buttons
  */
 class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement)))) {
+
 	static get properties() {
 		return {
 			/**
@@ -65,6 +64,7 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 			:host([critical]) .d2l-dialog-header {
 				padding-bottom: 15px;
 			}
+
 			.d2l-dialog-header > div > d2l-button-icon {
 				flex: none;
 				margin: -4px -15px 0 15px;
@@ -74,11 +74,13 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 				margin-left: -15px;
 				margin-right: 15px;
 			}
+
 			.d2l-dialog-content > div {
 				/* required to properly calculate preferred height when there are bottom
 				margins at the end of the slotted content */
 				border-bottom: 1px solid transparent;
 			}
+
 			.d2l-dialog-content-loading {
 				text-align: center;
 			}
@@ -144,7 +146,7 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 			`;
 		}
 
-		const heightOverride = {};
+		const heightOverride = {} ;
 		let topOverride = null;
 		if (mediaQueryList.matches) {
 			if (this._ifrauContextInfo) {
@@ -199,12 +201,11 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		);
 	}
 
-	async updated(changedProperties) {
+	updated(changedProperties) {
 		super.updated(changedProperties);
-
-		if (changedProperties.has('asyncState') && this.asyncState === asyncStates.complete) {
-			await this._waitForUpdateComplete();
-			setTimeout(() => this.resize());
+		if (!changedProperties.has('asyncState')) return;
+		if (this.asyncState === asyncStates.complete) {
+			this.resize();
 		}
 	}
 
@@ -222,10 +223,6 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		this.resize();
 	}
 
-	async _waitForUpdateComplete() {
-		const predicate = () => true;
-		const composedChildren = getComposedChildren(this, predicate);
-		await Promise.all(composedChildren.map(child => waitForElem(child, predicate)));
-	}
 }
+
 customElements.define('d2l-dialog', Dialog);

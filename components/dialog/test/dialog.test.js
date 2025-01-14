@@ -1,9 +1,8 @@
 import '../dialog.js';
 import { expect, fixture, oneEvent, runConstructor } from '@brightspace-ui/testing';
-import { html, LitElement } from 'lit';
 import { createMessage } from '../../../mixins/property-required/property-required-mixin.js';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
-import { spy } from 'sinon';
+import { html } from 'lit';
 
 describe('d2l-dialog', () => {
 
@@ -77,46 +76,6 @@ describe('d2l-dialog', () => {
 			await oneEvent(el, 'd2l-dialog-open');
 			const paragraph = el.querySelector('p');
 			expect(getComposedActiveElement()).to.not.equal(paragraph);
-		});
-
-	});
-
-	class DelayedElement extends LitElement {
-		render() {
-			return html`<div class="delayed-div"></div>`;
-		}
-
-		async getLoadingComplete() {
-			const newChild = document.createElement('div');
-			newChild.className = 'added-child';
-			newChild.textContent = 'New addition to the family!';
-			this.shadowRoot.appendChild(newChild);
-			await new Promise(r => setTimeout(r, 100));
-		}
-	}
-	customElements.define('delayed-elem', DelayedElement);
-
-	describe('getLoadingComplete', () => {
-
-		it('should wait for child component\'s getLoadingComplete before resizing', async() => {
-
-			const el = await fixture(html`
-				<d2l-dialog>
-					<delayed-elem></delayed-elem>
-				</d2l-dialog>
-			`);
-
-			const delayedComponent = el.querySelector('delayed-elem');
-			const mixinProto = Object.getPrototypeOf(el).__proto__;
-			const resizeSpy = spy(mixinProto, 'resize');
-
-			el.opened = true;
-			await oneEvent(el, 'd2l-dialog-open');
-			el.asyncState = 'complete';
-
-			expect(resizeSpy.called).to.be.false;
-			await delayedComponent.getLoadingComplete();
-			expect(resizeSpy.calledOnce).to.be.true;
 		});
 
 	});
