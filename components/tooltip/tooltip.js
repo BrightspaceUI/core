@@ -447,6 +447,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._dismissibleId = null;
 		this._isFocusing = false;
 		this._isHovering = false;
+		this._isHoveringContent = false;
 		this._resizeRunSinceTruncationCheck = false;
 		this._viewportMargin = defaultViewportMargin;
 	}
@@ -487,6 +488,21 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (this._target) {
 			elemIdListRemove(this._target, 'aria-labelledby', this.id);
 			elemIdListRemove(this._target, 'aria-describedby', this.id);
+		}
+	}
+
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		const content = this._getContent();
+		if (content) {
+			content.addEventListener('mouseenter', this._onContentMouseEnter.bind(this));
+			content.addEventListener('mouseleave', this._onContentMouseLeave.bind(this));
+		}
+		const pointer = this.shadowRoot.querySelector('.d2l-tooltip-pointer:not(.d2l-tooltip-pointer-outline)');
+		if (pointer) {
+			pointer.addEventListener('mouseenter', this._onContentMouseEnter.bind(this));
+			pointer.addEventListener('mouseleave', this._onContentMouseLeave.bind(this));
 		}
 	}
 
@@ -840,6 +856,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_onTargetMouseEnter() {
+		this._isHovering = true;
 		this._hoverTimeout = setTimeout(async() => {
 			if (this.showTruncatedOnly) {
 				await this._updateTruncating();
@@ -847,7 +864,6 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			resetDelayTimeout();
-			this._isHovering = true;
 			this._updateShowing();
 		}, getDelay(this.delay));
 	}
@@ -855,7 +871,19 @@ class Tooltip extends RtlMixin(LitElement) {
 	_onTargetMouseLeave() {
 		clearTimeout(this._hoverTimeout);
 		this._isHovering = false;
+		setTimeout(this._updateShowing.bind(this), 10); // delay to allow for mouseenter to fire if hovering on tooltip content
+	}
+
+	_onContentMouseEnter() {
+		if (!this.showing) return;
+		this._isHoveringContent = true;
 		this._updateShowing();
+	}
+
+	_onContentMouseLeave() {
+		clearTimeout(this._hoverTimeout);
+		this._isHoveringContent = false;
+		setTimeout(this._updateShowing.bind(this), 10); // delay to allow for mouseenter to fire if hovering on target
 	}
 
 	_onTargetResize() {
@@ -932,7 +960,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_updateShowing() {
-		this.showing = this._isFocusing || this._isHovering || this.forceShow;
+		this.showing = this._isFocusing || this._isHovering || this.forceShow || this._isHoveringContent;
 	}
 
 	_updateTarget() {
