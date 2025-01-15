@@ -84,14 +84,9 @@ describe('dialog-mixin', () => {
 						awaitLoadingComplete: false
 					}
 				);
-				await waitUntil(() => el.querySelector(delayedTag) !== null);
-				const delayedEl = el.querySelector(delayedTag);
-				await delayedEl.updateComplete;
-
-				setTimeout(() => el.opened = true);
-				setTimeout(() => delayedEl.finishLoading(), 100);
+				setTimeout(() => el.querySelector(delayedTag).finishLoading(), 500);
+				el.opened = true;
 				await oneEvent(el, 'd2l-dialog-open');
-
 				await expect(document).to.be.golden();
 			});
 		});
