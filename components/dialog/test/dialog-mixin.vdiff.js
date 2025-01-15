@@ -1,5 +1,5 @@
 import '../dialog.js';
-import { clickElem, defineCE, expect, fixture, focusElem, html, oneEvent, sendKeys, waitUntil } from '@brightspace-ui/testing';
+import { clickElem, defineCE, expect, fixture, focusElem, html, oneEvent, sendKeys } from '@brightspace-ui/testing';
 import { footer, general } from './dialog-shared-contents.js';
 import { LitElement } from 'lit';
 import { LoadingCompleteMixin } from '../../../mixins/loading-complete/loading-complete-mixin.js';
