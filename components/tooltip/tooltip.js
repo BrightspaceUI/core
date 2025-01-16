@@ -496,13 +496,13 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		const content = this._getContent();
 		if (content) {
-			content.addEventListener('mouseenter', this._onContentMouseEnter.bind(this));
-			content.addEventListener('mouseleave', this._onContentMouseLeave.bind(this));
+			content.addEventListener('mouseenter', this.#onTooltipMouseEnter.bind(this));
+			content.addEventListener('mouseleave', this.#onTooltipMouseLeave.bind(this));
 		}
 		const pointer = this.shadowRoot.querySelector('.d2l-tooltip-pointer:not(.d2l-tooltip-pointer-outline)');
 		if (pointer) {
-			pointer.addEventListener('mouseenter', this._onContentMouseEnter.bind(this));
-			pointer.addEventListener('mouseleave', this._onContentMouseLeave.bind(this));
+			pointer.addEventListener('mouseenter', this.#onTooltipMouseEnter.bind(this));
+			pointer.addEventListener('mouseleave', this.#onTooltipMouseLeave.bind(this));
 		}
 	}
 
@@ -871,19 +871,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	_onTargetMouseLeave() {
 		clearTimeout(this._hoverTimeout);
 		this._isHovering = false;
-		setTimeout(this._updateShowing.bind(this), 10); // delay to allow for mouseenter to fire if hovering on tooltip content
-	}
-
-	_onContentMouseEnter() {
-		if (!this.showing) return;
-		this._isHoveringContent = true;
-		this._updateShowing();
-	}
-
-	_onContentMouseLeave() {
-		clearTimeout(this._hoverTimeout);
-		this._isHoveringContent = false;
-		setTimeout(this._updateShowing.bind(this), 10); // delay to allow for mouseenter to fire if hovering on target
+		setTimeout(this._updateShowing.bind(this), 100); // delay to allow for mouseenter to fire if hovering on tooltip content
 	}
 
 	_onTargetResize() {
@@ -1034,6 +1022,17 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._truncating = (clone.scrollWidth - target.offsetWidth) > 2; // Safari adds 1px to scrollWidth necessitating a subtraction comparison.
 		this._resizeRunSinceTruncationCheck = false;
 		target.removeChild(cloneContainer);
+	}
+
+	#onTooltipMouseEnter() {
+		if (!this.showing) return;
+		this._isHoveringContent = true;
+		this._updateShowing();
+	}
+
+	#onTooltipMouseLeave() {
+		this._isHoveringContent = false;
+		setTimeout(this._updateShowing.bind(this), 100); // delay to allow for mouseenter to fire if hovering on target
 	}
 }
 customElements.define('d2l-tooltip', Tooltip);
