@@ -196,6 +196,7 @@ static get localizeConfig() {
   };
 }
 ```
+See [Creating a new collection](https://desire2learn.atlassian.net/wiki/spaces/DEVCENTRAL/pages/3105063520/OSLO#Creating-a-new-collection) to determine your collection name. Backslash (`\`) characters in your collection name must be escaped.
 
 > **Important:** When defining language resource keys, avoid using the Full Stop (`.`) character for grouping. OSLO does not support it.
 

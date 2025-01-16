@@ -1,7 +1,7 @@
 import '../empty-state-action-button.js';
 import '../empty-state-action-link.js';
 import '../empty-state-illustrated.js';
-import { expect, fixture, html, nextFrame } from '@brightspace-ui/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 import { nothing } from 'lit';
 
 function createEmptyState(opts) {
@@ -31,7 +31,6 @@ describe('empty-state-illustrated', () => {
 		].forEach(({ name, opts }) => {
 			it(`${size}-${name}`, async() => {
 				const elem = await fixture(createEmptyState(opts), { viewport: { width } });
-				await nextFrame();
 				await expect(elem).to.be.golden();
 			});
 		});

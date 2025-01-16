@@ -10,7 +10,7 @@ Search inputs allow users to input text, execute a search, and clear results. A 
 <d2l-input-search
   label="Search"
   value="Apples"
-  placeholder="Search for fruit">
+  placeholder="Search">
 </d2l-input-search>
 ```
 

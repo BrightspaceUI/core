@@ -5,7 +5,6 @@ The collapsible panel is a container that can show or hide additional content. I
 <!-- docs: demo -->
 ```html
 <script type="module">
-	import '@brightspace-ui/core/components/button/button-icon.js';
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
 	import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
 	import '@brightspace-ui/core/components/dropdown/dropdown-more.js';
@@ -118,13 +117,12 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 | `summary` | optional | Summary of the expanded content. Only accepts `d2l-collapsible-panel-summary-item` |
 | `default` | required | Content that is rendered when the panel is expanded |
 
-
 ### Properties
 
 | Property | Type | Description |
 |--|--|--|
 | `expanded` | Boolean | Whether or not the panel is expanded |
-| `expand-collapse-label` | String | Optional label describing the contents of the header (used by screen readers) |
+| `expand-collapse-label` | String | Label describing the contents of the header for screen reader users |
 | `heading-style` | Number | The heading style to use |
 | `heading-level` | Number | Semantic heading level (h1-h4) |
 | `no-sticky` | Boolean | Disables sticky positioning for the header |
@@ -134,6 +132,7 @@ The `d2l-collapsible-panel` element is a container that provides specific layout
 | `type` | String | The type of collapsible panel |
 
 ### Events
+
 | Event | Description |
 |--|--|
 | `d2l-collapsible-panel-expand` | Dispatched when the panel is expanded |
@@ -214,7 +213,6 @@ An optional summary can help the user understand what’s inside the collapsible
 import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel.js';
 import '@brightspace-ui/core/components/collapsible-panel/collapsible-panel-summary-item.js';
 import '@brightspace-ui/core/components/inputs/input-checkbox.js';
-import '@brightspace-ui/core/components/form/form.js';
 import { css, html, LitElement } from 'lit';
 import { labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { selectStyles } from '@brightspace-ui/core/components/inputs/input-select-styles.js';
@@ -389,11 +387,14 @@ Use the `d2l-collapsible-panel-group` component to automatically handle spacing 
 
 ## Accessibility
 
+The `d2l-collapsible-panel` component adheres to [W3C's Disclosure Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/) and any components added to any of the slots should also adhere to its respective pattern.
+
 ### Panel label
+
 By default, the panel is described by screen readers with the `panel-title` attribute. There may be situations where the screen reader should read additional information. In this case, a special label can be specified using the `expand-collapse-label` property.
 
 ### Keyboard behaviour
 
-On focus, a focus ring (blue border) goes around the clickable area of the component. When collapsed, this area is the entire panel; when expanded, it's only the header.
+On focus, a focus ring (blue border) goes around the clickable area of the component. When collapsed, this area is the entire panel; when expanded, it's only the header. When focused, users can expand or collapse the panel using the `Enter` or `Space` key.
 
 Any focusable actions placed in the `actions` slot will receive focus after the panel recevies focus. The open/close icon beside the `actions` slot looks like a button, but is an indicator of component state. It will not receive focus like a typical button.

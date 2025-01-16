@@ -28,6 +28,11 @@ class Popover extends PopoverMixin(LitElement) {
 			 */
 			minWidth: { type: Number, reflect: true, attribute: 'min-width' },
 			/**
+			 * Mobile tray location.
+			 * @type {'inline-start'|'inline-end'|'block-end'}
+			 */
+			mobileTrayLocation: { type: String, reflect: true, attribute: 'mobile-tray-location' },
+			/**
 			 * Whether to disable auto-close/light-dismiss
 			 * @type {boolean}
 			 */
@@ -145,6 +150,7 @@ class Popover extends PopoverMixin(LitElement) {
 				maxWidth: this.maxWidth,
 				minHeight: this.minHeight,
 				minWidth: this.minWidth,
+				mobileTrayLocation: this.mobileTrayLocation,
 				noAutoClose: this.noAutoClose,
 				noAutoFocus: this.noAutoFocus,
 				noPointer: this.noPointer,
@@ -163,6 +169,7 @@ class Popover extends PopoverMixin(LitElement) {
 	}
 
 	#handleContentScroll() {
+		// eslint-disable-next-line
 		console.log('handle content scroll');
 	}
 

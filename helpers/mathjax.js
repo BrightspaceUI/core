@@ -98,7 +98,10 @@ export function loadMathJax(mathJaxConfig) {
 		options: {
 			menuOptions: {
 				settings: { zoom: 'None' }
-			}
+			},
+			skipHtmlTags: [
+				'd2l-html-block' // Prevents MathJax from reaching into the html-block to try to parse what's inside; we leave that to the custom renderer
+			]
 		},
 		loader: {
 			load: ['ui/menu']

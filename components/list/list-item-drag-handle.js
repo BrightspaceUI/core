@@ -72,7 +72,6 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElem
 			:host {
 				display: flex;
 				margin: 0.25rem;
-				pointer-events: auto; /* required since its parent may set point-events: none; (see generic layout) */
 			}
 			:host([hidden]) {
 				display: none;
@@ -115,6 +114,9 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElem
 			}
 			.d2l-list-item-drag-handle-tooltip-key {
 				font-weight: 700;
+			}
+			d2l-button-move {
+				pointer-events: auto; /* required since ancestors may set point-events: none; (see generic layout) */
 			}
 		`];
 	}
