@@ -456,8 +456,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-7397-dialog-resize-updateComplete', true) ?? true;
 			if (flag) {
 				await this.#waitForUpdateComplete();
+				await this._updateSize();
 			}
-			await this._updateSize();
 			/** Dispatched when the dialog is opened */
 			this.dispatchEvent(new CustomEvent(
 				'd2l-dialog-open', { bubbles: true, composed: true }
