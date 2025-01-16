@@ -447,9 +447,10 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._dismissibleId = null;
 		this._isFocusing = false;
 		this._isHovering = false;
-		this._isHoveringContent = false;
 		this._resizeRunSinceTruncationCheck = false;
 		this._viewportMargin = defaultViewportMargin;
+
+		this.#isHoveringTooltip = false;
 	}
 
 	/** @ignore */
@@ -661,6 +662,8 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.style.height = `${positionRect.height}px`;
 	}
 
+	#isHoveringTooltip;
+
 	_addListeners() {
 		if (!this._target) {
 			return;
@@ -871,7 +874,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	_onTargetMouseLeave() {
 		clearTimeout(this._hoverTimeout);
 		this._isHovering = false;
-		setTimeout(this._updateShowing.bind(this), 100); // delay to allow for mouseenter to fire if hovering on tooltip content
+		setTimeout(this._updateShowing.bind(this), 100); // delay to allow for mouseenter to fire if hovering on tooltip
 	}
 
 	_onTargetResize() {
@@ -948,7 +951,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_updateShowing() {
-		this.showing = this._isFocusing || this._isHovering || this.forceShow || this._isHoveringContent;
+		this.showing = this._isFocusing || this._isHovering || this.forceShow || this.#isHoveringTooltip;
 	}
 
 	_updateTarget() {
@@ -1026,12 +1029,12 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	#onTooltipMouseEnter() {
 		if (!this.showing) return;
-		this._isHoveringContent = true;
+		this.#isHoveringTooltip = true;
 		this._updateShowing();
 	}
 
 	#onTooltipMouseLeave() {
-		this._isHoveringContent = false;
+		this.#isHoveringTooltip = false;
 		setTimeout(this._updateShowing.bind(this), 100); // delay to allow for mouseenter to fire if hovering on target
 	}
 }
