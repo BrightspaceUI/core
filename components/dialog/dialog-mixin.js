@@ -453,7 +453,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			if (reduceMotion) await new Promise(resolve => requestAnimationFrame(resolve));
 			else await animPromise;
 
-			const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-7397-dialog-resize-updateComplete', true) ?? true;
+			const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-7397-dialog-resize-update-complete', true) ?? true;
 			if (flag) {
 				await this.#waitForUpdateComplete();
 				await this._updateSize();
