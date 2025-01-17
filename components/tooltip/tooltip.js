@@ -451,6 +451,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._viewportMargin = defaultViewportMargin;
 
 		this.#isHoveringTooltip = false;
+		this.#leftTooltip = false;
 	}
 
 	/** @ignore */
@@ -492,21 +493,6 @@ class Tooltip extends RtlMixin(LitElement) {
 		}
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		const content = this._getContent();
-		if (content) {
-			content.addEventListener('mouseenter', this.#onTooltipMouseEnter.bind(this));
-			content.addEventListener('mouseleave', this.#onTooltipMouseLeave.bind(this));
-		}
-		const pointer = this.shadowRoot.querySelector('.d2l-tooltip-pointer:not(.d2l-tooltip-pointer-outline)');
-		if (pointer) {
-			pointer.addEventListener('mouseenter', this.#onTooltipMouseEnter.bind(this));
-			pointer.addEventListener('mouseleave', this.#onTooltipMouseLeave.bind(this));
-		}
-	}
-
 	async getUpdateComplete() {
 		const fontsPromise = document.fonts ? document.fonts.ready : Promise.resolve();
 		await super.getUpdateComplete();
@@ -540,7 +526,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		return html`
 			<div class="d2l-tooltip-container">
 				<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
-					<div class="${classMap(contentClasses)}">
+					<div class="${classMap(contentClasses)}" @mouseenter="${this.#onTooltipMouseEnter}" @mouseleave="${this.#onTooltipMouseLeave}">
 						<div role="text">
 							<slot></slot>
 						</div>
@@ -549,7 +535,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				<div class="d2l-tooltip-pointer d2l-tooltip-pointer-outline">
 					<div></div>
 				</div>
-				<div class="d2l-tooltip-pointer">
+				<div class="d2l-tooltip-pointer" @mouseenter="${this.#onTooltipMouseEnter}" @mouseleave="${this.#onTooltipMouseLeave}">
 					<div></div>
 				</div>
 			</div>`
