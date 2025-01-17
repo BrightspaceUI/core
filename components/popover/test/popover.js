@@ -1,7 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { PopoverMixin } from '../popover-mixin.js';
-import { styleMap } from 'lit/directives/style-map.js';
 
 class Popover extends PopoverMixin(LitElement) {
 
@@ -67,8 +66,8 @@ class Popover extends PopoverMixin(LitElement) {
 			 * @type {boolean}
 			*/
 			trapFocus: { type: Boolean, reflect: true, attribute: 'trap-focus' },
-			_hasFooter: { state: true },
-			_hasHeader: { state: true }
+			_hasFooterSlotContent: { state: true },
+			_hasHeaderSlotContent: { state: true }
 		};
 	}
 
@@ -88,8 +87,24 @@ class Popover extends PopoverMixin(LitElement) {
 			.test-no-header {
 				display: none;
 			}
+			.test-footer {
+				box-sizing: border-box;
+				max-width: 100%;
+				padding: 0 1rem 1rem 1rem;
+				width: 100%;
+			}
 			.test-no-footer {
 				display: none;
+			}
+			.test-close {
+				margin-block-start: 12px;
+				width: 100%;
+			}
+			.test-no-close {
+				display: none;
+			}
+			.test-close-no-margin {
+				margin-block-start: 0;
 			}
 		`];
 	}
@@ -102,8 +117,8 @@ class Popover extends PopoverMixin(LitElement) {
 		this.opened = false;
 		this.trapFocus = false;
 
-		this._hasFooter = false;
-		this._hasHeader = false;
+		this._hasFooterSlotContent = false;
+		this._hasHeaderSlotContent = false;
 	}
 
 	connectedCallback() {
@@ -116,26 +131,29 @@ class Popover extends PopoverMixin(LitElement) {
 
 		const headerClasses = {
 			'test-header': true,
-			'test-no-header': !this._hasHeader
+			'test-no-header': !this._hasHeaderSlotContent
 		};
-		const headerStyle = {};
-
 		const footerClasses = {
 			'test-footer': true,
-			'test-no-footer': !this._hasFooter
+			'test-no-footer': !(this._hasFooterSlotContent || (this._mobile && this._mobileTrayLocation))
 		};
-		const footerStyle = {};
+		const closeButtonClasses = {
+			'test-close': true,
+			'test-no-close': !(this._mobile && this._mobileTrayLocation),
+			'test-close-no-margin': !this._hasFooterSlotContent
+		};
 
 		const content = html`
 			<div class="test-content-layout">
-				<div class="${classMap(headerClasses)}" style="${styleMap(headerStyle)}">
+				<div class="${classMap(headerClasses)}">
 					<slot name="header" @slotchange="${this.#handleHeaderSlotChange}"></slot>
 				</div>
 				<div class="test-content" @scroll="${this.#handleContentScroll}">
 					<slot></slot>
 				</div>
-				<div class=${classMap(footerClasses)} style=${styleMap(footerStyle)}>
+				<div class="${classMap(footerClasses)}">
 					<slot name="footer" @slotchange="${this.#handleFooterSlotChange}"></slot>
+					<d2l-button class="${classMap(closeButtonClasses)}" @click=${this.#handleCloseButtonClick}>Close</d2l-button>
 				</div>
 			</div>
 		`;
@@ -168,17 +186,21 @@ class Popover extends PopoverMixin(LitElement) {
 		return this.shadowRoot.querySelector('.test-content');
 	}
 
+	#handleCloseButtonClick() {
+		this.close();
+	}
+
 	#handleContentScroll() {
 		// eslint-disable-next-line
 		console.log('handle content scroll');
 	}
 
 	#handleFooterSlotChange(e) {
-		this._hasFooter = e.target.assignedNodes().length !== 0;
+		this._hasFooterSlotContent = e.target.assignedNodes().length !== 0;
 	}
 
 	#handleHeaderSlotChange(e) {
-		this._hasHeader = e.target.assignedNodes().length !== 0;
+		this._hasHeaderSlotContent = e.target.assignedNodes().length !== 0;
 	}
 
 	#handlePopoverClose() {
