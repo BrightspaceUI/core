@@ -26,7 +26,6 @@ class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 
 			.d2l-form-error-summary-header {
-				align-items: top;
 				cursor: pointer;
 				display: flex;
 				justify-content: space-between;

@@ -180,7 +180,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				display: -webkit-box;
 				hyphens: auto;
 				-webkit-line-clamp: 2;
-				word-break: break-word;
+				overflow-wrap: anywhere;
 			}
 
 			d2l-list-item[selection-disabled] .d2l-filter-dimension-set-value,
