@@ -149,6 +149,12 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		});
 	}
 
+	async waitForUpdateComplete() {
+		const predicate = () => true;
+		const composedChildren = getComposedChildren(this, predicate);
+		await Promise.all(composedChildren.map(child => waitForElem(child, predicate)));
+	}
+
 	_addHandlers() {
 		window.addEventListener('resize', this._updateSize);
 		this.addEventListener('touchstart', this._handleTouchStart);
@@ -455,7 +461,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 			const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-7397-dialog-resize-update-complete', true) ?? true;
 			if (flag) {
-				await this.#waitForUpdateComplete();
+				await this.waitForUpdateComplete();
 				await this._updateSize();
 			}
 			/** Dispatched when the dialog is opened */
@@ -587,9 +593,4 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		});
 	}
 
-	async #waitForUpdateComplete() {
-		const predicate = () => true;
-		const composedChildren = getComposedChildren(this, predicate);
-		await Promise.all(composedChildren.map(child => waitForElem(child, predicate)));
-	}
 };

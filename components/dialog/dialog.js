@@ -205,7 +205,12 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		super.updated(changedProperties);
 		if (!changedProperties.has('asyncState')) return;
 		if (this.asyncState === asyncStates.complete) {
-			this.resize();
+			const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-7397-dialog-resize-update-complete', true) ?? true;
+			if (flag) {
+				this.waitForUpdateComplete().then(() => this.resize());
+			} else {
+				this.resize();
+			}
 		}
 	}
 
