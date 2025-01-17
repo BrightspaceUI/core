@@ -663,6 +663,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	#isHoveringTooltip;
+	#leftTooltip;
 
 	_addListeners() {
 		if (!this._target) {
@@ -859,7 +860,12 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_onTargetMouseEnter() {
-		this._isHovering = true;
+		// came from tooltip so keep showing
+		if (this.#leftTooltip) {
+			this._isHovering = true;
+			return;
+		}
+
 		this._hoverTimeout = setTimeout(async() => {
 			if (this.showTruncatedOnly) {
 				await this._updateTruncating();
@@ -867,6 +873,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 
 			resetDelayTimeout();
+			this._isHovering = true;
 			this._updateShowing();
 		}, getDelay(this.delay));
 	}
@@ -1035,7 +1042,11 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	#onTooltipMouseLeave() {
 		this.#isHoveringTooltip = false;
-		setTimeout(this._updateShowing.bind(this), 100); // delay to allow for mouseenter to fire if hovering on target
+		this.#leftTooltip = true;
+		setTimeout(() => {
+			this.#leftTooltip = false;
+			this._updateShowing();
+		}, 100); // delay to allow for mouseenter to fire if hovering on target
 	}
 }
 customElements.define('d2l-tooltip', Tooltip);
