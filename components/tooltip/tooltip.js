@@ -451,7 +451,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._viewportMargin = defaultViewportMargin;
 
 		this.#isHoveringTooltip = false;
-		this.#leftTooltip = false;
+		this.#mouseLeftTooltip = false;
 	}
 
 	/** @ignore */
@@ -649,7 +649,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	#isHoveringTooltip;
-	#leftTooltip;
+	#mouseLeftTooltip;
 
 	_addListeners() {
 		if (!this._target) {
@@ -847,7 +847,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	_onTargetMouseEnter() {
 		// came from tooltip so keep showing
-		if (this.#leftTooltip) {
+		if (this.#mouseLeftTooltip) {
 			this._isHovering = true;
 			return;
 		}
@@ -867,7 +867,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	_onTargetMouseLeave() {
 		clearTimeout(this._hoverTimeout);
 		this._isHovering = false;
-		setTimeout(this._updateShowing.bind(this), 100); // delay to allow for mouseenter to fire if hovering on tooltip
+		setTimeout(() => this._updateShowing(), 100); // delay to allow for mouseenter to fire if hovering on tooltip
 	}
 
 	_onTargetResize() {
@@ -1027,10 +1027,13 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	#onTooltipMouseLeave() {
+		clearTimeout(this._mouseLeaveTimeout);
+
 		this.#isHoveringTooltip = false;
-		this.#leftTooltip = true;
-		setTimeout(() => {
-			this.#leftTooltip = false;
+		this.#mouseLeftTooltip = true;
+
+		this._mouseLeaveTimeout = setTimeout(() => {
+			this.#mouseLeftTooltip = false;
 			this._updateShowing();
 		}, 100); // delay to allow for mouseenter to fire if hovering on target
 	}
