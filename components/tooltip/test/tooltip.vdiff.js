@@ -6,6 +6,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 const shortText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 const longText = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+const longTextNoSpaces = 'Loremipsumdolorsitamet,consecteturadipiscingelit,seddoeiusmodtemporincididuntutlaboreetdoloremagnaaliqua.';
 const additionalText = 'Aliquam ut porttitor leo a diam sollicitudin tempor id eu.';
 
 function createTooltip(tooltipOpts, target) {
@@ -96,7 +97,8 @@ describe('tooltip', () => {
 		{ name: 'dark-background-position-top', opts: { dark: true, content: longText, position: 'top' }, targetStyles: { left: mid, top: mid } },
 		{ name: 'dark-background-position-bottom', opts: { dark: true, content: longText, position: 'bottom', wrapped: true }, targetStyles: { left: mid, top: mid } },
 		{ name: 'dark-background-position-right', opts: { dark: true, content: longText, position: 'right' }, targetStyles: { left: mid, top: mid } },
-		{ name: 'dark-background-position-left', opts: { dark: true, content: longText, position: 'left', wrapped: true }, targetStyles: { left: mid, top: mid } }
+		{ name: 'dark-background-position-left', opts: { dark: true, content: longText, position: 'left', wrapped: true }, targetStyles: { left: mid, top: mid } },
+		{ name: 'long-text-wrap', opts: { content: longTextNoSpaces }, targetStyles: { left: mid, top: mid } }
 	].forEach(({ name, opts = {}, targetStyles = {}, rtl }) => {
 		it(name, async() => {
 			const elem = await fixture(createTooltip(opts, targetStyles), { rtl, viewport: { width: 400, height: 400 }, pagePadding: false });

@@ -331,6 +331,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				min-width: 2.1rem;
 				outline: ${outlineSize}px solid var(--d2l-tooltip-outline-color);
 				overflow: hidden;
+				overflow-wrap: anywhere;
 				padding: ${11 - contentBorderSize}px ${contentHorizontalPadding - contentBorderSize}px;
 				position: absolute;
 			}
