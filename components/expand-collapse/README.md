@@ -41,8 +41,8 @@ The `d2l-expand-collapse-content` element can be used to create expandable and c
 To make your usage of `d2l-expand-collapse-content` accessible, it should follow the [W3C Disclosure (Show/Hide) Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/).
 
 To achieve this, the control that toggles the expanded state should:
- - Should use the [`d2l-button`](../button) or use an element with the [`button`](https://w3c.github.io/aria/#button) role
+ - Use the [`d2l-button`](../button) or use an element with the [`button`](https://w3c.github.io/aria/#button) role
  - Toggle between states when using the `Enter` and `Space` buttons and retain focus upon toggle
- - Have the [`aria-expanded`](https://www.w3.org/TR/wai-aria/#aria-expanded) attribute, so screen reader users will know what state it's in
+ - Have the [`aria-expanded`](https://www.w3.org/TR/wai-aria/#aria-expanded) attribute set to `'true'` or `'false'` depending on expansion state so that screen reader users will know what state it's in
  - Be adjacent to the expanded/collapsed content
 
