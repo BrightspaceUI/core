@@ -29,12 +29,13 @@ const contentBorderSize = 1;
 const contentHorizontalPadding = 15;
 const outlineSize = 1;
 
-/* once a user shows a tooltip, ignore delay if they hover adjacent target within this timeout */
+/* once a user closes a tooltip, ignore delay if they hover adjacent target within this timeout */
 let delayTimeoutId;
 const resetDelayTimeout = () => {
 	if (delayTimeoutId) clearTimeout(delayTimeoutId);
 	delayTimeoutId = setTimeout(() => delayTimeoutId = null, 1000);
 };
+/* ignore delay if user hovers adjacent target when a tooltip is already open */
 const getDelay = delay => {
 	if (delayTimeoutId) return 0;
 	else return delay;
@@ -847,7 +848,6 @@ class Tooltip extends RtlMixin(LitElement) {
 				if (!this._truncating) return;
 			}
 
-			resetDelayTimeout();
 			this._isHovering = true;
 			this._updateShowing();
 		}, getDelay(this.delay));
@@ -918,6 +918,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			if (this.announced && !this._isInteractive(this._target)) announce(this.innerText);
 		} else {
 			if (activeTooltip === this) activeTooltip = null;
+			resetDelayTimeout();
 
 			this.setAttribute('aria-hidden', 'true');
 			if (this._dismissibleId) {
