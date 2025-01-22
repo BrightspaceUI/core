@@ -193,9 +193,6 @@ class Form extends FormMixin(LitElement) {
 	}
 
 	_setupDialogValidationReset() {
-		const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-6979-dialog-close-reset-validation', true) ?? true;
-		if (!flag) return;
-
 		const dialogAncestor = findComposedAncestor(
 			this,
 			node => node?._isDialogMixin
