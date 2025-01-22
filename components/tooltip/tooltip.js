@@ -868,6 +868,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	_onTargetMouseLeave() {
 		clearTimeout(this._hoverTimeout);
 		this._isHovering = false;
+		if (this.showing) resetDelayTimeout();
 		setTimeout(() => this._updateShowing(), 100); // delay to allow for mouseenter to fire if hovering on tooltip
 	}
 
@@ -937,7 +938,6 @@ class Tooltip extends RtlMixin(LitElement) {
 				this._dismissibleId = null;
 			}
 			if (dispatch) {
-				resetDelayTimeout();
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tooltip-hide', { bubbles: true, composed: true }
 				));
@@ -1033,6 +1033,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		this.#isHoveringTooltip = false;
 		this.#mouseLeftTooltip = true;
+		resetDelayTimeout();
 
 		this._mouseLeaveTimeout = setTimeout(() => {
 			this.#mouseLeftTooltip = false;
