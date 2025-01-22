@@ -29,12 +29,13 @@ const contentBorderSize = 1;
 const contentHorizontalPadding = 15;
 const outlineSize = 1;
 
-/* once a user shows a tooltip, ignore delay if they hover adjacent target within this timeout */
+/* once a user closes a tooltip, ignore delay if they hover adjacent target within this timeout */
 let delayTimeoutId;
 const resetDelayTimeout = () => {
 	if (delayTimeoutId) clearTimeout(delayTimeoutId);
 	delayTimeoutId = setTimeout(() => delayTimeoutId = null, 1000);
 };
+/* ignore delay if user hovers adjacent target when a tooltip is already open */
 const getDelay = delay => {
 	if (delayTimeoutId) return 0;
 	else return delay;
@@ -331,6 +332,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				min-width: 2.1rem;
 				outline: ${outlineSize}px solid var(--d2l-tooltip-outline-color);
 				overflow: hidden;
+				overflow-wrap: anywhere;
 				padding: ${11 - contentBorderSize}px ${contentHorizontalPadding - contentBorderSize}px;
 				position: absolute;
 			}
@@ -858,7 +860,6 @@ class Tooltip extends RtlMixin(LitElement) {
 				if (!this._truncating) return;
 			}
 
-			resetDelayTimeout();
 			this._isHovering = true;
 			this._updateShowing();
 		}, getDelay(this.delay));
@@ -936,6 +937,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				this._dismissibleId = null;
 			}
 			if (dispatch) {
+				resetDelayTimeout();
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tooltip-hide', { bubbles: true, composed: true }
 				));

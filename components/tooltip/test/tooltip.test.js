@@ -261,6 +261,37 @@ describe('d2l-tooltip', () => {
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
 			expect(tooltip.showing).to.be.true;
 		});
+
+		it('should show second tooltip without delay after hovering over first tooltip for greater than delay', async() => {
+			const doubleTooltipFixture = html`
+				<div>
+					<button id="explicit-target1">Hover me for tips</button>
+					<d2l-tooltip for="explicit-target1" for-type="descriptor">If I got a problem then a problem's got a problem.</d2l-tooltip>
+					<button id="explicit-target2">Hover me for tips</button>
+					<d2l-tooltip for="explicit-target2" for-type="descriptor">There might be another problem.</d2l-tooltip>
+				</div>
+			`;
+
+			const testFixture = await fixture(doubleTooltipFixture);
+
+			const target1 = testFixture.querySelector('#explicit-target1');
+			const target2 = testFixture.querySelector('#explicit-target2');
+
+			const tooltips = testFixture.querySelectorAll('d2l-tooltip');
+			const tooltip1 = tooltips[0];
+			const tooltip2 = tooltips[1];
+
+			// display tooltip 1 then leave
+			target1.dispatchEvent(new Event('mouseenter'));
+			await oneEvent(testFixture, 'd2l-tooltip-show');
+			expect(tooltip1.showing).to.be.true;
+			target1.dispatchEvent(new Event('mouseleave'));
+
+			// don't wait delay, enter target2, tooltip 2 should show without having to wait for delay
+			target2.dispatchEvent(new Event('mouseenter'));
+			await aTimeout(tooltip.delay / 2);
+			expect(tooltip2.showing).to.be.true;
+		});
 	});
 
 	describe('force-show', () => {

@@ -126,10 +126,10 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 			.d2l-input-textarea-mirror {
 				line-height: 1rem;
 				overflow: hidden;
+				overflow-wrap: anywhere; /* prevent width from growing */
 				padding-bottom: 0.5rem;
 				padding-top: 0.5rem;
 				visibility: hidden;
-				word-break: break-word; /* prevent width from growing */
 			}
 			:host([no-padding]) .d2l-input {
 				padding-left: 0;
