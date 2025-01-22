@@ -918,7 +918,6 @@ class Tooltip extends RtlMixin(LitElement) {
 			if (this.announced && !this._isInteractive(this._target)) announce(this.innerText);
 		} else {
 			if (activeTooltip === this) activeTooltip = null;
-			resetDelayTimeout();
 
 			this.setAttribute('aria-hidden', 'true');
 			if (this._dismissibleId) {
@@ -926,6 +925,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				this._dismissibleId = null;
 			}
 			if (dispatch) {
+				resetDelayTimeout();
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tooltip-hide', { bubbles: true, composed: true }
 				));
