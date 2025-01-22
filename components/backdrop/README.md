@@ -1,6 +1,6 @@
 # Backdrops
 
-The `d2l-backdrop` element displays a semi-transparent backdrop behind a specified sibling target element. It also hides elements other than the target from assistive technologies by applying `aria-hidden="true"`.
+Use a backdrop to deemphasize background elements and draw the user's attention to a dialog or other modal content.
 
 ## Backdrop [d2l-backdrop]
 
@@ -43,3 +43,9 @@ Elements with `aria-hidden` applied (as well as their descendants) are completel
 **When showing a backdrop**: first move focus inside the target, then set the `shown` attribute on the backdrop.
 
 **When hiding a backdrop**: first remove the `shown` attribute on the backdrop, then if appropriate move focus outside the target.
+
+## Accessibility
+
+The backdrop hides background elements from screen reader users by setting `aria-hidden="true"` on all elements other than the target element specified in `for-target`.
+
+Before showing the backdrop, focus should be moved inside the target element — see [Focus Management](#focus-management) for more details.
