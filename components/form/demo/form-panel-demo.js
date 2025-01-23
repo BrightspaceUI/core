@@ -32,27 +32,8 @@ class FormPanelDemo extends LitElement {
 				display: none;
 			}
 
-			.d2l-form-panel-demo-panel {
-				background-color: white;
-				border-radius: 8px;
-				padding: 20px;
-			}
-
 			.d2l-form-panel-demo-container {
 				margin-bottom: 10px;
-			}
-
-			.d2l-form-panel-demo-header {
-				align-items: top;
-				cursor: pointer;
-				display: flex;
-				justify-content: space-between;
-			}
-
-			.d2l-form-panel-demo-text {
-				align-items: center;
-				display: flex;
-				margin: 0;
 			}
 		`];
 	}

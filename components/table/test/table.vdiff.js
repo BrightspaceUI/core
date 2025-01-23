@@ -664,6 +664,26 @@ describe('table', () => {
 					await expect(elem).to.be.golden();
 				});
 
+				it('col-sort-button-dropdown-open-short-flag-off', async() => {
+					window.D2L = {};
+					const elem = await createTableFixture(html`
+						<thead>${createSortableButtonDropdownHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await clickElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await expect(elem).to.be.golden();
+				});
+
+				it('col-sort-button-dropdown-open-short-flag-on', async() => {
+					window.D2L = { LP: { Web: { UI: { Flags: { Flag: () => true } } } } };
+					const elem = await createTableFixture(html`
+						<thead>${createSortableButtonDropdownHeaderRow()}</thead>
+						<tbody>${createRows([1])}</tbody>
+					`);
+					await clickElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+					await expect(elem).to.be.golden({ margin: 50 });
+				});
+
 				it('wrapper component', async() => {
 					const elem = await fixture(html`<d2l-test-table type="${type}"></d2l-test-table>`, { rtl });
 					await expect(elem).to.be.golden();

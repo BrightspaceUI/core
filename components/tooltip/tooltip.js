@@ -29,12 +29,13 @@ const contentBorderSize = 1;
 const contentHorizontalPadding = 15;
 const outlineSize = 1;
 
-/* once a user shows a tooltip, ignore delay if they hover adjacent target within this timeout */
+/* once a user closes a tooltip, ignore delay if they hover adjacent target within this timeout */
 let delayTimeoutId;
 const resetDelayTimeout = () => {
 	if (delayTimeoutId) clearTimeout(delayTimeoutId);
 	delayTimeoutId = setTimeout(() => delayTimeoutId = null, 1000);
 };
+/* ignore delay if user hovers adjacent target when a tooltip is already open */
 const getDelay = delay => {
 	if (delayTimeoutId) return 0;
 	else return delay;
@@ -331,6 +332,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				min-width: 2.1rem;
 				outline: ${outlineSize}px solid var(--d2l-tooltip-outline-color);
 				overflow: hidden;
+				overflow-wrap: anywhere;
 				padding: ${11 - contentBorderSize}px ${contentHorizontalPadding - contentBorderSize}px;
 				position: absolute;
 			}
@@ -449,6 +451,9 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._isHovering = false;
 		this._resizeRunSinceTruncationCheck = false;
 		this._viewportMargin = defaultViewportMargin;
+
+		this.#isHoveringTooltip = false;
+		this.#mouseLeftTooltip = false;
 	}
 
 	/** @ignore */
@@ -523,7 +528,7 @@ class Tooltip extends RtlMixin(LitElement) {
 		return html`
 			<div class="d2l-tooltip-container">
 				<div class="d2l-tooltip-position" style=${styleMap(tooltipPositionStyle)}>
-					<div class="${classMap(contentClasses)}">
+					<div class="${classMap(contentClasses)}" @mouseenter="${this.#onTooltipMouseEnter}" @mouseleave="${this.#onTooltipMouseLeave}">
 						<div role="text">
 							<slot></slot>
 						</div>
@@ -532,7 +537,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				<div class="d2l-tooltip-pointer d2l-tooltip-pointer-outline">
 					<div></div>
 				</div>
-				<div class="d2l-tooltip-pointer">
+				<div class="d2l-tooltip-pointer" @mouseenter="${this.#onTooltipMouseEnter}" @mouseleave="${this.#onTooltipMouseLeave}">
 					<div></div>
 				</div>
 			</div>`
@@ -644,6 +649,9 @@ class Tooltip extends RtlMixin(LitElement) {
 		this.style.width = `${positionRect.width}px`;
 		this.style.height = `${positionRect.height}px`;
 	}
+
+	#isHoveringTooltip;
+	#mouseLeftTooltip;
 
 	_addListeners() {
 		if (!this._target) {
@@ -840,13 +848,18 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_onTargetMouseEnter() {
+		// came from tooltip so keep showing
+		if (this.#mouseLeftTooltip) {
+			this._isHovering = true;
+			return;
+		}
+
 		this._hoverTimeout = setTimeout(async() => {
 			if (this.showTruncatedOnly) {
 				await this._updateTruncating();
 				if (!this._truncating) return;
 			}
 
-			resetDelayTimeout();
 			this._isHovering = true;
 			this._updateShowing();
 		}, getDelay(this.delay));
@@ -855,7 +868,8 @@ class Tooltip extends RtlMixin(LitElement) {
 	_onTargetMouseLeave() {
 		clearTimeout(this._hoverTimeout);
 		this._isHovering = false;
-		this._updateShowing();
+		if (this.showing) resetDelayTimeout();
+		setTimeout(() => this._updateShowing(), 100); // delay to allow for mouseenter to fire if hovering on tooltip
 	}
 
 	_onTargetResize() {
@@ -932,7 +946,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_updateShowing() {
-		this.showing = this._isFocusing || this._isHovering || this.forceShow;
+		this.showing = this._isFocusing || this._isHovering || this.forceShow || this.#isHoveringTooltip;
 	}
 
 	_updateTarget() {
@@ -1006,6 +1020,25 @@ class Tooltip extends RtlMixin(LitElement) {
 		this._truncating = (clone.scrollWidth - target.offsetWidth) > 2; // Safari adds 1px to scrollWidth necessitating a subtraction comparison.
 		this._resizeRunSinceTruncationCheck = false;
 		target.removeChild(cloneContainer);
+	}
+
+	#onTooltipMouseEnter() {
+		if (!this.showing) return;
+		this.#isHoveringTooltip = true;
+		this._updateShowing();
+	}
+
+	#onTooltipMouseLeave() {
+		clearTimeout(this._mouseLeaveTimeout);
+
+		this.#isHoveringTooltip = false;
+		this.#mouseLeftTooltip = true;
+		resetDelayTimeout();
+
+		this._mouseLeaveTimeout = setTimeout(() => {
+			this.#mouseLeftTooltip = false;
+			this._updateShowing();
+		}, 100); // delay to allow for mouseenter to fire if hovering on target
 	}
 }
 customElements.define('d2l-tooltip', Tooltip);

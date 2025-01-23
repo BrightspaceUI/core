@@ -1,6 +1,31 @@
 import '../dialog.js';
-import { clickElem, expect, fixture, focusElem, html, oneEvent, sendKeys } from '@brightspace-ui/testing';
+import { clickElem, defineCE, expect, fixture, focusElem, html, oneEvent, sendKeys } from '@brightspace-ui/testing';
 import { footer, general } from './dialog-shared-contents.js';
+import { LitElement } from 'lit';
+import { LoadingCompleteMixin } from '../../../mixins/loading-complete/loading-complete-mixin.js';
+
+const delayedTag = defineCE(
+	class extends LoadingCompleteMixin(LitElement) {
+		static get properties() {
+			return {
+				loaded: { type: Boolean }
+			};
+		}
+		constructor() {
+			super();
+			this.loaded = false;
+		}
+		render() {
+			return this.loaded ?
+				html`<div style="border: 2px solid green; margin: 200px;">Loaded</div>` :
+				html`<div style="border: 2px solid red; margin: 10px;">Loading...</div>`;
+		}
+		finishLoading() {
+			this.loaded = true;
+			this.resolveLoadingComplete();
+		}
+	}
+);
 
 describe('dialog-mixin', () => {
 
@@ -50,6 +75,19 @@ describe('dialog-mixin', () => {
 						await expect(document).to.be.golden();
 					});
 				});
+			});
+
+			it('delayed-content', async() => {
+				const el = await fixture(
+					`<d2l-dialog title-text="Delayed Dialog"><${delayedTag}></${delayedTag}></d2l-dialog>`,
+					{
+						awaitLoadingComplete: false
+					}
+				);
+				setTimeout(() => el.querySelector(delayedTag).finishLoading(), 500);
+				el.opened = true;
+				await oneEvent(el, 'd2l-dialog-open');
+				await expect(document).to.be.golden();
 			});
 		});
 	});

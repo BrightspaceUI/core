@@ -86,7 +86,8 @@ elemIdListRemoves(node, attrName, value);
 findComposedAncestor(node, predicate);
 
 // gets the composed children (including shadow children & distributed children)
-getComposedChildren(element);
+// includes a predicate which will add children nodes when predicate(node) is true
+getComposedChildren(element, predicate = () => true);
 
 // gets the composed parent (including shadow host & insertion points)
 getComposedParent(node);

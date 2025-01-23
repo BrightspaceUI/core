@@ -29,7 +29,7 @@ class FocusTrap extends FocusMixin(LitElement) {
 				display: inline-block;
 			}
 			:host([hidden]) {
-				display: hidden;
+				display: none;
 			}
 		`;
 	}
