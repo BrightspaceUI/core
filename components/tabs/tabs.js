@@ -17,6 +17,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const scrollButtonWidth = 56;
+const WIREUP_TIMEOUT_DELAY = 100; // to allow dynamic additions of tabs/panel components
 
 /**
  * A component for tabbed content. It supports the "d2l-tab-panel" component for the content, renders tabs responsively, and provides virtual scrolling for large tab lists.
@@ -236,6 +237,12 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 			}
 		});
 
+		this._tabsSlot = this.shadowRoot.querySelector('slot[name="tabs"]');
+  		this._panelsSlot = this.shadowRoot.querySelector('slot[name="panels"]');
+
+		// could potentially fire off initial logic flow that slot changes (tab and panel) run here?
+		// would cover cases where initial static dom is already here and not on dynamic slot changes alone
+		// current solve doesn't cover this so probably don't need
 	}
 
 	disconnectedCallback() {
@@ -247,10 +254,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		super.firstUpdated(changedProperties);
 
 		this.arrowKeysFocusablesProvider = async() => {
-			return [...this.shadowRoot.querySelectorAll('d2l-tab-internal')];
+			return [...this.shadowRoot.querySelectorAll('d2l-tab-internal')]; // so supersede this part
 		};
 
-		this.arrowKeysOnBeforeFocus = async(tab) => {
+		this.arrowKeysOnBeforeFocus = async(tab) => { // shouldn't have to worry too much about it, should be PNP
 			const tabInfo = this._getTabInfo(tab.controlsPanel);
 			this._setFocusable(tabInfo);
 
@@ -484,6 +491,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 	}
 
 	async _focusSelected() {
+		// new version of this, just update ref const selectedTab = this.shadowRoot && this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]');
+		// if fails - then run below query
 		const selectedTab = this.shadowRoot && this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]');
 		if (!selectedTab) return;
 
@@ -527,18 +536,24 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 
 	_getPanels(slot) {
 		if (!slot) return;
-		return slot.assignedNodes({ flatten: true })
-			.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.role === 'tabpanel');
+		return slot?.assignedNodes({ flatten: true })
+			.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.role === 'tabpanel') || [];
 	}
 
 	_getTabInfo(id) {
 		if (this._tabInfos.find) {
 			return this._tabInfos.find((t) => t.id === id);
 		} else {
-			// IE11
+			// IE11 - TODO, prune
 			const index = this._tabInfos.findIndex((t) => t.id === id);
 			return index !== -1 ? this._tabInfos[index] : null;
 		}
+	}
+
+	_getTabs(slot) {
+		if (!slot) return;
+		return slot?.assignedNodes({ flatted: true })
+			.filter(node => node.nodeType === Node.ELEMENT_NODE && node.role === 'tab') || [];
 	}
 
 	_handleFocusOut(e) {
@@ -556,7 +571,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		this.requestUpdate();
 	}
 
-	async _handlePanelSlotChange(e) {
+	async _handlePanelSlotChange(e) { // this is essentially the new tabSlot
 
 		const panels = this._getPanels(e.target);
 
@@ -642,8 +657,25 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 
 	}
 
+	// need to handle tab/panel removal
 	_handlePanelsSlotChange() {
-		this._hasPanelsSlotContent = this._hasPanelsSlotContent.assignedNodes().length > 0;
+		const panels = this._getPanels(this._panelsSlot);
+		this._hasPanelsSlotContent = panels.length > 0; // find -> to find panel that has labelledBy = tab that was just clicked
+
+		this._updateAriaControls();
+
+		// if they remove a panel but they don't remove the tab - edge/error case that we could shout to console.warn, etc.
+		// or the inverse, adding a panel without a tab, would be another misconfig that we could console.warn about
+		// setTimeout on this (3000, etc.) don't want a misfire and complain when the browser is chugging to add all the components
+
+		// potentially do wireup of aria-controls here
+		// -> DB says aria-controls potentially not helpful? - only SR might be JAWS that does something with it
+
+		// so if(has panel/tab match after timeout) {
+		// do aria-controls wireup
+		// else {
+		//   shout consolewarning
+		// }
 	}
 
 	async _handlePanelTextChange(e) {
@@ -743,11 +775,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 
 	async _handleTabSelected(e) {
 		e.stopPropagation();
-
+		// selected logic is a bit odd, need a SSOT on selected - tab owns?
 		const selectedTab = e.target;
 		const selectedPanel = this._getPanel(selectedTab.controlsPanel);
 		const selectedTabInfo = this._getTabInfo(selectedTab.controlsPanel);
 		selectedTabInfo.activeFocusable = true;
+		// slot.assignedElements - ittr over, find the one that's selected, tabIndex = 0, all others need to be -1
+		  // ^ e.target for setting to 0 is easy, but need to itr to find old
 
 		await this.updateComplete;
 		this._updateScrollPosition(selectedTabInfo);
@@ -768,8 +802,14 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		this.requestUpdate();
 	}
 
-	_handleTabsSlotChange() {
-		this._hasTabsSlotContent = this._tabsSlot.assignedNodes().length > 0;
+	_handleTabsSlotChange(e) {
+		const tabs = this._getTabs(e.target);
+		this._hasTabsSlotContent = tabs.length > 0;
+
+		this._wireAriaControls();
+
+		// this will be the meet and potatoes of it here
+		// essentially copy what the old _handlePanelSlotChange does
 	}
 
 	_isPositionInLeftScrollArea(position) {
@@ -858,10 +898,42 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		return true;
 	}
 
+	// need detach version - currently only attach state/flow is covered
+	_updateAriaControls() {
+		const panels = this._getPanels(this._panelsSlot);
+		const tabs = this._getTabs(this._tabsSlot);
+
+		panels.forEach(panel => {
+			const labelledBy = panel.getAttribute('labelledBy');
+			if (!labelledBy) {
+				setTimeout(() => {
+					if (!panel.getAttribute('labelledBy')) {
+						console.warn(`Panel with id="${panel.id}" is missing "labelledBy" attribute and cannot be attached to its tab`);
+					}
+				}, WIREUP_TIMEOUT_DELAY);
+				return;
+			}
+
+			let tab = tabs.find(tab => tab.id === labelledBy);
+			if (tab) {
+				tab.setAttribute('aria-controls', panel.id);
+			} else {
+				setTimeout(() => {
+					tab = tabs.find(tab => tab.id === labelledBy);
+					if (!tab) {
+						console.warn(`No tab found with id="${labelledBy}" to link with panel id="${panel.id}"`);
+					}
+				}, WIREUP_TIMEOUT_DELAY);
+			}
+		});
+	  }
+
 	_updateMeasures() {
 		let totalTabsWidth = 0;
 		if (!this.shadowRoot) return;
-		const tabs = [...this.shadowRoot.querySelectorAll('d2l-tab-internal')];
+		// const tabs = [...this.shadowRoot.querySelectorAll('d2l-tab')] // so current -> then if array.length = 0 do old check from below
+		// essentially we'd want to prevent mixture of the approach since hybrid approach could get messy elsewhere, KISS
+		const tabs = [...this.shadowRoot.querySelectorAll('d2l-tab-internal')]; // just append additional query here for new tab?
 
 		const tabRects = tabs.map((tab) => {
 			const measures = {
