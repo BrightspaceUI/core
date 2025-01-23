@@ -667,15 +667,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		// if they remove a panel but they don't remove the tab - edge/error case that we could shout to console.warn, etc.
 		// or the inverse, adding a panel without a tab, would be another misconfig that we could console.warn about
 		// setTimeout on this (3000, etc.) don't want a misfire and complain when the browser is chugging to add all the components
-
-		// potentially do wireup of aria-controls here
-		// -> DB says aria-controls potentially not helpful? - only SR might be JAWS that does something with it
-
-		// so if(has panel/tab match after timeout) {
-		// do aria-controls wireup
-		// else {
-		//   shout consolewarning
-		// }
 	}
 
 	async _handlePanelTextChange(e) {
@@ -802,14 +793,90 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		this.requestUpdate();
 	}
 
-	_handleTabsSlotChange(e) {
+	// this will be the meet and potatoes of it here
+	// essentially copy what the old _handlePanelSlotChange does
+	async _handleTabsSlotChange(e) {
 		const tabs = this._getTabs(e.target);
 		this._hasTabsSlotContent = tabs.length > 0;
 
-		this._wireAriaControls();
+		this._updateTabListVisibility(tabs);
+		if (!this._intialized && !this._hasTabsSlotContent) return;
 
-		// this will be the meet and potatoes of it here
-		// essentially copy what the old _handlePanelSlotChange does
+		let selectedTabInfo = null;
+		const newTabInfos = tabs.map(tab => {
+			let state = '';
+			if (this._initialized && !reduceMotion && tabs.length !== this._tabsInfos.length) {
+				// if it's a new tab, update state to animation addition
+				if (this._tabsInfos.some(info => info.id === tab.id)) {
+					state = 'adding';
+				}
+			}
+
+			const tabInfo = {
+				id: tab.id,
+				// TODO id's need solution (scope level, etc.)
+				// specifically, is it just being added to the get properties() of TabMixin?
+				// or..?
+				text: tab.text,
+				selected: tab.selected,
+				state: state
+			};
+
+			if (tabInfo.selected) {
+				selectedTabInfo = tabInfo;
+				this._setFocusable(tabInfo);
+			}
+
+			return tabInfo;
+		});
+
+		if (this._initialized && !reduceMotion && this._tabsInfos.length !== newTabInfos.length) {
+			this._tabsInfos.forEach((info, index) => {
+				// if a tab was removed, include old info to animate it away
+				if (!newTabInfos.some(newInfo => newInfo.id === info.id)) {
+					info.state = 'removing';
+					info.selected = false;
+					newTabInfos.splice(index, 0, info);
+				}
+			});
+		}
+		this._tabsInfo = newTabInfos;
+
+		if (this._tabInfos.length > 0 && !selectedTabInfo) {
+			selectedTabInfo = this._tabInfos.find(tabInfo => tabInfo.state !== 'removing');
+			if (selectedTabInfo) {
+				selectedTabInfo.activeFocusable = true;
+				selectedTabInfo.selected = true;
+			}
+		}
+
+		await this.updateComplete;
+
+		const animPromises = [];
+		if (!this._initialized && this._tabInfos.length > 0) {
+			this._initialized = true;
+			await this._updateTabsContainerWidth(selectedTabInfo);
+		} else {
+			if (this._tabInfos.length > 1) {
+				this._tabInfos.forEach(info => {
+					if (info.state === 'adding') animPromises.push(this._animateTabAddition(info));
+					else if (info.state === 'removing') animPromises.push(this._animateTabRemoval(info));
+				});
+			}
+			this._updateMeasures(); // required for animation
+		}
+
+		if (selectedTabInfo) {
+			Promise.all(animPromises).then(() => {
+				this._updateMeasures();
+				return this._updateScrollPosition(selectedTabInfo);
+			});
+		}
+
+		this._updateAriaControls();
+		this.dispatchEvent(new CustomEvent(
+			'd2l-tabs-initialized', { bubbles: true, composed: true }
+		));
 	}
 
 	_isPositionInLeftScrollArea(position) {
@@ -990,8 +1057,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		return this.updateComplete;
 	}
 
-	_updateTabListVisibility(panels) {
-		if (this._state === 'shown' && panels.length < 2) {
+	_updateTabListVisibility(tabs) {
+		if (this._state === 'shown' && tabs.length < 2) {
 			// don't animate the tabs list visibility if it's the inital render
 			if (reduceMotion || !this._initialized) {
 				this._state = 'hidden';
@@ -1005,7 +1072,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 				layout.addEventListener('transitionend', handleTransitionEnd);
 				this._state = 'anim';
 			}
-		} else if (this._state === 'hidden' && panels.length > 1) {
+		} else if (this._state === 'hidden' && tabs.length > 1) {
 			// don't animate the tabs list visibility if it's the inital render
 			if (reduceMotion || !this._initialized) {
 				this._state = 'shown';
