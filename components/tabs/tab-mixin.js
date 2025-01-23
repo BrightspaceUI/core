@@ -11,7 +11,17 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	static get properties() {
 		return {
+			/**
+			 * ACCESSIBILITY: REQUIRED: A description to be added to the tab for accessibility when text on tab does not provide enough context
+			 * @type {string}
+			 */
+			description: { type: String },
 			selected: { type: Boolean, reflect: true },
+			/**
+			 * ACCESSIBILITY: REQUIRED: Accessible text for the button
+			 * @type {string}
+			 */
+			text: { type: String }
 		};
 	}
 
