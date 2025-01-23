@@ -1,6 +1,6 @@
 # Backdrops
 
-Use a backdrop to deemphasize background elements and draw the user's attention to a dialog or other modal content.
+Use a backdrop to de-emphasize background elements and draw the user's attention to a dialog or other modal content.
 
 ## Backdrop [d2l-backdrop]
 
