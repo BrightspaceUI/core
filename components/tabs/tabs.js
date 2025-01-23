@@ -998,11 +998,16 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 	_updateMeasures() {
 		let totalTabsWidth = 0;
 		if (!this.shadowRoot) return;
-		// const tabs = [...this.shadowRoot.querySelectorAll('d2l-tab')] // so current -> then if array.length = 0 do old check from below
-		// essentially we'd want to prevent mixture of the approach since hybrid approach could get messy elsewhere, KISS
-		const tabs = [...this.shadowRoot.querySelectorAll('d2l-tab-internal')]; // just append additional query here for new tab?
 
-		const tabRects = tabs.map((tab) => {
+		let tabs = this._getTabs(this._tabsSlot);
+
+		if (!tabs.length > 0) {
+			tabs = tabs = [...this.shadowRoot.querySelectorAll('d2l-tab-internal')];
+		}
+
+		if (!tabs.length > 0) return;
+
+		const tabRects = tabs.map(tab => {
 			const measures = {
 				rect: tab.getBoundingClientRect(),
 				offsetLeft: tab.offsetLeft
