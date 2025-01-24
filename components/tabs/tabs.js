@@ -541,13 +541,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 	}
 
 	_getTabInfo(id) {
-		if (this._tabInfos.find) {
-			return this._tabInfos.find((t) => t.id === id);
-		} else {
-			// IE11 - TODO, prune
-			const index = this._tabInfos.findIndex((t) => t.id === id);
-			return index !== -1 ? this._tabInfos[index] : null;
-		}
+		return this._tabInfos.find(t => t.id === id);
 	}
 
 	_getTabs(slot) {
