@@ -248,12 +248,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 
 		this._tabsSlot = this.shadowRoot.querySelector('slot[name="tabs"]');
   		this._panelsSlot = this.shadowRoot.querySelector('slot[name="panels"]');
+		const tabs = this._getTabs(this._tabsSlot);
 
 		this.arrowKeysFocusablesProvider = async() => {
-			return [...this.shadowRoot.querySelectorAll('d2l-tab-internal')]; // so supersede this part
+			return this._tabsSlot.length > 0 ? [...tabs] : [...this.shadowRoot.querySelectorAll('d2l-tab-internal')];
 		};
 
-		this.arrowKeysOnBeforeFocus = async(tab) => { // shouldn't have to worry too much about it, should be PNP
+		this.arrowKeysOnBeforeFocus = async(tab) => {
 			const tabInfo = this._getTabInfo(tab.controlsPanel);
 			this._setFocusable(tabInfo);
 
@@ -561,7 +562,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		this.requestUpdate();
 	}
 
-	async _handlePanelSlotChange(e) { // this is essentially the new tabSlot
+	async _handlePanelSlotChange(e) {
 
 		const panels = this._getPanels(e.target);
 
@@ -650,7 +651,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 	// need to handle tab/panel removal
 	_handlePanelsSlotChange() {
 		const panels = this._getPanels(this._panelsSlot);
-		this._hasPanelsSlotContent = panels.length > 0; // find -> to find panel that has labelledBy = tab that was just clicked
+		this._hasPanelsSlotContent = panels.length > 0;
 
 		this._updateAriaControls();
 
@@ -783,8 +784,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		this.requestUpdate();
 	}
 
-	// this will be the meet and potatoes of it here
-	// essentially copy what the old _handlePanelSlotChange does
 	async _handleTabsSlotChange(e) {
 		const tabs = this._getTabs(e.target);
 		this._hasTabsSlotContent = tabs.length > 0;
@@ -804,9 +803,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 
 			const tabInfo = {
 				id: tab.id,
-				// TODO id's need solution (scope level, etc.)
-				// specifically, is it just being added to the get properties() of TabMixin?
-				// or..?
 				text: tab.text,
 				selected: tab.selected,
 				state: state
