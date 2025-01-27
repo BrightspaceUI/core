@@ -236,13 +236,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 				this.style.setProperty('--d2l-tabs-background-color', bgColor);
 			}
 		});
-
-		this._tabsSlot = this.shadowRoot.querySelector('slot[name="tabs"]');
-  		this._panelsSlot = this.shadowRoot.querySelector('slot[name="panels"]');
-
-		// could potentially fire off initial logic flow that slot changes (tab and panel) run here?
-		// would cover cases where initial static dom is already here and not on dynamic slot changes alone
-		// current solve doesn't cover this so probably don't need
 	}
 
 	disconnectedCallback() {
@@ -252,6 +245,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
+
+		this._tabsSlot = this.shadowRoot.querySelector('slot[name="tabs"]');
+  		this._panelsSlot = this.shadowRoot.querySelector('slot[name="panels"]');
 
 		this.arrowKeysFocusablesProvider = async() => {
 			return [...this.shadowRoot.querySelectorAll('d2l-tab-internal')]; // so supersede this part
