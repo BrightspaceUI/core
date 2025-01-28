@@ -37,7 +37,9 @@ class Tab extends TabMixin(LitElement) {
 
 		return html`
 			<div class="${classMap(contentClasses)}">
-				<slot></slot>
+				<slot name="before"></slot>
+				${this.text}
+				<slot name="after"></slot>
 			</div>
 		`;
 	}
