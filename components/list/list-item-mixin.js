@@ -201,7 +201,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 			[slot="content"] {
 				display: flex;
-				justify-content: stretch;
+				justify-content: start;
 				padding: 0.55rem 0.55rem 0.55rem 0;
 			}
 			:host([dir="rtl"]) [slot="content"] {
