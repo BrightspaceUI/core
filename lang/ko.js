@@ -37,7 +37,6 @@ export default {
 	"components.filter.singleDimensionDescription": "필터 기준: {filterName}",
 	"components.filter-dimension-set-date-text-value.textHours":
 	`{num, plural,
-		one {지난 {num}시간}
 		other {지난 {num}시간}
 	}`,
 	"components.filter-dimension-set-date-text-value.textDays":
