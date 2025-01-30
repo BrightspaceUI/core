@@ -37,7 +37,6 @@ export default {
 	"components.filter.singleDimensionDescription": "筛选依据：{filterName}",
 	"components.filter-dimension-set-date-text-value.textHours":
 	`{num, plural,
-		one {过去 {num} 小时}
 		other {过去 {num} 小时}
 	}`,
 	"components.filter-dimension-set-date-text-value.textDays":
