@@ -115,8 +115,8 @@ export default {
 	"components.input-date.useDateFormat": "{format} tarih formatını kullanın.",
 	"components.input-number.hintInteger": "Bu alanda yalnızca tam sayı değerleri kabul edilir (ondalık sayı kabul edilmez)",
 	"components.input-number.hintDecimalDuplicate": "Bu sayıda zaten bir ondalık var",
-	"components.input-number.hintDecimalIncorrectComma": "Ondalık sayı eklemek için virgül \",\" karakterini kullanın",
-	"components.input-number.hintDecimalIncorrectPeriod": "Ondalık sayı eklemek için nokta \".\" karakterini kullanın",
+	"components.input-number.hintDecimalIncorrectComma": "Ondalık sayı eklemek için virgül “,” karakterini kullanın",
+	"components.input-number.hintDecimalIncorrectPeriod": "Ondalık sayı eklemek için nokta “.” karakterini kullanın",
 	"components.input-search.clear": "Aramayı Temizle",
 	"components.input-search.defaultPlaceholder": "Ara...",
 	"components.input-search.search": "Arama",
@@ -188,8 +188,8 @@ export default {
 			other {Düşükten yükseğe sıralandı}
 		}}
 		words {{direction, select,
-			desc {Z'den A'ya sıralandı}
-			other {A'dan Z'ye sıralandı}
+			desc {Z’den A’ya sıralandı}
+			other {A’dan Z’ye sıralandı}
 		}}
 		value {{selectedMenuItemText} sıralandı}
 		other {{direction, select,
