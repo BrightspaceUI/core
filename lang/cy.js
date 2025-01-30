@@ -4,10 +4,10 @@ export default {
 	"components.button-add.addItem": "Ychwanegu Eitem",
 	"components.calendar.hasEvents": "Yn Cynnwys Digwyddiadau.",
 	"components.calendar.notSelected": "Heb ei Ddewis.",
-	"components.calendar.selected": "Wedi'i Ddewis.",
+	"components.calendar.selected": "Wedi’i Ddewis.",
 	"components.calendar.show": "Dangos {month}",
 	"components.count-badge.plus": "{number}+",
-	"components.dialog.close": "Cau'r dialog hwn",
+	"components.dialog.close": "Cau’r dialog hwn",
 	"components.dialog.critical": "Critigol!",
 	"components.dropdown.close": "Cau",
 	"components.filter.activeFilters": "Dim Hidlwyr Gweithredol:",
@@ -35,7 +35,7 @@ export default {
 		one {{number} canlyniad chwilio}
 		other {{number} canlyniadau chwilio}
 	}`,
-	"components.filter.selectedFirstListLabel": "{headerText}. Mae'r hidlyddion a ddewiswyd yn ymddangos gyntaf.",
+	"components.filter.selectedFirstListLabel": "{headerText}. Mae’r hidlyddion a ddewiswyd yn ymddangos gyntaf.",
 	"components.filter.singleDimensionDescription": "Hidlo yn ôl: {filterName}",
 	"components.filter-dimension-set-date-text-value.textHours":
 	`{num, plural,
@@ -56,30 +56,30 @@ export default {
 	"components.filter-dimension-set-date-time-range-value.text": "Ystod dyddiad pwrpasol",
 	"components.form-element.defaultError": "Mae {label} yn annilys",
 	"components.form-element.defaultFieldLabel": "Maes",
-	"components.form-element.input.email.typeMismatch": "Nid yw'r e-bost yn ddilys",
+	"components.form-element.input.email.typeMismatch": "Nid yw’r e-bost yn ddilys",
 	"components.form-element.input.number.rangeError":
 	`{minExclusive, select,
 		true {{maxExclusive, select,
-			true {Rhaid i'r nifer fod yn fwy na {min} a llai na {max}.}
-			other {Rhaid i'r nifer fod yn fwy na {min} a llai na neu'n hafal i {max}.}
+			true {Rhaid i’r nifer fod yn fwy na {min} a llai na {max}.}
+			other {Rhaid i’r nifer fod yn fwy na {min} a llai na neu’n hafal i {max}.}
 		}}
 		other {{maxExclusive, select,
-			true {Rhaid i'r nifer fod yn fwy na neu'n hafal i {min} a llai na {max}.}
-			other {Rhaid i'r nifer fod yn fwy na neu'n hafal i {min} a llai na neu'n hafal i {max}.}
+			true {Rhaid i’r nifer fod yn fwy na neu’n hafal i {min} a llai na {max}.}
+			other {Rhaid i’r nifer fod yn fwy na neu’n hafal i {min} a llai na neu’n hafal i {max}.}
 		}}
 	}`,
 	"components.form-element.input.number.rangeOverflow":
 	`{maxExclusive, select,
-		true {Rhaid i'r nifer fod yn llai na {max}.}
-		other {Rhaid i'r nifer fod yn llai na neu’n hafal i {max}.}
+		true {Rhaid i’r nifer fod yn llai na {max}.}
+		other {Rhaid i’r nifer fod yn llai na neu’n hafal i {max}.}
 	}`,
 	"components.form-element.input.number.rangeUnderflow":
 	`{minExclusive, select,
-		true {Rhaid i'r nifer fod yn fwy na {min}.}
-		other {Rhaid i'r nifer fod yn fwy na neu'n hafal i {min}.}
+		true {Rhaid i’r nifer fod yn fwy na {min}.}
+		other {Rhaid i’r nifer fod yn fwy na neu’n hafal i {min}.}
 	}`,
 	"components.form-element.input.text.tooShort": "Rhaid i {label} fod o leiaf {minlength} nod",
-	"components.form-element.input.url.typeMismatch": "Nid yw'r URL yn ddilys.",
+	"components.form-element.input.url.typeMismatch": "Nid yw’r URL yn ddilys.",
 	"components.form-element.valueMissing": "Mae angen {label}",
 	"components.form-error-summary.errorSummary":
 	`{count, plural,
@@ -101,23 +101,23 @@ export default {
 	"components.input-date-time.date": "Dyddiad",
 	"components.input-date-time.errorMaxDateOnly": "Rhaid i’r dyddiad fod cyn neu ar {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "Rhaid i’r dyddiad fod ar neu ar ôl {minDate}",
-	"components.input-date-time.errorOutsideRange": "Rhaid i'r dyddiad fod rhwng {minDate} a {maxDate}",
+	"components.input-date-time.errorOutsideRange": "Rhaid i’r dyddiad fod rhwng {minDate} a {maxDate}",
 	"components.input-date-time.time": "Amser",
 	"components.input-date-time-range.interactive-label": "Mewnbwn ystod dyddiad ac amser",
 	"components.input-date.clear": "Clirio",
 	"components.input-date.errorMaxDateOnly": "Rhaid i’r dyddiad fod cyn neu ar {maxDate}",
 	"components.input-date.errorMinDateOnly": "Rhaid i’r dyddiad fod ar neu ar ôl {minDate}",
-	"components.input-date.errorOutsideRange": "Rhaid i'r dyddiad fod rhwng {minDate} a {maxDate}",
+	"components.input-date.errorOutsideRange": "Rhaid i’r dyddiad fod rhwng {minDate} a {maxDate}",
 	"components.input-date.openInstructions": "Defnyddio fformat dyddiad {format}. Pwyswch saeth i lawr neu Enter i gael mynediad at galendr bach.",
 	"components.input-date.now": "Nawr",
-	"components.input-date.revert": "Mae {label} wedi'i ddychwelyd i'r gwerth blaenorol.",
+	"components.input-date.revert": "Mae {label} wedi’i ddychwelyd i’r gwerth blaenorol.",
 	"components.input-date.today": "Heddiw",
 	"components.input-date.useDateFormat": "Defnyddio fformat dyddiad {format}.",
-	"components.input-number.hintInteger": "Mae'r maes hwn yn derbyn gwerthoedd cyfanrif yn unig (dim degolion)",
+	"components.input-number.hintInteger": "Mae’r maes hwn yn derbyn gwerthoedd cyfanrif yn unig (dim degolion)",
 	"components.input-number.hintDecimalDuplicate": "Mae degol eisoes yn y nifer hwn",
-	"components.input-number.hintDecimalIncorrectComma": "I ychwanegu degol defnyddiwch y nod coma \",”",
-	"components.input-number.hintDecimalIncorrectPeriod": "I ychwanegu degol defnyddiwch y nod atalnod llawn \".\"",
-	"components.input-search.clear": "Clirio'r Chwilio",
+	"components.input-number.hintDecimalIncorrectComma": "I ychwanegu degol defnyddiwch y nod coma “,”",
+	"components.input-number.hintDecimalIncorrectPeriod": "I ychwanegu degol defnyddiwch y nod atalnod llawn “.”",
+	"components.input-search.clear": "Clirio’r Chwilio",
 	"components.input-search.defaultPlaceholder": "Chwilio...",
 	"components.input-search.search": "Chwilio",
 	"components.input-time-range.endTime": "Amser Gorffen",
@@ -125,20 +125,20 @@ export default {
 	"components.input-time-range.startTime": "Amser Dechrau",
 	"components.interactive.instructions": "Pwyswch Enter i ryngweithio, Escape i adael",
 	"components.link.open-in-new-window": "Yn agor mewn ffenestr newydd",
-	"components.list.keyboard": "Defnyddiwch y <b>bysellau saeth</b> i symud ffocws y tu mewn i'r rhestr hon, neu <b>tudalen i fyny/i lawr</b> i symud i fyny neu i lawr erbyn 5",
+	"components.list.keyboard": "Defnyddiwch y <b>bysellau saeth</b> i symud ffocws y tu mewn i’r rhestr hon, neu <b>tudalen i fyny/i lawr</b> i symud i fyny neu i lawr erbyn 5",
 	"components.list-controls.label": "Camau gweithredu ar gyfer rhestr",
 	"components.list-item.addItem": "Ychwanegu Eitem",
 	"components.list-item-drag-handle.default": "Aildrefnu gweithred eitem ar gyfer {name}",
-	"components.list-item-drag-handle.keyboard": "Aildrefnu eitemau, safle presennol {currentPosition} allan o {size}. I symud yr eitem hon, pwyswch y saeth i fyny neu'r saeth i lawr.",
+	"components.list-item-drag-handle.keyboard": "Aildrefnu eitemau, safle presennol {currentPosition} allan o {size}. I symud yr eitem hon, pwyswch y saeth i fyny neu’r saeth i lawr.",
 	"components.list-item-drag-handle-tooltip.title": "Rheolaethau bysellfwrdd ar gyfer aildrefnu:",
 	"components.list-item-drag-handle-tooltip.enter-key": "Nodi",
-	"components.list-item-drag-handle-tooltip.enter-desc": "Toglo'r modd aildrefnu bysellfwrdd.",
+	"components.list-item-drag-handle-tooltip.enter-desc": "Toglo’r modd aildrefnu bysellfwrdd.",
 	"components.list-item-drag-handle-tooltip.up-down-key": "I Fyny/I Lawr",
 	"components.list-item-drag-handle-tooltip.up-down-desc": "Symud yr eitem i fyny neu i lawr yn y rhestr.",
 	"components.list-item-drag-handle-tooltip.left-right-key": "Chwith/De",
 	"components.list-item-drag-handle-tooltip.left-right-desc": "Newid y lefel nythu.",
-	"components.menu-item-return.return": "Dychwelyd i'r ddewislen flaenorol.",
-	"components.menu-item-return.returnCurrentlyShowing": "Dychwelyd i'r ddewislen flaenorol. Rydych chi'n edrych ar {menuTitle}.",
+	"components.menu-item-return.return": "Dychwelyd i’r ddewislen flaenorol.",
+	"components.menu-item-return.returnCurrentlyShowing": "Dychwelyd i’r ddewislen flaenorol. Rydych chi’n edrych ar {menuTitle}.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",
 	"components.meter-mixin.fraction": "{x}∕{y}",
 	"components.meter-mixin.fractionAria": "{x} allan o {y}",
@@ -162,10 +162,10 @@ export default {
 	"components.pager-load-more.status-loading": "Llwytho rhagor o eitemau",
 	"components.selection.action-max-hint":
 	`{count, plural,
-		one {Wedi'i analluogi pan fydd mwy nag {countFormatted} eitem yn cael ei ddewis}
-		other {Wedi'i analluogi pan fydd mwy na {countFormatted} eitem yn cael eu dewis}
+		one {Wedi’i analluogi pan fydd mwy nag {countFormatted} eitem yn cael ei ddewis}
+		other {Wedi’i analluogi pan fydd mwy na {countFormatted} eitem yn cael eu dewis}
 	}`,
-	"components.selection.action-required-hint": "Rhaid i chi ddewis eitem i gyflawni'r weithred hon",
+	"components.selection.action-required-hint": "Rhaid i chi ddewis eitem i gyflawni’r weithred hon",
 	"components.selection.select-all": "Dewis y Cyfan",
 	"components.selection.select-all-items": "Dewis Pob {count} Eitem",
 	"components.selection.selected": "{count} wedi’u dewis.",

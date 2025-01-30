@@ -1,5 +1,5 @@
 export default {
-	"components.alert.close": "Fermer l'alerte",
+	"components.alert.close": "Fermer l’alerte",
 	"components.breadcrumbs.breadcrumb": "Chemin de navigation",
 	"components.button-add.addItem": "Ajouter un élément",
 	"components.calendar.hasEvents": "Comprend des événements.",
@@ -54,9 +54,9 @@ export default {
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "Après {startValue}",
 	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "Avant {endValue}",
 	"components.filter-dimension-set-date-time-range-value.text": "Période personnalisée",
-	"components.form-element.defaultError": "{label} n'est pas valide",
+	"components.form-element.defaultError": "{label} n’est pas valide",
 	"components.form-element.defaultFieldLabel": "Champ",
-	"components.form-element.input.email.typeMismatch": "L'adresse courriel n'est pas valide",
+	"components.form-element.input.email.typeMismatch": "L’adresse courriel n’est pas valide",
 	"components.form-element.input.number.rangeError":
 	`{minExclusive, select,
 		true {{maxExclusive, select,
@@ -79,16 +79,16 @@ export default {
 		other {Le nombre doit être supérieur ou égal à {min}.}
 	}`,
 	"components.form-element.input.text.tooShort": "{label} doit comprendre au moins {minlength} caractères",
-	"components.form-element.input.url.typeMismatch": "L'URL n'est pas valide",
+	"components.form-element.input.url.typeMismatch": "L’URL n’est pas valide",
 	"components.form-element.valueMissing": "{label} est requis",
 	"components.form-error-summary.errorSummary":
 	`{count, plural,
 		one {Il y avait {count} erreur trouvée dans les informations que vous avez soumises}
 		other {Il y avait {count} erreurs trouvées dans les informations que vous avez soumises}
 	}`,
-	"components.form-error-summary.text": "Afficher les détails de l'erreur",
+	"components.form-error-summary.text": "Afficher les détails de l’erreur",
 	"components.input-color.backgroundColor": "Couleur d’arrière-plan",
-	"components.input-color.foregroundColor": "Couleur de l'avant-plan",
+	"components.input-color.foregroundColor": "Couleur de l’avant-plan",
 	"components.input-color.none": "Aucun",
 	"components.input-date-range.endDate": "Date de fin",
 	"components.input-date-range.errorBadInput": "{startLabel} doit précéder {endLabel}",
@@ -108,10 +108,10 @@ export default {
 	"components.input-date.errorMaxDateOnly": "La date doit être {maxDate} ou une date antérieure",
 	"components.input-date.errorMinDateOnly": "La date doit être {minDate} ou une date ultérieure",
 	"components.input-date.errorOutsideRange": "La date doit être comprise entre {minDate} et {maxDate}",
-	"components.input-date.openInstructions": "Utiliser le format de date {format}. Utiliser la flèche vers le bas ou la touche d'entrée pour accéder au mini-calendrier.",
+	"components.input-date.openInstructions": "Utiliser le format de date {format}. Utiliser la flèche vers le bas ou la touche d’entrée pour accéder au mini-calendrier.",
 	"components.input-date.now": "Maintenant",
 	"components.input-date.revert": "La valeur précédente a été réattribuée à {label}.",
-	"components.input-date.today": "Aujourd'hui",
+	"components.input-date.today": "Aujourd’hui",
 	"components.input-date.useDateFormat": "Utiliser le format de date {format}.",
 	"components.input-number.hintInteger": "Ce champ accepte uniquement les valeurs entières (sans décimales)",
 	"components.input-number.hintDecimalDuplicate": "Ce nombre comporte déjà une décimale",
@@ -128,15 +128,15 @@ export default {
 	"components.list.keyboard": "Utiliser les <b>touches fléchées</b> pour parcourir cette liste ou les touches <b>page up/down</b> pour monter ou descendre 5 éléments à la fois.",
 	"components.list-controls.label": "Actions pour la liste",
 	"components.list-item.addItem": "Ajouter un élément",
-	"components.list-item-drag-handle.default": "Réordonner l'action de l'élément pour {name}",
+	"components.list-item-drag-handle.default": "Réordonner l’action de l’élément pour {name}",
 	"components.list-item-drag-handle.keyboard": "Réorganiser les éléments, position actuelle {currentPosition} de {size}. Pour déplacer cet élément, utilisez les flèches vers le haut et vers le bas.",
 	"components.list-item-drag-handle-tooltip.title": "Commandes du clavier pour la réorganisation :",
 	"components.list-item-drag-handle-tooltip.enter-key": "Entrée",
 	"components.list-item-drag-handle-tooltip.enter-desc": "Basculer en mode réorganiser le clavier.",
 	"components.list-item-drag-handle-tooltip.up-down-key": "Haut/bas",
-	"components.list-item-drag-handle-tooltip.up-down-desc": "Déplacer l'élément vers le haut ou vers le bas dans la liste.",
+	"components.list-item-drag-handle-tooltip.up-down-desc": "Déplacer l’élément vers le haut ou vers le bas dans la liste.",
 	"components.list-item-drag-handle-tooltip.left-right-key": "Gauche/droite",
-	"components.list-item-drag-handle-tooltip.left-right-desc": "Changer le niveau d'imbrication.",
+	"components.list-item-drag-handle-tooltip.left-right-desc": "Changer le niveau d’imbrication.",
 	"components.menu-item-return.return": "Retour au menu précédent.",
 	"components.menu-item-return.returnCurrentlyShowing": "Retour au menu précédent. Vous voyez actuellement {menuTitle}.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",
@@ -146,7 +146,7 @@ export default {
 	"components.more-less.less": "moins",
 	"components.more-less.more": "plus",
 	"components.object-property-list.item-placeholder-text": "Élément de paramètre fictif",
-	"components.overflow-group.moreActions": "Plus d'actions",
+	"components.overflow-group.moreActions": "Plus d’actions",
 	"components.pager-load-more.action": "En télécharger plus",
 	"components.pager-load-more.action-with-page-size": "Charger {count} de plus",
 	"components.pageable.info":
@@ -159,7 +159,7 @@ export default {
 		one {{countFormatted} de {totalCountFormatted} élément}
 		other {{countFormatted} de {totalCountFormatted} éléments}
 	}`,
-	"components.pager-load-more.status-loading": "Chargement d'autres d'éléments",
+	"components.pager-load-more.status-loading": "Chargement d’autres d’éléments",
 	"components.selection.action-max-hint":
 	`{count, plural,
 		one {Désactivé lorsque plus de {countFormatted} élément est sélectionné}
@@ -176,7 +176,7 @@ export default {
 	"components.switch.hidden": "Masqué",
 	"components.switch.conditions": "Les conditions doivent être remplies",
 	"components.table-col-sort-button.addSortOrder": "Sélectionner pour ajouter un ordre de tri",
-	"components.table-col-sort-button.changeSortOrder": "Sélectionner pour modifier l'ordre de tri",
+	"components.table-col-sort-button.changeSortOrder": "Sélectionner pour modifier l’ordre de tri",
 	"components.table-col-sort-button.title":
 	`{sourceType, select,
 		dates {{direction, select,
