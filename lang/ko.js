@@ -27,7 +27,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {검색 결과 없음} other {{number}개 검색 결과}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. 선택한 필터가 먼저 나타납니다.",
 	"components.filter.singleDimensionDescription": "필터 기준: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {지난 1시간} other {지난 {num}시간}}",
+	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, one {지난 {num}시간} other {지난 {num}시간}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {오늘} other {지난 {num}일}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "지난 {num}개월",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, 확장하여 날짜 선택",
