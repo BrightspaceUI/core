@@ -9,7 +9,12 @@ export default [
 		addExtensions(litConfig, ['.js', '.html']),
 		{
 			'**/test':testingConfig,
-			cli: nodeConfig
+			cli: nodeConfig,
+			lang: [{
+				rules: {
+					'no-irregular-whitespace': 'off'
+				}
+			}]
 		}
 	),
 	{
