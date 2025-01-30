@@ -61,7 +61,7 @@ export default {
 	`{minExclusive, select,
 		true {{maxExclusive, select,
 			true {Pono ka nui o ka helu ma mua o {min} a emi iho ma mua o {max}.}
-			other {ʻOi aku ka nui o ka helu ma mua o {min} a emi mai a like paha me {max}. }
+			other {ʻOi aku ka nui o ka helu ma mua o {min} a emi mai a like paha me {max}.}
 		}}
 		other {{maxExclusive, select,
 			true {Pono ka helu ma mua o ka {min} a emi iho ma mua o {max}.}
