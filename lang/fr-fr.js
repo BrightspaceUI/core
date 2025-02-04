@@ -23,31 +23,31 @@ export default {
 	"components.filter.loading": "Chargement des filtres",
 	"components.filter.filterCountDescription":
 		`{number, plural,
-			=0 {Aucun filtre appliqué.}
-			one {{number} filtre appliqué.}
-			other {{number} filtres appliqués.}
-		}`,
+		=0 {Aucun filtre appliqué.}
+		one {{number} filtre appliqué.}
+		other {{number} filtres appliqués.}
+	}`,
 	"components.filter.filters": "Filtres",
 	"components.filter.noFilters": "Aucun filtre disponible",
 	"components.filter.searchResults":
 		`{number, plural,
-			=0 {Aucun résultat de recherche}
-			one {{number} résultat de recherche}
-			other {{number} résultats de recherche}
-		}`,
+		=0 {Aucun résultat de recherche}
+		one {{number} résultat de recherche}
+		other {{number} résultats de recherche}
+	}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Les filtres sélectionnés s’affichent en premier.",
 	"components.filter.singleDimensionDescription": "Filtrer par : {filterName}",
 	"components.filter-dimension-set-date-text-value.textHours":
 		`{num, plural,
-			=1 {Dernière heure}
-			other {{num} dernières heures}
-		}`,
+		=1 {Dernière heure}
+		other {{num} dernières heures}
+	}`,
 	"components.filter-dimension-set-date-text-value.textDays":
 		`{num, plural,
-			=0 {Aujourd’hui}
-			one {{num} dernier jour}
-			other {{num} derniers jours}
-		}`,
+		=0 {Aujourd’hui}
+		one {{num} dernier jour}
+		other {{num} derniers jours}
+	}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "{num} derniers mois",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, développez pour choisir des dates",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "De {startValue} à {endValue}",
@@ -59,33 +59,33 @@ export default {
 	"components.form-element.input.email.typeMismatch": "L’adresse e-mail n’est pas valide.",
 	"components.form-element.input.number.rangeError":
 		`{minExclusive, select,
-			true {{maxExclusive, select,
-				true {Le nombre doit être supérieur à {min} et inférieur à {max}.}
-				other {Le nombre doit être supérieur à {min} et inférieur à ou égal à {max}.}
-			}}
-			other {{maxExclusive, select,
-				true {Le nombre doit être supérieur ou égal à {min} et inférieur à {max}.}
-				other {Le nombre doit être supérieur ou égal à {min} et inférieur ou égal à {max}.}
-			}}
-		}`,
+		true {{maxExclusive, select,
+			true {Le nombre doit être supérieur à {min} et inférieur à {max}.}
+			other {Le nombre doit être supérieur à {min} et inférieur à ou égal à {max}.}
+		}}
+		other {{maxExclusive, select,
+			true {Le nombre doit être supérieur ou égal à {min} et inférieur à {max}.}
+			other {Le nombre doit être supérieur ou égal à {min} et inférieur ou égal à {max}.}
+		}}
+	}`,
 	"components.form-element.input.number.rangeOverflow":
 		`{maxExclusive, select,
-			true {Le nombre doit être inférieur à {max}.}
-			other {Le nombre doit être inférieur ou égal à {max}.}
-		}`,
+		true {Le nombre doit être inférieur à {max}.}
+		other {Le nombre doit être inférieur ou égal à {max}.}
+	}`,
 	"components.form-element.input.number.rangeUnderflow":
 		`{minExclusive, select,
-			true {Le nombre doit être supérieur à {min}.}
-			other {Le nombre doit être supérieur ou égal à {min}.}
-		}`,
+		true {Le nombre doit être supérieur à {min}.}
+		other {Le nombre doit être supérieur ou égal à {min}.}
+	}`,
 	"components.form-element.input.text.tooShort": "{label} doit contenir au moins {minlength} caractères.",
 	"components.form-element.input.url.typeMismatch": "URL non valide",
 	"components.form-element.valueMissing": "{label} est obligatoire",
 	"components.form-error-summary.errorSummary":
 		`{count, plural,
-			one {{count} erreur trouvée dans les informations soumises}
-			other {{count} erreurs trouvées dans les informations soumises}
-		}`,
+		one {{count} erreur trouvée dans les informations soumises}
+		other {{count} erreurs trouvées dans les informations soumises}
+	}`,
 	"components.form-error-summary.text": "Afficher/Masquer les détails de l’erreur",
 	"components.input-color.backgroundColor": "Couleur de l’arrière-plan",
 	"components.input-color.foregroundColor": "Couleur de l’avant-plan",
@@ -151,20 +151,20 @@ export default {
 	"components.pager-load-more.action-with-page-size": "Charger {count} supplémentaire(s)",
 	"components.pageable.info":
 		`{count, plural,
-			one {{countFormatted} élément}
-			other {{countFormatted} éléments}
-		}`,
+		one {{countFormatted} élément}
+		other {{countFormatted} éléments}
+	}`,
 	"components.pageable.info-with-total":
 		`{totalCount, plural,
-			one {{countFormatted} sur {totalCountFormatted} élément}
-			other {{countFormatted} sur {totalCountFormatted} éléments}
-		}`,
+		one {{countFormatted} sur {totalCountFormatted} élément}
+		other {{countFormatted} sur {totalCountFormatted} éléments}
+	}`,
 	"components.pager-load-more.status-loading": "Charger plus d’éléments",
 	"components.selection.action-max-hint":
 		`{count, plural,
-			one {désactivé lorsque plus de {countFormatted} élément est sélectionné}
-			other {désactivé lorsque plus de {countFormatted} éléments sont sélectionnés}
-		}`,
+		one {désactivé lorsque plus de {countFormatted} élément est sélectionné}
+		other {désactivé lorsque plus de {countFormatted} éléments sont sélectionnés}
+	}`,
 	"components.selection.action-required-hint": "Sélectionnez un élément pour exécuter cette action",
 	"components.selection.select-all": "Tout sélectionner",
 	"components.selection.select-all-items": "Sélectionner tous les {count} éléments",
@@ -179,24 +179,24 @@ export default {
 	"components.table-col-sort-button.changeSortOrder": "Sélectionner pour modifier l’ordre de tri",
 	"components.table-col-sort-button.title":
 		`{sourceType, select,
-			dates {{direction, select,
-				desc {Tri du plus récent au plus ancien}
-				other {Tri du plus ancien au plus récent}
-			}}
-			numbers {{direction, select,
-				desc {Tri du plus petit au plus grand}
-				other {Tri du plus grand au plus petit}
-			}}
-			words {{direction, select,
-				desc {Tri de Z à A}
-				other {Tri de A à Z}
-			}}
-			value {Tri par {selectedMenuItemText}}
-			other {{direction, select,
-				desc {Tri par ordre décroissant}
-				other {Tri par ordre croissant}
-			}}
-		}`,
+		dates {{direction, select,
+			desc {Tri du plus récent au plus ancien}
+			other {Tri du plus ancien au plus récent}
+		}}
+		numbers {{direction, select,
+			desc {Tri du plus petit au plus grand}
+			other {Tri du plus grand au plus petit}
+		}}
+		words {{direction, select,
+			desc {Tri de Z à A}
+			other {Tri de A à Z}
+		}}
+		value {Tri par {selectedMenuItemText}}
+		other {{direction, select,
+			desc {Tri par ordre décroissant}
+			other {Tri par ordre croissant}
+		}}
+	}`,
 	"components.table-controls.label": "Actions du tableau",
 	"components.tabs.next": "Faire défiler vers l’avant",
 	"components.tabs.previous": "Faire défiler vers l’arrière",

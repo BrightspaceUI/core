@@ -23,31 +23,31 @@ export default {
 	"components.filter.loading": "Laden van filters",
 	"components.filter.filterCountDescription":
 		`{number, plural,
-			=0 {Geen filters toegepast.}
-			one {{number} filter toegepast.}
-			other {{number} filters toegepast.}
-		}`,
+		=0 {Geen filters toegepast.}
+		one {{number} filter toegepast.}
+		other {{number} filters toegepast.}
+	}`,
 	"components.filter.filters": "Filters",
 	"components.filter.noFilters": "Geen beschikbare filters",
 	"components.filter.searchResults":
 		`{number, plural,
-			=0 {Geen zoekresultaten}
-			one {{number} zoekresultaat}
-			other {{number} zoekresultaten}
-		}`,
+		=0 {Geen zoekresultaten}
+		one {{number} zoekresultaat}
+		other {{number} zoekresultaten}
+	}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Geselecteerde filters verschijnen als eerste.",
 	"components.filter.singleDimensionDescription": "Filter op {filterName}",
 	"components.filter-dimension-set-date-text-value.textHours":
 		`{num, plural,
-			=1 {Afgelopen uur}
-			other {Afgelopen {num} uur}
-		}`,
+		=1 {Afgelopen uur}
+		other {Afgelopen {num} uur}
+	}`,
 	"components.filter-dimension-set-date-text-value.textDays":
 		`{num, plural,
-			=0 {Vandaag}
-			one {Afgelopen {num} dag}
-			other {Afgelopen {num} dagen}
-		}`,
+		=0 {Vandaag}
+		one {Afgelopen {num} dag}
+		other {Afgelopen {num} dagen}
+	}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Afgelopen {num} maanden",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, vouw uit om datums te kiezen",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} tot {endValue}",
@@ -59,33 +59,33 @@ export default {
 	"components.form-element.input.email.typeMismatch": "E-mailadres is ongeldig",
 	"components.form-element.input.number.rangeError":
 		`{minExclusive, select,
-			true {{maxExclusive, select,
-				true {Getal moet groter zijn dan {min} en kleiner dan {max}.}
-				other {Getal moet groter zijn dan {min} en kleiner dan of gelijk aan {max}.}
-			}}
-			other {{maxExclusive, select,
-				true {Getal moet groter zijn dan of gelijk aan {min} en kleiner dan {max}.}
-				other {Getal moet groter zijn dan of gelijk aan {min} en kleiner dan of gelijk aan {max}.}
-			}}
-		}`,
+		true {{maxExclusive, select,
+			true {Getal moet groter zijn dan {min} en kleiner dan {max}.}
+			other {Getal moet groter zijn dan {min} en kleiner dan of gelijk aan {max}.}
+		}}
+		other {{maxExclusive, select,
+			true {Getal moet groter zijn dan of gelijk aan {min} en kleiner dan {max}.}
+			other {Getal moet groter zijn dan of gelijk aan {min} en kleiner dan of gelijk aan {max}.}
+		}}
+	}`,
 	"components.form-element.input.number.rangeOverflow":
 		`{maxExclusive, select,
-			true {Getal moet kleiner zijn dan {max}.}
-			other {Getal moet kleiner zijn dan of gelijk aan {max}.}
-		}`,
+		true {Getal moet kleiner zijn dan {max}.}
+		other {Getal moet kleiner zijn dan of gelijk aan {max}.}
+	}`,
 	"components.form-element.input.number.rangeUnderflow":
 		`{minExclusive, select,
-			true {Getal moet groter zijn dan {min}.}
-			other {Getal moet groter zijn dan of gelijk aan {min}.}
-		}`,
+		true {Getal moet groter zijn dan {min}.}
+		other {Getal moet groter zijn dan of gelijk aan {min}.}
+	}`,
 	"components.form-element.input.text.tooShort": "{label} moet ten minste {minlength} tekens bevatten",
 	"components.form-element.input.url.typeMismatch": "URL is niet geldig",
 	"components.form-element.valueMissing": "{label} is vereist",
 	"components.form-error-summary.errorSummary":
 		`{count, plural,
-			one {Er is {count} fout gevonden in de informatie die u hebt ingediend}
-			other {Er zijn {count} fouten gevonden in de informatie die u hebt ingediend}
-		}`,
+		one {Er is {count} fout gevonden in de informatie die u hebt ingediend}
+		other {Er zijn {count} fouten gevonden in de informatie die u hebt ingediend}
+	}`,
 	"components.form-error-summary.text": "Foutdetails in-/uitschakelen",
 	"components.input-color.backgroundColor": "Achtergrondkleur",
 	"components.input-color.foregroundColor": "Voorgrondkleur",
@@ -151,20 +151,20 @@ export default {
 	"components.pager-load-more.action-with-page-size": "Laad nog {count} extra",
 	"components.pageable.info":
 		`{count, plural,
-			one {{countFormatted} item}
-			other {{countFormatted} items}
-		}`,
+		one {{countFormatted} item}
+		other {{countFormatted} items}
+	}`,
 	"components.pageable.info-with-total":
 		`{totalCount, plural,
-			one {{countFormatted} van {totalCountFormatted} artikel}
-			other {{countFormatted} van {totalCountFormatted} artikelen}
-		}`,
+		one {{countFormatted} van {totalCountFormatted} artikel}
+		other {{countFormatted} van {totalCountFormatted} artikelen}
+	}`,
 	"components.pager-load-more.status-loading": "Er worden meer items geladen",
 	"components.selection.action-max-hint":
 		`{count, plural,
-			one {Uitgeschakeld als meer dan {countFormatted} item is geselecteerd}
-			other {Uitgeschakeld als meer dan {countFormatted} items zijn geselecteerd}
-		}`,
+		one {Uitgeschakeld als meer dan {countFormatted} item is geselecteerd}
+		other {Uitgeschakeld als meer dan {countFormatted} items zijn geselecteerd}
+	}`,
 	"components.selection.action-required-hint": "Selecteer een item om deze actie uit te voeren",
 	"components.selection.select-all": "Alles selecteren",
 	"components.selection.select-all-items": "Alle {count} records selecteren",
@@ -179,24 +179,24 @@ export default {
 	"components.table-col-sort-button.changeSortOrder": "Selecteer te wijzigen sorteervolgorde",
 	"components.table-col-sort-button.title":
 		`{sourceType, select,
-			dates {{direction, select,
-				desc {Gesorteerd van nieuw naar oud}
-				other {Gesorteerd van oud naar nieuw}
-			}}
-			numbers {{direction, select,
-				desc {Gesorteerd van hoog naar laag}
-				other {Gesorteerd van laag naar hoog}
-			}}
-			words {{direction, select,
-				desc {Gesorteerd van A naar Z}
-				other {Gesorteerd van Z naar A}
-			}}
-			value {Gesorteerd op {selectedMenuItemText}}
-			other {{direction, select,
-				desc {Aflopend gesorteerd}
-				other {Oplopend gesorteerd}
-			}}
-		}`,
+		dates {{direction, select,
+			desc {Gesorteerd van nieuw naar oud}
+			other {Gesorteerd van oud naar nieuw}
+		}}
+		numbers {{direction, select,
+			desc {Gesorteerd van hoog naar laag}
+			other {Gesorteerd van laag naar hoog}
+		}}
+		words {{direction, select,
+			desc {Gesorteerd van A naar Z}
+			other {Gesorteerd van Z naar A}
+		}}
+		value {Gesorteerd op {selectedMenuItemText}}
+		other {{direction, select,
+			desc {Aflopend gesorteerd}
+			other {Oplopend gesorteerd}
+		}}
+	}`,
 	"components.table-controls.label": "Acties voor tabel",
 	"components.tabs.next": "Naar voren scrollen",
 	"components.tabs.previous": "Naar achteren scrollen",
