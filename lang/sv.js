@@ -22,32 +22,32 @@ export default {
 	"components.filter.clearDescription": "Rensa filter för {filterName}",
 	"components.filter.loading": "Läser in filter",
 	"components.filter.filterCountDescription":
-	`{number, plural,
-		=0 {Inga filter tillämpade.}
-		one {{number} filter tillämpat.}
-		other {{number} filter tillämpade.}
-	}`,
+		`{number, plural,
+			=0 {Inga filter tillämpade.}
+			one {{number} filter tillämpat.}
+			other {{number} filter tillämpade.}
+		}`,
 	"components.filter.filters": "Filter",
 	"components.filter.noFilters": "Inga tillgängliga filter",
 	"components.filter.searchResults":
-	`{number, plural,
-		=0 {Inga sökresultat}
-		one {{number} sökresultat}
-		other {{number} sökresultat}
-	}`,
+		`{number, plural,
+			=0 {Inga sökresultat}
+			one {{number} sökresultat}
+			other {{number} sökresultat}
+		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Valda filter visas först.",
 	"components.filter.singleDimensionDescription": "Filtrera efter: {filterName}",
 	"components.filter-dimension-set-date-text-value.textHours":
-	`{num, plural,
-		=1 {Senaste timmen}
-		other {Senaste {num} timmarna}
-	}`,
+		`{num, plural,
+			=1 {Senaste timmen}
+			other {Senaste {num} timmarna}
+		}`,
 	"components.filter-dimension-set-date-text-value.textDays":
-	`{num, plural,
-		=0 {Idag}
-		one {Senaste {num} dagen}
-		other {Senaste {num} dagarna}
-	}`,
+		`{num, plural,
+			=0 {Idag}
+			one {Senaste {num} dagen}
+			other {Senaste {num} dagarna}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Senaste {num} månaderna",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, expandera för att välja datum",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} till {endValue}",
@@ -58,34 +58,34 @@ export default {
 	"components.form-element.defaultFieldLabel": "Fält",
 	"components.form-element.input.email.typeMismatch": "E-postadressen är ogiltig",
 	"components.form-element.input.number.rangeError":
-	`{minExclusive, select,
-		true {{maxExclusive, select,
-			true {Siffran ska vara högre än {min} och lägre än {max}.}
-			other {Siffran ska vara högre än {min} och lägre än eller exakt {max}.}
-		}}
-		other {{maxExclusive, select,
-			true {Siffran ska vara högre än eller exakt {min} och lägre än {max}.}
-			other {Siffran ska vara högre än eller exakt {min} och lägre än eller exakt {max}.}
-		}}
-	}`,
+		`{minExclusive, select,
+			true {{maxExclusive, select,
+				true {Siffran ska vara högre än {min} och lägre än {max}.}
+				other {Siffran ska vara högre än {min} och lägre än eller exakt {max}.}
+			}}
+			other {{maxExclusive, select,
+				true {Siffran ska vara högre än eller exakt {min} och lägre än {max}.}
+				other {Siffran ska vara högre än eller exakt {min} och lägre än eller exakt {max}.}
+			}}
+		}`,
 	"components.form-element.input.number.rangeOverflow":
-	`{maxExclusive, select,
-		true {Siffran ska vara lägre än {max}.}
-		other {Siffran ska vara lägre än eller exakt {max}.}
-	}`,
+		`{maxExclusive, select,
+			true {Siffran ska vara lägre än {max}.}
+			other {Siffran ska vara lägre än eller exakt {max}.}
+		}`,
 	"components.form-element.input.number.rangeUnderflow":
-	`{minExclusive, select,
-		true {Siffran ska vara högre än {min}.}
-		other {Siffran ska vara högre än eller exakt {min}.}
-	}`,
+		`{minExclusive, select,
+			true {Siffran ska vara högre än {min}.}
+			other {Siffran ska vara högre än eller exakt {min}.}
+		}`,
 	"components.form-element.input.text.tooShort": "{label} måste innehålla minst {minlength} tecken",
 	"components.form-element.input.url.typeMismatch": "URL är inte giltigt",
 	"components.form-element.valueMissing": "{label} krävs",
 	"components.form-error-summary.errorSummary":
-	`{count, plural,
-		one {Det finns {count} fel i informationen som du skickade}
-		other {Det finns {count} fel i informationen som du skickade}
-	}`,
+		`{count, plural,
+			one {Det finns {count} fel i informationen som du skickade}
+			other {Det finns {count} fel i informationen som du skickade}
+		}`,
 	"components.form-error-summary.text": "Växla felinformation",
 	"components.input-color.backgroundColor": "Bakgrundsfärg",
 	"components.input-color.foregroundColor": "Förgrundsfärg",
@@ -150,21 +150,21 @@ export default {
 	"components.pager-load-more.action": "Läs in fler",
 	"components.pager-load-more.action-with-page-size": "Läs in {count} till",
 	"components.pageable.info":
-	`{count, plural,
-		one {{countFormatted} objekt}
-		other {{countFormatted} objekt}
-	}`,
+		`{count, plural,
+			one {{countFormatted} objekt}
+			other {{countFormatted} objekt}
+		}`,
 	"components.pageable.info-with-total":
-	`{totalCount, plural,
-		one {{countFormatted} av {totalCountFormatted} objekt}
-		other {{countFormatted} av {totalCountFormatted} objekt}
-	}`,
+		`{totalCount, plural,
+			one {{countFormatted} av {totalCountFormatted} objekt}
+			other {{countFormatted} av {totalCountFormatted} objekt}
+		}`,
 	"components.pager-load-more.status-loading": "Läser in fler objekt",
 	"components.selection.action-max-hint":
-	`{count, plural,
-		one {inaktiveras när fler än {countFormatted} objekt väljs}
-		other {inaktiveras när fler än {countFormatted} objekt väljs}
-	}`,
+		`{count, plural,
+			one {inaktiveras när fler än {countFormatted} objekt väljs}
+			other {inaktiveras när fler än {countFormatted} objekt väljs}
+		}`,
 	"components.selection.action-required-hint": "Välj ett objekt för att utföra åtgärden",
 	"components.selection.select-all": "Välj alla",
 	"components.selection.select-all-items": "Välj alla {count} objekt",
@@ -178,25 +178,25 @@ export default {
 	"components.table-col-sort-button.addSortOrder": "Välj för att lägga till sorteringsordning",
 	"components.table-col-sort-button.changeSortOrder": "Välj för att ändra sorteringsordning",
 	"components.table-col-sort-button.title":
-	`{sourceType, select,
-		dates {{direction, select,
-			desc {Sorterat från nytt till gammalt}
-			other {Sorterat från gammalt till nytt}
-		}}
-		numbers {{direction, select,
-			desc {Sorterat från högt till lågt}
-			other {Sorterat från lågt till högt}
-		}}
-		words {{direction, select,
-			desc {Sorterat från Ö till A}
-			other {Sorterat från A till Ö}
-		}}
-		value {Sorterat {selectedMenuItemText}}
-		other {{direction, select,
-			desc {Sorterat i fallande ordning}
-			other {Sorterat i stigande ordning}
-		}}
-	}`,
+		`{sourceType, select,
+			dates {{direction, select,
+				desc {Sorterat från nytt till gammalt}
+				other {Sorterat från gammalt till nytt}
+			}}
+			numbers {{direction, select,
+				desc {Sorterat från högt till lågt}
+				other {Sorterat från lågt till högt}
+			}}
+			words {{direction, select,
+				desc {Sorterat från Ö till A}
+				other {Sorterat från A till Ö}
+			}}
+			value {Sorterat {selectedMenuItemText}}
+			other {{direction, select,
+				desc {Sorterat i fallande ordning}
+				other {Sorterat i stigande ordning}
+			}}
+		}`,
 	"components.table-controls.label": "Åtgärder för tabell",
 	"components.tabs.next": "Bläddra framåt",
 	"components.tabs.previous": "Bläddra bakåt",
