@@ -23,32 +23,32 @@ export default {
 	"components.filter.clearDescription": "{filterName} için filtreleri temizle",
 	"components.filter.loading": "Filtreler yükleniyor",
 	"components.filter.filterCountDescription":
-	`{number, plural,
-		=0 {Filtre uygulanmadı.}
-		one {{number} filtre uygulandı.}
-		other {{number} filtre uygulandı.}
-	}`,
+		`{number, plural,
+			=0 {Filtre uygulanmadı.}
+			one {{number} filtre uygulandı.}
+			other {{number} filtre uygulandı.}
+		}`,
 	"components.filter.filters": "Filtre",
 	"components.filter.noFilters": "Uygun filtre yok",
 	"components.filter.searchResults":
-	`{number, plural,
-		=0 {Arama sonucu yok}
-		one {{number} arama sonucu}
-		other {{number} arama sonucu}
-	}`,
+		`{number, plural,
+			=0 {Arama sonucu yok}
+			one {{number} arama sonucu}
+			other {{number} arama sonucu}
+		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Seçilen filtreler önce görünür.",
 	"components.filter.singleDimensionDescription": "Filtreleme ölçütü: {filterName}",
 	"components.filter-dimension-set-date-text-value.textHours":
-	`{num, plural,
-		=1 {Son saat}
-		other {Son {num} saat}
-	}`,
+		`{num, plural,
+			=1 {Son saat}
+			other {Son {num} saat}
+		}`,
 	"components.filter-dimension-set-date-text-value.textDays":
-	`{num, plural,
-		=0 {Bugün}
-		one {Son {num} gün}
-		other {Son {num} gün}
-	}`,
+		`{num, plural,
+			=0 {Bugün}
+			one {Son {num} gün}
+			other {Son {num} gün}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Son {num} ay",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, tarihleri seçmek için genişletin",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} - {endValue}",
@@ -59,34 +59,34 @@ export default {
 	"components.form-element.defaultFieldLabel": "Alan",
 	"components.form-element.input.email.typeMismatch": "E-posta geçerli değil",
 	"components.form-element.input.number.rangeError":
-	`{minExclusive, select,
-		true {{maxExclusive, select,
-			true {Sayı {min} değerinden büyük ve {max} değerinden küçük olmalıdır.}
-			other {Sayı {min} değerinden büyük ve {max} değerinden küçük veya bu değere eşit olmalıdır.}
-		}}
-		other {{maxExclusive, select,
-			true {Sayı {min} değerinden büyük veya bu değere eşit olmalıdır ve {max} değerinden küçük olmalıdır.}
-			other {Sayı {min} değerinden büyük veya bu değere eşit olmalıdır ve {max} değerinden küçük veya bu değere eşit olmalıdır.}
-		}}
-	}`,
+		`{minExclusive, select,
+			true {{maxExclusive, select,
+				true {Sayı {min} değerinden büyük ve {max} değerinden küçük olmalıdır.}
+				other {Sayı {min} değerinden büyük ve {max} değerinden küçük veya bu değere eşit olmalıdır.}
+			}}
+			other {{maxExclusive, select,
+				true {Sayı {min} değerinden büyük veya bu değere eşit olmalıdır ve {max} değerinden küçük olmalıdır.}
+				other {Sayı {min} değerinden büyük veya bu değere eşit olmalıdır ve {max} değerinden küçük veya bu değere eşit olmalıdır.}
+			}}
+		}`,
 	"components.form-element.input.number.rangeOverflow":
-	`{maxExclusive, select,
-		true {Sayı {max} değerinden küçük olmalıdır.}
-		other {Sayı {max} değerinden küçük veya bu değere eşit olmalıdır.}
-	}`,
+		`{maxExclusive, select,
+			true {Sayı {max} değerinden küçük olmalıdır.}
+			other {Sayı {max} değerinden küçük veya bu değere eşit olmalıdır.}
+		}`,
 	"components.form-element.input.number.rangeUnderflow":
-	`{minExclusive, select,
-		true {Sayı {min} değerinden büyük olmalıdır.}
-		other {Sayı {min} değerinden büyük veya bu değere eşit olmalıdır.}
-	}`,
+		`{minExclusive, select,
+			true {Sayı {min} değerinden büyük olmalıdır.}
+			other {Sayı {min} değerinden büyük veya bu değere eşit olmalıdır.}
+		}`,
 	"components.form-element.input.text.tooShort": "{label} en az {minlength} karakter olmalıdır",
 	"components.form-element.input.url.typeMismatch": "URL geçerli değil",
 	"components.form-element.valueMissing": "{label} zorunludur",
 	"components.form-error-summary.errorSummary":
-	`{count, plural,
-		one {Gönderdiğiniz bilgilerde {count} hata bulundu}
-		other {Gönderdiğiniz bilgilerde {count} hata bulundu}
-	}`,
+		`{count, plural,
+			one {Gönderdiğiniz bilgilerde {count} hata bulundu}
+			other {Gönderdiğiniz bilgilerde {count} hata bulundu}
+		}`,
 	"components.form-error-summary.text": "Hata ayrıntılarını değiştir",
 	"components.input-color.backgroundColor": "Arka Plan Rengi",
 	"components.input-color.foregroundColor": "Ön Plan Rengi",
@@ -151,21 +151,21 @@ export default {
 	"components.pager-load-more.action": "Daha Fazla Yükle",
 	"components.pager-load-more.action-with-page-size": "{count} Tane Daha Yükle",
 	"components.pageable.info":
-	`{count, plural,
-		one {{countFormatted} öğe}
-		other {{countFormatted} öğe}
-	}`,
+		`{count, plural,
+			one {{countFormatted} öğe}
+			other {{countFormatted} öğe}
+		}`,
 	"components.pageable.info-with-total":
-	`{totalCount, plural,
-		one {{countFormatted} / {totalCountFormatted} öğe}
-		other {{countFormatted} / {totalCountFormatted} öğe}
-	}`,
+		`{totalCount, plural,
+			one {{countFormatted} / {totalCountFormatted} öğe}
+			other {{countFormatted} / {totalCountFormatted} öğe}
+		}`,
 	"components.pager-load-more.status-loading": "Daha fazla öğe yükleniyor",
 	"components.selection.action-max-hint":
-	`{count, plural,
-		one {{countFormatted} öğeden fazlası seçildiğinde devre dışı bırakılır}
-		other {{countFormatted} öğeden fazlası seçildiğinde devre dışı bırakılır}
-	}`,
+		`{count, plural,
+			one {{countFormatted} öğeden fazlası seçildiğinde devre dışı bırakılır}
+			other {{countFormatted} öğeden fazlası seçildiğinde devre dışı bırakılır}
+		}`,
 	"components.selection.action-required-hint": "Bu eylemi gerçekleştirebilmek için bir öğe seçin",
 	"components.selection.select-all": "Tümünü Seç",
 	"components.selection.select-all-items": "{count} Öğenin Tamamını Seç",
@@ -179,25 +179,25 @@ export default {
 	"components.table-col-sort-button.addSortOrder": "Sıralama düzeni eklemek için seçin",
 	"components.table-col-sort-button.changeSortOrder": "Sıralama düzenini değiştirmek için seçin",
 	"components.table-col-sort-button.title":
-	`{sourceType, select,
-		dates {{direction, select,
-			desc {Yeniden eskiye sıralandı}
-			other {Eskiden yeniye sıralandı}
-		}}
-		numbers {{direction, select,
-			desc {Yüksekten düşüğe sıralandı}
-			other {Düşükten yükseğe sıralandı}
-		}}
-		words {{direction, select,
-			desc {Z’den A’ya sıralandı}
-			other {A’dan Z’ye sıralandı}
-		}}
-		value {{selectedMenuItemText} sıralandı}
-		other {{direction, select,
-			desc {Azalan şekilde sıralandı}
-			other {Artan şekilde sıralandı}
-		}}
-	}`,
+		`{sourceType, select,
+			dates {{direction, select,
+				desc {Yeniden eskiye sıralandı}
+				other {Eskiden yeniye sıralandı}
+			}}
+			numbers {{direction, select,
+				desc {Yüksekten düşüğe sıralandı}
+				other {Düşükten yükseğe sıralandı}
+			}}
+			words {{direction, select,
+				desc {Z’den A’ya sıralandı}
+				other {A’dan Z’ye sıralandı}
+			}}
+			value {{selectedMenuItemText} sıralandı}
+			other {{direction, select,
+				desc {Azalan şekilde sıralandı}
+				other {Artan şekilde sıralandı}
+			}}
+		}`,
 	"components.table-controls.label": "Tablo için eylemler",
 	"components.tabs.next": "İleri Kaydır",
 	"components.tabs.previous": "Geri Kaydır",
