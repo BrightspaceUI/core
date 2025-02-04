@@ -23,31 +23,31 @@ export default {
 	"components.filter.loading": "Cargando filtros",
 	"components.filter.filterCountDescription":
 		`{number, plural,
-		=0 {Sin filtros aplicados.}
-		one {{number} filtro aplicado.}
-		other {{number} filtros aplicados.}
-	}`,
+			=0 {Sin filtros aplicados.}
+			one {{number} filtro aplicado.}
+			other {{number} filtros aplicados.}
+		}`,
 	"components.filter.filters": "Filtros",
 	"components.filter.noFilters": "No hay filtros disponibles",
 	"components.filter.searchResults":
 		`{number, plural,
-		=0 {No se encontraron resultados de búsqueda}
-		one {{number} resultado de búsqueda}
-		other {{number} resultados de búsqueda}
-	}`,
+			=0 {No se encontraron resultados de búsqueda}
+			one {{number} resultado de búsqueda}
+			other {{number} resultados de búsqueda}
+		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Los filtros seleccionados aparecen primero.",
 	"components.filter.singleDimensionDescription": "Filtrar por: {filterName}",
 	"components.filter-dimension-set-date-text-value.textHours":
 		`{num, plural,
-		=1 {Última hora}
-		other {Últimas {num} horas}
-	}`,
+			=1 {Última hora}
+			other {Últimas {num} horas}
+		}`,
 	"components.filter-dimension-set-date-text-value.textDays":
 		`{num, plural,
-		=0 {Today}
-		one {Último {num} día}
-		other {Últimos {num} días}
-	}`,
+			=0 {Today}
+			one {Último {num} día}
+			other {Últimos {num} días}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Últimos {num} meses",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, expanda para elegir fechas",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "De {startValue} a {endValue}",
@@ -59,33 +59,33 @@ export default {
 	"components.form-element.input.email.typeMismatch": "El correo electrónico no es válido",
 	"components.form-element.input.number.rangeError":
 		`{minExclusive, select,
-		true {{maxExclusive, select,
-			true {El número debe ser mayor que {min} y menor que {max}.}
-			other {El número debe ser mayor que {min} y menor o igual que {max}.}
-		}}
-		other {{maxExclusive, select,
-			true {El número debe ser mayor o igual que {min} y menor que {max}.}
-			other {El número debe ser mayor o igual que {min} y menor o igual que {max}.}
-		}}
-	}`,
+			true {{maxExclusive, select,
+				true {El número debe ser mayor que {min} y menor que {max}.}
+				other {El número debe ser mayor que {min} y menor o igual que {max}.}
+			}}
+			other {{maxExclusive, select,
+				true {El número debe ser mayor o igual que {min} y menor que {max}.}
+				other {El número debe ser mayor o igual que {min} y menor o igual que {max}.}
+			}}
+		}`,
 	"components.form-element.input.number.rangeOverflow":
 		`{maxExclusive, select,
-		true {El número debe ser menor que {max}.}
-		other {El número debe ser menor o igual que {max}.}
-	}`,
+			true {El número debe ser menor que {max}.}
+			other {El número debe ser menor o igual que {max}.}
+		}`,
 	"components.form-element.input.number.rangeUnderflow":
 		`{minExclusive, select,
-		true {El número debe ser mayor que {min}.}
-		other {El número debe ser mayor o igual que {min}.}
-	}`,
+			true {El número debe ser mayor que {min}.}
+			other {El número debe ser mayor o igual que {min}.}
+		}`,
 	"components.form-element.input.text.tooShort": "{label} debe tener al menos {minlength} caracteres",
 	"components.form-element.input.url.typeMismatch": "La dirección URL no es válida",
 	"components.form-element.valueMissing": "{label} es obligatorio",
 	"components.form-error-summary.errorSummary":
 		`{count, plural,
-		one {Se encontró {count} error en la información que envió}
-		other {Se encontraron {count} errores en la información que envió}
-	}`,
+			one {Se encontró {count} error en la información que envió}
+			other {Se encontraron {count} errores en la información que envió}
+		}`,
 	"components.form-error-summary.text": "Activar o desactivar la presentación de detalles de los errores",
 	"components.input-color.backgroundColor": "Color de fondo",
 	"components.input-color.foregroundColor": "Color del primer plano",
@@ -151,20 +151,20 @@ export default {
 	"components.pager-load-more.action-with-page-size": "Cargar {count} más",
 	"components.pageable.info":
 		`{count, plural,
-		one {{countFormatted} elemento}
-		other {{countFormatted} elementos}
-	}`,
+			one {{countFormatted} elemento}
+			other {{countFormatted} elementos}
+		}`,
 	"components.pageable.info-with-total":
 		`{totalCount, plural,
-		one {{countFormatted} de {totalCountFormatted} elemento}
-		other {{countFormatted} de {totalCountFormatted} elementos}
-	}`,
+			one {{countFormatted} de {totalCountFormatted} elemento}
+			other {{countFormatted} de {totalCountFormatted} elementos}
+		}`,
 	"components.pager-load-more.status-loading": "Cargando más elementos",
 	"components.selection.action-max-hint":
 		`{count, plural,
-		one {Se desactiva cuando se selecciona más de {countFormatted} elemento}
-		other {Se desactiva cuando se selecciona más de {countFormatted} elementos}
-	}`,
+			one {Se desactiva cuando se selecciona más de {countFormatted} elemento}
+			other {Se desactiva cuando se selecciona más de {countFormatted} elementos}
+		}`,
 	"components.selection.action-required-hint": "Seleccione un elemento para realizar esta acción",
 	"components.selection.select-all": "Seleccionar todo",
 	"components.selection.select-all-items": "Seleccione todos los {count} elementos",
@@ -179,24 +179,24 @@ export default {
 	"components.table-col-sort-button.changeSortOrder": "Seleccione para cambiar el orden de clasificación",
 	"components.table-col-sort-button.title":
 		`{sourceType, select,
-		dates {{direction, select,
-			desc {Clasificado de más nuevo a más antiguo}
-			other {Clasificado de más antiguo a más nuevo}
-		}}
-		numbers {{direction, select,
-			desc {Clasificado de más alto a más bajo}
-			other {Clasificado de más bajo a más alto}
-		}}
-		words {{direction, select,
-			desc {Clasificado de la Z a la A}
-			other {Clasificado de la A a la Z}
-		}}
-		value {Clasificado {selectedMenuItemText}}
-		other {{direction, select,
-			desc {Clasificado de manera descendente}
-			other {Clasificado de manera ascendente}
-		}}
-	}`,
+			dates {{direction, select,
+				desc {Clasificado de más nuevo a más antiguo}
+				other {Clasificado de más antiguo a más nuevo}
+			}}
+			numbers {{direction, select,
+				desc {Clasificado de más alto a más bajo}
+				other {Clasificado de más bajo a más alto}
+			}}
+			words {{direction, select,
+				desc {Clasificado de la Z a la A}
+				other {Clasificado de la A a la Z}
+			}}
+			value {Clasificado {selectedMenuItemText}}
+			other {{direction, select,
+				desc {Clasificado de manera descendente}
+				other {Clasificado de manera ascendente}
+			}}
+		}`,
 	"components.table-controls.label": "Acciones de la tabla",
 	"components.tabs.next": "Desplazarse hacia adelante",
 	"components.tabs.previous": "Desplazarse hacia atrás",

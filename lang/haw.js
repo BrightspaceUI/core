@@ -23,31 +23,31 @@ export default {
 	"components.filter.loading": "Hoʻouka i nā kānana",
 	"components.filter.filterCountDescription":
 		`{number, plural,
-		=0 {ʻAʻohe kānana i hoʻohana ʻia.}
-		one {{number} hoʻohana ʻia ke kānana.}
-		other {{number} hoʻohana ʻia nā kānana.}
-	}`,
+			=0 {ʻAʻohe kānana i hoʻohana ʻia.}
+			one {{number} hoʻohana ʻia ke kānana.}
+			other {{number} hoʻohana ʻia nā kānana.}
+		}`,
 	"components.filter.filters": "Nā kānana",
 	"components.filter.noFilters": "ʻAʻohe kānana i loaʻa",
 	"components.filter.searchResults":
 		`{number, plural,
-		=0 {ʻAʻohe hopena hulina}
-		one {{number} hopena huli}
-		other {{number} hopena huli}
-	}`,
+			=0 {ʻAʻohe hopena hulina}
+			one {{number} hopena huli}
+			other {{number} hopena huli}
+		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Hōʻike mua ʻia nā kānana i koho ʻia.",
 	"components.filter.singleDimensionDescription": "Kānana e: {filterName}",
 	"components.filter-dimension-set-date-text-value.textHours":
 		`{num, plural,
-		=1 {hola hope}
-		other {hope loa {num} hola}
-	}`,
+			=1 {hola hope}
+			other {hope loa {num} hola}
+		}`,
 	"components.filter-dimension-set-date-text-value.textDays":
 		`{num, plural,
-		=0 {I kēia lā}
-		one {hope loa {num} lā}
-		other {hope loa {num} lā}
-	}`,
+			=0 {I kēia lā}
+			one {hope loa {num} lā}
+			other {hope loa {num} lā}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "{num} mahina i hala",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, hoʻonui e koho i nā lā",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} i {endValue}",
@@ -59,33 +59,33 @@ export default {
 	"components.form-element.input.email.typeMismatch": "ʻAʻole kūpono ka leka uila",
 	"components.form-element.input.number.rangeError":
 		`{minExclusive, select,
-		true {{maxExclusive, select,
-			true {Pono ka nui o ka helu ma mua o {min} a emi iho ma mua o {max}.}
-			other {ʻOi aku ka nui o ka helu ma mua o {min} a emi mai a like paha me {max}.}
-		}}
-		other {{maxExclusive, select,
-			true {Pono ka helu ma mua o ka {min} a emi iho ma mua o {max}.}
-			other {Pono ka helu ma mua a i ʻole like me {min} a emi iho a like paha {max}.}
-		}}
-	}`,
+			true {{maxExclusive, select,
+				true {Pono ka nui o ka helu ma mua o {min} a emi iho ma mua o {max}.}
+				other {ʻOi aku ka nui o ka helu ma mua o {min} a emi mai a like paha me {max}.}
+			}}
+			other {{maxExclusive, select,
+				true {Pono ka helu ma mua o ka {min} a emi iho ma mua o {max}.}
+				other {Pono ka helu ma mua a i ʻole like me {min} a emi iho a like paha {max}.}
+			}}
+		}`,
 	"components.form-element.input.number.rangeOverflow":
 		`{maxExclusive, select,
-		true {Pono ka helu ma mua o {max}.}
-		other {Pono ka helu ma mua a i ʻole like me {max}.}
-	}`,
+			true {Pono ka helu ma mua o {max}.}
+			other {Pono ka helu ma mua a i ʻole like me {max}.}
+		}`,
 	"components.form-element.input.number.rangeUnderflow":
 		`{minExclusive, select,
-		true {Pono ka helu ma mua o {min}.}
-		other {Pono ka helu ma mua a i ʻole like me {min}.}
-	}`,
+			true {Pono ka helu ma mua o {min}.}
+			other {Pono ka helu ma mua a i ʻole like me {min}.}
+		}`,
 	"components.form-element.input.text.tooShort": "Pono ka {label} ma kahi o {minlength} mau huapalapala",
 	"components.form-element.input.url.typeMismatch": "ʻAʻole kūpono ka URL",
 	"components.form-element.valueMissing": "Pono ʻo {label}.",
 	"components.form-error-summary.errorSummary":
 		`{count, plural,
-		one {Aia aku nei {count} Loaʻa ka hewa ma ka ʻike āu i hoʻouna ai}
-		other {Aia aku nei {count} loaʻa nā hewa i ka ʻike āu i hoʻouna ai}
-	}`,
+			one {Aia aku nei {count} Loaʻa ka hewa ma ka ʻike āu i hoʻouna ai}
+			other {Aia aku nei {count} loaʻa nā hewa i ka ʻike āu i hoʻouna ai}
+		}`,
 	"components.form-error-summary.text": "Hoʻololi i nā kikoʻī hewa",
 	"components.input-color.backgroundColor": "Ka waihoʻoluʻu",
 	"components.input-color.foregroundColor": "Kalai mua",
@@ -151,20 +151,20 @@ export default {
 	"components.pager-load-more.action-with-page-size": "Hoʻouka {count} hou aku",
 	"components.pageable.info":
 		`{count, plural,
-		one {{countFormatted} mea}
-		other {{countFormatted} mau mea}
-	}`,
+			one {{countFormatted} mea}
+			other {{countFormatted} mau mea}
+		}`,
 	"components.pageable.info-with-total":
 		`{totalCount, plural,
-		one {{countFormatted} o {totalCountFormatted} mea}
-		other {{countFormatted} o {totalCountFormatted} mau mea}
-	}`,
+			one {{countFormatted} o {totalCountFormatted} mea}
+			other {{countFormatted} o {totalCountFormatted} mau mea}
+		}`,
 	"components.pager-load-more.status-loading": "Ke hoʻouka nei i nā mea hou aʻe",
 	"components.selection.action-max-hint":
 		`{count, plural,
-		one {Disabled when more than {countFormatted} item is selected}
-		other {Disabled when more than {countFormatted} items are selected}
-	}`,
+			one {Disabled when more than {countFormatted} item is selected}
+			other {Disabled when more than {countFormatted} items are selected}
+		}`,
 	"components.selection.action-required-hint": "E koho i kahi mea e hana ai i kēia hana",
 	"components.selection.select-all": "E koho i nā mea a pau",
 	"components.selection.select-all-items": "E koho i nā mea a pau {count}.",
@@ -179,24 +179,24 @@ export default {
 	"components.table-col-sort-button.changeSortOrder": "E koho e hoʻololi i ka hoʻonohonoho ʻana",
 	"components.table-col-sort-button.title":
 		`{sourceType, select,
-		dates {{direction, select,
-			desc {Hoʻokaʻawale ʻia ka mea hou a i ka mea kahiko}
-			other {Hoʻokaʻawale ʻia ka mea kahiko i ka mea hou}
-		}}
-		numbers {{direction, select,
-			desc {Hoʻokaʻina kiʻekiʻe a haʻahaʻa}
-			other {Hoʻokaʻina haʻahaʻa a kiʻekiʻe}
-		}}
-		words {{direction, select,
-			desc {Hoʻokaʻawale ʻia ʻo Z i A}
-			other {Hoʻopili ʻia ʻo A a Z}
-		}}
-		value {Hoʻokaʻawale ʻia {selectedMenuItemText}}
-		other {{direction, select,
-			desc {Hoʻokaʻawale i ka iho ʻana}
-			other {Hoʻokaʻawale ʻia i ka piʻi ʻana}
-		}}
-	}`,
+			dates {{direction, select,
+				desc {Hoʻokaʻawale ʻia ka mea hou a i ka mea kahiko}
+				other {Hoʻokaʻawale ʻia ka mea kahiko i ka mea hou}
+			}}
+			numbers {{direction, select,
+				desc {Hoʻokaʻina kiʻekiʻe a haʻahaʻa}
+				other {Hoʻokaʻina haʻahaʻa a kiʻekiʻe}
+			}}
+			words {{direction, select,
+				desc {Hoʻokaʻawale ʻia ʻo Z i A}
+				other {Hoʻopili ʻia ʻo A a Z}
+			}}
+			value {Hoʻokaʻawale ʻia {selectedMenuItemText}}
+			other {{direction, select,
+				desc {Hoʻokaʻawale i ka iho ʻana}
+				other {Hoʻokaʻawale ʻia i ka piʻi ʻana}
+			}}
+		}`,
 	"components.table-controls.label": "Nā hana no ka papaʻaina",
 	"components.tabs.next": "Holo i mua",
 	"components.tabs.previous": "Holo i hope",
