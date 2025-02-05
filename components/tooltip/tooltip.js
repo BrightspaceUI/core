@@ -988,7 +988,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				);
 				logAccessibilityWarning = false;
 			}
-			if (this.showing) {
+			if (!this._initiallyFocused && this.showing) {
 				this.updatePosition();
 			} else if (isComposedAncestor(this._target, getComposedActiveElement())) {
 				this._onTargetFocus();
