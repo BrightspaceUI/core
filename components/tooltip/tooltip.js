@@ -964,13 +964,13 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (this._target) {
 			const targetDisabled = this._target.hasAttribute('disabled') || this._target.getAttribute('aria-disabled') === 'true';
 
-			setTimeout(() => {
-				if (targetDisabled) {
+			if (targetDisabled) {
+				queueMicrotask(() => {
 					this._initiallyFocused = document.activeElement === this._target || this._target.matches(':hover');
-				} else {
-					this._initiallyFocused = false;
-				}
-			}, 0);
+				  });
+			} else {
+				this._initiallyFocused = false;
+			}
 
 			const isInteractive = this._isInteractive(this._target);
 			this.id = this.id || getUniqueId();
