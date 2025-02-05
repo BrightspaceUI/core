@@ -823,6 +823,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_onTargetBlur() {
+		this._initiallyFocused = false;
 		this._isFocusing = false;
 		this._updateShowing();
 	}
@@ -946,13 +947,23 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_updateShowing() {
-		this.showing = this._isFocusing || this._isHovering || this.forceShow || this.#isHoveringTooltip;
+		if (this._initiallyFocused === undefined) return;
+		this.showing = !this._initiallyFocused &&
+			this._isFocusing || this._isHovering || this.forceShow || this.#isHoveringTooltip;
 	}
 
 	_updateTarget() {
+		const newTarget = this._findTarget();
+		if (this._target === newTarget) {
+			return;
+		}
+
 		this._removeListeners();
-		this._target = this._findTarget();
+		this._target = newTarget;
 		if (this._target) {
+			setTimeout(() => {
+				this._initiallyFocused = document.activeElement === this._target || this._target.matches(':hover');
+			}, 0);
 			const isInteractive = this._isInteractive(this._target);
 			this.id = this.id || getUniqueId();
 			this.setAttribute('role', 'tooltip');
@@ -969,7 +980,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				);
 				logAccessibilityWarning = false;
 			}
-			if (this.showing) {
+			if (!this._initiallyFocused && this.showing) {
 				this.updatePosition();
 			} else if (isComposedAncestor(this._target, getComposedActiveElement())) {
 				this._onTargetFocus();
