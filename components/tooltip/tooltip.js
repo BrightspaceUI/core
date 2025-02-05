@@ -960,10 +960,18 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		this._removeListeners();
 		this._target = newTarget;
+
 		if (this._target) {
+			const targetDisabled = this._target.hasAttribute('disabled') || this._target.getAttribute('aria-disabled') === 'true';
+
 			setTimeout(() => {
-				this._initiallyFocused = document.activeElement === this._target || this._target.matches(':hover');
+				if (targetDisabled) {
+					this._initiallyFocused = document.activeElement === this._target || this._target.matches(':hover');
+				} else {
+					this._initiallyFocused = false;
+				}
 			}, 0);
+
 			const isInteractive = this._isInteractive(this._target);
 			this.id = this.id || getUniqueId();
 			this.setAttribute('role', 'tooltip');
@@ -980,7 +988,7 @@ class Tooltip extends RtlMixin(LitElement) {
 				);
 				logAccessibilityWarning = false;
 			}
-			if (!this._initiallyFocused && this.showing) {
+			if (this.showing) {
 				this.updatePosition();
 			} else if (isComposedAncestor(this._target, getComposedActiveElement())) {
 				this._onTargetFocus();
