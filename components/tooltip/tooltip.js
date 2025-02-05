@@ -966,7 +966,7 @@ class Tooltip extends RtlMixin(LitElement) {
 
 			if (targetDisabled) {
 				queueMicrotask(() => {
-					this._initiallyFocused = document.activeElement === this._target || this._target.matches(':hover');
+					this._initiallyFocused = getComposedActiveElement() === this._target || this._target.matches(':hover');
 				  });
 			} else {
 				this._initiallyFocused = false;
