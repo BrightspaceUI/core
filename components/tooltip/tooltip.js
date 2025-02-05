@@ -948,8 +948,8 @@ class Tooltip extends RtlMixin(LitElement) {
 
 	_updateShowing() {
 		if (this._initiallyFocused === undefined) return;
-		this.showing = !this._initiallyFocused &&
-			this._isFocusing || this._isHovering || this.forceShow || this.#isHoveringTooltip;
+		this.showing = !this._initiallyFocused && (this._isFocusing || this._isHovering)
+			|| this.forceShow || this.#isHoveringTooltip;
 	}
 
 	_updateTarget() {
