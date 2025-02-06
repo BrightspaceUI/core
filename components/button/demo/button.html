@@ -21,12 +21,27 @@
 				</template>
 			</d2l-demo-snippet>
 
-
-			<h2>Toggle me! (Disabled with Tooltip)</h2>
+			<h2>Button (Primary)</h2>
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button id="toggle" disabled-tooltip="Optional disabled tooltip">Normal Button</d2l-button>
+					<d2l-button primary>Primary Button</d2l-button>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Button (Disabled)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button disabled>Disabled Button</d2l-button>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Button (Disabled with Tooltip)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button disabled disabled-tooltip="Optional disabled tooltip">Normal Button</d2l-button>
 				</template>
 			</d2l-demo-snippet>
 
@@ -51,9 +66,8 @@
 
 		<script>
 			document.addEventListener('click', e => {
-				if (e.target.id !== 'toggle') return;
-				e.target.disabled = !e.target.disabled;
-				console.log('toggle flipped');
+				if (e.target.tagName !== 'D2L-BUTTON') return;
+				console.log('button clicked', e.target);
 			});
 		</script>
 
