@@ -258,6 +258,80 @@ document.querySelector('#open').addEventListener('click', () => {
 });
 ```
 
+## Async Dialogs
+
+The `async` attribute is supported by the General Dialog (`d2l-dialog`) and the fullscreen dialog (`d2l-dialog-fullscreen`). This indicates to the dialog component that the content is async, and a loading-spinner will be displayed until the content is ready. The expectation of the dialog is that the nested content will dispatch a promise-carrying `pending-state` event. When the promise is fulfilled the dialog hides the spinner, shows the content, and sizes the dialog. This functionality can be implemented with help from the [RunAsync Directive](#runasync-directive).
+
+<!-- docs: demo code autoSize:false size:medium -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/button.js';
+  import '@brightspace-ui/core/components/dialog/dialog.js';
+  
+  document.querySelector('#open').addEventListener('click', () => {
+    document.querySelector('#dialog').opened = true;
+    document.querySelector('d2l-dialog-demo-async-content').key = 'my-dialog';
+  });
+  document.querySelector('#dialog').addEventListener('d2l-dialog-close', (e) => {
+    console.log('dialog action:', e.detail.action);
+  });
+</script>
+<script type="module">
+  import { html, LitElement } from 'lit';
+  import { InitialStateError, runAsync } from '@brightspace-ui/core/directives/run-async/run-async.js';
+
+  class DialogAsyncContent extends LitElement {
+
+    static get properties() {
+      return {
+        key: { type: String }
+      };
+    }
+
+    constructor() {
+      super();
+      this.key = null;
+    }
+
+    render() {
+      return html`${runAsync(this.key, (key) => this.#getContent(key), {
+        success: (content) => content
+      })}`;
+    }
+
+    #getContent(key) {
+      return new Promise((resolve) => {
+        if (!key) {
+          throw new InitialStateError();
+        }
+        setTimeout(() => {
+          resolve(html`<div>Welcome!</div>`);
+        }, 3000);
+      });
+    }
+  }
+  customElements.define('d2l-dialog-demo-async-content', DialogAsyncContent);
+</script>
+<d2l-dialog id="dialog" title-text="Async Dialog" async>
+  <d2l-dialog-demo-async-content></d2l-dialog-demo-async-content>
+  <d2l-button slot="footer" primary data-dialog-action="done">Done</d2l-button>
+  <d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+</d2l-dialog>
+<d2l-button id="open">Show Dialog</d2l-button>
+```
+
+### RunAsync Directive
+
+The `runAsync` directive, shown in the demo above, can be used to assist with managing the promse state and dispatching the `pending-state` event.
+
+#### Arguments
+
+| Argument | Description |
+|--|--|
+| `key` | Unique identifier for the task |
+| `task` | The Promise that resolves to the dialog content
+| `templates` | Object of `{ success, pending, initial, failure }` containing any necessary callback functions |
+
 ## Accessibility
 
 ### Focus Management
