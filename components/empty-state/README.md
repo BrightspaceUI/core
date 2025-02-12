@@ -23,7 +23,7 @@ Empty state components are used to convey that there is no data available to be 
 <d2l-empty-state-simple description="There are no assignments to display.">
 	<d2l-empty-state-action-link text="Create an Assignment" href="#"></d2l-empty-state-action-link>
 </d2l-empty-state-simple>
-<d2l-empty-state-illustrated illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path.">
+<d2l-empty-state-illustrated illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path">
 	<d2l-empty-state-action-link text="Create Learning Paths" href="#"></d2l-empty-state-action-link>
 </d2l-empty-state-illustrated>
 ```
@@ -55,7 +55,7 @@ The `d2l-empty-state-simple` component is an empty state component that displays
   import '@brightspace-ui/core/components/empty-state/empty-state-simple.js';
 </script>
 
-<d2l-empty-state-simple description="There are no assignments to display."></d2l-empty-state-simple>
+<d2l-empty-state-simple description="There are no assignments to display"></d2l-empty-state-simple>
 ```
 
 ## Empty State Illustrated [d2l-empty-state-illustrated]
@@ -79,7 +79,7 @@ The `illustration-name` property can be set to use one of the preset illustratio
 	}
 </style>
 <!-- docs: end hidden content -->
-<d2l-empty-state-illustrated illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path."></d2l-empty-state-illustrated>
+<d2l-empty-state-illustrated illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path"></d2l-empty-state-illustrated>
 ```
 
 ## Empty State Action Button [d2l-empty-state-action-button]
@@ -112,7 +112,7 @@ The `primary` attribute can be set to render a primary button in place of the de
 <d2l-empty-state-simple description="There are no assignments to display.">
 	<d2l-empty-state-action-button text="Create an Assignment"></d2l-empty-state-action-button>
 </d2l-empty-state-simple>
-<d2l-empty-state-illustrated illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path.">
+<d2l-empty-state-illustrated illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path">
 	<d2l-empty-state-action-button text="Create Learning Paths"></d2l-empty-state-action-button>
 </d2l-empty-state-illustrated>
 ```
@@ -145,7 +145,7 @@ To add the link, place a `d2l-empty-state-action-link` component inside of the d
 <d2l-empty-state-simple description="There are no assignments to display.">
 	<d2l-empty-state-action-link text="Create an Assignment" href="#"></d2l-empty-state-action-link>
 </d2l-empty-state-simple>
-<d2l-empty-state-illustrated illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path.">
+<d2l-empty-state-illustrated illustration-name="desert-road" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path">
 	<d2l-empty-state-action-link text="Create Learning Paths" href="#"></d2l-empty-state-action-link>
 </d2l-empty-state-illustrated>
 ```
