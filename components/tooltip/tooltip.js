@@ -823,7 +823,6 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_onTargetBlur() {
-		this._initiallyFocused = false;
 		this._isFocusing = false;
 		this._updateShowing();
 	}
@@ -947,9 +946,7 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_updateShowing() {
-		if (this._initiallyFocused === undefined) return;
-		this.showing = !this._initiallyFocused && (this._isFocusing || this._isHovering)
-			|| this.forceShow || this.#isHoveringTooltip;
+		this.showing = this._isFocusing || this._isHovering || this.forceShow || this.#isHoveringTooltip;
 	}
 
 	_updateTarget() {
@@ -963,14 +960,6 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		if (this._target) {
 			const targetDisabled = this._target.hasAttribute('disabled') || this._target.getAttribute('aria-disabled') === 'true';
-
-			if (targetDisabled) {
-				queueMicrotask(() => {
-					this._initiallyFocused = getComposedActiveElement() === this._target || this._target.matches(':hover');
-				  });
-			} else {
-				this._initiallyFocused = false;
-			}
 
 			const isInteractive = this._isInteractive(this._target);
 			this.id = this.id || getUniqueId();
@@ -990,7 +979,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 			if (this.showing) {
 				this.updatePosition();
-			} else if (isComposedAncestor(this._target, getComposedActiveElement())) {
+			} else if (!targetDisabled && isComposedAncestor(this._target, getComposedActiveElement())) {
 				this._onTargetFocus();
 			}
 		}
