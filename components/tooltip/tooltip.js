@@ -544,8 +544,8 @@ class Tooltip extends RtlMixin(LitElement) {
 		;
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
 
 		changedProperties.forEach((_, prop) => {
 			if (prop === 'for') {
