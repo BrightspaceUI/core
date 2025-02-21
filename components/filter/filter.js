@@ -30,6 +30,7 @@ import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
+import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
@@ -256,6 +257,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		addSpaceListener();
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this.#resizeObserver) this.#resizeObserver.disconnect();
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this.addEventListener('d2l-filter-dimension-data-change', this._handleDimensionDataChange);
@@ -349,6 +355,16 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		super.update(changedProperties);
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		const search = this.shadowRoot.querySelector('d2l-input-search');
+		if (search) {
+			if (this.#resizeObserver) this.#resizeObserver.disconnect();
+			this.#resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.#handleSearchResize()));
+			this.#resizeObserver.observe(search);
+		}
+	}
+
 	requestFilterClearAll() {
 		this._handleClearAll();
 	}
@@ -362,6 +378,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				break;
 		}
 	}
+
+	#resizeObserver;
 
 	_buildDimension(dimension, singleDimension) {
 		let dimensionHTML;
@@ -1143,6 +1161,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		}
 	}
 
+	#handleSearchResize() {
+		const content = this.shadowRoot.querySelector(`.${FILTER_CONTENT_CLASS}`);
+		content.resize();
+	}
 }
 
 customElements.define('d2l-filter', Filter);
