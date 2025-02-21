@@ -223,6 +223,20 @@ describe('d2l-tooltip', () => {
 
 		});
 
+		it('should not show if added to a disabled target that already has focus', async() => {
+
+			const target = tooltipFixture.querySelector('#explicit-target');
+			target.disabled = true;
+			await focusElem(target);
+
+			const dynamicTooltip = document.createElement('d2l-tooltip');
+			dynamicTooltip.for = target.id;
+			tooltipFixture.appendChild(dynamicTooltip);
+
+			await aTimeout(100);
+			expect(dynamicTooltip.showing).to.be.false;
+		});
+
 	});
 
 	describe('delay', () => {
