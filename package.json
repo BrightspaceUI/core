@@ -58,7 +58,7 @@
     "messageformat-validator": "^2",
     "rollup": "^4",
     "rollup-plugin-copy": "^3",
-    "rollup-plugin-delete": "^2",
+    "rollup-plugin-delete": "^3",
     "sass": "^1",
     "sinon": "^19",
     "stylelint": "^16",
