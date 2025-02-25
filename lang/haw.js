@@ -56,7 +56,7 @@ export default {
 	"components.input-date-time-range-to.to": "i",
 	"components.input-date-time-range.endDate": "Lā Hoʻopau",
 	"components.input-date-time-range.errorBadInput": "Pono ʻo {startLabel} ma mua o {endLabel}",
-	"components.input-date-time-range.startDate": "lā hoʻomaka",
+	"components.input-date-time-range.startDate": "Lā hoʻomaka",
 	"components.input-date-time.date": "Lā",
 	"components.input-date-time.errorMaxDateOnly": "Pono ka lā ma mua a ma {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "Pono ka lā ma a ma hope paha o {minDate}",
