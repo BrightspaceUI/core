@@ -25,7 +25,7 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 	static get properties() {
 		return {
 			/**
-			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
+			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin. See [Async Dialogs](#async-dialogs) for more information.
 			 */
 			async: { type: Boolean },
 
