@@ -2,7 +2,7 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import '../../helpers/queueMicrotask.js';
 import './tab-internal.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { cssEscape, findComposedAncestor } from '../../helpers/dom.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
@@ -16,36 +16,8 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 const scrollButtonWidth = 56;
-
-// remove once IE11 is no longer supported
-if (!Array.prototype.findIndex) {
-	Object.defineProperty(Array.prototype, 'findIndex', {
-		value: function(predicate) {
-
-			if (this === null) throw new TypeError('"this" is null or not defined');
-
-			const o = Object(this);
-			const len = o.length >>> 0;
-
-			if (typeof predicate !== 'function') throw new TypeError('predicate must be a function');
-
-			const thisArg = arguments[1];
-			let k = 0;
-
-			while (k < len) {
-				const kValue = o[k];
-				if (predicate.call(thisArg, kValue, k, o)) return k;
-				k++;
-			}
-
-			return -1;
-		},
-		configurable: true,
-		writable: true
-	});
-}
+const WIREUP_TIMEOUT_DELAY = 100; // to allow dynamic additions of tabs/panel components
 
 /**
  * A component for tabbed content. It supports the "d2l-tab-panel" component for the content, renders tabs responsively, and provides virtual scrolling for large tab lists.
@@ -244,6 +216,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		this.maxToShow = -1;
 		this._allowScrollNext = false;
 		this._allowScrollPrevious = false;
+		this._hasPanelsSlotContent = false;
+		this._hasTabsSlotContent = false;
 		this._loadingCompleteResolve = undefined;
 		this._loadingCompletePromise = new Promise(resolve => this._loadingCompleteResolve = resolve);
 		this._maxWidth = null;
@@ -262,7 +236,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 				this.style.setProperty('--d2l-tabs-background-color', bgColor);
 			}
 		});
-
 	}
 
 	disconnectedCallback() {
@@ -273,8 +246,12 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
+		this._tabsSlot = this.shadowRoot.querySelector('slot[name="tabs"]');
+  		this._panelsSlot = this.shadowRoot.querySelector('slot[name="panels"]');
+		const tabs = this._getTabs(this._tabsSlot);
+
 		this.arrowKeysFocusablesProvider = async() => {
-			return [...this.shadowRoot.querySelectorAll('d2l-tab-internal')];
+			return this._tabsSlot.length > 0 ? [...tabs] : [...this.shadowRoot.querySelectorAll('d2l-tab-internal')];
 		};
 
 		this.arrowKeysOnBeforeFocus = async(tab) => {
@@ -351,7 +328,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 							@focusout="${this._handleFocusOut}"
 							role="tablist"
 							style="${styleMap(tabsContainerListStyles)}">
-							${repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
+							${!this._hasTabsSlotContent ? repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
 								<d2l-tab-internal aria-selected="${tabInfo.selected ? 'true' : 'false'}"
 									.controlsPanel="${tabInfo.id}"
 									data-state="${tabInfo.state}"
@@ -359,7 +336,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 									tabindex="${tabInfo.activeFocusable ? 0 : -1}"
 									text="${tabInfo.text}">
 								</d2l-tab-internal>
-							`)}
+							`) : nothing}
+							<slot name="tabs" @slotchange="${this._handleTabsSlotChange}"></slot>
 						</div>
 					`)}
 					<div class="d2l-tabs-scroll-next-container">
@@ -375,7 +353,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 			<div class="${classMap(panelContainerClasses)}"
 				@d2l-tab-panel-selected="${this._handlePanelSelected}"
 				@d2l-tab-panel-text-changed="${this._handlePanelTextChange}">
-				<slot @slotchange="${this._handlePanelsSlotChange}"></slot>
+				<slot @slotchange="${this._handlePanelSlotChange}"></slot>
+				<slot name="panels" @slotChange="${this._handlePanelsSlotChange}"></slot>
 			</div>
 		`;
 	}
@@ -509,6 +488,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 	}
 
 	async _focusSelected() {
+		// new version of this, just update ref const selectedTab = this.shadowRoot && this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]');
+		// if fails - then run below query
 		const selectedTab = this.shadowRoot && this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]');
 		if (!selectedTab) return;
 
@@ -540,7 +521,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 	_getPanel(id) {
 		if (!this.shadowRoot) return;
 		// use simple selector for slot (Edge)
-		const slot = this.shadowRoot.querySelector('.d2l-panels-container').querySelector('slot');
+		const panelsContainer = this.shadowRoot.querySelector('.d2l-panels-container');
+		const slot = this._hasPanelsSlotContent ? panelsContainer.querySelector('slot[name="panels"]') : panelsContainer.querySelector('slot');
 		const panels = this._getPanels(slot);
 		for (let i = 0; i < panels.length; i++) {
 			if (panels[i].nodeType === Node.ELEMENT_NODE && panels[i].role === 'tabpanel' && panels[i].id === id) {
@@ -551,18 +533,18 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 
 	_getPanels(slot) {
 		if (!slot) return;
-		return slot.assignedNodes({ flatten: true })
-			.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.role === 'tabpanel');
+		return slot?.assignedNodes({ flatten: true })
+			.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.role === 'tabpanel') || [];
 	}
 
 	_getTabInfo(id) {
-		if (this._tabInfos.find) {
-			return this._tabInfos.find((t) => t.id === id);
-		} else {
-			// IE11
-			const index = this._tabInfos.findIndex((t) => t.id === id);
-			return index !== -1 ? this._tabInfos[index] : null;
-		}
+		return this._tabInfos.find(t => t.id === id);
+	}
+
+	_getTabs(slot) {
+		if (!slot) return;
+		return slot?.assignedNodes({ flatted: true })
+			.filter(node => node.nodeType === Node.ELEMENT_NODE && node.role === 'tab') || [];
 	}
 
 	_handleFocusOut(e) {
@@ -580,7 +562,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		this.requestUpdate();
 	}
 
-	async _handlePanelsSlotChange(e) {
+	async _handlePanelSlotChange(e) {
 
 		const panels = this._getPanels(e.target);
 
@@ -664,6 +646,18 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 			'd2l-tabs-initialized', { bubbles: true, composed: true }
 		));
 
+	}
+
+	// need to handle tab/panel removal
+	_handlePanelsSlotChange() {
+		const panels = this._getPanels(this._panelsSlot);
+		this._hasPanelsSlotContent = panels.length > 0;
+
+		this._updateAriaControls();
+
+		// if they remove a panel but they don't remove the tab - edge/error case that we could shout to console.warn, etc.
+		// or the inverse, adding a panel without a tab, would be another misconfig that we could console.warn about
+		// setTimeout on this (3000, etc.) don't want a misfire and complain when the browser is chugging to add all the components
 	}
 
 	async _handlePanelTextChange(e) {
@@ -763,11 +757,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 
 	async _handleTabSelected(e) {
 		e.stopPropagation();
-
+		// selected logic is a bit odd, need a SSOT on selected - tab owns?
 		const selectedTab = e.target;
 		const selectedPanel = this._getPanel(selectedTab.controlsPanel);
 		const selectedTabInfo = this._getTabInfo(selectedTab.controlsPanel);
 		selectedTabInfo.activeFocusable = true;
+		// slot.assignedElements - ittr over, find the one that's selected, tabIndex = 0, all others need to be -1
+		  // ^ e.target for setting to 0 is easy, but need to itr to find old
 
 		await this.updateComplete;
 		this._updateScrollPosition(selectedTabInfo);
@@ -786,6 +782,87 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		});
 
 		this.requestUpdate();
+	}
+
+	async _handleTabsSlotChange(e) {
+		const tabs = this._getTabs(e.target);
+		this._hasTabsSlotContent = tabs.length > 0;
+
+		this._updateTabListVisibility(tabs);
+		if (!this._intialized && !this._hasTabsSlotContent) return;
+
+		let selectedTabInfo = null;
+		const newTabInfos = tabs.map(tab => {
+			let state = '';
+			if (this._initialized && !reduceMotion && tabs.length !== this._tabsInfos.length) {
+				// if it's a new tab, update state to animation addition
+				if (this._tabsInfos.some(info => info.id === tab.id)) {
+					state = 'adding';
+				}
+			}
+
+			const tabInfo = {
+				id: tab.id,
+				text: tab.text,
+				selected: tab.selected,
+				state: state
+			};
+
+			if (tabInfo.selected) {
+				selectedTabInfo = tabInfo;
+				this._setFocusable(tabInfo);
+			}
+
+			return tabInfo;
+		});
+
+		if (this._initialized && !reduceMotion && this._tabsInfos.length !== newTabInfos.length) {
+			this._tabsInfos.forEach((info, index) => {
+				// if a tab was removed, include old info to animate it away
+				if (!newTabInfos.some(newInfo => newInfo.id === info.id)) {
+					info.state = 'removing';
+					info.selected = false;
+					newTabInfos.splice(index, 0, info);
+				}
+			});
+		}
+		this._tabsInfo = newTabInfos;
+
+		if (this._tabInfos.length > 0 && !selectedTabInfo) {
+			selectedTabInfo = this._tabInfos.find(tabInfo => tabInfo.state !== 'removing');
+			if (selectedTabInfo) {
+				selectedTabInfo.activeFocusable = true;
+				selectedTabInfo.selected = true;
+			}
+		}
+
+		await this.updateComplete;
+
+		const animPromises = [];
+		if (!this._initialized && this._tabInfos.length > 0) {
+			this._initialized = true;
+			await this._updateTabsContainerWidth(selectedTabInfo);
+		} else {
+			if (this._tabInfos.length > 1) {
+				this._tabInfos.forEach(info => {
+					if (info.state === 'adding') animPromises.push(this._animateTabAddition(info));
+					else if (info.state === 'removing') animPromises.push(this._animateTabRemoval(info));
+				});
+			}
+			this._updateMeasures(); // required for animation
+		}
+
+		if (selectedTabInfo) {
+			Promise.all(animPromises).then(() => {
+				this._updateMeasures();
+				return this._updateScrollPosition(selectedTabInfo);
+			});
+		}
+
+		this._updateAriaControls();
+		this.dispatchEvent(new CustomEvent(
+			'd2l-tabs-initialized', { bubbles: true, composed: true }
+		));
 	}
 
 	_isPositionInLeftScrollArea(position) {
@@ -874,12 +951,49 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		return true;
 	}
 
+	// need detach version - currently only attach state/flow is covered
+	_updateAriaControls() {
+		const panels = this._getPanels(this._panelsSlot);
+		const tabs = this._getTabs(this._tabsSlot);
+
+		panels.forEach(panel => {
+			const labelledBy = panel.getAttribute('labelledBy');
+			if (!labelledBy) {
+				setTimeout(() => {
+					if (!panel.getAttribute('labelledBy')) {
+						console.warn(`Panel with id="${panel.id}" is missing "labelledBy" attribute and cannot be attached to its tab`);
+					}
+				}, WIREUP_TIMEOUT_DELAY);
+				return;
+			}
+
+			let tab = tabs.find(tab => tab.id === labelledBy);
+			if (tab) {
+				tab.setAttribute('aria-controls', panel.id);
+			} else {
+				setTimeout(() => {
+					tab = tabs.find(tab => tab.id === labelledBy);
+					if (!tab) {
+						console.warn(`No tab found with id="${labelledBy}" to link with panel id="${panel.id}"`);
+					}
+				}, WIREUP_TIMEOUT_DELAY);
+			}
+		});
+	  }
+
 	_updateMeasures() {
 		let totalTabsWidth = 0;
 		if (!this.shadowRoot) return;
-		const tabs = [...this.shadowRoot.querySelectorAll('d2l-tab-internal')];
 
-		const tabRects = tabs.map((tab) => {
+		let tabs = this._getTabs(this._tabsSlot);
+
+		if (!tabs.length > 0) {
+			tabs = tabs = [...this.shadowRoot.querySelectorAll('d2l-tab-internal')];
+		}
+
+		if (!tabs.length > 0) return;
+
+		const tabRects = tabs.map(tab => {
 			const measures = {
 				rect: tab.getBoundingClientRect(),
 				offsetLeft: tab.offsetLeft
@@ -934,8 +1048,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		return this.updateComplete;
 	}
 
-	_updateTabListVisibility(panels) {
-		if (this._state === 'shown' && panels.length < 2) {
+	_updateTabListVisibility(tabs) {
+		if (this._state === 'shown' && tabs.length < 2) {
 			// don't animate the tabs list visibility if it's the inital render
 			if (reduceMotion || !this._initialized) {
 				this._state = 'hidden';
@@ -949,7 +1063,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 				layout.addEventListener('transitionend', handleTransitionEnd);
 				this._state = 'anim';
 			}
-		} else if (this._state === 'hidden' && panels.length > 1) {
+		} else if (this._state === 'hidden' && tabs.length > 1) {
 			// don't animate the tabs list visibility if it's the inital render
 			if (reduceMotion || !this._initialized) {
 				this._state = 'shown';
