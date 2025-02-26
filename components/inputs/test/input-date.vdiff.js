@@ -352,6 +352,13 @@ describe('d2l-input-date', () => {
 				await expect(elem).to.be.golden();
 			});
 
+			it('open then close then open', async() => {
+				await clickElem(elem);
+				await clickElem(document.body);
+				await clickElem(elem);
+				await expect(elem).to.be.golden();
+			});
+
 			it('click then click away', async() => {
 				await clickElem(elem);
 				await clickElem(document.body);
