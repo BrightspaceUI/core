@@ -67,6 +67,11 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			 */
 			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
 			/**
+			 * ADVANCED: Hide the tooltip when input is invalid
+			 * @type {boolean}
+			 */
+			hideInvalidTooltip: { attribute: 'hide-invalid-tooltip', type: Boolean, reflect: true },
+			/**
 			 * Restricts the maximum width of the input box without impacting the width of the label.
 			 * @type {string}
 			 */
@@ -270,6 +275,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		this.autofocus = false;
 		this.disabled = false;
 		this.hideInvalidIcon = false;
+		this.hideInvalidTooltip = false;
 		this.labelHidden = false;
 		this.preventSubmit = false;
 		this.readonly = false;
@@ -487,7 +493,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 
 		let tooltip = nothing;
 		if (!this.skeleton) {
-			if (this.validationError && !this.noValidate) {
+			if (this.validationError && !this.noValidate && !this.hideInvalidTooltip) {
 				// this tooltip is using "announced" since we don't want aria-describedby wire-up - VoiceOver ignores our message when the input is invalid
 				tooltip = html`<d2l-tooltip state="error" announced align="start" class="vdiff-target">${this.validationError} <span class="d2l-offscreen">${this.description}</span></d2l-tooltip>`;
 			} else if (this.instructions) {
