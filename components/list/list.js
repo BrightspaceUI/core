@@ -274,15 +274,29 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		const selectionInfo = super.getSelectionInfo();
 		if (!includeNested) return selectionInfo;
 
+		let state = selectionInfo.state;
 		let keys = selectionInfo.keys;
 
 		this.getItems().forEach(item => {
 			if (item._selectionProvider) {
+				const itemSelectionInfo = item._selectionProvider.getSelectionInfo(true);
+				if (state === SelectionInfo.states.undefined) {
+					// initialize to this item's state
+					state = itemSelectionInfo.state;
+				} else if (state === SelectionInfo.states.none && itemSelectionInfo.state !== SelectionInfo.states.undefined && itemSelectionInfo.state !== SelectionInfo.states.none) {
+					// if it is none and this is some or all, then we set to some
+					state = SelectionInfo.states.some;
+				} else if (state === SelectionInfo.states.all && (itemSelectionInfo.state === SelectionInfo.states.some || itemSelectionInfo.state === SelectionInfo.states.none)) {
+					// if it is all and this is some or none, then we set to some
+					state = SelectionInfo.states.some;
+				} else if (state === SelectionInfo.states.some) {
+					// if it is some, then we leave it as some
+				}
 				keys = [...keys, ...item._selectionProvider.getSelectionInfo(true).keys];
 			}
 		});
 
-		return new SelectionInfo(keys, selectionInfo.state);
+		return new SelectionInfo(keys, state);
 	}
 
 	resizedCallback(width, breakpointsChanged) {
@@ -296,6 +310,15 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			if (width >= breakpoint || index > lastBreakpointIndexToCheck) {
 				this._breakpoint = lastBreakpointIndexToCheck - index - (lastBreakpointIndexToCheck - this.breakpoints.length + 1) * index;
 				return true;
+			}
+		});
+	}
+
+	setSelectionForAll(selected, selectAllPages) {
+		super.setSelectionForAll(selected, selectAllPages);
+		this.getItems().forEach(item => {
+			if (!item.selectable && item._selectionProvider) {
+				item._selectionProvider.setSelectionForAll(selected, selectAllPages);
 			}
 		});
 	}
