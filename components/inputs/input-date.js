@@ -297,6 +297,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
 					hide-invalid-icon
+					?hide-invalid-tooltip="${this.opened}"
 					id="${this._inputId}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden || this.labelledBy}"
