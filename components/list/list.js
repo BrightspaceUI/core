@@ -311,7 +311,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	setSelectionForAll(selected, selectAllPages) {
 		super.setSelectionForAll(selected, selectAllPages);
-		// list-specific logic to push selection state deeper into tree - required to support nested lists with no selectables
+		// list-specific logic to push selection state deeper into tree - required to support intermediate nested lists with no direct selectables but with their own nested lists containing selectables
 		this.getItems().forEach(item => {
 			if (!item.selectable && item._selectionProvider) {
 				item._selectionProvider.setSelectionForAll(selected, selectAllPages);
