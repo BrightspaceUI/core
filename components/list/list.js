@@ -281,16 +281,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			if (item._selectionProvider) {
 				const itemSelectionInfo = item._selectionProvider.getSelectionInfo(true);
 				if (state === SelectionInfo.states.undefined) {
-					// initialize to this item's state
 					state = itemSelectionInfo.state;
 				} else if (state === SelectionInfo.states.none && itemSelectionInfo.state !== SelectionInfo.states.undefined && itemSelectionInfo.state !== SelectionInfo.states.none) {
-					// if it is none and this is some or all, then we set to some
 					state = SelectionInfo.states.some;
 				} else if (state === SelectionInfo.states.all && (itemSelectionInfo.state === SelectionInfo.states.some || itemSelectionInfo.state === SelectionInfo.states.none)) {
-					// if it is all and this is some or none, then we set to some
 					state = SelectionInfo.states.some;
-				} else if (state === SelectionInfo.states.some) {
-					// if it is some, then we leave it as some
 				}
 				keys = [...keys, ...item._selectionProvider.getSelectionInfo(true).keys];
 			}
@@ -316,6 +311,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	setSelectionForAll(selected, selectAllPages) {
 		super.setSelectionForAll(selected, selectAllPages);
+		// list-specific logic to push selection state deeper into tree - required to support nested lists with no selectables
 		this.getItems().forEach(item => {
 			if (!item.selectable && item._selectionProvider) {
 				item._selectionProvider.setSelectionForAll(selected, selectAllPages);
