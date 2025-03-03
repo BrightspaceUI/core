@@ -1,15 +1,21 @@
-import '../list.js';
 import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
 import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
+import { listSelectionStates } from '../list.js';
 
 const clickItemInput = async item => {
 	const selectionInput = item.shadowRoot.querySelector('d2l-selection-input');
 	const inputCheckbox = selectionInput.shadowRoot.querySelector('d2l-input-checkbox');
 	const input = inputCheckbox.shadowRoot.querySelector('input');
 	return clickElem(input);
+};
+
+const expectSelectionInfo = (list, nested, state, keys) => {
+	const info = list.getSelectionInfo(nested);
+	expect(info.state).to.equal(state);
+	expect(JSON.stringify(info.keys)).to.equal(JSON.stringify(keys));
 };
 
 describe('d2l-list', () => {
@@ -206,6 +212,46 @@ describe('d2l-list', () => {
 			expect(e.detail.position).to.equal('after');
 		});
 
+		it('getSelectionInfo returns state:undefined and no keys when there are no selectables', async() => {
+			const list = await fixture(html`
+				<d2l-list>
+					<d2l-list-item key="L1-1" label="L1-1"></d2l-list-item>
+					<d2l-list-item key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			expectSelectionInfo(list, false, listSelectionStates.undefined, []);
+		});
+
+		it('getSelectionInfo returns state:none and no keys', async() => {
+			const list = await fixture(html`
+				<d2l-list>
+					<d2l-list-item selectable key="L1-1" label="L1-1"></d2l-list-item>
+					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			expectSelectionInfo(list, false, listSelectionStates.none, []);
+		});
+
+		it('getSelectionInfo returns state:some with selected keys', async() => {
+			const list = await fixture(html`
+				<d2l-list>
+					<d2l-list-item selectable selected key="L1-1" label="L1-1"></d2l-list-item>
+					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			expectSelectionInfo(list, false, listSelectionStates.some, ['L1-1']);
+		});
+
+		it('getSelectionInfo returns state:all with selected keys', async() => {
+			const list = await fixture(html`
+				<d2l-list>
+					<d2l-list-item selectable selected key="L1-1" label="L1-1"></d2l-list-item>
+					<d2l-list-item selectable selected key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			expectSelectionInfo(list, false, listSelectionStates.all, ['L1-1', 'L1-2']);
+		});
+
 	});
 
 	describe('nested', () => {
@@ -268,6 +314,176 @@ describe('d2l-list', () => {
 			clickItemInput(elem.querySelector('[key="L2-3"]'));
 			await oneEvent(elem, 'd2l-list-selection-changes');
 			expect(elem.getSelectedListItems(true).length).to.equal(2);
+		});
+
+		it('getSelectionInfo returns correct state when no items are selected', async() => {
+			const list = await fixture(html`
+				<d2l-list>
+					<d2l-list-item selectable key="L1-1" label="L1-1">
+						<d2l-list slot="nested">
+							<d2l-list-item selectable key="L2-1" label="L2-1"></d2l-list-item>
+							<d2l-list-item selectable key="L2-2" label="L2-2"></d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			expectSelectionInfo(list, false, listSelectionStates.none, []);
+			expectSelectionInfo(list, true, listSelectionStates.none, []);
+			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.none, []);
+		});
+
+		it('getSelectionInfo returns correct state when some items selected', async() => {
+			const list = await fixture(html`
+				<d2l-list>
+					<d2l-list-item selectable key="L1-1" label="L1-1">
+						<d2l-list slot="nested">
+							<d2l-list-item selectable key="L2-1" label="L2-1"></d2l-list-item>
+							<d2l-list-item selectable key="L2-2" label="L2-2"></d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+					<d2l-list-item selectable selected key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			expectSelectionInfo(list, false, listSelectionStates.some, ['L1-2']);
+			expectSelectionInfo(list, true, listSelectionStates.some, ['L1-2']);
+			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.none, []);
+		});
+
+		it('getSelectionInfo returns correct state when subtree selected but siblings are not', async() => {
+			const list = await fixture(html`
+				<d2l-list>
+					<d2l-list-item selectable selected key="L1-1" label="L1-1">
+						<d2l-list slot="nested">
+							<d2l-list-item selectable selected key="L2-1" label="L2-1"></d2l-list-item>
+							<d2l-list-item selectable selected key="L2-2" label="L2-2"></d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			expectSelectionInfo(list, false, listSelectionStates.some, ['L1-1']);
+			expectSelectionInfo(list, true, listSelectionStates.some, ['L1-1', 'L2-1', 'L2-2']);
+			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.all, ['L2-1', 'L2-2']);
+		});
+
+		it('getSelectionInfo returns correct state when all items are selected', async() => {
+			const list = await fixture(html`
+				<d2l-list>
+					<d2l-list-item selectable selected key="L1-1" label="L1-1">
+						<d2l-list slot="nested">
+							<d2l-list-item selectable selected key="L2-1" label="L2-1"></d2l-list-item>
+							<d2l-list-item selectable selected key="L2-2" label="L2-2"></d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+					<d2l-list-item selectable selected key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			expectSelectionInfo(list, false, listSelectionStates.all, ['L1-1', 'L1-2']);
+			expectSelectionInfo(list, true, listSelectionStates.all, ['L1-1', 'L1-2', 'L2-1', 'L2-2']);
+			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.all, ['L2-1', 'L2-2']);
+		});
+
+		it('getSelectionInfo returns correct state when root list is not selectable and no nested items are selected', async() => {
+			const list = await fixture(html`
+				<d2l-list>
+					<d2l-list-item key="L1-1" label="L1-1">
+						<d2l-list slot="nested">
+							<d2l-list-item selectable key="L2-1" label="L2-1"></d2l-list-item>
+							<d2l-list-item selectable key="L2-2" label="L2-2"></d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+					<d2l-list-item key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			expectSelectionInfo(list, false, listSelectionStates.undefined, []);
+			expectSelectionInfo(list, true, listSelectionStates.none, []);
+			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.none, []);
+		});
+
+		it('getSelectionInfo returns correct state when root list is not selectable and some nested items are selected', async() => {
+			const list = await fixture(html`
+				<d2l-list>
+					<d2l-list-item key="L1-1" label="L1-1">
+						<d2l-list slot="nested">
+							<d2l-list-item selectable selected key="L2-1" label="L2-1"></d2l-list-item>
+							<d2l-list-item selectable key="L2-2" label="L2-2"></d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+					<d2l-list-item key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			expectSelectionInfo(list, false, listSelectionStates.undefined, []);
+			expectSelectionInfo(list, true, listSelectionStates.some, ['L2-1']);
+			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.some, ['L2-1']);
+		});
+
+		it('getSelectionInfo returns correct state when root list is not selectable and all nested items are selected', async() => {
+			const list = await fixture(html`
+				<d2l-list>
+					<d2l-list-item key="L1-1" label="L1-1">
+						<d2l-list slot="nested">
+							<d2l-list-item selectable selected key="L2-1" label="L2-1"></d2l-list-item>
+							<d2l-list-item selectable selected key="L2-2" label="L2-2"></d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+					<d2l-list-item key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			expectSelectionInfo(list, false, listSelectionStates.undefined, []);
+			expectSelectionInfo(list, true, listSelectionStates.all, ['L2-1', 'L2-2']);
+			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.all, ['L2-1', 'L2-2']);
+		});
+
+		it('getSelectionInfo returns correct state when no root items are selected and nested list is not selectable', async() => {
+			const list = await fixture(html`
+				<d2l-list>
+					<d2l-list-item selectable key="L1-1" label="L1-1">
+						<d2l-list slot="nested">
+							<d2l-list-item key="L2-1" label="L2-1"></d2l-list-item>
+							<d2l-list-item key="L2-2" label="L2-2"></d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			expectSelectionInfo(list, false, listSelectionStates.none, []);
+			expectSelectionInfo(list, true, listSelectionStates.none, []);
+			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.undefined, []);
+		});
+
+		it('getSelectionInfo returns correct state when some root items are selected and nested list is not selectable', async() => {
+			const list = await fixture(html`
+				<d2l-list>
+					<d2l-list-item selectable selected key="L1-1" label="L1-1">
+						<d2l-list slot="nested">
+							<d2l-list-item key="L2-1" label="L2-1"></d2l-list-item>
+							<d2l-list-item key="L2-2" label="L2-2"></d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			expectSelectionInfo(list, false, listSelectionStates.some, ['L1-1']);
+			expectSelectionInfo(list, true, listSelectionStates.some, ['L1-1']);
+			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.undefined, []);
+		});
+
+		it('getSelectionInfo returns correct state when all root items are selected and nested list is not selectable', async() => {
+			const list = await fixture(html`
+				<d2l-list>
+					<d2l-list-item selectable selected key="L1-1" label="L1-1">
+						<d2l-list slot="nested">
+							<d2l-list-item key="L2-1" label="L2-1"></d2l-list-item>
+							<d2l-list-item key="L2-2" label="L2-2"></d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+					<d2l-list-item selectable selected key="L1-2" label="L1-2"></d2l-list-item>
+				</d2l-list>
+			`);
+			expectSelectionInfo(list, false, listSelectionStates.all, ['L1-1', 'L1-2']);
+			expectSelectionInfo(list, true, listSelectionStates.all, ['L1-1', 'L1-2']);
+			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.undefined, []);
 		});
 
 	});
