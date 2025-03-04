@@ -99,7 +99,6 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			 * @type {boolean}
 			 */
 			indeterminate: { type: Boolean },
-			isHovered: { state: true },
 			/**
 			 * Name of the input
 			 * @type {string}
@@ -114,7 +113,8 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			 * Value of the input
 			 * @type {string}
 			 */
-			value: { type: String }
+			value: { type: String },
+			_isHovered: { state: true },
 		};
 	}
 
@@ -177,10 +177,10 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 		this.checked = false;
 		this.disabled = false;
 		this.indeterminate = false;
-		this.isHovered = false;
 		this.name = '';
 		this.notTabbable = false;
 		this.value = 'on';
+		this._isHovered = false;
 	}
 
 	static get focusElementSelector() {
@@ -199,7 +199,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 		const offscreenContainer = this.description ? html`<div class="d2l-offscreen" id="${this.#descriptionId}">${this.description}</div>` : null;
 		const ariaDescribedByIds = `${this.description ? this.#descriptionId : ''} ${this._hasInlineHelp ? this.#inlineHelpId : ''}`.trim();
 		const disabledTooltip = disabled && this.disabledTooltip ?
-			html`<d2l-tooltip align="start" class="vdiff-target" for="${this.#inputId}" ?force-show="${this.isHovered}" position="top">${this.disabledTooltip}</d2l-tooltip>` :
+			html`<d2l-tooltip align="start" class="vdiff-target" for="${this.#inputId}" ?force-show="${this._isHovered}" position="top">${this.disabledTooltip}</d2l-tooltip>` :
 			nothing;
 		return html`
 			<label>
@@ -249,11 +249,11 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 	}
 
 	#handleMouseEnter() {
-		this.isHovered = true;
+		this._isHovered = true;
 	}
 
 	#handleMouseLeave() {
-		this.isHovered = false;
+		this._isHovered = false;
 	}
 
 }
