@@ -202,8 +202,8 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			html`<d2l-tooltip align="start" class="vdiff-target" for="${this.#inputId}" ?force-show="${this._isHovered}" position="top">${this.disabledTooltip}</d2l-tooltip>` :
 			nothing;
 		return html`
-			<label>
-				<span @mouseleave="${this.#handleMouseLeave}" @mouseenter="${this.#handleMouseEnter}"><span class="d2l-input-checkbox-wrapper d2l-skeletize"><input
+			<label @mouseleave="${this.#handleMouseLeave}" @mouseenter="${this.#handleMouseEnter}">
+				<span class="d2l-input-checkbox-wrapper d2l-skeletize"><input
 					aria-checked="${ifDefined(ariaChecked)}"
 					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
 					aria-disabled="${ifDefined(disabled && this.disabledTooltip ? 'true' : undefined)}"
@@ -218,7 +218,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 					name="${ifDefined(this.name)}"
 					tabindex="${ifDefined(tabindex)}"
 					type="checkbox"
-					.value="${this.value}"></span><span class="${classMap(textClasses)}"><slot></slot></span></span>
+					.value="${this.value}"></span><span class="${classMap(textClasses)}"><slot></slot></span>
 			</label>
 			${this._renderInlineHelp(this.#inlineHelpId)}
 		  	${offscreenContainer}
