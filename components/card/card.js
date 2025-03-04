@@ -56,7 +56,7 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 			 */
 			target: { type: String, reflect: true },
 			/**
-			 * Accessible text for the card (will be announced when AT user focuses)
+			 * ACCESSIBILITY: REQUIRED: Accessible text for the card for screen reader users
 			 * @type {string}
 			 */
 			text: { type: String, reflect: true },
