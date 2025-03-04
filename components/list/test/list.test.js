@@ -212,14 +212,14 @@ describe('d2l-list', () => {
 			expect(e.detail.position).to.equal('after');
 		});
 
-		it('getSelectionInfo returns state:undefined and no keys when there are no selectables', async() => {
+		it('getSelectionInfo returns state:notSet and no keys when there are no selectables', async() => {
 			const list = await fixture(html`
 				<d2l-list>
 					<d2l-list-item key="L1-1" label="L1-1"></d2l-list-item>
 					<d2l-list-item key="L1-2" label="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
-			expectSelectionInfo(list, false, listSelectionStates.undefined, []);
+			expectSelectionInfo(list, false, listSelectionStates.notSet, []);
 		});
 
 		it('getSelectionInfo returns state:none and no keys', async() => {
@@ -396,7 +396,7 @@ describe('d2l-list', () => {
 					<d2l-list-item key="L1-2" label="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
-			expectSelectionInfo(list, false, listSelectionStates.undefined, []);
+			expectSelectionInfo(list, false, listSelectionStates.notSet, []);
 			expectSelectionInfo(list, true, listSelectionStates.none, []);
 			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.none, []);
 		});
@@ -413,7 +413,7 @@ describe('d2l-list', () => {
 					<d2l-list-item key="L1-2" label="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
-			expectSelectionInfo(list, false, listSelectionStates.undefined, []);
+			expectSelectionInfo(list, false, listSelectionStates.notSet, []);
 			expectSelectionInfo(list, true, listSelectionStates.some, ['L2-1']);
 			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.some, ['L2-1']);
 		});
@@ -430,7 +430,7 @@ describe('d2l-list', () => {
 					<d2l-list-item key="L1-2" label="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
-			expectSelectionInfo(list, false, listSelectionStates.undefined, []);
+			expectSelectionInfo(list, false, listSelectionStates.notSet, []);
 			expectSelectionInfo(list, true, listSelectionStates.all, ['L2-1', 'L2-2']);
 			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.all, ['L2-1', 'L2-2']);
 		});
@@ -449,7 +449,7 @@ describe('d2l-list', () => {
 			`);
 			expectSelectionInfo(list, false, listSelectionStates.none, []);
 			expectSelectionInfo(list, true, listSelectionStates.none, []);
-			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.undefined, []);
+			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.notSet, []);
 		});
 
 		it('getSelectionInfo returns correct state when some root items are selected and nested list is not selectable', async() => {
@@ -466,7 +466,7 @@ describe('d2l-list', () => {
 			`);
 			expectSelectionInfo(list, false, listSelectionStates.some, ['L1-1']);
 			expectSelectionInfo(list, true, listSelectionStates.some, ['L1-1']);
-			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.undefined, []);
+			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.notSet, []);
 		});
 
 		it('getSelectionInfo returns correct state when all root items are selected and nested list is not selectable', async() => {
@@ -483,7 +483,7 @@ describe('d2l-list', () => {
 			`);
 			expectSelectionInfo(list, false, listSelectionStates.all, ['L1-1', 'L1-2']);
 			expectSelectionInfo(list, true, listSelectionStates.all, ['L1-1', 'L1-2']);
-			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.undefined, []);
+			expectSelectionInfo(list.querySelector('d2l-list'), false, listSelectionStates.notSet, []);
 		});
 
 	});

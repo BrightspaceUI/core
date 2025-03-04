@@ -40,7 +40,7 @@ export class SelectionInfo {
 			some: 'some',
 			all: 'all',
 			allPages: 'all-pages',
-			undefined: 'undefined'
+			notSet: 'not-set'
 		};
 	}
 
@@ -100,7 +100,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 	getSelectionInfo() {
 		let allEnabledSelected = true;
-		let state = (this._selectionSelectables.size > 0 ? SelectionInfo.states.none : SelectionInfo.states.undefined);
+		let state = (this._selectionSelectables.size > 0 ? SelectionInfo.states.none : SelectionInfo.states.notSet);
 		const keys = [];
 
 		if (this._selectAllPages) {

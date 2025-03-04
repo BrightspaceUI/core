@@ -280,9 +280,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this.getItems().forEach(item => {
 			if (item._selectionProvider) {
 				const itemSelectionInfo = item._selectionProvider.getSelectionInfo(true);
-				if (state === SelectionInfo.states.undefined) {
+				if (state === SelectionInfo.states.notSet) {
 					state = itemSelectionInfo.state;
-				} else if (state === SelectionInfo.states.none && itemSelectionInfo.state !== SelectionInfo.states.undefined && itemSelectionInfo.state !== SelectionInfo.states.none) {
+				} else if (state === SelectionInfo.states.none && itemSelectionInfo.state !== SelectionInfo.states.notSet && itemSelectionInfo.state !== SelectionInfo.states.none) {
 					state = SelectionInfo.states.some;
 				} else if (state === SelectionInfo.states.all && (itemSelectionInfo.state === SelectionInfo.states.some || itemSelectionInfo.state === SelectionInfo.states.none)) {
 					state = SelectionInfo.states.some;

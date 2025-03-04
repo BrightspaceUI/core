@@ -70,7 +70,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		const oldVal = this._selectionInfo;
 		if (oldVal !== val) {
 			this._selectionInfo = val;
-			if (this._selectionInfo.state !== SelectionInfo.states.undefined) {
+			if (this._selectionInfo.state !== SelectionInfo.states.notSet) {
 				this.setSelected(this._selectionInfo.state === SelectionInfo.states.all);
 			}
 			this.requestUpdate('selectionInfo', oldVal);
@@ -89,7 +89,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		super.updated(changedProperties);
 		if (!this._selectionProvider || !changedProperties.has('selectionInfo')) return;
 		// TODO: consider moving this to willUpdate
-		if (this.selectionInfo.state !== SelectionInfo.states.undefined) {
+		if (this.selectionInfo.state !== SelectionInfo.states.notSet) {
 			this.selected = (this.selectionInfo.state === SelectionInfo.states.all);
 		}
 	}
