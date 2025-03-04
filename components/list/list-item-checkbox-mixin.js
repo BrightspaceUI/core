@@ -88,7 +88,6 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	updated(changedProperties) {
 		super.updated(changedProperties);
 		if (!this._selectionProvider || !changedProperties.has('selectionInfo')) return;
-		// TODO: consider moving this to willUpdate
 		if (this.selectionInfo.state !== SelectionInfo.states.notSet) {
 			this.selected = (this.selectionInfo.state === SelectionInfo.states.all);
 		}
