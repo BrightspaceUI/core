@@ -274,15 +274,24 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		const selectionInfo = super.getSelectionInfo();
 		if (!includeNested) return selectionInfo;
 
+		let state = selectionInfo.state;
 		let keys = selectionInfo.keys;
 
 		this.getItems().forEach(item => {
 			if (item._selectionProvider) {
+				const itemSelectionInfo = item._selectionProvider.getSelectionInfo(true);
+				if (state === SelectionInfo.states.notSet) {
+					state = itemSelectionInfo.state;
+				} else if (state === SelectionInfo.states.none && itemSelectionInfo.state !== SelectionInfo.states.notSet && itemSelectionInfo.state !== SelectionInfo.states.none) {
+					state = SelectionInfo.states.some;
+				} else if (state === SelectionInfo.states.all && (itemSelectionInfo.state === SelectionInfo.states.some || itemSelectionInfo.state === SelectionInfo.states.none)) {
+					state = SelectionInfo.states.some;
+				}
 				keys = [...keys, ...item._selectionProvider.getSelectionInfo(true).keys];
 			}
 		});
 
-		return new SelectionInfo(keys, selectionInfo.state);
+		return new SelectionInfo(keys, state);
 	}
 
 	resizedCallback(width, breakpointsChanged) {
@@ -296,6 +305,16 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			if (width >= breakpoint || index > lastBreakpointIndexToCheck) {
 				this._breakpoint = lastBreakpointIndexToCheck - index - (lastBreakpointIndexToCheck - this.breakpoints.length + 1) * index;
 				return true;
+			}
+		});
+	}
+
+	setSelectionForAll(selected, selectAllPages) {
+		super.setSelectionForAll(selected, selectAllPages);
+		// list-specific logic to push selection state deeper into tree - required to support intermediate nested lists with no direct selectables but with their own nested lists containing selectables
+		this.getItems().forEach(item => {
+			if (!item.selectable && item._selectionProvider) {
+				item._selectionProvider.setSelectionForAll(selected, selectAllPages);
 			}
 		});
 	}

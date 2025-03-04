@@ -651,9 +651,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	_onNestedSlotChange() {
-		if (this.selectable) {
-			this._onNestedSlotChangeCheckboxMixin();
-		}
+		this._onNestedSlotChangeCheckboxMixin();
 		const nestedList = this._getNestedList();
 		if (this._hasNestedList !== !!nestedList) {
 			this._hasNestedList = !!nestedList;
