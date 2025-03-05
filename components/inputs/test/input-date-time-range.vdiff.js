@@ -390,6 +390,7 @@ describe('d2l-input-date-time-range', () => {
 					});
 
 					it('focus end', async() => {
+						await nextFrame();
 						focusElem(actualElem.shadowRoot.querySelector(endDateSelector));
 						await oneEvent(actualElem, 'd2l-tooltip-show');
 						await nextFrameGolden(elem);
