@@ -168,13 +168,13 @@ The `d2l-card` element is a container that provides specific layout using severa
 
 | Property | Type | Description |
 |--|--|--|
-| `text` | String, required | Accessible text for the card for screen reader users |
 | `align-center` | Boolean | Style the card's content and footer as centered horizontally |
 | `download` | Boolean | Download a URL instead of navigating to it |
 | `href` | String | Location for the primary action/navigation |
 | `rel` | String | Relationship of the target object to the link object |
 | `subtle` | Boolean | Subtle aesthetic on non-white backgrounds |
 | `target` | String | Where to display the linked URL |
+| `text` | String | Accessible text for the card |
 
 See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.
 <!-- docs: end hidden content -->
@@ -292,7 +292,6 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
 | Property | Type | Description |
 |--|--|--|
 | `icon` | String, required | Preset icon key (ex. "tier1:gear") |
-| `text` | String, required | Accessible text for the link for screen reader users |
 | `download` | Boolean | Download a URL instead of navigating to it |
 | `href` | String | Location for the primary action/navigation |
 | `rel` | String | Relationship of the target object to the link object |
@@ -300,9 +299,15 @@ The `d2l-card-footer-link` element is an icon link that can be placed in the `fo
 | `secondary-count-type` | String | Controls the style of the secondary count bubble; options are `notification` and `count` |
 | `secondary-count-max-digits` | Number | Overrides the default maximum digits of the secondary count bubble (2 for `notification` and no limit for `count` type) |
 | `target` | String | Where to display the linked URL |
+| `text` | String | Accessible text for the link |
 
 See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.
+<!-- docs: end hidden content -->
 
+## Accessibility
+- The `text` property for the d2l-card and d2l-card-footer-link components is only required if actionable (i.e. the `href` property is used)
+
+<!-- docs: start hidden content -->
 ## Future Improvements
 
 * scroll API for the dialog content (see [#341](https://github.com/BrightspaceUI/core/issues/341))
