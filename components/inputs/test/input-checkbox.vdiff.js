@@ -1,6 +1,6 @@
 import '../input-checkbox.js';
 import '../input-checkbox-spacer.js';
-import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
 
@@ -80,6 +80,27 @@ describe('d2l-input-checkbox', () => {
 				await expect(elem).to.be.golden();
 			});
 		});
+	});
+
+	describe('disabled-tooltip', () => {
+
+		let elem;
+		beforeEach(async() => {
+			elem = await fixture(html`<d2l-input-checkbox disabled disabled-tooltip="Tooltip text">Checkbox</d2l-input-checkbox>`);
+		});
+
+		it('hover', async() => {
+			hoverElem(elem.shadowRoot.querySelector('.d2l-input-checkbox-wrapper'));
+			await oneEvent(elem, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
+		});
+
+		it('focus', async() => {
+			focusElem(elem);
+			await oneEvent(elem, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
+		});
+
 	});
 
 	describe('sass', () => {
