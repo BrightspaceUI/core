@@ -152,8 +152,8 @@ export const dropdownContentStyles = css`
 		box-sizing: border-box;
 		max-width: 100%;
 		outline: none;
-		overscroll-behavior: contain;
 		overflow-y: auto;
+		overscroll-behavior: contain;
 		padding: 1rem;
 	}
 
