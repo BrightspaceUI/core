@@ -153,8 +153,10 @@ export const dropdownContentStyles = css`
 		max-width: 100%;
 		outline: none;
 		overflow-y: auto;
-		overscroll-behavior: contain;
 		padding: 1rem;
+	}
+	.d2l-dropdown-content-container.d2l-dropdown-content-container-overscroll {
+		overscroll-behavior: contain;
 	}
 
 	.d2l-dropdown-content-top,
