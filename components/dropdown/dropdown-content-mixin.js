@@ -1260,7 +1260,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 		const mobileTrayRightLeft = this._useMobileStyling && (this.mobileTray === 'right' || this.mobileTray === 'left');
 		const mobileTrayBottom = this._useMobileStyling && (this.mobileTray === 'bottom');
-		const overscrollFlag = window.D2L?.LP?.Web?.UI?.Flags.Flag('dropdown-overscroll', true) ?? true;
 
 		let stylesMap;
 		if (mobileTrayBottom) {
@@ -1286,10 +1285,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			'd2l-dropdown-content-bottom-scroll': this._bottomOverflow,
 			'd2l-dropdown-content-footer': this._hasFooter || (this._useMobileStyling && this.mobileTray && !this.noMobileCloseButton)
 		};
-		const containerClasses = {
-			'd2l-dropdown-content-container': true,
-			'd2l-dropdown-content-container-overscroll': overscrollFlag
-		};
 
 		let dropdownContentSlots = html`
 			<div
@@ -1301,7 +1296,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 					<slot name="header" @slotchange="${this.__handleHeaderSlotChange}"></slot>
 				</div>
 				<div
-				class="${classMap(containerClasses)}"
+				class="d2l-dropdown-content-container"
 				style=${styleMap(contentStyle)}
 				@scroll=${this.__toggleScrollStyles}>
 					<slot class="d2l-dropdown-content-slot"></slot>

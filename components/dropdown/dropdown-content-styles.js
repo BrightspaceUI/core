@@ -155,9 +155,6 @@ export const dropdownContentStyles = css`
 		overflow-y: auto;
 		padding: 1rem;
 	}
-	.d2l-dropdown-content-container.d2l-dropdown-content-container-overscroll {
-		overscroll-behavior: contain;
-	}
 
 	.d2l-dropdown-content-top,
 	.d2l-dropdown-content-bottom {
