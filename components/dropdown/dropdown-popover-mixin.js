@@ -1,9 +1,10 @@
 import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PopoverMixin } from '../popover/popover-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-export const DropdownPopoverMixin = superclass => class extends PopoverMixin(superclass) {
+export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElement(PopoverMixin(superclass)) {
 
 	static get properties() {
 		return {
@@ -57,6 +58,11 @@ export const DropdownPopoverMixin = superclass => class extends PopoverMixin(sup
 			 * @type {boolean}
 			 */
 			noAutoFocus: { type: Boolean, attribute: 'no-auto-focus' },
+			/**
+			 * Opt-out of showing a close button in the footer of tray-style mobile dropdowns.
+			 * @type {boolean}
+			 */
+			noMobileCloseButton: { type: Boolean, attribute: 'no-mobile-close-button' },
 			/**
 			 * Render with no padding
 			 * @type {boolean}
@@ -219,14 +225,7 @@ export const DropdownPopoverMixin = superclass => class extends PopoverMixin(sup
 			'dropdown-footer-scroll': this._blockEndScroll
 		};
 
-		/*
-		const closeButtonClasses = {
-			'test-close': true,
-			'test-no-close': !(this._mobile && this._mobileTrayLocation),
-			'test-close-no-margin': !this._hasFooterSlotContent
-		};
-		*/
-		//<d2l-button class="${classMap(closeButtonClasses)}" @click=${this.#handleCloseButtonClick}>Close</d2l-button>
+		const closeButtonStyles = this.#getMobileCloseButtonStyles();
 
 		const content = html`
 			<div class="dropdown-content-layout" style="${styleMap(contentLayoutStyles)}">
@@ -238,6 +237,9 @@ export const DropdownPopoverMixin = superclass => class extends PopoverMixin(sup
 				</div>
 				<div class="${classMap(footerClasses)}">
 					<slot name="footer" @slotchange="${this.#handleFooterSlotChange}"></slot>
+					<d2l-button style=${styleMap(closeButtonStyles)} @click=${this.close}>
+						${this.localize('components.dropdown.close')}
+					</d2l-button>
 				</div>
 			</div>			
 		`;
@@ -289,6 +291,29 @@ export const DropdownPopoverMixin = superclass => class extends PopoverMixin(sup
 		  }
 	}
 
+	#getMobileCloseButtonStyles() {
+		if (!this._mobile || !this._mobileTrayLocation) {
+			return { display: 'none' };
+		}
+
+		let footerWidth;
+		if (this.noPaddingFooter) {
+			footerWidth = 'calc(100% - 24px)';
+		} else if (this._hasFooterSlotContent) {
+			footerWidth = '100%';
+		} else {
+			footerWidth = 'calc(100% + 16px)';
+		}
+
+		return {
+			display: !this.noMobileCloseButton ? 'inline-block' : 'none',
+			marginBlock: this._hasFooterSlotContent ? '0' : '-20px -20px',
+			marginInline: this._hasFooterSlotContent ? '0' : '-20px 0',
+			padding: this._hasFooterSlotContent && !this.noPaddingFooter ? '12px 0 0 0' : '12px',
+			width: footerWidth
+		};
+	}
+
 	#handleFooterSlotChange(e) {
 		this._hasFooterSlotContent = e.target.assignedNodes().length !== 0;
 	}
@@ -319,11 +344,5 @@ export const DropdownPopoverMixin = superclass => class extends PopoverMixin(sup
 		this._blockEndScroll = this.#contentElement.scrollHeight - (this.#contentElement.scrollTop + this.#contentElement.clientHeight) >= 5;
 		this._blockStartScroll = this.#contentElement.scrollTop !== 0;
 	}
-
-	/*
-	#handleCloseButtonClick() {
-		this.close();
-	}
-	*/
 
 };
