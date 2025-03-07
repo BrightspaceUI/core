@@ -73,7 +73,7 @@ class SelectAll extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(Li
 		const checkbox = e.target;
 		if (this._provider) this._provider.setSelectionForAll(checkbox.checked, false);
 
-		// keep inner checkbox in sync with checked and indeterminate as based on this.state
+		// keep inner checkbox checked and indeterminate in sync with this.state
 		await this.updateComplete;
 		checkbox.checked = this.#getIsChecked();
 		checkbox.indeterminate = this.#getIsIndeterminate();
