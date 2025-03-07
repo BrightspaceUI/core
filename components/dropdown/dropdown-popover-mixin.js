@@ -199,7 +199,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		this.#contentElement = this.shadowRoot?.querySelector('.dropdown-content');
 		this.addEventListener('d2l-popover-open', this.#handlePopoverOpen);
 		this.addEventListener('d2l-popover-close', this.#handlePopoverClose);
-		this.addEventListener('d2l-popover-position', this.#toggleScrollStyles);
+		this.addEventListener('d2l-popover-position', this.#handlePopoverPosition);
 	}
 
 	render() {
@@ -338,6 +338,13 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 
 		/** Dispatched when the dropdown is opened */
 		this.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
+	}
+
+	#handlePopoverPosition() {
+		this.#toggleScrollStyles();
+
+		/** Dispatched when the dropdown position finishes adjusting */
+		this.dispatchEvent(new CustomEvent('d2l-dropdown-position', { bubbles: true, composed: true }));
 	}
 
 	#toggleScrollStyles() {
