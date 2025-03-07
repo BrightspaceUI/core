@@ -78,6 +78,14 @@ export const PopoverMixin = superclass => class extends superclass {
 				text-align: start;
 				width: fit-content; /* normalize popover */
 			}
+			:host([theme="dark"]) {
+				--d2l-popover-default-animation-name: d2l-popover-animation-dark;
+				--d2l-popover-default-background-color: #333536; /* tungsten @ 70% */
+				--d2l-popover-default-border-color: var(--d2l-color-tungsten);
+				--d2l-popover-default-foreground-color: var(--d2l-color-sylvite);
+				--d2l-popover-default-shadow-color: rgba(0, 0, 0, 1);
+				opacity: 0.9;
+			}
 			:host([hidden]) {
 				display: none;
 			}
@@ -142,6 +150,10 @@ export const PopoverMixin = superclass => class extends superclass {
 			@keyframes d2l-popover-animation {
 				0% { opacity: 0; transform: translate(0, -10px); }
 				100% { opacity: 1; transform: translate(0, 0); }
+			}
+			@keyframes d2l-popover-animation-dark {
+				0% { opacity: 0; transform: translate(0, -10px); }
+				100% { opacity: 0.9; transform: translate(0, 0); }
 			}
 			@media (prefers-reduced-motion: no-preference) {
 				:host([_opened]) {
