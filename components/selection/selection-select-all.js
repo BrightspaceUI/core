@@ -61,8 +61,21 @@ class SelectAll extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(Li
 		`;
 	}
 
-	_handleCheckboxChange(e) {
+	async _handleCheckboxChange(e) {
 		if (this._provider) this._provider.setSelectionForAll(e.target.checked, false);
+
+		// OPTION 1: update checkbox's checked and indeterminate properties if they don't accurately reflect current state
+		await this.updateComplete;
+		const checkbox = this.shadowRoot.querySelector('d2l-input-checkbox');
+		if (!checkbox) return;
+		
+		const currState = this.selectionInfo.state;
+		const shouldBeChecked = currState === SelectionInfo.states.all || currState === SelectionInfo.states.allPages;
+		const shouldBeIndeterminate = currState === SelectionInfo.states.some;
+		if (checkbox.checked !== shouldBeChecked || checkbox.indeterminate !== shouldBeIndeterminate) {
+			checkbox.checked = shouldBeChecked;
+			checkbox.indeterminate = shouldBeIndeterminate;
+		}
 	}
 
 }

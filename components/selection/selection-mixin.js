@@ -115,6 +115,7 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 			if (keys.length > 0) {
 				if (keys.length === this._selectionSelectables.size) state = SelectionInfo.states.all;
+				//else if (allEnabledSelected) state = SelectionInfo.states.all; // OPTION 2: set state to ALL if all selectable are selected
 				else state = SelectionInfo.states.some;
 			}
 		}
