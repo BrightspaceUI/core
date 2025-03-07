@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { PopoverMixin } from '../popover-mixin.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 class Popover extends PopoverMixin(LitElement) {
 
@@ -80,19 +81,22 @@ class Popover extends PopoverMixin(LitElement) {
 			}
 			.test-content {
 				box-sizing: border-box;
+				flex: auto;
 				max-width: 100%;
 				overflow-y: auto;
 				padding: 1rem;
 			}
-			.test-no-header {
-				display: none;
-			}
+			.test-header,
 			.test-footer {
 				box-sizing: border-box;
+				flex: none;
 				max-width: 100%;
-				padding: 0 1rem 1rem 1rem;
 				width: 100%;
 			}
+			.test-footer {
+				padding: 0 1rem 1rem 1rem;
+			}
+			.test-no-header,
 			.test-no-footer {
 				display: none;
 			}
@@ -129,6 +133,9 @@ class Popover extends PopoverMixin(LitElement) {
 
 	render() {
 
+		const contentLayoutStyles = {
+			maxHeight: this._contentHeight ? `${this._contentHeight}px` : undefined
+		}		
 		const headerClasses = {
 			'test-header': true,
 			'test-no-header': !this._hasHeaderSlotContent
@@ -144,7 +151,7 @@ class Popover extends PopoverMixin(LitElement) {
 		};
 
 		const content = html`
-			<div class="test-content-layout">
+			<div class="test-content-layout" style="${styleMap(contentLayoutStyles)}">
 				<div class="${classMap(headerClasses)}">
 					<slot name="header" @slotchange="${this.#handleHeaderSlotChange}"></slot>
 				</div>

@@ -63,7 +63,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				--d2l-popover-default-border-color: var(--d2l-color-mica);
 				--d2l-popover-default-border-radius: 0.3rem;
 				--d2l-popover-default-foreground-color: var(--d2l-color-ferrite);
-				--d2l-popover-default-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
+				--d2l-popover-default-shadow-color: rgba(0, 0, 0, 0.15);
 				background-color: transparent; /* override popover default */
 				border: none; /* override popover */
 				box-sizing: border-box;
@@ -75,6 +75,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				overflow: visible; /* override popover */
 				padding: 0; /* override popover */
 				position: fixed; /* normalize popover */
+				text-align: start;
 				width: fit-content; /* normalize popover */
 			}
 			:host([hidden]) {
@@ -99,7 +100,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				background-color: var(--d2l-popover-background-color, var(--d2l-popover-default-background-color));
 				border: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
 				border-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
-				box-shadow: var(--d2l-popover-shadow, var(--d2l-popover-default-shadow));
+				box-shadow: 0 2px 12px 0 var(--d2l-popover-shadow-color, var(--d2l-popover-default-shadow-color));
 				box-sizing: border-box;
 				max-width: 370px;
 				min-width: 70px;
