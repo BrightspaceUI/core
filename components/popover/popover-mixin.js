@@ -322,7 +322,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._opener = getComposedActiveElement();
 		this.#addAutoCloseHandlers();
 
-		await this.#position();
+		await this.position();
 
 		this._showBackdrop = this._mobile && this._mobileTrayLocation;
 		if (ifrauBackdropService && this._showBackdrop) {
@@ -336,6 +336,94 @@ export const PopoverMixin = superclass => class extends superclass {
 		this.#addRepositionHandlers();
 
 		this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
+
+	}
+
+	async position(contentRect, options) {
+		if (!this._opener) return;
+
+		options = Object.assign({ updateLocation: true, updateHeight: true }, options);
+
+		const content = this.#getContentContainer();
+
+		if (!this._noAutoFit && options.updateHeight) {
+			this._contentHeight = null;
+		}
+
+		// don't let popover content horizontally overflow viewport
+		this._width = null;
+
+		await this.updateComplete;
+
+		const adjustPosition = async() => {
+
+			const scrollHeight = document.documentElement.scrollHeight;
+			const openerRect = this._opener.getBoundingClientRect();
+			contentRect = contentRect ?? content.getBoundingClientRect();
+
+			const height = this._minHeight ?? Math.min(this._maxHeight ?? Number.MAX_VALUE, contentRect.height);
+
+			const spaceRequired = {
+				height: height + 10,
+				width: contentRect.width
+			};
+
+			// space in viewport
+			const spaceAround = this.#constrainSpaceAround({
+				// allow for opener offset + outer margin
+				above: openerRect.top - this._offset - this._margin,
+				// allow for opener offset + outer margin
+				below: window.innerHeight - openerRect.bottom - this._offset - this._margin,
+				// allow for outer margin
+				left: openerRect.left - 20,
+				// allow for outer margin
+				right: document.documentElement.clientWidth - openerRect.right - 15
+			}, spaceRequired, openerRect);
+
+			// space in document
+			const spaceAroundScroll = this.#constrainSpaceAround({
+				above: openerRect.top + document.documentElement.scrollTop,
+				below: scrollHeight - openerRect.bottom - document.documentElement.scrollTop
+			}, spaceRequired, openerRect);
+
+			if (options.updateLocation) {
+				this._location = this.#getLocation(spaceAround, spaceAroundScroll, spaceRequired);
+			}
+
+			this._position = this.#getPosition(spaceAround, openerRect, contentRect);
+			if (!this._noPointer) this._pointerPosition = this.#getPointerPosition(openerRect);
+
+			if (options.updateHeight) {
+
+				// calculate height available to the popover contents for overflow because that is the only area capable of scrolling
+				const availableHeight = (this._location === 'block-start') ? spaceAround.above : spaceAround.below;
+
+				if (!this._noAutoFit && availableHeight && availableHeight > 0) {
+					// only apply maximum if it's less than space available and the header/footer alone won't exceed it (content must be visible)
+					this._contentHeight = this._maxHeight !== null && availableHeight > this._maxHeight
+						? this._maxHeight - 2 : availableHeight;
+
+					// ensure the content height has updated when the __toggleScrollStyles event handler runs
+					await this.updateComplete;
+				}
+
+				// todo: handle inline-start and inline-end locations
+
+			}
+
+			/** Dispatched when the popover position finishes adjusting */
+			this.dispatchEvent(new CustomEvent('d2l-popover-position', { bubbles: true, composed: true }));
+
+		};
+
+		const scrollWidth = content.scrollWidth;
+		const availableWidth = window.innerWidth - 40;
+
+		this._width = (availableWidth > scrollWidth ? scrollWidth : availableWidth);
+
+		await this.updateComplete;
+
+		await adjustPosition();
 
 	}
 
@@ -405,7 +493,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	async resize() {
 		if (!this._opened) return;
 		this._showBackdrop = this._mobile && this._mobileTrayLocation;
-		await this.#position();
+		await this.position();
 	}
 
 	toggleOpen(applyFocus = true) {
@@ -885,100 +973,12 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._mobile = this.#mediaQueryList.matches;
 		if (this._opened) {
 			this._showBackdrop = this._mobile && this._mobileTrayLocation;
-			await this.#position();
+			await this.position();
 		}
 	}
 
 	#handleResize() {
 		this.resize();
-	}
-
-	async #position(contentRect, options) {
-		if (!this._opener) return;
-
-		options = Object.assign({ updateLocation: true, updateHeight: true }, options);
-
-		const content = this.#getContentContainer();
-
-		if (!this._noAutoFit && options.updateHeight) {
-			this._contentHeight = null;
-		}
-
-		// don't let popover content horizontally overflow viewport
-		this._width = null;
-
-		await this.updateComplete;
-
-		const adjustPosition = async() => {
-
-			const scrollHeight = document.documentElement.scrollHeight;
-			const openerRect = this._opener.getBoundingClientRect();
-			contentRect = contentRect ?? content.getBoundingClientRect();
-
-			const height = this._minHeight ?? Math.min(this._maxHeight ?? Number.MAX_VALUE, contentRect.height);
-
-			const spaceRequired = {
-				height: height + 10,
-				width: contentRect.width
-			};
-
-			// space in viewport
-			const spaceAround = this.#constrainSpaceAround({
-				// allow for opener offset + outer margin
-				above: openerRect.top - this._offset - this._margin,
-				// allow for opener offset + outer margin
-				below: window.innerHeight - openerRect.bottom - this._offset - this._margin,
-				// allow for outer margin
-				left: openerRect.left - 20,
-				// allow for outer margin
-				right: document.documentElement.clientWidth - openerRect.right - 15
-			}, spaceRequired, openerRect);
-
-			// space in document
-			const spaceAroundScroll = this.#constrainSpaceAround({
-				above: openerRect.top + document.documentElement.scrollTop,
-				below: scrollHeight - openerRect.bottom - document.documentElement.scrollTop
-			}, spaceRequired, openerRect);
-
-			if (options.updateLocation) {
-				this._location = this.#getLocation(spaceAround, spaceAroundScroll, spaceRequired);
-			}
-
-			this._position = this.#getPosition(spaceAround, openerRect, contentRect);
-			if (!this._noPointer) this._pointerPosition = this.#getPointerPosition(openerRect);
-
-			if (options.updateHeight) {
-
-				// calculate height available to the popover contents for overflow because that is the only area capable of scrolling
-				const availableHeight = (this._location === 'block-start') ? spaceAround.above : spaceAround.below;
-
-				if (!this._noAutoFit && availableHeight && availableHeight > 0) {
-					// only apply maximum if it's less than space available and the header/footer alone won't exceed it (content must be visible)
-					this._contentHeight = this._maxHeight !== null && availableHeight > this._maxHeight
-						? this._maxHeight - 2 : availableHeight;
-
-					// ensure the content height has updated when the __toggleScrollStyles event handler runs
-					await this.updateComplete;
-				}
-
-				// todo: handle inline-start and inline-end locations
-
-			}
-
-			/** Dispatched when the popover position finishes adjusting */
-			this.dispatchEvent(new CustomEvent('d2l-popover-position', { bubbles: true, composed: true }));
-
-		};
-
-		const scrollWidth = content.scrollWidth;
-		const availableWidth = window.innerWidth - 40;
-
-		this._width = (availableWidth > scrollWidth ? scrollWidth : availableWidth);
-
-		await this.updateComplete;
-
-		await adjustPosition();
-
 	}
 
 	#removeAutoCloseHandlers() {
@@ -1005,7 +1005,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		// throttle repositioning (https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event#scroll_event_throttling)
 		if (!this._repositioning) {
 			requestAnimationFrame(() => {
-				this.#position(undefined, { updateLocation: false, updateHeight: false });
+				this.position(undefined, { updateLocation: false, updateHeight: false });
 				this._repositioning = false;
 			});
 		}
