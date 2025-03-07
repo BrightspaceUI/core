@@ -135,7 +135,7 @@ class Popover extends PopoverMixin(LitElement) {
 
 		const contentLayoutStyles = {
 			maxHeight: this._contentHeight ? `${this._contentHeight}px` : undefined
-		}		
+		};
 		const headerClasses = {
 			'test-header': true,
 			'test-no-header': !this._hasHeaderSlotContent
