@@ -446,7 +446,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 					<div class="d2l-collapsible-panel-header-actions" @click="${this._handleActionsClick}">
 						<slot name="actions"></slot>
 					</div>
-					<d2l-icon-custom size="tier1" class="d2l-skeletize">
+					<d2l-icon-custom size="tier1" class="d2l-skeletize" aria-hidden="true">
 						<svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" fill="none" viewBox="0 0 10 18">
 							<path stroke="var(--d2l-color-tungsten)" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
 						</svg>
