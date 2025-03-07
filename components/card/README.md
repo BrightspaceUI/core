@@ -174,7 +174,7 @@ The `d2l-card` element is a container that provides specific layout using severa
 | `rel` | String | Relationship of the target object to the link object |
 | `subtle` | Boolean | Subtle aesthetic on non-white backgrounds |
 | `target` | String | Where to display the linked URL |
-| `text` | String | Accessible text for the card, required if `href` is set |
+| `text` | String | Accessible text for the card; required if `href` is set |
 
 See the [anchor element docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) for more information on standard link attributes and their values.
 <!-- docs: end hidden content -->
