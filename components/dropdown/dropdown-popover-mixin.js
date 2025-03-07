@@ -133,13 +133,13 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 			}
 			.dropdown-header {
 				border-block-end: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
-				border-start-end-radius: 0.3rem;
-				border-start-start-radius: 0.3rem;
+				border-start-end-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
+				border-start-start-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
 			}
 			.dropdown-footer {
 				border-block-start: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
-				border-end-end-radius: 0.3rem;
-				border-end-start-radius: 0.3rem;
+				border-end-end-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
+				border-end-start-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
 			}
 			.dropdown-no-header,
 			.dropdown-no-footer {
