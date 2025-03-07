@@ -232,12 +232,14 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				font-size: inherit;
 				font-weight: inherit;
 				letter-spacing: inherit;
-				order: 1;
+				line-height: inherit;
 				outline: none;
 				padding-block: 0;
 				padding-inline: 0;
+				text-align: inherit;
 			}
 			d2l-icon-custom {
+				align-self: self-start;
 				height: 0.9rem;
 				margin: 0.6rem;
 				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
