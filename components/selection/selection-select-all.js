@@ -52,30 +52,31 @@ class SelectAll extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(Li
 		return html`
 			<d2l-input-checkbox
 				aria-label="${this.localize('components.selection.select-all')}"
-				@change="${this._handleCheckboxChange}"
-				?checked="${this.selectionInfo.state === SelectionInfo.states.all || this.selectionInfo.state === SelectionInfo.states.allPages}"
+				@change="${this.#handleCheckboxChange}"
+				?checked="${this.#getIsChecked()}"
 				?disabled="${this.disabled}"
 				description="${ifDefined(this.selectionInfo.state !== SelectionInfo.states.none ? summary : undefined)}"
-				?indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}">
+				?indeterminate="${this.#getIsIndeterminate()}">
 			</d2l-input-checkbox>
 		`;
 	}
 
-	async _handleCheckboxChange(e) {
-		if (this._provider) this._provider.setSelectionForAll(e.target.checked, false);
+	#getIsChecked() {
+		return this.selectionInfo.state === SelectionInfo.states.all || this.selectionInfo.state === SelectionInfo.states.allPages;
+	}
 
-		// OPTION 1: update checkbox's checked and indeterminate properties if they don't accurately reflect current state
+	#getIsIndeterminate() {
+		return this.selectionInfo.state === SelectionInfo.states.some;
+	}
+
+	async #handleCheckboxChange(e) {
+		const checkbox = e.target;
+		if (this._provider) this._provider.setSelectionForAll(checkbox.checked, false);
+
+		// keep inner checkbox in sync with checked and indeterminate as based on this.state
 		await this.updateComplete;
-		const checkbox = this.shadowRoot.querySelector('d2l-input-checkbox');
-		if (!checkbox) return;
-		
-		const currState = this.selectionInfo.state;
-		const shouldBeChecked = currState === SelectionInfo.states.all || currState === SelectionInfo.states.allPages;
-		const shouldBeIndeterminate = currState === SelectionInfo.states.some;
-		if (checkbox.checked !== shouldBeChecked || checkbox.indeterminate !== shouldBeIndeterminate) {
-			checkbox.checked = shouldBeChecked;
-			checkbox.indeterminate = shouldBeIndeterminate;
-		}
+		checkbox.checked = this.#getIsChecked();
+		checkbox.indeterminate = this.#getIsIndeterminate();
 	}
 
 }
