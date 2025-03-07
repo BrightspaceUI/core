@@ -148,7 +148,12 @@ export const DropdownPopoverMixin = superclass => class extends PopoverMixin(sup
 			.dropdown-footer-scroll {
 				box-shadow: 0 -3px 3px 0 var(--d2l-popover-shadow-color, var(--d2l-popover-default-shadow-color));
 			}
-			
+
+			:host([_mobile][_mobile-tray-location="inline-start"][opened]) .dropdown-content-layout,
+			:host([_mobile][_mobile-tray-location="inline-end"][opened]) .dropdown-content-layout {
+				height: 100vh;
+			}
+
 			/*
 			.test-close {
 				margin-block-start: 12px;
@@ -193,8 +198,9 @@ export const DropdownPopoverMixin = superclass => class extends PopoverMixin(sup
 
 	render() {
 
+		const fillHeight = this._mobile && (this._mobileTrayLocation === 'inline-start' || this._mobileTrayLocation === 'inline-end');
 		const contentLayoutStyles = {
-			maxHeight: this._contentHeight ? `${this._contentHeight}px` : undefined
+			maxHeight: (!fillHeight && this._contentHeight) ? `${this._contentHeight}px` : undefined
 		};
 		const contentClasses = {
 			'dropdown-content': true,
