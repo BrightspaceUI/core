@@ -272,6 +272,8 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		await this.updateComplete; // wait before applying focus to opener
 		this.#focusOpener();
+
+		/** Dispatched when the popover is closed */
 		this.dispatchEvent(new CustomEvent('d2l-popover-close', { bubbles: true, composed: true }));
 
 	}
@@ -335,6 +337,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		this.#addRepositionHandlers();
 
+		/** Dispatched when the popover is opened */
 		this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
 
 	}
