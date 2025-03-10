@@ -20,7 +20,7 @@ describe('d2l-collapsible-panel', () => {
 			`);
 
 			const button = elem.shadowRoot.querySelector('.d2l-collapsible-panel-opener');
-			expect(button.ariaLabel).to.equal('Panel Title');
+			expect(button.textContent).to.equal('Panel Title');
 		});
 
 		it('should be expand-collapse-label if provided', async() => {
