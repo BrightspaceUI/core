@@ -273,7 +273,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		await this.updateComplete; // wait before applying focus to opener
 		this.#focusOpener();
 
-		/** Dispatched when the popover is closed */
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-popover-close', { bubbles: true, composed: true }));
 
 	}
@@ -337,7 +337,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		this.#addRepositionHandlers();
 
-		/** Dispatched when the popover is opened */
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
 
 	}
@@ -414,7 +414,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 			}
 
-			/** Dispatched when the popover position finishes adjusting */
+			/** @ignore */
 			this.dispatchEvent(new CustomEvent('d2l-popover-position', { bubbles: true, composed: true }));
 
 		};
@@ -968,7 +968,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	#handleFocusTrapEnter() {
 		this.#focusContent(this.#getContentContainer());
 
-		/** Dispatched when user focus enters the popover (trap-focus option only) */
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-popover-focus-enter', { detail: { applyFocus: this._applyFocus } }));
 	}
 
