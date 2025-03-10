@@ -6,7 +6,6 @@ import { heading1Styles, heading2Styles, heading3Styles, heading4Styles } from '
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -93,7 +92,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	static get styles() {
-		return [super.styles, heading1Styles, heading2Styles, heading3Styles, heading4Styles, offscreenStyles, css`
+		return [super.styles, heading1Styles, heading2Styles, heading3Styles, heading4Styles, css`
 			:host {
 				--d2l-collapsible-panel-focus-outline: solid 2px var(--d2l-color-celestine);
 				--d2l-collapsible-panel-spacing-inline: 0.9rem;
