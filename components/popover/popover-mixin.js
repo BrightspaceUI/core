@@ -277,6 +277,8 @@ export const PopoverMixin = superclass => class extends superclass {
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-popover-close', { bubbles: true, composed: true }));
 
+		this._opener = null;
+
 	}
 
 	configure(properties) {
@@ -306,7 +308,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._trapFocus = properties?.trapFocus ?? false;
 	}
 
-	async open(applyFocus = true) {
+	async open(opener, applyFocus = true) {
 		if (this._opened) return;
 
 		const ifrauBackdropService = await tryGetIfrauBackdropService();
@@ -322,7 +324,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		this._previousFocusableAncestor = getPreviousFocusableAncestor(this, false, false);
 
-		this._opener = getComposedActiveElement();
+		this._opener = opener;
 		this.#addAutoCloseHandlers();
 
 		await this.position();
@@ -500,9 +502,9 @@ export const PopoverMixin = superclass => class extends superclass {
 		await this.position();
 	}
 
-	toggleOpen(applyFocus = true) {
+	toggleOpen(opener, applyFocus = true) {
 		if (this._opened) return this.close();
-		else return this.open(!this._noAutoFocus && applyFocus);
+		else return this.open(opener, (!this._noAutoFocus && applyFocus));
 	}
 
 	#ifrauContextInfo;

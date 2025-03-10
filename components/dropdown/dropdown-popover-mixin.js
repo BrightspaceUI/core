@@ -1,5 +1,6 @@
 import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { getFlag } from '../../helpers/flags.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PopoverMixin } from '../popover/popover-mixin.js';
@@ -266,6 +267,16 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		}
 	}
 
+	async open(applyFocus = true) {
+		const opener = this.#getOpener();
+		super.open(opener, applyFocus);
+	}
+
+	toggleOpen(applyFocus = true) {
+		const opener = this.#getOpener();
+		super.toggleOpen(opener, applyFocus);
+	}
+
 	#contentElement;
 
 	#adaptMobileTrayLocation(val) {
@@ -308,6 +319,10 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		};
 	}
 
+	#getOpener() {
+		return findComposedAncestor(this, elem => elem.dropdownOpener);
+	}
+
 	#handleFooterSlotChange(e) {
 		this._hasFooterSlotContent = e.target.assignedNodes().length !== 0;
 	}
@@ -317,10 +332,12 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	#handlePopoverClose() {
-		this.opened = false;
+		setTimeout(() => {
+			this.opened = false;
 
-		/** Dispatched when the dropdown is closed */
-		this.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
+			/** Dispatched when the dropdown is closed */
+			this.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
+		});
 	}
 
 	#handlePopoverOpen() {

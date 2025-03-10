@@ -48,11 +48,6 @@ class Popover extends PopoverMixin(LitElement) {
 			 */
 			noPointer: { type: Boolean, reflect: true, attribute: 'no-pointer' },
 			/**
-			 * Whether the popover is open or not
-			 * @type {boolean}
-			 */
-			opened: { type: Boolean, reflect: true },
-			/**
 			 * Position the popover before or after the opener. Default is "block-end" (after).
 			 * @type {'block-start'|'block-end'}
 			 */
@@ -118,7 +113,6 @@ class Popover extends PopoverMixin(LitElement) {
 		this.noAutoClose = false;
 		this.noAutoFocus = false;
 		this.noPointer = false;
-		this.opened = false;
 		this.trapFocus = false;
 
 		this._hasFooterSlotContent = false;
@@ -128,7 +122,6 @@ class Popover extends PopoverMixin(LitElement) {
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('d2l-popover-open', this.#handlePopoverOpen);
-		this.addEventListener('d2l-popover-close', this.#handlePopoverClose);
 	}
 
 	render() {
@@ -183,10 +176,6 @@ class Popover extends PopoverMixin(LitElement) {
 				trapFocus: this.trapFocus
 			});
 		}
-		if (changedProperties.has('opened')) {
-			if (this.opened) this.open(true);
-			else if (changedProperties.get('opened')) this.close();
-		}
 	}
 
 	#getContentContainer() {
@@ -210,13 +199,7 @@ class Popover extends PopoverMixin(LitElement) {
 		this._hasHeaderSlotContent = e.target.assignedNodes().length !== 0;
 	}
 
-	#handlePopoverClose() {
-		this.opened = false;
-	}
-
 	#handlePopoverOpen() {
-		this.opened = true;
-
 		const content = this.#getContentContainer();
 		if (!this.noAutoFit && content) {
 			content.scrollTop ??= 0;
