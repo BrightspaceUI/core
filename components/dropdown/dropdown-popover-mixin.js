@@ -4,6 +4,8 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PopoverMixin } from '../popover/popover-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+export const usePopoverMixin = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-7472-dropdown-popover', false) ?? false;
+
 export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElement(PopoverMixin(superclass)) {
 
 	static get properties() {

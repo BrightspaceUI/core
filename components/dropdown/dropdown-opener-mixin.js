@@ -1,7 +1,6 @@
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
-
-const usePopoverMixin = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-7472-dropdown-popover', false);
+import { usePopoverMixin } from './dropdown-popover-mixin.js';
 
 const intersectionObserver = new IntersectionObserver(entries => {
 	entries.forEach(entry => {

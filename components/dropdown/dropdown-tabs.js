@@ -1,9 +1,8 @@
 import { css, LitElement } from 'lit';
+import { DropdownPopoverMixin, usePopoverMixin } from './dropdown-popover-mixin.js';
 import { DropdownContentMixin } from './dropdown-content-mixin.js';
 import { dropdownContentStyles } from './dropdown-content-styles.js';
-import { DropdownPopoverMixin } from './dropdown-popover-mixin.js';
 
-const usePopoverMixin = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-7472-dropdown-popover', false);
 if (usePopoverMixin) {
 
 	/**
