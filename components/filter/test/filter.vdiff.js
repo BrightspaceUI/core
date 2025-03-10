@@ -191,12 +191,32 @@ describe('filter', () => {
 			});
 		});
 
-		it('select-all-then-clear', async() => {
+		it.only('select-all-then-clear', async() => {
 			const template = html`
 				<d2l-filter>
 					<d2l-filter-dimension-set key="course" text="Course" select-all>
 						<d2l-filter-dimension-set-value key="art" text="Art" selected></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="biology" text="Biology" disabled></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="chemistry" text="Chemistry"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="english" text="English"></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			`;
+			const elem = await fixture(template);
+			elem.opened = true;
+			await oneEvent(elem, 'd2l-filter-dimension-first-open');
+			await nextFrame();
+			await clickElem(elem.shadowRoot.querySelector('d2l-selection-select-all'));
+			await clickElem(elem.shadowRoot.querySelector('[text="Clear"]'));
+			await expect(elem).to.be.golden();
+		});
+
+		it.only('select-all-with-selected-disabled-then-clear', async() => {
+			const template = html`
+				<d2l-filter>
+					<d2l-filter-dimension-set key="course" text="Course" select-all>
+						<d2l-filter-dimension-set-value key="art" text="Art" selected></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="biology" text="Biology" selected disabled></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="chemistry" text="Chemistry"></d2l-filter-dimension-set-value>
 						<d2l-filter-dimension-set-value key="english" text="English"></d2l-filter-dimension-set-value>
 					</d2l-filter-dimension-set>
