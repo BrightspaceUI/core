@@ -327,7 +327,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			}
 		} else {
 			this.toggleOpen(true);
-		} 
+		}
 	}
 
 	__updateContentVisibility(visible) {
