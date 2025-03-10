@@ -110,6 +110,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				border-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
 				box-shadow: 0 2px 12px 0 var(--d2l-popover-shadow-color, var(--d2l-popover-default-shadow-color));
 				box-sizing: border-box;
+				display: flex;
 				max-width: 370px;
 				min-width: 70px;
 				width: 100vw;

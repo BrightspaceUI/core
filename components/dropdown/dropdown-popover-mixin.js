@@ -144,9 +144,13 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 				border-end-end-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
 				border-end-start-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
 			}
-			.dropdown-no-header,
+			.dropdown-no-header {
+				border-block-end: none;
+				padding: 0;
+			}
 			.dropdown-no-footer {
-				display: none;
+				border-block-start: none;
+				padding: 0;
 			}
 			.dropdown-no-padding {
 				padding: 0;
