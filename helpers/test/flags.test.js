@@ -3,6 +3,10 @@ import { getFlag } from '../flags.js';
 
 describe('flags', () => {
 
+	beforeEach(() => {
+		window.D2L = undefined;
+	});
+
 	it('should return default value when D2L API is not defined', async() => {
 		expect(getFlag('some-flag', true)).to.be.true;
 	});
