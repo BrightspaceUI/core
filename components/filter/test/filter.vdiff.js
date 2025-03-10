@@ -191,7 +191,7 @@ describe('filter', () => {
 			});
 		});
 
-		it.only('select-all-then-clear', async() => {
+		it('select-all-then-clear', async() => {
 			const template = html`
 				<d2l-filter>
 					<d2l-filter-dimension-set key="course" text="Course" select-all>
@@ -211,7 +211,7 @@ describe('filter', () => {
 			await expect(elem).to.be.golden();
 		});
 
-		it.only('select-all-with-selected-disabled-then-clear', async() => {
+		it('select-all-with-selected-disabled-then-clear', async() => {
 			const template = html`
 				<d2l-filter>
 					<d2l-filter-dimension-set key="course" text="Course" select-all>
