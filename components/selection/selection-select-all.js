@@ -52,17 +52,31 @@ class SelectAll extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(Li
 		return html`
 			<d2l-input-checkbox
 				aria-label="${this.localize('components.selection.select-all')}"
-				@change="${this._handleCheckboxChange}"
-				?checked="${this.selectionInfo.state === SelectionInfo.states.all || this.selectionInfo.state === SelectionInfo.states.allPages}"
+				@change="${this.#handleCheckboxChange}"
+				?checked="${this.#getIsChecked()}"
 				?disabled="${this.disabled}"
 				description="${ifDefined(this.selectionInfo.state !== SelectionInfo.states.none ? summary : undefined)}"
-				?indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}">
+				?indeterminate="${this.#getIsIndeterminate()}">
 			</d2l-input-checkbox>
 		`;
 	}
 
-	_handleCheckboxChange(e) {
-		if (this._provider) this._provider.setSelectionForAll(e.target.checked, false);
+	#getIsChecked() {
+		return this.selectionInfo.state === SelectionInfo.states.all || this.selectionInfo.state === SelectionInfo.states.allPages;
+	}
+
+	#getIsIndeterminate() {
+		return this.selectionInfo.state === SelectionInfo.states.some;
+	}
+
+	async #handleCheckboxChange(e) {
+		const checkbox = e.target;
+		if (this._provider) this._provider.setSelectionForAll(checkbox.checked, false);
+
+		// keep inner checkbox checked and indeterminate in sync with this.state
+		await this.updateComplete;
+		checkbox.checked = this.#getIsChecked();
+		checkbox.indeterminate = this.#getIsIndeterminate();
 	}
 
 }
