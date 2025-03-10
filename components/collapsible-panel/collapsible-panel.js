@@ -5,6 +5,7 @@ import { css, html, LitElement } from 'lit';
 import { heading1Styles, heading2Styles, heading3Styles, heading4Styles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -223,32 +224,37 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				margin: 0.3rem;
 			}
 			.d2l-collapsible-panel-opener {
-				align-self: self-start;
 				background-color: transparent;
 				border: none;
+				color: inherit;
 				cursor: pointer;
-				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
-				order: 1;
+				font-family: inherit;
+				font-size: inherit;
+				font-weight: inherit;
+				letter-spacing: inherit;
+				line-height: inherit;
 				outline: none;
 				padding-block: 0;
 				padding-inline: 0;
+				text-align: inherit;
 			}
-			.d2l-collapsible-panel-opener > d2l-icon-custom {
+			d2l-icon-custom {
+				align-self: self-start;
 				height: 0.9rem;
 				margin: 0.6rem;
-				margin-inline-end: 0;
+				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
 				position: relative;
 				width: 0.9rem;
 			}
-			:host([dir="rtl"]) .d2l-collapsible-panel-opener > d2l-icon-custom {
+			:host([dir="rtl"]) d2l-icon-custom {
 				transform: scale(-1, 1);
 				transform-origin: center;
 			}
-			.d2l-collapsible-panel-opener > d2l-icon-custom svg {
+			d2l-icon-custom svg {
 				position: absolute;
 				transform-origin: 0.4rem;
 			}
-			:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom svg {
+			:host([expanded]) d2l-icon-custom svg {
 				fill: var(--d2l-color-tungsten);
 				transform: rotate(90deg);
 			}
@@ -256,10 +262,10 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				.d2l-collapsible-panel-divider {
 					transition: opacity var(--d2l-collapsible-panel-transition-time) ease-in-out;
 				}
-				.d2l-collapsible-panel-opener > d2l-icon-custom svg {
+				d2l-icon-custom svg {
 					animation: d2l-collapsible-panel-opener-close var(--d2l-collapsible-panel-arrow-time) ease-in-out;
 				}
-				:host([expanded]) .d2l-collapsible-panel-opener > d2l-icon-custom svg {
+				:host([expanded]) d2l-icon-custom svg {
 					animation: d2l-collapsible-panel-opener-open var(--d2l-collapsible-panel-arrow-time) ease-in-out;
 				}
 				/* stylelint-disable order/properties-alphabetical-order */
@@ -432,32 +438,21 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	_renderHeader() {
-		const expandCollapseLabel = this.expandCollapseLabel || this.panelTitle;
 		return html`
 			<div class="d2l-collapsible-panel-header" @click="${this._handleHeaderClick}">
 				<div class="d2l-collapsible-panel-before">
 					<slot name="before" @slotchange="${this._handleBeforeSlotChange}"></slot>
 				</div>
 				<div class="d2l-collapsible-panel-header-primary">
-					<button
-						class="d2l-collapsible-panel-opener"
-						aria-expanded="${this.expanded}"
-						type="button"
-						@click="${this._handleHeaderClick}"
-						@focus="${this._onFocus}"
-						@blur="${this._onBlur}"
-						aria-label="${expandCollapseLabel}"
-						>
-						<d2l-icon-custom size="tier1" class="d2l-skeletize">
-							<svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" fill="none" viewBox="0 0 10 18">
-								<path stroke="var(--d2l-color-tungsten)" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
-							</svg>
-						</d2l-icon-custom>
-					</button>
 					${this._renderPanelTitle()}
 					<div class="d2l-collapsible-panel-header-actions" @click="${this._handleActionsClick}">
 						<slot name="actions"></slot>
 					</div>
+					<d2l-icon-custom size="tier1" class="d2l-skeletize" aria-hidden="true">
+						<svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" fill="none" viewBox="0 0 10 18">
+							<path stroke="var(--d2l-color-tungsten)" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
+						</svg>
+					</d2l-icon-custom>
 				</div>
 				<div class="d2l-collapsible-panel-header-secondary" @click="${this._handleHeaderSecondaryClick}">
 					<slot name="header"></slot>
@@ -477,14 +472,25 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			[`d2l-heading-${headingStyle}`]: true,
 		};
 
+		const button = html`
+			<button
+				class="d2l-collapsible-panel-opener"
+				aria-expanded="${this.expanded}"
+				type="button"
+				@click="${this._handleHeaderClick}"
+				@focus="${this._onFocus}"
+				@blur="${this._onBlur}"
+				aria-label="${ifDefined(this.expandCollapseLabel)}">${this.panelTitle}</button>
+		`;
+
 		const headingLevel = normalizeHeadingLevel(this.headingLevel);
 		switch (headingLevel) {
-			case 1: return html`<h1 class="${classMap(titleClasses)}">${this.panelTitle}</h1>`;
-			case 2: return html`<h2 class="${classMap(titleClasses)}">${this.panelTitle}</h2>`;
-			case 3: return html`<h3 class="${classMap(titleClasses)}">${this.panelTitle}</h3>`;
-			case 4: return html`<h4 class="${classMap(titleClasses)}">${this.panelTitle}</h4>`;
-			case 5: return html`<h5 class="${classMap(titleClasses)}">${this.panelTitle}</h5>`;
-			case 6: return html`<h6 class="${classMap(titleClasses)}">${this.panelTitle}</h6>`;
+			case 1: return html`<h1 class="${classMap(titleClasses)}">${button}</h1>`;
+			case 2: return html`<h2 class="${classMap(titleClasses)}">${button}</h2>`;
+			case 3: return html`<h3 class="${classMap(titleClasses)}">${button}</h3>`;
+			case 4: return html`<h4 class="${classMap(titleClasses)}">${button}</h4>`;
+			case 5: return html`<h5 class="${classMap(titleClasses)}">${button}</h5>`;
+			case 6: return html`<h6 class="${classMap(titleClasses)}">${button}</h6>`;
 		}
 	}
 
