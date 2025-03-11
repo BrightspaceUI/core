@@ -141,7 +141,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (!this.openOnHover || !changedProperties.has('_isFading')) return;
 		const element = this.__getContentElement();
 		if (!element) return;
-		// todo: deal with this fading for popover
 		if (this._isFading) {
 			element.classList.add('d2l-dropdown-content-fading');
 		} else {
