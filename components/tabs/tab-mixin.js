@@ -7,11 +7,17 @@ const keyCodes = {
 	SPACE: 32
 };
 
+// const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	static get properties() {
 		return {
+			activeFocusable: { type: Boolean, reflect: true, attribute: 'active-focusable' },
 			selected: { type: Boolean, reflect: true },
+			state: { type: String, reflect: true },
+			/** @ignore */
+			tabindex: { type: Number, reflect: true }
 		};
 	}
 
@@ -66,7 +72,10 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		this.ariaSelected = false;
 		this.role = 'tab';
 		this.selected = false;
-		this.tabIndex = -1;
+		this.tabindex = -1;
+		this.activeFocusable = false;
+
+		// this.state = reduceMotion ? '' : 'adding';
 	}
 
 	connectedCallback() {
@@ -89,6 +98,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 			this.#resizeObserver.disconnect();
 			this.#resizeObserver = null;
 		}
+		// this.state = reduceMotion ? '' : 'removing';
 	}
 
 	render() {
@@ -102,16 +112,23 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	update(changedProperties) {
 		super.update(changedProperties);
-		changedProperties.forEach((oldVal, prop) => {
+		changedProperties.forEach((_, prop) => {
 			if (prop === 'selected') {
 				this.ariaSelected = this.selected;
-				if (this.selected === 'true') {
+				if (this.selected) {
 					this.dispatchEvent(new CustomEvent(
 						'd2l-tab-selected', { bubbles: true, composed: true }
 					));
 				}
 			}
 		});
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('activeFocusable')) {
+			this.tabindex = this.activeFocusable ? 0 : -1;
+		}
 	}
 
 	renderContent() {
