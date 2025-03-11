@@ -215,7 +215,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		};
 		const footerClasses = {
 			'dropdown-footer': true,
-			'dropdown-no-footer': !(this._hasFooterSlotContent || (this._mobile && this._mobileTrayLocation)),
+			'dropdown-no-footer': !(this._hasFooterSlotContent || (this._mobile && this._mobileTrayLocation && !this.noMobileCloseButton)),
 			'dropdown-no-padding': this.noPaddingFooter,
 			'dropdown-footer-scroll': this._blockEndScroll
 		};

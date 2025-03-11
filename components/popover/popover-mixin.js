@@ -119,6 +119,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				box-sizing: border-box;
 				display: inline-block;
 				max-width: 100%;
+				min-width: inherit;
 				outline: none;
 				overflow-y: auto;
 			}
