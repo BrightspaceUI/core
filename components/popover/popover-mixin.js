@@ -277,8 +277,6 @@ export const PopoverMixin = superclass => class extends superclass {
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-popover-close', { bubbles: true, composed: true }));
 
-		this._opener = null;
-
 	}
 
 	configure(properties) {
