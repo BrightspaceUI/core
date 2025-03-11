@@ -1,5 +1,5 @@
 import '../input-checkbox.js';
-import { expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 const uncheckedFixture = html`<d2l-input-checkbox aria-label="basic"></d2l-input-checkbox>`;
 const indeterminateCheckedFixture = html`<d2l-input-checkbox indeterminate checked></d2l-input-checkbox>`;
@@ -215,6 +215,22 @@ describe('d2l-input-checkbox', () => {
 			setTimeout(() => elem.simulateClick());
 			await oneEvent(elem, 'change');
 			expect(elem.checked).to.be.true;
+		});
+
+	});
+
+	describe('disabled', () => {
+
+		it('should not be toggleable when disabled without tooltip', async() => {
+			const elem = await fixture(html`<d2l-input-checkbox disabled aria-label="disabled"></d2l-input-checkbox>`);
+			await clickElem(getInput(elem));
+			expect(elem.checked).to.be.false;
+		});
+
+		it('should not be toggleable when disabled with tooltip', async() => {
+			const elem = await fixture(html`<d2l-input-checkbox disabled disabled-tooltip="tooltip" aria-label="disabled"></d2l-input-checkbox>`);
+			await clickElem(getInput(elem));
+			expect(elem.checked).to.be.false;
 		});
 
 	});

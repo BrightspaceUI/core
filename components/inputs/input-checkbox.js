@@ -210,7 +210,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 					aria-label="${ifDefined(this.ariaLabel)}"
 					@change="${this.#handleChange}"
 					class="d2l-input-checkbox"
-					@click="${this._handleClick}"
+					@click="${this.#handleClick}"
 					.checked="${this.checked}"
 					?disabled="${disabled && !this.disabledTooltip}"
 					id="${this.#inputId}"
@@ -246,6 +246,10 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			'change',
 			{ bubbles: true, composed: false }
 		));
+	}
+
+	#handleClick(e) {
+		if (this.disabled) e.preventDefault();
 	}
 
 	#handleMouseEnter() {
