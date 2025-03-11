@@ -11,7 +11,6 @@ import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { repeat } from 'lit/directives/repeat.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -19,41 +18,13 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const scrollButtonWidth = 56;
 
-// remove once IE11 is no longer supported
-if (!Array.prototype.findIndex) {
-	Object.defineProperty(Array.prototype, 'findIndex', {
-		value: function(predicate) {
-
-			if (this === null) throw new TypeError('"this" is null or not defined');
-
-			const o = Object(this);
-			const len = o.length >>> 0;
-
-			if (typeof predicate !== 'function') throw new TypeError('predicate must be a function');
-
-			const thisArg = arguments[1];
-			let k = 0;
-
-			while (k < len) {
-				const kValue = o[k];
-				if (predicate.call(thisArg, kValue, k, o)) return k;
-				k++;
-			}
-
-			return -1;
-		},
-		configurable: true,
-		writable: true
-	});
-}
-
 /**
  * A component for tabbed content. It supports the "d2l-tab-panel" component for the content, renders tabs responsively, and provides virtual scrolling for large tab lists.
  * @slot - Contains the tab panels (e.g., "d2l-tab-panel" components)
  * @slot ext - Additional content (e.g., a button) positioned at right
  * @fires d2l-tabs-initialized - Dispatched when the component is initialized
  */
-class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(LitElement)))) {
+class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -113,11 +84,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 			}
 			.d2l-tabs-container-ext {
 				flex: none;
-				padding-left: 4px;
-			}
-			:host([dir="rtl"]) .d2l-tabs-container-ext {
-				padding-left: 0;
-				padding-right: 4px;
+				padding-inline: 4px 0;
 			}
 			.d2l-tabs-container-list {
 				display: block;
@@ -136,27 +103,15 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 				z-index: 1;
 			}
 			.d2l-tabs-scroll-previous-container {
-				left: 0;
-				margin-left: 4px;
-			}
-			:host([dir="rtl"]) .d2l-tabs-scroll-previous-container {
-				left: auto;
-				margin-left: 0;
-				margin-right: 4px;
-				right: 0;
+				inset-inline-start: 0;
+				margin-inline: 4px 0;
 			}
 			.d2l-tabs-container[data-allow-scroll-previous] > .d2l-tabs-scroll-previous-container {
 				display: inline-block;
 			}
 			.d2l-tabs-scroll-next-container {
-				margin-right: 4px;
-				right: 0;
-			}
-			:host([dir="rtl"]) .d2l-tabs-scroll-next-container {
-				left: 0;
-				margin-left: 4px;
-				margin-right: 0;
-				right: auto;
+				inset-inline-end: 0;
+				margin-inline: 0 4px;
 			}
 			.d2l-tabs-container[data-allow-scroll-next] > .d2l-tabs-scroll-next-container {
 				display: inline-block;
@@ -290,7 +245,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 				const measures = this._getMeasures();
 				const newTranslationValue = this._calculateScrollPosition(tabInfo, measures);
 
-				if (this.dir !== 'rtl') {
+				if (!this.#isRTL()) {
 					if (newTranslationValue >= 0) return;
 				} else {
 					if (newTranslationValue <= 0) return;
@@ -434,8 +389,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		const isOverflowingLeft = (selectedTabMeasures.offsetLeft + this._translationValue < 0);
 		const isOverflowingRight = (selectedTabMeasures.offsetLeft + selectedTabMeasures.rect.width + this._translationValue > measures.tabsContainerRect.width);
 
+		const isRTL = this.#isRTL();
+
 		let getNewTranslationValue;
-		if (this.dir !== 'rtl') {
+		if (!isRTL) {
 			getNewTranslationValue = () => {
 				if (selectedTabIndex === 0) {
 					// position selected tab at beginning
@@ -471,7 +428,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		let expectedPosition;
 
 		// make sure the new position will not place selected tab behind left scroll button
-		if (this.dir !== 'rtl') {
+		if (!isRTL) {
 			expectedPosition = selectedTabMeasures.offsetLeft + newTranslationValue;
 			if (newTranslationValue < 0 && this._isPositionInLeftScrollArea(expectedPosition)) {
 				newTranslationValue = getNewTranslationValue();
@@ -483,7 +440,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 			}
 		}
 
-		if (this.dir !== 'rtl') {
+		if (!isRTL) {
 			// make sure there will not be any empty space between left side of container and first tab
 			if (newTranslationValue > 0) newTranslationValue = 0;
 		} else {
@@ -492,7 +449,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		}
 
 		// make sure the new position will not place selected tab behind the right scroll button
-		if (this.dir !== 'rtl') {
+		if (!isRTL) {
 			expectedPosition = selectedTabMeasures.offsetLeft + selectedTabMeasures.rect.width + newTranslationValue;
 			if ((selectedTabIndex < this._tabInfos.length - 1) && this._isPositionInRightScrollArea(expectedPosition, measures)) {
 				newTranslationValue = getNewTranslationValue();
@@ -556,13 +513,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 	}
 
 	_getTabInfo(id) {
-		if (this._tabInfos.find) {
-			return this._tabInfos.find((t) => t.id === id);
-		} else {
-			// IE11
-			const index = this._tabInfos.findIndex((t) => t.id === id);
-			return index !== -1 ? this._tabInfos[index] : null;
-		}
+		return this._tabInfos.find((t) => t.id === id);
 	}
 
 	_handleFocusOut(e) {
@@ -695,7 +646,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		const lastTabMeasures = measures.tabRects[measures.tabRects.length - 1];
 		let isOverflowingNext;
 
-		if (this.dir !== 'rtl') {
+		if (!this.#isRTL()) {
 
 			newTranslationValue = (this._translationValue - measures.tabsContainerRect.width + scrollButtonWidth);
 			if (newTranslationValue < 0) newTranslationValue += scrollButtonWidth;
@@ -738,7 +689,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		let newTranslationValue;
 		let isOverflowingPrevious;
 
-		if (this.dir !== 'rtl') {
+		if (!this.#isRTL()) {
 
 			newTranslationValue = (this._translationValue + measures.tabsContainerRect.width - scrollButtonWidth);
 			isOverflowingPrevious = (newTranslationValue < 0);
@@ -921,7 +872,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 			return Promise.resolve();
 		}
 
-		if (this.dir !== 'rtl') {
+		if (!this.#isRTL()) {
 			// show/hide scroll buttons
 			this._allowScrollPrevious = (this._translationValue < 0);
 			this._allowScrollNext = (lastTabMeasures.offsetLeft + lastTabMeasures.rect.width + this._translationValue > measures.tabsContainerRect.width);
@@ -984,6 +935,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 		this._measures = null;
 
 		return this.updateComplete;
+	}
+
+	#isRTL() {
+		return document.documentElement.getAttribute('dir') === 'rtl';
 	}
 
 }

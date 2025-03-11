@@ -37,7 +37,6 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				width: calc(100% - 1.2rem);
 			}
 			:host(:first-child) .d2l-tab-selected-indicator {
-				margin-inline-end: 0.6rem;
 				margin-inline-start: 0;
 				width: calc(100% - 0.6rem);
 			}

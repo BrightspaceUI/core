@@ -15,7 +15,6 @@ class Tab extends TabMixin(LitElement) {
 				white-space: nowrap;
 			}
 			:host(:first-child) .d2l-tab-text {
-				margin-inline-end: 0.6rem;
 				margin-inline-start: 0;
 			}
 			:host(:${unsafeCSS(getFocusPseudoClass())}) > .d2l-tab-text {

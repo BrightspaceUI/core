@@ -2,7 +2,6 @@ import '../colors/colors.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const keyCodes = {
@@ -10,7 +9,7 @@ const keyCodes = {
 	SPACE: 32
 };
 
-class Tab extends SkeletonMixin(RtlMixin(LitElement)) {
+class Tab extends SkeletonMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -44,11 +43,7 @@ class Tab extends SkeletonMixin(RtlMixin(LitElement)) {
 				top: 0.15rem;
 			}
 			:host(:first-child) .d2l-tab-text {
-				margin-left: 0;
-			}
-			:host([dir="rtl"]:first-child) .d2l-tab-text {
-				margin-left: 0.6rem;
-				margin-right: 0;
+				margin-inline-start: 0;
 			}
 			.d2l-tab-selected-indicator {
 				border-top: 4px solid var(--d2l-color-celestine);
@@ -69,12 +64,8 @@ class Tab extends SkeletonMixin(RtlMixin(LitElement)) {
 				min-width: 50px;
 			}
 			:host(:first-child) .d2l-tab-selected-indicator {
-				margin-left: 0;
+				margin-inline-start: 0;
 				width: calc(100% - 0.6rem);
-			}
-			:host([dir="rtl"]:first-child) .d2l-tab-selected-indicator {
-				margin-left: 0.6rem;
-				margin-right: 0;
 			}
 			:host(:${unsafeCSS(getFocusPseudoClass())}) > .d2l-tab-text {
 				border-radius: 0.3rem;
