@@ -2,7 +2,6 @@ import '../colors/colors.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const keyCodes = {
@@ -10,7 +9,7 @@ const keyCodes = {
 	SPACE: 32
 };
 
-class Tab extends SkeletonMixin(RtlMixin(LitElement)) {
+class Tab extends SkeletonMixin(LitElement) {
 
 	static get properties() {
 		return {
