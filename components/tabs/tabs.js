@@ -19,34 +19,6 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const scrollButtonWidth = 56;
 
-// remove once IE11 is no longer supported
-if (!Array.prototype.findIndex) {
-	Object.defineProperty(Array.prototype, 'findIndex', {
-		value: function(predicate) {
-
-			if (this === null) throw new TypeError('"this" is null or not defined');
-
-			const o = Object(this);
-			const len = o.length >>> 0;
-
-			if (typeof predicate !== 'function') throw new TypeError('predicate must be a function');
-
-			const thisArg = arguments[1];
-			let k = 0;
-
-			while (k < len) {
-				const kValue = o[k];
-				if (predicate.call(thisArg, kValue, k, o)) return k;
-				k++;
-			}
-
-			return -1;
-		},
-		configurable: true,
-		writable: true
-	});
-}
-
 /**
  * A component for tabbed content. It supports the "d2l-tab-panel" component for the content, renders tabs responsively, and provides virtual scrolling for large tab lists.
  * @slot - Contains the tab panels (e.g., "d2l-tab-panel" components)
@@ -113,11 +85,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 			}
 			.d2l-tabs-container-ext {
 				flex: none;
-				padding-left: 4px;
-			}
-			:host([dir="rtl"]) .d2l-tabs-container-ext {
-				padding-left: 0;
-				padding-right: 4px;
+				padding-inline: 4px 0;
 			}
 			.d2l-tabs-container-list {
 				display: block;
@@ -136,27 +104,15 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 				z-index: 1;
 			}
 			.d2l-tabs-scroll-previous-container {
-				left: 0;
-				margin-left: 4px;
-			}
-			:host([dir="rtl"]) .d2l-tabs-scroll-previous-container {
-				left: auto;
-				margin-left: 0;
-				margin-right: 4px;
-				right: 0;
+				inset-inline-start: 0;
+				margin-inline: 4px 0;
 			}
 			.d2l-tabs-container[data-allow-scroll-previous] > .d2l-tabs-scroll-previous-container {
 				display: inline-block;
 			}
 			.d2l-tabs-scroll-next-container {
-				margin-right: 4px;
-				right: 0;
-			}
-			:host([dir="rtl"]) .d2l-tabs-scroll-next-container {
-				left: 0;
-				margin-left: 4px;
-				margin-right: 0;
-				right: auto;
+				inset-inline-end: 0;
+				margin-inline: 0 4px;
 			}
 			.d2l-tabs-container[data-allow-scroll-next] > .d2l-tabs-scroll-next-container {
 				display: inline-block;
@@ -556,13 +512,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Lit
 	}
 
 	_getTabInfo(id) {
-		if (this._tabInfos.find) {
-			return this._tabInfos.find((t) => t.id === id);
-		} else {
-			// IE11
-			const index = this._tabInfos.findIndex((t) => t.id === id);
-			return index !== -1 ? this._tabInfos[index] : null;
-		}
+		return this._tabInfos.find((t) => t.id === id);
 	}
 
 	_handleFocusOut(e) {
