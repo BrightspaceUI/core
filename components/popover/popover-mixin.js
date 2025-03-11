@@ -996,7 +996,9 @@ export const PopoverMixin = superclass => class extends superclass {
 	}
 
 	#removeRepositionHandlers() {
-		this._openerIntersectionObserver?.unobserve(this._opener);
+		if (this._opener) {
+			this._openerIntersectionObserver?.unobserve(this._opener);
+		}
 		this._scrollablesObserved?.forEach(node => {
 			node.removeEventListener('scroll', this.#repositionBound);
 		});

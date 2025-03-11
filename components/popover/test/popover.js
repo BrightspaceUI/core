@@ -119,6 +119,10 @@ class Popover extends PopoverMixin(LitElement) {
 		this._hasHeaderSlotContent = false;
 	}
 
+	get opened() {
+		return this._opened;
+	}
+
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('d2l-popover-open', this.#handlePopoverOpen);
