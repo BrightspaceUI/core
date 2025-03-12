@@ -37,7 +37,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				border-top-right-radius: 4px;
 				bottom: 0;
 				display: none;
-				margin: 1px 0.6rem 0 0.6rem; /* maybe 0.7 rem */
+				margin: 1px 0.6rem 0 0.6rem;
 				position: absolute;
 				transition: box-shadow 0.2s;
 				width: calc(100% - 1.2rem);
@@ -47,7 +47,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 			}
 			:host(:first-child) .d2l-tab-selected-indicator {
 				margin-inline-start: 0;
-				width: calc(100% - 0.6rem); /* maybe 0.7 rem */
+				width: calc(100% - 0.6rem);
 			}
 			:host([aria-selected="true"]:focus) {
 				text-decoration: none;
