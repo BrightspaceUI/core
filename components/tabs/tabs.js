@@ -88,7 +88,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			}
 			.d2l-tabs-container-list {
 				display: flex;
-				gap: 0.2rem;
 				-webkit-transition: transform 200ms ease-out;
 				transition: transform 200ms ease-out;
 				white-space: nowrap;
