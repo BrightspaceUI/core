@@ -35,7 +35,7 @@ Tabs are used to present related information in mutually exclusive panels, allow
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-## Tab [d2l-tabs]
+## Tabs [d2l-tabs]
 
 The `d2l-tabs` element is a web component for tabbed content. It provides the `d2l-tab-panel` component for the content, renders tabs responsively, and provides virtual scrolling for large tab lists.
 
@@ -65,6 +65,10 @@ The `d2l-tabs` element is a web component for tabbed content. It provides the `d
 | `max-to-show` | Number | Used to limit the max-width/number of tabs to initially display |
 
 <!-- docs: end hidden content -->
+
+## Tab [d2l-tab]
+
+Coming soon! This is currently in development and not quite ready for usage.
 
 ## Tab Panels [d2l-tab-panel]
 Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Tab panels can contain text, form controls, rich media, or just about anything else. There is an optional “slot” available for related controls such as a Settings button.
