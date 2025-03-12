@@ -9,7 +9,6 @@ import { findComposedAncestor } from '../../helpers/dom.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -29,7 +28,7 @@ const scrollButtonWidth = 56;
  * @slot ext - Additional content (e.g., a button) positioned at right
  * @fires d2l-tabs-initialized - Dispatched when the component is initialized
  */
-class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(LitElement)))) {
+class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -54,7 +53,6 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 				box-sizing: border-box;
 				display: block;
 				margin-bottom: 1.2rem;
-				position: relative; /* necessary for offsetLeft measurement to be correct */
 			}
 			.d2l-tabs-layout {
 				border-bottom: 1px solid var(--d2l-color-gypsum);
@@ -250,7 +248,7 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 				const measures = this._getMeasures();
 				const newTranslationValue = this._calculateScrollPosition(tab, measures);
 
-				if (this.dir !== 'rtl') {
+				if (document.documentElement.getAttribute('dir') !== 'rtl') {
 					if (newTranslationValue >= 0) return;
 				} else {
 					if (newTranslationValue <= 0) return;
@@ -394,7 +392,7 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 		const isOverflowingRight = (selectedTabMeasures.offsetLeft + selectedTabMeasures.rect.width + this._translationValue > measures.tabsContainerRect.width);
 
 		let getNewTranslationValue;
-		if (this.dir !== 'rtl') {
+		if (document.documentElement.getAttribute('dir') !== 'rtl') {
 			getNewTranslationValue = () => {
 				if (selectedTabIndex === 0) {
 					// position selected tab at beginning
@@ -430,7 +428,7 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 		let expectedPosition;
 
 		// make sure the new position will not place selected tab behind left scroll button
-		if (this.dir !== 'rtl') {
+		if (document.documentElement.getAttribute('dir') !== 'rtl') {
 			expectedPosition = selectedTabMeasures.offsetLeft + newTranslationValue;
 			if (newTranslationValue < 0 && this._isPositionInLeftScrollArea(expectedPosition)) {
 				newTranslationValue = getNewTranslationValue();
@@ -442,7 +440,7 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 			}
 		}
 
-		if (this.dir !== 'rtl') {
+		if (document.documentElement.getAttribute('dir') !== 'rtl') {
 			// make sure there will not be any empty space between left side of container and first tab
 			if (newTranslationValue > 0) newTranslationValue = 0;
 		} else {
@@ -451,7 +449,7 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 		}
 
 		// make sure the new position will not place selected tab behind the right scroll button
-		if (this.dir !== 'rtl') {
+		if (document.documentElement.getAttribute('dir') !== 'rtl') {
 			expectedPosition = selectedTabMeasures.offsetLeft + selectedTabMeasures.rect.width + newTranslationValue;
 			if ((selectedTabIndex < tabs.length - 1) && this._isPositionInRightScrollArea(expectedPosition, measures)) {
 				newTranslationValue = getNewTranslationValue();
@@ -546,7 +544,7 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 		const lastTabMeasures = measures.tabRects[measures.tabRects.length - 1];
 		let isOverflowingNext;
 
-		if (this.dir !== 'rtl') {
+		if (document.documentElement.getAttribute('dir') !== 'rtl') {
 
 			newTranslationValue = (this._translationValue - measures.tabsContainerRect.width + scrollButtonWidth);
 			if (newTranslationValue < 0) newTranslationValue += scrollButtonWidth;
@@ -589,7 +587,7 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 		let newTranslationValue;
 		let isOverflowingPrevious;
 
-		if (this.dir !== 'rtl') {
+		if (document.documentElement.getAttribute('dir') !== 'rtl') {
 
 			newTranslationValue = (this._translationValue + measures.tabsContainerRect.width - scrollButtonWidth);
 			isOverflowingPrevious = (newTranslationValue < 0);
@@ -622,7 +620,7 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 
 		const selectedTab = e.target;
 		const selectedPanel = this._getPanel(e.target.id);
-		selectedTab.activeFocusable = true;
+		selectedTab.tabIndex = 0;
 
 		await this.updateComplete;
 		this._updateScrollPosition(selectedTab);
@@ -636,7 +634,7 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 					// panel may not exist if it's being removed
 					if (panel) panel.selected = false;
 				}
-				if (tab.activeFocusable) tab.activeFocusable = false;
+				if (tab.tabIndex === 0) tab.tabIndex = -1;
 			}
 		});
 
@@ -668,7 +666,7 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 			selectedTab = tabs.find((tab) => tab.state !== 'removing');
 			if (selectedTab) {
 				selectedTab.selected = true;
-				selectedTab.activeFocusable = true;
+				selectedTab.tabIndex = 0;
 			}
 		}
 
@@ -742,10 +740,10 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 	}
 
 	_setFocusable(tab) {
-		const currentFocusable = this._getTabs().find(tab => tab.activeFocusable);
-		if (currentFocusable) currentFocusable.activeFocusable = false;
+		const currentFocusable = this._getTabs().find(tab => tab.tabIndex === 0);
+		if (currentFocusable) currentFocusable.tabIndex = -1;
 
-		tab.activeFocusable = true;
+		tab.tabIndex = 0;
 	}
 
 	async _tryExpandTabsContainer(measures) {
@@ -798,9 +796,14 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 		const tabs = this._getTabs();
 
 		const tabRects = tabs.map((tab) => {
+			// tab.offsetLeft is relative to body rather than the slot container; this calculates it based on slot parent element
+			const tabRect = tab.getBoundingClientRect();
+			const parentLeft = tab.assignedSlot.parentElement.getBoundingClientRect().left;
+			const offsetLeft = Math.round(tabRect.left - parentLeft);
+
 			const measures = {
 				rect: tab.getBoundingClientRect(),
-				offsetLeft: tab.offsetLeft
+				offsetLeft: offsetLeft
 			};
 			totalTabsWidth += measures.rect.width;
 			return measures;
@@ -838,7 +841,7 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 			return Promise.resolve();
 		}
 
-		if (this.dir !== 'rtl') {
+		if (document.documentElement.getAttribute('dir') !== 'rtl') {
 			// show/hide scroll buttons
 			this._allowScrollPrevious = (this._translationValue < 0);
 			this._allowScrollNext = (lastTabMeasures.offsetLeft + lastTabMeasures.rect.width + this._translationValue > measures.tabsContainerRect.width);

@@ -13,11 +13,8 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	static get properties() {
 		return {
-			activeFocusable: { type: Boolean, reflect: true, attribute: 'active-focusable' },
 			selected: { type: Boolean, reflect: true },
-			state: { type: String, reflect: true },
-			/** @ignore */
-			tabindex: { type: Number, reflect: true }
+			state: { type: String, reflect: true }
 		};
 	}
 
@@ -74,8 +71,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		this.ariaSelected = false;
 		this.role = 'tab';
 		this.selected = false;
-		this.tabindex = -1;
-		this.activeFocusable = false;
+		this.tabIndex = -1;
 
 		// this.state = reduceMotion ? '' : 'adding';
 	}
@@ -122,13 +118,6 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				}
 			}
 		});
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		if (changedProperties.has('activeFocusable')) {
-			this.tabindex = this.activeFocusable ? 0 : -1;
-		}
 	}
 
 	renderContent() {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="" dir="">
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="UTF-8">
@@ -12,16 +12,16 @@
 			import '../../menu/menu.js';
 			import '../../menu/menu-item.js';
 			import '../tab.js';
-			import '../tab-panel.js';
-			import '../tabs2.js';
 			import '../tabs.js';
+			import '../tabs2.js';
+			import '../tab-panel.js';
 		</script>
 	</head>
 	<body unresolved>
 
 		<d2l-demo-page page-title="d2l-tabs">
 
-			<h2>Tabs</h2>
+			<h2>Tabs (new version)</h2>
 
 			<d2l-demo-snippet>
 				<template>
@@ -29,22 +29,43 @@
 						<d2l-tab id="all" text="All" slot="tabs"></d2l-tab>
 						<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
 						<d2l-tab id="chemistry" text="Chemistry" slot="tabs"></d2l-tab>
+						<d2l-tab id="earth" text="Earth &amp; Planetary Sciences" slot="tabs"></d2l-tab>
+						<d2l-tab id="physics" text="Physics" slot="tabs"></d2l-tab>
+						<d2l-tab id="math" text="Math" slot="tabs"></d2l-tab>
 						<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
 						<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
 						<d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
-						<d2l-tab id="all2" text="All2" slot="tabs"></d2l-tab>
-						<d2l-tab id="biology2" text="Biology2" slot="tabs"></d2l-tab>
-						<d2l-tab id="chemistry2" text="Chemistry2" slot="tabs"></d2l-tab>
-						<d2l-tab-panel labelled-by="all2" slot="panels">Tab content for All2</d2l-tab-panel>
-						<d2l-tab-panel labelled-by="biology2" slot="panels">Tab content for Biology2</d2l-tab-panel>
-						<d2l-tab-panel labelled-by="chemistry2" slot="panels">Tab content for Chemistry2</d2l-tab-panel>
-						<d2l-tab id="all3" text="All3" slot="tabs"></d2l-tab>
-						<d2l-tab id="biology3" text="Biology3" slot="tabs"></d2l-tab>
-						<d2l-tab id="chemistry3" text="Chemistry3" slot="tabs"></d2l-tab>
-						<d2l-tab-panel labelled-by="all3" slot="panels">Tab content for All3</d2l-tab-panel>
-						<d2l-tab-panel labelled-by="biology3" slot="panels">Tab content for Biology3</d2l-tab-panel>
-						<d2l-tab-panel labelled-by="chemistry3" slot="panels">Tab content for Chemistry3</d2l-tab-panel>
+						<d2l-tab-panel labelled-by="earth" slot="panels">Tab content for Earth &amp; Planetary Sciences</d2l-tab-panel>
+						<d2l-tab-panel labelled-by="physics" slot="panels">Tab content for physics</d2l-tab-panel>
+						<d2l-tab-panel labelled-by="math" slot="panels">Tab content for math</d2l-tab-panel>
+						<d2l-dropdown-button-subtle slot="ext" text="Explore Topics">
+							<d2l-dropdown-menu>
+								<d2l-menu label="Astronomy">
+									<d2l-menu-item text="Introduction"></d2l-menu-item>
+									<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+									<d2l-menu-item text="The Solar System"></d2l-menu-item>
+									<d2l-menu-item text="Stars &amp; Galaxies"></d2l-menu-item>
+									<d2l-menu-item text="The Night Sky"></d2l-menu-item>
+									<d2l-menu-item text="The Universe"></d2l-menu-item>
+								</d2l-menu>
+							</d2l-dropdown-menu>
+						</d2l-dropdown-button-subtle>
 					</d2l-tabs2>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Tabs</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-tabs>
+						<d2l-tab-panel text="All">Tab content for All</d2l-tab-panel>
+						<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
+						<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
+						<d2l-tab-panel text="Earth &amp; Planetary Sciences">Tab content for Earth &amp; Planetary Sciences</d2l-tab-panel>
+						<d2l-tab-panel text="Physics">Tab content for Physics</d2l-tab-panel>
+						<d2l-tab-panel text="Math">Tab content for Math</d2l-tab-panel>
+					</d2l-tabs>
 				</template>
 			</d2l-demo-snippet>
 
