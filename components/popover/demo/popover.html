@@ -16,9 +16,9 @@
 		window.wireUpPopover = demo => {
 			const popover = demo.querySelector('d2l-test-popover');
 			const openButton = demo.querySelector('d2l-button-subtle[text="Open"]');
-			openButton.addEventListener('click', () => popover.opened = !popover.opened);
+			openButton.addEventListener('click', () => popover.open(openButton));
 			const closeButton = demo.querySelector('d2l-button-subtle[text="Close"]');
-			if (closeButton) closeButton.addEventListener('click', () => popover.opened = false);
+			if (closeButton) closeButton.addEventListener('click', () => popover.close());
 		};
 	</script>
 </head>

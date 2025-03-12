@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { PopoverMixin } from '../popover-mixin.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 class Popover extends PopoverMixin(LitElement) {
 
@@ -47,11 +48,6 @@ class Popover extends PopoverMixin(LitElement) {
 			 */
 			noPointer: { type: Boolean, reflect: true, attribute: 'no-pointer' },
 			/**
-			 * Whether the popover is open or not
-			 * @type {boolean}
-			 */
-			opened: { type: Boolean, reflect: true },
-			/**
 			 * Position the popover before or after the opener. Default is "block-end" (after).
 			 * @type {'block-start'|'block-end'}
 			 */
@@ -80,19 +76,22 @@ class Popover extends PopoverMixin(LitElement) {
 			}
 			.test-content {
 				box-sizing: border-box;
+				flex: auto;
 				max-width: 100%;
 				overflow-y: auto;
 				padding: 1rem;
 			}
-			.test-no-header {
-				display: none;
-			}
+			.test-header,
 			.test-footer {
 				box-sizing: border-box;
+				flex: none;
 				max-width: 100%;
-				padding: 0 1rem 1rem 1rem;
 				width: 100%;
 			}
+			.test-footer {
+				padding: 0 1rem 1rem 1rem;
+			}
+			.test-no-header,
 			.test-no-footer {
 				display: none;
 			}
@@ -114,21 +113,26 @@ class Popover extends PopoverMixin(LitElement) {
 		this.noAutoClose = false;
 		this.noAutoFocus = false;
 		this.noPointer = false;
-		this.opened = false;
 		this.trapFocus = false;
 
 		this._hasFooterSlotContent = false;
 		this._hasHeaderSlotContent = false;
 	}
 
+	get opened() {
+		return this._opened;
+	}
+
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('d2l-popover-open', this.#handlePopoverOpen);
-		this.addEventListener('d2l-popover-close', this.#handlePopoverClose);
 	}
 
 	render() {
 
+		const contentLayoutStyles = {
+			maxHeight: this._contentHeight ? `${this._contentHeight}px` : undefined
+		};
 		const headerClasses = {
 			'test-header': true,
 			'test-no-header': !this._hasHeaderSlotContent
@@ -144,7 +148,7 @@ class Popover extends PopoverMixin(LitElement) {
 		};
 
 		const content = html`
-			<div class="test-content-layout">
+			<div class="test-content-layout" style="${styleMap(contentLayoutStyles)}">
 				<div class="${classMap(headerClasses)}">
 					<slot name="header" @slotchange="${this.#handleHeaderSlotChange}"></slot>
 				</div>
@@ -176,10 +180,6 @@ class Popover extends PopoverMixin(LitElement) {
 				trapFocus: this.trapFocus
 			});
 		}
-		if (changedProperties.has('opened')) {
-			if (this.opened) this.open(true);
-			else if (changedProperties.get('opened')) this.close();
-		}
 	}
 
 	#getContentContainer() {
@@ -203,13 +203,7 @@ class Popover extends PopoverMixin(LitElement) {
 		this._hasHeaderSlotContent = e.target.assignedNodes().length !== 0;
 	}
 
-	#handlePopoverClose() {
-		this.opened = false;
-	}
-
 	#handlePopoverOpen() {
-		this.opened = true;
-
 		const content = this.#getContentContainer();
 		if (!this.noAutoFit && content) {
 			content.scrollTop ??= 0;
