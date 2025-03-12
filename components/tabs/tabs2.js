@@ -92,13 +92,11 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 				padding-inline: 4px 0;
 			}
 			.d2l-tabs-container-list {
-				/*display: block;*/
+				display: flex;
+				gap: 4px;
 				-webkit-transition: transform 200ms ease-out;
 				transition: transform 200ms ease-out;
 				white-space: nowrap;
-
-				display: flex;
-				gap: 4px;
 			}
 			.d2l-tabs-scroll-previous-container,
 			.d2l-tabs-scroll-next-container {

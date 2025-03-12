@@ -18,8 +18,7 @@ class Tab extends TabMixin(LitElement) {
 	static get styles() {
 		const styles = [ css`
 			.d2l-tab-text {
-				margin-inline: 0.5rem; /* maybe 0.6rem */
-				margin-block: 0.5rem;
+				margin: 0.5rem;
 				overflow: hidden;
 				padding: 0.1rem;
 				text-overflow: ellipsis;
