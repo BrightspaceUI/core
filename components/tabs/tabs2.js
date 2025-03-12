@@ -54,6 +54,7 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 				box-sizing: border-box;
 				display: block;
 				margin-bottom: 1.2rem;
+				position: relative; /* necessary for offsetLeft measurement to be correct */
 			}
 			.d2l-tabs-layout {
 				border-bottom: 1px solid var(--d2l-color-gypsum);
@@ -88,17 +89,16 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 			}
 			.d2l-tabs-container-ext {
 				flex: none;
-				padding-left: 4px;
-			}
-			:host([dir="rtl"]) .d2l-tabs-container-ext {
-				padding-left: 0;
-				padding-right: 4px;
+				padding-inline: 4px 0;
 			}
 			.d2l-tabs-container-list {
-				display: block;
+				/*display: block;*/
 				-webkit-transition: transform 200ms ease-out;
 				transition: transform 200ms ease-out;
 				white-space: nowrap;
+
+				display: flex;
+				gap: 4px;
 			}
 			.d2l-tabs-scroll-previous-container,
 			.d2l-tabs-scroll-next-container {
@@ -111,27 +111,15 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 				z-index: 1;
 			}
 			.d2l-tabs-scroll-previous-container {
-				left: 0;
-				margin-left: 4px;
-			}
-			:host([dir="rtl"]) .d2l-tabs-scroll-previous-container {
-				left: auto;
-				margin-left: 0;
-				margin-right: 4px;
-				right: 0;
+				inset-inline-start: 0;
+				margin-inline: 4px 0;
 			}
 			.d2l-tabs-container[data-allow-scroll-previous] > .d2l-tabs-scroll-previous-container {
 				display: inline-block;
 			}
 			.d2l-tabs-scroll-next-container {
-				margin-right: 4px;
-				right: 0;
-			}
-			:host([dir="rtl"]) .d2l-tabs-scroll-next-container {
-				left: 0;
-				margin-left: 4px;
-				margin-right: 0;
-				right: auto;
+				inset-inline-end: 0;
+				margin-inline: 0 4px;
 			}
 			.d2l-tabs-container[data-allow-scroll-next] > .d2l-tabs-scroll-next-container {
 				display: inline-block;
@@ -246,7 +234,7 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 		if (this._resizeObserver) this._resizeObserver.disconnect();
 	}
 
-	firstUpdated(changedProperties) {
+	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
 		this.arrowKeysFocusablesProvider = async() => {
@@ -344,6 +332,17 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 				<slot name="panels" @slotchange="${this._handlePanelsSlotChange}"></slot>
 			</div>
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		if (changedProperties.has('skeleton')) {
+			const tabs = this._getTabs();
+			tabs.forEach(tab => {
+				tab.skeleton = this.skeleton;
+			});
+		}
 	}
 
 	focus() {
@@ -662,6 +661,10 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 				selectedTab = tab;
 				this._setFocusable(tab);
 			}
+
+			if (this.skeleton) {
+				tab.skeleton = true;
+			}
 		});
 
 		if (tabs.length > 0 && !selectedTab) {
@@ -833,7 +836,6 @@ class Tabs2 extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(RtlMixin(Li
 	}
 
 	_updateScrollVisibility(measures) {
-
 		const lastTabMeasures = measures.tabRects[measures.tabRects.length - 1];
 		if (!lastTabMeasures) {
 			return Promise.resolve();
