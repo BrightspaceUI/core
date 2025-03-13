@@ -233,7 +233,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		super.firstUpdated(changedProperties);
 
 		this.arrowKeysFocusablesProvider = async() => {
-			return this._getTabs();
+			return this._defaultSlotBehavior ? [...this.shadowRoot.querySelectorAll('d2l-tab-internal')] : this._tabs;
 		};
 
 		this.arrowKeysOnBeforeFocus = async(tab) => {
@@ -413,7 +413,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_calculateScrollPosition(selectedTab, measures) {
-		const tabs = this._getTabs();
+		const tabs = this._tabs;
 		const selectedTabIndex = tabs.indexOf(selectedTab);
 
 		if (!measures.tabRects[selectedTabIndex]) return 0;
@@ -590,7 +590,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			return;
 		}
 
-		const selectedTab = this._getTabs().find(ti => ti.selected);
+		const selectedTab = this._tabs.find(ti => ti.selected);
 		if (!selectedTab) return;
 
 		await this._updateScrollPosition(selectedTab);
@@ -664,10 +664,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	// remove after d2l-tab/d2l-tab-panel backport
 	_getTabInfo(id) {
 		return this._tabInfos.find((t) => t.id === id);
-	}
-
-	_getTabs() {
-		return this._defaultSlotBehavior ? [...this.shadowRoot.querySelectorAll('d2l-tab-internal')] : this._tabs;
 	}
 
 	// remove after d2l-tab/d2l-tab-panel backport
@@ -898,7 +894,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._updateScrollPosition(selectedTab);
 
 		selectedPanel.selected = true;
-		this._getTabs().forEach(tab => {
+		this._tabs.forEach(tab => {
 			if (tab.id !== selectedTab.id) {
 				if (tab.selected) {
 					tab.selected = false;
@@ -1020,7 +1016,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			if (selectedTab) this._setFocusableDefaultSlotBehavior(selectedTab);
 			this.requestUpdate();
 		} else {
-			const selectedTab = this._getTabs().find(ti => ti.selected);
+			const selectedTab = this._tabs.find(ti => ti.selected);
 			if (selectedTab) this._setFocusable(selectedTab);
 			this.requestUpdate();
 		}
@@ -1048,7 +1044,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_setFocusable(tab) {
-		const currentFocusable = this._getTabs().find(tab => tab.tabIndex === 0);
+		const currentFocusable = this._tabs.find(tab => tab.tabIndex === 0);
 		if (currentFocusable) currentFocusable.tabIndex = -1;
 
 		tab.tabIndex = 0;
@@ -1112,7 +1108,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		}
 		let totalTabsWidth = 0;
 		if (!this.shadowRoot) return;
-		const tabs = this._getTabs();
+		const tabs = this._tabs;
 
 		const tabRects = tabs.map((tab) => {
 			// tab.offsetLeft is relative to body rather than the slot container; this calculates it based on slot parent element
@@ -1219,7 +1215,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_updateTabsContainerWidth(selectedTab) {
-		const tabs = this._getTabs();
+		const tabs = this._tabs;
 		if (!this.maxToShow || this.maxToShow <= 0 || this.maxToShow >= tabs.length) return;
 		if (tabs.indexOf(selectedTab) > this.maxToShow - 1) return;
 		return this.#updateTabsContainerWidthLogic();
