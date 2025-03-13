@@ -421,7 +421,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	_calculateScrollPositionDefaultSlotBehavior(selectedTabInfo, measures) {
 		const selectedTabIndex = this._tabInfos.indexOf(selectedTabInfo);
 		return this.#calculateScrollPositionLogic(this._tabInfos, selectedTabIndex, measures);
-
 	}
 
 	async _focusSelected() {
@@ -795,20 +794,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		await this.updateComplete;
 
-		const animPromises = [];
 		if (!this._initialized && this._tabs.length > 0) {
 			this._initialized = true;
 			await this._updateTabsContainerWidth(selectedTab);
-		} else {
-			if (this._tabs.length > 1) {
-				this._tabs.forEach((tab) => {
-					if (tab.state === 'adding') animPromises.push(this._animateTabAddition(tab));
-					else if (tab.state === 'removing') animPromises.push(this._animateTabRemoval(tab));
-				});
-			}
-
-			// required for animation
-			this._updateMeasures();
 		}
 
 		if (selectedTab) {
@@ -816,10 +804,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			const selectedPanel = this._getPanel(selectedTab.id);
 			if (selectedPanel) selectedPanel.selected = true;
 
-			Promise.all(animPromises).then(() => {
-				this._updateMeasures();
-				return this._updateScrollPosition(selectedTab);
-			});
+			this._updateMeasures();
+			return this._updateScrollPosition(selectedTab);
 		}
 
 		this.dispatchEvent(new CustomEvent(
@@ -928,14 +914,14 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	_updateMeasures() {
 		let totalTabsWidth = 0;
 		if (!this.shadowRoot) return;
-		const tabs = this._tabs;
+		const tabs = this._defaultSlotBehavior ? [...this.shadowRoot.querySelectorAll('d2l-tab-internal')] : this._tabs;
 
 		const tabRects = tabs.map((tab) => {
 			const tabRect = tab.getBoundingClientRect();
 			const offsetLeft = this._defaultSlotBehavior ? tab.offsetLeft : this.#getOffsetLeft(tab, tabRect);
 
 			const measures = {
-				rect: tab.getBoundingClientRect(),
+				rect: tabRect,
 				offsetLeft: offsetLeft
 			};
 			totalTabsWidth += measures.rect.width;
@@ -1023,7 +1009,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return this.#updateTabsContainerWidthLogic();
 	}
 
-	#calculateScrollPositionLogic(tabDataStructure, selectedTabIndex, measures) {
+	#calculateScrollPositionLogic(tabsDataStructure, selectedTabIndex, measures) {
 		if (!measures.tabRects[selectedTabIndex]) return 0;
 
 		const selectedTabMeasures = measures.tabRects[selectedTabIndex];
@@ -1039,7 +1025,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				if (selectedTabIndex === 0) {
 					// position selected tab at beginning
 					return 0;
-				} else if (selectedTabIndex === (tabDataStructure.length - 1)) {
+				} else if (selectedTabIndex === (tabsDataStructure.length - 1)) {
 					// position selected tab at end
 					return -1 * (selectedTabMeasures.offsetLeft - measures.tabsContainerRect.width + selectedTabMeasures.rect.width);
 				} else {
@@ -1052,7 +1038,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				if (selectedTabIndex === 0) {
 					// position selected tab at beginning
 					return 0;
-				} else if (selectedTabIndex === (tabDataStructure.length - 1)) {
+				} else if (selectedTabIndex === (tabsDataStructure.length - 1)) {
 					// position selected tab at end
 					return -1 * selectedTabMeasures.offsetLeft;
 				} else {
@@ -1093,12 +1079,12 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		// make sure the new position will not place selected tab behind the right scroll button
 		if (!isRTL) {
 			expectedPosition = selectedTabMeasures.offsetLeft + selectedTabMeasures.rect.width + newTranslationValue;
-			if ((selectedTabIndex < tabDataStructure.length - 1) && this._isPositionInRightScrollArea(expectedPosition, measures)) {
+			if ((selectedTabIndex < tabsDataStructure.length - 1) && this._isPositionInRightScrollArea(expectedPosition, measures)) {
 				newTranslationValue = getNewTranslationValue();
 			}
 		} else {
 			expectedPosition = selectedTabMeasures.offsetLeft + newTranslationValue;
-			if ((selectedTabIndex < tabDataStructure.length - 1) && this._isPositionInLeftScrollArea(expectedPosition)) {
+			if ((selectedTabIndex < tabsDataStructure.length - 1) && this._isPositionInLeftScrollArea(expectedPosition)) {
 				newTranslationValue = getNewTranslationValue();
 			}
 		}
