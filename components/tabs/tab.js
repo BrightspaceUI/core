@@ -42,4 +42,4 @@ class Tab extends TabMixin(LitElement) {
 	}
 }
 
-customElements.define('d2l-tab-wip', Tab);
+customElements.define('d2l-tab', Tab);
