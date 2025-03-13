@@ -333,7 +333,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 					</div>
 					${this.arrowKeysContainer(html`
 						<div class="d2l-tabs-container-list"
-							@d2l-tab-change="${this._handleTabChange}"
 							@d2l-tab-selected="${this._handleTabSelected}"
 							@focusout="${this._handleFocusOut}"
 							role="tablist"
@@ -870,12 +869,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			this.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button').focus();
 		}
 
-	}
-
-	async _handleTabChange(e) {
-		e.stopPropagation();
-		this._updateMeasures();
-		await this._updateScrollVisibility(this._getMeasures());
 	}
 
 	async _handleTabSelected(e) {
