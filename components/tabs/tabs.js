@@ -35,7 +35,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			maxToShow: { type: Number, attribute: 'max-to-show' },
 			_allowScrollNext: { type: Boolean },
 			_allowScrollPrevious: { type: Boolean },
-			_legacyBehaviour: { state: true},
+			_defaultSlotBehavior: { state: true },
 			_maxWidth: { type: Number },
 			_scrollCollapsed: { type: Boolean },
 			_state: { type: String },
@@ -209,7 +209,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._translationValue = 0;
 
 		this._tabs = [];
-		this._legacyBehaviour = true;
+		this._defaultSlotBehavior = true;
 	}
 
 	connectedCallback() {
@@ -236,30 +236,57 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			return this._getTabs();
 		};
 
-		this.arrowKeysOnBeforeFocus = async(tabControl) => {
-			const tab = this._legacyBehaviour ? this._getTabInfo(tabControl.controlsPanel) : tabControl;
-			this._setFocusable(tab);
+		this.arrowKeysOnBeforeFocus = async(tab) => {
+			if (this._defaultSlotBehavior) {
+				const tabInfo = this._getTabInfo(tab.controlsPanel);
+				this._setFocusableDefaultSlotBehavior(tabInfo);
 
-			this.requestUpdate();
-			await this.updateComplete;
+				this.requestUpdate();
+				await this.updateComplete;
 
-			if (!this._scrollCollapsed) {
-				return this._updateScrollPosition(tab);
-			} else {
-				const measures = this._getMeasures();
-				const newTranslationValue = this._calculateScrollPosition(tab, measures);
-
-				if (!this.#isRTL()) {
-					if (newTranslationValue >= 0) return;
+				if (!this._scrollCollapsed) {
+					return this._updateScrollPositionDefaultSlotBehavior(tabInfo);
 				} else {
-					if (newTranslationValue <= 0) return;
+					const measures = this._getMeasures();
+					const newTranslationValue = this._calculateScrollPositionDefaultSlotBehavior(tabInfo, measures);
+
+					if (!this.#isRTL()) {
+						if (newTranslationValue >= 0) return;
+					} else {
+						if (newTranslationValue <= 0) return;
+					}
+
+					const expanded = await this._tryExpandTabsContainer(measures);
+					if (expanded) {
+						return;
+					} else {
+						return this._updateScrollPositionDefaultSlotBehavior(tabInfo);
+					}
 				}
+			} else {
+				this._setFocusable(tab);
 
-				const expanded = await this._tryExpandTabsContainer(measures);
-				if (expanded) {
-					return;
-				} else {
+				this.requestUpdate();
+				await this.updateComplete;
+
+				if (!this._scrollCollapsed) {
 					return this._updateScrollPosition(tab);
+				} else {
+					const measures = this._getMeasures();
+					const newTranslationValue = this._calculateScrollPosition(tab, measures);
+
+					if (!this.#isRTL()) {
+						if (newTranslationValue >= 0) return;
+					} else {
+						if (newTranslationValue <= 0) return;
+					}
+
+					const expanded = await this._tryExpandTabsContainer(measures);
+					if (expanded) {
+						return;
+					} else {
+						return this._updateScrollPosition(tab);
+					}
 				}
 			}
 		};
@@ -386,10 +413,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_calculateScrollPosition(selectedTab, measures) {
-		if (this._legacyBehaviour) {
-			return this._calculateScrollPositionLegacy(selectedTab, measures);
-		}
-
 		const tabs = this._getTabs();
 		const selectedTabIndex = tabs.indexOf(selectedTab);
 
@@ -474,7 +497,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	// remove after d2l-tab/d2l-tab-panel backport
-	_calculateScrollPositionLegacy(selectedTabInfo, measures) {
+	_calculateScrollPositionDefaultSlotBehavior(selectedTabInfo, measures) {
 
 		const selectedTabIndex = this._tabInfos.indexOf(selectedTabInfo);
 
@@ -562,8 +585,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	async _focusSelected() {
-		if (this._legacyBehaviour) {
-			this._focusSelectedLegacy();
+		if (this._defaultSlotBehavior) {
+			this._focusSelectedDefaultSlotBehavior();
 			return;
 		}
 
@@ -576,12 +599,12 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	// remove after d2l-tab/d2l-tab-panel backport
-	async _focusSelectedLegacy() {
+	async _focusSelectedDefaultSlotBehavior() {
 		const selectedTab = this.shadowRoot && this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]');
 		if (!selectedTab) return;
 
 		const selectedTabInfo = this._getTabInfo(selectedTab.controlsPanel);
-		await this._updateScrollPosition(selectedTabInfo);
+		await this._updateScrollPositionDefaultSlotBehavior(selectedTabInfo);
 
 		selectedTab.focus();
 	}
@@ -606,7 +629,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_getPanel(id) {
-		if (this._legacyBehaviour) return this._getPanelLegacy(id);
+		if (this._defaultSlotBehavior) return this._getPanelDefaultSlotBehavior(id);
 
 		if (!this.shadowRoot) return;
 		// use simple selector for slot (Edge)
@@ -620,7 +643,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	// remove after d2l-tab/d2l-tab-panel backport
-	_getPanelLegacy(id) {
+	_getPanelDefaultSlotBehavior(id) {
 		if (!this.shadowRoot) return;
 		// use simple selector for slot (Edge)
 		const slot = this.shadowRoot.querySelector('.d2l-panels-container').querySelector('slot');
@@ -644,12 +667,12 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_getTabs() {
-		return this._legacyBehaviour ? [...this.shadowRoot.querySelectorAll('d2l-tab-internal')] : this._tabs;
+		return this._defaultSlotBehavior ? [...this.shadowRoot.querySelectorAll('d2l-tab-internal')] : this._tabs;
 	}
 
 	// remove after d2l-tab/d2l-tab-panel backport
 	async _handleDefaultSlotChange(e) {
-		if (!this._legacyBehaviour) return;
+		if (!this._defaultSlotBehavior) return;
 
 		const panels = this._getPanels(e.target);
 
@@ -676,7 +699,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			};
 			if (tabInfo.selected) {
 				selectedTabInfo = tabInfo;
-				this._setFocusable(tabInfo);
+				this._setFocusableDefaultSlotBehavior(tabInfo);
 			}
 			return tabInfo;
 		});
@@ -707,7 +730,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		if (!this._initialized && this._tabInfos.length > 0) {
 
 			this._initialized = true;
-			await this._updateTabsContainerWidth(selectedTabInfo);
+			await this._updateTabsContainerWidthDefaultSlotBehavior(selectedTabInfo);
 
 		} else {
 
@@ -725,7 +748,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		if (selectedTabInfo) {
 			Promise.all(animPromises).then(() => {
 				this._updateMeasures();
-				return this._updateScrollPosition(selectedTabInfo);
+				return this._updateScrollPositionDefaultSlotBehavior(selectedTabInfo);
 			});
 		}
 
@@ -746,7 +769,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		// event could be from nested tabs
 		if (!tabInfo) return;
 
-		this._setFocusable(tabInfo);
+		this._setFocusableDefaultSlotBehavior(tabInfo);
 		tabInfo.selected = true;
 		this.requestUpdate();
 	}
@@ -860,8 +883,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	async _handleTabSelected(e) {
-		if (this._legacyBehaviour) {
-			this._handleTabSelectedLegacy(e);
+		if (this._defaultSlotBehavior) {
+			this._handleTabSelectedDefaultSlotBehavior(e);
 			return;
 		}
 
@@ -891,7 +914,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	// remove after d2l-tab/d2l-tab-panel backport
-	async _handleTabSelectedLegacy(e) {
+	async _handleTabSelectedDefaultSlotBehavior(e) {
 		e.stopPropagation();
 
 		const selectedTab = e.target;
@@ -900,7 +923,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		selectedTabInfo.activeFocusable = true;
 
 		await this.updateComplete;
-		this._updateScrollPosition(selectedTabInfo);
+		this._updateScrollPositionDefaultSlotBehavior(selectedTabInfo);
 
 		selectedPanel.selected = true;
 		this._tabInfos.forEach((tabInfo) => {
@@ -919,7 +942,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	async _handleTabsSlotChange(e) {
-		this._legacyBehaviour = false;
+		this._defaultSlotBehavior = false;
 
 		this._tabs = e.target.assignedNodes({ flatten: true })
 			.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.role === 'tab');
@@ -992,11 +1015,15 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_resetFocusables() {
-		const selectedTab = this._legacyBehaviour
-			? this._tabInfos.find(ti => ti.selected)
-			: this._getTabs().find(ti => ti.selected);
-		if (selectedTab) this._setFocusable(selectedTab);
-		this.requestUpdate();
+		if (this._defaultSlotBehavior) {
+			const selectedTab = this._tabInfos.find(ti => ti.selected);
+			if (selectedTab) this._setFocusableDefaultSlotBehavior(selectedTab);
+			this.requestUpdate();
+		} else {
+			const selectedTab = this._getTabs().find(ti => ti.selected);
+			if (selectedTab) this._setFocusable(selectedTab);
+			this.requestUpdate();
+		}
 	}
 
 	_scrollToPosition(translationValue) {
@@ -1021,18 +1048,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_setFocusable(tab) {
-		if (this._legacyBehaviour) {
-			this._setFocusableLegacy(tab);
-			return;
-		}
-
 		const currentFocusable = this._getTabs().find(tab => tab.tabIndex === 0);
 		if (currentFocusable) currentFocusable.tabIndex = -1;
 
 		tab.tabIndex = 0;
 	}
 
-	_setFocusableLegacy(tabInfo) {
+	_setFocusableDefaultSlotBehavior(tabInfo) {
 		const currentFocusable = this._tabInfos.find(ti => ti.activeFocusable);
 		if (currentFocusable) currentFocusable.activeFocusable = false;
 
@@ -1084,8 +1106,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_updateMeasures() {
-		if (this._legacyBehaviour) {
-			this._updateMeasuresLegacy();
+		if (this._defaultSlotBehavior) {
+			this._updateMeasuresDefaultSlotBehavior();
 			return;
 		}
 		let totalTabsWidth = 0;
@@ -1114,7 +1136,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		};
 	}
 
-	_updateMeasuresLegacy() {
+	_updateMeasuresDefaultSlotBehavior() {
 		let totalTabsWidth = 0;
 		if (!this.shadowRoot) return;
 		const tabs = [...this.shadowRoot.querySelectorAll('d2l-tab-internal')];
@@ -1139,19 +1161,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	_updateScrollPosition(selectedTab) {
 		const measures = this._getMeasures();
 		const newTranslationValue = this._calculateScrollPosition(selectedTab, measures);
-		const scrollToPromise = this._scrollToPosition(newTranslationValue);
-		const scrollVisibilityPromise = this._updateScrollVisibility(measures);
-		const p = Promise.all([
-			scrollVisibilityPromise,
-			scrollToPromise
-		]);
-		p.then(() => {
-			if (this._loadingCompleteResolve) {
-				this._loadingCompleteResolve();
-				this._loadingCompleteResolve = undefined;
-			}
-		});
-		return p;
+		return this.#updateScrollPositionLogic(measures, newTranslationValue);
+	}
+
+	_updateScrollPositionDefaultSlotBehavior(selectedTabInfo) {
+		const measures = this._getMeasures();
+		const newTranslationValue = this._calculateScrollPositionDefaultSlotBehavior(selectedTabInfo, measures);
+		return this.#updateScrollPositionLogic(measures, newTranslationValue);
 	}
 
 	_updateScrollVisibility(measures) {
@@ -1203,17 +1219,39 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_updateTabsContainerWidth(selectedTab) {
-		if (!this.maxToShow || this.maxToShow <= 0) return;
+		const tabs = this._getTabs();
+		if (!this.maxToShow || this.maxToShow <= 0 || this.maxToShow >= tabs.length) return;
+		if (tabs.indexOf(selectedTab) > this.maxToShow - 1) return;
+		return this.#updateTabsContainerWidthLogic();
+	}
 
-		if (this._legacyBehaviour) {
-			if (this.maxToShow >= this._tabInfos.length) return;
-			if (this._tabInfos.indexOf(selectedTab) > this.maxToShow - 1) return;
-		} else {
-			const tabs = this._getTabs();
-			if (this.maxToShow >= tabs.length) return;
-			if (tabs.indexOf(selectedTab) > this.maxToShow - 1) return;
-		}
+	_updateTabsContainerWidthDefaultSlotBehavior(selectedTabInfo) {
+		if (!this.maxToShow || this.maxToShow <= 0 || this.maxToShow >= this._tabInfos.length) return;
+		if (this._tabInfos.indexOf(selectedTabInfo) > this.maxToShow - 1) return;
+		return this.#updateTabsContainerWidthLogic();
+	}
 
+	#isRTL() {
+		return document.documentElement.getAttribute('dir') === 'rtl';
+	}
+
+	#updateScrollPositionLogic(measures, newTranslationValue) {
+		const scrollToPromise = this._scrollToPosition(newTranslationValue);
+		const scrollVisibilityPromise = this._updateScrollVisibility(measures);
+		const p = Promise.all([
+			scrollVisibilityPromise,
+			scrollToPromise
+		]);
+		p.then(() => {
+			if (this._loadingCompleteResolve) {
+				this._loadingCompleteResolve();
+				this._loadingCompleteResolve = undefined;
+			}
+		});
+		return p;
+	}
+
+	#updateTabsContainerWidthLogic() {
 		const measures = this._getMeasures();
 
 		let maxWidth = 4; // initial value to allow for padding hack
@@ -1232,10 +1270,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._measures = null;
 
 		return this.updateComplete;
-	}
-
-	#isRTL() {
-		return document.documentElement.getAttribute('dir') === 'rtl';
 	}
 
 }
