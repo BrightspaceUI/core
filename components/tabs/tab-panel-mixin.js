@@ -9,7 +9,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 			 * Id of the tab that labels this panel
 			 * @type {string}
 			 */
-			labelledBy: { type: String },
+			labelledBy: { type: String, attribute: 'labelled-by' },
 			/**
 			 * Opt out of default padding/whitespace around the panel
 			 * @type {boolean}
@@ -21,12 +21,12 @@ export const TabPanelMixin = superclass => class extends superclass {
 			// eslint-disable-next-line lit/no-native-attributes
 			role: { type: String, reflect: true },
 			/**
-			 * Use to select the tab
+			 * Use to select the tab. Do not set if using the d2l-tab/d2l-tab-panel implementation.
 			 * @type {boolean}
 			 */
 			selected: { type: Boolean, reflect: true },
 			/**
-			 * ACCESSIBILITY: REQUIRED: The text used for the tab, as well as labelling the panel
+			 * ACCESSIBILITY: The text used for the tab, as well as labelling the panel. Required if not using d2l-tab/d2l-tab-panel implementation.
 			 * @type {string}
 			 */
 			text: { type: String }
