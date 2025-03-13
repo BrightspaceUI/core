@@ -9,7 +9,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 			 * Id of the tab that labels this panel
 			 * @type {string}
 			 */
-			labelledBy: { type: String },
+			labelledBy: { type: String, attribute: 'labelled-by' },
 			/**
 			 * Opt out of default padding/whitespace around the panel
 			 * @type {boolean}
@@ -21,12 +21,12 @@ export const TabPanelMixin = superclass => class extends superclass {
 			// eslint-disable-next-line lit/no-native-attributes
 			role: { type: String, reflect: true },
 			/**
-			 * Use to select the tab
+			 * Use to select the tab. Do not set if using the d2l-tab/d2l-tab-panel implementation.
 			 * @type {boolean}
 			 */
 			selected: { type: Boolean, reflect: true },
 			/**
-			 * ACCESSIBILITY: REQUIRED: The text used for the tab, as well as labelling the panel
+			 * ACCESSIBILITY: The text used for the tab, as well as labelling the panel. Required if not using d2l-tab/d2l-tab-panel implementation.
 			 * @type {string}
 			 */
 			text: { type: String }
@@ -65,13 +65,14 @@ export const TabPanelMixin = superclass => class extends superclass {
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
-		changedProperties.forEach((oldVal, prop) => {
+		changedProperties.forEach((_, prop) => {
 			if (prop === 'labelledBy') {
 				this.setAttribute('aria-labelledby', this.labelledBy);
 			} else if (prop === 'selected') {
-				if (this.selected) {
+				// assuming if this.text that we are using the old workflow
+				if (this.selected && this.text) {
 					requestAnimationFrame(() => {
-						/** Dispatched when a tab is selected */
+						/** Dispatched when a tab is selected if NOT using the d2l-tab/d2l-tab-panel implementation. */
 						this.dispatchEvent(new CustomEvent(
 							'd2l-tab-panel-selected', { bubbles: true, composed: true }
 						));

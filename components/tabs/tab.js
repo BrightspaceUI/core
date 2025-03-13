@@ -5,6 +5,16 @@ import { TabMixin } from './tab-mixin.js';
 
 class Tab extends TabMixin(LitElement) {
 
+	static get properties() {
+		return {
+			/**
+			 * ACCESSIBILITY: REQUIRED: The text used for the tab, as well as labelling the panel.
+			 * @type {string}
+			 */
+			text: { type: String }
+		};
+	}
+
 	static get styles() {
 		const styles = [ css`
 			.d2l-tab-text {
@@ -30,13 +40,12 @@ class Tab extends TabMixin(LitElement) {
 
 	renderContent() {
 		const contentClasses = {
-			'd2l-tab-handler': true,
 			'd2l-tab-text': true,
 		};
 
 		return html`
 			<div class="${classMap(contentClasses)}">
-				<slot></slot>
+				${this.text}
 			</div>
 		`;
 	}
