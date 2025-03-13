@@ -65,14 +65,13 @@ export const TabPanelMixin = superclass => class extends superclass {
 	updated(changedProperties) {
 		super.updated(changedProperties);
 
-		changedProperties.forEach((_, prop) => {
+		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'labelledBy') {
 				this.setAttribute('aria-labelledby', this.labelledBy);
 			} else if (prop === 'selected') {
-				// assuming if this.text that we are using the old workflow
-				if (this.selected && this.text) {
+				if (this.selected) {
 					requestAnimationFrame(() => {
-						/** Dispatched when a tab is selected if NOT using the d2l-tab/d2l-tab-panel implementation. */
+						/** Dispatched when a tab is selected */
 						this.dispatchEvent(new CustomEvent(
 							'd2l-tab-panel-selected', { bubbles: true, composed: true }
 						));
