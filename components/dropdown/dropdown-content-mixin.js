@@ -720,10 +720,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				width: contentRect.width
 			};
 
-			let spaceAround;
-			let spaceAroundScroll;
-
-			spaceAround = this._constrainSpaceAround({
+			const spaceAround = this._constrainSpaceAround({
 				// allow for target offset + outer margin
 				above: targetRect.top - this._verticalOffset - outerMarginTopBottom,
 				// allow for target offset + outer margin
@@ -734,7 +731,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				right: document.documentElement.clientWidth - targetRect.right - 15
 			}, spaceRequired, targetRect);
 
-			spaceAroundScroll = this._constrainSpaceAround({
+			const spaceAroundScroll = this._constrainSpaceAround({
 				above: targetRect.top + document.documentElement.scrollTop,
 				below: scrollHeight - targetRect.bottom - document.documentElement.scrollTop
 			}, spaceRequired, targetRect);
