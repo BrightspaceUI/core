@@ -3,7 +3,6 @@ import { _offscreenStyleDeclarations } from '../offscreen/offscreen.js';
 import { css } from 'lit';
 
 const pointerLength = 16;
-const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
 
 export const dropdownContentStyles = css`
 
