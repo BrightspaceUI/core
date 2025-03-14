@@ -330,7 +330,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			}
 		});
 		this._hasSummary = false;
-		this._isLastPanelInGroup = false;
+		this._isLastPanelInGroup = true;
 		this._scrolled = false;
 	}
 
