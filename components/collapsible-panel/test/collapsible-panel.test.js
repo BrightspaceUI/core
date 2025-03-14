@@ -1,6 +1,5 @@
 import '../collapsible-panel.js';
 import '../collapsible-panel-summary-item.js';
-import '../collapsible-panel-group.js';
 import { expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-collapsible-panel', () => {
@@ -8,7 +7,6 @@ describe('d2l-collapsible-panel', () => {
 	it('should construct', () => {
 		runConstructor('d2l-collapsible-panel');
 		runConstructor('d2l-collapsible-panel-summary-item');
-		runConstructor('d2l-collapsible-panel-group');
 	});
 
 	describe('panel label', () => {
