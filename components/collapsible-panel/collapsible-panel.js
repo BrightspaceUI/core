@@ -4,6 +4,7 @@ import '../expand-collapse/expand-collapse-content.js';
 import { css, html, LitElement } from 'lit';
 import { heading1Styles, heading2Styles, heading3Styles, heading4Styles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -86,7 +87,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			_focused: { state: true },
 			_hasBefore: { state: true },
 			_hasSummary: { state: true },
-			_noBottomBorder: { state: true },
+			_isLastPanelInGroup: { state: true },
 			_scrolled: { state: true },
 		};
 	}
@@ -321,8 +322,15 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 		this.type = 'default';
 		this.noSticky = false;
 		this._focused = false;
+		this._group = undefined;
+		this._groupSubscription = new EventSubscriberController(this, 'collapsible-panel-group', {
+			onSubscribe: (registry) => {
+				this._group = registry;
+				this._group._updatePanelAttributes();
+			}
+		});
 		this._hasSummary = false;
-		this._noBottomBorder = false;
+		this._isLastPanelInGroup = true;
 		this._scrolled = false;
 	}
 
@@ -342,7 +350,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			'has-summary': this._hasSummary,
 			'has-before': this._hasBefore,
 			'scrolled': this._scrolled,
-			'no-bottom-border': this._noBottomBorder,
+			'no-bottom-border': this.type === 'inline' && !this._isLastPanelInGroup,
 		};
 
 		return html`
@@ -377,6 +385,10 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 
 		if (changedProperties.has('noSticky')) {
 			this._stickyObserverUpdate();
+		}
+
+		if (changedProperties.has('type')) {
+			this._group?._updatePanelAttributes();
 		}
 	}
 
