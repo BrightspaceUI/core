@@ -12,7 +12,7 @@ import { nothing } from 'lit';
 
 const viewport = { width: 476 };
 
-function createInputList(numInputs, selected) {
+function createInputList(numInputs, selected, disabled) {
 	return html`
 		<ul style="padding: 0;">
 			${Array.from(Array(numInputs).keys()).map((key) => html`
@@ -21,7 +21,8 @@ function createInputList(numInputs, selected) {
 						style="margin-right: 10px;"
 						label="${`item ${key + 1}`}"
 						key="${`key${key + 1}`}"
-						?selected="${selected && selected[key]}">
+						?selected="${selected && selected[key]}"
+						?disabled="${disabled && disabled[key]}">
 					</d2l-selection-input>${`Item ${key + 1}`}
 				</li>
 			`)}
@@ -238,7 +239,7 @@ describe('selection-components', () => {
 
 describe('selection-mixin', () => {
 	function createTemplate(opts) {
-		const { external, singleSelection, selected } = { external: false, singleSelection: false, selected: [false, false, false], ...opts };
+		const { external, singleSelection, selected, disabled } = { external: false, singleSelection: false, selected: [false, false, false], disabled: [false, false, false], ...opts };
 		return html`
 			<div>
 				${external ? html`
@@ -264,7 +265,7 @@ describe('selection-mixin', () => {
 							<d2l-selection-summary style="flex: none;"></d2l-selection-summary>
 						</div>
 					` : nothing}
-					${createInputList(3, selected)}
+					${createInputList(3, selected, disabled)}
 				</d2l-test-selection>
 			</div>
 		`;
@@ -306,6 +307,23 @@ describe('selection-mixin', () => {
 			const elem = await fixture(html`<d2l-test-selection selection-single ?selection-no-input-arrow-key-behavior="${noKeyUpBehavior}">${createInputList(3, selected || [false, true, false])}</d2l-test-selection>`, { rtl, viewport });
 			const input = elem.querySelector('d2l-selection-input[selected]');
 			if (action) await action(input);
+			await expect(elem).to.be.golden();
+		});
+	});
+
+	[
+		{ name: 'disabled-item-others-selected', template: createTemplate({ selected: [true, true, false], disabled: [false, false, true] }) },
+		{ name: 'disabled-item-others-selected-select-all', template: createTemplate({ selected: [true, true, false], disabled: [false, false, true] }), action: elem => clickElem(elem.querySelector('d2l-selection-select-all')) },
+		{ name: 'disabled-item-some-selected-select-all', template: createTemplate({ selected: [false, true, false], disabled: [false, false, true] }), action: elem => clickElem(elem.querySelector('d2l-selection-select-all')) },
+		{ name: 'disabled-item-some-selected-select-item', template: createTemplate({ selected: [false, true, false], disabled: [false, false, true] }), action: elem => clickElem(elem.querySelector('d2l-selection-input')) },
+		{ name: 'all-selected-one-disabled', template: createTemplate({ selected: [true, true, true], disabled: [false, false, true] }) },
+		{ name: 'all-selected-one-disabled-select-all', template: createTemplate({ selected: [true, true, true], disabled: [false, false, true] }), action: elem => clickElem(elem.querySelector('d2l-selection-select-all')) },
+		{ name: 'disabled-selected-select-all', template: createTemplate({ selected: [false, true, true], disabled: [false, false, true] }), action: elem => clickElem(elem.querySelector('d2l-selection-select-all')) },
+		{ name: 'disabled-and-some-selected-select-item', template: createTemplate({ selected: [false, true, true], disabled: [false, false, true] }), action: elem => clickElem(elem.querySelector('d2l-selection-input')) },
+	].forEach(({ name, template, action }) => {
+		it(name, async() => {
+			const elem = await fixture(template);
+			if (action) await action(elem);
 			await expect(elem).to.be.golden();
 		});
 	});
