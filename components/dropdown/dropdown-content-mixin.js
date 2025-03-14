@@ -190,14 +190,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				attribute: 'opened-above'
 			},
 			/**
-			 * Temporary.
-			 * @ignore
-			 */
-			preferFixedPositioning: {
-				type: Boolean,
-				attribute: 'prefer-fixed-positioning'
-			},
-			/**
  			* Optionally render a d2l-focus-trap around the dropdown content
 			 * @type {boolean}
  			*/
@@ -223,11 +215,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			_dropdownContent: {
 				type: Boolean,
 				attribute: 'dropdown-content',
-				reflect: true
-			},
-			_fixedPositioning: {
-				type: Boolean,
-				attribute: '_fixed-positioning',
 				reflect: true
 			},
 			_useMobileStyling: {
@@ -370,12 +357,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		});
 	}
 
-	willUpdate(changedProperties) {
-		if (this._fixedPositioning === undefined || changedProperties.has('preferFixedPositioning')) {
-			this._fixedPositioning = (window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-131-dropdown-fixed-positioning', false) && this.preferFixedPositioning);
-		}
-	}
-
 	close() {
 		const hide = () => {
 			this._closing = false;
@@ -460,7 +441,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	__addRepositionHandlers() {
-		if (!this._fixedPositioning) return;
 
 		const isScrollable = (node, prop) => {
 			const value = window.getComputedStyle(node, null).getPropertyValue(prop);
@@ -722,15 +702,10 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		/* don't let dropdown content horizontally overflow viewport */
 		this._width = null;
 
-		const openerPosition = window.getComputedStyle(opener, null).getPropertyValue('position'); // todo: cleanup when switched to fixed positioning
 		const boundingContainer = getBoundingAncestor(target.parentNode);
-		const boundingContainerRect = boundingContainer.getBoundingClientRect(); // todo: cleanup when switched to fixed positioning
 		const scrollHeight = boundingContainer.scrollHeight;
 
 		await this.updateComplete;
-
-		// position check in case consuming app (LMS) has overriden position to make content absolute wrt document
-		const bounded = (!this._fixedPositioning && openerPosition === 'relative' && boundingContainer !== document.documentElement);
 
 		const adjustPosition = async() => {
 
@@ -747,43 +722,22 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 			let spaceAround;
 			let spaceAroundScroll;
-			if (bounded) {
 
-				spaceAround = this._constrainSpaceAround({
-					// allow for target offset + outer margin
-					above: targetRect.top - boundingContainerRect.top - this._verticalOffset - outerMarginTopBottom,
-					// allow for target offset + outer margin
-					below: boundingContainerRect.bottom - targetRect.bottom - this._verticalOffset - outerMarginTopBottom,
-					// allow for outer margin
-					left: targetRect.left - boundingContainerRect.left - 20,
-					// allow for outer margin
-					right: boundingContainerRect.right - targetRect.right - 20
-				}, spaceRequired, targetRect);
+			spaceAround = this._constrainSpaceAround({
+				// allow for target offset + outer margin
+				above: targetRect.top - this._verticalOffset - outerMarginTopBottom,
+				// allow for target offset + outer margin
+				below: window.innerHeight - targetRect.bottom - this._verticalOffset - outerMarginTopBottom,
+				// allow for outer margin
+				left: targetRect.left - 20,
+				// allow for outer margin
+				right: document.documentElement.clientWidth - targetRect.right - 15
+			}, spaceRequired, targetRect);
 
-				spaceAroundScroll = this._constrainSpaceAround({
-					above: targetRect.top - boundingContainerRect.top + boundingContainer.scrollTop,
-					below: scrollHeight - targetRect.bottom + boundingContainerRect.top - boundingContainer.scrollTop
-				}, spaceRequired, targetRect);
-
-			} else {
-
-				spaceAround = this._constrainSpaceAround({
-					// allow for target offset + outer margin
-					above: targetRect.top - this._verticalOffset - outerMarginTopBottom,
-					// allow for target offset + outer margin
-					below: window.innerHeight - targetRect.bottom - this._verticalOffset - outerMarginTopBottom,
-					// allow for outer margin
-					left: targetRect.left - 20,
-					// allow for outer margin
-					right: document.documentElement.clientWidth - targetRect.right - 15
-				}, spaceRequired, targetRect);
-
-				spaceAroundScroll = this._constrainSpaceAround({
-					above: targetRect.top + document.documentElement.scrollTop,
-					below: scrollHeight - targetRect.bottom - document.documentElement.scrollTop
-				}, spaceRequired, targetRect);
-
-			}
+			spaceAroundScroll = this._constrainSpaceAround({
+				above: targetRect.top + document.documentElement.scrollTop,
+				below: scrollHeight - targetRect.bottom - document.documentElement.scrollTop
+			}, spaceRequired, targetRect);
 
 			if (options.updateAboveBelow) {
 				this.openedAbove = this._getOpenedAbove(spaceAround, spaceAroundScroll, spaceRequired);
@@ -813,7 +767,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		};
 
 		const scrollWidth = Math.max(header.scrollWidth, content.scrollWidth, footer.scrollWidth);
-		const availableWidth = (bounded ? boundingContainerRect.width - 60 : window.innerWidth - 40);
+		const availableWidth = window.innerWidth - 40;
 		this._width = (availableWidth > scrollWidth ? scrollWidth : availableWidth) ;
 
 		await this.updateComplete;
@@ -822,8 +776,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	__removeRepositionHandlers() {
-		if (!this._fixedPositioning) return;
-
 		this._scrollablesObserved?.forEach(node => {
 			node.removeEventListener('scroll', this.__reposition);
 		});
@@ -1112,7 +1064,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 	_getPointerPosition(targetRect) {
 		const position = {};
-		if (!this._fixedPositioning) return position;
 
 		const pointer = this.__getPointer();
 		if (!pointer) return position;
@@ -1146,28 +1097,20 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		const position = {};
 		const isRTL = this.getAttribute('dir') === 'rtl';
 		const positionXAdjustment = this._getPositionXAdjustment(spaceAround, targetRect, contentRect);
-		if (this._fixedPositioning) {
-			if (positionXAdjustment !== null) {
-				if (!isRTL) {
-					position.left = targetRect.left + positionXAdjustment;
-				} else {
-					position.right = window.innerWidth - targetRect.left - targetRect.width + positionXAdjustment;
-				}
-			}
-			if (this.openedAbove) {
-				position.bottom = window.innerHeight - targetRect.top + this._verticalOffset;
+
+		if (positionXAdjustment !== null) {
+			if (!isRTL) {
+				position.left = targetRect.left + positionXAdjustment;
 			} else {
-				position.top = targetRect.top + targetRect.height + this._verticalOffset;
-			}
-		} else {
-			if (positionXAdjustment !== null) {
-				if (!isRTL) {
-					position.left = positionXAdjustment;
-				} else {
-					position.right = positionXAdjustment;
-				}
+				position.right = window.innerWidth - targetRect.left - targetRect.width + positionXAdjustment;
 			}
 		}
+		if (this.openedAbove) {
+			position.bottom = window.innerHeight - targetRect.top + this._verticalOffset;
+		} else {
+			position.top = targetRect.top + targetRect.height + this._verticalOffset;
+		}
+
 		return position;
 	}
 
