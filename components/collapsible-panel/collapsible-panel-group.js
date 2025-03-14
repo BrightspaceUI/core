@@ -9,6 +9,12 @@ import { SubscriberRegistryController } from '../../controllers/subscriber/subsc
  */
 class CollapsiblePanelGroup extends SkeletonGroupMixin(LitElement) {
 
+	static get properties() {
+		return {
+			_spaced: { state: true }
+		};
+	}
+
 	static get styles() {
 		return css`
 			:host ::slotted(*) {
@@ -28,11 +34,12 @@ class CollapsiblePanelGroup extends SkeletonGroupMixin(LitElement) {
 	constructor() {
 		super();
 		this._panels = new SubscriberRegistryController(this, 'collapsible-panel-group');
+		this._spaced = true;
 	}
 
 	render() {
 		const classes = {
-			spaced: this._panels?.[0]?.type !== 'inline',
+			spaced: this._spaced,
 		};
 
 		return html`<slot class="${classMap(classes)}"></slot>`;
@@ -46,6 +53,7 @@ class CollapsiblePanelGroup extends SkeletonGroupMixin(LitElement) {
 		if (!panels || panels.length === 0) return;
 
 		const isInline = panels[0].type === 'inline';
+		this._spaced = !isInline;
 		for (let i = 0; i < panels.length; i++) {
 			if (i < panels.length - 1) {
 				panels[i]._noBottomBorder = isInline;
