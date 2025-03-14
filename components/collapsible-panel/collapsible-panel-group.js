@@ -54,13 +54,7 @@ class CollapsiblePanelGroup extends SkeletonGroupMixin(LitElement) {
 
 		const isInline = panels[0].type === 'inline';
 		this._spaced = !isInline;
-		for (let i = 0; i < panels.length; i++) {
-			if (i < panels.length - 1) {
-				panels[i]._noBottomBorder = isInline;
-			} else {
-				panels[i]._noBottomBorder = false;
-			}
-		}
+		panels.forEach((p, idx) => p._isLastPanelInGroup = idx === panels.length - 1);
 	}
 }
 

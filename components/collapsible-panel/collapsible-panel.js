@@ -87,7 +87,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			_focused: { state: true },
 			_hasBefore: { state: true },
 			_hasSummary: { state: true },
-			_noBottomBorder: { state: true },
+			_isLastPanelInGroup: { state: true },
 			_scrolled: { state: true },
 		};
 	}
@@ -330,7 +330,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			}
 		});
 		this._hasSummary = false;
-		this._noBottomBorder = false;
+		this._isLastPanelInGroup = false;
 		this._scrolled = false;
 	}
 
@@ -350,7 +350,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			'has-summary': this._hasSummary,
 			'has-before': this._hasBefore,
 			'scrolled': this._scrolled,
-			'no-bottom-border': this._noBottomBorder,
+			'no-bottom-border': this.type === 'inline' && !this._isLastPanelInGroup,
 		};
 
 		return html`
