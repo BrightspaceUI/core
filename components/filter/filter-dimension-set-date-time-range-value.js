@@ -144,7 +144,6 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 				inclusive-date-range
 				label="${this.localize('components.filter-dimension-set-date-time-range-value.text')}"
 				label-hidden
-				prefer-fixed-positioning
 				start-value="${ifDefined(this.startValue ? getLocalDateTimeFromUTCDateTime(this.startValue) : undefined)}"
 			></d2l-input-date-range>`
 			: html`<d2l-input-date-time-range
@@ -153,7 +152,6 @@ class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElemen
 				end-value="${ifDefined(this.endValue)}"
 				label="${this.localize('components.filter-dimension-set-date-time-range-value.text')}"
 				label-hidden
-				prefer-fixed-positioning
 				start-value="${ifDefined(this.startValue)}"
 			></d2l-input-date-time-range>
 		`;
