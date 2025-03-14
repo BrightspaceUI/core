@@ -50,7 +50,7 @@ class CollapsiblePanelGroup extends SkeletonGroupMixin(LitElement) {
 			?.querySelector('slot')
 			?.assignedNodes({ flatten: true })
 			.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-COLLAPSIBLE-PANEL');
-		if (panels?.length) return;
+		if (!panels?.length) return;
 
 		const isInline = panels[0].type === 'inline';
 		this._spaced = !isInline;
