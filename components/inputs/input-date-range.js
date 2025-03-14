@@ -94,11 +94,6 @@ class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormEleme
 			 */
 			minValue: { attribute: 'min-value', reflect: true, type: String },
 			/**
-			 * Temporary.
-			 * @ignore
-			 */
-			preferFixedPositioning: { type: Boolean, attribute: 'prefer-fixed-positioning' },
-			/**
 			 * Indicates that values are required
 			 * @type {boolean}
 			 */
@@ -203,7 +198,6 @@ class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormEleme
 						max-value="${ifDefined(this.maxValue)}"
 						min-value="${ifDefined(this.minValue)}"
 						?opened="${this.startOpened}"
-						?prefer-fixed-positioning="${this.preferFixedPositioning}"
 						?required="${this.required}"
 						?skeleton="${this.skeleton}"
 						slot="left"
@@ -222,7 +216,6 @@ class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormEleme
 						max-value="${ifDefined(this.maxValue)}"
 						min-value="${ifDefined(this.minValue)}"
 						?opened="${this.endOpened}"
-						?prefer-fixed-positioning="${this.preferFixedPositioning}"
 						?required="${this.required}"
 						?skeleton="${this.skeleton}"
 						slot="right"
