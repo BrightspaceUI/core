@@ -16,6 +16,18 @@
 		</style>
 	</head>
 	<body unresolved>
+		<h2>Not fixed</h2>
+		<p>
+			This demonstrates the undesired behaviour, where individual cells are skeletized
+			but the skeleton state does not roll up to the block of rows being loaded.
+		</p>
 		<d2l-test-table-skeleton></d2l-test-table-skeleton>
+		<h2>Fixed</h2>
+		<p>
+			This is an example of the desired behaviour. Each group of cells being loaded
+			is treated as a single skeleton group, and only once every cell in the group
+			has loaded is the skeleton state removed.
+		</p>
+		<d2l-test-table-skeleton fixed></d2l-test-table-skeleton>
 	</body>
 </html>
