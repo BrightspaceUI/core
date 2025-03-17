@@ -37,7 +37,6 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				width: calc(100% - 1.2rem);
 			}
 			:host(:first-child) .d2l-tab-selected-indicator {
-				margin-inline-end: 0.6rem;
 				margin-inline-start: 0;
 				width: calc(100% - 0.6rem);
 			}
@@ -93,25 +92,22 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	render() {
 		return html`
-			<div class="d2l-skeletize">
-				${this.renderContent()}
-			</div>
+			${this.renderContent()}
 			<div class="d2l-tab-selected-indicator d2l-skeletize-container"></div>
 		`;
 	}
 
 	update(changedProperties) {
 		super.update(changedProperties);
-		changedProperties.forEach((oldVal, prop) => {
-			if (prop === 'selected') {
-				this.ariaSelected = this.selected;
-				if (this.selected === 'true') {
-					this.dispatchEvent(new CustomEvent(
-						'd2l-tab-selected', { bubbles: true, composed: true }
-					));
-				}
+
+		if (changedProperties.has('selected')) {
+			this.ariaSelected = this.selected;
+			if (this.selected) {
+				this.dispatchEvent(new CustomEvent(
+					'd2l-tab-selected', { bubbles: true, composed: true }
+				));
 			}
-		});
+		}
 	}
 
 	renderContent() {
