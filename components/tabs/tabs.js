@@ -752,6 +752,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				if (tab.selected) {
 					tab.selected = false;
 					const panel = this._getPanel(tab.id);
+					// panel may not exist if it's being removed
 					if (panel) panel.selected = false;
 				}
 				if (tab.tabIndex === 0) tab.tabIndex = -1;
