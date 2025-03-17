@@ -747,12 +747,16 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		await this.updateComplete;
 
 		selectedPanel.selected = true;
-		const prevSelectTab = this._tabs.find(tab => (tab.id !== selectedTab.id && tab.selected));
-		if (prevSelectTab) {
-			prevSelectTab.selected = false;
-			const prevSelectPanel = this._getPanel(prevSelectTab.id);
-			if (prevSelectPanel) prevSelectPanel.selected = false;
-		}
+		this._tabs.forEach((tab) => {
+			if (tab.id !== selectedTab.id) {
+				if (tab.selected) {
+					tab.selected = false;
+					const panel = this._getPanel(tab.id);
+					if (panel) panel.selected = false;
+				}
+				if (tab.tabIndex === 0) tab.tabIndex = -1;
+			}
+		});
 
 		this.requestUpdate();
 	}
