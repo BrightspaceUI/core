@@ -35,6 +35,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			maxToShow: { type: Number, attribute: 'max-to-show' },
 			_allowScrollNext: { type: Boolean },
 			_allowScrollPrevious: { type: Boolean },
+			_defaultSlotBehavior: { state: true },
 			_maxWidth: { type: Number },
 			_scrollCollapsed: { type: Boolean },
 			_state: { type: String },
@@ -199,6 +200,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this.maxToShow = -1;
 		this._allowScrollNext = false;
 		this._allowScrollPrevious = false;
+		this._defaultSlotBehavior = true; // remove after d2l-tab/d2l-tab-panel backport
 		this._loadingCompleteResolve = undefined;
 		this._loadingCompletePromise = new Promise(resolve => this._loadingCompleteResolve = resolve);
 		this._maxWidth = null;
@@ -315,6 +317,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 									text="${tabInfo.text}">
 								</d2l-tab-internal>
 							`)}
+							<slot name="tabs" @slotchange="${this._handleTabsSlotChange}"></slot>
 						</div>
 					`)}
 					<div class="d2l-tabs-scroll-next-container">
@@ -330,7 +333,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			<div class="${classMap(panelContainerClasses)}"
 				@d2l-tab-panel-selected="${this._handlePanelSelected}"
 				@d2l-tab-panel-text-changed="${this._handlePanelTextChange}">
-				<slot @slotchange="${this._handlePanelsSlotChange}"></slot>
+				<slot @slotchange="${this._handleDefaultSlotChange}"></slot>
+				<slot name="panels"></slot>
 			</div>
 		`;
 	}
@@ -340,7 +344,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	async getLoadingComplete() {
-		return this._loadingCompletePromise;
+		return this._defaultSlotBehavior ? this._loadingCompletePromise : true;
 	}
 
 	getTabListRect() {
@@ -495,6 +499,21 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_getPanel(id) {
+		if (this._defaultSlotBehavior) return this._getPanelDefaultSlotBehavior(id);
+
+		if (!this.shadowRoot) return;
+		// use simple selector for slot (Edge)
+		const slot = this.shadowRoot.querySelector('.d2l-panels-container').querySelector('slot[name="panels"]');
+		const panels = this._getPanels(slot);
+		for (let i = 0; i < panels.length; i++) {
+			if (panels[i].labelledBy === id) {
+				return panels[i];
+			}
+		}
+	}
+
+	// remove after d2l-tab/d2l-tab-panel backport
+	_getPanelDefaultSlotBehavior(id) {
 		if (!this.shadowRoot) return;
 		// use simple selector for slot (Edge)
 		const slot = this.shadowRoot.querySelector('.d2l-panels-container').querySelector('slot');
@@ -516,22 +535,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return this._tabInfos.find((t) => t.id === id);
 	}
 
-	_handleFocusOut(e) {
-		if (e.relatedTarget && e.relatedTarget.role === 'tab') return;
-		this._resetFocusables();
-	}
-
-	_handlePanelSelected(e) {
-		const tabInfo = this._getTabInfo(e.target.id);
-		// event could be from nested tabs
-		if (!tabInfo) return;
-
-		this._setFocusable(tabInfo);
-		tabInfo.selected = true;
-		this.requestUpdate();
-	}
-
-	async _handlePanelsSlotChange(e) {
+	async _handleDefaultSlotChange(e) {
+		if (!this._defaultSlotBehavior) return;
 
 		const panels = this._getPanels(e.target);
 
@@ -615,6 +620,21 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			'd2l-tabs-initialized', { bubbles: true, composed: true }
 		));
 
+	}
+
+	_handleFocusOut(e) {
+		if (e.relatedTarget && e.relatedTarget.role === 'tab') return;
+		this._resetFocusables();
+	}
+
+	_handlePanelSelected(e) {
+		const tabInfo = this._getTabInfo(e.target.id);
+		// event could be from nested tabs
+		if (!tabInfo) return;
+
+		this._setFocusable(tabInfo);
+		tabInfo.selected = true;
+		this.requestUpdate();
 	}
 
 	async _handlePanelTextChange(e) {
@@ -713,6 +733,32 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	async _handleTabSelected(e) {
+		if (this._defaultSlotBehavior) {
+			this._handleTabSelectedDefaultSlotBehavior(e);
+			return;
+		}
+
+		e.stopPropagation();
+
+		const selectedTab = e.target;
+		const selectedPanel = this._getPanel(e.target.id);
+		selectedTab.tabIndex = 0;
+
+		await this.updateComplete;
+
+		selectedPanel.selected = true;
+		const prevSelectTab = this._tabs.find(tab => (tab.id !== selectedTab.id && tab.selected));
+		if (prevSelectTab) {
+			prevSelectTab.selected = false;
+			const prevSelectPanel = this._getPanel(prevSelectTab.id);
+			if (prevSelectPanel) prevSelectPanel.selected = false;
+		}
+
+		this.requestUpdate();
+	}
+
+	// remove after d2l-tab/d2l-tab-panel backport
+	async _handleTabSelectedDefaultSlotBehavior(e) {
 		e.stopPropagation();
 
 		const selectedTab = e.target;
@@ -737,6 +783,43 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		});
 
 		this.requestUpdate();
+	}
+
+	async _handleTabsSlotChange(e) {
+		this._defaultSlotBehavior = false;
+
+		this._tabs = e.target.assignedNodes({ flatten: true })
+			.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.role === 'tab');
+
+		// handle case where there are less than two tabs initially
+		this._updateTabListVisibility(this._tabs);
+
+		if (!this._initialized && this._tabs.length === 0) return;
+
+		let selectedTab;
+		if (this._tabs.length > 0) {
+			selectedTab = this._tabs.find((tab) => tab.state !== 'removing');
+			if (selectedTab) {
+				selectedTab.selected = true;
+				selectedTab.tabIndex = 0;
+			}
+		}
+
+		await this.updateComplete;
+
+		if (!this._initialized && this._tabs.length > 0) {
+			this._initialized = true;
+		}
+
+		if (selectedTab) {
+			// set corresponding panel to selected
+			const selectedPanel = this._getPanel(selectedTab.id);
+			if (selectedPanel) selectedPanel.selected = true;
+		}
+
+		this.dispatchEvent(new CustomEvent(
+			'd2l-tabs-initialized', { bubbles: true, composed: true }
+		));
 	}
 
 	_isPositionInLeftScrollArea(position) {
