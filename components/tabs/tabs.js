@@ -627,7 +627,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._resetFocusables();
 	}
 
+	// remove after d2l-tab/d2l-tab-panel backport
 	_handlePanelSelected(e) {
+		if (!this._defaultSlotBehavior) return;
+
 		const tabInfo = this._getTabInfo(e.target.id);
 		// event could be from nested tabs
 		if (!tabInfo) return;
