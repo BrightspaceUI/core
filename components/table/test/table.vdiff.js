@@ -675,7 +675,6 @@ describe('table', () => {
 				});
 
 				it('col-sort-button-dropdown-open-short-flag-on', async() => {
-					window.D2L = { LP: { Web: { UI: { Flags: { Flag: () => true } } } } };
 					const elem = await createTableFixture(html`
 						<thead>${createSortableButtonDropdownHeaderRow()}</thead>
 						<tbody>${createRows([1])}</tbody>
