@@ -236,7 +236,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		this.arrowKeysOnBeforeFocus = async(tab) => {
 			const tabInfo = this._getTabInfo(tab.controlsPanel);
-			this._setFocusable(tabInfo);
+			this._setFocusableDefaultSlotBehavior(tabInfo);
 
 			this.requestUpdate();
 			await this.updateComplete;
@@ -563,7 +563,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			};
 			if (tabInfo.selected) {
 				selectedTabInfo = tabInfo;
-				this._setFocusable(tabInfo);
+				this._setFocusableDefaultSlotBehavior(tabInfo);
 			}
 			return tabInfo;
 		});
@@ -635,7 +635,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		// event could be from nested tabs
 		if (!tabInfo) return;
 
-		this._setFocusable(tabInfo);
+		this._setFocusableDefaultSlotBehavior(tabInfo);
 		tabInfo.selected = true;
 		this.requestUpdate();
 	}
@@ -804,13 +804,17 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		if (!this._initialized && this._tabs.length === 0) return;
 
-		let selectedTab;
-		if (this._tabs.length > 0) {
+		let selectedTab = this._tabs?.find(tab => tab.selected);
+
+		if (this._tabs.length > 0 && !selectedTab) {
 			selectedTab = this._tabs.find((tab) => tab.state !== 'removing');
 			if (selectedTab) {
 				selectedTab.selected = true;
-				selectedTab.tabIndex = 0;
 			}
+		}
+
+		if (selectedTab) {
+			this._setFocusable(selectedTab);
 		}
 
 		await this.updateComplete;
@@ -840,7 +844,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	_resetFocusables() {
 		const selectedTab = this._tabInfos.find(ti => ti.selected);
-		if (selectedTab) this._setFocusable(selectedTab);
+		if (selectedTab) this._setFocusableDefaultSlotBehavior(selectedTab);
 		this.requestUpdate();
 	}
 
@@ -865,7 +869,14 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		});
 	}
 
-	_setFocusable(tabInfo) {
+	_setFocusable(tab) {
+		const currentFocusable = this._tabs.find(tab => tab.tabIndex === 0);
+		if (currentFocusable) currentFocusable.tabIndex = -1;
+
+		tab.tabIndex = 0;
+	}
+
+	_setFocusableDefaultSlotBehavior(tabInfo) {
 		const currentFocusable = this._tabInfos.find(ti => ti.activeFocusable);
 		if (currentFocusable) currentFocusable.activeFocusable = false;
 
