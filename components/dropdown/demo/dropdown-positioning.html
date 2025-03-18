@@ -1,14 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
-	<script>
-		const urlParams = new URLSearchParams(window.location.search);
-		window.D2L = { LP: { Web: { UI: { Flags: { Flag: () => (urlParams.get('position') === 'fixed') } } } } };
-	</script>
 	<script type="module">
 		import '../../demo/demo-page.js';
 		import '../../button/button.js';
@@ -19,19 +14,18 @@
 		import '../../table/demo/table-test.js';
 	</script>
 </head>
-
 <body unresolved>
 
-	<d2l-demo-page page-title="d2l-dropdown">
+	<d2l-demo-page page-title="d2l-dropdown (positioning)">
 
 		<h2>Dropdown (in a scrollable container)</h2>
 		<d2l-demo-snippet>
 			<template>
 				<div style="height: 250px; overflow: scroll;">
 					<p>Gabion warp American Main gunwalls cutlass gally cable gibbet jib keel. Trysail chantey swing the lead hempen halter hang the jib chase Jack Tar furl galleon scurvy. Brig splice the main brace provost pink rutters tender heave to Shiver me timbers belaying pin Brethren of the Coast.</p>
-					<d2l-dropdown prefer-fixed-positioning>
+					<d2l-dropdown>
 						<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
-						<d2l-dropdown-content max-width="400" prefer-fixed-positioning>
+						<d2l-dropdown-content max-width="400">
 							<a href="https://youtu.be/9ze87zQFSak">Google</a>
 							<p>Shrouds hulk ye run a rig pink wherry hornswaggle overhaul spike splice the main brace. Barbary Coast salmagundi Nelsons folly lanyard Sea Legs topgallant Sink me crow's nest scuttle red ensign. Handsomely swab wench hang the jib square-rigged scuppers spyglass holystone Yellow Jack splice the main brace.</p>
 							<a href="http://www.desire2learn.com">D2L</a>
@@ -56,13 +50,13 @@
 
 		<d2l-demo-snippet>
 			<template>
-				<d2l-dropdown prefer-fixed-positioning>
+				<d2l-dropdown>
 					<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
-					<d2l-dropdown-content max-width="400" prefer-fixed-positioning>
+					<d2l-dropdown-content max-width="400">
 						<p>Shrouds hulk ye run a rig pink wherry hornswaggle overhaul spike splice the main brace. Barbary Coast salmagundi Nelsons folly lanyard Sea Legs topgallant Sink me crow's nest scuttle red ensign.</p>
-						<d2l-dropdown prefer-fixed-positioning>
+						<d2l-dropdown>
 							<d2l-button-subtle class="d2l-dropdown-opener">Open Nested!</d2l-button-subtle>
-							<d2l-dropdown-content max-width="600" align="start" prefer-fixed-positioning>
+							<d2l-dropdown-content max-width="600" align="start">
 								<a href="https://youtu.be/9ze87zQFSak">Google</a>
 								<p>Shrouds hulk ye run a rig pink wherry hornswaggle overhaul spike splice the main brace. Barbary Coast salmagundi Nelsons folly lanyard Sea Legs topgallant Sink me crow's nest scuttle red ensign. Handsomely swab wench hang the jib square-rigged scuppers spyglass holystone Yellow Jack splice the main brace.</p>
 								<a href="http://www.desire2learn.com">D2L</a>
@@ -82,9 +76,9 @@
 				<d2l-dialog id="dialog1" title-text="Dialog Title">
 					<div>
 						<p>Bilge tack furl dance the hempen jig fathom weigh anchor mizzen Blimey Jack Ketch flogging. Lee galleon avast schooner long clothes scuppers pinnace bucko deadlights gibbet. Nipper brigantine Buccaneer Gold Road matey gangway booty tender killick Brethren of the Coast.</p>
-						<d2l-dropdown prefer-fixed-positioning>
+						<d2l-dropdown>
 							<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
-							<d2l-dropdown-content max-width="400" prefer-fixed-positioning>
+							<d2l-dropdown-content max-width="400">
 								<a href="https://youtu.be/9ze87zQFSak">Google</a>
 								<p>Shrouds hulk ye run a rig pink wherry hornswaggle overhaul spike splice the main brace. Barbary Coast salmagundi Nelsons folly lanyard Sea Legs topgallant Sink me crow's nest scuttle red ensign. Handsomely swab wench hang the jib square-rigged scuppers spyglass holystone Yellow Jack splice the main brace.</p>
 								<a href="http://www.desire2learn.com">D2L</a>
@@ -111,9 +105,9 @@
 			<template>
 				<div>
 					<div id="mutations-above"></div>
-					<d2l-dropdown prefer-fixed-positioning>
+					<d2l-dropdown>
 						<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
-						<d2l-dropdown-content max-width="400" prefer-fixed-positioning>
+						<d2l-dropdown-content max-width="400">
 							<d2l-button-subtle id="mutations-add-above">Add to Above</d2l-button-subtle>
 						</d2l-dropdown-content>
 					</d2l-dropdown>
@@ -129,9 +123,5 @@
 			</template>
 		</d2l-demo-snippet>
 
-		<script>
-			document.querySelector('d2l-demo-page').pageTitle = `d2l-dropdown (${ window.D2L.LP.Web.UI.Flags.Flag('GAUD-131-dropdown-fixed-positioning', false) ? 'fixed' : 'relative' })`;
-		</script>
 </body>
-
 </html>
