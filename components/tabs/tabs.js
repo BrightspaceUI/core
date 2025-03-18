@@ -3,7 +3,7 @@ import '../icons/icon.js';
 import '../../helpers/queueMicrotask.js';
 import './tab-internal.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
-import { cssEscape, findComposedAncestor } from '../../helpers/dom.js';
+import { cssEscape, findComposedAncestor, getOffsetParent } from '../../helpers/dom.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -89,6 +89,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			}
 			.d2l-tabs-container-list {
 				display: flex;
+				position: relative;
 				-webkit-transition: transform 200ms ease-out;
 				transition: transform 200ms ease-out;
 				white-space: nowrap;
@@ -242,10 +243,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			await this.updateComplete;
 
 			if (!this._scrollCollapsed) {
-				return this._updateScrollPosition(tabInfo);
+				return this._updateScrollPositionDefaultSlotBehavior(tabInfo);
 			} else {
 				const measures = this._getMeasures();
-				const newTranslationValue = this._calculateScrollPosition(tabInfo, measures);
+				const newTranslationValue = this._calculateScrollPositionDefaultSlotBehavior(tabInfo, measures);
 
 				if (!this.#isRTL()) {
 					if (newTranslationValue >= 0) return;
@@ -257,7 +258,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				if (expanded) {
 					return;
 				} else {
-					return this._updateScrollPosition(tabInfo);
+					return this._updateScrollPositionDefaultSlotBehavior(tabInfo);
 				}
 			}
 		};
@@ -382,91 +383,16 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		});
 	}
 
-	_calculateScrollPosition(selectedTabInfo, measures) {
+	_calculateScrollPosition(selectedTab, measures) {
+		const tabs = this._tabs;
+		const selectedTabIndex = tabs.indexOf(selectedTab);
+		return this.#calculateScrollPositionLogic(tabs, selectedTabIndex, measures);
+	}
 
+	// remove after d2l-tab/d2l-tab-panel backport
+	_calculateScrollPositionDefaultSlotBehavior(selectedTabInfo, measures) {
 		const selectedTabIndex = this._tabInfos.indexOf(selectedTabInfo);
-
-		if (!measures.tabRects[selectedTabIndex]) return 0;
-
-		const selectedTabMeasures = measures.tabRects[selectedTabIndex];
-
-		const isOverflowingLeft = (selectedTabMeasures.offsetLeft + this._translationValue < 0);
-		const isOverflowingRight = (selectedTabMeasures.offsetLeft + selectedTabMeasures.rect.width + this._translationValue > measures.tabsContainerRect.width);
-
-		const isRTL = this.#isRTL();
-
-		let getNewTranslationValue;
-		if (!isRTL) {
-			getNewTranslationValue = () => {
-				if (selectedTabIndex === 0) {
-					// position selected tab at beginning
-					return 0;
-				} else if (selectedTabIndex === (this._tabInfos.length - 1)) {
-					// position selected tab at end
-					return -1 * (selectedTabMeasures.offsetLeft - measures.tabsContainerRect.width + selectedTabMeasures.rect.width);
-				} else {
-					// position selected tab in middle
-					return -1 * (selectedTabMeasures.offsetLeft - (measures.tabsContainerRect.width / 2) + (selectedTabMeasures.rect.width / 2));
-				}
-			};
-		} else {
-			getNewTranslationValue = () => {
-				if (selectedTabIndex === 0) {
-					// position selected tab at beginning
-					return 0;
-				} else if (selectedTabIndex === (this._tabInfos.length - 1)) {
-					// position selected tab at end
-					return -1 * selectedTabMeasures.offsetLeft;
-				} else {
-					// position selected tab in middle
-					return (measures.tabsContainerRect.width / 2) - (selectedTabMeasures.offsetLeft + selectedTabMeasures.rect.width / 2) + (selectedTabMeasures.rect.width / 2);
-				}
-			};
-		}
-
-		let newTranslationValue = this._translationValue;
-		if (isOverflowingLeft || isOverflowingRight) {
-			newTranslationValue = getNewTranslationValue();
-		}
-
-		let expectedPosition;
-
-		// make sure the new position will not place selected tab behind left scroll button
-		if (!isRTL) {
-			expectedPosition = selectedTabMeasures.offsetLeft + newTranslationValue;
-			if (newTranslationValue < 0 && this._isPositionInLeftScrollArea(expectedPosition)) {
-				newTranslationValue = getNewTranslationValue();
-			}
-		} else {
-			expectedPosition = selectedTabMeasures.offsetLeft + selectedTabMeasures.rect.width + newTranslationValue;
-			if (newTranslationValue > 0 && this._isPositionInRightScrollArea(expectedPosition, measures)) {
-				newTranslationValue = getNewTranslationValue();
-			}
-		}
-
-		if (!isRTL) {
-			// make sure there will not be any empty space between left side of container and first tab
-			if (newTranslationValue > 0) newTranslationValue = 0;
-		} else {
-			// make sure there will not be any empty space between right side of container and first tab
-			if (newTranslationValue < 0) newTranslationValue = 0;
-		}
-
-		// make sure the new position will not place selected tab behind the right scroll button
-		if (!isRTL) {
-			expectedPosition = selectedTabMeasures.offsetLeft + selectedTabMeasures.rect.width + newTranslationValue;
-			if ((selectedTabIndex < this._tabInfos.length - 1) && this._isPositionInRightScrollArea(expectedPosition, measures)) {
-				newTranslationValue = getNewTranslationValue();
-			}
-		} else {
-			expectedPosition = selectedTabMeasures.offsetLeft + newTranslationValue;
-			if ((selectedTabIndex < this._tabInfos.length - 1) && this._isPositionInLeftScrollArea(expectedPosition)) {
-				newTranslationValue = getNewTranslationValue();
-			}
-		}
-
-		return newTranslationValue;
-
+		return this.#calculateScrollPositionLogic(this._tabInfos, selectedTabIndex, measures);
 	}
 
 	async _focusSelected() {
@@ -474,7 +400,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		if (!selectedTab) return;
 
 		const selectedTabInfo = this._getTabInfo(selectedTab.controlsPanel);
-		await this._updateScrollPosition(selectedTabInfo);
+		await this._updateScrollPositionDefaultSlotBehavior(selectedTabInfo);
 
 		selectedTab.focus();
 	}
@@ -594,7 +520,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		if (!this._initialized && this._tabInfos.length > 0) {
 
 			this._initialized = true;
-			await this._updateTabsContainerWidth(selectedTabInfo);
+			await this._updateTabsContainerWidthDefaultSlotBehavior(selectedTabInfo);
 
 		} else {
 
@@ -612,7 +538,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		if (selectedTabInfo) {
 			Promise.all(animPromises).then(() => {
 				this._updateMeasures();
-				return this._updateScrollPosition(selectedTabInfo);
+				return this._updateScrollPositionDefaultSlotBehavior(selectedTabInfo);
 			});
 		}
 
@@ -748,6 +674,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		selectedTab.tabIndex = 0;
 
 		await this.updateComplete;
+		this._updateScrollPosition(selectedTab);
 
 		selectedPanel.selected = true;
 		this._tabs.forEach((tab) => {
@@ -775,7 +702,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		selectedTabInfo.activeFocusable = true;
 
 		await this.updateComplete;
-		this._updateScrollPosition(selectedTabInfo);
+		this._updateScrollPositionDefaultSlotBehavior(selectedTabInfo);
 
 		selectedPanel.selected = true;
 		this._tabInfos.forEach((tabInfo) => {
@@ -821,12 +748,16 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		if (!this._initialized && this._tabs.length > 0) {
 			this._initialized = true;
+			await this._updateTabsContainerWidth(selectedTab);
 		}
 
 		if (selectedTab) {
 			// set corresponding panel to selected
 			const selectedPanel = this._getPanel(selectedTab.id);
 			if (selectedPanel) selectedPanel.selected = true;
+
+			this._updateMeasures();
+			this._updateScrollPosition(selectedTab);
 		}
 
 		this.dispatchEvent(new CustomEvent(
@@ -931,12 +862,15 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	_updateMeasures() {
 		let totalTabsWidth = 0;
 		if (!this.shadowRoot) return;
-		const tabs = [...this.shadowRoot.querySelectorAll('d2l-tab-internal')];
+		const tabs = this._defaultSlotBehavior ? [...this.shadowRoot.querySelectorAll('d2l-tab-internal')] : this._tabs;
 
 		const tabRects = tabs.map((tab) => {
+			const tabRect = tab.getBoundingClientRect();
+			const offsetLeft = this._defaultSlotBehavior ? tab.offsetLeft : this.#getOffsetLeft(tab, tabRect);
+
 			const measures = {
-				rect: tab.getBoundingClientRect(),
-				offsetLeft: tab.offsetLeft
+				rect: tabRect,
+				offsetLeft: offsetLeft
 			};
 			totalTabsWidth += measures.rect.width;
 			return measures;
@@ -950,22 +884,17 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		};
 	}
 
-	_updateScrollPosition(selectedTabInfo) {
+	_updateScrollPosition(selectedTab) {
 		const measures = this._getMeasures();
-		const newTranslationValue = this._calculateScrollPosition(selectedTabInfo, measures);
-		const scrollToPromise = this._scrollToPosition(newTranslationValue);
-		const scrollVisibilityPromise = this._updateScrollVisibility(measures);
-		const p = Promise.all([
-			scrollVisibilityPromise,
-			scrollToPromise
-		]);
-		p.then(() => {
-			if (this._loadingCompleteResolve) {
-				this._loadingCompleteResolve();
-				this._loadingCompleteResolve = undefined;
-			}
-		});
-		return p;
+		const newTranslationValue = this._calculateScrollPosition(selectedTab, measures);
+		return this.#updateScrollPositionLogic(measures, newTranslationValue);
+	}
+
+	// remove after d2l-tab/d2l-tab-panel backport
+	_updateScrollPositionDefaultSlotBehavior(selectedTabInfo) {
+		const measures = this._getMeasures();
+		const newTranslationValue = this._calculateScrollPositionDefaultSlotBehavior(selectedTabInfo, measures);
+		return this.#updateScrollPositionLogic(measures, newTranslationValue);
 	}
 
 	_updateScrollVisibility(measures) {
@@ -1016,10 +945,129 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		}
 	}
 
-	_updateTabsContainerWidth(selectedTabInfo) {
+	_updateTabsContainerWidth(selectedTab) {
+		const tabs = this._tabs;
+		if (!this.maxToShow || this.maxToShow <= 0 || this.maxToShow >= tabs.length) return;
+		if (tabs.indexOf(selectedTab) > this.maxToShow - 1) return;
+		return this.#updateTabsContainerWidthLogic();
+	}
+
+	// remove after d2l-tab/d2l-tab-panel backport
+	_updateTabsContainerWidthDefaultSlotBehavior(selectedTabInfo) {
 		if (!this.maxToShow || this.maxToShow <= 0 || this.maxToShow >= this._tabInfos.length) return;
 		if (this._tabInfos.indexOf(selectedTabInfo) > this.maxToShow - 1) return;
+		return this.#updateTabsContainerWidthLogic();
+	}
 
+	#calculateScrollPositionLogic(tabsDataStructure, selectedTabIndex, measures) {
+		if (!measures.tabRects[selectedTabIndex]) return 0;
+
+		const selectedTabMeasures = measures.tabRects[selectedTabIndex];
+
+		const isOverflowingLeft = (selectedTabMeasures.offsetLeft + this._translationValue < 0);
+		const isOverflowingRight = (selectedTabMeasures.offsetLeft + selectedTabMeasures.rect.width + this._translationValue > measures.tabsContainerRect.width);
+
+		const isRTL = this.#isRTL();
+
+		let getNewTranslationValue;
+		if (!isRTL) {
+			getNewTranslationValue = () => {
+				if (selectedTabIndex === 0) {
+					// position selected tab at beginning
+					return 0;
+				} else if (selectedTabIndex === (tabsDataStructure.length - 1)) {
+					// position selected tab at end
+					return -1 * (selectedTabMeasures.offsetLeft - measures.tabsContainerRect.width + selectedTabMeasures.rect.width);
+				} else {
+					// position selected tab in middle
+					return -1 * (selectedTabMeasures.offsetLeft - (measures.tabsContainerRect.width / 2) + (selectedTabMeasures.rect.width / 2));
+				}
+			};
+		} else {
+			getNewTranslationValue = () => {
+				if (selectedTabIndex === 0) {
+					// position selected tab at beginning
+					return 0;
+				} else if (selectedTabIndex === (tabsDataStructure.length - 1)) {
+					// position selected tab at end
+					return -1 * selectedTabMeasures.offsetLeft;
+				} else {
+					// position selected tab in middle
+					return (measures.tabsContainerRect.width / 2) - (selectedTabMeasures.offsetLeft + selectedTabMeasures.rect.width / 2) + (selectedTabMeasures.rect.width / 2);
+				}
+			};
+		}
+
+		let newTranslationValue = this._translationValue;
+		if (isOverflowingLeft || isOverflowingRight) {
+			newTranslationValue = getNewTranslationValue();
+		}
+
+		let expectedPosition;
+
+		// make sure the new position will not place selected tab behind left scroll button
+		if (!isRTL) {
+			expectedPosition = selectedTabMeasures.offsetLeft + newTranslationValue;
+			if (newTranslationValue < 0 && this._isPositionInLeftScrollArea(expectedPosition)) {
+				newTranslationValue = getNewTranslationValue();
+			}
+		} else {
+			expectedPosition = selectedTabMeasures.offsetLeft + selectedTabMeasures.rect.width + newTranslationValue;
+			if (newTranslationValue > 0 && this._isPositionInRightScrollArea(expectedPosition, measures)) {
+				newTranslationValue = getNewTranslationValue();
+			}
+		}
+
+		if (!isRTL) {
+			// make sure there will not be any empty space between left side of container and first tab
+			if (newTranslationValue > 0) newTranslationValue = 0;
+		} else {
+			// make sure there will not be any empty space between right side of container and first tab
+			if (newTranslationValue < 0) newTranslationValue = 0;
+		}
+
+		// make sure the new position will not place selected tab behind the right scroll button
+		if (!isRTL) {
+			expectedPosition = selectedTabMeasures.offsetLeft + selectedTabMeasures.rect.width + newTranslationValue;
+			if ((selectedTabIndex < tabsDataStructure.length - 1) && this._isPositionInRightScrollArea(expectedPosition, measures)) {
+				newTranslationValue = getNewTranslationValue();
+			}
+		} else {
+			expectedPosition = selectedTabMeasures.offsetLeft + newTranslationValue;
+			if ((selectedTabIndex < tabsDataStructure.length - 1) && this._isPositionInLeftScrollArea(expectedPosition)) {
+				newTranslationValue = getNewTranslationValue();
+			}
+		}
+
+		return newTranslationValue;
+	}
+
+	#getOffsetLeft(tab, tabRect) {
+		const offsetParent = getOffsetParent(tab);
+		return Math.round(tabRect.left - offsetParent.getBoundingClientRect().left);
+	}
+
+	#isRTL() {
+		return document.documentElement.getAttribute('dir') === 'rtl';
+	}
+
+	#updateScrollPositionLogic(measures, newTranslationValue) {
+		const scrollToPromise = this._scrollToPosition(newTranslationValue);
+		const scrollVisibilityPromise = this._updateScrollVisibility(measures);
+		const p = Promise.all([
+			scrollVisibilityPromise,
+			scrollToPromise
+		]);
+		p.then(() => {
+			if (this._loadingCompleteResolve) {
+				this._loadingCompleteResolve();
+				this._loadingCompleteResolve = undefined;
+			}
+		});
+		return p;
+	}
+
+	#updateTabsContainerWidthLogic() {
 		const measures = this._getMeasures();
 
 		let maxWidth = 4; // initial value to allow for padding hack
@@ -1038,10 +1086,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._measures = null;
 
 		return this.updateComplete;
-	}
-
-	#isRTL() {
-		return document.documentElement.getAttribute('dir') === 'rtl';
 	}
 
 }
