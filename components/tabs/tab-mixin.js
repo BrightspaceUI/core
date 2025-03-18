@@ -12,6 +12,9 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	static get properties() {
 		return {
 			selected: { type: Boolean, reflect: true },
+			// eslint-disable-next-line lit/no-native-attributes
+			role: { type: String, reflect: true },
+			tabIndex: { type: Number, reflect: true, attribute: 'tabindex' }
 		};
 	}
 
@@ -62,7 +65,6 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	constructor() {
 		super();
-		this.ariaSelected = false;
 		this.role = 'tab';
 		this.selected = false;
 		this.tabIndex = -1;

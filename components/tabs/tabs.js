@@ -206,7 +206,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._maxWidth = null;
 		this._scrollCollapsed = false;
 		this._state = 'shown';
-		this._tabInfos = [];
+		this._tabInfos = []; // remove after d2l-tab/d2l-tab-panel backport
 		this._translationValue = 0;
 	}
 
@@ -531,6 +531,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.role === 'tabpanel');
 	}
 
+	// remove after d2l-tab/d2l-tab-panel backport
 	_getTabInfo(id) {
 		return this._tabInfos.find((t) => t.id === id);
 	}
@@ -740,8 +741,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			this._handleTabSelectedDefaultSlotBehavior(e);
 			return;
 		}
-
-		e.stopPropagation();
 
 		const selectedTab = e.target;
 		const selectedPanel = this._getPanel(e.target.id);
