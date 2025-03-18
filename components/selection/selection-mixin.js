@@ -16,6 +16,7 @@ export class SelectionInfo {
 		if (!allEnabledSelected) allEnabledSelected = false;
 		if (!keys) keys = [];
 		if (!state) state = SelectionInfo.states.none;
+
 		this.#allEnabledSelected = allEnabledSelected;
 		this.#keys = keys;
 		this.#state = state;
@@ -38,7 +39,8 @@ export class SelectionInfo {
 			none: 'none',
 			some: 'some',
 			all: 'all',
-			allPages: 'all-pages'
+			allPages: 'all-pages',
+			notSet: 'not-set'
 		};
 	}
 
@@ -98,12 +100,13 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 
 	getSelectionInfo() {
 		let allEnabledSelected = true;
-		let state = SelectionInfo.states.none;
+		let state = (this._selectionSelectables.size > 0 ? SelectionInfo.states.none : SelectionInfo.states.notSet);
 		const keys = [];
 
 		if (this._selectAllPages) {
 			state = SelectionInfo.states.allPages;
 		} else {
+
 			this._selectionSelectables.forEach(selectable => {
 				if (selectable.selected) keys.push(selectable.key);
 				if (!selectable.disabled && !selectable.selected) allEnabledSelected = false;

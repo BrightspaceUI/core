@@ -69,11 +69,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			 */
 			opened: { type: Boolean, reflect: true },
 			/**
-			 * Temporary.
-			 * @ignore
-			 */
-			preferFixedPositioning: { type: Boolean, attribute: 'prefer-fixed-positioning' },
-			/**
 			 * Indicates that a value is required
 			 * @type {boolean}
 			 */
@@ -264,8 +259,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				trap-focus
 				no-auto-focus
 				mobile-tray="bottom"
-				no-padding
-				?prefer-fixed-positioning="${this.preferFixedPositioning}">
+				no-padding>
 				<d2l-calendar
 					@d2l-calendar-selected="${this._handleDateSelected}"
 					label="${ifDefined(this.label)}"
@@ -285,7 +279,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				<div>${shortDateFormat}</div>
 			</div>
 			${tooltip}
-			<d2l-dropdown ?disabled="${this.disabled || this.skeleton}" no-auto-open ?prefer-fixed-positioning="${this.preferFixedPositioning}">
+			<d2l-dropdown ?disabled="${this.disabled || this.skeleton}" no-auto-open>
 				<d2l-input-text
 					?novalidate="${this.noValidate}"
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
@@ -297,6 +291,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 					@focus="${this._handleInputTextFocus}"
 					@keydown="${this._handleKeydown}"
 					hide-invalid-icon
+					?hide-invalid-tooltip="${this.opened}"
 					id="${this._inputId}"
 					label="${ifDefined(this.label)}"
 					?label-hidden="${this.labelHidden || this.labelledBy}"

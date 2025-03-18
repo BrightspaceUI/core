@@ -5,6 +5,16 @@ import { TabMixin } from './tab-mixin.js';
 
 class Tab extends TabMixin(LitElement) {
 
+	static get properties() {
+		return {
+			/**
+			 * ACCESSIBILITY: REQUIRED: The text used for the tab, as well as labelling the panel.
+			 * @type {string}
+			 */
+			text: { type: String }
+		};
+	}
+
 	static get styles() {
 		const styles = [ css`
 			.d2l-tab-text {
@@ -15,7 +25,6 @@ class Tab extends TabMixin(LitElement) {
 				white-space: nowrap;
 			}
 			:host(:first-child) .d2l-tab-text {
-				margin-inline-end: 0.6rem;
 				margin-inline-start: 0;
 			}
 			:host(:${unsafeCSS(getFocusPseudoClass())}) > .d2l-tab-text {
@@ -31,16 +40,15 @@ class Tab extends TabMixin(LitElement) {
 
 	renderContent() {
 		const contentClasses = {
-			'd2l-tab-handler': true,
 			'd2l-tab-text': true,
 		};
 
 		return html`
 			<div class="${classMap(contentClasses)}">
-				<slot></slot>
+				${this.text}
 			</div>
 		`;
 	}
 }
 
-customElements.define('d2l-tab-wip', Tab);
+customElements.define('d2l-tab', Tab);

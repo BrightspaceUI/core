@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "3.85.2",
+  "version": "3.92.0",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -58,7 +58,7 @@
     "messageformat-validator": "^2",
     "rollup": "^4",
     "rollup-plugin-copy": "^3",
-    "rollup-plugin-delete": "^2",
+    "rollup-plugin-delete": "^3",
     "sass": "^1",
     "sinon": "^19",
     "stylelint": "^16",

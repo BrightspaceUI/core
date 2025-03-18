@@ -1,5 +1,6 @@
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
+import { usePopoverMixin } from './dropdown-popover-mixin.js';
 
 const intersectionObserver = new IntersectionObserver(entries => {
 	entries.forEach(entry => {
@@ -50,19 +51,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 				type: Boolean,
 				attribute: 'open-on-hover'
 			},
-			/**
-			 * Temporary.
-			 * @ignore
-			 */
-			preferFixedPositioning: {
-				type: Boolean,
-				attribute: 'prefer-fixed-positioning'
-			},
-			_fixedPositioning: {
-				type: Boolean,
-				attribute: '_fixed-positioning',
-				reflect: true,
-			},
 			_isHovering: { type: Boolean },
 			_isOpenedViaClick: { type: Boolean },
 			_isFading: { type: Boolean }
@@ -97,7 +85,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.addEventListener('mouseenter', this.__onMouseEnter);
 		this.addEventListener('mouseleave', this.__onMouseLeave);
 
-		if (this._fixedPositioning && this.dropdownOpened) {
+		if (this.dropdownOpened) {
 			intersectionObserver.observe(this);
 		}
 		if (this.openOnHover) {
@@ -113,9 +101,8 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.removeEventListener('mouseenter', this.__onMouseEnter);
 		this.removeEventListener('mouseleave', this.__onMouseLeave);
 
-		if (this._fixedPositioning) {
-			intersectionObserver.unobserve(this);
-		}
+		intersectionObserver.unobserve(this);
+
 		if (this.openOnHover) {
 			document.body.removeEventListener('mouseup', this._onOutsideClick);
 		}
@@ -144,12 +131,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			element.classList.add('d2l-dropdown-content-fading');
 		} else {
 			element.classList.remove('d2l-dropdown-content-fading');
-		}
-	}
-
-	willUpdate(changedProperties) {
-		if (this._fixedPositioning === undefined || changedProperties.has('preferFixedPositioning')) {
-			this._fixedPositioning = (window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-131-dropdown-fixed-positioning', false) && this.preferFixedPositioning);
 		}
 	}
 
@@ -218,9 +199,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	__onClosed() {
-		if (this._fixedPositioning) {
-			intersectionObserver.unobserve(this);
-		}
+		intersectionObserver.unobserve(this);
 
 		const opener = this.getOpenerElement();
 		if (!opener) {
@@ -260,7 +239,10 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (!this.openOnHover) return;
 		// do not respond to hover events on mobile screens
 		const dropdownContent = this.__getContentElement();
-		if (dropdownContent._useMobileStyling) return;
+
+		if (usePopoverMixin && dropdownContent._mobile) return;
+		else if (!usePopoverMixin && dropdownContent._useMobileStyling) return; // Flag cleanup: GAUD-7472-dropdown-popover
+
 		clearTimeout(this._dismissTimerId);
 		if (!this.dropdownOpened) await this.openDropdown(false);
 		this._closeTimerStop();
@@ -271,7 +253,10 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (!this.openOnHover) return;
 		// do not respond to hover events on mobile screens
 		const dropdownContent = this.__getContentElement();
-		if (dropdownContent._useMobileStyling) return;
+
+		if (usePopoverMixin && dropdownContent._mobile) return;
+		else if (!usePopoverMixin && dropdownContent._useMobileStyling) return; // Flag cleanup: GAUD-7472-dropdown-popover
+
 		this._isHovering = false;
 		if (this._isOpenedViaClick) return;
 		//Wait before closing so we don't lose hover when we jump from opener to card
@@ -296,9 +281,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		opener.setAttribute('active', 'true');
 		this._isFading = false;
 
-		if (this._fixedPositioning) {
-			intersectionObserver.observe(this);
-		}
+		intersectionObserver.observe(this);
 	}
 
 	__onOpenerMouseUp(e) {
@@ -317,11 +300,15 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 				this._isHovering = false;
 				this.openDropdown(false);
 			}
-		} else this.toggleOpen(true);
+		} else {
+			this.toggleOpen(true);
+		}
 	}
 
 	__updateContentVisibility(visible) {
-		this.__getContentElement().offscreen = !visible;
+		if (!usePopoverMixin) {
+			this.__getContentElement().offscreen = !visible; // Flag cleanup: GAUD-7472-dropdown-popover
+		}
 	}
 
 	/* used by open-on-hover option */
@@ -345,11 +332,15 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	/* used by open-on-hover option */
 	_onOutsideClick(e) {
 		if (!this.dropdownOpened) return;
-		const isWithinDropdown = isComposedAncestor(this.__getContentElement(), e.composedPath()[0]);
+		const dropdownContent = this.__getContentElement();
+		const isWithinDropdown = isComposedAncestor(dropdownContent, e.composedPath()[0]);
 		const isWithinOpener = isComposedAncestor(this.getOpenerElement(), e.composedPath()[0]);
+
+		// Flag cleanup: GAUD-7472-dropdown-popover
 		const isBackdropClick = isWithinDropdown
-			&& this.__getContentElement()._useMobileStyling
+			&& ((!usePopoverMixin && dropdownContent._useMobileStyling) || (usePopoverMixin && dropdownContent._mobile))
 			&& e.composedPath().find(node => node.nodeName === 'D2L-BACKDROP');
+
 		if (!isWithinOpener && (!isWithinDropdown || isBackdropClick)) {
 			this.closeDropdown();
 		}

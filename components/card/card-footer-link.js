@@ -61,7 +61,7 @@ class CardFooterLink extends FocusMixin(RtlMixin(LitElement)) {
 			 */
 			target: { type: String, reflect: true },
 			/**
-			 * REQUIRED: Accessible text for the link (not visible, gets announced when user focuses)
+			 * ACCESSIBILITY: REQUIRED: Accessible text for the link
 			 * @type {string}
 			 */
 			text: { type: String, reflect: true },

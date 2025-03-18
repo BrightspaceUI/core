@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script>
+		const urlParams = new URLSearchParams(window.location.search);
+		window.D2L = { LP: { Web: { UI: { Flags: { Flag: (key) => {
+			if (key === 'GAUD-7472-dropdown-popover') return (urlParams.get('popover') === 'true');
+			return false;
+		} } } } } };
+	</script>
 	<script type="module">
 		import '../../demo/demo-page.js';
 		import '../../button/button.js';
@@ -12,7 +18,6 @@
 		import '../dropdown-content.js';
 	</script>
 </head>
-
 <body unresolved>
 
 	<d2l-demo-page page-title="d2l-dropdown">

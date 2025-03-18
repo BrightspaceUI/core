@@ -184,9 +184,9 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 				<slot></slot>${iconView}
 			</button><span id="${this._describedById}" hidden>${buttonDescription}</span>${sortedView}`;
 		if (this._hasDropdownItems) {
-			return html`<d2l-dropdown prefer-fixed-positioning>
+			return html`<d2l-dropdown>
 					${button}
-					<d2l-dropdown-menu no-pointer align="start" vertical-offset="0" prefer-fixed-positioning>
+					<d2l-dropdown-menu no-pointer align="start" vertical-offset="4">
 						<d2l-menu @d2l-table-col-sort-button-item-change="${this._handleTablColSortButtonItemChange}">
 							<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 						</d2l-menu>

@@ -1,12 +1,12 @@
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit';
+import '../tooltip/tooltip.js';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { InputInlineHelpMixin } from './input-inline-help.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 export const cssSizes = {
@@ -53,7 +53,8 @@ export const checkboxStyles = css`
 		border-width: 2px;
 		outline-width: 0;
 	}
-	input[type="checkbox"].d2l-input-checkbox:disabled {
+	input[type="checkbox"].d2l-input-checkbox:disabled,
+	input[type="checkbox"].d2l-input-checkbox[aria-disabled="true"] {
 		opacity: 0.5;
 	}
 `;
@@ -64,7 +65,7 @@ export const checkboxStyles = css`
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when the checkbox's state changes
  */
-class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMixin(LitElement)))) {
+class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -89,6 +90,11 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 			 */
 			disabled: { type: Boolean },
 			/**
+			 * Tooltip text when disabled
+			 * @type {string}
+			 */
+			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
+			/**
 			 * Sets checkbox to an indeterminate state
 			 * @type {boolean}
 			 */
@@ -107,7 +113,8 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 			 * Value of the input
 			 * @type {string}
 			 */
-			value: { type: String }
+			value: { type: String },
+			_isHovered: { state: true },
 		};
 	}
 
@@ -138,21 +145,12 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 					display: inline-block;
 					font-size: 0.8rem;
 					font-weight: 400;
-					margin-left: ${cssSizes.checkboxMargin}rem;
+					margin-inline-start: ${cssSizes.checkboxMargin}rem;
 					vertical-align: top;
 					white-space: normal;
 				}
-				:host([dir="rtl"]) .d2l-input-checkbox-text {
-					margin-left: 0;
-					margin-right: ${cssSizes.checkboxMargin}rem;
-				}
 				:host([aria-label]) .d2l-input-checkbox-text {
-					margin-left: 0;
-					margin-right: 0;
-				}
-				:host([dir="rtl"][aria-label]) .d2l-input-checkbox-text {
-					margin-left: 0;
-					margin-right: 0;
+					margin-inline-start: 0;
 				}
 				:host([skeleton]) .d2l-input-checkbox-text.d2l-skeletize::before {
 					bottom: 0.3rem;
@@ -182,8 +180,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 		this.name = '';
 		this.notTabbable = false;
 		this.value = 'on';
-		this._descriptionId = getUniqueId();
-		this._inlineHelpId = getUniqueId();
+		this._isHovered = false;
 	}
 
 	static get focusElementSelector() {
@@ -199,27 +196,33 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 		};
 		const ariaChecked = this.indeterminate ? 'mixed' : undefined;
 		const disabled = this.disabled || this.skeleton;
-		const offscreenContainer = this.description ? html`<div class="d2l-offscreen" id="${this._descriptionId}">${this.description}</div>` : null;
-		const ariaDescribedByIds = `${this.description ? this._descriptionId : ''} ${this._hasInlineHelp ? this._inlineHelpId : ''}`.trim();
+		const offscreenContainer = this.description ? html`<div class="d2l-offscreen" id="${this.#descriptionId}">${this.description}</div>` : null;
+		const ariaDescribedByIds = `${this.description ? this.#descriptionId : ''} ${this._hasInlineHelp ? this.#inlineHelpId : ''}`.trim();
+		const disabledTooltip = disabled && this.disabledTooltip ?
+			html`<d2l-tooltip align="start" class="vdiff-target" for="${this.#inputId}" ?force-show="${this._isHovered}" position="top">${this.disabledTooltip}</d2l-tooltip>` :
+			nothing;
 		return html`
-			<label>
+			<label @mouseleave="${this.#handleMouseLeave}" @mouseenter="${this.#handleMouseEnter}">
 				<span class="d2l-input-checkbox-wrapper d2l-skeletize"><input
 					aria-checked="${ifDefined(ariaChecked)}"
 					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
+					aria-disabled="${ifDefined(disabled && this.disabledTooltip ? 'true' : undefined)}"
 					aria-label="${ifDefined(this.ariaLabel)}"
-					@change="${this._handleChange}"
+					@change="${this.#handleChange}"
 					class="d2l-input-checkbox"
-					@click="${this._handleClick}"
+					@click="${this.#handleClick}"
 					.checked="${this.checked}"
-					?disabled="${disabled}"
+					?disabled="${disabled && !this.disabledTooltip}"
+					id="${this.#inputId}"
 					.indeterminate="${this.indeterminate}"
 					name="${ifDefined(this.name)}"
 					tabindex="${ifDefined(tabindex)}"
 					type="checkbox"
 					.value="${this.value}"></span><span class="${classMap(textClasses)}"><slot></slot></span>
 			</label>
-			${this._renderInlineHelp(this._inlineHelpId)}
+			${this._renderInlineHelp(this.#inlineHelpId)}
 		  	${offscreenContainer}
+			${disabledTooltip}
 		`;
 	}
 
@@ -232,7 +235,11 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 		));
 	}
 
-	_handleChange(e) {
+	#descriptionId = getUniqueId();
+	#inlineHelpId = getUniqueId();
+	#inputId = getUniqueId();
+
+	#handleChange(e) {
 		this.checked = e.target.checked;
 		this.indeterminate = false;
 		this.dispatchEvent(new CustomEvent(
@@ -241,16 +248,17 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(RtlMix
 		));
 	}
 
-	/**
-	 * This is needed only for Legacy-Edge AND going from indeterminate to checked/unchecked.
-	 * When the indeterminate state is set, and the checkbox is clicked, the _handleChange
-	 * function is NOT triggered, therefore we have to detect the click and handle it ourselves.
-	 */
-	_handleClick() {
-		const browserType = window.navigator.userAgent;
-		if (this.indeterminate && (browserType.indexOf('Edge') > -1)) {
-			this.simulateClick();
-		}
+	#handleClick(e) {
+		if (this.disabled) e.preventDefault();
 	}
+
+	#handleMouseEnter() {
+		this._isHovered = true;
+	}
+
+	#handleMouseLeave() {
+		this._isHovered = false;
+	}
+
 }
 customElements.define('d2l-input-checkbox', InputCheckbox);

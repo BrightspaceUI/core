@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../list-item-content.js';
+			import '../list-item.js';
+			import '../list-controls.js';
+			import '../list.js';
+			import '../../selection/selection-action.js';
+		</script>
+		<style>
+			d2l-list::before {
+				box-sizing: border-box;
+				color: var(--d2l-color-tungsten);
+				content: attr(data-selection-info);
+				font-size: 0.7rem;
+				inset-block-start: 0;
+				inset-inline-end: 0;
+				margin: 0 0.4rem;
+				padding: 0;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-list (selection)">
+
+			<h2>Nested - 1 - all selectable</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid>
+						<d2l-list-controls slot="controls">
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+						</d2l-list-controls>
+						<d2l-list-item selectable key="Item-1" label="Label for Item-1">
+							<d2l-list-item-content>
+								<div>Item-1 - Earth Sciences</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid separators="all">
+								<d2l-list-item selectable key="Item-1-1" label="Label for Item-1-1">
+									<d2l-list-item-content>
+										<div>Item-1-1 - Introductory Earth Sciences</div>
+										<div slot="supporting-info">Supporting Info</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+								<d2l-list-item selectable key="Item-1-2" label="Label for Item-1-2">
+									<d2l-list-item-content>
+										<div>Item-1-2 - Flow and Transport Through Fractured Rocks</div>
+										<div slot="supporting-info">Supporting Info</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+								<d2l-list-item selectable key="Item-1-3" label="Label for Item-1-3">
+									<d2l-list-item-content>
+										<div>Item-1-3 - Applied Wetland Science</div>
+										<div slot="supporting-info">Supporting Info</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+							</d2l-list>
+						</d2l-list-item>
+						<d2l-list-item selectable key="Item-2" label="Label for Item-2">
+							<d2l-list-item-content>
+								<div>Item-2 - Biology</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item selectable key="Item-3" label="Label for Item-3">
+							<d2l-list-item-content>
+								<div>Item-3 - Computer Science</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Nested - 2 - L1 not selectable, L2 selectable</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid>
+						<d2l-list-controls slot="controls">
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+						</d2l-list-controls>
+						<d2l-list-item key="Item-1" label="Label for Item-1">
+							<d2l-list-item-content>
+								<div>Item-1 - Earth Sciences</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid separators="all">
+								<d2l-list-item selectable key="Item-1-1" label="Label for Item-1-1">
+									<d2l-list-item-content>
+										<div>Item-1-1 - Introductory Earth Sciences</div>
+										<div slot="supporting-info">Supporting Info</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+								<d2l-list-item selectable key="Item-1-2" label="Label for Item-1-2">
+									<d2l-list-item-content>
+										<div>Item-1-2 - Flow and Transport Through Fractured Rocks</div>
+										<div slot="supporting-info">Supporting Info</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+								<d2l-list-item selectable key="Item-1-3" label="Label for Item-1-3">
+									<d2l-list-item-content>
+										<div>Item-1-3 - Applied Wetland Science</div>
+										<div slot="supporting-info">Supporting Info</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+							</d2l-list>
+						</d2l-list-item>
+						<d2l-list-item key="Item-2" label="Label for Item-2">
+							<d2l-list-item-content>
+								<div>Item-2 - Biology</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item key="Item-3" label="Label for Item-3">
+							<d2l-list-item-content>
+								<div>Item-3 - Computer Science</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Nested - 3 - L1 selectable, L2 not selectable</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid>
+						<d2l-list-controls slot="controls">
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+						</d2l-list-controls>
+						<d2l-list-item selectable key="Item-1" label="Label for Item-1">
+							<d2l-list-item-content>
+								<div>Item-1 - Earth Sciences</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid separators="all">
+								<d2l-list-item key="Item-1-1" label="Label for Item-1-1">
+									<d2l-list-item-content>
+										<div>Item-1-1 - Introductory Earth Sciences</div>
+										<div slot="supporting-info">Supporting Info</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+								<d2l-list-item key="Item-1-2" label="Label for Item-1-2">
+									<d2l-list-item-content>
+										<div>Item-1-2 - Flow and Transport Through Fractured Rocks</div>
+										<div slot="supporting-info">Supporting Info</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+								<d2l-list-item key="Item-1-3" label="Label for Item-1-3">
+									<d2l-list-item-content>
+										<div>Item-1-3 - Applied Wetland Science</div>
+										<div slot="supporting-info">Supporting Info</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+							</d2l-list>
+						</d2l-list-item>
+						<d2l-list-item selectable key="Item-2" label="Label for Item-2">
+							<d2l-list-item-content>
+								<div>Item-2 - Biology</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item selectable key="Item-3" label="Label for Item-3">
+							<d2l-list-item-content>
+								<div>Item-3 - Computer Science</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Nested - 4 - L1 selectable, L2 not selectable, L3 selectable</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid>
+						<d2l-list-controls slot="controls">
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+						</d2l-list-controls>
+						<d2l-list-item selectable key="Item-1" label="Label for Item-1">
+							<d2l-list-item-content>
+								<div>Item-1 - Earth Sciences</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid separators="all">
+								<d2l-list-item key="Item-1-1" label="Label for Item-1-1">
+									<d2l-list-item-content>
+										<div>Item-1-1 - Introductory Earth Sciences</div>
+										<div slot="supporting-info">Supporting Info</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+								<d2l-list-item key="Item-1-2" label="Label for Item-1-2">
+									<d2l-list-item-content>
+										<div>Item-1-2 - Flow and Transport Through Fractured Rocks</div>
+										<div slot="supporting-info">Supporting Info</div>
+									</d2l-list-item-content>
+									<d2l-list slot="nested" grid separators="all">
+										<d2l-list-item selectable key="Item-1-2-1" label="Label for Item-1-2-1">
+											<d2l-list-item-content>
+												<div>Item-1-2-1 - Hydraulic Properties of Fractures</div>
+												<div slot="supporting-info">Supporting Info</div>
+											</d2l-list-item-content>
+										</d2l-list-item>
+										<d2l-list-item selectable key="Item-1-2-2" label="Label for Item-1-2-2">
+											<d2l-list-item-content>
+												<div>Item-1-2-2 - Contaminant Transport</div>
+												<div slot="supporting-info">Supporting Info</div>
+											</d2l-list-item-content>
+										</d2l-list-item>
+									</d2l-list>
+								</d2l-list-item>
+								<d2l-list-item key="Item-1-3" label="Label for Item-1-3">
+									<d2l-list-item-content>
+										<div>Item-1-3 - Applied Wetland Science</div>
+										<div slot="supporting-info">Supporting Info</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+							</d2l-list>
+						</d2l-list-item>
+						<d2l-list-item selectable key="Item-2" label="Label for Item-2">
+							<d2l-list-item-content>
+								<div>Item-2 - Biology</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item selectable key="Item-3" label="Label for Item-3">
+							<d2l-list-item-content>
+								<div>Item-3 - Computer Science</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Nested - 5 - L1 mixed</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid>
+						<d2l-list-controls slot="controls">
+							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+						</d2l-list-controls>
+						<d2l-list-item selectable key="Item-1" label="Label for Item-1">
+							<d2l-list-item-content>
+								<div>Item-1 - Earth Sciences</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item key="Item-2" label="Label for Item-2">
+							<d2l-list-item-content>
+								<div>Item-2 - Biology</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item selectable key="Item-3" label="Label for Item-3">
+							<d2l-list-item-content>
+								<div>Item-3 - Computer Science</div>
+								<div slot="supporting-info">Supporting Info</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+		<script>
+			function updateSelectionInfoText(list) {
+				const info = list.getSelectionInfo(true);
+				list.setAttribute('data-selection-info', `Selection Info: ${info.state}, ${info.keys.length}`);
+			}
+
+			setTimeout(() => {
+				document.querySelectorAll('d2l-list').forEach(list => {
+					list.addEventListener('d2l-list-selection-changes', (e) => {
+						updateSelectionInfoText(e.target);
+						console.log('d2l-list-selection-changes', e.detail);
+					});
+					updateSelectionInfoText(list);
+				});
+			}, 1000);
+		</script>
+	</body>
+</html>

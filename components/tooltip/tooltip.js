@@ -544,8 +544,8 @@ class Tooltip extends RtlMixin(LitElement) {
 		;
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
 
 		changedProperties.forEach((_, prop) => {
 			if (prop === 'for') {
@@ -950,9 +950,17 @@ class Tooltip extends RtlMixin(LitElement) {
 	}
 
 	_updateTarget() {
+		const newTarget = this._findTarget();
+		if (this._target === newTarget) {
+			return;
+		}
+
 		this._removeListeners();
-		this._target = this._findTarget();
+		this._target = newTarget;
+
 		if (this._target) {
+			const targetDisabled = this._target.hasAttribute('disabled') || this._target.getAttribute('aria-disabled') === 'true';
+
 			const isInteractive = this._isInteractive(this._target);
 			this.id = this.id || getUniqueId();
 			this.setAttribute('role', 'tooltip');
@@ -971,7 +979,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			}
 			if (this.showing) {
 				this.updatePosition();
-			} else if (isComposedAncestor(this._target, getComposedActiveElement())) {
+			} else if (!targetDisabled && isComposedAncestor(this._target, getComposedActiveElement())) {
 				this._onTargetFocus();
 			}
 		}
