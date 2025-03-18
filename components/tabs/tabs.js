@@ -735,7 +735,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	}
 
-	async _handleTabSelected(e) {
+	_handleTabSelected(e) {
 		if (this._defaultSlotBehavior) {
 			this._handleTabSelectedDefaultSlotBehavior(e);
 			return;
@@ -744,25 +744,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		e.stopPropagation();
 
 		const selectedTab = e.target;
-		const selectedPanel = this._getPanel(e.target.id);
-		selectedTab.tabIndex = 0;
-
-		await this.updateComplete;
-
-		selectedPanel.selected = true;
-		this._tabs.forEach((tab) => {
-			if (tab.id !== selectedTab.id) {
-				if (tab.selected) {
-					tab.selected = false;
-					const panel = this._getPanel(tab.id);
-					// panel may not exist if it's being removed
-					if (panel) panel.selected = false;
-				}
-				if (tab.tabIndex === 0) tab.tabIndex = -1;
-			}
-		});
-
-		this.requestUpdate();
+		this.#tabSelectionHelper(selectedTab);
 	}
 
 	// remove after d2l-tab/d2l-tab-panel backport
@@ -804,18 +786,12 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		if (!this._initialized && this._tabs.length === 0) return;
 
-		let selectedTab = this._tabs?.find(tab => tab.selected);
-
-		if (this._tabs.length > 0 && !selectedTab) {
+		let selectedTab = this._tabs.find((tab) => tab.selected && tab.state !== 'removing');
+		if (!selectedTab) {
 			selectedTab = this._tabs.find((tab) => tab.state !== 'removing');
-			if (selectedTab) {
-				selectedTab.selected = true;
-			}
+			if (selectedTab) selectedTab.selected = true;
 		}
-
-		if (selectedTab) {
-			this._setFocusable(selectedTab);
-		}
+		this.#tabSelectionHelper(selectedTab);
 
 		await this.updateComplete;
 
@@ -1042,6 +1018,28 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	#isRTL() {
 		return document.documentElement.getAttribute('dir') === 'rtl';
+	}
+
+	async #tabSelectionHelper(selectedTab) {
+		const selectedPanel = this._getPanel(selectedTab.id);
+		selectedTab.tabIndex = 0;
+
+		await this.updateComplete;
+
+		selectedPanel.selected = true;
+		this._tabs.forEach((tab) => {
+			if (tab.id !== selectedTab.id) {
+				if (tab.selected) {
+					tab.selected = false;
+					const panel = this._getPanel(tab.id);
+					// panel may not exist if it's being removed
+					if (panel) panel.selected = false;
+				}
+				if (tab.tabIndex === 0) tab.tabIndex = -1;
+			}
+		});
+
+		this.requestUpdate();
 	}
 
 }
