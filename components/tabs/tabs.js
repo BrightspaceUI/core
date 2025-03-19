@@ -344,7 +344,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	async getLoadingComplete() {
-		return this._defaultSlotBehavior ? this._loadingCompletePromise : true;
+		return this._loadingCompletePromise;
 	}
 
 	getTabListRect() {
