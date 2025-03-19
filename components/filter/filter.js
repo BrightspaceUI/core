@@ -219,7 +219,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			/* Needed to "undo" the menu-item style for multiple dimensions */
 			d2l-hierarchical-view {
 				cursor: auto;
-				overflow: auto; /* remove with GAUD-131-dropdown-fixed-positioning flag clean up */
 			}
 
 			d2l-loading-spinner {
@@ -287,7 +286,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					no-padding-header
 					no-padding
 					?opened="${this.opened}"
-					prefer-fixed-positioning
 					?trap-focus="${!this._isDimensionEmpty(this._dimensions[0])}">
 					${header}
 					${dimensions}
@@ -301,7 +299,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					mobile-breakpoint="768"
 					no-padding-header
 					?opened="${this.opened}"
-					prefer-fixed-positioning
 					trap-focus>
 					${header}
 					<d2l-menu label="${this.localize('components.filter.filters')}">
@@ -326,8 +323,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				@d2l-dropdown-open="${this._handleDropdownOpen}"
 				@d2l-dropdown-position="${this._stopPropagation}"
 				class="vdiff-target"
-				?disabled="${this.disabled}"
-				prefer-fixed-positioning>
+				?disabled="${this.disabled}">
 				<d2l-button-subtle
 					class="d2l-dropdown-opener"
 					description="${description}"

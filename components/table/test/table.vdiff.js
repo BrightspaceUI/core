@@ -664,18 +664,7 @@ describe('table', () => {
 					await expect(elem).to.be.golden();
 				});
 
-				it('col-sort-button-dropdown-open-short-flag-off', async() => {
-					window.D2L = {};
-					const elem = await createTableFixture(html`
-						<thead>${createSortableButtonDropdownHeaderRow()}</thead>
-						<tbody>${createRows([1])}</tbody>
-					`);
-					await clickElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
-					await expect(elem).to.be.golden();
-				});
-
-				it('col-sort-button-dropdown-open-short-flag-on', async() => {
-					window.D2L = { LP: { Web: { UI: { Flags: { Flag: () => true } } } } };
+				it('col-sort-button-dropdown-open-short', async() => {
 					const elem = await createTableFixture(html`
 						<thead>${createSortableButtonDropdownHeaderRow()}</thead>
 						<tbody>${createRows([1])}</tbody>

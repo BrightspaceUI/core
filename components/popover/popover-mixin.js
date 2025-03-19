@@ -20,9 +20,6 @@ const pointerLength = 16;
 const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
 const isSupported = ('popover' in HTMLElement.prototype);
 
-// eslint-disable-next-line no-console
-console.log('Popover', isSupported);
-
 export const PopoverMixin = superclass => class extends superclass {
 
 	static get properties() {

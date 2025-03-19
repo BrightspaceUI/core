@@ -155,11 +155,6 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 			 */
 			opened: { type: Boolean },
 			/**
-			 * Temporary.
-			 * @ignore
-			 */
-			preferFixedPositioning: { type: Boolean, attribute: 'prefer-fixed-positioning' },
-			/**
 			 * Indicates that a value is required
 			 * @type {boolean}
 			 */
@@ -342,7 +337,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 				class="${this.label && !this.labelHidden && !this.labelledBy ? 'd2l-input-label d2l-skeletize' : 'd2l-offscreen'}"
 				for="${this._dropdownId}-input"
 				id="${this._dropdownId}-label">${this.label}</label>
-			<d2l-dropdown class="d2l-skeletize" ?disabled="${disabled}" ?prefer-fixed-positioning="${this.preferFixedPositioning}">
+			<d2l-dropdown class="d2l-skeletize" ?disabled="${disabled}">
 				<input
 					aria-invalid="${this.invalid ? 'true' : 'false'}"
 					aria-controls="${this._dropdownId}"
@@ -366,8 +361,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 					no-padding-footer
 					max-height="${ifDefined(this.maxHeight)}"
 					min-width="195"
-					?opened="${opened}"
-					?prefer-fixed-positioning="${this.preferFixedPositioning}">
+					?opened="${opened}">
 					<d2l-menu
 						aria-labelledby="${this._dropdownId}-label"
 						class="d2l-input-time-menu"

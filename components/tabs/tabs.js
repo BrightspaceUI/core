@@ -22,7 +22,6 @@ const scrollButtonWidth = 56;
  * A component for tabbed content. It supports the "d2l-tab-panel" component for the content, renders tabs responsively, and provides virtual scrolling for large tab lists.
  * @slot - Contains the tab panels (e.g., "d2l-tab-panel" components)
  * @slot ext - Additional content (e.g., a button) positioned at right
- * @fires d2l-tabs-initialized - Dispatched when the component is initialized
  */
 class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))) {
 
@@ -206,7 +205,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._maxWidth = null;
 		this._scrollCollapsed = false;
 		this._state = 'shown';
-		this._tabInfos = [];
+		this._tabInfos = []; // remove after d2l-tab/d2l-tab-panel backport
 		this._translationValue = 0;
 	}
 
@@ -502,14 +501,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		if (this._defaultSlotBehavior) return this._getPanelDefaultSlotBehavior(id);
 
 		if (!this.shadowRoot) return;
-		// use simple selector for slot (Edge)
-		const slot = this.shadowRoot.querySelector('.d2l-panels-container').querySelector('slot[name="panels"]');
+		const slot = this.shadowRoot.querySelector('slot[name="panels"]');
 		const panels = this._getPanels(slot);
-		for (let i = 0; i < panels.length; i++) {
-			if (panels[i].labelledBy === id) {
-				return panels[i];
-			}
-		}
+		return panels.find(panel => panel.labelledBy === id);
 	}
 
 	// remove after d2l-tab/d2l-tab-panel backport
@@ -527,10 +521,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	_getPanels(slot) {
 		if (!slot) return;
-		return slot.assignedNodes({ flatten: true })
-			.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.role === 'tabpanel');
+		return slot.assignedElements({ flatten: true }).filter((node) => node.role === 'tabpanel');
 	}
 
+	// remove after d2l-tab/d2l-tab-panel backport
 	_getTabInfo(id) {
 		return this._tabInfos.find((t) => t.id === id);
 	}
@@ -616,10 +610,24 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			});
 		}
 
-		this.dispatchEvent(new CustomEvent(
-			'd2l-tabs-initialized', { bubbles: true, composed: true }
-		));
+	}
 
+	_handleFocusOut(e) {
+		if (e.relatedTarget && e.relatedTarget.role === 'tab') return;
+		this._resetFocusables();
+	}
+
+	// remove after d2l-tab/d2l-tab-panel backport
+	_handlePanelSelected(e) {
+		if (!this._defaultSlotBehavior) return;
+
+		const tabInfo = this._getTabInfo(e.target.id);
+		// event could be from nested tabs
+		if (!tabInfo) return;
+
+		this._setFocusable(tabInfo);
+		tabInfo.selected = true;
+		this.requestUpdate();
 	}
 
 	_handleFocusOut(e) {
@@ -741,8 +749,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			return;
 		}
 
-		e.stopPropagation();
-
 		const selectedTab = e.target;
 		this.#tabSelectionHelper(selectedTab);
 	}
@@ -778,8 +784,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	async _handleTabsSlotChange(e) {
 		this._defaultSlotBehavior = false;
 
-		this._tabs = e.target.assignedNodes({ flatten: true })
-			.filter((node) => node.nodeType === Node.ELEMENT_NODE && node.role === 'tab');
+		this._tabs = e.target.assignedElements({ flatten: true }).filter((node) => node.role === 'tab');
 
 		// handle case where there are less than two tabs initially
 		this._updateTabListVisibility(this._tabs);
@@ -804,10 +809,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			const selectedPanel = this._getPanel(selectedTab.id);
 			if (selectedPanel) selectedPanel.selected = true;
 		}
-
-		this.dispatchEvent(new CustomEvent(
-			'd2l-tabs-initialized', { bubbles: true, composed: true }
-		));
 	}
 
 	_isPositionInLeftScrollArea(position) {
