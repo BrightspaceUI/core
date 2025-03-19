@@ -778,7 +778,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			selectedTab = this._tabs.find((tab) => tab.state !== 'removing');
 			if (selectedTab) selectedTab.selected = true;
 		}
-		this.#tabSelectionHelper(selectedTab);
+		if (selectedTab) {
+			this.#tabSelectionHelper(selectedTab);
+		}
 
 		await this.updateComplete;
 
