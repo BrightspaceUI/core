@@ -235,7 +235,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		this.arrowKeysOnBeforeFocus = async(tab) => {
 			const tabInfo = this._getTabInfo(tab.controlsPanel);
-			this._setFocusableDefaultSlotBehavior(tabInfo);
+			this._setFocusable(tabInfo);
 
 			this.requestUpdate();
 			await this.updateComplete;
@@ -557,7 +557,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			};
 			if (tabInfo.selected) {
 				selectedTabInfo = tabInfo;
-				this._setFocusableDefaultSlotBehavior(tabInfo);
+				this._setFocusable(tabInfo);
 			}
 			return tabInfo;
 		});
@@ -625,7 +625,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		// event could be from nested tabs
 		if (!tabInfo) return;
 
-		this._setFocusableDefaultSlotBehavior(tabInfo);
+		this._setFocusable(tabInfo);
 		tabInfo.selected = true;
 		this.requestUpdate();
 	}
@@ -803,7 +803,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	_resetFocusables() {
 		const selectedTab = this._tabInfos.find(ti => ti.selected);
-		if (selectedTab) this._setFocusableDefaultSlotBehavior(selectedTab);
+		if (selectedTab) this._setFocusable(selectedTab);
 		this.requestUpdate();
 	}
 
@@ -828,15 +828,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		});
 	}
 
-	_setFocusable(tab) {
-		const currentFocusable = this._tabs.find(tab => tab.tabIndex === 0);
-		if (currentFocusable) currentFocusable.tabIndex = -1;
-
-		tab.tabIndex = 0;
-	}
-
-	// remove after d2l-tab/d2l-tab-panel backport
-	_setFocusableDefaultSlotBehavior(tabInfo) {
+	_setFocusable(tabInfo) {
 		const currentFocusable = this._tabInfos.find(ti => ti.activeFocusable);
 		if (currentFocusable) currentFocusable.activeFocusable = false;
 
