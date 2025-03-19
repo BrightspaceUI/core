@@ -12,6 +12,9 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	static get properties() {
 		return {
 			selected: { type: Boolean, reflect: true },
+			// eslint-disable-next-line lit/no-native-attributes
+			role: { type: String, reflect: true },
+			tabIndex: { type: Number, reflect: true, attribute: 'tabindex' }
 		};
 	}
 
@@ -62,15 +65,13 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	constructor() {
 		super();
+		this.role = 'tab';
 		this.selected = false;
+		this.tabIndex = -1;
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-
-		this.role = 'tab';
-		this.tabIndex = -1;
-
 		this.#addEventHandlers();
 
 		if (!this.#resizeObserver) {
@@ -91,11 +92,6 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		}
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		this.setAttribute('aria-selected', this.selected);
-	}
-
 	render() {
 		return html`
 			${this.renderContent()}
@@ -107,7 +103,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		super.update(changedProperties);
 
 		if (changedProperties.has('selected')) {
-			this.setAttribute('aria-selected', this.selected);
+			this.ariaSelected = `${this.selected}`;
 			if (this.selected) {
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tab-selected', { bubbles: true, composed: true }

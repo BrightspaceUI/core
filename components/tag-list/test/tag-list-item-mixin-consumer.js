@@ -38,6 +38,7 @@ class TagListItemMixinConsumer extends TagListItemMixin(LitElement) {
 			}
 			d2l-dropdown {
 				min-width: 0;
+				position: relative;
 			}
 		`];
 	}
