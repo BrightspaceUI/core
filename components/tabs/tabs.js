@@ -1013,8 +1013,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				if (tab.tabIndex === 0) tab.tabIndex = -1;
 			}
 		});
-
-		this.requestUpdate();
 	}
 
 }

@@ -73,6 +73,13 @@ describe('d2l-tabs', () => {
 	});
 
 	describe('behavior', () => {
+
+		function checkIfSelected(tab, isSelected) {
+			expect(tab.selected).to.equal(isSelected);
+			expect(tab.tabIndex).to.equal(isSelected ? 0 : -1);
+			expect(tab.ariaSelected).to.equal(isSelected.toString());
+		}
+
 		it('should only have one panel selected at a time even if multiple have selected attribute', async() => {
 			const el = await fixture(html`
 				<div>
@@ -87,10 +94,8 @@ describe('d2l-tabs', () => {
 				</div>
 			`);
 			const tabs = el.querySelectorAll('d2l-tab');
-			expect(tabs[0].selected).to.be.true;
-			expect(tabs[0].tabIndex).to.equal(0);
-			expect(tabs[2].selected).to.be.false;
-			expect(tabs[2].tabIndex).to.equal(-1);
+			checkIfSelected(tabs[0], true);
+			checkIfSelected(tabs[2], false);
 		});
 
 		it('should update selection properties on new selection', async() => {
@@ -108,12 +113,8 @@ describe('d2l-tabs', () => {
 			`);
 			const tabs = el.querySelectorAll('d2l-tab');
 			await clickElem(tabs[2]);
-			expect(tabs[0].selected).to.be.false;
-			expect(tabs[0].tabIndex).to.equal(-1);
-			expect(tabs[0].ariaSelected).to.equal('false');
-			expect(tabs[2].selected).to.be.true;
-			expect(tabs[2].tabIndex).to.equal(0);
-			expect(tabs[2].ariaSelected).to.equal('true');
+			checkIfSelected(tabs[0], false);
+			checkIfSelected(tabs[2], true);
 		});
 	});
 });
