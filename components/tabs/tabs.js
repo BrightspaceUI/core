@@ -625,24 +625,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		// event could be from nested tabs
 		if (!tabInfo) return;
 
-		this._setFocusable(tabInfo);
-		tabInfo.selected = true;
-		this.requestUpdate();
-	}
-
-	_handleFocusOut(e) {
-		if (e.relatedTarget && e.relatedTarget.role === 'tab') return;
-		this._resetFocusables();
-	}
-
-	// remove after d2l-tab/d2l-tab-panel backport
-	_handlePanelSelected(e) {
-		if (!this._defaultSlotBehavior) return;
-
-		const tabInfo = this._getTabInfo(e.target.id);
-		// event could be from nested tabs
-		if (!tabInfo) return;
-
 		this._setFocusableDefaultSlotBehavior(tabInfo);
 		tabInfo.selected = true;
 		this.requestUpdate();
