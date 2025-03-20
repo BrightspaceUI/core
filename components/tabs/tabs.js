@@ -658,7 +658,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		}
 
 		const selectedTab = e.target;
-		this.#tabSelectionHelper(selectedTab);
+		this.#updateSelectedTab(selectedTab);
 		await this.updateComplete;
 		this._updateScrollPosition(selectedTab);
 	}
@@ -707,7 +707,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			if (selectedTab) selectedTab.selected = true;
 		}
 		if (selectedTab) {
-			this.#tabSelectionHelper(selectedTab);
+			this.#updateSelectedTab(selectedTab);
 		}
 
 		await this.updateComplete;
@@ -1005,26 +1005,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return document.documentElement.getAttribute('dir') === 'rtl';
 	}
 
-	async #tabSelectionHelper(selectedTab) {
-		const selectedPanel = this._getPanel(selectedTab.id);
-		selectedTab.tabIndex = 0;
-
-		await this.updateComplete;
-
-		selectedPanel.selected = true;
-		this._tabs.forEach((tab) => {
-			if (tab.id !== selectedTab.id) {
-				if (tab.selected) {
-					tab.selected = false;
-					const panel = this._getPanel(tab.id);
-					// panel may not exist if it's being removed
-					if (panel) panel.selected = false;
-				}
-				if (tab.tabIndex === 0) tab.tabIndex = -1;
-			}
-		});
-	}
-
 	#updateScrollPositionLogic(measures, newTranslationValue) {
 		const scrollToPromise = this._scrollToPosition(newTranslationValue);
 		const scrollVisibilityPromise = this._updateScrollVisibility(measures);
@@ -1060,6 +1040,26 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._measures = null;
 
 		return this.updateComplete;
+	}
+
+	async #updateSelectedTab(selectedTab) {
+		const selectedPanel = this._getPanel(selectedTab.id);
+		selectedTab.tabIndex = 0;
+
+		await this.updateComplete;
+
+		selectedPanel.selected = true;
+		this._tabs.forEach((tab) => {
+			if (tab.id !== selectedTab.id) {
+				if (tab.selected) {
+					tab.selected = false;
+					const panel = this._getPanel(tab.id);
+					// panel may not exist if it's being removed
+					if (panel) panel.selected = false;
+				}
+				if (tab.tabIndex === 0) tab.tabIndex = -1;
+			}
+		});
 	}
 }
 
