@@ -18,6 +18,11 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const scrollButtonWidth = 56;
 
+function getOffsetLeft(tab, tabRect) {
+	const offsetParent = getOffsetParent(tab);
+	return Math.round(tabRect.left - offsetParent.getBoundingClientRect().left);
+}
+
 /**
  * A component for tabbed content. It supports the "d2l-tab-panel" component for the content, renders tabs responsively, and provides virtual scrolling for large tab lists.
  * @slot - Contains the tab panels (e.g., "d2l-tab-panel" components)
@@ -820,7 +825,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		const tabRects = tabs.map((tab) => {
 			const tabRect = tab.getBoundingClientRect();
-			const offsetLeft = this._defaultSlotBehavior ? tab.offsetLeft : this.#getOffsetLeft(tab, tabRect);
+			const offsetLeft = this._defaultSlotBehavior ? tab.offsetLeft : getOffsetLeft(tab, tabRect);
 
 			const measures = {
 				rect: tabRect,
@@ -994,11 +999,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		}
 
 		return newTranslationValue;
-	}
-
-	#getOffsetLeft(tab, tabRect) {
-		const offsetParent = getOffsetParent(tab);
-		return Math.round(tabRect.left - offsetParent.getBoundingClientRect().left);
 	}
 
 	#isRTL() {
