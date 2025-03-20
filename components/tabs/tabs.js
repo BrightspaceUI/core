@@ -35,7 +35,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			 */
 			maxToShow: { type: Number, attribute: 'max-to-show' },
 			/**
-			 * REQUIRED: ACCESSIBILITY: Label for the tablist
+			 * REQUIRED: ACCESSIBILITY: Accessible text for the tablist
 			 * @type {string}
 			 */
 			text: { type: String },
