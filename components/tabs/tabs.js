@@ -1021,6 +1021,26 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return p;
 	}
 
+	async #updateSelectedTab(selectedTab) {
+		const selectedPanel = this._getPanel(selectedTab.id);
+		selectedTab.tabIndex = 0;
+
+		await this.updateComplete;
+
+		selectedPanel.selected = true;
+		this._tabs.forEach((tab) => {
+			if (tab.id !== selectedTab.id) {
+				if (tab.selected) {
+					tab.selected = false;
+					const panel = this._getPanel(tab.id);
+					// panel may not exist if it's being removed
+					if (panel) panel.selected = false;
+				}
+				if (tab.tabIndex === 0) tab.tabIndex = -1;
+			}
+		});
+	}
+
 	#updateTabsContainerWidthLogic() {
 		const measures = this._getMeasures();
 
@@ -1040,26 +1060,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._measures = null;
 
 		return this.updateComplete;
-	}
-
-	async #updateSelectedTab(selectedTab) {
-		const selectedPanel = this._getPanel(selectedTab.id);
-		selectedTab.tabIndex = 0;
-
-		await this.updateComplete;
-
-		selectedPanel.selected = true;
-		this._tabs.forEach((tab) => {
-			if (tab.id !== selectedTab.id) {
-				if (tab.selected) {
-					tab.selected = false;
-					const panel = this._getPanel(tab.id);
-					// panel may not exist if it's being removed
-					if (panel) panel.selected = false;
-				}
-				if (tab.tabIndex === 0) tab.tabIndex = -1;
-			}
-		});
 	}
 }
 
