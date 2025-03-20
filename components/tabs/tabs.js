@@ -810,7 +810,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			this._tabs.forEach((tab) => {
 				const panel = this._getPanel(tab.id);
 				if (!panel) return;
-	
+
 				if (!panel.id) panel.id = getUniqueId();
 				tab.setAttribute('aria-controls', `${panel.id}`);
 			});
