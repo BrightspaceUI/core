@@ -13,7 +13,8 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		return {
 			selected: { type: Boolean, reflect: true },
 			// eslint-disable-next-line lit/no-native-attributes
-			role: { type: String, reflect: true }
+			role: { type: String, reflect: true },
+			tabIndex: { type: Number, reflect: true, attribute: 'tabindex' }
 		};
 	}
 
@@ -42,18 +43,18 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				margin-inline-start: 0;
 				width: calc(100% - 0.6rem);
 			}
-			:host([aria-selected="true"]:focus) {
+			:host([selected]:focus) {
 				text-decoration: none;
 			}
 			:host(:hover) {
 				color: var(--d2l-color-celestine);
 				cursor: pointer;
 			}
-			:host([aria-selected="true"]:hover) {
+			:host([selected]:hover) {
 				color: inherit;
 				cursor: default;
 			}
-			:host([aria-selected="true"]) .d2l-tab-selected-indicator {
+			:host([selected]) .d2l-tab-selected-indicator {
 				display: block;
 			}
 		`];
@@ -66,6 +67,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		super();
 		this.role = 'tab';
 		this.selected = false;
+		this.tabIndex = -1;
 	}
 
 	connectedCallback() {
@@ -101,7 +103,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		super.update(changedProperties);
 
 		if (changedProperties.has('selected')) {
-			this.ariaSelected = this.selected;
+			this.ariaSelected = `${this.selected}`;
 			if (this.selected) {
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tab-selected', { bubbles: true, composed: true }
