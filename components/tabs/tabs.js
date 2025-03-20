@@ -732,7 +732,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		}
 
 		const selectedTab = e.target;
-		this.#tabSelectionHelper(selectedTab);
+		this.#updateSelectedTab(selectedTab);
 	}
 
 	// remove after d2l-tab/d2l-tab-panel backport
@@ -779,7 +779,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			if (selectedTab) selectedTab.selected = true;
 		}
 		if (selectedTab) {
-			this.#tabSelectionHelper(selectedTab);
+			this.#updateSelectedTab(selectedTab);
 		}
 
 		await this.updateComplete;
@@ -997,7 +997,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return document.documentElement.getAttribute('dir') === 'rtl';
 	}
 
-	async #tabSelectionHelper(selectedTab) {
+	async #updateSelectedTab(selectedTab) {
 		const selectedPanel = this._getPanel(selectedTab.id);
 		selectedTab.tabIndex = 0;
 
