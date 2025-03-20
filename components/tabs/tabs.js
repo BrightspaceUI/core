@@ -733,32 +733,14 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	}
 
-	async _handleTabSelected(e) {
+	_handleTabSelected(e) {
 		if (this._defaultSlotBehavior) {
 			this._handleTabSelectedDefaultSlotBehavior(e);
 			return;
 		}
 
 		const selectedTab = e.target;
-		const selectedPanel = this._getPanel(e.target.id);
-		selectedTab.tabIndex = 0;
-
-		await this.updateComplete;
-
-		selectedPanel.selected = true;
-		this._tabs.forEach((tab) => {
-			if (tab.id !== selectedTab.id) {
-				if (tab.selected) {
-					tab.selected = false;
-					const panel = this._getPanel(tab.id);
-					// panel may not exist if it's being removed
-					if (panel) panel.selected = false;
-				}
-				if (tab.tabIndex === 0) tab.tabIndex = -1;
-			}
-		});
-
-		this.requestUpdate();
+		this.#updateSelectedTab(selectedTab);
 	}
 
 	// remove after d2l-tab/d2l-tab-panel backport
@@ -799,22 +781,22 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		if (!this._initialized && this._tabs.length === 0) return;
 
-		let selectedTab;
-		if (this._tabs.length > 0) {
+		let selectedTab = this._tabs.find((tab) => tab.selected && tab.state !== 'removing');
+		if (!selectedTab) {
 			selectedTab = this._tabs.find((tab) => tab.state !== 'removing');
-			if (selectedTab) {
-				selectedTab.selected = true;
-				selectedTab.tabIndex = 0;
-			}
-
-			this._tabs.forEach((tab) => {
-				const panel = this._getPanel(tab.id);
-				if (!panel) return;
-
-				if (!panel.id) panel.id = getUniqueId();
-				tab.setAttribute('aria-controls', `${panel.id}`);
-			});
+			if (selectedTab) selectedTab.selected = true;
 		}
+		if (selectedTab) {
+			this.#updateSelectedTab(selectedTab);
+		}
+
+		this._tabs?.forEach((tab) => {
+			const panel = this._getPanel(tab.id);
+			if (!panel) return;
+
+			if (!panel.id) panel.id = getUniqueId();
+			tab.setAttribute('aria-controls', `${panel.id}`);
+		});
 
 		await this.updateComplete;
 
@@ -1029,6 +1011,26 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	#isRTL() {
 		return document.documentElement.getAttribute('dir') === 'rtl';
+	}
+
+	async #updateSelectedTab(selectedTab) {
+		const selectedPanel = this._getPanel(selectedTab.id);
+		selectedTab.tabIndex = 0;
+
+		await this.updateComplete;
+
+		selectedPanel.selected = true;
+		this._tabs.forEach((tab) => {
+			if (tab.id !== selectedTab.id) {
+				if (tab.selected) {
+					tab.selected = false;
+					const panel = this._getPanel(tab.id);
+					// panel may not exist if it's being removed
+					if (panel) panel.selected = false;
+				}
+				if (tab.tabIndex === 0) tab.tabIndex = -1;
+			}
+		});
 	}
 
 }

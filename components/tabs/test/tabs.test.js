@@ -1,7 +1,7 @@
 import '../tab.js';
 import '../tabs.js';
 import '../tab-panel.js';
-import { fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 const defaultFixture = html`
 	<div>
@@ -72,4 +72,49 @@ describe('d2l-tabs', () => {
 
 	});
 
+	describe('behavior', () => {
+
+		function checkIfSelected(tab, isSelected) {
+			expect(tab.selected).to.equal(isSelected);
+			expect(tab.tabIndex).to.equal(isSelected ? 0 : -1);
+			expect(tab.ariaSelected).to.equal(isSelected.toString());
+		}
+
+		it('should only have one panel selected at a time even if multiple have selected attribute', async() => {
+			const el = await fixture(html`
+				<div>
+					<d2l-tabs>
+						<d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
+						<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
+						<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
+						<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
+						<d2l-tab id="chemistry" text="Chemistry" slot="tabs" selected></d2l-tab>
+						<d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
+					</d2l-tabs>
+				</div>
+			`);
+			const tabs = el.querySelectorAll('d2l-tab');
+			checkIfSelected(tabs[0], true);
+			checkIfSelected(tabs[2], false);
+		});
+
+		it('should update selection properties on new selection', async() => {
+			const el = await fixture(html`
+				<div>
+					<d2l-tabs>
+						<d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
+						<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
+						<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
+						<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
+						<d2l-tab id="chemistry" text="Chemistry" slot="tabs"></d2l-tab>
+						<d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
+					</d2l-tabs>
+				</div>
+			`);
+			const tabs = el.querySelectorAll('d2l-tab');
+			await clickElem(tabs[2]);
+			checkIfSelected(tabs[0], false);
+			checkIfSelected(tabs[2], true);
+		});
+	});
 });
