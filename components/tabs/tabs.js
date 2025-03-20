@@ -8,7 +8,6 @@ import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -341,7 +340,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				@d2l-tab-panel-selected="${this._handlePanelSelected}"
 				@d2l-tab-panel-text-changed="${this._handlePanelTextChange}">
 				<slot @slotchange="${this._handleDefaultSlotChange}"></slot>
-				<slot name="panels"></slot>
+				<slot name="panels" @slotchange="${this._handlePanelsSlotChange}"></slot>
 			</div>
 		`;
 	}
@@ -638,6 +637,12 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this.requestUpdate();
 	}
 
+	_handlePanelsSlotChange() {
+		if (this._defaultSlotBehavior) return;
+
+		this.#setAriaControls();
+	}
+
 	async _handlePanelTextChange(e) {
 		const tabInfo = this._getTabInfo(e.target.id);
 		// event could be from nested tabs
@@ -789,25 +794,12 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		if (selectedTab) {
 			this.#updateSelectedTab(selectedTab);
 		}
-
-		this._tabs?.forEach((tab) => {
-			const panel = this._getPanel(tab.id);
-			if (!panel) return;
-
-			if (!panel.id) panel.id = getUniqueId();
-			tab.setAttribute('aria-controls', `${panel.id}`);
-		});
+		this.#setAriaControls();
 
 		await this.updateComplete;
 
 		if (!this._initialized && this._tabs.length > 0) {
 			this._initialized = true;
-		}
-
-		if (selectedTab) {
-			// set corresponding panel to selected
-			const selectedPanel = this._getPanel(selectedTab.id);
-			if (selectedPanel) selectedPanel.selected = true;
 		}
 	}
 
@@ -1011,6 +1003,21 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	#isRTL() {
 		return document.documentElement.getAttribute('dir') === 'rtl';
+	}
+
+	#setAriaControls() {
+		// debounce so only runs once when tabs/panels slots changing
+		if (this._updateAriaControlsRequested) return;
+
+		this._updateAriaControlsRequested = true;
+		setTimeout(() => {
+			this._tabs?.forEach((tab) => {
+				const panel = this._getPanel(tab.id);
+				if (!panel) return;
+				tab.setAttribute('aria-controls', `${panel.id}`);
+			});
+			this._updateAriaControlsRequested = false;
+		}, 0);
 	}
 
 	async #updateSelectedTab(selectedTab) {
