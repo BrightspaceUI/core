@@ -8,6 +8,8 @@ import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { repeat } from 'lit/directives/repeat.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -32,6 +34,11 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			 * @type {number}
 			 */
 			maxToShow: { type: Number, attribute: 'max-to-show' },
+			/**
+			 * REQUIRED: ACCESSIBILITY: Label for the tablist
+			 * @type {string}
+			 */
+			text: { type: String },
 			_allowScrollNext: { type: Boolean },
 			_allowScrollPrevious: { type: Boolean },
 			_defaultSlotBehavior: { state: true },
@@ -305,6 +312,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 						<div class="d2l-tabs-container-list"
 							@d2l-tab-selected="${this._handleTabSelected}"
 							@focusout="${this._handleFocusOut}"
+							aria-label="${ifDefined(this.text)}"
 							role="tablist"
 							style="${styleMap(tabsContainerListStyles)}">
 							${repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
@@ -799,6 +807,14 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				selectedTab.tabIndex = 0;
 			}
 		}
+
+		this._tabs.forEach((tab) => {
+			const panel = this._getPanel(tab.id);
+			if (!panel) return;
+
+			if (!panel.id) panel.id = getUniqueId();
+			tab.setAttribute('aria-controls', `${panel.id}`);
+		});
 
 		await this.updateComplete;
 
