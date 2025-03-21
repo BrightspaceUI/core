@@ -94,7 +94,7 @@ const skeletonNoTextFixture = {
 		<d2l-tabs skeleton>
 			<d2l-tab id="all" text="All" slot="tabs"></d2l-tab>
 			<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
-			<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
+			<d2l-tab id="biology" slot="tabs"></d2l-tab>
 			<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
 			<d2l-tab id="physics" text="Physics" slot="tabs"></d2l-tab>
 			<d2l-tab-panel labelled-by="physics" slot="panels">Tab content for Physics</d2l-tab-panel>

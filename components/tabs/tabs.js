@@ -379,6 +379,16 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		`;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		if (changedProperties.has('skeleton')) {
+			this._tabs?.forEach(tab => {
+				tab.skeleton = this.skeleton;
+			});
+		}
+	}
+
 	focus() {
 		return this._focusSelected();
 	}
@@ -768,7 +778,14 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		if (!this._initialized && this._tabs.length === 0) return;
 
-		let selectedTab = this._tabs.find((tab) => tab.selected && tab.state !== 'removing');
+		let selectedTab;
+		this._tabs?.forEach((tab) => {
+			if (!selectedTab && tab.selected && tab.state !== 'removing') {
+				selectedTab = tab;
+			}
+			tab.skeleton = this.skeleton;
+		});
+
 		if (!selectedTab) {
 			selectedTab = this._tabs.find((tab) => tab.state !== 'removing');
 			if (selectedTab) selectedTab.selected = true;
