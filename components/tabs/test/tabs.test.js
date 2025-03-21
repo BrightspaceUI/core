@@ -70,6 +70,13 @@ describe('d2l-tabs', () => {
 			await oneEvent(tabs, 'd2l-tab-selected');
 		});
 
+		it('dispatches d2l-tab-content-change', async() => {
+			const el = await fixture(normalFixture);
+			const tab = el.querySelector('d2l-tab');
+			setTimeout(() => tab.setAttribute('text', 'new text'));
+			await oneEvent(tab, 'd2l-tab-content-change');
+		});
+
 	});
 
 	describe('behavior', () => {

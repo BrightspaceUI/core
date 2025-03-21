@@ -315,6 +315,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 					</div>
 					${this.arrowKeysContainer(html`
 						<div class="d2l-tabs-container-list"
+							@d2l-tab-content-change="${this._handleTabContentChange}"
 							@d2l-tab-selected="${this._handleTabSelected}"
 							@focusout="${this._handleFocusOut}"
 							aria-label="${ifDefined(this.text)}"
@@ -574,6 +575,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this.#setAriaControls();
 	}
 
+	// remove after d2l-tab/d2l-tab-panel backport
 	async _handlePanelTextChange(e) {
 		const tabInfo = this._getTabInfo(e.target.id);
 		// event could be from nested tabs
@@ -667,6 +669,11 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			this.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button').focus();
 		}
 
+	}
+
+	async _handleTabContentChange() {
+		this._updateMeasures();
+		await this._updateScrollVisibility(this._getMeasures());
 	}
 
 	async _handleTabSelected(e) {

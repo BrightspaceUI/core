@@ -38,6 +38,17 @@ class Tab extends TabMixin(LitElement) {
 		return styles;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		if (changedProperties.has('text')) {
+			/** Dispatched when the text attribute is changed */
+			this.dispatchEvent(new CustomEvent(
+				'd2l-tab-content-change', { bubbles: true, composed: true, detail: { text: this.text } }
+			));
+		}
+	}
+
 	renderContent() {
 		const contentClasses = {
 			'd2l-tab-text': true,
