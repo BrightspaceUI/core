@@ -4,7 +4,7 @@ import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { TabMixin } from './tab-mixin.js';
 
 /**
- * @fires d2l-tab-content-change - Dispatched when the text attribute is changed
+ * @fires d2l-tab-content-change - Dispatched when the text attribute is changed. Triggers virtual scrolling calculations in parent d2l-tabs.
  */
 class Tab extends TabMixin(LitElement) {
 
@@ -45,7 +45,7 @@ class Tab extends TabMixin(LitElement) {
 		super.updated(changedProperties);
 
 		if (changedProperties.has('text')) {
-			this.dispatchChangeEvent();
+			this.dispatchContentChangeEvent();
 		}
 	}
 
