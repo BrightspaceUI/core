@@ -358,6 +358,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return this.shadowRoot.querySelector('.d2l-tabs-container-list').getBoundingClientRect();
 	}
 
+	#checkTabPanelMatchRequested;
+	#panels;
+	#updateAriaControlsRequested;
+
 	_animateTabAddition(tabInfo) {
 		const tab = this.shadowRoot
 			&& this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
@@ -507,8 +511,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	_getPanel(id) {
 		if (this._defaultSlotBehavior) return this._getPanelDefaultSlotBehavior(id);
 
-		if (!this._panels) return;
-		return this._panels.find(panel => panel.labelledBy === id);
+		if (!this.#panels) return;
+		return this.#panels.find(panel => panel.labelledBy === id);
 	}
 
 	// remove after d2l-tab/d2l-tab-panel backport
@@ -639,7 +643,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	_handlePanelsSlotChange(e) {
 		if (this._defaultSlotBehavior) return;
 
-		this._panels = e.target.assignedElements({ flatten: true }).filter((node) => node.role === 'tabpanel');
+		this.#panels = e.target.assignedElements({ flatten: true }).filter((node) => node.role === 'tabpanel');
 		this.#checkTabPanelMatch();
 		this.#setAriaControls();
 	}
@@ -1005,16 +1009,16 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	#checkTabPanelMatch() {
 		// debounce so only runs once when tabs/panels slots changing
-		if (this._checkTabPanelMatchRequested) return;
+		if (this.#checkTabPanelMatchRequested) return;
 
-		this._checkTabPanelMatchRequested = true;
+		this.#checkTabPanelMatchRequested = true;
 		setTimeout(() => {
-			if ((this._tabs && !this._panels) || (this._panels && !this._tabs)) {
+			if ((this._tabs && !this.#panels) || (this.#panels && !this._tabs)) {
 				console.warn('d2l-tabs: tabs and panels are not in sync');
-			} else if (this._tabs.length !== this._panels.length) {
+			} else if (this._tabs.length !== this.#panels.length) {
 				console.warn('d2l-tabs: number of tabs and panels does not match');
 			}
-			this._checkTabPanelMatchRequested = false;
+			this.#checkTabPanelMatchRequested = false;
 		}, 0);
 	}
 
@@ -1024,9 +1028,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	#setAriaControls() {
 		// debounce so only runs once when tabs/panels slots changing
-		if (this._updateAriaControlsRequested) return;
+		if (this.#updateAriaControlsRequested) return;
 
-		this._updateAriaControlsRequested = true;
+		this.#updateAriaControlsRequested = true;
 		setTimeout(() => {
 			this._tabs?.forEach((tab) => {
 				const panel = this._getPanel(tab.id);
@@ -1036,7 +1040,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				}
 				tab.setAttribute('aria-controls', `${panel.id}`);
 			});
-			this._updateAriaControlsRequested = false;
+			this.#updateAriaControlsRequested = false;
 		}, 0);
 	}
 
