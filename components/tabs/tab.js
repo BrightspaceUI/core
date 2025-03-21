@@ -3,6 +3,9 @@ import { classMap } from 'lit/directives/class-map.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { TabMixin } from './tab-mixin.js';
 
+/**
+ * @fires d2l-tab-content-change - Dispatched when the text attribute is changed. Triggers virtual scrolling calculations in parent d2l-tabs.
+ */
 class Tab extends TabMixin(LitElement) {
 
 	static get properties() {
@@ -36,6 +39,14 @@ class Tab extends TabMixin(LitElement) {
 
 		super.styles && styles.unshift(super.styles);
 		return styles;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		if (changedProperties.has('text')) {
+			this.dispatchContentChangeEvent();
+		}
 	}
 
 	renderContent() {
