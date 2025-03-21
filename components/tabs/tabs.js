@@ -1046,7 +1046,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		await this.updateComplete;
 
 		const selectedPanel = this._getPanel(selectedTab.id);
-		selectedPanel.selected = true;
+		if (selectedPanel) selectedPanel.selected = true;
 		this._tabs.forEach((tab) => {
 			if (tab.id !== selectedTab.id) {
 				if (tab.selected) {
