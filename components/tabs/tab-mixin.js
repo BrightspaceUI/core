@@ -115,7 +115,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	/**
 	 * IMPORTANT: Call this in any consumer when anything changes that could impact the tab's size
 	 * Notifies the parent d2l-tabs component of a change so that it can update virtual scrolling calculations
-	 * */ 
+	 * */
 	dispatchContentChangeEvent() {
 		this.dispatchEvent(new CustomEvent(
 			'd2l-tab-content-change', { bubbles: true, composed: true }
