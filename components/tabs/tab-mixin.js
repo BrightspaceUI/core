@@ -112,6 +112,12 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		}
 	}
 
+	dispatchChangeEvent() {
+		this.dispatchEvent(new CustomEvent(
+			'd2l-tab-content-change', { bubbles: true, composed: true }
+		));
+	}
+
 	renderContent() {
 		console.warn('Subclasses to implement/override renderContent');
 		return html`<div>Default Tab Content</div>`;

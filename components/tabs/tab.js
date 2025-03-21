@@ -3,6 +3,9 @@ import { classMap } from 'lit/directives/class-map.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { TabMixin } from './tab-mixin.js';
 
+/**
+ * @fires d2l-tab-content-change - Dispatched when the text attribute is changed
+ */
 class Tab extends TabMixin(LitElement) {
 
 	static get properties() {
@@ -42,10 +45,7 @@ class Tab extends TabMixin(LitElement) {
 		super.updated(changedProperties);
 
 		if (changedProperties.has('text')) {
-			/** Dispatched when the text attribute is changed */
-			this.dispatchEvent(new CustomEvent(
-				'd2l-tab-content-change', { bubbles: true, composed: true, detail: { text: this.text } }
-			));
+			this.dispatchChangeEvent();
 		}
 	}
 
