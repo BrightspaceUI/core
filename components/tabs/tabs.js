@@ -1128,9 +1128,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	async #updateSelectedTab(selectedTab) {
-		selectedTab.tabIndex = 0;
-
 		await this.updateComplete;
+
+		selectedTab.selected = true;
+		selectedTab.tabIndex = 0;
 
 		const selectedPanel = this._getPanel(selectedTab.id);
 		if (selectedPanel) selectedPanel.selected = true;
