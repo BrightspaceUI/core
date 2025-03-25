@@ -115,7 +115,7 @@ An element that displays the corresponding tab panel when selected.
 ```
 
 <!-- docs: start hidden content -->
-### Tab Panel Properties
+### Properties
 | Property | Type | Description |
 |--|--|--|
 | `id` | String, required | Unique identifier for the tab |
@@ -225,7 +225,7 @@ Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Ta
 ```
 
 <!-- docs: start hidden content -->
-### Tab Panel Properties
+### Properties
 | Property | Type | Description |
 |--|--|--|
 | `labelled-by` | String, required | Id of the tab that labels this panel |
