@@ -44,7 +44,7 @@ Tabs are used to present related information in mutually exclusive panels, allow
 
 ## Tabs [d2l-tabs]
 
-The `d2l-tabs` element is a web component for tabbed content. It provides the `d2l-tab` component for simple tab content, and the `d2l-tab-panel` component for the panel content. It also provides the `TabMixin` for custom tabs. It renders tabs responsively and provides virtual scrolling for large tab lists. The tabs and panels are paired using an `id` on the tab handle and corresponding `labelle-by` on the `d2l-tab-panel`.
+The `d2l-tabs` element is a web component for tabbed content. It provides the `d2l-tab` component for simple tab content, and the `d2l-tab-panel` component for the panel content. It also provides the `TabMixin` for custom tabs. It renders tabs responsively and provides virtual scrolling for large tab lists. The tabs and panels are paired using an `id` on the tab handle and corresponding `labelled-by` on the `d2l-tab-panel`.
 
 <!-- docs: demo code properties name:d2l-tabs sandboxTitle:'Tab' display:block -->
 ```html
