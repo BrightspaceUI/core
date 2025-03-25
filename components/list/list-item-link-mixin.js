@@ -26,11 +26,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 				height: 100%;
 				outline: none;
 				width: 100%;
-			}
-			:host([action-href]:not([action-href=""])) [slot="content"],
-			:host(:not([no-primary-action])) [slot="control-action"] ~ [slot="content"],
-			:host(:not([no-primary-action])) [slot="outside-control-action"] ~ [slot="content"] {
-				pointer-events: none;
+				text-decoration: none;
 			}
 			:host([action-href]:not([action-href=""])) [slot="control-action"],
 			:host([action-href]:not([action-href=""])) [slot="outside-control-action"] {
@@ -53,7 +49,8 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		if (changedProperties.has('actionHref') && !this.actionHref) this._hoveringPrimaryAction = false;
 	}
 
-	_handleLinkClick() {
+	_handleLinkClick(e) {
+		e.preventDefault();
 		/** Dispatched when the item's primary link action is clicked */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
 	}
@@ -66,13 +63,13 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		this.shadowRoot.querySelector(`#${this._primaryActionId}`).click();
 	}
 
-	_renderPrimaryAction(labelledBy) {
+	_renderPrimaryAction(labelledBy, content) {
 		if (!this.actionHref) return;
 		return html`<a aria-labelledby="${labelledBy}"
 			@click="${this._handleLinkClick}"
 			href="${this.actionHref}"
 			id="${this._primaryActionId}"
-			@keydown="${this._handleLinkKeyDown}"></a>`;
+			@keydown="${this._handleLinkKeyDown}">${content}</a>`;
 	}
 
 };

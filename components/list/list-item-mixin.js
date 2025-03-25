@@ -679,7 +679,19 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		};
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
-		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
+
+		const contentAreaContent = html`
+			<div slot="content"
+				class="d2l-list-item-content"
+				id="${this._contentId}"
+				@mouseenter="${this._onMouseEnter}"
+				@mouseleave="${this._onMouseLeave}">
+				<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
+				<slot>${content}</slot>
+			</div>
+		`;
+
+		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId, contentAreaContent) : null);
 		let tooltipForId = null;
 		if (this._showAddButton) {
 			tooltipForId = this._addButtonTopId;
@@ -691,6 +703,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const addButtonText = this._addButtonText || this.localize('components.list-item.addItem');
 		const innerView = html`
 			<d2l-list-item-generic-layout
+				@click="${this._handleClick}"
 				align-nested="${ifDefined(alignNested)}"
 				@focusin="${this._onFocusIn}"
 				@focusout="${this._onFocusOut}"
@@ -741,15 +754,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					@mouseenter="${this._onMouseEnterPrimaryAction}"
 					@mouseleave="${this._onMouseLeavePrimaryAction}">
 						${primaryAction}
-				</div>` : nothing}
-				<div slot="content"
-					class="d2l-list-item-content"
-					id="${this._contentId}"
-					@mouseenter="${this._onMouseEnter}"
-					@mouseleave="${this._onMouseLeave}">
-					<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
-					<slot>${content}</slot>
-				</div>
+				</div>` : contentAreaContent}
 				<div slot="actions"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}"
@@ -805,5 +810,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		node.focus();
 		return true;
 	}
-
+	
+	_handleClick(e) {
+		/**
+		 * if the click was on something interactive, handle that
+		 * else resume whatever the link or button would have done
+		 */
+		console.log(e.composedPath())
+	}
 };
