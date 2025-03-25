@@ -129,7 +129,71 @@ An element that displays the corresponding tab panel when selected.
 
 ### Custom Tabs
 
-The `TabMixin` can be used to create custom tab openers which use the same structure within `d2l-tabs` as above. It is important to call the `dispatchContentChangeEvent` function in `TabMixin` when content changes in the consumer in order to properly trigger calculations.
+The `TabMixin` can be used to create custom tab openers which use the same structure within `d2l-tabs` as above. It is IMPORTANT to call the `dispatchContentChangeEvent` function in `TabMixin` when content changes in the consumer in order to properly trigger calculations.
+
+<!-- docs: demo code sandboxTitle:'TabMixin' display:block -->
+```html
+<script type="module">
+  import { css, html, LitElement, unsafeCSS } from 'lit';
+  import { getFocusPseudoClass } from '@brightspace-ui/core/helpers/focus.js';
+  import { TabMixin } from '@brightspace-ui/core/components/tabs/tab-mixin.js';
+
+  class TabCustom extends TabMixin(LitElement) {
+
+    static get styles() {
+      const styles = [ css`
+        .d2l-tab-custom-content {
+          margin: 0.5rem;
+          overflow: hidden;
+          padding: 0.1rem;
+          white-space: nowrap;
+        }
+        :host(:first-child) .d2l-tab-custom-content {
+          margin-inline-start: 0;
+        }
+        :host(:${unsafeCSS(getFocusPseudoClass())}) > .d2l-tab-custom-content {
+          border-radius: 0.3rem;
+          box-shadow: 0 0 0 2px var(--d2l-color-celestine);
+          color: var(--d2l-color-celestine);
+        }
+      `];
+
+      super.styles && styles.unshift(super.styles);
+      return styles;
+    }
+
+    renderContent() {
+      return html`
+        <div class="d2l-tab-custom-content">
+          <slot @slotchange="${this.#handleSlotchange}"></slot>
+        </div>
+      `;
+    }
+
+    #handleSlotchange() {
+      this.dispatchContentChangeEvent();
+    }
+  }
+
+  customElements.define('d2l-tab-custom', TabCustom);
+</script>
+<script type="module">
+  import '@brightspace-ui/core/components/tabs/tabs.js';
+  import '@brightspace-ui/core/components/tabs/tab-panel.js';
+  import '@brightspace-ui/core/components/count-badge/count-badge.js';
+</script>
+
+<d2l-tabs text="Courses">
+  <d2l-tab-custom id="all" slot="tabs"><div style="color: purple;">All</div></d2l-tab-custom>
+  <d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
+  <d2l-tab-custom id="biology" slot="tabs" selected>
+    Biology <d2l-count-badge has-tooltip number="100" size="small" tab-stop text="100 new notifications" type="notification"></d2l-count-badge>
+  </d2l-tab-custom>
+  <d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
+  <d2l-tab-custom id="chemistry" slot="tabs">Chemistry</d2l-tab-custom>
+  <d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
+</d2l-tabs>
+```
 
 ## Tab Panels [d2l-tab-panel]
 Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Tab panels can contain text, form controls, rich media, or just about anything else. There is an optional “slot” available for related controls such as a Settings button.
