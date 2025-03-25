@@ -703,7 +703,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const addButtonText = this._addButtonText || this.localize('components.list-item.addItem');
 		const innerView = html`
 			<d2l-list-item-generic-layout
-				@click="${this._handleClick}"
 				align-nested="${ifDefined(alignNested)}"
 				@focusin="${this._onFocusIn}"
 				@focusout="${this._onFocusOut}"
@@ -809,13 +808,5 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		if (!node) return false;
 		node.focus();
 		return true;
-	}
-	
-	_handleClick(e) {
-		/**
-		 * if the click was on something interactive, handle that
-		 * else resume whatever the link or button would have done
-		 */
-		console.log(e.composedPath())
 	}
 };

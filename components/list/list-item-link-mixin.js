@@ -3,6 +3,55 @@ import { css, html } from 'lit';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ListItemMixin } from './list-item-mixin.js';
 
+const interactiveElements = {
+	// 'a' only if an href is present
+	'button': true,
+	'input': true,
+	'select': true,
+	'textarea': true
+};
+
+const interactiveRoles = {
+	'button': true,
+	'checkbox': true,
+	'combobox': true,
+	'link': true,
+	'listbox': true,
+	'menuitem': true,
+	'menuitemcheckbox': true,
+	'menuitemradio': true,
+	'option': true,
+	'radio': true,
+	'slider': true,
+	'spinbutton': true,
+	'switch': true,
+	'tab:': true,
+	'textbox': true,
+	'treeitem': true
+};
+
+function getIsInteractiveChildClicked(e) {
+	const composedPath = e.composedPath();
+	const clickedElem = e.target;
+	for (let i = 0; i < composedPath.length; i++) {
+		const elem = composedPath[i];
+		if (elem === clickedElem) {
+			return false;
+		}
+
+		const nodeName = elem.nodeName.toLowerCase();
+		if (interactiveElements[nodeName] || (nodeName === 'a' && elem.hasAttribute('href'))) {
+			return true;
+		}
+
+		const role = (elem.getAttribute('role') || '');
+		if (interactiveRoles[role]) {
+			return true;
+		}
+	}
+	return false;
+}
+
 export const ListItemLinkMixin = superclass => class extends ListItemMixin(superclass) {
 
 	static get properties() {
@@ -50,9 +99,12 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 	}
 
 	_handleLinkClick(e) {
-		e.preventDefault();
-		/** Dispatched when the item's primary link action is clicked */
-		this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
+		if (getIsInteractiveChildClicked(e)) {
+			e.preventDefault();
+		} else {
+			/** Dispatched when the item's primary link action is clicked */
+			this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
+		}
 	}
 
 	_handleLinkKeyDown(e) {
