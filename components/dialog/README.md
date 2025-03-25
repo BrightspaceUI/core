@@ -338,14 +338,6 @@ Notes on this example:
 <d2l-button id="open">Show Dialog</d2l-button>
 ```
 
-#### Arguments
-
-| Argument | Description |
-|--|--|
-| `key` | Unique identifier for the task |
-| `task` | The Promise that resolves to the dialog content
-| `templates` | Object of `{ success, pending, initial, failure }` containing any necessary callback functions |
-
 ## Accessibility
 
 ### Focus Management

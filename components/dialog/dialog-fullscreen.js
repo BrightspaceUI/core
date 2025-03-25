@@ -25,7 +25,7 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 	static get properties() {
 		return {
 			/**
-			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin. See [Async Dialogs](#async-dialogs) for more information.
+			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
 			 * @type {boolean}
 			 */
 			async: { type: Boolean },
