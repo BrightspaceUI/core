@@ -44,7 +44,7 @@ Tabs are used to present related information in mutually exclusive panels, allow
 
 ## Tabs [d2l-tabs]
 
-The `d2l-tabs` element is a web component for tabbed content. It provides the `d2l-tab` component for simple tab content, and the `d2l-tab-panel` component for the panel content. It also provides the `TabMixin` for custom tabs. It renders tabs responsively and provides virtual scrolling for large tab lists.
+The `d2l-tabs` element is a web component for tabbed content. It provides the `d2l-tab` component for simple tab content, and the `d2l-tab-panel` component for the panel content. It also provides the `TabMixin` for custom tabs. It renders tabs responsively and provides virtual scrolling for large tab lists. The tabs and panels are paired using an `id` on the tab handle and corresponding `labelle-by` on the `d2l-tab-panel`.
 
 <!-- docs: demo code properties name:d2l-tabs sandboxTitle:'Tab' display:block -->
 ```html
@@ -96,7 +96,7 @@ An element that displays the corresponding tab panel when selected.
   import '@brightspace-ui/core/components/tabs/tab-panel.js';
 </script>
 
-<d2l-tabs>
+<d2l-tabs text="Courses">
   <d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
   <d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
   <d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
@@ -118,18 +118,18 @@ An element that displays the corresponding tab panel when selected.
 ### Tab Panel Properties
 | Property | Type | Description |
 |--|--|--|
-| `text` | String, required | The text used for the tab and for labelling the corresponding panel |
 | `id` | String, required | Unique identifier for the tab |
+| `text` | String, required | The text used for the tab and for labelling the corresponding panel |
 | `selected` | Boolean | Use to select the tab |
 
 ### Events
-- `d2l-tab-content-change`: Dispatched when the text attribute is changed. Triggers virtual scrolling calculations in parent d2l-tabs.
+- `d2l-tab-content-change`: Dispatched when the text attribute is changed. Triggers virtual scrolling calculations in parent `d2l-tabs`.
 - `d2l-tab-selected`: Dispatched when a tab is selected
 <!-- docs: end hidden content -->
 
 ### Custom Tabs
 
-The `TabMixin` can be used to create custom tab openers which use the same structure within `d2l-tabs` as above. It is IMPORTANT to call the `dispatchContentChangeEvent` function in `TabMixin` when content changes in the consumer in order to properly trigger calculations.
+The `TabMixin` can be used to create custom tabs. It is IMPORTANT to call the `dispatchContentChangeEvent` function in `TabMixin` when content changes in the consumer in order to properly trigger calculations.
 
 <!-- docs: demo code sandboxTitle:'TabMixin' display:block -->
 ```html
@@ -206,7 +206,7 @@ Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Ta
   import '@brightspace-ui/core/components/tabs/tab-panel.js';
 </script>
 
-<d2l-tabs>
+<d2l-tabs text="Courses">
   <d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
   <d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
   <d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
@@ -241,6 +241,6 @@ Selecting a tab in the tab bar causes the relevant tab panel to be displayed. Ta
 
 The `tabs` components were built following [W3C best practices for Tabs](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/) with Manual Activation. Important features include:
 - Following recommended keyboard control patterns (with the exception of the "Optional" Home, End, and Delete key patterns)
-- Using the roles of `tablist` and `tab` appropriately in order to facilitate screen reader information (e.g., "tab, 2 of 7")
+- Using the roles of `tablist` and `tab` appropriately in order to facilitate screen reader information (e.g., "tab, 2 of 7") and adding an `aria-label` to the `tablist`
 - Using `aria-selected` to indicate `tab` selection state
 - Using `aria-labelledby` and `aria-controls` in order to match the `tab` with the `tabpanel` for screen reader users
