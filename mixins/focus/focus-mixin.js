@@ -20,24 +20,27 @@ export const FocusMixin = dedupeMixin(superclass => class extends superclass {
 	}
 
 	focus() {
-
-		const selector = this.constructor.focusElementSelector;
-		if (!selector) {
-			throw new Error(`FocusMixin: no static focusElementSelector provided for "${this.tagName}"`);
-		}
-
 		if (!this.hasUpdated) {
 			this._focusOnFirstRender = true;
 			return;
 		}
 
-		const elem = this.shadowRoot.querySelector(selector);
-		if (!elem) {
-			throw new Error(`FocusMixin: selector "${selector}" yielded no element for "${this.tagName}"`);
+		const focusTarget = this._getFocusTarget();
+		if (!focusTarget) {
+			throw new Error(`FocusMixin: No focus target found for "${this.tagName}"`);
 		}
 
-		elem.focus();
+		focusTarget.focus();
+	}
 
+	_getFocusTarget() {
+		const selector = this.constructor.focusElementSelector;
+		if (!selector) {
+			throw new Error(`FocusMixin: no static focusElementSelector provided for "${this.tagName}"`);
+		}
+
+		const elem = this.shadowRoot.querySelector(selector);
+		return elem;
 	}
 
 });
