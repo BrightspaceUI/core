@@ -447,8 +447,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'max-width') return;
 				if (tab) tab.removeEventListener('transitionend', handleTransitionEnd);
-				// this._tabInfos.splice(this._tabInfos.findIndex(info => info.id === tabInfo.id), 1);
-				// remove from ids? remove from dom
 				this.requestUpdate();
 				resolve();
 			};
