@@ -9,14 +9,13 @@ import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
 /**
  * A button component that can be used just like the native button for instances where only an icon is displayed.
  * @slot icon - Optional slot for a custom icon
  */
-class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement))))) {
+class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -103,11 +102,7 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 				}
 
 				:host([h-align="text"]) button {
-					left: var(--d2l-button-icon-h-align);
-				}
-				:host([dir="rtl"][h-align="text"]) button {
-					left: 0;
-					right: var(--d2l-button-icon-h-align);
+					inset-inline-start: var(--d2l-button-icon-h-align);
 				}
 
 				/* Firefox includes a hidden border which messes up button dimensions */
