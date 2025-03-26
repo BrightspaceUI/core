@@ -827,7 +827,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 					tab.setAttribute('data-state', 'adding');
 				}
 			}
-			if (tab.selected && tab.getAttribute('data-state') !== 'removing') {
+			if (!selectedTab && tab.selected && tab.getAttribute('data-state') !== 'removing') {
 				selectedTab = tab;
 			}
 			newTabIds[tab.id] = true;
