@@ -21,7 +21,7 @@ The `d2l-more-less` element can be used to minimize the display of long content,
 | Property | Type | Description |
 |---|---|---|
 | `expanded` | Boolean | Specifies the expanded/collapsed state of the content |
-| `h-align` | String | A value of `text` aligns the leading edge of text |
+| `h-align` | String | Possible values are undefined (default), `text` or `text-end`. If `text` or `text-end`, aligns the button content to the leading (or trailing) edge of text. |
 | `height` | String, default: `'4em'` | Maximum height of the content when in "less" mode. The `d2l-more-less` element itself will take up additional vertical space for the fading effect as well as the more/less button itself. |
 | `inactive` | Boolean | Whether the component is active or inactive |
 <!-- docs: end hidden content -->

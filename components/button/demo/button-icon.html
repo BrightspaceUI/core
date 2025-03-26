@@ -102,9 +102,16 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-icon icon="tier1:gear" text="Button Edge Aligned (default)"></d2l-button-icon>
-					<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
-					<d2l-button-icon icon="tier1:gear" text="Button Content Aligned" h-align="text"></d2l-button-icon>
+					<div style="border: 1px dashed #999999; text-align: start;">
+						<d2l-button-icon icon="tier1:gear" text="Button Edge Aligned (default)"></d2l-button-icon>
+						<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+						<d2l-button-icon icon="tier1:gear" text="Button Content Aligned" h-align="text"></d2l-button-icon>
+					</div>
+					<div style="border: 1px dashed #999999; text-align: end;">
+						<d2l-button-icon icon="tier1:gear" text="Button Edge Aligned (default)"></d2l-button-icon>
+						<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+						<d2l-button-icon icon="tier1:gear" text="Button Content Aligned" h-align="text-end"></d2l-button-icon>
+					</div>
 				</template>
 			</d2l-demo-snippet>
 

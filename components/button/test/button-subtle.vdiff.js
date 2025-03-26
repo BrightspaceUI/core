@@ -82,20 +82,26 @@ describe('button-subtle', () => {
 		});
 	});
 
-	it('h-align', async() => {
-		const elem = await fixture(html`
-			<div>
-				<d2l-button-subtle icon="tier1:gear" text="Button Edge Aligned (default)"></d2l-button-subtle>
-				<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
-				<d2l-button-subtle icon="tier1:gear" text="Button Content Aligned" h-align="text"></d2l-button-subtle>
-				<br>
-				<d2l-button-subtle slim icon="tier1:gear" text="Slim Button Content Aligned" h-align="text"></d2l-button-subtle>
-				<br>
-				<d2l-button-subtle icon="tier1:chevron-down" text="Subtle Button" icon-right h-align="text"></d2l-button-subtle>
-				<br>
-				<d2l-button-subtle slim icon="tier1:chevron-down" text="Slim Subtle Button" icon-right h-align="text"></d2l-button-subtle>
-			</div>
-		`);
-		await expect(elem).to.be.golden();
+	describe('h-align', () => {
+		['text', 'text-end'].forEach(hAlign => {
+			it(hAlign, async() => {
+				const textAlign = hAlign === 'text' ? 'start' : 'end';
+				const elem = await fixture(html`
+					<div style="border: 1px dashed #999999; text-align: ${textAlign};">
+						<d2l-button-subtle icon="tier1:gear" text="Button Edge Aligned (default)"></d2l-button-subtle>
+						<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+						<d2l-button-subtle icon="tier1:gear" text="Button Content Aligned" h-align="${hAlign}"></d2l-button-subtle>
+						<br>
+						<d2l-button-subtle slim icon="tier1:gear" text="Slim Button Content Aligned" h-align="${hAlign}"></d2l-button-subtle>
+						<br>
+						<d2l-button-subtle icon="tier1:chevron-down" text="Subtle Button" icon-right h-align="${hAlign}"></d2l-button-subtle>
+						<br>
+						<d2l-button-subtle slim icon="tier1:chevron-down" text="Slim Subtle Button" icon-right h-align="${hAlign}"></d2l-button-subtle>
+					</div>
+				`);
+				await expect(elem).to.be.golden();
+			});
+		});
+
 	});
 });

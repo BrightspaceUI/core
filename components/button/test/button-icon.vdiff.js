@@ -43,4 +43,21 @@ describe('button-icon', () => {
 			});
 		});
 	});
+
+	describe('h-align', () => {
+		['text', 'text-end'].forEach(hAlign => {
+			it(hAlign, async() => {
+				const textAlign = hAlign === 'text' ? 'start' : 'end';
+				const elem = await fixture(html`
+					<div style="border: 1px dashed #999999; text-align: ${textAlign};">
+						<d2l-button-icon icon="tier1:gear" text="Button Edge Aligned (default)"></d2l-button-icon>
+						<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+						<d2l-button-icon icon="tier1:gear" text="Button Content Aligned" h-align="${hAlign}"></d2l-button-icon>
+					</div>
+				`);
+				await expect(elem).to.be.golden();
+			});
+		});
+	});
+
 });
