@@ -169,11 +169,14 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				transition: margin-top 200ms ease-out;
 			}
 
-			d2l-tab-internal {
+			d2l-tab-internal, ::slotted(d2l-tab) {
 				-webkit-transition: max-width 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
 				transition: max-width 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
 			}
-			d2l-tab-internal[data-state="adding"], d2l-tab-internal[data-state="removing"] {
+			d2l-tab-internal[data-state="adding"],
+			d2l-tab-internal[data-state="removing"],
+			::slotted(d2l-tab[data-state="adding"]),
+			::slotted(d2l-tab[data-state="removing"]) {
 				max-width: 0;
 				opacity: 0;
 				transform: translateY(20px);
@@ -197,7 +200,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 					-webkit-transition: none;
 					transition: none;
 				}
-				d2l-tab-internal {
+				d2l-tab-internal, ::slotted(d2l-tab) {
 					-webkit-transition: none;
 					transition: none;
 				}
@@ -217,6 +220,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._maxWidth = null;
 		this._scrollCollapsed = false;
 		this._state = 'shown';
+		this._tabIds = {};
 		this._tabInfos = []; // remove after d2l-tab/d2l-tab-panel backport
 		this._translationValue = 0;
 	}
@@ -393,11 +397,37 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return this.shadowRoot.querySelector('.d2l-tabs-container-list').getBoundingClientRect();
 	}
 
+	removeTab(tab) {
+		tab.setAttribute('data-state', 'removing');
+		Promise.resolve(this._animateTabRemoval(tab)).then(async() => {
+			const tabId = tab.id;
+			tab.remove();
+			this._tabIds[tabId] = false;
+
+			const panel = this._getPanel(tabId);
+			panel?.remove();
+		});
+	}
+
 	#checkTabPanelMatchRequested;
 	#panels;
 	#updateAriaControlsRequested;
 
-	_animateTabAddition(tabInfo) {
+	_animateTabAddition(tab) {
+		return new Promise((resolve) => {
+			const handleTransitionEnd = (e) => {
+				if (e.propertyName !== 'max-width') return;
+				if (tab) tab.removeEventListener('transitionend', handleTransitionEnd);
+				resolve();
+			};
+			if (tab) tab.addEventListener('transitionend', handleTransitionEnd);
+			tab.setAttribute('data-state', '');
+			this.requestUpdate();
+		});
+	}
+
+	// remove after d2l-tab/d2l-tab-panel backport
+	_animateTabAdditionDefaultSlotBehavior(tabInfo) {
 		const tab = this.shadowRoot
 			&& this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
 		return new Promise((resolve) => {
@@ -412,7 +442,22 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		});
 	}
 
-	_animateTabRemoval(tabInfo) {
+	_animateTabRemoval(tab) {
+		return new Promise((resolve) => {
+			const handleTransitionEnd = (e) => {
+				if (e.propertyName !== 'max-width') return;
+				if (tab) tab.removeEventListener('transitionend', handleTransitionEnd);
+				// this._tabInfos.splice(this._tabInfos.findIndex(info => info.id === tabInfo.id), 1);
+				// remove from ids? remove from dom
+				this.requestUpdate();
+				resolve();
+			};
+			if (tab) tab.addEventListener('transitionend', handleTransitionEnd);
+		});
+	}
+
+	// remove after d2l-tab/d2l-tab-panel backport
+	_animateTabRemovalDefaultSlotBehavior(tabInfo) {
 		const tab = this.shadowRoot &&
 			this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
 		return new Promise((resolve) => {
@@ -579,8 +624,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 			if (this._tabInfos.length > 1) {
 				this._tabInfos.forEach((info) => {
-					if (info.state === 'adding') animPromises.push(this._animateTabAddition(info));
-					else if (info.state === 'removing') animPromises.push(this._animateTabRemoval(info));
+					if (info.state === 'adding') animPromises.push(this._animateTabAdditionDefaultSlotBehavior(info));
+					else if (info.state === 'removing') animPromises.push(this._animateTabRemovalDefaultSlotBehavior(info));
 				});
 			}
 
@@ -774,9 +819,26 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		if (!this._initialized && this._tabs.length === 0) return;
 
-		let selectedTab = this._tabs.find((tab) => tab.selected && tab.state !== 'removing');
+		let selectedTab = null;
+		const newTabIds = {};
+		this._tabs?.forEach((tab) => {
+			if (this._initialized && !reduceMotion && this._tabs.length !== Object.keys(this._tabIds).length) {
+				// if it's a new tab, update state to animate addition
+				if (!this._tabIds[tab.id]) {
+					this._tabIds[tab.id] = true;
+					tab.setAttribute('data-state', 'adding');
+				}
+			}
+			if (tab.selected && tab.getAttribute('data-state') !== 'removing') {
+				selectedTab = tab;
+			}
+			newTabIds[tab.id] = true;
+		});
+
+		this._tabIds = newTabIds;
+
 		if (!selectedTab) {
-			selectedTab = this._tabs.find((tab) => tab.state !== 'removing');
+			selectedTab = this._tabs.find((tab) => tab.getAttribute('data-state') !== 'removing');
 			if (selectedTab) selectedTab.selected = true;
 		}
 		if (selectedTab) {
@@ -787,14 +849,25 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this.#checkTabPanelMatch();
 		this.#setAriaControls();
 
+		const animPromises = [];
+
 		if (!this._initialized && this._tabs.length > 0) {
 			this._initialized = true;
 			await this._updateTabsContainerWidth(selectedTab);
+		} else {
+			if (this._tabs.length > 1) {
+				this._tabs.forEach((tab) => {
+					if (tab.getAttribute('data-state') === 'adding') animPromises.push(this._animateTabAddition(tab));
+				});
+			}
+			this._updateMeasures();
 		}
 
 		if (selectedTab) {
-			this._updateMeasures();
-			this._updateScrollPosition(selectedTab);
+			Promise.all(animPromises).then(() => {
+				this._updateMeasures();
+				this._updateScrollPosition(selectedTab);
+			});
 		}
 	}
 
