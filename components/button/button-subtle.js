@@ -24,8 +24,8 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 			description: { type: String },
 
 			/**
-			 * Aligns the leading edge of text if value is set to "text"
-			 * @type {'text'|''}
+			 * Aligns the leading edge of text if value is set to "text" for left-aligned layouts, the trailing edge of text if value is set to "text-end" for right-aligned layouts
+			 * @type {'text'|'text-end'|''}
 			 */
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
@@ -100,6 +100,9 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 
 				:host([h-align="text"]) button {
 					inset-inline-start: calc(var(--d2l-button-subtle-padding-inline-start) * -1);
+				}
+				:host([h-align="text-end"]) button {
+					inset-inline-end: calc(var(--d2l-button-subtle-padding-inline-end) * -1);
 				}
 
 				/* Firefox includes a hidden border which messes up button dimensions */

@@ -26,8 +26,8 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 			description: { type: String },
 
 			/**
-			 * Aligns the leading edge of text if value is set to "text"
-			 * @type {'text'|''}
+			 * Aligns the leading edge of text if value is set to "text" for left-aligned layouts, the trailing edge of text if value is set to "text-end" for right-aligned layouts
+			 * @type {'text'|'text-end'|''}
 			 */
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
@@ -103,6 +103,9 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 
 				:host([h-align="text"]) button {
 					inset-inline-start: var(--d2l-button-icon-h-align);
+				}
+				:host([h-align="text-end"]) button {
+					inset-inline-end: var(--d2l-button-icon-h-align);
 				}
 
 				/* Firefox includes a hidden border which messes up button dimensions */
