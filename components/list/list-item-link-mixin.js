@@ -77,8 +77,8 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 				display: block;
 				height: 100%;
 				outline: none;
-				width: 100%;
 				text-decoration: none;
+				width: 100%;
 			}
 			:host([action-href]:not([action-href=""])) [slot="control-action"],
 			:host([action-href]:not([action-href=""])) [slot="outside-control-action"] {
