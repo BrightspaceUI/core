@@ -8,7 +8,9 @@ const interactiveElements = {
 	'button': true,
 	'input': true,
 	'select': true,
-	'textarea': true
+	'textarea': true,
+	'd2l-tooltip-help': true,
+	'd2l-button': true
 };
 
 const interactiveRoles = {
@@ -30,12 +32,13 @@ const interactiveRoles = {
 	'treeitem': true
 };
 
-function getIsInteractiveChildClicked(e) {
+function getIsInteractiveChildClicked(e, linkElem) {
 	const composedPath = e.composedPath();
-	const clickedElem = e.target;
 	for (let i = 0; i < composedPath.length; i++) {
 		const elem = composedPath[i];
-		if (elem === clickedElem) {
+		if (!elem.getAttribute) continue;
+
+		if (elem === linkElem) {
 			return false;
 		}
 
@@ -99,7 +102,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 	}
 
 	_handleLinkClick(e) {
-		if (getIsInteractiveChildClicked(e)) {
+		if (getIsInteractiveChildClicked(e, this.shadowRoot.querySelector(`#${this._primaryActionId}`))) {
 			e.preventDefault();
 		} else {
 			/** Dispatched when the item's primary link action is clicked */
@@ -112,7 +115,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		// handle the space key
 		e.preventDefault();
 		e.stopPropagation();
-		this.shadowRoot.querySelector(`#${this._primaryActionId}`).click();
+		e.target.click();
 	}
 
 	_renderPrimaryAction(labelledBy, content) {
