@@ -6,7 +6,6 @@ export const buttonStyles = css`
 	button {
 		border-radius: 0.3rem;
 		border-style: none;
-		box-shadow: 0 0 0 4px rgba(0, 0, 0, 0);
 		box-sizing: border-box;
 		cursor: pointer;
 		display: inline-block;
@@ -23,6 +22,7 @@ export const buttonStyles = css`
 		width: auto;
 	}
 	button:${unsafeCSS(getFocusPseudoClass())} {
-		box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
+		outline: 2px solid var(--d2l-button-focus-color, var(--d2l-color-celestine));
+		outline-offset: var(--d2l-button-focus-offset, 2px);
 	}
 `;

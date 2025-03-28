@@ -1,11 +1,10 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor/visible-on-ancestor-mixin.js';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
@@ -64,7 +63,6 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 					--d2l-button-icon-background-color: transparent;
 					--d2l-button-icon-background-color-hover: var(--d2l-color-gypsum);
 					--d2l-button-icon-border-radius: 0.3rem;
-					--d2l-button-icon-focus-box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 					--d2l-button-icon-min-height: calc(2rem + 2px);
 					--d2l-button-icon-min-width: calc(2rem + 2px);
 					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
@@ -78,14 +76,15 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 				:host([translucent]) {
 					--d2l-button-icon-background-color: rgba(0, 0, 0, 0.5);
 					--d2l-button-icon-background-color-hover: var(--d2l-color-celestine);
-					--d2l-button-icon-focus-box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), inset 0 0 0 4px white;
+					--d2l-button-focus-color: white;
+					--d2l-button-focus-offset: -4px;
 					--d2l-icon-fill-color: white;
 					--d2l-button-icon-fill-color-hover: white;
 				}
 				:host([theme="dark"]) {
 					--d2l-button-icon-background-color: transparent;
 					--d2l-button-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
-					--d2l-button-icon-focus-box-shadow: 0 0 0 2px black, 0 0 0 4px var(--d2l-color-celestine-plus-1);
+					--d2l-button-focus-color: var(--d2l-color-celestine-plus-1);
 					--d2l-icon-fill-color: var(--d2l-color-sylvite);
 					--d2l-button-icon-fill-color-hover: var(--d2l-color-sylvite);
 				}
@@ -118,9 +117,6 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 				:host([active]) button:not([disabled]) {
 					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-tungsten));
 					background-color: var(--d2l-button-icon-background-color-hover);
-				}
-				button:${unsafeCSS(getFocusPseudoClass())} {
-					box-shadow: var(--d2l-button-icon-focus-box-shadow);
 				}
 
 				slot[name="icon"]::slotted(*) {
