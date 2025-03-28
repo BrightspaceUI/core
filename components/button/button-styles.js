@@ -23,6 +23,6 @@ export const buttonStyles = css`
 	}
 	button:${unsafeCSS(getFocusPseudoClass())} {
 		outline: 2px solid var(--d2l-button-focus-color, var(--d2l-color-celestine));
-  		outline-offset: var(--d2l-button-focus-offset, 2px);
+		outline-offset: var(--d2l-button-focus-offset, 2px);
 	}
 `;
