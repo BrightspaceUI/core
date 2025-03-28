@@ -5,7 +5,6 @@ import { bodyCompactStyles, bodyStandardStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A component for communicating important information relating to the state of the system and the user's work flow.
@@ -13,7 +12,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
  * @fires d2l-alert-close - Dispatched when the alert's close button is clicked
  * @fires d2l-alert-button-press - Dispatched when the alert's action button is clicked
  */
-class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
+class Alert extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
@@ -69,33 +68,28 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 
 			.d2l-alert-highlight {
-				border-radius: 0.3rem 0 0 0.3rem;
-				bottom: 0;
-				left: 0;
-				margin: -1px;
-				min-width: 0.3rem;
+				border-inline-start-style: solid;
+				border-inline-start-width: 0.3rem;
+				border-end-start-radius: 0.3rem;
+				border-start-start-radius: 0.3rem;
+				inset-inline-start: -1px;
+				inset-block-end: -1px;
+				inset-block-start: -1px;
 				position: absolute;
-				top: 0;
-				width: 0.3rem;
-			}
-			:host([dir="rtl"]) .d2l-alert-highlight {
-				border-radius: 0 0.3rem 0.3rem 0;
-				left: auto;
-				right: 0;
 			}
 			:host([type="critical"]) .d2l-alert-highlight,
 			:host([type="error"]) .d2l-alert-highlight {
-				background-color: var(--d2l-color-feedback-error);
+				border-color: var(--d2l-color-feedback-error);
 			}
 			:host([type="warning"]) .d2l-alert-highlight {
-				background-color: var(--d2l-color-feedback-warning);
+				border-color: var(--d2l-color-feedback-warning);
 			}
 			:host([type="default"]) .d2l-alert-highlight,
 			:host([type="call-to-action"]) .d2l-alert-highlight {
-				background-color: var(--d2l-color-feedback-action);
+				border-color: var(--d2l-color-feedback-action);
 			}
 			:host([type="success"]) .d2l-alert-highlight {
-				background-color: var(--d2l-color-feedback-success);
+				border-color: var(--d2l-color-feedback-success);
 			}
 
 			.d2l-alert-text {
@@ -104,20 +98,14 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				position: relative;
 			}
 			.d2l-alert-text-with-actions {
-				padding-right: 0.9rem;
+				padding-inline-end: 0.9rem;
 			}
 
-			:host([dir="rtl"]) .d2l-alert-text-with-actions {
-				padding-left: 0.9rem;
-				padding-right: 1.5rem;
-			}
 			:host([no-padding]) .d2l-alert-text,
 			:host([no-padding]) .d2l-alert-text-with-actions {
-				padding: 0 0 0 0.3rem;
-			}
-			:host([dir="rtl"][no-padding]) .d2l-alert-text,
-			:host([dir="rtl"][no-padding]) .d2l-alert-text-with-actions {
-				padding: 0 0.3rem 0 0;
+				padding-block: 0;
+				padding-inline-end: 0;
+				padding-inline-start: 0.3rem;
 			}
 
 			.d2l-alert-subtext {
@@ -125,11 +113,9 @@ class Alert extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 
 			.d2l-alert-action {
-				margin: 0.6rem 0.6rem 0.6rem 0;
-			}
-			:host([dir="rtl"]) .d2l-alert-action {
-				margin-left: 0.6rem;
-				margin-right: 0;
+				margin-block: 0.6rem;
+				margin-inline-end: 0.6rem;
+				margin-inline-start: 0;
 			}
 			:host([no-padding]) .d2l-alert-action {
 				margin: 0;
