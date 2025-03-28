@@ -336,10 +336,8 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		this.#addRepositionHandlers();
 
-		setTimeout(() => {
-			/** @ignore */
-			this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
-		});
+		/** @ignore */
+		this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
 
 	}
 
