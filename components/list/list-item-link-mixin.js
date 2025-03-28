@@ -3,6 +3,58 @@ import { css, html } from 'lit';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ListItemMixin } from './list-item-mixin.js';
 
+const interactiveElements = {
+	// 'a' only if an href is present
+	'button': true,
+	'input': true,
+	'select': true,
+	'textarea': true,
+	'd2l-tooltip-help': true,
+	'd2l-button': true
+};
+
+const interactiveRoles = {
+	'button': true,
+	'checkbox': true,
+	'combobox': true,
+	'link': true,
+	'listbox': true,
+	'menuitem': true,
+	'menuitemcheckbox': true,
+	'menuitemradio': true,
+	'option': true,
+	'radio': true,
+	'slider': true,
+	'spinbutton': true,
+	'switch': true,
+	'tab:': true,
+	'textbox': true,
+	'treeitem': true
+};
+
+function getIsInteractiveChildClicked(e, linkElem) {
+	const composedPath = e.composedPath();
+	for (let i = 0; i < composedPath.length; i++) {
+		const elem = composedPath[i];
+		if (!elem.getAttribute) continue;
+
+		if (elem === linkElem) {
+			return false;
+		}
+
+		const nodeName = elem.nodeName.toLowerCase();
+		if (interactiveElements[nodeName] || (nodeName === 'a' && elem.hasAttribute('href'))) {
+			return true;
+		}
+
+		const role = (elem.getAttribute('role') || '');
+		if (interactiveRoles[role]) {
+			return true;
+		}
+	}
+	return false;
+}
+
 export const ListItemLinkMixin = superclass => class extends ListItemMixin(superclass) {
 
 	static get properties() {
@@ -25,12 +77,8 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 				display: block;
 				height: 100%;
 				outline: none;
+				text-decoration: none;
 				width: 100%;
-			}
-			:host([action-href]:not([action-href=""])) [slot="content"],
-			:host(:not([no-primary-action])) [slot="control-action"] ~ [slot="content"],
-			:host(:not([no-primary-action])) [slot="outside-control-action"] ~ [slot="content"] {
-				pointer-events: none;
 			}
 			:host([action-href]:not([action-href=""])) [slot="control-action"],
 			:host([action-href]:not([action-href=""])) [slot="outside-control-action"] {
@@ -53,9 +101,13 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		if (changedProperties.has('actionHref') && !this.actionHref) this._hoveringPrimaryAction = false;
 	}
 
-	_handleLinkClick() {
-		/** Dispatched when the item's primary link action is clicked */
-		this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
+	_handleLinkClick(e) {
+		if (getIsInteractiveChildClicked(e, this.shadowRoot.querySelector(`#${this._primaryActionId}`))) {
+			e.preventDefault();
+		} else {
+			/** Dispatched when the item's primary link action is clicked */
+			this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
+		}
 	}
 
 	_handleLinkKeyDown(e) {
@@ -63,16 +115,16 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		// handle the space key
 		e.preventDefault();
 		e.stopPropagation();
-		this.shadowRoot.querySelector(`#${this._primaryActionId}`).click();
+		e.target.click();
 	}
 
-	_renderPrimaryAction(labelledBy) {
+	_renderPrimaryAction(labelledBy, content) {
 		if (!this.actionHref) return;
 		return html`<a aria-labelledby="${labelledBy}"
 			@click="${this._handleLinkClick}"
 			href="${this.actionHref}"
 			id="${this._primaryActionId}"
-			@keydown="${this._handleLinkKeyDown}"></a>`;
+			@keydown="${this._handleLinkKeyDown}">${content}</a>`;
 	}
 
 };

@@ -154,7 +154,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			}
 
 			::slotted([slot="content-action"]) {
-				grid-column: content-start / end;
+				grid-column: content-start / content-end;
 			}
 
 			:host([no-primary-action]) ::slotted([slot="content-action"]) {
