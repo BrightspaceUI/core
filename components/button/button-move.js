@@ -93,7 +93,6 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 				:host {
 					--d2l-button-move-background-color-focus: #ffffff;
 					--d2l-button-move-icon-background-color-hover: var(--d2l-color-mica);
-					--d2l-button-move-box-shadow-focus: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 					--d2l-icon-fill-color: var(--d2l-color-tungsten);
 					display: inline-block;
 					line-height: 0;
@@ -104,7 +103,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 				:host([theme="dark"]) {
 					--d2l-button-move-background-color-focus: #000000;
 					--d2l-button-move-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
-					--d2l-button-move-box-shadow-focus: 0 0 0 2px black, 0 0 0 4px var(--d2l-color-celestine-plus-1);
+					--d2l-button-focus-color: var(--d2l-color-celestine-plus-1);
 					--d2l-icon-fill-color: var(--d2l-color-sylvite);
 				}
 				button {
@@ -129,9 +128,6 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 				button:hover > d2l-icon,
 				button:focus > d2l-icon {
 					background-color: var(--d2l-button-move-icon-background-color-hover);
-				}
-				button:${unsafeCSS(getFocusPseudoClass())} {
-					box-shadow: var(--d2l-button-move-box-shadow-focus);
 				}
 				.up-icon {
 					border-top-left-radius: 0.3rem;
