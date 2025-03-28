@@ -61,6 +61,16 @@ class HtmlBlockMathRenderer {
 			elm.style.height = '0.5rem';
 		});
 
+		// WIRIS outputs bad syntax for empty sub/superscripts, but changing these on write
+		// can be risky. Instead, change them on render to minimize potential damage if this
+		// impacts legitimate usages.
+		if (context.replaceNoneSubSuperScripts) {
+			elem.querySelectorAll('math mmultiscripts > none').forEach(elm => {
+				const mrow = document.createElementNS('http://www.w3.org/1998/Math/MathML', 'mrow');
+				elm.replaceWith(mrow);
+			});
+		}
+
 		// If we're using deferred rendering, we need to create a document structure
 		// within the element so MathJax can appropriately process math.
 		if (!options.noDeferredRendering) elem.innerHTML = `<mjx-doc><mjx-head></mjx-head><mjx-body>${elem.innerHTML}</mjx-body></mjx-doc>`;
