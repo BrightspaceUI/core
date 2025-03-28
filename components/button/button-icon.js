@@ -66,7 +66,6 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 					--d2l-button-icon-min-height: calc(2rem + 2px);
 					--d2l-button-icon-min-width: calc(2rem + 2px);
 					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
-					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color, var(--d2l-color-tungsten));
 					display: inline-block;
 					line-height: 0;
 				}
@@ -78,14 +77,14 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 					--d2l-button-icon-background-color-hover: var(--d2l-color-celestine);
 					--d2l-button-focus-color: white;
 					--d2l-button-focus-offset: -4px;
-					--d2l-icon-fill-color: white;
+					--d2l-button-icon-fill-color: white;
 					--d2l-button-icon-fill-color-hover: white;
 				}
 				:host([theme="dark"]) {
 					--d2l-button-icon-background-color: transparent;
 					--d2l-button-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
 					--d2l-button-focus-color: var(--d2l-color-celestine-plus-1);
-					--d2l-icon-fill-color: var(--d2l-color-sylvite);
+					--d2l-button-icon-fill-color: var(--d2l-color-sylvite);
 					--d2l-button-icon-fill-color-hover: var(--d2l-color-sylvite);
 				}
 
@@ -115,7 +114,7 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 				button:hover:not([disabled]),
 				button:focus:not([disabled]),
 				:host([active]) button:not([disabled]) {
-					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-tungsten));
+					--d2l-button-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-tungsten));
 					background-color: var(--d2l-button-icon-background-color-hover);
 				}
 
@@ -128,6 +127,7 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 
 				d2l-icon,
 				slot[name="icon"]::slotted(d2l-icon-custom) {
+					color: var(--d2l-button-icon-fill-color, var(--d2l-color-tungsten));
 					height: 0.9rem;
 					width: 0.9rem;
 				}
