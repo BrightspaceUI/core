@@ -25,4 +25,9 @@ export const buttonStyles = css`
 		outline: 2px solid var(--d2l-button-focus-color, var(--d2l-color-celestine));
 		outline-offset: var(--d2l-button-focus-offset, 2px);
 	}
+	@media (prefers-contrast: more) {
+		button {
+			border: 2px solid transparent;
+		}
+	}
 `;
