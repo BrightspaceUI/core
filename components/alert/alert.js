@@ -54,6 +54,7 @@ class Alert extends LocalizeCoreElement(LitElement) {
 				animation: 600ms ease drop-in;
 				background: white;
 				border: 1px solid var(--d2l-color-mica);
+				border-inline-start-width: 0.3rem;
 				border-radius: 0.3rem;
 				box-sizing: border-box;
 				display: flex;
@@ -67,29 +68,19 @@ class Alert extends LocalizeCoreElement(LitElement) {
 				display: none;
 			}
 
-			.d2l-alert-highlight {
-				border-inline-start-style: solid;
-				border-inline-start-width: 0.3rem;
-				border-start-start-radius: 0.3rem;
-				border-end-start-radius: 0.3rem;
-				inset-inline-start: -1px;
-				position: absolute;
-				inset-block-end: -1px;
-				inset-block-start: -1px;
+			:host([type="critical"]),
+			:host([type="error"]) {
+				border-inline-start-color: var(--d2l-color-feedback-error);
 			}
-			:host([type="critical"]) .d2l-alert-highlight,
-			:host([type="error"]) .d2l-alert-highlight {
-				border-color: var(--d2l-color-feedback-error);
+			:host([type="warning"]) {
+				border-inline-start-color: var(--d2l-color-feedback-warning);
 			}
-			:host([type="warning"]) .d2l-alert-highlight {
-				border-color: var(--d2l-color-feedback-warning);
+			:host([type="default"]),
+			:host([type="call-to-action"]) {
+				border-inline-start-color: var(--d2l-color-feedback-action);
 			}
-			:host([type="default"]) .d2l-alert-highlight,
-			:host([type="call-to-action"]) .d2l-alert-highlight {
-				border-color: var(--d2l-color-feedback-action);
-			}
-			:host([type="success"]) .d2l-alert-highlight {
-				border-color: var(--d2l-color-feedback-success);
+			:host([type="success"]) {
+				border-inline-start-color: var(--d2l-color-feedback-success);
 			}
 
 			.d2l-alert-text {
@@ -166,7 +157,6 @@ class Alert extends LocalizeCoreElement(LitElement) {
 		};
 
 		return html`
-			<div class="d2l-alert-highlight"></div>
 			<div class="${classMap(alertTextClasses)}">
 				<slot></slot>
 				${this.subtext ? html`<p class="d2l-body-compact d2l-alert-subtext">${this.subtext}</p>` : null}
