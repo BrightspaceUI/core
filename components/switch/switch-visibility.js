@@ -81,7 +81,8 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 				class="${classMap(tooltipHelpClasses)}" 
 				id="conditions-help" 
 				inherit-font-style
-				text="${this.localize('components.switch.conditions')}">
+				text="${this.localize('components.switch.conditions')}"
+				@click="${this._handleTooltipClick}">
 				<slot @slotchange="${this._handleConditionsSlotChange}"></slot>
 			</d2l-tooltip-help>
 			`;
@@ -92,6 +93,10 @@ class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 	_handleConditionsSlotChange(e) {
 		const nodes = e.target.assignedNodes({ flatten: true });
 		this._hasConditions = !!nodes[0]?.textContent?.trim();
+	}
+
+	_handleTooltipClick(e) {
+		e.stopPropagation();
 	}
 }
 
