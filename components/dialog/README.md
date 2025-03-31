@@ -264,7 +264,7 @@ The `until` directive can be used for manging the rendering of dialog content wh
 
 Notes on this example:
 - Dialog sizing: `this.resolveLoadingComplete` (part of `LoadingCompleteMixin`) on image load triggers the dialog resize
-- Focus management: focus will go to the first footer button by default. If focus should instead go to a focusable element in the content then that would need to be specified.
+- Focus management: focus will go to the first footer button by default. If focus should instead go to a focusable element in the content then that would need to be specified, often by using `.focus()` on the other focusable element.
 
 <!-- docs: demo code autoSize:false size:xlarge -->
 ```html
