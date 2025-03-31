@@ -8,6 +8,7 @@ const fixtureWithValue = '<d2l-input-time value="11:22:33" label="label text"></
 const hourLongIntervals = '<d2l-input-time label="label text" time-interval="sixty"></d2l-input-time>';
 const hourLongIntervalsEnforced = '<d2l-input-time label="label text" time-interval="sixty" enforce-time-intervals></d2l-input-time>';
 const labelHiddenFixture = '<d2l-input-time label="label text" label-hidden time-interval="sixty"></d2l-input-time>';
+const tzHiddenFixture = '<d2l-input-time label="label text" timezone-hidden time-interval="sixty"></d2l-input-time>';
 
 function dispatchEvent(elem, eventType, composed) {
 	const e = new Event(
@@ -61,6 +62,19 @@ describe('d2l-input-time', () => {
 		it('should create offscreen label when label-hidden', async() => {
 			const elem = await fixture(labelHiddenFixture);
 			expect(elem.shadowRoot.querySelector('.d2l-offscreen').innerText).to.equal('label text');
+		});
+	});
+
+	describe('hiding timezone', () => {
+
+		it('should display timezone by default', async() => {
+			const elem = await fixture(basicFixture);
+			expect(elem.shadowRoot.querySelector('.d2l-input-time-timezone')).to.not.be.null;
+		});
+
+		it('should hide timezone when timezon-hidden', async() => {
+			const elem = await fixture(tzHiddenFixture);
+			expect(elem.shadowRoot.querySelector('.d2l-input-time-timezone')).to.be.null;
 		});
 	});
 
