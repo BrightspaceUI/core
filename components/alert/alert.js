@@ -85,7 +85,9 @@ class Alert extends LocalizeCoreElement(LitElement) {
 
 			.d2l-alert-text {
 				flex: 1;
-				padding: 0.9rem 1.5rem;
+				padding-block: 0.9rem;
+				padding-inline-end: 1.5rem;
+				padding-inline-start: 1.2rem;
 				position: relative;
 			}
 			.d2l-alert-text-with-actions {
@@ -96,7 +98,7 @@ class Alert extends LocalizeCoreElement(LitElement) {
 			:host([no-padding]) .d2l-alert-text-with-actions {
 				padding-block: 0;
 				padding-inline-end: 0;
-				padding-inline-start: 0.3rem;
+				padding-inline-start: 0;
 			}
 
 			.d2l-alert-subtext {
