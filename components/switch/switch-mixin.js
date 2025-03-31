@@ -201,7 +201,8 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			<div
 				@click="${this._handleClick}"
 				@mouseenter="${this._handleSwitchHover}"
-				@mouseleave="${this._handleSwitchHoverLeave}">${textPosition === 'start' ? switchLabel : ''}
+				@mouseleave="${this._handleSwitchHoverLeave}">
+				${textPosition === 'start' ? switchLabel : ''}
 				<div
 					aria-checked="${this.on ? 'true' : 'false'}"
 					aria-label="${ifDefined(textPosition === 'hidden' ? this.text : undefined)}"
