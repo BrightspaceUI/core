@@ -137,6 +137,7 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 | `labelled-by` | String | HTML id of an element in the same shadow root which acts as the input's label |
 | `opened` | Boolean | Indicates if the dropdown is open |
 | `required` | Boolean | Indicates that a value is required |
+| `timezone-hidden` | Boolean | Hides the timezone inside the selection dropdown. Should only be used when the input uses a different timezone than the document's settings |
 | `time-interval` | String, default: `thirty` | Number of minutes between times shown in dropdown. Valid values include `five`, `ten`, `fifteen`, `twenty`, `thirty`, and `sixty`. |
 | `value` | String, default `''` | Value of the input. This should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable). |
 
@@ -276,7 +277,7 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 
 ## Accessibility
 
-The date and time components generally follow the W3C's best practice recommendations for a [Date picker dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/). For details on the accessibility of the calendar within the date input components, see [Calendar Accessibility](../calendar#accessibility). 
+The date and time components generally follow the W3C's best practice recommendations for a [Date picker dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/). For details on the accessibility of the calendar within the date input components, see [Calendar Accessibility](../calendar#accessibility).
 
 A few notable accessibility-related features of these components are:
 
