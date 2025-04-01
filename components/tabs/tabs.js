@@ -407,7 +407,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	#updateAriaControlsRequested;
 
 	_animateTabAddition(tab) {
-		if (!tab || reduceMotion) return Promise.resolve();
+		if (!tab || reduceMotion) {
+			return new Promise((resolve) => {
+				tab.setAttribute('data-state', '');
+				this.requestUpdate();
+				resolve();
+			});
+		}
 
 		return new Promise((resolve) => {
 			const handleTransitionEnd = (e) => {
