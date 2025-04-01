@@ -2,9 +2,9 @@ import { emptyStateIllustratedStyles, emptyStateStyles } from './empty-state-sty
 import { html, LitElement, nothing } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { EmptyStateMixin } from './empty-state-mixin.js';
 import { LoadingCompleteMixin } from '../../mixins/loading-complete/loading-complete-mixin.js';
 import { loadSvg } from '../../generated/empty-state/presetIllustrationLoader.js';
-import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { runAsync } from '../../directives/run-async/run-async.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -17,7 +17,7 @@ const illustrationAspectRatio = 500 / 330;
  * @slot - Slot for empty state actions
  * @slot illustration - Slot for custom SVG content if `illustration-name` property is not set
  */
-class EmptyStateIllustrated extends LoadingCompleteMixin(PropertyRequiredMixin(LitElement)) {
+class EmptyStateIllustrated extends LoadingCompleteMixin(EmptyStateMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -74,7 +74,7 @@ class EmptyStateIllustrated extends LoadingCompleteMixin(PropertyRequiredMixin(L
 		return html`
 			${this.#renderIllustration()}
 			<p class="${classMap(titleClass)}">${this.titleText}</p>
-			<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
+			<p class="d2l-body-compact d2l-empty-state-description" tabindex="-1">${this.description}</p>
 			<slot class="action-slot"></slot>
 		`;
 	}
