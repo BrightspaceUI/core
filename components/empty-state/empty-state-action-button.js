@@ -1,6 +1,7 @@
 import '../button/button.js';
 import '../button/button-subtle.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
@@ -9,7 +10,7 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
  * @fires d2l-empty-state-action - Dispatched when the action button is clicked
  * @fires d2l-empty-state-illustrated-check - Internal event
  */
-class EmptyStateActionButton extends PropertyRequiredMixin(LitElement) {
+class EmptyStateActionButton extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -38,6 +39,10 @@ class EmptyStateActionButton extends PropertyRequiredMixin(LitElement) {
 	constructor() {
 		super();
 		this._illustrated = false;
+	}
+
+	static get focusElementSelector() {
+		return '.d2l-empty-state-action';
 	}
 
 	connectedCallback() {

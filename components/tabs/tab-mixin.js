@@ -13,7 +13,8 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		return {
 			selected: { type: Boolean, reflect: true },
 			// eslint-disable-next-line lit/no-native-attributes
-			role: { type: String, reflect: true }
+			role: { type: String, reflect: true },
+			tabIndex: { type: Number, reflect: true, attribute: 'tabindex' }
 		};
 	}
 
@@ -26,6 +27,12 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				outline: none;
 				position: relative;
 				vertical-align: middle;
+			}
+			.d2l-tab-content {
+				margin: 0.5rem;
+			}
+			:host(:first-child) .d2l-tab-content {
+				margin-inline-start: 0;
 			}
 			.d2l-tab-selected-indicator {
 				border-top: 4px solid var(--d2l-color-celestine);
@@ -42,20 +49,24 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				margin-inline-start: 0;
 				width: calc(100% - 0.6rem);
 			}
-			:host([aria-selected="true"]:focus) {
+			:host([selected]:focus) {
 				text-decoration: none;
 			}
 			:host(:hover) {
 				color: var(--d2l-color-celestine);
 				cursor: pointer;
 			}
-			:host([aria-selected="true"]:hover) {
+			:host([selected]:hover) {
 				color: inherit;
 				cursor: default;
 			}
-			:host([aria-selected="true"]) .d2l-tab-selected-indicator {
+			:host([selected]) .d2l-tab-selected-indicator {
 				display: block;
 			}
+			:host([skeleton]) .d2l-tab-selected-indicator {
+				position: absolute !important; /* make sure skeleton styles do not override this */
+			}
+
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -66,6 +77,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		super();
 		this.role = 'tab';
 		this.selected = false;
+		this.tabIndex = -1;
 	}
 
 	connectedCallback() {
@@ -92,7 +104,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	render() {
 		return html`
-			${this.renderContent()}
+			<div class="d2l-skeletize d2l-tab-content">${this.renderContent()}</div>
 			<div class="d2l-tab-selected-indicator d2l-skeletize-container"></div>
 		`;
 	}
@@ -101,13 +113,23 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		super.update(changedProperties);
 
 		if (changedProperties.has('selected')) {
-			this.ariaSelected = this.selected;
+			this.ariaSelected = `${this.selected}`;
 			if (this.selected) {
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tab-selected', { bubbles: true, composed: true }
 				));
 			}
 		}
+	}
+
+	/**
+	 * IMPORTANT: Call this in any consumer when anything changes that could impact the tab's size
+	 * Notifies the parent d2l-tabs component of a change so that it can update virtual scrolling calculations
+	 * */
+	dispatchContentChangeEvent() {
+		this.dispatchEvent(new CustomEvent(
+			'd2l-tab-content-change', { bubbles: true, composed: true }
+		));
 	}
 
 	renderContent() {

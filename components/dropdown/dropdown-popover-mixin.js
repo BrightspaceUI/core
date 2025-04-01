@@ -347,8 +347,10 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 			this.#contentElement.scrollTop ??= 0;
 		}
 
-		/** Dispatched when the dropdown is opened */
-		this.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
+		setTimeout(() => {
+			/** Dispatched when the dropdown is opened */
+			this.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
+		});
 	}
 
 	#handlePopoverPosition() {
