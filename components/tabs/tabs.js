@@ -407,13 +407,15 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	#updateAriaControlsRequested;
 
 	_animateTabAddition(tab) {
+		if (!tab || reduceMotion) return Promise.resolve();
+
 		return new Promise((resolve) => {
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'max-width') return;
-				if (tab) tab.removeEventListener('transitionend', handleTransitionEnd);
+				tab.removeEventListener('transitionend', handleTransitionEnd);
 				resolve();
 			};
-			if (tab) tab.addEventListener('transitionend', handleTransitionEnd);
+			tab.addEventListener('transitionend', handleTransitionEnd);
 			tab.setAttribute('data-state', '');
 			this.requestUpdate();
 		});
@@ -423,27 +425,31 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	_animateTabAdditionDefaultSlotBehavior(tabInfo) {
 		const tab = this.shadowRoot
 			&& this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
+		if (!tab) Promise.resolve();
+
 		return new Promise((resolve) => {
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'max-width') return;
-				if (tab) tab.removeEventListener('transitionend', handleTransitionEnd);
+				tab.removeEventListener('transitionend', handleTransitionEnd);
 				resolve();
 			};
-			if (tab) tab.addEventListener('transitionend', handleTransitionEnd);
+			tab.addEventListener('transitionend', handleTransitionEnd);
 			tabInfo.state = '';
 			this.requestUpdate();
 		});
 	}
 
 	_animateTabRemoval(tab) {
+		if (!tab || reduceMotion) return Promise.resolve();
+
 		return new Promise((resolve) => {
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'max-width') return;
-				if (tab) tab.removeEventListener('transitionend', handleTransitionEnd);
+				tab.removeEventListener('transitionend', handleTransitionEnd);
 				this.requestUpdate();
 				resolve();
 			};
-			if (tab) tab.addEventListener('transitionend', handleTransitionEnd);
+			tab.addEventListener('transitionend', handleTransitionEnd);
 		});
 	}
 
@@ -451,15 +457,17 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	_animateTabRemovalDefaultSlotBehavior(tabInfo) {
 		const tab = this.shadowRoot &&
 			this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
+		if (!tab) Promise.resolve();
+
 		return new Promise((resolve) => {
 			const handleTransitionEnd = (e) => {
 				if (e.propertyName !== 'max-width') return;
-				if (tab) tab.removeEventListener('transitionend', handleTransitionEnd);
+				tab.removeEventListener('transitionend', handleTransitionEnd);
 				this._tabInfos.splice(this._tabInfos.findIndex(info => info.id === tabInfo.id), 1);
 				this.requestUpdate();
 				resolve();
 			};
-			if (tab) tab.addEventListener('transitionend', handleTransitionEnd);
+			tab.addEventListener('transitionend', handleTransitionEnd);
 		});
 	}
 
