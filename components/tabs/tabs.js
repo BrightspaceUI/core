@@ -169,14 +169,14 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				transition: margin-top 200ms ease-out;
 			}
 
-			d2l-tab-internal, ::slotted(d2l-tab) {
+			d2l-tab-internal, ::slotted([role="tab"]) {
 				-webkit-transition: max-width 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
 				transition: max-width 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
 			}
 			d2l-tab-internal[data-state="adding"],
 			d2l-tab-internal[data-state="removing"],
-			::slotted(d2l-tab[data-state="adding"]),
-			::slotted(d2l-tab[data-state="removing"]) {
+			::slotted([role="tab"][data-state="adding"]),
+			::slotted([role="tab"][data-state="removing"]) {
 				max-width: 0;
 				opacity: 0;
 				transform: translateY(20px);
@@ -200,7 +200,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 					-webkit-transition: none;
 					transition: none;
 				}
-				d2l-tab-internal, ::slotted(d2l-tab) {
+				d2l-tab-internal, ::slotted([role="tab"]) {
 					-webkit-transition: none;
 					transition: none;
 				}
