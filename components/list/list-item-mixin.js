@@ -92,7 +92,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_showAddButton: { type: Boolean, attribute: '_show-add-button', reflect: true },
-			_siblingHasColor: { state: true },
+			_siblingHasColor: { state: true }
 		};
 	}
 
@@ -336,6 +336,13 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_hovering-primary-action]) [slot="outside-control-container"],
 			:host([_hovering-selection]) [slot="outside-control-container"] {
 				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+			}
+			:host([current="page"]) [slot="outside-control-container"] {
+				margin-block: 1px;
+				outline: 3px solid var(--d2l-button-focus-color, var(--d2l-color-celestine));
+			}
+			:host([current="page"]) [slot="control-container"]::after {
+				border-color: transparent;
 			}
 			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"] {
 				background-color: #f3fbff;
@@ -679,7 +686,19 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		};
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
-		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
+
+		const contentAreaContent = html`
+			<div slot="content"
+				class="d2l-list-item-content"
+				id="${this._contentId}"
+				@mouseenter="${this._onMouseEnter}"
+				@mouseleave="${this._onMouseLeave}">
+				<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
+				<slot>${content}</slot>
+			</div>
+		`;
+
+		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId, contentAreaContent) : null);
 		let tooltipForId = null;
 		if (this._showAddButton) {
 			tooltipForId = this._addButtonTopId;
@@ -741,15 +760,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					@mouseenter="${this._onMouseEnterPrimaryAction}"
 					@mouseleave="${this._onMouseLeavePrimaryAction}">
 						${primaryAction}
-				</div>` : nothing}
-				<div slot="content"
-					class="d2l-list-item-content"
-					id="${this._contentId}"
-					@mouseenter="${this._onMouseEnter}"
-					@mouseleave="${this._onMouseLeave}">
-					<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
-					<slot>${content}</slot>
-				</div>
+				</div>` : contentAreaContent}
 				<div slot="actions"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}"
