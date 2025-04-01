@@ -397,16 +397,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return this.shadowRoot.querySelector('.d2l-tabs-container-list').getBoundingClientRect();
 	}
 
-	removeTab(tab) {
+	hideTab(tab) {
 		tab.setAttribute('data-state', 'removing');
-		Promise.resolve(this._animateTabRemoval(tab)).then(async() => {
-			const tabId = tab.id;
-			tab.remove();
-			this._tabIds[tabId] = false;
-
-			const panel = this._getPanel(tabId);
-			panel?.remove();
-		});
+		return (Object.keys(this._tabIds).length > 1 && !reduceMotion) ? this._animateTabRemoval(tab) : Promise.resolve();
 	}
 
 	#checkTabPanelMatchRequested;
@@ -1208,6 +1201,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		selectedTab.tabIndex = 0;
 
 		await this.updateComplete;
+
+		selectedTab.selected = true;
+		selectedTab.tabIndex = 0;
 
 		const selectedPanel = this._getPanel(selectedTab.id);
 		if (selectedPanel) selectedPanel.selected = true;

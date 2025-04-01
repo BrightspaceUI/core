@@ -172,15 +172,30 @@
 					if (tabElems.length === 0) return;
 
 					const tab = tabElems.length === 1 ? tabElems[0] : tabElems[1];
-					tabs.removeTab(tab);
+					Promise.resolve(tabs.hideTab((tab))).then(() => {
+						const panel = tabs.querySelector(`d2l-tab-panel[labelled-by="${tab.id}"]`);
+						if (panel) tabs.removeChild(panel);
+						tabs.removeChild(tab);
+					});
 				};
 				const removeTabs = (tabs) => {
 					const tabElems = [...tabs.querySelectorAll('d2l-tab')];
 					if (tabElems.length === 0) return;
-					else if (tabElems.length === 1) tabs.removeTab(tabs[0]);
+					else if (tabElems.length === 1) removeTab(tabs);
 					else {
-						tabs.removeTab(tabElems[1]);
-						tabs.removeTab(tabElems[0]);
+						const tab1 = tabElems[0];
+						const tab2 = tabElems[1];
+						const animPromises = [];
+						animPromises.push(tabs.hideTab(tab1));
+						animPromises.push(tabs.hideTab(tab2));
+						Promise.all(animPromises).then(() => {
+							const panel1 = tabs.querySelector(`d2l-tab-panel[labelled-by="${tab1.id}"]`);
+							const panel2 = tabs.querySelector(`d2l-tab-panel[labelled-by="${tab2.id}"]`);
+							if (panel1) tabs.removeChild(panel1);
+							if (panel2) tabs.removeChild(panel2);
+							tabs.removeChild(tab1);
+							tabs.removeChild(tab2);
+						});
 					}
 				};
 
