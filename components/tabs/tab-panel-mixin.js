@@ -9,7 +9,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 			 * Id of the tab that labels this panel
 			 * @type {string}
 			 */
-			labelledBy: { type: String, attribute: 'labelled-by' },
+			labelledBy: { type: String, attribute: 'labelled-by', reflect: true },
 			/**
 			 * Opt out of default padding/whitespace around the panel
 			 * @type {boolean}
