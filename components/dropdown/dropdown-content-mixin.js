@@ -351,7 +351,6 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				if (isNaN(newVerticalOffset)) {
 					newVerticalOffset = defaultVerticalOffset;
 				}
-				this.style.setProperty('--d2l-dropdown-verticaloffset', `${newVerticalOffset}px`);
 				this._verticalOffset = newVerticalOffset;
 			}
 		});
