@@ -97,6 +97,9 @@ class OverflowGroup extends OverflowGroupMixin(LitElement) {
 			::slotted(d2l-selection-action-dropdown) {
 				margin-inline-end: 0.2rem;
 			}
+			::slotted(*:last-child) {
+				margin-inline-end: 0;
+			}
 		`];
 	}
 
