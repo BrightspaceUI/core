@@ -14,7 +14,7 @@ The `d2l-expand-collapse-content` element can be used to create expandable and c
   button.addEventListener('click', () => {
     const section = document.querySelector('d2l-expand-collapse-content');
     section.expanded = !section.expanded;
-    button.setAttribute('aria-expanded', section.expanded ? 'true' : 'false');
+    button.setAttribute('control-expanded', section.expanded ? 'true' : 'false');
   });
 </script>
 <d2l-button primary>Toggle</d2l-button>

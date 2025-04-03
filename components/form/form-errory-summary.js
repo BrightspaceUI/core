@@ -71,7 +71,7 @@ class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				<div class="d2l-form-error-summary-header" @click=${this._toggleExpandCollapse}>
 					<div class="d2l-form-error-summary-text">${this.localize('components.form-error-summary.errorSummary', { count: this.errors.length })}</div>
 					<d2l-button-icon
-						aria-expanded=${this._expanded ? 'true' : 'false'}
+						control-expanded=${this._expanded ? 'true' : 'false'}
 						icon=${this._expanded ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small' }
 						text="${this.localize('components.form-error-summary.text')}"
 						@click=${this._toggleExpandCollapse}>

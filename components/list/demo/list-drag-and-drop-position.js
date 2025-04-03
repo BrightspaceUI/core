@@ -71,6 +71,7 @@ class ListDemoDragAndDropPosition extends LitElement {
 		return html`
 			<d2l-list
 				?grid="${this.grid}"
+				@d2l-list-items-move="${e => console.log(e)}"
 				@d2l-list-item-position-change="${this._moveItems}"
 				?add-button="${this.addButton}"
 				add-button-text="${ifDefined(addButtonText)}">

@@ -241,7 +241,7 @@ Daylight buttons rely on standard button semantics to ensure a smooth experience
 * If the button's context is implied by visual layout, then `description` can be used to add missing context
   * Example: if multiple page sections have an Edit button relying on visual layout to indicate which section it edits, there could be extra information in the `description` to help differentiate the Edit buttons for non-sighted users
 
-* If expanding other content in a dropdown, use the [Dropdown](../../components/dropdown) component; if building custom expand/collapse behaviour, be sure to use [`aria-expanded`](https://www.w3.org/TR/wai-aria/states_and_properties#aria-expanded) and [`aria-haspopup`](https://www.w3.org/TR/wai-aria/states_and_properties#aria-haspopup) attributes in accordance with best practices.
+* If expanding other content in a dropdown, use the [Dropdown](../../components/dropdown) component; if building custom expand/collapse behaviour, be sure to use [`control-expanded`](https://www.w3.org/TR/wai-aria/states_and_properties#aria-expanded) and [`aria-haspopup`](https://www.w3.org/TR/wai-aria/states_and_properties#aria-haspopup) attributes in accordance with best practices.
 
 * Disabled buttons are normally not focusable as per web standards, but if the disabled state needs explaining you can use `disabled-tooltip` to provide an explanation that appears in a [tooltip](../../components/tooltip) via [aria-describedby](https://www.w3.org/TR/wai-aria/states_and_properties#aria-describedby)
 
