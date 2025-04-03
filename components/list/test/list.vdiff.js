@@ -380,11 +380,21 @@ describe('list', () => {
 
 	describe('controls', () => {
 		function createListWithControls(opts) {
-			const { color2, selectable, selected, selectAllPages } = { selectable: true, selected: [false, false], selectAllPages: false, ...opts };
+			const { actions, color2, extendSeparators, selectable, selected, selectAllPages } = {
+				actions: false,
+				extendSeparators: false,
+				selectable: true,
+				selected: [false, false],
+				selectAllPages: false,
+				...opts
+			};
 			return html`
-				<d2l-list item-count="${ifDefined(selectAllPages ? '50' : undefined)}" style="width: 400px;">
+				<d2l-list item-count="${ifDefined(selectAllPages ? '50' : undefined)}" ?extend-separators="${extendSeparators}" style="width: 400px;">
 					<d2l-list-controls slot="controls" ?no-selection="${!selectable}" ?select-all-pages-allowed="${selectAllPages}" no-sticky>
-						${selectable ? nothing : html`<d2l-button-subtle text="Action"></d2l-button-subtle>`}
+						${actions ? html`
+							<d2l-selection-action text="Delete" icon="tier1:delete"></d2l-selection-action>
+							<d2l-selection-action text="Edit" icon="tier1:edit"></d2l-selection-action>
+						` : nothing}
 					</d2l-list-controls>
 					<d2l-list-item label="Item 1" key="1" ?selectable="${selectable}" ?selected="${selected[0]}">Item 1</d2l-list-item>
 					<d2l-list-item label="Item 2" key="2" color="${ifDefined(color2)}" ?selection-disabled="${selectable}" ?selectable="${selectable}" ?selected="${selected[1]}">Item 2</d2l-list-item>
@@ -393,11 +403,16 @@ describe('list', () => {
 		}
 
 		[
-			{ name: 'not selectable', template: createListWithControls({ selectable: false }) },
+			{ name: 'not selectable actions', template: createListWithControls({ actions: true, selectable: false }) },
 			{ name: 'none selected', template: createListWithControls() },
 			{ name: 'some selected', template: createListWithControls({ color2: '#00ff00', selected: [true, false] }), margin: 24 },
 			{ name: 'all selected', template: createListWithControls({ selected: [true, true] }), margin: 24 },
 			{ name: 'all selected pages', template: createListWithControls({ selectAllPages: true, selected: [true, true] }), margin: 24 },
+			{ name: 'selectable actions', template: createListWithControls({ actions: true, selectable: true }) },
+			{ name: 'selectable actions color', template: createListWithControls({ actions: true, color2: '#00ff00', selectable: true }) },
+			{ name: 'selectable no-actions', template: createListWithControls({ selectable: true }) },
+			{ name: 'selectable actions extend', template: createListWithControls({ actions: true, extendSeparators: true, selectable: true }) },
+			{ name: 'selectable actions extend color', template: createListWithControls({ actions: true, color2: '#00ff00', extendSeparators: true, selectable: true }) },
 		].forEach(({ name, template, margin }) => {
 			it(name, async() => {
 				const elem = await fixture(template);
