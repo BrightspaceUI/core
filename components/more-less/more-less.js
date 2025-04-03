@@ -152,7 +152,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 				class="d2l-more-less-toggle"
 				icon="${this.__computeIcon()}"
 				aria-controls="${this.__contentId}"
-				aria-expanded="${this.__computeAriaExpanded()}"
+				control-expanded="${this.__computeAriaExpanded()}"
 				@click="${this.__toggleOnClick}"
 				text="${this.__computeText()}"
 				h-align="${ifDefined(this.hAlign)}">

@@ -131,7 +131,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 			<d2l-button-icon
 				class="d2l-skeletize"
 				icon="${this.expanded ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small' }"
-				aria-expanded="${this.expanded ? 'true' : 'false'}"
+				control-expanded="${this.expanded ? 'true' : 'false'}"
 				text="${this.label}"
 				@click="${this._toggleExpandCollapse}"></d2l-button-icon>`;
 	}

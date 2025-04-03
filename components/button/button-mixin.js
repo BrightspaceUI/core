@@ -22,6 +22,11 @@ export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 			// eslint-disable-next-line lit/no-native-attributes
 			autofocus: { type: Boolean, reflect: true },
 			/**
+			 * Wether the controlled element is expanded. Replaces 'aria-expanded'
+			 * @type {'true' | 'false'}
+			 */
+			controlExpanded: { type: String, reflect: true, attribute: 'control-expanded' },
+			/**
 			 * Disables the button
 			 * @type {boolean}
 			 */
@@ -110,6 +115,13 @@ export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.removeEventListener('click', this._handleClick, true);
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('ariaExpanded') && this.ariaExpanded !== undefined) {
+			this.controlExpanded = this.ariaExpanded;
+		}
 	}
 
 	/** @internal */

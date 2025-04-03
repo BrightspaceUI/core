@@ -52,6 +52,22 @@ const dropdownWithHeader = html`
 		</div>
 	</div>
 `;
+const dropdownD2LButtonOpener = html`
+	<div>
+		<div id="optionallyFocusable">
+		<d2l-dropdown>
+			<d2l-button class="another-class d2l-dropdown-opener"></d2l-button>
+			<d2l-dropdown-content trap-focus>
+				<div slot="header">
+					<a id="focusable_header" href="http://www.desire2learn.com">b</a>
+				</div>
+				<p id="non_focusable_inside">a</p>
+				<a id="focusable_inside" href="http://www.desire2learn.com">b</a>
+			</d2l-dropdown-content>
+		</d2l-dropdown>
+		</div>
+	</div>
+`;
 
 describe('d2l-dropdown', () => {
 
@@ -360,14 +376,8 @@ describe('d2l-dropdown', () => {
 	});
 
 	describe('aria-expanded', () => {
-
-		let opener;
-
-		beforeEach(async() => {
-			opener = dropdown.querySelector('.d2l-dropdown-opener');
-		});
-
 		it('should set aria-expanded on the opener', async() => {
+			const opener = dropdown.querySelector('.d2l-dropdown-opener');
 			content.setAttribute('opened', true);
 			await oneEvent(content, 'd2l-dropdown-open');
 			await opener.updateComplete;
@@ -377,6 +387,22 @@ describe('d2l-dropdown', () => {
 			await oneEvent(content, 'd2l-dropdown-close');
 			await opener.updateComplete;
 			expect(opener.getAttribute('aria-expanded')).to.equal('false');
+		});
+
+		it('should set control-expanded on the d2l-button opener', async() => {
+			const dropdown = await fixture(dropdownD2LButtonOpener);
+			const content = dropdown.querySelector('d2l-dropdown-content');
+			const opener = dropdown.querySelector('.d2l-dropdown-opener');
+
+			content.setAttribute('opened', true);
+			await oneEvent(content, 'd2l-dropdown-open');
+			await opener.updateComplete;
+			expect(opener.getAttribute('control-expanded')).to.equal('true');
+
+			setTimeout(() => content.removeAttribute('opened'));
+			await oneEvent(content, 'd2l-dropdown-close');
+			await opener.updateComplete;
+			expect(opener.getAttribute('control-expanded')).to.equal('false');
 		});
 	});
 

@@ -119,7 +119,8 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (!opener) {
 			return;
 		}
-		opener.setAttribute('aria-expanded', (content && content.opened || false).toString());
+		const attribute = opener.tagName.toUpperCase().startsWith('D2L-BUTTON') ? 'control-expanded' : 'aria-expanded';
+		opener.setAttribute(attribute, (content && content.opened || false).toString());
 	}
 
 	updated(changedProperties) {
