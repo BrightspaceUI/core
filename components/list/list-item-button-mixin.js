@@ -66,8 +66,8 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 		this.dispatchEvent(new CustomEvent('d2l-list-item-button-click', { bubbles: true }));
 	}
 
-	_renderPrimaryAction(labelledBy) {
-		return html`<button id="${this._primaryActionId}" aria-labelledby="${labelledBy}" @click="${this._onButtonClick}" ?disabled="${this.buttonDisabled}"></button>`;
+	_renderPrimaryAction(labelledBy, content) {
+		return html`<button id="${this._primaryActionId}" aria-labelledby="${labelledBy}" @click="${this._onButtonClick}" ?disabled="${this.buttonDisabled}">${content}</button>`;
 	}
 
 };
