@@ -1,4 +1,5 @@
 export default {
+	"__test__": `A "test" message`,
 	"components.alert.close": "Close Alert",
 	"components.breadcrumbs.breadcrumb": "Breadcrumb",
 	"components.button-add.addItem": "Add Item",
