@@ -1,3 +1,5 @@
+const defaultLines = 2;
+
 export const MenuItemMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -24,6 +26,11 @@ export const MenuItemMixin = superclass => class extends superclass {
 			 * @ignore
 			 */
 			last: { type: String, reflect: true }, // set by d2l-menu
+			/**
+			 * The number of lines to display before truncating text with an ellipsis. Defaults to 2.
+			 * @type {number}
+			 */
+			lines: { type: Number },
 			/**
 			 * @ignore
 			 */
@@ -60,6 +67,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 		this.__children = null;
 
 		this.disabled = false;
+		this.lines = defaultLines;
 		/** @ignore */
 		this.role = 'menuitem';
 		/** @ignore */
@@ -93,6 +101,13 @@ export const MenuItemMixin = superclass => class extends superclass {
 				this._ariaLabel = this.description || this.text;
 			}
 		});
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('lines') && !(changedProperties.get('lines') === undefined && this.lines === defaultLines)) {
+			this.style.setProperty('--d2l-menu-item-lines', this.lines);
+		}
 	}
 
 	__action() {
