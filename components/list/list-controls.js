@@ -18,6 +18,7 @@ export class ListControls extends SelectionControls {
 		return [super.styles, css`
 			:host {
 				--d2l-selection-controls-background-color: var(--d2l-list-controls-background-color);
+				--d2l-selection-controls-offset: -12px;
 				--d2l-selection-controls-padding: var(--d2l-list-controls-padding, 18px);
 				z-index: 6; /* must be greater than d2l-list-item-active-border */
 			}
@@ -25,13 +26,14 @@ export class ListControls extends SelectionControls {
 				z-index: auto;
 			}
 			.d2l-list-controls-color {
-				padding: 0 1.8rem;
+				padding-inline-start: 1.8rem;
 			}
 			.d2l-list-controls-extend-separator {
+				--d2l-selection-controls-offset: 0;
 				padding: 0 0.9rem;
 			}
 			.d2l-list-controls-color.d2l-list-controls-extend-separator {
-				padding: 0 calc(0.6rem + 9px);
+				padding-inline-start: calc(0.6rem + 9px);
 			}
 		`];
 	}
