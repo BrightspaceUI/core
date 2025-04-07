@@ -285,7 +285,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 			case 'left': return 'inline-start';
 			case 'right': return 'inline-end';
 			default: return undefined;
-		  }
+		}
 	}
 
 	#adaptPositionSpan(val) {
@@ -293,7 +293,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 			case 'start': return 'end';
 			case 'end': return 'start';
 			default: return 'all';
-		  }
+		}
 	}
 
 	#getMobileCloseButtonStyles() {
