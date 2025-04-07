@@ -106,7 +106,9 @@ export const MenuItemMixin = superclass => class extends superclass {
 					this._ariaDisabled = this.disabled ? 'true' : 'false';
 					break;
 				case 'lines':
-					if (!(changedProperties.get('lines') === undefined && this.lines === defaultLines)) this.style.setProperty('--d2l-menu-item-lines', this.lines);
+					if (!(changedProperties.get('lines') === undefined && this.lines === defaultLines)) {
+						this.style.setProperty('--d2l-menu-item-lines', this.lines);
+					} 
 					break;
 			}
 		});
