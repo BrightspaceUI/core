@@ -91,23 +91,27 @@ export const MenuItemMixin = superclass => class extends superclass {
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
-
-		changedProperties.forEach((oldValue, propName) => {
-			if (propName === 'hidden') {
-				this._onHidden();
-			} else if (propName === 'disabled') {
-				this._ariaDisabled = this.disabled ? 'true' : 'false';
-			} else if (propName === 'text' || propName === 'description') {
-				this._ariaLabel = this.description || this.text;
-			}
-		});
+		if (changedProperties.has('hidden')) this._onHidden();
 	}
 
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
-		if (changedProperties.has('lines') && !(changedProperties.get('lines') === undefined && this.lines === defaultLines)) {
-			this.style.setProperty('--d2l-menu-item-lines', this.lines);
-		}
+		changedProperties.forEach((oldValue, propName) => {
+			switch (propName) {
+				case 'text':
+				case 'description':
+					this._ariaLabel = this.description || this.text;
+					break;
+				case 'disabled':
+					this._ariaDisabled = this.disabled ? 'true' : 'false';
+					break;
+				case 'lines':
+					if (!(changedProperties.get('lines') === undefined && this.lines === defaultLines)) {
+						this.style.setProperty('--d2l-menu-item-lines', this.lines);
+					}
+					break;
+			}
+		});
 	}
 
 	__action() {
