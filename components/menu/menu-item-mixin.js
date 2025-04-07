@@ -1,3 +1,5 @@
+const defaultLines = 2;
+
 export const MenuItemMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -65,6 +67,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 		this.__children = null;
 
 		this.disabled = false;
+		this.lines = defaultLines;
 		/** @ignore */
 		this.role = 'menuitem';
 		/** @ignore */
@@ -102,7 +105,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
-		if (changedProperties.has('lines')) {
+		if (changedProperties.has('lines') && !(changedProperties.get('lines') === undefined && this.lines === defaultLines)) {
 			this.style.setProperty('--d2l-menu-item-lines', this.lines);
 		}
 	}
