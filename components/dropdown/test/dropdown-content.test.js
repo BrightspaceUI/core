@@ -385,13 +385,13 @@ describe('d2l-dropdown', () => {
 		it('vertical offset should update if set without px', async() => {
 			content.setAttribute('vertical-offset', 100);
 			await nextFrame();
-			expect(content.style.getPropertyValue('--d2l-dropdown-verticaloffset')).to.equal('100px');
+			expect(content._verticalOffset).to.equal(100);
 		});
 
 		it('vertical offset should update if set with px', async() => {
 			content.setAttribute('vertical-offset', '50px');
 			await nextFrame();
-			expect(content.style.getPropertyValue('--d2l-dropdown-verticaloffset')).to.equal('50px');
+			expect(content._verticalOffset).to.equal(50);
 		});
 
 		it('vertical offset should default to 16 if removed', async() => {
@@ -399,13 +399,13 @@ describe('d2l-dropdown', () => {
 			await nextFrame();
 			content.removeAttribute('vertical-offset');
 			await nextFrame();
-			expect(content.style.getPropertyValue('--d2l-dropdown-verticaloffset')).to.equal('16px');
+			expect(content._verticalOffset).to.equal(16);
 		});
 
 		it('vertical offset should default to 16 if set to an invalid number', async() => {
 			content.setAttribute('vertical-offset', 'thisisnotasize');
 			await nextFrame();
-			expect(content.style.getPropertyValue('--d2l-dropdown-verticaloffset')).to.equal('16px');
+			expect(content._verticalOffset).to.equal(16);
 		});
 
 	});

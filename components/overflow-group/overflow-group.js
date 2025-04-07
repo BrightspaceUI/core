@@ -13,7 +13,6 @@ import '../menu/menu-item-link.js';
 import { css, html, LitElement } from 'lit';
 import { OVERFLOW_CLASS, OVERFLOW_MINI_CLASS, OverflowGroupMixin } from './overflow-group-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const OPENER_STYLE = {
 	DEFAULT: 'default',
@@ -58,7 +57,7 @@ function createMenuItemSeparator() {
  * @attr {'default'|'icon'} [opener-type="default"] - Set the opener type to 'icon' for a `...` menu icon instead of `More actions` text
  * @attr {boolean} auto-show - Use predefined classes on slot elements to set min and max buttons to show
 */
-class OverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
+class OverflowGroup extends OverflowGroupMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -87,15 +86,7 @@ class OverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 			::slotted(span),
 			::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
 			::slotted(d2l-dropdown-button) {
-				margin-right: 0.6rem;
-			}
-			:host([dir="rtl"]) ::slotted(d2l-button),
-			:host([dir="rtl"]) ::slotted(d2l-link),
-			:host([dir="rtl"]) ::slotted(span),
-			:host([dir="rtl"]) ::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
-			:host([dir="rtl"]) ::slotted(d2l-dropdown-button) {
-				margin-left: 0.6rem;
-				margin-right: 0;
+				margin-inline-end: 0.6rem;
 			}
 			::slotted(d2l-button-subtle),
 			::slotted(d2l-button-icon),
@@ -104,17 +95,10 @@ class OverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 			::slotted(d2l-dropdown-context-menu),
 			::slotted(d2l-selection-action),
 			::slotted(d2l-selection-action-dropdown) {
-				margin-right: 0.2rem;
+				margin-inline-end: 0.2rem;
 			}
-			:host([dir="rtl"]) ::slotted(d2l-button-subtle),
-			:host([dir="rtl"]) ::slotted(d2l-button-icon),
-			:host([dir="rtl"]) ::slotted(d2l-dropdown-button-subtle),
-			:host([dir="rtl"]) ::slotted(d2l-dropdown-more),
-			:host([dir="rtl"]) ::slotted(d2l-dropdown-context-menu),
-			:host([dir="rtl"]) ::slotted(d2l-selection-action),
-			:host([dir="rtl"]) ::slotted(d2l-selection-action-dropdown) {
-				margin-left: 0.2rem;
-				margin-right: 0;
+			::slotted(*:last-child) {
+				margin-inline-end: 0;
 			}
 		`];
 	}

@@ -2,14 +2,13 @@ import '../button/button-subtle.js';
 import { emptyStateSimpleStyles, emptyStateStyles } from './empty-state-styles.js';
 import { html, LitElement } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
-import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { EmptyStateMixin } from './empty-state-mixin.js';
 
 /**
  * The `d2l-empty-state-simple` component is an empty state component that displays a description. An empty state action component can be placed inside of the default slot to add an optional action.
  * @slot - Slot for empty state actions
  */
-class EmptyStateSimple extends PropertyRequiredMixin(RtlMixin(LitElement)) {
+class EmptyStateSimple extends EmptyStateMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -28,7 +27,7 @@ class EmptyStateSimple extends PropertyRequiredMixin(RtlMixin(LitElement)) {
 	render() {
 		return html`
 			<div class="empty-state-container">
-				<p class="d2l-body-compact d2l-empty-state-description">${this.description}</p>
+				<p class="d2l-body-compact d2l-empty-state-description" tabindex="-1">${this.description}</p>
 				<slot class="action-slot"></slot>
 			</div>
 		`;

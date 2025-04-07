@@ -221,19 +221,7 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 			}
 			@media (prefers-reduced-motion: no-preference) {
 				:host {
-					transition: transform 300ms ease-out 50ms, box-shadow 0.2s;
-				}
-
-				:host(:hover),
-				:host([subtle]:hover),
-				:host([_active]:hover),
-				:host([subtle][_active]:hover) {
-					transform: translateY(-4px);
-				}
-
-				:host(:not([href])),
-				:host([subtle]:not([href])) {
-					transform: none;
+					transition: box-shadow 0.2s;
 				}
 			}
 		`];

@@ -162,9 +162,11 @@ class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-w
 		`;
 	}
 
-	_handlePagerLoadMore(e) {
+	async _handlePagerLoadMore(e) {
+		const pageSize = e.target.pageSize;
+		await new Promise(resolve => setTimeout(resolve, 1000));
 		const startIndex = this._data.length + 1;
-		for (let i = 0; i < e.target.pageSize; i++) {
+		for (let i = 0; i < pageSize; i++) {
 			this._data.push({ name: `City ${startIndex + i}, Country ${startIndex + i}`, data: { 'city': `City ${startIndex + i}`, 'country': `Country ${startIndex + i}`, 'population': 26320000, 'size': 6340, 'elevation': 4, 'latitude': 3, 'longitude': 3 }, selected: false });
 		}
 		this.requestUpdate();

@@ -48,7 +48,6 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 
 			.d2l-switch-container {
 				background-color: var(--d2l-switch-container-background-color, #ffffff);
-				border: 2px solid transparent;
 				border-radius: 1rem;
 				box-sizing: border-box;
 				cursor: default;
@@ -60,7 +59,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				vertical-align: middle;
 			}
 			.d2l-switch-container:${unsafeCSS(getFocusPseudoClass())} {
-				border-color: var(--d2l-color-celestine);
+				outline: 2px solid var(--d2l-color-celestine);
 			}
 			:host([disabled]) .d2l-switch-container {
 				cursor: default;
@@ -198,34 +197,33 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 
 		// Note: we render the switchLabel in the case of textPosition === 'hidden' so that any slot handlers can pick up on content being passed in
 		return html`
-			${textPosition === 'start' ? switchLabel : ''}
 			<div
-				aria-checked="${this.on ? 'true' : 'false'}"
-				aria-label="${ifDefined(textPosition === 'hidden' ? this.text : undefined)}"
-				aria-labelledby="${ifDefined(textPosition !== 'hidden' ? this._textId : undefined)}"
-				class="d2l-switch-container"
 				@click="${this._handleClick}"
-				@keydown="${this._handleKeyDown}"
-				@keyup="${this._handleKeyUp}"
-				role="switch"
-				tabindex="${ifDefined(tabindex)}">
-				<div class="${classMap(innerSwitchClasses)}">
-					<div class="d2l-switch-icon-on">${this.onIcon}</div>
-					<div class="d2l-switch-icon-off">${this.offIcon}</div>
-					<div class="d2l-switch-toggle"><div></div></div>
+				@mouseenter="${this._handleSwitchHover}"
+				@mouseleave="${this._handleSwitchHoverLeave}">
+				${textPosition === 'start' ? switchLabel : ''}
+				<div
+					aria-checked="${this.on ? 'true' : 'false'}"
+					aria-label="${ifDefined(textPosition === 'hidden' ? this.text : undefined)}"
+					aria-labelledby="${ifDefined(textPosition !== 'hidden' ? this._textId : undefined)}"
+					class="d2l-switch-container"
+					@keydown="${this._handleKeyDown}"
+					@keyup="${this._handleKeyUp}"
+					role="switch"
+					tabindex="${ifDefined(tabindex)}">
+					<div class="${classMap(innerSwitchClasses)}">
+						<div class="d2l-switch-icon-on">${this.onIcon}</div>
+						<div class="d2l-switch-icon-off">${this.offIcon}</div>
+						<div class="d2l-switch-toggle"><div></div></div>
+					</div>
 				</div>
+				${textPosition === 'end' || textPosition === 'hidden' ? switchLabel : ''}
 			</div>
-			${textPosition === 'end' || textPosition === 'hidden' ? switchLabel : ''}
 		`;
 	}
 
 	get _labelContent() {
-		return html`<span
-			@click='${this._handleClick}'
-			@mouseenter='${this._handleSwitchHover}'
-			@mouseleave='${this._handleSwitchHoverLeave}'>
-			${this.text}
-		</span>`;
+		return this.text;
 	}
 
 	_handleClick() {

@@ -55,7 +55,8 @@
 				--d2l-button-icon-min-height: 1.5rem;
 				--d2l-button-icon-min-width: 1.5rem;
 				--d2l-button-icon-border-radius: 4px;
-				--d2l-button-icon-focus-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px #006fbf;
+				--d2l-button-focus-color: #006fbf;
+				--d2l-button-focus-offset: 1px;
 			}
 		</style>
 	</head>
@@ -102,9 +103,16 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-icon icon="tier1:gear" text="Button Edge Aligned (default)"></d2l-button-icon>
-					<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
-					<d2l-button-icon icon="tier1:gear" text="Button Content Aligned" h-align="text"></d2l-button-icon>
+					<div style="border: 1px dashed #999999; text-align: start;">
+						<d2l-button-icon icon="tier1:gear" text="Button Edge Aligned (default)"></d2l-button-icon>
+						<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+						<d2l-button-icon icon="tier1:gear" text="Button Content Aligned" h-align="text"></d2l-button-icon>
+					</div>
+					<div style="border: 1px dashed #999999; text-align: end;">
+						<d2l-button-icon icon="tier1:gear" text="Button Edge Aligned (default)"></d2l-button-icon>
+						<div>Lorem ipsum dolor sit amet, consectetur adipiscing elit</div>
+						<d2l-button-icon icon="tier1:gear" text="Button Content Aligned" h-align="text-end"></d2l-button-icon>
+					</div>
 				</template>
 			</d2l-demo-snippet>
 

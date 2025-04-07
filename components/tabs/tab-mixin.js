@@ -38,6 +38,12 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				position: relative;
 				vertical-align: middle;
 			}
+			.d2l-tab-content {
+				margin: 0.5rem;
+			}
+			:host(:first-child) .d2l-tab-content {
+				margin-inline-start: 0;
+			}
 			.d2l-tab-selected-indicator {
 				border-top: 4px solid var(--d2l-color-celestine);
 				border-top-left-radius: 4px;
@@ -67,6 +73,10 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 			:host([selected]) .d2l-tab-selected-indicator {
 				display: block;
 			}
+			:host([skeleton]) .d2l-tab-selected-indicator {
+				position: absolute !important; /* make sure skeleton styles do not override this */
+			}
+
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -90,7 +100,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	render() {
 		return html`
-			${this.renderContent()}
+			<div class="d2l-skeletize d2l-tab-content">${this.renderContent()}</div>
 			<div class="d2l-tab-selected-indicator d2l-skeletize-container"></div>
 		`;
 	}

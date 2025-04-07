@@ -8,7 +8,6 @@ import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PageableSubscriberMixin } from '../paging/pageable-subscriber-mixin.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 /**
@@ -16,7 +15,7 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
  * @slot - Responsive container using `d2l-overflow-group` for `d2l-selection-action` elements
  * @fires d2l-selection-observer-subscribe - Internal event
  */
-export class SelectionControls extends PageableSubscriberMixin(SelectionObserverMixin(RtlMixin(LocalizeCoreElement(LitElement)))) {
+export class SelectionControls extends PageableSubscriberMixin(SelectionObserverMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
@@ -95,27 +94,16 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 				flex: none;
 			}
 			d2l-selection-select-all + d2l-selection-summary {
-				margin-left: 0.9rem;
-			}
-			:host([dir="rtl"]) d2l-selection-select-all + d2l-selection-summary {
-				margin-left: 0;
-				margin-right: 0.9rem;
+				margin-inline-start: 0.9rem;
 			}
 			d2l-selection-select-all-pages {
 				flex: none;
-				margin-left: 0.45rem;
-			}
-			:host([dir="rtl"]) d2l-selection-select-all-pages {
-				margin-left: 0;
-				margin-right: 0.45rem;
+				margin-inline-start: 0.45rem;
 			}
 			.d2l-selection-controls-actions {
 				--d2l-overflow-group-justify-content: flex-end;
 				flex: auto;
-				text-align: right;
-			}
-			:host([dir="rtl"]) .d2l-selection-controls-actions {
-				text-align: left;
+				text-align: end;
 			}
 			.d2l-sticky-edge {
 				left: 0;
