@@ -39,9 +39,9 @@ class MenuItemReturn extends RtlMixin(LocalizeCoreElement(MenuItemMixin(LitEleme
 		];
 	}
 
-	firstUpdated() {
-		super.firstUpdated();
-		this.setAttribute('aria-label', this.localize('components.menu-item-return.return'));
+	constructor() {
+		super();
+		this.text = null;
 	}
 
 	render() {
@@ -51,14 +51,15 @@ class MenuItemReturn extends RtlMixin(LocalizeCoreElement(MenuItemMixin(LitEleme
 		`;
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-
-		changedProperties.forEach((oldValue, propName) => {
-			if (propName === 'text') {
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);	
+		if (changedProperties.has('text')) {
+			if (this.text) {
 				this.setAttribute('aria-label', this.localize('components.menu-item-return.returnCurrentlyShowing', 'menuTitle', this.text));
+			} else {
+				this.setAttribute('aria-label', this.localize('components.menu-item-return.return'));
 			}
-		});
+		}
 	}
 
 }
