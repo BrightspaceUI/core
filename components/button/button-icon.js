@@ -1,22 +1,20 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor/visible-on-ancestor-mixin.js';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
 /**
  * A button component that can be used just like the native button for instances where only an icon is displayed.
  * @slot icon - Optional slot for a custom icon
  */
-class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(RtlMixin(LitElement))))) {
+class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -27,8 +25,8 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 			description: { type: String },
 
 			/**
-			 * Aligns the leading edge of text if value is set to "text"
-			 * @type {'text'|''}
+			 * Aligns the leading edge of text if value is set to "text" for left-aligned layouts, the trailing edge of text if value is set to "text-end" for right-aligned layouts
+			 * @type {'text'|'text-end'|''}
 			 */
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
@@ -65,11 +63,9 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 					--d2l-button-icon-background-color: transparent;
 					--d2l-button-icon-background-color-hover: var(--d2l-color-gypsum);
 					--d2l-button-icon-border-radius: 0.3rem;
-					--d2l-button-icon-focus-box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
 					--d2l-button-icon-min-height: calc(2rem + 2px);
 					--d2l-button-icon-min-width: calc(2rem + 2px);
 					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
-					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color, var(--d2l-color-tungsten));
 					display: inline-block;
 					line-height: 0;
 				}
@@ -79,15 +75,16 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 				:host([translucent]) {
 					--d2l-button-icon-background-color: rgba(0, 0, 0, 0.5);
 					--d2l-button-icon-background-color-hover: var(--d2l-color-celestine);
-					--d2l-button-icon-focus-box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), inset 0 0 0 4px white;
-					--d2l-icon-fill-color: white;
+					--d2l-button-focus-color: white;
+					--d2l-button-focus-offset: -4px;
+					--d2l-button-icon-fill-color: white;
 					--d2l-button-icon-fill-color-hover: white;
 				}
 				:host([theme="dark"]) {
 					--d2l-button-icon-background-color: transparent;
 					--d2l-button-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
-					--d2l-button-icon-focus-box-shadow: 0 0 0 2px black, 0 0 0 4px var(--d2l-color-celestine-plus-1);
-					--d2l-icon-fill-color: var(--d2l-color-sylvite);
+					--d2l-button-focus-color: var(--d2l-color-celestine-plus-1);
+					--d2l-button-icon-fill-color: var(--d2l-color-sylvite);
 					--d2l-button-icon-fill-color-hover: var(--d2l-color-sylvite);
 				}
 
@@ -103,11 +100,10 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 				}
 
 				:host([h-align="text"]) button {
-					left: var(--d2l-button-icon-h-align);
+					inset-inline-start: var(--d2l-button-icon-h-align);
 				}
-				:host([dir="rtl"][h-align="text"]) button {
-					left: 0;
-					right: var(--d2l-button-icon-h-align);
+				:host([h-align="text-end"]) button {
+					inset-inline-end: var(--d2l-button-icon-h-align);
 				}
 
 				/* Firefox includes a hidden border which messes up button dimensions */
@@ -118,11 +114,8 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 				button:hover:not([disabled]),
 				button:focus:not([disabled]),
 				:host([active]) button:not([disabled]) {
-					--d2l-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-tungsten));
+					--d2l-button-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-tungsten));
 					background-color: var(--d2l-button-icon-background-color-hover);
-				}
-				button:${unsafeCSS(getFocusPseudoClass())} {
-					box-shadow: var(--d2l-button-icon-focus-box-shadow);
 				}
 
 				slot[name="icon"]::slotted(*) {
@@ -134,6 +127,7 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 
 				d2l-icon,
 				slot[name="icon"]::slotted(d2l-icon-custom) {
+					color: var(--d2l-button-icon-fill-color, var(--d2l-color-tungsten));
 					height: 0.9rem;
 					width: 0.9rem;
 				}

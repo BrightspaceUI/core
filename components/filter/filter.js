@@ -644,9 +644,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					<div class="d2l-filter-dimension-set-value d2l-body-compact">
 						<div class="d2l-filter-dimension-set-value-text">${item.text}</div>
 						${item.count !== undefined ? html`<div class="d2l-body-small">(${formatNumber(item.count)})</div>` : nothing}
-						${item.additionalContent
-		? html`<d2l-icon icon="${item.selected ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small'}" aria-hidden="true"></d2l-icon>`
-		: nothing}
+						${item.additionalContent ? html`<d2l-icon icon="${item.selected ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small'}" aria-hidden="true"></d2l-icon>` : nothing}
 					</div>
 					${item.additionalContent ? html`
 						<d2l-expand-collapse-content 
@@ -658,9 +656,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 					` : nothing}
 				</div>
 			</d2l-list-item>
-			${item.additionalContent && item.selected && this._displayKeyboardTooltip
-		? html`<d2l-tooltip align="start" announced for="${itemId}" for-type="descriptor" @d2l-tooltip-hide="${this._handleTooltipHide}">${this.localizeHTML('components.filter.additionalContentTooltip')}</d2l-tooltip>`
-		: nothing}
+			${item.additionalContent && item.selected && this._displayKeyboardTooltip ? html`<d2l-tooltip align="start" announced for="${itemId}" for-type="descriptor" @d2l-tooltip-hide="${this._handleTooltipHide}">${this.localizeHTML('components.filter.additionalContentTooltip')}</d2l-tooltip>` : nothing}
 		`;
 	}
 

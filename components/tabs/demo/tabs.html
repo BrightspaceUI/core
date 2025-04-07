@@ -116,29 +116,42 @@
 						tabs.insertBefore(tab, tabList[1]);
 					}
 				};
-				const removePanel = (tabs) => {
-					const tabComps = [...tabs.querySelectorAll('d2l-tab')];
-					if (tabComps.length === 0) return;
+				const removeTab = (tabs) => {
+					const tabElems = [...tabs.querySelectorAll('d2l-tab')];
+					if (tabElems.length === 0) return;
 
-					const tab = tabComps.length === 1 ? tabComps[0] : tabComps[1];
-					const panel = tabs.querySelector(`d2l-tab-panel[labelled-by="${tab.id}"]`);
-					tabs.removeChild(tab);
-					tabs.removeChild(panel);
+					const tab = tabElems.length === 1 ? tabElems[0] : tabElems[1];
+					Promise.resolve(tabs.hideTab((tab))).then(() => {
+						const panel = tabs.querySelector(`d2l-tab-panel[labelled-by="${tab.id}"]`);
+						if (panel) tabs.removeChild(panel);
+						tabs.removeChild(tab);
+					});
 				};
-				const removePanels = (tabs) => {
-					const panels = [...tabs.querySelectorAll('d2l-tab-panel')];
-					if (panels.length === 0) return;
-					if (panels.length === 1) removePanel(tabs);
+				const removeTabs = (tabs) => {
+					const tabElems = [...tabs.querySelectorAll('d2l-tab')];
+					if (tabElems.length === 0) return;
+					else if (tabElems.length === 1) removeTab(tabs);
 					else {
-						removePanel(tabs);
-						removePanel(tabs);
+						const tab1 = tabElems[0];
+						const tab2 = tabElems[1];
+						const animPromises = [];
+						animPromises.push(tabs.hideTab(tab1));
+						animPromises.push(tabs.hideTab(tab2));
+						Promise.all(animPromises).then(() => {
+							const panel1 = tabs.querySelector(`d2l-tab-panel[labelled-by="${tab1.id}"]`);
+							const panel2 = tabs.querySelector(`d2l-tab-panel[labelled-by="${tab2.id}"]`);
+							if (panel1) tabs.removeChild(panel1);
+							if (panel2) tabs.removeChild(panel2);
+							tabs.removeChild(tab1);
+							tabs.removeChild(tab2);
+						});
 					}
 				};
 
 				document.querySelector('#add').addEventListener('click', () => addPanel(false, document.querySelector('#withSlot').querySelector('d2l-tabs')));
 				document.querySelector('#add-selected').addEventListener('click', () => addPanel(true, document.querySelector('#withSlot').querySelector('d2l-tabs')));
-				document.querySelector('#remove').addEventListener('click', () => removePanel(document.querySelector('#withSlot').querySelector('d2l-tabs')));
-				document.querySelector('#remove-multiple').addEventListener('click', () => removePanels(document.querySelector('#withSlot').querySelector('d2l-tabs')));
+				document.querySelector('#remove').addEventListener('click', () => removeTab(document.querySelector('#withSlot').querySelector('d2l-tabs')));
+				document.querySelector('#remove-multiple').addEventListener('click', () => removeTabs(document.querySelector('#withSlot').querySelector('d2l-tabs')));
 			</script>
 
 			<d2l-demo-snippet id="withSlot">
@@ -388,6 +401,9 @@
 			});
 			document.addEventListener('d2l-tab-panel-text-changed', (e) => {
 				console.log('tab panel text changed', e);
+			});
+			document.addEventListener('d2l-tab-content-change', (e) => {
+				console.log('tab content changed', e);
 			});
 		</script>
 

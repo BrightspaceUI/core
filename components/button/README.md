@@ -76,7 +76,7 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 | `description` | String | A description to be added to the `button` for accessibility for additional context |
 | `disabled` | Boolean | Disables the button |
 | `disabledTooltip` | String | Tooltip text when disabled |
-| `h-align` | String | Possible values are undefined (default) or `text`. If `text`, aligns the button content to the leading edge of text. |
+| `h-align` | String | Possible values are undefined (default), `text` or `text-end`. If `text` or `text-end`, aligns the button content to the leading (or trailing) edge of text. |
 | `icon` | String | [Preset icon key](../../components/icons#preset-icons) (e.g. `tier1:gear`) |
 | `icon-right` | Boolean | Render the icon on the right of the button |
 <!-- docs: end hidden content -->
@@ -121,7 +121,7 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 | `text` | String, required | Accessible text for the button |
 | `disabled` | Boolean | Disables the button |
 | `disabledTooltip` | String | Tooltip text when disabled |
-| `h-align` | String | Possible values are undefined (default) or `text`. If `text`, aligns the button content to the leading edge of text. |
+| `h-align` | String | Possible values are undefined (default), `text` or `text-end`. If `text` or `text-end`, aligns the button content to the leading (or trailing) edge of text. |
 | `translucent` | Boolean | Indicates to display translucent (ex. on rich backgrounds) |
 <!-- docs: end hidden content -->
 

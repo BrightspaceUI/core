@@ -27,8 +27,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			expanded: { type: Boolean, reflect: true },
 
 			/**
-			 * The h-align property of the more-less button
-			 * @type {'text'|''}
+			 * Aligns the leading edge of more/less button text if value is set to "text" for left-aligned layouts, the trailing edge of text if value is set to "text-end" for right-aligned layouts
+			 * @type {'text'|'text-end'|''}
 			 */
 			hAlign: { type: String, attribute: 'h-align' },
 

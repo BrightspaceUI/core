@@ -80,7 +80,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 					--d2l-button-icon-min-height: 1.5rem;
 					--d2l-button-icon-min-width: 1.5rem;
 					--d2l-button-icon-border-radius: 4px;
-					--d2l-button-icon-focus-box-shadow: 0 0 0 1px #ffffff, 0 0 0 3px var(--d2l-color-celestine);
+					--d2l-button-focus-offset: 1px;
 					margin-left: 0.3rem;
 					margin-right: 0.3rem;
 				}

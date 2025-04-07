@@ -3,7 +3,7 @@ import '../dropdown/dropdown-menu.js';
 import '../menu/menu.js';
 import '../menu/menu-item-radio.js';
 
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { formatDateInISOTime, getDateFromISOTime, getToday } from '../../helpers/dateTime.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
@@ -165,6 +165,11 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 			 */
 			timeInterval: { type: String, attribute: 'time-interval' },
 			/**
+			 * Hides the timezone inside the selection dropdown. Should only be used when the input uses a different timezone than the document's settings
+			 * @type {Boolean}
+			 */
+			timezoneHidden: { type: Boolean, attribute: 'timezone-hidden' },
+			/**
 			 * Value of the input
 			 * @type {string}
 			 */
@@ -226,6 +231,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 		this.opened = false;
 		this.required = false;
 		this.timeInterval = 'thirty';
+		this.timezoneHidden = false;
 		this._dropdownFirstOpened = false;
 		this._dropdownId = getUniqueId();
 		this._hiddenContentWidth = '6rem';
@@ -371,7 +377,9 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 						root-view>
 						${menuItems}
 					</d2l-menu>
-					<div class="d2l-input-time-timezone d2l-body-small" id="${dropdownIdTimezone}" slot="footer">${this._timezone}</div>
+					${!this.timezoneHidden ? html`
+						<div class="d2l-input-time-timezone d2l-body-small" id="${dropdownIdTimezone}" slot="footer">${this._timezone}</div>
+					` : nothing}
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
 			${this._renderInlineHelp(this._inlineHelpId)}
