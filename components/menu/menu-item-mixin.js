@@ -25,7 +25,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 			 */
 			last: { type: String, reflect: true }, // set by d2l-menu
 			/**
-			 * The number of lines to display before truncating text with an ellipsis. Deafults to 2.
+			 * The number of lines to display before truncating text with an ellipsis. Defaults to 2.
 			 * @type {number}
 			 */
 			lines: { type: Number },
