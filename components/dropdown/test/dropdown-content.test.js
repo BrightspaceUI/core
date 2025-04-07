@@ -376,7 +376,7 @@ describe('d2l-dropdown', () => {
 	});
 
 	describe('aria-expanded', () => {
-		it('should set aria-expanded on the opener', async() => {
+		it('should set aria-expanded on button openers', async() => {
 			const opener = dropdown.querySelector('.d2l-dropdown-opener');
 			content.setAttribute('opened', true);
 			await oneEvent(content, 'd2l-dropdown-open');
@@ -389,7 +389,7 @@ describe('d2l-dropdown', () => {
 			expect(opener.getAttribute('aria-expanded')).to.equal('false');
 		});
 
-		it('should set control-expanded on the d2l-button opener', async() => {
+		it('should set expanded on ButtonMixin openers', async() => {
 			const dropdown = await fixture(dropdownD2LButtonOpener);
 			const content = dropdown.querySelector('d2l-dropdown-content');
 			const opener = dropdown.querySelector('.d2l-dropdown-opener');
@@ -397,12 +397,12 @@ describe('d2l-dropdown', () => {
 			content.setAttribute('opened', true);
 			await oneEvent(content, 'd2l-dropdown-open');
 			await opener.updateComplete;
-			expect(opener.getAttribute('control-expanded')).to.equal('true');
+			expect(opener.getAttribute('expanded')).to.equal('true');
 
 			setTimeout(() => content.removeAttribute('opened'));
 			await oneEvent(content, 'd2l-dropdown-close');
 			await opener.updateComplete;
-			expect(opener.getAttribute('control-expanded')).to.equal('false');
+			expect(opener.getAttribute('expanded')).to.equal('false');
 		});
 	});
 

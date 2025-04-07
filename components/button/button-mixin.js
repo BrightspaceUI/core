@@ -25,7 +25,7 @@ export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 			 * Wether the controlled element is expanded. Replaces 'aria-expanded'
 			 * @type {'true' | 'false'}
 			 */
-			controlExpanded: { type: String, reflect: true, attribute: 'control-expanded' },
+			expanded: { type: String, reflect: true, attribute: 'expanded' },
 			/**
 			 * Disables the button
 			 * @type {boolean}
@@ -107,6 +107,10 @@ export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 		return 'button';
 	}
 
+	get isButtonMixin() {
+		return true;
+	}
+
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('click', this._handleClick, true);
@@ -120,7 +124,7 @@ export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 		if (changedProperties.has('ariaExpanded') && this.ariaExpanded !== undefined) {
-			this.controlExpanded = this.ariaExpanded;
+			this.expanded = this.ariaExpanded;
 		}
 	}
 
