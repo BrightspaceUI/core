@@ -108,7 +108,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 				case 'lines':
 					if (!(changedProperties.get('lines') === undefined && this.lines === defaultLines)) {
 						this.style.setProperty('--d2l-menu-item-lines', this.lines);
-					} 
+					}
 					break;
 			}
 		});

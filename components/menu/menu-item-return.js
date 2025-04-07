@@ -52,7 +52,7 @@ class MenuItemReturn extends RtlMixin(LocalizeCoreElement(MenuItemMixin(LitEleme
 	}
 
 	willUpdate(changedProperties) {
-		super.willUpdate(changedProperties);	
+		super.willUpdate(changedProperties);
 		if (changedProperties.has('text')) {
 			if (this.text) {
 				this.setAttribute('aria-label', this.localize('components.menu-item-return.returnCurrentlyShowing', 'menuTitle', this.text));
