@@ -6,6 +6,7 @@ import '../tooltip/tooltip.js';
 import '../expand-collapse/expand-collapse-content.js';
 import { css, html, nothing } from 'lit';
 import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
+import { sharedInteractiveElems, sharedInteractiveRoles } from '../../helpers/interactive.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { composeMixins } from '../../helpers/composeMixins.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
@@ -38,6 +39,35 @@ function addTabListener() {
 }
 
 let hasDisplayedKeyboardTooltip = false;
+
+const interactiveElements = {
+	...sharedInteractiveElems,
+	'd2l-button': true,
+	'd2l-tooltip-help': true
+};
+
+export function getIsInteractiveChildClicked(e, linkElem) {
+	const composedPath = e.composedPath();
+	for (let i = 0; i < composedPath.length; i++) {
+		const elem = composedPath[i];
+		if (!elem.getAttribute) continue;
+
+		if (elem === linkElem) {
+			return false;
+		}
+
+		const nodeName = elem.nodeName.toLowerCase();
+		if (interactiveElements[nodeName] || (nodeName === 'a' && elem.hasAttribute('href'))) {
+			return true;
+		}
+
+		const role = (elem.getAttribute('role') || '');
+		if (sharedInteractiveRoles[role]) {
+			return true;
+		}
+	}
+	return false;
+}
 
 /**
  * @property label - The hidden label for the checkbox and expand collapse control
@@ -679,7 +709,18 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		};
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
-		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
+		const hasPrimaryAction = !this.noPrimaryAction && this._renderPrimaryAction;
+		const contentAreaContent = html`
+			<div slot="content"
+				class="d2l-list-item-content"
+				id="${this._contentId}"
+				@mouseenter="${this._onMouseEnter}"
+				@mouseleave="${this._onMouseLeave}">
+				<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
+				<slot>${content}</slot>
+			</div>
+		`;
+		const primaryAction = (hasPrimaryAction ? this._renderPrimaryAction(this._contentId, contentAreaContent) : null);
 		let tooltipForId = null;
 		if (this._showAddButton) {
 			tooltipForId = this._addButtonTopId;
@@ -741,15 +782,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					@mouseenter="${this._onMouseEnterPrimaryAction}"
 					@mouseleave="${this._onMouseLeavePrimaryAction}">
 						${primaryAction}
-				</div>` : nothing}
-				<div slot="content"
-					class="d2l-list-item-content"
-					id="${this._contentId}"
-					@mouseenter="${this._onMouseEnter}"
-					@mouseleave="${this._onMouseLeave}">
-					<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
-					<slot>${content}</slot>
-				</div>
+				</div>` : contentAreaContent}
 				<div slot="actions"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}"
