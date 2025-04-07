@@ -127,6 +127,20 @@ An element that displays the corresponding tab panel when selected.
 - `d2l-tab-selected`: Dispatched when a tab is selected
 <!-- docs: end hidden content -->
 
+### Removing a Tab
+
+A `tab` can be removed from the DOM using any regular method (e.g., `removeChild`). In order for the removal animation to be shown, the `hideTab` helper method in `d2l-tabs` must be used. An example of this is shown below, which waits for the promise in `hideTab` to resolve and then removes the tab and panel from the DOM. Ensure that when a `tab` is removed, the corresponding panel is also removed.
+
+```
+const tabs = this.shadowRoot.querySelector('d2l-tabs');
+const tab = tabs.querySelector('d2l-tab');
+Promise.resolve(tabs.hideTab((tab))).then(() => {
+  const panel = tabs.querySelector(`d2l-tab-panel[labelled-by="${tab.id}"]`);
+  if (panel) tabs.removeChild(panel);
+  tabs.removeChild(tab);
+});
+```
+
 ### Custom Tabs
 
 The `TabMixin` can be used to create custom tabs. It is IMPORTANT to call the `dispatchContentChangeEvent` function in `TabMixin` when content changes in the consumer in order to properly trigger calculations.
