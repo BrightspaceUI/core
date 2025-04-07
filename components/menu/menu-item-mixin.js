@@ -25,6 +25,11 @@ export const MenuItemMixin = superclass => class extends superclass {
 			 */
 			last: { type: String, reflect: true }, // set by d2l-menu
 			/**
+			 * The number of lines to display before truncating text with an ellipsis. Deafults to 2.
+			 * @type {number}
+			 */
+			lines: { type: Number },
+			/**
 			 * @ignore
 			 */
 			// eslint-disable-next-line lit/no-native-attributes
@@ -93,6 +98,13 @@ export const MenuItemMixin = superclass => class extends superclass {
 				this._ariaLabel = this.description || this.text;
 			}
 		});
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('lines')) {
+			this.style.setProperty('--d2l-menu-item-lines', this.lines);
+		}
 	}
 
 	__action() {

@@ -4,6 +4,7 @@ import { getFocusPseudoClass } from '../../helpers/focus.js';
 
 export const menuItemStyles = css`
 	:host {
+		--d2l-menu-item-lines: 2;
 		background-color: var(--d2l-menu-background-color);
 		border-top: 1px solid var(--d2l-menu-border-color);
 		box-sizing: border-box;
@@ -53,7 +54,7 @@ export const menuItemStyles = css`
 		-webkit-box-orient: vertical;
 		display: -webkit-box;
 		flex: auto;
-		-webkit-line-clamp: 2;
+		-webkit-line-clamp: var(--d2l-menu-item-lines, 2);
 		line-height: 1rem;
 		overflow-wrap: anywhere;
 		overflow-x: hidden;
