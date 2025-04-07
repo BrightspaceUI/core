@@ -16,6 +16,7 @@
 			import '../../tooltip/tooltip-help.js';
 			import '../list-item-content.js';
 			import '../list-item.js';
+			import '../list-item-button.js';
 			import '../list.js';
 			import '../../tag-list/tag-list.js';
 			import '../../tag-list/tag-list-item.js';
@@ -72,6 +73,53 @@
 				<script type="module">
 					requestAnimationFrame(() => {
 						document.querySelector('d2l-button').addEventListener('click', () => {
+							console.log('d2l-button: click event');
+						});
+					});
+				</script>
+			</d2l-demo-snippet>
+
+			<h2>Basic List with help tooltip, primary action, sublist; uses list-item-button</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid id="button-item-list">
+						<d2l-list-item-button expandable key="expand-1" label="Expandable item #1" button-disabled>
+							<d2l-list-item-content>
+								<div >Week 1: Introduction</div>
+								<div slot="secondary" style="padding: 10px;">Here is some information: <d2l-tooltip-help text="Due: Jan 30, 2023">Available: Aug 11, 2023</d2l-tooltip-help></div>
+								<div slot="supporting-info"><d2l-button style="padding: 10px;">Hi!</d2l-button></div>
+							</d2l-list-item-content>
+							<d2l-list grid slot="nested">
+								<d2l-list-item-button selectable key="nested-1" label="Nested 1">
+								  <d2l-list-item-content><div>Nested item #1</div></d2l-list-item-content>
+								</d2l-list-item-button>
+								<d2l-list-item-button selectable key="nested-2" label="Nested 2">
+								  <d2l-list-item-content><div>Nested item #2</div></d2l-list-item-content>
+								</d2l-list-item-button>
+							  </d2l-list>
+						</d2l-list-item-button>
+						<d2l-list-item-button button-disabled>
+							<d2l-list-item-content>
+								<div>Week 2: Learn more</div>
+								<div slot="secondary">Secondary Information</div>
+							</d2l-list-item-content>
+						</d2l-list-item-button>
+						<d2l-list-item-button>
+							<d2l-list-item-content>
+								<div>Week 3: Learn even more!</div>
+								<div slot="secondary">Secondary Information</div>
+							</d2l-list-item-content>
+						</d2l-list-item-button>
+					</d2l-list>
+				</template>
+				<script type="module">
+					requestAnimationFrame(() => {
+						const list = document.querySelector('#button-item-list');
+						list.addEventListener('d2l-list-item-button-click', (e) => {
+							console.log('d2l-list-item-button: click event');
+						});
+						list.querySelector('d2l-button').addEventListener('click', () => {
 							console.log('d2l-button: click event');
 						});
 					});

@@ -22,6 +22,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
 			a[href] {
+				color: unset;
 				display: block;
 				height: 100%;
 				outline: none;

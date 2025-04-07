@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import { css, html } from 'lit';
+import { getIsInteractiveChildClicked, ListItemMixin } from './list-item-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ListItemMixin } from './list-item-mixin.js';
 
 export const ListItemButtonMixin = superclass => class extends ListItemMixin(superclass) {
 	static get properties() {
@@ -29,16 +29,19 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			button {
 				background-color: transparent;
 				border: none;
+				color: unset;
 				cursor: pointer;
 				display: block;
+				font-family: unset;
+				font-size: unset;
+				font-weight: unset;
+				letter-spacing: unset;
+				line-height: unset;
 				height: 100%;
 				outline: none;
+				padding: 0;
+				text-align: start;
 				width: 100%;
-			}
-			:host(:not([button-disabled]):not([no-primary-action])) [slot="content"],
-			:host(:not([no-primary-action])) [slot="control-action"] ~ [slot="content"],
-			:host(:not([no-primary-action])) [slot="outside-control-action"] ~ [slot="content"] {
-				pointer-events: none;
 			}
 			:host(:not([button-disabled])) [slot="control-action"],
 			:host(:not([button-disabled])) [slot="outside-control-action"] {
@@ -61,13 +64,23 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 		if (changedProperties.has('buttonDisabled') && this.buttonDisabled === true) this._hoveringPrimaryAction = false;
 	}
 
-	_onButtonClick() {
-		/** Dispatched when the item's primary button action is clicked */
-		this.dispatchEvent(new CustomEvent('d2l-list-item-button-click', { bubbles: true }));
+	_onButtonClick(e) {
+		if (getIsInteractiveChildClicked(e, this.shadowRoot.querySelector(`#${this._primaryActionId}`))) {
+			e.preventDefault();
+		} else {
+			/** Dispatched when the item's primary button action is clicked */
+			this.dispatchEvent(new CustomEvent('d2l-list-item-button-click', { bubbles: true }));
+		}
 	}
 
-	_renderPrimaryAction(labelledBy) {
-		return html`<button id="${this._primaryActionId}" aria-labelledby="${labelledBy}" @click="${this._onButtonClick}" ?disabled="${this.buttonDisabled}"></button>`;
+	_renderPrimaryAction(labelledBy, content) {
+		return html`<button 
+			id="${this._primaryActionId}" 
+			aria-labelledby="${labelledBy}" 
+			@click="${this._onButtonClick}" 
+			?disabled="${this.buttonDisabled}">
+			${content}
+		</button>`;
 	}
 
 };
