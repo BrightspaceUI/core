@@ -541,12 +541,11 @@ describe('list', () => {
 
 		[
 			{ name: 'default', template: createDraggableList() },
-			{ name: 'focus', template: createDraggableList(), action: elem => focusElem(elem.querySelector('[key="1"]')) },
-			{ name: 'hover', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'add-button', template: createDraggableList({ addButton: true }) },
 			{ name: 'add-button focus', template: createDraggableList({ addButton: true }), action: elem => focusElem(elem.querySelector('[key="2"]')) },
 			{ name: 'add-button hover', template: createDraggableList({ addButton: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'color hover', template: createDraggableList({ color1: '#ff0000' }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
+			{ name: 'focus list item', template: createDraggableList(), action: elem => focusElem(elem.querySelector('[key="1"]')) },
 			{ name: 'hover list item', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'hover outside control', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]').shadowRoot.querySelector('[slot="outside-control"]')) },
 			{ name: 'drag-target-handle-only hover list item', template: createDraggableList({ handleOnly: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
