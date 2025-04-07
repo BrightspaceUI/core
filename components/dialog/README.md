@@ -258,6 +258,86 @@ document.querySelector('#open').addEventListener('click', () => {
 });
 ```
 
+## Loading Asynchronous Content
+
+The `until` directive can be used for manging the rendering of dialog content when it is loaded asynchronously. The example below loads some dialog content asynchronously, displaying a [Loading Spinner](../loading-spinner/) until the content is ready.
+
+Notes on this example:
+- Dialog sizing: `this.resolveLoadingComplete` (part of `LoadingCompleteMixin`) on image load triggers the dialog resize
+- Focus management: focus will go to the first footer button by default. If focus should instead go to a focusable element in the content then that would need to be specified, often by using `.focus()` on the other focusable element.
+
+<!-- docs: demo code autoSize:false size:xlarge -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/button.js';
+  import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
+  import { html, LitElement, noChange } from 'lit';
+  import { guard } from 'lit/directives/guard.js';
+  import { LoadingCompleteMixin } from '@brightspace-ui/core/mixins/loading-complete/loading-complete-mixin.js';
+  import { until } from 'lit/directives/until.js';
+
+  class DialogAsyncContentUntil extends LoadingCompleteMixin(LitElement) {
+
+    static get properties() {
+      return {
+        key: { type: String }
+      };
+    }
+    
+    constructor() {
+      super();
+      this.key = null;
+    }
+
+    render() {
+      const loadingSpinner = html`<d2l-loading-spinner size="100" style="width: 100%;"></d2l-loading-spinner>`;
+      return html`${guard([this.key], () => until(this.#getContent(this.key), loadingSpinner, noChange))}`;
+    }
+    
+    #getContent(key) {
+      return new Promise((resolve) => {
+      if (!key) return;
+      setTimeout(() => {
+        resolve(html`
+        <d2l-button>Focus on me!</d2l-button>
+        <img 
+          src="https://us.v-cdn.net/cdn-cgi/image/fit=scale-down,width=1600/https://us.v-cdn.net/6036482/uploads/Y6MNPRWX5OVH/moose-poses-guided-tour.png" 
+          style="height: 300px; display: block;"
+          @load="${this.#handleImageLoad}"
+        >
+        `);
+        }, 1000);
+      });
+    }
+
+    #handleImageLoad() {
+      this.shadowRoot.querySelector('d2l-button').focus();
+      this.resolveLoadingComplete();
+    }
+  }
+
+  customElements.define('d2l-dialog-demo-async-content-until', DialogAsyncContentUntil);
+</script>
+<script type="module">
+  import '@brightspace-ui/core/components/button/button.js';
+  import '@brightspace-ui/core/components/dialog/dialog.js';
+  
+  document.querySelector('#open').addEventListener('click', () => {
+    document.querySelector('#dialog').opened = true;
+    document.querySelector('d2l-dialog-demo-async-content-until').key = 'my-dialog';
+  });
+  document.querySelector('#dialog').addEventListener('d2l-dialog-close', (e) => {
+    console.log('dialog action:', e.detail.action);
+  });
+</script>
+<d2l-dialog id="dialog" title-text="Async Dialog">
+  <d2l-dialog-demo-async-content-until></d2l-dialog-demo-async-content-until>
+  <d2l-button slot="footer" primary data-dialog-action="done">Done</d2l-button>
+  <d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+</d2l-dialog>
+<d2l-button id="open">Show Dialog</d2l-button>
+```
+
 ## Accessibility
 
 ### Focus Management
