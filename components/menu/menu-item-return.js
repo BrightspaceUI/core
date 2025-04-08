@@ -3,9 +3,8 @@ import { css, html, LitElement } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { MenuItemMixin } from './menu-item-mixin.js';
 import { menuItemStyles } from './menu-item-styles.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
-class MenuItemReturn extends RtlMixin(LocalizeCoreElement(MenuItemMixin(LitElement))) {
+class MenuItemReturn extends LocalizeCoreElement(MenuItemMixin(LitElement)) {
 
 	static get styles() {
 		return [ menuItemStyles,
@@ -27,21 +26,16 @@ class MenuItemReturn extends RtlMixin(LocalizeCoreElement(MenuItemMixin(LitEleme
 
 				d2l-icon {
 					flex: none;
-					margin-right: 1rem;
+					margin-inline-end: 1rem;
 					margin-top: 0.1rem;
-				}
-
-				:host([dir="rtl"]) > d2l-icon {
-					margin-left: 1rem;
-					margin-right: 0;
 				}
 			`
 		];
 	}
 
-	firstUpdated() {
-		super.firstUpdated();
-		this.setAttribute('aria-label', this.localize('components.menu-item-return.return'));
+	constructor() {
+		super();
+		this.text = null;
 	}
 
 	render() {
@@ -51,14 +45,15 @@ class MenuItemReturn extends RtlMixin(LocalizeCoreElement(MenuItemMixin(LitEleme
 		`;
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-
-		changedProperties.forEach((oldValue, propName) => {
-			if (propName === 'text') {
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('text')) {
+			if (this.text) {
 				this.setAttribute('aria-label', this.localize('components.menu-item-return.returnCurrentlyShowing', 'menuTitle', this.text));
+			} else {
+				this.setAttribute('aria-label', this.localize('components.menu-item-return.return'));
 			}
-		});
+		}
 	}
 
 }

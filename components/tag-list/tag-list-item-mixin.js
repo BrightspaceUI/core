@@ -10,7 +10,6 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const keyCodes = {
 	BACKSPACE: 8,
@@ -38,7 +37,7 @@ export function resetHasDisplayedKeyboardTooltip() {
 	hasDisplayedKeyboardTooltip = false;
 }
 
-export const TagListItemMixin = superclass => class extends LocalizeCoreElement(PropertyRequiredMixin(RtlMixin(superclass))) {
+export const TagListItemMixin = superclass => class extends LocalizeCoreElement(PropertyRequiredMixin(superclass)) {
 
 	static get properties() {
 		return {
@@ -95,11 +94,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				white-space: nowrap;
 			}
 			.tag-list-item-container.tag-list-item-container-clearable {
-				padding-right: 0.2rem;
-			}
-			:host([dir="rtl"]) .tag-list-item-container.tag-list-item-container-clearable {
-				padding-left: 0.2rem;
-				padding-right: 0;
+				padding-inline-end: 0.2rem;
 			}
 			.tag-list-item-content {
 				outline: none;
@@ -135,11 +130,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				}
 			}
 			.d2l-tag-list-item-clear-button {
-				margin-left: calc(-0.6rem + 3px);
-			}
-			:host([dir="rtl"]) .d2l-tag-list-item-clear-button {
-				margin-left: 0;
-				margin-right: calc(-0.6rem + 3px);
+				margin-inline-start: calc(-0.6rem + 3px);
 			}
 			d2l-button-icon {
 				--d2l-button-icon-fill-color: var(--d2l-color-chromite);
