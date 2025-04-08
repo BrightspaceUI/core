@@ -41,7 +41,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			 * Whether or not the dialog is open
 			 */
 			opened: { type: Boolean, reflect: true },
-
+			/**
+			 * Opt out of dialog content scrolling
+			 */
+			noContentScroll: { type: Boolean, attribute: 'no-content-scroll', reflect: true },
 			/**
 			 * The optional title for the dialog
 			 */
@@ -68,6 +71,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	constructor() {
 		super();
 		this.focusableContentElemPresent = false;
+		this.noContentScroll = false;
 		this.opened = false;
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
