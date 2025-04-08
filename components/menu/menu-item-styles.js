@@ -4,6 +4,7 @@ import { getFocusPseudoClass } from '../../helpers/focus.js';
 
 export const menuItemStyles = css`
 	:host {
+		--d2l-menu-item-lines: 2;
 		background-color: var(--d2l-menu-background-color);
 		border-top: 1px solid var(--d2l-menu-border-color);
 		box-sizing: border-box;
@@ -53,7 +54,7 @@ export const menuItemStyles = css`
 		-webkit-box-orient: vertical;
 		display: -webkit-box;
 		flex: auto;
-		-webkit-line-clamp: 2;
+		-webkit-line-clamp: var(--d2l-menu-item-lines, 2);
 		line-height: 1rem;
 		overflow-wrap: anywhere;
 		overflow-x: hidden;
@@ -64,10 +65,6 @@ export const menuItemStyles = css`
 	.d2l-menu-item-supporting {
 		flex: 0 0 auto;
 		line-height: 1rem;
-		margin-left: 6px;
-	}
-	:host([dir="rtl"]) .d2l-menu-item-supporting {
-		margin-left: 0;
-		margin-right: 6px;
+		margin-inline-start: 6px;
 	}
 `;

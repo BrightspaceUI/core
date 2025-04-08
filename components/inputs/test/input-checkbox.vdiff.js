@@ -148,14 +148,28 @@ describe('d2l-input-checkbox', () => {
 			template: html`<d2l-input-checkbox aria-label="Label for checkbox"></d2l-input-checkbox>`
 		},
 		{
+			name: 'supporting',
+			template: html`
+				<d2l-input-checkbox>
+					Label for checkbox
+					<div slot="supporting" style="color: #999999;">
+						Additional content can go here and will<br>
+						also line up nicely with the checkbox.
+					</div>
+				</d2l-input-checkbox>
+			`
+		},
+		{
 			name: 'spacer',
 			template: html`
 				<div class="display:inline-block;">
-					<d2l-input-checkbox>Label for checkbox</d2l-input-checkbox>
-					<d2l-input-checkbox-spacer style="color: #999999;">
-						Additional content can go here and will<br>
-						also line up nicely with the checkbox.
-					</d2l-input-checkbox-spacer>
+					<d2l-input-checkbox>
+						Label for checkbox
+						<div slot="supporting" style="color: #999999;">
+							Additional content can go here and will<br>
+							also line up nicely with the checkbox.
+						</div>
+					</d2l-input-checkbox>
 				</div>
 			`
 		}

@@ -11,9 +11,19 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	static get properties() {
 		return {
+			/**
+			 * Use to select the tab. Only one tab can be selected at a time.
+			 * @type {boolean}
+			 */
 			selected: { type: Boolean, reflect: true },
+			/**
+			 * @ignore
+			 */
 			// eslint-disable-next-line lit/no-native-attributes
 			role: { type: String, reflect: true },
+			/**
+			 * @ignore
+			 */
 			tabIndex: { type: Number, reflect: true, attribute: 'tabindex' }
 		};
 	}
@@ -80,26 +90,12 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		this.tabIndex = -1;
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		this.#addEventHandlers();
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
 
-		if (!this.#resizeObserver) {
-			this.#resizeObserver = new ResizeObserver(() => {
-				this.#handleResize();
-			});
-			this.#resizeObserver.observe(this);
-		}
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.#removeEventHandlers();
-
-		if (this.#resizeObserver) {
-			this.#resizeObserver.disconnect();
-			this.#resizeObserver = null;
-		}
+		this.addEventListener('click', this.#handleClick);
+		this.addEventListener('keydown', this.#handleKeydown);
+		this.addEventListener('keyup', this.#handleKeyup);
 	}
 
 	render() {
@@ -115,6 +111,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		if (changedProperties.has('selected')) {
 			this.ariaSelected = `${this.selected}`;
 			if (this.selected) {
+				/** Dispatched when a tab is selected */
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tab-selected', { bubbles: true, composed: true }
 				));
@@ -137,39 +134,21 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		return html`<div>Default Tab Content</div>`;
 	}
 
-	#resizeObserver;
-
-	#handleClick = () => {
+	#handleClick() {
 		this.selected = true;
 	};
 
-	#handleKeydown = e => {
+	#handleKeydown(e) {
 		if (e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER) {
 			e.stopPropagation();
 			e.preventDefault();
 		}
 	};
 
-	#handleKeyup = e => {
+	#handleKeyup(e) {
 		if (e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER) {
 			this.#handleClick();
 		}
 	};
-
-	#addEventHandlers() {
-		this.addEventListener('click', this.#handleClick);
-		this.addEventListener('keydown', this.#handleKeydown);
-		this.addEventListener('keyup', this.#handleKeyup);
-	}
-
-	#handleResize() {
-		this.dispatchEvent(new CustomEvent('d2l-tab-resize'));
-	}
-
-	#removeEventHandlers() {
-		this.removeEventListener('click', this.#handleClick);
-		this.removeEventListener('keydown', this.#handleKeydown);
-		this.removeEventListener('keyup', this.#handleKeyup);
-	}
 
 };

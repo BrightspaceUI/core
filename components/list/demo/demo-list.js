@@ -1,4 +1,3 @@
-/* eslint-disable indent */
 import '../../button/button-icon.js';
 import '../../dropdown/dropdown-button-subtle.js';
 import '../../dropdown/dropdown-menu.js';

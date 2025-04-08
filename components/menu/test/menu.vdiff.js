@@ -41,6 +41,11 @@ describe('menu', () => {
 				<d2l-menu-item text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"></d2l-menu-item>
 			</d2l-menu>
 		` },
+		{ name: 'lines', template: html`
+			<d2l-menu>
+				<d2l-menu-item lines="3" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."></d2l-menu-item>
+			</d2l-menu>
+		` },
 		{ name: 'hidden', template: html`
 			<d2l-menu>
 				<d2l-menu-item text="a" hidden></d2l-menu-item>

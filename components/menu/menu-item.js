@@ -18,14 +18,9 @@ class MenuItem extends MenuItemMixin(LitElement) {
 					display: flex;
 					padding: 0.75rem 1rem;
 				}
-
 				d2l-icon {
 					flex: none;
-					margin-left: 6px;
-				}
-				:host([dir="rtl"]) d2l-icon {
-					margin-left: 0;
-					margin-right: 6px;
+					margin-inline-start: 6px;
 				}
 			`
 		];

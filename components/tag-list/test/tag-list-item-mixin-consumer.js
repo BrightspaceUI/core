@@ -18,23 +18,15 @@ class TagListItemMixinConsumer extends TagListItemMixin(LitElement) {
 				border-radius: 6px;
 				display: inline-block;
 				height: 1.2rem;
-				left: 0.15rem;
+				inset-inline-start: 0.15rem;
 				position: absolute;
 				top: 50%;
 				transform: translate(0, -50%);
 				width: 1.2rem;
 			}
-			:host([dir="rtl"]) .color-block {
-				left: unset;
-				right: 0.15rem;
-			}
 			.text {
-				padding-left: calc(1.55rem - 0.6rem);
+				padding-inline-start: calc(1.55rem - 0.6rem);
 				vertical-align: middle;
-			}
-			:host([dir="rtl"]) .text {
-				padding-left: 0;
-				padding-right: calc(1.55rem - 0.6rem);
 			}
 			d2l-dropdown {
 				min-width: 0;

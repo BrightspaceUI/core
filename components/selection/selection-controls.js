@@ -103,6 +103,7 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 			.d2l-selection-controls-actions {
 				--d2l-overflow-group-justify-content: flex-end;
 				flex: auto;
+				margin-inline-end: var(--d2l-selection-controls-offset, 0);
 				text-align: end;
 			}
 			.d2l-sticky-edge {
