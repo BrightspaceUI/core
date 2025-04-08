@@ -4,6 +4,7 @@ import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { TabMixin } from './tab-mixin.js';
 
 /**
+ * @attr id - REQUIRED: Unique identifier for the tab
  * @fires d2l-tab-content-change - Dispatched when the text attribute is changed. Triggers virtual scrolling calculations in parent d2l-tabs.
  */
 class Tab extends TabMixin(LitElement) {
@@ -11,7 +12,7 @@ class Tab extends TabMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * ACCESSIBILITY: REQUIRED: The text used for the tab, as well as labelling the panel.
+			 * ACCESSIBILITY: REQUIRED: The text used for the tab and for labelling the corresponding panel
 			 * @type {string}
 			 */
 			text: { type: String }
