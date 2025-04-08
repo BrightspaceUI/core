@@ -59,6 +59,12 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		}
 	}
 
+	_handleLinkFocus(e) {
+		if (getIsInteractiveChildClicked(e, this.shadowRoot.querySelector(`#${this._primaryActionId}`))) {
+			e.stopPropagation();
+		}
+	}
+
 	_handleLinkKeyDown(e) {
 		if (e.keyCode !== 32) return;
 		// handle the space key
@@ -71,6 +77,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		if (!this.actionHref) return;
 		return html`<a aria-labelledby="${labelledBy}"
 			@click="${this._handleLinkClick}"
+			@focusin="${this._handleLinkFocus}"
 			href="${this.actionHref}"
 			id="${this._primaryActionId}"
 			@keydown="${this._handleLinkKeyDown}">${content}</a>`;

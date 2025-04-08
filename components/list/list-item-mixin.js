@@ -709,7 +709,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		};
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
-		const hasPrimaryAction = !this.noPrimaryAction && this._renderPrimaryAction;
 		const contentAreaContent = html`
 			<div slot="content"
 				class="d2l-list-item-content"
@@ -720,7 +719,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				<slot>${content}</slot>
 			</div>
 		`;
-		const primaryAction = (hasPrimaryAction ? this._renderPrimaryAction(this._contentId, contentAreaContent) : null);
+		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId, contentAreaContent) : null);
 		let tooltipForId = null;
 		if (this._showAddButton) {
 			tooltipForId = this._addButtonTopId;

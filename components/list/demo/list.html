@@ -116,7 +116,7 @@
 				<script type="module">
 					requestAnimationFrame(() => {
 						const list = document.querySelector('#button-item-list');
-						list.addEventListener('d2l-list-item-button-click', (e) => {
+						list.addEventListener('d2l-list-item-button-click', () => {
 							console.log('d2l-list-item-button: click event');
 						});
 						list.querySelector('d2l-button').addEventListener('click', () => {
