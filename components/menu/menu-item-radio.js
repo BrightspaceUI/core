@@ -2,13 +2,12 @@ import '../icons/icon.js';
 import { html, LitElement } from 'lit';
 import { MenuItemRadioMixin } from './menu-item-radio-mixin.js';
 import { menuItemSelectableStyles } from './menu-item-selectable-styles.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A menu item component used for radio selection. Only one radio item in a given d2l-menu may be selected at once (i.e., selecting one option will deselect the other selected "d2l-menu-item-radio" item).
  * @slot supporting - Allows supporting information to be displayed on the right-most side of the menu item
  */
-class MenuItemRadio extends RtlMixin(MenuItemRadioMixin(LitElement)) {
+class MenuItemRadio extends MenuItemRadioMixin(LitElement) {
 
 	static get styles() {
 		return menuItemSelectableStyles;
