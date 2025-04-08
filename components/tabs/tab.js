@@ -28,8 +28,8 @@ class Tab extends TabMixin(LitElement) {
 			}
 			:host(:${unsafeCSS(getFocusPseudoClass())}) .d2l-tab-text {
 				border-radius: 0.3rem;
-				box-shadow: 0 0 0 2px var(--d2l-color-celestine);
 				color: var(--d2l-color-celestine);
+				outline: 2px solid var(--d2l-color-celestine);
 			}
 			.d2l-tab-text-skeletize-override {
 				min-width: 50px;
