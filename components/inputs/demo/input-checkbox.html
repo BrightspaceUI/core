@@ -55,9 +55,16 @@
 				</template>
 			</d2l-demo-snippet>
 
-			<h2>Checkbox with label and secondary content</h2>
+			<h2>Checkbox with label and supporting content</h2>
 			<d2l-demo-snippet>
 				<template>
+					<d2l-input-checkbox>
+						Label for checkbox
+						<div slot="supporting" style="color: #999999;">
+							Additional content can go here and will<br>
+							also line up nicely with the checkbox.
+						</div>
+					</d2l-input-checkbox>
 					<d2l-input-checkbox>Label for checkbox</d2l-input-checkbox>
 					<d2l-input-checkbox-spacer style="color: #999999;">
 						Additional content can go here and will<br>

@@ -63,6 +63,7 @@ export const checkboxStyles = css`
  * A component that can be used to show a checkbox and optional visible label.
  * @slot - Checkbox information (e.g., text)
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
+ * @slot supporting - Supporting information which will appear below and be aligned with the checkbox.
  * @fires change - Dispatched when the checkbox's state changes
  */
 class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitElement))) {
@@ -114,6 +115,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			 * @type {string}
 			 */
 			value: { type: String },
+			_hasSupporting: { type: Boolean, attribute: '_has-supporting', reflect: true },
 			_isHovered: { state: true },
 		};
 	}
@@ -123,7 +125,6 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			css`
 				:host {
 					display: block;
-					line-height: ${cssSizes.inputBoxSize}rem;
 					margin-bottom: 0.9rem;
 				}
 				:host([hidden]) {
@@ -135,6 +136,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 				}
 				label {
 					display: flex;
+					line-height: ${cssSizes.inputBoxSize}rem;
 					overflow-wrap: anywhere;
 				}
 				.d2l-input-checkbox-wrapper {
@@ -156,7 +158,8 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 					bottom: 0.3rem;
 					top: 0.3rem;
 				}
-				.d2l-input-inline-help {
+				.d2l-input-inline-help,
+				.d2l-input-checkbox-supporting {
 					margin-inline-start: ${cssSizes.inputBoxSize + cssSizes.checkboxMargin}rem;
 				}
 				.d2l-input-checkbox-text-disabled {
@@ -167,6 +170,13 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 				}
 				input[type="checkbox"].d2l-input-checkbox {
 					vertical-align: top;
+				}
+				.d2l-input-checkbox-supporting {
+					display: none;
+					margin-block: 0.9rem;
+				}
+				:host([_has-supporting]) .d2l-input-checkbox-supporting {
+					display: block;
 				}
 			`
 		];
@@ -180,6 +190,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 		this.name = '';
 		this.notTabbable = false;
 		this.value = 'on';
+		this._hasSupporting = false;
 		this._isHovered = false;
 	}
 
@@ -221,8 +232,9 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 					.value="${this.value}"></span><span class="${classMap(textClasses)}"><slot></slot></span>
 			</label>
 			${this._renderInlineHelp(this.#inlineHelpId)}
-		  	${offscreenContainer}
+			${offscreenContainer}
 			${disabledTooltip}
+			<div class="d2l-input-checkbox-supporting"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
 		`;
 	}
 
@@ -258,6 +270,11 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 
 	#handleMouseLeave() {
 		this._isHovered = false;
+	}
+
+	#handleSupportingSlotChange(e) {
+		const content = e.target.assignedNodes({ flatten: true });
+		this._hasSupporting = content?.length > 0;
 	}
 
 }
