@@ -35,9 +35,9 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 				font-family: unset;
 				font-size: unset;
 				font-weight: unset;
+				height: 100%;
 				letter-spacing: unset;
 				line-height: unset;
-				height: 100%;
 				outline: none;
 				padding: 0;
 				text-align: start;
