@@ -65,10 +65,6 @@ export const menuItemStyles = css`
 	.d2l-menu-item-supporting {
 		flex: 0 0 auto;
 		line-height: 1rem;
-		margin-left: 6px;
-	}
-	:host([dir="rtl"]) .d2l-menu-item-supporting {
-		margin-left: 0;
-		margin-right: 6px;
+		margin-inline-start: 6px;
 	}
 `;
