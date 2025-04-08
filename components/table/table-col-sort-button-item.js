@@ -2,7 +2,6 @@ import '../icons/icon.js';
 import { html, LitElement } from 'lit';
 import { MenuItemRadioMixin } from '../menu/menu-item-radio-mixin.js';
 import { menuItemSelectableStyles } from '../menu/menu-item-selectable-styles.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A radio menu item to be used within the d2l-table-col-sort-button component for a multi-faceted sort.
@@ -10,7 +9,7 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
  * @fires d2l-menu-item-select - Internal event
  * @fires d2l-menu-item-visibility-change - Internal event
  */
-class TableColSortButtonItem extends RtlMixin(MenuItemRadioMixin(LitElement)) {
+class TableColSortButtonItem extends MenuItemRadioMixin(LitElement) {
 
 	static get styles() {
 		return menuItemSelectableStyles;

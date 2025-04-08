@@ -23,11 +23,7 @@ class ActionMenuItem extends SelectionActionMixin(MenuItemMixin(LitElement)) {
 				}
 				d2l-icon {
 					flex: none;
-					margin-left: 6px;
-				}
-				:host([dir="rtl"]) d2l-icon {
-					margin-left: 0;
-					margin-right: 6px;
+					margin-inline-start: 6px;
 				}
 			`
 		];

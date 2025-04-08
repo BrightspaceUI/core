@@ -5,14 +5,14 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { InputInlineHelpMixin } from './input-inline-help.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
  * A component wrapper to be used when a page contains multiple inputs which are related (for example to form an address) to wrap those related inputs.
  * @slot - Related input components
  */
-class InputFieldset extends InputInlineHelpMixin(SkeletonMixin(RtlMixin(LitElement))) {
+class InputFieldset extends PropertyRequiredMixin(InputInlineHelpMixin(SkeletonMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -20,7 +20,7 @@ class InputFieldset extends InputInlineHelpMixin(SkeletonMixin(RtlMixin(LitEleme
 			 * REQUIRED: Label for the fieldset
 			 * @type {string}
 			 */
-			label: { type: String },
+			label: { type: String, required: true },
 			/**
 			 * Hides the label visually
 			 * @type {boolean}
