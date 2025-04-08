@@ -114,7 +114,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.addEventListener('d2l-dropdown-open', this.__onOpened);
 		this.addEventListener('d2l-dropdown-close', this.__onClosed);
 		const content = this.__getContentElement();
-		this.setOpenerElementAttribute(content?.opened || false);
+		this._setOpenerElementAttribute(content?.opened || false);
 	}
 
 	updated(changedProperties) {
@@ -167,18 +167,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		await dropdownContent.updateComplete;
 	}
 
-	setOpenerElementAttribute(val, setActive = false) {
-		const opener = this.getOpenerElement();
-		if (!opener) return false;
-		const attribute = opener.isButtonMixin ? 'expanded' : 'aria-expanded';
-		opener.setAttribute(attribute, val.toString());
-		if (setActive) {
-			if (val) opener.setAttribute('active', 'true');
-			else opener.removeAttribute('active');
-		}
-		return true;
-	}
-
 	toggleOpen(applyFocus) {
 		if (this.disabled) {
 			return;
@@ -208,7 +196,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	__onClosed() {
 		intersectionObserver.unobserve(this);
 
-		if (!this.setOpenerElementAttribute(false, true)) return;
+		if (!this._setOpenerElementAttribute(false, true)) return;
 		this.dropdownOpened = false;
 		this._isOpenedViaClick = false;
 	}
@@ -275,7 +263,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	__onOpened() {
-		if (!this.setOpenerElementAttribute(true, true)) return;
+		if (!this._setOpenerElementAttribute(true, true)) return;
 		this._isFading = false;
 
 		intersectionObserver.observe(this);
@@ -341,5 +329,17 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (!isWithinOpener && (!isWithinDropdown || isBackdropClick)) {
 			this.closeDropdown();
 		}
+	}
+
+	_setOpenerElementAttribute(val, setActive = false) {
+		const opener = this.getOpenerElement();
+		if (!opener) return false;
+		const attribute = opener.isButtonMixin ? 'expanded' : 'aria-expanded';
+		opener.setAttribute(attribute, val.toString());
+		if (setActive) {
+			if (val) opener.setAttribute('active', 'true');
+			else opener.removeAttribute('active');
+		}
+		return true;
 	}
 };
