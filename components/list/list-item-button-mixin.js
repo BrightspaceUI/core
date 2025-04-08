@@ -73,11 +73,18 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 		}
 	}
 
+	_onButtonFocus(e) {
+		if (getIsInteractiveChildClicked(e, this.shadowRoot.querySelector(`#${this._primaryActionId}`))) {
+			e.stopPropagation();
+		}
+	}
+
 	_renderPrimaryAction(labelledBy, content) {
 		return html`<button 
 			id="${this._primaryActionId}" 
 			aria-labelledby="${labelledBy}" 
 			@click="${this._onButtonClick}" 
+			@focusin="${this._onButtonFocus}"
 			?disabled="${this.buttonDisabled}">
 			${content}
 		</button>`;
