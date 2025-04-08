@@ -115,7 +115,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			 * @type {string}
 			 */
 			value: { type: String },
-			_hasSupporting: { type: Boolean, attribute: '_has-supporting', reflect: true },
+			_hasSupporting: { state: true },
 			_isHovered: { state: true },
 		};
 	}
@@ -175,7 +175,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 					display: none;
 					margin-block: 0.9rem;
 				}
-				:host([_has-supporting]) .d2l-input-checkbox-supporting {
+				.d2l-input-checkbox-supporting-visible {
 					display: block;
 				}
 			`
@@ -200,6 +200,10 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 
 	render() {
 		const tabindex = this.notTabbable ? -1 : undefined;
+		const supportingClasses = {
+			'd2l-input-checkbox-supporting': true,
+			'd2l-input-checkbox-supporting-visible': this._hasSupporting
+		};
 		const textClasses = {
 			'd2l-input-checkbox-text': true,
 			'd2l-skeletize': true,
@@ -234,7 +238,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			${this._renderInlineHelp(this.#inlineHelpId)}
 			${offscreenContainer}
 			${disabledTooltip}
-			<div class="d2l-input-checkbox-supporting"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
+			<div class="${classMap(supportingClasses)}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
 		`;
 	}
 
