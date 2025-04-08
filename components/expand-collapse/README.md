@@ -14,7 +14,7 @@ The `d2l-expand-collapse-content` element can be used to create expandable and c
   button.addEventListener('click', () => {
     const section = document.querySelector('d2l-expand-collapse-content');
     section.expanded = !section.expanded;
-    button.setAttribute('aria-expanded', section.expanded ? 'true' : 'false');
+    button.setAttribute('expanded', section.expanded ? 'true' : 'false');
   });
 </script>
 <d2l-button primary>Toggle</d2l-button>
@@ -43,6 +43,6 @@ To make your usage of `d2l-expand-collapse-content` accessible, it should follow
 To achieve this, the control that toggles the expanded state should:
  - Use the [`d2l-button`](../button) or use an element with the [`button`](https://w3c.github.io/aria/#button) role
  - Toggle between states when using the `Enter` and `Space` buttons and retain focus upon toggle
- - Have the [`aria-expanded`](https://www.w3.org/TR/wai-aria/#aria-expanded) attribute set to `'true'` or `'false'` depending on expansion state so that screen reader users will know what state it's in
+ - Have the [`aria-expanded`](https://www.w3.org/TR/wai-aria/#aria-expanded)(`expanded` on controls using `ButtonMixin` like core [button components](../../components/button)) attribute set to `'true'` or `'false'` depending on expansion state so that screen reader users will know what state it's in
  - Be adjacent to the expanded/collapsed content
 
