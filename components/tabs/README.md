@@ -145,7 +145,7 @@ Promise.resolve(tabs.hideTab((tab))).then(() => {
 
 The `TabMixin` can be used to create custom tabs. It is IMPORTANT to call the `dispatchContentChangeEvent` function in `TabMixin` when content changes in the consumer in order to properly trigger calculations. Ensure that there is only one element in any custom tab to focus on, else the focus and keyboard navigation behaviors become confusing for users. Note that the parent `d2l-tabs` element handles `tabindex` focus management, and so consumers should not be rendering focusable elements within custom tabs.
 
-<!-- docs: demo code sandboxTitle:'TabMixin' display:block -->
+<!-- docs: demo code sandboxTitle:'TabMixin' display:block-->
 ```html
 <script type="module">
   import { css, html, LitElement, unsafeCSS } from 'lit';
