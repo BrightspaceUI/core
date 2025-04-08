@@ -12,7 +12,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	static get properties() {
 		return {
 			/**
-			 * Use to select the tab
+			 * Use to select the tab. Only one tab can be selected at a time.
 			 * @type {boolean}
 			 */
 			selected: { type: Boolean, reflect: true },

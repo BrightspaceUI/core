@@ -143,7 +143,7 @@ Promise.resolve(tabs.hideTab((tab))).then(() => {
 
 ### Custom Tabs
 
-The `TabMixin` can be used to create custom tabs. It is IMPORTANT to call the `dispatchContentChangeEvent` function in `TabMixin` when content changes in the consumer in order to properly trigger calculations.
+The `TabMixin` can be used to create custom tabs. It is IMPORTANT to call the `dispatchContentChangeEvent` function in `TabMixin` when content changes in the consumer in order to properly trigger calculations. Ensure that there is only one focusable element in any custom tab, else the focus and keyboard navigation behaviors becomes confusing for users.
 
 <!-- docs: demo code sandboxTitle:'TabMixin' display:block -->
 ```html
@@ -165,10 +165,10 @@ The `TabMixin` can be used to create custom tabs. It is IMPORTANT to call the `d
         :host(:first-child) .d2l-tab-custom-content {
           margin-inline-start: 0;
         }
-        :host(:${unsafeCSS(getFocusPseudoClass())}) > .d2l-tab-custom-content {
+        :host(:${unsafeCSS(getFocusPseudoClass())}) .d2l-tab-custom-content {
           border-radius: 0.3rem;
-          box-shadow: 0 0 0 2px var(--d2l-color-celestine);
           color: var(--d2l-color-celestine);
+          outline: 2px solid var(--d2l-color-celestine);
         }
       `];
 
@@ -201,7 +201,7 @@ The `TabMixin` can be used to create custom tabs. It is IMPORTANT to call the `d
   <d2l-tab-custom id="all" slot="tabs"><div style="color: purple;">All</div></d2l-tab-custom>
   <d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
   <d2l-tab-custom id="biology" slot="tabs" selected>
-    Biology <d2l-count-badge has-tooltip number="100" size="small" tab-stop text="100 new notifications" type="notification"></d2l-count-badge>
+    Biology <d2l-count-badge number="100" size="small" text="100 new notifications" type="notification"></d2l-count-badge>
   </d2l-tab-custom>
   <d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
   <d2l-tab-custom id="chemistry" slot="tabs">Chemistry</d2l-tab-custom>
