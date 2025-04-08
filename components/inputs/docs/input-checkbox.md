@@ -77,6 +77,7 @@ checkbox.addEventListener('change', (e) => {
 
 * `default`: Primary text that will appear next to the input box and function as the label for the checkbox.
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
+* `supporting`: Supporting information which will appear below and be aligned with the checkbox.
 <!-- docs: end hidden content -->
 
 ### Methods
@@ -84,6 +85,9 @@ checkbox.addEventListener('change', (e) => {
 - `simulateClick()`: useful for testing, it simulates the user clicking on the checkbox, which toggles the state of the checkbox and fires the `change` event
 
 ## Checkbox Spacer [d2l-input-checkbox-spacer]
+
+> [!NOTE]  
+> Spacer is obsolete. Use the `supporting` slot instead.
 
 To align related content below checkboxes, the `d2l-input-checkbox-spacer` element can be used:
 
