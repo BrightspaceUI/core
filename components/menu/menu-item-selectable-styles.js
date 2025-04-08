@@ -16,13 +16,8 @@ export const menuItemSelectableStyles = [ menuItemStyles,
 
 		d2l-icon {
 			flex: none;
-			margin-right: 0.8rem;
+			margin-inline-end: 0.8rem;
 			visibility: hidden;
-		}
-
-		:host([dir="rtl"]) > d2l-icon {
-			margin-left: 0.8rem;
-			margin-right: 0;
 		}
 
 		:host([aria-checked="true"]) > d2l-icon {
