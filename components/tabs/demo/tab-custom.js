@@ -17,8 +17,8 @@ class TabCustom extends TabMixin(LitElement) {
 			}
 			:host(:${unsafeCSS(getFocusPseudoClass())}) .d2l-tab-custom-content {
 				border-radius: 0.3rem;
-				outline: 2px solid var(--d2l-color-celestine);
 				color: var(--d2l-color-celestine);
+				outline: 2px solid var(--d2l-color-celestine);
 			}
 		`];
 
