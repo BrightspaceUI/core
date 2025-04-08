@@ -42,7 +42,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			 */
 			opened: { type: Boolean, reflect: true },
 			/**
-			 * Opt out of dialog content scrolling
+			 * ADVANCED: Opt out of dialog content scrolling
 			 */
 			noContentScroll: { type: Boolean, attribute: 'no-content-scroll', reflect: true },
 			/**
