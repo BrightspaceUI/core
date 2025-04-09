@@ -34,38 +34,38 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-list grid menu style="width: 334px;">
-						<d2l-list-item-menu-item key="L1-1" label="Label for L1-1" color="#006fbf">
+						<d2l-list-item-menu-item expandable key="L1-1" label="Label for L1-1" color="#006fbf">
 							<d2l-list-item-content>
 								<div>Earth Sciences (L1)</div>
 								<div slot="supporting-info">This course will teach the basics of earth sciences.</div>
 								<div slot="secondary"><d2l-tooltip-help text="Due: Jan 30, 2023">Available: Jan 11, 2023</d2l-tooltip-help></div>
 							</d2l-list-item-content>
 							<d2l-list slot="nested" menu>
-								<d2l-list-item-menu-item key="L2-1" label="Label for L2-1" color="#29a6ff" >
+								<d2l-list-item-menu-item expandable key="L2-1" label="Label for L2-1" color="#29a6ff" >
 									<d2l-list-item-content>
 										<div>Introductory Earth Sciences (L2)</div>
 									</d2l-list-item-content>
 									<d2l-list slot="nested" menu>
-										<d2l-list-item-menu-item key="L3-1" label="Label for L3-1" color="#e8f8ff">
+										<d2l-list-item-menu-item expandable key="L3-1" label="Label for L3-1" color="#e8f8ff">
 											<d2l-list-item-content>
 												<div>Glaciation (L3)</div>
 												<div slot="secondary" style="padding: 5px;"><d2l-tooltip-help text="Due: Jan 28, 2023">Available: Jan 11, 2023</d2l-tooltip-help></div>
 											</d2l-list-item-content>
 
-									<d2l-list slot="nested" menu>
-										<d2l-list-item-menu-item key="L4-1" label="Label for L4-1" color="#e8f8ff">
-											<d2l-list-item-content>
-												<div>Glaciation (L4)</div>
-												<div slot="secondary" style="padding: 5px;"><d2l-tooltip-help text="Due: Jan 28, 2023">Available: Jan 11, 2023</d2l-tooltip-help></div>
-											</d2l-list-item-content>
-										</d2l-list-item-menu-item>
-									</d2l-list>
+											<d2l-list slot="nested" menu>
+												<d2l-list-item-menu-item key="L4-1" label="Label for L4-1" color="#e8f8ff">
+													<d2l-list-item-content>
+														<div>Glaciation (L4)</div>
+														<div slot="secondary" style="padding: 5px;"><d2l-tooltip-help text="Due: Jan 28, 2023">Available: Jan 11, 2023</d2l-tooltip-help></div>
+													</d2l-list-item-content>
+												</d2l-list-item-menu-item>
+											</d2l-list>
 										</d2l-list-item-menu-item>
 									</d2l-list>
 								</d2l-list-item-menu-item>
 							</d2l-list>
 						</d2l-list-item-menu-item>
-						<d2l-list-item-menu-item key="L1-2" label="Label for L1-2" color="#006fbf">
+						<d2l-list-item-menu-item expandable key="L1-2" label="Label for L1-2" color="#006fbf">
 							<d2l-list-item-content>
 								<div>Earth Sciences 2.0 (L1)</div>
 								<div slot="supporting-info">This course will teach the expertise of earth sciences.</div>
@@ -181,7 +181,7 @@
 							<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
 							<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
 						</d2l-list-controls>
-						<d2l-list-item selectable key="L1-1" label="Label for L1-1">
+						<d2l-list-item expandableselectable key="L1-1" label="Label for L1-1">
 							<d2l-list-item-content>
 								<div>Earth Sciences (L1)</div>
 								<div slot="supporting-info">Earth science or geoscience includes all fields of natural science related to planet Earth. This is a branch of science dealing with the physical and chemical constitution of Earth and its atmosphere. Earth science can be considered to be a branch of planetary science, but with a much older history.</div>
