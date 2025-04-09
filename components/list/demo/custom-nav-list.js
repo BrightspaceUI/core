@@ -1,6 +1,5 @@
 import '../list.js';
 import './custom-nav-item.js';
-import '../list-item-content.js';
 import '../../tooltip/tooltip-help.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -47,13 +46,13 @@ class CustomNavList extends (LitElement) {
 
 	_renderItemContent(item) {
 		return html`
-			<d2l-list-item-content>
+			<div>
 				<div>${item.primaryText}</div>
 				<div slot="supporting-info">${item.supportingText}</div>
 				<div slot="secondary">
 					<d2l-tooltip-help text="Available Jan 4, 2025">Due Jan 20, 2025</d2l-tooltip-help>
 				</div>
-			</d2l-list-item-content>`;
+			</div>`;
 	}
 
 	_renderList(items, nested) {
