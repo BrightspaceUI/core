@@ -59,19 +59,17 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 		this.buttonDisabled = false;
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		this._button = this.shadowRoot.querySelector(`#${this._primaryActionId}`);
-	}
-
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 		if (changedProperties.has('buttonDisabled') && this.buttonDisabled === true) this._hoveringPrimaryAction = false;
 	}
 
+	getButton() {
+		return this.shadowRoot.querySelector(`#${this._primaryActionId}`);
+	}
+
 	_onButtonClick(e) {
-		if (getIsInteractiveChildClicked(e, this._button)) {
+		if (getIsInteractiveChildClicked(e, this.shadowRoot.querySelector(`#${this._primaryActionId}`))) {
 			e.preventDefault();
 		} else {
 			/** Dispatched when the item's primary button action is clicked */
@@ -80,14 +78,14 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 	}
 
 	_onButtonFocus(e) {
-		if (getIsInteractiveChildClicked(e, this._button)) {
+		if (getIsInteractiveChildClicked(e, this.shadowRoot.querySelector(`#${this._primaryActionId}`))) {
 			e.stopPropagation();
 		}
 	}
 
 	_renderPrimaryAction(labelledBy, content) {
 		return html`<button 
-			id="${this._primaryActionId}"
+			id="${this._primaryActionId}" 
 			aria-labelledby="${labelledBy}" 
 			@click="${this._onButtonClick}" 
 			@focusin="${this._onButtonFocus}"

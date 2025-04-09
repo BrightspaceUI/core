@@ -56,7 +56,7 @@ class ListItemCustomNavItem extends ListItemButtonMixin(LitElement) {
 		super.firstUpdated(changedProperties);
 
 		if (this.current) {
-			this._button.setAttribute('aria-current', this.current);
+			this.getButton().setAttribute('aria-current', this.current);
 		}
 		this.addEventListener('d2l-list-item-custom-nav-item-set-current', async(e) => {
 			if (e.target === this) return;
@@ -72,9 +72,9 @@ class ListItemCustomNavItem extends ListItemButtonMixin(LitElement) {
 		super.updated(changedProperties);
 		if (changedProperties.has('current')) {
 			if (this.current) {
-				this._button.setAttribute('aria-current', this.current);
+				this.getButton().setAttribute('aria-current', this.current);
 			} else {
-				this._button.removeAttribute('aria-current');
+				this.getButton().removeAttribute('aria-current');
 			}
 			if (this.current === 'page') {
 				this.dispatchEvent(new CustomEvent('d2l-list-item-custom-nav-item-set-current', { bubbles: true, composed: true }));
