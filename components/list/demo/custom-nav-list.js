@@ -42,8 +42,6 @@ class CustomNavList extends (LitElement) {
 		});
 
 		this._currentItem = e.target.key;
-
-		await this.updateComplete;
 	}
 
 	_renderItemContent(item) {
