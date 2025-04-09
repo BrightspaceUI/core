@@ -4,6 +4,7 @@ import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
 
 const basicFixture = '<d2l-input-date-time label="label text"></d2l-input-date-time>';
+const requiredFixture = '<d2l-input-date-time label="label text" required></d2l-input-date-time>';
 const valueFixture = '<d2l-input-date-time label="label text" value="2019-03-02T05:00:00.000Z"></d2l-input-date-time>';
 const minMaxFixture = '<d2l-input-date-time label="label text" min-value="2018-08-27T03:30:00Z" max-value="2018-09-30T17:30:00Z"></d2l-input-date-time>';
 const minMaxLocalizedFixture = '<d2l-input-date-time label="label text" localized min-value="2018-08-27T03:30:00" max-value="2018-09-30T17:30:00"></d2l-input-date-time>';
@@ -149,6 +150,29 @@ describe('d2l-input-date-time', () => {
 				expect(elem.invalid).to.be.true;
 				expect(elem.validationError).to.equal(`Date must be before or on ${expectedEnd}`);
 			});
+
+			it('should return no errors when not required', async() => {
+				const elem = await fixture(basicFixture);
+				const errors = await elem.validate();
+				expect(errors.length).to.equal(0);
+			});
+
+			it('should return no errors when required and a value is provided', async() => {
+				const elem = await fixture(requiredFixture);
+				const inputElem = getChildElem(elem, 'd2l-input-date');
+				inputElem.value = '2018-02-02';
+				setTimeout(() => dispatchEvent(inputElem, 'change'));
+				await oneEvent(elem, 'change');
+				const errors = await elem.validate();
+				expect(errors.length).to.equal(0);
+			});
+
+			it('should return 1 error when required and no value is provided', async() => {
+				const elem = await fixture(requiredFixture);
+				const errors = await elem.validate();
+				expect(errors.length).to.equal(1);
+			});
+
 		});
 	});
 
