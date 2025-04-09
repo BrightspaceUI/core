@@ -1,6 +1,7 @@
 import '../list.js';
 import './custom-nav-item.js';
 import '../list-item-content.js';
+import '../../tooltip/tooltip-help.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { listDemos } from './list-demo-scenarios.js';
@@ -31,7 +32,7 @@ class CustomNavList extends (LitElement) {
 	render() {
 		return html`
 			<div>
-				${this._renderList(listDemos['imgPrimaryAndSupporting'], false)}
+				${this._renderList(listDemos['primaryTextOnlyDeepNesting'], false)}
 			</div>
 		`;
 	}
