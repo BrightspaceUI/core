@@ -27,7 +27,7 @@ export default {
 	"components.filter.searchResults": "{number, plural, =0 {Kāore he hua rapu} one {{number} hua rapu} other {{number} Ngā Huanga Rapu}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Ka puta tuatahi ngā tātari kua tīpakohia.",
 	"components.filter.singleDimensionDescription": "Tātari mā: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Tērā haora} other {Whakamutunga {num} hāora}}",
+	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, one {Tērā haora} other {Whakamutunga {num} hāora}}",
 	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Āianei} one {Whakamutunga {num} Te rā} other {Whakamutunga {num} ngā rā}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "Ngā marama {num} whakamutunga",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, whakaroha hei kōwhiri i ngā rā",
