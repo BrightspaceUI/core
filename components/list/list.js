@@ -164,6 +164,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this.addEventListener('d2l-list-item-nested-change', (e) => this._handleListItemNestedChange(e));
 		this.addEventListener('d2l-list-item-property-change', (e) => this._handleListItemPropertyChange(e));
 		this.addEventListener('d2l-list-item-add-button-click', (e) => this._handleListItemAddButtonClick(e));
+		this.addEventListener('d2l-list-item-button-click', (e) => this._handleListItemMenuItemClick(e));
 		ro.observe(this);
 	}
 
@@ -171,6 +172,19 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		super.disconnectedCallback();
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
 		ro.unobserve(this);
+	}
+
+	_handleListItemMenuItemClick(e) {
+		if (this.slot === 'nested') return;
+
+		const items = this.querySelectorAll('d2l-list-item-menu-item');
+		items.forEach((item) => {
+			if (item === e.target) return;
+
+			item.current = undefined;
+		});
+
+		e.target.dispatchResetEvent();
 	}
 
 	firstUpdated(changedProperties) {

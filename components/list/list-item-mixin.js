@@ -91,6 +91,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			color: { type: String },
 			/**
+			 * possible values: page, location
+			 */
+			current: { type: String, reflect: true },
+			/**
 			 * @ignore
 			 */
 			first: { type: Boolean, reflect: true },
@@ -195,6 +199,14 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([padding-type="none"]) d2l-list-item-generic-layout {
 				border-bottom: 0;
 				border-top: 0;
+			}
+
+			:host([current="page"]) [slot="outside-control-container"] {
+				margin-block: 1px;
+				outline: 3px solid var(--d2l-button-focus-color, var(--d2l-color-celestine));
+			}
+			:host([current="page"]) [slot="control-container"]::after {
+				border-color: transparent;
 			}
 
 			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] {
