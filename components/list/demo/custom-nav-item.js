@@ -48,10 +48,6 @@ class ListItemCustomNavItem extends ListItemButtonMixin(LitElement) {
 		this.current = undefined;
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-	}
-
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 

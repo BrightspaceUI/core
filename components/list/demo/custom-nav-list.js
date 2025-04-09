@@ -48,8 +48,8 @@ class CustomNavList extends (LitElement) {
 		return html`
 			<div>
 				<div>${item.primaryText}</div>
-				<div slot="supporting-info">${item.supportingText}</div>
-				<div slot="secondary">
+				<div>${item.supportingText}</div>
+				<div>
 					<d2l-tooltip-help text="Available Jan 4, 2025">Due Jan 20, 2025</d2l-tooltip-help>
 				</div>
 			</div>`;
