@@ -1,8 +1,8 @@
 import '../colors/colors.js';
 import { css } from 'lit';
+import { getIsInteractiveChildClicked } from './list-item-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ListItemButtonMixin } from './list-item-button-mixin.js';
-import { getIsInteractiveChildClicked } from './list-item-mixin.js';
 
 export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(superclass) {
 
@@ -16,7 +16,7 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 	}
 
 	static get styles() {
-	
+
 		const styles = [ css`
 			:host([current="page"]) [slot="outside-control-container"] {
 				margin-block: 1px;
@@ -37,15 +37,21 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 		this._primaryActionId = getUniqueId();
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		if (this.current) this._button.setAttribute('aria-current', this.current);
-
+	connectedCallback() {
+		super.connectedCallback();
 		this.addEventListener('d2l-list-item-menu-item-set-current', async(e) => {
 			if (e.target === this) return;
 			this.current = 'location';
 		});
+	}
+
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		if (this.current) {
+			this._button.setAttribute('aria-current', this.current);
+			this.dispatchResetEvent();
+		}
 	}
 
 	updated(changedProperties) {

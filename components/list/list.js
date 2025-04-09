@@ -174,19 +174,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		ro.unobserve(this);
 	}
 
-	_handleListItemMenuItemClick(e) {
-		if (this.slot === 'nested') return;
-
-		const items = this.querySelectorAll('d2l-list-item-menu-item');
-		items.forEach((item) => {
-			if (item === e.target) return;
-
-			item.current = undefined;
-		});
-
-		e.target.dispatchResetEvent();
-	}
-
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		// check if list items are expandable on first render so we adjust sibling spacing appropriately
@@ -364,6 +351,19 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		 * The `position` represents where the new item should be positioned relative to the item with that key.
 		 * */
 		this.dispatchEvent(new CustomEvent('d2l-list-add-button-click', { detail: { key: e.target.key, position: e.detail.position } }));
+	}
+
+	_handleListItemMenuItemClick(e) {
+		if (this.slot === 'nested') return;
+
+		const items = this.querySelectorAll('d2l-list-item-menu-item');
+		items.forEach((item) => {
+			if (item === e.target) return;
+
+			item.current = undefined;
+		});
+
+		e.target.dispatchResetEvent();
 	}
 
 	_handleListItemNestedChange(e) {
