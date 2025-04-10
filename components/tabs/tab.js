@@ -4,8 +4,10 @@ import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { TabMixin } from './tab-mixin.js';
 
 /**
- * @attr id - REQUIRED: Unique identifier for the tab
+ * @attr {string} id - REQUIRED: Unique identifier for the tab
  * @fires d2l-tab-content-change - Dispatched when the text attribute is changed. Triggers virtual scrolling calculations in parent d2l-tabs.
+ * @slot before - Slot for content to be displayed before the tab text
+ * @slot after - Slot for content to be displayed after the tab text
  */
 class Tab extends TabMixin(LitElement) {
 
@@ -21,18 +23,18 @@ class Tab extends TabMixin(LitElement) {
 
 	static get styles() {
 		const styles = [ css`
-			.d2l-tab-text {
+			.d2l-tab-inner-content {
 				overflow: hidden;
 				padding: 0.1rem;
 				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
-			:host(:${unsafeCSS(getFocusPseudoClass())}) .d2l-tab-text {
+			:host(:${unsafeCSS(getFocusPseudoClass())}) .d2l-tab-inner-content {
 				border-radius: 0.3rem;
 				color: var(--d2l-color-celestine);
 				outline: 2px solid var(--d2l-color-celestine);
 			}
-			.d2l-tab-text-skeletize-override {
+			.d2l-tab-inner-content-skeletize-override {
 				min-width: 50px;
 			}
 			:host([skeleton]) .d2l-tab-content.d2l-skeletize::before {
@@ -55,12 +57,16 @@ class Tab extends TabMixin(LitElement) {
 	renderContent() {
 		const overrideSkeletonText = this.skeleton && (!this.text || this.text.length === 0);
 		const contentClasses = {
-			'd2l-tab-text': true,
-			'd2l-tab-text-skeletize-override': overrideSkeletonText
+			'd2l-tab-inner-content': true,
+			'd2l-tab-inner-content-skeletize-override': overrideSkeletonText
 		};
 
 		return html`
-			<div class="${classMap(contentClasses)}">${overrideSkeletonText ? html`&nbsp;` : this.text}</div>
+			<div class="${classMap(contentClasses)}">
+				<slot name="before"></slot>
+				<span>${overrideSkeletonText ? html`&nbsp;` : this.text}</span>
+				<slot name="after"></slot>
+			</div>
 		`;
 	}
 }

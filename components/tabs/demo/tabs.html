@@ -55,6 +55,36 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Tabs (with before and after slot content)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-tabs text="Courses">
+						<d2l-tab id="beforelong" text="Long Panel Text That Will Also Have Slot Content" slot="tabs">
+							<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="before"></d2l-count-badge>
+						</d2l-tab>
+						<d2l-tab id="afterlong" text="Long Panel Text That Will Also Have Slot Content" slot="tabs">
+							<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="after"></d2l-count-badge>
+						</d2l-tab>
+						<d2l-tab id="beforeshort" text="Biology" slot="tabs">
+							<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="before"></d2l-count-badge>
+						</d2l-tab>
+						<d2l-tab id="aftershort" text="Biology" slot="tabs">
+							<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="after"></d2l-count-badge>
+						</d2l-tab>
+						<d2l-tab id="beforeafter" text="Biology" slot="tabs">
+							<d2l-count-badge number="5" size="small" text="100 new notifications" type="notification" slot="before"></d2l-count-badge>
+							<d2l-count-badge number="10" size="small" text="100 new notifications" type="notification" slot="after"></d2l-count-badge>
+						</d2l-tab>
+						<d2l-tab-panel labelled-by="beforelong" slot="panels">Tab content for All</d2l-tab-panel>
+						<d2l-tab-panel labelled-by="afterlong" slot="panels">Tab content for Biology</d2l-tab-panel>
+						<d2l-tab-panel labelled-by="beforeshort" slot="panels">Tab content for Chemistry</d2l-tab-panel>
+						<d2l-tab-panel labelled-by="aftershort" slot="panels">Tab content for Physics</d2l-tab-panel>
+						<d2l-tab-panel labelled-by="beforeafter" slot="panels">Tab content for Trig</d2l-tab-panel>
+					</d2l-tabs>
+				</template>
+			</d2l-demo-snippet>
+
 			<h2>Tabs (with custom tab)</h2>
 
 			<d2l-demo-snippet>

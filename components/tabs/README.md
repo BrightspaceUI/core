@@ -122,6 +122,13 @@ An element that displays the corresponding tab panel when selected.
 | `text` | String, required | The text used for the tab and for labelling the corresponding panel |
 | `selected` | Boolean | Use to select the tab |
 
+### Slots
+
+| Slot | Description |
+|--|--|
+| `before` | Slot for content to be displayed before the tab text |
+| `after` | Slot for content to be displayed after the tab text |
+
 ### Events
 - `d2l-tab-content-change`: Dispatched when the text attribute is changed. Triggers virtual scrolling calculations in parent `d2l-tabs`.
 - `d2l-tab-selected`: Dispatched when a tab is selected
@@ -144,6 +151,8 @@ Promise.resolve(tabs.hideTab((tab))).then(() => {
 ### Custom Tabs
 
 The `TabMixin` can be used to create custom tabs. It is IMPORTANT to call the `dispatchContentChangeEvent` function in `TabMixin` when content changes in the consumer in order to properly trigger calculations. Ensure that there is only one element in any custom tab to focus on, else the focus and keyboard navigation behaviors become confusing for users. Note that the parent `d2l-tabs` element handles `tabindex` focus management, and so consumers should not be rendering focusable elements within custom tabs.
+
+Before creating a custom tab, ensure that the case is not covered by using a standard `d2l-tab` with content in the `before` and/or `after` slot(s). 
 
 <!-- docs: demo code sandboxTitle:'TabMixin' display:block-->
 ```html
