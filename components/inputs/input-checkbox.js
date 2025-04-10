@@ -238,7 +238,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			${this._renderInlineHelp(this.#inlineHelpId)}
 			${offscreenContainer}
 			${disabledTooltip}
-			<div class="${classMap(supportingClasses)}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
+			<div class="${classMap(supportingClasses)}" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
 		`;
 	}
 
@@ -274,6 +274,10 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 
 	#handleMouseLeave() {
 		this._isHovered = false;
+	}
+
+	#handleSupportingChange(e) {
+		e.stopPropagation();
 	}
 
 	#handleSupportingSlotChange(e) {
