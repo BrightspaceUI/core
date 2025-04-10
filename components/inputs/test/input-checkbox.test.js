@@ -44,21 +44,31 @@ describe('d2l-input-checkbox', () => {
 
 	describe('events', () => {
 
-		let elem;
-		beforeEach(async() => {
-			elem = await fixture(uncheckedFixture);
-		});
-
 		it('should fire "change" event when input element is clicked', async() => {
-			setTimeout(() => getInput(elem).click());
+			const elem = await fixture(uncheckedFixture);
+			clickElem(getInput(elem));
 			const { target } = await oneEvent(elem, 'change');
 			expect(target).to.equal(elem);
 		});
 
 		it('should reflect that a previously unchecked input is now checked', async() => {
-			setTimeout(() => getInput(elem).click());
+			const elem = await fixture(uncheckedFixture);
+			clickElem(getInput(elem));
 			const { target } = await oneEvent(elem, 'change');
 			expect(target.checked).to.equal(true);
+		});
+
+		it('should prevent "change" events inside supporting slot from propagating', async() => {
+			const elem = await fixture(html`
+				<d2l-input-checkbox aria-label="label">
+					<d2l-input-checkbox aria-label="nested" slot="supporting"></d2l-input-checkbox>
+				</d2l-input-checkbox>
+			`);
+			const nestedElem = elem.querySelector('[aria-label="nested"]');
+			let eventFired = false;
+			elem.addEventListener('change', () => eventFired = true);
+			await clickElem(getInput(nestedElem));
+			expect(eventFired).to.be.false;
 		});
 
 	});
