@@ -2,6 +2,7 @@ import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
 import { css, html, nothing } from 'lit';
 import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
+import { getIsInteractiveChildClicked } from './list-item-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const dragIntervalDelay = 100;
@@ -136,12 +137,12 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 				@click="${this._toggleExpandCollapse}"></d2l-button-icon>`;
 	}
 
-	_renderExpandCollapseAction() {
+	_renderExpandCollapseAction(content) {
 		if (this.selectable || !this.expandable || this.noPrimaryAction) {
 			return nothing;
 		}
 
-		return html`<div class="d2l-list-expand-collapse-action" @click="${this._toggleExpandCollapse}"></div>`;
+		return html`<div class="d2l-list-expand-collapse-action" @click="${this._toggleExpandCollapse}">${content}</div>`;
 	}
 
 	_renderNestedLoadingSpinner() {
@@ -157,6 +158,10 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 	_toggleExpandCollapse(e = null) {
 		if (e) {
 			e.stopPropagation();
+			if (getIsInteractiveChildClicked(e, this.shadowRoot.querySelector('div.d2l-list-expand-collapse-action'))) {
+				e.preventDefault();
+				return;
+			}
 		}
 		if (!this.expandable) {
 			return;

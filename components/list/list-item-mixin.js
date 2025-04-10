@@ -719,7 +719,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				<slot>${content}</slot>
 			</div>
 		`;
+
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId, contentAreaContent) : null);
+		const renderExpandableAction = !primaryAction && !this.selectable && this.expandable && !this.noPrimaryAction;
 		let tooltipForId = null;
 		if (this._showAddButton) {
 			tooltipForId = this._addButtonTopId;
@@ -772,7 +774,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}">
 						${this._renderCheckboxAction('')}
-						${this._renderExpandCollapseAction()}
+						${this._renderExpandCollapseAction(contentAreaContent)}
 				</div>` : nothing }
 				${primaryAction ? html`
 				<div slot="content-action"
@@ -781,7 +783,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					@mouseenter="${this._onMouseEnterPrimaryAction}"
 					@mouseleave="${this._onMouseLeavePrimaryAction}">
 						${primaryAction}
-				</div>` : contentAreaContent}
+				</div>` : (!renderExpandableAction ? contentAreaContent : nothing)}
 				<div slot="actions"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}"
