@@ -2,6 +2,7 @@ import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit';
 import { cssEscape, elemIdListAdd, elemIdListRemove, getBoundingAncestor, getOffsetParent, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, isFocusable } from '../../helpers/focus.js';
+import { sharedInteractiveElems, sharedInteractiveRoles } from '../../helpers/interactive.js';
 import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -42,38 +43,19 @@ const getDelay = delay => {
 };
 
 const interactiveElements = {
-	// 'a' only if an href is present
-	'button': true,
+	...sharedInteractiveElems,
 	'h1': true,
 	'h2': true,
 	'h3': true,
 	'h4': true,
 	'h5': true,
-	'h6': true,
-	'input': true,
-	'select': true,
-	'textarea': true
+	'h6': true
 };
 
 const interactiveRoles = {
-	'button': true,
-	'checkbox': true,
-	'combobox': true,
+	...sharedInteractiveRoles,
 	'heading': true,
-	'img': true,
-	'link': true,
-	'listbox': true,
-	'menuitem': true,
-	'menuitemcheckbox': true,
-	'menuitemradio': true,
-	'option': true,
-	'radio': true,
-	'slider': true,
-	'spinbutton': true,
-	'switch': true,
-	'tab:': true,
-	'textbox': true,
-	'treeitem': true
+	'img': true
 };
 
 const computeTooltipShift = (centerDelta, spaceLeft, spaceRight) => {

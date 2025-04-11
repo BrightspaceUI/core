@@ -1,3 +1,4 @@
+import '../../button/button.js';
 import '../../button/button-icon.js';
 import '../../colors/colors.js';
 import '../../dropdown/dropdown.js';
@@ -6,6 +7,7 @@ import '../../link/link.js';
 import '../../paging/pager-load-more.js';
 import '../../selection/selection-action.js';
 import '../../tooltip/tooltip.js';
+import '../../tooltip/tooltip-help.js';
 import '../demo/demo-list-nested-iterations-helper.js';
 import '../list.js';
 import '../list-controls.js';
@@ -20,6 +22,14 @@ const simpleListItemContent = html`
 	<d2l-list-item-content>
 		<div>Item 1</div>
 		<div slot="supporting-info">Secondary info for item 1</div>
+	</d2l-list-item-content>
+`;
+
+const interactiveListItemContent = html`
+	<d2l-list-item-content>
+		<div>Item 1</div>
+		<div slot="secondary">Information: <d2l-tooltip-help text="Due: Jan 30, 2023">Available: Aug 11, 2023</d2l-tooltip-help></div>
+		<div slot="supporting-info"><d2l-button style="padding: 10px;">Hi!</d2l-button></div>
 	</d2l-list-item-content>
 `;
 
@@ -173,6 +183,54 @@ describe('list', () => {
 				await expect(elem).to.be.golden();
 			});
 		});
+	});
+
+	describe('interactive content', () => {
+
+		describe('href', () => {
+			[
+				{ name: 'default' },
+				{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-list-item')), margin: 24 },
+				{ name: 'hover', action: elem => hoverElem(elem.querySelector('d2l-list-item')), margin: 24 },
+				{ name: 'focus-interactive', action: elem => focusElem(elem.querySelector('d2l-button')), margin: 24 },
+				{ name: 'hover-interactive', action: elem => hoverElem(elem.querySelector('d2l-button')), margin: 24 }
+			].forEach(({ name, action, margin }) => {
+				it(name, async() => {
+					const elem = await fixture(html`
+						<d2l-list style="width: 400px;">
+							<d2l-list-item label="Item" href="http://www.d2l.com">
+								${interactiveListItemContent}
+							</d2l-list-item>
+						</d2l-list>
+					`);
+					if (action) await action(elem);
+					await expect(elem).to.be.golden({ margin });
+				});
+			});
+		});
+
+		describe('button', () => {
+			[
+				{ name: 'default' },
+				{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-list-item-button')), margin: 24 },
+				{ name: 'hover', action: elem => hoverElem(elem.querySelector('d2l-list-item-button')), margin: 24 },
+				{ name: 'focus-interactive', action: elem => focusElem(elem.querySelector('d2l-button')), margin: 24 },
+				{ name: 'hover-interactive', action: elem => hoverElem(elem.querySelector('d2l-button')), margin: 24 }
+			].forEach(({ name, action, margin }) => {
+				it(name, async() => {
+					const elem = await fixture(html`
+						<d2l-list style="width: 400px;">
+							<d2l-list-item-button label="Item">
+								${interactiveListItemContent}
+							</d2l-list-item-button>
+						</d2l-list>
+					`);
+					if (action) await action(elem);
+					await expect(elem).to.be.golden({ margin });
+				});
+			});
+		});
+
 	});
 
 	describe('pager', () => {
@@ -541,12 +599,11 @@ describe('list', () => {
 
 		[
 			{ name: 'default', template: createDraggableList() },
-			{ name: 'focus', template: createDraggableList(), action: elem => focusElem(elem.querySelector('[key="1"]')) },
-			{ name: 'hover', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'add-button', template: createDraggableList({ addButton: true }) },
 			{ name: 'add-button focus', template: createDraggableList({ addButton: true }), action: elem => focusElem(elem.querySelector('[key="2"]')) },
 			{ name: 'add-button hover', template: createDraggableList({ addButton: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'color hover', template: createDraggableList({ color1: '#ff0000' }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
+			{ name: 'focus list item', template: createDraggableList(), action: elem => focusElem(elem.querySelector('[key="1"]')) },
 			{ name: 'hover list item', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'hover outside control', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]').shadowRoot.querySelector('[slot="outside-control"]')) },
 			{ name: 'drag-target-handle-only hover list item', template: createDraggableList({ handleOnly: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },

@@ -330,6 +330,9 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			:host([_drop-location="7"]) [slot="control-container"]::after {
 				border-color: transparent;
 			}
+			:host(:not([no-primary-action])) [slot="outside-control-action"] ~ [slot="content"] {
+				pointer-events: none;
+			}
 
 			@media only screen and (hover: hover), only screen and (pointer: fine) {
 				d2l-list-item-drag-handle {
