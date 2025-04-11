@@ -1,12 +1,17 @@
 import '../input-checkbox.js';
-import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
-
-const uncheckedFixture = html`<d2l-input-checkbox aria-label="basic"></d2l-input-checkbox>`;
-const indeterminateCheckedFixture = html`<d2l-input-checkbox indeterminate checked></d2l-input-checkbox>`;
-const indeterminateUncheckedFixture = html`<d2l-input-checkbox indeterminate></d2l-input-checkbox>`;
+import { clickElem, expect, fixture, focusElem, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { checkboxFixtures } from './input-checkbox-fixtures.js';
 
 function getInput(elem) {
 	return elem.shadowRoot.querySelector('input.d2l-input-checkbox');
+}
+
+function getText(elem) {
+	const text = elem.shadowRoot.querySelector('.d2l-input-checkbox-text').innerText;
+	return text + elem.shadowRoot.querySelector('slot')
+		.assignedNodes({ flatten: true })
+		.map(node => (node.textContent ? node.textContent : ''))
+		.join('');
 }
 
 describe('d2l-input-checkbox', () => {
@@ -23,7 +28,7 @@ describe('d2l-input-checkbox', () => {
 
 		let elem;
 		beforeEach(async() => {
-			elem = await fixture(uncheckedFixture);
+			elem = await fixture(checkboxFixtures.unchecked);
 		});
 
 		['checked', 'disabled', 'indeterminate', 'notTabbable'].forEach((name) => {
@@ -45,14 +50,14 @@ describe('d2l-input-checkbox', () => {
 	describe('events', () => {
 
 		it('should fire "change" event when input element is clicked', async() => {
-			const elem = await fixture(uncheckedFixture);
+			const elem = await fixture(checkboxFixtures.unchecked);
 			clickElem(getInput(elem));
 			const { target } = await oneEvent(elem, 'change');
 			expect(target).to.equal(elem);
 		});
 
 		it('should reflect that a previously unchecked input is now checked', async() => {
-			const elem = await fixture(uncheckedFixture);
+			const elem = await fixture(checkboxFixtures.unchecked);
 			clickElem(getInput(elem));
 			const { target } = await oneEvent(elem, 'change');
 			expect(target.checked).to.equal(true);
@@ -77,17 +82,17 @@ describe('d2l-input-checkbox', () => {
 
 		let elem;
 		beforeEach(async() => {
-			elem = await fixture(uncheckedFixture);
+			elem = await fixture(checkboxFixtures.unchecked);
 		});
 
 		it('should fire "focus" event when input element is focussed', async() => {
-			setTimeout(() => getInput(elem).focus());
+			focusElem(getInput(elem));
 			const { target } = await oneEvent(elem, 'focus');
 			expect(target).to.equal(elem);
 		});
 
 		it('should fire "focus" event when custom element is focussed', async() => {
-			setTimeout(() => elem.focus());
+			focusElem(elem);
 			const { target } = await oneEvent(elem, 'focus');
 			expect(target).to.equal(elem);
 		});
@@ -97,36 +102,34 @@ describe('d2l-input-checkbox', () => {
 	describe('indeterminate', () => {
 
 		it('should set aria-checked to "mixed" when indeterminate and checked', async() => {
-			const elem = await fixture(indeterminateCheckedFixture);
+			const elem = await fixture(checkboxFixtures.indeterminateChecked);
 			expect(getInput(elem).getAttribute('aria-checked')).to.equal('mixed');
 		});
 
 		it('should set aria-checked to "mixed" when indeterminate and unchecked', async() => {
-			const elem = await fixture(indeterminateUncheckedFixture);
+			const elem = await fixture(checkboxFixtures.indeterminateUnchecked);
 			expect(getInput(elem).getAttribute('aria-checked')).to.equal('mixed');
 		});
 
 		it('should clear "indeterminate" when checked interderminate clicked', async() => {
-			const elem = await fixture(indeterminateCheckedFixture);
-			getInput(elem).click();
-			await elem.updateComplete;
+			const elem = await fixture(checkboxFixtures.indeterminateChecked);
+			await clickElem(getInput(elem));
 			expect(elem.checked).to.be.false;
 			expect(elem.indeterminate).to.be.false;
 			expect(getInput(elem).hasAttribute('aria-checked')).to.be.false;
 		});
 
 		it('should fire "change" event when input element is clicked', async() => {
-			const elem = await fixture(indeterminateCheckedFixture);
-			setTimeout(() => getInput(elem).click());
+			const elem = await fixture(checkboxFixtures.indeterminateChecked);
+			clickElem(getInput(elem));
 			const { target } = await oneEvent(elem, 'change');
 			expect(target.checked).to.equal(false);
 			expect(target.indeterminate).to.equal(false);
 		});
 
 		it('should clear "indeterminate" when unchecked indeterminate clicked', async() => {
-			const elem = await fixture(indeterminateUncheckedFixture);
-			getInput(elem).click();
-			await elem.updateComplete;
+			const elem = await fixture(checkboxFixtures.indeterminateUnchecked);
+			await clickElem(getInput(elem));
 			expect(elem.checked).to.be.true;
 			expect(elem.indeterminate).to.be.false;
 			expect(getInput(elem).hasAttribute('aria-checked')).to.be.false;
@@ -137,12 +140,12 @@ describe('d2l-input-checkbox', () => {
 	describe('not tabbable', () => {
 
 		it('should not put a tabindex on the checkbox by default', async() => {
-			const elem = await fixture(uncheckedFixture);
+			const elem = await fixture(checkboxFixtures.unchecked);
 			expect(getInput(elem).hasAttribute('tabindex')).to.be.false;
 		});
 
 		it('should apply -1 tabindex when set', async() => {
-			const elem = await fixture(html`<d2l-input-checkbox not-tabbable aria-label="not-tabbable"></d2l-input-checkbox>`);
+			const elem = await fixture(html`<d2l-input-checkbox not-tabbable label="not-tabbable"></d2l-input-checkbox>`);
 			expect(getInput(elem).getAttribute('tabindex')).to.equal('-1');
 		});
 
@@ -152,7 +155,7 @@ describe('d2l-input-checkbox', () => {
 
 		let elem;
 		beforeEach(async() => {
-			elem = await fixture(uncheckedFixture);
+			elem = await fixture(checkboxFixtures.unchecked);
 		});
 
 		it('should bind "value" attribute to input property', async() => {
@@ -181,17 +184,15 @@ describe('d2l-input-checkbox', () => {
 
 		it('should continue to bind "checked" property after interaction', async() => {
 			const input = getInput(elem);
-			input.click();
+			await clickElem(input);
 			expect(input.checked).to.be.true;
 			expect(elem.checked).to.be.true;
-			await elem.updateComplete;
 			elem.checked = false;
 			await elem.updateComplete;
 			expect(input.checked).to.be.false;
 		});
 
 		[
-			{ name: 'aria-label', propName: 'ariaLabel', value: 'hello' },
 			{ name: 'disabled', value: true },
 			{ name: 'name', value: 'jim' }
 		].forEach((attr) => {
@@ -218,10 +219,46 @@ describe('d2l-input-checkbox', () => {
 
 	});
 
+	describe('labels', () => {
+
+		it('should set aria-label when label-hidden', async() => {
+			const elem = await fixture(checkboxFixtures.labelHidden);
+			expect(getInput(elem).getAttribute('aria-label')).to.equal('label hidden');
+			expect(getText(elem)).to.equal('');
+		});
+
+		it('should set aria-label when aria-label', async() => {
+			const elem = await fixture(checkboxFixtures.labelAria);
+			expect(elem.label).to.equal('label aria');
+			expect(elem.labelHidden).to.be.true;
+			expect(getInput(elem).getAttribute('aria-label')).to.equal('label aria');
+			expect(getText(elem)).to.equal('');
+		});
+
+		it('should use visible label when not label-hidden', async() => {
+			const elem = await fixture(checkboxFixtures.labelNormal);
+			expect(getInput(elem).hasAttribute('aria-label')).to.be.false;
+			expect(getText(elem)).to.equal('label normal');
+		});
+
+		it('should use slotted label when slotted', async() => {
+			const elem = await fixture(checkboxFixtures.labelSlotted);
+			expect(getInput(elem).hasAttribute('aria-label')).to.be.false;
+			expect(getText(elem)).to.equal('label slotted');
+		});
+
+		it('should combine label with slotted label', async() => {
+			const elem = await fixture(html`<d2l-input-checkbox label="label">label slotted</d2l-input-checkbox>`);
+			expect(getInput(elem).hasAttribute('aria-label')).to.be.false;
+			expect(getText(elem)).to.equal('labellabel slotted');
+		});
+
+	});
+
 	describe('simulateClick', () => {
 
 		it('should set checked property and trigger an event', async() => {
-			const elem = await fixture(uncheckedFixture);
+			const elem = await fixture(checkboxFixtures.unchecked);
 			setTimeout(() => elem.simulateClick());
 			await oneEvent(elem, 'change');
 			expect(elem.checked).to.be.true;
@@ -232,13 +269,13 @@ describe('d2l-input-checkbox', () => {
 	describe('disabled', () => {
 
 		it('should not be toggleable when disabled without tooltip', async() => {
-			const elem = await fixture(html`<d2l-input-checkbox disabled aria-label="disabled"></d2l-input-checkbox>`);
+			const elem = await fixture(checkboxFixtures.disabled);
 			await clickElem(getInput(elem));
 			expect(elem.checked).to.be.false;
 		});
 
 		it('should not be toggleable when disabled with tooltip', async() => {
-			const elem = await fixture(html`<d2l-input-checkbox disabled disabled-tooltip="tooltip" aria-label="disabled"></d2l-input-checkbox>`);
+			const elem = await fixture(checkboxFixtures.disabledTooltip);
 			await clickElem(getInput(elem));
 			expect(elem.checked).to.be.false;
 		});

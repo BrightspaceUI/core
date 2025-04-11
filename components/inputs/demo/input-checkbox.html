@@ -16,56 +16,50 @@
 			<h2>Simple checkbox with label</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-checkbox checked>Checked item</d2l-input-checkbox>
-					<d2l-input-checkbox>Unchecked item</d2l-input-checkbox>
+					<d2l-input-checkbox label="Checked item" checked></d2l-input-checkbox>
+					<d2l-input-checkbox label="Unchecked item"></d2l-input-checkbox>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Checkbox with multi-line label</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-checkbox style="overflow: hidden; width: 200px;">
-						Label for checkbox that wraps nicely onto
-						multiple lines and stays aligned
-					</d2l-input-checkbox>
-					<d2l-input-checkbox style="overflow: hidden; width: 200px;">
-						https://en.wikipedia.org/wiki/Dark_matter
-					</d2l-input-checkbox>
+					<d2l-input-checkbox style="overflow: hidden; width: 200px;" label="Label for checkbox that wraps nicely onto multiple lines and stays aligned"></d2l-input-checkbox>
+					<d2l-input-checkbox style="overflow: hidden; width: 200px;" label="https://en.wikipedia.org/wiki/Dark_matter"></d2l-input-checkbox>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Checkbox with hidden label</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-checkbox aria-label="Label for checkbox"></d2l-input-checkbox>
+					<d2l-input-checkbox label="Label for checkbox" label-hidden></d2l-input-checkbox>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Disabled checkbox</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-checkbox checked disabled>Disabled checkbox</d2l-input-checkbox>
+					<d2l-input-checkbox label="Disabled checkbox" checked disabled></d2l-input-checkbox>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Disabled checkbox with tooltip</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-checkbox checked disabled disabled-tooltip="Explanation for why checkbox is disabled">Disabled checkbox with tooltip</d2l-input-checkbox>
+					<d2l-input-checkbox label="Disabled checkbox with tooltip" checked disabled disabled-tooltip="Explanation for why checkbox is disabled"></d2l-input-checkbox>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Checkbox with label and supporting content</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-checkbox>
-						Label for checkbox
+					<d2l-input-checkbox label="Label for checkbox">
 						<div slot="supporting" style="color: #999999;">
 							Additional content can go here and will<br>
 							also line up nicely with the checkbox.
 						</div>
 					</d2l-input-checkbox>
-					<d2l-input-checkbox>Label for checkbox</d2l-input-checkbox>
+					<d2l-input-checkbox label="Label for checkbox"></d2l-input-checkbox>
 					<d2l-input-checkbox-spacer style="color: #999999;">
 						Additional content can go here and will<br>
 						also line up nicely with the checkbox.
@@ -76,15 +70,14 @@
 			<h2>Indeterminate checkbox</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-checkbox indeterminate>Indeterminate checkbox</d2l-input-checkbox>
+					<d2l-input-checkbox label="Indeterminate checkbox" indeterminate></d2l-input-checkbox>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Inline help checkbox</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-checkbox>
-						Inline help checkbox
+					<d2l-input-checkbox label="Inline help checkbox">
 						<div slot="inline-help">
 							Help text <b>right here</b>!
 						</div>
@@ -95,8 +88,7 @@
 			<h2>Inline help (multiline) checkbox</h2>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-input-checkbox>
-						Inline help checkbox
+					<d2l-input-checkbox label="Inline help checkbox">
 						<div slot="inline-help">
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit,
 							sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

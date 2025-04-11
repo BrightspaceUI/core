@@ -7,7 +7,7 @@ Checkboxes are used in forms to toggle an option or preference.
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-checkbox.js';
 </script>
-<d2l-input-checkbox checked>Label for checkbox</d2l-input-checkbox>
+<d2l-input-checkbox label="Label for checkbox" checked></d2l-input-checkbox>
 ```
 
 ## Best Practices
@@ -44,8 +44,8 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
   });
 </script>
 <div>
-  <d2l-input-checkbox id="checkbox">Label for checkbox</d2l-input-checkbox>
-  <d2l-input-checkbox>Label for second checkbox</d2l-input-checkbox>
+  <d2l-input-checkbox id="checkbox" label="Label for checkbox"></d2l-input-checkbox>
+  <d2l-input-checkbox label="Label for second checkbox"></d2l-input-checkbox>
 </div>
 ```
 
@@ -54,11 +54,12 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
 
 | Property | Type | Description |
 |---|---|---|
-| `aria-label` | String | Overrides the text in the `Default` slot for screenreader users |
 | `checked` | Boolean | Checked state |
 | `description` | String | Additional information communicated to screenreader users when focusing on the input |
 | `disabled` | Boolean | Disables the input |
 | `indeterminate` | Boolean | Sets checkbox to an indeterminate state |
+| `label` | String, required | Label for the input |
+| `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
 | `name` | String | Name of the input |
 | `not-tabbable` | Boolean | Sets `tabindex="-1"` on the checkbox. Note that an alternative method of focusing is necessary to implement if using this property. |
 | `value` | String | Value of the input |
@@ -75,14 +76,9 @@ checkbox.addEventListener('change', (e) => {
 
 ### Slots
 
-* `default`: Primary text that will appear next to the input box and function as the label for the checkbox.
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 * `supporting`: Supporting information which will appear below and be aligned with the checkbox.
 <!-- docs: end hidden content -->
-
-### Methods
-
-- `simulateClick()`: useful for testing, it simulates the user clicking on the checkbox, which toggles the state of the checkbox and fires the `change` event
 
 ## Checkbox Spacer [d2l-input-checkbox-spacer]
 
