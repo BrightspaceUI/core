@@ -81,7 +81,9 @@ class Tab extends TabMixin(LitElement) {
 
 		return html`
 			<div class="d2l-tab-text-inner-content">
-				<slot name="before"></slot><span class="${classMap(contentClasses)}">${overrideSkeletonText ? html`&nbsp;` : this.text}</span><slot name="after"></slot>
+				<slot name="before"></slot>
+				<span class="${classMap(contentClasses)}">${overrideSkeletonText ? html`&nbsp;` : this.text}</span>
+				<slot name="after"></slot>
 			</div>
 		`;
 	}
