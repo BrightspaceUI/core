@@ -1,8 +1,6 @@
 import { css, html, nothing } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 export const OVERFLOW_CLASS = 'd2l-overflow-container';
@@ -25,7 +23,7 @@ async function filterAsync(arr, callback) {
 	return results.filter(i => i !== fail);
 }
 
-export const OverflowGroupMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
+export const OverflowGroupMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {
 		return {
@@ -68,7 +66,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	}
 
 	static get styles() {
-		return [offscreenStyles, css`
+		return css`
 			:host {
 				display: block;
 			}
@@ -82,7 +80,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			.d2l-overflow-group-container ::slotted([data-is-chomped]) {
 				display: none !important;
 			}
-		`];
+		`;
 	}
 
 	constructor() {
