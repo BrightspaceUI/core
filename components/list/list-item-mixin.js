@@ -779,8 +779,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				<div slot="control-action"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}">
-						${this._renderCheckboxAction(contentAreaContent)}
-						${this._renderExpandCollapseAction(contentAreaContent)}
+						${this._renderCheckboxAction(!primaryAction ? contentAreaContent : '')}
+						${this._renderExpandCollapseAction(!primaryAction ? contentAreaContent : null)}
 				</div>` : nothing }
 				${primaryAction ? html`
 				<div slot="content-action"
