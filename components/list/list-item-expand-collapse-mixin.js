@@ -142,7 +142,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 			return nothing;
 		}
 
-		return html`<div class="d2l-list-expand-collapse-action" @click="${this._toggleExpandCollapse}">${content}</div>`;
+		return html`<div class="d2l-list-expand-collapse-action" @click="${this._toggleExpandCollapseAction}">${content}</div>`;
 	}
 
 	_renderNestedLoadingSpinner() {
@@ -158,10 +158,6 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 	_toggleExpandCollapse(e = null) {
 		if (e) {
 			e.stopPropagation();
-			if (getIsInteractiveChildClicked(e, this.shadowRoot.querySelector('div.d2l-list-expand-collapse-action'))) {
-				e.preventDefault();
-				return;
-			}
 		}
 		if (!this.expandable) {
 			return;
@@ -172,5 +168,14 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 			composed: true,
 			bubbles: true
 		}));
+	}
+
+	_toggleExpandCollapseAction(e = null) {
+		if (getIsInteractiveChildClicked(e, this.shadowRoot.querySelector('div.d2l-list-expand-collapse-action'))) {
+			e.preventDefault();
+			return;
+		}
+
+		this._toggleExpandCollapse(e);
 	}
 };
