@@ -61,7 +61,6 @@ export const checkboxStyles = css`
 
 /**
  * A component that can be used to show a checkbox and optional visible label.
- * @slot - Checkbox information (e.g., text)
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @slot supporting - Supporting information which will appear below and be aligned with the checkbox.
  * @fires change - Dispatched when the checkbox's state changes
@@ -71,8 +70,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 	static get properties() {
 		return {
 			/**
-			 * ACCESSIBILITY: Overrides the text in the `Default` slot for screenreader users
-			 * @type {string}
+			 * @ignore
 			 */
 			ariaLabel: { type: String, attribute: 'aria-label' },
 			/**
@@ -100,6 +98,16 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			 * @type {boolean}
 			 */
 			indeterminate: { type: Boolean },
+			/**
+			 * REQUIRED: Label for the input
+			 * @type {string}
+			 */
+			label: { type: String },
+			/**
+			 * Hides the label visually
+			 * @type {boolean}
+			 */
+			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
 			/**
 			 * Name of the input
 			 * @type {string}
@@ -130,7 +138,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 				:host([hidden]) {
 					display: none;
 				}
-				:host([aria-label]) {
+				:host([label-hidden]) {
 					display: inline-block;
 					margin-bottom: 0;
 				}
@@ -151,7 +159,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 					vertical-align: top;
 					white-space: normal;
 				}
-				:host([aria-label]) .d2l-input-checkbox-text {
+				:host([label-hidden]) .d2l-input-checkbox-text {
 					margin-inline-start: 0;
 				}
 				:host([skeleton]) .d2l-input-checkbox-text.d2l-skeletize::before {
@@ -187,6 +195,8 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 		this.checked = false;
 		this.disabled = false;
 		this.indeterminate = false;
+		this.label = '';
+		this.labelHidden = false;
 		this.name = '';
 		this.notTabbable = false;
 		this.value = 'on';
@@ -210,6 +220,8 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			'd2l-input-checkbox-text-disabled': this.disabled
 		};
 		const ariaChecked = this.indeterminate ? 'mixed' : undefined;
+		const ariaLabel = (this.label && this.labelHidden) ? this.label : undefined;
+		const label = (this.label && !this.labelHidden) ? this.label : nothing;
 		const disabled = this.disabled || this.skeleton;
 		const offscreenContainer = this.description ? html`<div class="d2l-offscreen" id="${this.#descriptionId}">${this.description}</div>` : null;
 		const ariaDescribedByIds = `${this.description ? this.#descriptionId : ''} ${this._hasInlineHelp ? this.#inlineHelpId : ''}`.trim();
@@ -222,7 +234,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 					aria-checked="${ifDefined(ariaChecked)}"
 					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
 					aria-disabled="${ifDefined(disabled && this.disabledTooltip ? 'true' : undefined)}"
-					aria-label="${ifDefined(this.ariaLabel)}"
+					aria-label="${ifDefined(ariaLabel)}"
 					@change="${this.#handleChange}"
 					class="d2l-input-checkbox"
 					@click="${this.#handleClick}"
@@ -233,13 +245,21 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 					name="${ifDefined(this.name)}"
 					tabindex="${ifDefined(tabindex)}"
 					type="checkbox"
-					.value="${this.value}"></span><span class="${classMap(textClasses)}"><slot></slot></span>
+					.value="${this.value}"></span><span class="${classMap(textClasses)}">${label}<slot></slot></span>
 			</label>
 			${this._renderInlineHelp(this.#inlineHelpId)}
 			${offscreenContainer}
 			${disabledTooltip}
 			<div class="${classMap(supportingClasses)}" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
 		`;
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('ariaLabel') && this.ariaLabel !== undefined) {
+			this.label = this.ariaLabel;
+			this.labelHidden = true;
+		}
 	}
 
 	simulateClick() {

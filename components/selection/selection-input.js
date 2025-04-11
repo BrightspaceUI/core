@@ -114,7 +114,8 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 		} else {
 			return html`
 				<d2l-input-checkbox
-					aria-label="${this.label}"
+					label="${this.label}"
+					label-hidden
 					@change="${this._handleCheckboxChange}"
 					?checked="${this.selected}"
 					class="${ifDefined(this.hovering ? 'd2l-hovering' : undefined)}"
