@@ -1,8 +1,10 @@
 import '../../button/button.js';
+import '../../count-badge/count-badge.js';
+import '../../icons/icon.js';
 import '../tab.js';
 import '../tabs.js';
 import '../tab-panel.js';
-import { clickElem, expect, fixture, focusElem, html, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, sendKeysElem } from '@brightspace-ui/testing';
 
 const noPanelSelectedFixture = {
 	deprecated: html`
@@ -437,6 +439,117 @@ describe('d2l-tabs', () => {
 			});
 		});
 
+	});
+
+	describe('slots', () => {
+		if (useFixture === 'default') return;
+
+		const slotsFixture = html`
+			<d2l-tabs>
+				<d2l-tab id="beforelong" text="Long Panel Text That Will Also Have Slot Content" slot="tabs">
+					<d2l-icon icon="tier1:gear" slot="before"></d2l-icon>
+				</d2l-tab>
+				<d2l-tab id="beforeafter" text="All" slot="tabs">
+					<d2l-count-badge number="5" size="small" text="100 new notifications" type="notification" slot="before"></d2l-count-badge>
+					<d2l-count-badge number="10" size="small" text="100 new notifications" type="notification" slot="after"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab id="afterlong" text="Long Panel Text That Will Also Have Slot Content" slot="tabs">
+					<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="after"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab id="beforeshort" text="All" slot="tabs">
+					<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="before"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab id="aftershort" text="All" slot="tabs">
+					<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="after"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab-panel labelled-by="beforelong" slot="panels">Tab content for All</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="afterlong" slot="panels">Tab content for Biology</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="beforeshort" slot="panels">Tab content for Chemistry</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="aftershort" slot="panels">Tab content for Physics</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="beforeafter" slot="panels">Tab content for Trig</d2l-tab-panel>
+			</d2l-tabs>
+		`;
+		const slotsSkeletonFixture = html`
+			<d2l-tabs skeleton>
+				<d2l-tab id="beforelong" text="Long Panel Text That Will Also Have Slot Content" slot="tabs" skeleton>
+					<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="before"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab id="beforeafter" text="All" slot="tabs" skeleton>
+					<d2l-count-badge number="5" size="small" text="100 new notifications" type="notification" slot="before"></d2l-count-badge>
+					<d2l-count-badge number="10" size="small" text="100 new notifications" type="notification" slot="after"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab id="afterlong" text="Long Panel Text That Will Also Have Slot Content" slot="tabs" skeleton>
+					<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="after"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab id="beforeshort" text="All" slot="tabs" skeleton>
+					<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="before"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab id="aftershort" text="All" slot="tabs" skeleton>
+					<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="after"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab-panel labelled-by="beforelong" slot="panels">Tab content for All</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="afterlong" slot="panels">Tab content for Biology</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="beforeshort" slot="panels">Tab content for Chemistry</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="aftershort" slot="panels">Tab content for Physics</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="beforeafter" slot="panels">Tab content for Trig</d2l-tab-panel>
+			</d2l-tabs>
+		`;
+		const slotsSkeletonNoTextFixture = html`
+			<d2l-tabs skeleton>
+				<d2l-tab id="beforelong" text="Long Panel Text That Will Also Have Slot Content" slot="tabs" skeleton>
+					<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="before"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab id="beforeafter" slot="tabs" skeleton>
+					<d2l-count-badge number="5" size="small" text="100 new notifications" type="notification" slot="before"></d2l-count-badge>
+					<d2l-count-badge number="10" size="small" text="100 new notifications" type="notification" slot="after"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab-panel labelled-by="beforelong" slot="panels">Tab content for All</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="beforeafter" slot="panels">Tab content for Trig</d2l-tab-panel>
+			</d2l-tabs>
+		`;
+
+		it('default', async() => {
+			const elem = await fixture(slotsFixture);
+			await expect(elem).to.be.golden();
+		});
+
+		it('focus', async() => {
+			const elem = await fixture(slotsFixture);
+			await focusElem(elem);
+			await expect(elem).to.be.golden();
+		});
+
+		it('focus both slots', async() => {
+			const elem = await fixture(slotsFixture);
+			await sendKeysElem(elem, 'press', 'ArrowRight');
+			await expect(elem).to.be.golden();
+		});
+
+		it('hover with icon when selected', async() => {
+			const elem = await fixture(slotsFixture);
+			const listitem = elem.querySelector('d2l-tab');
+			await hoverElem(listitem);
+			await expect(elem).to.be.golden();
+		});
+
+		it('hover with icon when not selected', async() => {
+			const elem = await fixture(slotsFixture);
+			elem.querySelectorAll('d2l-tab')[1].selected = true;
+			await elem.updateComplete;
+			const listitem = elem.querySelector('d2l-tab');
+			await hoverElem(listitem);
+			await expect(elem).to.be.golden();
+		});
+
+		it('skeleton', async() => {
+			const elem = await fixture(slotsSkeletonFixture);
+			await expect(elem).to.be.golden();
+		});
+
+		it('skeleton no text', async() => {
+			const elem = await fixture(slotsSkeletonNoTextFixture);
+			await expect(elem).to.be.golden();
+		});
 	});
 
 	describe('deprecated structure', () => {
