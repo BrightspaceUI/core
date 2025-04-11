@@ -23,18 +23,36 @@ class Tab extends TabMixin(LitElement) {
 
 	static get styles() {
 		const styles = [ css`
-			.d2l-tab-inner-content {
+			.d2l-tab-text-inner-content {
+				display: flex;
+			}
+			:host(:${unsafeCSS(getFocusPseudoClass())}) .d2l-tab-text-inner-content {
+				border-radius: 0.3rem;
+				color: var(--d2l-color-celestine);
+				outline: 2px solid var(--d2l-color-celestine);
+			}
+			:host(:${unsafeCSS(getFocusPseudoClass())}) ::slotted(d2l-icon) {
+				color: var(--d2l-color-celestine);
+			}
+			slot {
+				display: block;
+			}
+			::slotted([slot="before"]) {
+				padding-inline-end: 0.2rem; /* total of 0.3rem padding between slotted content and text */
+			}
+			::slotted([slot="after"]) {
+				padding-inline-start: 0.2rem; /* total of 0.3rem padding between slotted content and text */
+			}
+			:host(:not([selected]):hover) ::slotted(d2l-icon) {
+				color: var(--d2l-color-celestine);
+			}
+			span {
 				overflow: hidden;
 				padding: 0.1rem;
 				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
-			:host(:${unsafeCSS(getFocusPseudoClass())}) .d2l-tab-inner-content {
-				border-radius: 0.3rem;
-				color: var(--d2l-color-celestine);
-				outline: 2px solid var(--d2l-color-celestine);
-			}
-			.d2l-tab-inner-content-skeletize-override {
+			.d2l-tab-text-skeletize-override {
 				min-width: 50px;
 			}
 			:host([skeleton]) .d2l-tab-content.d2l-skeletize::before {
@@ -57,15 +75,13 @@ class Tab extends TabMixin(LitElement) {
 	renderContent() {
 		const overrideSkeletonText = this.skeleton && (!this.text || this.text.length === 0);
 		const contentClasses = {
-			'd2l-tab-inner-content': true,
-			'd2l-tab-inner-content-skeletize-override': overrideSkeletonText
+			'd2l-tab-text': true,
+			'd2l-tab-text-skeletize-override': overrideSkeletonText
 		};
 
 		return html`
-			<div class="${classMap(contentClasses)}">
-				<slot name="before"></slot>
-				<span>${overrideSkeletonText ? html`&nbsp;` : this.text}</span>
-				<slot name="after"></slot>
+			<div class="d2l-tab-text-inner-content">
+				<slot name="before"></slot><span class="${classMap(contentClasses)}">${overrideSkeletonText ? html`&nbsp;` : this.text}</span><slot name="after"></slot>
 			</div>
 		`;
 	}

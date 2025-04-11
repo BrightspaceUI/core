@@ -1,9 +1,10 @@
 import '../../button/button.js';
 import '../../count-badge/count-badge.js';
+import '../../icons/icon.js';
 import '../tab.js';
 import '../tabs.js';
 import '../tab-panel.js';
-import { clickElem, expect, fixture, focusElem, html, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, sendKeysElem } from '@brightspace-ui/testing';
 
 const noPanelSelectedFixture = {
 	deprecated: html`
@@ -446,7 +447,7 @@ describe('d2l-tabs', () => {
 		const slotsFixture = html`
 			<d2l-tabs>
 				<d2l-tab id="beforelong" text="Long Panel Text That Will Also Have Slot Content" slot="tabs">
-					<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="before"></d2l-count-badge>
+					<d2l-icon icon="tier1:gear" slot="before"></d2l-icon>
 				</d2l-tab>
 				<d2l-tab id="beforeafter" text="All" slot="tabs">
 					<d2l-count-badge number="5" size="small" text="100 new notifications" type="notification" slot="before"></d2l-count-badge>
@@ -521,6 +522,22 @@ describe('d2l-tabs', () => {
 		it('focus both slots', async() => {
 			const elem = await fixture(slotsFixture);
 			await sendKeysElem(elem, 'press', 'ArrowRight');
+			await expect(elem).to.be.golden();
+		});
+
+		it('hover with icon when selected', async() => {
+			const elem = await fixture(slotsFixture);
+			const listitem = elem.querySelector('d2l-tab');
+			await hoverElem(listitem);
+			await expect(elem).to.be.golden();
+		});
+
+		it('hover with icon when not selected', async() => {
+			const elem = await fixture(slotsFixture);
+			elem.querySelectorAll('d2l-tab')[1].selected = true;
+			await elem.updateComplete;
+			const listitem = elem.querySelector('d2l-tab');
+			await hoverElem(listitem);
 			await expect(elem).to.be.golden();
 		});
 
