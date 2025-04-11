@@ -49,7 +49,7 @@
 							</d2l-list-item-content>
 							<d2l-list grid slot="nested">
 								<d2l-list-item selectable key="nested-1" label="Nested 1">
-								  <d2l-list-item-content><div>Nested item #1</div></d2l-list-item-content>
+								  <d2l-list-item-content><div>Nested item #1</div><d2l-button style="padding: 10px;">Hi!</d2l-button></d2l-list-item-content>
 								</d2l-list-item>
 								<d2l-list-item selectable key="nested-2" label="Nested 2">
 								  <d2l-list-item-content><div>Nested item #2</div></d2l-list-item-content>
@@ -72,8 +72,10 @@
 				</template>
 				<script type="module">
 					requestAnimationFrame(() => {
-						document.querySelector('d2l-button').addEventListener('click', () => {
-							console.log('d2l-button: click event');
+						document.querySelectorAll('d2l-button').forEach((button) => {
+							button.addEventListener('click', () => {
+								console.log('d2l-button: click event');
+							});
 						});
 					});
 				</script>
