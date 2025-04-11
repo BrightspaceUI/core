@@ -247,6 +247,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				padding-inline-start: 2.2rem; /* width of "control" slot set in generic-layout */
 			}
 
+			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] ~ [slot="control-action"] [slot="content"] {
+				padding-inline-start: 3rem;
+			}
+
 			[slot="content"] ::slotted([slot="illustration"]),
 			[slot="content"] .d2l-list-item-illustration > * {
 				border-radius: 6px;
