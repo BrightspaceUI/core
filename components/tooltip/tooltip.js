@@ -2,7 +2,7 @@ import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, LitElement } from 'lit';
 import { cssEscape, elemIdListAdd, elemIdListRemove, getBoundingAncestor, getOffsetParent, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, isFocusable } from '../../helpers/focus.js';
-import { sharedInteractiveElems, sharedInteractiveRoles } from '../../helpers/interactive.js';
+import { interactiveElements, interactiveRoles, isInteractive } from '../../helpers/interactive.js';
 import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -42,8 +42,8 @@ const getDelay = delay => {
 	else return delay;
 };
 
-const interactiveElements = {
-	...sharedInteractiveElems,
+const tooltipInteractiveElements = {
+	...interactiveElements,
 	'h1': true,
 	'h2': true,
 	'h3': true,
@@ -52,8 +52,8 @@ const interactiveElements = {
 	'h6': true
 };
 
-const interactiveRoles = {
-	...sharedInteractiveRoles,
+const tooltipInteractiveRoles = {
+	...interactiveRoles,
 	'heading': true,
 	'img': true
 };
@@ -795,13 +795,8 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (ele.nodeType !== Node.ELEMENT_NODE) {
 			return false;
 		}
-		const nodeName = ele.nodeName.toLowerCase();
-		const isInteractive = interactiveElements[nodeName];
-		if (isInteractive) {
-			return true;
-		}
-		const role = (ele.getAttribute('role') || '');
-		return (nodeName === 'a' && ele.hasAttribute('href')) || interactiveRoles[role];
+
+		return isInteractive(ele, tooltipInteractiveElements, tooltipInteractiveRoles);
 	}
 
 	_onTargetBlur() {
@@ -943,15 +938,15 @@ class Tooltip extends RtlMixin(LitElement) {
 		if (this._target) {
 			const targetDisabled = this._target.hasAttribute('disabled') || this._target.getAttribute('aria-disabled') === 'true';
 
-			const isInteractive = this._isInteractive(this._target);
+			const isTargetInteractive = this._isInteractive(this._target);
 			this.id = this.id || getUniqueId();
 			this.setAttribute('role', 'tooltip');
 			if (this.forType === 'label') {
 				elemIdListAdd(this._target, 'aria-labelledby', this.id);
-			} else if (!this.announced || isInteractive) {
+			} else if (!this.announced || isTargetInteractive) {
 				elemIdListAdd(this._target, 'aria-describedby', this.id);
 			}
-			if (logAccessibilityWarning && !isInteractive && !this.announced) {
+			if (logAccessibilityWarning && !isTargetInteractive && !this.announced) {
 				console.warn(
 					'd2l-tooltip may be being used in a non-accessible manner; it should be attached to interactive elements like \'a\', \'button\',' +
 					'\'input\'', '\'select\', \'textarea\' or static / custom elements if a role has been set and the element is focusable.',
