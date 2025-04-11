@@ -243,6 +243,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				padding-top: 0;
 			}
 
+			[slot="control"] ~ [slot="control-action"] [slot="content"] {
+				padding-inline-start: 2.2rem; /* width of "control" slot set in generic-layout */
+			}
+
 			[slot="content"] ::slotted([slot="illustration"]),
 			[slot="content"] .d2l-list-item-illustration > * {
 				border-radius: 6px;
@@ -722,6 +726,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId, contentAreaContent) : null);
 		const renderExpandableAction = !primaryAction && !this.selectable && this.expandable && !this.noPrimaryAction;
+		const renderCheckboxAction = !primaryAction && this.selectable;
+
 		let tooltipForId = null;
 		if (this._showAddButton) {
 			tooltipForId = this._addButtonTopId;
@@ -773,7 +779,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				<div slot="control-action"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}">
-						${this._renderCheckboxAction('')}
+						${this._renderCheckboxAction(contentAreaContent)}
 						${this._renderExpandCollapseAction(contentAreaContent)}
 				</div>` : nothing }
 				${primaryAction ? html`
@@ -783,7 +789,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					@mouseenter="${this._onMouseEnterPrimaryAction}"
 					@mouseleave="${this._onMouseLeavePrimaryAction}">
 						${primaryAction}
-				</div>` : (!renderExpandableAction ? contentAreaContent : nothing)}
+				</div>` : (!renderExpandableAction && !renderCheckboxAction ? contentAreaContent : nothing)}
 				<div slot="actions"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}"
