@@ -143,7 +143,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 			return nothing;
 		}
 
-		return html`<div class="d2l-list-expand-collapse-action" @click="${this._toggleExpandCollapseAction}">${content}</div>`;
+		return html`<div class="d2l-list-expand-collapse-action" @click="${this._toggleExpandCollapseAction}">${content || nothing}</div>`;
 	}
 
 	_renderNestedLoadingSpinner() {

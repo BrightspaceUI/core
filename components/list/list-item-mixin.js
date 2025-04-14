@@ -708,6 +708,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId, contentAreaContent) : null);
 		const renderExpandableAction = !primaryAction && !this.selectable && this.expandable && !this.noPrimaryAction;
 		const renderCheckboxAction = !primaryAction && this.selectable && !this.noPrimaryAction;
+		const renderDragTarget = !primaryAction && !renderCheckboxAction && !renderExpandableAction && this.draggable;
 
 		let tooltipForId = null;
 		if (this._showAddButton) {
@@ -739,10 +740,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				</div>
 				` : nothing}
 				<div slot="outside-control-container" class="${classMap(bottomBorderClasses)}"></div>
-				<div slot="before-content"></div>
+				${this._hasNestedListAddButton ? html`<div slot="before-content"></div>` : nothing}
 				${this._renderDropTarget()}
 				${this._renderDragHandle(this._renderOutsideControl)}
-				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
+				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction, renderDragTarget ? contentAreaContent : nothing)}
 				<div slot="control-container" class="${classMap(bottomBorderClasses)}"></div>
 				${this._hasColorSlot ? html`
 				<div slot="color-indicator" class="d2l-list-item-color-outer">
@@ -770,7 +771,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					@mouseenter="${this._onMouseEnterPrimaryAction}"
 					@mouseleave="${this._onMouseLeavePrimaryAction}">
 						${primaryAction}
-				</div>` : (!renderExpandableAction && !renderCheckboxAction ? contentAreaContent : nothing)}
+				</div>` : nothing}
+				${!renderExpandableAction && !renderCheckboxAction && !renderDragTarget ? contentAreaContent : nothing}
 				<div slot="actions"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}"
