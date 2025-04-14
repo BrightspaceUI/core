@@ -25,6 +25,7 @@ class Tab extends TabMixin(LitElement) {
 		const styles = [ css`
 			.d2l-tab-text-inner-content {
 				display: flex;
+				padding: 0.1rem;
 			}
 			:host(:${unsafeCSS(getFocusPseudoClass())}) .d2l-tab-text-inner-content {
 				border-radius: 0.3rem;
@@ -35,20 +36,20 @@ class Tab extends TabMixin(LitElement) {
 				color: var(--d2l-color-celestine);
 			}
 			slot {
-				display: block;
+				align-items: center;
+				display: flex;
 			}
 			::slotted([slot="before"]) {
-				padding-inline-end: 0.2rem; /* total of 0.3rem padding between slotted content and text */
+				padding-inline-end: 0.3rem;
 			}
 			::slotted([slot="after"]) {
-				padding-inline-start: 0.2rem; /* total of 0.3rem padding between slotted content and text */
+				padding-inline-start: 0.3rem;
 			}
 			:host(:not([selected]):hover) ::slotted(d2l-icon) {
 				color: var(--d2l-color-celestine);
 			}
 			span {
 				overflow: hidden;
-				padding: 0.1rem;
 				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
