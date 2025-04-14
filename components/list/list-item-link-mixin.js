@@ -1,7 +1,8 @@
 import '../colors/colors.js';
 import { css, html } from 'lit';
-import { getIsInteractiveChildClicked, ListItemMixin } from './list-item-mixin.js';
+import { listInteractiveElems, ListItemMixin } from './list-item-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { isInteractiveInComposedPath } from '../../helpers/interactive.js';
 
 export const ListItemLinkMixin = superclass => class extends ListItemMixin(superclass) {
 
@@ -50,8 +51,13 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		if (changedProperties.has('actionHref') && !this.actionHref) this._hoveringPrimaryAction = false;
 	}
 
+	_getDescendantClicked(e) {
+		const isPrimaryAction = (elem) => elem === this.shadowRoot.querySelector(`#${this._primaryActionId}`);
+		return isInteractiveInComposedPath(e.composedPath(), isPrimaryAction, { elements: listInteractiveElems });
+	}
+
 	_handleLinkClick(e) {
-		if (getIsInteractiveChildClicked(e, this.shadowRoot.querySelector(`#${this._primaryActionId}`))) {
+		if (this._getDescendantClicked(e)) {
 			e.preventDefault();
 		} else {
 			/** Dispatched when the item's primary link action is clicked */
@@ -60,7 +66,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 	}
 
 	_handleLinkFocus(e) {
-		if (getIsInteractiveChildClicked(e, this.shadowRoot.querySelector(`#${this._primaryActionId}`))) {
+		if (this._getDescendantClicked(e)) {
 			e.stopPropagation();
 		}
 	}

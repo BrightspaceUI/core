@@ -6,13 +6,13 @@ import '../tooltip/tooltip.js';
 import '../expand-collapse/expand-collapse-content.js';
 import { css, html, nothing } from 'lit';
 import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
-import { sharedInteractiveElems, sharedInteractiveRoles } from '../../helpers/interactive.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { composeMixins } from '../../helpers/composeMixins.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { interactiveElements } from '../../helpers/interactive.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
 import { ListItemDragDropMixin } from './list-item-drag-drop-mixin.js';
@@ -40,34 +40,11 @@ function addTabListener() {
 
 let hasDisplayedKeyboardTooltip = false;
 
-const interactiveElements = {
-	...sharedInteractiveElems,
+export const listInteractiveElems = {
+	...interactiveElements,
 	'd2l-button': true,
 	'd2l-tooltip-help': true
 };
-
-export function getIsInteractiveChildClicked(e, linkElem) {
-	const composedPath = e.composedPath();
-	for (let i = 0; i < composedPath.length; i++) {
-		const elem = composedPath[i];
-		if (!elem.getAttribute) continue;
-
-		if (elem === linkElem) {
-			return false;
-		}
-
-		const nodeName = elem.nodeName.toLowerCase();
-		if (interactiveElements[nodeName] || (nodeName === 'a' && elem.hasAttribute('href'))) {
-			return true;
-		}
-
-		const role = (elem.getAttribute('role') || '');
-		if (sharedInteractiveRoles[role]) {
-			return true;
-		}
-	}
-	return false;
-}
 
 /**
  * @property label - The hidden label for the checkbox and expand collapse control
