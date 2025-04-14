@@ -91,6 +91,7 @@ An element that displays the corresponding tab panel when selected.
 <!-- docs: demo code properties name:d2l-tab sandboxTitle:'Tab' display:block -->
 ```html
 <script type="module">
+  import '@brightspace-ui/core/components/count-badge/count-badge.js';
   import '@brightspace-ui/core/components/tabs/tab.js';
   import '@brightspace-ui/core/components/tabs/tabs.js';
   import '@brightspace-ui/core/components/tabs/tab-panel.js';
@@ -99,7 +100,9 @@ An element that displays the corresponding tab panel when selected.
 <d2l-tabs text="Courses">
   <d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
   <d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
-  <d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
+  <d2l-tab id="biology" text="Biology" slot="tabs">
+    <d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="after"></d2l-count-badge>
+  </d2l-tab>
   <d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
   <d2l-tab id="chemistry" text="Chemistry" slot="tabs"></d2l-tab>
   <d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
@@ -121,6 +124,13 @@ An element that displays the corresponding tab panel when selected.
 | `id` | String, required | Unique identifier for the tab |
 | `text` | String, required | The text used for the tab and for labelling the corresponding panel |
 | `selected` | Boolean | Use to select the tab |
+
+### Slots
+
+| Slot | Description |
+|--|--|
+| `before` | Slot for content to be displayed before the tab text |
+| `after` | Slot for content to be displayed after the tab text |
 
 ### Events
 - `d2l-tab-content-change`: Dispatched when the text attribute is changed. Triggers virtual scrolling calculations in parent `d2l-tabs`.
@@ -144,6 +154,8 @@ Promise.resolve(tabs.hideTab((tab))).then(() => {
 ### Custom Tabs
 
 The `TabMixin` can be used to create custom tabs. It is IMPORTANT to call the `dispatchContentChangeEvent` function in `TabMixin` when content changes in the consumer in order to properly trigger calculations. Ensure that there is only one element in any custom tab to focus on, else the focus and keyboard navigation behaviors become confusing for users. Note that the parent `d2l-tabs` element handles `tabindex` focus management, and so consumers should not be rendering focusable elements within custom tabs.
+
+Before creating a custom tab, ensure that the case is not covered by using a standard `d2l-tab` with content in the `before` and/or `after` slot(s). 
 
 <!-- docs: demo code sandboxTitle:'TabMixin' display:block-->
 ```html
