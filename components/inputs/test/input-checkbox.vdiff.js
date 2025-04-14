@@ -1,5 +1,4 @@
 import '../input-checkbox.js';
-import '../input-checkbox-spacer.js';
 import { expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
 import { checkboxFixtures } from './input-checkbox-fixtures.js';
@@ -148,20 +147,6 @@ describe('d2l-input-checkbox', () => {
 		{
 			name: 'supporting',
 			template: checkboxFixtures.supporting
-		},
-		{
-			name: 'spacer',
-			template: html`
-				<div class="display:inline-block;">
-					<d2l-input-checkbox>
-						Label for checkbox
-						<div slot="supporting" style="color: #999999;">
-							Additional content can go here and will<br>
-							also line up nicely with the checkbox.
-						</div>
-					</d2l-input-checkbox>
-				</div>
-			`
 		}
 	].forEach(({ name, template }) => {
 		[false, true].forEach(rtl => {

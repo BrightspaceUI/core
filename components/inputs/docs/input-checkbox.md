@@ -80,28 +80,6 @@ checkbox.addEventListener('change', (e) => {
 * `supporting`: Supporting information which will appear below and be aligned with the checkbox.
 <!-- docs: end hidden content -->
 
-## Checkbox Spacer [d2l-input-checkbox-spacer]
-
-> [!NOTE]  
-> Spacer is obsolete. Use the `supporting` slot instead.
-
-To align related content below checkboxes, the `d2l-input-checkbox-spacer` element can be used:
-
-<!-- docs: demo code display:block -->
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/inputs/input-checkbox.js';
-  import '@brightspace-ui/core/components/inputs/input-checkbox-spacer.js';
-</script>
-<div>
-  <d2l-input-checkbox>Label for checkbox</d2l-input-checkbox>
-  <d2l-input-checkbox-spacer>
-    Additional content can go here and will
-    line up nicely with the edge of the checkbox.
-  </d2l-input-checkbox-spacer>
-</div>
-```
-
 ## Applying styles to native checkboxes
 
 As an alternative to using the `<d2l-input-checkbox>` custom element, you can style a native checkbox inside your own element. Import `input-checkbox-styles.js` and apply the `d2l-input-checkbox` CSS class to the input:
