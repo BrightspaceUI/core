@@ -693,7 +693,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			'hide-bottom-border': this._showAddButton && (!this._hasNestedList || this._hasNestedListAddButton)
 		};
 
-		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
+		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color) || (this.expandable && !this.selectable)) ? 'control' : undefined;
 		const contentAreaContent = html`
 			<div slot="content"
 				class="d2l-list-item-content"
@@ -707,7 +707,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId, contentAreaContent) : null);
 		const renderExpandableAction = !primaryAction && !this.selectable && this.expandable && !this.noPrimaryAction;
-		const renderCheckboxAction = !primaryAction && this.selectable;
+		const renderCheckboxAction = !primaryAction && this.selectable && !this.noPrimaryAction;
 
 		let tooltipForId = null;
 		if (this._showAddButton) {
@@ -760,8 +760,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				<div slot="control-action"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}">
-						${this._renderCheckboxAction(!primaryAction ? contentAreaContent : '')}
-						${this._renderExpandCollapseAction(!primaryAction ? contentAreaContent : null)}
+						${this._renderCheckboxAction(renderCheckboxAction ? contentAreaContent : '')}
+						${this._renderExpandCollapseAction(renderExpandableAction ? contentAreaContent : null)}
 				</div>` : nothing }
 				${primaryAction ? html`
 				<div slot="content-action"
