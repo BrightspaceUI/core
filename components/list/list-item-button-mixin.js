@@ -66,7 +66,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 	}
 
 	_getDescendantClicked(e) {
-		const isPrimaryAction = (elem) => elem !== this.shadowRoot.querySelector(`#${this._primaryActionId}`);
+		const isPrimaryAction = (elem) => elem === this.shadowRoot.querySelector(`#${this._primaryActionId}`);
 		return isInteractiveInComposedPath(e.composedPath(), isPrimaryAction, { elements: listInteractiveElems });
 	}
 

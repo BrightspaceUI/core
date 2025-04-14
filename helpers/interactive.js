@@ -25,6 +25,19 @@ export const interactiveRoles = {
 	'treeitem': true
 };
 
+export function isInteractive(ele, elems, roles) {
+	elems = elems || interactiveElements;
+	roles = roles || interactiveRoles;
+
+	const nodeName = ele.nodeName.toLowerCase();
+	const isInteractiveElem = elems[nodeName];
+	if (isInteractiveElem) {
+		return true;
+	}
+	const role = (ele.getAttribute('role') || '');
+	return (nodeName === 'a' && ele.hasAttribute('href')) || roles[role] || false;
+}
+
 export function isInteractiveInComposedPath(composedPath, predicate, options) {
 	const elems = options?.elements || interactiveElements;
 	const roles = options?.roles || interactiveRoles;
@@ -32,7 +45,7 @@ export function isInteractiveInComposedPath(composedPath, predicate, options) {
 		const elem = composedPath[i];
 		if (!elem.getAttribute) continue;
 
-		if (!predicate(elem)) {
+		if (predicate && predicate(elem)) {
 			break;
 		}
 
@@ -41,14 +54,4 @@ export function isInteractiveInComposedPath(composedPath, predicate, options) {
 		}
 	}
 	return false;
-}
-
-export function isInteractive(ele, elems, roles) {
-	const nodeName = ele.nodeName.toLowerCase();
-	const isInteractiveElem = elems[nodeName];
-	if (isInteractiveElem) {
-		return true;
-	}
-	const role = (ele.getAttribute('role') || '');
-	return (nodeName === 'a' && ele.hasAttribute('href')) || roles[role];
 }

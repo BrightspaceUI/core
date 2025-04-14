@@ -52,7 +52,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 	}
 
 	_getDescendantClicked(e) {
-		const isPrimaryAction = (elem) => elem !== this.shadowRoot.querySelector(`#${this._primaryActionId}`);
+		const isPrimaryAction = (elem) => elem === this.shadowRoot.querySelector(`#${this._primaryActionId}`);
 		return isInteractiveInComposedPath(e.composedPath(), isPrimaryAction, { elements: listInteractiveElems });
 	}
 
