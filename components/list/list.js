@@ -175,7 +175,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		items.forEach((item) => {
 			if (item === e.target) return;
 
-			item.current = undefined;
+			item.current = false;
+			item._childCurrent = false;
 		});
 
 		e.target.dispatchResetEvent();
