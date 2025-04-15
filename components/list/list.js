@@ -205,7 +205,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	render() {
-		const role = !this.grid ? 'list' : 'application';
+		const role = !this.grid ? 'list' : 'application'; // not using grid role due to Safari+VO: https://bugs.webkit.org/show_bug.cgi?id=291591
 		const ariaLabel = this.slot !== 'nested' ? this.label : undefined;
 		return html`
 			<slot name="controls"></slot>
@@ -235,7 +235,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		if (!slot) slot = this.shadowRoot.querySelector('slot:not([name])');
 		if (!slot) return [];
 		return slot.assignedNodes({ flatten: true }).filter((node) => {
-			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'rowgroup' || node.role === 'listitem');
+			return node.nodeType === Node.ELEMENT_NODE && (node.role === 'row' || node.role === 'listitem');
 		});
 	}
 
