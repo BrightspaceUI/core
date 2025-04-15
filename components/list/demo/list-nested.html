@@ -14,6 +14,7 @@
 			import '../list-item-content.js';
 			import './list-item-custom.js';
 			import '../list-item.js';
+			import '../list-item-nav.js';
 			import '../list-controls.js';
 			import '../list.js';
 			import '../../menu/menu.js';
@@ -21,6 +22,7 @@
 			import '../../paging/pager-load-more.js';
 			import '../../selection/selection-action.js';
 			import '../../switch/switch.js';
+			import '../../tooltip/tooltip-help.js';
 
 			import './demo-list-nested-iterations-helper.js';
 		</script>
@@ -29,6 +31,86 @@
 
 		<d2l-demo-page page-title="d2l-list (nested)">
 
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid menu style="width: 334px;">
+						<d2l-list-item-nav key="L1-1" label="Label for L1-1" color="#006fbf" expandable expanded>
+							<d2l-list-item-content>
+								<div>Earth Sciences (L1)</div>
+								<div slot="supporting-info">This course will teach the basics of earth sciences.</div>
+								<div slot="secondary"><d2l-tooltip-help text="Due: Jan 30, 2023">Available: Jan 11, 2023</d2l-tooltip-help></div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" menu>
+								<d2l-list-item-nav key="L2-1" label="Label for L2-1" color="#29a6ff">
+									<d2l-list-item-content>
+										<div>Introductory Earth Sciences (L2)</div>
+									</d2l-list-item-content>
+									<d2l-list slot="nested" menu>
+										<d2l-list-item-nav key="L3-1" label="Label for L3-1" color="#e8f8ff" >
+											<d2l-list-item-content>
+												<div>Glaciation (L3)</div>
+												<div slot="secondary" style="padding: 5px;"><d2l-tooltip-help text="Due: Jan 28, 2023">Available: Jan 11, 2023</d2l-tooltip-help></div>
+											</d2l-list-item-content>
+											<d2l-list slot="nested" menu>
+												<d2l-list-item-nav key="L4-1" label="Label for L4-1" color="#e8f8ff">
+													<d2l-list-item-content>
+														<div>Glaciation (L4)</div>
+														<div slot="secondary" style="padding: 5px;"><d2l-tooltip-help text="Due: Jan 28, 2023">Available: Jan 11, 2023</d2l-tooltip-help></div>
+													</d2l-list-item-content>
+												</d2l-list-item-nav>
+											</d2l-list>
+										</d2l-list-item-nav>
+									</d2l-list>
+								</d2l-list-item-nav>
+								<d2l-list-item-nav key="L2-2" label="Label for L2-2" color="#29a6ff">
+									<d2l-list-item-content>
+										<div>Another Introductory Earth Sciences (L2)</div>
+									</d2l-list-item-content>
+									<d2l-list slot="nested" menu>
+										<d2l-list-item-nav key="L3-2" label="Label for L3-2" color="#e8f8ff">
+											<d2l-list-item-content>
+												<div>Another Glaciation (L3)</div>
+												<div slot="secondary" style="padding: 5px;"><d2l-tooltip-help text="Due: Jan 28, 2023">Available: Jan 11, 2023</d2l-tooltip-help></div>
+											</d2l-list-item-content>
+											<d2l-list slot="nested" menu>
+												<d2l-list-item-nav key="L4-2" label="Label for L4-2" color="#e8f8ff">
+													<d2l-list-item-content>
+														<div>Another Glaciation (L4)</div>
+														<div slot="secondary" style="padding: 5px;"><d2l-tooltip-help text="Due: Jan 28, 2023">Available: Jan 11, 2023</d2l-tooltip-help></div>
+													</d2l-list-item-content>
+												</d2l-list-item-nav>
+											</d2l-list>
+										</d2l-list-item-nav>
+									</d2l-list>
+								</d2l-list-item-nav>
+							</d2l-list>
+						</d2l-list-item-nav>
+						<d2l-list-item-nav key="L1-2" label="Label for L1-2" color="#006fbf">
+							<d2l-list-item-content>
+								<div>Earth Sciences 2.0 (L1)</div>
+								<div slot="supporting-info">This course will teach the expertise of earth sciences.</div>
+								<div slot="secondary"><d2l-tooltip-help text="Due: Jan 30, 2023">Available: Jan 11, 2023</d2l-tooltip-help></div>
+							</d2l-list-item-content>
+
+							<d2l-list slot="nested" menu>
+								<d2l-list-item-nav key="L1-2-2" label="Label for L1-2-2" color="#e8f8ff">
+									<d2l-list-item-content>
+										<div>Glaciation (L5)</div>
+										<div slot="secondary" style="padding: 5px;"><d2l-tooltip-help text="Due: Jan 28, 2023">Available: Jan 11, 2023</d2l-tooltip-help></div>
+									</d2l-list-item-content>
+								</d2l-list-item-nav>
+							</d2l-list>
+						</d2l-list-item-nav>
+					</d2l-list>
+				</template>
+				<script type="module">
+					requestAnimationFrame(() => {
+						document.addEventListener('d2l-list-item-nav-click', () => {
+							console.log('d2l-list-item-nav: click event');
+						});
+					});
+				</script>
+			</d2l-demo-snippet>
 
 			<d2l-demo-snippet>
 				<template>
