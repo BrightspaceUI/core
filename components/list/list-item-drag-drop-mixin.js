@@ -868,9 +868,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		`) : nothing;
 	}
 
-	_renderDragTarget(templateMethod, content) {
+	_renderDragTarget(templateMethod) {
 		templateMethod = templateMethod || (dragTarget => dragTarget);
-		content = content || nothing;
 		return this.draggable && !this._keyboardActive ? templateMethod.call(this, html`
 			<div
 				class="d2l-list-item-drag-area"
@@ -885,9 +884,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				@touchcancel="${this._onTouchCancel}"
 				@mousedown="${this._onDragTargetMouseDown}"
 				>
-				${content}
 			</div>
-		`) : content;
+		`) : nothing;
 	}
 
 	_renderDropTarget(templateMethod) {
