@@ -173,7 +173,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 
 	_toggleExpandCollapseAction(e = null) {
 		const isPrimaryAction = (elem) => elem === this.shadowRoot.querySelector('div.d2l-list-expand-collapse-action');
-		if (isInteractiveInComposedPath(e?.composedPath(), isPrimaryAction, { elements: listInteractiveElems })) {
+		if (e && isInteractiveInComposedPath(e.composedPath(), isPrimaryAction, { elements: listInteractiveElems })) {
 			e.preventDefault();
 			return;
 		}

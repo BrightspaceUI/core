@@ -739,7 +739,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				</div>
 				` : nothing}
 				<div slot="outside-control-container" class="${classMap(bottomBorderClasses)}"></div>
-				${this._hasNestedListAddButton ? html`<div slot="before-content"></div>` : nothing}
+				<div slot="before-content"></div>
 				${this._renderDropTarget()}
 				${this._renderDragHandle(this._renderOutsideControl)}
 				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
