@@ -11,7 +11,7 @@ class InputCheckboxGroup extends LitElement {
 			:host {
 				display: flex;
 				flex-direction: column;
-				gap: 0.9rem;
+				gap: 0.6rem;
 			}
 			:host([hidden]) {
 				display: none;
