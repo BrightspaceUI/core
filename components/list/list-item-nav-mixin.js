@@ -38,8 +38,14 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('d2l-list-item-nav-set-current', async(e) => {
+			await this.updateComplete;
 			if (e.target === this || !this._button) return;
 			this._childCurrent = true;
+		});
+		this.addEventListener('d2l-list-item-nav-reset-current', async(e) => {
+			await this.updateComplete;
+			if (e.target === this || !this._button) return;
+			this._childCurrent = false;
 		});
 	}
 
@@ -48,15 +54,13 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 
 		if (this.current) {
 			this._button.ariaCurrent = 'page';
-			this.dispatchEvent(new CustomEvent('d2l-list-item-nav-set-current', { bubbles: true }));
+			this.dispatchResetEvent();
 		}
 	}
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
 		if (changedProperties.has('current')) {
-			// this._button.ariaCurrent = this.current;
-
 			if (this.current) {
 				this._button.ariaCurrent = 'page';
 				/** @ignore */
@@ -65,7 +69,11 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 				this._button.ariaCurrent = 'location';
 			} else {
 				this._button.ariaCurrent = undefined;
-				// handle removal
+			}
+
+			// going from true to false
+			if (!this.curent && changedProperties.get('current')) {
+				this.dispatchEvent(new CustomEvent('d2l-list-item-nav-reset-current', { bubbles: true }));
 			}
 		} else if (changedProperties.has('_childCurrent')) {
 			if (this.current) {
@@ -85,10 +93,21 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 
 	_onButtonClick(e) {
 		if (!this._getDescendantClicked(e)) {
-			// this.current = 'page';
 			this.current = true;
 			this._childCurrent = false;
 		}
 	}
+
+	// set current(val) {
+	// 	if (this._childCurrent && val) {
+	// 		this._childCurrent = false;
+	// 	}
+	// 	const oldVal = this._current;
+	// 	this._current = val;
+	// 	this.requestUpdate('current', oldVal);
+	// }
+	// get current() {
+	// 	return this._current;
+	// }
 
 };
