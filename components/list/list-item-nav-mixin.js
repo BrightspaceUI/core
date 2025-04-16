@@ -64,7 +64,7 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 			if (this.current) {
 				this._button.ariaCurrent = 'page';
 				/** @ignore */
-				this.dispatchEvent(new CustomEvent('d2l-list-item-nav-top-level', { bubbles: true }));
+				this.dispatchEvent(new CustomEvent('d2l-list-item-property-change', { bubbles: true, detail: { name: 'current', value: this.current } }));
 			} else if (this._childCurrent) {
 				this._button.ariaCurrent = 'location';
 			} else {
@@ -73,7 +73,8 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 
 			// going from true to false
 			if (!this.curent && changedProperties.get('current')) {
-				this.dispatchEvent(new CustomEvent('d2l-list-item-nav-reset-current', { bubbles: true }));
+				/** @ignore */
+				// this.dispatchEvent(new CustomEvent('d2l-list-item-nav-reset-current', { bubbles: true }));
 			}
 		} else if (changedProperties.has('_childCurrent')) {
 			if (this.current) {
@@ -97,17 +98,5 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 			this._childCurrent = false;
 		}
 	}
-
-	// set current(val) {
-	// 	if (this._childCurrent && val) {
-	// 		this._childCurrent = false;
-	// 	}
-	// 	const oldVal = this._current;
-	// 	this._current = val;
-	// 	this.requestUpdate('current', oldVal);
-	// }
-	// get current() {
-	// 	return this._current;
-	// }
 
 };

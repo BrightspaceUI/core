@@ -164,22 +164,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this.addEventListener('d2l-list-item-nested-change', (e) => this._handleListItemNestedChange(e));
 		this.addEventListener('d2l-list-item-property-change', (e) => this._handleListItemPropertyChange(e));
 		this.addEventListener('d2l-list-item-add-button-click', (e) => this._handleListItemAddButtonClick(e));
-		this.addEventListener('d2l-list-item-nav-top-level', (e) => this._handleListItemNavClick(e));
 		ro.observe(this);
-	}
-
-	_handleListItemNavClick(e) {
-		if (this.slot === 'nested') return;
-
-		const items = this.querySelectorAll('d2l-list-item-nav');
-		items.forEach((item) => {
-			if (item === e.target) return;
-
-			item.current = false;
-			item._childCurrent = false;
-		});
-
-		e.target.dispatchResetEvent();
 	}
 
 	disconnectedCallback() {
@@ -385,8 +370,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	_handleListItemPropertyChange(e) {
-		e.stopPropagation();
 		if (e.detail.name === 'color') {
+			e.stopPropagation();
 			if (e.detail.value) {
 				this._childHasColor = true;
 				this._listChildrenUpdatedSubscribers.updateSubscribers();
@@ -394,6 +379,18 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				// if color has had its value removed then need to loop through all the items to determine if there are still others with colors
 				this._handleListItemNestedChange(e);
 			}
+		} else if (e.detail.name === 'current') {
+			if (this.slot === 'nested') return;
+
+			const items = this.querySelectorAll('d2l-list-item-nav');
+			items.forEach((item) => {
+				if (item === e.target) return;
+
+				item.current = false;
+				item._childCurrent = false;
+			});
+
+			e.target.dispatchResetEvent();
 		}
 	}
 
