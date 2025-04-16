@@ -7,22 +7,30 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 	static get properties() {
 		return {
 			current: { type: Boolean, reflect: true },
-			_childCurrent: { state: true },
+			_childCurrent: { type: Boolean, reflect: true, attribute: '_child-current' },
 		};
 	}
 
 	static get styles() {
 
 		const styles = [ css`
-			button[aria-current="page"] {
-				border: 2px solid blue;
-			}
-			button[aria-current="location"] {
-				border: 2px solid green;
-			}
 			.d2l-list-item-content ::slotted(*) {
 				width: 100%; /* add vdiff for this case where hovering on tooltip causes the text to be wider than the button */
 			}
+			:host([current]) [slot="outside-control-container"] {
+				margin-block: 1px;
+				outline: 3px solid var(--d2l-button-focus-color, var(--d2l-color-celestine));
+			}
+			:host([_child-current]) [slot="outside-control-container"] {
+				margin-block: 1px;
+				outline: 1px solid var(--d2l-button-focus-color, var(--d2l-color-celestine-plus-1));
+			}
+			:host([current]) [slot="control-container"]::after,
+			:host([_child-current]) [slot="control-container"]::before,
+			:host([_child-current]) [slot="control-container"]::after {
+				border-color: transparent;
+			}
+
 		` ];
 
 		super.styles && styles.unshift(super.styles);
@@ -37,15 +45,10 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('d2l-list-item-nav-set-current', async(e) => {
-			await this.updateComplete;
+		this.addEventListener('d2l-list-item-nav-set-child-current', async(e) => {
+			await this.updateComplete; // ensure button exists
 			if (e.target === this || !this._button) return;
-			this._childCurrent = true;
-		});
-		this.addEventListener('d2l-list-item-nav-reset-current', async(e) => {
-			await this.updateComplete;
-			if (e.target === this || !this._button) return;
-			this._childCurrent = false;
+			this._childCurrent = e.detail.value;
 		});
 	}
 
@@ -54,7 +57,7 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 
 		if (this.current) {
 			this._button.ariaCurrent = 'page';
-			this.dispatchResetEvent();
+			this._dispatchSetChildCurrentEvent(true);
 		}
 	}
 
@@ -81,14 +84,9 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 		}
 	}
 
-	dispatchResetEvent() {
+	_dispatchSetChildCurrentEvent(val) {
 		/** @ignore */
-		this.dispatchEvent(new CustomEvent('d2l-list-item-nav-reset-current', { bubbles: true }));
-	}
-
-	dispatchSetEvent() {
-		/** @ignore */
-		this.dispatchEvent(new CustomEvent('d2l-list-item-nav-set-current', { bubbles: true }));
+		this.dispatchEvent(new CustomEvent('d2l-list-item-nav-set-child-current', { bubbles: true, detail: { value: val } }));
 	}
 
 	_onButtonClick(e) {

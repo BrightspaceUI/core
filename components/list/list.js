@@ -406,14 +406,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			});
 
 			if (prevCurrent) {
-				this.addEventListener('d2l-list-item-nav-reset-current', (e) => {
+				this.addEventListener('d2l-list-item-nav-set-child-current', (e) => {
 					e.stopPropagation();
-					target.dispatchSetEvent();
+					target._dispatchSetChildCurrentEvent(true);
 				}, { once: true });
 				prevCurrent.current = false;
-				prevCurrent.dispatchResetEvent();
+				prevCurrent._dispatchSetChildCurrentEvent(false);
 			} else {
-				target.dispatchSetEvent();
+				target._dispatchSetChildCurrentEvent(true);
 			}
 		}
 	}
