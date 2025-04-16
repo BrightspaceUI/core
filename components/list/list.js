@@ -383,6 +383,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			if (this.slot === 'nested') return;
 			e.stopPropagation();
 
+			if (!e.detail.value) {
+				e.target._dispatchSetChildCurrentEvent(false);
+				return;
+			}
+
 			/**
 			 * When a nav item is set to current, do the following:
 			 * - If previous current item:
@@ -397,7 +402,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				console.warn('d2l-list: More than one d2l-list-item-nav has been set to current. This is not allowed.');
 			}
 			const target = e.target;
-			
+
 			// TODO: handle if more than 2 current items
 			let prevCurrent = false;
 			currentItems.forEach((item) => {
@@ -411,7 +416,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 					target._dispatchSetChildCurrentEvent(true);
 				}, { once: true });
 				prevCurrent.current = false;
-				prevCurrent._dispatchSetChildCurrentEvent(false);
 			} else {
 				target._dispatchSetChildCurrentEvent(true);
 			}

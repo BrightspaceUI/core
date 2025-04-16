@@ -30,6 +30,9 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 			:host([_child-current]) [slot="control-container"]::after {
 				border-color: transparent;
 			}
+			:host([_focusing-primary-action]) .d2l-list-item-content {
+				--d2l-list-item-content-text-outline: none !important;
+			}
 
 		` ];
 
@@ -65,13 +68,17 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 		super.updated(changedProperties);
 		if (changedProperties.has('current')) {
 			if (this.current) {
+				this._childCurrent = false;
 				this._button.ariaCurrent = 'page';
-				/** @ignore */
-				this.dispatchEvent(new CustomEvent('d2l-list-item-property-change', { bubbles: true, detail: { name: 'current', value: this.current } }));
 			} else if (this._childCurrent) {
 				this._button.ariaCurrent = 'location';
 			} else {
 				this._button.ariaCurrent = undefined;
+			}
+
+			if (changedProperties.get('current') !== undefined) {
+				/** @ignore */
+				this.dispatchEvent(new CustomEvent('d2l-list-item-property-change', { bubbles: true, detail: { name: 'current', value: this.current } }));
 			}
 		} else if (changedProperties.has('_childCurrent')) {
 			if (this.current) {
