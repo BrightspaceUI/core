@@ -239,7 +239,7 @@ class AlertToast extends LitElement {
 				data-state="${this._state}"
 				style="${styleMap(containerStyles)}"
 				@transitionend=${this._onTransitionEnd}>
-				<d2l-alert role="${ this._state !== states.CLOSED ? 'alert' : '' }"
+				<d2l-alert
 					@blur=${this._onBlur}
 					button-text="${ifDefined(this.buttonText)}"
 					@d2l-alert-button-press=${this._handleButtonPress}
@@ -249,6 +249,7 @@ class AlertToast extends LitElement {
 					?hidden="${this._state === states.CLOSED}"
 					@mouseenter=${this._onMouseEnter}
 					@mouseleave=${this._onMouseLeave}
+					role="${ifDefined(this._state !== states.CLOSED ? 'alert' : undefined)}"
 					subtext="${ifDefined(this.subtext)}"
 					type="${ifDefined(this.type)}">
 					<slot></slot>
