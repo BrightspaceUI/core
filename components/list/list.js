@@ -381,16 +381,40 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			}
 		} else if (e.detail.name === 'current') {
 			if (this.slot === 'nested') return;
+			e.stopPropagation();
 
-			const items = this.querySelectorAll('d2l-list-item-nav');
-			items.forEach((item) => {
+			/**
+			 * When a nav item is set to current, do the following:
+			 * - If previous current item:
+			 *   - Set its current to FALSE
+			 *   - Trigger the d2l-list-item-nav-reset-current which sets all parent item aria-current to undefined
+			 * - After the reset event has worked its way up OR if there is no previous current item:
+			 *   - Trigger the d2l-list-item-nav-set-current event which sets all parent item aria-current to "location"
+			 */
+			const currentItems = this.querySelectorAll('[current]');
+			// length of 2 is fine as long as one is e.target and the other is the previous current item
+			if (currentItems.length > 2) {
+				console.warn('d2l-list: More than one d2l-list-item-nav has been set to current. This is not allowed.');
+			}
+			const target = e.target;
+			
+			// TODO: handle if more than 2 current items
+			let prevCurrent = false;
+			currentItems.forEach((item) => {
 				if (item === e.target) return;
-
-				item.current = false;
-				item._childCurrent = false;
+				prevCurrent = item;
 			});
 
-			e.target.dispatchResetEvent();
+			if (prevCurrent) {
+				this.addEventListener('d2l-list-item-nav-reset-current', (e) => {
+					e.stopPropagation();
+					target.dispatchSetEvent();
+				}, { once: true });
+				prevCurrent.current = false;
+				prevCurrent.dispatchResetEvent();
+			} else {
+				target.dispatchSetEvent();
+			}
 		}
 	}
 
