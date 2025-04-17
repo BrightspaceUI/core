@@ -232,6 +232,7 @@ class AlertToast extends LitElement {
 			'd2l-alert-toast-container-lowest': !this._totalSiblingHeightBelow,
 			'vdiff-target': true
 		};
+
 		return html`
 			<div
 				class="${classMap(containerClasses)}"
@@ -248,6 +249,7 @@ class AlertToast extends LitElement {
 					?hidden="${this._state === states.CLOSED}"
 					@mouseenter=${this._onMouseEnter}
 					@mouseleave=${this._onMouseLeave}
+					role="${ifDefined(this._state !== states.CLOSED ? 'alert' : undefined)}"
 					subtext="${ifDefined(this.subtext)}"
 					type="${ifDefined(this.type)}">
 					<slot></slot>
@@ -392,7 +394,6 @@ class AlertToast extends LitElement {
 		this._totalSiblingHeightBelow = 0;
 		this._numAlertsBelow = 0;
 		this._closeClicked = false;
-		this.removeAttribute('role');
 	}
 
 	_onTransitionEnd() {
@@ -420,13 +421,11 @@ class AlertToast extends LitElement {
 					this._state = states.OPEN;
 				}
 			}
-			this.setAttribute('role', 'alert');
 		} else {
 			if (!this._innerContainer) return;
 
 			if (activeReduceMotion || this._state === states.PREOPENING) {
 				cancelAnimationFrame(this._preopenFrame);
-				this.removeAttribute('role');
 			} else if (this._state === states.OPENING || this._state === states.OPEN || this._state === states.SLIDING) {
 				this._state = states.CLOSING;
 			}
