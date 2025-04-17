@@ -1,9 +1,8 @@
 import { css, html, LitElement } from 'lit';
 import { fixSvg } from './fix-svg.js';
 import { iconStyles } from './icon-styles.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
-class IconCustom extends RtlMixin(LitElement) {
+class IconCustom extends LitElement {
 
 	static get properties() {
 		return {
