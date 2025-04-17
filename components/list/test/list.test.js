@@ -1,3 +1,4 @@
+import '../../button/button.js';
 import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
@@ -536,6 +537,48 @@ describe('d2l-list-item', () => {
 		expect(handleRealClicks).to.equal(0);
 	});
 
+	describe('events', () => {
+
+		it('dispatches d2l-list-item-link-click event when clicked', async() => {
+			const el = await fixture(html`<d2l-list-item action-href="javascript:void(0)" label="item"></d2l-list-item>`);
+			clickElem(el.shadowRoot.querySelector('a'));
+			await oneEvent(el, 'd2l-list-item-link-click');
+		});
+
+		it('dispatches d2l-list-item-link-click event when clicked with interactive content', async() => {
+			const el = await fixture(html`
+				<d2l-list-item action-href="javascript:void(0)" label="item">
+					<div>Item 1</div>
+					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+				</d2l-list-item>`);
+			clickElem(el.shadowRoot.querySelector('a'));
+			await oneEvent(el, 'd2l-list-item-link-click');
+		});
+
+		it('dispatches d2l-list-item-link-click event when non-interactive content clicked', async() => {
+			const el = await fixture(html`
+				<d2l-list-item action-href="javascript:void(0)" label="item">
+					<div>Item 1</div>
+					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+				</d2l-list-item>`);
+			clickElem(el.querySelector('div'));
+			await oneEvent(el, 'd2l-list-item-link-click');
+		});
+
+		it('does not dispatch d2l-list-item-link-click event interactive content clicked', async() => {
+			let dispatched = false;
+			const el = await fixture(html`
+				<d2l-list-item action-href="javascript:void(0)" label="item">
+					<div>Item 1</div>
+					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+				</d2l-list-item>`);
+
+			el.addEventListener('d2l-list-item-link-click', () => dispatched = true);
+			await clickElem(el.querySelector('d2l-button'));
+			expect(dispatched).to.equal(false);
+		});
+	});
+
 });
 
 describe('d2l-list-item-button', () => {
@@ -550,16 +593,42 @@ describe('d2l-list-item-button', () => {
 
 	describe('events', () => {
 
-		it('dispatches d2l-list-item-link-click event when clicked', async() => {
-			const el = await fixture(html`<d2l-list-item action-href="javascript:void(0)" label="item"></d2l-list-item>`);
-			clickElem(el.shadowRoot.querySelector('a'));
-			await oneEvent(el, 'd2l-list-item-link-click');
-		});
-
 		it('dispatches d2l-list-item-button-click event when clicked', async() => {
 			const el = await fixture(html`<d2l-list-item-button label="item"></d2l-list-item-button>`);
 			clickElem(el.shadowRoot.querySelector('button'));
 			await oneEvent(el, 'd2l-list-item-button-click');
+		});
+
+		it('dispatches d2l-list-item-button-click event when clicked with interactive content', async() => {
+			const el = await fixture(html`
+				<d2l-list-item-button label="item">
+					<div>Item 1</div>
+					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+				</d2l-list-item-button>`);
+			clickElem(el.shadowRoot.querySelector('button'));
+			await oneEvent(el, 'd2l-list-item-button-click');
+		});
+
+		it('dispatches d2l-list-item-button-click event when non-interactive content clicked', async() => {
+			const el = await fixture(html`
+				<d2l-list-item-button label="item">
+					<div>Item 1</div>
+					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+				</d2l-list-item-button>`);
+			clickElem(el.querySelector('div'));
+			await oneEvent(el, 'd2l-list-item-button-click');
+		});
+
+		it('does not dispatch d2l-list-item-button-click event interactive content clicked', async() => {
+			let dispatched = false;
+			const el = await fixture(html`
+				<d2l-list-item-button label="item">
+					<div>Item 1</div>
+					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+				</d2l-list-item-button>`);
+			el.addEventListener('d2l-list-item-button-click', () => dispatched = true);
+			await clickElem(el.querySelector('d2l-button'));
+			expect(dispatched).to.equal(false);
 		});
 
 		it('dispatches d2l-list-item-add-button-click event when first add button clicked', async() => {

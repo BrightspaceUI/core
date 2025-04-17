@@ -12,6 +12,7 @@ import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { interactiveElements } from '../../helpers/interactive.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
 import { ListItemDragDropMixin } from './list-item-drag-drop-mixin.js';
@@ -38,6 +39,12 @@ function addTabListener() {
 }
 
 let hasDisplayedKeyboardTooltip = false;
+
+export const listInteractiveElems = {
+	...interactiveElements,
+	'd2l-button': true,
+	'd2l-tooltip-help': true
+};
 
 /**
  * @property label - The hidden label for the checkbox and expand collapse control
@@ -679,7 +686,17 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		};
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
-		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId) : null);
+		const contentAreaContent = html`
+			<div slot="content"
+				class="d2l-list-item-content"
+				id="${this._contentId}"
+				@mouseenter="${this._onMouseEnter}"
+				@mouseleave="${this._onMouseLeave}">
+				<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
+				<slot>${content}</slot>
+			</div>
+		`;
+		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId, contentAreaContent) : null);
 		let tooltipForId = null;
 		if (this._showAddButton) {
 			tooltipForId = this._addButtonTopId;
@@ -741,15 +758,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					@mouseenter="${this._onMouseEnterPrimaryAction}"
 					@mouseleave="${this._onMouseLeavePrimaryAction}">
 						${primaryAction}
-				</div>` : nothing}
-				<div slot="content"
-					class="d2l-list-item-content"
-					id="${this._contentId}"
-					@mouseenter="${this._onMouseEnter}"
-					@mouseleave="${this._onMouseLeave}">
-					<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
-					<slot>${content}</slot>
-				</div>
+				</div>` : contentAreaContent}
 				<div slot="actions"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}"

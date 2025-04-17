@@ -1,7 +1,8 @@
 import '../colors/colors.js';
 import { css, html } from 'lit';
+import { listInteractiveElems, ListItemMixin } from './list-item-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ListItemMixin } from './list-item-mixin.js';
+import { isInteractiveInComposedPath } from '../../helpers/interactive.js';
 
 export const ListItemLinkMixin = superclass => class extends ListItemMixin(superclass) {
 
@@ -22,15 +23,12 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
 			a[href] {
+				color: unset;
 				display: block;
 				height: 100%;
 				outline: none;
+				text-decoration: none;
 				width: 100%;
-			}
-			:host([action-href]:not([action-href=""])) [slot="content"],
-			:host(:not([no-primary-action])) [slot="control-action"] ~ [slot="content"],
-			:host(:not([no-primary-action])) [slot="outside-control-action"] ~ [slot="content"] {
-				pointer-events: none;
 			}
 			:host([action-href]:not([action-href=""])) [slot="control-action"],
 			:host([action-href]:not([action-href=""])) [slot="outside-control-action"] {
@@ -53,9 +51,24 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		if (changedProperties.has('actionHref') && !this.actionHref) this._hoveringPrimaryAction = false;
 	}
 
-	_handleLinkClick() {
-		/** Dispatched when the item's primary link action is clicked */
-		this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
+	_getDescendantClicked(e) {
+		const isPrimaryAction = (elem) => elem === this.shadowRoot.querySelector(`#${this._primaryActionId}`);
+		return isInteractiveInComposedPath(e.composedPath(), isPrimaryAction, { elements: listInteractiveElems });
+	}
+
+	_handleLinkClick(e) {
+		if (this._getDescendantClicked(e)) {
+			e.preventDefault();
+		} else {
+			/** Dispatched when the item's primary link action is clicked */
+			this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
+		}
+	}
+
+	_handleLinkFocus(e) {
+		if (this._getDescendantClicked(e)) {
+			e.stopPropagation();
+		}
 	}
 
 	_handleLinkKeyDown(e) {
@@ -63,16 +76,17 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		// handle the space key
 		e.preventDefault();
 		e.stopPropagation();
-		this.shadowRoot.querySelector(`#${this._primaryActionId}`).click();
+		e.target.click();
 	}
 
-	_renderPrimaryAction(labelledBy) {
+	_renderPrimaryAction(labelledBy, content) {
 		if (!this.actionHref) return;
 		return html`<a aria-labelledby="${labelledBy}"
 			@click="${this._handleLinkClick}"
+			@focusin="${this._handleLinkFocus}"
 			href="${this.actionHref}"
 			id="${this._primaryActionId}"
-			@keydown="${this._handleLinkKeyDown}"></a>`;
+			@keydown="${this._handleLinkKeyDown}">${content}</a>`;
 	}
 
 };
