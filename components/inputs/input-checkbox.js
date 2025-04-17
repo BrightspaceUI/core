@@ -61,8 +61,8 @@ export const checkboxStyles = css`
 
 /**
  * A component that can be used to show a checkbox and optional visible label.
- * @slot - Checkbox information (e.g., text)
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
+ * @slot supporting - Supporting information which will appear below and be aligned with the checkbox.
  * @fires change - Dispatched when the checkbox's state changes
  */
 class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitElement))) {
@@ -70,8 +70,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 	static get properties() {
 		return {
 			/**
-			 * ACCESSIBILITY: Overrides the text in the `Default` slot for screenreader users
-			 * @type {string}
+			 * @ignore
 			 */
 			ariaLabel: { type: String, attribute: 'aria-label' },
 			/**
@@ -100,6 +99,16 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			 */
 			indeterminate: { type: Boolean },
 			/**
+			 * REQUIRED: Label for the input
+			 * @type {string}
+			 */
+			label: { type: String },
+			/**
+			 * Hides the label visually
+			 * @type {boolean}
+			 */
+			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
+			/**
 			 * Name of the input
 			 * @type {string}
 			 */
@@ -114,6 +123,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			 * @type {string}
 			 */
 			value: { type: String },
+			_hasSupporting: { state: true },
 			_isHovered: { state: true },
 		};
 	}
@@ -123,18 +133,18 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			css`
 				:host {
 					display: block;
-					line-height: ${cssSizes.inputBoxSize}rem;
 					margin-bottom: 0.9rem;
 				}
 				:host([hidden]) {
 					display: none;
 				}
-				:host([aria-label]) {
+				:host([label-hidden]) {
 					display: inline-block;
 					margin-bottom: 0;
 				}
 				label {
 					display: flex;
+					line-height: ${cssSizes.inputBoxSize}rem;
 					overflow-wrap: anywhere;
 				}
 				.d2l-input-checkbox-wrapper {
@@ -149,14 +159,15 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 					vertical-align: top;
 					white-space: normal;
 				}
-				:host([aria-label]) .d2l-input-checkbox-text {
+				:host([label-hidden]) .d2l-input-checkbox-text {
 					margin-inline-start: 0;
 				}
 				:host([skeleton]) .d2l-input-checkbox-text.d2l-skeletize::before {
 					bottom: 0.3rem;
 					top: 0.3rem;
 				}
-				.d2l-input-inline-help {
+				.d2l-input-inline-help,
+				.d2l-input-checkbox-supporting {
 					margin-inline-start: ${cssSizes.inputBoxSize + cssSizes.checkboxMargin}rem;
 				}
 				.d2l-input-checkbox-text-disabled {
@@ -168,6 +179,13 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 				input[type="checkbox"].d2l-input-checkbox {
 					vertical-align: top;
 				}
+				.d2l-input-checkbox-supporting {
+					display: none;
+					margin-block: 0.9rem;
+				}
+				.d2l-input-checkbox-supporting-visible {
+					display: block;
+				}
 			`
 		];
 	}
@@ -177,9 +195,12 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 		this.checked = false;
 		this.disabled = false;
 		this.indeterminate = false;
+		this.label = '';
+		this.labelHidden = false;
 		this.name = '';
 		this.notTabbable = false;
 		this.value = 'on';
+		this._hasSupporting = false;
 		this._isHovered = false;
 	}
 
@@ -189,12 +210,18 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 
 	render() {
 		const tabindex = this.notTabbable ? -1 : undefined;
+		const supportingClasses = {
+			'd2l-input-checkbox-supporting': true,
+			'd2l-input-checkbox-supporting-visible': this._hasSupporting
+		};
 		const textClasses = {
 			'd2l-input-checkbox-text': true,
 			'd2l-skeletize': true,
 			'd2l-input-checkbox-text-disabled': this.disabled
 		};
 		const ariaChecked = this.indeterminate ? 'mixed' : undefined;
+		const ariaLabel = (this.label && this.labelHidden) ? this.label : undefined;
+		const label = (this.label && !this.labelHidden) ? this.label : nothing;
 		const disabled = this.disabled || this.skeleton;
 		const offscreenContainer = this.description ? html`<div class="d2l-offscreen" id="${this.#descriptionId}">${this.description}</div>` : null;
 		const ariaDescribedByIds = `${this.description ? this.#descriptionId : ''} ${this._hasInlineHelp ? this.#inlineHelpId : ''}`.trim();
@@ -207,7 +234,7 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 					aria-checked="${ifDefined(ariaChecked)}"
 					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
 					aria-disabled="${ifDefined(disabled && this.disabledTooltip ? 'true' : undefined)}"
-					aria-label="${ifDefined(this.ariaLabel)}"
+					aria-label="${ifDefined(ariaLabel)}"
 					@change="${this.#handleChange}"
 					class="d2l-input-checkbox"
 					@click="${this.#handleClick}"
@@ -218,12 +245,21 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 					name="${ifDefined(this.name)}"
 					tabindex="${ifDefined(tabindex)}"
 					type="checkbox"
-					.value="${this.value}"></span><span class="${classMap(textClasses)}"><slot></slot></span>
+					.value="${this.value}"></span><span class="${classMap(textClasses)}">${label}<slot></slot></span>
 			</label>
 			${this._renderInlineHelp(this.#inlineHelpId)}
-		  	${offscreenContainer}
+			${offscreenContainer}
 			${disabledTooltip}
+			<div class="${classMap(supportingClasses)}" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
 		`;
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('ariaLabel') && this.ariaLabel !== undefined) {
+			this.label = this.ariaLabel;
+			this.labelHidden = true;
+		}
 	}
 
 	simulateClick() {
@@ -258,6 +294,15 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 
 	#handleMouseLeave() {
 		this._isHovered = false;
+	}
+
+	#handleSupportingChange(e) {
+		e.stopPropagation();
+	}
+
+	#handleSupportingSlotChange(e) {
+		const content = e.target.assignedNodes({ flatten: true });
+		this._hasSupporting = content?.length > 0;
 	}
 
 }

@@ -147,7 +147,7 @@ export const dialogStyles = css`
 		height: 100%;
 	}
 
-	.d2l-dialog-outer-scroll .d2l-dialog-content {
+	:host(:not([no-content-scroll])) .d2l-dialog-outer-scroll .d2l-dialog-content {
 		overflow: auto;
 	}
 

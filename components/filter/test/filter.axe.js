@@ -53,7 +53,7 @@ describe('d2l-filter', () => {
 
 			elem.opened = true;
 			await oneEvent(dropdown, 'd2l-dropdown-open');
-			await expect(elem).to.be.accessible({ ignoredRules: ['aria-roles', 'aria-required-children', 'aria-required-parent'] }); // d2l-list's grid mode does not apply the grid roles because of lack of iOS support
+			await expect(elem).to.be.accessible({ ignoredRules: ['aria-required-parent'] }); // d2l-list's grid mode does not apply the grid roles because of lack of iOS support
 		});
 	});
 
@@ -67,7 +67,7 @@ describe('d2l-filter', () => {
 		await oneEvent(dropdown, 'd2l-dropdown-open');
 		menuItem.click();
 		await oneEvent(menu, 'd2l-hierarchical-view-show-complete');
-		await expect(elem).to.be.accessible({ ignoredRules: ['aria-roles', 'aria-required-children', 'aria-required-parent'] }); // d2l-list's grid mode does not apply the grid roles because of lack of iOS support
+		await expect(elem).to.be.accessible({ ignoredRules: ['aria-required-parent'] }); // d2l-list's grid mode does not apply the grid roles because of lack of iOS support
 	});
 
 });

@@ -172,7 +172,7 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 			<button
 				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
 				aria-disabled="${ifDefined(this.disabled && this.disabledTooltip ? 'true' : undefined)}"
-				aria-expanded="${ifDefined(this.ariaExpanded)}"
+				aria-expanded="${ifDefined(this.expanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${this.ariaLabel ? this.ariaLabel : ifDefined(this.text)}"
 				?autofocus="${this.autofocus}"

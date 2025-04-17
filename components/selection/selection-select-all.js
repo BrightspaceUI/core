@@ -51,7 +51,8 @@ class SelectAll extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(Li
 
 		return html`
 			<d2l-input-checkbox
-				aria-label="${this.localize('components.selection.select-all')}"
+				label="${this.localize('components.selection.select-all')}"
+				label-hidden
 				@change="${this.#handleCheckboxChange}"
 				?checked="${this.#getIsChecked()}"
 				?disabled="${this.disabled}"

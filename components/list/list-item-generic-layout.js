@@ -214,7 +214,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.role = this.gridActive ? 'gridrow' : undefined;
+		this.role = this.gridActive ? 'gridcell' : undefined;
 	}
 
 	firstUpdated() {
@@ -265,7 +265,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_focusFirstRow() {
 		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
-		const row = list.firstElementChild.shadowRoot.querySelector('[role="gridrow"]');
+		const row = list.firstElementChild.shadowRoot.querySelector('[role="gridcell"]');
 		if (this.dir === 'rtl') {
 			row._focusLastCell();
 		} else {
@@ -288,7 +288,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_focusLastRow() {
 		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
-		const row = list.lastElementChild.shadowRoot.querySelector('[role="gridrow"]');
+		const row = list.lastElementChild.shadowRoot.querySelector('[role="gridcell"]');
 		if (this.dir === 'rtl') {
 			row._focusFirstCell();
 		} else {
@@ -320,7 +320,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	_focusNextRow(focusInfo, previous = false, num = 1) {
 
-		const curListItem = findComposedAncestor(this, node => node.role === 'rowgroup');
+		const curListItem = findComposedAncestor(this, node => node.role === 'row');
 		let listItem = curListItem;
 
 		while (num > 0) {
@@ -331,7 +331,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		}
 
 		if (!listItem) return;
-		const listItemRow = listItem.shadowRoot.querySelector('[role="gridrow"]');
+		const listItemRow = listItem.shadowRoot.querySelector('[role="gridcell"]');
 		const focusedCellItem = listItemRow._focusCellItem(focusInfo);
 
 		if (!focusedCellItem) {
@@ -339,7 +339,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			if (!listItem._tryFocus()) {
 				// ultimate fallback to generic method for getting next/previous focusable
 				const nextFocusable = previous ? getPreviousFocusable(listItem) : getNextFocusable(listItem);
-				const nextListItem = findComposedAncestor(nextFocusable, (node) => node.role === 'rowgroup' || node.role === 'listitem');
+				const nextListItem = findComposedAncestor(nextFocusable, (node) => node.role === 'row' || node.role === 'listitem');
 				if (nextListItem && this._isContainedInSameRootList(curListItem, nextListItem)) {
 					nextFocusable.focus();
 				}
@@ -363,7 +363,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		// check for nested list first; this check needs to account for standard list-items as well as custom
 		const nestedList = listItem.querySelector('[slot="nested"]') || listItem.shadowRoot.querySelector('d2l-list');
 		if (nestedList && (!listItem.expandable || (listItem.expandable && listItem.expanded))) {
-			const nestedListItem = [...nestedList.children].find(node => node.role === 'rowgroup');
+			const nestedListItem = [...nestedList.children].find(node => node.role === 'row');
 			if (nestedListItem) return nestedListItem;
 		}
 
@@ -372,7 +372,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			// check for sibling list-item
 			let nextElement = listItem.nextElementSibling;
 			while (nextElement) {
-				if (nextElement.role === 'rowgroup') return nextElement;
+				if (nextElement.role === 'row') return nextElement;
 				nextElement = nextElement.nextElementSibling;
 			}
 
@@ -380,7 +380,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			const list = findComposedAncestor(listItem, node => node.tagName === 'D2L-LIST');
 			if (list.slot !== 'nested' && !(list.parentNode.tagName === 'SLOT' && list.parentNode.name === 'nested')) return;
 
-			const parentListItem = findComposedAncestor(list, node => node.role === 'rowgroup');
+			const parentListItem = findComposedAncestor(list, node => node.role === 'row');
 			return getNextListItem(parentListItem);
 
 		};
@@ -396,14 +396,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 		// try to get the previous list-item in the current list sub-tree including nested
 		while (previousElement) {
-			if (previousElement.role === 'rowgroup') {
+			if (previousElement.role === 'row') {
 
 				let nestedList;
 				do {
 					// this check needs to account for standard list-items as well as custom
 					nestedList = previousElement.querySelector('[slot="nested"]') || previousElement.shadowRoot.querySelector('d2l-list');
 					if (nestedList) {
-						const nestedListItems = [...nestedList.children].filter(node => node.role === 'rowgroup');
+						const nestedListItems = [...nestedList.children].filter(node => node.role === 'row');
 						if (nestedListItems.length) {
 							previousElement = nestedListItems[nestedListItems.length - 1];
 						} else {
@@ -421,7 +421,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 		// this check needs to account for standard list-items as well as custom
 		if (list.slot === 'nested' || (list.parentNode.tagName === 'SLOT' && list.parentNode.name === 'nested')) {
-			const parentListItem = findComposedAncestor(list, node => node.role === 'rowgroup');
+			const parentListItem = findComposedAncestor(list, node => node.role === 'row');
 			return parentListItem;
 		}
 
