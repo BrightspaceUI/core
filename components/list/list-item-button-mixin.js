@@ -60,6 +60,12 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 		this.buttonDisabled = false;
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		this._button = this.shadowRoot.querySelector(`#${this._primaryActionId}`);
+	}
+
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 		if (changedProperties.has('buttonDisabled') && this.buttonDisabled === true) this._hoveringPrimaryAction = false;
