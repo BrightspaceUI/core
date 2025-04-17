@@ -231,6 +231,76 @@ describe('list', () => {
 			});
 		});
 
+		describe('selectable', () => {
+			[
+				{ name: 'default' },
+				{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-list-item')), margin: 24 },
+				{ name: 'hover', action: elem => hoverElem(elem.querySelector('d2l-list-item')), margin: 24 },
+				{ name: 'focus-interactive', action: elem => focusElem(elem.querySelector('d2l-button')), margin: 24 },
+				{ name: 'hover-interactive', action: elem => hoverElem(elem.querySelector('d2l-button')), margin: 24 }
+			].forEach(({ name, action, margin }) => {
+				it(name, async() => {
+					const elem = await fixture(html`
+						<d2l-list style="width: 400px;">
+							<d2l-list-item label="Item" selectable>
+								${interactiveListItemContent}
+							</d2l-list-item>
+						</d2l-list>
+					`);
+					if (action) await action(elem);
+					await expect(elem).to.be.golden({ margin });
+				});
+			});
+		});
+
+		describe('expandable', () => {
+			[
+				{ name: 'default' },
+				{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-list-item')), margin: 24 },
+				{ name: 'hover', action: elem => hoverElem(elem.querySelector('d2l-list-item')), margin: 24 },
+				{ name: 'focus-interactive', action: elem => focusElem(elem.querySelector('d2l-button')), margin: 24 },
+				{ name: 'hover-interactive', action: elem => hoverElem(elem.querySelector('d2l-button')), margin: 24 }
+			].forEach(({ name, action, margin }) => {
+				it(name, async() => {
+					const elem = await fixture(html`
+						<d2l-list style="width: 400px;">
+							<d2l-list-item label="Item" expandable key="key-1">
+								${interactiveListItemContent}
+								<d2l-list slot="nested">
+									${simpleListItemContent}
+								</d2l-list>
+							</d2l-list-item>
+						</d2l-list>
+					`);
+					if (action) await action(elem);
+					await expect(elem).to.be.golden({ margin });
+				});
+			});
+		});
+
+		describe('href-selectable-expandable', () => {
+			[
+				{ name: 'default' },
+				{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-list-item')), margin: 24 },
+				{ name: 'hover', action: elem => hoverElem(elem.querySelector('d2l-list-item')), margin: 24 }
+			].forEach(({ name, action, margin }) => {
+				it(name, async() => {
+					const elem = await fixture(html`
+						<d2l-list style="width: 400px;">
+							<d2l-list-item label="Item" href="http://www.d2l.com" expandable selectable key="key-1">
+								${interactiveListItemContent}
+								<d2l-list slot="nested">
+									${simpleListItemContent}
+								</d2l-list>
+							</d2l-list-item>
+						</d2l-list>
+					`);
+					if (action) await action(elem);
+					await expect(elem).to.be.golden({ margin });
+				});
+			});
+		});
+
 	});
 
 	describe('pager', () => {
