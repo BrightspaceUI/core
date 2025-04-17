@@ -209,7 +209,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-list grid>
-						<d2l-list-item expandable key="expand-1" label="Expandable item #1" href=" ">
+						<d2l-list-item expandable key="expand-1" label="Expandable item #1">
 							<d2l-list-item-content>
 								<div>Week 1: Introduction</div>
 								<div slot="secondary" style="padding: 5px;"><d2l-tooltip-help text="Due: Jan 30, 2023">Available: Aug 11, 2023</d2l-tooltip-help></div>
@@ -217,12 +217,29 @@
 							</d2l-list-item-content>
 							<d2l-list grid slot="nested">
 								<d2l-list-item selectable key="nested-1" label="Nested 1">
-								  <d2l-list-item-content><div>Nested item #1</div></d2l-list-item-content>
+								  <d2l-list-item-content>
+									<div>Nested item #1</div>
+									<div slot="secondary"><d2l-button-subtle style="padding: 5px;" text="Bookmark" icon="tier1:bookmark-hollow"></d2l-button-subtle></div>
+								</d2l-list-item-content>
 								</d2l-list-item>
-								<d2l-list-item selectable key="nested-2" label="Nested 2">
-								  <d2l-list-item-content><div>Nested item #2</div></d2l-list-item-content>
+								<d2l-list-item selectable key="nested-2" label="Nested 2" expandable>
+								  <d2l-list-item-content>
+									<div>Nested item #2</div>
+									<div slot="secondary"><d2l-button-subtle style="padding: 5px;" text="Bookmark" icon="tier1:bookmark-hollow"></d2l-button-subtle></div>
+								</d2l-list-item-content>
+								  <d2l-list grid slot="nested">
+									<d2l-list-item selectable key="nested-1-1" label="Nested 1">
+									  <d2l-list-item-content>
+										<div>Nested item #1</div>
+										<div slot="secondary"><d2l-button-subtle style="padding: 5px;" text="Bookmark" icon="tier1:bookmark-hollow"></d2l-button-subtle></div>
+									</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable key="nested--1" label="Nested 2">
+									  <d2l-list-item-content><div>Nested item #2</div></d2l-list-item-content>
+									</d2l-list-item>
+								</d2l-list>
 								</d2l-list-item>
-							  </d2l-list>
+							</d2l-list>
 						</d2l-list-item>
 						<d2l-list-item href="http://www.d2l.com">
 							<d2l-list-item-content>
@@ -240,8 +257,10 @@
 				</template>
 				<script type="module">
 					requestAnimationFrame(() => {
-						document.querySelector('d2l-button-subtle').addEventListener('click', () => {
-							console.log('d2l-button: click event');
+						document.querySelectorAll('d2l-button-subtle').forEach((button) => {
+							button.addEventListener('click', () => {
+								console.log('d2l-button: click event');
+							});
 						});
 					});
 				</script>
