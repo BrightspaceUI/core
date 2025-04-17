@@ -39,7 +39,7 @@ class InputRadio extends PropertyRequiredMixin(LitElement) {
 				display: none;
 			}
 			.d2l-input-radio-label {
-				cursor: default
+				cursor: default;
 			}
 		`];
 	}
