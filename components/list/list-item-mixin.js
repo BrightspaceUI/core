@@ -475,7 +475,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	connectedCallback() {
 		super.connectedCallback();
-		if (this.role === 'rowgroup') {
+		if (this.role === 'row') {
 			addTabListener();
 		}
 		if (!this.selectable && !this.expandable) {
@@ -614,12 +614,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	_isListItem(node) {
 		if (!node) node = this;
-		return node.role === 'rowgroup' || node.role === 'listitem';
+		return node.role === 'row' || node.role === 'listitem';
 	}
 
 	_onFocusIn() {
 		this._focusing = true;
-		if (this.role !== 'rowgroup' || !tabPressed || hasDisplayedKeyboardTooltip) return;
+		if (this.role !== 'row' || !tabPressed || hasDisplayedKeyboardTooltip) return;
 		this._displayKeyboardTooltip = true;
 		hasDisplayedKeyboardTooltip = true;
 	}
@@ -725,7 +725,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				@focusout="${this._onFocusOut}"
 				class="${classMap(classes)}"
 				data-separators="${ifDefined(this._separators)}"
-				?grid-active="${this.role === 'rowgroup'}"
+				?grid-active="${this.role === 'row'}"
 				?no-primary-action="${this.noPrimaryAction}">
 				${this._showAddButton && this.first ? html`
 				<div slot="add-top">

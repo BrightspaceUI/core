@@ -1,4 +1,5 @@
 import '../input-checkbox.js';
+import '../input-checkbox-group.js';
 import '../input-fieldset.js';
 import { css, LitElement } from 'lit';
 import { defineCE, expect, fixture, html } from '@brightspace-ui/testing';
@@ -48,9 +49,11 @@ const fieldsetManualTag = defineCE(class extends LitElement {
 		return html`
 			<fieldset class="d2l-input-label-fieldset">
 				<legend class="d2l-input-label">Ingredients</legend>
-				<d2l-input-checkbox>Ketchup</d2l-input-checkbox>
-				<d2l-input-checkbox>Mustard</d2l-input-checkbox>
-				<d2l-input-checkbox>Relish</d2l-input-checkbox>
+				<d2l-input-checkbox-group>
+					<d2l-input-checkbox label="Ketchup"></d2l-input-checkbox>
+					<d2l-input-checkbox label="Mustard"></d2l-input-checkbox>
+					<d2l-input-checkbox label="Relish"></d2l-input-checkbox>
+				</d2l-input-checkbox-group>
 			</fieldset>
 		`;
 	}

@@ -6,7 +6,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
 			/**
-			 * Id of the tab that labels this panel
+			 * REQUIRED: Id of the tab that labels this panel
 			 * @type {string}
 			 */
 			labelledBy: { type: String, attribute: 'labelled-by', reflect: true },
@@ -21,12 +21,12 @@ export const TabPanelMixin = superclass => class extends superclass {
 			// eslint-disable-next-line lit/no-native-attributes
 			role: { type: String, reflect: true },
 			/**
-			 * Use to select the tab. Do not set if using the d2l-tab/d2l-tab-panel implementation.
+			 * DEPRECATED: Use to select the tab. Do NOT set if using the d2l-tab/d2l-tab-panel implementation.
 			 * @type {boolean}
 			 */
 			selected: { type: Boolean, reflect: true },
 			/**
-			 * ACCESSIBILITY: The text used for the tab, as well as labelling the panel. Required if not using d2l-tab/d2l-tab-panel implementation.
+			 * DEPRECATED: The text used for the tab, as well as labelling the panel. Required if not using d2l-tab/d2l-tab-panel implementation.
 			 * @type {string}
 			 */
 			text: { type: String }
@@ -71,7 +71,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 			} else if (prop === 'selected') {
 				if (this.selected) {
 					requestAnimationFrame(() => {
-						/** Dispatched when a tab is selected */
+						/** DEPRECATED: Dispatched when a tab is selected */
 						this.dispatchEvent(new CustomEvent(
 							'd2l-tab-panel-selected', { bubbles: true, composed: true }
 						));
@@ -79,7 +79,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 				}
 			} else if (prop === 'text') {
 				this.setAttribute('aria-label', this.text);
-				/** Dispatched when the text attribute is changed */
+				/** DEPRECATED: Dispatched when the text attribute is changed */
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tab-panel-text-changed', { bubbles: true, composed: true, detail: { text: this.text } }
 				));

@@ -258,7 +258,7 @@ class CollapsiblePanelDaylightDemo extends LitElement {
 
 				<p class="d2l-label-text">Add-ons</p>
 				${this._addons.map((item) => (
-					html`<d2l-input-checkbox id="${item.id}" @change="${this._onChangeCheckbox}">${item.text}</d2l-input-checkbox>`
+					html`<d2l-input-checkbox id="${item.id}" @change="${this._onChangeCheckbox}" label="${item.text}"></d2l-input-checkbox>`
 				))}
 			</d2l-collapsible-panel>
 		`;

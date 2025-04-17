@@ -25,9 +25,11 @@ function getOffsetLeft(tab, tabRect) {
 }
 
 /**
- * A component for tabbed content. It supports the "d2l-tab-panel" component for the content, renders tabs responsively, and provides virtual scrolling for large tab lists.
- * @slot - Contains the tab panels (e.g., "d2l-tab-panel" components)
+ * A component for tabbed content. It supports the "d2l-tab" component and "TabMixin" consumers for tabs, the "d2l-tab-panel" component for the tab content, renders tabs responsively, and provides virtual scrolling for large tab lists.
+ * @slot - DEPRECATED: Contains the tab panels (e.g., "d2l-tab-panel" components)
  * @slot ext - Additional content (e.g., a button) positioned at right
+ * @slot tabs - Contains the tabs (e.g., "d2l-tab" components or custom components that use `TabMixin`)
+ * @slot panels - Contains the tab panels (e.g., "d2l-tab-panel" components)
  */
 class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))) {
 
@@ -1212,8 +1214,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	async #updateSelectedTab(selectedTab) {
-		selectedTab.tabIndex = 0;
-
 		await this.updateComplete;
 
 		selectedTab.selected = true;

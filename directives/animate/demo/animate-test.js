@@ -63,7 +63,7 @@ export class AnimateTest extends LitElement {
 				</d2l-list-item>` : null;
 		});
 		return html`
-			<d2l-input-checkbox .checked="${this._listVisibility}" @change="${this._handleToggleList}">Show items</d2l-input-checkbox>
+			<d2l-input-checkbox .checked="${this._listVisibility}" @change="${this._handleToggleList}" label="Show items"></d2l-input-checkbox>
 			<d2l-list .animate="${animateAction}">${items}</d2l-list>
 			<d2l-button @click="${this._handleAddItem}" ?disabled="${!this._listVisibility}">Add Item</d2l-button>
 			<d2l-button @click="${this._handleReRender}">Re-render (${this._renderCount})</d2l-button>
