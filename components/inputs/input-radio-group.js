@@ -3,6 +3,8 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
+// TODO: poissibly break behaviour out into a mixin
+
 class InputRadioGroup extends PropertyRequiredMixin(LitElement) {
 
 	static get properties() {
@@ -38,6 +40,7 @@ class InputRadioGroup extends PropertyRequiredMixin(LitElement) {
 	render() {
 		// TODO: handle required validation
 		// TODO: handle being in a form
+		// TODO: handle multiple radios thinking they're checked
 		return html`
 			<span class="d2l-input-label" ?hidden="${this.labelHidden}" id="${this.#labelId}">${this.label}</span>
 			<div aria-labelledby="${this.#labelId}" @click="${this.#handleClick}" @keydown="${this.#handleKeyDown}" role="radiogroup">	
@@ -58,10 +61,22 @@ class InputRadioGroup extends PropertyRequiredMixin(LitElement) {
 	#handleClick(e) {
 		if (e.target.tagName !== 'D2L-INPUT-RADIO') return;
 		const radios = this.#getRadios();
+		let prevChecked = null;
+		const newChecked = e.target;
 		radios.forEach(el => {
+			if (el.checked) prevChecked = el;
 			el.checked = (el === e.target);
-			// TODO: possibly dispatch a change event here
 		});
+		if (prevChecked !== newChecked) {
+			this.dispatchEvent(new CustomEvent('change', {
+				bubbles: true,
+				composed: true,
+				detail: {
+					value: newChecked.value,
+					oldValue: prevChecked?.value
+				}
+			}));
+		}
 		e.preventDefault();
 	}
 
