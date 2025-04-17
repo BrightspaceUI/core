@@ -16,7 +16,8 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 			 * @type {boolean}
 			 */
 			trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true },
-			_errors: { type: Object }
+			_errors: { type: Object },
+			_hasErrors: { type: Boolean, attribute: '_has-errors', reflect: true },
 		};
 	}
 
@@ -55,6 +56,13 @@ export const FormMixin = superclass => class extends LocalizeCoreElement(supercl
 		this.addEventListener('input', this._onFormElementChange);
 		this.addEventListener('focusout', this._onFormElementChange);
 		this._firstUpdateResolve();
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('_errors')) {
+			this._hasErrors = this._errors.size > 0;
+		}
 	}
 
 	// eslint-disable-next-line no-unused-vars

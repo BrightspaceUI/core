@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../../button/button.js';
+			import '../../button/floating-buttons.js';
+			import '../../form/form.js';
+			import '../input-checkbox.js';
+			import '../input-checkbox-group.js';
+			import '../input-fieldset.js';
+			import '../input-group.js';
+			import '../input-text.js';
+			import '../input-textarea.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="Input Groups">
+
+			<h2>Simple</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-form>
+						<d2l-input-group>
+							<d2l-input-text label="Name" required></d2l-input-text>
+							<d2l-input-fieldset label="Options">
+								<d2l-input-checkbox-group>
+									<d2l-input-checkbox>Option 1</d2l-input-checkbox>
+									<d2l-input-checkbox checked>Option 2</d2l-input-checkbox>
+									<d2l-input-checkbox>Option 3</d2l-input-checkbox>
+								</d2l-input-checkbox-group>
+							</d2l-input-fieldset>
+							<d2l-input-fieldset label="Address" label-hidden>
+								<d2l-input-group>
+									<d2l-input-text label="Street" required></d2l-input-text>
+									<d2l-input-text label="City" required></d2l-input-text>
+								</d2l-input-group>
+							</d2l-input-fieldset>
+							<d2l-input-textarea label="Description" rows="3"></d2l-input-textarea>
+						</d2l-input-group>
+					</d2l-form>
+					<d2l-floating-buttons>
+						<d2l-button primary>Save</d2l-button>
+					</d2l-floating-buttons>
+					<script>
+						document
+							.querySelector('d2l-button')
+							.addEventListener('click', () => document.querySelector('d2l-form').submit());
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>
