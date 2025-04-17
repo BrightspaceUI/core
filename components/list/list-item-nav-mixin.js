@@ -6,6 +6,10 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 
 	static get properties() {
 		return {
+			/**
+			 * Whether the list item is the current page in a navigation context
+			 * @type {boolean}
+			 */
 			current: { type: Boolean, reflect: true },
 			_childCurrent: { type: Boolean, reflect: true, attribute: '_child-current' },
 		};
