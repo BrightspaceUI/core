@@ -2,8 +2,7 @@ import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
 import { css, html, nothing } from 'lit';
 import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
-import { isInteractiveInComposedPath } from '../../helpers/interactive.js';
-import { listInteractiveElems } from './list-item-mixin.js';
+import { isInteractiveInListItemComposedPath } from './list-item-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const dragIntervalDelay = 100;
@@ -173,7 +172,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 
 	_toggleExpandCollapseAction(e = null) {
 		const isPrimaryAction = (elem) => elem === this.shadowRoot.querySelector('div.d2l-list-expand-collapse-action');
-		if (e && isInteractiveInComposedPath(e.composedPath(), isPrimaryAction, { elements: listInteractiveElems })) {
+		if (e && isInteractiveInListItemComposedPath(e, isPrimaryAction)) {
 			e.preventDefault();
 			return;
 		}

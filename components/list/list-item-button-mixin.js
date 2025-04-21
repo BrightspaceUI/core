@@ -1,8 +1,7 @@
 import '../colors/colors.js';
 import { css, html } from 'lit';
-import { listInteractiveElems, ListItemMixin } from './list-item-mixin.js';
+import { isInteractiveInListItemComposedPath, ListItemMixin } from './list-item-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { isInteractiveInComposedPath } from '../../helpers/interactive.js';
 
 export const ListItemButtonMixin = superclass => class extends ListItemMixin(superclass) {
 	static get properties() {
@@ -67,7 +66,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 
 	_getDescendantClicked(e) {
 		const isPrimaryAction = (elem) => elem === this.shadowRoot.querySelector(`#${this._primaryActionId}`);
-		return isInteractiveInComposedPath(e.composedPath(), isPrimaryAction, { elements: listInteractiveElems });
+		return isInteractiveInListItemComposedPath(e, isPrimaryAction);
 	}
 
 	_onButtonClick(e) {

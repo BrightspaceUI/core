@@ -1,8 +1,7 @@
 import '../selection/selection-input.js';
 import { css, html, nothing } from 'lit';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { isInteractiveInComposedPath } from '../../helpers/interactive.js';
-import { listInteractiveElems } from './list-item-mixin.js';
+import { isInteractiveInListItemComposedPath } from './list-item-mixin.js';
 import { SelectionInfo } from '../selection/selection-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -122,7 +121,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		event.preventDefault();
 		if (this.selectionDisabled) return;
 		const isPrimaryAction = (elem) => elem === this.shadowRoot.querySelector('div.d2l-checkbox-action');
-		if (isInteractiveInComposedPath(event.composedPath(), isPrimaryAction, { elements: listInteractiveElems })) return;
+		if (isInteractiveInListItemComposedPath(event, isPrimaryAction)) return;
 
 		this.setSelected(!this.selected);
 		const checkbox = this.shadowRoot && this.shadowRoot.querySelector(`#${this._checkboxId}`);

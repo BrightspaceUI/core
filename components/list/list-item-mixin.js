@@ -6,13 +6,13 @@ import '../tooltip/tooltip.js';
 import '../expand-collapse/expand-collapse-content.js';
 import { css, html, nothing } from 'lit';
 import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
+import { interactiveElements, isInteractiveInComposedPath } from '../../helpers/interactive.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { composeMixins } from '../../helpers/composeMixins.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { interactiveElements } from '../../helpers/interactive.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
 import { ListItemDragDropMixin } from './list-item-drag-drop-mixin.js';
@@ -40,11 +40,14 @@ function addTabListener() {
 
 let hasDisplayedKeyboardTooltip = false;
 
-export const listInteractiveElems = {
-	...interactiveElements,
-	'd2l-button': true,
-	'd2l-tooltip-help': true
-};
+export function isInteractiveInListItemComposedPath(e, isPrimaryAction) {
+	const listInteractiveElems = {
+		...interactiveElements,
+		'd2l-button': true,
+		'd2l-tooltip-help': true
+	};
+	return isInteractiveInComposedPath(e.composedPath(), isPrimaryAction, { elements: listInteractiveElems });
+}
 
 /**
  * @property label - The hidden label for the checkbox and expand collapse control
@@ -177,6 +180,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] {
 				width: 3rem;
 			}
+			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] ~ [slot="control-action"] [slot="content"] {
+				padding-inline-start: 3rem;
+			}
 			:host(:not([_has-color-slot])) .d2l-list-item-content-extend-separators [slot="content"] {
 				padding-inline: 0.9rem;
 			}
@@ -216,10 +222,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 			[slot="control"] ~ [slot="control-action"] [slot="content"] {
 				padding-inline-start: 2.2rem; /* width of "control" slot set in generic-layout */
-			}
-
-			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] ~ [slot="control-action"] [slot="content"] {
-				padding-inline-start: 3rem;
 			}
 
 			[slot="content"] ::slotted([slot="illustration"]),
