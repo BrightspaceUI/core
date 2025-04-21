@@ -278,7 +278,7 @@ describe('list', () => {
 			});
 		});
 
-		describe('href-selectable-expandable', () => {
+		describe('href-selectable-expandable-color', () => {
 			[
 				{ name: 'default' },
 				{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-list-item')), margin: 24 },
@@ -287,10 +287,12 @@ describe('list', () => {
 				it(name, async() => {
 					const elem = await fixture(html`
 						<d2l-list style="width: 400px;">
-							<d2l-list-item label="Item" href="http://www.d2l.com" expandable selectable key="key-1">
+							<d2l-list-item label="Item" href="http://www.d2l.com" expandable selectable key="key-1" color="#00ff00">
 								${interactiveListItemContent}
 								<d2l-list slot="nested">
+									<d2l-list-item>
 									${simpleListItemContent}
+									</d2l-list-item>
 								</d2l-list>
 							</d2l-list-item>
 						</d2l-list>
