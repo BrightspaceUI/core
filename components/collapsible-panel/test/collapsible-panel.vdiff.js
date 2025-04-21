@@ -1,7 +1,6 @@
 import '../../button/button-icon.js';
 import '../../link/link.js';
 import '../../status-indicator/status-indicator.js';
-import '../../typography/typography.js';
 import '../collapsible-panel.js';
 import '../collapsible-panel-summary-item.js';
 import { expect, fixture, focusElem, html, nextFrame, oneEvent } from '@brightspace-ui/testing';

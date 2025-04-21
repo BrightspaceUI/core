@@ -1,4 +1,3 @@
-import '../../typography/typography.js';
 import '../tooltip-help.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 
