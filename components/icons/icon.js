@@ -4,11 +4,10 @@ import { fixSvg } from './fix-svg.js';
 import { guard } from 'lit/directives/guard.js';
 import { iconStyles } from './icon-styles.js';
 import { loadSvg } from '../../generated/icons/presetIconLoader.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { until } from 'lit/directives/until.js';
 
-class Icon extends RtlMixin(LitElement) {
+class Icon extends LitElement {
 
 	static get properties() {
 		return {
