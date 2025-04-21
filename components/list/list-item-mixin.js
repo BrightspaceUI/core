@@ -177,9 +177,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] {
 				width: 3rem;
 			}
-			:host(:not([_has-color-slot])) .d2l-list-item-content-extend-separators [slot="content"],
-			:host(:not([_has-color-slot])[dir="rtl"]) .d2l-list-item-content-extend-separators [slot="content"] {
+			:host(:not([_has-color-slot])) .d2l-list-item-content-extend-separators [slot="content"] {
 				padding-inline: 0.9rem;
+			}
+			:host([selectable]) .d2l-list-item-content-extend-separators [slot="content"] {
+				padding-inline-start: 0;
 			}
 
 			:host([_hovering-primary-action]) .d2l-list-item-content,
