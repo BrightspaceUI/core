@@ -28,7 +28,7 @@ const simpleListItemContent = html`
 const interactiveListItemContent = html`
 	<d2l-list-item-content>
 		<div>Item 1</div>
-		<div slot="secondary">Information: <d2l-tooltip-help text="Due: Jan 30, 2023">Available: Aug 11, 2023</d2l-tooltip-help></div>
+		<div slot="secondary" style="padding: 5px;">Information: <d2l-tooltip-help text="Due: Jan 30, 2023">Available: Aug 11, 2023</d2l-tooltip-help></div>
 		<div slot="supporting-info"><d2l-button style="padding: 10px;">Hi!</d2l-button></div>
 	</d2l-list-item-content>
 `;
