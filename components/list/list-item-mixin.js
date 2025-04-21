@@ -180,7 +180,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:not([_has-color-slot])) .d2l-list-item-content-extend-separators [slot="content"] {
 				padding-inline: 0.9rem;
 			}
-			:host([selectable]) .d2l-list-item-content-extend-separators [slot="content"] {
+			:host([selectable]) .d2l-list-item-content-extend-separators > [slot="content"] {
 				padding-inline-start: 0;
 			}
 
