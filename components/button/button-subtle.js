@@ -204,7 +204,7 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 			<button
 				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
 				aria-disabled="${ifDefined(this.disabled && this.disabledTooltip ? 'true' : undefined)}"
-				aria-expanded="${ifDefined(this.ariaExpanded)}"
+				aria-expanded="${ifDefined(this.expanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${ifDefined(this.ariaLabel)}"
 				?autofocus="${this.autofocus}"

@@ -28,10 +28,9 @@ export const iconStyles = css`
 		pointer-events: none;
 		width: 100%;
 	}
-	:host([dir="rtl"]) svg[mirror-in-rtl],
-	:host([dir="rtl"]) ::slotted(svg[mirror-in-rtl]) {
-		-webkit-transform: scale(-1, 1);
-		transform: scale(-1, 1);
+	svg[mirror-in-rtl],
+	::slotted(svg[mirror-in-rtl]) {
+		transform: var(--d2l-mirror-transform, ${document.dir === 'rtl' ? css`scale(-1, 1)` : css`none`}); /* stylelint-disable-line @stylistic/string-quotes, @stylistic/function-whitespace-after */
 		transform-origin: center;
 	}
 `;

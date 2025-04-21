@@ -1,5 +1,4 @@
 import { css, html, LitElement } from 'lit';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A private helper declarations that should not be used by general consumers
@@ -25,7 +24,7 @@ export const offscreenStyles = css`
  * A component for positioning content offscreen to only be visible to screen readers.
  * @slot - Default content placed inside of the component
  */
-class Offscreen extends RtlMixin(LitElement) {
+class Offscreen extends LitElement {
 	static get styles() {
 		return css`
 			:host {

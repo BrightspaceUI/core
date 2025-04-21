@@ -37,8 +37,8 @@ export class inlineHelpFixtures {
 			<d2l-input-checkbox
 				?disabled="${this.disabled}"
 				?skeleton="${this.skeleton}"
+				label="Inline help checkbox"
 			>
-				Inline help checkbox
 				${this.inlineHelpSlot}
 			</d2l-input-checkbox>
 		`;

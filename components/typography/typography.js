@@ -7,10 +7,12 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 	style.textContent = `
 		* {
 			--d2l-document-direction: ltr;
+			--d2l-mirror-transform: none;
 		}
 
 		html[dir="rtl"] * {
 			--d2l-document-direction: rtl;
+			--d2l-mirror-transform: scale(-1, 1);
 		}
 
 		${fontFacesCss}

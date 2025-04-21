@@ -4,14 +4,17 @@ import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { TabMixin } from './tab-mixin.js';
 
 /**
+ * @attr {string} id - REQUIRED: Unique identifier for the tab
  * @fires d2l-tab-content-change - Dispatched when the text attribute is changed. Triggers virtual scrolling calculations in parent d2l-tabs.
+ * @slot before - Slot for content to be displayed before the tab text
+ * @slot after - Slot for content to be displayed after the tab text
  */
 class Tab extends TabMixin(LitElement) {
 
 	static get properties() {
 		return {
 			/**
-			 * ACCESSIBILITY: REQUIRED: The text used for the tab, as well as labelling the panel.
+			 * ACCESSIBILITY: REQUIRED: The text used for the tab and for labelling the corresponding panel
 			 * @type {string}
 			 */
 			text: { type: String }
@@ -20,16 +23,35 @@ class Tab extends TabMixin(LitElement) {
 
 	static get styles() {
 		const styles = [ css`
-			.d2l-tab-text {
-				overflow: hidden;
+			.d2l-tab-text-inner-content {
+				display: flex;
 				padding: 0.1rem;
+			}
+			:host(:${unsafeCSS(getFocusPseudoClass())}) .d2l-tab-text-inner-content {
+				border-radius: 0.3rem;
+				color: var(--d2l-color-celestine);
+				outline: 2px solid var(--d2l-color-celestine);
+			}
+			:host(:${unsafeCSS(getFocusPseudoClass())}) ::slotted(d2l-icon) {
+				color: var(--d2l-color-celestine);
+			}
+			slot {
+				align-items: center;
+				display: flex;
+			}
+			::slotted([slot="before"]) {
+				padding-inline-end: 0.3rem;
+			}
+			::slotted([slot="after"]) {
+				padding-inline-start: 0.3rem;
+			}
+			:host(:not([selected]):hover) ::slotted(d2l-icon) {
+				color: var(--d2l-color-celestine);
+			}
+			span {
+				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
-			}
-			:host(:${unsafeCSS(getFocusPseudoClass())}) .d2l-tab-text {
-				border-radius: 0.3rem;
-				box-shadow: 0 0 0 2px var(--d2l-color-celestine);
-				color: var(--d2l-color-celestine);
 			}
 			.d2l-tab-text-skeletize-override {
 				min-width: 50px;
@@ -59,7 +81,11 @@ class Tab extends TabMixin(LitElement) {
 		};
 
 		return html`
-			<div class="${classMap(contentClasses)}">${overrideSkeletonText ? html`&nbsp;` : this.text}</div>
+			<div class="d2l-tab-text-inner-content">
+				<slot name="before"></slot>
+				<span class="${classMap(contentClasses)}">${overrideSkeletonText ? html`&nbsp;` : this.text}</span>
+				<slot name="after"></slot>
+			</div>
 		`;
 	}
 }

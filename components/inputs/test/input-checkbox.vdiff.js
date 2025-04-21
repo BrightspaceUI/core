@@ -1,7 +1,7 @@
 import '../input-checkbox.js';
-import '../input-checkbox-spacer.js';
 import { expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
+import { checkboxFixtures } from './input-checkbox-fixtures.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-checkbox', () => {
@@ -32,7 +32,8 @@ describe('d2l-input-checkbox', () => {
 						?checked="${checked === 'checked'}"
 						?disabled="${disabled}"
 						?indeterminate="${checked === 'indeterminate'}"
-						?skeleton="${skeleton}">Checkbox (${text})</d2l-input-checkbox>
+						label="Checkbox (${text})"
+						?skeleton="${skeleton}"></d2l-input-checkbox>
 				`;
 
 				it(name, async() => {
@@ -86,7 +87,7 @@ describe('d2l-input-checkbox', () => {
 
 		let elem;
 		beforeEach(async() => {
-			elem = await fixture(html`<d2l-input-checkbox disabled disabled-tooltip="Tooltip text">Checkbox</d2l-input-checkbox>`);
+			elem = await fixture(checkboxFixtures.disabledTooltip);
 		});
 
 		it('hover', async() => {
@@ -129,35 +130,23 @@ describe('d2l-input-checkbox', () => {
 	[
 		{
 			name: 'multiline',
-			template: html`
-				<d2l-input-checkbox style="overflow: hidden; width: 200px;">
-					Label for checkbox that wraps nicely onto
-					multiple lines and stays aligned
-				</d2l-input-checkbox>`
+			template: checkboxFixtures.labelMultiline
 		},
 		{
 			name: 'multiline-unbreakable',
-			template: html`
-				<d2l-input-checkbox id="wc-multiline-unbreakable" style="overflow: hidden; width: 200px;">
-					https://en.wikipedia.org/wiki/Dark_matter
-				</d2l-input-checkbox>
-			`
+			template: checkboxFixtures.labelMultilineUnbreakable
+		},
+		{
+			name: 'aria-label',
+			template: checkboxFixtures.labelAria
 		},
 		{
 			name: 'hidden-label',
-			template: html`<d2l-input-checkbox aria-label="Label for checkbox"></d2l-input-checkbox>`
+			template: checkboxFixtures.labelHidden
 		},
 		{
-			name: 'spacer',
-			template: html`
-				<div class="display:inline-block;">
-					<d2l-input-checkbox>Label for checkbox</d2l-input-checkbox>
-					<d2l-input-checkbox-spacer style="color: #999999;">
-						Additional content can go here and will<br>
-						also line up nicely with the checkbox.
-					</d2l-input-checkbox-spacer>
-				</div>
-			`
+			name: 'supporting',
+			template: checkboxFixtures.supporting
 		}
 	].forEach(({ name, template }) => {
 		[false, true].forEach(rtl => {

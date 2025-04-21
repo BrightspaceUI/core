@@ -89,7 +89,7 @@ render() {
     <div class="d2l-skeletize-container">
       <div class="d2l-skeletize">This text will skeletize</div>
       <span>This text will hide</span>
-      <d2l-input-checkbox ?skeleton="{this.skeleton}">This input will skeletize</d2l-input-checkbox>
+      <d2l-input-checkbox ?skeleton="{this.skeleton}" label="This input will skeletize"></d2l-input-checkbox>
     </div>
   `;
 }

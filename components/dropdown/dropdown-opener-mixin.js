@@ -113,13 +113,8 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 		this.addEventListener('d2l-dropdown-open', this.__onOpened);
 		this.addEventListener('d2l-dropdown-close', this.__onClosed);
-
-		const opener = this.getOpenerElement();
 		const content = this.__getContentElement();
-		if (!opener) {
-			return;
-		}
-		opener.setAttribute('aria-expanded', (content && content.opened || false).toString());
+		this._setOpenerElementAttribute(content?.opened || false);
 	}
 
 	updated(changedProperties) {
@@ -201,12 +196,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	__onClosed() {
 		intersectionObserver.unobserve(this);
 
-		const opener = this.getOpenerElement();
-		if (!opener) {
-			return;
-		}
-		opener.setAttribute('aria-expanded', 'false');
-		opener.removeAttribute('active');
+		if (!this._setOpenerElementAttribute(false, true)) return;
 		this.dropdownOpened = false;
 		this._isOpenedViaClick = false;
 	}
@@ -273,12 +263,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	__onOpened() {
-		const opener = this.getOpenerElement();
-		if (!opener) {
-			return;
-		}
-		opener.setAttribute('aria-expanded', 'true');
-		opener.setAttribute('active', 'true');
+		if (!this._setOpenerElementAttribute(true, true)) return;
 		this._isFading = false;
 
 		intersectionObserver.observe(this);
@@ -344,5 +329,17 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (!isWithinOpener && (!isWithinDropdown || isBackdropClick)) {
 			this.closeDropdown();
 		}
+	}
+
+	_setOpenerElementAttribute(val, setActive = false) {
+		const opener = this.getOpenerElement();
+		if (!opener) return false;
+		const attribute = opener.isButtonMixin ? 'expanded' : 'aria-expanded';
+		opener.setAttribute(attribute, val.toString());
+		if (setActive) {
+			if (val) opener.setAttribute('active', 'true');
+			else opener.removeAttribute('active');
+		}
+		return true;
 	}
 };
