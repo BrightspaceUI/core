@@ -1,17 +1,15 @@
-import '../input-checkbox.js';
-import '../input-checkbox-group.js';
 import '../input-fieldset.js';
 import { css, LitElement } from 'lit';
 import { defineCE, expect, fixture, html } from '@brightspace-ui/testing';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { getUniqueId } from '../../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputLabelStyles } from '../input-label-styles.js';
 import { inputStyles } from '../input-styles.js';
-import { radioStyles } from '../input-radio-styles.js';
 
 const viewport = { width: 376 };
+
+const inputs = html`<div style="border: 1px solid black; padding: 10px;">Inputs go in here.</div>`;
 
 const fieldsetTag = defineCE(class extends LitElement {
 
@@ -19,18 +17,10 @@ const fieldsetTag = defineCE(class extends LitElement {
 		return { required: { type: Boolean } };
 	}
 
-	static get styles() { return [radioStyles]; }
-
 	render() {
-		const name = getUniqueId();
 		return html`
 			<d2l-input-fieldset label="Bun" ?required="${this.required}">
-				<label class="d2l-input-radio-label">
-					<input type="radio" name="${name}" checked>Whole wheat
-				</label>
-				<label class="d2l-input-radio-label">
-					<input type="radio" name="${name}">White
-				</label>
+				${inputs}
 			</d2l-input-fieldset>
 		`;
 	}
@@ -49,11 +39,7 @@ const fieldsetManualTag = defineCE(class extends LitElement {
 		return html`
 			<fieldset class="d2l-input-label-fieldset">
 				<legend class="d2l-input-label">Ingredients</legend>
-				<d2l-input-checkbox-group label="Toppings">
-					<d2l-input-checkbox label="Ketchup"></d2l-input-checkbox>
-					<d2l-input-checkbox label="Mustard"></d2l-input-checkbox>
-					<d2l-input-checkbox label="Relish"></d2l-input-checkbox>
-				</d2l-input-checkbox-group>
+				${inputs}
 			</fieldset>
 		`;
 	}
