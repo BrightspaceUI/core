@@ -6,7 +6,7 @@ describe('d2l-input-checkbox-group', () => {
 
 	it('labelled', async() => {
 		const template = html`
-			<d2l-input-checkbox-group label="Checkbox Group" label-hidden>
+			<d2l-input-checkbox-group label="Checkbox Group">
 				<d2l-input-checkbox label="Checkbox 1"></d2l-input-checkbox>
 				<d2l-input-checkbox label="Checkbox 2"></d2l-input-checkbox>
 				<d2l-input-checkbox label="Checkbox 3"></d2l-input-checkbox>
