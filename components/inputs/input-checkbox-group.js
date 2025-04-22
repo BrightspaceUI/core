@@ -42,6 +42,9 @@ class InputCheckboxGroup extends PropertyRequiredMixin(LitElement) {
 			.d2l-input-label {
 				margin-block-end: 0.6rem;
 			}
+			.d2l-input-label[hidden] {
+				display: none;
+			}
 		`];
 	}
 
