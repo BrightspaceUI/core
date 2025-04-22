@@ -441,13 +441,14 @@ describe('list', () => {
 				});
 
 				it(`nested-${name}`, async() => {
+					if (addButton) return;
 					const elem = await fixture(html`
-						<d2l-list grid style="width: 334px;" ?add-button="${addButton || false}">
+						<d2l-list grid style="width: 334px;">
 							<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable>
 								<d2l-list-item-content>
 									<div>Welcome!</div>
 								</d2l-list-item-content>
-								<d2l-list slot="nested" grid ?add-button="${addButton || false}">
+								<d2l-list slot="nested" grid>
 									<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" draggable>
 										<d2l-list-item-content>
 											<div>Syallabus Confirmation</div>

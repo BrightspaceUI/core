@@ -25,7 +25,7 @@ describe('ListItemNavMixin', () => {
 			expect(button.getAttribute('aria-current')).to.equal('page');
 		});
 
-		it('sets aria-current to undefined when current attribute is removed', async() => {
+		it('does not have aria-current set when current attribute is removed', async() => {
 			const element = await fixture(`<${tag} current label="some label"></${tag}>`);
 			element.removeAttribute('current');
 			await element.updateComplete;
@@ -42,7 +42,7 @@ describe('ListItemNavMixin', () => {
 			expect(button.getAttribute('aria-current')).to.equal('location');
 		});
 
-		it('sets aria-current to undefined when _childCurrent is false', async() => {
+		it('does not have aria-current set when _childCurrent is false', async() => {
 			const element = await fixture(`<${tag} label="some label"></${tag}>`);
 			element._childCurrent = false;
 			await element.updateComplete;
