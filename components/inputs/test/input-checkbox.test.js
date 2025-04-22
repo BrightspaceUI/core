@@ -1,5 +1,4 @@
 import '../input-checkbox.js';
-import '../input-checkbox-group.js';
 import { clickElem, expect, fixture, focusElem, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { checkboxFixtures } from './input-checkbox-fixtures.js';
 
@@ -21,7 +20,6 @@ describe('d2l-input-checkbox', () => {
 
 		it('should construct', () => {
 			runConstructor('d2l-input-checkbox');
-			runConstructor('d2l-input-checkbox-group');
 		});
 
 	});

@@ -89,29 +89,11 @@ If multiple checkboxes are displayed together, wrapping them in a `<d2l-input-ch
   import '@brightspace-ui/core/components/inputs/input-checkbox.js';
   import '@brightspace-ui/core/components/inputs/input-checkbox-group.js';
 </script>
-<d2l-input-checkbox-group>
-  <d2l-input-checkbox label="Option 1"></d2l-input-checkbox>
-  <d2l-input-checkbox label="Option 2"></d2l-input-checkbox>
-  <d2l-input-checkbox label="Option 3"></d2l-input-checkbox>
+<d2l-input-checkbox-group label="Toppings">
+  <d2l-input-checkbox label="Ketchup"></d2l-input-checkbox>
+  <d2l-input-checkbox label="Mustard"></d2l-input-checkbox>
+  <d2l-input-checkbox label="Relish"></d2l-input-checkbox>
 </d2l-input-checkbox-group>
-```
-
-Often, the checkboxes in the group are related to each other and may have a label for the whole group. In this case, a `<d2l-input-fieldset>` should be used.
-
-<!-- docs: demo code -->
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/inputs/input-checkbox.js';
-  import '@brightspace-ui/core/components/inputs/input-checkbox-group.js';
-  import '@brightspace-ui/core/components/inputs/input-fieldset.js';
-</script>
-<d2l-input-fieldset label="Toppings">
-  <d2l-input-checkbox-group>
-    <d2l-input-checkbox label="Ketchup"></d2l-input-checkbox>
-    <d2l-input-checkbox label="Mustard"></d2l-input-checkbox>
-    <d2l-input-checkbox label="Relish"></d2l-input-checkbox>
-  </d2l-input-checkbox-group>
-</d2l-input-fieldset>
 ```
 
 ## Applying styles to native checkboxes
