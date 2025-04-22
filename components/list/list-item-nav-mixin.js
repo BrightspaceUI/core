@@ -18,24 +18,30 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 	static get styles() {
 
 		const styles = [ css`
+			:host(:not([button-disabled])) {
+				--d2l-list-item-content-text-color: var(--d2l-color-ferrite);
+			}
 			.d2l-list-item-content ::slotted(*) {
-				width: 100%; /* add vdiff for this case where hovering on tooltip causes the text to be wider than the button */
+				width: 100%;
 			}
 			:host([current]) [slot="outside-control-container"] {
-				margin-block: 1px;
-				outline: 3px solid var(--d2l-button-focus-color, var(--d2l-color-celestine));
+				border: 3px solid var(--d2l-color-celestine);
+				margin-block: -1px;
 			}
-			:host([_child-current]) [slot="outside-control-container"] {
-				margin-block: 1px;
-				outline: 1px solid var(--d2l-button-focus-color, var(--d2l-color-celestine-plus-1));
+			:host([_focusing-primary-action]:not([current])) [slot="outside-control-container"] {
+				border: 2px solid var(--d2l-color-celestine);
 			}
-			:host([current]) [slot="control-container"]::after,
-			:host([_child-current]) [slot="control-container"]::before,
-			:host([_child-current]) [slot="control-container"]::after {
+			:host([current]) [slot="control-container"]::before,
+			:host([current]) [slot="control-container"]::after {
 				border-color: transparent;
 			}
 			:host([_focusing-primary-action]) .d2l-list-item-content {
-				--d2l-list-item-content-text-outline: none !important;
+				--d2l-list-item-content-text-outline: none;
+			}
+			:host([_hovering-primary-action]) .d2l-list-item-content,
+			:host([_focusing-primary-action]) .d2l-list-item-content {
+				--d2l-list-item-content-text-color: var(--d2l-color-ferrite);
+				--d2l-list-item-content-text-decoration: none;
 			}
 
 		` ];
@@ -63,35 +69,26 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 		super.firstUpdated(changedProperties);
 
 		if (this.current) {
-			this._button.ariaCurrent = 'page';
+			this.#setAriaCurrent('page');
 			this._dispatchSetChildCurrentEvent(true);
 		}
 	}
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
-		if (changedProperties.has('current')) {
+		if (changedProperties.has('current') || changedProperties.has('_childCurrent')) {
 			if (this.current) {
 				this._childCurrent = false;
-				this._button.ariaCurrent = 'page';
+				this.#setAriaCurrent('page');
 			} else if (this._childCurrent) {
-				this._button.ariaCurrent = 'location';
+				this.#setAriaCurrent('location');
 			} else {
-				this._button.ariaCurrent = undefined;
+				this.#setAriaCurrent(undefined);
 			}
-
-			if (changedProperties.get('current') !== undefined) {
-				/** @ignore */
-				this.dispatchEvent(new CustomEvent('d2l-list-item-property-change', { bubbles: true, detail: { name: 'current', value: this.current } }));
-			}
-		} else if (changedProperties.has('_childCurrent')) {
-			if (this.current) {
-				this._button.ariaCurrent = 'page';
-			} else if (this._childCurrent) {
-				this._button.ariaCurrent = 'location';
-			} else {
-				this._button.ariaCurrent = undefined;
-			}
+		}
+		if (changedProperties.get('current') !== undefined) {
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent('d2l-list-item-property-change', { bubbles: true, detail: { name: 'current', value: this.current } }));
 		}
 	}
 
@@ -105,6 +102,11 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 			this.current = true;
 			this._childCurrent = false;
 		}
+		super._onButtonClick(e);
+	}
+
+	#setAriaCurrent(val) {
+		this._button.ariaCurrent = val;
 	}
 
 };

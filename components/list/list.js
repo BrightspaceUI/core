@@ -392,18 +392,18 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 * When a nav item is set to current, do the following:
 			 * - If previous current item:
 			 *   - Set its current to FALSE
-			 *   - Trigger the d2l-list-item-nav-reset-current which sets all parent item aria-current to undefined
+			 *   	- This triggers the d2l-list-item-nav-set-child-current with value of false, causing
+			 * 		  the previous current item to set its aria-current to undefined if it is not the current item
 			 * - After the reset event has worked its way up OR if there is no previous current item:
-			 *   - Trigger the d2l-list-item-nav-set-current event which sets all parent item aria-current to "location"
+			 *   - Trigger the d2l-list-item-nav-set-child-current event with value of true, which sets all parent item aria-current to "location"
 			 */
 			const currentItems = this.querySelectorAll('[current]');
 			// length of 2 is fine as long as one is e.target and the other is the previous current item
 			if (currentItems.length > 2) {
-				console.warn('d2l-list: More than one d2l-list-item-nav has been set to current. This is not allowed.');
+				console.warn('d2l-list: More than one list item has been set to current. This is not allowed and will cause unexpected behavior.');
 			}
 			const target = e.target;
 
-			// TODO: handle if more than 2 current items
 			let prevCurrent = false;
 			currentItems.forEach((item) => {
 				if (item === e.target) return;

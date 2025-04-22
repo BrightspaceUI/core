@@ -35,12 +35,12 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-list grid style="width: 334px;">
-						<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded>
+						<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable>
 							<d2l-list-item-content>
 								<div>Welcome!</div>
 							</d2l-list-item-content>
-							<d2l-list slot="nested">
-								<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation">
+							<d2l-list slot="nested" grid>
+								<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" draggable>
 									<d2l-list-item-content>
 										<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Syallabus Confirmation</div>
 										<div slot="secondary"><d2l-tooltip-help text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
@@ -48,18 +48,18 @@
 								</d2l-list-item-nav>
 							</d2l-list>
 						</d2l-list-item-nav>
-						<d2l-list-item-nav key="L2-2" label="Unit 1: Poetry" color="#29a6ff" expandable expanded>
+						<d2l-list-item-nav key="L2-2" label="Unit 1: Poetry" color="#29a6ff" expandable expanded draggable>
 							<d2l-list-item-content>
 								<div>Unit 1: Fiction</div>
 								<div slot="secondary"><d2l-tooltip-help text="Starts: May 2, 2023 at 2 pm">Starts: May 2, 2023</d2l-tooltip-help></div>
 							</d2l-list-item-content>
-							<d2l-list slot="nested">
-								<d2l-list-item-nav key="L3-2" label="Fiction">
+							<d2l-list slot="nested" grid>
+								<d2l-list-item-nav key="L3-2" label="Fiction" draggable>
 									<d2l-list-item-content>
 										<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Fiction</div>
 									</d2l-list-item-content>
 								</d2l-list-item-nav>
-								<d2l-list-item-nav key="L3-2" label="Ten rules for writing fiction">
+								<d2l-list-item-nav key="L3-2" label="Ten rules for writing fiction" draggable>
 									<d2l-list-item-content>
 										<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Ten rules for writing fiction</div>
 									</d2l-list-item-content>
@@ -70,7 +70,7 @@
 				</template>
 				<script type="module">
 					requestAnimationFrame(() => {
-						document.addEventListener('d2l-list-item-nav-click', () => {
+						document.addEventListener('d2l-list-item-button-click', () => {
 							console.log('d2l-list-item-nav: click event');
 						});
 					});
