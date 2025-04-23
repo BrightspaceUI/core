@@ -103,7 +103,7 @@ class ButtonSplit extends FocusMixin(LitElement) {
 			::slotted(:not(d2l-menu)) {
 				display: none;
 			}
-			:host([primary]) d2l-icon {
+			.menu-opener[primary] > d2l-icon {
 				color: #ffffff;
 			}
 		`;
