@@ -80,6 +80,9 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 
 			// Dispatches click event from the list item to maintain existing functionality in consumers that listen for the click event
 			const listItemClickEvent = new e.constructor(e.type, e);
+			listItemClickEvent.preventDefault = () => {
+				e.preventDefault();
+			};
 			/** @ignore */
 			this.dispatchEvent(listItemClickEvent);
 		}
