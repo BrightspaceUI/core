@@ -584,7 +584,6 @@ describe('d2l-list-item', () => {
 					<div>Item 1</div>
 					<div slot="secondary"><d2l-button>Button</d2l-button></div>
 				</d2l-list-item>`);
-			
 			setTimeout(() => el.querySelector('d2l-button').click());
 			await oneEvent(el.querySelector('d2l-button'), 'click');
 		});
@@ -606,7 +605,6 @@ describe('d2l-list-item', () => {
 					<div>Item 1</div>
 					<div slot="secondary"><d2l-button>Button</d2l-button></div>
 				</d2l-list-item>`);
-			
 			setTimeout(() => el.querySelector('d2l-button').click());
 			const e = await oneEvent(el, 'click');
 			expect(e.target).to.equal(el.querySelector('d2l-button'));
@@ -644,7 +642,6 @@ describe('d2l-list-item-button', () => {
 					<div>Item 1</div>
 					<div slot="secondary"><d2l-button>Button</d2l-button></div>
 				</d2l-list-item-button>`);
-			
 			setTimeout(() => el.querySelector('d2l-button').click());
 			const e = await oneEvent(el, 'click');
 			expect(e.target).to.equal(el.querySelector('d2l-button'));
@@ -694,7 +691,6 @@ describe('d2l-list-item-button', () => {
 					<div>Item 1</div>
 					<div slot="secondary"><d2l-button>Button</d2l-button></div>
 				</d2l-list-item-button>`);
-			
 			setTimeout(() => el.querySelector('d2l-button').click());
 			await oneEvent(el.querySelector('d2l-button'), 'click');
 		});
