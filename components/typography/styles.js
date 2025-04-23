@@ -1,5 +1,8 @@
 import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
+import { getFlag } from '../../helpers/flags.js';
+
+const inputStyleTweaksEnabled = getFlag('input-style-tweaks', true);
 
 export const _isValidCssSelector = (selector) => {
 	if (selector === ':host') return true;
@@ -112,7 +115,7 @@ export const _generateBodySmallStyles = (selector) => {
 			color: var(--d2l-color-tungsten);
 			font-size: 0.7rem;
 			font-weight: 400;
-			line-height: 1rem;
+			line-height: ${unsafeCSS(inputStyleTweaksEnabled ? '0.9rem' : '1rem')}; /* stylelint-disable-line */
 			margin: auto;
 		}
 		:host([skeleton]) ${selector}.d2l-skeletize::before {
@@ -131,7 +134,7 @@ export const _generateBodySmallStyles = (selector) => {
 		@media (max-width: 615px) {
 			${selector} {
 				font-size: 0.6rem;
-				line-height: 0.9rem;
+				line-height: 0.9rem; /* TODO: what to do with this? */
 			}
 			:host([skeleton]) ${selector}.d2l-skeletize::before {
 				bottom: 0.25rem;
