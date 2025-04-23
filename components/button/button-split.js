@@ -8,7 +8,7 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 /**
- * A button container component for split buttons.
+ * A split button that provides a main action button and slot for a menu.
  */
 class ButtonSplit extends FocusMixin(LitElement) {
 
