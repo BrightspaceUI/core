@@ -11,7 +11,8 @@ export const inputLabelStyles = css`
 		font-weight: 700;
 		letter-spacing: 0.2px;
 		line-height: ${unsafeCSS(inputStyleTweaksEnabled ? '0.9rem' : '1rem')}; /* stylelint-disable-line */
-		margin: 0 0 7px 0;
+		margin-block: 0 ${unsafeCSS(inputStyleTweaksEnabled ? '0.4rem' : '7px')};
+		margin-inline: 0;
 		padding: 0;
 	}
 	:host([required]) .d2l-input-label::after,
