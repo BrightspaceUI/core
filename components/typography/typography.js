@@ -51,7 +51,7 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 
 		.d2l-typography .d2l-label-text {
 			font-size: 0.7rem;
-			line-height: 1rem;
+			line-height: ${(inputStyleTweaksEnabled ? '0.9rem' : '1rem')};
 			font-weight: 700;
 			letter-spacing: 0.2px;
 		}
