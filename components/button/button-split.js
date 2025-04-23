@@ -160,6 +160,7 @@ class ButtonSplit extends FocusMixin(LitElement) {
 
 	#handleMainActionClick(e) {
 		e.stopPropagation();
+		/** Dispatched when the main action button is clicked */
 		this.dispatchEvent(new CustomEvent('d2l-button-split-click'));
 	}
 
