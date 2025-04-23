@@ -25,7 +25,7 @@ class ButtonSplit extends FocusMixin(LitElement) {
 			 */
 			description: { type: String },
 			/**
-			 * Disables the main action and menu opener buttons
+			 * Disables the main action and dropdown opener buttons
 			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
@@ -95,12 +95,12 @@ class ButtonSplit extends FocusMixin(LitElement) {
 				--d2l-button-start-end-radius: 0;
 				--d2l-button-end-end-radius: 0;
 			}
-			.menu-opener {
+			.d2l-dropdown-opener {
 				--d2l-button-start-start-radius: 0;
 				--d2l-button-end-start-radius: 0;
 				--d2l-button-padding: 0 0.6rem;
 			}
-			.menu-opener[primary] > d2l-icon {
+			.d2l-dropdown-opener[primary] > d2l-icon {
 				color: #ffffff;
 			}
 			::slotted(:not(d2l-menu)) {
@@ -145,7 +145,8 @@ class ButtonSplit extends FocusMixin(LitElement) {
 				<d2l-dropdown>
 					<d2l-button
 						aria-label="Other Actions"
-						class="d2l-dropdown-opener menu-opener"
+						class="d2l-dropdown-opener"
+						@click="${this.#handleDropdownOpenerClick}"
 						?disabled="${this.disabled}"
 						?primary="${this.primary}">
 						<d2l-icon icon="tier1:chevron-down"></d2l-icon>
@@ -156,6 +157,10 @@ class ButtonSplit extends FocusMixin(LitElement) {
 				</d2l-dropdown>
 			</div>
 		`;
+	}
+
+	#handleDropdownOpenerClick(e) {
+		e.stopPropagation();
 	}
 
 	#handleMainActionClick(e) {
