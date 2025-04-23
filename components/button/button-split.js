@@ -100,11 +100,11 @@ class ButtonSplit extends FocusMixin(LitElement) {
 				--d2l-button-end-start-radius: 0;
 				--d2l-button-padding: 0 0.6rem;
 			}
-			::slotted(:not(d2l-menu)) {
-				display: none;
-			}
 			.menu-opener[primary] > d2l-icon {
 				color: #ffffff;
+			}
+			::slotted(:not(d2l-menu)) {
+				display: none;
 			}
 		`;
 	}
