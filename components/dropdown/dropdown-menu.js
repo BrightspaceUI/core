@@ -268,10 +268,9 @@ if (usePopoverMixin) {
 		}
 
 		__getMenuElement() {
-			if (!this.shadowRoot) return undefined;
-			return this.shadowRoot.querySelector('.d2l-dropdown-content-slot')
-				.assignedNodes().filter(node => node.hasAttribute
-					&& (node.getAttribute('role') === 'menu' || node.getAttribute('role') === 'listbox'))[0];
+			return this.shadowRoot?.querySelector('.d2l-dropdown-content-slot')
+				.assignedElements({ flatten: true })
+				.filter(node => (node.getAttribute('role') === 'menu' || node.getAttribute('role') === 'listbox'))[0];
 		}
 
 		_onAnimationEnd() {
