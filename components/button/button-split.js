@@ -63,12 +63,12 @@ class ButtonSplit extends FocusMixin(LitElement) {
 			 */
 			name: { type: String, reflect: true },
 			/**
-			 * Styles the button as a primary button
+			 * Styles the buttons as a primary buttons
 			 * @type {boolean}
 			 */
 			primary: { type: Boolean, reflect: true },
 			/**
-			 * ACCESSIBILITY: REQUIRED: Accessible text for the button
+			 * ACCESSIBILITY: REQUIRED: Accessible text for the main action button
 			 * @type {string}
 			 */
 			text: { type: String, reflect: true, required: true },
