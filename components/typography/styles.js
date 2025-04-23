@@ -275,7 +275,7 @@ export const _generateLabelStyles = (selector) => {
 			font-size: 0.7rem;
 			font-weight: 700;
 			letter-spacing: 0.2px;
-			line-height: 1rem;
+			line-height: ${unsafeCSS(inputStyleTweaksEnabled ? '0.9rem' : '1rem')}; /* stylelint-disable-line */
 		}
 		:host([skeleton]) ${selector}.d2l-skeletize::before {
 			bottom: 0.25rem;
