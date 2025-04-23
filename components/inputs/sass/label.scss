@@ -6,10 +6,12 @@
 	letter-spacing: 0.2px;
 	line-height: 0.9rem;
 	margin: 0;
-	padding: 0 0 7px 0;
+	padding-block: 0 0.4rem;
+	padding-inline: 0;
 	width: 100%;
 	.d2l-typography.d2l-no-input-style-tweaks & {
 		line-height: 1rem;
+		padding-block-end: 7px;
 	}
 }
 
