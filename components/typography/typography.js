@@ -1,7 +1,9 @@
 import '../colors/colors.js';
 import { fontFacesCss } from './styles.js';
+import { getFlag } from '../../helpers/flags.js';
 
 if (!document.head.querySelector('#d2l-typography-font-face')) {
+	const inputStyleTweaksEnabled = getFlag('input-style-tweaks', true);
 	const style = document.createElement('style');
 	style.id = 'd2l-typography-font-face';
 	style.textContent = `
@@ -43,7 +45,7 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 			color: var(--d2l-color-tungsten);
 			font-size: 0.7rem;
 			font-weight: 400;
-			line-height: 1rem;
+			line-height: ${(inputStyleTweaksEnabled ? '0.9rem' : '1rem')};
 			margin: auto;
 		}
 
@@ -149,7 +151,7 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 
 			.d2l-typography .d2l-body-small {
 				font-size: 0.6rem;
-				line-height: 0.9rem;
+				line-height: 0.9rem; /* TODO: what to do with this? */
 			}
 
 			.d2l-typography .d2l-heading-1 {
