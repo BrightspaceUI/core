@@ -84,7 +84,7 @@ class ListItemDragImage extends LocalizeCoreElement(SkeletonMixin(RtlMixin(LitEl
 				color: white;
 				left: 26px;
 				min-width: 1.4rem;
-				padding: 0.2rem 0.4rem;
+				padding: 0.25rem 0.4rem;
 				position: absolute;
 				text-align: center;
 				top: 30px;
