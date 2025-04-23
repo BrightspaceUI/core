@@ -87,6 +87,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				color: var(--d2l-color-ferrite);
 				cursor: pointer;
 				display: flex;
+				line-height: 1rem;
 				max-width: 320px;
 				min-width: 0;
 				outline: none;
