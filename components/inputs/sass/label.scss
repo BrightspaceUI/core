@@ -4,10 +4,13 @@
 	font-size: 0.7rem;
 	font-weight: 700;
 	letter-spacing: 0.2px;
-	line-height: 1rem;
+	line-height: 0.9rem;
 	margin: 0;
 	padding: 0 0 7px 0;
 	width: 100%;
+	.d2l-typography.d2l-no-input-style-tweaks & {
+		line-height: 1rem;
+	}
 }
 
 @mixin d2l-input-label-required() {
