@@ -11,7 +11,7 @@ export const inputLabelStyles = css`
 		font-weight: 700;
 		letter-spacing: 0.2px;
 		line-height: ${unsafeCSS(inputStyleTweaksEnabled ? '0.9rem' : '1rem')}; /* stylelint-disable-line */
-		margin-block: 0 ${unsafeCSS(inputStyleTweaksEnabled ? '0.4rem' : '7px')};
+		margin-block: 0 ${unsafeCSS(inputStyleTweaksEnabled ? '0.4rem' : '7px')}; /* stylelint-disable-line */
 		margin-inline: 0;
 		padding: 0;
 	}
