@@ -7,11 +7,12 @@ import '../menu/menu.js';
 import { css, html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
  * A split button that provides a main action button and slot for a menu.
  */
-class ButtonSplit extends FocusMixin(LitElement) {
+class ButtonSplit extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
@@ -103,14 +104,14 @@ class ButtonSplit extends FocusMixin(LitElement) {
 				</d2l-button>
 				<d2l-dropdown>
 					<d2l-button
-						aria-label="Other Options"
+						aria-label="${this.localize('components.button-split.otherOptions')}"
 						class="d2l-dropdown-opener"
 						?disabled="${this.disabled}"
 						?primary="${this.primary}">
 						<d2l-icon icon="tier1:chevron-down"></d2l-icon>
 					</d2l-button>
 					<d2l-dropdown-menu>
-						<d2l-menu label="Other Options" @d2l-menu-item-select="${this.#handleMenuItemSelect}">
+						<d2l-menu label="${this.localize('components.button-split.otherOptions')}" @d2l-menu-item-select="${this.#handleMenuItemSelect}">
 							<slot></slot>
 						</d2l-menu>
 					</d2l-dropdown-menu>
