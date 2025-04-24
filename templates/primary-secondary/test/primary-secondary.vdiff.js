@@ -11,7 +11,7 @@ import { nothing } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 
 function createTemplate(opts) {
-	const { footer, mobile, resizable, shading, secondaryFirst, storageKey, widthType } = { footer: true, mobile: false, resizable: true, secondaryFirst: false, ...opts };
+	const { footer, mobile, resizable, shading, secondaryFirst, storageKey, widthType, printPrimaryOnly } = { footer: true, mobile: false, resizable: true, secondaryFirst: false, printPrimaryOnly: false, ...opts };
 	const styles = {
 		border: '2px solid var(--d2l-color-mica)',
 		height: mobile ? '300px' : '150px',
@@ -20,7 +20,7 @@ function createTemplate(opts) {
 	};
 	return html`
 		<div style="${styleMap(styles)}">
-			<d2l-template-primary-secondary ?resizable="${resizable}" ?secondary-first="${secondaryFirst}" background-shading="${ifDefined(shading)}" width-type="${ifDefined(widthType)}" storage-key="${ifDefined(storageKey)}">
+			<d2l-template-primary-secondary ?resizable="${resizable}" ?secondary-first="${secondaryFirst}" ?print-primary-only="${printPrimaryOnly}" background-shading="${ifDefined(shading)}" width-type="${ifDefined(widthType)}" storage-key="${ifDefined(storageKey)}">
 				<div style="${ifDefined(mobile ? undefined : 'border-bottom: 1px solid var(--d2l-color-mica);')}" slot="header">Header</div>Size
 				<div slot="primary">
 					We make it easy to provide timely and contextual feedback and assessments. Do it through inline
@@ -104,6 +104,7 @@ describe('primary-secondary', () => {
 			{ name: 'width-fullscreen', template: createTemplate({ footer: false, resizable: false, widthType: 'fullscreen' }) },
 			{ name: 'width-normal', template: createTemplate({ footer: false, resizable: false, widthType: 'normal' }) },
 			{ name: 'width-normal-collapsed', template: createTemplate({ footer: false, widthType: 'normal' }), action: elem => moveDivider(elem, 'ArrowRight', 5) },
+			{ name: 'print-primary-only', template: createTemplate({ printPrimaryOnly: true }) },
 			{ name: 'short-content', template: createShortTemplate() },
 		].forEach(({ name, template, action, rtl }) => {
 			it(name, async() => {

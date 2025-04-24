@@ -58,6 +58,7 @@ If either of the panels contain an `iframe`, resizing may not work properly. Thi
 | `secondary-first` | Boolean, default: `false` | When set to true, the secondary panel will be displayed on the left (or the right in RTL) in the desktop view. This attribute has no effect on the mobile view. |
 | `storage-key` | String | The key used to persist the divider's position to local storage. This key should not be shared between appliactions so that users can save different divider positions for different applications. If no key is provided, the template will fall back its default size. |
 | `width-type` | String, default: `'fullscreen'` | Whether content fills the screen or not. When set to `normal`, the width of the template is constrained to `1230px`. Can be one of `'fullscreen'`, `'normal'`. |
+| `print-primary-only` | Boolean, default: `false` | When true, only the contents of the primary panel will be printed using the browser print dialog. |
 
 ### Events
 * `d2l-template-primary-secondary-resize-start`: dispatched when a user begins moving the divider
