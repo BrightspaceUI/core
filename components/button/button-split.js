@@ -3,6 +3,7 @@ import '../colors/colors.js';
 import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-menu.js';
 import '../icons/icon.js';
+import '../menu/menu.js';
 import { css, html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -14,11 +15,6 @@ class ButtonSplit extends FocusMixin(LitElement) {
 
 	static get properties() {
 		return {
-			/**
-			 * @ignore
-			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			autofocus: { type: Boolean, reflect: true },
 			/**
 			 * ACCESSIBILITY: A description to be added to the main action button for accessibility when text does not provide enough context
 			 * @type {string}
@@ -34,34 +30,6 @@ class ButtonSplit extends FocusMixin(LitElement) {
 			 * @type {string}
 			 */
 			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
-			/**
-			 * @ignore
-			 */
-			form: { type: String, reflect: true },
-			/**
-			 * @ignore
-			 */
-			formaction: { type: String, reflect: true },
-			/**
-			 * @ignore
-			 */
-			formenctype: { type: String, reflect: true },
-			/**
-			 * @ignore
-			 */
-			formmethod: { type: String, reflect: true },
-			/**
-			 * @ignore
-			 */
-			formnovalidate: { type: String, reflect: true },
-			/**
-			 * @ignore
-			 */
-			formtarget: { type: String, reflect: true },
-			/**
-			 * @ignore
-			 */
-			name: { type: String, reflect: true },
 			/**
 			 * Styles the buttons as a primary buttons
 			 * @type {boolean}
@@ -98,12 +66,13 @@ class ButtonSplit extends FocusMixin(LitElement) {
 			.d2l-dropdown-opener {
 				--d2l-button-start-start-radius: 0;
 				--d2l-button-end-start-radius: 0;
-				--d2l-button-padding: 0 0.6rem;
+				--d2l-button-padding-inline-end: 0.6rem;
+				--d2l-button-padding-inline-start: 0.6rem;
 			}
 			.d2l-dropdown-opener[primary] > d2l-icon {
 				color: #ffffff;
 			}
-			::slotted(:not(d2l-menu)) {
+			::slotted(:not(d2l-button-split-item)) {
 				display: none;
 			}
 		`;
@@ -111,8 +80,6 @@ class ButtonSplit extends FocusMixin(LitElement) {
 
 	constructor() {
 		super();
-		/** @ignore */
-		this.autofocus = false;
 		this.disabled = false;
 		this.primary = false;
 	}
@@ -123,50 +90,50 @@ class ButtonSplit extends FocusMixin(LitElement) {
 
 	render() {
 		return html`
-			<div class="container">
+			<div class="container" @click="${this.#suppressClick}">
 				<d2l-button
-					?autofocus="${this.autofocus}"
 					class="main-action"
 					@click="${this.#handleMainActionClick}"
 					description="${ifDefined(this.description)}"
 					?disabled="${this.disabled}"
 					disabled-tooltip="${ifDefined(this.disabledTooltip)}"
-					form="${ifDefined(this.form)}"
-					formaction="${ifDefined(this.formaction)}"
-					formenctype="${ifDefined(this.formenctype)}"
-					formmethod="${ifDefined(this.formmethod)}"
-					?formnovalidate="${this.formnovalidate}"
-					formtarget="${ifDefined(this.formtarget)}"
-					name="${ifDefined(this.name)}"
 					?primary="${this.primary}"
 					type="${ifDefined(this.type)}">
 					${this.text}
 				</d2l-button>
 				<d2l-dropdown>
 					<d2l-button
-						aria-label="Other Actions"
+						aria-label="Other Options"
 						class="d2l-dropdown-opener"
-						@click="${this.#handleDropdownOpenerClick}"
 						?disabled="${this.disabled}"
 						?primary="${this.primary}">
 						<d2l-icon icon="tier1:chevron-down"></d2l-icon>
 					</d2l-button>
 					<d2l-dropdown-menu>
-						<slot name="menu"></slot>
+						<d2l-menu label="Other Options" @d2l-menu-item-select="${this.#handleMenuItemSelect}">
+							<slot name="menu"></slot>
+						</d2l-menu>
 					</d2l-dropdown-menu>
 				</d2l-dropdown>
 			</div>
 		`;
 	}
 
-	#handleDropdownOpenerClick(e) {
-		e.stopPropagation();
+	#dispatchClick(key) {
+		/** Dispatched when a split button is clicked */
+		this.dispatchEvent(new CustomEvent('click', { detail: { key } }));
 	}
 
-	#handleMainActionClick(e) {
+	#handleMainActionClick() {
+		this.#dispatchClick(null);
+	}
+
+	#handleMenuItemSelect(e) {
+		this.#dispatchClick(e.target.key);
+	}
+
+	#suppressClick(e) {
 		e.stopPropagation();
-		/** Dispatched when the main action button is clicked */
-		this.dispatchEvent(new CustomEvent('d2l-button-split-click'));
 	}
 
 }

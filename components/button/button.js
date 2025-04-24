@@ -41,7 +41,10 @@ class Button extends ButtonMixin(LitElement) {
 
 				button {
 					font-family: inherit;
-					padding: var(--d2l-button-padding, 0 1.5rem);
+					padding-block-end: 0;
+					padding-block-start: 0;
+					padding-inline-end: var(--d2l-button-padding-inline-end, 1.5rem);
+					padding-inline-start: var(--d2l-button-padding-inline-start, 1.5rem);
 					width: 100%;
 				}
 

@@ -1,6 +1,5 @@
 import '../button-split.js';
-import '../../menu/menu.js';
-import '../../menu/menu-item.js';
+import '../button-split-item.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -14,11 +13,8 @@ describe('d2l-button-split', () => {
 				disabled-tooltip="${ifDefined(options?.disabledTooltip)}"
 				?primary="${options?.primary}"
 				text="Save">
-				<d2l-menu label="Other Options" slot="menu">
-					<d2l-menu-item text="Save as Draft"></d2l-menu-item>
-					<d2l-menu-item text="Save and Close"></d2l-menu-item>
-					<d2l-menu-item text="Save and New"></d2l-menu-item>
-				</d2l-menu>
+				<d2l-button-split-item slot="menu" key="saveAsDraft" text="Save as Draft"></d2l-button-split-item>
+				<d2l-button-split-item slot="menu" key="saveAndClose" text="Save and Close"></d2l-button-split-item>
 			</d2l-button-split>
 		`;
 	};
