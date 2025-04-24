@@ -224,4 +224,12 @@ describe('primary-secondary', () => {
 			await expect(elem).to.be.golden({ margin: 0 });
 		});
 	});
+
+	describe('print', () => {
+		it('resizable', async() => {
+			const elem = await fixture(createTemplate(), { media: 'print', viewport: { width: 1450 } });
+			const primarySecondary = elem.querySelector('d2l-template-primary-secondary');
+			await expect(primarySecondary).to.be.golden({ margin: 0 });
+		});
+	});
 });
