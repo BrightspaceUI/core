@@ -1,5 +1,5 @@
 import '../input-time.js';
-import { clickElem, expect, fixture, focusElem, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
@@ -102,6 +102,7 @@ describe('d2l-input-time', () => {
 			const elem = await fixture(create({ opened: true, skeleton: true }), { viewport });
 			elem.removeAttribute('skeleton');
 			await oneEvent(elem, 'd2l-dropdown-open');
+			await nextFrame();
 			await expect(elem).to.be.golden();
 		});
 	});
