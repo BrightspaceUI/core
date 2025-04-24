@@ -13,8 +13,8 @@ describe('d2l-button-split', () => {
 				disabled-tooltip="${ifDefined(options?.disabledTooltip)}"
 				?primary="${options?.primary}"
 				text="Save">
-				<d2l-button-split-item slot="menu" key="saveAsDraft" text="Save as Draft"></d2l-button-split-item>
-				<d2l-button-split-item slot="menu" key="saveAndClose" text="Save and Close"></d2l-button-split-item>
+				<d2l-button-split-item key="saveAsDraft" text="Save as Draft"></d2l-button-split-item>
+				<d2l-button-split-item key="saveAndClose" text="Save and Close"></d2l-button-split-item>
 			</d2l-button-split>
 		`;
 	};

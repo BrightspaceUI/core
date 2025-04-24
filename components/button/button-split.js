@@ -111,7 +111,7 @@ class ButtonSplit extends FocusMixin(LitElement) {
 					</d2l-button>
 					<d2l-dropdown-menu>
 						<d2l-menu label="Other Options" @d2l-menu-item-select="${this.#handleMenuItemSelect}">
-							<slot name="menu"></slot>
+							<slot></slot>
 						</d2l-menu>
 					</d2l-dropdown-menu>
 				</d2l-dropdown>
