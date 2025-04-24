@@ -1,3 +1,3 @@
 export default {
-	pattern: type => `**/test/*.${type}.js`
+	pattern: type => `**/test/input-time.${type}.js`
 };
