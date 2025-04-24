@@ -953,6 +953,29 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 					z-index: -1;
 				}
 			}
+
+			@media print {
+				:host([print-primary-only]) {
+					overflow: visible;
+					position: relative;
+				}
+
+				:host([print-primary-only]) .d2l-template-primary-secondary-container,
+				:host([print-primary-only]) .d2l-template-primary-secondary-content {
+					height: auto;
+					overflow: visible;
+				}
+
+				:host([print-primary-only]) .d2l-template-primary-secondary-container > header,
+				:host([print-primary-only]) .d2l-template-primary-secondary-container > footer,
+				:host([print-primary-only]) .d2l-template-primary-secondary-content > :not(main) {
+					display: none;
+				}
+
+				:host([print-primary-only]) .d2l-template-primary-secondary-content > main {
+					background: white;
+				}
+			}
 		`;
 	}
 
