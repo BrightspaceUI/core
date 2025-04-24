@@ -841,6 +841,7 @@ describe('table', () => {
 							{ bottomMargin: true, stickyHeaders: true, stickyHeadersScrollWrapper: hasStickyHeadersScrollWrapper, viewport: { height: 300, width: 500 } }
 						);
 						await clickElem(elem.shadowRoot.querySelector('d2l-table-col-sort-button'));
+						await nextFrame();
 						await expect(elem).to.be.golden();
 					});
 
