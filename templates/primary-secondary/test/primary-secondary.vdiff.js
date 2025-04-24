@@ -11,9 +11,9 @@ import { nothing } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 
 function createTemplate(opts) {
-	const { footer, mobile, resizable, shading, secondaryFirst, storageKey, widthType } = { footer: true, mobile: false, resizable: true, secondaryFirst: false, ...opts };
+	const { footer, mobile, resizable, shading, secondaryFirst, storageKey, widthType, print } = { footer: true, mobile: false, resizable: true, secondaryFirst: false, print: false, ...opts };
 	const styles = {
-		border: '2px solid var(--d2l-color-mica)',
+		border: print ? 'none' : '2px solid var(--d2l-color-mica)',
 		height: mobile ? '300px' : '150px',
 		position: 'relative',
 		width: mobile ? '100px' : (widthType ? '1400px' : '769px')
@@ -227,7 +227,7 @@ describe('primary-secondary', () => {
 
 	describe('print', () => {
 		it('resizable', async() => {
-			const elem = await fixture(createTemplate(), { media: 'print', viewport: { width: 1450 } });
+			const elem = await fixture(createTemplate({ print: true }), { media: 'print', viewport: { width: 1450 } });
 			const primarySecondary = elem.querySelector('d2l-template-primary-secondary');
 			await expect(primarySecondary).to.be.golden({ margin: 0 });
 		});
