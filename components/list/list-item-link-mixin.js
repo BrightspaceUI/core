@@ -60,8 +60,17 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		if (this._getDescendantClicked(e)) {
 			e.preventDefault();
 		} else {
+			e.stopPropagation();
 			/** Dispatched when the item's primary link action is clicked */
 			this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
+
+			// Dispatches click event from the list item to maintain existing functionality in consumers that listen for the click event
+			const listItemClickEvent = new e.constructor(e.type, e);
+			listItemClickEvent.preventDefault = () => {
+				e.preventDefault();
+			};
+			/** @ignore */
+			this.dispatchEvent(listItemClickEvent);
 		}
 	}
 

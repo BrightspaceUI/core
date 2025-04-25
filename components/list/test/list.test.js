@@ -577,6 +577,38 @@ describe('d2l-list-item', () => {
 			await clickElem(el.querySelector('d2l-button'));
 			expect(dispatched).to.equal(false);
 		});
+
+		it('dispatches element\'s click event when interactive content clicked', async() => {
+			const el = await fixture(html`
+				<d2l-list-item action-href="javascript:void(0)" label="item">
+					<div>Item 1</div>
+					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+				</d2l-list-item>`);
+			setTimeout(() => el.querySelector('d2l-button').click());
+			await oneEvent(el.querySelector('d2l-button'), 'click');
+		});
+
+		it('dispatches click event with correct target when clicked', async() => {
+			const el = await fixture(html`
+				<d2l-list-item action-href="javascript:void(0)" label="item">
+					<div>Item 1</div>
+					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+				</d2l-list-item>`);
+			clickElem(el.shadowRoot.querySelector('div'));
+			const e = await oneEvent(el, 'click');
+			expect(e.target).to.equal(el);
+		});
+
+		it('dispatches click event with correct target when interactive content clicked', async() => {
+			const el = await fixture(html`
+				<d2l-list-item action-href="javascript:void(0)" label="item">
+					<div>Item 1</div>
+					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+				</d2l-list-item>`);
+			setTimeout(() => el.querySelector('d2l-button').click());
+			const e = await oneEvent(el, 'click');
+			expect(e.target).to.equal(el.querySelector('d2l-button'));
+		});
 	});
 
 });
@@ -592,6 +624,28 @@ describe('d2l-list-item-button', () => {
 	});
 
 	describe('events', () => {
+
+		it('dispatches click event with correct target when clicked', async() => {
+			const el = await fixture(html`
+				<d2l-list-item-button label="item">
+					<div>Item 1</div>
+					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+				</d2l-list-item-button>`);
+			clickElem(el.shadowRoot.querySelector('div'));
+			const e = await oneEvent(el, 'click');
+			expect(e.target).to.equal(el);
+		});
+
+		it('dispatches click event with correct target when interactive content clicked', async() => {
+			const el = await fixture(html`
+				<d2l-list-item-button label="item">
+					<div>Item 1</div>
+					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+				</d2l-list-item-button>`);
+			setTimeout(() => el.querySelector('d2l-button').click());
+			const e = await oneEvent(el, 'click');
+			expect(e.target).to.equal(el.querySelector('d2l-button'));
+		});
 
 		it('dispatches d2l-list-item-button-click event when clicked', async() => {
 			const el = await fixture(html`<d2l-list-item-button label="item"></d2l-list-item-button>`);
@@ -629,6 +683,16 @@ describe('d2l-list-item-button', () => {
 			el.addEventListener('d2l-list-item-button-click', () => dispatched = true);
 			await clickElem(el.querySelector('d2l-button'));
 			expect(dispatched).to.equal(false);
+		});
+
+		it('dispatches element\'s click event when interactive content clicked', async() => {
+			const el = await fixture(html`
+				<d2l-list-item-button label="item">
+					<div>Item 1</div>
+					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+				</d2l-list-item-button>`);
+			setTimeout(() => el.querySelector('d2l-button').click());
+			await oneEvent(el.querySelector('d2l-button'), 'click');
 		});
 
 		it('dispatches d2l-list-item-add-button-click event when first add button clicked', async() => {
