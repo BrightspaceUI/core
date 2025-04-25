@@ -5,12 +5,18 @@ import { restore, stub } from 'sinon';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
 
-const pseudoLocalizationOn = () => document.documentElement.dataset.pseudoLocalization = JSON.stringify(
-	{
+const documentLocaleSettings = getDocumentLocaleSettings();
+
+const pseudoLocalizationOn = () => {
+	let resolve;
+	const dlsChange = new Promise(r => resolve = r);
+	documentLocaleSettings.addChangeListener(resolve);
+	document.documentElement.dataset.pseudoLocalization = JSON.stringify({
 		isAvailable: true,
 		textFormat: '{0} | {1}',
-	}
-);
+	});
+	return dlsChange;
+};
 
 const Test1LocalizeMixinBase = superclass => class extends _LocalizeMixinBase(superclass) {
 
@@ -282,13 +288,11 @@ const localizeCommonTag = defineCE(
 
 describe('LocalizeMixin', () => {
 
-	const documentLocaleSettings = getDocumentLocaleSettings();
-
 	afterEach(() => documentLocaleSettings.reset());
 
 	[true, false].forEach(pseudoLocalization => {
 		it(`should share resources between instances, pseudoLocalization ${pseudoLocalization ? 'on' : 'off'}`, async () => {
-			pseudoLocalization && pseudoLocalizationOn();
+			pseudoLocalization && await pseudoLocalizationOn();
 			const elemStatic = await fixture(`<${staticTag}></${staticTag}>`);
 			const elemStatic2 = await fixture(`<${staticTag}></${staticTag}>`);
 			const elemAsync = await fixture(`<${asyncTag}></${asyncTag}>`);
@@ -484,10 +488,9 @@ describe('LocalizeMixin', () => {
 
 	describe('pseudoLocalize', () => {
 		it('should replace {0} and {1} with formatted message and message name', async() => {
-			pseudoLocalizationOn();
+			await pseudoLocalizationOn();
 			const elem = await fixture(`<${synchronousTag}></${synchronousTag}>`);
 			expect(elem.localize('sync')).to.equal('Synchronous Content | sync');
-			document.documentElement.dataset.pseudoLocalization = null;
 		});
 	});
 
