@@ -31,6 +31,9 @@ class Form extends FormMixin(LitElement) {
 			:host([hidden]) {
 				display: none;
 			}
+			:host([_has-errors]) ::slotted(d2l-input-group) {
+				margin-block-start: 1rem;
+			}
 		`;
 	}
 
