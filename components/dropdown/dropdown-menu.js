@@ -350,7 +350,7 @@ if (usePopoverMixin) {
 		}
 
 		_onSelect(e) {
-			if (['D2L-MENU-ITEM', 'D2L-MENU-ITEM-LINK', 'D2L-SELECTION-ACTION-MENU-ITEM'].indexOf(e.target.tagName) < 0) {
+			if (['D2L-MENU-ITEM', 'D2L-MENU-ITEM-LINK', 'D2L-SELECTION-ACTION-MENU-ITEM', 'D2L-BUTTON-SPLIT-ITEM'].indexOf(e.target.tagName) < 0) {
 				return;
 			}
 			this.close();

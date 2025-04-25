@@ -8,11 +8,12 @@ import { css, html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 /**
  * A split button that provides a main action button and slot for a menu.
  */
-class ButtonSplit extends FocusMixin(LocalizeCoreElement(LitElement)) {
+class ButtonSplit extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
@@ -32,6 +33,11 @@ class ButtonSplit extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
 			/**
+			 * REQUIRED: Key of the main action
+			 * @type {string}
+			 */
+			key: { type: String, required: true },
+			/**
 			 * Styles the buttons as a primary buttons
 			 * @type {boolean}
 			 */
@@ -40,11 +46,7 @@ class ButtonSplit extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			 * ACCESSIBILITY: REQUIRED: Accessible text for the main action button
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true, required: true },
-			/**
-			 * @ignore
-			 */
-			type: { type: String, reflect: true }
+			text: { type: String, reflect: true, required: true }
 		};
 	}
 
@@ -98,8 +100,7 @@ class ButtonSplit extends FocusMixin(LocalizeCoreElement(LitElement)) {
 					description="${ifDefined(this.description)}"
 					?disabled="${this.disabled}"
 					disabled-tooltip="${ifDefined(this.disabledTooltip)}"
-					?primary="${this.primary}"
-					type="${ifDefined(this.type)}">
+					?primary="${this.primary}">
 					${this.text}
 				</d2l-button>
 				<d2l-dropdown>
@@ -126,7 +127,7 @@ class ButtonSplit extends FocusMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	#handleMainActionClick() {
-		this.#dispatchClick(null);
+		this.#dispatchClick(this.key);
 	}
 
 	#handleMenuItemSelect(e) {

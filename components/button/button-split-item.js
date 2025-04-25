@@ -1,19 +1,20 @@
 import { css, html, LitElement } from 'lit';
 import { MenuItemMixin } from '../menu/menu-item-mixin.js';
 import { menuItemStyles } from '../menu/menu-item-styles.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 /**
  * An split button item component used with JS handlers.
  */
-class ButtonSplitItem extends MenuItemMixin(LitElement) {
+class ButtonSplitItem extends PropertyRequiredMixin(MenuItemMixin(LitElement)) {
 
 	static get properties() {
 		return {
 			/**
-			 * Key of the item
-			 * @type {boolean}
+			 * REQUIRED: Key of the action
+			 * @type {string}
 			 */
-			key: { type: String }
+			key: { type: String, required: true }
 		};
 	}
 
