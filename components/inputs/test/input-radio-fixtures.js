@@ -31,7 +31,6 @@ export const radioFixtures = {
 			<d2l-input-radio label="Three" value="3"></d2l-input-radio>
 		</d2l-input-radio-group>
 	`,
-	
 	secondChecked: html`
 		<d2l-input-radio-group label="One, two or three?">
 			<d2l-input-radio label="One" value="1"></d2l-input-radio>
