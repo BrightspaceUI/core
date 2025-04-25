@@ -254,12 +254,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 			.d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
 			.d2l-list-item-content-extend-separators .d2l-list-item-actions > * {
-				margin-right: 0.9rem;
-			}
-			:host([dir="rtl"]) .d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
-			:host([dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-actions > * {
-				margin-left: 0.9rem;
-				margin-right: 0;
+				margin-inline-end: 0.9rem;
 			}
 
 			d2l-selection-input {
@@ -739,7 +734,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				<div slot="before-content"></div>
 				${this._renderDropTarget()}
 				${this._renderDragHandle(this._renderOutsideControl)}
-				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction, renderDraggable ? contentAreaContent : nothing)}
+				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction, renderDraggable ? contentAreaContent : null)}
 				<div slot="control-container" class="${classMap(bottomBorderClasses)}"></div>
 				${this._hasColorSlot ? html`
 				<div slot="color-indicator" class="d2l-list-item-color-outer">

@@ -337,7 +337,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 			:host([draggable]:not([selectable]):not([expandable])) .d2l-list-item-drag-area {
 				display: grid;
-				grid-template-rows: 1fr;
 				grid-template-columns: 
 					[start outside-control-start] minmax(0, min-content)
 					[color-start outside-control-end] minmax(0, min-content)
@@ -347,9 +346,15 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 					[content-end actions-start] minmax(0, min-content)
 					[end actions-end];
 			}
-			.d2l-list-item-drag-area [slot="content"] {
-				grid-column: content-start / actions-end;
+			.d2l-list-item-drag-area [slot] {
 				grid-row: 1;
+			}
+			.d2l-list-item-drag-area [slot="content"] {
+				grid-column: content-start / actions-start;
+			}
+			.d2l-list-item-drag-area [slot="actions"] {
+				grid-column: actions-start / actions-end;
+				justify-self: end;
 			}
 
 			@media only screen and (hover: hover), only screen and (pointer: fine) {
@@ -909,12 +914,12 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				@mousedown="${this._onDragTargetMouseDown}"
 				>
 				${content ? html`
-					<div slot="outside-control" style="width: 1.5rem; grid-row: 1;"></div>
+					<div slot="outside-control" style="width: 1.5rem;"></div>
 					${this._hasColorSlot ? html`
-					<div slot="color-indicator" class="d2l-list-item-color-outer" style="grid-row: 1; width: var(--d2l-list-item-color-width, 6px);"></div>` : nothing}
-					<div slot="expand-collapse" class="d2l-list-expand-collapse"  style="grid-row: 1;"></div>
-					<div slot="control" style="grid-row: 1;"></div>
-					<div slot="actions" class="d2l-list-item-actions-container" style="grid-row: 1;">
+					<div slot="color-indicator" class="d2l-list-item-color-outer" style="width: var(--d2l-list-item-color-width, 6px);"></div>` : nothing}
+					<div slot="expand-collapse" class="d2l-list-expand-collapse"></div>
+					<div slot="control"></div>
+					<div slot="actions" class="d2l-list-item-actions-container">
 						<slot name="actions" class="d2l-list-item-actions"></slot>
 					</div>
 					${content}
