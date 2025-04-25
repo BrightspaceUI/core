@@ -5,6 +5,13 @@ import { restore, stub } from 'sinon';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
 
+const pseudoLocalizationOn = () => document.documentElement.dataset.pseudoLocalization = JSON.stringify(
+	{
+		isAvailable: true,
+		textFormat: '{0} | {1}',
+	}
+);
+
 const Test1LocalizeMixinBase = superclass => class extends _LocalizeMixinBase(superclass) {
 
 	static async getLocalizeResources(langs) {
@@ -279,14 +286,19 @@ describe('LocalizeMixin', () => {
 
 	afterEach(() => documentLocaleSettings.reset());
 
-	it('should share resources between instances', async() => {
-		const elemStatic = await fixture(`<${staticTag}></${staticTag}>`);
-		const elemStatic2 = await fixture(`<${staticTag}></${staticTag}>`);
-		const elemAsync = await fixture(`<${asyncTag}></${asyncTag}>`);
-		const elemDifferent = await fixture(`<${multiMixinTagConsolidated}></${multiMixinTagConsolidated}>`);
-		expect(elemStatic.localize.resources).to.equal(elemStatic2.localize.resources);
-		expect(elemStatic.localize.resources).to.equal(elemAsync.localize.resources);
-		expect(elemStatic.localize.resources).to.not.equal(elemDifferent.localize.resources);
+	[true, false].forEach(pseudoLocalization => {
+		it(`should share resources between instances, pseudoLocalization ${pseudoLocalization ? 'on' : 'off'}`, async () => {
+			pseudoLocalization && pseudoLocalizationOn();
+			const elemStatic = await fixture(`<${staticTag}></${staticTag}>`);
+			const elemStatic2 = await fixture(`<${staticTag}></${staticTag}>`);
+			const elemAsync = await fixture(`<${asyncTag}></${asyncTag}>`);
+			const elemDifferent = await fixture(`<${multiMixinTagConsolidated}></${multiMixinTagConsolidated}>`);
+			if (!pseudoLocalization) {
+				expect(elemStatic.localize.resources).to.equal(elemStatic2.localize.resources);
+				expect(elemStatic.localize.resources).to.equal(elemAsync.localize.resources);
+			}
+			expect(elemStatic.localize.resources).to.not.equal(elemDifferent.localize.resources);
+		});
 	});
 
 	['static', 'async'].forEach((type) => {
@@ -472,10 +484,7 @@ describe('LocalizeMixin', () => {
 
 	describe('pseudoLocalize', () => {
 		it('should replace {0} and {1} with formatted message and message name', async() => {
-			document.documentElement.dataset.pseudoLocalization = JSON.stringify({
-				isAvailable: true,
-				textFormat: '{0} | {1}',
-			});
+			pseudoLocalizationOn();
 			const elem = await fixture(`<${synchronousTag}></${synchronousTag}>`);
 			expect(elem.localize('sync')).to.equal('Synchronous Content | sync');
 			document.documentElement.dataset.pseudoLocalization = null;
