@@ -11,6 +11,7 @@ describe('d2l-button-split', () => {
 				description="${ifDefined(options?.description)}"
 				?disabled="${options?.disabled}"
 				disabled-tooltip="${ifDefined(options?.disabledTooltip)}"
+				key="save"
 				?primary="${options?.primary}"
 				text="Save">
 				<d2l-button-split-item key="saveAsDraft" text="Save as Draft"></d2l-button-split-item>
