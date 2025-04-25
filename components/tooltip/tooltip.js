@@ -310,12 +310,13 @@ class Tooltip extends RtlMixin(LitElement) {
 				border-radius: ${contentBorderRadius}px;
 				box-sizing: border-box;
 				max-width: 17.5rem;
-				min-height: 2.1rem;
+				min-height: 1.95rem;
 				min-width: 2.1rem;
 				outline: ${outlineSize}px solid var(--d2l-tooltip-outline-color);
 				overflow: hidden;
 				overflow-wrap: anywhere;
-				padding: ${11 - contentBorderSize}px ${contentHorizontalPadding - contentBorderSize}px;
+				padding-block: ${10 - contentBorderSize}px ${11 - contentBorderSize}px;
+				padding-inline: ${contentHorizontalPadding - contentBorderSize}px;
 				position: absolute;
 			}
 
