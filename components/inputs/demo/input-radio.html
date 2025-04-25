@@ -5,19 +5,18 @@
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 		<script type="module">
+			import '../../button/button.js';
 			import '../../demo/demo-page.js';
+			import '../../form/form.js';
 			import '../input-radio.js';
 			import '../input-radio-group.js';
-			import '../input-radio-spacer.js';
 			import './input-radio-label-test.js';
-			import './input-radio-label-simple-test.js';
-			import './input-radio-solo-test.js';
-			import './input-radio-spacer-test.js';
 		</script>
 	</head>
 	<body unresolved>
 		<d2l-demo-page page-title="d2l-input-radio">
 
+			<h2>Simple radio group with labels</h2>
 			<d2l-demo-snippet>
 				<d2l-input-radio-group label="Bread">
 					<d2l-input-radio label="Whole wheat" checked></d2l-input-radio>
@@ -26,37 +25,37 @@
 				</d2l-input-radio-group>
 			</d2l-demo-snippet>
 
-			<h2>Simple radio group with labels</h2>
+			<h2>Required radio group</h2>
 			<d2l-demo-snippet>
-				<d2l-test-input-radio-label-simple></d2l-test-input-radio-label-simple>
+				<d2l-form>
+					<d2l-input-radio-group label="Bread" required>
+						<d2l-input-radio label="Whole wheat"></d2l-input-radio>
+						<d2l-input-radio label="White"></d2l-input-radio>
+						<d2l-input-radio label="Gluten free"></d2l-input-radio>
+					</d2l-input-radio-group>
+					<d2l-button primary style="margin-top: 20px">Save</d2l-button>
+				</d2l-form>
+				<script>
+					(demo => {
+						const form = demo.querySelector('d2l-form');
+						const button = demo.querySelector('d2l-button');
+						button.addEventListener('click', () => form.submit());
+					})(document.currentScript.parentNode);
+				</script>
+			</d2l-demo-snippet>
+
+			<h2>Disabled item</h2>
+			<d2l-demo-snippet>
+				<d2l-input-radio-group label="Bread">
+					<d2l-input-radio label="Whole wheat"></d2l-input-radio>
+					<d2l-input-radio label="White" disabled checked></d2l-input-radio>
+					<d2l-input-radio label="Gluten free"></d2l-input-radio>
+				</d2l-input-radio-group>
 			</d2l-demo-snippet>
 
 			<h2>Radio group with labels</h2>
 			<d2l-demo-snippet>
 				<d2l-test-input-radio-label></d2l-test-input-radio-label>
-			</d2l-demo-snippet>
-
-			<h2>Radio group with labels and secondary content</h2>
-			<d2l-demo-snippet>
-				<template>
-					<d2l-test-input-radio-label></d2l-test-input-radio-label>
-					<d2l-input-radio-spacer style="color: #999999;">
-						Additional content can go here and will<br>
-						also line up nicely with the radios.
-					</d2l-input-radio-spacer>
-				</template>
-			</d2l-demo-snippet>
-
-			<h2>Radio buttons on their own</h2>
-			<d2l-demo-snippet>
-				<d2l-test-input-radio-solo></d2l-test-input-radio-solo>
-				<d2l-test-input-radio-solo disabled></d2l-test-input-radio-solo>
-				<d2l-test-input-radio-solo invalid></d2l-test-input-radio-solo>
-			</d2l-demo-snippet>
-
-			<h2>Radio button with spacer</h2>
-			<d2l-demo-snippet>
-				<d2l-test-input-radio-spacer></d2l-test-input-radio-spacer>
 			</d2l-demo-snippet>
 
 		</d2l-demo-page>
