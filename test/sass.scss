@@ -35,9 +35,6 @@
 .d2l-test-heading-4 {
 	@include typography.d2l-heading-4();
 }
-.d2l-test-label-text {
-	@include typography.d2l-label-text();
-}
 .d2l-test-input-checkbox {
 	@include checkbox.d2l-input-checkbox();
 }
