@@ -122,7 +122,7 @@ class ButtonSplit extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(L
 	}
 
 	#dispatchClick(key) {
-		/** Dispatched when a split button is clicked */
+		/** Dispatched when a split button is clicked. The `key` is provided on the event detail. */
 		this.dispatchEvent(new CustomEvent('click', { detail: { key } }));
 	}
 
