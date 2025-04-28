@@ -6,13 +6,13 @@ import '../tooltip/tooltip.js';
 import '../expand-collapse/expand-collapse-content.js';
 import { css, html, nothing } from 'lit';
 import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
+import { interactiveElements, isInteractiveInComposedPath } from '../../helpers/interactive.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { composeMixins } from '../../helpers/composeMixins.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { interactiveElements } from '../../helpers/interactive.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { ListItemCheckboxMixin } from './list-item-checkbox-mixin.js';
 import { ListItemDragDropMixin } from './list-item-drag-drop-mixin.js';
@@ -40,11 +40,14 @@ function addTabListener() {
 
 let hasDisplayedKeyboardTooltip = false;
 
-export const listInteractiveElems = {
-	...interactiveElements,
-	'd2l-button': true,
-	'd2l-tooltip-help': true
-};
+export function isInteractiveInListItemComposedPath(e, isPrimaryAction) {
+	const listInteractiveElems = {
+		...interactiveElements,
+		'd2l-button': true,
+		'd2l-tooltip-help': true
+	};
+	return isInteractiveInComposedPath(e.composedPath(), isPrimaryAction, { elements: listInteractiveElems });
+}
 
 /**
  * @property label - The hidden label for the checkbox and expand collapse control
@@ -177,17 +180,14 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] {
 				width: 3rem;
 			}
-			:host(:not([_has-color-slot])) .d2l-list-item-content-extend-separators > [slot="content"],
-			:host(:not([_has-color-slot])[dir="rtl"]) .d2l-list-item-content-extend-separators > [slot="content"] {
-				padding-left: 0.9rem;
-				padding-right: 0.9rem;
+			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] ~ [slot="control-action"] [slot="content"] {
+				padding-inline-start: 3rem;
+			}
+			:host(:not([_has-color-slot])) .d2l-list-item-content-extend-separators [slot="content"] {
+				padding-inline: 0.9rem;
 			}
 			:host([selectable]) .d2l-list-item-content-extend-separators > [slot="content"] {
-				padding-left: 0;
-			}
-			:host([dir="rtl"][selectable]) .d2l-list-item-content-extend-separators > [slot="content"] {
-				padding-left: 0.9rem;
-				padding-right: 0;
+				padding-inline-start: 0;
 			}
 
 			:host([_hovering-primary-action]) .d2l-list-item-content,
@@ -218,6 +218,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([padding-type="none"]) [slot="content"] {
 				padding-bottom: 0;
 				padding-top: 0;
+			}
+
+			[slot="control"] ~ [slot="control-action"] [slot="content"] {
+				padding-inline-start: 2.2rem; /* width of "control" slot set in generic-layout */
 			}
 
 			[slot="content"] ::slotted([slot="illustration"]),
@@ -685,7 +689,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			'hide-bottom-border': this._showAddButton && (!this._hasNestedList || this._hasNestedListAddButton)
 		};
 
-		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color)) ? 'control' : undefined;
+		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color) || (this.expandable && !this.selectable)) ? 'control' : undefined;
 		const contentAreaContent = html`
 			<div slot="content"
 				class="d2l-list-item-content"
@@ -696,7 +700,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				<slot>${content}</slot>
 			</div>
 		`;
+
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId, contentAreaContent) : null);
+		const renderExpandableAction = !primaryAction && !this.selectable && this.expandable && !this.noPrimaryAction;
+		const renderCheckboxAction = !primaryAction && this.selectable && !this.noPrimaryAction;
+
 		let tooltipForId = null;
 		if (this._showAddButton) {
 			tooltipForId = this._addButtonTopId;
@@ -748,8 +756,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				<div slot="control-action"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}">
-						${this._renderCheckboxAction('')}
-						${this._renderExpandCollapseAction()}
+						${this._renderCheckboxAction(renderCheckboxAction ? contentAreaContent : '')}
+						${this._renderExpandCollapseAction(renderExpandableAction ? contentAreaContent : null)}
 				</div>` : nothing }
 				${primaryAction ? html`
 				<div slot="content-action"
@@ -758,7 +766,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					@mouseenter="${this._onMouseEnterPrimaryAction}"
 					@mouseleave="${this._onMouseLeavePrimaryAction}">
 						${primaryAction}
-				</div>` : contentAreaContent}
+				</div>` : nothing}
+				${!primaryAction && !renderExpandableAction && !renderCheckboxAction ? contentAreaContent : nothing}
 				<div slot="actions"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}"
