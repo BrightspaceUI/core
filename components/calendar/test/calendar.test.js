@@ -362,23 +362,6 @@ describe('d2l-calendar', () => {
 			});
 		});
 
-		describe('getShownValue', () => {
-
-			it('gets the date of the year and month in view', async() => {
-				const calendar = await fixture(normalFixture);
-				expect(new Date(calendar.getShownValue())).to.deep.equal(new Date(2015, 8, 1));
-			});
-
-			it('gets the new date of the year and month in view after the view changes', async() => {
-				const calendar = await fixture(normalFixture);
-				const el = calendar.shadowRoot.querySelectorAll('d2l-button-icon')[0];
-				clickElem(el);
-				await oneEvent(calendar, 'd2l-calendar-view-change');
-				expect(new Date(calendar.getShownValue())).to.deep.equal(new Date(2015, 7, 1));
-			});
-
-		});
-
 		describe('getShownYearAndMonth', () => {
 			it('gets the date of the year and month in view', async() => {
 				const calendar = await fixture(normalFixture);
