@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "Kati Matohi",
 	"components.breadcrumbs.breadcrumb": "Pānui",
 	"components.button-add.addItem": "Tāpiri Tūemi",
+	"components.button-split.otherOptions": "Other Options",
 	"components.calendar.hasEvents": "He takahanga anō.",
 	"components.calendar.notSelected": "Kāore i tīpakona.",
 	"components.calendar.selected": "I tīpakona.",

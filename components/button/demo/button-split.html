@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../button-split.js';
+			import '../button-split-item.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-button-split">
+
+			<h2>Split Button</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<button id="focusButton" style="display: block; margin-block-end: 1rem;">Focus It!</button>
+					<d2l-button-split key="save" text="Save">
+						<d2l-button-split-item key="saveAsDraft" text="Save as Draft"></d2l-button-split-item>
+						<d2l-button-split-item key="saveAndClose" text="Save and Close"></d2l-button-split-item>
+						<d2l-button-split-item key="saveAndNew" text="Save and New"></d2l-button-split-item>
+					</d2l-button-split>
+					<script>
+						(demo => {
+							const splitButton = demo.querySelector('d2l-button-split');
+							demo.querySelector('#focusButton').addEventListener('click', () => splitButton.focus());
+							splitButton.addEventListener('click', e => console.log('click:', e.detail.key));
+						})(document.currentScript.parentNode);
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Split Button (with a description)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-split key="save" text="Save" description="Super fancy save options!">
+						<d2l-button-split-item key="saveAsDraft" text="Save as Draft"></d2l-button-split-item>
+						<d2l-button-split-item key="saveAndClose" text="Save and Close"></d2l-button-split-item>
+						<d2l-button-split-item key="saveAndNew" text="Save and New"></d2l-button-split-item>
+					</d2l-button-split>
+				</template>
+			</d2l-demo-snippet>			
+
+			<h2>Split Button (primary)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-split key="save" text="Save" primary>
+						<d2l-button-split-item key="saveAsDraft" text="Save as Draft"></d2l-button-split-item>
+						<d2l-button-split-item key="saveAndClose" text="Save and Close"></d2l-button-split-item>
+						<d2l-button-split-item key="saveAndNew" text="Save and New"></d2l-button-split-item>
+					</d2l-button-split>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Split Button (disabled)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-split key="save" text="Save" primary disabled disabled-tooltip="Too fancy!">
+						<d2l-button-split-item key="saveAsDraft" text="Save as Draft"></d2l-button-split-item>
+						<d2l-button-split-item key="saveAndClose" text="Save and Close"></d2l-button-split-item>
+						<d2l-button-split-item key="saveAndNew" text="Save and New"></d2l-button-split-item>
+					</d2l-button-split>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+	</body>
+</html>
