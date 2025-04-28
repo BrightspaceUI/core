@@ -39,7 +39,7 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 			 */
 			titleText: { type: String, attribute: 'title-text', required: true },
 			/**
-			 * The preferred width (unit-less) for the dialog. Maximum 1170.
+			 * The preferred width (unit-less) for the dialog. Minimum 1170 (anything smaller will have no effect).
 			 */
 			width: { type: Number },
 			_autoSize: { state: true }, /* DE52039 This is only redefined here to suppress a lit-analyzer linting issue */

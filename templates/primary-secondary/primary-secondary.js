@@ -953,6 +953,41 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 					z-index: -1;
 				}
 			}
+
+			@media print {
+				:host {
+					overflow: visible;
+					position: relative;
+				}
+
+				.d2l-template-primary-secondary-content {
+					flex-direction: column;
+				}
+
+				.d2l-template-primary-secondary-content,
+				.d2l-template-primary-secondary-content > main,
+				.d2l-template-primary-secondary-secondary-container {
+					overflow: visible;
+				}
+
+				.d2l-template-primary-secondary-content > main {
+					background: none;
+				}
+
+				.d2l-template-primary-secondary-divider-not-resizable,
+				.d2l-template-primary-secondary-divider {
+					display: none;
+				}
+
+				.d2l-template-primary-secondary-container > footer {
+					box-shadow: none;
+				}
+
+				.d2l-template-primary-secondary-container,
+				.d2l-template-primary-secondary-content {
+					height: auto;
+				}
+			}
 		`;
 	}
 

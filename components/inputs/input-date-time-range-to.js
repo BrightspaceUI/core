@@ -68,8 +68,8 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 				margin-bottom: -1.2rem;
 			}
 			.d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-start-container {
-				margin-bottom: 1.2rem;
 				margin-inline: 0;
+				margin-bottom: 1.2rem;
 			}
 			:host([display-to]) .d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-start-container {
 				margin-bottom: 0.6rem;
