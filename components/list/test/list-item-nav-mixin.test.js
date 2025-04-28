@@ -70,16 +70,16 @@ describe('ListItemNavMixin', () => {
 			expect(dispatched).to.be.false;
 		});
 
-		it('dispatches d2l-list-item-nav-set-child-current when _dispatchSetChildCurrentEvent is called with param true', async() => {
+		it('dispatches d2l-list-item-nav-set-child-current when dispatchSetChildCurrentEvent is called with param true', async() => {
 			const element = await fixture(`<${tag} label="some label"></${tag}>`);
-			setTimeout(() => element._dispatchSetChildCurrentEvent(true));
+			setTimeout(() => element.dispatchSetChildCurrentEvent(true));
 			const e = await oneEvent(element, 'd2l-list-item-nav-set-child-current');
 			expect(e.detail.value).to.be.true;
 		});
 
-		it('dispatches d2l-list-item-nav-set-child-current when _dispatchSetChildCurrentEvent is called with param false', async() => {
+		it('dispatches d2l-list-item-nav-set-child-current when dispatchSetChildCurrentEvent is called with param false', async() => {
 			const element = await fixture(`<${tag} label="some label"></${tag}>`);
-			setTimeout(() => element._dispatchSetChildCurrentEvent(false));
+			setTimeout(() => element.dispatchSetChildCurrentEvent(false));
 			const e = await oneEvent(element, 'd2l-list-item-nav-set-child-current');
 			expect(e.detail.value).to.be.false;
 		});

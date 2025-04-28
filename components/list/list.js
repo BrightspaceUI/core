@@ -384,7 +384,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			e.stopPropagation();
 
 			if (!e.detail.value) {
-				e.target._dispatchSetChildCurrentEvent(false);
+				e.target.dispatchSetChildCurrentEvent(false);
 				return;
 			}
 
@@ -406,18 +406,18 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 			let prevCurrent = false;
 			currentItems.forEach((item) => {
-				if (item === e.target) return;
+				if (item === target) return;
 				prevCurrent = item;
 			});
 
 			if (prevCurrent) {
 				this.addEventListener('d2l-list-item-nav-set-child-current', (e) => {
 					e.stopPropagation();
-					target._dispatchSetChildCurrentEvent(true);
+					target.dispatchSetChildCurrentEvent(true);
 				}, { once: true });
 				prevCurrent.current = false;
 			} else {
-				target._dispatchSetChildCurrentEvent(true);
+				target.dispatchSetChildCurrentEvent(true);
 			}
 		}
 	}

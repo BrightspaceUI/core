@@ -58,27 +58,34 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('d2l-list-item-nav-set-child-current', async(e) => {
-			await this.updateComplete; // ensure button exists
-			if (e.target === this || !this._button) return;
-			this._childCurrent = e.detail.value;
-		});
+		this.addEventListener('d2l-list-item-nav-set-child-current', this.#setChildCurrent);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.removeEventListener('d2l-list-item-nav-set-child-current', this.#setChildCurrent);
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
 		if (this.current) {
-			this.#setAriaCurrent('page');
-			this._dispatchSetChildCurrentEvent(true);
+			this.dispatchSetChildCurrentEvent(true);
 		}
 	}
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
+		if (changedProperties.get('current') !== undefined) {
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent('d2l-list-item-property-change', { bubbles: true, composed: true, detail: { name: 'current', value: this.current } }));
+		}
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
 		if (changedProperties.has('current') || changedProperties.has('_childCurrent')) {
 			if (this.current) {
-				this._childCurrent = false;
 				this.#setAriaCurrent('page');
 			} else if (this._childCurrent) {
 				this.#setAriaCurrent('location');
@@ -86,15 +93,14 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 				this.#setAriaCurrent(undefined);
 			}
 		}
-		if (changedProperties.get('current') !== undefined) {
-			/** @ignore */
-			this.dispatchEvent(new CustomEvent('d2l-list-item-property-change', { bubbles: true, detail: { name: 'current', value: this.current } }));
-		}
 	}
 
-	_dispatchSetChildCurrentEvent(val) {
+	/**
+	 * Internal. Do not use.
+	 */
+	dispatchSetChildCurrentEvent(val) {
 		/** @ignore */
-		this.dispatchEvent(new CustomEvent('d2l-list-item-nav-set-child-current', { bubbles: true, detail: { value: val } }));
+		this.dispatchEvent(new CustomEvent('d2l-list-item-nav-set-child-current', { bubbles: true, composed: true, detail: { value: val } }));
 	}
 
 	_onButtonClick(e) {
@@ -106,7 +112,13 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 	}
 
 	#setAriaCurrent(val) {
-		this._button.ariaCurrent = val;
+		this._ariaCurrent = val;
+	}
+
+	async #setChildCurrent(e) {
+		await this.updateComplete; // ensure button exists
+		if (e.target === this || !this._button) return;
+		this._childCurrent = e.detail.value;
 	}
 
 };
