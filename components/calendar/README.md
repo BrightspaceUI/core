@@ -32,7 +32,7 @@ Note: All `*-value` properties should be in ISO 8601 calendar date format (`YYYY
 
 ### Methods
 
-- `getShownYearAndMonth()`: returns an object containing the year and month in view.
+- `getShownValue()`: returns the date representing the year and month in view as an ISO 8601 calendar date format (`YYYY-MM-DD`).
 
 ## Accessibility
 

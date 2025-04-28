@@ -633,6 +633,10 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 		}
 	}
 
+	getShownValue() {
+		return new Date(this._shownYear, this._shownMonth).toISOString();
+	}
+
 	getShownYearAndMonth() {
 		return { year: this._shownYear, month: this._shownMonth };
 	}
