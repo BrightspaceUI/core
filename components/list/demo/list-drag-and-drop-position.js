@@ -1,7 +1,8 @@
 import '../list-item-content.js';
 import '../list-item.js';
 import '../list.js';
-import { html, LitElement } from 'lit';
+import '../../tooltip/tooltip-help.js';
+import { html, LitElement, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 
@@ -13,6 +14,7 @@ class ListDemoDragAndDropPosition extends LitElement {
 			list: { type: Array },
 			// below are for demonstration only
 			grid: { type: Boolean },
+			interactiveContent: { type: Boolean, attribute: 'interactive-content' },
 			hrefs: { type: Boolean },
 			selectable: { type: Boolean }
 		};
@@ -86,6 +88,7 @@ class ListDemoDragAndDropPosition extends LitElement {
 						<d2l-list-item-content>
 							<div>${item.name}</div>
 							<div slot="secondary">${item.secondary}</div>
+							${this.interactiveContent ? html`<div slot="supporting-info" style="padding:5px;"><d2l-tooltip-help text="Available: Next Monday">Due: Next Friday</d2l-tooltip-help></div>` : nothing}
 						</d2l-list-item-content>
 					</d2l-list-item>
 				`)}
