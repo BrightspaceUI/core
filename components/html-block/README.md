@@ -56,23 +56,23 @@ Examples are provided to display how user-authored math can be embedded within y
   import '@brightspace-ui/core/tools/mathjax-test-context.js';
 </script>
 <d2l-html-block html="
-  <math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;>
-    <msqrt>
-      <mn>3</mn>
-      <mi>x</mi>
-      <mo>&#x2212;</mo>
-      <mn>1</mn>
-    </msqrt>
-    <mo>+</mo>
-    <mo stretchy=&quot;false&quot;>(</mo>
-    <mn>1</mn>
-    <mo>+</mo>
-    <mi>x</mi>
-    <msup>
-      <mo stretchy=&quot;false&quot;>)</mo>
-      <mn>2</mn>
-    </msup>
-  </math>">
+  &lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;>
+    &lt;msqrt&gt;
+      &lt;mn&gt;3&lt;/mn&gt;
+      &lt;mi&gt;x&lt;/mi&gt;
+      &lt;mo&gt;&#x2212;&lt;/mo&gt;
+      &lt;mn&gt;1&lt;/mn&gt;
+    &lt;/msqrt&gt;
+    &lt;mo&gt;+&lt;/mo&gt;
+    &lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;
+    &lt;mn&gt;1&lt;/mn&gt;
+    &lt;mo&gt;+&lt;/mo&gt;
+    &lt;mi&gt;x&lt;/mi&gt;
+    &lt;msup&gt;
+      &lt;mo stretchy=&quot;false&quot;>)&lt;/mo&gt;
+      &lt;mn&gt;2&lt;/mn&gt;
+    &lt;/msup&gt;
+  &lt;/math&gt;">
 </d2l-html-block>
 ```
 
