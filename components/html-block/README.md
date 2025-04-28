@@ -15,7 +15,7 @@ Pass the user-authored HTML into the `html` attribute of the `d2l-html-block` an
   import '@brightspace-ui/core/components/icons/icon.js';
 </script>
 <d2l-html-block html="
-  <style>
+  &lt;style&gt;
     div {
       --d2l-icon-fill-color: var(--d2l-color-cinnabar);
     }
@@ -33,13 +33,13 @@ Pass the user-authored HTML into the `html` attribute of the `d2l-html-block` an
       display: flex;
       justify-content: center;
     }
-  </style>
-  <div class=&quot;warning-container&quot;>
-    <d2l-icon icon=&quot;tier3:alert&quot;></d2l-icon>
-    <span>
-      <b>Important:</b> user-authored HTML must be trusted or properly sanitized!
-    </span>
-  </div>">
+  &lt;/style&gt;
+  &lt;div class=&quot;warning-container&quot;&gt;
+    &lt;d2l-icon icon=&quot;tier3:alert&quot;&gt;&lt;/d2l-icon&gt;
+    &lt;span&gt;
+      &lt;b&gt;Important:&lt;/b&gt; user-authored HTML must be trusted or properly sanitized!
+    &lt;/span&gt;
+  &lt;/div&gt;">
 </d2l-html-block>
 ```
 
@@ -56,7 +56,7 @@ Examples are provided to display how user-authored math can be embedded within y
   import '@brightspace-ui/core/tools/mathjax-test-context.js';
 </script>
 <d2l-html-block html="
-  &lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;>
+  &lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;
     &lt;msqrt&gt;
       &lt;mn&gt;3&lt;/mn&gt;
       &lt;mi&gt;x&lt;/mi&gt;
@@ -69,7 +69,7 @@ Examples are provided to display how user-authored math can be embedded within y
     &lt;mo&gt;+&lt;/mo&gt;
     &lt;mi&gt;x&lt;/mi&gt;
     &lt;msup&gt;
-      &lt;mo stretchy=&quot;false&quot;>)&lt;/mo&gt;
+      &lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;
       &lt;mn&gt;2&lt;/mn&gt;
     &lt;/msup&gt;
   &lt;/math&gt;">
