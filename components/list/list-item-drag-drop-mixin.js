@@ -6,6 +6,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { isInteractiveInListItemComposedPath } from './list-item-mixin.js';
 import { SelectionInfo } from '../selection/selection-mixin.js';
 
 export const moveLocations = Object.freeze({
@@ -332,6 +333,28 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			}
 			:host(:not([no-primary-action])) [slot="outside-control-action"] ~ [slot="content"] {
 				pointer-events: none;
+			}
+
+			:host([draggable]:not([selectable]):not([expandable])) .d2l-list-item-drag-area {
+				display: grid;
+				grid-template-columns:
+					[start outside-control-start] minmax(0, min-content)
+					[color-start outside-control-end] minmax(0, min-content)
+					[expand-collapse-start color-end] minmax(0, min-content)
+					[control-start expand-collapse-end] minmax(0, min-content)
+					[control-end content-start] minmax(0, auto)
+					[content-end actions-start] minmax(0, min-content)
+					[end actions-end];
+			}
+			.d2l-list-item-drag-area [slot] {
+				grid-row: 1;
+			}
+			.d2l-list-item-drag-area [slot="content"] {
+				grid-column: content-start / actions-start;
+			}
+			.d2l-list-item-drag-area [slot="actions"] {
+				grid-column: actions-start / actions-end;
+				justify-self: end;
 			}
 
 			@media only screen and (hover: hover), only screen and (pointer: fine) {
@@ -671,6 +694,12 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_onDragTargetClick(e) {
 		if (!this.shadowRoot) return;
+
+		const isPrimaryAction = (elem) => elem === this.shadowRoot.querySelector('div.d2l-list-item-drag-area');
+		if (isInteractiveInListItemComposedPath(e, isPrimaryAction)) {
+			e.preventDefault();
+			return;
+		}
 		if (this._keyboardActiveOnNextClick) {
 			this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
 		} else {
@@ -868,7 +897,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		`) : nothing;
 	}
 
-	_renderDragTarget(templateMethod) {
+	_renderDragTarget(templateMethod, content) {
 		templateMethod = templateMethod || (dragTarget => dragTarget);
 		return this.draggable && !this._keyboardActive ? templateMethod.call(this, html`
 			<div
@@ -884,6 +913,17 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				@touchcancel="${this._onTouchCancel}"
 				@mousedown="${this._onDragTargetMouseDown}"
 				>
+				${content ? html`
+					<div slot="outside-control" style="width: 1.5rem;"></div>
+					${this._hasColorSlot ? html`
+					<div slot="color-indicator" class="d2l-list-item-color-outer" style="width: var(--d2l-list-item-color-width, 6px);"></div>` : nothing}
+					<div slot="expand-collapse" class="d2l-list-expand-collapse"></div>
+					<div slot="control"></div>
+					<div slot="actions" class="d2l-list-item-actions-container">
+						<slot name="actions" class="d2l-list-item-actions"></slot>
+					</div>
+					${content}
+				` : nothing}
 			</div>
 		`) : nothing;
 	}
