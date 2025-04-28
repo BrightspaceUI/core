@@ -337,8 +337,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 			:host([draggable]:not([selectable]):not([expandable])) .d2l-list-item-drag-area {
 				display: grid;
-				grid-template-columns: 
-					[start outside-control-start] minmax(0, min-content)
+				grid-template-columns: [start outside-control-start] minmax(0, min-content)
 					[color-start outside-control-end] minmax(0, min-content)
 					[expand-collapse-start color-end] minmax(0, min-content)
 					[control-start expand-collapse-end] minmax(0, min-content)
