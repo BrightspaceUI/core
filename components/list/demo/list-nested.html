@@ -265,9 +265,22 @@
 					</d2l-list>
 				</template>
 				<script type="module">
+                    let currentItem = document.querySelector('d2l-list-item-nav[current]');
 					requestAnimationFrame(() => {
-						document.addEventListener('d2l-list-item-button-click', () => {
+						document.addEventListener('d2l-list-item-button-click', (e) => {
 							console.log('d2l-list-item-nav: click event');
+
+                            if (!e.target.expandable) {
+                                currentItem = e.target;
+                                return;
+                            }
+
+                            if (currentItem !== e.target) {
+                                e.target.expanded = true;
+                                currentItem = e.target;
+                            } else {
+                                e.target.expanded = !e.target.expanded;
+                            }
 						});
 					});
 				</script>
