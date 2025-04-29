@@ -160,7 +160,7 @@ describe('d2l-list', () => {
 			let dispatched = false;
 			elem.addEventListener('d2l-list-selection-changes', () => dispatched = true);
 			const button = elem.querySelector('d2l-button');
-			setTimeout(() => clickElem(button));
+			clickElem(button);
 			await oneEvent(button, 'click');
 			expect(dispatched).to.equal(false);
 		});
@@ -171,7 +171,7 @@ describe('d2l-list', () => {
 			let dispatched = false;
 			const button = elem.querySelector('d2l-button');
 			button.addEventListener('click', () => dispatched = true);
-			setTimeout(() => clickElem(button));
+			clickElem(button);
 			await oneEvent(elem, 'd2l-list-selection-changes');
 			expect(dispatched).to.equal(false);
 		});
@@ -605,7 +605,7 @@ describe('d2l-list-item', () => {
 
 			el.addEventListener('d2l-list-item-link-click', () => dispatched = true);
 			const button = el.querySelector('d2l-button');
-			setTimeout(() => clickElem(button));
+			clickElem(button);
 			await oneEvent(button, 'click');
 			expect(dispatched).to.equal(false);
 		});
@@ -622,7 +622,7 @@ describe('d2l-list-item', () => {
 			el._listItemInteractiveEnabled = false;
 			const button = el.querySelector('d2l-button');
 			button.addEventListener('click', () => dispatched = true);
-			setTimeout(() => clickElem(button));
+			clickElem(button);
 			await oneEvent(el, 'd2l-list-item-link-click');
 			expect(dispatched).to.equal(false);
 		});
@@ -634,7 +634,7 @@ describe('d2l-list-item', () => {
 					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item>`);
 			const button = el.querySelector('d2l-button');
-			setTimeout(() => clickElem(button));
+			clickElem(button);
 			await oneEvent(button, 'click');
 		});
 
@@ -644,7 +644,7 @@ describe('d2l-list-item', () => {
 					<div>Item 1</div>
 					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item>`);
-			setTimeout(() => clickElem(el.querySelector('div')));
+			clickElem(el.querySelector('div'));
 			const e = await oneEvent(el, 'click');
 			expect(e.target).to.equal(el);
 		});
@@ -656,7 +656,7 @@ describe('d2l-list-item', () => {
 					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item>`);
 			const button = el.querySelector('d2l-button');
-			setTimeout(() => clickElem(button));
+			clickElem(button);
 			const e = await oneEvent(button, 'click');
 			expect(e.target).to.equal(el.querySelector('d2l-button'));
 		});
@@ -679,7 +679,7 @@ describe('d2l-list-item', () => {
 					</d2l-list-item>`);
 				el.addEventListener('d2l-list-item-expand-collapse-toggled', () => dispatched = true);
 				const button = el.querySelector('d2l-button');
-				setTimeout(() => clickElem(button));
+				clickElem(button);
 				await oneEvent(button, 'click');
 				expect(dispatched).to.equal(false);
 			});
@@ -702,7 +702,7 @@ describe('d2l-list-item', () => {
 				el._listItemInteractiveEnabled = false;
 				const button = el.querySelector('d2l-button');
 				button.addEventListener('click', () => dispatched = true);
-				setTimeout(() => clickElem(button));
+				clickElem(button);
 				await oneEvent(el, 'd2l-list-item-expand-collapse-toggled');
 				expect(dispatched).to.equal(false);
 			});
@@ -746,7 +746,7 @@ describe('d2l-list-item-button', () => {
 					<div>Item 1</div>
 					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item-button>`);
-			setTimeout(() => clickElem(el.querySelector('div')));
+			clickElem(el.querySelector('div'));
 			const e = await oneEvent(el, 'click');
 			expect(e.target).to.equal(el);
 		});
@@ -758,7 +758,7 @@ describe('d2l-list-item-button', () => {
 					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item-button>`);
 			const button = el.querySelector('d2l-button');
-			setTimeout(() => clickElem(button));
+			clickElem(button);
 			const e = await oneEvent(button, 'click');
 			expect(e.target).to.equal(el.querySelector('d2l-button'));
 		});
@@ -798,7 +798,7 @@ describe('d2l-list-item-button', () => {
 				</d2l-list-item-button>`);
 			el.addEventListener('d2l-list-item-button-click', () => dispatched = true);
 			const button = el.querySelector('d2l-button');
-			setTimeout(() => clickElem(button));
+			clickElem(button);
 			await oneEvent(button, 'click');
 			expect(dispatched).to.equal(false);
 		});
@@ -814,7 +814,7 @@ describe('d2l-list-item-button', () => {
 			el._listItemInteractiveEnabled = false;
 			const button = el.querySelector('d2l-button');
 			button.addEventListener('click', () => dispatched = true);
-			setTimeout(() => clickElem(button));
+			clickElem(button);
 			await oneEvent(el, 'd2l-list-item-button-click');
 			expect(dispatched).to.equal(false);
 		});
@@ -826,7 +826,7 @@ describe('d2l-list-item-button', () => {
 					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item-button>`);
 			const button = el.querySelector('d2l-button');
-			setTimeout(() => clickElem(button));
+			clickElem(button);
 			const e = await oneEvent(button, 'click');
 			expect(e.target).to.equal(button);
 		});
