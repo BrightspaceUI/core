@@ -644,7 +644,7 @@ describe('d2l-list-item', () => {
 					<div>Item 1</div>
 					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item>`);
-			clickElem(el.shadowRoot.querySelector('div'));
+			setTimeout(() => clickElem(el.querySelector('div')));
 			const e = await oneEvent(el, 'click');
 			expect(e.target).to.equal(el);
 		});
@@ -746,7 +746,7 @@ describe('d2l-list-item-button', () => {
 					<div>Item 1</div>
 					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item-button>`);
-			clickElem(el.shadowRoot.querySelector('div'));
+			setTimeout(() => clickElem(el.querySelector('div')));
 			const e = await oneEvent(el, 'click');
 			expect(e.target).to.equal(el);
 		});
