@@ -165,6 +165,17 @@ describe('d2l-list', () => {
 			expect(dispatched).to.equal(false);
 		});
 
+		// clean up with flag GAUD-7495-list-interactive-content
+		it('dispatches d2l-list-selection-changes event when interactive element is clicked in selectable item when flag is off', async() => {
+			elem.querySelector('d2l-list-item')._listItemInteractiveEnabled = false;
+			let dispatched = false;
+			const button = elem.querySelector('d2l-button');
+			button.addEventListener('click', () => dispatched = true);
+			setTimeout(() => clickElem(button));
+			await oneEvent(elem, 'd2l-list-selection-changes');
+			expect(dispatched).to.equal(false);
+		});
+
 		it('dispatches d2l-list-selection-changes event when non-interactive element is clicked', async() => {
 			clickElem(elem.querySelector('div'));
 			const e = await oneEvent(elem, 'd2l-list-selection-changes');
@@ -567,7 +578,7 @@ describe('d2l-list-item', () => {
 			const el = await fixture(html`
 				<d2l-list-item action-href="javascript:void(0)" label="item">
 					<div>Item 1</div>
-					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item>`);
 			clickElem(el.shadowRoot.querySelector('a'));
 			await oneEvent(el, 'd2l-list-item-link-click');
@@ -577,7 +588,7 @@ describe('d2l-list-item', () => {
 			const el = await fixture(html`
 				<d2l-list-item action-href="javascript:void(0)" label="item">
 					<div>Item 1</div>
-					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item>`);
 			clickElem(el.querySelector('div'));
 			await oneEvent(el, 'd2l-list-item-link-click');
@@ -586,31 +597,52 @@ describe('d2l-list-item', () => {
 		it('does not dispatch d2l-list-item-link-click event when interactive content clicked', async() => {
 			let dispatched = false;
 			const el = await fixture(html`
-				<d2l-list-item action-href="javascript:void(0)" label="item">
-					<div>Item 1</div>
-					<div slot="secondary"><d2l-button>Button</d2l-button></div>
-				</d2l-list-item>`);
+				<d2l-list-item action-href="javascript:void(0);" label="L1-1">
+					<div>Content</div>
+					<div><d2l-button>Button</d2l-button></div>
+				</d2l-list-item>
+			`);
 
 			el.addEventListener('d2l-list-item-link-click', () => dispatched = true);
-			await clickElem(el.querySelector('d2l-button'));
+			const button = el.querySelector('d2l-button');
+			setTimeout(() => clickElem(button));
+			await oneEvent(button, 'click');
+			expect(dispatched).to.equal(false);
+		});
+
+		// clean up with flag GAUD-7495-list-interactive-content
+		it('dispatches d2l-list-item-link-click event when interactive content clicked if feature flag is off', async() => {
+			let dispatched = false;
+			const el = await fixture(html`
+				<d2l-list-item action-href="javascript:void(0);" label="L1-1">
+					<div>Content</div>
+					<div><d2l-button>Button</d2l-button></div>
+				</d2l-list-item>
+			`);
+			el._listItemInteractiveEnabled = false;
+			const button = el.querySelector('d2l-button');
+			button.addEventListener('click', () => dispatched = true);
+			setTimeout(() => clickElem(button));
+			await oneEvent(el, 'd2l-list-item-link-click');
 			expect(dispatched).to.equal(false);
 		});
 
 		it('dispatches element\'s click event when interactive content clicked', async() => {
 			const el = await fixture(html`
-				<d2l-list-item action-href="javascript:void(0)" label="item">
+				<d2l-list-item action-href="javascript:void(0);" label="item">
 					<div>Item 1</div>
-					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item>`);
-			setTimeout(() => el.querySelector('d2l-button').click());
-			await oneEvent(el.querySelector('d2l-button'), 'click');
+			const button = el.querySelector('d2l-button');
+			setTimeout(() => clickElem(button));
+			await oneEvent(button, 'click');
 		});
 
 		it('dispatches click event with correct target when clicked', async() => {
 			const el = await fixture(html`
 				<d2l-list-item action-href="javascript:void(0)" label="item">
 					<div>Item 1</div>
-					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item>`);
 			clickElem(el.shadowRoot.querySelector('div'));
 			const e = await oneEvent(el, 'click');
@@ -619,12 +651,13 @@ describe('d2l-list-item', () => {
 
 		it('dispatches click event with correct target when interactive content clicked', async() => {
 			const el = await fixture(html`
-				<d2l-list-item action-href="javascript:void(0)" label="item">
+				<d2l-list-item action-href="javascript:void(0);" label="item">
 					<div>Item 1</div>
-					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item>`);
-			setTimeout(() => el.querySelector('d2l-button').click());
-			const e = await oneEvent(el, 'click');
+			const button = el.querySelector('d2l-button');
+			setTimeout(() => clickElem(button));
+			const e = await oneEvent(button, 'click');
 			expect(e.target).to.equal(el.querySelector('d2l-button'));
 		});
 
@@ -646,8 +679,31 @@ describe('d2l-list-item', () => {
 					</d2l-list-item>`);
 				el.addEventListener('d2l-list-item-expand-collapse-toggled', () => dispatched = true);
 				const button = el.querySelector('d2l-button');
-				setTimeout(() => button.click());
+				setTimeout(() => clickElem(button));
 				await oneEvent(button, 'click');
+				expect(dispatched).to.equal(false);
+			});
+
+			// clean up with flag GAUD-7495-list-interactive-content
+			it('dispatches d2l-list-item-expand-collapse-toggled event when interactive content clicked when flag is off', async() => {
+				let dispatched = false;
+				const el = await fixture(html`
+					<d2l-list-item label="item" expandable key="expand-1">
+						<div>
+							<div>Item 1</div>
+							<d2l-button>Button</d2l-button>
+						</div>
+						<d2l-list grid slot="nested">
+							<d2l-list-item selectable key="nested-1" label="Nested 1">
+								<div>Nested item #1</div>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>`);
+				el._listItemInteractiveEnabled = false;
+				const button = el.querySelector('d2l-button');
+				button.addEventListener('click', () => dispatched = true);
+				setTimeout(() => clickElem(button));
+				await oneEvent(el, 'd2l-list-item-expand-collapse-toggled');
 				expect(dispatched).to.equal(false);
 			});
 
@@ -688,7 +744,7 @@ describe('d2l-list-item-button', () => {
 			const el = await fixture(html`
 				<d2l-list-item-button label="item">
 					<div>Item 1</div>
-					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item-button>`);
 			clickElem(el.shadowRoot.querySelector('div'));
 			const e = await oneEvent(el, 'click');
@@ -699,10 +755,11 @@ describe('d2l-list-item-button', () => {
 			const el = await fixture(html`
 				<d2l-list-item-button label="item">
 					<div>Item 1</div>
-					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item-button>`);
-			setTimeout(() => el.querySelector('d2l-button').click());
-			const e = await oneEvent(el, 'click');
+			const button = el.querySelector('d2l-button');
+			setTimeout(() => clickElem(button));
+			const e = await oneEvent(button, 'click');
 			expect(e.target).to.equal(el.querySelector('d2l-button'));
 		});
 
@@ -716,7 +773,7 @@ describe('d2l-list-item-button', () => {
 			const el = await fixture(html`
 				<d2l-list-item-button label="item">
 					<div>Item 1</div>
-					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item-button>`);
 			clickElem(el.shadowRoot.querySelector('button'));
 			await oneEvent(el, 'd2l-list-item-button-click');
@@ -726,7 +783,7 @@ describe('d2l-list-item-button', () => {
 			const el = await fixture(html`
 				<d2l-list-item-button label="item">
 					<div>Item 1</div>
-					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item-button>`);
 			clickElem(el.querySelector('div'));
 			await oneEvent(el, 'd2l-list-item-button-click');
@@ -737,10 +794,28 @@ describe('d2l-list-item-button', () => {
 			const el = await fixture(html`
 				<d2l-list-item-button label="item">
 					<div>Item 1</div>
-					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item-button>`);
 			el.addEventListener('d2l-list-item-button-click', () => dispatched = true);
-			await clickElem(el.querySelector('d2l-button'));
+			const button = el.querySelector('d2l-button');
+			setTimeout(() => clickElem(button));
+			await oneEvent(button, 'click');
+			expect(dispatched).to.equal(false);
+		});
+
+		// clean up with flag GAUD-7495-list-interactive-content
+		it('dispatches d2l-list-item-button-click event interactive content clicked when feature flag is off', async() => {
+			let dispatched = false;
+			const el = await fixture(html`
+				<d2l-list-item-button label="item">
+					<div>Item 1</div>
+					<div><d2l-button>Button</d2l-button></div>
+				</d2l-list-item-button>`);
+			el._listItemInteractiveEnabled = false;
+			const button = el.querySelector('d2l-button');
+			button.addEventListener('click', () => dispatched = true);
+			setTimeout(() => clickElem(button));
+			await oneEvent(el, 'd2l-list-item-button-click');
 			expect(dispatched).to.equal(false);
 		});
 
@@ -748,10 +823,12 @@ describe('d2l-list-item-button', () => {
 			const el = await fixture(html`
 				<d2l-list-item-button label="item">
 					<div>Item 1</div>
-					<div slot="secondary"><d2l-button>Button</d2l-button></div>
+					<div><d2l-button>Button</d2l-button></div>
 				</d2l-list-item-button>`);
-			setTimeout(() => el.querySelector('d2l-button').click());
-			await oneEvent(el.querySelector('d2l-button'), 'click');
+			const button = el.querySelector('d2l-button');
+			setTimeout(() => clickElem(button));
+			const e = await oneEvent(button, 'click');
+			expect(e.target).to.equal(button);
 		});
 
 		it('dispatches d2l-list-item-add-button-click event when first add button clicked', async() => {

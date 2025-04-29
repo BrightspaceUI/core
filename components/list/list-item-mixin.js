@@ -38,9 +38,12 @@ function addTabListener() {
 	});
 }
 
+const listItemInteractiveFlag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-7495-list-interactive-content', false) ?? false;
+
 let hasDisplayedKeyboardTooltip = false;
 
 export function isInteractiveInListItemComposedPath(e, isPrimaryAction) {
+	if (!listItemInteractiveFlag) return false;
 	const listInteractiveElems = {
 		...interactiveElements,
 		'd2l-button': true,
@@ -101,6 +104,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
+			_listItemInteractiveEnabled: { type: Boolean, reflect: true, attribute: '_list-item-interactive-enabled' },
 			_showAddButton: { type: Boolean, attribute: '_show-add-button', reflect: true },
 			_siblingHasColor: { state: true },
 		};
@@ -454,6 +458,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._displayKeyboardTooltip = false;
 		this._hasColorSlot = false;
 		this._hasNestedList = false;
+		this._listItemInteractiveEnabled = listItemInteractiveFlag;
 		this._siblingHasColor = false;
 	}
 
@@ -701,9 +706,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			</div>
 		`;
 
-		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId, contentAreaContent) : null);
-		const renderExpandableAction = !primaryAction && !this.selectable && this.expandable && !this.noPrimaryAction;
-		const renderCheckboxAction = !primaryAction && this.selectable && !this.noPrimaryAction;
+		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId, this._listItemInteractiveEnabled ? contentAreaContent : nothing) : null);
+		const renderExpandableActionContent = this._listItemInteractiveEnabled && !primaryAction && !this.selectable && this.expandable && !this.noPrimaryAction;
+		const renderCheckboxActionContent = this._listItemInteractiveEnabled && !primaryAction && this.selectable && !this.noPrimaryAction;
 
 		let tooltipForId = null;
 		if (this._showAddButton) {
@@ -756,8 +761,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				<div slot="control-action"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}">
-						${this._renderCheckboxAction(renderCheckboxAction ? contentAreaContent : '')}
-						${this._renderExpandCollapseAction(renderExpandableAction ? contentAreaContent : null)}
+						${this._renderCheckboxAction(renderCheckboxActionContent ? contentAreaContent : '')}
+						${this._renderExpandCollapseAction(renderExpandableActionContent ? contentAreaContent : null)}
 				</div>` : nothing }
 				${primaryAction ? html`
 				<div slot="content-action"
@@ -767,7 +772,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					@mouseleave="${this._onMouseLeavePrimaryAction}">
 						${primaryAction}
 				</div>` : nothing}
-				${!primaryAction && !renderExpandableAction && !renderCheckboxAction ? contentAreaContent : nothing}
+				${!this._listItemInteractiveEnabled || (!primaryAction && !renderExpandableActionContent && !renderCheckboxActionContent) ? contentAreaContent : nothing}
 				<div slot="actions"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}"
