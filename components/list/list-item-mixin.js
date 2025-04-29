@@ -10,6 +10,7 @@ import { interactiveElements, isInteractiveInComposedPath } from '../../helpers/
 import { classMap } from 'lit/directives/class-map.js';
 import { composeMixins } from '../../helpers/composeMixins.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -38,7 +39,7 @@ function addTabListener() {
 	});
 }
 
-const listItemInteractiveFlag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-7495-list-interactive-content', true) ?? true;
+const listItemInteractiveFlag = getFlag('GAUD-7495-list-interactive-content', true);
 
 let hasDisplayedKeyboardTooltip = false;
 
