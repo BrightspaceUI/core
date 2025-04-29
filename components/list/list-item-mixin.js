@@ -38,7 +38,7 @@ function addTabListener() {
 	});
 }
 
-const listItemInteractiveFlag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-7495-list-interactive-content', false) ?? false;
+const listItemInteractiveFlag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-7495-list-interactive-content', true) ?? true;
 
 let hasDisplayedKeyboardTooltip = false;
 
@@ -694,7 +694,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			'hide-bottom-border': this._showAddButton && (!this._hasNestedList || this._hasNestedListAddButton)
 		};
 
-		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color) || (this.expandable && !this.selectable)) ? 'control' : undefined;
+		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color) || (this._listItemInteractiveEnabled && this.expandable && !this.selectable)) ? 'control' : undefined;
 		const contentAreaContent = html`
 			<div slot="content"
 				class="d2l-list-item-content"
