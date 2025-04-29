@@ -1,4 +1,5 @@
 import '../../button/button.js';
+import '../../dialog/dialog.js';
 import '../tooltip.js';
 import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -160,6 +161,28 @@ describe('tooltip', () => {
 			});
 		});
 
+	});
+
+	describe('dialog', () => {
+		const template = html`
+			<d2l-dialog title-text="Dialog with Odd Width" opened>
+				<span>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</span>
+				<div style="display: grid; grid-template-columns: 1fr 1fr; height: 400px; width: 523px;">
+					<div></div>
+					<div>
+						<div id="target" style="border: 2px solid black; box-sizing: border-box; height: 42px; width: 200px;"></div>
+						<d2l-tooltip for="target" align="start">Number must be greater than or equal to 0 and less than or equal to 59.</d2l-tooltip>
+					</div>
+				</div>
+			</d2l-dialog>
+		`;
+		it('odd-width', async() => {
+			const elem = await fixture(template, { viewport: { height: 500 } });
+			const tooltip = elem.querySelector('d2l-tooltip');
+			tooltip.show();
+			await oneEvent(tooltip, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
+		});
 	});
 
 });
