@@ -132,10 +132,7 @@ export const _generateBodySmallStyles = (selector) => {
 			max-height: 5rem;
 		}
 		@media (max-width: 615px) {
-			${unsafeCSS(!inputStyleTweaksEnabled ? `${selector} {
-				font-size: 0.6rem;
-				line-height: 0.9rem;
-			}` : '')}
+			${unsafeCSS(!inputStyleTweaksEnabled ? `${selector} { font-size: 0.6rem; line-height: 0.9rem; }` : '')}
 			:host([skeleton]) ${selector}.d2l-skeletize::before {
 				bottom: 0.25rem;
 				top: 0.2rem;
