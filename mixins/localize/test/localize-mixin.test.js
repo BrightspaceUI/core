@@ -5,6 +5,18 @@ import { restore, stub } from 'sinon';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
 
+const documentLocaleSettings = getDocumentLocaleSettings();
+
+const pseudoLocalizationOn = () => {
+	let resolve;
+	const dlsChange = new Promise(r => resolve = r);
+	documentLocaleSettings.addChangeListener(resolve);
+	document.documentElement.dataset.pseudoLocalization = JSON.stringify({
+		textFormat: '{0} | {1}',
+	});
+	return dlsChange;
+};
+
 const Test1LocalizeMixinBase = superclass => class extends _LocalizeMixinBase(superclass) {
 
 	static async getLocalizeResources(langs) {
@@ -275,15 +287,27 @@ const localizeCommonTag = defineCE(
 
 describe('LocalizeMixin', () => {
 
-	const documentLocaleSettings = getDocumentLocaleSettings();
-
 	afterEach(() => documentLocaleSettings.reset());
+
+	[true, false].forEach(pseudoLocalization => {
+		it(`should share resources between instances, pseudoLocalization ${pseudoLocalization ? 'on' : 'off'}`, async() => {
+			pseudoLocalization && await pseudoLocalizationOn();
+			const elemStatic = await fixture(`<${staticTag}></${staticTag}>`);
+			const elemStatic2 = await fixture(`<${staticTag}></${staticTag}>`);
+			const elemAsync = await fixture(`<${asyncTag}></${asyncTag}>`);
+			const elemDifferent = await fixture(`<${multiMixinTagConsolidated}></${multiMixinTagConsolidated}>`);
+			if (!pseudoLocalization) {
+				expect(elemStatic.localize.resources).to.equal(elemStatic2.localize.resources);
+				expect(elemStatic.localize.resources).to.equal(elemAsync.localize.resources);
+			}
+			expect(elemStatic.localize.resources).to.not.equal(elemDifferent.localize.resources);
+		});
+	});
 
 	['static', 'async'].forEach((type) => {
 
-		const f = (type === 'static') ? `<${staticTag}></${staticTag}>` :
-			`<${asyncTag}></${asyncTag}>`;
 		const tagName = (type === 'static') ? staticTag : asyncTag;
+		const f = `<${tagName}></${tagName}>`;
 
 		describe(`localize (${type})`, () => {
 
@@ -459,6 +483,14 @@ describe('LocalizeMixin', () => {
 			expect(elem).lightDom.to.equal(t.expect);
 		}));
 
+	});
+
+	describe('pseudoLocalize', () => {
+		it('should replace {0} and {1} with formatted message and message name', async() => {
+			await pseudoLocalizationOn();
+			const elem = await fixture(`<${synchronousTag}></${synchronousTag}>`);
+			expect(elem.localize('sync')).to.equal('Synchronous Content | sync');
+		});
 	});
 
 	describe('browser language settings in mixin', () => {
