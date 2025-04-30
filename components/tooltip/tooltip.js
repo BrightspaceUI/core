@@ -564,6 +564,8 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		// Compute the size of the spaces above, below, left and right and find which space to fit the tooltip in
 		const content = this._getContent();
+		if (content === null) return;
+
 		const spaces = this._computeAvailableSpaces(targetRect, spaceAround);
 		const space = await this._fitContentToSpace(content, spaces);
 
