@@ -12,7 +12,6 @@ const pseudoLocalizationOn = () => {
 	const dlsChange = new Promise(r => resolve = r);
 	documentLocaleSettings.addChangeListener(resolve);
 	document.documentElement.dataset.pseudoLocalization = JSON.stringify({
-		isAvailable: true,
 		textFormat: '{0} | {1}',
 	});
 	return dlsChange;
@@ -291,7 +290,7 @@ describe('LocalizeMixin', () => {
 	afterEach(() => documentLocaleSettings.reset());
 
 	[true, false].forEach(pseudoLocalization => {
-		it(`should share resources between instances, pseudoLocalization ${pseudoLocalization ? 'on' : 'off'}`, async () => {
+		it(`should share resources between instances, pseudoLocalization ${pseudoLocalization ? 'on' : 'off'}`, async() => {
 			pseudoLocalization && await pseudoLocalizationOn();
 			const elemStatic = await fixture(`<${staticTag}></${staticTag}>`);
 			const elemStatic2 = await fixture(`<${staticTag}></${staticTag}>`);
