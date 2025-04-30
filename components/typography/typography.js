@@ -149,10 +149,10 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 				line-height: 1.2rem;
 			}
 
-			.d2l-typography .d2l-body-small {
+			${!inputStyleTweaksEnabled ? `.d2l-typography .d2l-body-small {
 				font-size: 0.6rem;
-				line-height: 0.9rem; /* TODO: what to do with this? */
-			}
+				line-height: 0.9rem;
+			}` : ''}
 
 			.d2l-typography .d2l-heading-1 {
 				font-size: 1.5rem;
