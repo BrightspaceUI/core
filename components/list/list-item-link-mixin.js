@@ -1,5 +1,5 @@
 import '../colors/colors.js';
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { isInteractiveInListItemComposedPath, ListItemMixin } from './list-item-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 
@@ -21,13 +21,26 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 			:host([action-href]:not([action-href=""])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
-			a[href] {
+			:host([_list-item-interactive-enabled]) a[href] {
 				color: unset;
 				display: block;
 				height: 100%;
 				outline: none;
 				text-decoration: none;
 				width: 100%;
+			}
+			/** clean up with flag GAUD-7495-list-interactive-content */
+			:host(:not([_list-item-interactive-enabled])) a[href] {
+				display: block;
+				height: 100%;
+				outline: none;
+				width: 100%;
+			}
+			/** clean up with flag GAUD-7495-list-interactive-content */
+			:host(:not([_list-item-interactive-enabled])[action-href]:not([action-href=""])) [slot="content"],
+			:host(:not([_list-item-interactive-enabled]):not([no-primary-action])) [slot="control-action"] ~ [slot="content"],
+			:host(:not([_list-item-interactive-enabled]):not([no-primary-action])) [slot="outside-control-action"] ~ [slot="content"] {
+				pointer-events: none;
 			}
 			:host([action-href]:not([action-href=""])) [slot="control-action"],
 			:host([action-href]:not([action-href=""])) [slot="outside-control-action"] {
@@ -59,9 +72,12 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		if (this._getDescendantClicked(e)) {
 			e.preventDefault();
 		} else {
-			e.stopPropagation();
 			/** Dispatched when the item's primary link action is clicked */
 			this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
+
+			if (!this._listItemInteractiveEnabled) return; // clean up with flag GAUD-7495-list-interactive-content
+
+			e.stopPropagation();
 
 			// Dispatches click event from the list item to maintain existing functionality in consumers that listen for the click event
 			const listItemClickEvent = new e.constructor(e.type, e);
@@ -94,7 +110,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 			@focusin="${this._handleLinkFocus}"
 			href="${this.actionHref}"
 			id="${this._primaryActionId}"
-			@keydown="${this._handleLinkKeyDown}">${content}</a>`;
+			@keydown="${this._handleLinkKeyDown}">${content || nothing}</a>`;
 	}
 
 };
