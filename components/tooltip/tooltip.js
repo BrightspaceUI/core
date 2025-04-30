@@ -737,7 +737,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			this._maxWidth = space.width;
 			await this.updateComplete;
 
-			if (content.scrollWidth + 2 * contentBorderSize <= space.width && content.scrollHeight + 2 * contentBorderSize <= space.height) {
+			if (content.scrollWidth + 2 * contentBorderSize <= Math.ceil(space.width) && content.scrollHeight + 2 * contentBorderSize <= Math.ceil(space.height)) {
 				return space;
 			}
 		}
