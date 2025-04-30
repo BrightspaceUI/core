@@ -113,12 +113,12 @@
 	font-weight: 400;
 	line-height: 0.9rem;
 	margin: auto;
-	@media (max-width: 615px) {
-		font-size: 0.6rem;
-		line-height: 0.9rem; /* TODO: what to do with this? */
-	}
 	.d2l-typography.d2l-no-input-style-tweaks & {
 		line-height: 1rem;
+		@media (max-width: 615px) {
+			font-size: 0.6rem;
+			line-height: 0.9rem;
+		}
 	}
 }
 
