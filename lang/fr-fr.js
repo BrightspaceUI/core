@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "Fermer l'alerte",
 	"components.breadcrumbs.breadcrumb": "Chemin de navigation",
 	"components.button-add.addItem": "Ajouter un élément",
+	"components.button-split.otherOptions": "Other Options",
 	"components.calendar.hasEvents": "A des événements.",
 	"components.calendar.notSelected": "Non sélectionné.",
 	"components.calendar.selected": "Sélectionné.",

@@ -171,6 +171,48 @@ The `d2l-button-toggle` element is a container for buttons that toggle a `presse
 - `d2l-button-toggle-change`: dispatched when the `pressed` state changes
 <!-- docs: end hidden content -->
 
+## Split Button [d2l-button-split]
+
+The `d2l-button-split` element is a button component that provides a main button and a slot for `d2l-button-split-item` elements. Simply provide a `key` and `text` for the main button and each item. The `d2l-button-split`'s `click` event provides the `key` of the selected action.
+
+<!-- docs: demo code properties name:d2l-button-split sandboxTitle:'Split Button' align:flex-start autoSize:false size:medium -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/button-split.js';
+  import '@brightspace-ui/core/components/button/button-split-item.js';
+</script>
+<d2l-button-split key="save" text="Save" primary>
+  <d2l-button-split-item key="saveAsDraft" text="Save as Draft"></d2l-button-split-item>
+  <d2l-button-split-item key="saveAndClose" text="Save and Close"></d2l-button-split-item>
+  <d2l-button-split-item key="saveAndNew" text="Save and New"></d2l-button-split-item>
+</d2l-button-split>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `description` | String | A description to be added to the main button for accessibility for additional context |
+| `disabled` | Boolean | Disables the main button and menu opener |
+| `disabledTooltip` | String | Tooltip text when disabled |
+| `key` | String, required | Key of the main button, provided on the `click` event detail |
+| `primary` | Boolean | Styles the main button and menu opener as primary buttons |
+| `text` | String, required | Accessible text for the main button |
+
+### Item Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `disabled` | Boolean | Disables the menu item |
+| `key` | String, required | Key of the menu item, provided on the `click` event detail |
+| `text` | String, required | Accessible text for the menu item |
+
+### Events
+
+- `click`: dispatched when the user clicks the main action or menu item. The `key` is provided on the event detail.
+<!-- docs: end hidden content -->
+
 ## Add Button [d2l-button-add]
 
 The `d2l-button-add` is for quickly adding new items at a specific location, such as when adding items to a curated list. Since the Add button is meant to be subtle, it should always be used in combination with more obvious methods to add items (like a menu or primary button).

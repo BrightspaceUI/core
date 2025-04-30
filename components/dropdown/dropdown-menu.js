@@ -167,7 +167,7 @@ if (usePopoverMixin) {
 		}
 
 		#handleSelect(e) {
-			if (['D2L-MENU-ITEM', 'D2L-MENU-ITEM-LINK', 'D2L-SELECTION-ACTION-MENU-ITEM'].indexOf(e.target.tagName) < 0) {
+			if (['D2L-MENU-ITEM', 'D2L-MENU-ITEM-LINK', 'D2L-SELECTION-ACTION-MENU-ITEM', 'D2L-BUTTON-SPLIT-ITEM'].indexOf(e.target.tagName) < 0) {
 				return;
 			}
 			this.close();
@@ -268,10 +268,9 @@ if (usePopoverMixin) {
 		}
 
 		__getMenuElement() {
-			if (!this.shadowRoot) return undefined;
-			return this.shadowRoot.querySelector('.d2l-dropdown-content-slot')
-				.assignedNodes().filter(node => node.hasAttribute
-					&& (node.getAttribute('role') === 'menu' || node.getAttribute('role') === 'listbox'))[0];
+			return this.shadowRoot?.querySelector('.d2l-dropdown-content-slot')
+				.assignedElements({ flatten: true })
+				.filter(node => (node.getAttribute('role') === 'menu' || node.getAttribute('role') === 'listbox'))[0];
 		}
 
 		_onAnimationEnd() {
@@ -351,7 +350,7 @@ if (usePopoverMixin) {
 		}
 
 		_onSelect(e) {
-			if (['D2L-MENU-ITEM', 'D2L-MENU-ITEM-LINK', 'D2L-SELECTION-ACTION-MENU-ITEM'].indexOf(e.target.tagName) < 0) {
+			if (['D2L-MENU-ITEM', 'D2L-MENU-ITEM-LINK', 'D2L-SELECTION-ACTION-MENU-ITEM', 'D2L-BUTTON-SPLIT-ITEM'].indexOf(e.target.tagName) < 0) {
 				return;
 			}
 			this.close();
