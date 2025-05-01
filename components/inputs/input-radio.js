@@ -30,8 +30,10 @@ class InputRadio extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			 * @type {string}
 			 */
 			value: { type: String },
+			_checked: { state: true },
 			_firstFocusable: { state: true },
-			_hovering: { state: true }
+			_hovering: { state: true },
+			_invalid: { state: true }
 		};
 	}
 
@@ -51,11 +53,23 @@ class InputRadio extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
 	constructor() {
 		super();
-		this.checked = false;
 		this.disabled = false;
 		this.value = 'on';
+		this._checked = false;
 		this._firstFocusable = false;
 		this._hovering = false;
+		this._invalid = false;
+	}
+
+	get checked() { return this._checked; }
+	set checked(value) {
+		if (value === this._checked) return;
+		this.dispatchEvent(
+			new CustomEvent(
+				'd2l-input-radio-checked',
+				{ bubbles: true, composed: false, detail: { checked: value } }
+			)
+		);
 	}
 
 	static get focusElementSelector() {
@@ -72,13 +86,14 @@ class InputRadio extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			'd2l-disabled': this.disabled,
 			'd2l-hovering': this._hovering && !this.disabled
 		};
-		const tabindex = (!this.disabled && (this.checked || this._firstFocusable)) ? '0' : undefined;
+		const tabindex = (!this.disabled && (this._checked || this._firstFocusable)) ? '0' : undefined;
 		// TODO: handle secondary content slot
 		return html`
 			<div class="${classMap(labelClasses)}" @mouseover="${this.#handleMouseOver}" @mouseout="${this.#handleMouseOut}">
 				<div
-					aria-checked="${this.checked}"
+					aria-checked="${this._checked}"
 					aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}"
+					aria-invalid="${ifDefined(this._invalid ? 'true' : undefined)}"
 					aria-labelledby="${this.#labelId}"
 					class="${classMap(radioClasses)}"
 					role="radio"
@@ -86,11 +101,6 @@ class InputRadio extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 				<div id="${this.#labelId}">${this.label}</div>
 			</div>
 		`;
-	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		// TODO handle programatic changes to checked
 	}
 
 	#labelId = getUniqueId();

@@ -31,6 +31,20 @@ export const radioFixtures = {
 			<d2l-input-radio label="Three" value="3"></d2l-input-radio>
 		</d2l-input-radio-group>
 	`,
+	requiredSecondChecked: html`
+		<d2l-input-radio-group label="One, two or three?" required>
+			<d2l-input-radio label="One" value="1"></d2l-input-radio>
+			<d2l-input-radio label="Two" value="2" checked></d2l-input-radio>
+			<d2l-input-radio label="Three" value="3"></d2l-input-radio>
+		</d2l-input-radio-group>
+	`,
+	requiredNoneChecked: html`
+		<d2l-input-radio-group label="One, two or three?" required>
+			<d2l-input-radio label="One" value="1"></d2l-input-radio>
+			<d2l-input-radio label="Two" value="2"></d2l-input-radio>
+			<d2l-input-radio label="Three" value="3"></d2l-input-radio>
+		</d2l-input-radio-group>
+	`,
 	secondChecked: html`
 		<d2l-input-radio-group label="One, two or three?">
 			<d2l-input-radio label="One" value="1"></d2l-input-radio>

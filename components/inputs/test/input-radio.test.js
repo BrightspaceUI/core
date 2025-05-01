@@ -81,6 +81,14 @@ describe('d2l-input-radio', () => {
 			expect(event.detail.oldValue).to.be.undefined;
 		});
 
+		it('should not fire change event when checked programatically', async() => {
+			const elem = await fixture(radioFixtures.secondChecked);
+			let eventFired = false;
+			elem.addEventListener('change', () => eventFired = true);
+			elem.querySelector('d2l-input-radio[value="1"]').checked = true;
+			expect(eventFired).to.be.false;
+		});
+
 	});
 
 	describe('focus management', () => {
@@ -113,6 +121,46 @@ describe('d2l-input-radio', () => {
 			const elem = await fixture(radioFixtures.disabledFirstNoneChecked);
 			await focusElem(elem);
 			expectActive('2', false);
+		});
+
+		it('should restore focusability to the first item if checked item is unchecked programatically', async() => {
+			const elem = await fixture(radioFixtures.secondChecked);
+			elem.querySelector('d2l-input-radio[value="2"]').checked = false;
+			await focusElem(elem);
+			expectActive('1', false);
+		});
+
+	});
+
+	describe('forms', () => {
+
+		it('should reflect the checked value to the form value', async() => {
+			const elem = await fixture(radioFixtures.secondChecked);
+			expect(elem.formValue).to.equal('2');
+		});
+
+		it('should reflect an empty string to the form value if no items are checked', async() => {
+			const elem = await fixture(radioFixtures.noneChecked);
+			expect(elem.formValue).to.equal('');
+		});
+
+		it('should update the form value when the checked item changes via click', async() => {
+			const elem = await fixture(radioFixtures.secondChecked);
+			await clickElem(elem.querySelector('d2l-input-radio[value="1"]'));
+			expect(elem.formValue).to.equal('1');
+		});
+
+		it('should update the form value when the checked item changes programatically', async() => {
+			const elem = await fixture(radioFixtures.secondChecked);
+			elem.querySelector('d2l-input-radio[value="1"]').checked = true;
+			await elem.updateComplete;
+			expect(elem.formValue).to.equal('1');
+		});
+
+		it('should update the form value when the checked item is unchecked programatically', async() => {
+			const elem = await fixture(radioFixtures.secondChecked);
+			elem.querySelector('d2l-input-radio[value="2"]').checked = false;
+			expect(elem.formValue).to.equal('');
 		});
 
 	});
@@ -183,18 +231,55 @@ describe('d2l-input-radio', () => {
 
 	});
 
-	it('should treat the last checked item as the only checked item', async() => {
-		const elem = await fixture(html`
-			<d2l-input-radio-group label="One, two or three?">
-				<d2l-input-radio label="One" value="1" checked></d2l-input-radio>
-				<d2l-input-radio label="Two" value="2" checked></d2l-input-radio>
-				<d2l-input-radio label="Three" value="3" checked></d2l-input-radio>
-			</d2l-input-radio-group>
-		`);
-		const radios = elem.querySelectorAll('d2l-input-radio');
-		expect(radios[0].checked).to.be.false;
-		expect(radios[1].checked).to.be.false;
-		expect(radios[2].checked).to.be.true;
+	describe('state management', () => {
+
+		it('should treat the last checked item as the only checked item', async() => {
+			const elem = await fixture(html`
+				<d2l-input-radio-group label="One, two or three?">
+					<d2l-input-radio label="One" value="1" checked></d2l-input-radio>
+					<d2l-input-radio label="Two" value="2" checked></d2l-input-radio>
+					<d2l-input-radio label="Three" value="3" checked></d2l-input-radio>
+				</d2l-input-radio-group>
+			`);
+			const radios = elem.querySelectorAll('d2l-input-radio');
+			expect(radios[0].checked).to.be.false;
+			expect(radios[1].checked).to.be.false;
+			expect(radios[2].checked).to.be.true;
+		});
+
+		it('should unchecked checked item when checked is set programatically', async() => {
+			const elem = await fixture(radioFixtures.secondChecked);
+			elem.querySelector('d2l-input-radio[value="1"]').checked = true;
+			expect(elem.querySelector('d2l-input-radio[value="2"]').checked).to.be.false;
+		});
+
+	});
+
+	describe('validity', () => {
+
+		it('should be valid when required and an item is checked', async() => {
+			const elem = await fixture(radioFixtures.requiredSecondChecked);
+			await elem.validate();
+			expect(elem.invalid).to.be.false;
+		});
+
+		it('should be valid when required and no items are checked initially', async() => {
+			const elem = await fixture(radioFixtures.requiredNoneChecked);
+			expect(elem.invalid).to.be.false;
+		});
+
+		it('should be invalid when required and no items are checked after validation', async() => {
+			const elem = await fixture(radioFixtures.requiredNoneChecked);
+			await elem.validate();
+			expect(elem.invalid).to.be.true;
+		});
+
+		it('should be valid when not required and no items are checked', async() => {
+			const elem = await fixture(radioFixtures.noneChecked);
+			await elem.validate();
+			expect(elem.invalid).to.be.false;
+		});
+
 	});
 
 });

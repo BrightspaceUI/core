@@ -44,22 +44,34 @@ class InputRadioGroup extends PropertyRequiredMixin(FormElementMixin(LitElement)
 		super();
 		this.labelHidden = false;
 		this.required = false;
+		this.setFormValue('');
 	}
 
 	render() {
-		// TODO: handle required validation
-		// TODO: handle being in a form
 		return html`
 			<span class="d2l-input-label" ?hidden="${this.labelHidden}" id="${this.#labelId}">${this.label}</span>
 			<div
+				aria-invalid="${ifDefined(this.invalid ? 'true' : undefined)}"
 				aria-labelledby="${this.#labelId}"
 				aria-required="${ifDefined(this.required ? 'true' : undefined)}"
 				@click="${this.#handleClick}"
+				@d2l-input-radio-checked="${this.#handleRadioChecked}"
 				@keydown="${this.#handleKeyDown}"
 				role="radiogroup">	
 				<slot @slotchange="${this.#handleSlotChange}"></slot>
 			</div>
 		`;
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('invalid')) {
+			const radios = this.#getRadios();
+			radios.forEach(el => el._invalid = this.invalid);
+		}
+		if (changedProperties.has('required')) {
+			this.#recalculateState(false);
+		}
 	}
 
 	focus() {
@@ -69,35 +81,36 @@ class InputRadioGroup extends PropertyRequiredMixin(FormElementMixin(LitElement)
 		let firstChecked = null;
 		radios.forEach(el => {
 			if (firstFocusable === null && !el.disabled) firstFocusable = el;
-			if (firstChecked === null && el.checked) firstChecked = el;
+			if (firstChecked === null && el._checked) firstChecked = el;
 		});
-		if (firstChecked !== null) {
-			firstChecked.focus();
-		} else {
-			firstFocusable.focus();
-		}
+		const focusElem = firstChecked || firstFocusable;
+		focusElem.focus();
+		setTimeout(() => focusElem.focus()); // timeout required when following link from form validation
 	}
 
 	#labelId = getUniqueId();
 
-	async #doUpdateChecked(newChecked) {
+	async #doUpdateChecked(newChecked, doFocus, doDispatchEvent) {
 		const radios = this.#getRadios();
 		let prevChecked = null;
 		radios.forEach(el => {
-			if (el.checked) prevChecked = el;
+			if (el._checked) prevChecked = el;
 			el._firstFocusable = false;
 		});
 		if (prevChecked === newChecked) return;
 
-		newChecked.checked = true;
-		await newChecked.updateComplete;
-		newChecked.focus();
-
-		if (prevChecked !== null) {
-			prevChecked.checked = false;
-			await prevChecked.updateComplete;
+		this.setFormValue(newChecked.value);
+		if (this.required) {
+			this.setValidity({ valueMissing: false });
+			this.requestValidate(true);
 		}
-		if (prevChecked !== newChecked) {
+
+		newChecked._checked = true;
+		if (prevChecked !== null) {
+			prevChecked._checked = false;
+		}
+
+		if (doDispatchEvent && prevChecked !== newChecked) {
 			this.dispatchEvent(new CustomEvent('change', {
 				bubbles: true,
 				composed: true,
@@ -107,19 +120,23 @@ class InputRadioGroup extends PropertyRequiredMixin(FormElementMixin(LitElement)
 				}
 			}));
 		}
+
+		if (doFocus) {
+			await newChecked.updateComplete;
+			newChecked.focus();
+		}
 	}
 
 	#getRadios() {
-		return this.shadowRoot
-			.querySelector('slot')
-			.assignedElements()
-			.filter(el => el.tagName === 'D2L-INPUT-RADIO');
+		const elems = this.shadowRoot?.querySelector('slot')?.assignedElements();
+		if (!elems) return [];
+		return elems.filter(el => el.tagName === 'D2L-INPUT-RADIO');
 	}
 
 	#handleClick(e) {
 		if (e.target.tagName !== 'D2L-INPUT-RADIO') return;
 		if (e.target.disabled) return;
-		this.#doUpdateChecked(e.target);
+		this.#doUpdateChecked(e.target, true, true);
 		e.preventDefault();
 	}
 
@@ -138,11 +155,11 @@ class InputRadioGroup extends PropertyRequiredMixin(FormElementMixin(LitElement)
 
 		if (newOffset === null) return;
 
-		const radios = this.#getRadios().filter(el => !el.disabled || el.checked);
+		const radios = this.#getRadios().filter(el => !el.disabled || el._checked);
 		let checkedIndex = -1;
 		let firstFocusableIndex = -1;
 		radios.forEach((el, i) => {
-			if (el.checked) checkedIndex = i;
+			if (el._checked) checkedIndex = i;
 			if (firstFocusableIndex < 0 && !el.disabled) firstFocusableIndex = i;
 		});
 		if (checkedIndex === -1) {
@@ -151,27 +168,60 @@ class InputRadioGroup extends PropertyRequiredMixin(FormElementMixin(LitElement)
 		}
 
 		const newIndex = (checkedIndex + newOffset + radios.length) % radios.length;
-		this.#doUpdateChecked(radios[newIndex]);
+		this.#doUpdateChecked(radios[newIndex], true, true);
 
 		e.preventDefault();
 	}
 
+	#handleRadioChecked(e) {
+		if (e.detail.checked) {
+			this.#doUpdateChecked(e.target, false, false);
+			return;
+		}
+		e.target._checked = false;
+		this.#recalculateState(false);
+	}
+
 	#handleSlotChange() {
+		this.#recalculateState(true);
+	}
+
+	#recalculateState(fromSlotChange) {
 		const radios = this.#getRadios();
+		if (radios.length === 0) return;
+
 		let firstFocusable = null;
 		const checkedRadios = [];
 		radios.forEach(el => {
 			if (firstFocusable === null && !el.disabled) firstFocusable = el;
-			if (el.checked) checkedRadios.push(el);
+			if (fromSlotChange && el.hasAttribute('checked') || !fromSlotChange && el._checked) checkedRadios.push(el);
 			el._firstFocusable = false;
 		});
+
 		// let the first non-disabled radio know it's first so it can be focusable
 		if (checkedRadios.length === 0 && firstFocusable !== null) {
 			firstFocusable._firstFocusable = true;
 		}
+
 		// only the last checked radio is actually checked
 		for (let i = 0; i < checkedRadios.length - 1; i++) {
-			checkedRadios[i].checked = false;
+			checkedRadios[i]._checked = false;
+		}
+		if (checkedRadios.length > 0) {
+			const lastCheckedRadio = checkedRadios[checkedRadios.length - 1];
+			lastCheckedRadio._checked = true;
+			this.setFormValue(lastCheckedRadio.value);
+			if (this.required) {
+				this.setValidity({ valueMissing: false });
+			}
+		} else {
+			this.setFormValue('');
+			if (this.required) {
+				this.setValidity({ valueMissing: true });
+			}
+		}
+		if (!fromSlotChange && this.required) {
+			this.requestValidate(true);
 		}
 	}
 

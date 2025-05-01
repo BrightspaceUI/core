@@ -8,6 +8,7 @@
 			import '../../button/button.js';
 			import '../../demo/demo-page.js';
 			import '../../form/form.js';
+			import '../input-group.js';
 			import '../input-radio.js';
 			import '../input-radio-group.js';
 			import './input-radio-label-test.js';
@@ -19,25 +20,30 @@
 			<h2>Simple radio group with labels</h2>
 			<d2l-demo-snippet>
 				<d2l-input-radio-group label="Bread">
-					<d2l-input-radio label="Whole wheat"></d2l-input-radio>
-					<d2l-input-radio label="White"></d2l-input-radio>
-					<d2l-input-radio label="Gluten free"></d2l-input-radio>
+					<d2l-input-radio label="Whole wheat" value="whole-wheat"></d2l-input-radio>
+					<d2l-input-radio label="French" value="french" checked></d2l-input-radio>
+					<d2l-input-radio label="Rye" value="rye"></d2l-input-radio>
 				</d2l-input-radio-group>
 			</d2l-demo-snippet>
 
 			<h2>Required radio group</h2>
 			<d2l-demo-snippet>
 				<d2l-form>
-					<d2l-input-radio-group label="Bread" required>
-						<d2l-input-radio label="Whole wheat"></d2l-input-radio>
-						<d2l-input-radio label="White"></d2l-input-radio>
-						<d2l-input-radio label="Gluten free"></d2l-input-radio>
-					</d2l-input-radio-group>
+					<d2l-input-group>
+						<d2l-input-radio-group name="bread" label="Bread" required>
+							<d2l-input-radio label="Whole wheat" value="whole-wheat"></d2l-input-radio>
+							<d2l-input-radio label="French" value="french"></d2l-input-radio>
+							<d2l-input-radio label="Rye" value="rye"></d2l-input-radio>
+						</d2l-input-radio-group>
+					</d2l-input-group>
 					<d2l-button primary style="margin-top: 20px">Save</d2l-button>
 				</d2l-form>
 				<script>
 					(demo => {
 						const form = demo.querySelector('d2l-form');
+						form.addEventListener('d2l-form-submit', (e) => {
+							console.log(`form submitted, value: "${e.detail.formData['bread']}"`);
+						});
 						const button = demo.querySelector('d2l-button');
 						button.addEventListener('click', () => form.submit());
 					})(document.currentScript.parentNode);
