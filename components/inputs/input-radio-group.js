@@ -85,7 +85,7 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 			radios.forEach(el => el._invalid = this.invalid);
 		}
 		if (changedProperties.has('required')) {
-			this.#recalculateState(false);
+			this.#recalculateState(true);
 		}
 	}
 
@@ -117,7 +117,7 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 		if (prevChecked !== null) {
 			prevChecked._checked = false;
 		}
-		this.#recalculateState(false);
+		this.#recalculateState(true);
 
 		if (doDispatchEvent) {
 			this.dispatchEvent(new CustomEvent('change', {
@@ -187,15 +187,15 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 			this.#doUpdateChecked(e.target, false, false);
 		} else {
 			e.target._checked = false;
-			this.#recalculateState(false);
+			this.#recalculateState(true);
 		}
 	}
 
 	#handleSlotChange() {
-		this.#recalculateState(true);
+		this.#recalculateState(false);
 	}
 
-	#recalculateState(fromSlotChange) {
+	#recalculateState(doValidate) {
 		const radios = this.#getRadios();
 		if (radios.length === 0) return;
 
@@ -203,7 +203,8 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 		const checkedRadios = [];
 		radios.forEach(el => {
 			if (firstFocusable === null && !el.disabled) firstFocusable = el;
-			if (fromSlotChange && el.hasAttribute('checked') || !fromSlotChange && el._checked) checkedRadios.push(el);
+			if (el._checked) checkedRadios.push(el);
+			el._isInitFromGroup = true;
 			el._firstFocusable = false;
 		});
 
@@ -229,7 +230,7 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 				this.setValidity({ valueMissing: true });
 			}
 		}
-		if (!fromSlotChange && this.required) {
+		if (doValidate && this.required) {
 			this.requestValidate(true);
 		}
 	}

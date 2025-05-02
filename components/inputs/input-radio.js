@@ -90,19 +90,24 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 		this._firstFocusable = false;
 		this._hasSupporting = false;
 		this._isHovered = false;
+		this._isInitFromGroup = false;
 		this._invalid = false;
 	}
 
 	get checked() { return this._checked; }
 	set checked(value) {
 		if (value === this._checked) return;
-		/** @ignore */
-		this.dispatchEvent(
-			new CustomEvent(
-				'd2l-input-radio-checked',
-				{ bubbles: true, composed: false, detail: { checked: value } }
-			)
-		);
+		if (!this._isInitFromGroup) {
+			this._checked = value;
+		} else {
+			/** @ignore */
+			this.dispatchEvent(
+				new CustomEvent(
+					'd2l-input-radio-checked',
+					{ bubbles: true, composed: false, detail: { checked: value } }
+				)
+			);
+		}
 	}
 
 	static get focusElementSelector() {
