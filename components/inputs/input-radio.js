@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -16,6 +16,11 @@ class InputRadio extends InputInlineHelpMixin(FocusMixin(PropertyRequiredMixin(L
 			 * @type {boolean}
 			 */
 			checked: { type: Boolean, reflect: true },
+			/**
+			 * ACCESSIBILITY: Additional information communicated to screenreader users when focusing on the input
+			 * @type {string}
+			 */
+			description: { type: String },
 			/**
 			 * Disables the input
 			 * @type {boolean}
@@ -111,12 +116,14 @@ class InputRadio extends InputInlineHelpMixin(FocusMixin(PropertyRequiredMixin(L
 			'd2l-input-radio-supporting': true,
 			'd2l-input-radio-supporting-visible': this._hasSupporting && (!this.supportingHiddenWhenUnchecked || this._checked),
 		};
+		const description = this.description ? html`<div id="${this.#descriptionId}" hidden>${this.description}</div>` : nothing;
+		const ariaDescribedByIds = `${this.description ? this.#descriptionId : ''} ${this._hasInlineHelp ? this.#inlineHelpId : ''}`.trim();
 		const tabindex = (!this.disabled && (this._checked || this._firstFocusable)) ? '0' : undefined;
 		return html`
 			<div class="${classMap(labelClasses)}" @mouseover="${this.#handleMouseOver}" @mouseout="${this.#handleMouseOut}">
 				<div
 					aria-checked="${this._checked}"
-					aria-describedby="${ifDefined(this._hasInlineHelp ? this.#inlineHelpId : undefined)}"
+					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
 					aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}"
 					aria-invalid="${ifDefined(this._invalid ? 'true' : undefined)}"
 					aria-labelledby="${this.#labelId}"
@@ -126,10 +133,12 @@ class InputRadio extends InputInlineHelpMixin(FocusMixin(PropertyRequiredMixin(L
 				<div id="${this.#labelId}">${this.label}</div>
 			</div>
 			${this._renderInlineHelp(this.#inlineHelpId)}
+			${description}
 			<div class="${classMap(supportingClasses)}" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
 		`;
 	}
 
+	#descriptionId = getUniqueId();
 	#inlineHelpId = getUniqueId();
 	#labelId = getUniqueId();
 

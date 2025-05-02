@@ -3,6 +3,13 @@ import '../input-radio-group.js';
 import { html } from 'lit';
 
 export const radioFixtures = {
+	description: html`
+		<d2l-input-radio-group label="Bread">
+			<d2l-input-radio label="Whole wheat" description="healthy option"></d2l-input-radio>
+			<d2l-input-radio label="Baguette" description="French specialty" checked></d2l-input-radio>
+			<d2l-input-radio label="Marble Rye" description="don't forget it"></d2l-input-radio>
+		</d2l-input-radio-group>
+	`,
 	disabledAllSecondChecked: html`
 		<d2l-input-radio-group label="Bread">
 			<d2l-input-radio label="Whole wheat" value="whole-wheat" disabled></d2l-input-radio>
