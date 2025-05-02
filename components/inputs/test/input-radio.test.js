@@ -1,7 +1,28 @@
-import { clickElem, expect, fixture, focusElem, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, defineCE, expect, fixture, focusElem, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 import { findComposedAncestor } from '../../../helpers/dom.js';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
+import { LitElement } from 'lit';
 import { radioFixtures } from './input-radio-fixtures.js';
+
+const wrapperTag = defineCE(
+	class extends LitElement {
+		static properties = {
+			checkedValue: { attribute: 'checked-value', type: Number }
+		};
+		render() {
+			return html`
+				<d2l-input-radio-group label="One, two or three?">
+					${[1, 2, 3].map(i => html`
+						<d2l-input-radio
+							label="Item ${i}"
+							value="${i}"
+							?checked="${this.checkedValue === i}"></d2l-input-radio>
+					`)}
+				</d2l-input-radio-group>
+			`;
+		}
+	}
+);
 
 function expectActive(value, checked) {
 	const activeRadio = getActiveRadio();
@@ -89,6 +110,16 @@ describe('d2l-input-radio', () => {
 			expect(eventFired).to.be.false;
 		});
 
+		it('should not fire change event when wrapper updates', async() => {
+			const elem = await fixture(`<${wrapperTag} checked-value="2"></${wrapperTag}>`);
+			const radioGroup = elem.shadowRoot.querySelector('d2l-input-radio-group');
+			let eventFired = false;
+			radioGroup.addEventListener('change', () => eventFired = true);
+			elem.checkedValue = 3;
+			await elem.updateComplete;
+			expect(eventFired).to.be.false;
+		});
+
 	});
 
 	describe('focus management', () => {
@@ -134,14 +165,19 @@ describe('d2l-input-radio', () => {
 
 	describe('forms', () => {
 
-		it('should reflect the checked value to the form value', async() => {
+		it('should use the checked value as the form value', async() => {
 			const elem = await fixture(radioFixtures.secondChecked);
 			expect(elem.formValue).to.equal('2');
 		});
 
-		it('should reflect an empty string to the form value if no items are checked', async() => {
+		it('should use an empty string as the form value if no items are checked', async() => {
 			const elem = await fixture(radioFixtures.noneChecked);
 			expect(elem.formValue).to.equal('');
+		});
+
+		it('should use "on" as the form value if checked item has no value', async() => {
+			const elem = await fixture(radioFixtures.secondCheckedNoValues);
+			expect(elem.formValue).to.equal('on');
 		});
 
 		it('should update the form value when the checked item changes via click', async() => {
@@ -153,7 +189,6 @@ describe('d2l-input-radio', () => {
 		it('should update the form value when the checked item changes programatically', async() => {
 			const elem = await fixture(radioFixtures.secondChecked);
 			elem.querySelector('d2l-input-radio[value="1"]').checked = true;
-			await elem.updateComplete;
 			expect(elem.formValue).to.equal('1');
 		});
 
@@ -265,6 +300,20 @@ describe('d2l-input-radio', () => {
 			expect(elem.querySelector('d2l-input-radio[value="2"]').checked).to.be.false;
 		});
 
+		it('should handle state changes when wrapped in a custom element', async() => {
+			const elem = await fixture(`<${wrapperTag} checked-value="2"></${wrapperTag}>`);
+			const radios = elem.shadowRoot.querySelectorAll('d2l-input-radio');
+			expect(radios[0].checked).to.be.false;
+			expect(radios[1].checked).to.be.true;
+			expect(radios[2].checked).to.be.false;
+
+			elem.checkedValue = 3;
+			await elem.updateComplete;
+			expect(radios[0].checked).to.be.false;
+			expect(radios[1].checked).to.be.false;
+			expect(radios[2].checked).to.be.true;
+		});
+
 	});
 
 	describe('validity', () => {
@@ -290,6 +339,13 @@ describe('d2l-input-radio', () => {
 			const elem = await fixture(radioFixtures.noneChecked);
 			await elem.validate();
 			expect(elem.invalid).to.be.false;
+		});
+
+		it('should be invalid when required is set', async() => {
+			const elem = await fixture(radioFixtures.noneChecked);
+			elem.required = true;
+			await elem.validate();
+			expect(elem.invalid).to.be.true;
 		});
 
 	});
