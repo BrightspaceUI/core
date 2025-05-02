@@ -37,6 +37,9 @@ class InputRadioGroup extends PropertyRequiredMixin(FormElementMixin(LitElement)
 			.d2l-input-label[hidden] {
 				display: none;
 			}
+			::slotted(:not(d2l-input-radio)) {
+				display: none;
+			}
 		`];
 	}
 
