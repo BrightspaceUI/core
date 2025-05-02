@@ -268,7 +268,6 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 	simulateClick() {
 		this.checked = !this.checked;
 		this.indeterminate = false;
-		/** @ignore */
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }

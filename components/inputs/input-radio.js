@@ -96,6 +96,7 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 	get checked() { return this._checked; }
 	set checked(value) {
 		if (value === this._checked) return;
+		/** @ignore */
 		this.dispatchEvent(
 			new CustomEvent(
 				'd2l-input-radio-checked',
