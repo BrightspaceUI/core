@@ -10,6 +10,7 @@ describe('d2l-input-radio', () => {
 		{ name: 'required-invalid', template: radioFixtures.requiredNoneChecked, validate: true },
 		{ name: 'disabled', template: radioFixtures.disabledAllSecondChecked },
 		{ name: 'inline-help', template: radioFixtures.inlineHelp },
+		{ name: 'skeleton', template: radioFixtures.skeleton },
 		{ name: 'supporting-hidden', template: radioFixtures.supporting },
 		{
 			name: 'supporting',

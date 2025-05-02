@@ -93,6 +93,13 @@ export const radioFixtures = {
 			<d2l-input-radio label="Marble Rye" value="marble-rye" disabled></d2l-input-radio>
 		</d2l-input-radio-group>
 	`,
+	skeleton: html`
+		<d2l-input-radio-group label="Bread" skeleton>
+			<d2l-input-radio label="Whole wheat" skeleton></d2l-input-radio>
+			<d2l-input-radio label="Baguette" checked skeleton></d2l-input-radio>
+			<d2l-input-radio label="Marble Rye" skeleton></d2l-input-radio>
+		</d2l-input-radio-group>
+	`,
 	supporting: html`
 		<d2l-input-radio-group label="Bread">
 			<d2l-input-radio label="Whole wheat" checked></d2l-input-radio>

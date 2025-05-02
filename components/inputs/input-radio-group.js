@@ -4,8 +4,14 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputLabelStyles } from './input-label-styles.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-class InputRadioGroup extends PropertyRequiredMixin(FormElementMixin(LitElement)) {
+/**
+ * A group of <d2l-input-radio> components.
+ * @slot - Radio components
+ * @fires change - Dispatched when the radio group's state changes
+ */
+class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -28,7 +34,7 @@ class InputRadioGroup extends PropertyRequiredMixin(FormElementMixin(LitElement)
 	}
 
 	static get styles() {
-		return [inputLabelStyles, css`
+		return [super.styles, inputLabelStyles, css`
 			:host {
 				display: block;
 			}
@@ -58,7 +64,7 @@ class InputRadioGroup extends PropertyRequiredMixin(FormElementMixin(LitElement)
 
 	render() {
 		return html`
-			<span class="d2l-input-label" ?hidden="${this.labelHidden}" id="${this.#labelId}">${this.label}</span>
+			<span class="d2l-input-label" ?hidden="${this.labelHidden}" id="${this.#labelId}"><span class="d2l-skeletize">${this.label}</span></span>
 			<div
 				aria-invalid="${ifDefined(this.invalid ? 'true' : undefined)}"
 				aria-labelledby="${this.#labelId}"

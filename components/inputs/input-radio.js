@@ -6,8 +6,14 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { InputInlineHelpMixin } from './input-inline-help.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { radioStyles } from './input-radio-styles.js';
+import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-class InputRadio extends InputInlineHelpMixin(FocusMixin(PropertyRequiredMixin(LitElement))) {
+/**
+ * A radio input within a <d2l-input-radio-group>.
+ * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
+ * @slot supporting - Supporting information which will appear below and be aligned with the input.
+ */
+class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyRequiredMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -103,14 +109,16 @@ class InputRadio extends InputInlineHelpMixin(FocusMixin(PropertyRequiredMixin(L
 	}
 
 	render() {
+		const disabled = this.disabled || this.skeleton;
 		const labelClasses = {
 			'd2l-input-radio-label': true,
-			'd2l-input-radio-label-disabled': this.disabled,
+			'd2l-input-radio-label-disabled': this.disabled && !this.skeleton,
 		};
 		const radioClasses = {
 			'd2l-input-radio': true,
-			'd2l-disabled': this.disabled,
-			'd2l-hovering': this._isHovered && !this.disabled
+			'd2l-disabled': this.disabled && !this.skeleton,
+			'd2l-hovering': this._isHovered && !disabled,
+			'd2l-skeletize': true
 		};
 		const supportingClasses = {
 			'd2l-input-radio-supporting': true,
@@ -118,19 +126,19 @@ class InputRadio extends InputInlineHelpMixin(FocusMixin(PropertyRequiredMixin(L
 		};
 		const description = this.description ? html`<div id="${this.#descriptionId}" hidden>${this.description}</div>` : nothing;
 		const ariaDescribedByIds = `${this.description ? this.#descriptionId : ''} ${this._hasInlineHelp ? this.#inlineHelpId : ''}`.trim();
-		const tabindex = (!this.disabled && (this._checked || this._firstFocusable)) ? '0' : undefined;
+		const tabindex = (!disabled && (this._checked || this._firstFocusable)) ? '0' : undefined;
 		return html`
 			<div class="${classMap(labelClasses)}" @mouseover="${this.#handleMouseOver}" @mouseout="${this.#handleMouseOut}">
 				<div
 					aria-checked="${this._checked}"
 					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
-					aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}"
+					aria-disabled="${ifDefined(disabled ? 'true' : undefined)}"
 					aria-invalid="${ifDefined(this._invalid ? 'true' : undefined)}"
 					aria-labelledby="${this.#labelId}"
 					class="${classMap(radioClasses)}"
 					role="radio"
 					tabindex="${ifDefined(tabindex)}"></div>
-				<div id="${this.#labelId}">${this.label}</div>
+				<div id="${this.#labelId}" class="d2l-skeletize">${this.label}</div>
 			</div>
 			${this._renderInlineHelp(this.#inlineHelpId)}
 			${description}
