@@ -140,13 +140,13 @@ class InputRadioGroup extends PropertyRequiredMixin(FormElementMixin(LitElement)
 	#handleKeyDown(e) {
 		if (e.target.tagName !== 'D2L-INPUT-RADIO') return;
 
-		// TODO: handle RTL
+		const isRtl = (getComputedStyle(this).direction === 'rtl');
 		let newOffset = null;
 		if (e.key === ' ') {
 			newOffset = 0;
-		} else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+		} else if (e.key === 'ArrowUp' || (!isRtl && e.key === 'ArrowLeft') || (isRtl && e.key === 'ArrowRight')) {
 			newOffset = -1;
-		} else if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+		} else if (e.key === 'ArrowDown' || (!isRtl && e.key === 'ArrowRight') || (isRtl && e.key === 'ArrowLeft')) {
 			newOffset = 1;
 		}
 

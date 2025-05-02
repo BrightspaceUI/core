@@ -5,7 +5,6 @@
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 		<script type="module">
-			import '../../button/button.js';
 			import '../../demo/demo-page.js';
 			import '../../form/form.js';
 			import '../input-group.js';
@@ -22,7 +21,7 @@
 				<d2l-input-radio-group label="Bread">
 					<d2l-input-radio label="Whole wheat" value="whole-wheat"></d2l-input-radio>
 					<d2l-input-radio label="French" value="french" checked></d2l-input-radio>
-					<d2l-input-radio label="Rye" value="rye"></d2l-input-radio>
+					<d2l-input-radio label="Marble Rye" value="marble-rye"></d2l-input-radio>
 				</d2l-input-radio-group>
 			</d2l-demo-snippet>
 
@@ -33,10 +32,10 @@
 						<d2l-input-radio-group name="bread" label="Bread" required>
 							<d2l-input-radio label="Whole wheat" value="whole-wheat"></d2l-input-radio>
 							<d2l-input-radio label="French" value="french"></d2l-input-radio>
-							<d2l-input-radio label="Rye" value="rye"></d2l-input-radio>
+							<d2l-input-radio label="Marble Rye" value="marble-rye"></d2l-input-radio>
 						</d2l-input-radio-group>
 					</d2l-input-group>
-					<d2l-button primary style="margin-top: 20px">Save</d2l-button>
+					<button style="margin-top: 20px">Save</button>
 				</d2l-form>
 				<script>
 					(demo => {
@@ -44,7 +43,7 @@
 						form.addEventListener('d2l-form-submit', (e) => {
 							console.log(`form submitted, value: "${e.detail.formData['bread']}"`);
 						});
-						const button = demo.querySelector('d2l-button');
+						const button = demo.querySelector('button');
 						button.addEventListener('click', () => form.submit());
 					})(document.currentScript.parentNode);
 				</script>
@@ -53,13 +52,13 @@
 			<h2>Disabled item</h2>
 			<d2l-demo-snippet>
 				<d2l-input-radio-group label="Bread">
-					<d2l-input-radio label="Whole wheat"></d2l-input-radio>
-					<d2l-input-radio label="White" disabled checked></d2l-input-radio>
-					<d2l-input-radio label="Gluten free"></d2l-input-radio>
+					<d2l-input-radio label="Whole wheat" checked></d2l-input-radio>
+					<d2l-input-radio label="French" disabled></d2l-input-radio>
+					<d2l-input-radio label="Marble Rye"></d2l-input-radio>
 				</d2l-input-radio-group>
 			</d2l-demo-snippet>
 
-			<h2>Radio group with labels</h2>
+			<h2>Standard radios with styles</h2>
 			<d2l-demo-snippet>
 				<d2l-test-input-radio-label></d2l-test-input-radio-label>
 			</d2l-demo-snippet>

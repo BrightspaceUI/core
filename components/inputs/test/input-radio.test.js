@@ -191,6 +191,12 @@ describe('d2l-input-radio', () => {
 			expectActive('3', true);
 		});
 
+		it('should check the previous item on arrow RIGHT (RTL)', async() => {
+			const elem = await fixture(radioFixtures.secondChecked, { rtl: true });
+			await sendKeysElem(elem, 'press', 'ArrowRight');
+			expectActive('1', true);
+		});
+
 		it('should check the next item on arrow DOWN', async() => {
 			const elem = await fixture(radioFixtures.secondChecked);
 			await sendKeysElem(elem, 'press', 'ArrowDown');
@@ -201,6 +207,12 @@ describe('d2l-input-radio', () => {
 			const elem = await fixture(radioFixtures.secondChecked);
 			await sendKeysElem(elem, 'press', 'ArrowLeft');
 			expectActive('1', true);
+		});
+
+		it('should check the next item on arrow LEFT (RTL)', async() => {
+			const elem = await fixture(radioFixtures.secondChecked, { rtl: true });
+			await sendKeysElem(elem, 'press', 'ArrowLeft');
+			expectActive('3', true);
 		});
 
 		it('should check the previous item on arrow UP', async() => {
