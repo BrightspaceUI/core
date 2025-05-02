@@ -29,6 +29,12 @@ class InputRadioGroup extends PropertyRequiredMixin(FormElementMixin(LitElement)
 
 	static get styles() {
 		return [inputLabelStyles, css`
+			:host {
+				display: block;
+			}
+			:host([hidden]) {
+				display: none;
+			}
 			div[role="radiogroup"] {
 				display: flex;
 				flex-direction: column;
