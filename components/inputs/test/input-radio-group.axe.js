@@ -1,10 +1,15 @@
 import { expect, fixture } from '@brightspace-ui/testing';
 import { radioFixtures } from './input-radio-fixtures.js';
 
-describe('d2l-input-radio', () => {
+describe('d2l-input-radio-group', () => {
 
-	it('normal', async() => {
+	it('labelled', async() => {
 		const elem = await fixture(radioFixtures.secondChecked);
+		await expect(elem).to.be.accessible();
+	});
+
+	it('label hidden', async() => {
+		const elem = await fixture(radioFixtures.labelHidden);
 		await expect(elem).to.be.accessible();
 	});
 

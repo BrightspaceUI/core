@@ -10,6 +10,7 @@
 			import '../input-group.js';
 			import '../input-radio.js';
 			import '../input-radio-group.js';
+			import '../../inputs/input-text.js';
 			import './input-radio-label-test.js';
 		</script>
 	</head>
@@ -20,18 +21,18 @@
 			<d2l-demo-snippet>
 				<d2l-input-radio-group label="Bread">
 					<d2l-input-radio label="Whole wheat" value="whole-wheat"></d2l-input-radio>
-					<d2l-input-radio label="French" value="french" checked></d2l-input-radio>
+					<d2l-input-radio label="Baguette" value="baguette" checked></d2l-input-radio>
 					<d2l-input-radio label="Marble Rye" value="marble-rye"></d2l-input-radio>
 				</d2l-input-radio-group>
 			</d2l-demo-snippet>
 
-			<h2>Required radio group</h2>
+			<h2>Required radio group in a form</h2>
 			<d2l-demo-snippet>
 				<d2l-form>
 					<d2l-input-group>
 						<d2l-input-radio-group name="bread" label="Bread" required>
 							<d2l-input-radio label="Whole wheat" value="whole-wheat"></d2l-input-radio>
-							<d2l-input-radio label="French" value="french"></d2l-input-radio>
+							<d2l-input-radio label="Baguette" value="baguette"></d2l-input-radio>
 							<d2l-input-radio label="Marble Rye" value="marble-rye"></d2l-input-radio>
 						</d2l-input-radio-group>
 					</d2l-input-group>
@@ -49,12 +50,39 @@
 				</script>
 			</d2l-demo-snippet>
 
-			<h2>Disabled item</h2>
+			<h2>Group with disabled item</h2>
 			<d2l-demo-snippet>
 				<d2l-input-radio-group label="Bread">
 					<d2l-input-radio label="Whole wheat" checked></d2l-input-radio>
-					<d2l-input-radio label="French" disabled></d2l-input-radio>
+					<d2l-input-radio label="Baguette" disabled></d2l-input-radio>
 					<d2l-input-radio label="Marble Rye"></d2l-input-radio>
+				</d2l-input-radio-group>
+			</d2l-demo-snippet>
+
+			<h2>Inline help</h2>
+			<d2l-demo-snippet>
+				<d2l-input-radio-group label="Bread">
+					<d2l-input-radio label="Whole wheat">
+						<div slot="inline-help">A healthy option, rich in fiber and nutrients.</div>
+					</d2l-input-radio>
+					<d2l-input-radio label="Baguette" checked>
+						<div slot="inline-help">A symbol of French culture and cuisine, with millions baked and consumed daily.</div>
+					</d2l-input-radio>
+					<d2l-input-radio label="Marble Rye">
+						<div slot="inline-help">Characterized by its distinctive appearance, achieved by weaving together light and dark rye dough.</div>
+					</d2l-input-radio>
+				</d2l-input-radio-group>
+			</d2l-demo-snippet>
+
+			<h2>Supporting slot</h2>
+			<d2l-demo-snippet>
+				<d2l-input-radio-group label="Bread">
+					<d2l-input-radio label="Whole wheat"></d2l-input-radio>
+					<d2l-input-radio label="Baguette"></d2l-input-radio>
+					<d2l-input-radio label="Marble Rye"></d2l-input-radio>
+					<d2l-input-radio label="Other" checked supporting-hidden-when-unchecked>
+						<d2l-input-text label="Other" label-hidden value="Sourdough" slot="supporting"></d2l-input-text>
+					</d2l-input-radio>
 				</d2l-input-radio-group>
 			</d2l-demo-snippet>
 
