@@ -103,6 +103,11 @@ if (usePopoverMixin) {
 				 */
 				forType: { type: String, attribute: 'for-type' },
 				/**
+				 * Adjust the size of the gap between the tooltip and its target (px)
+				 * @type {number}
+				 */
+				offset: { type: Number },
+				/**
 				 * @ignore
 				 */
 				showing: { type: Boolean, reflect: true },
@@ -126,6 +131,7 @@ if (usePopoverMixin) {
 			this.disableFocusLock = false;
 			this.forceShow = false;
 			this.forType = 'descriptor';
+			this.offset = 10;
 			this.showTruncatedOnly = false;
 
 			this.#handleTargetBlurBound = this.#handleTargetBlur.bind(this);
@@ -146,7 +152,6 @@ if (usePopoverMixin) {
 			this.#resizeRunSinceTruncationCheck = false;
 
 			/*
-			this.offset = pointerRotatedOverhang + pointerGap;
 			this.state = 'info';
 
 			this._viewportMargin = defaultViewportMargin;
@@ -210,35 +215,16 @@ if (usePopoverMixin) {
 		willUpdate(changedProperties) {
 			super.willUpdate(changedProperties);
 
-			super.configure();
-
-			changedProperties.forEach((_, prop) => {
-				if (prop === 'for') {
-					this.#updateTarget();
-				} else if (prop === 'forceShow') {
-					this.#updateShowing();
-				}
-			});
-
-			/*
-			if (changedProperties.has('align') || changedProperties.has('maxHeight') || changedProperties.has('maxWidth') || changedProperties.has('minHeight') || changedProperties.has('minWidth') || changedProperties.has('mobileBreakpointOverride') || changedProperties.has('mobileTray') || changedProperties.has('noAutoClose') || changedProperties.has('noAutoFit') || changedProperties.has('noAutoFocus') || changedProperties.has('noPointer') || changedProperties.has('trapFocus') || changedProperties.has('verticalOffset')) {
+			if (changedProperties.has('offset')) {
 				super.configure({
-					maxHeight: this.maxHeight,
-					maxWidth: this.maxWidth,
-					minHeight: this.minHeight,
-					minWidth: this.minWidth,
-					mobileBreakpoint: this.mobileBreakpointOverride,
-					mobileTrayLocation: this.#adaptMobileTrayLocation(this.mobileTray),
-					noAutoClose: this.noAutoClose,
-					noAutoFit: this.noAutoFit,
-					noAutoFocus: this.noAutoFocus,
-					noPointer: this.noPointer,
-					offset: (this.verticalOffset !== undefined ? Number.parseInt(this.verticalOffset) : undefined),
-					position: { location: 'block-end', span: this.#adaptPositionSpan(this.align) },
-					trapFocus: this.trapFocus
+					offset: (this.offset !== undefined ? Number.parseInt(this.offset) : undefined)
 				});
 			}
-			*/
+
+			changedProperties.forEach((_, prop) => {
+				if (prop === 'for') this.#updateTarget();
+				else if (prop === 'forceShow') this.#updateShowing();
+			});
 		}
 
 		hide() {
