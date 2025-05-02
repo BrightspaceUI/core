@@ -98,22 +98,16 @@ class InputRadioGroup extends PropertyRequiredMixin(FormElementMixin(LitElement)
 		let prevChecked = null;
 		radios.forEach(el => {
 			if (el._checked) prevChecked = el;
-			el._firstFocusable = false;
 		});
 		if (prevChecked === newChecked) return;
-
-		this.setFormValue(newChecked.value);
-		if (this.required) {
-			this.setValidity({ valueMissing: false });
-			this.requestValidate(true);
-		}
 
 		newChecked._checked = true;
 		if (prevChecked !== null) {
 			prevChecked._checked = false;
 		}
+		this.#recalculateState(false);
 
-		if (doDispatchEvent && prevChecked !== newChecked) {
+		if (doDispatchEvent) {
 			this.dispatchEvent(new CustomEvent('change', {
 				bubbles: true,
 				composed: true,
@@ -125,7 +119,7 @@ class InputRadioGroup extends PropertyRequiredMixin(FormElementMixin(LitElement)
 		}
 
 		if (doFocus) {
-			await newChecked.updateComplete;
+			await newChecked.updateComplete; // wait for tabindex to be updated
 			newChecked.focus();
 		}
 	}
@@ -179,10 +173,10 @@ class InputRadioGroup extends PropertyRequiredMixin(FormElementMixin(LitElement)
 	#handleRadioChecked(e) {
 		if (e.detail.checked) {
 			this.#doUpdateChecked(e.target, false, false);
-			return;
+		} else {
+			e.target._checked = false;
+			this.#recalculateState(false);
 		}
-		e.target._checked = false;
-		this.#recalculateState(false);
 	}
 
 	#handleSlotChange() {
