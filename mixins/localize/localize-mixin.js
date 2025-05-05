@@ -8,6 +8,9 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinB
 	constructor() {
 		super();
 		super.constructor.setLocalizeMarkup(localizeMarkup);
+		if (super.constructor.documentLocaleSettings.pseudoLocalization?.textFormat) {
+			this.localize = (...args) => super.constructor.pseudoLocalize((...args) => super.localize(...args), ...args);
+		}
 	}
 
 	connectedCallback() {

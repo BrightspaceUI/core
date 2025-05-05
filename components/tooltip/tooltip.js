@@ -1,15 +1,18 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { cssEscape, elemIdListAdd, elemIdListRemove, getBoundingAncestor, getOffsetParent, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, isFocusable } from '../../helpers/focus.js';
 import { interactiveElements, interactiveRoles, isInteractive } from '../../helpers/interactive.js';
 import { announce } from '../../helpers/announce.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
+
+const inputStyleTweaksEnabled = getFlag('input-style-tweaks', true);
 
 let logAccessibilityWarning = true;
 
@@ -310,12 +313,13 @@ class Tooltip extends RtlMixin(LitElement) {
 				border-radius: ${contentBorderRadius}px;
 				box-sizing: border-box;
 				max-width: 17.5rem;
-				min-height: 2.1rem;
+				min-height: ${unsafeCSS(inputStyleTweaksEnabled ? '1.95rem' : '2.1rem')}; /* stylelint-disable-line */
 				min-width: 2.1rem;
 				outline: ${outlineSize}px solid var(--d2l-tooltip-outline-color);
 				overflow: hidden;
 				overflow-wrap: anywhere;
-				padding: ${11 - contentBorderSize}px ${contentHorizontalPadding - contentBorderSize}px;
+				padding-block: ${(inputStyleTweaksEnabled ? 10 : 11) - contentBorderSize}px ${11 - contentBorderSize}px;
+				padding-inline: ${contentHorizontalPadding - contentBorderSize}px;
 				position: absolute;
 			}
 
@@ -560,6 +564,8 @@ class Tooltip extends RtlMixin(LitElement) {
 
 		// Compute the size of the spaces above, below, left and right and find which space to fit the tooltip in
 		const content = this._getContent();
+		if (content === null) return;
+
 		const spaces = this._computeAvailableSpaces(targetRect, spaceAround);
 		const space = await this._fitContentToSpace(content, spaces);
 
@@ -737,7 +743,7 @@ class Tooltip extends RtlMixin(LitElement) {
 			this._maxWidth = space.width;
 			await this.updateComplete;
 
-			if (content.scrollWidth + 2 * contentBorderSize <= space.width && content.scrollHeight + 2 * contentBorderSize <= space.height) {
+			if (content.scrollWidth + 2 * contentBorderSize <= Math.ceil(space.width) && content.scrollHeight + 2 * contentBorderSize <= Math.ceil(space.height)) {
 				return space;
 			}
 		}

@@ -205,14 +205,13 @@
 		<d2l-demo-snippet>
 			<template>
 				<d2l-button id="toggle" disabled-tooltip="This tooltip shows if button is disabled, but only after refocusing">Toggle Disable</d2l-button>
+				<script>
+					document.querySelector('#toggle').addEventListener('click', e => e.target.disabled = !e.target.disabled);
+					document.addEventListener('d2l-tooltip-show', e => console.log('d2l-tooltip-show', e.target));
+					document.addEventListener('d2l-tooltip-hide', e => console.log('d2l-tooltip-hide', e.target));
+				</script>
 			</template>
 		</d2l-demo-snippet>
-
-		<script>
-			document.querySelector('#toggle').addEventListener('click', e => e.target.disabled = !e.target.disabled);
-			document.addEventListener('d2l-tooltip-show', e => console.log('d2l-tooltip-show', e.target));
-			document.addEventListener('d2l-tooltip-hide', e => console.log('d2l-tooltip-hide', e.target));
-		</script>
 
 	</d2l-demo-page>
 
