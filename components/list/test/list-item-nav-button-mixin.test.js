@@ -1,11 +1,11 @@
 import '../list.js';
-import '../list-item-nav.js';
+import '../list-item-nav-button.js';
 import { defineCE, expect, fixture, oneEvent, waitUntil } from '@brightspace-ui/testing';
 import { html, LitElement } from 'lit';
-import { ListItemNavMixin } from '../list-item-nav-mixin.js';
+import { ListItemNavButtonMixin } from '../list-item-nav-button-mixin.js';
 
 const tag = defineCE(
-	class extends ListItemNavMixin(LitElement) {
+	class extends ListItemNavButtonMixin(LitElement) {
 		render() {
 			return html`
 				${this._renderListItem()}
@@ -14,10 +14,10 @@ const tag = defineCE(
 	}
 );
 
-describe('ListItemNavMixin', () => {
+describe('ListItemNavButtonMixin', () => {
 
 	describe('aria-current', () => {
-		it('sets aria-current to "page"" when current attribute is set', async() => {
+		it('sets aria-current to "page" when current attribute is set', async() => {
 			const element = await fixture(`<${tag} current label="some label"></${tag}>`);
 			await element.updateComplete;
 			expect(element.current).to.be.true;
@@ -116,30 +116,30 @@ describe('ListItemNavMixin', () => {
 		beforeEach(async() => {
 			elem = await fixture(html`
 				<d2l-list label="some label">
-					<d2l-list-item-nav id="a1" label="a1">
+					<d2l-list-item-nav-button id="a1" label="a1">
 						<d2l-list slot="nested">
-							<d2l-list-item-nav id="a1-1" label="a1-1">
+							<d2l-list-item-nav-button id="a1-1" label="a1-1">
 								<d2l-list slot="nested">
-									<d2l-list-item-nav id="a1-1-1" label="a1-1-1" current></d2l-list-item-nav>
-									<d2l-list-item-nav id="a1-1-2" label="a1-1-2"></d2l-list-item-nav>
+									<d2l-list-item-nav-button id="a1-1-1" label="a1-1-1" current></d2l-list-item-nav-button>
+									<d2l-list-item-nav-button id="a1-1-2" label="a1-1-2"></d2l-list-item-nav-button>
 								</d2l-list>
-							</d2l-list-item-nav>
-							<d2l-list-item-nav id="a1-2" label="a1-2"></d2l-list-item-nav>
+							</d2l-list-item-nav-button>
+							<d2l-list-item-nav-button id="a1-2" label="a1-2"></d2l-list-item-nav-button>
 						</d2l-list>
-					</d2l-list-item-nav>
-					<d2l-list-item-nav id="a2" label="a2">
+					</d2l-list-item-nav-button>
+					<d2l-list-item-nav-button id="a2" label="a2">
 						<d2l-list slot="nested">
-							<d2l-list-item-nav id="a2-1" label="a2-1"></d2l-list-item-nav>
+							<d2l-list-item-nav-button id="a2-1" label="a2-1"></d2l-list-item-nav-button>
 						</d2l-list>
-					</d2l-list-item-nav>
-					<d2l-list-item-nav id="a3" label="a3"></d2l-list-item-nav>
+					</d2l-list-item-nav-button>
+					<d2l-list-item-nav-button id="a3" label="a3"></d2l-list-item-nav-button>
 				</d2l-list>
 			`);
 			await elem.updateComplete;
 		});
 
 		function checkAriaCurrent(expectedPage, expectedLocations) {
-			const navItems = elem.querySelectorAll('d2l-list-item-nav');
+			const navItems = elem.querySelectorAll('d2l-list-item-nav-button');
 			navItems.forEach((item) => {
 				const button = item.shadowRoot.querySelector('button');
 				if (item.id === expectedPage) {

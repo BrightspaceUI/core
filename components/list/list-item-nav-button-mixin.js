@@ -2,7 +2,7 @@ import '../colors/colors.js';
 import { css } from 'lit';
 import { ListItemButtonMixin } from './list-item-button-mixin.js';
 
-export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(superclass) {
+export const ListItemNavButtonMixin = superclass => class extends ListItemButtonMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -117,7 +117,7 @@ export const ListItemNavMixin = superclass => class extends ListItemButtonMixin(
 
 	async #setChildCurrent(e) {
 		await this.updateComplete; // ensure button exists
-		if (e.target === this || !this._button) return;
+		if (e.target === this) return;
 		this._childCurrent = e.detail.value;
 	}
 
