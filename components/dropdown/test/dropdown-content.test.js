@@ -69,68 +69,6 @@ const dropdownD2LButtonOpener = html`
 	</div>
 `;
 
-const twoColumnFixture = html`
-<div style="height: 75px; overflow: scroll;">
-	<d2l-dropdown>
-		<button class="another-class d2l-dropdown-opener">open</button>
-		<d2l-dropdown-content max-width="900" min-width="200" max-height="100">
-					<div>
-						<div style="float: left; margin-left: 20px; width: 200px;">
-							<h2 class="d2l-heading">Small Dogs</h2>
-							<div>Chihuahua</div>
-							<div>Pomeranian</div>
-							<div>Yorkshire Terrier</div>
-							<div>Shih Tzu</div>
-							<div>Dachshund</div>
-							<div>Miniature Schnauzer</div>
-							<div>French Bulldog</div>
-							<div>Pug</div>
-							<div>Boston Terrier</div>
-							<div>Havanese</div>
-						</div>
-						<div style="float: left; margin-left: 20px; width: 200px;">
-							<h2 class="d2l-heading">Large Dogs</h2>
-							<div>Golden Retriever</div>
-							<div>German Shepherd</div>
-							<div>Labrador Retriever</div>
-							<div>Rottweiler</div>
-							<div>Great Dane</div>
-							<div>Bernese Mountain Dog</div>
-							<div>Doberman Pinscher</div>
-						</div>
-					</div>
-				</d2l-dropdown-content>
-	</d2l-dropdown>
-	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-		magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-		commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-		nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-		anim id est laborum.</p>
-</div>
-`;
-
-describe.only('test the bug', () => {
-
-	it('works properly when scrolling', async() => {
-		const dropdown = await fixture(twoColumnFixture);
-		dropdown.scrollTop = 0;
-
-		const content = dropdown.querySelector('d2l-dropdown-content');
-		content.setAttribute('opened', true);
-		await oneEvent(content, 'd2l-dropdown-open');
-
-		const container = content.shadowRoot.querySelector('.d2l-dropdown-content-container');
-		const initialWidth = getComputedStyle(container).width;
-
-		dropdown.scrollTop = 25;
-		await oneEvent(dropdown, 'scroll');
-		const afterScrollWiddth = getComputedStyle(container).width;
-
-		expect(initialWidth).to.equal(afterScrollWiddth);
-
-	});
-});
-
 describe('d2l-dropdown', () => {
 
 	let dropdown, content;

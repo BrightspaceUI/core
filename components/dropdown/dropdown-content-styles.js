@@ -123,6 +123,7 @@ export const dropdownContentStyles = css`
 		outline: none;
 		overflow-y: auto;
 		padding: 1rem;
+		scrollbar-gutter: stable;
 	}
 
 	.d2l-dropdown-content-top,
