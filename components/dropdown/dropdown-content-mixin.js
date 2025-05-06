@@ -893,21 +893,21 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 
 	_getDropdownStyling() {
 		const widthStyle = {
-			maxWidth: this.maxWidth ? `${this.maxWidth}px` : '',
-			minWidth: this.minWidth ? `${this.minWidth}px` : '',
+			maxWidth: this.maxWidth ? `${this.maxWidth}px` : null,
+			minWidth: this.minWidth ? `${this.minWidth}px` : null,
 			/* add 2 to content width since scrollWidth does not include border */
-			width: this._width ? `${this._width + 20}px` : ''
+			width: this._width ? `${this._width + 20}px` : null
 		};
 
 		const contentWidthStyle = {
-			minWidth: this.minWidth ? `${this.minWidth}px` : '',
+			minWidth: this.minWidth ? `${this.minWidth}px` : null,
 			/* set width of content in addition to width container so header and footer borders are full width */
-			width: this._width ? `${this._width + 18}px` : '',
+			width: this._width ? `${this._width + 18}px` : null,
 		};
 
 		const contentStyle = {
 			...contentWidthStyle,
-			maxHeight: this._contentHeight ? `${this._contentHeight}px` : '',
+			maxHeight: this._contentHeight ? `${this._contentHeight}px` : null,
 		};
 
 		const closeButtonStyle = {
