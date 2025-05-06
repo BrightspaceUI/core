@@ -1,14 +1,14 @@
 # FormElementMixin
 
-The `FormElementMixin` allows the user to turn a custom web component into a form element.
+The `FormElementMixin` allows custom web components to participate as a form element.
 
 This means that the component will be able to:
 1. Perform live self-validation when being edited.
-1. Participate in validation and submission when added to `d2l-form` or `d2l-form-native`.
+1. Participate in validation and submission when added to `d2l-form`.
 
-All custom form elements must provide a form value that will be submitted during `d2l-form` or `d2l-form-native` submission.
-However, participating in validation is optional. Some custom form elements may not need validation because they have no
-invalid state.
+All custom form elements must provide a form value that will be submitted during `d2l-form` submission.
+
+Participating in validation is, however, optional. Some custom form elements may not need validation because they have no invalid state.
 
 ## Form Value
 
@@ -24,7 +24,6 @@ invalid state.
 		- When an `Object` is provided, all keys-value pairs will be submitted. To avoid collision it is recommended that you prefix each key with the component's `name` property value.
 	1. A single value: `'my-value'`
 		- When a single value is provided a key-value pair will be submitted with the component's `name` property value as the key. If `name` does not have a value, the value will not be submitted.
-	- **Note:** When using `d2l-form-native` all values will be converted to `String`s. Complex value may be used with `d2l-form` but should only be used if absolutely required to maintain compatibility with `d2l-form-native`.
 
 ## Validation
 
@@ -61,7 +60,6 @@ invalid state.
 - Additional validation logic can be added to custom form elements by using the `d2l-validation-custom` component. [See the documentation for more information](../../validation/README.md).
 
 ## Usage
-
 
 ```javascript
 import { FormElementMixin } from '@brightspace-ui/core/form/form-element-mixin.js';
