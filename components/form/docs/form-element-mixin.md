@@ -8,7 +8,7 @@ This means that the component will be able to:
 
 All custom form elements must provide a form value that will be submitted during `d2l-form` submission.
 
-Participating in validation is however optional. Some custom form elements may not need validation because they have no invalid state.
+Participating in validation is, however, optional. Some custom form elements may not need validation because they have no invalid state.
 
 ## Form Value
 

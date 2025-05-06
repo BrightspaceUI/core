@@ -4,7 +4,7 @@ There are several components and mixins available to help make working with form
 
 ## Validating and Submitting Forms Using `<d2l-form>`
 
-Much like a native `<form>` element, `<d2l-form>` groups nested form elements together and controlls how their data is validated and submitted. Unlike native `<form>`s, it supports our custom form elements.
+Much like a native `<form>` element, `<d2l-form>` groups nested form elements together and controls how their data is validated and submitted. Unlike native `<form>`s, it supports our custom form elements.
 
 - [d2l-form](docs/form.md#form-d2l-form): supports aggregation of nested forms for validation and submission
 
