@@ -1,7 +1,13 @@
+import './form-errory-summary.js';
+import '../tooltip/tooltip.js';
+import '../link/link.js';
 import { css, html, LitElement } from 'lit';
 import { findFormElements, flattenMap, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
-import { FormMixin } from './form-mixin.js';
+import { getComposedActiveElement } from '../../helpers/focus.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { localizeFormElement } from './form-element-localize-helper.js';
 
 /**
  * A component that can be used to build sections containing interactive controls that are validated and submitted as a group.
@@ -9,7 +15,7 @@ import { FormMixin } from './form-mixin.js';
  * @slot - The native and custom form elements that participate in validation and submission
  * @fires d2l-form-connect - Internal event
  */
-class Form extends FormMixin(LitElement) {
+class Form extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
@@ -20,6 +26,13 @@ class Form extends FormMixin(LitElement) {
 			 * @type {boolean}
 			 */
 			noNesting: { type: Boolean, attribute: 'no-nesting', reflect: true },
+			/**
+			 * Indicates that the form should interrupt and warn on navigation if the user has unsaved changes on native elements.
+			 * @type {boolean}
+			 */
+			trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true },
+			_errors: { type: Object },
+			_hasErrors: { type: Boolean, attribute: '_has-errors', reflect: true },
 		};
 	}
 
@@ -39,21 +52,37 @@ class Form extends FormMixin(LitElement) {
 
 	constructor() {
 		super();
+		this.trackChanges = false;
+		this._errors = new Map();
 		this._isSubForm = false;
 		this._nestedForms = new Map();
+		this._firstUpdateResolve = null;
+		this._firstUpdatePromise = new Promise((resolve) => {
+			this._firstUpdateResolve = resolve;
+		});
+		this._tooltips = new Map();
+		this._validationCustoms = new Set();
+
+		this._onUnload = this._onUnload.bind(this);
+		this._onNativeSubmit = this._onNativeSubmit.bind(this);
 
 		/** @ignore */
 		this.addEventListener('d2l-form-connect', this._onFormConnect);
+		this.addEventListener('d2l-form-errors-change', this._onErrorsChange);
+		this.addEventListener('d2l-form-element-errors-change', this._onErrorsChange);
+		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
+		window.addEventListener('beforeunload', this._onUnload);
 		/** @ignore */
 		this._isSubForm = !this.dispatchEvent(new CustomEvent('d2l-form-connect', { bubbles: true, composed: true, cancelable: true }));
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
+		window.removeEventListener('beforeunload', this._onUnload);
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-form-disconnect'));
 		this._isSubForm = false;
@@ -62,6 +91,10 @@ class Form extends FormMixin(LitElement) {
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
+		this.addEventListener('change', this._onFormElementChange);
+		this.addEventListener('input', this._onFormElementChange);
+		this.addEventListener('focusout', this._onFormElementChange);
+		this._firstUpdateResolve();
 		this._setupDialogValidationReset();
 	}
 
@@ -77,6 +110,13 @@ class Form extends FormMixin(LitElement) {
 			${errorSummary}
 			<slot></slot>
 		`;
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('_errors')) {
+			this._hasErrors = this._errors.size > 0;
+		}
 	}
 
 	async requestSubmit(submitter) {
@@ -145,6 +185,34 @@ class Form extends FormMixin(LitElement) {
 		return flattenedErrorMap;
 	}
 
+	_displayInvalid(ele, message) {
+		let tooltip = this._tooltips.get(ele);
+		if (!tooltip) {
+			tooltip = document.createElement('d2l-tooltip');
+			tooltip.for = ele.id;
+			tooltip.align = 'start';
+			tooltip.state = 'error';
+			ele.parentNode.append(tooltip);
+			this._tooltips.set(ele, tooltip);
+
+			tooltip.appendChild(document.createTextNode(message));
+		} else if (tooltip.innerText.trim() !== message.trim()) {
+			tooltip.textContent = '';
+			tooltip.appendChild(document.createTextNode(message));
+			tooltip.updatePosition();
+		}
+		ele.setAttribute('aria-invalid', 'true');
+	}
+
+	_displayValid(ele) {
+		const tooltip = this._tooltips.get(ele);
+		if (tooltip) {
+			this._tooltips.delete(ele);
+			tooltip.remove();
+		}
+		ele.setAttribute('aria-invalid', 'false');
+	}
+
 	_findFormElements() {
 		const isFormElementPredicate = ele => this._hasSubForms(ele);
 		const visitChildrenPredicate = ele => !this._hasSubForms(ele);
@@ -161,6 +229,14 @@ class Form extends FormMixin(LitElement) {
 
 	_isRootForm() {
 		return !this._isSubForm || this.noNesting;
+	}
+
+	_onErrorsChange(e) {
+		if (e.target === this) {
+			return;
+		}
+		e.stopPropagation();
+		this._updateErrors(e.target, e.detail.errors);
 	}
 
 	_onFormConnect(e) {
@@ -195,6 +271,37 @@ class Form extends FormMixin(LitElement) {
 
 	}
 
+	async _onFormElementChange(e) {
+		const ele = e.target;
+
+		if ((isNativeFormElement(ele) || isCustomFormElement(ele)) && e.type !== 'focusout') {
+			this._dirty = true;
+			/** Dispatched whenever any form element fires an `input` or `change` event. Can be used to track whether the form is dirty or not. */
+			this.dispatchEvent(new CustomEvent('d2l-form-dirty'));
+		}
+
+		if (!isNativeFormElement(ele)) {
+			return;
+		}
+		e.stopPropagation();
+		const errors = await this._validateFormElement(ele, e.type === 'focusout');
+		this._updateErrors(ele, errors);
+	}
+
+	_onNativeSubmit(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		const submitter = e.submitter || getComposedActiveElement();
+		this.requestSubmit(submitter);
+	}
+
+	_onUnload(e) {
+		if (this.trackChanges && this._dirty) {
+			e.preventDefault();
+			e.returnValue = false;
+		}
+	}
+
 	_setupDialogValidationReset() {
 		const dialogAncestor = findComposedAncestor(
 			this,
@@ -227,6 +334,60 @@ class Form extends FormMixin(LitElement) {
 		}
 		/** Dispatched when the form is submitted. The form data can be obtained from the `detail`'s `formData` property. */
 		this.dispatchEvent(new CustomEvent('d2l-form-submit', { detail: { formData } }));
+	}
+
+	_updateErrors(ele, errors) {
+
+		if (!this._errors.has(ele)) {
+			return false;
+		}
+		if (Array.from(errors).length === 0) {
+			this._errors.delete(ele);
+		} else {
+			this._errors.set(ele, errors);
+		}
+		const detail = { bubbles: true, composed: true, detail: { errors: this._errors } };
+		/** @ignore */
+		this.dispatchEvent(new CustomEvent('d2l-form-errors-change', detail));
+		this.requestUpdate('_errors');
+		return true;
+	}
+
+	async _validateFormElement(ele, showNewErrors) {
+		// if validation occurs before we've rendered,
+		// localization may not have loaded yet
+		await this._firstUpdatePromise;
+		ele.id = ele.id || getUniqueId();
+		if (isCustomFormElement(ele)) {
+			return ele.validate(showNewErrors);
+		} else if (isNativeFormElement(ele)) {
+			const customs = [...this._validationCustoms].filter(custom => custom.forElement === ele);
+			const results = await Promise.all(customs.map(custom => custom.validate()));
+			const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
+			if (!ele.checkValidity()) {
+				const validationMessage = localizeFormElement(this.localize.bind(this), ele);
+				errors.unshift(validationMessage);
+			}
+			if (errors.length > 0 && (showNewErrors || ele.getAttribute('aria-invalid') === 'true')) {
+				this._displayInvalid(ele, errors[0]);
+			} else {
+				this._displayValid(ele);
+			}
+			return errors;
+		}
+		return [];
+	}
+
+	_validationCustomConnected(e) {
+		e.stopPropagation();
+		const custom = e.composedPath()[0];
+		this._validationCustoms.add(custom);
+
+		const onDisconnect = () => {
+			custom.removeEventListener('d2l-validation-custom-disconnected', onDisconnect);
+			this._validationCustoms.delete(custom);
+		};
+		custom.addEventListener('d2l-validation-custom-disconnected', onDisconnect);
 	}
 
 }
