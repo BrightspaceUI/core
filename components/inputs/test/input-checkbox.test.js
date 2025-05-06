@@ -1,8 +1,8 @@
 import '../../form/form.js';
 import '../input-checkbox.js';
 import { clickElem, expect, fixture, focusElem, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
-import { checkboxFixtures } from './input-checkbox-fixtures.js';
 import { mockFlag, resetFlag } from '../../../helpers/flags.js';
+import { checkboxFixtures } from './input-checkbox-fixtures.js';
 
 function getInput(elem) {
 	return elem.shadowRoot.querySelector('input.d2l-input-checkbox');
