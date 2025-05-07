@@ -251,9 +251,9 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				transform-origin: center;
 			}
 			d2l-icon-custom svg {
+				color: var(--d2l-color-tungsten);
 				position: absolute;
 				transform-origin: 0.4rem;
-				color: var(--d2l-color-tungsten);
 			}
 			:host([expanded]) d2l-icon-custom svg {
 				fill: currentColor;
