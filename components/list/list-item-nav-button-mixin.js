@@ -7,7 +7,7 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 	static get properties() {
 		return {
 			/**
-			 * Whether the list item is the current page in a navigation context
+			 * Whether the list item is the current page in a navigation context. At most one list item should have the `current` attribute at any time; this will be managed by the `list` after initial render.
 			 * @type {boolean}
 			 */
 			current: { type: Boolean, reflect: true },
