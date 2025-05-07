@@ -22,7 +22,7 @@ class Switch extends SwitchMixin(LitElement) {
 					color: inherit;
 				}
 			}
-		`]
+		`];
 	}
 
 	get offIcon() {
