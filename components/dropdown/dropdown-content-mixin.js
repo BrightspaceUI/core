@@ -762,7 +762,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-position', { bubbles: true, composed: true }));
 		};
 
-		if (!scrollPositionChange || !this._scrollWidth || !this._width) {
+		if (!scrollPositionChange || !this._scrollWidth) {
 			this._scrollWidth = Math.max(header.scrollWidth, content.scrollWidth, footer.scrollWidth);
 		}
 		const availableWidth = window.innerWidth - 40;
