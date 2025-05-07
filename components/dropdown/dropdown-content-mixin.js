@@ -677,7 +677,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		}
 	}
 
-	async __position(contentRect, options) {
+	async __position(contentRect, options, scrollPositionChange) {
 
 		options = Object.assign({ updateAboveBelow: true, updateHeight: true }, options);
 
@@ -762,9 +762,11 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-position', { bubbles: true, composed: true }));
 		};
 
-		const scrollWidth = Math.max(header.scrollWidth, content.scrollWidth, footer.scrollWidth);
+		if (!scrollPositionChange || !this._scrollWidth || !this._width) {
+			this._scrollWidth = Math.max(header.scrollWidth, content.scrollWidth, footer.scrollWidth);
+		}
 		const availableWidth = window.innerWidth - 40;
-		this._width = (availableWidth > scrollWidth ? scrollWidth : availableWidth) ;
+		this._width = (availableWidth > this._scrollWidth ? this._scrollWidth : availableWidth);
 
 		await this.updateComplete;
 
@@ -784,7 +786,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 		// throttle repositioning (https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event#scroll_event_throttling)
 		if (!this.__repositioning) {
 			requestAnimationFrame(() => {
-				this.__position(undefined, { updateAboveBelow: false, updateHeight: false });
+				this.__position(undefined, { updateAboveBelow: false, updateHeight: false }, true);
 				this.__repositioning = false;
 			});
 		}
