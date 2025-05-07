@@ -263,27 +263,27 @@
 							</d2l-list>
 						</d2l-list-item-nav-button>
 					</d2l-list>
+					<script>
+						(demo => {
+							let currentItem = document.querySelector('d2l-list-item-nav-button[current]');
+							demo.addEventListener('d2l-list-item-button-click', (e) => {
+								console.log('d2l-list-item-nav-button: click event');
+
+								if (!e.target.expandable) {
+									currentItem = e.target;
+									return;
+								}
+
+								if (currentItem !== e.target) {
+									e.target.expanded = true;
+									currentItem = e.target;
+								} else {
+									e.target.expanded = !e.target.expanded;
+								}
+							});
+						})(document.currentScript.parentNode);
+					</script>
 				</template>
-				<script type="module">
-					let currentItem = document.querySelector('d2l-list-item-nav-button[current]');
-					requestAnimationFrame(() => {
-						document.addEventListener('d2l-list-item-button-click', (e) => {
-							console.log('d2l-list-item-nav-button: click event');
-
-							if (!e.target.expandable) {
-								currentItem = e.target;
-								return;
-							}
-
-							if (currentItem !== e.target) {
-								e.target.expanded = true;
-								currentItem = e.target;
-							} else {
-								e.target.expanded = !e.target.expanded;
-							}
-						});
-					});
-				</script>
 			</d2l-demo-snippet>
 
 			<h2>All Iterations</h2>
