@@ -415,6 +415,12 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	_handleHeaderClick(e) {
+		if (e.target.tagName !== 'BUTTON') {
+			e.stopPropagation();
+			this.shadowRoot.querySelector('button').click();
+			return;
+		}
+
 		if (this.expanded) {
 			this._toggleExpand();
 			e.stopPropagation();
@@ -429,6 +435,12 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	_handlePanelClick(e) {
+		if (e.target.tagName !== 'BUTTON') {
+			e.stopPropagation();
+			this.shadowRoot.querySelector('button').click();
+			return;
+		}
+
 		if (!this.expanded) {
 			this._toggleExpand();
 			e.stopPropagation();
@@ -530,7 +542,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	_toggleExpand() {
 		if (this.skeleton) return;
 		this.expanded = !this.expanded;
-		this.focus();
 	}
 
 }

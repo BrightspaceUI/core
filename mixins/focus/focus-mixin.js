@@ -19,7 +19,8 @@ export const FocusMixin = dedupeMixin(superclass => class extends superclass {
 		}
 	}
 
-	focus() {
+	focus(options) {
+		options = options || {};
 
 		const selector = this.constructor.focusElementSelector;
 		if (!selector) {
@@ -36,7 +37,7 @@ export const FocusMixin = dedupeMixin(superclass => class extends superclass {
 			throw new Error(`FocusMixin: selector "${selector}" yielded no element for "${this.tagName}"`);
 		}
 
-		elem.focus();
+		elem.focus(options);
 
 	}
 
