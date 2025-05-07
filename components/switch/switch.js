@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../icons/icon-custom.js';
-import { html, LitElement } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { SwitchMixin } from './switch-mixin.js';
 
 /**
@@ -11,11 +11,25 @@ import { SwitchMixin } from './switch-mixin.js';
  */
 class Switch extends SwitchMixin(LitElement) {
 
+	static get styles() {
+		return [super.styles, css`
+			.d2l-switch-icon-off svg {
+				color: var(--d2l-color-ferrite);
+			}
+
+			@media (prefers-contrast: more) {
+				.d2l-switch-icon-off svg {
+					color: inherit;
+				}
+			}
+		`]
+	}
+
 	get offIcon() {
 		return html`
 			<d2l-icon-custom size="tier1">
 				<svg viewBox="0 0 18 18" height="18" width="18" xmlns="http://www.w3.org/2000/svg">
-					<circle cx="9" cy="9" r="6" stroke="var(--d2l-color-ferrite)" stroke-width="3" fill="none" />
+					<circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="3" fill="none" />
 				</svg>
 			</d2l-icon-custom>
 		`;
