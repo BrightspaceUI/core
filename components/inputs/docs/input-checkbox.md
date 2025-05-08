@@ -18,16 +18,16 @@ Checkboxes are used in forms to toggle an option or preference. They may be grou
 ## Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Use in a form to indicate an option or preference.
-* Use to allow the user to select multiple, independent options from a set.
-* When multiple options are presented together, [wrap them in a group](#d2l-input-checkbox-group).
-* Use an indeterminate state to indicate a mixed state where some child items are checked and some are not.
-* Use as progressive disclosure in forms, so long as users are made aware both visually and non-visually that new options have been made available.
+* Use in a form to indicate an option or preference
+* Use to allow the user to select multiple, independent options from a set
+* When multiple options are presented together, [wrap them in a group](#d2l-input-checkbox-group)
+* Use an indeterminate state to indicate a mixed state where some child items are checked and some are not
+* Use as progressive disclosure in forms, so long as users are made aware both visually and non-visually that new options have been made available
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Don't use as a toggle that performs an immediate action, use a Switch component.
-* Don't use for mutually exclusive options, use radio input groups.
+* Don't use as a toggle that performs an immediate action, use a Switch component
+* Don't use for mutually exclusive options, use radio input groups
 * Don't use labels as “instructions” or “phrases”. Good label: “Visible to Students”. Bad label: (“Check this to make it visible to students”)
 * Don't use labels to describe the default or “off” state of the option. As much as possible, use the label to refer to the “on” state. Good label: “Visible”. Bad label: “Hidden”.
 <!-- docs: end donts -->
