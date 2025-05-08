@@ -7,6 +7,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { isComposedAncestor } from '../../helpers/dom.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -343,6 +344,12 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		this._button = this.shadowRoot.querySelector('.d2l-collapsible-panel-opener');
+		this._content = this.shadowRoot.querySelector('.d2l-collapsible-panel-content');
+	}
+
 	render() {
 		const classes = {
 			'd2l-collapsible-panel': true,
@@ -414,19 +421,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 		));
 	}
 
-	_handleHeaderClick(e) {
-		if (e.target.tagName !== 'BUTTON') {
-			e.stopPropagation();
-			this.shadowRoot.querySelector('button').click();
-			return;
-		}
-
-		if (this.expanded) {
-			this._toggleExpand();
-			e.stopPropagation();
-		}
-	}
-
 	_handleHeaderSecondaryClick(e) {
 		const header = this.shadowRoot.querySelector('.d2l-collapsible-panel-header-secondary');
 		if (e.target !== header) {
@@ -435,15 +429,14 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	_handlePanelClick(e) {
-		if (e.target.tagName !== 'BUTTON') {
-			e.stopPropagation();
-			this.shadowRoot.querySelector('button').click();
-			return;
-		}
+		// if click target is the content or a child of the content, do nothing
+		if (e.target === this._content || isComposedAncestor(this._content, e.target)) return;
 
-		if (!this.expanded) {
+		e.stopPropagation();
+		if (e.target === this._button) {
 			this._toggleExpand();
-			e.stopPropagation();
+		} else {
+			this._button.click();
 		}
 	}
 
@@ -462,7 +455,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 
 	_renderHeader() {
 		return html`
-			<div class="d2l-collapsible-panel-header" @click="${this._handleHeaderClick}">
+			<div class="d2l-collapsible-panel-header">
 				<div class="d2l-collapsible-panel-before">
 					<slot name="before" @slotchange="${this._handleBeforeSlotChange}"></slot>
 				</div>
@@ -500,7 +493,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				class="d2l-collapsible-panel-opener"
 				aria-expanded="${this.expanded}"
 				type="button"
-				@click="${this._handleHeaderClick}"
 				@focus="${this._onFocus}"
 				@blur="${this._onBlur}"
 				aria-label="${ifDefined(this.expandCollapseLabel)}">${this.panelTitle}</button>
