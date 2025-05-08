@@ -1,5 +1,6 @@
 
 import { cssEscape } from '../../helpers/dom.js';
+import { getFlag } from '../../helpers/flags.js';
 
 const formElements = {
 	button: true,
@@ -149,6 +150,12 @@ const _hasFormData = (node, submitter) => {
 			return false;
 		}
 		if (type === 'reset') {
+			return false;
+		}
+	}
+	if (tagName === 'd2l-input-checkbox') {
+		const useFormElementMixin = getFlag('input-checkbox-form-element', true);
+		if (!useFormElementMixin || !node.checked) {
 			return false;
 		}
 	}

@@ -3,6 +3,7 @@ import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -68,7 +69,7 @@ export const checkboxStyles = css`
  * @slot supporting - Supporting information which will appear below and be aligned with the checkbox.
  * @fires change - Dispatched when the checkbox's state changes
  */
-class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitElement))) {
+class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitElement)))) {
 
 	static get properties() {
 		return {
@@ -111,11 +112,6 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			 * @type {boolean}
 			 */
 			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
-			/**
-			 * Name of the input
-			 * @type {string}
-			 */
-			name: { type: String },
 			/**
 			 * ACCESSIBILITY: ADVANCED: Sets "tabindex="-1"" on the checkbox. Note that an alternative method of focusing is necessary to implement if using this property.
 			 * @type {boolean}
@@ -255,6 +251,13 @@ class InputCheckbox extends InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitEle
 			${disabledTooltip}
 			<div class="${classMap(supportingClasses)}" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
 		`;
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('value')) {
+			this.setFormValue(this.value); // d2l-form handles not using value when unchecked
+		}
 	}
 
 	willUpdate(changedProperties) {

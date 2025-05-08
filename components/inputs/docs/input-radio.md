@@ -5,9 +5,14 @@ Radio Buttons are used in forms to offer a single choice among mutually exclusiv
 <!-- docs: demo display:block -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/inputs/demo/input-radio-label-simple-test.js';
+  import '@brightspace-ui/core/components/inputs/input-radio-group.js';
+  import '@brightspace-ui/core/components/inputs/input-radio.js';
 </script>
-<d2l-test-input-radio-label-simple></d2l-test-input-radio-label-simple>
+<d2l-input-radio-group label="Bread">
+  <d2l-input-radio label="Whole wheat" checked></d2l-input-radio>
+  <d2l-input-radio label="Baguette"></d2l-input-radio>
+  <d2l-input-radio label="Marble Rye"></d2l-input-radio>
+</d2l-input-radio-group>
 ```
 
 Unlike checkboxes, individual radio buttons cannot be placed in a custom element. Items belonging to a radio group cannot span across different shadow roots -- all radios in the same group must be in the same shadow root.
