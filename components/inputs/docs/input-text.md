@@ -44,18 +44,8 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-text.js';
-
-  window.addEventListener('load', function () {
-    var input = document.querySelector('#text');
-    input.addEventListener('change', (e) => {
-      console.log('input-text change: ', input.value);
-    });
-    input.addEventListener('input', (e) => {
-      console.log('input-text input: ', input.value);
-    });
-  });
 </script>
-<d2l-input-text id="text" label="Label"></d2l-input-text>
+<d2l-input-text label="Label"></d2l-input-text>
 ```
 
 <!-- docs: start hidden content -->
@@ -78,7 +68,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 | `maxlength` | Number | Imposes an upper character limit |
 | `min` | String | For number inputs, minimum value |
 | `minlength` | Number | Imposes a lower character limit |
-| `name` | String | Name of the input |
+| `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `novalidate` | Boolean | Disables the built-in validation |
 | `pattern` | String | Regular expression pattern to validate the value |
 | `pattern-failure-text` | String | Text to display when input fails validation against the pattern. If a list of characters is included in the message, use `LocalizeMixin`'s `localizeCharacter`. |
@@ -93,7 +83,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 
 ### Events
 
-The `d2l-input-text` dispatches the `change` event when an alteration to the value is committed (typically after focus is lost) by the user. To be notified immediately of changes made by the user, use the `input` event.
+The `<d2l-input-text>` dispatches the `change` event when an alteration to the value is committed (typically after focus is lost) by the user. To be notified immediately of changes made by the user, use the `input` event.
 
 ```javascript
 // dispatched when value changes are committed
@@ -116,44 +106,17 @@ input.addEventListener('input', (e) => {
 
 ### Accessibility Properties
 
-To make your usage of `d2l-input-text` accessible, use the following properties when applicable:
+To make your usage of `<d2l-input-text>` accessible, use the following properties when applicable:
 
 | Attribute | Description |
 |---|---|
 | `aria-haspopup` | [Indicate clicking the input opens a menu](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-haspopup). |
 | `aria-invalid` | [Indicate that the input value is invalid](https://www.w3.org/WAI/PF/aria/states_and_properties#aria-invalid) |
-| `aria-label` | Use when `label` does not provide enough context. Only applies if no `label-hidden`. |
 | `description` | Use when label on input does not provide enough context. |
 | `label` | **REQUIRED**  [Acts as a primary label on the input](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
 | `label-hidden` | Use if label should be visually hidden but available for screen reader users |
 | `labelled-by` | Use when another visible element should act as the label |
 | `unit` | Use to render the unit (offscreen) as part of the label. |
-
-## Applying styles to native text input
-
-As an alternative to using the `<d2l-input-text>` custom element, you can style a native text input inside your own element. Import `input-styles.js` and apply the `d2l-input` CSS class to the input:
-
-<!-- docs: demo code -->
-```html
-<script type="module">
-  import { html, LitElement } from 'lit';
-  import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
-
-  class MyTextInputElem extends LitElement {
-
-    static get styles() {
-      return inputStyles;
-    }
-
-    render() {
-      return html`<input type="text" class="d2l-input">`;
-    }
-
-  }
-  customElements.define('d2l-my-text-input-elem', MyTextInputElem);
-</script>
-<d2l-my-text-input-elem></d2l-my-text-input-elem>
-```
 
 ## Textarea Input [d2l-input-textarea]
 
@@ -163,23 +126,13 @@ The `<d2l-input-textarea>` is a wrapper around the native `<textarea>` element t
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-textarea.js';
-
-  window.addEventListener('load', function () {
-    var input = document.querySelector('#textarea');
-    input.addEventListener('change', (e) => {
-      console.log('input-textarea change: ', input.value);
-    });
-    input.addEventListener('input', (e) => {
-      console.log('input-textarea input: ', input.value);
-    });
-  });
 </script>
 <style>
   d2l-input-textarea {
     width: 100%;
   }
 </style>
-<d2l-input-textarea id="textarea" label="Description"></d2l-input-textarea>
+<d2l-input-textarea label="Description"></d2l-input-textarea>
 ```
 
 <!-- docs: start hidden content -->
@@ -187,15 +140,16 @@ The `<d2l-input-textarea>` is a wrapper around the native `<textarea>` element t
 
 | Property | Type | Description |
 |---|---|---|
+| `label` | String, required | Label for the `textarea` |
 | `aria-invalid` | String | Indicates that the `textarea` value is invalid |
 | `description` | String | A description to be added to the `textarea` for accessibility |
 | `disabled` | Boolean | Disables the `textarea` |
-| `label` | String, required | Label for the `textarea` |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the `textarea`'s `aria-label` attribute) |
 | `labelled-by` | String | HTML id of an element in the same shadow root which acts as the input's label |
 | `max-rows` | Number, default: 11 | Maximum number of rows before scrolling. Less than 1 allows `textarea` to grow infinitely. |
 | `maxlength` | Number | Imposes an upper character limit |
 | `minlength` | Number | Imposes a lower character limit |
+| `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `no-border` | Boolean | Hides the border |
 | `no-padding` | Boolean | Removes left/right padding |
 | `required` | Boolean | Indicates that a value is required |
@@ -204,7 +158,7 @@ The `<d2l-input-textarea>` is a wrapper around the native `<textarea>` element t
 
 ### Events
 
-The `d2l-input-textarea` dispatches the `change` event when an alteration to the value is committed (typically after focus is lost) by the user. To be notified immediately of changes made by the user, use the `input` event.
+The `<d2l-input-textarea>` dispatches the `change` event when an alteration to the value is committed (typically after focus is lost) by the user. To be notified immediately of changes made by the user, use the `input` event.
 
 ```javascript
 // dispatched when value changes are committed
@@ -235,29 +189,3 @@ To make your usage of `d2l-input-textarea` accessible, use the following propert
 
 * `focus()`: Places focus in the `textarea`
 * `select()`: Selects the contents of the `textarea`
-
-## Applying styles to native textarea
-
-Native `<textarea>` elements can be styled by importing `input-styles.js` into your LitElement and applying the `d2l-input` CSS class.
-
-<!-- docs: demo code -->
-```html
-<script type="module">
-  import { html, LitElement } from 'lit';
-  import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
-
-  class MyTextareaInputElem extends LitElement {
-    static get styles() {
-      return inputStyles;
-    }
-    render() {
-      return html`
-        <textarea class="d2l-input">
-        </textarea>
-        `;
-    }
-  }
-  customElements.define('d2l-my-textarea-input-elem', MyTextareaInputElem);
-</script>
-<d2l-my-textarea-input-elem></d2l-my-textarea-input-elem>
-```
