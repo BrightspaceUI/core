@@ -65,7 +65,7 @@ This will not only provide consistent spacing between checkboxes, but the group 
 
 The `<d2l-input-checkbox>` element can be used on its own or as an option within a `<d2l-input-checkbox-group>` collection. It will display a checkbox and optional visible label.
 
-When provided with a `name`, the checkbox can participate in forms when it is `checked` and enabled. Its value will be `"on"` unless another is provided using the `value` attribute.
+When provided with a `name`, the checkbox will participate in forms if it is `checked` and enabled.
 
 <!-- docs: demo code properties name:d2l-input-checkbox sandboxTitle:'Checkbox Input' display:block -->
 ```html

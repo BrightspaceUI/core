@@ -1,8 +1,8 @@
 # Styling Native Inputs
 
-In the majority of cases, it's recommended to use our web component wrappers around native inputs like text, textarea, checkboxes and radios. They'll provide functionality like inline help, skeletons, form participation and localized validation out-of-the-box.
+In the majority of cases, it's recommended to use our web component wrappers around native inputs like text, textarea, checkboxes and radios. They'll provide functionality like inline help, skeletons, form participation, and localized validation out-of-the-box.
 
-In the rare circumstances where it's preferred to use a native HTML input instead, it is possible to apply styles such that they appear similar to our web component variants.
+In the rare circumstance where a native HTML input is preferred, it is possible to apply styles such that they appear similar to our web component variants.
 
 ## Checkbox Input
 

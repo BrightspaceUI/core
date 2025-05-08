@@ -91,10 +91,10 @@ The `<d2l-input-radio>` element represents an option within its parent `<d2l-inp
 
 | Property | Type | Description |
 |---|---|---|
+| `label` | String, required | Label for the input |
 | `checked` | Boolean | Checked state |
 | `description` | String | Additional information communicated to screenreader users when focusing on the input |
 | `disabled` | Boolean | Disables the input |
-| `label` | String, required | Label for the input |
 | `supporting-hidden-when-unchecked` | Boolean | Hides the supporting slot when unchecked |
 | `value` | String | Value of the input |
 
