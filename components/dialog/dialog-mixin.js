@@ -162,6 +162,18 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-dialog-content').addEventListener('scroll', this._updateOverflow);
 	}
 
+	_checkForFocusableContentElem() {
+		if (!this.shadowRoot) return;
+		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
+		if (!content) return null;
+
+		const elementToFocus = this._findAutofocusElement(content) ?? getNextFocusable(content);
+		if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-content'), elementToFocus)) {
+			this.focusableContentElemPresent = true;
+		}
+		return elementToFocus;
+	}
+
 	_close(action) {
 		if (!this._state) return;
 		this._action = action;
@@ -227,16 +239,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	_focusFirst() {
 		if (!this.shadowRoot) return;
-		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
-		if (content) {
-			const elementToFocus = this._findAutofocusElement(content) ?? getNextFocusable(content);
-			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-content'), elementToFocus)) {
-				this.focusableContentElemPresent = true;
-			}
-			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), elementToFocus)) {
-				this._focusElemOrDescendant(elementToFocus);
-				return;
-			}
+		const elementToFocus = this._checkForFocusableContentElem();
+		if (elementToFocus && isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), elementToFocus)) {
+			this._focusElemOrDescendant(elementToFocus);
+			return;
 		}
 		const focusTrap = this.shadowRoot.querySelector('d2l-focus-trap');
 		if (focusTrap) {
@@ -458,6 +464,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			if (flag) {
 				await this.waitForUpdateComplete();
 				await this._updateSize();
+
+				requestAnimationFrame(() => this._checkForFocusableContentElem()); // check if focusable content is present in order to set focusableContentElemPresent to true
 			}
 			/** Dispatched when the dialog is opened */
 			this.dispatchEvent(new CustomEvent(

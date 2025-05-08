@@ -167,7 +167,7 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 
 		const content = html`
 			${loading}
-			<div id="${ifDefined(this._textId)}" style=${styleMap(slotStyles)}><slot></slot></div>
+			<div id="${ifDefined(this._textId)}" style=${styleMap(slotStyles)}><slot @slotchange="${this._handleSlotChange}"></slot></div>
 		`;
 
 		const contentTabIndex = !this.focusableContentElemPresent ? '0' : undefined;
@@ -226,6 +226,12 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 	_handleResize() {
 		this._autoSize = !mediaQueryList.matches;
 		this.resize();
+	}
+
+	_handleSlotChange() {
+		requestAnimationFrame(() => {
+			this._checkForFocusableContentElem();
+		});
 	}
 
 }

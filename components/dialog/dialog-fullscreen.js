@@ -254,7 +254,7 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 
 		const content = html`
 			${loading}
-			<div style=${styleMap(slotStyles)}><slot></slot></div>
+			<div style=${styleMap(slotStyles)}><slot @slotchange="${this._handleSlotChange}"></slot></div>
 		`;
 
 		const contentTabIndex = !this.focusableContentElemPresent ? '0' : undefined;
@@ -310,6 +310,12 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 	_handleResize() {
 		this._icon = mediaQueryList.matches ? 'tier1:close-small' : 'tier1:close-large-thick';
 		this._headerStyle = mediaQueryList.matches ? 'd2l-heading-3' : 'd2l-heading-2';
+	}
+
+	_handleSlotChange() {
+		requestAnimationFrame(() => {
+			this._checkForFocusableContentElem();
+		});
 	}
 
 }
