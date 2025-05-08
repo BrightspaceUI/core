@@ -73,21 +73,20 @@ export const selectStyles = css`
 	}
 
 	@media (prefers-contrast: more) {
-		.d2l-input-select  {
-			-webkit-appearance: auto;
-			-moz-appearance: auto;
+		.d2l-input-select {
+			-webkit-appearance: auto; /* stylelint-disable-line declaration-property-value-no-unknown */
+			-moz-appearance: auto; /* stylelint-disable-line declaration-property-value-no-unknown */
 			appearance: auto;
+			background-color: Field !important;
+			background-image: none;
 			border: none !important;
 			border-inline-end: 0.75rem solid transparent !important;
+			color: FieldText;
+			forced-color-adjust: none;
 			height: calc(2rem + 2px);
 			outline: 1px solid FieldText !important;
 			outline-offset: -1px;
-			background-color: Field;
-			background-image: none;
-			forced-color-adjust: none;
-			color: FieldText;
-			padding-inline-start: 0.6rem !important;
-			padding-inline-end: 16px !important;
+			padding-inline: 0.6rem 16px !important;
 		}
 
 		.d2l-input-select option {
