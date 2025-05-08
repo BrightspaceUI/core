@@ -66,6 +66,16 @@ A list displays a collection of objects of the same type. A list is primarily us
 
 ## Accessibility
 
+The list components are fairly complex and aim to be usable by all our users. Interesting details of note includes:
+
+* When the `grid` attribute is used on the `d2l-list` component, it enables the list to follow the [Grid Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/). More details on this are [below](#aria-layout-grid).
+
+* When using the `d2l-list-item-nav-button` component and/or mixin, usage of the `current` attribute adds the `aria-current` attribute to "page" for the `current` item and "location" for any parent and ancestors of the item. The components work together to keep these attributes up-to-date on subsequent selection. 
+
+   * Usage of the new `current` attribute over the existing `selected` attribute corresponds to `aria-current` and also leaves open the possibility of using both `current` and selection behavior together.
+
+### ARIA Layout Grid
+
 If your list items are selectable or have secondary action buttons, use the ARIA layout grid on `d2l-list` to make it easy to navigate between items. This makes the entire list a single tab stop, and then the user can use the arrow keys to navigate between various list rows and actions in the list item.
 
 **Benefits of the ARIA layout grid:**
@@ -601,7 +611,7 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 
 ## Navigational Button List Item [d2l-list-item-nav-button]
 
-The `d2l-list-item-nav-button` provides the same functionality as `d2l-list-item-button`, while also adding in side navigational menu semantics. The `current` attribute is used to show the currently selected item.
+Use a `d2l-list-item-nav-button` if your list serves as a table of contents or is part of a master/details workflow. It provides the same functionality as `d2l-list-item-button` while adding navigation semantics and behaviours. Use the `current` attribute to indicate the currently selected item — see more about this in [Accessibility](#accessibility).
 
 The example below also includes expand/collapse behavior in order to expand or collapse the items on subsequent clicks.
 
