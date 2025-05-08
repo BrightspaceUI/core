@@ -1,6 +1,6 @@
 import '../collapsible-panel.js';
 import '../collapsible-panel-summary-item.js';
-import { expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
+import { expect, fixture, html, oneEvent, runConstructor, sendKeys } from '@brightspace-ui/testing';
 
 describe('d2l-collapsible-panel', () => {
 
@@ -118,6 +118,55 @@ describe('d2l-collapsible-panel', () => {
 			const heading = elem.shadowRoot.querySelector('.d2l-collapsible-panel-title');
 			expect(heading.tagName).to.equal('H1');
 			expect(heading.classList.contains('d2l-heading-4')).to.be.true;
+		});
+	});
+
+	describe('interaction style', () => {
+		let button, elem;
+		beforeEach(async() => {
+			elem = await fixture(html`
+				<d2l-collapsible-panel panel-title="Panel Title">
+					Panel Content
+				</d2l-collapsible-panel>
+			`);
+			button = elem.shadowRoot.querySelector('button');
+		});
+
+		it('clicking button should expand but not trigger focus-visible on button', async() => {
+			button.click();
+			await oneEvent(elem, 'd2l-collapsible-panel-expand');
+			expect(button.matches(':focus-visible')).to.be.false;
+		});
+
+		it('clicking header should expand but not trigger focus-visible', async() => {
+			const header = elem.shadowRoot.querySelector('.d2l-collapsible-panel-header');
+			header.click();
+			await oneEvent(elem, 'd2l-collapsible-panel-expand');
+			expect(button.matches(':focus-visible')).to.be.false;
+		});
+
+		it('selecting heading with keypress should trigger focus-visible and expand', async() => {
+			sendKeys('press', 'Tab');
+			sendKeys('press', 'Enter');
+			await oneEvent(elem, 'd2l-collapsible-panel-expand');
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.matches(':focus-visible')).to.be.true;
+		});
+
+		it('clicking content should not collapse', async() => {
+			elem.expanded = true;
+			await oneEvent(elem, 'd2l-collapsible-panel-expand');
+
+			let dispatched = false;
+			elem.addEventListener('d2l-collapsible-panel-collapse', () => {
+				dispatched = true;
+			});
+
+			const content = elem.shadowRoot.querySelector('.d2l-collapsible-panel-content');
+			content.click();
+			await elem.updateComplete;
+			expect(elem.expanded).to.be.true;
+			expect(dispatched).to.be.false;
 		});
 	});
 
