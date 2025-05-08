@@ -1,4 +1,4 @@
-# Search Inputs
+# Search Input
 
 Search inputs allow users to input text, execute a search, and clear results. A search input may be used in conjunction with filters, sort, and/or auto-complete.
 
@@ -39,14 +39,8 @@ For text searches use `<d2l-input-search>`, which wraps the native `<input type=
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-search.js';
-
-  window.addEventListener('load', function () {
-    document.querySelector('#search').addEventListener('d2l-input-search-searched', (e) => {
-      console.log('searched term:', e.detail.value);
-    });
-  });
 </script>
-<d2l-input-search id="search" label="Search">
+<d2l-input-search label="Search">
 </d2l-input-search>
 ```
 
@@ -66,7 +60,7 @@ For text searches use `<d2l-input-search>`, which wraps the native `<input type=
 
 ### Events
 
-The `d2l-input-search` component dispatches the `d2l-input-search-searched` event when a search is performed:
+The `<d2l-input-search>` component dispatches the `d2l-input-search-searched` event when a search is performed:
 
 ```javascript
 search.addEventListener('d2l-input-search-searched', (e) => {

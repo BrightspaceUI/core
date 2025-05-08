@@ -42,7 +42,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			 */
 			ariaInvalid: { type: String, attribute: 'aria-invalid' },
 			/**
-			 * Specifies which types of values can be autofilled by the browser
+			 * ADVANCED: Specifies which types of values can be autofilled by the browser
 			 * @type {string}
 			 */
 			autocomplete: { type: String },
@@ -125,7 +125,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			 */
 			preventSubmit: { type: Boolean, attribute: 'prevent-submit' },
 			/**
-			 * Makes the input read-only
+			 * ADVANCED: Makes the input read-only
 			 * @type {boolean}
 			 */
 			readonly: { type: Boolean },
@@ -140,7 +140,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			 */
 			size: { type: Number },
 			/**
-			 * For number inputs, sets the step size
+			 * ADVANCED: For number inputs, sets the step size
 			 * @type {string}
 			 */
 			step: { type: String },
@@ -181,7 +181,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			 */
 			value: { type: String },
 			/**
-			 * Alignment of the value text within the input
+			 * ADVANCED: Alignment of the value text within the input
 			 * @type {'start'|'end'}
 			 */
 			valueAlign: { attribute: 'value-align', type: String },

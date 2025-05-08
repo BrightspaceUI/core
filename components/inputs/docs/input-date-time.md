@@ -51,6 +51,7 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 | `labelled-by` | String | HTML id of an element in the same shadow root which acts as the input's label |
 | `max-value` | String | Maximum valid date that could be selected by a user. |
 | `min-value` | String | Minimum valid date that could be selected by a user. |
+| `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `opened` | Boolean | Indicates if the calendar dropdown is open |
 | `required` | Boolean | Indicates that a value is required |
 | `value` | String, default `''` | Value of the input. |
@@ -95,6 +96,7 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 | `label-hidden` | Boolean | Hides the fieldset label visually |
 | `max-value` | String | Maximum valid date that could be selected by a user |
 | `min-value` | String |  Minimum valid date that could be selected by a user |
+| `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `required` | Boolean | Indicates that values are required |
 | `start-label` | String, default `'Start Date'` | Accessible label for the first date input |
 | `start-opened` | Boolean | Indicates if the start calendar dropdown is open |
@@ -135,6 +137,7 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 | `enforce-time-intervals` | Boolean | Rounds up to nearest valid interval time (specified with `time-interval`) when user types a time |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
 | `labelled-by` | String | HTML id of an element in the same shadow root which acts as the input's label |
+| `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `opened` | Boolean | Indicates if the dropdown is open |
 | `required` | Boolean | Indicates that a value is required |
 | `timezone-hidden` | Boolean | Hides the timezone inside the selection dropdown. Should only be used when the input uses a different timezone than the document's settings |
@@ -180,6 +183,7 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 | `enforce-time-intervals` | Boolean | Rounds up to nearest valid interval time (specified with `time-interval`) when user types a time |
 | `inclusive-time-range` | Boolean | Validate on inclusive range (i.e., it is valid for start and end times to be equal) |
 | `label-hidden` | Boolean | Hides the fieldset label visually |
+| `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `required` | Boolean | Indicates that values are required |
 | `start-label` | String, default `'Start Time'` | Accessible label for the first time input |
 | `start-opened` | Boolean | Indicates if the start dropdown is open |
@@ -218,6 +222,7 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 | `localized` | Boolean | Indicates that any timezone localization will be handeld by the consumer and so any values will not be converted from/to UTC |
 | `max-value` | String | Maximum valid date/time that could be selected by a user |
 | `min-value` | String | Minimum valid date/time that could be selected by a user |
+| `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `opened` | Boolean | Indicates if the date or time dropdown is open |
 | `required` | Boolean | Indicates that a value is required |
 | `time-default-value`| String, default:`'00:00:00'` | Set default value of time input. Accepts ISO 8601 time format (`hh:mm:ss`) and the following keywords: `startOfDay`,`endOfDay`. |
@@ -261,6 +266,7 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 | `end-value` | String, default `''` | Value of the second date-time input |
 | `inclusive-date-range` | Boolean | Validate on inclusive range (i.e., it is valid for start and end date-times to be equal) |
 | `label-hidden` | Boolean | Hides the fieldset label visually |
+| `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `required` | Boolean | Indicates that values are required |
 | `start-label` | String, default `'Start Date'` | Accessible label for the first date-time input |
 | `start-opened` | Boolean | Indicates if the start date or time dropdown is open |
