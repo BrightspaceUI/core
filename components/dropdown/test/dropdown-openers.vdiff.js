@@ -47,6 +47,7 @@ describe('dropdown-openers', () => {
 		await nextFrame();
 		await sendKeys('press', 'Tab');
 		await sendKeys('press', 'Tab');
+		await oneEvent(elem, 'd2l-dropdown-close');
 		await expect(elem).to.be.golden();
 	});
 

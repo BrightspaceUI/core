@@ -268,6 +268,35 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Simple dialog with longer loading content</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button>Show Dialog</d2l-button>
+					<d2l-dialog-fullscreen title-text="Fullscreen Title">
+					</d2l-dialog-fullscreen>
+					<d2l-dropdown style="display: none;" id="thing">
+						<button class="d2l-dropdown-opener">Open!</button>
+						<d2l-dropdown-content>
+							<a href=" " style="display: block;">A Link</a>
+							Some content... Click me!
+						</d2l-dropdown-content>
+					</d2l-dropdown>
+
+					<script>
+						(demo => {
+							demo.querySelector('d2l-button').addEventListener('click', () => {
+								demo.querySelector('d2l-dialog-fullscreen').opened = true;
+								setTimeout(() => {
+									demo.querySelector('d2l-dropdown').style.display = 'block';
+									demo.querySelector('d2l-dialog-fullscreen').appendChild(demo.querySelector('d2l-dropdown'));
+								}, 1000);
+							});
+						})(document.currentScript.parentNode);
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
 		</d2l-demo-page>
 	</body>
 </html>
