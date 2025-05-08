@@ -16,7 +16,7 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 	static get properties() {
 		return {
 			/**
-			 * REQUIRED: Label for the input
+			 * REQUIRED: Label for the group of radio inputs
 			 * @type {string}
 			 */
 			label: { required: true, type: String },
