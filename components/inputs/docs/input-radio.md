@@ -24,7 +24,7 @@ Radio inputs are used in forms to offer a single choice among mutually exclusive
 
 <!-- docs: start donts -->
 * Don’t use two radio inputs if a single checkbox works better
-* Don’t use for triggering an immediate action. Notable exceptions are forms that autosave with clear indication and as a trigger for progressive disclosure on traditional forms, so long as users are made aware that new options have been made available
+* Don’t use for triggering an immediate action. Notable exceptions are forms that autosave with clear indication and as a trigger for progressive disclosure on traditional forms, so long as users are made aware that new options have been made available.
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
