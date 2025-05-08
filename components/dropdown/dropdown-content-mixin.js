@@ -573,7 +573,7 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 				return;
 			}
 			this.close();
-		}, 0);
+		}, 10);
 	}
 
 	__onClose(e) {
