@@ -102,6 +102,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 		this.addEventListener('d2l-menu-item-visibility-change', this._onMenuItemsChanged);
 		this.addEventListener('keydown', this._onKeyDown);
 		this.addEventListener('keypress', this._onKeyPress);
+		this.addEventListener('focusout', this._onFocusOut);
 
 		this._labelChanged();
 
@@ -175,22 +176,40 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 
 	_focusFirst() {
 		const item = this._tryGetNextFocusable();
-		if (item) item.focus();
+		if (item) {
+			item.setAttribute('tabindex', '0');
+			item.focus();
+		}
 	}
 
 	_focusLast() {
 		const item = this._tryGetPreviousFocusable();
-		if (item) item.focus();
+		if (item) {
+			item.setAttribute('tabindex', '0');
+			item.focus();
+		}
 	}
 
 	_focusNext(item) {
 		item = this._tryGetNextFocusable(item);
-		item ? item.focus() : this._focusFirst();
+
+		if (item) {
+			item.setAttribute('tabindex', '0');
+			item.focus();
+		} else {
+			this._focusFirst();
+		}
 	}
 
 	_focusPrevious(item) {
 		item = this._tryGetPreviousFocusable(item);
-		item ? item.focus() : this._focusLast();
+
+		if (item) {
+			item.setAttribute('tabindex', '0');
+			item.focus();
+		} else {
+			this._focusLast();
+		}
 	}
 
 	_focusSelected() {
@@ -258,6 +277,11 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 		this.setAttribute('aria-label', this.label);
 		const returnItem = this._getMenuItemReturn();
 		if (returnItem) returnItem.setAttribute('text', this.label);
+	}
+
+	_onFocusOut(e) {
+		if (e.target.role !== 'menuitem' || e.target.hasAttribute('first')) return;
+		e.target.setAttribute('tabindex', '-1');
 	}
 
 	_onKeyDown(e) {
