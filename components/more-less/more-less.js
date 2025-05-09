@@ -8,6 +8,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { overflowHiddenDeclarations } from '../../helpers/overflow.js';
 
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const transitionDur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 400;
@@ -55,7 +56,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			}
 
 			.d2l-more-less-content {
-				overflow: hidden;
+				display: flow-root;
+				${overflowHiddenDeclarations}
 			}
 			.d2l-more-less-transition {
 				transition: max-height ${transitionDur}ms cubic-bezier(0, 0.7, 0.5, 1);
