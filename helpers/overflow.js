@@ -6,6 +6,7 @@ export function getOverflowDeclarations({ textOverflow = 'ellipsis', lines = 0, 
 	if (!arguments.length) return defaultOverflowDeclarations;
 
 	const declarations = `
+		min-width: 0; /* clamps width of flex items */
 		overflow: visible;
 		overflow-x: clip;
 		${lines
