@@ -13,14 +13,8 @@ class Switch extends SwitchMixin(LitElement) {
 
 	static get styles() {
 		return [super.styles, css`
-			.d2l-switch-icon-off svg {
+			.d2l-switch-icon-off > .d2l-switch-icon-off {
 				color: var(--d2l-color-ferrite);
-			}
-
-			@media (prefers-contrast: more) {
-				.d2l-switch-icon-off svg {
-					color: inherit;
-				}
 			}
 		`];
 	}
