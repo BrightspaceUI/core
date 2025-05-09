@@ -47,7 +47,7 @@ class StatusIndicator extends LitElement {
 				font-size: 0.6rem;
 				font-weight: bold;
 				line-height: 1;
-				overflow: hidden;
+				overflow: hidden; /* leaving hidden for UX */
 				padding: 2px 10px 2px 10px;
 				text-overflow: ellipsis;
 				text-transform: capitalize;
