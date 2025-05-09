@@ -27,6 +27,7 @@ import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
+import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -151,9 +152,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				padding-right: 0;
 			}
 
-			.d2l-filter-dimension-header-text,
-			.d2l-filter-dimension-set-value-text {
-				overflow: hidden;
+			.d2l-filter-dimension-header-text {
+				${getOverflowDeclarations()}
 			}
 
 			.d2l-filter-dimension-set-value {
@@ -162,7 +162,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				display: flex;
 				gap: 0.45rem;
 				line-height: unset;
-				overflow: hidden;
 			}
 			.d2l-filter-dimension-set-value d2l-icon {
 				flex-shrink: 0;
@@ -172,15 +171,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				padding-block: 0.8rem 0.4rem;
 			}
 			d2l-list-item.expanding-content {
-				overflow-y: hidden;
+				overflow-y: hidden; /* todo: confirm this is fine */
 			}
 
 			.d2l-filter-dimension-set-value-text {
-				-webkit-box-orient: vertical;
-				display: -webkit-box;
 				hyphens: auto;
-				-webkit-line-clamp: 2;
 				overflow-wrap: anywhere;
+				${getOverflowDeclarations({ lines: 2 })}
 			}
 
 			d2l-list-item[selection-disabled] .d2l-filter-dimension-set-value,
@@ -637,8 +634,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 						${item.additionalContent ? html`<d2l-icon icon="${item.selected ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small'}" aria-hidden="true"></d2l-icon>` : nothing}
 					</div>
 					${item.additionalContent ? html`
-						<d2l-expand-collapse-content 
-							?expanded="${item.selected}" 
+						<d2l-expand-collapse-content
+							?expanded="${item.selected}"
 							@d2l-expand-collapse-content-collapse="${this._handleExpandCollapse}"
 							@d2l-expand-collapse-content-expand="${this._handleExpandCollapse}">
 							${item.additionalContent()}
