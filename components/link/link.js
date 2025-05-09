@@ -4,6 +4,7 @@ import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
+import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -109,10 +110,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					display: inherit;
 				}
 				a.truncate {
-					-webkit-box-orient: vertical;
-					display: -webkit-box;
-					overflow: hidden;
-					overflow-wrap: anywhere;
+					${getOverflowDeclarations({ lines: 1 })}
 				}
 				d2l-icon {
 					color: var(--d2l-color-celestine);
