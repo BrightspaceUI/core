@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -40,8 +41,8 @@ class CollapsiblePanelSummaryItem extends SkeletonMixin(LitElement) {
 			p.truncate {
 				-webkit-box-orient: vertical;
 				display: -webkit-box;
-				overflow: hidden;
 				overflow-wrap: anywhere;
+				${getOverflowDeclarations({ lines: 1 })}
 			}
 		`];
 	}
