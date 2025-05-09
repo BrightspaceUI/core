@@ -1,6 +1,7 @@
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { TabMixin } from './tab-mixin.js';
 
 const focusRingStyles = getFocusRingStyles(
@@ -51,9 +52,7 @@ class Tab extends TabMixin(LitElement) {
 				color: var(--d2l-color-celestine);
 			}
 			span {
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
+				${overflowEllipsisDeclarations}
 			}
 			.d2l-tab-text-skeletize-override {
 				min-width: 50px;

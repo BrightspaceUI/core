@@ -9,7 +9,7 @@ class TabCustom extends TabMixin(LitElement) {
 			.d2l-tab-custom-content {
 				--d2l-focus-ring-offset: 0;
 				margin: 0.5rem;
-				overflow: hidden;
+				overflow: hidden; /* ask margaree what we want here */
 				padding: 0.1rem;
 				white-space: nowrap;
 			}
