@@ -13,6 +13,7 @@ export function getOverflowDeclarations({ textOverflow = 'ellipsis', lines = 0, 
 		? `
 	  	display: -webkit-box;
 		overflow-clip-margin: 0.2em;
+		overflow-wrap: anywhere;
 		overflow-y: clip;
 		-webkit-box-orient: vertical;
   		-webkit-line-clamp: ${lines};`

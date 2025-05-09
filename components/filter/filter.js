@@ -176,7 +176,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 			.d2l-filter-dimension-set-value-text {
 				hyphens: auto;
-				overflow-wrap: anywhere;
 				${getOverflowDeclarations({ lines: 2 })}
 			}
 
