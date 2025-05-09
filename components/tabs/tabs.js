@@ -14,6 +14,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { getOverflowDeclarations } from '../../helpers/overflow.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -87,13 +88,11 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				box-sizing: border-box;
 				flex: auto;
 				margin-left: -3px;
-				overflow: hidden;
-				overflow-x: hidden;
 				padding-left: 3px;
 				position: relative;
 				-webkit-transition: max-width 200ms ease-in;
 				transition: max-width 200ms ease-in;
-				white-space: nowrap;
+				${getOverflowDeclarations({ textOverflow: 'clip' })}
 			}
 			.d2l-tabs-container-ext {
 				flex: none;
@@ -110,6 +109,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			.d2l-tabs-scroll-next-container {
 				background-color: var(--d2l-tabs-background-color);
 				box-shadow: 0 0 12px 18px var(--d2l-tabs-background-color);
+				clip-path: rect(0% 200% 100% -100%);
 				display: none;
 				height: 100%;
 				position: absolute;

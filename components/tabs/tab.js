@@ -1,6 +1,7 @@
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { TabMixin } from './tab-mixin.js';
 
 /**
@@ -49,9 +50,7 @@ class Tab extends TabMixin(LitElement) {
 				color: var(--d2l-color-celestine);
 			}
 			span {
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
+				${overflowEllipsisDeclarations}
 			}
 			.d2l-tab-text-skeletize-override {
 				min-width: 50px;
