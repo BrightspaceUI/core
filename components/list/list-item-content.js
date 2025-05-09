@@ -33,14 +33,10 @@ class ListItemContent extends LitElement {
 
 			.d2l-list-item-content-text-secondary {
 				color: var(--d2l-list-item-content-text-secondary-color, var(--d2l-color-tungsten));
-				margin: 0;
-				overflow: hidden;
 			}
 
 			.d2l-list-item-content-text-supporting-info {
 				color: var(--d2l-color-ferrite);
-				margin: 0;
-				overflow: hidden;
 			}
 
 			.d2l-list-item-content-text-secondary ::slotted(*),
