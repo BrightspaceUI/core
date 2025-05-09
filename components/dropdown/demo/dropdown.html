@@ -17,6 +17,13 @@
 		import '../dropdown.js';
 		import '../dropdown-content.js';
 	</script>
+	<style>
+		.d2l-dropdown-column {
+			float: left;
+			margin-left: 20px;
+			width: 200px;
+		}
+	</style>
 </head>
 <body unresolved>
 
@@ -120,6 +127,60 @@
 							eget. Suspendisse imperdiet nulla eget velit sodales, sit amet tempus metus dignissim. Sed ac luctus leo, a
 							ornare nisl. Proin non sapien eu orci gravida aliquam. Praesent placerat auctor lacus sit amet faucibus.
 							Suspendisse sit amet dui sed turpis vestibulum dignissim.</p>
+					</d2l-dropdown-content>
+				</d2l-dropdown>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Two Columns</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-dropdown>
+					<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+					<d2l-dropdown-content max-width="900" min-width="200">
+						<div>
+							<div class="d2l-dropdown-column">
+								<h2 class="d2l-heading">Small Dogs</h2>
+								<div>Chihuahua</div>
+								<div>Pomeranian</div>
+								<div>Yorkshire Terrier</div>
+								<div>Shih Tzu</div>
+								<div>Dachshund</div>
+								<div>Miniature Schnauzer</div>
+								<div>French Bulldog</div>
+								<div>Pug</div>
+								<div>Boston Terrier</div>
+								<div>Havanese</div>
+								<div>Italian Greyhound</div>
+								<div>Jack Russell Terrier</div>
+								<div>Maltese</div>
+								<div>Scottish Terrier</div>
+								<div>West Highland White Terrier</div>
+								<div>Cavalier King Charles Spaniel</div>
+								<div>Bichon Frise</div>
+								<div>Miniature Pinscher</div>
+								<div>Papillon</div>
+								<div>Japanese Chin</div>
+							</div>
+							<div class="d2l-dropdown-column">
+								<h2 class="d2l-heading">Large Dogs</h2>
+								<div>Golden Retriever</div>
+								<div>German Shepherd</div>
+								<div>Labrador Retriever</div>
+								<div>Rottweiler</div>
+								<div>Great Dane</div>
+								<div>Bernese Mountain Dog</div>
+								<div>Doberman Pinscher</div>
+								<div>Saint Bernard</div>
+								<div>Alaskan Malamute</div>
+								<div>Irish Wolfhound</div>
+								<div>Newfoundland</div>
+								<div>English Mastiff</div>
+								<div>Boxer</div>
+								<div>Weimaraner</div>
+								<div>Rhodesian Ridgeback</div>
+							</div>
+						</div>
 					</d2l-dropdown-content>
 				</d2l-dropdown>
 			</template>
