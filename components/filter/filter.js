@@ -23,11 +23,11 @@ import '../tooltip/tooltip.js';
 
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
-import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -144,16 +144,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				flex-grow: 1;
 				padding-right: calc(2rem + 2px);
 				text-align: center;
-				text-overflow: ellipsis;
-				white-space: nowrap;
+				${overflowEllipsisDeclarations}
 			}
 			:host([dir="rtl"]) .d2l-filter-dimension-header-text {
 				padding-left: calc(2rem + 2px);
 				padding-right: 0;
-			}
-
-			.d2l-filter-dimension-header-text {
-				${getOverflowDeclarations()}
 			}
 
 			.d2l-filter-dimension-set-value {
