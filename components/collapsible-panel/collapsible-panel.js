@@ -251,7 +251,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				transform-origin: center;
 			}
 			d2l-icon-custom svg {
-				color: var(--d2l-color-tungsten);
 				position: absolute;
 				transform-origin: 0.4rem;
 			}
@@ -310,12 +309,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 			}
 			.d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-summary {
 				display: none;
-			}
-
-			@media (prefers-contrast: more) {
-				d2l-icon-custom svg {
-					color: inherit;
-				}
 			}
 		`];
 	}
