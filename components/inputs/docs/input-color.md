@@ -34,6 +34,7 @@ The `<d2l-input-color>` will open a dialog to allow the user to select a color f
 | `disallow-none` | Boolean, default: `false` | Disallows the user from selecting "None" as a color value. |
 | `label` | String, required | Label for the input. Comes with a default value for background & foreground types. |
 | `label-hidden` | Boolean, default: `false` | Hides the label visually. |
+| `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `readonly` | Boolean, default: `false` | Puts the input into a read-only state. |
 | `type` | String, default: `custom` | Type of color being chosen. Can be one of: `custom`, `background`, `foreground`. |
 | `value` | Number | Value of the input. |

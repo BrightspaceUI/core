@@ -1,6 +1,6 @@
 # Numeric Inputs
 
-Numeric inputs allow users to input numbers. These include the more generic `d2l-input-number`, as well as the percentage input `d2l-input-percent`.
+Numeric inputs allow users to input numbers. These include the more generic `<d2l-input-number>`, as well as the percentage input `<d2l-input-percent>`.
 
 <!-- docs: demo -->
 ```html
@@ -25,15 +25,8 @@ The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's i
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-number.js';
-
-  window.addEventListener('load', function () {
-    var input = document.querySelector('#number');
-    input.addEventListener('change', (e) => {
-      console.log('numeric value: ', input.value);
-    });
-  });
 </script>
-<d2l-input-number id="number" label="Label"></d2l-input-number>
+<d2l-input-number label="Label"></d2l-input-number>
 ```
 
 <!-- docs: start hidden content -->
@@ -54,6 +47,7 @@ The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's i
 | `min` | Number | Minimum value allowed. |
 | `min-exclusive` | Boolean, default: `false` | Indicates whether the min value is exclusive. |
 | `min-fraction-digits` | Number, default: `0` | Minimum number of digits allowed after the decimal place. Must be between 0 and 20 and less than or equal to `maxFractionDigits` |
+| `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `required` | Boolean, default: `false` | Indicates that a value is required. |
 | `unit` | String | Unit associated with the input value, displayed next to input and announced as part of the label |
 | `unit-label` | String | Label for the unit, which is only picked up by screenreaders. Required if `unit` is used. |
@@ -94,15 +88,8 @@ The `<d2l-input-percent>` element is similar to `<d2l-input-number>`, except it 
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-percent.js';
-
-  window.addEventListener('load', function () {
-    var input = document.querySelector('#percent');
-    input.addEventListener('change', (e) => {
-      console.log('percentage value: ', input.value);
-    });
-  });
 </script>
-<d2l-input-percent id="percent" label="Label"></d2l-input-percent>
+<d2l-input-percent label="Label"></d2l-input-percent>
 ```
 
 <!-- docs: start hidden content -->
@@ -117,6 +104,7 @@ The `<d2l-input-percent>` element is similar to `<d2l-input-number>`, except it 
 | `label-hidden` | Boolean, default: `false` | Hides the label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label. |
 | `max-fraction-digits` | Number | Maximum number of digits allowed after the decimal place. |
 | `min-fraction-digits` | Number | Minimum number of digits allowed after the decimal place. |
+| `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `required` | Boolean, default: `false` | Indicates that a value is required. |
 | `value` | Number | Value of the input. |
 
