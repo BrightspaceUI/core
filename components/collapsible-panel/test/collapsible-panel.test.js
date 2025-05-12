@@ -1,6 +1,6 @@
 import '../collapsible-panel.js';
 import '../collapsible-panel-summary-item.js';
-import { expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeys } from '@brightspace-ui/testing';
 
 describe('d2l-collapsible-panel', () => {
 
@@ -118,6 +118,72 @@ describe('d2l-collapsible-panel', () => {
 			const heading = elem.shadowRoot.querySelector('.d2l-collapsible-panel-title');
 			expect(heading.tagName).to.equal('H1');
 			expect(heading.classList.contains('d2l-heading-4')).to.be.true;
+		});
+	});
+
+	describe('interaction style', () => {
+
+		let elem, panel;
+		const focusedClass = 'focused';
+
+		beforeEach(async() => {
+			elem = await fixture(html`
+				<d2l-collapsible-panel panel-title="Panel Title">
+					Panel Content
+				</d2l-collapsible-panel>
+			`);
+			panel = elem.shadowRoot.querySelector('.d2l-collapsible-panel');
+		});
+
+		it('clicking button should expand but not trigger focused class on button', async() => {
+			const button = elem.shadowRoot.querySelector('.d2l-collapsible-panel-opener');
+			clickElem(button);
+			await oneEvent(elem, 'd2l-collapsible-panel-expand');
+			expect(panel.classList.contains(focusedClass)).to.be.false;
+		});
+
+		it('clicking header should expand but not trigger focused class', async() => {
+			const header = elem.shadowRoot.querySelector('.d2l-collapsible-panel-header');
+			clickElem(header);
+			await oneEvent(elem, 'd2l-collapsible-panel-expand');
+			expect(panel.classList.contains(focusedClass)).to.be.false;
+		});
+
+		it('selecting heading with keypress should trigger focused class and expand', async() => {
+			sendKeys('press', 'Tab');
+			sendKeys('press', 'Enter');
+			await oneEvent(elem, 'd2l-collapsible-panel-expand');
+			expect(panel.classList.contains(focusedClass)).to.be.true;
+		});
+
+		it('clicking content should not collapse', async() => {
+			elem.expanded = true;
+			await oneEvent(elem, 'd2l-collapsible-panel-expand');
+
+			let dispatched = false;
+			elem.addEventListener('d2l-collapsible-panel-collapse', () => {
+				dispatched = true;
+			});
+
+			const content = elem.shadowRoot.querySelector('.d2l-collapsible-panel-content');
+			content.click();
+			await elem.updateComplete;
+			expect(elem.expanded).to.be.true;
+			expect(dispatched).to.be.false;
+		});
+
+		it('clicking summary should expand', async() => {
+			const elemWithSummary = await fixture(html`
+				<d2l-collapsible-panel panel-title="Cake Decoration">
+					<d2l-collapsible-panel-summary-item slot="summary" text="Buttercream icing"></d2l-collapsible-panel-summary-item>
+					Expanded content
+				</d2l-collapsible-panel>
+			`);
+
+			const summary = elemWithSummary.querySelector('d2l-collapsible-panel-summary-item');
+			clickElem(summary);
+			await oneEvent(elemWithSummary, 'd2l-collapsible-panel-expand');
+			expect(elemWithSummary.expanded).to.be.true;
 		});
 	});
 
