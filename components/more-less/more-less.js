@@ -6,9 +6,9 @@ import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { overflowHiddenDeclarations } from '../../helpers/overflow.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
-import { overflowHiddenDeclarations } from '../../helpers/overflow.js';
 
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const transitionDur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 400;
@@ -62,7 +62,10 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			.d2l-more-less-transition {
 				transition: max-height ${transitionDur}ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
-			:host(:not([expanded]):not([inactive])) .d2l-more-less-content {
+			:host(:not([expanded]):not([inactive])) .d2l-more-less-content .after {
+				content: "";
+				inset: 0;
+				position: absolute;
 				-webkit-mask-image: linear-gradient(to top, transparent, #000000 1em);
 				mask-image: linear-gradient(to top, transparent, #000000 1em);
 			}
