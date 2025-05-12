@@ -10,7 +10,6 @@ import { overflowHiddenDeclarations } from '../../helpers/overflow.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const transitionDur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 400;
 
 /**
@@ -52,20 +51,19 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	static get styles() {
 		return css`
 			:host {
-				display: block;
+				display: flow-root;
 			}
 
 			.d2l-more-less-content {
 				display: flow-root;
+				margin: -1em -1em 0;
+				padding: 1em 1em 0;
 				${overflowHiddenDeclarations}
 			}
 			.d2l-more-less-transition {
 				transition: max-height ${transitionDur}ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
-			:host(:not([expanded]):not([inactive])) .d2l-more-less-content .after {
-				content: "";
-				inset: 0;
-				position: absolute;
+			:host(:not([expanded]):not([inactive])) .d2l-more-less-content {
 				-webkit-mask-image: linear-gradient(to top, transparent, #000000 1em);
 				mask-image: linear-gradient(to top, transparent, #000000 1em);
 			}
@@ -233,13 +231,11 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 		const target = e.composedPath()[0] || e.target;
 
-		if (isSafari) {
-			target.scrollIntoViewIfNeeded?.();
-			setTimeout(() => this.__content.scrollTo({ top: 0, behavior: 'instant' }), 1);
-		}
+		const em = parseInt(getComputedStyle(this.__content).getPropertyValue('font-size'));
+		const { y: contentY, height: contentHeight } = this.__content.getBoundingClientRect();
+		const { y: targetY, height: targetHeight } = target.getBoundingClientRect();
 
-		if (this.__content.scrollTop) {
-			this.__content.scrollTo({ top: 0, behavior: 'instant' });
+		if (targetY + targetHeight > contentY + contentHeight - em) {
 			this.__expand();
 			this.__autoExpanded = true;
 			await (transitionDur && new Promise(r => setTimeout(r, transitionDur)));
