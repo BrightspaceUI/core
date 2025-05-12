@@ -569,7 +569,8 @@ export const DropdownContentMixin = superclass => class extends LocalizeCoreElem
 			const activeElement = getComposedActiveElement();
 
 			if (isComposedAncestor(this, activeElement)
-				|| isComposedAncestor(this.__getOpener(), activeElement)) {
+				|| isComposedAncestor(this.__getOpener(), activeElement)
+				|| isComposedAncestor(activeElement, this)) {
 				return;
 			}
 			this.close();
