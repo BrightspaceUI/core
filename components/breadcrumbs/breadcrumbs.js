@@ -1,7 +1,7 @@
 import './breadcrumb.js';
 import { css, html, LitElement } from 'lit';
-import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**

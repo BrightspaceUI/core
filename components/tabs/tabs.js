@@ -8,13 +8,13 @@ import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js'
 import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { repeat } from 'lit/directives/repeat.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
-import { getOverflowDeclarations } from '../../helpers/overflow.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
