@@ -1,6 +1,6 @@
 import '../collapsible-panel.js';
 import '../collapsible-panel-summary-item.js';
-import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeys } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 
 describe('d2l-collapsible-panel', () => {
 
@@ -150,8 +150,7 @@ describe('d2l-collapsible-panel', () => {
 		});
 
 		it('selecting heading with keypress should trigger focused class and expand', async() => {
-			sendKeys('press', 'Tab');
-			sendKeys('press', 'Enter');
+			sendKeysElem(elem.shadowRoot.querySelector('button'), 'press', 'Enter');
 			await oneEvent(elem, 'd2l-collapsible-panel-expand');
 			expect(panel.classList.contains(focusedClass)).to.be.true;
 		});
@@ -161,9 +160,7 @@ describe('d2l-collapsible-panel', () => {
 			await oneEvent(elem, 'd2l-collapsible-panel-expand');
 
 			let dispatched = false;
-			elem.addEventListener('d2l-collapsible-panel-collapse', () => {
-				dispatched = true;
-			});
+			elem.addEventListener('d2l-collapsible-panel-collapse', () => dispatched = true);
 
 			const content = elem.shadowRoot.querySelector('.d2l-collapsible-panel-content');
 			content.click();
