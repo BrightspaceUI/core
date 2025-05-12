@@ -1,6 +1,6 @@
-# Radio Buttons
+# Radio Inputs
 
-Radio Buttons are used in forms to offer a single choice among mutually exclusive options.
+Radio inputs are used in forms to offer a single choice among mutually exclusive options.
 
 <!-- docs: demo display:block -->
 ```html
@@ -15,11 +15,6 @@ Radio Buttons are used in forms to offer a single choice among mutually exclusiv
 </d2l-input-radio-group>
 ```
 
-Unlike checkboxes, individual radio buttons cannot be placed in a custom element. Items belonging to a radio group cannot span across different shadow roots -- all radios in the same group must be in the same shadow root.
-
-As a result, we have to apply styles to native radio inputs.
-
-
 ## Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
@@ -28,127 +23,87 @@ As a result, we have to apply styles to native radio inputs.
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Don’t use two radio buttons if a single checkbox works better
-* Don’t use for triggering an immediate action. Notable exceptions are forms that autosave with clear indication and as a trigger for progressive disclosure on traditional forms, so long as users are made aware that new options have been made available
+* Don’t use two radio inputs if a single checkbox works better
+* Don’t use for triggering an immediate action. Notable exceptions are forms that autosave with clear indication and as a trigger for progressive disclosure on traditional forms, so long as users are made aware that new options have been made available.
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
-## Radio Inputs With Labels
+## Radio Input Group [d2l-input-radio-group]
 
-The simplest way to apply radio styles is to use the `d2l-input-radio-label` CSS class on a `<label>` element that wraps the input.
+The group is a required parent of `<d2l-input-radio>`. It internally renders a `<fieldset>` and `<legend>` with the provided `label`, which gives additional accessibility context. The label can be hidden visually if desired.
 
-For disabled items, add the `d2l-input-radio-label-disabled` class on the label and the `disabled` attribute on the input itself.
+When provided with a `name`, the group will participate in forms with the `value` of the currently checked input.
 
-<!-- docs: demo code display:block -->
+<!-- docs: demo code properties name:d2l-input-radio-group sandboxTitle:'Checkbox Group' display:block -->
 ```html
 <script type="module">
-  import { html, LitElement } from 'lit';
-  import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-styles.js';
-
-  class MyRadioElem extends LitElement {
-
-    static get styles() {
-      return radioStyles;
-    }
-
-    render() {
-      return html`
-        <label class="d2l-input-radio-label">
-          <input type="radio" name="myGroup" checked>
-          Option 1 (selected)
-        </label>
-        <label class="d2l-input-radio-label d2l-input-radio-label-disabled">
-          <input type="radio" name="myGroup" disabled>
-          Option 2 (disabled)
-        </label>
-        <label class="d2l-input-radio-label">
-          <input type="radio" name="myGroup">
-          Option 3
-        </label>
-      `;
-    }
-
-  }
-  customElements.define('d2l-my-radio-elem', MyRadioElem);
+  import '@brightspace-ui/core/components/inputs/input-radio.js';
+  import '@brightspace-ui/core/components/inputs/input-radio-group.js';
 </script>
-<d2l-my-radio-elem></d2l-my-radio-elem>
+<d2l-input-radio-group label="Bread" name="bread">
+  <d2l-input-radio label="Whole wheat" name="whole-wheat" checked></d2l-input-radio>
+  <d2l-input-radio label="Baguette" name="baguette"></d2l-input-radio>
+  <d2l-input-radio label="Marble Rye" name="marble-rye"></d2l-input-radio>
+</d2l-input-radio-group>
 ```
 
-## Individual Radio Inputs
+<!-- docs: start hidden content -->
+### Properties
 
-If you'd like to manually link the radio input with a label, or use an ARIA label, place the `d2l-radio-input` CSS class on the input itself to style it. For example:
+| Property | Type | Description |
+|---|---|---|
+| `label` | String, required | Label for the group of radio inputs |
+| `label-hidden` | Boolean | Hides the label visually |
+| `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
+| `required` | Boolean | Indicates that a value is required |
 
-<!-- docs: demo code properties name:d2l-test-input-radio-solo display:block -->
+### Events
+
+When the radio group's state changes, it dispatches the `change` event:
+
+```javascript
+checkbox.addEventListener('change', e => {
+  const newValue = e.target.detail.value;
+  const oldValue = e.target.detail.oldValue; // may be undefined
+});
+```
+<!-- docs: end hidden content -->
+
+## Radio Input [d2l-input-radio]
+
+The `<d2l-input-radio>` element represents an option within its parent `<d2l-input-radio-group>`.
+
+<!-- docs: demo code properties name:d2l-input-radio sandboxTitle:'Radio Input' display:block -->
 ```html
 <script type="module">
-  import { html, LitElement } from 'lit';
-  import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-styles.js';
-
-  class MyRadioElem extends LitElement {
-
-    static get properties() {
-      return {
-        checked: { type: Boolean },
-        disabled: { type: Boolean },
-        invalid: { type: Boolean }
-      };
-    }
-
-    static get styles() {
-      return radioStyles;
-    }
-
-    render() {
-      const invalid = this.invalid ? 'true' : 'false';
-      return html`
-        <input
-          aria-invalid="${invalid}"
-          aria-label="Option 1"
-          ?checked="${this.checked}"
-          class="d2l-input-radio"
-          ?disabled="${this.disabled}"
-          type="radio">
-      `;
-    }
-
-  }
-  customElements.define('d2l-test-input-radio-solo', MyRadioElem);
+  import '@brightspace-ui/core/components/inputs/input-radio.js';
+  import '@brightspace-ui/core/components/inputs/input-radio-group.js';
 </script>
-<d2l-test-input-radio-solo></d2l-test-input-radio-solo>
+<d2l-input-radio-group label="Bread" name="bread">
+  <d2l-input-radio label="Whole wheat" name="whole-wheat" checked></d2l-input-radio>
+  <d2l-input-radio label="Baguette" name="baguette"></d2l-input-radio>
+  <d2l-input-radio label="Marble Rye" name="marble-rye"></d2l-input-radio>
+</d2l-input-radio-group>
 ```
 
-## Radio Spacer [d2l-input-radio-spacer]
+<!-- docs: start hidden content -->
+### Properties
 
-To align related content below radio buttons, the `d2l-input-radio-spacer` element can be used in conjunction with the `d2l-input-radio-label` class:
+| Property | Type | Description |
+|---|---|---|
+| `label` | String, required | Label for the input |
+| `checked` | Boolean | Checked state |
+| `description` | String | Additional information communicated to screenreader users when focusing on the input |
+| `disabled` | Boolean | Disables the input |
+| `supporting-hidden-when-unchecked` | Boolean | Hides the supporting slot when unchecked |
+| `value` | String | Value of the input |
 
-<!-- docs: demo code display:block -->
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/inputs/input-radio-spacer.js';
-  import { html, LitElement } from 'lit';
-  import { inlineHelpStyles } from '@brightspace-ui/core/components/inputs/input-inline-help.js';
-  import { radioStyles } from '@brightspace-ui/core/components/inputs/input-radio-styles.js';
+### Slots
 
-  class MyRadioElem extends LitElement {
+* `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
+* `supporting`: Supporting information which will appear below and be aligned with the input.
+<!-- docs: end hidden content -->
 
-    static get styles() {
-      return [ radioStyles, inlineHelpStyles ];
-    }
+## Accessibility
 
-    render() {
-      return html`
-        <label class="d2l-input-radio-label">
-          <input type="radio" aria-describedby="desc1" value="normal" checked>
-          Option 1
-        </label>
-        <d2l-input-radio-spacer id="desc1" class="d2l-input-inline-help">
-          Additional content can go here and will line up nicely with the edge of the radio.
-        </d2l-input-radio-spacer>
-      `;
-    }
-
-  }
-  customElements.define('d2l-my-radio-spacer-elem', MyRadioElem);
-</script>
-<d2l-my-radio-spacer-elem></d2l-my-radio-spacer-elem>
-```
+The `d2l-input-radio-group` and `d2l-input-radio` components follow W3C's best practice recommendations for a [radio group](https://www.w3.org/WAI/ARIA/apg/patterns/radio/).

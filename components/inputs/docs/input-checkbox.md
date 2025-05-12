@@ -1,51 +1,78 @@
-# Checkboxes
+# Checkbox Input
 
-Checkboxes are used in forms to toggle an option or preference.
+Checkboxes are used in forms to toggle an option or preference. They may be grouped to form a set of options.
 
-<!-- docs: demo -->
+<!-- docs: demo display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-checkbox.js';
+  import '@brightspace-ui/core/components/inputs/input-checkbox-group.js';
 </script>
-<d2l-input-checkbox label="Label for checkbox" checked></d2l-input-checkbox>
+<d2l-input-checkbox-group label="Toppings">
+  <d2l-input-checkbox label="Ketchup" checked></d2l-input-checkbox>
+  <d2l-input-checkbox label="Mustard"></d2l-input-checkbox>
+  <d2l-input-checkbox label="Relish"></d2l-input-checkbox>
+</d2l-input-checkbox-group>
 ```
 
 ## Best Practices
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Use in a form to indicate an option or preference.
+* Use in a form to indicate an option or preference
 * Use to allow the user to select multiple, independent options from a set
+* When multiple options are presented together, [wrap them in a group](#d2l-input-checkbox-group)
 * Use an indeterminate state to indicate a mixed state where some child items are checked and some are not
-* Use as progressive disclosure in forms, so long as users are made aware both visually and non-visually that new options have been made available.
+* Use as progressive disclosure in forms, so long as users are made aware both visually and non-visually that new options have been made available
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Don't use as a toggle that performs an immediate action, use a Switch component.
-* Don't use for mutually exclusive options, use radio buttons.
+* Don't use as a toggle that performs an immediate action, use a Switch component
+* Don't use for mutually exclusive options, use radio input groups
 * Don't use labels as “instructions” or “phrases”. Good label: “Visible to Students”. Bad label: (“Check this to make it visible to students”)
 * Don't use labels to describe the default or “off” state of the option. As much as possible, use the label to refer to the “on” state. Good label: “Visible”. Bad label: “Hidden”.
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
+## Checkbox Input Group [d2l-input-checkbox-group]
+
+When multiple checkboxes are displayed together, wrap them in a `<d2l-input-checkbox-group>`.
+
+This will not only provide consistent spacing between checkboxes, but the group also internally renders a `<fieldset>` and `<legend>` with the provided `label`, which gives additional accessibility context. The label can be hidden visually if desired.
+
+<!-- docs: demo code properties name:d2l-input-checkbox-group sandboxTitle:'Checkbox Group' display:block -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/inputs/input-checkbox.js';
+  import '@brightspace-ui/core/components/inputs/input-checkbox-group.js';
+</script>
+<d2l-input-checkbox-group label="Toppings">
+  <d2l-input-checkbox label="Ketchup"></d2l-input-checkbox>
+  <d2l-input-checkbox label="Mustard"></d2l-input-checkbox>
+  <d2l-input-checkbox label="Relish"></d2l-input-checkbox>
+</d2l-input-checkbox-group>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|---|---|---|
+| `label` | String, required | Label for the group of checkboxes |
+| `label-hidden` | Boolean | Hides the label visually |
+<!-- docs: end hidden content -->
+
 ## Checkbox Input [d2l-input-checkbox]
 
-The `<d2l-input-checkbox>` element can be used to get a checkbox and optional visible label.
+The `<d2l-input-checkbox>` element can be used on its own or as an option within a `<d2l-input-checkbox-group>` collection. It will display a checkbox and optional visible label.
+
+When provided with a `name`, the checkbox will participate in forms if it is `checked` and enabled.
 
 <!-- docs: demo code properties name:d2l-input-checkbox sandboxTitle:'Checkbox Input' display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-checkbox.js';
-
-  window.addEventListener('load', () => {
-    document.querySelector('d2l-input-checkbox')
-      .addEventListener('change', e => {
-        console.log('checked value: ', e.target.checked);
-      });
-  });
 </script>
-<div>
-  <d2l-input-checkbox label="Label for checkbox"></d2l-input-checkbox>
-</div>
+<d2l-input-checkbox label="Label for checkbox"></d2l-input-checkbox>
 ```
 
 <!-- docs: start hidden content -->
@@ -59,7 +86,7 @@ The `<d2l-input-checkbox>` element can be used to get a checkbox and optional vi
 | `indeterminate` | Boolean | Sets checkbox to an indeterminate state |
 | `label` | String, required | Label for the input |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
-| `name` | String | Name of the input |
+| `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `not-tabbable` | Boolean | Sets `tabindex="-1"` on the checkbox. Note that an alternative method of focusing is necessary to implement if using this property. |
 | `value` | String | Value of the input |
 
@@ -78,49 +105,6 @@ checkbox.addEventListener('change', e => {
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 * `supporting`: Supporting information which will appear below and be aligned with the checkbox.
 <!-- docs: end hidden content -->
-
-### Groups of Checkboxes
-
-If multiple checkboxes are displayed together, wrapping them in a `<d2l-input-checkbox-group>` provides consistent spacing between each checkbox.
-
-<!-- docs: demo code -->
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/inputs/input-checkbox.js';
-  import '@brightspace-ui/core/components/inputs/input-checkbox-group.js';
-</script>
-<d2l-input-checkbox-group label="Toppings">
-  <d2l-input-checkbox label="Ketchup"></d2l-input-checkbox>
-  <d2l-input-checkbox label="Mustard"></d2l-input-checkbox>
-  <d2l-input-checkbox label="Relish"></d2l-input-checkbox>
-</d2l-input-checkbox-group>
-```
-
-## Applying styles to native checkboxes
-
-As an alternative to using the `<d2l-input-checkbox>` custom element, you can style a native checkbox inside your own element. Import `input-checkbox-styles.js` and apply the `d2l-input-checkbox` CSS class to the input:
-
-<!-- docs: demo code display:block -->
-```html
-<script type="module">
-  import { html, LitElement } from 'lit';
-  import { checkboxStyles } from '@brightspace-ui/core/components/inputs/input-checkbox.js';
-
-  class MyCheckboxElem extends LitElement {
-
-    static get styles() {
-      return checkboxStyles;
-    }
-
-    render() {
-      return html`<input type="checkbox" class="d2l-input-checkbox">`;
-    }
-
-  }
-  customElements.define('d2l-my-checkbox-elem', MyCheckboxElem);
-</script>
-<d2l-my-checkbox-elem></d2l-my-checkbox-elem>
-```
 
 ## Accessibility
 
