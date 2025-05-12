@@ -203,3 +203,14 @@ Import `input-styles.js` and apply the `d2l-input` CSS class to the  native `<te
 </script>
 <d2l-my-textarea-input-elem></d2l-my-textarea-input-elem>
 ```
+
+### Grouping inputs with `<fieldset>`
+
+When a page contains multiple inputs which are related, wrap the inputs with `<fieldset>` and `<legend>` elements. Then apply the `d2l-input-label-fieldset` and `d2l-input-label` CSS classes to the `<fieldset>` and `<legend>` elements respectively.
+
+```html
+<fieldset class="d2l-input-label-fieldset">
+  <legend class="d2l-input-label">Shipping Address</legend>
+  <!-- set of related inputs go here -->
+</fieldset>
+```
