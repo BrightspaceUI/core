@@ -1,6 +1,6 @@
 import '../collapsible-panel.js';
 import '../collapsible-panel-summary-item.js';
-import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 
 describe('d2l-collapsible-panel', () => {
 
@@ -157,14 +157,15 @@ describe('d2l-collapsible-panel', () => {
 
 		it('clicking content should not collapse', async() => {
 			elem.expanded = true;
-			await oneEvent(elem, 'd2l-collapsible-panel-expand');
+			const e = await oneEvent(elem, 'd2l-collapsible-panel-expand');
+			await e.detail.complete;
 
 			let dispatched = false;
 			elem.addEventListener('d2l-collapsible-panel-collapse', () => dispatched = true);
 
 			const content = elem.shadowRoot.querySelector('.d2l-collapsible-panel-content');
-			content.click();
-			await elem.updateComplete;
+			clickElem(content);
+			await aTimeout(50);
 			expect(elem.expanded).to.be.true;
 			expect(dispatched).to.be.false;
 		});

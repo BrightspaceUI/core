@@ -346,12 +346,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		this._button = this.shadowRoot.querySelector('.d2l-collapsible-panel-opener');
-		this._content = this.shadowRoot.querySelector('.d2l-collapsible-panel-content');
-	}
-
 	render() {
 		const classes = {
 			'd2l-collapsible-panel': true,
@@ -432,7 +426,8 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 
 	_handlePanelClick(e) {
 		this._clicked = e.detail && e.detail > 0; // detect if click event is from a mouse
-		if (e.target !== this._content && !isComposedAncestor(this._content, e.target)) this._toggleExpand();
+		const content = this.shadowRoot.querySelector('.d2l-collapsible-panel-content');
+		if (e.target !== content && !isComposedAncestor(content, e.target)) this._toggleExpand();
 	}
 
 	_handleSummarySlotChange(e) {
