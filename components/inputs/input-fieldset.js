@@ -50,7 +50,7 @@ class InputFieldset extends PropertyRequiredMixin(InputInlineHelpMixin(SkeletonM
 					display: none;
 				}
 				legend.d2l-heading-4 {
-					margin-block-start: 0;
+					margin-block: 0 1rem;
 				}
 			`
 		];
