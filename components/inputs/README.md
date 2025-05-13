@@ -13,4 +13,4 @@ There are various input components available:
 
 See also:
 - [Inputs Groups and Fieldsets](docs/input-group-fieldset.md)
-- [Validating and Submitting Inputs with Forms](../form/README.md)
+- [Validating and Submitting Inputs with Forms](../form/)
