@@ -418,7 +418,9 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		};
 
+		content.style.overflow = 'hidden';
 		const scrollWidth = content.scrollWidth;
+		content.style.removeProperty('overflow');
 		const availableWidth = window.innerWidth - 40;
 
 		this._width = (availableWidth > scrollWidth ? scrollWidth : availableWidth);
