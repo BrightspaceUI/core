@@ -1,6 +1,7 @@
 import '../dropdown.js';
 import '../dropdown-content.js';
-import { aTimeout, expect, fixture, focusElem, html, nextFrame, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { css, LitElement } from 'lit';
 
 const normalFixture = html`
 	<div>
@@ -68,6 +69,33 @@ const dropdownD2LButtonOpener = html`
 		</div>
 	</div>
 `;
+
+const wrappedDropdown = defineCE(
+	class extends LitElement {
+		static get styles() {
+			return css`
+				:host { display: inline-block; }
+			`;
+		}
+		render() {
+			return html`
+				<div>
+					<div id="optionallyFocusable" tabindex="0">
+						<d2l-dropdown>
+							<button class="another-class d2l-dropdown-opener"></button>
+							<d2l-dropdown-content opened>
+								<p id="non_focusable_inside">a</p>
+								<a id="focusable_inside" href="http://www.desire2learn.com">b</a>
+							</d2l-dropdown-content>
+						</d2l-dropdown>
+						<p id="non_focusable_outside">c</p>
+						<button id="focusable_outside">out here</button>
+					</div>
+				</div>
+			`;
+		}
+	}
+);
 
 describe('d2l-dropdown', () => {
 
@@ -319,6 +347,12 @@ describe('d2l-dropdown', () => {
 			await focusElem(focusableAncestor);
 			await aTimeout(100);
 			expect(content.opened).to.be.true;
+		});
+
+		it('should not close when activeElement becomes focusable ancestor when in a custom element', async() => {
+			const elem = await fixture(`<${wrappedDropdown}></${wrappedDropdown}>`);
+			await clickElem(elem.shadowRoot.querySelector('#non_focusable_inside'));
+			expect(elem.shadowRoot.querySelector('d2l-dropdown-content').opened).to.be.true;
 		});
 
 		[
