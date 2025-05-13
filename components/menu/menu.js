@@ -176,46 +176,33 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 
 	_focusFirst() {
 		const item = this._tryGetNextFocusable();
-		if (item) {
-			item.setAttribute('tabindex', '0');
-			item.focus();
-		}
+		if (item) this._focusItem(item);
+	}
+
+	_focusItem(item) {
+		item.setAttribute('tabindex', '0');
+		item.focus();
 	}
 
 	_focusLast() {
 		const item = this._tryGetPreviousFocusable();
-		if (item) {
-			item.setAttribute('tabindex', '0');
-			item.focus();
-		}
+		if (item) this._focusItem(item);
 	}
 
 	_focusNext(item) {
 		item = this._tryGetNextFocusable(item);
-
-		if (item) {
-			item.setAttribute('tabindex', '0');
-			item.focus();
-		} else {
-			this._focusFirst();
-		}
+		item ? this._focusItem(item) : this._focusFirst();
 	}
 
 	_focusPrevious(item) {
 		item = this._tryGetPreviousFocusable(item);
-
-		if (item) {
-			item.setAttribute('tabindex', '0');
-			item.focus();
-		} else {
-			this._focusLast();
-		}
+		item ? this._focusItem(item) : this._focusLast();
 	}
 
 	_focusSelected() {
 		const selected = this.querySelector('[selected]');
 		if (selected) {
-			selected.focus();
+			this._focusItem(selected);
 		} else {
 			this._focusFirst();
 		}
@@ -280,7 +267,8 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 	}
 
 	_onFocusOut(e) {
-		if (e.target.role !== 'menuitem' || e.target.hasAttribute('first')) return;
+		e.stopPropagation();
+		if (e.target.role !== 'menuitem' || e.target.hasAttribute('first') || e.target.hasChildView) return;
 		e.target.setAttribute('tabindex', '-1');
 	}
 
@@ -345,7 +333,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 		while (itemIndex !== targetItemIndex) {
 			const item = focusableItems[itemIndex];
 			if (startsWith(item, searchChar)) {
-				item.focus();
+				this._focusItem(item);
 				return;
 			}
 			itemIndex = getNextOrFirstIndex(itemIndex);
