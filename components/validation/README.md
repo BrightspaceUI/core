@@ -4,10 +4,10 @@
 The `d2l-validation-custom` component is used to add custom validation logic to native form elements like `input`, `select` and `textarea` or custom form elements created with the [`FormElementMixin`](../form/docs/form-element-mixin.md).
 
 **Native Form Elements:**
-- When attached to native form elements like `input`, `select` and `textarea`, both the `d2l-validation-custom` and native form element **must** be within a [`d2l-form`](../form/docs/form.md) or [`d2l-form-native`](../form/docs/form-native.md) for the validation custom to function.
+- When attached to native form elements like `input`, `select` and `textarea`, both the `d2l-validation-custom` and native form element **must** be within a [`d2l-form`](../form/docs/form.md) for the validation custom to function.
 
 **Custom Form Elements:**
-- When attached to custom form elements created with the [`FormElementMixin`](../form/docs/form-element-mixin.md), the `d2l-validation-custom` will function even if no [`d2l-form`](../form/docs/form.md) or [`d2l-form-native`](../form/docs/form-native.md) is present.
+- When attached to custom form elements created with the [`FormElementMixin`](../form/docs/form-element-mixin.md), the `d2l-validation-custom` will function even if no [`d2l-form`](../form/docs/form.md) is present.
 
 **Usage:**
 ```html
