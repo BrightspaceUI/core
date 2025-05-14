@@ -7,6 +7,15 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
+function debounce(func, delay) {
+	let timer = 0;
+	return function() {
+		clearTimeout(timer);
+		// eslint-disable-next-line no-invalid-this
+		timer = setTimeout(() => func.apply(this), delay);
+	};
+}
+
 class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
@@ -163,19 +172,19 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 		const leftElem = this.shadowRoot.querySelector('.d2l-input-date-time-range-start-container');
 		let leftElemHeight = 0;
 
-		this._leftElemResizeObserver = this._leftElemResizeObserver || new ResizeObserver(() => {
+		this._leftElemResizeObserver = this._leftElemResizeObserver || new ResizeObserver(debounce(() => {
 			leftElemHeight = Math.ceil(parseFloat(getComputedStyle(leftElem).getPropertyValue('height')));
-		});
+		}, 5));
 		this._leftElemResizeObserver.disconnect();
 		this._leftElemResizeObserver.observe(leftElem);
 
-		this._parentElemResizeObserver = this._parentElemResizeObserver || new ResizeObserver(async() => {
+		this._parentElemResizeObserver = this._parentElemResizeObserver || new ResizeObserver(debounce(async() => {
 			this._blockDisplay = false;
 			await this.updateComplete;
 			const height = Math.ceil(parseFloat(getComputedStyle(container).getPropertyValue('height')));
 			if (height >= (leftElemHeight * 2)) this._blockDisplay = true; // switch to _blockDisplay styles if content has wrapped (needed for "to" to occupy its own line)
 			else this._blockDisplay = false;
-		});
+		}, 5));
 		this._parentElemResizeObserver.disconnect();
 		this._parentElemResizeObserver.observe(this._parentNode);
 	}
