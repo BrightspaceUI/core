@@ -22,6 +22,7 @@ class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 	static get styles() {
 		return css`
 			:host {
+				clip-path: rect(-1em 100% calc(100% + 1em) -1em);
 				display: block;
 				font-size: 0.7rem;
 				line-height: 1.05rem;
