@@ -172,9 +172,9 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 		const leftElem = this.shadowRoot.querySelector('.d2l-input-date-time-range-start-container');
 		let leftElemHeight = 0;
 
-		this._leftElemResizeObserver = this._leftElemResizeObserver || new ResizeObserver(debounce(() => {
+		this._leftElemResizeObserver = this._leftElemResizeObserver || new ResizeObserver(() => {
 			leftElemHeight = Math.ceil(parseFloat(getComputedStyle(leftElem).getPropertyValue('height')));
-		}, 5));
+		});
 		this._leftElemResizeObserver.disconnect();
 		this._leftElemResizeObserver.observe(leftElem);
 
