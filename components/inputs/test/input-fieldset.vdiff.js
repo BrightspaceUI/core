@@ -29,7 +29,9 @@ describe('d2l-input-fieldset', () => {
 	[
 		{ name: 'fieldset', template: html`<d2l-input-fieldset label="Bun">${inputs}</d2l-input-fieldset>` },
 		{ name: 'fieldset-required', template: html`<d2l-input-fieldset label="Bun" required>${inputs}</d2l-input-fieldset>` },
+		{ name: 'fieldset-label-hidden', template: html`<d2l-input-fieldset label="Bun" label-hidden>${inputs}</d2l-input-fieldset>` },
 		{ name: 'fieldset-label-style-heading', template: html`<d2l-input-fieldset label="Bun" label-style="heading">${inputs}</d2l-input-fieldset>` },
+		{ name: 'fieldset-label-hidden-style-heading', template: html`<d2l-input-fieldset label="Bun" label-hidden label-style="heading">${inputs}</d2l-input-fieldset>` },
 		{ name: 'fieldset-manual', template: `<${fieldsetManualTag}></${fieldsetManualTag}>` },
 		{ name: 'fieldset-manual-required', template: `<${fieldsetManualTag} required></${fieldsetManualTag}>` },
 	].forEach(({ name, template }) => {
