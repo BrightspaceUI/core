@@ -49,7 +49,11 @@ class InputFieldset extends PropertyRequiredMixin(InputInlineHelpMixin(SkeletonM
 				:host([hidden]) {
 					display: none;
 				}
+				:host([label-style="heading"]) {
+					margin-block-start: 0.3rem;
+				}
 				legend.d2l-heading-4 {
+					line-height: 0.8rem;
 					margin-block: 0 0.9rem;
 					padding: 0;
 				}
