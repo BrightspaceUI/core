@@ -11,8 +11,7 @@ function debounce(func, delay) {
 	let timer = 0;
 	return function() {
 		clearTimeout(timer);
-		// eslint-disable-next-line no-invalid-this
-		timer = setTimeout(() => func.apply(this), delay);
+		timer = setTimeout(func, delay);
 	};
 }
 
@@ -184,7 +183,7 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 			const height = Math.ceil(parseFloat(getComputedStyle(container).getPropertyValue('height')));
 			if (height >= (leftElemHeight * 2)) this._blockDisplay = true; // switch to _blockDisplay styles if content has wrapped (needed for "to" to occupy its own line)
 			else this._blockDisplay = false;
-		}, 5));
+		}, 5).bind(this));
 		this._parentElemResizeObserver.disconnect();
 		this._parentElemResizeObserver.observe(this._parentNode);
 	}
