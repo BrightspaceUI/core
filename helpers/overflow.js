@@ -11,23 +11,23 @@ export function getOverflowDeclarations({ textOverflow = '', lines = 0, lit = tr
 		overflow-x: clip;
 		${lines
 			? `
-		  	display: -webkit-box;
+			display: -webkit-box;
 			overflow-clip-margin: 0.2em;
 			overflow-wrap: anywhere;
 			overflow-y: clip;
+			text-overflow: ${textOverflow || 'ellipsis'};
 			-webkit-box-orient: vertical;
-	  		-webkit-line-clamp: ${lines};
-	    	text-overflow: ${textOverflow || 'ellipsis'};`
+			-webkit-line-clamp: ${lines};`
 			: `
-     		overflow-clip-margin: 1em;
-    		${textOverflow
+			overflow-clip-margin: 1em;
+			${textOverflow
 				? `
-		     	overflow-y: visible;
-		     	text-overflow: ${textOverflow};
-		      	white-space: nowrap;`
+				overflow-y: visible;
+				text-overflow: ${textOverflow};
+				white-space: nowrap;`
 				: `
-	       		overflow-y: clip;`}
-      	`};
+				overflow-y: clip;`}
+		`}
 	`;
 	return lit ? unsafeCSS(declarations) : declarations;
 }
