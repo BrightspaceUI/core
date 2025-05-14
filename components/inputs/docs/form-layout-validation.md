@@ -1,6 +1,6 @@
-# Input Groups and Fieldsets
+# Form Layout & Validation
 
-Collections of inputs can be consistently displayed visually using an input group or related to each other semantically using an input fieldset.
+Collections of inputs can be validated and submitted as part of a form, consistently displayed visually using an input group or related to each other semantically using an input fieldset.
 
 <!-- docs: demo display:block -->
 ```html
@@ -16,9 +16,10 @@ Collections of inputs can be consistently displayed visually using an input grou
 </script>
 <d2l-form>
   <d2l-input-group>
-    <d2l-input-fieldset label="Address">
+    <d2l-input-text label="Name" required style="max-width: 200px;"></d2l-input-text>
+    <d2l-input-fieldset label="Address" label-style="heading">
       <d2l-input-group>
-        <d2l-input-text label="Street" required style="max-width: 350px;"></d2l-input-text>
+        <d2l-input-text label="Street" style="max-width: 350px;"></d2l-input-text>
         <d2l-input-text label="City" style="max-width: 200px;"></d2l-input-text>
       </d2l-input-group>
     </d2l-input-fieldset>

@@ -12,5 +12,5 @@ There are various input components available:
 - [Text (input-text, input-textarea)](docs/input-text.md)
 
 See also:
-- [Inputs Groups and Fieldsets](docs/input-group-fieldset.md)
-- [Validating and Submitting Inputs with Forms](../form/)
+- [Form Layout and Validation](docs/form-layout-validation.md)
+- [FormElementMixin](../form/docs/form-element-mixin.md)
