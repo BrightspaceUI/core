@@ -50,7 +50,8 @@ class InputFieldset extends PropertyRequiredMixin(InputInlineHelpMixin(SkeletonM
 					display: none;
 				}
 				legend.d2l-heading-4 {
-					margin-block: 0 1rem;
+					margin-block: 0 0.9rem;
+					padding: 0;
 				}
 			`
 		];
@@ -67,7 +68,7 @@ class InputFieldset extends PropertyRequiredMixin(InputInlineHelpMixin(SkeletonM
 	render() {
 		const legendClasses = {
 			'd2l-heading-4': this.labelStyle === 'heading',
-			'd2l-input-label': this.labelStyle === 'default',
+			'd2l-input-label': this.labelStyle !== 'heading',
 			'd2l-offscreen': this.labelHidden,
 			'd2l-skeletize': true
 		};
