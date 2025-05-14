@@ -1,4 +1,3 @@
-import '../input-fieldset.js';
 import { css, LitElement } from 'lit';
 import { defineCE, expect, fixture, html } from '@brightspace-ui/testing';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
@@ -8,43 +7,6 @@ import { inputLabelStyles } from '../input-label-styles.js';
 import { inputStyles } from '../input-styles.js';
 
 const viewport = { width: 376 };
-
-const inputs = html`<div style="border: 1px solid black; padding: 10px;">Inputs go in here.</div>`;
-
-const fieldsetTag = defineCE(class extends LitElement {
-
-	static get properties() {
-		return { required: { type: Boolean } };
-	}
-
-	render() {
-		return html`
-			<d2l-input-fieldset label="Bun" ?required="${this.required}">
-				${inputs}
-			</d2l-input-fieldset>
-		`;
-	}
-
-});
-
-const fieldsetManualTag = defineCE(class extends LitElement {
-
-	static get properties() {
-		return { required: { type: Boolean } };
-	}
-
-	static get styles() { return [inputLabelStyles]; }
-
-	render() {
-		return html`
-			<fieldset class="d2l-input-label-fieldset">
-				<legend class="d2l-input-label">Ingredients</legend>
-				${inputs}
-			</fieldset>
-		`;
-	}
-
-});
 
 const refTag = defineCE(class extends LitElement {
 
@@ -98,10 +60,6 @@ describe('d2l-input-label', () => {
 	after(unloadSass);
 
 	[
-		{ name: 'fieldset', template: `<${fieldsetTag}></${fieldsetTag}>` },
-		{ name: 'fieldset-required', template: `<${fieldsetTag} required></${fieldsetTag}>` },
-		{ name: 'fieldset-manual', template: `<${fieldsetManualTag}></${fieldsetManualTag}>` },
-		{ name: 'fieldset-manual-required', template: `<${fieldsetManualTag} required></${fieldsetManualTag}>` },
 		{ name: 'ref', template: `<${refTag}></${refTag}>` },
 		{ name: 'ref-required', template: `<${refTag} required></${refTag}>` },
 		{ name: 'wrap', template: `<${wrapTag}></${wrapTag}>` },
