@@ -368,7 +368,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	render() {
 		const classes = {
 			'd2l-collapsible-panel': true,
-			'focused': this._focused && !this._clicked,
+			'focused': this._focused,
 			'has-summary': this._hasSummary,
 			'has-before': this._hasBefore,
 			'scrolled': this._scrolled,
@@ -455,7 +455,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 
 	_onBlur() {
 		setTimeout(() => {
-			// don't blur if the button still ends up in focus
+			// don't remove focus if the button still ends up in focus
 			if (getComposedActiveElement() === this.shadowRoot.querySelector('button')) return;
 			this._focused = false;
 		}, 10);
