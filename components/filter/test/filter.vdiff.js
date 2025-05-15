@@ -168,16 +168,17 @@ describe('filter', () => {
 				{ name: 'dates', template: createSingleDimDate() },
 				{ name: 'dates-long', template: createSingleDimDateCustom({ long: true }) },
 				{ name: 'dates-custom-selected', template: createSingleDimDateCustom({ customSelected: true }) },
-				{ name: 'dates-custom-selected-start-value', template: createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z' }) },
+				{ name: 'dates-custom-selected-start-value', template: createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z' }), waitForBlockDisplay: true },
 				{ name: 'dates-custom-selected-start-value-date', template: createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', type: 'date' }) },
 				{ name: 'dates-custom-selected-same-start-end-date', template: createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', endValue: '2018-02-13T04:59:59.000Z', type: 'date' }) },
 				{ name: 'dates-long-custom-selected', template: createSingleDimDateCustom({ long: true, longCustomSelected: true }) },
-			].forEach(({ name, template }) => {
+			].forEach(({ name, template, waitForBlockDisplay }) => {
 				it(`${rtl ? 'rtl-' : ''}${name}`, async() => {
 					const elem = await fixture(template, { rtl, viewport: { height: 1500 } });
 					elem.opened = true;
 					await oneEvent(elem, 'd2l-filter-dimension-first-open');
 					await nextFrame();
+					if (waitForBlockDisplay) await waitUntil(() => elem.shadowRoot.querySelector('d2l-input-date-time-range').shadowRoot.querySelector('d2l-input-date-time-range-to')._blockDisplay, 'component never changed layout');
 					await expect(elem).to.be.golden();
 				});
 
