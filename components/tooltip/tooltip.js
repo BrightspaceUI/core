@@ -117,6 +117,11 @@ if (usePopoverMixin) {
 				 */
 				offset: { type: Number },
 				/**
+				 * ADVANCED: Force the tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
+				 * @type {'top'|'bottom'|'left'|'right'}
+				 */
+				positionLocation: { type: String, attribute: 'position' },
+				/**
 				 * @ignore
 				 */
 				showing: { type: Boolean, reflect: true },
@@ -260,11 +265,11 @@ if (usePopoverMixin) {
 		willUpdate(changedProperties) {
 			super.willUpdate(changedProperties);
 
-			if (changedProperties.has('align') || changedProperties.has('offset')) {
+			if (changedProperties.has('align') || changedProperties.has('forceShow') || changedProperties.has('offset') || changedProperties.has('positionLocation')) {
 				super.configure({
 					noAutoClose: this.forceShow,
 					offset: (this.offset !== undefined ? Number.parseInt(this.offset) : undefined),
-					position: { location: 'block-end', span: this.#adaptPositionSpan(this.align) },
+					position: { location: this.#adaptPositionLocation(this.positionLocation), span: this.#adaptPositionSpan(this.align) },
 				});
 			}
 
@@ -305,6 +310,16 @@ if (usePopoverMixin) {
 		#showing;
 		#target;
 		#targetSizeObserver;
+
+		#adaptPositionLocation(val) {
+			switch (val) {
+				case 'bottom': return 'block-end';
+				//case 'left': return 'inline-start'; not suppoted yet
+				//case 'right': return 'inline-end'; not suppoted yet
+				case 'top': return 'block-start';
+				default: return 'block-end';
+			}
+		}
 
 		#adaptPositionSpan(val) {
 			switch (val) {
