@@ -4,7 +4,7 @@ export function getFlag(key, defaultValue) {
 	if (flagOverrides.has(key)) {
 		return flagOverrides.get(key);
 	}
-	return window.D2L?.LP?.Web?.UI?.Flags.Flag(key, defaultValue) ?? defaultValue;
+	return globalThis.D2L?.LP?.Web?.UI?.Flags.Flag(key, defaultValue) ?? defaultValue;
 }
 
 export function mockFlag(key, value) {

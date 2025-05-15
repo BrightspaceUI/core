@@ -1,4 +1,4 @@
-if (!document.head.querySelector('#d2l-colors')) {
+if (globalThis.document !== undefined && !globalThis.document.head.querySelector('#d2l-colors')) {
 	const style = document.createElement('style');
 	style.id = 'd2l-colors';
 	style.textContent = `
