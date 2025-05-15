@@ -14,6 +14,10 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const usePopoverMixin = getFlag('GAUD-7355-tooltip-popover', false);
+const inputStyleTweaksEnabled = getFlag('input-style-tweaks', true);
+
+const contentBorderSize = 1;
+const contentHorizontalPadding = 15;
 
 const tooltipInteractiveElements = {
 	...interactiveElements,
@@ -68,6 +72,11 @@ if (usePopoverMixin) {
 		static get properties() {
 			return {
 				/**
+				 * Align the tooltip with either the start or end of its target. If not set, the tooltip will attempt be centered.
+				 * @type {'start'|'end'}
+				 */
+				align: { type: String, reflect: true },
+				/**
 				 * ADVANCED: Announce the tooltip innerText when applicable (for use with custom elements)
 				 * @type {boolean}
 				 */
@@ -115,12 +124,51 @@ if (usePopoverMixin) {
 				 * ADVANCED: Only show the tooltip if we detect the target element is truncated
 				 * @type {boolean}
 				 */
-				showTruncatedOnly: { type: Boolean, attribute: 'show-truncated-only' }
+				showTruncatedOnly: { type: Boolean, attribute: 'show-truncated-only' },
+				/**
+				 * The style of the tooltip based on the type of information it displays
+				 * @type {'info'|'error'}
+				 */
+				state: { type: String, reflect: true }
 			};
 		}
 
 		static get styles() {
-			return [super.styles];
+			return [super.styles, bodySmallStyles, css`
+				:host {
+					--d2l-tooltip-background-color: var(--d2l-color-ferrite); /* Deprecated, use state attribute instead */
+					--d2l-tooltip-border-color: var(--d2l-color-ferrite); /* Deprecated, use state attribute instead */
+					--d2l-tooltip-outline-color: rgba(255, 255, 255, 0.32);
+					--d2l-popover-background-color: var(--d2l-tooltip-background-color);
+					--d2l-popover-border-color: var(--d2l-tooltip-outline-color);
+					--d2l-popover-border-radius: 0.3rem;
+				}
+				:host([state="error"]) {
+					--d2l-tooltip-background-color: var(--d2l-color-cinnabar);
+					--d2l-tooltip-border-color: var(--d2l-color-cinnabar);
+				}
+				.d2l-tooltip-content {
+					box-sizing: border-box;
+					color: white;
+					max-width: 17.5rem;
+					min-height: ${unsafeCSS(inputStyleTweaksEnabled ? '1.95rem' : '2.1rem')}; /* stylelint-disable-line */
+					min-width: 2.1rem;
+					overflow: hidden;
+					overflow-wrap: anywhere;
+					padding-block: ${(inputStyleTweaksEnabled ? 10 : 11) - contentBorderSize}px ${11 - contentBorderSize}px;
+					padding-inline: ${contentHorizontalPadding - contentBorderSize}px;
+				}
+				::slotted(ul),
+				::slotted(ol) {
+					padding-inline-start: 1rem;
+				}
+				@media (max-width: 615px) {
+					.d2l-tooltip-content {
+						padding-bottom: ${12 - contentBorderSize}px;
+						padding-top: ${12 - contentBorderSize}px;
+					}
+				}
+			`];
 		}
 
 		constructor() {
@@ -133,6 +181,7 @@ if (usePopoverMixin) {
 			this.forType = 'descriptor';
 			this.offset = 10;
 			this.showTruncatedOnly = false;
+			this.state = 'info';
 
 			this.#handleTargetBlurBound = this.#handleTargetBlur.bind(this);
 			this.#handleTargetClickBound = this.#handleTargetClick.bind(this);
@@ -152,8 +201,6 @@ if (usePopoverMixin) {
 			this.#resizeRunSinceTruncationCheck = false;
 
 			/*
-			this.state = 'info';
-
 			this._viewportMargin = defaultViewportMargin;
 			*/
 		}
@@ -206,7 +253,9 @@ if (usePopoverMixin) {
 
 		render() {
 			const content = html`
-				<slot></slot>
+				<div class="d2l-tooltip-content d2l-body-small" role="text">
+					<slot></slot>
+				</div>
 			`;
 
 			return this.renderPopover(content);
@@ -215,9 +264,10 @@ if (usePopoverMixin) {
 		willUpdate(changedProperties) {
 			super.willUpdate(changedProperties);
 
-			if (changedProperties.has('offset')) {
+			if (changedProperties.has('align') || changedProperties.has('offset')) {
 				super.configure({
-					offset: (this.offset !== undefined ? Number.parseInt(this.offset) : undefined)
+					offset: (this.offset !== undefined ? Number.parseInt(this.offset) : undefined),
+					position: { location: 'block-end', span: this.#adaptPositionSpan(this.align) },
 				});
 			}
 
@@ -258,6 +308,14 @@ if (usePopoverMixin) {
 		#showing;
 		#target;
 		#targetSizeObserver;
+
+		#adaptPositionSpan(val) {
+			switch (val) {
+				case 'start': return 'end';
+				case 'end': return 'start';
+				default: return 'all';
+			}
+		}
 
 		#addListeners() {
 			if (!this.#target) return;
@@ -523,8 +581,6 @@ if (usePopoverMixin) {
 
 	// Cleanup: GAUD-7355-tooltip-popover - remove this entire block and unused imports
 
-	const inputStyleTweaksEnabled = getFlag('input-style-tweaks', true);
-
 	const pointerLength = 16;
 	const pointerOverhang = 7; /* how far the pointer extends outside the content */
 
@@ -535,8 +591,6 @@ if (usePopoverMixin) {
 	const pointerGap = 0; /* spacing between pointer and target */
 	const defaultViewportMargin = 18;
 	const contentBorderRadius = 6;
-	const contentBorderSize = 1;
-	const contentHorizontalPadding = 15;
 	const outlineSize = 1;
 
 	const computeTooltipShift = (centerDelta, spaceLeft, spaceRight) => {
