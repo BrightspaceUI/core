@@ -44,11 +44,14 @@ Unlike the standard HTML `<form>` element, `<d2l-form>` supports validating and 
   import '@brightspace-ui/core/components/inputs/input-textarea.js';
 
   const form = document.querySelector('d2l-form');
-  document.querySelector('d2l-button')
-    .addEventListener('click', () => form.submit());
   form.addEventListener('d2l-form-submit', e => {
-    const data = e.detail.formData; // data.name, data.description
-  })
+    const data = e.detail.formData;
+    console.log(`name: "${data.name}"`);
+    console.log(`description: "${data.description}"`);
+  });
+  document
+    .querySelector('d2l-button')
+    .addEventListener('click', () => form.submit());
 </script>
 <d2l-form>
   <d2l-input-group>
@@ -138,5 +141,6 @@ Within the fieldset, `<d2l-input-group>` can still be used to provide a consiste
 
 ### Slots
 
+* `Default`: Related input components
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
