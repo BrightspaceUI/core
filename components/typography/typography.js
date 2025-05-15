@@ -80,6 +80,11 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 			font-family: 'Hiragino Kaku Gothic Pro', 'Meiyro', sans-serif;
 		}
 
+		.d2l-typography:lang(th),
+		.d2l-typography :lang(th) {
+			font-family: 'Noto Sans Thai', system-ui, Tahoma;
+		}
+
 		.d2l-typography .d2l-heading-1 {
 			font-size: 2rem;
 			font-weight: 400;
