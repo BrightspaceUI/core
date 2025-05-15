@@ -257,7 +257,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				transform-origin: 0.4rem;
 			}
 			:host([expanded]) d2l-icon-custom svg {
-				fill: var(--d2l-color-tungsten);
+				fill: currentColor;
 				transform: rotate(90deg);
 			}
 			@media (prefers-reduced-motion: no-preference) {
@@ -457,7 +457,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 					</div>
 					<d2l-icon-custom size="tier1" class="d2l-skeletize" aria-hidden="true">
 						<svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" fill="none" viewBox="0 0 10 18">
-							<path stroke="var(--d2l-color-tungsten)" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
+							<path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
 						</svg>
 					</d2l-icon-custom>
 				</div>
