@@ -678,6 +678,13 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			this._lastSlotWidth = 0;
 		}
 
+		requestAnimationFrame(() => {
+			this.dispatchEvent(new CustomEvent(
+				'd2l-input-text-layout-updated',
+				{ bubbles: true, composed: true }
+			));
+		});
+
 	}
 
 }
