@@ -199,10 +199,6 @@ if (usePopoverMixin) {
 			this.#isTruncating = false;
 			this.#mouseLeftTooltip = false;
 			this.#resizeRunSinceTruncationCheck = false;
-
-			/*
-			this._viewportMargin = defaultViewportMargin;
-			*/
 		}
 
 		/** @ignore */
