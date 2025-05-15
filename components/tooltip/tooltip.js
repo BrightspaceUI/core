@@ -266,6 +266,7 @@ if (usePopoverMixin) {
 
 			if (changedProperties.has('align') || changedProperties.has('offset')) {
 				super.configure({
+					noAutoClose: this.forceShow,
 					offset: (this.offset !== undefined ? Number.parseInt(this.offset) : undefined),
 					position: { location: 'block-end', span: this.#adaptPositionSpan(this.align) },
 				});
