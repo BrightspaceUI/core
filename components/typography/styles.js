@@ -324,8 +324,8 @@ const importUrl = 'https://s.brightspace.com/lib/fonts/0.6.1/assets/';
 const fonts = {
 	LatoRegular: 'Lato-400',
 	LatoBold: 'Lato-700',
-	NotoSansThaiRegular: 'NotoSansThai-400',
-	NotoSansThaiBold: 'NotoSansThai-700',
+	NotoSansThaiRegular: 'NotoSansThai-Regular',
+	NotoSansThaiBold: 'NotoSansThai-Bold',
 	BCSansLight: 'BCSans-Light',
 	BCSansRegular: 'BCSans-Regular',
 	BCSansBold: 'BCSans-Bold',
