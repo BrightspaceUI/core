@@ -334,13 +334,13 @@ export const fontFacesCss = `@font-face {
 	font-family: 'Lato';
 	font-style: normal;
 	font-weight: 400;
-	src: local('Lato Regular'), local('Lato-Regular'), url(${new URL(`${fonts.LatoRegular}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.LatoRegular}.woff`, importUrl)}) format('woff');
+	src: url(${new URL(`${fonts.LatoRegular}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.LatoRegular}.woff`, importUrl)}) format('woff');
 }
 @font-face {
 	font-family: 'Lato';
 	font-style: normal;
 	font-weight: 700;
-	src: local('Lato Bold'), local('Lato-Bold'), url(${new URL(`${fonts.LatoBold}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.LatoBold}.woff`, importUrl)}) format('woff');
+	src: url(${new URL(`${fonts.LatoBold}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.LatoBold}.woff`, importUrl)}) format('woff');
 }
 @font-face {
 	font-family: 'BC Sans';
