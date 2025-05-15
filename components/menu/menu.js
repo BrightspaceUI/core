@@ -268,7 +268,8 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 
 	_onFocusOut(e) {
 		e.stopPropagation();
-		if (e.target.role !== 'menuitem' || e.target.hasAttribute('first') || e.target.hasChildView) return;
+		const isMenuItem = e.target.role === 'menuitem' || e.target.role === 'menuitemcheckbox' || e.target.role === 'menuitemradio';
+		if (!isMenuItem || e.target.hasAttribute('first') || e.target.hasChildView) return;
 		e.target.setAttribute('tabindex', '-1');
 	}
 
