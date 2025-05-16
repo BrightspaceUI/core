@@ -296,7 +296,8 @@ export const blockquoteStyles = css`
 		position: relative;
 	}
 	.d2l-blockquote::before {
-		content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAyMiAyMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGRlZnM+PHBhdGggaWQ9ImEiIGQ9Ik0wIDBoMjR2MjRIMHoiLz48L2RlZnM+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEgLTEpIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxtYXNrIGlkPSJiIiBmaWxsPSIjZmZmIj48dXNlIHhsaW5rOmhyZWY9IiNhIi8+PC9tYXNrPjxwYXRoIGQ9Ik02IDIyLjY2N0E0LjY2NyA0LjY2NyAwIDAgMCAxMC42NjcgMThjMC0xLjIyNy0uNTU5LTIuNS0xLjMzNC0zLjMzM0M4LjQ4MSAxMy43NSA3LjM1IDEzLjMzMyA2IDEzLjMzM2MtLjQxMSAwIDEuMzMzLTYuNjY2IDMtOSAxLjY2Ny0yLjMzMyAxLjMzMy0zIC4zMzMtM0M4IDEuMzMzIDUuMjUzIDQuNTg2IDQgNy4yNTUgMS43NzMgMTIgMS4zMzMgMTUuMzkyIDEuMzMzIDE4QTQuNjY3IDQuNjY3IDAgMCAwIDYgMjIuNjY3em0xMiAwQTQuNjY3IDQuNjY3IDAgMCAwIDIyLjY2NyAxOGMwLTEuMjI3LS41NTktMi41LTEuMzM0LTMuMzMzLS44NTItLjkxNy0xLjk4My0xLjMzNC0zLjMzMy0xLjMzNC0uNDExIDAgMS4zMzMtNi42NjYgMy05IDEuNjY3LTIuMzMzIDEuMzMzLTMgLjMzMy0zLTEuMzMzIDAtNC4wOCAzLjI1My01LjMzMyA1LjkyMkMxMy43NzMgMTIgMTMuMzMzIDE1LjM5MiAxMy4zMzMgMThBNC42NjcgNC42NjcgMCAwIDAgMTggMjIuNjY3eiIgZmlsbD0iI0QzRDlFMyIgbWFzaz0idXJsKCNiKSIvPjwvZz48L3N2Zz4=");
+		content:
+			url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAyMiAyMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGRlZnM+PHBhdGggaWQ9ImEiIGQ9Ik0wIDBoMjR2MjRIMHoiLz48L2RlZnM+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEgLTEpIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxtYXNrIGlkPSJiIiBmaWxsPSIjZmZmIj48dXNlIHhsaW5rOmhyZWY9IiNhIi8+PC9tYXNrPjxwYXRoIGQ9Ik02IDIyLjY2N0E0LjY2NyA0LjY2NyAwIDAgMCAxMC42NjcgMThjMC0xLjIyNy0uNTU5LTIuNS0xLjMzNC0zLjMzM0M4LjQ4MSAxMy43NSA3LjM1IDEzLjMzMyA2IDEzLjMzM2MtLjQxMSAwIDEuMzMzLTYuNjY2IDMtOSAxLjY2Ny0yLjMzMyAxLjMzMy0zIC4zMzMtM0M4IDEuMzMzIDUuMjUzIDQuNTg2IDQgNy4yNTUgMS43NzMgMTIgMS4zMzMgMTUuMzkyIDEuMzMzIDE4QTQuNjY3IDQuNjY3IDAgMCAwIDYgMjIuNjY3em0xMiAwQTQuNjY3IDQuNjY3IDAgMCAwIDIyLjY2NyAxOGMwLTEuMjI3LS41NTktMi41LTEuMzM0LTMuMzMzLS44NTItLjkxNy0xLjk4My0xLjMzNC0zLjMzMy0xLjMzNC0uNDExIDAgMS4zMzMtNi42NjYgMy05IDEuNjY3LTIuMzMzIDEuMzMzLTMgLjMzMy0zLTEuMzMzIDAtNC4wOCAzLjI1My01LjMzMyA1LjkyMkMxMy43NzMgMTIgMTMuMzMzIDE1LjM5MiAxMy4zMzMgMThBNC42NjcgNC42NjcgMCAwIDAgMTggMjIuNjY3eiIgZmlsbD0iI0QzRDlFMyIgbWFzaz0idXJsKCNiKSIvPjwvZz48L3N2Zz4=");
 		left: 0;
 		position: absolute;
 		top: 0;
@@ -323,6 +324,8 @@ const importUrl = 'https://s.brightspace.com/lib/fonts/0.6.1/assets/';
 const fonts = {
 	LatoRegular: 'Lato-400',
 	LatoBold: 'Lato-700',
+	NotoSansThaiRegular: 'NotoSansThai-Regular',
+	NotoSansThaiBold: 'NotoSansThai-Bold',
 	BCSansLight: 'BCSans-Light',
 	BCSansRegular: 'BCSans-Regular',
 	BCSansBold: 'BCSans-Bold',
@@ -335,48 +338,92 @@ export const fontFacesCss = `
 		font-family: 'Lato';
 		font-style: normal;
 		font-weight: 400;
-		src: local('Lato Regular'), local('Lato-Regular'), url(${new URL(`${fonts.LatoRegular}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.LatoRegular}.woff`, importUrl)}) format('woff'), url(${new URL(`${fonts.LatoRegular}.ttf`, importUrl)}) format('truetype');
+		src:
+			local('Lato Regular'),
+			local('Lato-Regular'),
+			url(${new URL(`${fonts.LatoRegular}.woff2`, importUrl)}) format('woff2'),
+			url(${new URL(`${fonts.LatoRegular}.woff`, importUrl)}) format('woff'),
+			url(${new URL(`${fonts.LatoRegular}.ttf`, importUrl)}) format('truetype');
 	}
 	@font-face {
 		font-family: 'Lato';
 		font-style: normal;
 		font-weight: 700;
-		src: local('Lato Bold'), local('Lato-Bold'), url(${new URL(`${fonts.LatoBold}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.LatoBold}.woff`, importUrl)}) format('woff'), url(${new URL(`${fonts.LatoBold}.ttf`, importUrl)}) format('truetype');
+		src:
+			local('Lato Bold'),
+			local('Lato-Bold'),
+			url(${new URL(`${fonts.LatoBold}.woff2`, importUrl)}) format('woff2'),
+			url(${new URL(`${fonts.LatoBold}.woff`, importUrl)}) format('woff'),
+			url(${new URL(`${fonts.LatoBold}.ttf`, importUrl)}) format('truetype');
+	}
+	@font-face {
+		font-family: 'Noto Sans Thai';
+		font-style: normal;
+		font-weight: 400;
+		src:
+			local('Noto Sans Thai Regular'),
+			local('NotoSansThai-Regular'),
+			url(${new URL(`${fonts.NotoSansThaiRegular}.woff2`, importUrl)}) format('woff2'),
+			url(${new URL(`${fonts.NotoSansThaiRegular}.woff`, importUrl)}) format('woff'),
+			url(${new URL(`${fonts.NotoSansThaiRegular}.ttf`, importUrl)}) format('truetype');
+	}
+	@font-face {
+		font-family: 'Noto Sans Thai';
+		font-style: normal;
+		font-weight: 700;
+		src:
+			local('Noto Sans Thai Bold'),
+			local('NotoSansThai-Bold'),
+			url(${new URL(`${fonts.NotoSansThaiBold}.woff2`, importUrl)}) format('woff2'),
+			url(${new URL(`${fonts.NotoSansThaiBold}.woff`, importUrl)}) format('woff'),
+			url(${new URL(`${fonts.NotoSansThaiBold}.ttf`, importUrl)}) format('truetype');
 	}
 	@font-face {
 		font-family: 'BC Sans';
 		font-style: normal;
 		font-weight: 300;
-		src: url(${new URL(`${fonts.BCSansLight}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansLight}.woff`, importUrl)}) format('woff');
+		src:
+			url(${new URL(`${fonts.BCSansLight}.woff2`, importUrl)}) format('woff2'),
+			url(${new URL(`${fonts.BCSansLight}.woff`, importUrl)}) format('woff');
 	}
 	@font-face {
 		font-family: 'BC Sans';
 		font-style: normal;
 		font-weight: 400;
-		src: url(${new URL(`${fonts.BCSansRegular}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansRegular}.woff`, importUrl)}) format('woff');
+		src:
+			url(${new URL(`${fonts.BCSansRegular}.woff2`, importUrl)}) format('woff2'),
+			url(${new URL(`${fonts.BCSansRegular}.woff`, importUrl)}) format('woff');
 	}
 	@font-face {
 		font-family: 'BC Sans';
 		font-style: normal;
 		font-weight: 700;
-		src: url(${new URL(`${fonts.BCSansBold}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansBold}.woff`, importUrl)}) format('woff');
+		src:
+			url(${new URL(`${fonts.BCSansBold}.woff2`, importUrl)}) format('woff2'),
+			url(${new URL(`${fonts.BCSansBold}.woff`, importUrl)}) format('woff');
 	}
 	@font-face {
 		font-family: 'BC Sans';
 		font-style: italic;
 		font-weight: 300;
-		src: url(${new URL(`${fonts.BCSansLightItalic}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansLightItalic}.woff`, importUrl)}) format('woff');
+		src:
+			url(${new URL(`${fonts.BCSansLightItalic}.woff2`, importUrl)}) format('woff2'),
+			url(${new URL(`${fonts.BCSansLightItalic}.woff`, importUrl)}) format('woff');
 	}
 	@font-face {
 		font-family: 'BC Sans';
 		font-style: italic;
 		font-weight: 400;
-		src: url(${new URL(`${fonts.BCSansItalic}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansItalic}.woff`, importUrl)}) format('woff');
+		src:
+			url(${new URL(`${fonts.BCSansItalic}.woff2`, importUrl)}) format('woff2'),
+			url(${new URL(`${fonts.BCSansItalic}.woff`, importUrl)}) format('woff');
 	}
 	@font-face {
 		font-family: 'BC Sans';
 		font-style: italic;
 		font-weight: 700;
-		src: url(${new URL(`${fonts.BCSansBoldItalic}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansBoldItalic}.woff`, importUrl)}) format('woff');
+		src:
+			url(${new URL(`${fonts.BCSansBoldItalic}.woff2`, importUrl)}) format('woff2'),
+			url(${new URL(`${fonts.BCSansBoldItalic}.woff`, importUrl)}) format('woff');
 	}
 `;
