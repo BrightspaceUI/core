@@ -1,5 +1,5 @@
 import '../colors/colors.js';
-import { fontFacesCss } from './styles.js';
+import { _generateBlockquoteStyles, fontFacesCss } from './styles.js';
 import { getFlag } from '../../helpers/flags.js';
 
 if (!document.head.querySelector('#d2l-typography-font-face')) {
@@ -108,39 +108,7 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 			margin: 1.5rem 0 1.5rem 0;
 		}
 
-		.d2l-typography .d2l-blockquote {
-			font-size: 0.8rem;
-			font-weight: 400;
-			line-height: 1.4rem;
-			margin: 0;
-			margin-right: 1.2rem;
-			padding: 0;
-			padding-left: 1.2rem;
-			padding-top: 0.5rem;
-			position: relative;
-		}
-
-		.d2l-typography .d2l-blockquote::before {
-			position: absolute;
-			content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAyMiAyMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGRlZnM+PHBhdGggaWQ9ImEiIGQ9Ik0wIDBoMjR2MjRIMHoiLz48L2RlZnM+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEgLTEpIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxtYXNrIGlkPSJiIiBmaWxsPSIjZmZmIj48dXNlIHhsaW5rOmhyZWY9IiNhIi8+PC9tYXNrPjxwYXRoIGQ9Ik02IDIyLjY2N0E0LjY2NyA0LjY2NyAwIDAgMCAxMC42NjcgMThjMC0xLjIyNy0uNTU5LTIuNS0xLjMzNC0zLjMzM0M4LjQ4MSAxMy43NSA3LjM1IDEzLjMzMyA2IDEzLjMzM2MtLjQxMSAwIDEuMzMzLTYuNjY2IDMtOSAxLjY2Ny0yLjMzMyAxLjMzMy0zIC4zMzMtM0M4IDEuMzMzIDUuMjUzIDQuNTg2IDQgNy4yNTUgMS43NzMgMTIgMS4zMzMgMTUuMzkyIDEuMzMzIDE4QTQuNjY3IDQuNjY3IDAgMCAwIDYgMjIuNjY3em0xMiAwQTQuNjY3IDQuNjY3IDAgMCAwIDIyLjY2NyAxOGMwLTEuMjI3LS41NTktMi41LTEuMzM0LTMuMzMzLS44NTItLjkxNy0xLjk4My0xLjMzNC0zLjMzMy0xLjMzNC0uNDExIDAgMS4zMzMtNi42NjYgMy05IDEuNjY3LTIuMzMzIDEuMzMzLTMgLjMzMy0zLTEuMzMzIDAtNC4wOCAzLjI1My01LjMzMyA1LjkyMkMxMy43NzMgMTIgMTMuMzMzIDE1LjM5MiAxMy4zMzMgMThBNC42NjcgNC42NjcgMCAwIDAgMTggMjIuNjY3eiIgZmlsbD0iI0QzRDlFMyIgbWFzaz0idXJsKCNiKSIvPjwvZz48L3N2Zz4=");
-			top: 0;
-			left: 0;
-		}
-
-		[dir="rtl"] .d2l-typography .d2l-blockquote,
-		.d2l-typography .d2l-blockquote[dir="rtl"] {
-			margin-left: 1.2rem;
-			margin-right: 0;
-			padding-left: 0;
-			padding-right: 1.2rem;
-		}
-
-		[dir="rtl"] .d2l-typography .d2l-blockquote::before,
-		.d2l-typography .d2l-blockquote[dir="rtl"]::before {
-			left: initial;
-			right: 0;
-			transform: scaleX(-1);
-		}
+		${_generateBlockquoteStyles('.d2l-typography .d2l-blockquote')}
 
 		@media (max-width: 615px) {
 
@@ -167,10 +135,6 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 
 			.d2l-typography .d2l-heading-3 {
 				font-size: 0.8rem;
-				line-height: 1.2rem;
-			}
-
-			.d2l-typography .d2l-blockquote {
 				line-height: 1.2rem;
 			}
 
