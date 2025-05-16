@@ -675,6 +675,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._changeEventsToDispatch = new Map();
 		clearTimeout(this._changeEventTimeout);
 		this._activeFiltersSubscribers.updateSubscribers();
+		this.#handleSearchLayoutUpdated(); // in order to update dropdown position if count-badge size changes pointer position
 	}
 
 	_dispatchChangeEventValueDataChange(dimension, value, valueKey) {
@@ -1147,7 +1148,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	#handleSearchLayoutUpdated() {
 		const content = this.shadowRoot.querySelector(`.${FILTER_CONTENT_CLASS}`);
 		content.resize();
-		this._resized = true; // ignore; for testing purposes
 	}
 }
 
