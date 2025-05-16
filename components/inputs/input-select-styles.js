@@ -1,5 +1,8 @@
 import '../colors/colors.js';
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
+
+const focusClass = unsafeCSS(getFocusPseudoClass());
 
 export const selectStyles = css`
 	.d2l-input-select {
@@ -36,7 +39,7 @@ export const selectStyles = css`
 	}
 
 	.d2l-input-select:not([disabled]):hover,
-	.d2l-input-select:not([disabled]):focus {
+	.d2l-input-select:not([disabled]):${focusClass} {
 		box-shadow: inset 0 2px 0 2px rgba(177, 185, 190, 0.2); /* corundum */
 		outline: 2px solid var(--d2l-color-celestine);
 		outline-offset: -2px;
@@ -46,7 +49,11 @@ export const selectStyles = css`
 		background-position: center right 17px, center right calc(1px + 11px + 17px);
 		background-repeat: no-repeat, no-repeat;
 		background-size: 11px 7px, 0.8rem 0.8rem;
-		outline-color: var(--d2l-color-cinnabar) !important;
+	}
+	.d2l-input-select[aria-invalid="true"],
+	.d2l-input-select[aria-invalid="true"]:${focusClass},
+	.d2l-input-select[aria-invalid="true"]:hover {
+		outline-color: var(--d2l-color-cinnabar);
 	}
 	:host([dir="rtl"]) .d2l-input-select[aria-invalid="true"] {
 		background-position: center left 17px, center left calc(1px + 11px + 17px);
@@ -62,7 +69,7 @@ export const selectStyles = css`
 			background-image: none;
 			border: none;
 			border-inline-end: 0.75rem solid transparent;
-			box-shadow: none !important;
+			box-shadow: none;
 			color: FieldText;
 			forced-color-adjust: none;
 			height: 2rem;
@@ -70,13 +77,10 @@ export const selectStyles = css`
 			padding-inline: 0.6rem 16px;
 		}
 
-		.d2l-input-select option {
-			outline: none;
-		}
-
-		.d2l-input-select:not([disabled]):focus,
+		.d2l-input-select:not([disabled]):${focusClass},
 		.d2l-input-select:not([disabled]):hover {
 			outline: 2px solid Highlight;
+			box-shadow: none;
 		}
 
 		.d2l-input-select[aria-invalid="true"] {
@@ -84,7 +88,12 @@ export const selectStyles = css`
 			background-position: center right calc(1px + 11px + 17px);
 			background-repeat: no-repeat;
 			background-size: 0.8rem 0.8rem;
-			outline-color: var(--d2l-color-cinnabar) !important;
+		}
+
+		.d2l-input-select[aria-invalid="true"],
+		.d2l-input-select[aria-invalid="true"]:${focusClass},
+		.d2l-input-select[aria-invalid="true"]:hover {
+			outline-color: var(--d2l-color-cinnabar);
 		}
 		:host([dir="rtl"]) .d2l-input-select[aria-invalid="true"] {
 			background-position: center left calc(1px + 11px + 17px);
