@@ -14,6 +14,7 @@ import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
+import '../list-item-nav-button.js';
 import { expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { nothing } from 'lit';
@@ -414,6 +415,52 @@ describe('list', () => {
 					`);
 					if (action) await action(elem.querySelector('d2l-list-item-button'));
 					await expect(elem).to.be.golden({ margin });
+				});
+			});
+		});
+	});
+
+	[true, false].forEach(disabled => {
+		describe(`nav${disabled ? '-disabled' : ''}`, () => {
+			[
+				{ name: 'default' },
+				{ name: 'focus', action: focusElem, margin: disabled ? undefined : 24 },
+				{ name: 'focus add-button', action: focusElem, margin: disabled ? 75 : 24, addButton: true },
+				{ name: 'hover', action: hoverElem, margin: disabled ? undefined : 24 }
+			].forEach(({ name, action, margin, addButton }) => {
+				it(name, async() => {
+					const elem = await fixture(html`
+						<d2l-list style="width: 400px;" ?add-button="${addButton || false}">
+							<d2l-list-item-nav-button ?button-disabled="${disabled}">
+								${interactiveListItemContent}
+							</d2l-list-item-nav-button>
+						</d2l-list>
+					`);
+					if (action) await action(elem.querySelector('d2l-list-item-nav-button'));
+					await expect(elem).to.be.golden({ margin });
+				});
+
+				it(`nested-${name}`, async() => {
+					if (addButton) return;
+					const elem = await fixture(html`
+						<d2l-list grid style="width: 334px;">
+							<d2l-list-item-nav-button key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable>
+								<d2l-list-item-content>
+									<div>Welcome!</div>
+								</d2l-list-item-content>
+								<d2l-list slot="nested" grid>
+									<d2l-list-item-nav-button key="L2-1" label="Syallabus Confirmation" draggable>
+										<d2l-list-item-content>
+											<div>Syallabus Confirmation</div>
+											<div slot="secondary"><d2l-tooltip-help text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
+										</d2l-list-item-content>
+									</d2l-list-item-nav-button>
+								</d2l-list>
+							</d2l-list-item-nav-button>
+						</d2l-list>
+					`);
+					if (action) await action(elem.querySelectorAll('d2l-list-item-nav-button')[1]);
+					await expect(elem).to.be.golden();
 				});
 			});
 		});

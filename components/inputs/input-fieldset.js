@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { heading4Styles } from '../typography/styles.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { InputInlineHelpMixin } from './input-inline-help.js';
 import { inputLabelStyles } from './input-label-styles.js';
@@ -27,6 +28,11 @@ class InputFieldset extends PropertyRequiredMixin(InputInlineHelpMixin(SkeletonM
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
 			/**
+			 * Style of the fieldset label
+			 * @type {'default'|'heading'}
+			 */
+			labelStyle: { type: String, attribute: 'label-style', reflect: true },
+			/**
 			 * Indicates that a value is required for inputs in the fieldset
 			 * @type {boolean}
 			 */
@@ -35,13 +41,20 @@ class InputFieldset extends PropertyRequiredMixin(InputInlineHelpMixin(SkeletonM
 	}
 
 	static get styles() {
-		return [ super.styles, inputLabelStyles, offscreenStyles,
+		return [ super.styles, heading4Styles, inputLabelStyles, offscreenStyles,
 			css`
 				:host {
 					display: block;
 				}
 				:host([hidden]) {
 					display: none;
+				}
+				:host([label-style="heading"]:not([label-hidden])) {
+					margin-block-start: 0.3rem;
+				}
+				legend.d2l-heading-4 {
+					margin-block: 0 0.6rem;
+					padding: 0;
 				}
 			`
 		];
@@ -50,21 +63,22 @@ class InputFieldset extends PropertyRequiredMixin(InputInlineHelpMixin(SkeletonM
 	constructor() {
 		super();
 		this.labelHidden = false;
+		this.labelStyle = 'default';
 		this.required = false;
 		this._inlineHelpId = getUniqueId();
 	}
 
 	render() {
 		const legendClasses = {
-			'd2l-input-label': true,
+			'd2l-heading-4': this.labelStyle === 'heading',
+			'd2l-input-label': this.labelStyle !== 'heading',
 			'd2l-offscreen': this.labelHidden,
 			'd2l-skeletize': true
 		};
 		return html`
 			<fieldset
 				class="d2l-input-label-fieldset"
-				aria-describedby="${ifDefined(this._hasInlineHelp ? this._inlineHelpId : undefined)}"
-			>
+				aria-describedby="${ifDefined(this._hasInlineHelp ? this._inlineHelpId : undefined)}">
 				<legend class="${classMap(legendClasses)}">${this.label}</legend>
 				<slot></slot>
 				${this._renderInlineHelp(this._inlineHelpId)}

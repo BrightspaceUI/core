@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import { css, html, nothing } from 'lit';
 import { isInteractiveInListItemComposedPath, ListItemMixin } from './list-item-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const ListItemButtonMixin = superclass => class extends ListItemMixin(superclass) {
 	static get properties() {
@@ -10,7 +11,8 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			 * Disables the primary action button
 			 * @type {boolean}
 			 */
-			buttonDisabled : { type: Boolean, attribute: 'button-disabled', reflect: true }
+			buttonDisabled : { type: Boolean, attribute: 'button-disabled', reflect: true },
+			_ariaCurrent: { type: String }
 		};
 	}
 
@@ -75,6 +77,12 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 		this.buttonDisabled = false;
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+
+		this._button = this.shadowRoot.querySelector(`#${this._primaryActionId}`);
+	}
+
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 		if (changedProperties.has('buttonDisabled') && this.buttonDisabled === true) this._hoveringPrimaryAction = false;
@@ -115,6 +123,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 	_renderPrimaryAction(labelledBy, content) {
 		return html`<button 
 			id="${this._primaryActionId}" 
+			aria-current="${ifDefined(this._ariaCurrent)}"
 			aria-labelledby="${labelledBy}" 
 			@click="${this._onButtonClick}" 
 			@focusin="${this._onButtonFocus}"

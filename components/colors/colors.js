@@ -1,5 +1,5 @@
-if (!document.head.querySelector('#d2l-colors')) {
-	const style = document.createElement('style');
+if (globalThis.document !== undefined && !globalThis.document.head.querySelector('#d2l-colors')) {
+	const style = globalThis.document.createElement('style');
 	style.id = 'd2l-colors';
 	style.textContent = `
 		html {
@@ -91,5 +91,5 @@ if (!document.head.querySelector('#d2l-colors')) {
 			--d2l-color-feedback-action: var(--d2l-color-celestine);
 		}
 	`;
-	document.head.appendChild(style);
+	globalThis.document.head.appendChild(style);
 }

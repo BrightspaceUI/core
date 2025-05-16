@@ -954,7 +954,9 @@ export const PopoverMixin = superclass => class extends superclass {
 			}
 
 			const activeElement = getComposedActiveElement();
-			if (isComposedAncestor(this, activeElement) || isComposedAncestor(this._opener, activeElement)) {
+			if (isComposedAncestor(this, activeElement)
+				|| isComposedAncestor(this._opener, activeElement)
+				|| activeElement === this._previousFocusableAncestor) {
 				return;
 			}
 

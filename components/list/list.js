@@ -370,14 +370,54 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	_handleListItemPropertyChange(e) {
-		e.stopPropagation();
 		if (e.detail.name === 'color') {
+			e.stopPropagation();
 			if (e.detail.value) {
 				this._childHasColor = true;
 				this._listChildrenUpdatedSubscribers.updateSubscribers();
 			} else {
 				// if color has had its value removed then need to loop through all the items to determine if there are still others with colors
 				this._handleListItemNestedChange(e);
+			}
+		} else if (e.detail.name === 'current') {
+			if (this.slot === 'nested') return;
+			e.stopPropagation();
+
+			if (!e.detail.value) {
+				e.target.dispatchSetChildCurrentEvent(false);
+				return;
+			}
+
+			/**
+			 * When a nav item is set to current, do the following:
+			 * - If previous current item:
+			 *   - Set its current to FALSE
+			 *   	- This triggers the d2l-list-item-nav-set-child-current with value of false, causing
+			 * 		  the previous current item to set its aria-current to undefined if it is not the current item
+			 * - After the reset event has worked its way up OR if there is no previous current item:
+			 *   - Trigger the d2l-list-item-nav-set-child-current event with value of true, which sets all parent item aria-current to "location"
+			 */
+			const currentItems = this.querySelectorAll('[current]');
+			// length of 2 is fine as long as one is e.target and the other is the previous current item
+			if (currentItems.length > 2) {
+				console.warn('d2l-list: More than one list item has been set to current. This is not allowed and will cause unexpected behavior.');
+			}
+			const target = e.target;
+
+			let prevCurrent = false;
+			currentItems.forEach((item) => {
+				if (item === target) return;
+				prevCurrent = item;
+			});
+
+			if (prevCurrent) {
+				this.addEventListener('d2l-list-item-nav-set-child-current', (e) => {
+					e.stopPropagation();
+					target.dispatchSetChildCurrentEvent(true);
+				}, { once: true });
+				prevCurrent.current = false;
+			} else {
+				target.dispatchSetChildCurrentEvent(true);
 			}
 		}
 	}

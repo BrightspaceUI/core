@@ -2,11 +2,11 @@
 
 There are various input components available:
 
-- [Checkboxes (input-checkbox*)](docs/input-checkbox.md)
+- [Checkbox Input (input-checkbox*)](docs/input-checkbox.md)
 - [Color Input (input-color)](docs/input-color.md)
 - [Date & Time Inputs (input-date, input-time, input-date-time)](docs/input-date-time.md)
 - [Numeric Inputs (input-number, input-percent)](docs/input-numeric.md)
-- [Radio Buttons (input-radio-*)](docs/input-radio.md)
+- [Radio Inputs (input-radio-*)](docs/input-radio.md)
 - [Search (input-search)](docs/input-search.md)
 - [Select Lists (input-select-styles)](docs/input-select-styles.md)
 - [Text (input-text, input-styles, input-textarea)](docs/input-text.md)
