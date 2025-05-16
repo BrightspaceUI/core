@@ -236,6 +236,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._displayKeyboardTooltip = false;
 		this._minWidth = 285;
 		this._openedDimensions = [];
+		this._resized = false;
 		this._totalAppliedCount = 0;
 
 		this._activeFilters = null;
@@ -444,7 +445,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const search = dimension.searchType === 'none' ? nothing : html`
 			<d2l-input-search
 				@d2l-input-search-searched="${this._handleSearch}"
-				@d2l-input-text-layout-updated="${this.#handleSearchLayoutUpdated}"
+				@d2l-input-search-layout-updated="${this.#handleSearchLayoutUpdated}"
 				?disabled="${this._isDimensionEmpty(dimension)}"
 				label="${this.localize('components.input-search.search')}"
 				value="${ifDefined(dimension.searchValue)}">
@@ -1146,6 +1147,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 	#handleSearchLayoutUpdated() {
 		const content = this.shadowRoot.querySelector(`.${FILTER_CONTENT_CLASS}`);
 		content.resize();
+		this._resized = true; // ignore; for testing purposes
 	}
 }
 

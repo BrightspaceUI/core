@@ -132,6 +132,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 			<d2l-input-text
 				label="${ifDefined(this.label)}"
 				label-hidden
+				@d2l-input-text-layout-updated="${this.#handleLayoutUpdated}"
 				description="${this.description}"
 				?disabled="${this.disabled}"
 				@input="${this._handleInput}"
@@ -211,6 +212,15 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 		this._lastSearchValue = val;
 		this.requestUpdate('lastSearchValue', oldVal);
 		return (oldVal !== val);
+	}
+
+	#handleLayoutUpdated() {
+		requestAnimationFrame(() => {
+			this.dispatchEvent(new CustomEvent(
+				'd2l-input-search-layout-updated',
+				{ bubbles: false, composed: false }
+			));
+		});
 	}
 
 }

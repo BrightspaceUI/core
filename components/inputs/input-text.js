@@ -682,7 +682,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		requestAnimationFrame(() => {
 			this.dispatchEvent(new CustomEvent(
 				'd2l-input-text-layout-updated',
-				{ bubbles: true, composed: true }
+				{ bubbles: false, composed: false }
 			));
 		});
 

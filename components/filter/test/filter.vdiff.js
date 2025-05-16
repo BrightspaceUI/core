@@ -153,12 +153,12 @@ describe('filter', () => {
 	describe('single-set', () => {
 		[true, false].forEach(rtl => {
 			[
-				{ name: 'empty', template: createEmptySingleDim() },
+				{ name: 'empty', template: createEmptySingleDim(), waitForLayoutChange: true },
 				{ name: 'introductory-text', template: createSingleDimSingleSelection({ introductoryText: 'Filter content by courses. Start typing any course name to explore.' }) },
-				{ name: 'single-selection', template: createSingleDimSingleSelection() },
-				{ name: 'single-selection-select-all', template: createSingleDimSingleSelection({ selected: true }) },
+				{ name: 'single-selection', template: createSingleDimSingleSelection(), waitForLayoutChange: true },
+				{ name: 'single-selection-select-all', template: createSingleDimSingleSelection({ selected: true }), waitForLayoutChange: true },
 				{ name: 'multi-selection', template: createSingleDimWithCounts() },
-				{ name: 'multi-selection-header-text', template: createSingleDimWithCounts({ short: true, headerText: 'Related Courses at Your Company' }) },
+				{ name: 'multi-selection-header-text', template: createSingleDimWithCounts({ short: true, headerText: 'Related Courses at Your Company' }), waitForLayoutChange: true },
 				{ name: 'multi-selection-header-text-selected-first', template: createSingleDimWithCounts({ headerText: 'Related Courses at Your Company', selectedFirst: true }) },
 				{ name: 'multi-selection-selected-first', template: createSingleDimWithCounts({ selectedFirst: true }) },
 				{ name: 'multi-selection-no-search', template: createSingleDim({ searchType: 'none' }) },
@@ -172,13 +172,15 @@ describe('filter', () => {
 				{ name: 'dates-custom-selected-start-value-date', template: createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', type: 'date' }) },
 				{ name: 'dates-custom-selected-same-start-end-date', template: createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', endValue: '2018-02-13T04:59:59.000Z', type: 'date' }) },
 				{ name: 'dates-long-custom-selected', template: createSingleDimDateCustom({ long: true, longCustomSelected: true }) },
-			].forEach(({ name, template, waitForBlockDisplay }) => {
+			].forEach(({ name, template, waitForBlockDisplay, waitForLayoutChange }) => {
 				it(`${rtl ? 'rtl-' : ''}${name}`, async() => {
 					const elem = await fixture(template, { rtl, viewport: { height: 1500 } });
 					elem.opened = true;
 					await oneEvent(elem, 'd2l-filter-dimension-first-open');
 					await nextFrame();
 					if (waitForBlockDisplay) await waitUntil(() => elem.shadowRoot.querySelector('d2l-input-date-time-range').shadowRoot.querySelector('d2l-input-date-time-range-to')._blockDisplay, 'component never changed layout');
+					const hasSearch = elem.shadowRoot.querySelector('d2l-input-search');
+					if (hasSearch) await waitUntil(() => elem._resized, 'component never changed layout');
 					await expect(elem).to.be.golden();
 				});
 
@@ -244,6 +246,7 @@ describe('filter', () => {
 			const elem = await fixture(createEmptySingleDim({ customEmptyState: true }));
 			elem.opened = true;
 			await oneEvent(elem, 'd2l-filter-dimension-first-open');
+			await waitUntil(() => elem._resized, 'component never changed layout');
 			await nextFrame();
 			await expect(elem).to.be.golden();
 		});
@@ -274,6 +277,7 @@ describe('filter', () => {
 					await elem.updateComplete;
 					elem.opened = true;
 					await oneEvent(elem, 'd2l-filter-dimension-first-open');
+					await waitUntil(() => elem._resized, 'component never changed layout');
 					await nextFrame();
 					await expect(elem).to.be.golden();
 				});
