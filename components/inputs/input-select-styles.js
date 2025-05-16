@@ -79,8 +79,8 @@ export const selectStyles = css`
 
 		.d2l-input-select:not([disabled]):${focusClass},
 		.d2l-input-select:not([disabled]):hover {
-			outline: 2px solid Highlight;
 			box-shadow: none;
+			outline: 2px solid Highlight;
 		}
 
 		.d2l-input-select[aria-invalid="true"] {
