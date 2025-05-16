@@ -153,12 +153,12 @@ describe('filter', () => {
 	describe('single-set', () => {
 		[true, false].forEach(rtl => {
 			[
-				{ name: 'empty', template: createEmptySingleDim(), waitForLayoutChange: true },
+				{ name: 'empty', template: createEmptySingleDim() },
 				{ name: 'introductory-text', template: createSingleDimSingleSelection({ introductoryText: 'Filter content by courses. Start typing any course name to explore.' }) },
-				{ name: 'single-selection', template: createSingleDimSingleSelection(), waitForLayoutChange: true },
-				{ name: 'single-selection-select-all', template: createSingleDimSingleSelection({ selected: true }), waitForLayoutChange: true },
+				{ name: 'single-selection', template: createSingleDimSingleSelection() },
+				{ name: 'single-selection-select-all', template: createSingleDimSingleSelection({ selected: true }) },
 				{ name: 'multi-selection', template: createSingleDimWithCounts() },
-				{ name: 'multi-selection-header-text', template: createSingleDimWithCounts({ short: true, headerText: 'Related Courses at Your Company' }), waitForLayoutChange: true },
+				{ name: 'multi-selection-header-text', template: createSingleDimWithCounts({ short: true, headerText: 'Related Courses at Your Company' }) },
 				{ name: 'multi-selection-header-text-selected-first', template: createSingleDimWithCounts({ headerText: 'Related Courses at Your Company', selectedFirst: true }) },
 				{ name: 'multi-selection-selected-first', template: createSingleDimWithCounts({ selectedFirst: true }) },
 				{ name: 'multi-selection-no-search', template: createSingleDim({ searchType: 'none' }) },
@@ -172,7 +172,7 @@ describe('filter', () => {
 				{ name: 'dates-custom-selected-start-value-date', template: createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', type: 'date' }) },
 				{ name: 'dates-custom-selected-same-start-end-date', template: createSingleDimDateCustom({ customSelected: true, startValue: '2018-02-12T05:00:00.000Z', endValue: '2018-02-13T04:59:59.000Z', type: 'date' }) },
 				{ name: 'dates-long-custom-selected', template: createSingleDimDateCustom({ long: true, longCustomSelected: true }) },
-			].forEach(({ name, template, waitForBlockDisplay, waitForLayoutChange }) => {
+			].forEach(({ name, template, waitForBlockDisplay }) => {
 				it(`${rtl ? 'rtl-' : ''}${name}`, async() => {
 					const elem = await fixture(template, { rtl, viewport: { height: 1500 } });
 					elem.opened = true;

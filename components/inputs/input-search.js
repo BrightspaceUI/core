@@ -216,6 +216,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 
 	#handleLayoutUpdated() {
 		requestAnimationFrame(() => {
+			/** @ignore */
 			this.dispatchEvent(new CustomEvent(
 				'd2l-input-search-layout-updated',
 				{ bubbles: false, composed: false }

@@ -26,7 +26,6 @@ import { styleMap } from 'lit/directives/style-map.js';
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  * @fires input - Dispatched immediately after changes by the user
- * @fires d2l-input-text-layout-updated - Dispatched when the input layout is updated
  */
 class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement))))))) {
 
@@ -680,6 +679,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		}
 
 		requestAnimationFrame(() => {
+			/** @ignore */
 			this.dispatchEvent(new CustomEvent(
 				'd2l-input-text-layout-updated',
 				{ bubbles: false, composed: false }
