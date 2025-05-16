@@ -61,8 +61,8 @@ export const selectStyles = css`
 			background-color: Field;
 			background-image: none;
 			border: none;
-			box-shadow:none !important;
 			border-inline-end: 0.75rem solid transparent;
+			box-shadow: none !important;
 			color: FieldText;
 			forced-color-adjust: none;
 			height: 2rem;
