@@ -2,19 +2,45 @@ import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
 
 export const _isValidCssSelector = (selector) => {
-	if (selector === ':host') return true;
-	const re = /([a-zA-Z0-9-_ >.#]+)(\[[a-zA-Z0-9-_]+\])?([a-zA-Z0-9-_ >.#]+)?/g;
-	const match = selector.match(re);
+	const partIsValid = (part) => {
+		const re = /([a-zA-Z0-9-_ >.#]+)(\[[a-zA-Z0-9-_]+\])?([a-zA-Z0-9-_ >.#]+)?/g;
+		if (part === ':host') return true;
+		const match = part.match(re);
+		const isValid = !!match && match.length === 1 && match[0].length === part.length;
+		if (!isValid) {
+			console.warn(`Invalid CSS selector: "${part}"`);
+		}
+		return isValid;
+	};
 
-	return !!match && match.length === 1 && match[0].length === selector.length;
+	const parts = selector.split(',');
+	const allValid = parts.every(part => partIsValid(part));
+	return allValid;
 };
 
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export const _generateBodyStandardStyles = (selector) => {
+	if (!_isValidCssSelector(selector)) return;
+
+	selector = unsafeCSS(selector);
+	return css`
+		${selector} {
+			font-size: 0.95rem;
+			font-weight: 400;
+			line-height: 1.4rem;
+		}
+		@media (max-width: 615px) {
+			${selector} {
+				font-size: 0.8rem;
+				line-height: 1.2rem;
+			}
+		}
+	`;
+};
 export const bodyStandardStyles = css`
-	.d2l-body-standard {
-		font-size: 0.95rem;
-		font-weight: 400;
-		line-height: 1.4rem;
-	}
+	${_generateBodyStandardStyles('.d2l-body-standard')}
 	:host([skeleton]) .d2l-body-standard.d2l-skeletize::before {
 		bottom: 0.35rem;
 		top: 0.3rem;
@@ -29,10 +55,6 @@ export const bodyStandardStyles = css`
 		max-height: 7rem;
 	}
 	@media (max-width: 615px) {
-		.d2l-body-standard {
-			font-size: 0.8rem;
-			line-height: 1.2rem;
-		}
 		:host([skeleton]) .d2l-body-standard.d2l-skeletize::before {
 			bottom: 0.3rem;
 			top: 0.3rem;
@@ -72,16 +94,11 @@ export const _generateResetStyles = (selector) => {
 /**
  * A private helper method that should not be used by general consumers
  */
-export const _generateBodyCompactStyles = (selector) => {
+export const _generateBodyCompactStyles = (selector, includeSkeleton = true) => {
 	if (!_isValidCssSelector(selector)) return;
 
 	selector = unsafeCSS(selector);
-	return css`
-		${selector} {
-			font-size: 0.8rem;
-			font-weight: 400;
-			line-height: 1.2rem;
-		}
+	const skeletonStyles = includeSkeleton ? css`
 		:host([skeleton]) ${selector}.d2l-skeletize::before {
 			bottom: 0.3rem;
 			top: 0.3rem;
@@ -95,26 +112,27 @@ export const _generateBodyCompactStyles = (selector) => {
 		:host([skeleton]) ${selector}.d2l-skeletize-paragraph-5 {
 			max-height: 6rem;
 		}
+	` : unsafeCSS('');
+	return css`
+		${selector} {
+			font-size: 0.8rem;
+			font-weight: 400;
+			line-height: 1.2rem;
+		}
+		${skeletonStyles}
 	`;
 };
 
-export const bodyCompactStyles = _generateBodyCompactStyles('.d2l-body-compact');
+export const bodyCompactStyles = _generateBodyCompactStyles('.d2l-body-compact', true);
 
 /**
  * A private helper method that should not be used by general consumers
  */
-export const _generateBodySmallStyles = (selector) => {
+export const _generateBodySmallStyles = (selector, includeSkeleton = true) => {
 	if (!_isValidCssSelector(selector)) return;
 
 	selector = unsafeCSS(selector);
-	return css`
-		${selector} {
-			color: var(--d2l-color-tungsten);
-			font-size: 0.7rem;
-			font-weight: 400;
-			line-height: 0.9rem;
-			margin: auto;
-		}
+	const skeletonStyles = includeSkeleton ? css`
 		:host([skeleton]) ${selector}.d2l-skeletize::before {
 			bottom: 0.25rem;
 			top: 0.2rem;
@@ -142,19 +160,46 @@ export const _generateBodySmallStyles = (selector) => {
 			:host([skeleton]) ${selector}.d2l-skeletize-paragraph-5 {
 				max-height: 4.5rem;
 			}
+		}` : unsafeCSS('');
+	return css`
+		${selector} {
+			color: var(--d2l-color-tungsten);
+			font-size: 0.7rem;
+			font-weight: 400;
+			line-height: 0.9rem;
+			margin: auto;
 		}
+		${skeletonStyles}
 	`;
 };
 
-export const bodySmallStyles = _generateBodySmallStyles('.d2l-body-small');
+export const bodySmallStyles = _generateBodySmallStyles('.d2l-body-small', true);
 
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export const _generateHeading1Styles = (selector) => {
+	if (!_isValidCssSelector(selector)) return;
+
+	selector = unsafeCSS(selector);
+	return css`
+		${selector} {
+			font-size: 2rem;
+			font-weight: 400;
+			line-height: 2.4rem;
+			margin: 1.5rem 0 1.5rem 0;
+		}
+		@media (max-width: 615px) {
+			${selector} {
+				font-size: 1.5rem;
+				line-height: 1.8rem;
+			}
+			
+		}
+	`;
+};
 export const heading1Styles = css`
-	.d2l-heading-1 {
-		font-size: 2rem;
-		font-weight: 400;
-		line-height: 2.4rem;
-		margin: 1.5rem 0 1.5rem 0;
-	}
+	${_generateHeading1Styles('.d2l-heading-1')}
 	:host([skeleton]) .d2l-heading-1.d2l-skeletize {
 		height: 2.4rem;
 		overflow: hidden;
@@ -164,10 +209,6 @@ export const heading1Styles = css`
 		top: 0.45rem;
 	}
 	@media (max-width: 615px) {
-		.d2l-heading-1 {
-			font-size: 1.5rem;
-			line-height: 1.8rem;
-		}
 		:host([skeleton]) .d2l-heading-1.d2l-skeletize {
 			height: 1.8rem;
 		}
@@ -178,13 +219,32 @@ export const heading1Styles = css`
 	}
 `;
 
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export const _generateHeading2Styles = (selector) => {
+	if (!_isValidCssSelector(selector)) return;
+
+	selector = unsafeCSS(selector);
+	return css`
+		${selector} {
+			font-size: 1.5rem;
+			font-weight: 400;
+			line-height: 1.8rem;
+			margin: 1.5rem 0 1.5rem 0;
+		}
+		@media (max-width: 615px) {
+			${selector} {
+				font-size: 1rem;
+				font-weight: 700;
+				line-height: 1.5rem;
+			}
+			
+		}
+	`;
+};
 export const heading2Styles = css`
-	.d2l-heading-2 {
-		font-size: 1.5rem;
-		font-weight: 400;
-		line-height: 1.8rem;
-		margin: 1.5rem 0 1.5rem 0;
-	}
+	${_generateHeading2Styles('.d2l-heading-2')}
 	:host([skeleton]) .d2l-heading-2.d2l-skeletize {
 		height: 1.8rem;
 		overflow: hidden;
@@ -194,11 +254,6 @@ export const heading2Styles = css`
 		top: 0.35rem;
 	}
 	@media (max-width: 615px) {
-		.d2l-heading-2 {
-			font-size: 1rem;
-			font-weight: 700;
-			line-height: 1.5rem;
-		}
 		:host([skeleton]) .d2l-heading-2.d2l-skeletize {
 			height: 1.5rem;
 		}
@@ -209,13 +264,31 @@ export const heading2Styles = css`
 	}
 `;
 
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export const _generateHeading3Styles = (selector) => {
+	if (!_isValidCssSelector(selector)) return;
+
+	selector = unsafeCSS(selector);
+	return css`
+		${selector} {
+			font-size: 1rem;
+			font-weight: 700;
+			line-height: 1.5rem;
+			margin: 1.5rem 0 1.5rem 0;
+		}
+		@media (max-width: 615px) {
+			${selector} {
+				font-size: 0.8rem;
+				line-height: 1.2rem;
+			}
+			
+		}
+	`;
+};
 export const heading3Styles = css`
-	.d2l-heading-3 {
-		font-size: 1rem;
-		font-weight: 700;
-		line-height: 1.5rem;
-		margin: 1.5rem 0 1.5rem 0;
-	}
+	${_generateHeading3Styles('.d2l-heading-3')}
 	:host([skeleton]) .d2l-heading-3.d2l-skeletize {
 		height: 1.5rem;
 		overflow: hidden;
@@ -225,10 +298,6 @@ export const heading3Styles = css`
 		top: 0.35rem;
 	}
 	@media (max-width: 615px) {
-		.d2l-heading-3 {
-			font-size: 0.8rem;
-			line-height: 1.2rem;
-		}
 		:host([skeleton]) .d2l-heading-3.d2l-skeletize {
 			height: 1.2rem;
 		}
@@ -239,13 +308,24 @@ export const heading3Styles = css`
 	}
 `;
 
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export const _generateHeading4Styles = (selector) => {
+	if (!_isValidCssSelector(selector)) return;
+
+	selector = unsafeCSS(selector);
+	return css`
+		${selector} {
+			font-size: 0.8rem;
+			font-weight: 700;
+			line-height: 1.2rem;
+			margin: 1.5rem 0 1.5rem 0;
+		}
+	`;
+};
 export const heading4Styles = css`
-	.d2l-heading-4 {
-		font-size: 0.8rem;
-		font-weight: 700;
-		line-height: 1.2rem;
-		margin: 1.5rem 0 1.5rem 0;
-	}
+	${_generateHeading4Styles('.d2l-heading-4')}
 	:host([skeleton]) .d2l-heading-4.d2l-skeletize {
 		height: 1.2rem;
 		overflow: hidden;
@@ -259,10 +339,16 @@ export const heading4Styles = css`
 /**
  * A private helper method that should not be used by general consumers
  */
-export const _generateLabelStyles = (selector) => {
+export const _generateLabelStyles = (selector, includeSkeleton = true) => {
 	if (!_isValidCssSelector(selector)) return;
 
 	selector = unsafeCSS(selector);
+	const skeletonStyles = includeSkeleton ? css`
+		:host([skeleton]) ${selector}.d2l-skeletize::before {
+			bottom: 0.25rem;
+			top: 0.15rem;
+		}
+	` : unsafeCSS('');
 	return css`
 		${selector} {
 			font-size: 0.7rem;
@@ -270,14 +356,10 @@ export const _generateLabelStyles = (selector) => {
 			letter-spacing: 0.2px;
 			line-height: 0.9rem;
 		}
-		:host([skeleton]) ${selector}.d2l-skeletize::before {
-			bottom: 0.25rem;
-			top: 0.15rem;
-		}
+		${skeletonStyles}
 	`;
 };
-
-export const labelStyles = _generateLabelStyles('.d2l-label-text');
+export const labelStyles = _generateLabelStyles('.d2l-label-text', true);
 
 /**
  * A private helper method that should not be used by general consumers
@@ -407,3 +489,43 @@ export const fontFacesCss = `@font-face {
 		url(${new URL(`${fonts.BCSansBoldItalic}.woff2`, importUrl)}) format('woff2'),
 		url(${new URL(`${fonts.BCSansBoldItalic}.woff`, importUrl)}) format('woff');
 }`;
+
+export const baseTypographyStyles = css`
+	${unsafeCSS(fontFacesCss)}
+	html {
+		--d2l-document-direction: ltr;
+		--d2l-mirror-transform: none;
+	}
+	html[dir="rtl"] {
+		--d2l-document-direction: rtl;
+		--d2l-mirror-transform: scale(-1, 1);
+	}
+
+	.d2l-typography {
+		color: var(--d2l-color-ferrite);
+		display: block;
+		font-family: "Lato", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+		letter-spacing: 0.01rem;
+	}
+	${_generateBodyStandardStyles('.d2l-typography', false)};
+
+	.d2l-typography p {
+		margin: 1rem 0;
+	}
+
+	.d2l-typography:lang(ar), .d2l-typography :lang(ar) {
+		font-family: "Segoe UI", "Geeza Pro", sans-serif;
+	}
+	.d2l-typography:lang(ja), .d2l-typography :lang(ja) {
+		font-family: "Hiragino Kaku Gothic Pro", "Meiyro", sans-serif;
+	}
+	.d2l-typography:lang(ko), .d2l-typography :lang(ko) {
+		font-family: "Apple SD Gothic Neo", Dotum, sans-serif;
+	}
+	.d2l-typography:lang(th), .d2l-typography :lang(th), .d2l-typography:lang(tha), .d2l-typography :lang(tha) {
+		font-family: "Noto Sans Thai", system-ui, Tahoma;
+	}
+	.d2l-typography:lang(zh), .d2l-typography :lang(zh) {
+		font-family: "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+	}
+`;
