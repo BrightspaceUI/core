@@ -166,6 +166,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 			return;
 		}
 		this.focus();
+		this.setAttribute('tabindex', '0');
 	}
 
 	__onKeyDown(e) {
