@@ -306,7 +306,7 @@ export const _generateBlockquoteStyles = (selector) => {
 			inset-block-start: 0;
 			inset-inline-start: 0;
 			position: absolute;
-			transform: var(--d2l-mirror-transform, ${globalThis.document.dir === 'rtl' ? css`scale(-1, 1)` : css`none`}); /* stylelint-disable-line @stylistic/string-quotes, @stylistic/function-whitespace-after */
+			transform: var(--d2l-mirror-transform, ${globalThis.document?.dir === 'rtl' ? css`scale(-1, 1)` : css`none`}); /* stylelint-disable-line @stylistic/string-quotes, @stylistic/function-whitespace-after */
 		}
 		@media (max-width: 615px) {
 			${selector} {
