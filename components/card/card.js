@@ -1,5 +1,5 @@
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -93,15 +93,18 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 				position: relative;
 			}
 			.d2l-card-link-container {
-				border-radius: 6px;
 				flex-basis: auto;
 				flex-grow: 1;
 				flex-shrink: 1;
-				overflow: hidden;
 				width: 100%; /* required for Legacy-Edge and FF when align-items: flex-start is specified */
 			}
 			.d2l-card-link-text {
 				display: inline-block;
+			}
+			.d2l-card-header {
+				border-start-end-radius: 6px;
+				border-start-start-radius: 6px;
+				overflow: hidden;
 			}
 
 			a {
@@ -280,18 +283,20 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 				@d2l-dropdown-close="${this._onDropdownClose}"
 				@d2l-tooltip-show="${this._onTooltipShow}"
 				@d2l-tooltip-hide="${this._onTooltipHide}">
-				<a @blur="${this._onLinkBlur}"
-					?download="${this.download}"
-					@focus="${this._onLinkFocus}"
-					href="${ifDefined(this.href ? this.href : undefined)}"
-					hreflang="${ifDefined(this.hreflang)}"
-					@mouseenter="${this._onLinkMouseEnter}"
-					@mouseleave="${this._onLinkMouseLeave}"
-					rel="${ifDefined(this.rel)}"
-					target="${ifDefined(this.target)}"
-					type="${ifDefined(this.type)}">
-					<span class="d2l-card-link-text d2l-offscreen">${this.text}</span>
-				</a>
+				${ this.href ? html`
+					<a @blur="${this._onLinkBlur}"
+						?download="${this.download}"
+						@focus="${this._onLinkFocus}"
+						href="${ifDefined(this.href ? this.href : undefined)}"
+						hreflang="${ifDefined(this.hreflang)}"
+						@mouseenter="${this._onLinkMouseEnter}"
+						@mouseleave="${this._onLinkMouseLeave}"
+						rel="${ifDefined(this.rel)}"
+						target="${ifDefined(this.target)}"
+						type="${ifDefined(this.type)}">
+						<span class="d2l-card-link-text d2l-offscreen">${this.text}</span>
+					</a>
+				` : nothing}
 				<div class="${classMap(linkContainerClass)}">
 					<div class="d2l-card-header"><slot name="header"></slot></div>
 					<div class="d2l-card-badge" style="${styleMap(badgeStyle)}"><slot name="badge"></slot></div>
