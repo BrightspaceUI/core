@@ -89,6 +89,7 @@ function createCustomWithSummary() {
 
 async function focusPanel(elem) {
 	await focusElem(elem.querySelector('d2l-collapsible-panel'));
+	elem.querySelector('d2l-collapsible-panel')._focused = true;
 }
 
 async function scrollTo(elem, y) {
