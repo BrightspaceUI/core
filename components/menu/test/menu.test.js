@@ -81,41 +81,58 @@ describe('d2l-menu', () => {
 
 		it('moves focus to next focusable item when down arrow is pressed', async() => {
 			await sendKeysElem(elem.querySelector('#c1'), 'press', 'ArrowDown');
+			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('0');
+			expect(elem.querySelector('#c1').getAttribute('tabindex')).to.equal('-1');
+			expect(elem.querySelector('#d1').getAttribute('tabindex')).to.equal('0');
 			expect(document.activeElement).to.equal(elem.querySelector('#d1'));
 		});
 
 		it('moves focus to previous focusable item when up arrow is pressed', async() => {
 			await sendKeysElem(elem.querySelector('#d1'), 'press', 'ArrowUp');
+			expect(elem.querySelector('#d1').getAttribute('tabindex')).to.equal('-1');
+			expect(elem.querySelector('#c1').getAttribute('tabindex')).to.equal('0');
 			expect(document.activeElement).to.equal(elem.querySelector('#c1'));
 		});
 
 		it('moves focus to first focusable item when down arrow is pressed on last focusable item', async() => {
 			await sendKeysElem(elem.querySelector('#d1'), 'press', 'ArrowDown');
+			expect(elem.querySelector('#d1').getAttribute('tabindex')).to.equal('-1');
+			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('0');
 			expect(document.activeElement).to.equal(elem.querySelector('#a1'));
 		});
 
 		it('moves focus to last focusable item when up arrow is pressed on first focusable item', async() => {
 			await sendKeysElem(elem.querySelector('#a1'), 'press', 'ArrowUp');
+			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('0'); // first item
+			expect(elem.querySelector('#d1').getAttribute('tabindex')).to.equal('0');
 			expect(document.activeElement).to.equal(elem.querySelector('#d1'));
 		});
 
 		it('sets focus to disabled menu items', async() => {
 			await sendKeysElem(elem.querySelector('#a1'), 'press', 'ArrowDown');
+			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('0'); // first item
+			expect(elem.querySelector('#b1').getAttribute('tabindex')).to.equal('0');
 			expect(document.activeElement).to.equal(elem.querySelector('#b1'));
 		});
 
 		it('sets focus to next item that starts with character pressed', async() => {
 			await sendKeysElem(elem.querySelector('#a1'), 'press', 'c');
+			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('0'); // first item
+			expect(elem.querySelector('#c1').getAttribute('tabindex')).to.equal('0');
 			expect(document.activeElement).to.equal(elem.querySelector('#c1'));
 		});
 
 		it('sets focus to next item that starts with uppercase character pressed', async() => {
 			await sendKeysElem(elem.querySelector('#a1'), 'press', 'C');
+			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('0'); // first item
+			expect(elem.querySelector('#c1').getAttribute('tabindex')).to.equal('0');
 			expect(document.activeElement).to.equal(elem.querySelector('#c1'));
 		});
 
 		it('sets focus by rolling over to beginning of menu when searching if necessary', async() => {
 			await sendKeysElem(elem.querySelector('#c1'), 'press', 'b');
+			expect(elem.querySelector('#c1').getAttribute('tabindex')).to.equal('-1');
+			expect(elem.querySelector('#b1').getAttribute('tabindex')).to.equal('0');
 			expect(document.activeElement).to.equal(elem.querySelector('#b1'));
 		});
 
@@ -130,6 +147,7 @@ describe('d2l-menu', () => {
 			`);
 			await nextFrame();
 			await focusElem(elem);
+			expect(elem.querySelector('#r3').getAttribute('tabindex')).to.equal('0');
 			await expect(document.activeElement).to.equal(elem.querySelector('#r3'));
 		});
 
@@ -171,6 +189,22 @@ describe('d2l-menu', () => {
 				return (document.activeElement.tagName === 'D2L-MENU-ITEM-RETURN') ||
 					(document.activeElement === nestedMenu);
 			}, 'Focus on return');
+			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('0');
+			expect(elem.querySelector('#b1').hasAttribute('tabindex')).to.be.false;
+			const returnItem = elem.querySelector('#nestedMenu')._getMenuItemReturn();
+			expect(returnItem.getAttribute('tabindex')).to.equal('0');
+		});
+
+		it('moves focus to next focusable item when down arrow is pressed', async() => {
+			setTimeout(() => clickElem(elem.querySelector('#b1')));
+			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+
+			const returnItem = elem.querySelector('#nestedMenu')._getMenuItemReturn();
+			await sendKeysElem(returnItem, 'press', 'ArrowDown');
+
+			expect(returnItem.getAttribute('tabindex')).to.equal('0');
+			expect(elem.querySelector('#a2').getAttribute('tabindex')).to.equal('0');
+			expect(document.activeElement).to.equal(elem.querySelector('#a2'));
 		});
 
 		it('shows nested menu when right arrow is pressed on opener', async() => {
@@ -185,6 +219,9 @@ describe('d2l-menu', () => {
 			setTimeout(() => sendKeysElem(elem.querySelector('#b2'), 'press', 'ArrowLeft'));
 			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
 			expect(elem.isActive()).to.be.true;
+
+			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('0');
+			expect(elem.querySelector('#b1').getAttribute('tabindex')).to.equal('0');
 		});
 
 		it('hides nested menu when escape is pressed in nested menu', async() => {

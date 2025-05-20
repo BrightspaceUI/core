@@ -102,6 +102,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 		this.addEventListener('d2l-menu-item-visibility-change', this._onMenuItemsChanged);
 		this.addEventListener('keydown', this._onKeyDown);
 		this.addEventListener('keypress', this._onKeyPress);
+		this.addEventListener('focusout', this._onFocusOut);
 
 		this._labelChanged();
 
@@ -175,28 +176,33 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 
 	_focusFirst() {
 		const item = this._tryGetNextFocusable();
-		if (item) item.focus();
+		if (item) this._focusItem(item);
+	}
+
+	_focusItem(item) {
+		item.setAttribute('tabindex', '0');
+		item.focus();
 	}
 
 	_focusLast() {
 		const item = this._tryGetPreviousFocusable();
-		if (item) item.focus();
+		if (item) this._focusItem(item);
 	}
 
 	_focusNext(item) {
 		item = this._tryGetNextFocusable(item);
-		item ? item.focus() : this._focusFirst();
+		item ? this._focusItem(item) : this._focusFirst();
 	}
 
 	_focusPrevious(item) {
 		item = this._tryGetPreviousFocusable(item);
-		item ? item.focus() : this._focusLast();
+		item ? this._focusItem(item) : this._focusLast();
 	}
 
 	_focusSelected() {
 		const selected = this.querySelector('[selected]');
 		if (selected) {
-			selected.focus();
+			this._focusItem(selected);
 		} else {
 			this._focusFirst();
 		}
@@ -260,6 +266,13 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 		if (returnItem) returnItem.setAttribute('text', this.label);
 	}
 
+	_onFocusOut(e) {
+		e.stopPropagation();
+		const isMenuItem = e.target.role === 'menuitem' || e.target.role === 'menuitemcheckbox' || e.target.role === 'menuitemradio';
+		if (!isMenuItem || e.target.hasAttribute('first') || e.target.hasChildView) return;
+		e.target.setAttribute('tabindex', '-1');
+	}
+
 	_onKeyDown(e) {
 		const rootTarget = e.composedPath()[0];
 		if (this._items.indexOf(rootTarget) === -1) return;
@@ -321,7 +334,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 		while (itemIndex !== targetItemIndex) {
 			const item = focusableItems[itemIndex];
 			if (startsWith(item, searchChar)) {
-				item.focus();
+				this._focusItem(item);
 				return;
 			}
 			itemIndex = getNextOrFirstIndex(itemIndex);
