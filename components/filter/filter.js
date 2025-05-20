@@ -30,7 +30,6 @@ import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
@@ -237,6 +236,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._displayKeyboardTooltip = false;
 		this._minWidth = 285;
 		this._openedDimensions = [];
+		this._resized = false;
 		this._totalAppliedCount = 0;
 
 		this._activeFilters = null;
@@ -351,16 +351,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		super.update(changedProperties);
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
-		const search = this.shadowRoot.querySelector('d2l-input-search');
-		if (search) {
-			if (this.#resizeObserver) this.#resizeObserver.disconnect();
-			this.#resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.#handleSearchResize()));
-			this.#resizeObserver.observe(search);
-		}
-	}
-
 	requestFilterClearAll() {
 		this._handleClearAll();
 	}
@@ -455,6 +445,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		const search = dimension.searchType === 'none' ? nothing : html`
 			<d2l-input-search
 				@d2l-input-search-searched="${this._handleSearch}"
+				@d2l-input-search-layout-updated="${this.#handleSearchLayoutUpdated}"
 				?disabled="${this._isDimensionEmpty(dimension)}"
 				label="${this.localize('components.input-search.search')}"
 				value="${ifDefined(dimension.searchValue)}">
@@ -684,6 +675,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._changeEventsToDispatch = new Map();
 		clearTimeout(this._changeEventTimeout);
 		this._activeFiltersSubscribers.updateSubscribers();
+		this.#handleSearchLayoutUpdated(); // in order to update dropdown position if count-badge size changes pointer position
 	}
 
 	_dispatchChangeEventValueDataChange(dimension, value, valueKey) {
@@ -1153,7 +1145,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		}
 	}
 
-	#handleSearchResize() {
+	#handleSearchLayoutUpdated() {
 		const content = this.shadowRoot.querySelector(`.${FILTER_CONTENT_CLASS}`);
 		content.resize();
 	}

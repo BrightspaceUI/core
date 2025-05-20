@@ -177,6 +177,8 @@ describe('filter', () => {
 					const elem = await fixture(template, { rtl, viewport: { height: 1500 } });
 					elem.opened = true;
 					await oneEvent(elem, 'd2l-filter-dimension-first-open');
+					const hasSearch = elem.shadowRoot.querySelector('d2l-input-search');
+					if (hasSearch) await oneEvent(elem.shadowRoot.querySelector('d2l-dropdown'), 'd2l-dropdown-position');
 					await nextFrame();
 					if (waitForBlockDisplay) await waitUntil(() => elem.shadowRoot.querySelector('d2l-input-date-time-range').shadowRoot.querySelector('d2l-input-date-time-range-to')._blockDisplay, 'component never changed layout');
 					await expect(elem).to.be.golden();
@@ -244,6 +246,7 @@ describe('filter', () => {
 			const elem = await fixture(createEmptySingleDim({ customEmptyState: true }));
 			elem.opened = true;
 			await oneEvent(elem, 'd2l-filter-dimension-first-open');
+			await oneEvent(elem.shadowRoot.querySelector('d2l-dropdown'), 'd2l-dropdown-position');
 			await nextFrame();
 			await expect(elem).to.be.golden();
 		});
@@ -274,6 +277,7 @@ describe('filter', () => {
 					await elem.updateComplete;
 					elem.opened = true;
 					await oneEvent(elem, 'd2l-filter-dimension-first-open');
+					await oneEvent(elem.shadowRoot.querySelector('d2l-dropdown'), 'd2l-dropdown-position');
 					await nextFrame();
 					await expect(elem).to.be.golden();
 				});
@@ -308,9 +312,9 @@ describe('filter', () => {
 					</d2l-filter>
 				`);
 
-				await clickElem(elem.shadowRoot.querySelector(selector));
+				clickElem(elem.shadowRoot.querySelector(selector));
+				await oneEvent(elem.shadowRoot.querySelector('d2l-dropdown'), 'd2l-dropdown-position');
 				await hoverAt(0, 0);
-				await aTimeout(300);
 				await expect(elem).to.be.golden();
 			});
 		});
