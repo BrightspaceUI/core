@@ -25,25 +25,19 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 				width: 100%;
 			}
 			:host([current]) [slot="outside-control-container"] {
-				border: 3px solid var(--d2l-color-celestine);
+				background-color: var(--d2l-color-regolith);
+				border: 3px solid var(--d2l-color-celestine) !important;
 				margin-block: -1px;
-			}
-			:host([_focusing-primary-action]:not([current])) [slot="outside-control-container"] {
-				border: 2px solid var(--d2l-color-celestine);
 			}
 			:host([current]) [slot="control-container"]::before,
 			:host([current]) [slot="control-container"]::after {
 				border-color: transparent;
-			}
-			:host([_focusing-primary-action]) .d2l-list-item-content {
-				--d2l-list-item-content-text-outline: none;
 			}
 			:host([_hovering-primary-action]) .d2l-list-item-content,
 			:host([_focusing-primary-action]) .d2l-list-item-content {
 				--d2l-list-item-content-text-color: var(--d2l-color-ferrite);
 				--d2l-list-item-content-text-decoration: none;
 			}
-
 		` ];
 
 		super.styles && styles.unshift(super.styles);

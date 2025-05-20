@@ -421,6 +421,7 @@ describe('list', () => {
 	});
 
 	[true, false].forEach(disabled => {
+
 		describe(`nav${disabled ? '-disabled' : ''}`, () => {
 			[
 				{ name: 'default' },
@@ -449,7 +450,7 @@ describe('list', () => {
 									<div>Welcome!</div>
 								</d2l-list-item-content>
 								<d2l-list slot="nested" grid>
-									<d2l-list-item-nav-button key="L2-1" label="Syallabus Confirmation" draggable>
+									<d2l-list-item-nav-button key="L2-1" label="Syallabus Confirmation" draggable ?button-disabled="${disabled}">
 										<d2l-list-item-content>
 											<div>Syallabus Confirmation</div>
 											<div slot="secondary"><d2l-tooltip-help text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
@@ -462,6 +463,29 @@ describe('list', () => {
 					if (action) await action(elem.querySelectorAll('d2l-list-item-nav-button')[1]);
 					await expect(elem).to.be.golden();
 				});
+			});
+
+			it('nested-focused-secondary', async() => {
+				const elem = await fixture(html`
+					<d2l-list grid style="width: 334px;">
+						<d2l-list-item-nav-button key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable>
+							<d2l-list-item-content>
+								<div>Welcome!</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid>
+								<d2l-list-item-nav-button key="L2-1" label="Syallabus Confirmation" draggable ?button-disabled="${disabled}">
+									<d2l-list-item-content>
+										<div>Syallabus Confirmation</div>
+										<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
+									</d2l-list-item-content>
+								</d2l-list-item-nav-button>
+							</d2l-list>
+						</d2l-list-item-nav-button>
+					</d2l-list>
+				`);
+				focusElem(elem.querySelector('d2l-tooltip-help'));
+				await oneEvent(elem, 'd2l-tooltip-show');
+				await expect(elem).to.be.golden();
 			});
 		});
 	});
