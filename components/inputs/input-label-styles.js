@@ -1,7 +1,4 @@
-import { css, unsafeCSS } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
-
-const inputStyleTweaksEnabled = getFlag('input-style-tweaks', true);
+import { css } from 'lit';
 
 export const inputLabelStyles = css`
 	.d2l-input-label {
@@ -10,8 +7,8 @@ export const inputLabelStyles = css`
 		font-size: 0.7rem;
 		font-weight: 700;
 		letter-spacing: 0.2px;
-		line-height: ${unsafeCSS(inputStyleTweaksEnabled ? '0.9rem' : '1rem')}; /* stylelint-disable-line */
-		margin-block: 0 ${unsafeCSS(inputStyleTweaksEnabled ? '0.4rem' : '7px')}; /* stylelint-disable-line */
+		line-height: 0.9rem;
+		margin-block: 0 0.4rem;
 		margin-inline: 0;
 		padding: 0;
 	}
