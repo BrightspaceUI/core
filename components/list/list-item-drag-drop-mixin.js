@@ -6,6 +6,8 @@ import { classMap } from 'lit/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { isInteractiveInListItemComposedPath } from './list-item-mixin.js';
+import ResizeObserver from 'resize-observer-polyfill';
 import { SelectionInfo } from '../selection/selection-mixin.js';
 
 export const moveLocations = Object.freeze({
@@ -358,6 +360,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		/** @ignore */
 		this.dragging = false;
 		this.dropNested = false;
+
+		this._hiddenContentResizeObserver = null;
 	}
 
 	connectedCallback() {
@@ -367,9 +371,24 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		}
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		if (this._hiddenContentResizeObserver) {
+			this._hiddenContentResizeObserver.disconnect();
+			this._hiddenContentResizeObserver = null;
+		}
+	}
+
 	firstUpdated(changedProperties) {
 		this.addEventListener('dragenter', this._onHostDragEnter.bind(this));
 		super.firstUpdated(changedProperties);
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('draggable') && this.draggable) {
+			this.#addDraggableResizeObserver();
+		}
 	}
 
 	activateDragHandle() {
@@ -671,6 +690,13 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_onDragTargetClick(e) {
 		if (!this.shadowRoot) return;
+
+		const isPrimaryAction = (elem) => elem === this.shadowRoot.querySelector('div.d2l-list-item-drag-area');
+		if (isInteractiveInListItemComposedPath(e, isPrimaryAction)) {
+			e.preventDefault();
+			return;
+		}
+
 		if (this._keyboardActiveOnNextClick) {
 			this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
 		} else {
@@ -868,7 +894,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		`) : nothing;
 	}
 
-	_renderDragTarget(templateMethod) {
+	_renderDragTarget(templateMethod, content) {
 		templateMethod = templateMethod || (dragTarget => dragTarget);
 		return this.draggable && !this._keyboardActive ? templateMethod.call(this, html`
 			<div
@@ -884,6 +910,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				@touchcancel="${this._onTouchCancel}"
 				@mousedown="${this._onDragTargetMouseDown}"
 				>
+				${content || nothing}
 			</div>
 		`) : nothing;
 	}
@@ -902,5 +929,24 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_renderTopPlacementMarker(renderTemplate) {
 		return this._dropLocation === dropLocation.above ? html`<div class="d2l-list-item-drag-top-marker">${renderTemplate}</div>` : null;
+	}
+	
+	async #addDraggableResizeObserver() {
+		const hiddenItem = this.shadowRoot.querySelector('.d2l-draggable-content-hidden')
+		if (!hiddenItem) return;
+		const actualContent = this.shadowRoot.querySelector('[slot="content"].d2l-list-item-content');
+
+		// do we need a resize observer? it's only if a property changes that the side bar gets impacted
+
+		this._hiddenContentResizeObserver = this._hiddenContentResizeObserver || new ResizeObserver(() => {
+			if (this._keyboardActive || !hiddenItem || !actualContent) return;
+			const width = Math.ceil(parseFloat(getComputedStyle(actualContent).getPropertyValue('width')));
+			this._hiddenContentWidth = !isNaN(width) ? `${width}px` : null;
+
+			requestAnimationFrame(() => {
+				this._contentPaddingInlineStart = `${(hiddenItem.offsetLeft)}px`;
+			});
+		});
+		this._hiddenContentResizeObserver.observe(actualContent);
 	}
 };
