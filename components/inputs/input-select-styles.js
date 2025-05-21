@@ -73,7 +73,7 @@ export const selectStyles = css`
 			color: FieldText;
 			forced-color-adjust: none;
 			height: 2rem;
-			outline: 1px solid FieldText;
+			outline: 1px solid ButtonBorder;
 			padding-inline: 0.6rem 16px;
 		}
 
@@ -81,6 +81,10 @@ export const selectStyles = css`
 		.d2l-input-select:not([disabled]):hover {
 			box-shadow: none;
 			outline: 2px solid Highlight;
+		}
+
+		.d2l-input-select:disabled {
+			outline: 1px solid GrayText;
 		}
 
 		.d2l-input-select[aria-invalid="true"] {
