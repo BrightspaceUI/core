@@ -339,13 +339,13 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) [slot="outside-control-container"].hide-bottom-border,
 			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"].hide-bottom-border {
 				background-clip: content-box, border-box;
-				background-image: linear-gradient(white, white), linear-gradient(to right, #b6cbe8 20%, transparent 20%, transparent 80%, #b6cbe8 80%);
+				background-image: linear-gradient(white, white), linear-gradient(to right, var(--d2l-list-item-border-color) 20%, transparent 20%, transparent 80%, var(--d2l-list-item-border-color) 80%);
 				background-origin: border-box;
 				border: double 1px transparent;
 				border-radius: 6px;
 			}
 			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"].hide-bottom-border {
-				background-image: linear-gradient(#f3fbff, #f3fbff), linear-gradient(to right, #b6cbe8 20%, transparent 20%, transparent 80%, #b6cbe8 80%);
+				background-image: linear-gradient(#f3fbff, #f3fbff), linear-gradient(to right, var(--d2l-list-item-border-color) 20%, transparent 20%, transparent 80%, var(--d2l-list-item-border-color) 80%);
 			}
 			:host([_hovering-control]) d2l-button-add,
 			:host([_hovering-primary-action]) d2l-button-add,
