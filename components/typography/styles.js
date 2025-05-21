@@ -1,8 +1,5 @@
 import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
-
-const inputStyleTweaksEnabled = getFlag('input-style-tweaks', true);
 
 export const _isValidCssSelector = (selector) => {
 	if (selector === ':host') return true;
@@ -115,7 +112,7 @@ export const _generateBodySmallStyles = (selector) => {
 			color: var(--d2l-color-tungsten);
 			font-size: 0.7rem;
 			font-weight: 400;
-			line-height: ${unsafeCSS(inputStyleTweaksEnabled ? '0.9rem' : '1rem')}; /* stylelint-disable-line */
+			line-height: 0.9rem;
 			margin: auto;
 		}
 		:host([skeleton]) ${selector}.d2l-skeletize::before {
@@ -132,7 +129,6 @@ export const _generateBodySmallStyles = (selector) => {
 			max-height: 5rem;
 		}
 		@media (max-width: 615px) {
-			${unsafeCSS(!inputStyleTweaksEnabled ? `${selector} { font-size: 0.6rem; line-height: 0.9rem; }` : '')}
 			:host([skeleton]) ${selector}.d2l-skeletize::before {
 				bottom: 0.25rem;
 				top: 0.2rem;
@@ -272,7 +268,7 @@ export const _generateLabelStyles = (selector) => {
 			font-size: 0.7rem;
 			font-weight: 700;
 			letter-spacing: 0.2px;
-			line-height: ${unsafeCSS(inputStyleTweaksEnabled ? '0.9rem' : '1rem')}; /* stylelint-disable-line */
+			line-height: 0.9rem;
 		}
 		:host([skeleton]) ${selector}.d2l-skeletize::before {
 			bottom: 0.25rem;

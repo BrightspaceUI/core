@@ -9,10 +9,6 @@
 	padding-block: 0 0.4rem;
 	padding-inline: 0;
 	width: 100%;
-	.d2l-typography.d2l-no-input-style-tweaks & {
-		line-height: 1rem;
-		padding-block-end: 7px;
-	}
 }
 
 @mixin d2l-input-label-required() {
