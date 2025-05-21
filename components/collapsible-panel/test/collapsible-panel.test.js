@@ -1,6 +1,6 @@
 import '../collapsible-panel.js';
 import '../collapsible-panel-summary-item.js';
-import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeys } from '@brightspace-ui/testing';
 
 describe('d2l-collapsible-panel', () => {
 
@@ -149,8 +149,23 @@ describe('d2l-collapsible-panel', () => {
 			expect(panel.classList.contains(focusedClass)).to.be.false;
 		});
 
+		it('tabbing into header should trigger focused class', async() => {
+			await sendKeys('press', 'Tab');
+			expect(panel.classList.contains(focusedClass)).to.be.true;
+		});
+
+		it('tabbing into header then clicking should not remove focused class', async() => {
+			await sendKeys('press', 'Tab');
+			expect(panel.classList.contains(focusedClass)).to.be.true;
+			const header = elem.shadowRoot.querySelector('.d2l-collapsible-panel-header');
+			clickElem(header);
+			await oneEvent(elem, 'd2l-collapsible-panel-expand');
+			expect(panel.classList.contains(focusedClass)).to.be.true;
+		});
+
 		it('selecting heading with keypress should trigger focused class and expand', async() => {
-			sendKeysElem(elem.shadowRoot.querySelector('button'), 'press', 'Enter');
+			sendKeys('press', 'Tab');
+			sendKeys('press', 'Enter');
 			await oneEvent(elem, 'd2l-collapsible-panel-expand');
 			expect(panel.classList.contains(focusedClass)).to.be.true;
 		});
