@@ -81,4 +81,30 @@ export const radioStyles = css`
 		margin-inline-end: 0.5rem;
 		margin-inline-start: -1.7rem;
 	}
+
+	@media (prefers-contrast: more) {
+		.d2l-input-radio[aria-checked="true"],
+		.d2l-input-radio:checked,
+		.d2l-input-radio-label > input[type="radio"]:checked {
+			background-image: none;
+			position: relative;
+		}
+		.d2l-input-radio[aria-checked="true"]::after,
+		.d2l-input-radio:checked::after,
+		.d2l-input-radio-label > input[type="radio"]:checked::after {
+			background-color: FieldText;
+			content: "";
+			display: block;
+			height: 1.2rem;
+			left: 50%;
+			mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2010%2010%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%09%3Ccircle%20cx%3D%225%22%20cy%3D%225%22%20r%3D%225%22%20fill%3D%22%23494c4e%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E");
+			mask-position: center center;
+			mask-repeat: no-repeat;
+			mask-size: 0.5rem 0.5rem;
+			position: absolute;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: 1.2rem;
+		}
+	}
 `;
