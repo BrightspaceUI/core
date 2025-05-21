@@ -18,6 +18,9 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 	static get styles() {
 
 		const styles = [ css`
+			:host {
+				--d2l-list-item-border-color: var(--d2l-color-mica) !important; /* clean up with flag GAUD-7495-list-item-new-styles */
+			}
 			:host(:not([button-disabled])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-ferrite);
 			}
@@ -25,6 +28,7 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 				width: 100%;
 			}
 			:host([current]) [slot="outside-control-container"] {
+				--d2l-list-item-border-color: var(--d2l-color-celestine);
 				background-color: var(--d2l-color-regolith);
 				border: 3px solid var(--d2l-color-celestine);
 				margin-block: -1px;
@@ -37,6 +41,17 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 			:host([_focusing-primary-action]) .d2l-list-item-content {
 				--d2l-list-item-content-text-color: var(--d2l-color-ferrite);
 				--d2l-list-item-content-text-decoration: none;
+			}
+
+			/* clean up below with flag GAUD-7495-list-item-new-styles */
+			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing]) [slot="outside-control-container"] {
+				border-color: var(--d2l-list-item-border-color);
+				margin-bottom: -1px;
+			}
+			@media only screen and (hover: hover), only screen and (pointer: fine) {
+				:host([_focusing]) d2l-list-item-drag-handle {
+					opacity: 1;
+				}
 			}
 		` ];
 
@@ -66,6 +81,9 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 		if (this.current) {
 			this.dispatchSetChildCurrentEvent(true);
 		}
+
+		this.addEventListener('focusin', this.#stopPropagation);
+		this.addEventListener('focusout', this.#stopPropagation);
 	}
 
 	updated(changedProperties) {
@@ -113,6 +131,10 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 		await this.updateComplete; // ensure button exists
 		if (e.target === this) return;
 		this._childCurrent = e.detail.value;
+	}
+
+	#stopPropagation(e) {
+		e.stopPropagation();
 	}
 
 };
