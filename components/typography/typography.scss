@@ -29,10 +29,8 @@
 		font-family: "Apple SD Gothic Neo", Dotum, sans-serif;
 	}
 
-	&:lang(th),
-	& :lang(th),
-	&:lang(tha),
-	& :lang(tha) {
+	&:lang(th, tha),
+	& :lang(th, tha) {
 		font-family: "Hiragino Kaku Gothic Pro", "Meiyro", sans-serif;
 	}
 
