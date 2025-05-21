@@ -61,6 +61,22 @@
 			url(https://s.brightspace.com/lib/fonts/0.6.4/assets/Lato-700.woff) format("woff");
 	}
 	@font-face {
+		font-family: 'Noto Sans Thai';
+		font-style: normal;
+		font-weight: 400;
+		src:
+			url(https://s.brightspace.com/lib/fonts/0.6.4/assets/NotoSansThai-Regular.woff2) format('woff2'),
+			url(https://s.brightspace.com/lib/fonts/0.6.4/assets/NotoSansThai-Regular.woff) format('woff');
+	}
+	@font-face {
+		font-family: 'Noto Sans Thai';
+		font-style: normal;
+		font-weight: 700;
+		src:
+			url(https://s.brightspace.com/lib/fonts/0.6.4/assets/NotoSansThai-Bold.woff2) format('woff2'),
+			url(https://s.brightspace.com/lib/fonts/0.6.4/assets/NotoSansThai-Bold.woff) format('woff');
+	}
+	@font-face {
 		font-family: "BC Sans";
 		font-style: normal;
 		font-weight: 300;
