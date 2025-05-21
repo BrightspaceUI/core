@@ -338,7 +338,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_focusing-primary-action]) [slot="outside-control-container"].hide-bottom-border,
 			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"].hide-bottom-border,
 			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) [slot="outside-control-container"].hide-bottom-border,
-			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"].hide-bottom-border {
+			:host(:not([_list-item-new-styles]):not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"].hide-bottom-border,
+			:host([_list-item-new-styles]:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing]) [slot="outside-control-container"].hide-bottom-border {
 				background-clip: content-box, border-box;
 				background-image: linear-gradient(white, white), linear-gradient(to right, var(--d2l-list-item-border-color) 20%, transparent 20%, transparent 80%, var(--d2l-list-item-border-color) 80%);
 				background-origin: border-box;
