@@ -19,7 +19,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 const DEFAULT_VALUE = '#000000';
 const DEFAULT_VALUE_BG = '#FFFFFF';
 const ICON_BACKGROUND = html`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="13" fill="none" viewBox="0 0 16 13">
-<g class="icon" clip-path="url(#a)">
+<g  fill="currentColor" clip-path="url(#a)">
   <path fill-rule="evenodd" d="M1.609 5.356c-2.706 2.706 4.329 9.741 7.035 7.035l4.87-4.87C15.897 5.137 8.862-1.898 6.48.486l-4.87 4.87Zm5.945 5.297L12 6.207a1.774 1.774 0 0 0-.116-.42c-.231-.613-.766-1.41-1.514-2.157-.748-.748-1.545-1.283-2.158-1.515A1.774 1.774 0 0 0 7.793 2L3.347 6.446c.988.286 1.898.863 2.62 1.586.724.723 1.301 1.633 1.587 2.62Zm.154-8.65c-.001-.002.011-.006.04-.006-.024.008-.038.008-.04.006Zm4.289 4.289c-.002-.002-.002-.016.005-.04 0 .029-.003.041-.005.04Z" clip-rule="evenodd"/>
   <path d="M12.994 11c0 1 .506 1.5 1.506 1.5S16 12 16 11c0-2-1-4.5-1.794-4.526 0 2.526-1.211 2.851-1.212 4.525Z"/>
   <path fill-rule="evenodd" d="M7.544 4.205a.55.55 0 0 1-.004-.01c-.334-.785-.925-1.602-1.603-2.218C5.244 1.347 4.543 1 4 1a.227.227 0 0 0-.086.011.208.208 0 0 0-.027.073c-.039.162-.02.44.066.8.081.343.205.694.312.964a9.174 9.174 0 0 0 .174.41l.01.022.002.005v.001a.5.5 0 0 1-.903.428L4 3.5l-.452.214v-.001l-.002-.002-.003-.008-.013-.028a10.168 10.168 0 0 1-.195-.46 8.313 8.313 0 0 1-.355-1.1c-.092-.39-.161-.86-.066-1.262.05-.21.153-.436.355-.606C3.475.073 3.731 0 4 0c.914 0 1.849.545 2.61 1.237a7.784 7.784 0 0 1 1.719 2.278 1 1 0 1 1-.784.69ZM3.91 1.014l.003-.002-.003.002Z" clip-rule="evenodd"/>
@@ -31,7 +31,7 @@ const ICON_BACKGROUND = html`<svg xmlns="http://www.w3.org/2000/svg" width="16" 
 </defs>
 </svg>`;
 const ICON_FOREGROUND = html`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="13" fill="none" viewBox="0 0 16 13">
-<g class="icon" clip-path="url(#a)">
+<g fill="currentColor" clip-path="url(#a)">
   <path d="M10.325 8.086 8.74 3.757a9.472 9.472 0 0 1-.243-.684 22.281 22.281 0 0 1-.252-.855c-.078.306-.16.594-.243.864-.084.264-.165.495-.243.693L6.185 8.086h4.14ZM14.6 13h-1.872a.815.815 0 0 1-.513-.153 1.016 1.016 0 0 1-.297-.396l-.972-2.655H5.555l-.972 2.655a.863.863 0 0 1-.28.378.779.779 0 0 1-.512.171H1.9L7.02-.014h2.467L14.6 13Z"/>
 </g>
 <defs>
@@ -212,9 +212,9 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 					height: 0.6rem;
 				}
 
-				.icon,
-				.chevron {
-					fill: #202122;
+				button,
+				.readonly-wrapper {
+					color: var(--d2l-color-ferrite);
 				}
 
 				.readonly-wrapper {
@@ -234,10 +234,6 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 				}
 
 				@media (prefers-contrast: more) {
-					.icon,
-					.chevron {
-						fill: currentColor;
-					}
 					.swatch {
 						border: 1px solid FieldText;
 						forced-color-adjust: none;
@@ -336,7 +332,7 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 			>
 				${this._getSwatch()}
 				<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" fill="none" viewBox="0 0 10 6">
-					<path class="chevron" d="M4.792 5.528a.733.733 0 0 1-.537-.223L.224 1.282a.745.745 0 0 1 0-1.065.751.751 0 0 1 1.057 0l3.51 3.511L8.303.218A.751.751 0 0 1 9.36 1.281L5.337 5.305a.753.753 0 0 1-.535.223h-.01Z"/>
+					<path fill="currentColor" d="M4.792 5.528a.733.733 0 0 1-.537-.223L.224 1.282a.745.745 0 0 1 0-1.065.751.751 0 0 1 1.057 0l3.51 3.511L8.303.218A.751.751 0 0 1 9.36 1.281L5.337 5.305a.753.753 0 0 1-.535.223h-.01Z"/>
 				</svg>
 			</button>`;
 		if (this.launchType === 'dialog') {
