@@ -507,8 +507,7 @@ export const baseTypographyStyles = css`
 		font-family: "Lato", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 		letter-spacing: 0.01rem;
 	}
-	${_generateBodyStandardStyles('.d2l-typography', false)};
-
+	${_generateBodyStandardStyles('.d2l-typography', false)}
 	.d2l-typography p {
 		margin: 1rem 0;
 	}
