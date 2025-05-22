@@ -29,8 +29,8 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 			}
 			:host([current]) [slot="outside-control-container"] {
 				background-color: var(--d2l-color-regolith);
-				border: 3px solid var(--d2l-color-celestine) !important;
-				margin-block: -1px;
+				border: 3px solid var(--d2l-color-celestine);
+				margin-block: 0;
 			}
 			:host([current]) [slot="control-container"]::before,
 			:host([current]) [slot="control-container"]::after {
