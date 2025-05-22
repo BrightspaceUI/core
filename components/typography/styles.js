@@ -1,8 +1,5 @@
 import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
-
-const inputStyleTweaksEnabled = getFlag('input-style-tweaks', true);
 
 export const _isValidCssSelector = (selector) => {
 	if (selector === ':host') return true;
@@ -115,7 +112,7 @@ export const _generateBodySmallStyles = (selector) => {
 			color: var(--d2l-color-tungsten);
 			font-size: 0.7rem;
 			font-weight: 400;
-			line-height: ${unsafeCSS(inputStyleTweaksEnabled ? '0.9rem' : '1rem')}; /* stylelint-disable-line */
+			line-height: 0.9rem;
 			margin: auto;
 		}
 		:host([skeleton]) ${selector}.d2l-skeletize::before {
@@ -132,7 +129,6 @@ export const _generateBodySmallStyles = (selector) => {
 			max-height: 5rem;
 		}
 		@media (max-width: 615px) {
-			${unsafeCSS(!inputStyleTweaksEnabled ? `${selector} { font-size: 0.6rem; line-height: 0.9rem; }` : '')}
 			:host([skeleton]) ${selector}.d2l-skeletize::before {
 				bottom: 0.25rem;
 				top: 0.2rem;
@@ -272,7 +268,7 @@ export const _generateLabelStyles = (selector) => {
 			font-size: 0.7rem;
 			font-weight: 700;
 			letter-spacing: 0.2px;
-			line-height: ${unsafeCSS(inputStyleTweaksEnabled ? '0.9rem' : '1rem')}; /* stylelint-disable-line */
+			line-height: 0.9rem;
 		}
 		:host([skeleton]) ${selector}.d2l-skeletize::before {
 			bottom: 0.25rem;
@@ -318,10 +314,12 @@ export const _generateBlockquoteStyles = (selector) => {
 
 export const blockquoteStyles = _generateBlockquoteStyles('.d2l-blockquote');
 
-const importUrl = 'https://s.brightspace.com/lib/fonts/0.6.1/assets/';
+const importUrl = 'https://s.brightspace.com/lib/fonts/0.6.4/assets/';
 const fonts = {
 	LatoRegular: 'Lato-400',
 	LatoBold: 'Lato-700',
+	NotoSansThaiRegular: 'NotoSansThai-Regular',
+	NotoSansThaiBold: 'NotoSansThai-Bold',
 	BCSansLight: 'BCSans-Light',
 	BCSansRegular: 'BCSans-Regular',
 	BCSansBold: 'BCSans-Bold',
@@ -333,47 +331,79 @@ export const fontFacesCss = `@font-face {
 	font-family: 'Lato';
 	font-style: normal;
 	font-weight: 400;
-	src: url(${new URL(`${fonts.LatoRegular}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.LatoRegular}.woff`, importUrl)}) format('woff');
+	src:
+		url(${new URL(`${fonts.LatoRegular}.woff2`, importUrl)}) format('woff2'),
+		url(${new URL(`${fonts.LatoRegular}.woff`, importUrl)}) format('woff');
 }
 @font-face {
 	font-family: 'Lato';
 	font-style: normal;
 	font-weight: 700;
-	src: url(${new URL(`${fonts.LatoBold}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.LatoBold}.woff`, importUrl)}) format('woff');
+	src:
+		url(${new URL(`${fonts.LatoBold}.woff2`, importUrl)}) format('woff2'),
+		url(${new URL(`${fonts.LatoBold}.woff`, importUrl)}) format('woff');
+}
+@font-face {
+	font-family: 'Noto Sans Thai';
+	font-style: normal;
+	font-weight: 400;
+	src:
+		url(${new URL(`${fonts.NotoSansThaiRegular}.woff2`, importUrl)}) format('woff2'),
+		url(${new URL(`${fonts.NotoSansThaiRegular}.woff`, importUrl)}) format('woff');
+}
+@font-face {
+	font-family: 'Noto Sans Thai';
+	font-style: normal;
+	font-weight: 700;
+	src:
+		url(${new URL(`${fonts.NotoSansThaiBold}.woff2`, importUrl)}) format('woff2'),
+		url(${new URL(`${fonts.NotoSansThaiBold}.woff`, importUrl)}) format('woff');
 }
 @font-face {
 	font-family: 'BC Sans';
 	font-style: normal;
 	font-weight: 300;
-	src: url(${new URL(`${fonts.BCSansLight}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansLight}.woff`, importUrl)}) format('woff');
+	src:
+		url(${new URL(`${fonts.BCSansLight}.woff2`, importUrl)}) format('woff2'),
+		url(${new URL(`${fonts.BCSansLight}.woff`, importUrl)}) format('woff');
 }
 @font-face {
 	font-family: 'BC Sans';
 	font-style: normal;
 	font-weight: 400;
-	src: url(${new URL(`${fonts.BCSansRegular}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansRegular}.woff`, importUrl)}) format('woff');
+	src:
+		url(${new URL(`${fonts.BCSansRegular}.woff2`, importUrl)}) format('woff2'),
+		url(${new URL(`${fonts.BCSansRegular}.woff`, importUrl)}) format('woff');
 }
 @font-face {
 	font-family: 'BC Sans';
 	font-style: normal;
 	font-weight: 700;
-	src: url(${new URL(`${fonts.BCSansBold}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansBold}.woff`, importUrl)}) format('woff');
+	src:
+		url(${new URL(`${fonts.BCSansBold}.woff2`, importUrl)}) format('woff2'),
+		url(${new URL(`${fonts.BCSansBold}.woff`, importUrl)}) format('woff');
 }
 @font-face {
 	font-family: 'BC Sans';
 	font-style: italic;
 	font-weight: 300;
-	src: url(${new URL(`${fonts.BCSansLightItalic}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansLightItalic}.woff`, importUrl)}) format('woff');
+	src:
+		url(${new URL(`${fonts.BCSansLightItalic}.woff2`, importUrl)}) format('woff2'),
+		url(${new URL(`${fonts.BCSansLightItalic}.woff`, importUrl)}) format('woff');
 }
 @font-face {
 	font-family: 'BC Sans';
 	font-style: italic;
 	font-weight: 400;
-	src: url(${new URL(`${fonts.BCSansItalic}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansItalic}.woff`, importUrl)}) format('woff');
+	src:
+		url(${new URL(`${fonts.BCSansItalic}.woff2`, importUrl)}) format('woff2'),
+		url(${new URL(`${fonts.BCSansItalic}.woff`, importUrl)}) format('woff');
 }
 @font-face {
 	font-family: 'BC Sans';
 	font-style: italic;
 	font-weight: 700;
-	src: url(${new URL(`${fonts.BCSansBoldItalic}.woff2`, importUrl)}) format('woff2'), url(${new URL(`${fonts.BCSansBoldItalic}.woff`, importUrl)}) format('woff');
+	src:
+		url(${new URL(`${fonts.BCSansBoldItalic}.woff2`, importUrl)}) format('woff2'),
+		url(${new URL(`${fonts.BCSansBoldItalic}.woff`, importUrl)}) format('woff');
 }`;

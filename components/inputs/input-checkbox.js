@@ -1,17 +1,14 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
-import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { InputInlineHelpMixin } from './input-inline-help.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
-
-const inputStyleTweaksEnabled = getFlag('input-style-tweaks', true);
 
 export const cssSizes = {
 	inputBoxSize: 1.2,
@@ -132,7 +129,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 			css`
 				:host {
 					display: block;
-					margin-block-end: ${unsafeCSS(inputStyleTweaksEnabled ? '0.6rem' : '0.9rem')}; /* stylelint-disable-line */
+					margin-block-end: 0.6rem;
 				}
 				:host([hidden]) {
 					display: none;
@@ -180,7 +177,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 				}
 				.d2l-input-checkbox-supporting {
 					display: none;
-					margin-block-start: ${unsafeCSS(inputStyleTweaksEnabled ? '0.6rem' : '0.9rem')}; /* stylelint-disable-line */
+					margin-block-start: 0.6rem;
 				}
 				.d2l-input-checkbox-supporting-visible {
 					display: block;

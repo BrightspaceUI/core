@@ -1,9 +1,7 @@
 import '../colors/colors.js';
 import { _generateBlockquoteStyles, fontFacesCss } from './styles.js';
-import { getFlag } from '../../helpers/flags.js';
 
 if (!document.head.querySelector('#d2l-typography-font-face')) {
-	const inputStyleTweaksEnabled = getFlag('input-style-tweaks', true);
 	const style = document.createElement('style');
 	style.id = 'd2l-typography-font-face';
 	style.textContent = `
@@ -45,13 +43,13 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 			color: var(--d2l-color-tungsten);
 			font-size: 0.7rem;
 			font-weight: 400;
-			line-height: ${(inputStyleTweaksEnabled ? '0.9rem' : '1rem')};
+			line-height: 0.9rem;
 			margin: auto;
 		}
 
 		.d2l-typography .d2l-label-text {
 			font-size: 0.7rem;
-			line-height: ${(inputStyleTweaksEnabled ? '0.9rem' : '1rem')};
+			line-height: 0.9rem;
 			font-weight: 700;
 			letter-spacing: 0.2px;
 		}
@@ -78,6 +76,13 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 		.d2l-typography:lang(ja),
 		.d2l-typography :lang(ja) {
 			font-family: 'Hiragino Kaku Gothic Pro', 'Meiyro', sans-serif;
+		}
+
+		.d2l-typography:lang(th),
+		.d2l-typography :lang(th),
+		.d2l-typography:lang(tha),
+		.d2l-typography :lang(tha) {
+			font-family: 'Noto Sans Thai', system-ui, Tahoma;
 		}
 
 		.d2l-typography .d2l-heading-1 {
@@ -116,11 +121,6 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 				font-size: 0.8rem;
 				line-height: 1.2rem;
 			}
-
-			${!inputStyleTweaksEnabled ? `.d2l-typography .d2l-body-small {
-				font-size: 0.6rem;
-				line-height: 0.9rem;
-			}` : ''}
 
 			.d2l-typography .d2l-heading-1 {
 				font-size: 1.5rem;
