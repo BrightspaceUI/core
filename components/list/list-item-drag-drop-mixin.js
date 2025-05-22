@@ -361,7 +361,9 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		this.dragging = false;
 		this.dropNested = false;
 
-		this._hiddenContentResizeObserver = null;
+		this._contentResizeObserver = null;
+		this._hiddenContentWidth = null;
+		this._contentPaddingInlineStart = null;
 	}
 
 	connectedCallback() {
@@ -373,10 +375,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (this._hiddenContentResizeObserver) {
-			this._hiddenContentResizeObserver.disconnect();
-			this._hiddenContentResizeObserver = null;
-		}
+		this.#removeDraggableResizeObserver();
 	}
 
 	firstUpdated(changedProperties) {
@@ -386,8 +385,18 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
-		if (changedProperties.has('draggable') && this.draggable) {
-			this.#addDraggableResizeObserver();
+
+		if (changedProperties.has('draggable')) {
+			if (this.draggable) {
+				this.#addDraggableResizeObserver();
+			} else {
+				this.#removeDraggableResizeObserver();
+				this._hiddenContentWidth = null;
+				this._contentPaddingInlineStart = null;
+			}
+		}
+		if (changedProperties.has('_hiddenContentWidth') && this.draggable) {
+			this.#updateContentPadding();
 		}
 	}
 
@@ -930,23 +939,38 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_renderTopPlacementMarker(renderTemplate) {
 		return this._dropLocation === dropLocation.above ? html`<div class="d2l-list-item-drag-top-marker">${renderTemplate}</div>` : null;
 	}
-	
+
 	async #addDraggableResizeObserver() {
-		const hiddenItem = this.shadowRoot.querySelector('.d2l-draggable-content-hidden')
-		if (!hiddenItem) return;
-		const actualContent = this.shadowRoot.querySelector('[slot="content"].d2l-list-item-content');
+		const content = this.shadowRoot.querySelector('[slot="content"].d2l-list-item-content');
+		if (!content) return;
 
-		// do we need a resize observer? it's only if a property changes that the side bar gets impacted
-
-		this._hiddenContentResizeObserver = this._hiddenContentResizeObserver || new ResizeObserver(() => {
-			if (this._keyboardActive || !hiddenItem || !actualContent) return;
-			const width = Math.ceil(parseFloat(getComputedStyle(actualContent).getPropertyValue('width')));
-			this._hiddenContentWidth = !isNaN(width) ? `${width}px` : null;
-
-			requestAnimationFrame(() => {
-				this._contentPaddingInlineStart = `${(hiddenItem.offsetLeft)}px`;
-			});
+		this._contentResizeObserver = this._contentResizeObserver || new ResizeObserver(() => {
+			const width = Math.ceil(parseFloat(getComputedStyle(content).getPropertyValue('width')));
+			if (isNaN(width)) return; // for case where drag & drop goes to keyboard control and back
+			this._hiddenContentWidth = `${width}px`;
 		});
-		this._hiddenContentResizeObserver.observe(actualContent);
+
+		this._contentResizeObserver.observe(content);
+	}
+
+	#isRTL() {
+		return document.documentElement.getAttribute('dir') === 'rtl';
+	}
+
+	#removeDraggableResizeObserver() {
+		if (this._contentResizeObserver) {
+			this._contentResizeObserver.disconnect();
+			this._contentResizeObserver = null;
+		}
+	}
+
+	#updateContentPadding() {
+		setTimeout(() => {
+			const hiddenItem = this.shadowRoot.querySelector('.d2l-draggable-content-hidden');
+			if (!hiddenItem) return;
+
+			const offsetLeft = hiddenItem.offsetLeft;
+			this._contentPaddingInlineStart = this.#isRTL() ? `${-1 * offsetLeft}px` : `${offsetLeft}px`;
+		});
 	}
 };
