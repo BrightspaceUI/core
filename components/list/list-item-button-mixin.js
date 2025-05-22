@@ -116,7 +116,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 
 	_onButtonFocus(e) {
 		if (this._getDescendantClicked(e)) {
-			e.stopPropagation();
+			requestAnimationFrame(() => this._focusingPrimaryAction = false);
 		}
 	}
 
