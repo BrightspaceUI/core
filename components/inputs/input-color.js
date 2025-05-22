@@ -15,6 +15,7 @@ import { inputLabelStyles } from './input-label-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { svgToCSS } from '../../helpers/svg-to-css.js';
 
 const DEFAULT_VALUE = '#000000';
 const DEFAULT_VALUE_BG = '#FFFFFF';
@@ -194,7 +195,7 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 					height: 1rem;
 				}
 				.swatch-transparent {
-					background-image: url("data:image/svg+xml;base64,${unsafeCSS(btoa(SWATCH_TRANSPARENT))}");
+					background-image: ${svgToCSS(SWATCH_TRANSPARENT)};
 					background-position-y: -1.5px;
 					background-size: cover;
 				}

@@ -1,4 +1,5 @@
 import { css, unsafeCSS } from 'lit';
+import { svgToCSS } from './svg-to-css';
 
 const prismLocation = 'https://s.brightspace.com/lib/prismjs/1.28.0';
 //const prismLocation = '/node_modules/prismjs'; // for local debugging
@@ -144,6 +145,11 @@ const generateColorVariables = (mode, theme) => {
 		}
 	`;
 };
+
+const transparentIcon = svgToCSS(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2">
+	<path fill="gray" d="M0 0h2v2H0z"/>
+	<path fill="white" d="M0 0h1v1H0zM1 1h1v1H1z"/>
+</svg>`)
 
 export const codeStyles = css`
 
@@ -301,7 +307,7 @@ export const codeStyles = css`
 		 *     <path fill="white" d="M0 0h1v1H0zM1 1h1v1H1z"/>
 		 * </svg>
 		 */
-		background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyIDIiPjxwYXRoIGZpbGw9ImdyYXkiIGQ9Ik0wIDBoMnYySDB6Ii8+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0wIDBoMXYxSDB6TTEgMWgxdjFIMXoiLz48L3N2Zz4=");
+		background: ${transparentIcon};
 		/* Prevent visual glitches where one pixel from the repeating pattern could be seen */
 		background-position: center;
 		background-size: 110%;
