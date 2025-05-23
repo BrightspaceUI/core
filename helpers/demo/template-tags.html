@@ -7,8 +7,6 @@
 		<script type="module">
 			import '../../components/demo/demo-page.js';
 			import '../../components/inputs/input-textarea.js';
-			import { set } from '../../helpers/template-tags.js';
-			window.set = set;
 		</script>
 	</head>
 	<body unresolved>
@@ -34,6 +32,7 @@
 				<template>
 					<d2l-input-textarea id="normal-tag"></d2l-input-textarea>
 					<script type="module">
+						import { set } from '../../helpers/template-tags.js';
 						document.querySelector('#normal-tag').value =
 							set`A multiline template literal,
 								with in-code indentation`;
@@ -47,6 +46,7 @@
 				<template>
 					<d2l-input-textarea id="marked-tag"></d2l-input-textarea>
 					<script type="module">
+						import { set } from '../../helpers/template-tags.js';
 						document.querySelector('#marked-tag').value = set`
 							A multiline template literal,
 							with in-code indentation
@@ -82,6 +82,7 @@
 				<template>
 					<d2l-input-textarea id="complex-normal-tag"></d2l-input-textarea>
 					<script type="module">
+						import { set } from '../../helpers/template-tags.js';
 						document.querySelector('#complex-normal-tag').value =
 							set`{peopleCount, plural,
 								one {There is # person}
@@ -97,7 +98,8 @@
 				<template>
 					<d2l-input-textarea id="complex-marked-tag"></d2l-input-textarea>
 					<script type="module">
-						let test = 'are';
+						import { set } from '../../helpers/template-tags.js';
+						const test = 'are';
 						document.querySelector('#complex-marked-tag').value = set`
 							{peopleCount, plural,
 								one {There is # person}
