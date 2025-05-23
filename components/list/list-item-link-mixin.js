@@ -91,7 +91,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 
 	_handleLinkFocus(e) {
 		if (this._getDescendantClicked(e)) {
-			e.stopPropagation();
+			requestAnimationFrame(() => this._focusingPrimaryAction = false);
 		}
 	}
 

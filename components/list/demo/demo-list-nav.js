@@ -1,6 +1,6 @@
 import '../../icons/icon.js';
 import '../list-item-content.js';
-import '../list-item-nav-button.js';
+import '../list-item-nav.js';
 import '../list.js';
 import '../../tooltip/tooltip-help.js';
 import { css, html, LitElement, nothing } from 'lit';
@@ -45,7 +45,7 @@ class ListDemoNav extends LitElement {
 				<d2l-list 
 					grid 
 					drag-multiple
-					@d2l-list-item-button-click="${this._handleItemClick}">
+					@d2l-list-item-link-click="${this._handleItemClick}">
 					${repeat(this.#list, (item) => item.key, (item) => this._renderItem(item))}
 				</d2l-list>
 			</div>
@@ -132,7 +132,7 @@ class ListDemoNav extends LitElement {
 	_renderItem(item) {
 		const hasSubList = item.items && item.items.length > 0;
 		return html`
-			<d2l-list-item-nav-button
+			<d2l-list-item-nav
 				key="${ifDefined(item.key)}"
 				draggable
 				drag-handle-text="${item.primaryText}"
@@ -154,7 +154,7 @@ class ListDemoNav extends LitElement {
 					</d2l-list>`
 						: nothing
 				}
-			</d2l-list-item-nav-button>
+			</d2l-list-item-nav>
 		`;
 	}
 }
