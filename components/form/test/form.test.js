@@ -5,6 +5,7 @@ import './form-element.js';
 import './nested-form.js';
 import { defineCE, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { html, LitElement } from 'lit';
+import { FormElementMixin } from '../form-element-mixin.js';
 
 class TestTwoForms extends LitElement {
 	render() {
@@ -483,6 +484,37 @@ describe('d2l-form', () => {
 			expect(form._errors.size).to.equal(0);
 		});
 
+	});
+
+	it('should validate custom form elements when they have nested forms', async() => {
+		const customFormElementWithNestedFormTag = defineCE(class extends FormElementMixin(LitElement) {
+			get label() { return 'Input 2'; }
+			get validity() { return this.shadowRoot.querySelector('input').validity; }
+			render() {
+				return html`
+					<input type="text" aria-label="${this.label}" name="input2" required>
+					<d2l-form></d2l-form>
+				`;
+			}
+		});
+		const customElementWithNestedFormTag = defineCE(class extends LitElement {
+			render() { return html`<d2l-form></d2l-form> `; }
+		});
+		const elem = await fixture(`
+			<d2l-form>
+				<input type="text" aria-label="Input 1" name="input1" required>
+				<${customFormElementWithNestedFormTag}></${customFormElementWithNestedFormTag}>
+				<${customElementWithNestedFormTag}></${customElementWithNestedFormTag}>
+			</d2l-form>
+		`);
+		const result = await elem.validate();
+		expect(result.size).to.equal(2);
+		expect([...result.entries()]).to.deep.equal([
+			[elem.querySelector('[name="input1"]'), ['Input 1 is required']],
+			[elem.querySelector(customFormElementWithNestedFormTag), ['Input 2 is required']]
+		]);
+		expect(elem.querySelector(customFormElementWithNestedFormTag).hasAttribute('id')).to.be.true;
+		expect(elem.querySelector(customElementWithNestedFormTag).hasAttribute('id')).to.be.false;
 	});
 
 });
