@@ -140,10 +140,6 @@
 	font-size: 0.8rem;
 	font-weight: 400;
 	line-height: 1.2rem;
-	@media (max-width: 615px) {
-		font-size: 0.8rem;
-		line-height: 1.2rem;
-	}
 }
 
 @mixin d2l-body-small {
@@ -161,7 +157,6 @@
 	margin: 1.5rem 0 1.5rem 0;
 	@media (max-width: 615px) {
 		font-size: 1.5rem;
-		font-weight: 400;
 		line-height: 1.8rem;
 	}
 }
@@ -195,11 +190,6 @@
 	font-weight: 700;
 	line-height: 1.2rem;
 	margin: 1.5rem 0 1.5rem 0;
-	@media (max-width: 615px) {
-		font-size: 0.8rem;
-		font-weight: 700;
-		line-height: 1.2rem;
-	}
 }
 
 @mixin d2l-label-text {

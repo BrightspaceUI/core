@@ -832,7 +832,7 @@ describe('list', () => {
 			const dropdown = elem.querySelector('d2l-dropdown');
 			setTimeout(() => dropdown.toggleOpen());
 			await oneEvent(dropdown, 'd2l-dropdown-open');
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
 		it('tooltip open down', async() => {

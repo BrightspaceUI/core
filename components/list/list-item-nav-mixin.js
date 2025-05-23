@@ -119,7 +119,8 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 		super._handleLinkClick(e);
 	}
 
-	#handleFocusIn() {
+	#handleFocusIn(e) {
+		e.stopPropagation(); // prevent _focusing from being set on the parent
 		requestAnimationFrame(() => {
 			const activeElement = getComposedActiveElement();
 			const parentListItem = findComposedAncestor(activeElement, (node) => node.role === 'row' || node.role === 'listitem');
