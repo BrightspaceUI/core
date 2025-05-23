@@ -5,9 +5,12 @@ import { css, html, LitElement } from 'lit';
 import { findFormElements, flattenMap, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { localizeFormElement } from './form-element-localize-helper.js';
+
+const formElementMixinWithNestedFormsParticipates = getFlag('form-element-mixin-nested-forms', true);
 
 /**
  * A component that can be used to build sections containing interactive controls that are validated and submitted as a group.
@@ -165,7 +168,13 @@ class Form extends LocalizeCoreElement(LitElement) {
 						}
 					}
 				}
-			} else {
+			} else if (!formElementMixinWithNestedFormsParticipates) {
+				const eleErrors = await this._validateFormElement(ele, true);
+				if (eleErrors.length > 0) {
+					errorMap.set(ele, eleErrors);
+				}
+			}
+			if (formElementMixinWithNestedFormsParticipates) {
 				const eleErrors = await this._validateFormElement(ele, true);
 				if (eleErrors.length > 0) {
 					errorMap.set(ele, eleErrors);
@@ -354,13 +363,16 @@ class Form extends LocalizeCoreElement(LitElement) {
 	}
 
 	async _validateFormElement(ele, showNewErrors) {
+		const isCustom = isCustomFormElement(ele);
+		const isNative = isNativeFormElement(ele);
+		if (!isCustom && !isNative) return [];
 		// if validation occurs before we've rendered,
 		// localization may not have loaded yet
 		await this._firstUpdatePromise;
 		ele.id = ele.id || getUniqueId();
-		if (isCustomFormElement(ele)) {
+		if (isCustom) {
 			return ele.validate(showNewErrors);
-		} else if (isNativeFormElement(ele)) {
+		} else if (isNative) {
 			const customs = [...this._validationCustoms].filter(custom => custom.forElement === ele);
 			const results = await Promise.all(customs.map(custom => custom.validate()));
 			const errors = customs.map(custom => custom.failureText).filter((_, i) => !results[i]);
