@@ -3,6 +3,7 @@ import '../menu-item.js';
 import '../menu-item-radio.js';
 import './custom-slots.js';
 import { clickElem, defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, runConstructor, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
+import { createMessage } from '../../../mixins/property-required/property-required-mixin.js';
 import { LitElement } from 'lit';
 import { MenuItemMixin } from '../menu-item-mixin.js';
 
@@ -14,8 +15,8 @@ describe('d2l-menu', () => {
 		beforeEach(async() => {
 			elem = await fixture(html`
 				<d2l-menu label="menu label">
-					<d2l-menu-item></d2l-menu-item>
-					<d2l-menu-item></d2l-menu-item>
+					<d2l-menu-item text="item 1"></d2l-menu-item>
+					<d2l-menu-item text="item 2"></d2l-menu-item>
 				</d2l-menu>
 			`);
 		});
@@ -159,14 +160,14 @@ describe('d2l-menu', () => {
 		beforeEach(async() => {
 			elem = await fixture(html`
 				<d2l-menu id="menu">
-					<d2l-menu-item id="a1"></d2l-menu-item>
+					<d2l-menu-item id="a1" text="a1"></d2l-menu-item>
 					<d2l-menu-item id="b1" text="b">
 						<d2l-menu id="nestedMenu">
-							<d2l-menu-item id="a2"></d2l-menu-item>
-							<d2l-menu-item id="b2"></d2l-menu-item>
+							<d2l-menu-item id="a2" text="a2"></d2l-menu-item>
+							<d2l-menu-item id="b2" text="b2"></d2l-menu-item>
 						</d2l-menu>
 					</d2l-menu-item>
-					<d2l-menu-item id="c1"></d2l-menu-item>
+					<d2l-menu-item id="c1" text="c1"></d2l-menu-item>
 				</d2l-menu>
 			`);
 			nestedMenu = elem.querySelector('#nestedMenu');
@@ -307,6 +308,32 @@ describe('d2l-menu', () => {
 		const items = await elem._getMenuItems();
 		expect(items.length).to.equal(2);
 
+	});
+
+	describe('validation', () => {
+		it('should throw when label is missing', async() => {
+			const elem = await fixture(html`<d2l-menu></d2l-menu>`);
+			expect(() => elem.flushRequiredPropertyErrors())
+				.to.throw(TypeError, createMessage(elem, 'label'));
+		});
+
+		it('should not throw when label is provided', async() => {
+			const elem = await fixture(html`<d2l-menu label="options"></d2l-menu>`);
+			expect(() => elem.flushRequiredPropertyErrors()).to.not.throw();
+		});
+
+		it('should not throw when label is provided as a nested menu', async() => {
+			const elem = await fixture(html`
+				<d2l-menu label="options">
+					<d2l-menu-item text="option 1">
+						<d2l-menu>
+							<d2l-menu-item text="option 1A"></d2l-menu-item>
+						</d2l-menu>
+					</d2l-menu-item>
+				</d2l-menu>
+			`);
+			expect(() => elem.flushRequiredPropertyErrors()).to.not.throw();
+		});
 	});
 
 });

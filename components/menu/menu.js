@@ -3,6 +3,7 @@ import '../icons/icon.js';
 import './menu-item-return.js';
 import { css, html, LitElement } from 'lit';
 import { HierarchicalViewMixin } from '../hierarchical-view/hierarchical-view-mixin.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
 const keyCodes = {
@@ -20,7 +21,7 @@ const keyCodes = {
  * @slot - Menu items
  * @fires d2l-menu-resize - Dispatched when size of menu changes (e.g., when nested menu of a different size is opened)
  */
-class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
+class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -32,7 +33,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 			 * ACCESSIBILITY: Acts as the primary label for the menu (REQUIRED for root menu)
 			 * @type {string}
 			 */
-			label: { type: String },
+			label: { type: String, required: true },
 			/**
 			 * @ignore
 			 */
