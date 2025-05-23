@@ -102,7 +102,7 @@ export const radioStyles = css`
 			display: block;
 			height: 1.2rem;
 			left: 50%;
-			mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2010%2010%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%09%3Ccircle%20cx%3D%225%22%20cy%3D%225%22%20r%3D%225%22%20fill%3D%22%23494c4e%22%3E%3C%2Fcircle%3E%0A%3C%2Fsvg%3E");
+			mask-image: ${radioCheck};
 			mask-position: center center;
 			mask-repeat: no-repeat;
 			mask-size: 0.5rem 0.5rem;
