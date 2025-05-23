@@ -312,8 +312,7 @@ describe('filter', () => {
 					</d2l-filter>
 				`);
 
-				clickElem(elem.shadowRoot.querySelector(selector));
-				await oneEvent(elem.shadowRoot.querySelector('d2l-dropdown'), 'd2l-dropdown-position');
+				await clickElem(elem.shadowRoot.querySelector(selector));
 				await hoverAt(0, 0);
 				await expect(elem).to.be.golden();
 			});
