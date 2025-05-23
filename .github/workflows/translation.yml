@@ -1,6 +1,8 @@
 name: translation
 on:
   pull_request:
+    paths:
+      - 'lang/**'
 
 jobs:
   format:
