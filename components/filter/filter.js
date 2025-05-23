@@ -236,7 +236,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._displayKeyboardTooltip = false;
 		this._minWidth = 285;
 		this._openedDimensions = [];
-		this._resized = false;
 		this._totalAppliedCount = 0;
 
 		this._activeFilters = null;
@@ -675,7 +674,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._changeEventsToDispatch = new Map();
 		clearTimeout(this._changeEventTimeout);
 		this._activeFiltersSubscribers.updateSubscribers();
-		this.#handleSearchLayoutUpdated(); // in order to update dropdown position if count-badge size changes pointer position
 	}
 
 	_dispatchChangeEventValueDataChange(dimension, value, valueKey) {
