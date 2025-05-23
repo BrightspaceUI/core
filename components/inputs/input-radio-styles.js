@@ -86,4 +86,30 @@ export const radioStyles = css`
 		margin-inline-end: 0.5rem;
 		margin-inline-start: -1.7rem;
 	}
+
+	@media (prefers-contrast: more) {
+		.d2l-input-radio[aria-checked="true"],
+		.d2l-input-radio:checked,
+		.d2l-input-radio-label > input[type="radio"]:checked {
+			background-image: none;
+			position: relative;
+		}
+		.d2l-input-radio[aria-checked="true"]::after,
+		.d2l-input-radio:checked::after,
+		.d2l-input-radio-label > input[type="radio"]:checked::after {
+			background-color: FieldText;
+			content: "";
+			display: block;
+			height: 1.2rem;
+			left: 50%;
+			mask-image: ${radioCheck};
+			mask-position: center center;
+			mask-repeat: no-repeat;
+			mask-size: 0.5rem 0.5rem;
+			position: absolute;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: 1.2rem;
+		}
+	}
 `;

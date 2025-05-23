@@ -66,6 +66,33 @@ export const checkboxStyles = css`
 	input[type="checkbox"].d2l-input-checkbox[aria-disabled="true"] {
 		opacity: 0.5;
 	}
+	@media (prefers-contrast: more) {
+		input[type="checkbox"].d2l-input-checkbox:checked,
+		input[type="checkbox"].d2l-input-checkbox:indeterminate {
+			background-image: none;
+			position: relative;
+		}
+		input[type="checkbox"].d2l-input-checkbox:checked::after,
+		input[type="checkbox"].d2l-input-checkbox:indeterminate::after {
+			background-color: FieldText;
+			content: "";
+			display: block;
+			height: ${cssSizes.inputBoxSize}rem;
+			left: 50%;
+			position: absolute;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: ${cssSizes.inputBoxSize}rem;
+		}
+
+		input[type="checkbox"].d2l-input-checkbox:checked::after {
+			mask-image: ${inputCheck};
+		}
+
+		input[type="checkbox"].d2l-input-checkbox:indeterminate::after {
+			mask-image: ${inputCheckIndeterminate};
+		}
+	}
 `;
 
 /**
