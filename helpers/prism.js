@@ -1,5 +1,5 @@
 import { css, unsafeCSS } from 'lit';
-import { svgToCSS } from './svg-to-css';
+import { svgToCSS } from './svg-to-css.js';
 
 const prismLocation = 'https://s.brightspace.com/lib/prismjs/1.28.0';
 //const prismLocation = '/node_modules/prismjs'; // for local debugging
@@ -149,7 +149,7 @@ const generateColorVariables = (mode, theme) => {
 const transparentIcon = svgToCSS(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2">
 	<path fill="gray" d="M0 0h2v2H0z"/>
 	<path fill="white" d="M0 0h1v1H0zM1 1h1v1H1z"/>
-</svg>`)
+</svg>`);
 
 export const codeStyles = css`
 
