@@ -14,10 +14,10 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			 */
 			current: { type: Boolean, reflect: true },
 			/**
-			 * Address of item link if navigable
-			 * @type {string}
+			 * Whether to prevent the default navigation behavior of the link
+			 * @type {boolean}
 			 */
-			href: { type: String },
+			preventNavigation: { type: Boolean, attribute: 'prevent-navigation' },
 			_childCurrent: { type: Boolean, reflect: true, attribute: '_child-current' },
 			_focusingElem: { type: Boolean, reflect: true, attribute: '_focusing-elem' },
 		};
@@ -55,7 +55,6 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 
 	constructor() {
 		super();
-		this.actionHref = 'javascript:void(0);';
 		this.current = false;
 		this._childCurrent = false;
 		this._focusingElem = false;
@@ -88,13 +87,6 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			/** @ignore */
 			this.dispatchEvent(new CustomEvent('d2l-list-item-property-change', { bubbles: true, composed: true, detail: { name: 'current', value: this.current } }));
 		}
-		if (changedProperties.has('href')) {
-			if (!this.href) {
-				this.actionHref = 'javascript:void(0);';
-			} else {
-				this.actionHref = this.href;
-			}
-		}
 	}
 
 	willUpdate(changedProperties) {
@@ -123,7 +115,7 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			this.current = true;
 			this._childCurrent = false;
 		}
-		e.preventDefault();
+		if (this.preventNavigation) e.preventDefault();
 		super._handleLinkClick(e);
 	}
 
