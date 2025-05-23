@@ -113,7 +113,9 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 		super._onButtonClick(e);
 	}
 
-	#handleFocusIn() {
+		
+	#handleFocusIn(e) {
+		e.stopPropagation(); // prevent _focusing from being set on the parent
 		requestAnimationFrame(() => {
 			const activeElement = getComposedActiveElement();
 			const parentListItem = findComposedAncestor(activeElement, (node) => node.role === 'row' || node.role === 'listitem');
