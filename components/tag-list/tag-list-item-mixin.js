@@ -99,7 +99,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			}
 			.tag-list-item-content {
 				outline: none;
-				overflow: hidden;
+				overflow: hidden; /* leaving for UX reasons */
 				padding: 0.25rem 0.6rem;
 				text-overflow: ellipsis;
 			}
