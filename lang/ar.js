@@ -22,33 +22,14 @@ export default {
 	"components.filter.clearAnnounce": "جارٍ مسح عوامل التصفية لـ: {filterName}",
 	"components.filter.clearDescription": "مسح عوامل التصفية لـ: {filterName}",
 	"components.filter.loading": "يتم تحميل عوامل التصفية",
-	"components.filter.filterCountDescription":
-		`{number, plural,
-			=0 {لم يتم تطبيق عوامل تصفية.}
-			one {تم تطبيق {number} عامل تصفية}
-			other {تم تطبيق {number} من عوامل التصفية.}
-		}`,
+	"components.filter.filterCountDescription": "{number, plural, =0 {لم يتم تطبيق عوامل تصفية.} one {تم تطبيق {number} عامل تصفية} ‏other {تم تطبيق {number} من عوامل التصفية.}}",
 	"components.filter.filters": "عوامل التصفية",
 	"components.filter.noFilters": "ما من عوامل تصفية متوفرة",
-	"components.filter.searchResults":
-		`{number, plural,
-			=0 {ما من نتائج بحث}
-			one {{number} نتيجة بحث}
-			other {{number} من نتائج البحث}
-		}`,
+	"components.filter.searchResults": "{number, plural, =0 {ما من نتائج بحث} one {{number} نتيجة بحث}‏ other {{number} من نتائج البحث}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. تظهر عوامل التصفية المحددة أولاً.",
 	"components.filter.singleDimensionDescription": "التصفية حسب: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours":
-		`{num, plural,
-			=1 {آخر ساعة}
-			other {آخر {num} من الساعات}
-		}`,
-	"components.filter-dimension-set-date-text-value.textDays":
-		`{num, plural,
-			=0 {يوم}
-			one {آخر {num} يوم}
-			other {آخر {num} من الأيام}
-		}`,
+	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {آخر ساعة} other {آخر {num} من الساعات}}",
+	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {يوم} one {آخر {num} يوم} other {آخر {num} من الأيام}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "آخر {num} من الأشهر",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}، التوسيع لاختيار التواريخ",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} إلى {endValue}",
@@ -58,35 +39,13 @@ export default {
 	"components.form-element.defaultError": "{label} غير صالحة",
 	"components.form-element.defaultFieldLabel": "الحقل",
 	"components.form-element.input.email.typeMismatch": "البريد الإلكتروني غير صالح",
-	"components.form-element.input.number.rangeError":
-		`{minExclusive, select,
-			true {{maxExclusive, select,
-				true {يجب أن يكون الرقم أكبر من {min} وأقل من {max}.}
-				other {يجب أن يكون الرقم أكبر من {min} وأقل من أو مساويًا لـ {max}.}
-			}}
-			other {{maxExclusive, select,
-				true {يجب أن يكون الرقم أكبر من أو مساويًا لـ {min} وأقل من {max}.}
-				other {يجب أن يكون الرقم أكبر من أو مساويًا لـ {min} وأقل من أو مساويًا لـ {max}.}
-			}}
-		}`,
-	"components.form-element.input.number.rangeOverflow":
-		`{maxExclusive, select,
-			true {يجب أن يكون الرقم أقل من {max}.}
-			other {يجب أن يكون الرقم أقل من أو مساويًا لـ {max}.}
-		}`,
-	"components.form-element.input.number.rangeUnderflow":
-		`{minExclusive, select,
-			true {يجب أن يكون الرقم أكبر من {min}.}
-			other {يجب أن يكون الرقم أكبر من أو مساويًا لـ {min}.}
-		}`,
+	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {يجب أن يكون الرقم أكبر من {min} وأقل من {max}.} other {يجب أن يكون الرقم أكبر من {min} وأقل من أو مساويًا لـ {max}.}}} other {{maxExclusive, select, true {يجب أن يكون الرقم أكبر من أو مساويًا لـ {min} وأقل من {max}.} other {يجب أن يكون الرقم أكبر من أو مساويًا لـ {min} وأقل من أو مساويًا لـ {max}.}}}}",
+	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {يجب أن يكون الرقم أقل من {max}.} other {يجب أن يكون الرقم أقل من أو مساويًا لـ {max}.}}",
+	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {يجب أن يكون الرقم أكبر من {min}.} other {يجب أن يكون الرقم أكبر من أو مساويًا لـ {min}.}}",
 	"components.form-element.input.text.tooShort": "يجب أن تتألف التسمية {label} من {minlength} من الأحرف على الأقل",
 	"components.form-element.input.url.typeMismatch": "عنوان URL غير صالح",
 	"components.form-element.valueMissing": "{label} مطلوبة",
-	"components.form-error-summary.errorSummary":
-		`{count, plural,
-			one {تم العثور على {count} خطأ في المعلومات التي أرسلتها}
-			other {تم العثور على {count} من الأخطاء في المعلومات التي أرسلتها}
-		}`,
+	"components.form-error-summary.errorSummary": "{count, plural, one {تم العثور على {count} خطأ في المعلومات التي أرسلتها} other {تم العثور على {count} من الأخطاء في المعلومات التي أرسلتها}}",
 	"components.form-error-summary.text": "تبديل تفاصيل الخطأ",
 	"components.input-color.backgroundColor": "لون الخلفية",
 	"components.input-color.foregroundColor": "لون المقدمة",
@@ -116,8 +75,8 @@ export default {
 	"components.input-date.useDateFormat": "استخدم تنسيق التاريخ {format}.",
 	"components.input-number.hintInteger": "يقبل هذا الحقل قيم الأعداد الصحيحة فقط (بدون أعداد عشرية)",
 	"components.input-number.hintDecimalDuplicate": "يوجد عدد عشري في هذا الرقم",
-	"components.input-number.hintDecimalIncorrectComma": "لإضافة عدد عشري، استخدم حرف الفاصلة ”,“",
-	"components.input-number.hintDecimalIncorrectPeriod": "لإضافة عدد عشري، استخدم حرف النقطة ”.“",
+	"components.input-number.hintDecimalIncorrectComma": "لإضافة عدد عشري، استخدم حرف الفاصلة \",\"",
+	"components.input-number.hintDecimalIncorrectPeriod": "لإضافة عدد عشري، استخدم حرف النقطة \".\"",
 	"components.input-search.clear": "مسح البحث",
 	"components.input-search.defaultPlaceholder": "البحث...",
 	"components.input-search.search": "بحث",
@@ -150,22 +109,10 @@ export default {
 	"components.overflow-group.moreActions": "مزيد من الإجراءات",
 	"components.pager-load-more.action": "تحميل المزيد",
 	"components.pager-load-more.action-with-page-size": "تحميل {count} إضافي",
-	"components.pageable.info":
-		`{count, plural,
-			one {{countFormatted} مادة واحد}
-			other {{countFormatted} من المواد}
-		}`,
-	"components.pageable.info-with-total":
-		`{totalCount, plural,
-			one {{countFormatted} من أصل {totalCountFormatted} مادة واحدة}
-			other {{countFormatted} من أصل {totalCountFormatted} من المواد}
-		}`,
+	"components.pageable.info": "{count, plural, one {{countFormatted} مادة واحد} other {{countFormatted} من المواد}}",
+	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} من أصل {totalCountFormatted} مادة واحدة} other {{countFormatted} من أصل {totalCountFormatted} من المواد}}",
 	"components.pager-load-more.status-loading": "تحميل المزيد من المواد",
-	"components.selection.action-max-hint":
-		`{count, plural,
-			one {يتم التعطيل عند تحديد أكثر من {countFormatted} عنصر}
-			other {يتم التعطيل عند تحديد أكثر من {countFormatted} من العناصر}
-		}`,
+	"components.selection.action-max-hint": "{count, plural, one {يتم التعطيل عند تحديد أكثر من {countFormatted} عنصر} other {يتم التعطيل عند تحديد أكثر من {countFormatted} من العناصر}}",
 	"components.selection.action-required-hint": "حدد عنصرًا لتنفيذ هذا الإجراء",
 	"components.selection.select-all": "تحديد الكل",
 	"components.selection.select-all-items": "تحديد كل المواد الـ {count}.",
@@ -178,26 +125,7 @@ export default {
 	"components.switch.conditions": "يجب استيفاء الشروط",
 	"components.table-col-sort-button.addSortOrder": "التحديد لإضافة ترتيب الفرز",
 	"components.table-col-sort-button.changeSortOrder": "التحديد لتغيير ترتيب الفرز",
-	"components.table-col-sort-button.title":
-		`{sourceType, select,
-			dates {{direction, select,
-				desc {الفرز من الجديد إلى القديم}
-				other {الفرز من القديم إلى الجديد}
-			}}
-			numbers {{direction, select,
-				desc {الفرز من الأعلى إلى الأدنى}
-				other {الفرز من الأدنى إلى الأعلى}
-			}}
-			words {{direction, select,
-				desc {الفرز من ي إلى أ}
-				other {الفرز من أ إلى ي}
-			}}
-			value {الفرز {selectedMenuItemText}}
-			other {{direction, select,
-				desc {الفرز تنازليًا}
-				other {الفرز تصاعديًا}
-			}}
-		}`,
+	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {الفرز من الجديد إلى القديم} other {الفرز من القديم إلى الجديد}}} numbers {{direction, select, desc {الفرز من الأعلى إلى الأدنى} other {الفرز من الأدنى إلى الأعلى}}} words {{direction, select, desc {الفرز من ي إلى أ} other {الفرز من أ إلى ي}}} value {الفرز {selectedMenuItemText}} other {{direction, select, desc {الفرز تنازليًا} other {الفرز تصاعديًا}}}}",
 	"components.table-controls.label": "إجراءات للجدول",
 	"components.tabs.next": "التمرير إلى الأمام",
 	"components.tabs.previous": "التمرير إلى الخلف",

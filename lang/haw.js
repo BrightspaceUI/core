@@ -22,33 +22,14 @@ export default {
 	"components.filter.clearAnnounce": "Ke holoi nei i nā kānana no: {filterName}",
 	"components.filter.clearDescription": "Holoi i nā kānana no: {filterName}",
 	"components.filter.loading": "Hoʻouka i nā kānana",
-	"components.filter.filterCountDescription":
-		`{number, plural,
-			=0 {ʻAʻohe kānana i hoʻohana ʻia.}
-			one {{number} hoʻohana ʻia ke kānana.}
-			other {{number} hoʻohana ʻia nā kānana.}
-		}`,
+	"components.filter.filterCountDescription": "{number, plural, =0 {ʻAʻohe kānana i hoʻohana ʻia.} one {{number} hoʻohana ʻia ke kānana.} other {{number} hoʻohana ʻia nā kānana.}}",
 	"components.filter.filters": "Nā kānana",
 	"components.filter.noFilters": "ʻAʻohe kānana i loaʻa",
-	"components.filter.searchResults":
-		`{number, plural,
-			=0 {ʻAʻohe hopena hulina}
-			one {{number} hopena huli}
-			other {{number} hopena huli}
-		}`,
+	"components.filter.searchResults": "{number, plural, =0 {ʻAʻohe hopena hulina} one {{number} hopena huli} other {{number} hopena huli}}",
 	"components.filter.selectedFirstListLabel": "{headerText}. Hōʻike mua ʻia nā kānana i koho ʻia.",
 	"components.filter.singleDimensionDescription": "Kānana e: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours":
-		`{num, plural,
-			=1 {hola hope}
-			other {hope loa {num} hola}
-		}`,
-	"components.filter-dimension-set-date-text-value.textDays":
-		`{num, plural,
-			=0 {I kēia lā}
-			one {hope loa {num} lā}
-			other {hope loa {num} lā}
-		}`,
+	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {hola hope} other {hope loa {num} hola}}",
+	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {I kēia lā} one {hope loa {num} lā} other {hope loa {num} lā}}",
 	"components.filter-dimension-set-date-text-value.textMonths": "{num} mahina i hala",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, hoʻonui e koho i nā lā",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} i {endValue}",
@@ -64,11 +45,7 @@ export default {
 	"components.form-element.input.text.tooShort": "Pono ka {label} ma kahi o {minlength} mau huapalapala",
 	"components.form-element.input.url.typeMismatch": "ʻAʻole kūpono ka URL",
 	"components.form-element.valueMissing": "Pono ʻo {label}.",
-	"components.form-error-summary.errorSummary":
-		`{count, plural,
-			one {Aia aku nei {count} Loaʻa ka hewa ma ka ʻike āu i hoʻouna ai}
-			other {Aia aku nei {count} loaʻa nā hewa i ka ʻike āu i hoʻouna ai}
-		}`,
+	"components.form-error-summary.errorSummary": "{count, plural, one {Aia aku nei {count} Loaʻa ka hewa ma ka ʻike āu i hoʻouna ai} other {Aia aku nei {count} loaʻa nā hewa i ka ʻike āu i hoʻouna ai}}",
 	"components.form-error-summary.text": "Hoʻololi i nā kikoʻī hewa",
 	"components.input-color.backgroundColor": "Ka waihoʻoluʻu",
 	"components.input-color.foregroundColor": "Kalai mua",
@@ -98,8 +75,8 @@ export default {
 	"components.input-date.useDateFormat": "E hoʻohana i ka hōʻano lā {format}.",
 	"components.input-number.hintInteger": "ʻAe kēia kahua i nā waiwai helu helu (ʻaʻohe decimals)",
 	"components.input-number.hintDecimalDuplicate": "Aia he decimal i kēia helu",
-	"components.input-number.hintDecimalIncorrectComma": "E hoʻohui i kahi decimal e hoʻohana i ke koma “,” ʻano",
-	"components.input-number.hintDecimalIncorrectPeriod": "No ka hoʻohui ʻana i kahi decimal e hoʻohana i ka manawa “.” ʻano ʻano",
+	"components.input-number.hintDecimalIncorrectComma": "E hoʻohui i kahi decimal e hoʻohana i ke koma \",\" ʻano",
+	"components.input-number.hintDecimalIncorrectPeriod": "No ka hoʻohui ʻana i kahi decimal e hoʻohana i ka manawa \".\" ʻano ʻano",
 	"components.input-search.clear": "Holoi Huli",
 	"components.input-search.defaultPlaceholder": "Huli...",
 	"components.input-search.search": "Huli",
