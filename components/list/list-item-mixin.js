@@ -147,6 +147,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-bottom: 1px solid var(--d2l-color-mica);
 				margin-bottom: -1px;
 			}
+			:host(:first-of-type[_show-add-button][_nested]) [slot="outside-control"] {
+				border-top: 1px solid var(--d2l-color-mica);
+			}
 			:host([_has-nested-list-add-button]:not([selection-disabled]):not([skeleton])[selected]) [slot="before-content"] {
 				border-bottom-color: ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')}; /* stylelint-disable-line */
 			}
@@ -335,7 +338,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"].hide-bottom-border,
 			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing-elem]) [slot="outside-control-container"].hide-bottom-border {
 				background-clip: content-box, border-box;
-				background-image: linear-gradient(white, white), linear-gradient(to right, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 20%, transparent 20%, transparent 80%, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 80%); /* stylelint-disable-line */
+				background-image: linear-gradient(white, white), linear-gradient(to right, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 30%, transparent 30%, transparent 80%, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 80%); /* stylelint-disable-line */
 				background-origin: border-box;
 				border: double 1px transparent;
 				border-radius: 6px;
