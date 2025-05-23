@@ -326,6 +326,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-color: ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')}; /* stylelint-disable-line */
 				margin-bottom: -1px;
 			}
+			/* clean up with GAUD-7495-list-item-new-styles flag */
+			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing-elem]:not([current])) [slot="outside-control-container"] {
+				border-color: var(--d2l-color-mica);
+				margin-bottom: -1px;
+			}
 			/* below hides the border under the d2l-button-add */
 			:host([_hovering-control]) [slot="outside-control-container"].hide-bottom-border,
 			:host([_hovering-primary-action]) [slot="outside-control-container"].hide-bottom-border,
@@ -337,6 +342,14 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_list-item-new-styles]:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing]) [slot="outside-control-container"].hide-bottom-border {
 				background-clip: content-box, border-box;
 				background-image: linear-gradient(white, white), linear-gradient(to right, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 20%, transparent 20%, transparent 80%, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 80%); /* stylelint-disable-line */
+				background-origin: border-box;
+				border: double 1px transparent;
+				border-radius: 6px;
+			}
+			/* clean up with GAUD-7495-list-item-new-styles flag */
+			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing-elem]) [slot="outside-control-container"].hide-bottom-border {
+				background-clip: content-box, border-box;
+				background-image: linear-gradient(white, white), linear-gradient(to right, var(--d2l-color-mica) 20%, transparent 20%, transparent 80%, var(--d2l-color-mica) 80%);
 				background-origin: border-box;
 				border: double 1px transparent;
 				border-radius: 6px;
