@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
+import { svgToCSS } from '../../helpers/svg-to-css.js';
 
 export const _isValidCssSelector = (selector) => {
 	const partIsValid = (part) => {
@@ -361,6 +362,16 @@ export const _generateLabelStyles = (selector, includeSkeleton = true) => {
 };
 export const labelStyles = _generateLabelStyles('.d2l-label-text', true);
 
+const quoteIcon = svgToCSS(`<svg width="11" height="11" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<path id="a" d="M0 0h24v24H0z"/>
+	</defs>
+	<g transform="translate(-1 -1)" fill="none" fill-rule="evenodd">
+		<mask id="b" fill="#fff"><use xlink:href="#a"/></mask>
+		<path d="M6 22.667A4.667 4.667 0 0 0 10.667 18c0-1.227-.559-2.5-1.334-3.333C8.481 13.75 7.35 13.333 6 13.333c-.411 0 1.333-6.666 3-9 1.667-2.333 1.333-3 .333-3C8 1.333 5.253 4.586 4 7.255 1.773 12 1.333 15.392 1.333 18A4.667 4.667 0 0 0 6 22.667zm12 0A4.667 4.667 0 0 0 22.667 18c0-1.227-.559-2.5-1.334-3.333-.852-.917-1.983-1.334-3.333-1.334-.411 0 1.333-6.666 3-9 1.667-2.333 1.333-3 .333-3-1.333 0-4.08 3.253-5.333 5.922C13.773 12 13.333 15.392 13.333 18A4.667 4.667 0 0 0 18 22.667z" fill="#D3D9E3" mask="url(#b)"/>
+	</g>
+</svg>`);
+
 /**
  * A private helper method that should not be used by general consumers
  */
@@ -380,7 +391,7 @@ export const _generateBlockquoteStyles = (selector) => {
 			position: relative;
 		}
 		${selector}::before {
-			content: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIHZpZXdCb3g9IjAgMCAyMiAyMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGRlZnM+PHBhdGggaWQ9ImEiIGQ9Ik0wIDBoMjR2MjRIMHoiLz48L2RlZnM+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTEgLTEpIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxtYXNrIGlkPSJiIiBmaWxsPSIjZmZmIj48dXNlIHhsaW5rOmhyZWY9IiNhIi8+PC9tYXNrPjxwYXRoIGQ9Ik02IDIyLjY2N0E0LjY2NyA0LjY2NyAwIDAgMCAxMC42NjcgMThjMC0xLjIyNy0uNTU5LTIuNS0xLjMzNC0zLjMzM0M4LjQ4MSAxMy43NSA3LjM1IDEzLjMzMyA2IDEzLjMzM2MtLjQxMSAwIDEuMzMzLTYuNjY2IDMtOSAxLjY2Ny0yLjMzMyAxLjMzMy0zIC4zMzMtM0M4IDEuMzMzIDUuMjUzIDQuNTg2IDQgNy4yNTUgMS43NzMgMTIgMS4zMzMgMTUuMzkyIDEuMzMzIDE4QTQuNjY3IDQuNjY3IDAgMCAwIDYgMjIuNjY3em0xMiAwQTQuNjY3IDQuNjY3IDAgMCAwIDIyLjY2NyAxOGMwLTEuMjI3LS41NTktMi41LTEuMzM0LTMuMzMzLS44NTItLjkxNy0xLjk4My0xLjMzNC0zLjMzMy0xLjMzNC0uNDExIDAgMS4zMzMtNi42NjYgMy05IDEuNjY3LTIuMzMzIDEuMzMzLTMgLjMzMy0zLTEuMzMzIDAtNC4wOCAzLjI1My01LjMzMyA1LjkyMkMxMy43NzMgMTIgMTMuMzMzIDE1LjM5MiAxMy4zMzMgMThBNC42NjcgNC42NjcgMCAwIDAgMTggMjIuNjY3eiIgZmlsbD0iI0QzRDlFMyIgbWFzaz0idXJsKCNiKSIvPjwvZz48L3N2Zz4=");
+			content: ${quoteIcon};
 			inset-block-start: 0;
 			inset-inline-start: 0;
 			position: absolute;
