@@ -22,7 +22,7 @@
     "test": "npm run lint && npm run test:translations && npm run test:unit && npm run test:axe",
     "test:axe": "d2l-test-runner axe --chrome",
     "test:unit": "d2l-test-runner",
-    "test:translations": "mfv -e -s en -p ./lang/ -i untranslated",
+    "test:translations": "mfv -s en -p ./lang/ -i untranslated,category-missing",
     "test:vdiff": "d2l-test-runner vdiff --timeout 10000",
     "test:wca": "node ./cli/validate-wca.js"
   },
@@ -56,7 +56,7 @@
     "eslint-config-brightspace": "^2.0.0",
     "eslint-plugin-unicorn": "^59",
     "glob-all": "^3",
-    "messageformat-validator": "^2",
+    "messageformat-validator": "^3.0.0-beta",
     "rollup": "^4",
     "rollup-plugin-copy": "^3",
     "rollup-plugin-delete": "^3",
