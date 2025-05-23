@@ -2,9 +2,9 @@ import '../colors/colors.js';
 import { css } from 'lit';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
-import { ListItemButtonMixin } from './list-item-button-mixin.js';
+import { ListItemLinkMixin } from './list-item-link-mixin.js';
 
-export const ListItemNavButtonMixin = superclass => class extends ListItemButtonMixin(superclass) {
+export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -13,6 +13,11 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 			 * @type {boolean}
 			 */
 			current: { type: Boolean, reflect: true },
+			/**
+			 * Whether to prevent the default navigation behavior of the link
+			 * @type {boolean}
+			 */
+			preventNavigation: { type: Boolean, attribute: 'prevent-navigation' },
 			_childCurrent: { type: Boolean, reflect: true, attribute: '_child-current' },
 			_focusingElem: { type: Boolean, reflect: true, attribute: '_focusing-elem' },
 		};
@@ -21,7 +26,7 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 	static get styles() {
 
 		const styles = [ css`
-			:host(:not([button-disabled])) {
+			:host([action-href]:not([action-href=""])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-ferrite);
 			}
 			.d2l-list-item-content ::slotted(*) {
@@ -105,12 +110,13 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 		this.dispatchEvent(new CustomEvent('d2l-list-item-nav-set-child-current', { bubbles: true, composed: true, detail: { value: val } }));
 	}
 
-	_onButtonClick(e) {
+	_handleLinkClick(e) {
 		if (!this._getDescendantClicked(e)) {
 			this.current = true;
 			this._childCurrent = false;
 		}
-		super._onButtonClick(e);
+		if (this.preventNavigation) e.preventDefault();
+		super._handleLinkClick(e);
 	}
 
 	#handleFocusIn(e) {
@@ -133,7 +139,7 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 	}
 
 	async #setChildCurrent(e) {
-		await this.updateComplete; // ensure button exists
+		await this.updateComplete;
 		if (e.target === this) return;
 		this._childCurrent = e.detail.value;
 	}

@@ -1,11 +1,11 @@
 import '../list.js';
-import '../list-item-nav-button.js';
+import '../list-item-nav.js';
 import { defineCE, expect, fixture, oneEvent, waitUntil } from '@brightspace-ui/testing';
 import { html, LitElement } from 'lit';
-import { ListItemNavButtonMixin } from '../list-item-nav-button-mixin.js';
+import { ListItemNavMixin } from '../list-item-nav-mixin.js';
 
 const tag = defineCE(
-	class extends ListItemNavButtonMixin(LitElement) {
+	class extends ListItemNavMixin(LitElement) {
 		render() {
 			return html`
 				${this._renderListItem()}
@@ -14,15 +14,15 @@ const tag = defineCE(
 	}
 );
 
-describe('ListItemNavButtonMixin', () => {
+describe('ListItemNavMixin', () => {
 
 	describe('aria-current', () => {
 		it('sets aria-current to "page" when current attribute is set', async() => {
 			const element = await fixture(`<${tag} current label="some label"></${tag}>`);
 			await element.updateComplete;
 			expect(element.current).to.be.true;
-			const button = element.shadowRoot.querySelector('button');
-			expect(button.getAttribute('aria-current')).to.equal('page');
+			const link = element.shadowRoot.querySelector('a');
+			expect(link.getAttribute('aria-current')).to.equal('page');
 		});
 
 		it('does not have aria-current set when current attribute is removed', async() => {
@@ -30,24 +30,24 @@ describe('ListItemNavButtonMixin', () => {
 			element.removeAttribute('current');
 			await element.updateComplete;
 			expect(element.current).to.be.false;
-			const button = element.shadowRoot.querySelector('button');
-			expect(button.hasAttribute('aria-current')).to.be.false;
+			const link = element.shadowRoot.querySelector('a');
+			expect(link.hasAttribute('aria-current')).to.be.false;
 		});
 
 		it('sets aria-current to "location" when _childCurrent is true', async() => {
 			const element = await fixture(`<${tag} label="some label"></${tag}>`);
 			element._childCurrent = true;
 			await element.updateComplete;
-			const button = element.shadowRoot.querySelector('button');
-			expect(button.getAttribute('aria-current')).to.equal('location');
+			const link = element.shadowRoot.querySelector('a');
+			expect(link.getAttribute('aria-current')).to.equal('location');
 		});
 
 		it('does not have aria-current set when _childCurrent is false', async() => {
 			const element = await fixture(`<${tag} label="some label"></${tag}>`);
 			element._childCurrent = false;
 			await element.updateComplete;
-			const button = element.shadowRoot.querySelector('button');
-			expect(button.hasAttribute('aria-current')).to.be.false;
+			const link = element.shadowRoot.querySelector('a');
+			expect(link.hasAttribute('aria-current')).to.be.false;
 		});
 	});
 
@@ -116,44 +116,44 @@ describe('ListItemNavButtonMixin', () => {
 		beforeEach(async() => {
 			elem = await fixture(html`
 				<d2l-list label="some label">
-					<d2l-list-item-nav-button id="a1" label="a1">
+					<d2l-list-item-nav id="a1" label="a1">
 						<d2l-list slot="nested">
-							<d2l-list-item-nav-button id="a1-1" label="a1-1">
+							<d2l-list-item-nav id="a1-1" label="a1-1">
 								<d2l-list slot="nested">
-									<d2l-list-item-nav-button id="a1-1-1" label="a1-1-1" current></d2l-list-item-nav-button>
-									<d2l-list-item-nav-button id="a1-1-2" label="a1-1-2"></d2l-list-item-nav-button>
+									<d2l-list-item-nav id="a1-1-1" label="a1-1-1" current></d2l-list-item-nav>
+									<d2l-list-item-nav id="a1-1-2" label="a1-1-2"></d2l-list-item-nav>
 								</d2l-list>
-							</d2l-list-item-nav-button>
-							<d2l-list-item-nav-button id="a1-2" label="a1-2"></d2l-list-item-nav-button>
+							</d2l-list-item-nav>
+							<d2l-list-item-nav id="a1-2" label="a1-2"></d2l-list-item-nav>
 						</d2l-list>
-					</d2l-list-item-nav-button>
-					<d2l-list-item-nav-button id="a2" label="a2">
+					</d2l-list-item-nav>
+					<d2l-list-item-nav id="a2" label="a2">
 						<d2l-list slot="nested">
-							<d2l-list-item-nav-button id="a2-1" label="a2-1"></d2l-list-item-nav-button>
+							<d2l-list-item-nav id="a2-1" label="a2-1"></d2l-list-item-nav>
 						</d2l-list>
-					</d2l-list-item-nav-button>
-					<d2l-list-item-nav-button id="a3" label="a3"></d2l-list-item-nav-button>
+					</d2l-list-item-nav>
+					<d2l-list-item-nav id="a3" label="a3"></d2l-list-item-nav>
 				</d2l-list>
 			`);
 			await elem.updateComplete;
 		});
 
 		function checkAriaCurrent(expectedPage, expectedLocations) {
-			const navItems = elem.querySelectorAll('d2l-list-item-nav-button');
+			const navItems = elem.querySelectorAll('d2l-list-item-nav');
 			navItems.forEach((item) => {
-				const button = item.shadowRoot.querySelector('button');
+				const link = item.shadowRoot.querySelector('a');
 				if (item.id === expectedPage) {
 					expect(item.current).to.be.true;
 					expect(item._childCurrent).to.be.false;
-					expect(button.getAttribute('aria-current')).to.equal('page');
+					expect(link.getAttribute('aria-current')).to.equal('page');
 				} else if (expectedLocations.includes(item.id)) {
 					expect(item.current).to.be.false;
 					expect(item._childCurrent).to.be.true;
-					expect(button.getAttribute('aria-current')).to.equal('location');
+					expect(link.getAttribute('aria-current')).to.equal('location');
 				} else {
 					expect(item.current).to.be.false;
 					expect(item._childCurrent).to.be.false;
-					expect(button.hasAttribute('aria-current')).to.be.false;
+					expect(link.hasAttribute('aria-current')).to.be.false;
 				}
 			});
 		}

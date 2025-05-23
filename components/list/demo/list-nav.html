@@ -8,7 +8,7 @@
 			import '../../demo/demo-page.js';
 			import '../../icons/icon.js';
 			import '../list-item-content.js';
-			import '../list-item-nav-button.js';
+			import '../list-item-nav.js';
 			import '../list.js';
 			import '../../tooltip/tooltip-help.js';
 
@@ -25,43 +25,43 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-list grid style="width: 334px;">
-						<d2l-list-item-nav-button key="L1-1" label="Welcome!" color="#006fbf" expandable expanded>
+						<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded action-href="https://d2l.com" prevent-navigation>
 							<d2l-list-item-content>
 								<div>Welcome!</div>
 							</d2l-list-item-content>
 							<d2l-list slot="nested" grid>
-								<d2l-list-item-nav-button key="L2-1" label="Syallabus Confirmation">
+								<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation">
 									<d2l-list-item-content>
 										<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Syallabus Confirmation</div>
 										<div slot="secondary"><d2l-tooltip-help text="Due: May 2, 2023 at 2 pm" style="padding: 5px;">Start: May 1, 2023 at 12:01 AM</d2l-tooltip-help></div>
 									</d2l-list-item-content>
-								</d2l-list-item-nav-button>
+								</d2l-list-item-nav>
 							</d2l-list>
-						</d2l-list-item-nav-button>
-						<d2l-list-item-nav-button key="L2-2" label="Unit 1: Poetry" color="#29a6ff" expandable expanded>
+						</d2l-list-item-nav>
+						<d2l-list-item-nav key="L2-2" label="Unit 1: Poetry" color="#29a6ff" expandable expanded>
 							<d2l-list-item-content>
 								<div>Unit 1: Fiction</div>
 								<div slot="secondary"><d2l-tooltip-help text="Due: May 2, 2023 at 5 pm" style="padding: 5px;">Starts: May 1, 2023 at 12:01 AM</d2l-tooltip-help></div>
 							</d2l-list-item-content>
 							<d2l-list slot="nested" grid>
-								<d2l-list-item-nav-button key="L3-2" label="Fiction">
+								<d2l-list-item-nav key="L3-2" label="Fiction">
 									<d2l-list-item-content>
 										<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Fiction</div>
 									</d2l-list-item-content>
-								</d2l-list-item-nav-button>
-								<d2l-list-item-nav-button key="L3-2" label="Ten rules for writing fiction">
+								</d2l-list-item-nav>
+								<d2l-list-item-nav key="L3-2" label="Ten rules for writing fiction">
 									<d2l-list-item-content>
 										<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Ten rules for writing fiction</div>
 									</d2l-list-item-content>
-								</d2l-list-item-nav-button>
+								</d2l-list-item-nav>
 							</d2l-list>
-						</d2l-list-item-nav-button>
+						</d2l-list-item-nav>
 					</d2l-list>
 					<script>
 						(demo => {
-							let currentItem = document.querySelector('d2l-list-item-nav-button[current]');
-							demo.addEventListener('d2l-list-item-button-click', (e) => {
-								console.log('d2l-list-item-nav-button: click event');
+							let currentItem = document.querySelector('d2l-list-item-nav[current]');
+							demo.addEventListener('d2l-list-item-link-click', (e) => {
+								console.log('d2l-list-item-nav: click event');
 
 								if (!e.target.expandable) {
 									currentItem = e.target;
