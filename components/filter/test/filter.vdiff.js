@@ -180,7 +180,11 @@ describe('filter', () => {
 					const hasSearch = elem.shadowRoot.querySelector('d2l-input-search');
 					if (hasSearch) await oneEvent(elem.shadowRoot.querySelector('d2l-dropdown'), 'd2l-dropdown-position');
 					await nextFrame();
-					if (waitForBlockDisplay) await waitUntil(() => elem.shadowRoot.querySelector('d2l-input-date-time-range').shadowRoot.querySelector('d2l-input-date-time-range-to')._blockDisplay, 'component never changed layout');
+					if (waitForBlockDisplay) {
+						await waitUntil(() => elem.shadowRoot.querySelector('d2l-input-date-time-range').shadowRoot.querySelector('d2l-input-date-time-range-to')._blockDisplay, 'component never changed layout');
+						await elem.updateComplete;
+						await nextFrame();
+					}
 					await expect(elem).to.be.golden();
 				});
 
