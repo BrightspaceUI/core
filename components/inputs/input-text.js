@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { inputStyles, invalidIcon } from './input-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
@@ -9,7 +10,6 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { InputInlineHelpMixin } from './input-inline-help.js';
 import { inputLabelStyles } from './input-label-styles.js';
-import { inputStyles } from './input-styles.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { PerfMonitor } from '../../helpers/perfMonitor.js';
@@ -258,7 +258,10 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 					opacity: 0.5;
 				}
 				.d2l-input-text-invalid-icon {
-					background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgIDxwYXRoIGQ9Ik0xOC44NjQgMTYuNDdMMTIuNjIzIDMuOTg5YTEuNzgzIDEuNzgzIDAgMDAtMy4xOTIgMEwzLjE4OSAxNi40N2ExLjc2MSAxLjc2MSAwIDAwLjA4IDEuNzNjLjMyNS41MjUuODk4Ljc5OCAxLjUxNi43OTloMTIuNDgzYy42MTggMCAxLjE5Mi0uMjczIDEuNTE2LS44LjIzNy0uMzM1LjI2NS0xLjM3LjA4LTEuNzN6IiBmaWxsPSIjQ0QyMDI2IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz4KICAgIDxwYXRoIGQ9Ik0xMS4wMjcgMTcuMjY0YTEuMzM3IDEuMzM3IDAgMTEwLTIuNjc1IDEuMzM3IDEuMzM3IDAgMDEwIDIuNjc1ek0xMS45IDEyLjk4YS44OTIuODkyIDAgMDEtMS43NDcgMEw5LjI3IDguNTJhLjg5Mi44OTIgMCAwMS44NzQtMS4wNjRoMS43NjhhLjg5Mi44OTIgMCAwMS44NzQgMS4wNjVsLS44ODYgNC40NTh6IiBmaWxsPSIjRkZGIi8+CiAgPC9nPgo8L3N2Zz4=");
+					background-image: ${invalidIcon};
+					background-position: center center;
+					background-repeat: no-repeat;
+					background-size: 0.8rem 0.8rem;
 					display: flex;
 					height: 22px;
 					position: absolute;

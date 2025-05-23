@@ -149,7 +149,7 @@ class ListDemoNav extends LitElement {
 					}
 				</d2l-list-item-content>
 				${hasSubList ? html`
-					<d2l-list slot="nested">
+					<d2l-list slot="nested" grid>
 						${repeat(item.items, (subItem) => subItem.key, (subItem) => this._renderItem(subItem))}
 					</d2l-list>`
 						: nothing
