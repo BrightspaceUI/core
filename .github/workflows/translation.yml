@@ -17,7 +17,6 @@ jobs:
       - name: Run formatter
         uses: BrightspaceUI/actions/t9n-format@main
         with:
-          t9n-newlines: true
           t9n-source: en
           t9n-path: ./lang/
           github-token: ${{ secrets.GITHUB_TOKEN }}
