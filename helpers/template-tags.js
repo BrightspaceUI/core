@@ -1,19 +1,20 @@
+const emptyStartRe = /^\s*?\n/;
+const emptyEndRe = /\n[^\S\n]+$/;
+const indentRe = /^\s*/;
 export function set(strings, ...expressions) {
 	let w = Number.MAX_SAFE_INTEGER;
-	const emptyStart = strings[0].match(/^\s*?\n/);
+	const emptyStart = strings[0].match(emptyStartRe);
 	if (emptyStart) {
-		strings = [ strings[0].replace(/^.*?\n/, ''), ...strings.slice(1) ];
-		strings[strings.length - 1] = strings.at(-1).replace(new RegExp('\\n[\\t ]+$'), '');
+		strings = [ strings[0].replace(emptyStartRe, ''), ...strings.slice(1) ];
+		strings[strings.length - 1] = strings.at(-1).replace(emptyEndRe, '');
 	}
 	strings
-		.map((s, idx) => s
+		.forEach(s => s
 			.split('\n')
-			.filter((s, idx2) => !idx || idx2) // skip strings after an expression
-		)
-		.flat()
-		.forEach((s, idx) => {
-			if (idx) w = Math.min(s.match(/^\s*/)[0].length, w);
-		});
+			.forEach((s, idx) => {
+				if (idx) w = Math.min(s.match(indentRe)[0].length, w);
+			})
+		);
 
 	const re = new RegExp(`(^|\n)[^\\S\n]{${w}}`, 'g');
 	return strings.reduce((acc, i, idx) => {
