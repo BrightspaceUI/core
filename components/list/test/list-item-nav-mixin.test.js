@@ -18,7 +18,7 @@ describe('ListItemNavMixin', () => {
 
 	describe('aria-current', () => {
 		it('sets aria-current to "page" when current attribute is set', async() => {
-			const element = await fixture(`<${tag} current label="some label"></${tag}>`);
+			const element = await fixture(`<${tag} current label="some label" action-href=" "></${tag}>`);
 			await element.updateComplete;
 			expect(element.current).to.be.true;
 			const link = element.shadowRoot.querySelector('a');
@@ -26,7 +26,7 @@ describe('ListItemNavMixin', () => {
 		});
 
 		it('does not have aria-current set when current attribute is removed', async() => {
-			const element = await fixture(`<${tag} current label="some label"></${tag}>`);
+			const element = await fixture(`<${tag} current label="some label" action-href=" "></${tag}>`);
 			element.removeAttribute('current');
 			await element.updateComplete;
 			expect(element.current).to.be.false;
@@ -35,7 +35,7 @@ describe('ListItemNavMixin', () => {
 		});
 
 		it('sets aria-current to "location" when _childCurrent is true', async() => {
-			const element = await fixture(`<${tag} label="some label"></${tag}>`);
+			const element = await fixture(`<${tag} label="some label" action-href=" "></${tag}>`);
 			element._childCurrent = true;
 			await element.updateComplete;
 			const link = element.shadowRoot.querySelector('a');
@@ -43,7 +43,7 @@ describe('ListItemNavMixin', () => {
 		});
 
 		it('does not have aria-current set when _childCurrent is false', async() => {
-			const element = await fixture(`<${tag} label="some label"></${tag}>`);
+			const element = await fixture(`<${tag} label="some label" action-href=" "></${tag}>`);
 			element._childCurrent = false;
 			await element.updateComplete;
 			const link = element.shadowRoot.querySelector('a');
@@ -57,13 +57,13 @@ describe('ListItemNavMixin', () => {
 			document.addEventListener('d2l-list-item-nav-set-child-current', (event) => {
 				e = event;
 			});
-			await fixture(`<${tag} label="some label" current></${tag}>`);
+			await fixture(`<${tag} label="some label" current action-href=" "></${tag}>`);
 			expect(e.detail.value).to.be.true;
 		});
 
 		it('does not dispatch d2l-list-item-nav-set-child-current when current is subsequently set', async() => {
 			let dispatched = false;
-			const element = await fixture(`<${tag} label="some label"></${tag}>`);
+			const element = await fixture(`<${tag} label="some label" action-href=" "></${tag}>`);
 			element.addEventListener('d2l-list-item-nav-set-child-current', () => dispatched = true);
 			element.current = true;
 			await element.updateComplete;
@@ -71,21 +71,21 @@ describe('ListItemNavMixin', () => {
 		});
 
 		it('dispatches d2l-list-item-nav-set-child-current when dispatchSetChildCurrentEvent is called with param true', async() => {
-			const element = await fixture(`<${tag} label="some label"></${tag}>`);
+			const element = await fixture(`<${tag} label="some label" action-href=" "></${tag}>`);
 			setTimeout(() => element.dispatchSetChildCurrentEvent(true));
 			const e = await oneEvent(element, 'd2l-list-item-nav-set-child-current');
 			expect(e.detail.value).to.be.true;
 		});
 
 		it('dispatches d2l-list-item-nav-set-child-current when dispatchSetChildCurrentEvent is called with param false', async() => {
-			const element = await fixture(`<${tag} label="some label"></${tag}>`);
+			const element = await fixture(`<${tag} label="some label" action-href=" "></${tag}>`);
 			setTimeout(() => element.dispatchSetChildCurrentEvent(false));
 			const e = await oneEvent(element, 'd2l-list-item-nav-set-child-current');
 			expect(e.detail.value).to.be.false;
 		});
 
 		it('dispatches d2l-list-item-property-change when current is subsequently set', async() => {
-			const element = await fixture(`<${tag} label="some label"></${tag}>`);
+			const element = await fixture(`<${tag} label="some label" action-href=" "></${tag}>`);
 			await element.updateComplete;
 			setTimeout(() => element.current = true);
 			const e = await oneEvent(element, 'd2l-list-item-property-change');
@@ -94,7 +94,7 @@ describe('ListItemNavMixin', () => {
 		});
 
 		it('dispatches d2l-list-item-property-change when current is subsequently removed', async() => {
-			const element = await fixture(`<${tag} label="some label" current></${tag}>`);
+			const element = await fixture(`<${tag} label="some label" current action-href=" "></${tag}>`);
 			await element.updateComplete;
 			setTimeout(() => element.current = false);
 			const e = await oneEvent(element, 'd2l-list-item-property-change');
@@ -104,7 +104,7 @@ describe('ListItemNavMixin', () => {
 
 		it('does not dispatch d2l-list-item-property-change when current is initially set', async() => {
 			let dispatched = false;
-			const element = await fixture(`<${tag} label="some label" current></${tag}>`);
+			const element = await fixture(`<${tag} label="some label" current action-href=" "></${tag}>`);
 			element.addEventListener('d2l-list-item-property-change', () => dispatched = true);
 			await element.updateComplete;
 			expect(dispatched).to.be.false;
@@ -116,23 +116,23 @@ describe('ListItemNavMixin', () => {
 		beforeEach(async() => {
 			elem = await fixture(html`
 				<d2l-list label="some label">
-					<d2l-list-item-nav id="a1" label="a1">
+					<d2l-list-item-nav id="a1" label="a1" action-href=" ">
 						<d2l-list slot="nested">
-							<d2l-list-item-nav id="a1-1" label="a1-1">
+							<d2l-list-item-nav id="a1-1" label="a1-1" action-href=" ">
 								<d2l-list slot="nested">
-									<d2l-list-item-nav id="a1-1-1" label="a1-1-1" current></d2l-list-item-nav>
-									<d2l-list-item-nav id="a1-1-2" label="a1-1-2"></d2l-list-item-nav>
+									<d2l-list-item-nav id="a1-1-1" label="a1-1-1" current action-href=" "></d2l-list-item-nav>
+									<d2l-list-item-nav id="a1-1-2" label="a1-1-2" action-href=" "></d2l-list-item-nav>
 								</d2l-list>
 							</d2l-list-item-nav>
-							<d2l-list-item-nav id="a1-2" label="a1-2"></d2l-list-item-nav>
+							<d2l-list-item-nav id="a1-2" label="a1-2" action-href=" "></d2l-list-item-nav>
 						</d2l-list>
 					</d2l-list-item-nav>
-					<d2l-list-item-nav id="a2" label="a2">
+					<d2l-list-item-nav id="a2" label="a2" action-href=" ">
 						<d2l-list slot="nested">
-							<d2l-list-item-nav id="a2-1" label="a2-1"></d2l-list-item-nav>
+							<d2l-list-item-nav id="a2-1" label="a2-1" action-href=" "></d2l-list-item-nav>
 						</d2l-list>
 					</d2l-list-item-nav>
-					<d2l-list-item-nav id="a3" label="a3"></d2l-list-item-nav>
+					<d2l-list-item-nav id="a3" label="a3" action-href=" "></d2l-list-item-nav>
 				</d2l-list>
 			`);
 			await elem.updateComplete;
