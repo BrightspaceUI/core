@@ -765,6 +765,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				${this._showAddButton && this.first ? html`
 				<div slot="add-top">
 					<d2l-button-add
+						?disable-animation="${this.current || this._hasCurrentParent}"
 						text="${addButtonText}"
 						mode="icon-when-interacted"
 						@click="${this._handleButtonAddClick}"
@@ -816,7 +817,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				${this._renderNested(nested)}
 				${this._showAddButton && (!this._hasNestedListAddButton || (this.expandable && !this.expanded)) ? html`
 				<div slot="add">
-					<d2l-button-add text="${addButtonText}" mode="icon-when-interacted" @click="${this._handleButtonAddClick}"></d2l-button-add>
+					<d2l-button-add 
+						?disable-animation="${this.current || this._nextSiblingCurrent}" 
+						text="${addButtonText}" 
+						mode="icon-when-interacted" 
+						@click="${this._handleButtonAddClick}"></d2l-button-add>
 				</div>
 				` : nothing}
 			</d2l-list-item-generic-layout>
