@@ -151,6 +151,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:first-of-type[_show-add-button][_nested]) [slot="outside-control"] {
 				border-top: 1px solid var(--d2l-color-mica);
 			}
+			:host(:first-of-type[_show-add-button][_nested][current]) [slot="outside-control"] {
+				border-color: var(--d2l-color-celestine);
+			}
 			:host([_has-nested-list-add-button]:not([selection-disabled]):not([skeleton])[selected]) [slot="before-content"] {
 				border-bottom-color: ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')}; /* stylelint-disable-line */
 			}
@@ -454,10 +457,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-bottom: -12.5px;
 				margin-top: -11.5px;
 			}
-			:host([draggable][selectable][_hovering]) [slot="add"],
-			:host([draggable][selectable][_focusing]) [slot="add"],
-			:host([draggable][selectable][_hovering]) [slot="add-top"],
-			:host([draggable][selectable][_focusing]) [slot="add-top"] {
+			:host([draggable][_hovering]) [slot="add"],
+			:host([draggable][_focusing]) [slot="add"],
+			:host([draggable][current]) [slot="add"],
+			:host([draggable][_hovering]) [slot="add-top"],
+			:host([draggable][_focusing]) [slot="add-top"],
+			:host([draggable][current]) [slot="add-top"] {
 				padding-inline-end: 6px;
 			}
 			.dragging [slot="add"] {

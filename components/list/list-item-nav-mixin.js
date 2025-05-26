@@ -32,10 +32,17 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			.d2l-list-item-content ::slotted(*) {
 				width: 100%;
 			}
+			:host([current]) d2l-button-add {
+				--d2l-button-add-line-color: var(--d2l-color-celestine);
+			}
 			:host([current]) [slot="outside-control-container"] {
 				background-color: var(--d2l-color-regolith);
 				border: 3px solid var(--d2l-color-celestine);
 				margin-block: 0;
+			}
+			:host([current][_show-add-button]) [slot="outside-control-container"] {
+				margin-bottom: -2px;
+				margin-top: -1px;
 			}
 			:host([current]) [slot="control-container"]::before,
 			:host([current]) [slot="control-container"]::after {
@@ -58,6 +65,7 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 		this.current = false;
 		this._childCurrent = false;
 		this._focusingElem = false;
+		this._dontHideBottomBorder = true;
 	}
 
 	connectedCallback() {
