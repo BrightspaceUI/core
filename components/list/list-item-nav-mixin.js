@@ -1,8 +1,10 @@
 import '../colors/colors.js';
 import { css } from 'lit';
-import { ListItemButtonMixin } from './list-item-button-mixin.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
+import { getComposedActiveElement } from '../../helpers/focus.js';
+import { ListItemLinkMixin } from './list-item-link-mixin.js';
 
-export const ListItemNavButtonMixin = superclass => class extends ListItemButtonMixin(superclass) {
+export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -11,32 +13,33 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 			 * @type {boolean}
 			 */
 			current: { type: Boolean, reflect: true },
+			/**
+			 * Whether to prevent the default navigation behavior of the link
+			 * @type {boolean}
+			 */
+			preventNavigation: { type: Boolean, attribute: 'prevent-navigation' },
 			_childCurrent: { type: Boolean, reflect: true, attribute: '_child-current' },
+			_focusingElem: { type: Boolean, reflect: true, attribute: '_focusing-elem' },
 		};
 	}
 
 	static get styles() {
 
 		const styles = [ css`
-			:host(:not([button-disabled])) {
+			:host([action-href]:not([action-href=""])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-ferrite);
 			}
 			.d2l-list-item-content ::slotted(*) {
 				width: 100%;
 			}
 			:host([current]) [slot="outside-control-container"] {
+				background-color: var(--d2l-color-regolith);
 				border: 3px solid var(--d2l-color-celestine);
-				margin-block: -1px;
-			}
-			:host([_focusing-primary-action]:not([current])) [slot="outside-control-container"] {
-				border: 2px solid var(--d2l-color-celestine);
+				margin-block: 0;
 			}
 			:host([current]) [slot="control-container"]::before,
 			:host([current]) [slot="control-container"]::after {
 				border-color: transparent;
-			}
-			:host([_focusing-primary-action]) .d2l-list-item-content {
-				--d2l-list-item-content-text-outline: none;
 			}
 			:host([_hovering-primary-action]) .d2l-list-item-content,
 			:host([_focusing-primary-action]) .d2l-list-item-content {
@@ -54,6 +57,7 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 		super();
 		this.current = false;
 		this._childCurrent = false;
+		this._focusingElem = false;
 	}
 
 	connectedCallback() {
@@ -72,6 +76,9 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 		if (this.current) {
 			this.dispatchSetChildCurrentEvent(true);
 		}
+
+		this.addEventListener('focusin', this.#handleFocusIn);
+		this.addEventListener('focusout', this.#handleFocusOut);
 	}
 
 	updated(changedProperties) {
@@ -103,12 +110,28 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 		this.dispatchEvent(new CustomEvent('d2l-list-item-nav-set-child-current', { bubbles: true, composed: true, detail: { value: val } }));
 	}
 
-	_onButtonClick(e) {
+	_handleLinkClick(e) {
 		if (!this._getDescendantClicked(e)) {
 			this.current = true;
 			this._childCurrent = false;
 		}
-		super._onButtonClick(e);
+		if (this.preventNavigation) e.preventDefault();
+		super._handleLinkClick(e);
+	}
+
+	#handleFocusIn(e) {
+		e.stopPropagation(); // prevent _focusing from being set on the parent
+		requestAnimationFrame(() => {
+			const activeElement = getComposedActiveElement();
+			const parentListItem = findComposedAncestor(activeElement, (node) => node.role === 'row' || node.role === 'listitem');
+			if (parentListItem && parentListItem === this) {
+				this._focusingElem = true;
+			}
+		});
+	}
+
+	#handleFocusOut() {
+		this._focusingElem = false;
 	}
 
 	#setAriaCurrent(val) {
@@ -116,7 +139,7 @@ export const ListItemNavButtonMixin = superclass => class extends ListItemButton
 	}
 
 	async #setChildCurrent(e) {
-		await this.updateComplete; // ensure button exists
+		await this.updateComplete;
 		if (e.target === this) return;
 		this._childCurrent = e.detail.value;
 	}

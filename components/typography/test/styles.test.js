@@ -39,6 +39,14 @@ describe('_isValidCssSelector', () => {
 		expect(_isValidCssSelector(':host')).to.be.true;
 	});
 
+	it('should support sets of selectors', () => {
+		expect(_isValidCssSelector('.class1, .class2')).to.be.true;
+	});
+
+	it('should not support sets with invalid selectors', () => {
+		expect(_isValidCssSelector('.valid, invalid$')).to.be.false;
+	});
+
 	it('should not support complex :host selectors', () => {
 		expect(_isValidCssSelector(':host p')).to.be.false;
 		expect(_isValidCssSelector(':host([hidden])')).to.be.false;

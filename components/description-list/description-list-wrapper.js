@@ -5,7 +5,7 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 export const descriptionListStyles = [
 	_generateLabelStyles('d2l-dl-wrapper > dl > dt'),
-	_generateBodyCompactStyles('d2l-dl-wrapper > dl > dd'),
+	_generateBodyCompactStyles('d2l-dl-wrapper > dl > dd', true),
 	css`
 		d2l-dl-wrapper {
 			--d2l-dl-wrapper-dt-min-width: min-content;
