@@ -278,6 +278,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				margin-left: auto;
 				margin-right: auto;
 				opacity: 0;
+				outline-offset: -1px;
 				padding: 3px;
 				position: relative;
 				text-align: center;
@@ -360,63 +361,61 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				background-color: var(--d2l-color-gypsum);
 			}
 
-			td:focus button:not(.d2l-calendar-date-selected):not(:disabled):hover,
-			td:focus button:not(.d2l-calendar-date-selected):not(:disabled).d2l-calendar-date-hover {
-				box-shadow: 0 0 0 2px var(--d2l-color-gypsum), 0 0 0 4px var(--d2l-color-celestine);
-				transition: none;
-			}
-
 			td, .d2l-calendar-date:focus {
 				outline: none;
 			}
 
-			td:focus .d2l-calendar-date {
-				border-radius: 0.16rem;
-				padding: 0;
+			td:focus .d2l-calendar-date:not(:disabled) {
+				outline: 2px solid var(--d2l-color-celestine);
 			}
 
-			td:focus .d2l-calendar-date:not(:disabled) {
-				box-shadow: 0 0 0 2px white, 0 0 0 4px var(--d2l-color-celestine);
-				transition: none;
+			@keyframes initial-focus {
+				from {
+					outline: 0 solid var(--d2l-color-celestine);
+					padding: 0;
+				}
 			}
 
 			td:focus .d2l-calendar-date.d2l-calendar-date-initial {
-				transition: box-shadow 200ms ease-in;
+				animation: 200ms ease-in initial-focus;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
-				td:focus .d2l-calendar-date.d2l-calendar-date-initial {
-					transition: none;
+				td:focus .d2l-calendar-date.d2l-calendar-date-initial,
+				td:focus .d2l-calendar-date-initial.d2l-calendar-date-day-info::after {
+					animation: none;
 				}
 			}
 
 			.d2l-calendar-date.d2l-calendar-date-selected {
 				background-color: var(--d2l-color-celestine-plus-2);
-				border: 1px solid var(--d2l-color-celestine);
-				padding: 2px;
+				outline: 1px solid var(--d2l-color-celestine);
 			}
 
 			.d2l-calendar-date.d2l-calendar-date-selected:disabled {
 				background-color: white;
-				border-style: none;
 				color: rgba(73, 76, 78, 0.5);
 			}
 
-			td:focus .d2l-calendar-date.d2l-calendar-date-selected {
-				border-width: 0;
-				box-shadow: 0 0 0 2px var(--d2l-color-celestine-plus-2), 0 0 0 4px var(--d2l-color-celestine);
-				padding: 0;
-			}
-
 			td:focus .d2l-calendar-date.d2l-calendar-date-selected:disabled {
-				box-shadow: 0 0 0 2px white, 0 0 0 4px var(--d2l-color-celestine);
 				opacity: 1;
+				outline: 2px solid var(--d2l-color-celestine);
 			}
 
 			.d2l-calendar-date.d2l-calendar-date-today,
 			.d2l-calendar-date.d2l-calendar-date-selected:enabled {
 				font-size: 1rem;
 				font-weight: 700;
+			}
+
+			@keyframes initial-focus-day-info {
+				from {
+					bottom: 1px;
+				}
+			}
+
+			td:focus .d2l-calendar-date-initial.d2l-calendar-date-day-info::after {
+				animation: 200ms ease-in initial-focus-day-info;
 			}
 
 			.d2l-calendar-date-day-info::after {
@@ -429,11 +428,16 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				position: absolute;
 				width: 6px;
 			}
-			.d2l-calendar-date-selected.d2l-calendar-date-day-info::after {
-				bottom: 2px;
-			}
+
+			.d2l-calendar-date-selected.d2l-calendar-date-day-info::after,
 			td:focus .d2l-calendar-date-day-info::after {
-				bottom: 0;
+				bottom: 3px;
+			}
+			@media (prefers-contrast: more) {
+				.d2l-calendar-date-day-info::after {
+					forced-color-adjust: none;
+					background-color: FieldText;
+				}
 			}
 
 		`];
