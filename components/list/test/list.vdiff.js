@@ -14,7 +14,7 @@ import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
-import '../list-item-nav-button.js';
+import '../list-item-nav.js';
 import { expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { nothing } from 'lit';
@@ -421,6 +421,8 @@ describe('list', () => {
 	});
 
 	[true, false].forEach(disabled => {
+		if (disabled) return; // skipping for now since no concept of disabled link item currently
+
 		describe(`nav${disabled ? '-disabled' : ''}`, () => {
 			[
 				{ name: 'default' },
@@ -433,12 +435,12 @@ describe('list', () => {
 				it(name, async() => {
 					const elem = await fixture(html`
 						<d2l-list style="width: 400px;" ?add-button="${addButton || false}">
-							<d2l-list-item-nav-button ?button-disabled="${disabled}" ?current="${current || false}">
+							<d2l-list-item-nav ?current="${current || false}" action-href=" ">
 								${interactiveListItemContent}
-							</d2l-list-item-nav-button>
+							</d2l-list-item-nav>
 						</d2l-list>
 					`);
-					if (action) await action(elem.querySelector('d2l-list-item-nav-button'));
+					if (action) await action(elem.querySelector('d2l-list-item-nav'));
 					await expect(elem).to.be.golden({ margin });
 				});
 
@@ -446,27 +448,22 @@ describe('list', () => {
 					if (addButton) return;
 					const elem = await fixture(html`
 						<d2l-list grid style="width: 334px;">
-							<d2l-list-item-nav-button key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable>
+							<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable action-href=" ">
 								<d2l-list-item-content>
 									<div>Welcome!</div>
 								</d2l-list-item-content>
 								<d2l-list slot="nested" grid>
-									<d2l-list-item-nav-button key="L2-1" label="Syallabus Confirmation" draggable ?button-disabled="${disabled}"  ?current="${current || false}">
+									<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" draggable  ?current="${current || false}" action-href=" ">
 										<d2l-list-item-content>
 											<div>Syallabus Confirmation</div>
 											<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
 										</d2l-list-item-content>
-									</d2l-list-item-nav-button>
+									</d2l-list-item-nav>
 								</d2l-list>
-							</d2l-list-item-nav-button>
+							</d2l-list-item-nav>
 						</d2l-list>
 					`);
-					if (disabled && (name === 'focus' || name === 'focus current')) {
-						action(elem.querySelectorAll('d2l-list-item-nav-button')[1]);
-						await oneEvent(elem, 'd2l-tooltip-show');
-					} else if (action) {
-						await action(elem.querySelectorAll('d2l-list-item-nav-button')[1]);
-					}
+					if (action) await action(elem.querySelectorAll('d2l-list-item-nav')[1]);
 					await expect(elem).to.be.golden();
 				});
 			});
@@ -474,19 +471,19 @@ describe('list', () => {
 			it('nested-focused-secondary', async() => {
 				const elem = await fixture(html`
 					<d2l-list grid style="width: 334px;">
-						<d2l-list-item-nav-button key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable>
+						<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable action-href=" ">
 							<d2l-list-item-content>
 								<div>Welcome!</div>
 							</d2l-list-item-content>
 							<d2l-list slot="nested" grid>
-								<d2l-list-item-nav-button key="L2-1" label="Syallabus Confirmation" draggable ?button-disabled="${disabled}">
+								<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" draggable action-href=" ">
 									<d2l-list-item-content>
 										<div>Syallabus Confirmation</div>
 										<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
 									</d2l-list-item-content>
-								</d2l-list-item-nav-button>
+								</d2l-list-item-nav>
 							</d2l-list>
-						</d2l-list-item-nav-button>
+						</d2l-list-item-nav>
 					</d2l-list>
 				`);
 				focusElem(elem.querySelector('d2l-tooltip-help'));

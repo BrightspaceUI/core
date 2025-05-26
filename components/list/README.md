@@ -70,7 +70,7 @@ The list components are fairly complex and aim to be usable by all our users. In
 
 * When the `grid` attribute is used on the `d2l-list` component, it enables the list to follow the [Grid Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/). More details on this are [below](#aria-layout-grid).
 
-* When using the `d2l-list-item-nav-button` component and/or mixin, usage of the `current` attribute adds the `aria-current` attribute to "page" for the `current` item and "location" for any parent and ancestors of the item. The components work together to keep these attributes up-to-date on subsequent selection. 
+* When using the `d2l-list-item-nav` component and/or mixin, usage of the `current` attribute adds the `aria-current` attribute to "page" for the `current` item and "location" for any parent and ancestors of the item. The components work together to keep these attributes up-to-date on subsequent selection. 
 
    * Usage of the new `current` attribute over the existing `selected` attribute corresponds to `aria-current` and also leaves open the possibility of using both `current` and selection behavior together.
 
@@ -609,23 +609,23 @@ The `d2l-list-item-button` provides the same functionality as `d2l-list-item` ex
 - `d2l-list-item-expand-collapse-toggled`: dispatched when the item's expand/collapse toggle is clicked
 <!-- docs: end hidden content -->
 
-## Navigational Button List Item [d2l-list-item-nav-button]
+## Navigational List Item [d2l-list-item-nav]
 
-Use a `d2l-list-item-nav-button` if your list serves as a table of contents or is part of a master/details workflow. It provides the same functionality as `d2l-list-item-button` while adding navigation semantics and behaviours. Use the `current` attribute to indicate the currently selected item — see more about this in [Accessibility](#accessibility).
+Use a `d2l-list-item-nav` if your list serves as a table of contents or is part of a master/details workflow. It provides the same functionality as `d2l-list-item-link` while adding navigation semantics and behaviours. Use the `current` attribute to indicate the currently selected item — see more about this in [Accessibility](#accessibility). The `action-href` attribute is required for the item to be able to be clickable.
 
 The example below also includes expand/collapse behavior in order to expand or collapse the items on subsequent clicks.
 
-<!-- docs: demo code properties name:d2l-list-item-nav-button sandboxTitle:'List Item Nav Button' display:block -->
+<!-- docs: demo code properties name:d2l-list-item-nav sandboxTitle:'List Item Nav' display:block -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
-  import '@brightspace-ui/core/components/list/list-item-nav-button.js';
+  import '@brightspace-ui/core/components/list/list-item-nav.js';
   import '@brightspace-ui/core/components/list/list-item-content.js';
 </script>
 <script>
-  let currentItem = document.querySelector('d2l-list-item-nav-button[current]');
-  document.addEventListener('d2l-list-item-button-click', (e) => {
-    console.log('d2l-list-item-nav-button: click event');
+  let currentItem = document.querySelector('d2l-list-item-nav[current]');
+  document.addEventListener('d2l-list-item-link-click', (e) => {
+    console.log('d2l-list-item-nav: click event');
 
     if (!e.target.expandable) {
       currentItem = e.target;
@@ -642,20 +642,20 @@ The example below also includes expand/collapse behavior in order to expand or c
 </script>
 
 <d2l-list>
-  <d2l-list-item-nav-button key="L1-1" label="Geomorphology and GIS" color="#006fbf" expandable expanded>
+  <d2l-list-item-nav key="L1-1" label="Geomorphology and GIS" color="#006fbf" expandable expanded action-href="https://d2l.com" prevent-navigation>
       <d2l-list-item-content>
         <div>Geomorphology and GIS </div>
         <div slot="supporting-info">This course explores the geological processes of the Earth's interior and surface. These include volcanism, earthquakes, mountain...</div>
       </d2l-list-item-content>
       <d2l-list slot="nested" grid>
-        <d2l-list-item-nav-button key="L2-1" label="Syallabus Confirmation">
+        <d2l-list-item-nav key="L2-1" label="Syallabus Confirmation">
           <d2l-list-item-content>
             <div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Syallabus Confirmation</div>
             <div slot="secondary"><d2l-tooltip-help text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
           </d2l-list-item-content>
-        </d2l-list-item-nav-button>
+        </d2l-list-item-nav>
       </d2l-list>
-  </d2l-list-item-nav-button>
+  </d2l-list-item-nav>
 </d2l-list>
 ```
 
@@ -664,26 +664,35 @@ The example below also includes expand/collapse behavior in order to expand or c
 
 | Property | Type | Description |
 |---|---|---|
-| `button-disabled` | Boolean | Disables the primary action button |
 | `current` | Boolean | Whether the list item is the current page in a navigation context. At most one list item should have the `current` attribute at any time; this will be managed by the `list` after initial render. |
 | `draggable` |  Boolean | Whether the item is draggable |
 | `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
+| `drag-target-handle-only` | Boolean | Make the drag target the drag handle only. |
 | `drop-nested` | Boolean | Whether nested items can be dropped on this item |
 | `drop-text` | String | Text to drag and drop |
 | `expandable` | Boolean | Whether or not to show the expand/collapse toggle. |
 | `expanded` | Boolean | Whether the item is expanded. Requires `expandable` to be set. |
+| `href` | String | Address of item link if navigable |
 | `key` | String | Value to identify item if selectable or draggable |
 | `label` | String | Explicitly defined label for the element |
 | `labelled-by` | String | The id of element that provides the label for this element |
+| `no-primary-action` | Boolean | Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive. |
 | `padding-type` | String | List item whitespace (`normal` (default), `none`)|
+| `prevent-navigation` | Boolean | Whether to prevent the default navigation behavior of the link |
 | `selectable` | Boolean | Indicates an input should be rendered for selecting the item |
 | `selected` | Boolean | Whether the item is selected |
 | `selection-disabled` | Boolean | Disables selection |
 | `skeleton` | Boolean | Renders the input as a skeleton loader |
 
+### Methods
+
+- `highlight()`: highlights the item
+- `scrollToItem(alignToTop=true)`: scrolls to the item. See [Element.scrollIntoView](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView) for definition of alignToTop.
+- `scrollToAndHighlight(alignToTop=true)`: scrolls to the item and then highlights it. . See [Element.scrollIntoView](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView) for definition of alignToTop.
+
 ### Events
 
-- `d2l-list-item-button-click`: dispatched when the item's primary button action is clicked
+- `d2l-list-item-link-click`: dispatched when the item's primary link action is clicked
 - `d2l-list-item-expand-collapse-toggled`: dispatched when the item's expand/collapse toggle is clicked
 <!-- docs: end hidden content -->
 
@@ -724,17 +733,17 @@ Where the parameters correspond to the slots of `d2l-list-item`:
 - actions (TemplateResult): Secondary actions for the list item.
 - nested (TemplateResult): Optional `d2l-list` for a nested list.
 
-## ListItemNavButtonMixin
+## ListItemNavMixin
 
-This mixin allows you to make a component into a navigational list item without requiring custom styling. All of the properties and functionality from `d2l-list-item-nav-button` (listed above) will be added to your new component.
+This mixin allows you to make a component into a navigational list item without requiring custom styling. All of the properties and functionality from `d2l-list-item-nav` (listed above) will be added to your new component.
 
 ### How to use
 
 Import
 ```javascript
-import { ListItemNavButtonMixin } from '@brightspace-ui/core/components/list/list-item-nav-button-mixin.js';
+import { ListItemNavMixin } from '@brightspace-ui/core/components/list/list-item-nav-mixin.js';
 
-class ListItem extends ListItemNavButtonMixin(LitElement) {
+class ListItem extends ListItemNavMixin(LitElement) {
 ...
 ```
 
