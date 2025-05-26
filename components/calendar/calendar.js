@@ -435,8 +435,12 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 			@media (prefers-contrast: more) {
 				.d2l-calendar-date-day-info::after {
-					forced-color-adjust: none;
 					background-color: FieldText;
+					forced-color-adjust: none;
+				}
+
+				td:focus .d2l-calendar-date {
+					outline-color: Highlight !important;
 				}
 			}
 
