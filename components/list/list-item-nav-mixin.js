@@ -20,6 +20,8 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			preventNavigation: { type: Boolean, attribute: 'prevent-navigation' },
 			_childCurrent: { type: Boolean, reflect: true, attribute: '_child-current' },
 			_focusingElem: { type: Boolean, reflect: true, attribute: '_focusing-elem' },
+			_hasCurrentParent: { type: Boolean, reflect: true, attribute: '_has-current-parent' },
+			_nextSiblingCurrent: { type: Boolean, reflect: true, attribute: '_next-sibling-current' },
 		};
 	}
 
@@ -32,7 +34,9 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			.d2l-list-item-content ::slotted(*) {
 				width: 100%;
 			}
-			:host([current]) d2l-button-add {
+			:host([current]) d2l-button-add,
+			:host([_has-current-parent]) [slot="add-top"] d2l-button-add,
+			:host([_next-sibling-current]) [slot="add"] d2l-button-add {
 				--d2l-button-add-line-color: var(--d2l-color-celestine);
 				--d2l-button-add-line-height: 3px;
 				--d2l-button-add-focus-line-height: 3px;
@@ -67,7 +71,7 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 		this.current = false;
 		this._childCurrent = false;
 		this._focusingElem = false;
-		this._dontHideBottomBorder = true;
+		this._nextSiblingCurrent = false;
 	}
 
 	connectedCallback() {

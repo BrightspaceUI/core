@@ -144,11 +144,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				position: absolute;
 				width: 100%;
 			}
-			:host([_has-nested-list-add-button]) [slot="before-content"] {
+			:host([_has-nested-list-add-button]:not([current])) [slot="before-content"] {
 				border-bottom: 1px solid var(--d2l-color-mica);
 				margin-bottom: -1px;
 			}
-			:host(:first-of-type[_show-add-button][_nested]) [slot="outside-control"] {
+			:host(:first-of-type[_show-add-button][_nested]:not([_has-current-parent])) [slot="outside-control"] {
 				border-top: 1px solid var(--d2l-color-mica);
 			}
 			:host(:first-of-type[_show-add-button][_nested][current]) [slot="outside-control"] {
@@ -338,13 +338,13 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-bottom: -1px;
 			}
 			/* below hides the border under the d2l-button-add */
-			:host([_hovering-control]:not([current])) [slot="outside-control-container"].hide-bottom-border,
-			:host([_hovering-primary-action]:not([current])) [slot="outside-control-container"].hide-bottom-border,
-			:host([_hovering-selection]:not([current])) [slot="outside-control-container"].hide-bottom-border,
-			:host([_focusing-primary-action]:not([current])) [slot="outside-control-container"].hide-bottom-border,
-			:host(:not([selection-disabled]):not([skeleton])[selected]:not([current])) [slot="outside-control-container"].hide-bottom-border,
-			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]:not([current])) [slot="outside-control-container"].hide-bottom-border,
-			:host(:not([_list-item-new-styles]):not([selection-disabled]):not([skeleton])[selectable][_focusing]:not([current])) [slot="outside-control-container"].hide-bottom-border,
+			:host([_hovering-control]) [slot="outside-control-container"].hide-bottom-border,
+			:host([_hovering-primary-action]) [slot="outside-control-container"].hide-bottom-border,
+			:host([_hovering-selection]) [slot="outside-control-container"].hide-bottom-border,
+			:host([_focusing-primary-action]) [slot="outside-control-container"].hide-bottom-border,
+			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"].hide-bottom-border,
+			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) [slot="outside-control-container"].hide-bottom-border,
+			:host(:not([_list-item-new-styles]):not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"].hide-bottom-border,
 			:host([_list-item-new-styles]:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing]:not([current])) [slot="outside-control-container"].hide-bottom-border {
 				background-clip: content-box, border-box;
 				background-image: linear-gradient(white, white), linear-gradient(to right, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 30%, transparent 30%, transparent 70%, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 70%); /* stylelint-disable-line */
@@ -360,7 +360,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border: double 1px transparent;
 				border-radius: 6px;
 			}
-			:host([_show-add-button][current])  [slot="outside-control-container"].hide-bottom-border {
+			:host([current]) [slot="outside-control-container"].hide-bottom-border {
 				background-clip: content-box, border-box;
 				background-image: linear-gradient(var(--d2l-color-regolith), var(--d2l-color-regolith)), linear-gradient(to right, var(--d2l-color-celestine) 30%, transparent 30%, transparent 70%, var(--d2l-color-celestine) 70%);
 				background-origin: border-box;

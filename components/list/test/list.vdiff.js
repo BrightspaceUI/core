@@ -490,7 +490,7 @@ describe('list', () => {
 				it(name, async() => {
 					const elem = await fixture(html`
 						<d2l-list style="width: 400px;">
-							<d2l-list-item-nav action-href=" " ?current="${current || false}" action-href=" ">
+							<d2l-list-item-nav ?current="${current || false}" action-href=" ">
 								${interactiveListItemContent}
 							</d2l-list-item-nav>
 						</d2l-list>
@@ -502,12 +502,12 @@ describe('list', () => {
 				it(`nested-${name}`, async() => {
 					const elem = await fixture(html`
 						<d2l-list grid style="width: 334px;">
-							<d2l-list-item-nav action-href=" " key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable action-href=" ">
+							<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable action-href=" ">
 								<d2l-list-item-content>
 									<div>Welcome!</div>
 								</d2l-list-item-content>
 								<d2l-list slot="nested" grid>
-									<d2l-list-item-nav action-href=" " key="L2-1" label="Syallabus Confirmation" draggable  ?current="${current || false}" action-href=" ">
+									<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" draggable  ?current="${current || false}" action-href=" ">
 										<d2l-list-item-content>
 											<div>Syallabus Confirmation</div>
 											<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
@@ -525,12 +525,12 @@ describe('list', () => {
 			it('nested-focused-secondary', async() => {
 				const elem = await fixture(html`
 					<d2l-list grid style="width: 334px;">
-						<d2l-list-item-nav action-href=" " key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable action-href=" ">
+						<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable action-href=" ">
 							<d2l-list-item-content>
 								<div>Welcome!</div>
 							</d2l-list-item-content>
 							<d2l-list slot="nested" grid>
-								<d2l-list-item-nav action-href=" " key="L2-1" label="Syallabus Confirmation" draggable action-href=" ">
+								<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" draggable action-href=" ">
 									<d2l-list-item-content>
 										<div>Syallabus Confirmation</div>
 										<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>

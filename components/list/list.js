@@ -21,6 +21,18 @@ const ro = new ResizeObserver(entries => {
 	});
 });
 
+function handleChildCurrentChange(target) {
+
+	target.dispatchSetChildCurrentEvent(true);
+	if (target._hasNestedList) {
+		const firstChild = target.querySelector('[first]');
+		if (firstChild) firstChild._hasCurrentParent = true;
+	}
+	if (target._getPreviousListItemSibling()) {
+		target._getPreviousListItemSibling()._nextSiblingCurrent = true;
+	}
+}
+
 /**
  * A container for a styled list of items ("d2l-list-item"). It provides the appropriate "list" semantics as well as options for displaying separators, etc.
  * @slot - Slot for list items (ex. `d2l-list-item`, `d2l-list-item-button`, or custom items)
@@ -413,11 +425,18 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			if (prevCurrent) {
 				this.addEventListener('d2l-list-item-nav-set-child-current', (e) => {
 					e.stopPropagation();
-					target.dispatchSetChildCurrentEvent(true);
+					handleChildCurrentChange(target);
 				}, { once: true });
+
 				prevCurrent.current = false;
+				const firstChild = this.querySelector('[_has-current-parent]');
+				if (firstChild) firstChild._hasCurrentParent = false;
+
+				const prevSibling = this.querySelector('[_next-sibling-current]');
+				if (prevSibling) prevSibling._nextSiblingCurrent = false;
 			} else {
-				target.dispatchSetChildCurrentEvent(true);
+				handleChildCurrentChange(target);
+
 			}
 		}
 	}
