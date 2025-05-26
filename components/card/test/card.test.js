@@ -12,7 +12,7 @@ describe('d2l-card', () => {
 		elem.href = null;
 		await elem.updateComplete;
 		const anchorElem = elem.shadowRoot.querySelector('a');
-		expect(anchorElem.hasAttribute('href')).to.be.false;
+		expect(anchorElem).to.be.null;
 	});
 
 });
