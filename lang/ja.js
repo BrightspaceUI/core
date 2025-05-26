@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "アラートを閉じる",
 	"components.breadcrumbs.breadcrumb": "階層",
 	"components.button-add.addItem": "項目の追加",
-	"components.button-split.otherOptions": "Other Options",
+	"components.button-split.otherOptions": "その他のオプション",
 	"components.calendar.hasEvents": "イベントがあります。",
 	"components.calendar.notSelected": "選択されていません。",
 	"components.calendar.selected": "選択されています。",

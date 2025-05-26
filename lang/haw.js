@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Pani i ka makaʻala",
 	"components.breadcrumbs.breadcrumb": "Palapalapala",
 	"components.button-add.addItem": "Pākuʻi Mea",
-	"components.button-split.otherOptions": "Other Options",
+	"components.button-split.otherOptions": "Nā Koho ʻē aʻe",
 	"components.calendar.hasEvents": "Loaʻa nā hanana.",
 	"components.calendar.notSelected": "ʻAʻole i koho ʻia.",
 	"components.calendar.selected": "Koho ʻia.",
