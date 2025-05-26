@@ -3,7 +3,7 @@ import { _generateBodySmallStyles } from '../typography/styles.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 export const inlineHelpStyles = [
-	_generateBodySmallStyles('.d2l-input-inline-help'),
+	_generateBodySmallStyles('.d2l-input-inline-help', true),
 	css`
 		.d2l-input-inline-help {
 			margin-top: 0.3rem !important;

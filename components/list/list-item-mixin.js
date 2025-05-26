@@ -107,6 +107,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_listItemInteractiveEnabled: { type: Boolean, reflect: true, attribute: '_list-item-interactive-enabled' },
+			_listItemNewStyles: { type: Boolean, reflect: true, attribute: '_list-item-new-styles' },
 			_showAddButton: { type: Boolean, attribute: '_show-add-button', reflect: true },
 			_siblingHasColor: { state: true },
 		};
@@ -323,9 +324,14 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_hovering-selection]) [slot="outside-control-container"],
 			:host([_focusing-primary-action]) [slot="outside-control-container"],
 			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) [slot="outside-control-container"],
-			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"],
-			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing-elem]:not([current])) [slot="outside-control-container"] {
+			:host(:not([_list-item-new-styles]):not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"],
+			:host([_list-item-new-styles]:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing]:not([current])) [slot="outside-control-container"] {
 				border-color: ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')}; /* stylelint-disable-line */
+				margin-bottom: -1px;
+			}
+			/* clean up with GAUD-7495-list-item-new-styles flag */
+			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing-elem]:not([current])) [slot="outside-control-container"] {
+				border-color: var(--d2l-color-mica);
 				margin-bottom: -1px;
 			}
 			/* below hides the border under the d2l-button-add */
@@ -335,10 +341,18 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_focusing-primary-action]:not([current])) [slot="outside-control-container"].hide-bottom-border,
 			:host(:not([selection-disabled]):not([skeleton])[selected]:not([current])) [slot="outside-control-container"].hide-bottom-border,
 			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]:not([current])) [slot="outside-control-container"].hide-bottom-border,
-			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]:not([current])) [slot="outside-control-container"].hide-bottom-border,
-			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing-elem]:not([current])) [slot="outside-control-container"].hide-bottom-border {
+			:host(:not([_list-item-new-styles]):not([selection-disabled]):not([skeleton])[selectable][_focusing]:not([current])) [slot="outside-control-container"].hide-bottom-border,
+			:host([_list-item-new-styles]:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing]:not([current])) [slot="outside-control-container"].hide-bottom-border {
 				background-clip: content-box, border-box;
 				background-image: linear-gradient(white, white), linear-gradient(to right, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 30%, transparent 30%, transparent 70%, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 70%); /* stylelint-disable-line */
+				background-origin: border-box;
+				border: double 1px transparent;
+				border-radius: 6px;
+			}
+			/* clean up with GAUD-7495-list-item-new-styles flag */
+			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing-elem]:not([current])) [slot="outside-control-container"].hide-bottom-border {
+				background-clip: content-box, border-box;
+				background-image: linear-gradient(white, white), linear-gradient(to right, var(--d2l-color-mica) 20%, transparent 20%, transparent 80%, var(--d2l-color-mica) 80%);
 				background-origin: border-box;
 				border: double 1px transparent;
 				border-radius: 6px;
@@ -466,6 +480,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._hasColorSlot = false;
 		this._hasNestedList = false;
 		this._listItemInteractiveEnabled = listItemInteractiveFlag;
+		this._listItemNewStyles = useNewStylesFlag;
 		this._siblingHasColor = false;
 	}
 

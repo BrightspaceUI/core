@@ -1,6 +1,6 @@
 import '../../icons/icon.js';
 import '../list-item-content.js';
-import '../list-item-nav-button.js';
+import '../list-item-nav.js';
 import '../list.js';
 import '../../tooltip/tooltip-help.js';
 import { css, html, LitElement, nothing } from 'lit';
@@ -45,7 +45,7 @@ class ListDemoNav extends LitElement {
 				<d2l-list 
 					grid 
 					drag-multiple
-					@d2l-list-item-button-click="${this._handleItemClick}">
+					@d2l-list-item-link-click="${this._handleItemClick}">
 					${repeat(this.#list, (item) => item.key, (item) => this._renderItem(item))}
 				</d2l-list>
 			</div>
@@ -132,15 +132,17 @@ class ListDemoNav extends LitElement {
 	_renderItem(item) {
 		const hasSubList = item.items && item.items.length > 0;
 		return html`
-			<d2l-list-item-nav-button
+			<d2l-list-item-nav
 				key="${ifDefined(item.key)}"
+				action-href="https://d2l.com"
 				draggable
 				drag-handle-text="${item.primaryText}"
 				color="${ifDefined(item.color)}"
 				?expandable="${hasSubList}"
 				?expanded="${hasSubList}"
 				drop-nested
-				label="${item.primaryText}">
+				label="${item.primaryText}"
+				prevent-navigation>
 				<d2l-list-item-content>
 					<div>${item.hasIcon ? html`<d2l-icon icon="tier2:file-document"></d2l-icon>` : nothing}${item.primaryText}</div>
 					${item.tooltipOpenerText && item.tooltipText
@@ -154,7 +156,7 @@ class ListDemoNav extends LitElement {
 					</d2l-list>`
 						: nothing
 				}
-			</d2l-list-item-nav-button>
+			</d2l-list-item-nav>
 		`;
 	}
 }

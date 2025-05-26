@@ -1,8 +1,14 @@
 import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { svgToCSS } from '../../helpers/svg-to-css.js';
 
 const focusClass = unsafeCSS(getFocusPseudoClass());
+
+export const invalidIcon = svgToCSS(`<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+	<path fill="#cd2026" d="M17.79 15.11l-7-14a2 2 0 0 0-3.58 0l-7 14a1.975 1.975 0 0 0 .09 1.94A2 2 0 0 0 2 18h14a1.994 1.994 0 0 0 1.7-.95 1.967 1.967 0 0 0 .09-1.94zM9 16a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 9 16zm.98-4.806a1 1 0 0 1-1.96 0l-.99-5A1 1 0 0 1 8.01 5h1.983a1 1 0 0 1 .98 1.194z"/>
+	<path fill="#FFF" d="M9 16a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 9 16zm.98-4.806a1 1 0 0 1-1.96 0l-.99-5A1 1 0 0 1 8.01 5h1.983a1 1 0 0 1 .98 1.194z"/>
+  </svg>`);
 
 export const inputStyles = css`
 	.d2l-input {
@@ -85,12 +91,13 @@ export const inputStyles = css`
 		padding-block: calc(0.5rem - 1px);
 	}
 	textarea.d2l-input[aria-invalid="true"] {
-		background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDE4IDE4Ij4KICA8cGF0aCBmaWxsPSIjY2QyMDI2IiBkPSJNMTcuNzkgMTUuMTFsLTctMTRhMiAyIDAgMCAwLTMuNTggMGwtNyAxNGExLjk3NSAxLjk3NSAwIDAgMCAuMDkgMS45NEEyIDIgMCAwIDAgMiAxOGgxNGExLjk5NCAxLjk5NCAwIDAgMCAxLjctLjk1IDEuOTY3IDEuOTY3IDAgMCAwIC4wOS0xLjk0ek05IDE2YTEuNSAxLjUgMCAxIDEgMS41LTEuNUExLjUgMS41IDAgMCAxIDkgMTZ6bS45OC00LjgwNmExIDEgMCAwIDEtMS45NiAwbC0uOTktNUExIDEgMCAwIDEgOC4wMSA1aDEuOTgzYTEgMSAwIDAgMSAuOTggMS4xOTR6Ii8+Cjwvc3ZnPgo=");
+		background-image: ${invalidIcon};
 		background-position: top 12px right 18px;
 		background-repeat: no-repeat;
 		background-size: 0.8rem 0.8rem;
 		padding-inline-end: calc(18px + 0.8rem);
 	}
+	textarea.d2l-input-focus[aria-invalid="true"],
 	textarea.d2l-input[aria-invalid="true"]:hover,
 	textarea.d2l-input[aria-invalid="true"]:${focusClass} {
 		background-position: top calc(12px - 1px) right calc(18px - 1px);
@@ -99,6 +106,7 @@ export const inputStyles = css`
 	:host([dir="rtl"]) textarea.d2l-input[aria-invalid="true"] {
 		background-position: top 12px left 18px;
 	}
+	:host([dir="rtl"]) textarea.d2l-input-focus[aria-invalid="true"],
 	:host([dir="rtl"]) textarea.d2l-input[aria-invalid="true"]:${focusClass},
 	:host([dir="rtl"]) textarea.d2l-input[aria-invalid="true"]:hover {
 		background-position: top calc(12px - 1px) left calc(18px - 1px);
