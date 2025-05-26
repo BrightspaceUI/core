@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Stängningsvarning",
 	"components.breadcrumbs.breadcrumb": "Sökväg",
 	"components.button-add.addItem": "Lägg till objekt",
-	"components.button-split.otherOptions": "Other Options",
+	"components.button-split.otherOptions": "Andra alternativ",
 	"components.calendar.hasEvents": "Har händelser.",
 	"components.calendar.notSelected": "Inte vald.",
 	"components.calendar.selected": "Markerad.",
