@@ -394,8 +394,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 			.d2l-calendar-date.d2l-calendar-date-selected:disabled {
 				background-color: white;
-				outline: none;
 				color: rgba(73, 76, 78, 0.5);
+				outline: none;
 			}
 
 			td:focus .d2l-calendar-date.d2l-calendar-date-selected:disabled {
