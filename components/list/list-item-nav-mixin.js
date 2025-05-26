@@ -1,7 +1,5 @@
 import '../colors/colors.js';
 import { css } from 'lit';
-import { findComposedAncestor } from '../../helpers/dom.js';
-import { getComposedActiveElement } from '../../helpers/focus.js';
 import { ListItemLinkMixin } from './list-item-link-mixin.js';
 
 export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(superclass) {
@@ -119,15 +117,10 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 		super._handleLinkClick(e);
 	}
 
+	/* clean up (including _focusingElem) with GAUD-7495-list-item-new-styles flag */
 	#handleFocusIn(e) {
 		e.stopPropagation(); // prevent _focusing from being set on the parent
-		requestAnimationFrame(() => {
-			const activeElement = getComposedActiveElement();
-			const parentListItem = findComposedAncestor(activeElement, (node) => node.role === 'row' || node.role === 'listitem');
-			if (parentListItem && parentListItem === this) {
-				this._focusingElem = true;
-			}
-		});
+		this._focusingElem = true;
 	}
 
 	#handleFocusOut() {

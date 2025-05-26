@@ -637,7 +637,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		return node.role === 'row' || node.role === 'listitem';
 	}
 
-	_onFocusIn() {
+	_onFocusIn(e) {
+		if (this._listItemNewStyles) {
+			e.stopPropagation(); // prevent _focusing from being set on the parent
+		}
 		this._focusing = true;
 		if (this.role !== 'row' || !tabPressed || hasDisplayedKeyboardTooltip) return;
 		this._displayKeyboardTooltip = true;
