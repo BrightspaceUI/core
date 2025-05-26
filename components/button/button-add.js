@@ -42,6 +42,8 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				--d2l-button-add-animation-duration: 200ms;
 				--d2l-button-add-hover-focus-color: var(--d2l-color-celestine-minus-1);
 				--d2l-button-add-line-color: var(--d2l-color-mica);
+				--d2l-button-add-line-height: 1px;
+				--d2l-button-add-focus-line-height: 2px;
 			}
 			:host([mode="icon-when-interacted"]) {
 				--d2l-button-add-animation-delay: 50ms;
@@ -71,7 +73,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 
 			.line {
 				background: var(--d2l-button-add-line-color);
-				height: 1px;
+				height: var(--d2l-button-add-line-height);
 				margin: 5px 0;
 				width: 100%;
 			}
@@ -79,7 +81,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			button:hover .line,
 			button:focus .line {
 				background: var(--d2l-button-add-hover-focus-color);
-				height: 2px;
+				height: var(--d2l-button-add-focus-line-height);
 			}
 			button:hover d2l-button-add-icon-text,
 			button:focus d2l-button-add-icon-text {

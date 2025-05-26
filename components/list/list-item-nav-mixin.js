@@ -34,6 +34,8 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			}
 			:host([current]) d2l-button-add {
 				--d2l-button-add-line-color: var(--d2l-color-celestine);
+				--d2l-button-add-line-height: 3px;
+				--d2l-button-add-focus-line-height: 3px;
 			}
 			:host([current]) [slot="outside-control-container"] {
 				background-color: var(--d2l-color-regolith);

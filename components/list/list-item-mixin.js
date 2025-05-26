@@ -360,6 +360,13 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border: double 1px transparent;
 				border-radius: 6px;
 			}
+			:host([_show-add-button][current])  [slot="outside-control-container"].hide-bottom-border {
+				background-clip: content-box, border-box;
+				background-image: linear-gradient(var(--d2l-color-regolith), var(--d2l-color-regolith)), linear-gradient(to right, var(--d2l-color-celestine) 30%, transparent 30%, transparent 70%, var(--d2l-color-celestine) 70%);
+				background-origin: border-box;
+				border: double 3px transparent;
+				border-radius: 6px;
+			}
 			:host(:not([selection-disabled]):not([skeleton])[selected]:not([current])) [slot="outside-control-container"].hide-bottom-border {
 				background-image: linear-gradient(#f3fbff, #f3fbff), linear-gradient(to right, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 20%, transparent 20%, transparent 80%, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 80%); /* stylelint-disable-line */
 			}
