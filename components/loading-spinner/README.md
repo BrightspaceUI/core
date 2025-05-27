@@ -28,7 +28,7 @@ A loading spinner indicates that something is happening and we don't know how lo
 
 ### When should I use the Skeleton Loader pattern vs. a Loading Spinner?
 The skeleton loader pattern has a feeling of "an existing structure coming into focus", whereas the spinner has a feeling of progression. Because of this, we say that Skeleton Loaders are for loading page chrome, whereas Spinners are for loading data.
-* If the page loading for the first time and different parts of the page are coming in asynchronously, use Skeleton Loader pattern.
+* If the page is loading for the first time and different parts of the page are coming in asynchronously, use Skeleton Loader pattern.
 * If your design is progressively disclosing new components (new form fields for example) because the user has expanded or opened a panel, use Skeleton Loader pattern.
 * If the data on a page changes as a result of a user action, ie: sorting or filtering a table, paginating, etc -- use a Loading Spinner.
 * If you need to communicate that part of the page is processing data, use a spinner.
