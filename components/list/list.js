@@ -28,8 +28,15 @@ function handleChildCurrentChange(target) {
 		const firstChild = target.querySelector('[first]');
 		if (firstChild) firstChild._hasCurrentParent = true;
 	}
-	if (target._getPreviousListItemSibling()) {
-		target._getPreviousListItemSibling()._nextSiblingCurrent = true;
+
+	const prevSibling = target._getPreviousListItemSibling();
+	if (prevSibling) {
+		prevSibling._nextSiblingCurrent = true;
+
+		if (prevSibling._hasNestedList) {
+			const lastChild = prevSibling.querySelector('[last]');
+			if (lastChild) lastChild._nextSiblingCurrent = true;
+		}
 	}
 }
 
@@ -432,8 +439,12 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				const firstChild = this.querySelector('[_has-current-parent]');
 				if (firstChild) firstChild._hasCurrentParent = false;
 
-				const prevSibling = this.querySelector('[_next-sibling-current]');
-				if (prevSibling) prevSibling._nextSiblingCurrent = false;
+				const prevSiblings = this.querySelectorAll('[_next-sibling-current]');
+				if (prevSiblings.length > 0) {
+					prevSiblings.forEach(sibling => {
+						sibling._nextSiblingCurrent = false;
+					});
+				}
 			} else {
 				handleChildCurrentChange(target);
 
@@ -456,9 +467,18 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	_handleSlotChange() {
 		this._updateItemShowingCount();
-		this.getItems().forEach((item, i) => {
-			if (i === 0) item.first = true;
-			else item.first = false;
+		const items = this.getItems();
+		items.forEach((item, i) => {
+			if (i === 0) {
+				item.first = true;
+				item.last = false;
+			} else if (i === items.length - 1) {
+				item.first = false;
+				item.last = true;
+			} else {
+				item.first = false;
+				item.last = false;
+			}
 		});
 
 		/** @ignore */
