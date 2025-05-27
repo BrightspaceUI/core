@@ -18,7 +18,7 @@ export const selectStyles = css`
 		background-color: #ffffff;
 		background-image: ${chevron};
 		background-origin: border-box;
-		background-position: center right 17px;
+		background-position: center var(--d2l-mirror-end, right) 17px;
 		background-repeat: no-repeat;
 		background-size: 11px 7px;
 		border: none;
@@ -40,9 +40,6 @@ export const selectStyles = css`
 		padding-inline: calc(0.75rem + 1px) calc(2px + 0.8rem + 1px + 11px + 16px + 1px);
 		vertical-align: middle;
 	}
-	:host([dir="rtl"]) .d2l-input-select {
-		background-position: center left 17px;
-	}
 
 	.d2l-input-select:not([disabled]):hover,
 	.d2l-input-select:not([disabled]):${focusClass} {
@@ -52,7 +49,7 @@ export const selectStyles = css`
 	}
 	.d2l-input-select[aria-invalid="true"] {
 		background-image: ${chevron}, ${invalidIcon};
-		background-position: center right 17px, center right calc(1px + 11px + 17px);
+		background-position: center var(--d2l-mirror-end, right) 17px, center var(--d2l-mirror-end, right) calc(1px + 11px + 17px);
 		background-repeat: no-repeat, no-repeat;
 		background-size: 11px 7px, 0.8rem 0.8rem;
 	}
@@ -60,9 +57,6 @@ export const selectStyles = css`
 	.d2l-input-select[aria-invalid="true"]:${focusClass},
 	.d2l-input-select[aria-invalid="true"]:hover {
 		outline-color: var(--d2l-color-cinnabar);
-	}
-	:host([dir="rtl"]) .d2l-input-select[aria-invalid="true"] {
-		background-position: center left 17px, center left calc(1px + 11px + 17px);
 	}
 	.d2l-input-select:disabled {
 		opacity: 0.5;
@@ -95,7 +89,7 @@ export const selectStyles = css`
 
 		.d2l-input-select[aria-invalid="true"] {
 			background-image: ${invalidIcon};
-			background-position: center right calc(1px + 11px + 17px);
+			background-position: center var(--d2l-mirror-end, right) calc(1px + 11px + 17px);
 			background-repeat: no-repeat;
 			background-size: 0.8rem 0.8rem;
 		}
@@ -104,9 +98,6 @@ export const selectStyles = css`
 		.d2l-input-select[aria-invalid="true"]:${focusClass},
 		.d2l-input-select[aria-invalid="true"]:hover {
 			outline-color: var(--d2l-color-cinnabar);
-		}
-		:host([dir="rtl"]) .d2l-input-select[aria-invalid="true"] {
-			background-position: center left calc(1px + 11px + 17px);
 		}
 	}
 `;

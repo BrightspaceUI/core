@@ -1,9 +1,8 @@
 import { css, html, LitElement } from 'lit';
-import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 import { selectStyles } from '../input-select-styles.js';
 import { SkeletonMixin } from '../../../components/skeleton/skeleton-mixin.js';
 
-class TestInputSelect extends SkeletonMixin(RtlMixin(LitElement)) {
+class TestInputSelect extends SkeletonMixin(LitElement) {
 
 	static get properties() {
 		return {

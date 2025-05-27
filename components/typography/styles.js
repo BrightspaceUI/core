@@ -506,10 +506,12 @@ export const baseTypographyStyles = css`
 	html {
 		--d2l-document-direction: ltr;
 		--d2l-mirror-transform: none;
+		--d2l-mirror-end: right;
 	}
 	html[dir="rtl"] {
 		--d2l-document-direction: rtl;
 		--d2l-mirror-transform: scale(-1, 1);
+		--d2l-mirror-end: left;
 	}
 
 	.d2l-typography {
