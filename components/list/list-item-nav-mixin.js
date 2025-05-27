@@ -37,7 +37,7 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			:host([_next-sibling-current]) [slot="add"] d2l-button-add {
 				--d2l-button-add-line-color: var(--d2l-color-celestine);
 				--d2l-button-add-line-height: 3px;
-				--d2l-button-add-focus-line-height: 3px;
+				--d2l-button-add-hover-focus-line-height: 3px;
 			}
 			:host([current]) [slot="outside-control-container"] {
 				background-color: var(--d2l-color-regolith);
@@ -57,6 +57,12 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 				--d2l-list-item-content-text-color: var(--d2l-color-ferrite);
 				--d2l-list-item-content-text-decoration: none;
 			}
+			:host(:first-of-type[_show-add-button][_nested]:not([_has-current-parent])) [slot="outside-control"] {
+				border-top: 1px solid var(--d2l-color-mica);
+			}
+			:host(:first-of-type[_show-add-button][_nested][current]) [slot="outside-control"] {
+				border-color: var(--d2l-color-celestine);
+			}
 
 		` ];
 
@@ -69,6 +75,7 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 		this.current = false;
 		this._childCurrent = false;
 		this._focusingElem = false;
+		this._hasCurrentParent = false;
 		this._nextSiblingCurrent = false;
 	}
 

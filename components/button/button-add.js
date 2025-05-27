@@ -47,7 +47,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				--d2l-button-add-hover-focus-color: var(--d2l-color-celestine-minus-1);
 				--d2l-button-add-line-color: var(--d2l-color-mica);
 				--d2l-button-add-line-height: 1px;
-				--d2l-button-add-focus-line-height: 2px;
+				--d2l-button-add-hover-focus-line-height: 2px;
 			}
 			:host([mode="icon-when-interacted"]) {
 				--d2l-button-add-animation-delay: 50ms;
@@ -85,7 +85,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			button:hover .line,
 			button:focus .line {
 				background: var(--d2l-button-add-hover-focus-color);
-				height: var(--d2l-button-add-focus-line-height);
+				height: var(--d2l-button-add-hover-focus-line-height);
 			}
 			button:hover d2l-button-add-icon-text,
 			button:focus d2l-button-add-icon-text {
@@ -109,7 +109,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 
 			button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
 				border-radius: 0.3rem;
-				box-shadow: 0 0 0 var(--d2l-button-add-focus-line-height) var(--d2l-button-add-hover-focus-color);
+				box-shadow: 0 0 0 var(--d2l-button-add-hover-focus-line-height) var(--d2l-button-add-hover-focus-color);
 			}
 			:host([mode="icon-when-interacted"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text,
 			:host([mode="icon"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {

@@ -152,12 +152,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-bottom: 1px solid var(--d2l-color-mica);
 				margin-bottom: -1px;
 			}
-			:host(:first-of-type[_show-add-button][_nested]:not([_has-current-parent])) [slot="outside-control"] {
-				border-top: 1px solid var(--d2l-color-mica);
-			}
-			:host(:first-of-type[_show-add-button][_nested][current]) [slot="outside-control"] {
-				border-color: var(--d2l-color-celestine);
-			}
 			:host([_has-nested-list-add-button]:not([selection-disabled]):not([skeleton])[selected]) [slot="before-content"] {
 				border-bottom-color: ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')}; /* stylelint-disable-line */
 			}
@@ -468,12 +462,21 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-bottom: -12.5px;
 				margin-top: -11.5px;
 			}
-			:host([draggable][_hovering]) [slot="add"],
-			:host([draggable][_focusing]) [slot="add"],
+			:host([_list-item-new-styles][draggable][_hovering]) [slot="add"],
+			:host([_list-item-new-styles][draggable][_focusing]) [slot="add"],
+			:host([_list-item-new-styles][draggable][_hovering]) [slot="add-top"],
+			:host([_list-item-new-styles][draggable][_focusing]) [slot="add-top"],
 			:host([draggable][current]) [slot="add"],
-			:host([draggable][_hovering]) [slot="add-top"],
-			:host([draggable][_focusing]) [slot="add-top"],
-			:host([draggable][current]) [slot="add-top"] {
+			:host([draggable][_next-sibling-current]) [slot="add"],
+			:host([draggable][current]) [slot="add-top"],
+			:host([draggable][_has-current-parent]) [slot="add-top"] {
+				padding-inline-end: 6px;
+			}
+			/* clean up with GAUD-7495-list-item-new-styles flag; it is covered by the block above */
+			:host([draggable][selectable][_hovering]) [slot="add"],
+			:host([draggable][selectable][_focusing]) [slot="add"],
+			:host([draggable][selectable][_hovering]) [slot="add-top"],
+			:host([draggable][selectable][_focusing]) [slot="add-top"] {
 				padding-inline-end: 6px;
 			}
 			.dragging [slot="add"] {
