@@ -426,8 +426,9 @@ describe('list', () => {
 			{ name: 'focus', action: async(elem) => await focusElem(elem.querySelector('d2l-list-item-nav')) },
 			{ name: 'focus current', action: async(elem) => await focusElem(elem.querySelector('[current]')), current: true },
 			{ name: 'hover', action: async(elem) => await hoverElem(elem.querySelector('d2l-list-item-nav')) },
-			{ name: 'focus second item', action: async(elem) => await focusElem(elem.querySelector('d2l-list-item-nav[key="L1-2"]')) }
-		].forEach(({ name, action, current }) => {
+			{ name: 'focus second item', action: async(elem) => await focusElem(elem.querySelector('d2l-list-item-nav[key="L1-2"]')) },
+			{ name: 'focus second item current', action: async(elem) => await focusElem(elem.querySelector('d2l-list-item-nav[key="L1-2"]')), currentSecond: true }
+		].forEach(({ name, action, current, currentSecond }) => {
 			it(name, async() => {
 				const elem = await fixture(html`
 					<d2l-list grid style="width: 334px;" add-button>
@@ -449,7 +450,7 @@ describe('list', () => {
 								</d2l-list-item-nav>
 							</d2l-list>
 						</d2l-list-item-nav>
-						<d2l-list-item-nav action-href=" " key="L1-2" label="Welcome!" color="#006fbf" expandable expanded draggable>
+						<d2l-list-item-nav action-href=" " key="L1-2" label="Welcome!" color="#006fbf" expandable expanded draggable ?current="${currentSecond || false}">
 							<d2l-list-item-content>
 								<div>Welcome!</div>
 							</d2l-list-item-content>

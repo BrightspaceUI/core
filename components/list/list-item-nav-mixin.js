@@ -120,6 +120,24 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 	dispatchSetChildCurrentEvent(val) {
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-nav-set-child-current', { bubbles: true, composed: true, detail: { value: val } }));
+
+		if (!val) return;
+		requestAnimationFrame(() => {
+			if (this._hasNestedList) {
+				const firstChild = this.querySelector('[first]');
+				if (firstChild) firstChild._hasCurrentParent = true;
+			}
+
+			const prevSibling = this._getPreviousListItemSibling();
+			if (prevSibling) {
+				prevSibling._nextSiblingCurrent = true;
+
+				if (prevSibling._hasNestedList) {
+					const lastChild = prevSibling.querySelector('[last]');
+					if (lastChild) lastChild._nextSiblingCurrent = true;
+				}
+			}
+		});
 	}
 
 	_handleLinkClick(e) {
