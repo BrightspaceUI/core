@@ -1049,6 +1049,7 @@ describe('list', () => {
 			{ name: 'default expanded', template: createExpandableList({ expanded: true }) },
 			{ name: 'selectable', template: createExpandableList({ expanded: true, selectable: true }) },
 			{ name: 'draggable', template: createExpandableList({ color2: '#0000ff', draggable: true, expanded: true }) },
+			{ name: 'draggable focus nested', template: createExpandableList({ color2: '#0000ff', draggable: true, expanded: true }), action: elem => focusElem(elem.querySelectorAll('d2l-list-item')[2].shadowRoot.querySelector('d2l-button-icon')) },
 			{ name: 'selectable draggable', template: createExpandableList({ color3: '#129044', draggable: true, expanded: true, selectable: true }) },
 			{ name: 'selectable draggable rtl', rtl: true, template: createExpandableList({ color3: '#129044', draggable: true, expanded: true, selectable: true }) },
 			{ name: 'default expanded multiple nested lists', template: createExpandableList({ color3: '#ff0000', expanded: true, nestedMultiple: true }) },
