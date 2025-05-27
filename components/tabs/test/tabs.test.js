@@ -213,4 +213,97 @@ describe('d2l-tabs', () => {
 			consoleSpy.restore();
 		});
 	});
+
+	describe('handleSlotChange', () => {
+		it('should set data-hide as expected when simple', async() => {
+			const elem = await fixture(html`
+				<d2l-tab id="all" text="All" slot="tabs">
+					<d2l-icon icon="tier1:checkmark" slot="before"></d2l-icon>
+					<d2l-count-badge icon="tier1:checkmark" slot="after"></d2l-count-badge>
+				</d2l-tab>
+			`);
+			expect(elem.querySelector('d2l-icon').hasAttribute('data-hide')).to.be.false;
+			expect(elem.querySelector('d2l-count-badge').hasAttribute('data-hide')).to.be.false;
+		});
+
+		it('should set data-hide as expected when out of order', async() => {
+			const elem = await fixture(html`
+				<d2l-tab id="all" text="All" slot="tabs">
+					<d2l-count-badge icon="tier1:checkmark" slot="after"></d2l-count-badge>
+					<d2l-icon-custom icon="tier1:checkmark" slot="before"></d2l-icon-custom>
+				</d2l-tab>
+			`);
+			expect(elem.querySelector('d2l-count-badge').hasAttribute('data-hide')).to.be.false;
+			expect(elem.querySelector('d2l-icon-custom').hasAttribute('data-hide')).to.be.false;
+		});
+
+		it('should set data-hide as expected when multiple', async() => {
+			const elem = await fixture(html`
+				<d2l-tab id="all" text="All" slot="tabs">
+					<d2l-icon id="item1" icon="tier1:checkmark" slot="before"></d2l-icon>
+					<d2l-count-badge id="item2" icon="tier1:checkmark" slot="before"></d2l-count-badge>
+					<d2l-icon id="item3" icon="tier1:checkmark" slot="after"></d2l-icon>
+					<d2l-count-badge id="item4" icon="tier1:checkmark" slot="after"></d2l-count-badge>
+				</d2l-tab>
+			`);
+			expect(elem.querySelector('#item1').hasAttribute('data-hide')).to.be.false;
+			expect(elem.querySelector('#item2').hasAttribute('data-hide')).to.be.true;
+			expect(elem.querySelector('#item3').hasAttribute('data-hide')).to.be.false;
+			expect(elem.querySelector('#item4').hasAttribute('data-hide')).to.be.true;
+		});
+
+		it('should remove data-hide when needed', async() => {
+			const elem = await fixture(html`
+				<d2l-tab id="all" text="All" slot="tabs">
+					<d2l-icon id="item1" icon="tier1:checkmark" slot="before"></d2l-icon>
+					<d2l-count-badge id="item2" icon="tier1:checkmark" slot="before"></d2l-count-badge>
+					<d2l-icon id="item3" icon="tier1:checkmark" slot="after"></d2l-icon>
+					<d2l-count-badge id="item4" icon="tier1:checkmark" slot="after"></d2l-count-badge>
+				</d2l-tab>
+			`);
+			const afterVisible = elem.querySelector('#item3');
+			afterVisible.remove();
+			await elem.updateComplete;
+			expect(elem.querySelector('#item1').hasAttribute('data-hide')).to.be.false;
+			expect(elem.querySelector('#item2').hasAttribute('data-hide')).to.be.true;
+			expect(elem.querySelector('#item4').hasAttribute('data-hide')).to.be.false;
+		});
+
+		it('should add data-hide when needed', async() => {
+			const elem = await fixture(html`
+				<d2l-tab id="all" text="All" slot="tabs">
+					<d2l-icon id="item1" icon="tier1:checkmark" slot="before"></d2l-icon>
+					<d2l-count-badge id="item2" icon="tier1:checkmark" slot="before"></d2l-count-badge>
+					<d2l-icon id="item3" icon="tier1:checkmark" slot="after"></d2l-icon>
+					<d2l-count-badge id="item4" icon="tier1:checkmark" slot="after"></d2l-count-badge>
+				</d2l-tab>
+			`);
+			const newElem = document.createElement('d2l-icon');
+			newElem.id = 'item5';
+			newElem.slot = 'after';
+			elem.insertBefore(newElem, elem.querySelector('#item3'));
+			await elem.updateComplete;
+			expect(elem.querySelector('#item1').hasAttribute('data-hide')).to.be.false;
+			expect(elem.querySelector('#item2').hasAttribute('data-hide')).to.be.true;
+			expect(elem.querySelector('#item3').hasAttribute('data-hide')).to.be.true;
+			expect(elem.querySelector('#item4').hasAttribute('data-hide')).to.be.true;
+			expect(elem.querySelector('#item5').hasAttribute('data-hide')).to.be.false;
+		});
+
+		it('should not add data-hide to non-applicable elems', async() => {
+			const elem = await fixture(html`
+				<d2l-tab id="all" text="All" slot="tabs">
+					<d2l-button-subtle icon="tier1:checkmark" slot="before"></d2l-button-subtle>
+					<d2l-icon-custom icon="tier1:checkmark" slot="before"></d2l-icon-custom>
+					<d2l-icon icon="tier1:checkmark" slot="before"></d2l-icon>
+					<d2l-count-badge icon="tier1:checkmark" slot="after"></d2l-count-badge>
+				</d2l-tab>
+			`);
+			expect(elem.querySelector('d2l-button-subtle').hasAttribute('data-hide')).to.be.false;
+			expect(getComputedStyle(elem.querySelector('d2l-button-subtle')).display).to.equal('none');
+			expect(elem.querySelector('d2l-icon-custom').hasAttribute('data-hide')).to.be.false;
+			expect(elem.querySelector('d2l-icon').hasAttribute('data-hide')).to.be.true;
+			expect(elem.querySelector('d2l-count-badge').hasAttribute('data-hide')).to.be.false;
+		});
+	});
 });
