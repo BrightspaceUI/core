@@ -7,12 +7,14 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+import { SlottedIconMixin } from '../icons/slotted-icon-mixin.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 /**
  * A component used to display additional information when users focus or hover over some text.
  * @slot - Default content placed inside of the tooltip
  */
-class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
+class TooltipHelp extends SlottedIconMixin(SkeletonMixin(FocusMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -52,6 +54,7 @@ class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
 				cursor: inherit;
 				font-family: inherit;
 				padding: 0;
+				position: relative;
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
 				text-decoration-thickness: 1px;
@@ -80,6 +83,14 @@ class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
 			:host([skeleton]) #d2l-tooltip-help-text.d2l-skeletize {
 				text-decoration: none;
 			}
+
+			d2l-icon,
+			slot[name="icon"]::slotted(d2l-icon-custom) {
+				left: 0;
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+			}
 		`];
 	}
 
@@ -107,8 +118,12 @@ class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
 			'd2l-body-small': !this.inheritFontStyle,
 			'd2l-skeletize': true
 		};
+		const buttonStyles = {
+			paddingInlineStart: this.hasIcon() ? '1.2rem' : ''
+		};
 		return html`
-			<button id="d2l-tooltip-help-text" class="${classMap(classes)}" type="button">
+			<button id="d2l-tooltip-help-text" class="${classMap(classes)}" style="${styleMap(buttonStyles)}" type="button">
+				${this._renderIcon()}
 				${this.text}
 			</button>
 			${!this.skeleton ? html`
