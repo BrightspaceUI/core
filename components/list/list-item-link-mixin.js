@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import { css, html, nothing } from 'lit';
 import { isInteractiveInListItemComposedPath, ListItemMixin } from './list-item-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const ListItemLinkMixin = superclass => class extends ListItemMixin(superclass) {
 
@@ -11,7 +12,8 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 			 * Address of item link if navigable
 			 * @type {string}
 			 */
-			actionHref: { type: String, attribute: 'action-href', reflect: true }
+			actionHref: { type: String, attribute: 'action-href', reflect: true },
+			_ariaCurrent: { type: String }
 		};
 	}
 
@@ -91,7 +93,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 
 	_handleLinkFocus(e) {
 		if (this._getDescendantClicked(e)) {
-			e.stopPropagation();
+			requestAnimationFrame(() => this._focusingPrimaryAction = false);
 		}
 	}
 
@@ -106,6 +108,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 	_renderPrimaryAction(labelledBy, content) {
 		if (!this.actionHref) return;
 		return html`<a aria-labelledby="${labelledBy}"
+			aria-current="${ifDefined(this._ariaCurrent)}"
 			@click="${this._handleLinkClick}"
 			@focusin="${this._handleLinkFocus}"
 			href="${this.actionHref}"

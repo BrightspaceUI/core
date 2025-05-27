@@ -1,5 +1,5 @@
 import '../input-date-time-range.js';
-import { defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
+import { defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { LitElement, nothing } from 'lit';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -293,6 +293,7 @@ describe('d2l-input-date-time-range', () => {
 						actualElem = elem.querySelector('d2l-input-date-time-range');
 						await changeInnerInputDateTime(elem, startDateSelector, startDate);
 						await changeInnerInputDateTime(elem, endDateSelector, endDate, true);
+						await waitUntil(() => actualElem.shadowRoot.querySelector('d2l-input-date-time-range-to')._blockDisplay, 'component never changed layout');
 					});
 
 					it('basic', async() => {
@@ -327,6 +328,7 @@ describe('d2l-input-date-time-range', () => {
 						actualElem = elem.querySelector('d2l-input-date-time-range');
 						await changeInnerInputTextDate(elem, startDateSelector, startDate, true);
 						await changeInnerInputTextDate(elem, endDateSelector, endDate, true);
+						await waitUntil(() => actualElem.shadowRoot.querySelector('d2l-input-date-time-range-to')._blockDisplay, 'component never changed layout');
 					});
 
 					it('basic', async() => {
@@ -381,6 +383,7 @@ describe('d2l-input-date-time-range', () => {
 						actualElem = elem.querySelector('d2l-input-date-time-range');
 						await changeInnerInputTextDate(elem, changeStartDateFirst ? startDateSelector : endDateSelector, changeStartDateFirst ? startDate : endDate, true);
 						await changeInnerInputTextDate(elem, changeStartDateFirst ? endDateSelector : startDateSelector, changeStartDateFirst ? endDate : startDate, true);
+						await waitUntil(() => actualElem.shadowRoot.querySelector('d2l-input-date-time-range-to')._blockDisplay, 'component never changed layout');
 					});
 
 					it('focus start', async() => {

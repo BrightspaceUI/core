@@ -6,7 +6,9 @@ import { heading1Styles, heading2Styles, heading3Styles, heading4Styles } from '
 import { classMap } from 'lit/directives/class-map.js';
 import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { getComposedActiveElement } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { isComposedAncestor } from '../../helpers/dom.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -25,6 +27,21 @@ const normalizeHeadingLevel = (number) => {
 };
 
 const defaultHeading = 3;
+
+let tabPressed = false;
+let tabListenerAdded = false;
+function addTabListener() {
+	if (tabListenerAdded) return;
+	tabListenerAdded = true;
+	document.addEventListener('keydown', e => {
+		if (e.keyCode !== 9) return;
+		tabPressed = true;
+	});
+	document.addEventListener('keyup', e => {
+		if (e.keyCode !== 9) return;
+		tabPressed = false;
+	});
+}
 
 /**
  * A container with a title that can be expanded/collapsed to show/hide content.
@@ -255,7 +272,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				transform-origin: 0.4rem;
 			}
 			:host([expanded]) d2l-icon-custom svg {
-				fill: var(--d2l-color-tungsten);
+				fill: currentColor;
 				transform: rotate(90deg);
 			}
 			@media (prefers-reduced-motion: no-preference) {
@@ -338,6 +355,11 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 		return '.d2l-collapsible-panel-opener';
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		addTabListener();
+	}
+
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
@@ -414,13 +436,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 		));
 	}
 
-	_handleHeaderClick(e) {
-		if (this.expanded) {
-			this._toggleExpand();
-			e.stopPropagation();
-		}
-	}
-
 	_handleHeaderSecondaryClick(e) {
 		const header = this.shadowRoot.querySelector('.d2l-collapsible-panel-header-secondary');
 		if (e.target !== header) {
@@ -429,10 +444,8 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	_handlePanelClick(e) {
-		if (!this.expanded) {
-			this._toggleExpand();
-			e.stopPropagation();
-		}
+		const content = this.shadowRoot.querySelector('.d2l-collapsible-panel-content');
+		if (e.target !== content && !isComposedAncestor(content, e.target)) this._toggleExpand();
 	}
 
 	_handleSummarySlotChange(e) {
@@ -441,16 +454,21 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 	}
 
 	_onBlur() {
-		this._focused = false;
+		setTimeout(() => {
+			// don't remove focus if the button still ends up in focus
+			if (getComposedActiveElement() === this.shadowRoot.querySelector('button')) return;
+			this._focused = false;
+		}, 10);
 	}
 
 	_onFocus() {
+		if (!tabPressed) return;
 		this._focused = true;
 	}
 
 	_renderHeader() {
 		return html`
-			<div class="d2l-collapsible-panel-header" @click="${this._handleHeaderClick}">
+			<div class="d2l-collapsible-panel-header">
 				<div class="d2l-collapsible-panel-before">
 					<slot name="before" @slotchange="${this._handleBeforeSlotChange}"></slot>
 				</div>
@@ -461,7 +479,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 					</div>
 					<d2l-icon-custom size="tier1" class="d2l-skeletize" aria-hidden="true">
 						<svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" fill="none" viewBox="0 0 10 18">
-							<path stroke="var(--d2l-color-tungsten)" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
+							<path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="m9 9-8 8V1l8 8Z"/>
 						</svg>
 					</d2l-icon-custom>
 				</div>
@@ -488,7 +506,6 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				class="d2l-collapsible-panel-opener"
 				aria-expanded="${this.expanded}"
 				type="button"
-				@click="${this._handleHeaderClick}"
 				@focus="${this._onFocus}"
 				@blur="${this._onBlur}"
 				aria-label="${ifDefined(this.expandCollapseLabel)}">${this.panelTitle}</button>

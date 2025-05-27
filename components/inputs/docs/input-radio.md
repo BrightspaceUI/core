@@ -62,7 +62,7 @@ When provided with a `name`, the group will participate in forms with the `value
 When the radio group's state changes, it dispatches the `change` event:
 
 ```javascript
-checkbox.addEventListener('change', e => {
+group.addEventListener('change', e => {
   const newValue = e.target.detail.value;
   const oldValue = e.target.detail.oldValue; // may be undefined
 });

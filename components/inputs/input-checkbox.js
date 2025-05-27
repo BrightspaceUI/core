@@ -1,17 +1,22 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
-import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { InputInlineHelpMixin } from './input-inline-help.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+import { svgToCSS } from '../../helpers/svg-to-css.js';
 
-const inputStyleTweaksEnabled = getFlag('input-style-tweaks', true);
+export const inputCheck = svgToCSS(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+	<path fill="#494C4E" d="M8.4 16.6c.6.6 1.5.6 2.1 0l8-8c.6-.6.6-1.5 0-2.1-.6-.6-1.5-.6-2.1 0l-6.9 7-1.9-1.9c-.6-.6-1.5-.6-2.1 0-.6.6-.6 1.5 0 2.1l2.9 2.9z"/>\
+</svg>`);
+export const inputCheckIndeterminate = svgToCSS(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+	<path fill="#494C4E" d="M7.5,11h9c0.8,0,1.5,0.7,1.5,1.5l0,0c0,0.8-0.7,1.5-1.5,1.5h-9C6.7,14,6,13.3,6,12.5l0,0C6,11.7,6.7,11,7.5,11z"/>
+</svg>`);
 
 export const cssSizes = {
 	inputBoxSize: 1.2,
@@ -38,10 +43,10 @@ export const checkboxStyles = css`
 		width: ${cssSizes.inputBoxSize}rem;
 	}
 	input[type="checkbox"].d2l-input-checkbox:checked {
-		background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23494C4E%22%20d%3D%22M8.4%2016.6c.6.6%201.5.6%202.1%200l8-8c.6-.6.6-1.5%200-2.1-.6-.6-1.5-.6-2.1%200l-6.9%207-1.9-1.9c-.6-.6-1.5-.6-2.1%200-.6.6-.6%201.5%200%202.1l2.9%202.9z%22/%3E%3C/svg%3E%0A");
+		background-image: ${inputCheck};
 	}
 	input[type="checkbox"].d2l-input-checkbox:indeterminate {
-		background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23494C4E%22%20d%3D%22M7.5%2C11h9c0.8%2C0%2C1.5%2C0.7%2C1.5%2C1.5l0%2C0c0%2C0.8-0.7%2C1.5-1.5%2C1.5h-9C6.7%2C14%2C6%2C13.3%2C6%2C12.5l0%2C0%0A%09C6%2C11.7%2C6.7%2C11%2C7.5%2C11z%22/%3E%3C/svg%3E%0A");
+		background-image: ${inputCheckIndeterminate};
 	}
 	input[type="checkbox"].d2l-input-checkbox,
 	input[type="checkbox"].d2l-input-checkbox:hover:disabled {
@@ -60,6 +65,33 @@ export const checkboxStyles = css`
 	input[type="checkbox"].d2l-input-checkbox:disabled,
 	input[type="checkbox"].d2l-input-checkbox[aria-disabled="true"] {
 		opacity: 0.5;
+	}
+	@media (prefers-contrast: more) {
+		input[type="checkbox"].d2l-input-checkbox:checked,
+		input[type="checkbox"].d2l-input-checkbox:indeterminate {
+			background-image: none;
+			position: relative;
+		}
+		input[type="checkbox"].d2l-input-checkbox:checked::after,
+		input[type="checkbox"].d2l-input-checkbox:indeterminate::after {
+			background-color: FieldText;
+			content: "";
+			display: block;
+			height: ${cssSizes.inputBoxSize}rem;
+			left: 50%;
+			position: absolute;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: ${cssSizes.inputBoxSize}rem;
+		}
+
+		input[type="checkbox"].d2l-input-checkbox:checked::after {
+			mask-image: ${inputCheck};
+		}
+
+		input[type="checkbox"].d2l-input-checkbox:indeterminate::after {
+			mask-image: ${inputCheckIndeterminate};
+		}
 	}
 `;
 
@@ -132,7 +164,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 			css`
 				:host {
 					display: block;
-					margin-block-end: ${unsafeCSS(inputStyleTweaksEnabled ? '0.6rem' : '0.9rem')}; /* stylelint-disable-line */
+					margin-block-end: 0.6rem;
 				}
 				:host([hidden]) {
 					display: none;
@@ -180,7 +212,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 				}
 				.d2l-input-checkbox-supporting {
 					display: none;
-					margin-block-start: ${unsafeCSS(inputStyleTweaksEnabled ? '0.6rem' : '0.9rem')}; /* stylelint-disable-line */
+					margin-block-start: 0.6rem;
 				}
 				.d2l-input-checkbox-supporting-visible {
 					display: block;

@@ -7,6 +7,14 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
+function debounce(func, delay) {
+	let timer = 0;
+	return function() {
+		clearTimeout(timer);
+		timer = setTimeout(func, delay);
+	};
+}
+
 class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
@@ -169,13 +177,13 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 		this._leftElemResizeObserver.disconnect();
 		this._leftElemResizeObserver.observe(leftElem);
 
-		this._parentElemResizeObserver = this._parentElemResizeObserver || new ResizeObserver(async() => {
+		this._parentElemResizeObserver = this._parentElemResizeObserver || new ResizeObserver(debounce(async() => {
 			this._blockDisplay = false;
 			await this.updateComplete;
 			const height = Math.ceil(parseFloat(getComputedStyle(container).getPropertyValue('height')));
 			if (height >= (leftElemHeight * 2)) this._blockDisplay = true; // switch to _blockDisplay styles if content has wrapped (needed for "to" to occupy its own line)
 			else this._blockDisplay = false;
-		});
+		}, 5).bind(this));
 		this._parentElemResizeObserver.disconnect();
 		this._parentElemResizeObserver.observe(this._parentNode);
 	}
