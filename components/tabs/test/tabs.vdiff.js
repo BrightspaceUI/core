@@ -469,6 +469,41 @@ describe('d2l-tabs', () => {
 				<d2l-tab-panel labelled-by="beforeafter" slot="panels">Tab content for Trig</d2l-tab-panel>
 			</d2l-tabs>
 		`;
+
+		const slotsMultipleFixture = html`
+			<d2l-tabs>
+				<d2l-tab id="beforeMultiple" text="Tab Text 1" slot="tabs">
+					<d2l-icon icon="tier1:gear" slot="before"></d2l-icon>
+					<d2l-icon icon="tier1:alert" slot="before"></d2l-icon>
+				</d2l-tab>
+				<d2l-tab id="afterMultiple" text="Tab Text 2" slot="tabs">
+					<d2l-icon icon="tier1:gear" slot="after"></d2l-icon>
+					<d2l-icon icon="tier1:alert" slot="after"></d2l-icon>
+				</d2l-tab>
+				<d2l-tab id="bothMultiple" text="Tab Text 3" slot="tabs">
+					<d2l-icon icon="tier1:gear" slot="before"></d2l-icon>
+					<d2l-icon icon="tier1:alert" slot="before"></d2l-icon>
+					<d2l-icon icon="tier1:gear" slot="after"></d2l-icon>
+					<d2l-icon icon="tier1:alert" slot="after"></d2l-icon>
+				</d2l-tab>
+				<d2l-tab id="wrongOrderMultiple" text="Tab Text 4" slot="tabs">
+					<d2l-icon icon="tier1:gear" slot="after"></d2l-icon>
+					<d2l-icon icon="tier1:alert" slot="after"></d2l-icon>
+					<d2l-icon icon="tier1:gear" slot="before"></d2l-icon>
+					<d2l-icon icon="tier1:alert" slot="before"></d2l-icon>
+				</d2l-tab>
+				<d2l-tab id="incorrectContent" text="Tab Text 5" slot="tabs">
+					<d2l-button slot="before">Button Text</d2l-button>
+					<d2l-button slot="after">Button Text 2</d2l-button>
+				</d2l-tab>
+				<d2l-tab-panel labelled-by="beforeMultiple" slot="panels">Tab content for Tab</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="afterMultiple" slot="panels">Tab content for Tab</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="bothMultiple" slot="panels">Tab content for Tab</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="wrongOrderMultiple" slot="panels">Tab content for Tab</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="incorrectContent" slot="panels">Tab content for Tab</d2l-tab-panel>
+			</d2l-tabs>
+		`;
+
 		const slotsSkeletonFixture = html`
 			<d2l-tabs skeleton>
 				<d2l-tab id="beforelong" text="Long Panel Text That Will Also Have Slot Content" slot="tabs" skeleton>
@@ -548,6 +583,11 @@ describe('d2l-tabs', () => {
 
 		it('skeleton no text', async() => {
 			const elem = await fixture(slotsSkeletonNoTextFixture);
+			await expect(elem).to.be.golden();
+		});
+
+		it('handles multiples correctly', async() => {
+			const elem = await fixture(slotsMultipleFixture);
 			await expect(elem).to.be.golden();
 		});
 	});
