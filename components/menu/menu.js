@@ -262,7 +262,11 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 	}
 
 	_labelChanged() {
-		this.setAttribute('aria-label', this.label);
+		if (typeof this.label === 'string' && this.label.trim().length > 0) {
+			this.setAttribute('aria-label', this.label);
+		} else {
+			this.removeAttribute('aria-label');
+		}
 		const returnItem = this._getMenuItemReturn();
 		if (returnItem) returnItem.setAttribute('text', this.label);
 	}
