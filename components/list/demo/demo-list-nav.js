@@ -13,6 +13,7 @@ class ListDemoNav extends LitElement {
 
 	static get properties() {
 		return {
+			addButton: { type: Boolean, attribute: 'add-button' },
 			_currentItem: { state: true }
 		};
 	}
@@ -36,6 +37,7 @@ class ListDemoNav extends LitElement {
 
 	constructor() {
 		super();
+		this.addButton = false;
 		this._currentItem = null;
 	}
 
@@ -44,6 +46,7 @@ class ListDemoNav extends LitElement {
 			<div @d2l-list-items-move="${this._handleListItemsMove}">
 				<d2l-list 
 					grid 
+					?add-button="${this.addButton}"
 					drag-multiple
 					@d2l-list-item-link-click="${this._handleItemClick}">
 					${repeat(this.#list, (item) => item.key, (item) => this._renderItem(item))}
@@ -151,7 +154,7 @@ class ListDemoNav extends LitElement {
 					}
 				</d2l-list-item-content>
 				${hasSubList ? html`
-					<d2l-list slot="nested" grid>
+					<d2l-list slot="nested" grid ?add-button="${this.addButton}">
 						${repeat(item.items, (subItem) => subItem.key, (subItem) => this._renderItem(subItem))}
 					</d2l-list>`
 						: nothing

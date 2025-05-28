@@ -85,6 +85,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
 			/**
+			 * @ignore
+			 */
+			last: { type: Boolean, reflect: true },
+			/**
 			 * Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive.
 			 * @type {boolean}
 			 */
@@ -144,7 +148,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				position: absolute;
 				width: 100%;
 			}
-			:host([_has-nested-list-add-button]) [slot="before-content"] {
+			:host([_has-nested-list-add-button]:not([current])) [slot="before-content"] {
 				border-bottom: 1px solid var(--d2l-color-mica);
 				margin-bottom: -1px;
 			}
@@ -339,22 +343,29 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"].hide-bottom-border,
 			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) [slot="outside-control-container"].hide-bottom-border,
 			:host(:not([_list-item-new-styles]):not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"].hide-bottom-border,
-			:host([_list-item-new-styles]:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing]) [slot="outside-control-container"].hide-bottom-border {
+			:host([_list-item-new-styles]:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing]:not([current])) [slot="outside-control-container"].hide-bottom-border {
 				background-clip: content-box, border-box;
-				background-image: linear-gradient(white, white), linear-gradient(to right, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 20%, transparent 20%, transparent 80%, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 80%); /* stylelint-disable-line */
+				background-image: linear-gradient(white, white), linear-gradient(to right, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 30%, transparent 30%, transparent 70%, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 70%); /* stylelint-disable-line */
 				background-origin: border-box;
 				border: double 1px transparent;
 				border-radius: 6px;
 			}
 			/* clean up with GAUD-7495-list-item-new-styles flag */
-			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing-elem]) [slot="outside-control-container"].hide-bottom-border {
+			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing-elem]:not([current])) [slot="outside-control-container"].hide-bottom-border {
 				background-clip: content-box, border-box;
 				background-image: linear-gradient(white, white), linear-gradient(to right, var(--d2l-color-mica) 20%, transparent 20%, transparent 80%, var(--d2l-color-mica) 80%);
 				background-origin: border-box;
 				border: double 1px transparent;
 				border-radius: 6px;
 			}
-			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"].hide-bottom-border {
+			:host([current]) [slot="outside-control-container"].hide-bottom-border {
+				background-clip: content-box, border-box;
+				background-image: linear-gradient(var(--d2l-color-regolith), var(--d2l-color-regolith)), linear-gradient(to right, var(--d2l-color-celestine) 30%, transparent 30%, transparent 70%, var(--d2l-color-celestine) 70%);
+				background-origin: border-box;
+				border: double 3px transparent;
+				border-radius: 6px;
+			}
+			:host(:not([selection-disabled]):not([skeleton])[selected]:not([current])) [slot="outside-control-container"].hide-bottom-border {
 				background-image: linear-gradient(#f3fbff, #f3fbff), linear-gradient(to right, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 20%, transparent 20%, transparent 80%, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 80%); /* stylelint-disable-line */
 			}
 			:host([_hovering-control]) d2l-button-add,
@@ -451,6 +462,17 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-bottom: -12.5px;
 				margin-top: -11.5px;
 			}
+			:host([_list-item-new-styles][draggable][_hovering]) [slot="add"],
+			:host([_list-item-new-styles][draggable][_focusing]) [slot="add"],
+			:host([_list-item-new-styles][draggable][_hovering]) [slot="add-top"],
+			:host([_list-item-new-styles][draggable][_focusing]) [slot="add-top"],
+			:host([draggable][current]) [slot="add"],
+			:host([draggable][_next-sibling-current]) [slot="add"],
+			:host([draggable][current]) [slot="add-top"],
+			:host([draggable][_has-current-parent]) [slot="add-top"] {
+				padding-inline-end: 6px;
+			}
+			/* clean up with GAUD-7495-list-item-new-styles flag; it is covered by the block above */
 			:host([draggable][selectable][_hovering]) [slot="add"],
 			:host([draggable][selectable][_focusing]) [slot="add"],
 			:host([draggable][selectable][_hovering]) [slot="add-top"],
@@ -753,6 +775,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				${this._showAddButton && this.first ? html`
 				<div slot="add-top">
 					<d2l-button-add
+						?disable-animation="${this.current || this._hasCurrentParent}"
 						text="${addButtonText}"
 						mode="icon-when-interacted"
 						@click="${this._handleButtonAddClick}"
@@ -804,7 +827,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				${this._renderNested(nested)}
 				${this._showAddButton && (!this._hasNestedListAddButton || (this.expandable && !this.expanded)) ? html`
 				<div slot="add">
-					<d2l-button-add text="${addButtonText}" mode="icon-when-interacted" @click="${this._handleButtonAddClick}"></d2l-button-add>
+					<d2l-button-add 
+						?disable-animation="${this.current || this._nextSiblingCurrent}" 
+						text="${addButtonText}" 
+						mode="icon-when-interacted" 
+						@click="${this._handleButtonAddClick}"></d2l-button-add>
 				</div>
 				` : nothing}
 			</d2l-list-item-generic-layout>

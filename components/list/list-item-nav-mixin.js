@@ -18,6 +18,8 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			preventNavigation: { type: Boolean, attribute: 'prevent-navigation' },
 			_childCurrent: { type: Boolean, reflect: true, attribute: '_child-current' },
 			_focusingElem: { type: Boolean, reflect: true, attribute: '_focusing-elem' },
+			_hasCurrentParent: { type: Boolean, reflect: true, attribute: '_has-current-parent' },
+			_nextSiblingCurrent: { type: Boolean, reflect: true, attribute: '_next-sibling-current' },
 		};
 	}
 
@@ -30,10 +32,21 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			.d2l-list-item-content ::slotted(*) {
 				width: 100%;
 			}
+			:host([current]) d2l-button-add,
+			:host([_has-current-parent]) [slot="add-top"] d2l-button-add,
+			:host([_next-sibling-current]) [slot="add"] d2l-button-add {
+				--d2l-button-add-line-color: var(--d2l-color-celestine);
+				--d2l-button-add-line-height: 3px;
+				--d2l-button-add-hover-focus-line-height: 3px;
+			}
 			:host([current]) [slot="outside-control-container"] {
 				background-color: var(--d2l-color-regolith);
 				border: 3px solid var(--d2l-color-celestine);
 				margin-block: 0;
+			}
+			:host([current][_show-add-button]) [slot="outside-control-container"] {
+				margin-bottom: -2px;
+				margin-top: -1px;
 			}
 			:host([current]) [slot="control-container"]::before,
 			:host([current]) [slot="control-container"]::after {
@@ -43,6 +56,12 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			:host([_focusing-primary-action]) .d2l-list-item-content {
 				--d2l-list-item-content-text-color: var(--d2l-color-ferrite);
 				--d2l-list-item-content-text-decoration: none;
+			}
+			:host(:first-of-type[_show-add-button][_nested]:not([_has-current-parent])) [slot="outside-control"] {
+				border-top: 1px solid var(--d2l-color-mica);
+			}
+			:host(:first-of-type[_show-add-button][_nested][current]) [slot="outside-control"] {
+				border-color: var(--d2l-color-celestine);
 			}
 
 		` ];
@@ -56,6 +75,8 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 		this.current = false;
 		this._childCurrent = false;
 		this._focusingElem = false;
+		this._hasCurrentParent = false;
+		this._nextSiblingCurrent = false;
 	}
 
 	connectedCallback() {
@@ -106,6 +127,24 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 	dispatchSetChildCurrentEvent(val) {
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-nav-set-child-current', { bubbles: true, composed: true, detail: { value: val } }));
+
+		if (!val) return;
+		requestAnimationFrame(() => {
+			if (this._hasNestedList) {
+				const firstChild = this.querySelector('[first]');
+				if (firstChild) firstChild._hasCurrentParent = true;
+			}
+
+			const prevSibling = this._getPreviousListItemSibling();
+			if (prevSibling) {
+				prevSibling._nextSiblingCurrent = true;
+
+				if (prevSibling._hasNestedList) {
+					const lastChild = prevSibling.querySelector('[last]');
+					if (lastChild) lastChild._nextSiblingCurrent = true;
+				}
+			}
+		});
 	}
 
 	_handleLinkClick(e) {
