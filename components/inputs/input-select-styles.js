@@ -18,7 +18,7 @@ export const selectStyles = css`
 		background-color: #ffffff;
 		background-image: ${chevron};
 		background-origin: border-box;
-		background-position: center var(--d2l-mirror-end, right) 17px;
+		background-position: center var(--d2l-inline-end, right) 17px;
 		background-repeat: no-repeat;
 		background-size: 11px 7px;
 		border: none;
@@ -49,7 +49,7 @@ export const selectStyles = css`
 	}
 	.d2l-input-select[aria-invalid="true"] {
 		background-image: ${chevron}, ${invalidIcon};
-		background-position: center var(--d2l-mirror-end, right) 17px, center var(--d2l-mirror-end, right) calc(1px + 11px + 17px);
+		background-position: center var(--d2l-inline-end, right) 17px, center var(--d2l-inline-end, right) calc(1px + 11px + 17px);
 		background-repeat: no-repeat, no-repeat;
 		background-size: 11px 7px, 0.8rem 0.8rem;
 	}
@@ -89,7 +89,7 @@ export const selectStyles = css`
 
 		.d2l-input-select[aria-invalid="true"] {
 			background-image: ${invalidIcon};
-			background-position: center var(--d2l-mirror-end, right) calc(1px + 11px + 17px);
+			background-position: center var(--d2l-inline-end, right) calc(1px + 11px + 17px);
 			background-repeat: no-repeat;
 			background-size: 0.8rem 0.8rem;
 		}
