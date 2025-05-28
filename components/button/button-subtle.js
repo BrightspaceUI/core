@@ -66,8 +66,11 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 				button {
 					--d2l-button-subtle-padding-inline-start: 0.6rem;
 					--d2l-button-subtle-padding-inline-end: 0.6rem;
+					align-items: center;
 					background-color: transparent;
 					border-color: transparent;
+					column-gap: 0.3rem;
+					display: inline-flex;
 					font-family: inherit;
 					padding-block-end: 0;
 					padding-block-start: 0;
@@ -132,22 +135,9 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 					--d2l-count-badge-background-color: var(--d2l-color-celestine-minus-1);
 				}
 
-
-				.d2l-button-subtle-has-icon .d2l-button-subtle-content-wrapper {
-					padding-inline: 1.2rem 0;
-				}
-
-				:host([icon-right]) .d2l-button-subtle-has-icon .d2l-button-subtle-content-wrapper {
-					padding-inline: 0 1.2rem;
-				}
-
 				.property-icon,
 				slot[name="icon"]::slotted(d2l-icon-custom) {
 					color: var(--d2l-color-celestine);
-					display: inline-block;
-					position: absolute;
-					top: 50%;
-					transform: translateY(-50%);
 				}
 
 				button:hover:not([disabled]) .property-icon,
@@ -161,7 +151,7 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 
 				:host([icon-right]) .property-icon,
 				:host([icon-right]) slot[name="icon"]::slotted(d2l-icon-custom) {
-					inset-inline-end: var(--d2l-button-subtle-padding-inline-end);
+					order: 1;
 				}
 
 				:host([disabled]) button {

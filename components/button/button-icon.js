@@ -32,18 +32,6 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
 			/**
-			 * REQUIRED: Preset icon key (e.g. "tier1:gear")
-			 * @type {string}
-			 */
-			icon: {
-				type: String,
-				reflect: true,
-				required: {
-					validator: (_value, elem, hasValue) => hasValue || elem._hasCustomIcon
-				}
-			},
-
-			/**
 			 * ACCESSIBILITY: REQUIRED: Accessible text for the button
 			 * @type {string}
 			 */
@@ -154,6 +142,7 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 		this._buttonId = getUniqueId();
 		/** @internal */
 		this._describedById = getUniqueId();
+		this._iconRequired = true;
 	}
 
 	render() {
