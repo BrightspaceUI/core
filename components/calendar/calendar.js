@@ -11,6 +11,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 
 const daysInWeek = 7;
 const keyCodes = {
@@ -361,11 +362,11 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				background-color: var(--d2l-color-gypsum);
 			}
 
-			td, .d2l-calendar-date:focus {
+			td, .d2l-calendar-date:${getFocusPseudoClass()} {
 				outline: none;
 			}
 
-			td:focus .d2l-calendar-date:not(:disabled) {
+			td:${getFocusPseudoClass()} .d2l-calendar-date:not(:disabled) {
 				outline: 2px solid var(--d2l-color-celestine);
 			}
 
@@ -376,13 +377,13 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				}
 			}
 
-			td:focus .d2l-calendar-date.d2l-calendar-date-initial {
+			td:${getFocusPseudoClass()} .d2l-calendar-date.d2l-calendar-date-initial {
 				animation: 200ms ease-in initial-focus;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
-				td:focus .d2l-calendar-date.d2l-calendar-date-initial,
-				td:focus .d2l-calendar-date-initial.d2l-calendar-date-day-info::after {
+				td:${getFocusPseudoClass()} .d2l-calendar-date.d2l-calendar-date-initial,
+				td:${getFocusPseudoClass()} .d2l-calendar-date-initial.d2l-calendar-date-day-info::after {
 					animation: none;
 				}
 			}
@@ -398,7 +399,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				outline: none;
 			}
 
-			td:focus .d2l-calendar-date.d2l-calendar-date-selected:disabled {
+			td:${getFocusPseudoClass()} .d2l-calendar-date.d2l-calendar-date-selected:disabled {
 				opacity: 1;
 				outline: 2px solid var(--d2l-color-celestine);
 			}
@@ -415,7 +416,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				}
 			}
 
-			td:focus .d2l-calendar-date-initial.d2l-calendar-date-day-info::after {
+			td:${getFocusPseudoClass()} .d2l-calendar-date-initial.d2l-calendar-date-day-info::after {
 				animation: 200ms ease-in initial-focus-day-info;
 			}
 
@@ -431,7 +432,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 
 			.d2l-calendar-date-selected.d2l-calendar-date-day-info::after,
-			td:focus .d2l-calendar-date-day-info::after {
+			td:${getFocusPseudoClass()} .d2l-calendar-date-day-info::after {
 				bottom: 3px;
 			}
 			@media (prefers-contrast: more) {
@@ -440,7 +441,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 					forced-color-adjust: none;
 				}
 
-				td:focus .d2l-calendar-date {
+				td:${getFocusPseudoClass()} .d2l-calendar-date {
 					outline-color: Highlight !important;
 				}
 			}
