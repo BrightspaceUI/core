@@ -169,7 +169,6 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 
 		this._buttonId = getUniqueId();
 		this._describedById = getUniqueId();
-		this._hasCustomIcon = false;
 	}
 
 	render() {

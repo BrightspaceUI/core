@@ -52,13 +52,13 @@ export const SlottedIconMixin = superclass => class extends superclass {
 		return !!(this.icon || this._hasCustomIcon);
 	}
 
-	_handleIconSlotChange(e) {
-		const icon = e.target.assignedElements({ flatten: true }).filter((node) => node.tagName === 'D2L-ICON-CUSTOM');
-		this._hasCustomIcon = icon.length === 1;
-	}
-
 	_renderIcon() {
 		const icon = this.icon ? html`<d2l-icon icon="${this.icon}" class="property-icon"></d2l-icon>` : nothing;
-		return html`<slot name="icon" @slotchange="${this._handleIconSlotChange}">${icon}</slot>`;
+		return html`<slot name="icon" @slotchange="${this.#handleIconSlotChange}">${icon}</slot>`;
+	}
+
+	#handleIconSlotChange(e) {
+		const icon = e.target.assignedElements({ flatten: true }).filter((node) => node.tagName === 'D2L-ICON-CUSTOM');
+		this._hasCustomIcon = icon.length === 1;
 	}
 };
