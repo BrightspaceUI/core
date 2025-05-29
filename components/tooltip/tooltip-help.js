@@ -62,7 +62,7 @@ class TooltipHelp extends SlottedIconMixin(SkeletonMixin(FocusMixin(LitElement))
 				text-underline-offset: 0.1rem;
 			}
 			d2l-icon,
-			slot[name="icon"]::slotted(d2l-icon-custom){
+			slot[name="icon"]::slotted(d2l-icon-custom) {
 				align-self: center;
 			}
 
