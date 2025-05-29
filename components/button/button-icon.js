@@ -1,20 +1,21 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor/visible-on-ancestor-mixin.js';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
+import { SlottedIconMixin } from '../icons/slotted-icon-mixin.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
 /**
  * A button component that can be used just like the native button for instances where only an icon is displayed.
  * @slot icon - Optional slot for a custom icon
  */
-class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(LitElement)))) {
+class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -31,18 +32,6 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
 			/**
-			 * REQUIRED: Preset icon key (e.g. "tier1:gear")
-			 * @type {string}
-			 */
-			icon: {
-				type: String,
-				reflect: true,
-				required: {
-					validator: (_value, elem, hasValue) => hasValue || elem._hasCustomIcon
-				}
-			},
-
-			/**
 			 * ACCESSIBILITY: REQUIRED: Accessible text for the button
 			 * @type {string}
 			 */
@@ -57,7 +46,7 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 	}
 
 	static get styles() {
-		return [ buttonStyles, visibleOnAncestorStyles,
+		return [super.styles, buttonStyles, visibleOnAncestorStyles,
 			css`
 				:host {
 					--d2l-button-icon-background-color: transparent;
@@ -118,18 +107,9 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 					background-color: var(--d2l-button-icon-background-color-hover);
 				}
 
-				slot[name="icon"]::slotted(*) {
-					display: none;
-				}
-				slot[name="icon"]::slotted(d2l-icon-custom) {
-					display: inline-flex;
-				}
-
 				d2l-icon,
 				slot[name="icon"]::slotted(d2l-icon-custom) {
 					color: var(--d2l-button-icon-fill-color, var(--d2l-color-tungsten));
-					height: 0.9rem;
-					width: 0.9rem;
 				}
 
 				:host([translucent]) button {
@@ -162,12 +142,10 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 		this._buttonId = getUniqueId();
 		/** @internal */
 		this._describedById = getUniqueId();
-		/** @internal */
-		this._hasCustomIcon = false;
+		this._iconRequired = true;
 	}
 
 	render() {
-		const icon = this.icon ? html`<d2l-icon icon="${this.icon}"></d2l-icon>` : nothing;
 		return html`
 			<button
 				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
@@ -187,17 +165,11 @@ class ButtonIcon extends PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnA
 				name="${ifDefined(this.name)}"
 				title="${ifDefined(this.text)}"
 				type="${this._getType()}">
-				<slot name="icon" @slotchange="${this._handleSlotChange}">${icon}</slot>
+				${this._renderIcon()}
 		</button>
 		${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
 		${this.disabled && this.disabledTooltip ? html`<d2l-tooltip for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
-	}
-
-	_handleSlotChange(e) {
-		this._hasCustomIcon = e.target.assignedNodes().find(
-			node => node.nodeType === 1 && node.tagName.toLowerCase() === 'd2l-icon-custom'
-		) !== undefined;
 	}
 
 }
