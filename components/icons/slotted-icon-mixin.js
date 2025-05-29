@@ -17,7 +17,7 @@ export const SlottedIconMixin = superclass => class extends superclass {
 					validator: (_value, elem, hasValue) => hasValue || elem._hasCustomIcon || !elem._iconRequired
 				}
 			},
-			_hasCustomIcon: { state: true, reflect: true }
+			_hasCustomIcon: { state: true }
 		};
 	}
 
@@ -53,9 +53,7 @@ export const SlottedIconMixin = superclass => class extends superclass {
 	}
 
 	_handleIconSlotChange(e) {
-		const icon = e && e.target && e.target.assignedNodes({ flatten: true }).filter((node) => {
-			return node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-ICON-CUSTOM';
-		});
+		const icon = e.target.assignedElements({ flatten: true }).filter((node) => node.tagName === 'D2L-ICON-CUSTOM');
 		this._hasCustomIcon = icon.length === 1;
 	}
 
