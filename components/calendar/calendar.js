@@ -6,12 +6,12 @@ import { formatDate, getDateTimeDescriptor } from '@brightspace-ui/intl/lib/date
 import { formatDateInISO, getClosestValidDate, getDateFromDateObj, getDateFromISODate, getToday, isDateInRange } from '../../helpers/dateTime.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
 
 const daysInWeek = 7;
 const keyCodes = {
