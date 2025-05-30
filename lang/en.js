@@ -146,8 +146,10 @@ export default {
 	"components.tag-list-item.tooltip-title": "Keyboard Controls",
 	"templates.primary-secondary.divider": "Secondary panel divider",
 	"templates.primary-secondary.secondary-panel": "Secondary panel",
-	"very.bad.message.guestsArrived": `{guestCount,plural, other
-		{# guests have} =1 {1 guest has}} arrived.`,
+	"very.bad.message.guestsArrived": `{guestCount, plural,
+		one {{guestCount} guest has arrived.}
+		other {{guestCount} guests have arrived.}
+	}`,
 	"very.bad.message.localeQuotes": `Don't use "straight" quotes`,
 	"very.bad.message.argumentCorrection": "Hello, {firstName}!",
 	"z": "z"
