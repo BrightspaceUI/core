@@ -151,6 +151,6 @@ export default {
 		other {{guestCount}人のゲストが到着しました。}
 	}`,
 	"very.bad.message.localeQuotes": `"ストレート"引用符は使用しないでください`,
-	"very.bad.message.argumentCorrection": "こんにちは、{name}さん!",
+	"very.bad.message.argumentCorrection": "こんにちは、{firstName}さん!",
 	"z": "z"
 };
