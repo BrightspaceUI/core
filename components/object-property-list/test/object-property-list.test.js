@@ -1,11 +1,12 @@
 import '../object-property-list.js';
 import '../object-property-list-item.js';
+import '../object-property-list-item-tooltip-help.js';
 import '../object-property-list-item-link.js';
 import '../../status-indicator/status-indicator.js';
 import { aTimeout, expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
 
 const validateSeparators = (elem, count) => {
-	const items = elem.querySelectorAll('d2l-object-property-list-item:not([hidden]), d2l-object-property-list-item-link:not([hidden])');
+	const items = elem.querySelectorAll('d2l-object-property-list-item:not([hidden]), d2l-object-property-list-item-link:not([hidden]), d2l-object-property-list-item-tooltip-help:not([hidden])');
 	expect(items.length).to.equal(count);
 	items.forEach((item, i) => {
 		const shouldHaveSeparator = i !== items.length - 1;
@@ -82,16 +83,20 @@ describe('d2l-object-property-list', () => {
 					<d2l-status-indicator slot="status" state="default" text="Status"></d2l-status-indicator>
 					<d2l-object-property-list-item text="Example item 1"></d2l-object-property-list-item>
 					<d2l-object-property-list-item text="Example item 2"></d2l-object-property-list-item>
-					<d2l-object-property-list-item text="Example item 3" hidden id="hidden"></d2l-object-property-list-item>
+					<d2l-object-property-list-item text="Example item 3" hidden></d2l-object-property-list-item>
+					<d2l-object-property-list-item-tooltip-help text="Example item 3" hidden></d2l-object-property-list-item>
 				</d2l-object-property-list>
 			`);
 			validateSeparators(elem, 2);
+			const hiddenElems = [...elem.querySelectorAll('[hidden]')];
+			for (const hiddenElem of hiddenElems)
+				hiddenElem.removeAttribute('hidden');
 
-			elem.querySelector('#hidden').removeAttribute('hidden');
 			await elem.updateComplete;
-			validateSeparators(elem, 3);
+			validateSeparators(elem, 4);
 
-			elem.querySelector('#hidden').setAttribute('hidden', '');
+			for (const hiddenElem of hiddenElems)
+				hiddenElem.setAttribute('hidden', '');
 			await elem.updateComplete;
 			validateSeparators(elem, 2);
 		});

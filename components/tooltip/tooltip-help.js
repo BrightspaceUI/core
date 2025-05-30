@@ -89,6 +89,9 @@ class TooltipHelp extends SlottedIconMixin(SkeletonMixin(FocusMixin(LitElement))
 			:host([skeleton]) #d2l-tooltip-help-text.d2l-skeletize {
 				text-decoration: none;
 			}
+			:host([skeleton]) slot[name="icon"]::slotted(d2l-icon-custom) {
+				display: none;
+			}
 		`];
 	}
 
