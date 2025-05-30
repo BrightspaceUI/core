@@ -149,5 +149,6 @@ export default {
 	"very.bad.message.guestsArrived": `{guestCount,plural, other
 		{# guests have} =1 {1 guest has}} arrived.`,
 	"very.bad.message.localeQuotes": `Don't use "straight" quotes`,
-	"very.bad.message.argumentCorrection": "Hello, {firstName}!"
+	"very.bad.message.argumentCorrection": "Hello, {firstName}!",
+	"z": "z"
 };
