@@ -150,7 +150,7 @@ export default {
 		one {{guestCount} guest has arrived.}
 		other {{guestCount} guests have arrived.}
 	}`,
-	"very.bad.message.localeQuotes": `Don't use "straight" quotes`,
+	"very.bad.message.localeQuotes": `Don’t use “straight” quotes`,
 	"very.bad.message.argumentCorrection": "Hello, {firstName}!",
 	"z": "z"
 };

@@ -149,7 +149,7 @@ export default {
 	"very.bad.message.guestsArrived": `{guestCount, plural,
 		other {{guestCount}人のゲストが到着しました。}
 	}`,
-	"very.bad.message.localeQuotes": `"ストレート"引用符は使用しないでください`,
+	"very.bad.message.localeQuotes": `「ストレート」引用符は使用しないでください`,
 	"very.bad.message.argumentCorrection": "こんにちは、{firstName}さん!",
 	"z": "z"
 };
