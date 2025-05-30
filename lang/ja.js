@@ -145,5 +145,9 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "フォーカスされたタグを削除します",
 	"components.tag-list-item.tooltip-title": "キーボードコントロール",
 	"templates.primary-secondary.divider": "セカンダリパネルディバイダ",
-	"templates.primary-secondary.secondary-panel": "セカンダリパネル"
+	"templates.primary-secondary.secondary-panel": "セカンダリパネル",
+	"very.bad.message.guestsArrived": `{guestCount,plural, other
+		{#人のゲストが到着しました。} =1 {1人のゲストが到着しました。}}`,
+	"very.bad.message.localeQuotes": `"ストレート"引用符は使用しないでください`,
+	"very.bad.message.argumentCorrection": "こんにちは、{ name }さん!"
 };
