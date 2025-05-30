@@ -145,5 +145,9 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "Delete the focused tag",
 	"components.tag-list-item.tooltip-title": "Keyboard Controls",
 	"templates.primary-secondary.divider": "Secondary panel divider",
-	"templates.primary-secondary.secondary-panel": "Secondary panel"
+	"templates.primary-secondary.secondary-panel": "Secondary panel",
+	"very.bad.message.guestsArrived": `{guestCount,plural, other
+		{# guests have} =1 {1 guest has}} arrived.`,
+	"very.bad.message.localeQuotes": `Don't use "straight" quotes`,
+	"very.bad.message.argumentCorrection": "Hello, {firstName}!"
 };
