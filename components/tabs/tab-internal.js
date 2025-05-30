@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const keyCodes = {
@@ -33,10 +34,8 @@ class Tab extends SkeletonMixin(LitElement) {
 			}
 			.d2l-tab-text {
 				margin: 0.5rem;
-				overflow: hidden;
 				padding: 0.1rem;
-				text-overflow: ellipsis;
-				white-space: nowrap;
+				${overflowEllipsisDeclarations}
 			}
 			:host([skeleton]) .d2l-tab-text.d2l-skeletize::before {
 				bottom: 0.15rem;
