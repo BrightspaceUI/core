@@ -4,7 +4,6 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 /**
@@ -15,7 +14,7 @@ import { styleMap } from 'lit/directives/style-map.js';
  * @slot footer - Slot for footer content, such secondary actions
  * @slot header - Slot for header content, such as course image (no actionable elements)
  */
-class Card extends RtlMixin(LitElement) {
+class Card extends LitElement {
 
 	static get properties() {
 		return {
@@ -141,22 +140,14 @@ class Card extends RtlMixin(LitElement) {
 				padding-bottom: 1.2rem;
 			}
 			.d2l-card-actions {
+				inset-inline-end: 0.6rem;
 				position: absolute;
-				right: 0.6rem;
 				top: 0.6rem;
 				/* this must be higher than footer z-index so dropdowns will be on top */
 				z-index: 3;
 			}
-			:host([dir="rtl"]) .d2l-card-actions {
-				left: 0.6rem;
-				right: auto;
-			}
 			.d2l-card-actions ::slotted(*) {
-				margin-left: 0.3rem;
-			}
-			:host([dir="rtl"]) .d2l-card-actions ::slotted(*) {
-				margin-left: 0;
-				margin-right: 0.3rem;
+				margin-inline-start: 0.3rem;
 			}
 			.d2l-card-badge {
 				line-height: 0;
