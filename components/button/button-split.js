@@ -155,7 +155,7 @@ class ButtonSplit extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(L
 		this.#dispatchClick(this.key);
 	}
 
-	#handleMainActionFocusVisible(e) {
+	#handleMainActionFocusVisible() {
 		this._focusVisibleElem = 'main-action';
 	}
 
@@ -167,7 +167,7 @@ class ButtonSplit extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(L
 		this._focusVisibleElem = null;
 	}
 
-	#handleMenuOpenerFocusVisible(e) {
+	#handleMenuOpenerFocusVisible() {
 		this._focusVisibleElem = 'menu-opener';
 	}
 
