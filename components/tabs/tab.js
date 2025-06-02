@@ -1,6 +1,6 @@
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js';
 import { TabMixin } from './tab-mixin.js';
 
 /**
@@ -27,11 +27,10 @@ class Tab extends TabMixin(LitElement) {
 				display: flex;
 				padding: 0.1rem;
 			}
-			:host(:${unsafeCSS(getFocusPseudoClass())}) .d2l-tab-text-inner-content {
-				border-radius: 0.3rem;
-				color: var(--d2l-color-celestine);
-				outline: 2px solid var(--d2l-color-celestine);
-			}
+			${getFocusRingStyles(
+				`:host(:${getFocusPseudoClass()}) .d2l-tab-text-inner-content`,
+				{noFocusPseudoClass:true,baseOffset:'0',extraStyles:'border-radius: 0.3rem; color: var(--d2l-color-celestine);'}
+			)}
 			:host(:${unsafeCSS(getFocusPseudoClass())}) ::slotted(d2l-icon) {
 				color: var(--d2l-color-celestine);
 			}

@@ -1,5 +1,5 @@
 import { css, html, LitElement, unsafeCSS } from 'lit';
-import { getFocusPseudoClass } from '../../../helpers/focus.js';
+import { getFocusPseudoClass, getFocusRingStyles } from '../../../helpers/focus.js';
 import { TabMixin } from '../tab-mixin.js';
 
 class TabCustom extends TabMixin(LitElement) {
@@ -15,11 +15,10 @@ class TabCustom extends TabMixin(LitElement) {
 			:host(:first-child) .d2l-tab-custom-content {
 				margin-inline-start: 0;
 			}
-			:host(:${unsafeCSS(getFocusPseudoClass())}) .d2l-tab-custom-content {
-				border-radius: 0.3rem;
-				color: var(--d2l-color-celestine);
-				outline: 2px solid var(--d2l-color-celestine);
-			}
+			${getFocusRingStyles(
+				`:host(:${getFocusPseudoClass()}) .d2l-tab-custom-content`,
+				{noFocusPseudoClass:true, baseOffset: '0', extraStyles: 'border-radius: 0.3rem;'}
+			)}
 		`];
 
 		super.styles && styles.unshift(super.styles);

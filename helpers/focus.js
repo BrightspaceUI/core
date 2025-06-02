@@ -1,3 +1,4 @@
+import { css, unsafeCSS } from 'lit';
 import { getComposedChildren, getComposedParent, getNextAncestorSibling, getPreviousAncestorSibling, isVisible } from './dom.js';
 
 const focusableElements = {
@@ -61,6 +62,22 @@ export function getFocusableDescendants(node, options) {
 
 export function getFocusPseudoClass() {
 	return isFocusVisibleSupported() ? 'focus-visible' : 'focus';
+}
+export function getFocusRingStyles(selector, {applyOnHover=false, noFocusPseudoClass=false, baseOffset='2px',extraStyles=''} = {}) {
+	const baseSelector = selector;
+	if (!noFocusPseudoClass) selector += `:${getFocusPseudoClass()}`;
+	if (applyOnHover) selector += `, ${baseSelector}:hover`
+	const cssSelector = unsafeCSS(selector);
+	return css`${cssSelector} {
+		${unsafeCSS(extraStyles)}
+		outline: 2px solid var(--d2l-focus-ring-color, var(--d2l-color-celestine));
+		outline-offset: var(--d2l-focus-ring-offset, ${unsafeCSS(baseOffset)});
+	}
+	@media (prefers-contrast: more) {
+		${cssSelector} {
+			outline-color: var(--d2l-focus-ring-color, Highlight);
+		}
+	}`;
 }
 
 export function getLastFocusableDescendant(node, includeHidden) {

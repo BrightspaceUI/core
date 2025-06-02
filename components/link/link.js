@@ -3,7 +3,7 @@ import '../icons/icon.js';
 import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -24,12 +24,7 @@ export const linkStyles = css`
 		color: var(--d2l-color-celestine-minus-1);
 		text-decoration: underline;
 	}
-	.d2l-link:${unsafeCSS(getFocusPseudoClass())} {
-		border-radius: 2px;
-		outline: 2px solid var(--d2l-color-celestine);
-		outline-offset: 1px;
-		text-decoration: underline;
-	}
+	${getFocusRingStyles('.d2l-link',{baseOffset: '1px', extraStyles: 'border-radius: 2px; text-decoration: underline;'})}
 	.d2l-link.d2l-link-main {
 		font-weight: 700;
 	}
