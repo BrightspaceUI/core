@@ -63,10 +63,10 @@ export function getFocusableDescendants(node, options) {
 export function getFocusPseudoClass() {
 	return isFocusVisibleSupported() ? 'focus-visible' : 'focus';
 }
-export function getFocusRingStyles(selector, {applyOnHover=false, noFocusPseudoClass=false, baseOffset='2px',extraStyles=''} = {}) {
+export function getFocusRingStyles(selector, { applyOnHover = false, noFocusPseudoClass = false, baseOffset = '2px', extraStyles = '' } = {}) {
 	const baseSelector = selector;
 	if (!noFocusPseudoClass) selector += `:${getFocusPseudoClass()}`;
-	if (applyOnHover) selector += `, ${baseSelector}:hover`
+	if (applyOnHover) selector += `, ${baseSelector}:hover`;
 	const cssSelector = unsafeCSS(selector);
 	return css`${cssSelector} {
 		${unsafeCSS(extraStyles)}

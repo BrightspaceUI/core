@@ -1,10 +1,10 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { SlottedIconMixin } from '../icons/slotted-icon-mixin.js';
@@ -69,10 +69,7 @@ class TooltipHelp extends SlottedIconMixin(SkeletonMixin(FocusMixin(LitElement))
 			#d2l-tooltip-help-text:focus {
 				outline-style: none;
 			}
-			${getFocusRingStyles(
-				'#d2l-tooltip-help-text',
-				{baseOffset: '0.05rem', extraStyles: 'border-radius: 0.05rem; text-underline-offset: 0.1rem;'}
-			)}
+			${getFocusRingStyles('#d2l-tooltip-help-text', { baseOffset: '0.05rem', extraStyles: 'border-radius: 0.05rem; text-underline-offset: 0.1rem;' })}
 			:host([inherit-font-style]) #d2l-tooltip-help-text {
 				color: inherit;
 				font-size: inherit;

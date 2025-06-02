@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import { codeStyles, createHtmlBlockRenderer as createCodeRenderer } from '../../helpers/prism.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createHtmlBlockRenderer as createMathRenderer } from '../../helpers/mathjax.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
@@ -111,7 +111,7 @@ export const htmlBlockContentStyles = css`
 	a {
 		--d2l-focus-ring-color: var(--d2l-color-celestine, #006fbf);
 	}
-	${getFocusRingStyles('a',{baseOffset: '1px', extraStyles: 'border-radius: 2px; text-decoration: underline;'})}
+	${getFocusRingStyles('a', { baseOffset: '1px', extraStyles: 'border-radius: 2px; text-decoration: underline;' })}
 	@media print {
 		a,
 		a:visited,

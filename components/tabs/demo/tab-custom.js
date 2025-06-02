@@ -1,4 +1,4 @@
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { getFocusPseudoClass, getFocusRingStyles } from '../../../helpers/focus.js';
 import { TabMixin } from '../tab-mixin.js';
 
@@ -17,7 +17,7 @@ class TabCustom extends TabMixin(LitElement) {
 			}
 			${getFocusRingStyles(
 				`:host(:${getFocusPseudoClass()}) .d2l-tab-custom-content`,
-				{noFocusPseudoClass:true, baseOffset: '0', extraStyles: 'border-radius: 0.3rem;'}
+				{ noFocusPseudoClass:true, baseOffset:'0', extraStyles:'border-radius: 0.3rem;' }
 			)}
 		`];
 

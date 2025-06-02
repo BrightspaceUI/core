@@ -1,8 +1,8 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
-import { css, html } from 'lit';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
-import { classMap } from 'lit/directives/class-map.js';
 import { getFocusRingStyles, getNextFocusable } from '../../helpers/focus.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../../components/offscreen/offscreen.js';
@@ -28,7 +28,7 @@ export const InteractiveMixin = superclass => class extends LocalizeCoreElement(
 	static get styles() {
 		return [offscreenStyles, getFocusRingStyles(
 			'.interactive-focusing-toggle',
-			{noFocusPseudoClass: true, extraStyles: 'border-radius: 6px;'}
+			{ noFocusPseudoClass: true, extraStyles: 'border-radius: 6px;' }
 		)];
 	}
 
