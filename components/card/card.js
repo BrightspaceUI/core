@@ -245,7 +245,7 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 	}
 
 	static get focusElementSelector() {
-		return 'a';
+		return this.href ? 'a' : nothing;
 	}
 
 	firstUpdated(changedProperties) {

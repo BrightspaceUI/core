@@ -1,4 +1,5 @@
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
+import { nothing } from 'lit';
 
 export const FocusMixin = dedupeMixin(superclass => class extends superclass {
 
@@ -22,6 +23,12 @@ export const FocusMixin = dedupeMixin(superclass => class extends superclass {
 	focus() {
 
 		const selector = this.constructor.focusElementSelector;
+
+		if (selector === nothing) {
+			super.focus();
+			return;
+		}
+
 		if (!selector) {
 			throw new Error(`FocusMixin: no static focusElementSelector provided for "${this.tagName}"`);
 		}
