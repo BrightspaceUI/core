@@ -16,10 +16,10 @@ function createObjectPropertyList(opts) {
 			<d2l-object-property-list-item text="Example item with icon" icon="tier1:grade" ?skeleton="${skeleton}"></d2l-object-property-list-item>
 			<d2l-object-property-list-item-link text="Example link" href="https://www.d2l.com/" ?skeleton="${skeleton}"></d2l-object-property-list-item-link>
 			<d2l-object-property-list-item-link text="Example link with icon" href="https://www.d2l.com/" icon="tier1:alert" ?skeleton="${skeleton}"></d2l-object-property-list-item-link>
-			<d2l-object-property-list-item-tooltip-help text="Example tooltip" ?skeleton="${skeleton}">This are extra details</d2l-object-property-list-item-tooltip-help>
-			<d2l-object-property-list-item-tooltip-help text="Example tooltip with icon" icon="tier1:alert" ?skeleton="${skeleton}">This are extra details</d2l-object-property-list-item-tooltip-help>
+			<d2l-object-property-list-item-tooltip-help text="Example tooltip" ?skeleton="${skeleton}">These are extra details</d2l-object-property-list-item-tooltip-help>
+			<d2l-object-property-list-item-tooltip-help text="Example tooltip with icon" icon="tier1:alert" ?skeleton="${skeleton}">These are extra details</d2l-object-property-list-item-tooltip-help>
 			<d2l-object-property-list-item-tooltip-help text="Example tooltip with custom icon" ?skeleton="${skeleton}">
-				This are extra details
+				These are extra details
 				<d2l-icon-custom slot="icon">
 					<svg xmlns="http://www.w3.org/2000/svg" mirror-in-rtl="true">
 							<path fill="#494c4e" d="M18 12v5a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1v-5a1 1 0 0 1 2 0v4h14v-4a1 1 0 0 1 2 0z"/>

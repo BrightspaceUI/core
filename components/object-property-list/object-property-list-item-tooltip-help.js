@@ -17,16 +17,6 @@ class ObjectPropertyListItemTooltipHelp extends FocusMixin(ObjectPropertyListIte
 			 * @type {string}
 			 */
 			icon: { type: String, reflect: true, },
-			/**
-			 * Allows this component to inherit certain font properties
-			 * @type {boolean}
-			 */
-			inheritFontStyle: { type: Boolean, attribute: 'inherit-font-style' },
-			/**
-			 * ADVANCED: Force the internal tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
-			 * @type {'top'|'bottom'|'left'|'right'}
-			 */
-			position: { type: String }
 		};
 	}
 
@@ -39,9 +29,8 @@ class ObjectPropertyListItemTooltipHelp extends FocusMixin(ObjectPropertyListIte
 			<d2l-tooltip-help
 				class="d2l-skeletize"
 				icon="${ifDefined(this.icon)}"
-				?inherit-font-style=${this.inheritFontStyle}
-				postion="${this.position}"
-				?skeleton=${this.skeleton}
+				inherit-font-style
+				?skeleton="${this.skeleton}"
 				text="${this.text}">
 				<slot></slot>
 				<slot slot="icon" name="icon"></slot>
