@@ -5,6 +5,7 @@ import '../dropdown/dropdown-menu.js';
 import '../icons/icon.js';
 import '../menu/menu.js';
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -46,7 +47,8 @@ class ButtonSplit extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(L
 			 * ACCESSIBILITY: REQUIRED: Accessible text for the main action button
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true, required: true }
+			text: { type: String, reflect: true, required: true },
+			_focusVisibleElem: { state: true }
 		};
 	}
 
@@ -60,7 +62,7 @@ class ButtonSplit extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(L
 			}
 			.container {
 				display: flex;
-				gap: 6px;
+				gap: 2px;
 			}
 			.main-action {
 				--d2l-button-start-end-radius: 0;
@@ -78,6 +80,14 @@ class ButtonSplit extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(L
 			::slotted(:not(d2l-button-split-item)) {
 				display: none;
 			}
+			.main-action-focus-visible .d2l-dropdown-opener {
+				--d2l-button-padding-inline-start: calc(0.6rem - 4px);
+				margin-inline-start: 4px;
+			}
+			.menu-opener-focus-visible .main-action {
+				--d2l-button-padding-inline-end: calc(1.5rem - 4px);
+				margin-inline-end: 4px;
+			}
 		`;
 	}
 
@@ -85,6 +95,7 @@ class ButtonSplit extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(L
 		super();
 		this.disabled = false;
 		this.primary = false;
+		this._focusVisibleElem = null;
 	}
 
 	static get focusElementSelector() {
@@ -92,22 +103,32 @@ class ButtonSplit extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(L
 	}
 
 	render() {
+		const classes = {
+			'container': true,
+			'main-action-focus-visible': (this._focusVisibleElem === 'main-action'),
+			'menu-opener-focus-visible': (this._focusVisibleElem === 'menu-opener'),
+		};
+
 		return html`
-			<div class="container" @click="${this.#suppressClick}">
+			<div class="${classMap(classes)}" @click="${this.#suppressClick}">
 				<d2l-button
+					@blur="${this.#handleMainActionBlur}"
 					class="main-action"
 					@click="${this.#handleMainActionClick}"
 					description="${ifDefined(this.description)}"
 					?disabled="${this.disabled}"
 					disabled-tooltip="${ifDefined(this.disabledTooltip)}"
+					@focus-visible="${this.#handleMainActionFocusVisible}"
 					?primary="${this.primary}">
 					${this.text}
 				</d2l-button>
 				<d2l-dropdown>
 					<d2l-button
 						aria-label="${this.localize('components.button-split.otherOptions')}"
+						@blur="${this.#handleMenuOpenerBlur}"
 						class="d2l-dropdown-opener"
 						?disabled="${this.disabled}"
+						@focus-visible="${this.#handleMenuOpenerFocusVisible}"
 						?primary="${this.primary}">
 						<d2l-icon icon="tier1:chevron-down"></d2l-icon>
 					</d2l-button>
@@ -126,12 +147,28 @@ class ButtonSplit extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(L
 		this.dispatchEvent(new CustomEvent('click', { detail: { key } }));
 	}
 
+	#handleMainActionBlur() {
+		this._focusVisibleElem = null;
+	}
+
 	#handleMainActionClick() {
 		this.#dispatchClick(this.key);
 	}
 
+	#handleMainActionFocusVisible() {
+		this._focusVisibleElem = 'main-action';
+	}
+
 	#handleMenuItemSelect(e) {
 		this.#dispatchClick(e.target.key);
+	}
+
+	#handleMenuOpenerBlur() {
+		this._focusVisibleElem = null;
+	}
+
+	#handleMenuOpenerFocusVisible() {
+		this._focusVisibleElem = 'menu-opener';
 	}
 
 	#suppressClick(e) {
