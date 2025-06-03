@@ -1,6 +1,7 @@
 import './breadcrumb.js';
 import { css, html, LitElement } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
@@ -24,9 +25,8 @@ class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				display: block;
 				font-size: 0.7rem;
 				line-height: 1.05rem;
-				overflow: hidden;
 				position: relative;
-				white-space: nowrap;
+				${overflowEllipsisDeclarations}
 			}
 			:host([hidden]) {
 				display: none;
