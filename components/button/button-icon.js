@@ -64,17 +64,17 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 				:host([translucent]) {
 					--d2l-button-icon-background-color: rgba(0, 0, 0, 0.5);
 					--d2l-button-icon-background-color-hover: var(--d2l-color-celestine);
-					--d2l-button-focus-color: white;
-					--d2l-button-focus-offset: -4px;
+					--d2l-focus-ring-color: white;
+					--d2l-focus-ring-offset: -4px;
 					--d2l-button-icon-fill-color: white;
 					--d2l-button-icon-fill-color-hover: white;
 				}
 				:host([theme="dark"]) {
 					--d2l-button-icon-background-color: transparent;
 					--d2l-button-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
-					--d2l-button-focus-color: var(--d2l-color-celestine-plus-1);
 					--d2l-button-icon-fill-color: var(--d2l-color-sylvite);
 					--d2l-button-icon-fill-color-hover: var(--d2l-color-sylvite);
+					--d2l-focus-ring-color: var(--d2l-color-celestine-plus-1);
 				}
 
 				button {

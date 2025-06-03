@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import { css } from 'lit';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 
 export const dialogStyles = css`
 
@@ -131,13 +132,7 @@ export const dialogStyles = css`
 		overflow: hidden; /* scrollbar is kept hidden while we update the scroll position to avoid scrollbar flash */
 		padding: 0 30px;
 	}
-
-	.d2l-dialog-content:focus-visible {
-		border-radius: 6px;
-		outline: 2px solid var(--d2l-color-celestine);
-		outline-offset: -2px;
-	}
-
+	${getFocusRingStyles('.d2l-dialog-content', { extraStyles: css`--d2l-focus-ring-offset: -2px; border-radius: 6px;` })}
 	.d2l-dialog-content > div {
 		position: relative; /* make this the positioned parent for absolute positioned elements like d2l-template-primary-secondary */
 	}
