@@ -49,7 +49,6 @@ describe('floating-buttons', () => {
 
 	it('does not float when small amount of content', async() => {
 		const elem = await fixture(floatingButtonsShortFixture);
-		await nextFrame();
 		await expect(elem).to.be.golden();
 	});
 
