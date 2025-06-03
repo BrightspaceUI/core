@@ -6,6 +6,7 @@ import { css, html, nothing } from 'lit';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
 import { _offscreenStyleDeclarations } from '../offscreen/offscreen.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 
@@ -130,10 +131,12 @@ export const PopoverMixin = superclass => class extends superclass {
 			:host([_location="block-start"]) .pointer {
 				clip: rect(9px, 21px, 22px, -3px);
 			}
-			:host([_location="inline-start"]) .pointer {
+			:host([_location="inline-start"]) .pointer,
+			:host([_location="inline-end"]) .pointer.pointer-mirror {
 				clip: rect(-3px, 21px, 21px, 10px);
 			}
-			:host([_location="inline-end"]) .pointer {
+			:host([_location="inline-end"]) .pointer,
+			:host([_location="inline-start"]) .pointer.pointer-mirror {
 				clip: rect(-3px, 8px, 21px, -3px);
 			}
 
@@ -483,8 +486,12 @@ export const PopoverMixin = superclass => class extends superclass {
 			}
 		}
 
+		const pointerClasses = {
+			'pointer': true,
+			'pointer-mirror': this._rtl
+		};
 		const pointer = !this._noPointer ? html`
-			<div class="pointer" style="${styleMap(pointerPositionStyles)}">
+			<div class="${classMap(pointerClasses)}" style="${styleMap(pointerPositionStyles)}">
 				<div></div>
 			</div>
 		` : nothing;
@@ -850,21 +857,19 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		} else if (this._location === 'inline-end' || this._location === 'inline-start') {
 
-			console.log('calculate position of pointer');
-
 			position.top = openerRect.top + (openerRect.height / 2) - 9;
 
 			if (this._location === 'inline-start') {
 				if (!this._rtl) {
-					position.right =  (openerRect.left - this._offset + 7) * -1;
+					position.right = (openerRect.left - this._offset + 7) * -1;
 				} else {
-					//position.left = (window.innerWidth - openerRect.right - this._offset - 16) * -1; // 16 for scrollbar
+					position.left = (window.innerWidth - openerRect.right + 7 - this._offset - 16) * -1; // 16 for scrollbar
 				}
 			} else {
 				if (!this._rtl) {
 					position.left = openerRect.left + openerRect.width + this._offset - 7;
 				} else {
-					//position.right = window.innerWidth - openerRect.left + this._offset - 16; // 16 for scrollbar
+					position.right = window.innerWidth - openerRect.left - 7 + this._offset - 16; // 16 for scrollbar
 				}
 			}
 
