@@ -130,7 +130,7 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 
 		if (!val) return;
 		requestAnimationFrame(() => {
-			if (this._hasNestedList) {
+			if (this._hasNestedList && this._showAddButton) {
 				const firstChild = this.querySelector('[first]');
 				if (firstChild) firstChild._hasCurrentParent = true;
 			}
@@ -139,7 +139,7 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			if (prevSibling) {
 				prevSibling._nextSiblingCurrent = true;
 
-				if (prevSibling._hasNestedList) {
+				if (prevSibling._hasNestedList && prevSibling._hasNestedListAddButton) {
 					const lastChild = prevSibling.querySelector('[last]');
 					if (lastChild) lastChild._nextSiblingCurrent = true;
 				}

@@ -462,17 +462,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-bottom: -12.5px;
 				margin-top: -11.5px;
 			}
-			:host([_list-item-new-styles][draggable][_hovering]) [slot="add"],
-			:host([_list-item-new-styles][draggable][_focusing]) [slot="add"],
-			:host([_list-item-new-styles][draggable][_hovering]) [slot="add-top"],
-			:host([_list-item-new-styles][draggable][_focusing]) [slot="add-top"],
-			:host([draggable][current]) [slot="add"],
-			:host([draggable][_next-sibling-current]) [slot="add"],
-			:host([draggable][current]) [slot="add-top"],
-			:host([draggable][_has-current-parent]) [slot="add-top"] {
-				padding-inline-end: 6px;
-			}
-			/* clean up with GAUD-7495-list-item-new-styles flag; it is covered by the block above */
 			:host([draggable][selectable][_hovering]) [slot="add"],
 			:host([draggable][selectable][_focusing]) [slot="add"],
 			:host([draggable][selectable][_hovering]) [slot="add-top"],
