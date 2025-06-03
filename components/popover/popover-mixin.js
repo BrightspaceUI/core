@@ -21,6 +21,12 @@ const pointerLength = 16;
 const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
 const isSupported = ('popover' in HTMLElement.prototype);
 
+const getScrollbarWidth = () => {
+	const width = window.innerWidth - document.documentElement.clientWidth;
+	if (width > 0) return width + 1; // 16 when present, but can be 0 even if visible (ex. MacOS depending on settings)
+	else return 0;
+};
+
 export const PopoverMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -863,13 +869,13 @@ export const PopoverMixin = superclass => class extends superclass {
 				if (!this._rtl) {
 					position.right = (openerRect.left - this._offset + 7) * -1;
 				} else {
-					position.left = (window.innerWidth - openerRect.right + 7 - this._offset - 16) * -1; // 16 for scrollbar
+					position.left = (window.innerWidth - openerRect.right + 7 - this._offset - getScrollbarWidth()) * -1;
 				}
 			} else {
 				if (!this._rtl) {
 					position.left = openerRect.left + openerRect.width + this._offset - 7;
 				} else {
-					position.right = window.innerWidth - openerRect.left - 7 + this._offset - 16; // 16 for scrollbar
+					position.right = window.innerWidth - openerRect.left - 7 + this._offset - getScrollbarWidth();
 				}
 			}
 
@@ -909,13 +915,13 @@ export const PopoverMixin = superclass => class extends superclass {
 				if (!this._rtl) {
 					position.right = (openerRect.left - this._offset) * -1;
 				} else {
-					position.left = (window.innerWidth - openerRect.right - this._offset - 16) * -1; // 16 for scrollbar
+					position.left = (window.innerWidth - openerRect.right - this._offset - getScrollbarWidth()) * -1;
 				}
 			} else {
 				if (!this._rtl) {
 					position.left = openerRect.left + openerRect.width + this._offset;
 				} else {
-					position.right = window.innerWidth - openerRect.left + this._offset - 16; // 16 for scrollbar
+					position.right = window.innerWidth - openerRect.left + this._offset - getScrollbarWidth();
 				}
 			}
 
