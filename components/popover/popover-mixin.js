@@ -385,11 +385,12 @@ export const PopoverMixin = superclass => class extends superclass {
 			};
 
 			// space in viewport
+			const prefersInline = this._preferredPosition.location === 'inline-start' || this._preferredPosition.location === 'inline-end';
 			const spaceAround = this.#constrainSpaceAround({
 				// allow for opener offset + outer margin
-				above: openerRect.top - this._offset - this._margin,
+				above: openerRect.top - (prefersInline ? 0 : this._offset) - this._margin,
 				// allow for opener offset + outer margin
-				below: window.innerHeight - openerRect.bottom - this._offset - this._margin,
+				below: window.innerHeight - openerRect.bottom - (prefersInline ? 0 : this._offset) - this._margin,
 				// allow for outer margin
 				left: openerRect.left - 20,
 				// allow for outer margin
@@ -412,7 +413,9 @@ export const PopoverMixin = superclass => class extends superclass {
 			if (options.updateHeight) {
 
 				// calculate height available to the popover contents for overflow because that is the only area capable of scrolling
-				const availableHeight = (this._location === 'block-start') ? spaceAround.above : spaceAround.below;
+				const availableHeight = (this._location === 'inline-start' || this._location === 'inline-end')
+					? (spaceAround.above + spaceAround.below + openerRect.height)
+					: (this._location === 'block-start' ? spaceAround.above : spaceAround.below);
 
 				if (!this._noAutoFit && availableHeight && availableHeight > 0) {
 					// only apply maximum if it's less than space available and the header/footer alone won't exceed it (content must be visible)
@@ -422,8 +425,6 @@ export const PopoverMixin = superclass => class extends superclass {
 					// ensure the content height has updated when the __toggleScrollStyles event handler runs
 					await this.updateComplete;
 				}
-
-				// todo: handle inline-start and inline-end locations
 
 			}
 
@@ -906,9 +907,9 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		} else if (this._location === 'inline-end' || this._location === 'inline-start') {
 
-			const yAdjustment = 0;
+			const yAdjustment = this.#getPositionYAdjustment(spaceAround, openerRect, contentRect);
 			if (yAdjustment !== null) {
-				position.top = openerRect.top;
+				position.top = openerRect.top + yAdjustment;
 			}
 
 			if (this._location === 'inline-start') {
@@ -932,51 +933,75 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	#getPositionXAdjustment(spaceAround, openerRect, contentRect) {
 
-		if (this._location === 'block-end' || this._location === 'block-start') {
+		if (this._location !== 'block-end' && this._location !== 'block-start') return null;
 
-			const centerDelta = contentRect.width - openerRect.width;
-			const contentXAdjustment = centerDelta / 2;
+		const centerDelta = contentRect.width - openerRect.width;
+		const contentXAdjustment = centerDelta / 2;
 
-			if (this._preferredPosition.span === 'all' && centerDelta <= 0) {
-				// center with target (opener wider than content)
-				return contentXAdjustment * -1;
-			}
-			if (this._preferredPosition.span === 'all' && spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
-				// center with target (content wider than opener and enough space around)
-				return contentXAdjustment * -1;
-			}
-
-			if (!this._rtl) {
-				if (spaceAround.left < contentXAdjustment) {
-					// slide content right (not enough space to center)
-					return spaceAround.left * -1;
-				} else if (spaceAround.right < contentXAdjustment) {
-					// slide content left (not enough space to center)
-					return (centerDelta * -1) + spaceAround.right;
-				}
-			} else {
-				if (spaceAround.left < contentXAdjustment) {
-					// slide content right (not enough space to center)
-					return (centerDelta * -1) + spaceAround.left;
-				} else if (spaceAround.right < contentXAdjustment) {
-					// slide content left (not enough space to center)
-					return spaceAround.right * -1;
-				}
-			}
-
-			if (this._preferredPosition.span !== 'all') {
-				// shift it (not enough space to align as requested)
-				const shift = Math.min((openerRect.width / 2) - (20 + pointerLength / 2), 0); // 20 ~= 1rem
-				if (this._preferredPosition.span === 'end') {
-					return shift;
-				} else {
-					return openerRect.width - contentRect.width - shift;
-				}
-			}
-
+		if (this._preferredPosition.span === 'all' && centerDelta <= 0) {
+			// center with target (opener wider than content)
+			return contentXAdjustment * -1;
+		}
+		if (this._preferredPosition.span === 'all' && spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
+			// center with target (content wider than opener and enough space around)
+			return contentXAdjustment * -1;
 		}
 
-		return null;
+		if (!this._rtl) {
+			if (spaceAround.left < contentXAdjustment) {
+				// slide content right (not enough space to center)
+				return spaceAround.left * -1;
+			} else if (spaceAround.right < contentXAdjustment) {
+				// slide content left (not enough space to center)
+				return (centerDelta * -1) + spaceAround.right;
+			}
+		} else {
+			if (spaceAround.left < contentXAdjustment) {
+				// slide content right (not enough space to center)
+				return (centerDelta * -1) + spaceAround.left;
+			} else if (spaceAround.right < contentXAdjustment) {
+				// slide content left (not enough space to center)
+				return spaceAround.right * -1;
+			}
+		}
+
+		if (this._preferredPosition.span !== 'all') {
+			// shift it (not enough space to align as requested)
+			const shift = Math.min((openerRect.width / 2) - (20 + pointerLength / 2), 0); // 20 ~= 1rem
+			if (this._preferredPosition.span === 'end') {
+				return shift;
+			} else {
+				return openerRect.width - contentRect.width - shift;
+			}
+		}
+
+	}
+
+	#getPositionYAdjustment(spaceAround, openerRect, contentRect) {
+
+		if (this._location !== 'inline-end' && this._location !== 'inline-start') return null;
+
+		const centerDelta = contentRect.height - openerRect.height;
+		const contentYAdjustment = centerDelta / 2;
+
+		if (this._preferredPosition.span === 'all' && centerDelta <= 0) {
+			// center with target (opener taller than content)
+			return contentYAdjustment * -1;
+		}
+
+		if (this._preferredPosition.span === 'all' && spaceAround.above > contentYAdjustment && spaceAround.below > contentYAdjustment) {
+			// center with target (content wider than opener and enough space around)
+			return contentYAdjustment * -1;
+		}
+
+		if (spaceAround.above < contentYAdjustment) {
+			// slide content right (not enough space to center)
+			return spaceAround.above * -1;
+		} else if (spaceAround.below < contentYAdjustment) {
+			// slide content left (not enough space to center)
+			return (centerDelta * -1) + spaceAround.below;
+		}
+
 	}
 
 	#getStyleMaps() {
