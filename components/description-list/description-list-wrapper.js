@@ -5,7 +5,7 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 export const descriptionListStyles = [
 	_generateLabelStyles('d2l-dl-wrapper > dl > dt'),
-	_generateBodyCompactStyles('d2l-dl-wrapper > dl > dd'),
+	_generateBodyCompactStyles('d2l-dl-wrapper > dl > dd', true),
 	css`
 		d2l-dl-wrapper {
 			--d2l-dl-wrapper-dt-min-width: min-content;
@@ -18,6 +18,9 @@ export const descriptionListStyles = [
 			gap: 0.3rem 1.5rem;
 			grid-auto-flow: row;
 			grid-template-columns: minmax(var(--d2l-dl-wrapper-dt-min-width), auto) minmax(var(--d2l-dl-wrapper-dd-min-width), 1fr);
+		}
+		d2l-dl-wrapper > dl[hidden] {
+			display: none;
 		}
 		d2l-dl-wrapper > dl > dt {
 			margin: var(--d2l-dl-wrapper-dt-margin, 0);
@@ -107,6 +110,7 @@ class DescriptionListWrapper extends LitElement {
 	_onResize(entries) {
 		if (!entries || entries.length === 0) return;
 		const entry = entries[0];
+		if (entry.contentRect.width === 0) return; // ignore if we're hidden
 
 		requestAnimationFrame(() => this._stacked = entry.contentRect.width < this.breakpoint);
 	}

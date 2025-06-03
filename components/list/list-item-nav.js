@@ -1,4 +1,4 @@
-import { ListItemNavButtonMixin } from './list-item-nav-button-mixin.js';
+import { ListItemNavMixin } from './list-item-nav-mixin.js';
 import { LitElement } from 'lit';
 
 /**
@@ -8,7 +8,7 @@ import { LitElement } from 'lit';
  * @slot actions - Actions (e.g., button icons) associated with the listen item located at the right of the item
  * @slot nested - Nested d2l-list element
  */
-class ListItemNavButton extends ListItemNavButtonMixin(LitElement) {
+class ListItemNavButton extends ListItemNavMixin(LitElement) {
 
 	render() {
 		return this._renderListItem();
@@ -16,4 +16,4 @@ class ListItemNavButton extends ListItemNavButtonMixin(LitElement) {
 
 }
 
-customElements.define('d2l-list-item-nav-button', ListItemNavButton);
+customElements.define('d2l-list-item-nav', ListItemNavButton);

@@ -7,8 +7,7 @@ class CustomView extends HierarchicalViewMixin(LitElement) {
 		return [ super.styles,
 			css`
 				:host {
-					background-image: url("https://www.nasa.gov/sites/default/files/images/504349main_ngc6357_hst_big_full.jpg");
-					background-size: cover;
+					background-color: black;
 					border: 1px solid black;
 					border-radius: 0.3rem;
 					box-sizing: border-box;

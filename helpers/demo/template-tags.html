@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../components/demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../components/demo/demo-page.js';
+			import '../../components/inputs/input-textarea.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="template-tags">
+
+			<h2>Basic Template - No Tag</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea id="no-tag"></d2l-input-textarea>
+					<script type="module">
+						document.querySelector('#no-tag').value = `
+							A multiline template literal,
+							with in-code indentation
+						`;
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Basic Template - Tag</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea id="normal-tag"></d2l-input-textarea>
+					<script type="module">
+						import { set } from '../../helpers/template-tags.js';
+						document.querySelector('#normal-tag').value =
+							set`A multiline template literal,
+								with in-code indentation`;
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Basic Template - Tag (whitespace)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea id="marked-tag"></d2l-input-textarea>
+					<script type="module">
+						import { set } from '../../helpers/template-tags.js';
+						document.querySelector('#marked-tag').value = set`
+							A multiline template literal,
+							with in-code indentation
+						`;
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Complex Template - No Tag</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea id="complex-no-tag"></d2l-input-textarea>
+					<d2l-input-textarea id="complex-no-tag2"></d2l-input-textarea>
+					<script type="module">
+						document.querySelector('#complex-no-tag').value =
+							`{peopleCount, plural,
+								one {There is # person}
+								other {There are # people}
+							}`;
+						document.querySelector('#complex-no-tag2').value =
+`{peopleCount, plural,
+	one {There is # person}
+	other {There are # people}
+}`;
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Complex Template - Tag</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea id="complex-normal-tag"></d2l-input-textarea>
+					<script type="module">
+						import { set } from '../../helpers/template-tags.js';
+						document.querySelector('#complex-normal-tag').value =
+							set`{peopleCount, plural,
+								one {There is # person}
+								other {There are # people}
+							}`;
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Complex Template - Tag (whitespace)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-textarea id="complex-marked-tag"></d2l-input-textarea>
+					<script type="module">
+						import { set } from '../../helpers/template-tags.js';
+						const test = 'are';
+						document.querySelector('#complex-marked-tag').value = set`
+							{peopleCount, plural,
+								one {There is # person}
+								other {There ${test} # people}
+							}
+						`;
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+	</body>
+</html>

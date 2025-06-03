@@ -4,7 +4,7 @@ import './list-item-generic-layout.js';
 import './list-item-placement-marker.js';
 import '../tooltip/tooltip.js';
 import '../expand-collapse/expand-collapse-content.js';
-import { css, html, nothing } from 'lit';
+import { css, html, nothing, unsafeCSS } from 'lit';
 import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
 import { interactiveElements, isInteractiveInComposedPath } from '../../helpers/interactive.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -40,6 +40,7 @@ function addTabListener() {
 }
 
 const listItemInteractiveFlag = getFlag('GAUD-7495-list-interactive-content', true);
+const useNewStylesFlag = getFlag('GAUD-7495-list-item-new-styles', true);
 
 let hasDisplayedKeyboardTooltip = false;
 
@@ -106,6 +107,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_listItemInteractiveEnabled: { type: Boolean, reflect: true, attribute: '_list-item-interactive-enabled' },
+			_listItemNewStyles: { type: Boolean, reflect: true, attribute: '_list-item-new-styles' },
 			_showAddButton: { type: Boolean, attribute: '_show-add-button', reflect: true },
 			_siblingHasColor: { state: true },
 		};
@@ -147,7 +149,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-bottom: -1px;
 			}
 			:host([_has-nested-list-add-button]:not([selection-disabled]):not([skeleton])[selected]) [slot="before-content"] {
-				border-bottom-color: #b6cbe8;
+				border-bottom-color: ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')}; /* stylelint-disable-line */
 			}
 			:host(:first-of-type) [slot="control-container"]::before {
 				top: 0;
@@ -319,8 +321,14 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_hovering-selection]) [slot="outside-control-container"],
 			:host([_focusing-primary-action]) [slot="outside-control-container"],
 			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) [slot="outside-control-container"],
-			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"] {
-				border-color: #b6cbe8; /* celestine alpha 0.3 */
+			:host(:not([_list-item-new-styles]):not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"],
+			:host([_list-item-new-styles]:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing]:not([current])) [slot="outside-control-container"] {
+				border-color: ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')}; /* stylelint-disable-line */
+				margin-bottom: -1px;
+			}
+			/* clean up with GAUD-7495-list-item-new-styles flag */
+			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing-elem]:not([current])) [slot="outside-control-container"] {
+				border-color: var(--d2l-color-mica);
 				margin-bottom: -1px;
 			}
 			/* below hides the border under the d2l-button-add */
@@ -330,15 +338,24 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_focusing-primary-action]) [slot="outside-control-container"].hide-bottom-border,
 			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"].hide-bottom-border,
 			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) [slot="outside-control-container"].hide-bottom-border,
-			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"].hide-bottom-border {
+			:host(:not([_list-item-new-styles]):not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"].hide-bottom-border,
+			:host([_list-item-new-styles]:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing]) [slot="outside-control-container"].hide-bottom-border {
 				background-clip: content-box, border-box;
-				background-image: linear-gradient(white, white), linear-gradient(to right, #b6cbe8 20%, transparent 20%, transparent 80%, #b6cbe8 80%);
+				background-image: linear-gradient(white, white), linear-gradient(to right, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 20%, transparent 20%, transparent 80%, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 80%); /* stylelint-disable-line */
+				background-origin: border-box;
+				border: double 1px transparent;
+				border-radius: 6px;
+			}
+			/* clean up with GAUD-7495-list-item-new-styles flag */
+			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing-elem]) [slot="outside-control-container"].hide-bottom-border {
+				background-clip: content-box, border-box;
+				background-image: linear-gradient(white, white), linear-gradient(to right, var(--d2l-color-mica) 20%, transparent 20%, transparent 80%, var(--d2l-color-mica) 80%);
 				background-origin: border-box;
 				border: double 1px transparent;
 				border-radius: 6px;
 			}
 			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"].hide-bottom-border {
-				background-image: linear-gradient(#f3fbff, #f3fbff), linear-gradient(to right, #b6cbe8 20%, transparent 20%, transparent 80%, #b6cbe8 80%);
+				background-image: linear-gradient(#f3fbff, #f3fbff), linear-gradient(to right, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 20%, transparent 20%, transparent 80%, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 80%); /* stylelint-disable-line */
 			}
 			:host([_hovering-control]) d2l-button-add,
 			:host([_hovering-primary-action]) d2l-button-add,
@@ -346,7 +363,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_focusing-primary-action]) d2l-button-add,
 			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]) d2l-button-add,
 			:host(:not([selection-disabled]):not([skeleton])[selected]) d2l-button-add {
-				--d2l-button-add-line-color: #b6cbe8; /* celestine alpha 0.3 */
+				--d2l-button-add-line-color: ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')}; /* stylelint-disable-line */
 			}
 			:host([_hovering-control]) [slot="outside-control-container"],
 			:host([_hovering-primary-action]) [slot="outside-control-container"],
@@ -355,7 +372,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"] {
 				background-color: #f3fbff;
-				border-color: #b6cbe8; /* celestine alpha 0.3 */
+				border-color: ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')}; /* stylelint-disable-line */
 				margin-bottom: -1px;
 			}
 
@@ -460,6 +477,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._hasColorSlot = false;
 		this._hasNestedList = false;
 		this._listItemInteractiveEnabled = listItemInteractiveFlag;
+		this._listItemNewStyles = useNewStylesFlag;
 		this._siblingHasColor = false;
 	}
 
@@ -619,7 +637,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		return node.role === 'row' || node.role === 'listitem';
 	}
 
-	_onFocusIn() {
+	_onFocusIn(e) {
+		if (this._listItemNewStyles) {
+			e.stopPropagation(); // prevent _focusing from being set on the parent
+		}
 		this._focusing = true;
 		if (this.role !== 'row' || !tabPressed || hasDisplayedKeyboardTooltip) return;
 		this._displayKeyboardTooltip = true;

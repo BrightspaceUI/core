@@ -77,12 +77,19 @@ const dropdownContent = (opened) => html`
 `;
 
 const tooltipContent = html`
+	<d2l-button id="shiny-button" style="width: 100%;">Shiny</d2l-button>
+	<d2l-tooltip class="vdiff-include" position="top" for="shiny-button">Shiny tooltip text that should overlap the adjacent card.</d2l-tooltip>
+`;
+
+const mainTooltipContent = html`
+	${createHeader('Header 1')}
+	<div slot="content">${tooltipContent}</div>
+`;
+
+const footerTooltipContent = html`
 	${createHeader('Header 1')}
 	<div slot="content">Content 1</div>
-	<div slot="footer">
-		<d2l-button id="shiny-button" style="width: 100%;">Shiny</d2l-button>
-		<d2l-tooltip class="vdiff-include" position="top" for="shiny-button">Shiny tooltip text that should overlap the adjacent card.</d2l-tooltip>
-	</div>
+	<div slot="footer">${tooltipContent}</div>
 `;
 
 describe('card', () => {
@@ -106,8 +113,11 @@ describe('card', () => {
 		{ name: 'with-dropdown', template: createMultiLinkCardTemplate({ mainCardContent: dropdownContent() }) },
 		{ name: 'with-dropdown-open', template: createMultiLinkCardTemplate({ mainCardContent: dropdownContent(true) }) },
 		{ name: 'with-dropdown-adjacent-hover', template: createMultiLinkCardTemplate({ mainCardContent: dropdownContent(true) }), action: elem => hoverElem(elem.querySelector('d2l-card:nth-child(2) [slot="header"]')) },
-		{ name: 'with-tooltip', template: createMultiLinkCardTemplate({ mainCardContent: tooltipContent, shinyFooter: true }) },
-		{ name: 'with-tooltip-focus', template: createMultiLinkCardTemplate({ mainCardContent: tooltipContent, shinyFooter: true }), action: async(elem) => {
+		{ name: 'with-main-tooltip-focus', template: createMultiLinkCardTemplate({ mainCardContent: mainTooltipContent, shinyFooter: false }), action: async(elem) => {
+			focusElem(elem.querySelector('#shiny-button'));
+			await oneEvent(elem, 'd2l-tooltip-show');
+		} },
+		{ name: 'with-footer-tooltip-focus', template: createMultiLinkCardTemplate({ mainCardContent: footerTooltipContent, shinyFooter: true }), action: async(elem) => {
 			focusElem(elem.querySelector('#shiny-button'));
 			await oneEvent(elem, 'd2l-tooltip-show');
 		} },

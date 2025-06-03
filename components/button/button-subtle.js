@@ -1,19 +1,20 @@
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
+import { SlottedIconMixin } from '../icons/slotted-icon-mixin.js';
 
 /**
  * A button component that can be used just like the native button, but for advanced or de-emphasized actions.
  * @slot - Default content placed inside of the button
  * @slot icon - Optional slot for a custom icon
  */
-class ButtonSubtle extends ButtonMixin(LitElement) {
+class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -28,12 +29,6 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 			 * @type {'text'|'text-end'|''}
 			 */
 			hAlign: { type: String, reflect: true, attribute: 'h-align' },
-
-			/**
-			 * Preset icon key (e.g. "tier1:gear")
-			 * @type {string}
-			 */
-			icon: { type: String, reflect: true },
 
 			/**
 			 * Indicates that the icon should be rendered on right
@@ -51,13 +46,12 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 			 * ACCESSIBILITY: REQUIRED: Text for the button
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true },
-			_hasCustomIcon: { state: true }
+			text: { type: String, reflect: true }
 		};
 	}
 
 	static get styles() {
-		return [ labelStyles, buttonStyles,
+		return [super.styles, labelStyles, buttonStyles,
 			css`
 				:host {
 					--d2l-count-badge-background-color: var(--d2l-color-celestine);
@@ -72,8 +66,11 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 				button {
 					--d2l-button-subtle-padding-inline-start: 0.6rem;
 					--d2l-button-subtle-padding-inline-end: 0.6rem;
+					align-items: center;
 					background-color: transparent;
 					border-color: transparent;
+					column-gap: 0.3rem;
+					display: inline-flex;
 					font-family: inherit;
 					padding-block-end: 0;
 					padding-block-start: 0;
@@ -138,42 +135,23 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 					--d2l-count-badge-background-color: var(--d2l-color-celestine-minus-1);
 				}
 
-
-				.d2l-button-subtle-has-icon .d2l-button-subtle-content-wrapper {
-					padding-inline: 1.2rem 0;
-				}
-
-				:host([icon-right]) .d2l-button-subtle-has-icon .d2l-button-subtle-content-wrapper {
-					padding-inline: 0 1.2rem;
-				}
-
-				slot[name="icon"]::slotted(*) {
-					display: none;
-				}
-
-				d2l-icon.d2l-button-subtle-icon,
+				.property-icon,
 				slot[name="icon"]::slotted(d2l-icon-custom) {
 					color: var(--d2l-color-celestine);
-					display: inline-block;
-					height: 0.9rem;
-					position: absolute;
-					top: 50%;
-					transform: translateY(-50%);
-					width: 0.9rem;
 				}
 
-				button:hover:not([disabled]) d2l-icon.d2l-button-subtle-icon,
-				button:focus:not([disabled]) d2l-icon.d2l-button-subtle-icon,
-				:host([active]:not([disabled])) button d2l-icon.d2l-button-subtle-icon,
+				button:hover:not([disabled]) .property-icon,
+				button:focus:not([disabled]) .property-icon,
+				:host([active]:not([disabled])) button .property-icon,
 				button:hover:not([disabled]) slot[name="icon"]::slotted(d2l-icon-custom),
 				button:focus:not([disabled]) slot[name="icon"]::slotted(d2l-icon-custom),
 				:host([active]:not([disabled])) slot[name="icon"]::slotted(d2l-icon-custom) {
 					color: var(--d2l-color-celestine-minus-1);
 				}
 
-				:host([icon-right]) .d2l-button-subtle-has-icon d2l-icon.d2l-button-subtle-icon,
+				:host([icon-right]) .property-icon,
 				:host([icon-right]) slot[name="icon"]::slotted(d2l-icon-custom) {
-					inset-inline-end: var(--d2l-button-subtle-padding-inline-end);
+					order: 1;
 				}
 
 				:host([disabled]) button {
@@ -191,13 +169,11 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 
 		this._buttonId = getUniqueId();
 		this._describedById = getUniqueId();
-		this._hasCustomIcon = false;
 	}
 
 	render() {
-		const icon = this.icon ? html`<d2l-icon icon="${this.icon}" class="d2l-button-subtle-icon"></d2l-icon>` : nothing;
 		const buttonClasses = {
-			'd2l-button-subtle-has-icon': this._hasCustomIcon || this.icon,
+			'd2l-button-subtle-has-icon': this.hasIcon(),
 			'd2l-label-text': true
 		};
 		return html`
@@ -219,7 +195,7 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 				id="${this._buttonId}"
 				name="${ifDefined(this.name)}"
 				type="${this._getType()}">
-				<slot name="icon" @slotchange="${this._handleIconSlotChange}">${icon}</slot>
+				${this._renderIcon()}
 				<span class="d2l-button-subtle-content-wrapper">
 					<span class="d2l-button-subtle-content">${this.text}</span>
 					<slot></slot>
@@ -228,13 +204,6 @@ class ButtonSubtle extends ButtonMixin(LitElement) {
 			${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
 			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip class="vdiff-target" for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
-	}
-
-	_handleIconSlotChange(e) {
-		const icon = e && e.target && e.target.assignedNodes({ flatten: true }).filter((node) => {
-			return node.nodeType === Node.ELEMENT_NODE && node.tagName === 'D2L-ICON-CUSTOM';
-		});
-		this._hasCustomIcon = icon.length === 1;
 	}
 
 }

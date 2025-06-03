@@ -3,6 +3,7 @@ import '../icons/icon.js';
 import './menu-item-return.js';
 import { css, html, LitElement } from 'lit';
 import { HierarchicalViewMixin } from '../hierarchical-view/hierarchical-view-mixin.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
 const keyCodes = {
@@ -20,7 +21,7 @@ const keyCodes = {
  * @slot - Menu items
  * @fires d2l-menu-resize - Dispatched when size of menu changes (e.g., when nested menu of a different size is opened)
  */
-class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
+class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -32,7 +33,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 			 * ACCESSIBILITY: Acts as the primary label for the menu (REQUIRED for root menu)
 			 * @type {string}
 			 */
-			label: { type: String },
+			label: { type: String, required: true },
 			/**
 			 * @ignore
 			 */
@@ -102,6 +103,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 		this.addEventListener('d2l-menu-item-visibility-change', this._onMenuItemsChanged);
 		this.addEventListener('keydown', this._onKeyDown);
 		this.addEventListener('keypress', this._onKeyPress);
+		this.addEventListener('focusout', this._onFocusOut);
 
 		this._labelChanged();
 
@@ -175,28 +177,33 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 
 	_focusFirst() {
 		const item = this._tryGetNextFocusable();
-		if (item) item.focus();
+		if (item) this._focusItem(item);
+	}
+
+	_focusItem(item) {
+		item.setAttribute('tabindex', '0');
+		item.focus();
 	}
 
 	_focusLast() {
 		const item = this._tryGetPreviousFocusable();
-		if (item) item.focus();
+		if (item) this._focusItem(item);
 	}
 
 	_focusNext(item) {
 		item = this._tryGetNextFocusable(item);
-		item ? item.focus() : this._focusFirst();
+		item ? this._focusItem(item) : this._focusFirst();
 	}
 
 	_focusPrevious(item) {
 		item = this._tryGetPreviousFocusable(item);
-		item ? item.focus() : this._focusLast();
+		item ? this._focusItem(item) : this._focusLast();
 	}
 
 	_focusSelected() {
 		const selected = this.querySelector('[selected]');
 		if (selected) {
-			selected.focus();
+			this._focusItem(selected);
 		} else {
 			this._focusFirst();
 		}
@@ -255,9 +262,20 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 	}
 
 	_labelChanged() {
-		this.setAttribute('aria-label', this.label);
+		if (typeof this.label === 'string' && this.label.trim().length > 0) {
+			this.setAttribute('aria-label', this.label);
+		} else {
+			this.removeAttribute('aria-label');
+		}
 		const returnItem = this._getMenuItemReturn();
 		if (returnItem) returnItem.setAttribute('text', this.label);
+	}
+
+	_onFocusOut(e) {
+		e.stopPropagation();
+		const isMenuItem = e.target.role === 'menuitem' || e.target.role === 'menuitemcheckbox' || e.target.role === 'menuitemradio';
+		if (!isMenuItem || e.target.hasAttribute('first') || e.target.hasChildView) return;
+		e.target.setAttribute('tabindex', '-1');
 	}
 
 	_onKeyDown(e) {
@@ -321,7 +339,7 @@ class Menu extends ThemeMixin(HierarchicalViewMixin(LitElement)) {
 		while (itemIndex !== targetItemIndex) {
 			const item = focusableItems[itemIndex];
 			if (startsWith(item, searchChar)) {
-				item.focus();
+				this._focusItem(item);
 				return;
 			}
 			itemIndex = getNextOrFirstIndex(itemIndex);

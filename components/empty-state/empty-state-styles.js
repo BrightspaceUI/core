@@ -1,6 +1,6 @@
 import '../colors/colors.js';
-import { css, unsafeCSS } from 'lit';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { css } from 'lit';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 
 export const emptyStateStyles = css`
 
@@ -20,13 +20,11 @@ export const emptyStateStyles = css`
 	.action-slot::slotted(d2l-empty-state-action-link:first-of-type) {
 		display: inline;
 	}
-
-	.d2l-empty-state-description:${unsafeCSS(getFocusPseudoClass())} {
+	.d2l-empty-state-description {
+		--d2l-focus-ring-offset: 3px;
 		border-radius: 0.3rem;
-		outline: 2px solid var(--d2l-color-celestine);
-		outline-offset: 3px;
 	}
-
+	${getFocusRingStyles('.d2l-empty-state-description')}
 `;
 
 export const emptyStateSimpleStyles = css`
