@@ -4,7 +4,7 @@ import { css, html, LitElement } from 'lit';
 import { getBoundingAncestor, getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getLegacyOffsetParent } from '../../helpers/offsetParent-legacy.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+import { LoadingCompleteMixin } from '../../mixins/loading-complete/loading-complete-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-height: 500px)');
@@ -14,7 +14,7 @@ const MINIMUM_TARGET_SIZE = 24;
  * A wrapper component to display floating workflow buttons. When the normal position of the workflow buttons is below the bottom edge of the viewport, they will dock at the bottom edge. When the normal position becomes visible, they will undock.
  * @slot - Content to be displayed in the floating container
  */
-class FloatingButtons extends RtlMixin(LitElement) {
+class FloatingButtons extends LoadingCompleteMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -26,8 +26,7 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			_containerMarginLeft: { attribute: false, type: String },
 			_containerMarginRight: { attribute: false, type: String },
 			_floating: { type: Boolean, reflect: true },
-			_innerContainerLeft: { attribute: false, type: String },
-			_innerContainerRight: { attribute: false, type: String }
+			_innerContainerLeft: { attribute: false, type: String }
 		};
 	}
 
@@ -80,19 +79,12 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			.d2l-floating-buttons-inner-container ::slotted(d2l-button),
 			.d2l-floating-buttons-inner-container ::slotted(button),
 			.d2l-floating-buttons-inner-container ::slotted(.d2l-button) {
+				margin-inline-end: 0.75rem !important;
 				margin-bottom: 0.75rem !important;
-				margin-right: 0.75rem !important;
 			}
 
 			.d2l-floating-buttons-inner-container ::slotted(d2l-overflow-group) {
 				padding-bottom: 0.75rem !important;
-			}
-
-			:host([dir="rtl"]) .d2l-floating-buttons-inner-container ::slotted(d2l-button),
-			:host([dir="rtl"]) .d2l-floating-buttons-inner-container ::slotted(button),
-			:host([dir="rtl"]) .d2l-floating-buttons-inner-container ::slotted(.d2l-button) {
-				margin-left: 0.75rem !important;
-				margin-right: 0 !important;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
@@ -110,7 +102,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		this._containerMarginRight = '';
 		this._floating = false;
 		this._innerContainerLeft = '';
-		this._innerContainerRight = '';
 		this._intersectionObserver = null;
 		this._isIntersecting = false;
 		this._recalculateFloating = this._recalculateFloating.bind(this);
@@ -125,13 +116,15 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		// if browser doesn't support IntersectionObserver, we don't float
 		if (typeof(IntersectionObserver) !== 'function') {
 			this._isIntersecting = true;
+			this.resolveLoadingComplete();
 			return;
 		}
-		this._intersectionObserver = this._intersectionObserver || new IntersectionObserver((entries) => {
-			entries.forEach((entry) => {
+		this._intersectionObserver = this._intersectionObserver || new IntersectionObserver(async(entries) => {
+			for (const entry of entries) {
 				this._isIntersecting = entry.isIntersecting;
-				this._recalculateFloating();
-			});
+				await this._recalculateFloating();
+			}
+			this.resolveLoadingComplete();
 		});
 
 		// observe intersection of a fake sibling element since host is sticky
@@ -164,13 +157,12 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 	render() {
 		const containerStyle = {
-			marginLeft: this._containerMarginLeft,
-			marginRight: this._containerMarginRight
+			marginInlineStart: this._containerMarginLeft,
+			marginInlineEnd: this._containerMarginRight
 		};
 
 		const innerContainerStyle = {
-			marginLeft: this._innerContainerLeft,
-			marginRight: this._innerContainerRight
+			marginInlineStart: this._innerContainerLeft
 		};
 
 		return html`
@@ -193,7 +185,6 @@ class FloatingButtons extends RtlMixin(LitElement) {
 		this._containerMarginLeft = '';
 		this._containerMarginRight = '';
 		this._innerContainerLeft = '';
-		this._innerContainerRight = '';
 
 		if (!this._floating) return;
 
@@ -218,12 +209,8 @@ class FloatingButtons extends RtlMixin(LitElement) {
 			this._containerMarginRight = `-${containerRight}px`;
 		}
 
-		if (this.dir !== 'rtl') {
-			if (containerLeft !== 0) {
-				this._innerContainerLeft = `${containerLeft}px`;
-			}
-		} else {
-			this._innerContainerRight = `${containerRight}px`;
+		if (containerLeft !== 0) {
+			this._innerContainerLeft = `${containerLeft}px`;
 		}
 
 	}
@@ -251,29 +238,30 @@ class FloatingButtons extends RtlMixin(LitElement) {
 
 	}
 
-	_recalculateFloating() {
-		requestAnimationFrame(() => {
+	async _recalculateFloating() {
+		await new Promise(resolve => requestAnimationFrame(resolve));
 
-			if (this.alwaysFloat) {
-				this._floating = true;
-				this._calcContainerPosition();
-				return;
-			}
+		if (this.alwaysFloat) {
+			this._floating = true;
+			this._calcContainerPosition();
+			await this.updateComplete;
+			return;
+		}
 
-			const viewportIsLessThanMinHeight = mediaQueryList.matches;
-			if (viewportIsLessThanMinHeight) {
-				this._floating = false;
-				this._calcContainerPosition();
-				return;
-			}
+		const viewportIsLessThanMinHeight = mediaQueryList.matches;
+		if (viewportIsLessThanMinHeight) {
+			this._floating = false;
+			this._calcContainerPosition();
+			await this.updateComplete;
+			return;
+		}
 
-			const shouldFloat = !this._isIntersecting;
-			if (shouldFloat !== this._floating) {
-				this._floating = shouldFloat;
-				this._calcContainerPosition();
-			}
-
-		});
+		const shouldFloat = !this._isIntersecting;
+		if (shouldFloat !== this._floating) {
+			this._floating = shouldFloat;
+			this._calcContainerPosition();
+			await this.updateComplete;
+		}
 	}
 
 	_scrollIfFloatObsuringFocus() {
