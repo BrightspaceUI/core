@@ -109,9 +109,10 @@ export const htmlBlockContentStyles = css`
 		text-decoration: underline;
 	}
 	a {
+		--d2l-focus-ring-offset: 1px;
 		--d2l-focus-ring-color: var(--d2l-color-celestine, #006fbf);
 	}
-	${getFocusRingStyles('a', { baseOffset: '1px', extraStyles: 'border-radius: 2px; text-decoration: underline;' })}
+	${getFocusRingStyles('a', { extraStyles: css`border-radius: 2px; text-decoration: underline;` })}
 	@media print {
 		a,
 		a:visited,

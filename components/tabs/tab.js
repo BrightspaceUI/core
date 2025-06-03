@@ -3,11 +3,10 @@ import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js'
 import { classMap } from 'lit/directives/class-map.js';
 import { TabMixin } from './tab-mixin.js';
 
-const focusRingStyles = getFocusRingStyles(`:host(:${getFocusPseudoClass()}) .d2l-tab-text-inner-content`, {
-	noFocusPseudoClass: true,
-	baseOffset: '0',
-	extraStyles: 'border-radius: 0.3rem; color: var(--d2l-color-celestine);'
-});
+const focusRingStyles = getFocusRingStyles(
+	pseudoClass => `:host(:${pseudoClass}) .d2l-tab-text-inner-content`,
+	{ extraStyles: css`border-radius: 0.3rem; color: var(--d2l-color-celestine);` }
+);
 
 /**
  * @attr {string} id - REQUIRED: Unique identifier for the tab
@@ -30,6 +29,7 @@ class Tab extends TabMixin(LitElement) {
 	static get styles() {
 		const styles = [ css`
 			.d2l-tab-text-inner-content {
+				--d2l-focus-ring-offset: 0;
 				display: flex;
 				padding: 0.1rem;
 			}

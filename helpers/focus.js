@@ -63,15 +63,13 @@ export function getFocusableDescendants(node, options) {
 export function getFocusPseudoClass() {
 	return isFocusVisibleSupported() ? 'focus-visible' : 'focus';
 }
-export function getFocusRingStyles(selector, { applyOnHover = false, noFocusPseudoClass = false, baseOffset = '2px', extraStyles = '' } = {}) {
-	const baseSelector = selector;
-	if (!noFocusPseudoClass) selector += `:${getFocusPseudoClass()}`;
-	if (applyOnHover) selector += `, ${baseSelector}:hover`;
-	const cssSelector = unsafeCSS(selector);
+export function getFocusRingStyles(selector, { applyOnHover = false, extraStyles = null } = {}) {
+	const selectorDelegate = typeof selector === 'string' ? pseudoClass => `${selector}:${pseudoClass}` : selector;
+	const cssSelector = unsafeCSS(`${selectorDelegate(getFocusPseudoClass())}${applyOnHover ? `, ${selectorDelegate('hover')}` : ''}`);
 	return css`${cssSelector} {
-		${unsafeCSS(extraStyles)}
+		${extraStyles ?? css``}
 		outline: 2px solid var(--d2l-focus-ring-color, var(--d2l-color-celestine));
-		outline-offset: var(--d2l-focus-ring-offset, ${unsafeCSS(baseOffset)});
+		outline-offset: var(--d2l-focus-ring-offset, 2px);
 	}
 	@media (prefers-contrast: more) {
 		${cssSelector} {

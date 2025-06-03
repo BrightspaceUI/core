@@ -47,6 +47,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			}
 
 			.d2l-switch-container {
+				--d2l-focus-ring-offset: 0;
 				background-color: var(--d2l-switch-container-background-color, #ffffff);
 				border-radius: 1rem;
 				box-sizing: border-box;
@@ -58,7 +59,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				padding: 0.1rem;
 				vertical-align: middle;
 			}
-			${getFocusRingStyles('.d2l-switch-container', { baseOffset:'0' })}
+			${getFocusRingStyles('.d2l-switch-container')}
 			:host([disabled]) .d2l-switch-container {
 				cursor: default;
 				opacity: 0.5;

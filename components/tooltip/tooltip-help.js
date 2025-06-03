@@ -48,6 +48,7 @@ class TooltipHelp extends SlottedIconMixin(SkeletonMixin(FocusMixin(LitElement))
 				display: none;
 			}
 			#d2l-tooltip-help-text {
+				--d2l-focus-ring-offset: 0.05rem;
 				align-items: baseline;
 				background: none;
 				border: none;
@@ -66,10 +67,7 @@ class TooltipHelp extends SlottedIconMixin(SkeletonMixin(FocusMixin(LitElement))
 				align-self: center;
 			}
 
-			#d2l-tooltip-help-text:focus {
-				outline-style: none;
-			}
-			${getFocusRingStyles('#d2l-tooltip-help-text', { baseOffset: '0.05rem', extraStyles: 'border-radius: 0.05rem; text-underline-offset: 0.1rem;' })}
+			${getFocusRingStyles('#d2l-tooltip-help-text', { extraStyles: css`border-radius: 0.05rem; text-underline-offset: 0.1rem;` })}
 			:host([inherit-font-style]) #d2l-tooltip-help-text {
 				color: inherit;
 				font-size: inherit;

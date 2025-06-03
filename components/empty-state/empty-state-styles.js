@@ -20,10 +20,11 @@ export const emptyStateStyles = css`
 	.action-slot::slotted(d2l-empty-state-action-link:first-of-type) {
 		display: inline;
 	}
-	${getFocusRingStyles(
-		'.d2l-empty-state-description',
-		{ baseOffset: '3px', extraStyles: 'border-radius: 0.3rem;' }
-	)}
+	.d2l-empty-state-description {
+		--d2l-focus-ring-offset: 3px;
+		border-radius: 0.3rem;
+	}
+	${getFocusRingStyles('.d2l-empty-state-description')}
 `;
 
 export const emptyStateSimpleStyles = css`

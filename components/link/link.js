@@ -11,6 +11,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 export const linkStyles = css`
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
+		--d2l-focus-ring-offset: 1px;
 		color: var(--d2l-color-celestine);
 		cursor: pointer;
 		outline-style: none;
@@ -24,7 +25,7 @@ export const linkStyles = css`
 		color: var(--d2l-color-celestine-minus-1);
 		text-decoration: underline;
 	}
-	${getFocusRingStyles('.d2l-link', { baseOffset: '1px', extraStyles: 'border-radius: 2px; text-decoration: underline;' })}
+	${getFocusRingStyles('.d2l-link', { extraStyles: css`border-radius: 2px; text-decoration: underline;` })}
 	.d2l-link.d2l-link-main {
 		font-weight: 700;
 	}
