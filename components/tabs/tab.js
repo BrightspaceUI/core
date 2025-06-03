@@ -64,8 +64,7 @@ class Tab extends TabMixin(LitElement) {
 			 * Only allow d2l-icon, d2l-count-badge, and d2l-icon-custom in the before/after slots
 			 * Only show the first item in the before slot and the last item in the after slot
 			 */
-			::slotted([slot="before"]:not(d2l-icon):not(d2l-count-badge):not(d2l-icon-custom)),
-			::slotted([slot="after"]:not(d2l-icon):not(d2l-count-badge):not(d2l-icon-custom)),
+			::slotted([slot]:not(d2l-icon):not(d2l-count-badge):not(d2l-icon-custom)),
 			::slotted([slot="before"]:not(:first-child)),
 			::slotted([slot="after"]:not(:last-child)) {
 				display: none;
