@@ -465,7 +465,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([draggable][selectable][_hovering]) [slot="add"],
 			:host([draggable][selectable][_focusing]) [slot="add"],
 			:host([draggable][selectable][_hovering]) [slot="add-top"],
-			:host([draggable][selectable][_focusing]) [slot="add-top"] {
+			:host([draggable][selectable][_focusing]) [slot="add-top"],
+			:host([draggable][current]) [slot="add"],
+			:host([draggable][_next-sibling-current]) [slot="add"],
+			:host([draggable][current]) [slot="add-top"],
+			:host([draggable][_has-current-parent]) [slot="add-top"] {
 				padding-inline-end: 6px;
 			}
 			.dragging [slot="add"] {
