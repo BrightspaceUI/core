@@ -25,16 +25,24 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-list grid style="width: 334px;">
-						<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded action-href="https://d2l.com" prevent-navigation>
+						<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded action-href="https://d2l.com" prevent-navigation indentation="20">
 							<d2l-list-item-content>
-								<div>Welcome!</div>
+								<div>Indentation of 20 on children</div>
 							</d2l-list-item-content>
 							<d2l-list slot="nested" grid>
-								<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation">
+								<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" expandable expanded>
 									<d2l-list-item-content>
-										<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Syallabus Confirmation</div>
+										<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Nested content with specified indentation</div>
 										<div slot="secondary"><d2l-tooltip-help text="Due: May 2, 2023 at 2 pm" style="padding: 5px;">Start: May 1, 2023 at 12:01 AM</d2l-tooltip-help></div>
 									</d2l-list-item-content>
+									<d2l-list slot="nested" grid>
+										<d2l-list-item-nav key="L2-1" label="Nested Syallabus Confirmation">
+											<d2l-list-item-content>
+												<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Double nested content without specified indentation</div>
+												<div slot="secondary"><d2l-tooltip-help text="Due: May 2, 2023 at 2 pm" style="padding: 5px;">Start: May 1, 2023 at 12:01 AM</d2l-tooltip-help></div>
+											</d2l-list-item-content>
+										</d2l-list-item-nav>
+									</d2l-list>
 								</d2l-list-item-nav>
 							</d2l-list>
 						</d2l-list-item-nav>
@@ -44,15 +52,23 @@
 								<div slot="secondary"><d2l-tooltip-help text="Due: May 2, 2023 at 5 pm" style="padding: 5px;">Starts: May 1, 2023 at 12:01 AM</d2l-tooltip-help></div>
 							</d2l-list-item-content>
 							<d2l-list slot="nested" grid>
-								<d2l-list-item-nav key="L3-2" label="Fiction">
-									<d2l-list-item-content>
-										<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Fiction</div>
-									</d2l-list-item-content>
-								</d2l-list-item-nav>
 								<d2l-list-item-nav key="L3-2" label="Ten rules for writing fiction">
 									<d2l-list-item-content>
 										<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Ten rules for writing fiction</div>
 									</d2l-list-item-content>
+								</d2l-list-item-nav>
+								<d2l-list-item-nav key="L3-2" label="Fiction" indentation="20" expandable expanded>
+									<d2l-list-item-content>
+										<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Indentation of 20 on children</div>
+									</d2l-list-item-content>
+									<d2l-list slot="nested" grid>
+										<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation">
+											<d2l-list-item-content>
+												<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Nested content with specified indentation</div>
+												<div slot="secondary"><d2l-tooltip-help text="Due: May 2, 2023 at 2 pm" style="padding: 5px;">Start: May 1, 2023 at 12:01 AM</d2l-tooltip-help></div>
+											</d2l-list-item-content>
+										</d2l-list-item-nav>
+									</d2l-list>
 								</d2l-list-item-nav>
 							</d2l-list>
 						</d2l-list-item-nav>
