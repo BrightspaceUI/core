@@ -105,11 +105,13 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			}
 
 			button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
+				background-color: white;
 				border-radius: 0.3rem;
 				box-shadow: 0 0 0 2px var(--d2l-button-add-hover-focus-color);
 			}
-			:host([_white-background-add-button]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
-				background-color: white;
+			/* remove when GAUD-7495-add-button-white-background is cleaned up */
+			:host(:not([_white-background-add-button])) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
+				background-color: transparent;
 			}
 			:host([mode="icon-when-interacted"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text,
 			:host([mode="icon"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
