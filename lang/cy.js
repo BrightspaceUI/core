@@ -24,31 +24,31 @@ export default {
 	"components.filter.loading": "Wrthi’n llwytho hidlyddion",
 	"components.filter.filterCountDescription":
 		`{number, plural,
-			=0 {Dim hidlyddion wedi’i gweithredu.}
-			one {{number} hidlydd wedi’i weithredu.}
-			other {{number} hidlyddion wedi’u gweithredu.}
-		}`,
+		=0 {Dim hidlyddion wedi’i gweithredu.}
+		one {{number} hidlydd wedi’i weithredu.}
+		other {{number} hidlyddion wedi’u gweithredu.}
+	}`,
 	"components.filter.filters": "Hidlyddion",
 	"components.filter.noFilters": "Dim hidlyddion ar gael",
 	"components.filter.searchResults":
 		`{number, plural,
-			=0 {Dim canlyniadau chwilio}
-			one {{number} canlyniad chwilio}
-			other {{number} canlyniadau chwilio}
-		}`,
+		=0 {Dim canlyniadau chwilio}
+		one {{number} canlyniad chwilio}
+		other {{number} canlyniadau chwilio}
+	}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Mae’r hidlyddion a ddewiswyd yn ymddangos gyntaf.",
 	"components.filter.singleDimensionDescription": "Hidlo yn ôl: {filterName}",
 	"components.filter-dimension-set-date-text-value.textHours":
 		`{num, plural,
-			=1 {Awr ddiwethaf}
-			other {{num} awr ddiwethaf}
-		}`,
+		=1 {Awr ddiwethaf}
+		other {{num} awr ddiwethaf}
+	}`,
 	"components.filter-dimension-set-date-text-value.textDays":
 		`{num, plural,
-			=0 {Heddiw}
-			one {{num} diwrnod diwethaf}
-			other {{num} o ddiwrnodau diwethaf}
-		}`,
+		=0 {Heddiw}
+		one {{num} diwrnod diwethaf}
+		other {{num} o ddiwrnodau diwethaf}
+	}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "{num} o fisoedd diwethaf",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, ehangwch i ddewis dyddiadau",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} i {endValue}",
@@ -60,33 +60,33 @@ export default {
 	"components.form-element.input.email.typeMismatch": "Nid yw’r e-bost yn ddilys",
 	"components.form-element.input.number.rangeError":
 		`{minExclusive, select,
-			true {{maxExclusive, select,
-				true {Rhaid i’r nifer fod yn fwy na {min} a llai na {max}.}
-				other {Rhaid i’r nifer fod yn fwy na {min} a llai na neu’n hafal i {max}.}
-			}}
-			other {{maxExclusive, select,
-				true {Rhaid i’r nifer fod yn fwy na neu’n hafal i {min} a llai na {max}.}
-				other {Rhaid i’r nifer fod yn fwy na neu’n hafal i {min} a llai na neu’n hafal i {max}.}
-			}}
-		}`,
+		true {{maxExclusive, select,
+			true {Rhaid i’r nifer fod yn fwy na {min} a llai na {max}.}
+			other {Rhaid i’r nifer fod yn fwy na {min} a llai na neu’n hafal i {max}.}
+		}}
+		other {{maxExclusive, select,
+			true {Rhaid i’r nifer fod yn fwy na neu’n hafal i {min} a llai na {max}.}
+			other {Rhaid i’r nifer fod yn fwy na neu’n hafal i {min} a llai na neu’n hafal i {max}.}
+		}}
+	}`,
 	"components.form-element.input.number.rangeOverflow":
 		`{maxExclusive, select,
-			true {Rhaid i’r nifer fod yn llai na {max}.}
-			other {Rhaid i’r nifer fod yn llai na neu’n hafal i {max}.}
-		}`,
+		true {Rhaid i’r nifer fod yn llai na {max}.}
+		other {Rhaid i’r nifer fod yn llai na neu’n hafal i {max}.}
+	}`,
 	"components.form-element.input.number.rangeUnderflow":
 		`{minExclusive, select,
-			true {Rhaid i’r nifer fod yn fwy na {min}.}
-			other {Rhaid i’r nifer fod yn fwy na neu’n hafal i {min}.}
-		}`,
+		true {Rhaid i’r nifer fod yn fwy na {min}.}
+		other {Rhaid i’r nifer fod yn fwy na neu’n hafal i {min}.}
+	}`,
 	"components.form-element.input.text.tooShort": "Rhaid i {label} fod o leiaf {minlength} nod",
 	"components.form-element.input.url.typeMismatch": "Nid yw’r URL yn ddilys.",
 	"components.form-element.valueMissing": "Mae angen {label}",
 	"components.form-error-summary.errorSummary":
 		`{count, plural,
-			one {Canfuwyd {count} gwall yn y wybodaeth a gyflwynoch}
-			other {Canfuwyd {count} gwall yn y wybodaeth a gyflwynoch}
-		}`,
+		one {Canfuwyd {count} gwall yn y wybodaeth a gyflwynoch}
+		other {Canfuwyd {count} gwall yn y wybodaeth a gyflwynoch}
+	}`,
 	"components.form-error-summary.text": "Toglo manylion gwall",
 	"components.input-color.backgroundColor": "Lliw Cefndir",
 	"components.input-color.foregroundColor": "Lliw Blaendir",
@@ -152,20 +152,20 @@ export default {
 	"components.pager-load-more.action-with-page-size": "Lwytho {count} Arall",
 	"components.pageable.info":
 		`{count, plural,
-			one {{countFormatted} eitem}
-			other {{countFormatted} o eitemau}
-		}`,
+		one {{countFormatted} eitem}
+		other {{countFormatted} o eitemau}
+	}`,
 	"components.pageable.info-with-total":
 		`{totalCount, plural,
-			one {{countFormatted} o {totalCountFormatted} eitem}
-			other {{countFormatted} o {totalCountFormatted} eitemau}
-		}`,
+		one {{countFormatted} o {totalCountFormatted} eitem}
+		other {{countFormatted} o {totalCountFormatted} eitemau}
+	}`,
 	"components.pager-load-more.status-loading": "Llwytho rhagor o eitemau",
 	"components.selection.action-max-hint":
 		`{count, plural,
-			one {Wedi’i analluogi pan fydd mwy nag {countFormatted} eitem yn cael ei ddewis}
-			other {Wedi’i analluogi pan fydd mwy na {countFormatted} eitem yn cael eu dewis}
-		}`,
+		one {Wedi’i analluogi pan fydd mwy nag {countFormatted} eitem yn cael ei ddewis}
+		other {Wedi’i analluogi pan fydd mwy na {countFormatted} eitem yn cael eu dewis}
+	}`,
 	"components.selection.action-required-hint": "Rhaid i chi ddewis eitem i gyflawni’r weithred hon",
 	"components.selection.select-all": "Dewis y Cyfan",
 	"components.selection.select-all-items": "Dewis Pob {count} Eitem",
@@ -180,24 +180,24 @@ export default {
 	"components.table-col-sort-button.changeSortOrder": "Dewiswch i newid trefn ddidoli",
 	"components.table-col-sort-button.title":
 		`{sourceType, select,
-			dates {{direction, select,
-				desc {Wedi didoli newydd i hen}
-				other {Wedi didoli hen i newydd}
-			}}
-			numbers {{direction, select,
-				desc {Wedi didoli uchel i isel}
-				other {Wedi didoli isel i uchel}
-			}}
-			words {{direction, select,
-				desc {Wedi didoli Z i A}
-				other {Wedi didoli A i Z}
-			}}
-			value {Wedi didoli {selectedMenuItemText}}
-			other {{direction, select,
-				desc {Wedi didoli’n ddisgynnol}
-				other {Wedi didoli’n esgynnol}
-			}}
-		}`,
+		dates {{direction, select,
+			desc {Wedi didoli newydd i hen}
+			other {Wedi didoli hen i newydd}
+		}}
+		numbers {{direction, select,
+			desc {Wedi didoli uchel i isel}
+			other {Wedi didoli isel i uchel}
+		}}
+		words {{direction, select,
+			desc {Wedi didoli Z i A}
+			other {Wedi didoli A i Z}
+		}}
+		value {Wedi didoli {selectedMenuItemText}}
+		other {{direction, select,
+			desc {Wedi didoli’n ddisgynnol}
+			other {Wedi didoli’n esgynnol}
+		}}
+	}`,
 	"components.table-controls.label": "Camau gweithredu ar gyfer y tabl",
 	"components.tabs.next": "Sgrolio Ymlaen",
 	"components.tabs.previous": "Sgrolio Yn Ôl",
