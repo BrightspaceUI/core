@@ -84,6 +84,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 * @type {boolean}
 			 */
 			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
+			indentation: { type: Number, reflect: true },
 			/**
 			 * Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive.
 			 * @type {boolean}
@@ -748,6 +749,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				@focusout="${this._onFocusOut}"
 				class="${classMap(classes)}"
 				data-separators="${ifDefined(this._separators)}"
+				indentation="${ifDefined(this.indentation)}"
 				?grid-active="${this.role === 'row'}"
 				?no-primary-action="${this.noPrimaryAction}">
 				${this._showAddButton && this.first ? html`

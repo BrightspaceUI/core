@@ -53,7 +53,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			 * Specifies whether the grid is active or not
 			 * @type {boolean}
 			 */
-			gridActive: { type: Boolean, attribute: 'grid-active' }
+			gridActive: { type: Boolean, attribute: 'grid-active' },
+			indentation: { type: Number, attribute: 'indentation', reflect: true }
 		};
 	}
 
@@ -185,6 +186,13 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-row: nested;
 			}
 
+			:host([indentation]) ::slotted([slot="nested"]) {
+				grid-column-start: start;
+			}
+			:host([indentation]) ::slotted([slot="nested"]) {
+				padding-inline-start: var(--d2l-list-item-generic-layout-nested-indentation);
+			}
+
 			::slotted([slot="add"]) {
 				grid-row: add;
 			}
@@ -222,6 +230,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 	firstUpdated() {
 		this.addEventListener('keydown', this._onKeydown.bind(this));
+	}
+
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('indentation')) {
+			this.style.setProperty('--d2l-list-item-generic-layout-nested-indentation', `${this.indentation}px`);
+		}
 	}
 
 	render() {
