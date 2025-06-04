@@ -359,7 +359,7 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 
 	_getTooltipLabel() {
 		const valueLabel = this.value !== undefined ? this.value : this.localize('components.input-color.none');
-		return `${this._getLabel()}: ${valueLabel}.`;
+		return `${this._getLabel()}: ${valueLabel}`;
 	}
 
 	_handleClose() {
