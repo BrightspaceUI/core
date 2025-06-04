@@ -975,6 +975,8 @@ export const PopoverMixin = superclass => class extends superclass {
 			}
 		}
 
+		return null;
+
 	}
 
 	#getPositionYAdjustment(spaceAround, openerRect, contentRect) {
@@ -1001,6 +1003,8 @@ export const PopoverMixin = superclass => class extends superclass {
 			// slide content left (not enough space to center)
 			return (centerDelta * -1) + spaceAround.below;
 		}
+
+		return null;
 
 	}
 
