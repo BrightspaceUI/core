@@ -153,6 +153,15 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 					}
 				}
 			}
+			@media (prefers-contrast: more) {
+				.line {
+					background-color: ButtonBorder;
+				}
+				button:hover .line,
+				button:focus .line {
+					background-color: Highlight !important;
+				}
+			}
 		`;
 	}
 

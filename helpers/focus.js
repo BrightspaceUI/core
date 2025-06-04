@@ -73,7 +73,7 @@ export function getFocusRingStyles(selector, { applyOnHover = false, extraStyles
 	}
 	@media (prefers-contrast: more) {
 		${cssSelector} {
-			outline-color: var(--d2l-focus-ring-color, Highlight);
+			outline-color: Highlight;
 		}
 	}`;
 }
