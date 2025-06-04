@@ -1,12 +1,12 @@
 import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { buttonStyles } from '../button/button-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -226,14 +226,7 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 					outline: none;
 					width: 1.2rem;
 				}
-				.readonly-wrapper:focus {
-					outline: none;
-				}
-				.readonly-wrapper:${unsafeCSS(getFocusPseudoClass())} {
-					outline: 2px solid var(--d2l-color-celestine);
-					outline-offset: 2px;
-				}
-
+				${getFocusRingStyles('.readonly-wrapper')}
 				@media (prefers-contrast: more) {
 					.swatch {
 						border: 1px solid FieldText;

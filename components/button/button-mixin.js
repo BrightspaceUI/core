@@ -121,6 +121,18 @@ export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 		this.removeEventListener('click', this._handleClick, true);
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		const button = this.shadowRoot.querySelector(this.constructor.focusElementSelector);
+		if (!button) return;
+		button.addEventListener('focus', () => {
+			if (this.shadowRoot.querySelector(':focus-visible')) {
+				/** @ignore */
+				this.dispatchEvent(new CustomEvent('focus-visible'));
+			}
+		});
+	}
+
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 		if (changedProperties.has('ariaExpanded') && this.ariaExpanded !== undefined) {

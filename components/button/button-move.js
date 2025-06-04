@@ -102,8 +102,8 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 				:host([theme="dark"]) {
 					--d2l-button-move-background-color-focus: #000000;
 					--d2l-button-move-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
-					--d2l-button-focus-color: var(--d2l-color-celestine-plus-1);
 					--d2l-icon-fill-color: var(--d2l-color-sylvite);
+					--d2l-focus-ring-color: var(--d2l-color-celestine-plus-1);
 				}
 				button {
 					background-color: transparent;

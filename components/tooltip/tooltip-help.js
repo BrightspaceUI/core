@@ -1,18 +1,19 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+import { SlottedIconMixin } from '../icons/slotted-icon-mixin.js';
 
 /**
  * A component used to display additional information when users focus or hover over some text.
  * @slot - Default content placed inside of the tooltip
  */
-class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
+class TooltipHelp extends SlottedIconMixin(SkeletonMixin(FocusMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -47,9 +48,13 @@ class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
 				display: none;
 			}
 			#d2l-tooltip-help-text {
+				--d2l-focus-ring-offset: 0.05rem;
+				align-items: baseline;
 				background: none;
 				border: none;
+				column-gap: 0.3rem;
 				cursor: inherit;
+				display: inline-flex;
 				font-family: inherit;
 				padding: 0;
 				text-decoration-line: underline;
@@ -57,15 +62,12 @@ class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
 				text-decoration-thickness: 1px;
 				text-underline-offset: 0.1rem;
 			}
-			#d2l-tooltip-help-text:focus {
-				outline-style: none;
+			d2l-icon,
+			slot[name="icon"]::slotted(d2l-icon-custom) {
+				align-self: center;
 			}
-			#d2l-tooltip-help-text:${unsafeCSS(getFocusPseudoClass())} {
-				border-radius: 0.05rem;
-				outline: 2px solid var(--d2l-color-celestine);
-				outline-offset: 0.05rem;
-				text-underline-offset: 0.1rem;
-			}
+
+			${getFocusRingStyles('#d2l-tooltip-help-text', { extraStyles: css`border-radius: 0.05rem; text-underline-offset: 0.1rem;` })}
 			:host([inherit-font-style]) #d2l-tooltip-help-text {
 				color: inherit;
 				font-size: inherit;
@@ -79,6 +81,9 @@ class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
 			}
 			:host([skeleton]) #d2l-tooltip-help-text.d2l-skeletize {
 				text-decoration: none;
+			}
+			:host([skeleton]) slot[name="icon"]::slotted(d2l-icon-custom) {
+				display: none;
 			}
 		`];
 	}
@@ -109,6 +114,7 @@ class TooltipHelp extends SkeletonMixin(FocusMixin(LitElement)) {
 		};
 		return html`
 			<button id="d2l-tooltip-help-text" class="${classMap(classes)}" type="button">
+				${this._renderIcon()}
 				${this.text}
 			</button>
 			${!this.skeleton ? html`

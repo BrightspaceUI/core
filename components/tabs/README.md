@@ -129,8 +129,8 @@ An element that displays the corresponding tab panel when selected.
 
 | Slot | Description |
 |--|--|
-| `before` | Slot for content to be displayed before the tab text |
-| `after` | Slot for content to be displayed after the tab text |
+| `before` | Slot for content to be displayed before the tab text. Supports `d2l-icon`, `d2l-icon-custom`, and `d2l-count-badge`. Only the *first* item assigned to this slot will be shown. |
+| `after` | Slot for content to be displayed after the tab text. Supports `d2l-icon`, `d2l-icon-custom`, and `d2l-count-badge`. Only the *last* item assigned to this slot will be shown. |
 
 ### Events
 - `d2l-tab-content-change`: Dispatched when the text attribute is changed. Triggers virtual scrolling calculations in parent `d2l-tabs`.

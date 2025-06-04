@@ -110,6 +110,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_listItemNewStyles: { type: Boolean, reflect: true, attribute: '_list-item-new-styles' },
 			_showAddButton: { type: Boolean, attribute: '_show-add-button', reflect: true },
 			_siblingHasColor: { state: true },
+			_whiteBackgroundAddButton: { type: Boolean, attribute: '_white-background-add-button', reflect: true },
 		};
 	}
 
@@ -144,11 +145,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				position: absolute;
 				width: 100%;
 			}
-			:host([_has-nested-list-add-button]) [slot="before-content"] {
+			:host(:not([_white-background-add-button])[_has-nested-list-add-button]) [slot="before-content"] {
 				border-bottom: 1px solid var(--d2l-color-mica);
 				margin-bottom: -1px;
 			}
-			:host([_has-nested-list-add-button]:not([selection-disabled]):not([skeleton])[selected]) [slot="before-content"] {
+			:host(:not([_white-background-add-button])[_has-nested-list-add-button]:not([selection-disabled]):not([skeleton])[selected]) [slot="before-content"] {
 				border-bottom-color: ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')}; /* stylelint-disable-line */
 			}
 			:host(:first-of-type) [slot="control-container"]::before {
@@ -172,9 +173,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_focusing-primary-action]) [slot="control-container"]::after,
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::before,
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::after,
-			:host([_show-add-button]) [slot="control-container"]::before,
+			:host(:not([_white-background-add-button])[_show-add-button]) [slot="control-container"]::before,
 			.hide-bottom-border[slot="control-container"]::after,
-			:host([_has-nested-list-add-button]) [slot="control-container"]::after,
+			:host(:not([_white-background-add-button])[_has-nested-list-add-button]) [slot="control-container"]::after,
 			:host(:first-of-type[_nested]) [slot="control-container"]::before {
 				border-top-color: transparent;
 			}
@@ -343,7 +344,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-color: var(--d2l-color-mica);
 				margin-bottom: -1px;
 			}
-			/* below hides the border under the d2l-button-add */
+			/* below hides the border under the d2l-button-add; clean up with GAUD-7495-add-button-white-background */
 			:host([_hovering-control]) [slot="outside-control-container"].hide-bottom-border,
 			:host([_hovering-primary-action]) [slot="outside-control-container"].hide-bottom-border,
 			:host([_hovering-selection]) [slot="outside-control-container"].hide-bottom-border,
@@ -491,6 +492,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._listItemInteractiveEnabled = listItemInteractiveFlag;
 		this._listItemNewStyles = useNewStylesFlag;
 		this._siblingHasColor = false;
+		this._whiteBackgroundAddButton = getFlag('GAUD-7495-add-button-white-background', true);
 	}
 
 	get color() {
@@ -725,7 +727,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			'd2l-skeletize': this.color
 		};
 		const bottomBorderClasses = {
-			'hide-bottom-border': this._showAddButton && (!this._hasNestedList || this._hasNestedListAddButton)
+			'hide-bottom-border': !this._whiteBackgroundAddButton && (this._showAddButton && (!this._hasNestedList || this._hasNestedListAddButton))
 		};
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color) || (this._listItemInteractiveEnabled && this.expandable && !this.selectable)) ? 'control' : undefined;
