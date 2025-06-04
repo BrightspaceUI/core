@@ -939,7 +939,7 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 					color: white;
 					display: block;
 				}
-				${getFocusRingStyles(pseudoClass => `.d2l-template-primary-secondary-divider:${pseudoClass} .d2l-template-primary-secondary-divider-handle-mobile`, { extraStyles: css`right: 0.2rem;` })}
+				${getFocusRingStyles(pseudoClass => `.d2l-template-primary-secondary-divider:${pseudoClass} .d2l-template-primary-secondary-divider-handle-mobile`, { extraStyles: css`right: 0.2rem; box-shadow: 0 0 0 2px #ffffff;` })}
 				.d2l-template-primary-secondary-divider-shadow {
 					box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.25);
 					display: block;

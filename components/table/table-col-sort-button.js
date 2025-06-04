@@ -116,7 +116,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 			button:hover {
 				background-color: var(--d2l-color-gypsum);
 			}
-			${getFocusRingStyles('button')}
+			${getFocusRingStyles('button', { extraStyles: css`box-shadow: 0 0 0 2px #ffffff;`})}
 			d2l-icon {
 				margin-inline-start: 0.6rem;
 			}
