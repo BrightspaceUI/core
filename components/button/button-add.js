@@ -1,9 +1,9 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js';
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '../../mixins/visible-on-ancestor/visible-on-ancestor-mixin.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -100,11 +100,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				0% { position: absolute; }
 				100% { position: static; }
 			}
-
-			button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
-				border-radius: 0.3rem;
-				box-shadow: 0 0 0 2px var(--d2l-button-add-hover-focus-color);
-			}
+			${getFocusRingStyles(pseudoClass => `button:${pseudoClass} d2l-button-add-icon-text`, { extraStyles: css`border-radius: 0.3rem;` })}
 			:host([mode="icon-when-interacted"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text,
 			:host([mode="icon"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
 				border-radius: 0.2rem;
@@ -204,6 +200,8 @@ class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 	static get styles() {
 		return [visibleOnAncestorStyles, css`
 			:host {
+				--d2l-focus-ring-offset: 0;
+				--d2l-focus-ring-color: var(--d2l-button-add-hover-focus-color);
 				--d2l-button-add-icon-text-color: var(--d2l-color-galena);
 				align-items: center;
 				display: flex;

@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { css, html, LitElement } from 'lit';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
@@ -13,11 +13,10 @@ let focusStyleSheet;
 function getFocusStyleSheet() {
 	if (!focusStyleSheet) {
 		focusStyleSheet = new CSSStyleSheet();
-		focusStyleSheet.replaceSync(css`
-		.d2l-scroll-wrapper-focus:${unsafeCSS(getFocusPseudoClass())} {
-			box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine), 0 2px 12px 0 rgba(0, 0, 0, 0.15);
-			outline: none;
-		}`);
+		focusStyleSheet.replaceSync(getFocusRingStyles(
+			'.d2l-scroll-wrapper-focus',
+			{ extraStyles: css`box-shadow: 0 0 0 2px #ffffff, 0 2px 12px 0 rgba(0, 0, 0, 0.15);` }
+		));
 	}
 	return focusStyleSheet;
 }
