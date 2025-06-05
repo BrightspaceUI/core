@@ -45,6 +45,8 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 				--d2l-button-add-animation-duration: 200ms;
 				--d2l-button-add-hover-focus-color: var(--d2l-color-celestine-minus-1);
 				--d2l-button-add-line-color: var(--d2l-color-mica);
+				--d2l-button-add-line-height: 1px;
+				--d2l-button-add-hover-focus-line-height: 2px;
 			}
 			:host([mode="icon-when-interacted"]) {
 				--d2l-button-add-animation-delay: 50ms;
@@ -74,7 +76,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 
 			.line {
 				background: var(--d2l-button-add-line-color);
-				height: 1px;
+				height: var(--d2l-button-add-line-height);
 				margin: 5px 0;
 				width: 100%;
 			}
@@ -82,7 +84,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			button:hover .line,
 			button:focus .line {
 				background: var(--d2l-button-add-hover-focus-color);
-				height: 2px;
+				height: var(--d2l-button-add-hover-focus-line-height);
 			}
 			button:hover d2l-button-add-icon-text,
 			button:focus d2l-button-add-icon-text {
@@ -107,7 +109,7 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
 				background-color: white;
 				border-radius: 0.3rem;
-				box-shadow: 0 0 0 2px var(--d2l-button-add-hover-focus-color);
+				box-shadow: 0 0 0 var(--d2l-button-add-hover-focus-line-height) var(--d2l-button-add-hover-focus-color);
 			}
 			/* remove when GAUD-7495-add-button-white-background is cleaned up */
 			:host(:not([_white-background-add-button])) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
@@ -139,21 +141,21 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 
 				@keyframes line-start-animation {
 					0% {
-						background: linear-gradient(to right, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-button-add-hover-focus-color) 11%) left center / 113%;
+						background: linear-gradient(to right, var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) left center / 113%;
 						opacity: 10%;
 					}
 					100% {
-						background: linear-gradient(to right, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-button-add-hover-focus-color) 11%) left center / 113%; /* safari */
+						background: linear-gradient(to right, var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) left center / 113%; /* safari */
 						background-position: right;
 					}
 				}
 				@keyframes line-end-animation {
 					0% {
-						background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-button-add-hover-focus-color) 11%) right center / 113%;
+						background: linear-gradient(to left, var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) right center / 113%;
 						opacity: 10%;
 					}
 					100% {
-						background: linear-gradient(to left, var(--d2l-color-mica) 0%, var(--d2l-color-mica) 11%, var(--d2l-button-add-hover-focus-color) 11%) right center / 113%; /* safari */
+						background: linear-gradient(to left, var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) right center / 113%; /* safari */
 						background-position: left;
 					}
 				}

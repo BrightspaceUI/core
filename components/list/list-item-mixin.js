@@ -85,6 +85,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
 			/**
+			 * @ignore
+			 */
+			last: { type: Boolean, reflect: true },
+			/**
 			 * Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive.
 			 * @type {boolean}
 			 */
