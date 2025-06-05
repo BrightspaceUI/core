@@ -843,16 +843,16 @@ export const PopoverMixin = superclass => class extends superclass {
 					}
 				} else {
 					if (this._preferredPosition.span === 'end') {
-						position.right = window.innerWidth - openerRect.right + xAdjustment;
+						position.right = window.innerWidth - openerRect.right + xAdjustment - getScrollbarWidth();
 					} else {
-						position.left = (window.innerWidth - openerRect.left - xAdjustment) * -1;
+						position.left = (window.innerWidth - openerRect.left - xAdjustment - getScrollbarWidth()) * -1;
 					}
 				}
 			} else {
 				if (!this._rtl) {
 					position.left = openerRect.left + ((openerRect.width - pointerRect.width) / 2);
 				} else {
-					position.right = window.innerWidth - openerRect.left - ((openerRect.width + pointerRect.width) / 2);
+					position.right = window.innerWidth - openerRect.left - ((openerRect.width + pointerRect.width) / 2) - getScrollbarWidth();
 				}
 			}
 
@@ -895,7 +895,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				if (!this._rtl) {
 					position.left = openerRect.left + xAdjustment;
 				} else {
-					position.right = window.innerWidth - openerRect.left - openerRect.width + xAdjustment;
+					position.right = window.innerWidth - openerRect.left - openerRect.width + xAdjustment - getScrollbarWidth();
 				}
 			}
 
