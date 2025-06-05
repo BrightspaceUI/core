@@ -23,7 +23,6 @@ class ListDemoNav extends LitElement {
 			css`
 				:host {
 					display: block;
-					max-width: 400px;
 				}
 				d2l-icon {
 					margin-right: 0.7rem;
