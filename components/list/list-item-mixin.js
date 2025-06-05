@@ -1,5 +1,6 @@
 import '../button/button-add.js';
 import '../colors/colors.js';
+import './list-item-drag-image.js';
 import './list-item-generic-layout.js';
 import './list-item-placement-marker.js';
 import '../tooltip/tooltip.js';
@@ -41,6 +42,7 @@ function addTabListener() {
 
 const listItemInteractiveFlag = getFlag('GAUD-7495-list-interactive-content', true);
 const useNewStylesFlag = getFlag('GAUD-7495-list-item-new-styles', true);
+const dragDropMultipleFlag = getFlag('GAUD-7495-list-item-drag-drop-multiple', true);
 
 let hasDisplayedKeyboardTooltip = false;
 
@@ -817,6 +819,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			${this.draggable ? html`<div class="d2l-list-item-drag-image">${innerView}</div>` : innerView}
 			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
 			${this._displayKeyboardTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this.localizeHTML('components.list.keyboard')}</d2l-tooltip>` : ''}
+			${dragDropMultipleFlag && (this.draggable && this._dragMultiple && (this.expandable || this.selectable)) ? html`<d2l-list-item-drag-image></d2l-list-item-drag-image>` : nothing}
 		`;
 
 	}

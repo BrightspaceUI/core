@@ -1,4 +1,7 @@
 import { findComposedAncestor } from '../../helpers/dom.js';
+import { getFlag } from '../../helpers/flags.js';
+
+const dragDropMultipleFlag = getFlag('GAUD-7495-list-item-drag-drop-multiple', true);
 
 export const ListItemRoleMixin = superclass => class extends superclass {
 
@@ -31,6 +34,9 @@ export const ListItemRoleMixin = superclass => class extends superclass {
 		this._nested = (parent.slot === 'nested');
 		this._separators = separators || undefined;
 		this._extendSeparators = parent.hasAttribute('extend-separators');
+
+		if (!dragDropMultipleFlag) return;
+		this._dragMultiple = this.getRootList()?.hasAttribute('drag-multiple');
 	}
 
 };
