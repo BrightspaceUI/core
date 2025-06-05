@@ -138,7 +138,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				position: relative;
 			}
 
-			:host(:first-of-type) [slot="control-container"]::before,
+			:host(:first-of-type:not([_list-item-new-styles])) [slot="control-container"]::before,
+			:host([_list-item-new-styles]) [slot="control-container"]::before,
 			[slot="control-container"]::after {
 				border-top: 1px solid var(--d2l-color-mica);
 				content: "";
@@ -152,7 +153,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host(:not([_white-background-add-button])[_has-nested-list-add-button]:not([selection-disabled]):not([skeleton])[selected]) [slot="before-content"] {
 				border-bottom-color: ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')}; /* stylelint-disable-line */
 			}
-			:host(:first-of-type) [slot="control-container"]::before {
+			:host(:first-of-type:not([_list-item-new-styles])) [slot="control-container"]::before,
+			:host([_list-item-new-styles]) [slot="control-container"]::before {
 				top: 0;
 			}
 			[slot="control-container"]::after {
