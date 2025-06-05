@@ -292,7 +292,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	}
 
 	configure(properties) {
-		this._margin = properties?.margin ?? 18;
+		this._margin = properties?.margin ?? ((properties?.position?.location === 'inline-start' || properties?.position?.location === 'inline-end') ? 0 : 18);
 		this._maxHeight = properties?.maxHeight;
 		this._maxWidth = properties?.maxWidth;
 		this._minHeight = properties?.minHeight;
