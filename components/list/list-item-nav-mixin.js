@@ -45,6 +45,20 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 				--d2l-list-item-content-text-decoration: none;
 			}
 
+			/* clean up with GAUD-7495-list-item-new-styles flag */
+			@supports selector(:has(a, b)) {
+				:host([_focusing-primary-action]) .d2l-list-item-content {
+					--d2l-list-item-content-text-border-radius: initial;
+					--d2l-list-item-content-text-outline: initial;
+					--d2l-list-item-content-text-outline-offset: initial;
+				}
+				:host([_focusing-primary-action]):has(:focus-visible) .d2l-list-item-content {
+					--d2l-list-item-content-text-border-radius: 3px;
+					--d2l-list-item-content-text-outline: 2px solid var(--d2l-color-celestine);
+					--d2l-list-item-content-text-outline-offset: 1px;
+				}
+			}
+
 		` ];
 
 		super.styles && styles.unshift(super.styles);
