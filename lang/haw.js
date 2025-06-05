@@ -1,4 +1,5 @@
 export default {
+	"__test__": "This will be removed in a follow-up PR (before translation)",
 	"components.alert.close": "Pani i ka makaʻala",
 	"components.breadcrumbs.breadcrumb": "Palapalapala",
 	"components.button-add.addItem": "Pākuʻi Mea",

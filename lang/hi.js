@@ -1,4 +1,5 @@
 export default {
+	"__test__": "This will be removed in a follow-up PR (before translation)",
 	"components.alert.close": "अलर्ट बंद करें",
 	"components.breadcrumbs.breadcrumb": "ब्रेडक्रंब",
 	"components.button-add.addItem": "आइटम जोड़ें",

@@ -1,4 +1,5 @@
 export default {
+	"__test__": "This will be removed in a follow-up PR (before translation)",
 	"components.alert.close": "Benachrichtigung schließen",
 	"components.breadcrumbs.breadcrumb": "Brotkrümelnavigation",
 	"components.button-add.addItem": "Element hinzufügen",

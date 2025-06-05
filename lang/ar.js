@@ -1,4 +1,5 @@
 export default {
+	"__test__": "This will be removed in a follow-up PR (before translation)",
 	"components.alert.close": "إغلاق التنبيه",
 	"components.breadcrumbs.breadcrumb": "شريط التنقل",
 	"components.button-add.addItem": "إضافة عنصر",

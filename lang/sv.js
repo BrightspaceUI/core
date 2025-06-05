@@ -1,4 +1,5 @@
 export default {
+	"__test__": "This will be removed in a follow-up PR (before translation)",
 	"components.alert.close": "Stängningsvarning",
 	"components.breadcrumbs.breadcrumb": "Sökväg",
 	"components.button-add.addItem": "Lägg till objekt",

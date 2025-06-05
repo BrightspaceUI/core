@@ -1,4 +1,5 @@
 export default {
+	"__test__": "This will be removed in a follow-up PR (before translation)",
 	"components.alert.close": "關閉警示",
 	"components.breadcrumbs.breadcrumb": "導覽路徑",
 	"components.button-add.addItem": "新增項目",

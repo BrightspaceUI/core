@@ -1,4 +1,5 @@
 export default {
+	"__test__": "This will be removed in a follow-up PR (before translation)",
 	"components.alert.close": "Cau Hysbysiad",
 	"components.breadcrumbs.breadcrumb": "Briwsionyn Bara",
 	"components.button-add.addItem": "Ychwanegu Eitem",

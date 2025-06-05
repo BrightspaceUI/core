@@ -1,4 +1,5 @@
 export default {
+	"__test__": "This will be removed in a follow-up PR (before translation)",
 	"components.alert.close": "アラートを閉じる",
 	"components.breadcrumbs.breadcrumb": "階層",
 	"components.button-add.addItem": "項目の追加",
