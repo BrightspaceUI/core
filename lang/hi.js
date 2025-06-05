@@ -1,4 +1,5 @@
 export default {
+	"__test__": "This will be removed in a follow-up PR (before translation)",
 	"components.alert.close": "अलर्ट बंद करें",
 	"components.breadcrumbs.breadcrumb": "ब्रेडक्रंब",
 	"components.button-add.addItem": "आइटम जोड़ें",
@@ -22,14 +23,33 @@ export default {
 	"components.filter.clearAnnounce": "इसके लिए फ़िल्टर साफ़ हो रहे हैं: {filterName}",
 	"components.filter.clearDescription": "इसके लिए फ़िल्टर्स साफ़ करें: {filterName}",
 	"components.filter.loading": "फिल्टर्स लोड किए जा रहे हैं",
-	"components.filter.filterCountDescription": "{number, plural, =0 {कोई फ़िल्टर लागू नहीं किए गए} one {1 फ़िल्टर लागू किया गया।} other {{number} फ़िल्टर्स लागू किए गए।}}",
+	"components.filter.filterCountDescription":
+		`{number, plural,
+			=0 {कोई फ़िल्टर लागू नहीं किए गए}
+			one {1 फ़िल्टर लागू किया गया।}
+			other {{number} फ़िल्टर्स लागू किए गए।}
+		}`,
 	"components.filter.filters": "फ़िल्टर्स",
 	"components.filter.noFilters": "कोई उपलब्ध फ़िल्टर्स नहीं",
-	"components.filter.searchResults": "{number, plural, =0 {कोई खोज परिणाम नहीं} one {{number} खोज परिणाम} other {{number} खोज परिणाम}}",
+	"components.filter.searchResults":
+		`{number, plural,
+			=0 {कोई खोज परिणाम नहीं}
+			one {{number} खोज परिणाम}
+			other {{number} खोज परिणाम}
+		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. चुने गए फ़िल्टर सबसे पहले दिखाई देते हैं।",
 	"components.filter.singleDimensionDescription": "इसके अनुसार फ़िल्टर करें: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {अंतिम घंटा} other {अंतिम {num} घंटे}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {आज} one {अंतिम {num} दिन} other {अंतिम {num} दिनों}}",
+	"components.filter-dimension-set-date-text-value.textHours":
+		`{num, plural,
+			=1 {अंतिम घंटा}
+			other {अंतिम {num} घंटे}
+		}`,
+	"components.filter-dimension-set-date-text-value.textDays":
+		`{num, plural,
+			=0 {आज}
+			one {अंतिम {num} दिन}
+			other {अंतिम {num} दिनों}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "अंतिम {num} महीने",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, तारीख चुनने के लिए विस्तृत करें",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} से {endValue}",
@@ -39,13 +59,35 @@ export default {
 	"components.form-element.defaultError": "{label} अमान्य है",
 	"components.form-element.defaultFieldLabel": "फ़ील्ड",
 	"components.form-element.input.email.typeMismatch": "ईमेल मान्य नहीं है",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {संख्या {min} से ज़्यादा और {max} से कम होनी चाहिए.} other {संख्या {min} से ज़्यादा और {max} से कम या उसके बराबर होनी चाहिए.}}} other {{maxExclusive, select, true {संख्या {min} से ज़्यादा या उसके बराबर और {max} से कम होनी चाहिए.} other {संख्या  {min} से ज़्यादा या उसके बराबर और {max} से कम या उसके बराबर होनी चाहिए.}}}}",
-	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {संख्या {max} से कम होनी चाहिए.} other {संख्या {max} से कम या उसके बराबर होनी चाहिए.}}",
-	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {संख्या {min} से ज़्यादा होनी चाहिए.} other {संख्या {min} से ज़्यादा या उसके बराबर होनी चाहिए.}}",
+	"components.form-element.input.number.rangeError":
+		`{minExclusive, select,
+			true {{maxExclusive, select,
+				true {संख्या {min} से ज़्यादा और {max} से कम होनी चाहिए.}
+				other {संख्या {min} से ज़्यादा और {max} से कम या उसके बराबर होनी चाहिए.}
+			}}
+			other {{maxExclusive, select,
+				true {संख्या {min} से ज़्यादा या उसके बराबर और {max} से कम होनी चाहिए.}
+				other {संख्या  {min} से ज़्यादा या उसके बराबर और {max} से कम या उसके बराबर होनी चाहिए.}
+			}}
+		}`,
+	"components.form-element.input.number.rangeOverflow":
+		`{maxExclusive, select,
+			true {संख्या {max} से कम होनी चाहिए.}
+			other {संख्या {max} से कम या उसके बराबर होनी चाहिए.}
+		}`,
+	"components.form-element.input.number.rangeUnderflow":
+		`{minExclusive, select,
+			true {संख्या {min} से ज़्यादा होनी चाहिए.}
+			other {संख्या {min} से ज़्यादा या उसके बराबर होनी चाहिए.}
+		}`,
 	"components.form-element.input.text.tooShort": "{label} कम से कम {minlength} वर्णों का होना चाहिए",
 	"components.form-element.input.url.typeMismatch": "URL मान्य नहीं है",
 	"components.form-element.valueMissing": "{label} ज़रूरी है",
-	"components.form-error-summary.errorSummary": "{count, plural, one {आपके द्वारा सबमिट की गई जानकारी में {count} त्रुटियाँ पाई गईं} other {आपके द्वारा सबमिट की गई जानकारी में {count} त्रुटियाँ पाई गईं}}",
+	"components.form-error-summary.errorSummary":
+		`{count, plural,
+			one {आपके द्वारा सबमिट की गई जानकारी में {count} त्रुटियाँ पाई गईं}
+			other {आपके द्वारा सबमिट की गई जानकारी में {count} त्रुटियाँ पाई गईं}
+		}`,
 	"components.form-error-summary.text": "त्रुटि विवरण टॉगल करें",
 	"components.input-color.backgroundColor": "पृष्ठभूमि का रंग",
 	"components.input-color.foregroundColor": "अग्रभूमि का रंग",
@@ -109,10 +151,22 @@ export default {
 	"components.overflow-group.moreActions": "अधिक क्रियाएँ",
 	"components.pager-load-more.action": "और लोड करें",
 	"components.pager-load-more.action-with-page-size": "{count} और लोड करें",
-	"components.pageable.info": "{count, plural, one {{countFormatted} आइटम} other {{countFormatted} आइटम}}",
-	"components.pageable.info-with-total": "{totalCount, plural, one {{totalCountFormatted} में से {countFormatted} आइटम} other {{totalCountFormatted} में से {countFormatted} आइटम}}",
+	"components.pageable.info":
+		`{count, plural,
+			one {{countFormatted} आइटम}
+			other {{countFormatted} आइटम}
+		}`,
+	"components.pageable.info-with-total":
+		`{totalCount, plural,
+			one {{totalCountFormatted} में से {countFormatted} आइटम}
+			other {{totalCountFormatted} में से {countFormatted} आइटम}
+		}`,
 	"components.pager-load-more.status-loading": "और आइटम लोड करना",
-	"components.selection.action-max-hint": "{count, plural, one {{countFormatted} से अधिक आइटम चुने जाने पर अक्षम किया गया जाता है} other {{countFormatted} अधिक आइटम्स चुने जाने पर अक्षम किया गया जाता है}}",
+	"components.selection.action-max-hint":
+		`{count, plural,
+			one {{countFormatted} से अधिक आइटम चुने जाने पर अक्षम किया गया जाता है}
+			other {{countFormatted} अधिक आइटम्स चुने जाने पर अक्षम किया गया जाता है}
+		}`,
 	"components.selection.action-required-hint": "यह कार्रवाई करने के लिए किसी आइटम का चयन करें",
 	"components.selection.select-all": "सभी का चयन करें",
 	"components.selection.select-all-items": "सभी {count} आइटम चुनें।",
@@ -125,7 +179,26 @@ export default {
 	"components.switch.conditions": "शर्तें पूरी होनी चाहिए",
 	"components.table-col-sort-button.addSortOrder": "क्रमबद्ध अनुक्रम जोड़ने के लिए चुनें",
 	"components.table-col-sort-button.changeSortOrder": "क्रमबद्ध अनुक्रम बदलने के लिए चुनें",
-	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {नए से पुराने तक क्रमबद्ध} other {पुराने से नये तक क्रमबद्ध}}} numbers {{direction, select, desc {उच्च से निम्न क्रमबद्ध} other {निम्न से उच्च क्रमबद्ध}}} words {{direction, select, desc {Z से A तक क्रमबद्ध} other {A से Z तक क्रमबद्ध}}} value {क्रमबद्ध किया गया {selectedMenuItemText}} other {{direction, select, desc {अवरोही क्रम में क्रमबद्ध} other {आरोही क्रम में क्रमबद्ध}}}}",
+	"components.table-col-sort-button.title":
+		`{sourceType, select,
+			dates {{direction, select,
+				desc {नए से पुराने तक क्रमबद्ध}
+				other {पुराने से नये तक क्रमबद्ध}
+			}}
+			numbers {{direction, select,
+				desc {उच्च से निम्न क्रमबद्ध}
+				other {निम्न से उच्च क्रमबद्ध}
+			}}
+			words {{direction, select,
+				desc {Z से A तक क्रमबद्ध}
+				other {A से Z तक क्रमबद्ध}
+			}}
+			value {क्रमबद्ध किया गया {selectedMenuItemText}}
+			other {{direction, select,
+				desc {अवरोही क्रम में क्रमबद्ध}
+				other {आरोही क्रम में क्रमबद्ध}
+			}}
+		}`,
 	"components.table-controls.label": "तालिका के लिए क्रियाएँ",
 	"components.tabs.next": "आगे स्क्रॉल करें",
 	"components.tabs.previous": "पीछे स्क्रॉल करें",
