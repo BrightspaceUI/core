@@ -1,5 +1,4 @@
 export default {
-	"__test__": "This will be removed in a follow-up PR (before translation)",
 	"components.alert.close": "Kapatma Uyarısı",
 	"components.breadcrumbs.breadcrumb": "İçerik Haritası",
 	"components.button-add.addItem": "Öğe Ekle",

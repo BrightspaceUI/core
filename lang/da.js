@@ -1,5 +1,4 @@
 export default {
-	"__test__": "This will be removed in a follow-up PR (before translation)",
 	"components.alert.close": "Luk besked",
 	"components.breadcrumbs.breadcrumb": "Brødkrumme",
 	"components.button-add.addItem": "Tilføj element",
