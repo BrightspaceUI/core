@@ -1012,10 +1012,10 @@ export const PopoverMixin = superclass => class extends superclass {
 		}
 
 		if (spaceAround.above < contentYAdjustment) {
-			// slide content right (not enough space to center)
+			// slide content down (not enough space to center)
 			return spaceAround.above * -1;
 		} else if (spaceAround.below < contentYAdjustment) {
-			// slide content left (not enough space to center)
+			// slide content up (not enough space to center)
 			return (centerDelta * -1) + spaceAround.below;
 		}
 
