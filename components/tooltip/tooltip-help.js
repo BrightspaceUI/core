@@ -1,10 +1,10 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { SlottedIconMixin } from '../icons/slotted-icon-mixin.js';
@@ -48,6 +48,7 @@ class TooltipHelp extends SlottedIconMixin(SkeletonMixin(FocusMixin(LitElement))
 				display: none;
 			}
 			#d2l-tooltip-help-text {
+				--d2l-focus-ring-offset: 0.05rem;
 				align-items: baseline;
 				background: none;
 				border: none;
@@ -66,15 +67,7 @@ class TooltipHelp extends SlottedIconMixin(SkeletonMixin(FocusMixin(LitElement))
 				align-self: center;
 			}
 
-			#d2l-tooltip-help-text:focus {
-				outline-style: none;
-			}
-			#d2l-tooltip-help-text:${unsafeCSS(getFocusPseudoClass())} {
-				border-radius: 0.05rem;
-				outline: 2px solid var(--d2l-color-celestine);
-				outline-offset: 0.05rem;
-				text-underline-offset: 0.1rem;
-			}
+			${getFocusRingStyles('#d2l-tooltip-help-text', { extraStyles: css`border-radius: 0.05rem; text-underline-offset: 0.1rem;` })}
 			:host([inherit-font-style]) #d2l-tooltip-help-text {
 				color: inherit;
 				font-size: inherit;
@@ -88,6 +81,9 @@ class TooltipHelp extends SlottedIconMixin(SkeletonMixin(FocusMixin(LitElement))
 			}
 			:host([skeleton]) #d2l-tooltip-help-text.d2l-skeletize {
 				text-decoration: none;
+			}
+			:host([skeleton]) slot[name="icon"]::slotted(d2l-icon-custom) {
+				display: none;
 			}
 		`];
 	}

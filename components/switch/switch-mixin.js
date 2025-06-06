@@ -1,8 +1,8 @@
 import '../colors/colors.js';
-import { css, html, unsafeCSS } from 'lit';
+import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -47,6 +47,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			}
 
 			.d2l-switch-container {
+				--d2l-focus-ring-offset: 0;
 				background-color: var(--d2l-switch-container-background-color, #ffffff);
 				border-radius: 1rem;
 				box-sizing: border-box;
@@ -58,9 +59,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				padding: 0.1rem;
 				vertical-align: middle;
 			}
-			.d2l-switch-container:${unsafeCSS(getFocusPseudoClass())} {
-				outline: 2px solid var(--d2l-color-celestine);
-			}
+			${getFocusRingStyles('.d2l-switch-container')}
 			:host([disabled]) .d2l-switch-container {
 				cursor: default;
 				opacity: 0.5;
