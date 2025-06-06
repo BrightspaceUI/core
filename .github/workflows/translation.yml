@@ -19,7 +19,6 @@ jobs:
       - name: Run formatter
         uses: BrightspaceUI/actions/t9n-format@main
         with:
-          false: true
           t9n-source: en
           t9n-path: ./lang/
           t9n-newlines: true
