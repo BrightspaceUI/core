@@ -1,4 +1,5 @@
 export default {
+	"__test__": "This will be removed in a follow-up PR (before translation)",
 	"components.alert.close": "Close Alert",
 	"components.breadcrumbs.breadcrumb": "Breadcrumb",
 	"components.button-add.addItem": "Add Item",
@@ -22,14 +23,33 @@ export default {
 	"components.filter.clearAnnounce": "Clearing filters for: {filterName}",
 	"components.filter.clearDescription": "Clear filters for: {filterName}",
 	"components.filter.loading": "Loading filters",
-	"components.filter.filterCountDescription": "{number, plural, =0 {No filters applied.} one {{number} filter applied.} other {{number} filters applied.}}",
+	"components.filter.filterCountDescription":
+		`{number, plural,
+			=0 {No filters applied.}
+			one {{number} filter applied.}
+			other {{number} filters applied.}
+		}`,
 	"components.filter.filters": "Filters",
 	"components.filter.noFilters": "No available filters",
-	"components.filter.searchResults": "{number, plural, =0 {No search results} one {{number} search result} other {{number} search results}}",
+	"components.filter.searchResults":
+		`{number, plural,
+			=0 {No search results}
+			one {{number} search result}
+			other {{number} search results}
+		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
 	"components.filter.singleDimensionDescription": "Filter by: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Last hour} other {Last {num} hours}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Today} one {Last {num} day} other {Last {num} days}}",
+	"components.filter-dimension-set-date-text-value.textHours":
+		`{num, plural,
+			=1 {Last hour}
+			other {Last {num} hours}
+		}`,
+	"components.filter-dimension-set-date-text-value.textDays":
+		`{num, plural,
+			=0 {Today}
+			one {Last {num} day}
+			other {Last {num} days}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Last {num} months",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, expand to choose dates",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} to {endValue}",
@@ -39,13 +59,35 @@ export default {
 	"components.form-element.defaultError": "{label} is invalid",
 	"components.form-element.defaultFieldLabel": "Field",
 	"components.form-element.input.email.typeMismatch": "Email is not valid",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {Number must be greater than {min} and less than {max}.} other {Number must be greater than {min} and less than or equal to {max}.}}} other {{maxExclusive, select, true {Number must be greater than or equal to {min} and less than {max}.} other {Number must be greater than or equal to {min} and less than or equal to {max}.}}}}",
-	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {Number must be less than {max}.} other {Number must be less than or equal to {max}.}}",
-	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {Number must be greater than {min}.} other {Number must be greater than or equal to {min}.}}",
+	"components.form-element.input.number.rangeError":
+		`{minExclusive, select,
+			true {{maxExclusive, select,
+				true {Number must be greater than {min} and less than {max}.}
+				other {Number must be greater than {min} and less than or equal to {max}.}
+			}}
+			other {{maxExclusive, select,
+				true {Number must be greater than or equal to {min} and less than {max}.}
+				other {Number must be greater than or equal to {min} and less than or equal to {max}.}
+			}}
+		}`,
+	"components.form-element.input.number.rangeOverflow":
+		`{maxExclusive, select,
+			true {Number must be less than {max}.}
+			other {Number must be less than or equal to {max}.}
+		}`,
+	"components.form-element.input.number.rangeUnderflow":
+		`{minExclusive, select,
+			true {Number must be greater than {min}.}
+			other {Number must be greater than or equal to {min}.}
+		}`,
 	"components.form-element.input.text.tooShort": "{label} must be at least {minlength} characters",
 	"components.form-element.input.url.typeMismatch": "URL is not valid",
 	"components.form-element.valueMissing": "{label} is required",
-	"components.form-error-summary.errorSummary": "{count, plural, one {There was {count} error found in the information you submitted} other {There were {count} errors found in the information you submitted}}",
+	"components.form-error-summary.errorSummary":
+		`{count, plural,
+			one {There was {count} error found in the information you submitted}
+			other {There were {count} errors found in the information you submitted}
+		}`,
 	"components.form-error-summary.text": "Toggle error details",
 	"components.input-color.backgroundColor": "Background Color",
 	"components.input-color.foregroundColor": "Foreground Color",
@@ -109,10 +151,22 @@ export default {
 	"components.overflow-group.moreActions": "More Actions",
 	"components.pager-load-more.action": "Load More",
 	"components.pager-load-more.action-with-page-size": "Load {count} More",
-	"components.pageable.info": "{count, plural, one {{countFormatted} item} other {{countFormatted} items}}",
-	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} of {totalCountFormatted} item} other {{countFormatted} of {totalCountFormatted} items}}",
+	"components.pageable.info":
+		`{count, plural,
+			one {{countFormatted} item}
+			other {{countFormatted} items}
+		}`,
+	"components.pageable.info-with-total":
+		`{totalCount, plural,
+			one {{countFormatted} of {totalCountFormatted} item}
+			other {{countFormatted} of {totalCountFormatted} items}
+		}`,
 	"components.pager-load-more.status-loading": "Loading more items",
-	"components.selection.action-max-hint": "{count, plural, one {Disabled when more than {countFormatted} item is selected} other {Disabled when more than {countFormatted} items are selected}}",
+	"components.selection.action-max-hint":
+		`{count, plural,
+			one {Disabled when more than {countFormatted} item is selected}
+			other {Disabled when more than {countFormatted} items are selected}
+		}`,
 	"components.selection.action-required-hint": "Select an item to perform this action",
 	"components.selection.select-all": "Select All",
 	"components.selection.select-all-items": "Select All {count} Items",
@@ -125,7 +179,26 @@ export default {
 	"components.switch.conditions": "Conditions must be met",
 	"components.table-col-sort-button.addSortOrder": "Select to add sort order",
 	"components.table-col-sort-button.changeSortOrder": "Select to change sort order",
-	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {Sorted new to old} other {Sorted old to new}}} numbers {{direction, select, desc {Sorted high to low} other {Sorted low to high}}} words {{direction, select, desc {Sorted Z to A} other {Sorted A to Z}}} value {Sorted {selectedMenuItemText}} other {{direction, select, desc {Sorted descending} other {Sorted ascending}}}}",
+	"components.table-col-sort-button.title":
+		`{sourceType, select,
+			dates {{direction, select,
+				desc {Sorted new to old}
+				other {Sorted old to new}
+			}}
+			numbers {{direction, select,
+				desc {Sorted high to low}
+				other {Sorted low to high}
+			}}
+			words {{direction, select,
+				desc {Sorted Z to A}
+				other {Sorted A to Z}
+			}}
+			value {Sorted {selectedMenuItemText}}
+			other {{direction, select,
+				desc {Sorted descending}
+				other {Sorted ascending}
+			}}
+		}`,
 	"components.table-controls.label": "Actions for table",
 	"components.tabs.next": "Scroll Forward",
 	"components.tabs.previous": "Scroll Backward",
