@@ -872,26 +872,26 @@ export const PopoverMixin = superclass => class extends superclass {
 			}
 
 			if (this._location === positionLocations.blockStart) {
-				position.bottom = window.innerHeight - openerRect.top + this._offset - 8;
+				position.bottom = window.innerHeight - openerRect.top + this._offset - 8; // 8 minor adjustment to position pointer at edge of content
 			} else {
-				position.top = openerRect.top + openerRect.height + this._offset - 7;
+				position.top = openerRect.top + openerRect.height + this._offset - 7; // 7 minor adjustment to position pointer at edge of content
 			}
 
 		} else if (this._location === positionLocations.inlineEnd || this._location === positionLocations.inlineStart) {
 
-			position.top = openerRect.top + (openerRect.height / 2) - 9;
+			position.top = openerRect.top + (openerRect.height / 2) - (pointerLength / 2);
 
 			if (this._location === positionLocations.inlineStart) {
 				if (!this._rtl) {
-					position.right = (openerRect.left - this._offset + 7) * -1;
+					position.right = (openerRect.left - this._offset + 7) * -1; // 7 minor adjustment to position pointer at edge of content
 				} else {
-					position.left = (window.innerWidth - openerRect.right + 7 - this._offset - getScrollbarWidth()) * -1;
+					position.left = (window.innerWidth - openerRect.right + 7 - this._offset - getScrollbarWidth()) * -1; // 7 minor adjustment to position pointer at edge of content
 				}
 			} else {
 				if (!this._rtl) {
-					position.left = openerRect.left + openerRect.width + this._offset - 7;
+					position.left = openerRect.left + openerRect.width + this._offset - 7; // 7 minor adjustment to position pointer at edge of content
 				} else {
-					position.right = window.innerWidth - openerRect.left - 7 + this._offset - getScrollbarWidth();
+					position.right = window.innerWidth - openerRect.left - 7 + this._offset - getScrollbarWidth(); // 7 minor adjustment to position pointer at edge of content
 				}
 			}
 
