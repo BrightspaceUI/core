@@ -10,9 +10,21 @@ import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 
+export const positionLocations = Object.freeze({
+	blockEnd: 'block-end',
+	blockStart: 'block-start',
+	inlineEnd: 'inline-end',
+	inlineStart: 'inline-start'
+});
+export const positionSpans = Object.freeze({
+	all: 'all',
+	end: 'end',
+	start: 'start'
+});
+
 const defaultPreferredPosition = {
-	location: 'block-end', // block-start, block-end, inline-start, inline-end
-	span: 'all', // start, end, all
+	location: positionLocations.blockEnd,
+	span: positionSpans.all,
 	allowFlip: true
 };
 const minBackdropHeightMobile = 42;
@@ -292,7 +304,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	}
 
 	configure(properties) {
-		this._margin = properties?.margin ?? ((properties?.position?.location === 'inline-start' || properties?.position?.location === 'inline-end') ? 0 : 18);
+		this._margin = properties?.margin ?? ((properties?.position?.location === positionLocations.inlineStart || properties?.position?.location === positionLocations.inlineEnd) ? 0 : 18);
 		this._maxHeight = properties?.maxHeight;
 		this._maxWidth = properties?.maxWidth;
 		this._minHeight = properties?.minHeight;
@@ -310,8 +322,8 @@ export const PopoverMixin = superclass => class extends superclass {
 			|| this._preferredPosition?.span !== properties.position?.span
 			|| this._preferredPosition?.allowFlip !== properties.position?.allowFlip) {
 			this._preferredPosition = {
-				location: properties?.position?.location ?? 'block-end',
-				span: properties?.position?.span ?? 'all',
+				location: properties?.position?.location ?? positionLocations.blockEnd,
+				span: properties?.position?.span ?? positionSpans.all,
 				allowFlip: properties?.position?.allowFlip ?? true
 			};
 		}
@@ -385,7 +397,7 @@ export const PopoverMixin = superclass => class extends superclass {
 			};
 
 			// space in viewport
-			const prefersInline = this._preferredPosition.location === 'inline-start' || this._preferredPosition.location === 'inline-end';
+			const prefersInline = this._preferredPosition.location === positionLocations.inlineStart || this._preferredPosition.location === positionLocations.inlineEnd;
 			const spaceAround = this.#constrainSpaceAround({
 				// allow for opener offset + outer margin
 				above: openerRect.top - (prefersInline ? 0 : this._offset) - this._margin,
@@ -413,9 +425,9 @@ export const PopoverMixin = superclass => class extends superclass {
 			if (options.updateHeight) {
 
 				// calculate height available to the popover contents for overflow because that is the only area capable of scrolling
-				const availableHeight = (this._location === 'inline-start' || this._location === 'inline-end')
+				const availableHeight = (this._location === positionLocations.inlineStart || this._location === positionLocations.inlineEnd)
 					? (spaceAround.above + spaceAround.below + openerRect.height)
-					: (this._location === 'block-start' ? spaceAround.above : spaceAround.below);
+					: (this._location === positionLocations.blockStart ? spaceAround.above : spaceAround.below);
 
 				if (!this._noAutoFit && availableHeight && availableHeight > 0) {
 					// only apply maximum if it's less than space available and the header/footer alone won't exceed it (content must be visible)
@@ -449,9 +461,9 @@ export const PopoverMixin = superclass => class extends superclass {
 		const mobileTrayLocation = this._mobile ? this._mobileTrayLocation : null;
 
 		let stylesMap;
-		if (mobileTrayLocation === 'block-end') {
+		if (mobileTrayLocation === positionLocations.blockEnd) {
 			stylesMap = this.#getMobileTrayBlockStyleMaps();
-		} else if (mobileTrayLocation === 'inline-start' || mobileTrayLocation === 'inline-end') {
+		} else if (mobileTrayLocation === positionLocations.inlineStart || mobileTrayLocation === positionLocations.inlineEnd) {
 			stylesMap = this.#getMobileTrayInlineStyleMaps();
 		} else {
 			stylesMap = this.#getStyleMaps();
@@ -599,9 +611,9 @@ export const PopoverMixin = superclass => class extends superclass {
 	#constrainSpaceAround(spaceAround, spaceRequired, openerRect) {
 		const constrained = { ...spaceAround };
 
-		if ((this._preferredPosition.span === 'end' && !this._rtl) || (this._preferredPosition.span === 'start' && this._rtl)) {
+		if ((this._preferredPosition.span === positionSpans.end && !this._rtl) || (this._preferredPosition.span === positionSpans.start && this._rtl)) {
 			constrained.left = Math.max(0, spaceRequired.width - (openerRect.width + spaceAround.right));
-		} else if ((this._preferredPosition.span === 'end' && this._rtl) || (this._preferredPosition.span === 'start' && !this._rtl)) {
+		} else if ((this._preferredPosition.span === positionSpans.end && this._rtl) || (this._preferredPosition.span === positionSpans.start && !this._rtl)) {
 			constrained.right = Math.max(0, spaceRequired.width - (openerRect.width + spaceAround.left));
 		}
 
@@ -640,46 +652,46 @@ export const PopoverMixin = superclass => class extends superclass {
 			return preferred.location;
 		}
 
-		if (preferred.location === 'block-end') {
-			if (spaceAround.below >= spaceRequired.height) return 'block-end';
-			if (spaceAround.above >= spaceRequired.height) return 'block-start';
+		if (preferred.location === positionLocations.blockEnd) {
+			if (spaceAround.below >= spaceRequired.height) return positionLocations.blockEnd;
+			if (spaceAround.above >= spaceRequired.height) return positionLocations.blockStart;
 			// if auto-fit is enabled, scroll will be enabled for the inner content so it will always fit in the available space so pick the largest space it can be displayed in
-			if (!this.noAutoFit) return spaceAround.above > spaceAround.below ? 'block-start' : 'block-end';
-			if (spaceAroundScroll.below >= spaceRequired.height) return 'block-end';
-			if (spaceAroundScroll.above >= spaceRequired.height) return 'block-start';
+			if (!this.noAutoFit) return spaceAround.above > spaceAround.below ? positionLocations.blockStart : positionLocations.blockEnd;
+			if (spaceAroundScroll.below >= spaceRequired.height) return positionLocations.blockEnd;
+			if (spaceAroundScroll.above >= spaceRequired.height) return positionLocations.blockStart;
 		}
 
-		if (preferred.location === 'block-start') {
-			if (spaceAround.above >= spaceRequired.height) return 'block-start';
-			if (spaceAround.below >= spaceRequired.height) return 'block-end';
+		if (preferred.location === positionLocations.blockStart) {
+			if (spaceAround.above >= spaceRequired.height) return positionLocations.blockStart;
+			if (spaceAround.below >= spaceRequired.height) return positionLocations.blockEnd;
 			// if auto-fit is enabled, scroll will be enabled for the inner content so it will always fit in the available space so pick the largest space it can be displayed in
-			if (!this.noAutoFit) return spaceAround.above > spaceAround.below ? 'block-start' : 'block-end';
-			if (spaceAroundScroll.above >= spaceRequired.height) return 'block-start';
-			if (spaceAroundScroll.below >= spaceRequired.height) return 'block-end';
+			if (!this.noAutoFit) return spaceAround.above > spaceAround.below ? positionLocations.blockStart : positionLocations.blockEnd;
+			if (spaceAroundScroll.above >= spaceRequired.height) return positionLocations.blockStart;
+			if (spaceAroundScroll.below >= spaceRequired.height) return positionLocations.blockEnd;
 		}
 
-		if (preferred.location === 'inline-end') {
+		if (preferred.location === positionLocations.inlineEnd) {
 			if (this._rtl) {
-				if (spaceAround.left >= spaceRequired.width) return 'inline-end';
-				if (spaceAround.right >= spaceRequired.width) return 'inline-start';
+				if (spaceAround.left >= spaceRequired.width) return positionLocations.inlineEnd;
+				if (spaceAround.right >= spaceRequired.width) return positionLocations.inlineStart;
 			} else {
-				if (spaceAround.right >= spaceRequired.width) return 'inline-end';
-				if (spaceAround.left >= spaceRequired.width) return 'inline-start';
+				if (spaceAround.right >= spaceRequired.width) return positionLocations.inlineEnd;
+				if (spaceAround.left >= spaceRequired.width) return positionLocations.inlineStart;
 			}
 		}
 
-		if (preferred.location === 'inline-start') {
+		if (preferred.location === positionLocations.inlineStart) {
 			if (this._rtl) {
-				if (spaceAround.right >= spaceRequired.width) return 'inline-start';
-				if (spaceAround.left >= spaceRequired.width) return 'inline-end';
+				if (spaceAround.right >= spaceRequired.width) return positionLocations.inlineStart;
+				if (spaceAround.left >= spaceRequired.width) return positionLocations.inlineEnd;
 			} else {
-				if (spaceAround.left >= spaceRequired.width) return 'inline-start';
-				if (spaceAround.right >= spaceRequired.width) return 'inline-end';
+				if (spaceAround.left >= spaceRequired.width) return positionLocations.inlineStart;
+				if (spaceAround.right >= spaceRequired.width) return positionLocations.inlineEnd;
 			}
 		}
 
 		// if auto-fit is disabled and it doesn't fit in the scrollable space above or below, always open down because it can add scrollable space
-		return 'block-end';
+		return positionLocations.blockEnd;
 	}
 
 	#getMobileTrayBlockStyleMaps() {
@@ -780,11 +792,11 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		let inlineEndOverride;
 		let inlineStartOverride;
-		if (this._mobileTrayLocation === 'inline-end') {
+		if (this._mobileTrayLocation === positionLocations.inlineEnd) {
 			// On non-responsive pages, the innerWidth may be wider than the screen,
 			// override right to stick to right of viewport
 			inlineEndOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
-		} else if (this._mobileTrayLocation === 'inline-start') {
+		} else if (this._mobileTrayLocation === positionLocations.inlineStart) {
 			// On non-responsive pages, the innerWidth may be wider than the screen,
 			// override left to stick to left of viewport
 			inlineStartOverride = `${Math.max(window.innerWidth - window.screen.width, 0)}px`;
@@ -831,18 +843,18 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		const pointerRect = pointer.getBoundingClientRect();
 
-		if (this._location === 'block-end' || this._location === 'block-start') {
+		if (this._location === positionLocations.blockEnd || this._location === positionLocations.blockStart) {
 
-			if (this._preferredPosition.span !== 'all') {
+			if (this._preferredPosition.span !== positionSpans.all) {
 				const xAdjustment = Math.min(20 + ((pointerRotatedLength - pointerLength) / 2), (openerRect.width - pointerLength) / 2);
 				if (!this._rtl) {
-					if (this._preferredPosition.span === 'end') {
+					if (this._preferredPosition.span === positionSpans.end) {
 						position.left = openerRect.left + xAdjustment;
 					} else {
 						position.right = (openerRect.right * -1) + xAdjustment;
 					}
 				} else {
-					if (this._preferredPosition.span === 'end') {
+					if (this._preferredPosition.span === positionSpans.end) {
 						position.right = window.innerWidth - openerRect.right + xAdjustment - getScrollbarWidth();
 					} else {
 						position.left = (window.innerWidth - openerRect.left - xAdjustment - getScrollbarWidth()) * -1;
@@ -856,17 +868,17 @@ export const PopoverMixin = superclass => class extends superclass {
 				}
 			}
 
-			if (this._location === 'block-start') {
+			if (this._location === positionLocations.blockStart) {
 				position.bottom = window.innerHeight - openerRect.top + this._offset - 8;
 			} else {
 				position.top = openerRect.top + openerRect.height + this._offset - 7;
 			}
 
-		} else if (this._location === 'inline-end' || this._location === 'inline-start') {
+		} else if (this._location === positionLocations.inlineEnd || this._location === positionLocations.inlineStart) {
 
 			position.top = openerRect.top + (openerRect.height / 2) - 9;
 
-			if (this._location === 'inline-start') {
+			if (this._location === positionLocations.inlineStart) {
 				if (!this._rtl) {
 					position.right = (openerRect.left - this._offset + 7) * -1;
 				} else {
@@ -888,7 +900,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	#getPosition(spaceAround, openerRect, contentRect) {
 		const position = {};
 
-		if (this._location === 'block-end' || this._location === 'block-start') {
+		if (this._location === positionLocations.blockEnd || this._location === positionLocations.blockStart) {
 
 			const xAdjustment = this.#getPositionXAdjustment(spaceAround, openerRect, contentRect);
 			if (xAdjustment !== null) {
@@ -899,20 +911,20 @@ export const PopoverMixin = superclass => class extends superclass {
 				}
 			}
 
-			if (this._location === 'block-start') {
+			if (this._location === positionLocations.blockStart) {
 				position.bottom = window.innerHeight - openerRect.top + this._offset;
 			} else {
 				position.top = openerRect.top + openerRect.height + this._offset;
 			}
 
-		} else if (this._location === 'inline-end' || this._location === 'inline-start') {
+		} else if (this._location === positionLocations.inlineEnd || this._location === positionLocations.inlineStart) {
 
 			const yAdjustment = this.#getPositionYAdjustment(spaceAround, openerRect, contentRect);
 			if (yAdjustment !== null) {
 				position.top = openerRect.top + yAdjustment;
 			}
 
-			if (this._location === 'inline-start') {
+			if (this._location === positionLocations.inlineStart) {
 				if (!this._rtl) {
 					position.right = (openerRect.left - this._offset) * -1;
 				} else {
@@ -933,16 +945,16 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	#getPositionXAdjustment(spaceAround, openerRect, contentRect) {
 
-		if (this._location !== 'block-end' && this._location !== 'block-start') return null;
+		if (this._location !== positionLocations.blockEnd && this._location !== positionLocations.blockStart) return null;
 
 		const centerDelta = contentRect.width - openerRect.width;
 		const contentXAdjustment = centerDelta / 2;
 
-		if (this._preferredPosition.span === 'all' && centerDelta <= 0) {
+		if (this._preferredPosition.span === positionSpans.all && centerDelta <= 0) {
 			// center with target (opener wider than content)
 			return contentXAdjustment * -1;
 		}
-		if (this._preferredPosition.span === 'all' && spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
+		if (this._preferredPosition.span === positionSpans.all && spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
 			// center with target (content wider than opener and enough space around)
 			return contentXAdjustment * -1;
 		}
@@ -965,10 +977,10 @@ export const PopoverMixin = superclass => class extends superclass {
 			}
 		}
 
-		if (this._preferredPosition.span !== 'all') {
+		if (this._preferredPosition.span !== positionSpans.all) {
 			// shift it (not enough space to align as requested)
 			const shift = Math.min((openerRect.width / 2) - (20 + pointerLength / 2), 0); // 20 ~= 1rem
-			if (this._preferredPosition.span === 'end') {
+			if (this._preferredPosition.span === positionSpans.end) {
 				return shift;
 			} else {
 				return openerRect.width - contentRect.width - shift;
@@ -981,17 +993,17 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	#getPositionYAdjustment(spaceAround, openerRect, contentRect) {
 
-		if (this._location !== 'inline-end' && this._location !== 'inline-start') return null;
+		if (this._location !== positionLocations.inlineEnd && this._location !== positionLocations.inlineStart) return null;
 
 		const centerDelta = contentRect.height - openerRect.height;
 		const contentYAdjustment = centerDelta / 2;
 
-		if (this._preferredPosition.span === 'all' && centerDelta <= 0) {
+		if (this._preferredPosition.span === positionSpans.all && centerDelta <= 0) {
 			// center with target (opener taller than content)
 			return contentYAdjustment * -1;
 		}
 
-		if (this._preferredPosition.span === 'all' && spaceAround.above > contentYAdjustment && spaceAround.below > contentYAdjustment) {
+		if (this._preferredPosition.span === positionSpans.all && spaceAround.above > contentYAdjustment && spaceAround.below > contentYAdjustment) {
 			// center with target (content wider than opener and enough space around)
 			return contentYAdjustment * -1;
 		}
