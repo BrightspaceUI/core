@@ -317,5 +317,56 @@ export const listDemos = {
 		primaryText: 'Applied Wetland Science',
 		dropNested: true,
 		items: []
-	}]
+	}],
+	nav: [{
+		key: '1',
+		primaryText: 'Introductory Earth Sciences',
+		dropNested: true,
+		color: '#006fbf',
+		items: [{
+			key: '1-1',
+			primaryText: 'Glaciation',
+			dropNested: true,
+			items: [],
+			color: '#29a6ff',
+			tooltipText: 'Starts: 2023-09-01, Ends: 2023-12-01',
+			tooltipOpenerText: 'Due: 2023-10-10',
+			hasIcon: true
+		}, {
+			key: '1-2',
+			primaryText: 'Weathering',
+			dropNested: true,
+			items: [],
+			color: '#29a6ff',
+			tooltipText: 'Starts: 2023-10-01, Ends: 2023-12-01',
+			tooltipOpenerText: 'Due: 2023-11-10',
+			hasIcon: true
+		}, {
+			key: '1-3',
+			primaryText: 'Volcanism',
+			dropNested: true,
+			items: [],
+			color: '#29a6ff',
+			hasIcon: true
+		}]
+	}, {
+		key: '2',
+		primaryText: 'Applied Wetland Science',
+		color: '#cd2026',
+		items: [{
+			key: '2-1',
+			primaryText: 'Carbon & Nitrogen Cycling',
+			dropNested: true,
+			items: [],
+			color: '#ff575a',
+			hasIcon: true
+		}, {
+			key: '2-2',
+			primaryText: 'Wetland Engineering',
+			dropNested: true,
+			items: [],
+			color: '#ff575a',
+			hasIcon: true
+		}]
+	}],
 };

@@ -1,9 +1,9 @@
 import '../colors/colors.js';
 import { codeStyles, createHtmlBlockRenderer as createCodeRenderer } from '../../helpers/prism.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { createHtmlBlockRenderer as createMathRenderer } from '../../helpers/mathjax.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { LoadingCompleteMixin } from '../../mixins/loading-complete/loading-complete-mixin.js';
 import { renderEmbeds } from '../../helpers/embeds.js';
 import { requestInstance } from '../../mixins/provider/provider-mixin.js';
@@ -108,12 +108,11 @@ export const htmlBlockContentStyles = css`
 		color: var(--d2l-color-celestine-minus-1, #004489);
 		text-decoration: underline;
 	}
-	a:${unsafeCSS(getFocusPseudoClass())} {
-		border-radius: 2px;
-		outline: 2px solid var(--d2l-color-celestine, #006fbf);
-		outline-offset: 1px;
-		text-decoration: underline;
+	a {
+		--d2l-focus-ring-offset: 1px;
+		--d2l-focus-ring-color: var(--d2l-color-celestine, #006fbf);
 	}
+	${getFocusRingStyles('a', { extraStyles: css`border-radius: 2px; text-decoration: underline;` })}
 	@media print {
 		a,
 		a:visited,

@@ -14,7 +14,7 @@ import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
-import '../list-item-nav-button.js';
+import '../list-item-nav.js';
 import { expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { nothing } from 'lit';
@@ -420,48 +420,129 @@ describe('list', () => {
 		});
 	});
 
+	describe('nav add-button', () => {
+		[
+			{ name: 'default' },
+			{ name: 'focus', action: async(elem) => await focusElem(elem.querySelector('d2l-list-item-nav')) },
+			{ name: 'focus current', action: async(elem) => await focusElem(elem.querySelector('[current]')), current: true },
+			{ name: 'hover', action: async(elem) => await hoverElem(elem.querySelector('d2l-list-item-nav')) },
+			{ name: 'focus second item', action: async(elem) => await focusElem(elem.querySelector('d2l-list-item-nav[key="L1-2"]')) },
+			{ name: 'focus second item current', action: async(elem) => await focusElem(elem.querySelector('d2l-list-item-nav[key="L1-2"]')), currentSecond: true }
+		].forEach(({ name, action, current, currentSecond }) => {
+			it(name, async() => {
+				const elem = await fixture(html`
+					<d2l-list grid style="width: 334px;" add-button>
+						<d2l-list-item-nav action-href=" " key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable>
+							<d2l-list-item-content>
+								<div>Welcome!</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid add-button>
+								<d2l-list-item-nav action-href=" " key="L2-1" label="Syallabus Confirmation" draggable ?current="${current || false}">
+									<d2l-list-item-content>
+										<div>Syallabus Confirmation</div>
+										<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
+									</d2l-list-item-content>
+								</d2l-list-item-nav>
+								<d2l-list-item-nav action-href=" " key="L2-2" label="Lesson 1" draggable>
+									<d2l-list-item-content>
+										<div>Lesson 1</div>
+									</d2l-list-item-content>
+								</d2l-list-item-nav>
+							</d2l-list>
+						</d2l-list-item-nav>
+						<d2l-list-item-nav action-href=" " key="L1-2" label="Welcome!" color="#006fbf" expandable expanded draggable ?current="${currentSecond || false}">
+							<d2l-list-item-content>
+								<div>Welcome!</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid add-button>
+								<d2l-list-item-nav action-href=" " key="L1-2-1" label="Syallabus Confirmation" draggable>
+									<d2l-list-item-content>
+										<div>Syallabus Confirmation</div>
+										<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
+									</d2l-list-item-content>
+								</d2l-list-item-nav>
+								<d2l-list-item-nav action-href=" " key="L1-2-2" label="Lesson 1" draggable>
+									<d2l-list-item-content>
+										<div>Lesson 1</div>
+									</d2l-list-item-content>
+								</d2l-list-item-nav>
+							</d2l-list>
+						</d2l-list-item-nav>
+					</d2l-list>
+				`);
+				if (action) await action(elem);
+				await expect(elem).to.be.golden({ margin: 24 });
+			});
+		});
+	});
+
 	[true, false].forEach(disabled => {
+		if (disabled) return; // skipping for now since no concept of disabled link item currently
+
 		describe(`nav${disabled ? '-disabled' : ''}`, () => {
 			[
 				{ name: 'default' },
+				{ name: 'default current', margin: disabled ? undefined : 24, current: true },
 				{ name: 'focus', action: focusElem, margin: disabled ? undefined : 24 },
-				{ name: 'focus add-button', action: focusElem, margin: disabled ? 75 : 24, addButton: true },
+				{ name: 'focus current', action: focusElem, margin: disabled ? undefined : 24, current: true },
 				{ name: 'hover', action: hoverElem, margin: disabled ? undefined : 24 }
-			].forEach(({ name, action, margin, addButton }) => {
+			].forEach(({ name, action, margin, current }) => {
 				it(name, async() => {
 					const elem = await fixture(html`
-						<d2l-list style="width: 400px;" ?add-button="${addButton || false}">
-							<d2l-list-item-nav-button ?button-disabled="${disabled}">
+						<d2l-list style="width: 400px;">
+							<d2l-list-item-nav ?current="${current || false}" action-href=" ">
 								${interactiveListItemContent}
-							</d2l-list-item-nav-button>
+							</d2l-list-item-nav>
 						</d2l-list>
 					`);
-					if (action) await action(elem.querySelector('d2l-list-item-nav-button'));
+					if (action) await action(elem.querySelector('d2l-list-item-nav'));
 					await expect(elem).to.be.golden({ margin });
 				});
 
 				it(`nested-${name}`, async() => {
-					if (addButton) return;
 					const elem = await fixture(html`
 						<d2l-list grid style="width: 334px;">
-							<d2l-list-item-nav-button key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable>
+							<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable action-href=" ">
 								<d2l-list-item-content>
 									<div>Welcome!</div>
 								</d2l-list-item-content>
 								<d2l-list slot="nested" grid>
-									<d2l-list-item-nav-button key="L2-1" label="Syallabus Confirmation" draggable>
+									<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" draggable  ?current="${current || false}" action-href=" ">
 										<d2l-list-item-content>
 											<div>Syallabus Confirmation</div>
-											<div slot="secondary"><d2l-tooltip-help text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
+											<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
 										</d2l-list-item-content>
-									</d2l-list-item-nav-button>
+									</d2l-list-item-nav>
 								</d2l-list>
-							</d2l-list-item-nav-button>
+							</d2l-list-item-nav>
 						</d2l-list>
 					`);
-					if (action) await action(elem.querySelectorAll('d2l-list-item-nav-button')[1]);
-					await expect(elem).to.be.golden();
+					if (action) await action(elem.querySelectorAll('d2l-list-item-nav')[1]);
+					await expect(elem).to.be.golden({ margin });
 				});
+			});
+
+			it('nested-focused-secondary', async() => {
+				const elem = await fixture(html`
+					<d2l-list grid style="width: 334px;">
+						<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable action-href=" ">
+							<d2l-list-item-content>
+								<div>Welcome!</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid>
+								<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" draggable action-href=" ">
+									<d2l-list-item-content>
+										<div>Syallabus Confirmation</div>
+										<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
+									</d2l-list-item-content>
+								</d2l-list-item-nav>
+							</d2l-list>
+						</d2l-list-item-nav>
+					</d2l-list>
+				`);
+				focusElem(elem.querySelector('d2l-tooltip-help'));
+				await oneEvent(elem, 'd2l-tooltip-show');
+				await expect(elem).to.be.golden({ margin: 24 });
 			});
 		});
 	});
@@ -719,33 +800,33 @@ describe('list', () => {
 		[
 			{ name: 'default', template: createDraggableList() },
 			{ name: 'add-button', template: createDraggableList({ addButton: true }) },
-			{ name: 'add-button focus', template: createDraggableList({ addButton: true }), action: elem => focusElem(elem.querySelector('[key="2"]')) },
-			{ name: 'add-button hover', template: createDraggableList({ addButton: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
-			{ name: 'color hover', template: createDraggableList({ color1: '#ff0000' }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
-			{ name: 'focus list item', template: createDraggableList(), action: elem => focusElem(elem.querySelector('[key="1"]')) },
-			{ name: 'hover list item', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
-			{ name: 'hover outside control', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]').shadowRoot.querySelector('[slot="outside-control"]')) },
+			{ name: 'add-button focus', template: createDraggableList({ addButton: true }), action: elem => focusElem(elem.querySelector('[key="2"]')), margin: 24 },
+			{ name: 'add-button hover', template: createDraggableList({ addButton: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
+			{ name: 'color hover', template: createDraggableList({ color1: '#ff0000' }), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
+			{ name: 'focus list item', template: createDraggableList(), action: elem => focusElem(elem.querySelector('[key="1"]')), margin: 24 },
+			{ name: 'hover list item', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
+			{ name: 'hover outside control', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]').shadowRoot.querySelector('[slot="outside-control"]')), margin: 24 },
 			{ name: 'drag-target-handle-only hover list item', template: createDraggableList({ handleOnly: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'drag-target-handle-only hover outside control', template: createDraggableList({ handleOnly: true }), action: elem => hoverElem(elem.querySelector('[key="1"]').shadowRoot.querySelector('[slot="outside-control"]')) },
 			{ name: 'selectable', template: createDraggableList({ selectable: true }) },
 			{ name: 'selectable off-color background', template: createOffColorBackground(createDraggableList({ selectable: true })) },
-			{ name: 'selectable focus', template: createDraggableList({ selectable: true }), action: elem => focusElem(elem.querySelector('[key="1"]').shadowRoot.querySelector(' d2l-selection-input')) },
+			{ name: 'selectable focus', template: createDraggableList({ selectable: true }), action: elem => focusElem(elem.querySelector('[key="1"]').shadowRoot.querySelector(' d2l-selection-input')), margin: 24 },
 			{ name: 'selectable focus off-color background', template: createOffColorBackground(createDraggableList({ selectable: true })), action: elem => focusElem(elem.querySelector('[key="1"]').shadowRoot.querySelector(' d2l-selection-input')) },
-			{ name: 'selectable hover', template: createDraggableList({ selectable: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
+			{ name: 'selectable hover', template: createDraggableList({ selectable: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
 			{ name: 'selectable hover off-color background', template: createOffColorBackground(createDraggableList({ selectable: true })), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
-			{ name: 'color selectable focus', template: createDraggableList({ color1: '#ff0000aa', selectable: true }), action: elem => focusElem(elem.querySelector('[key="1"]').shadowRoot.querySelector(' d2l-selection-input')) },
+			{ name: 'color selectable focus', template: createDraggableList({ color1: '#ff0000aa', selectable: true }), action: elem => focusElem(elem.querySelector('[key="1"]').shadowRoot.querySelector(' d2l-selection-input')), margin: 24 },
 			{ name: 'color selectable focus off-color background', template: createOffColorBackground(createDraggableList({ color1: '#ff0000aa', selectable: true })), action: elem => focusElem(elem.querySelector('[key="1"]').shadowRoot.querySelector(' d2l-selection-input')) },
-			{ name: 'color selectable hover', template: createDraggableList({ color1: '#ff0000aa', selectable: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
+			{ name: 'color selectable hover', template: createDraggableList({ color1: '#ff0000aa', selectable: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
 			{ name: 'color selectable hover off-color background', template: createOffColorBackground(createDraggableList({ color1: '#ff0000aa', selectable: true })), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'extended separators', template: createDraggableList({ color2: '#00ff00', extendSeparators: true, selectable: true }) },
 			{ name: 'extended separators hover', template: createDraggableList({ color2: '#00ff00', extendSeparators: true, selectable: true }), action: elem => hoverElem(elem.querySelector('[key="2"]')) },
 			{ name: 'extended separators add-button', template: createDraggableList({ color2: '#00ff00', extendSeparators: true, selectable: true, addButton: true }) },
 			{ name: 'extended separators add-button hover', template: createDraggableList({ color2: '#00ff00', extendSeparators: true, selectable: true, addButton: true }), action: elem => hoverElem(elem.querySelector('[key="2"]')) },
-		].forEach(({ name, template, action }) => {
+		].forEach(({ name, template, action, margin = undefined }) => {
 			it(name, async() => {
 				const elem = await fixture(template);
 				if (action) await action(elem);
-				await expect(elem).to.be.golden();
+				await expect(elem).to.be.golden({ margin });
 			});
 		});
 	});
@@ -805,7 +886,7 @@ describe('list', () => {
 			const dropdown = elem.querySelector('d2l-dropdown');
 			setTimeout(() => dropdown.toggleOpen());
 			await oneEvent(dropdown, 'd2l-dropdown-open');
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ margin: 24 });
 		});
 
 		it('tooltip open down', async() => {
@@ -1022,6 +1103,7 @@ describe('list', () => {
 			{ name: 'default expanded', template: createExpandableList({ expanded: true }) },
 			{ name: 'selectable', template: createExpandableList({ expanded: true, selectable: true }) },
 			{ name: 'draggable', template: createExpandableList({ color2: '#0000ff', draggable: true, expanded: true }) },
+			{ name: 'draggable focus nested', template: createExpandableList({ color2: '#0000ff', draggable: true, expanded: true }), action: elem => focusElem(elem.querySelectorAll('d2l-list-item')[2].shadowRoot.querySelector('d2l-button-icon')), margin: 24 },
 			{ name: 'selectable draggable', template: createExpandableList({ color3: '#129044', draggable: true, expanded: true, selectable: true }) },
 			{ name: 'selectable draggable rtl', rtl: true, template: createExpandableList({ color3: '#129044', draggable: true, expanded: true, selectable: true }) },
 			{ name: 'default expanded multiple nested lists', template: createExpandableList({ color3: '#ff0000', expanded: true, nestedMultiple: true }) },
@@ -1034,11 +1116,11 @@ describe('list', () => {
 				elem.querySelector('[key="L3-1"]').color = '#ff0000';
 				await nextFrame();
 			} }
-		].forEach(({ name, template, action, rtl }) => {
+		].forEach(({ name, template, action, rtl, margin = undefined }) => {
 			it(name, async() => {
 				const elem = await fixture(template, { rtl });
 				if (action) await action(elem);
-				await expect(elem).to.be.golden();
+				await expect(elem).to.be.golden({ margin });
 			});
 		});
 

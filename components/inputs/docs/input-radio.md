@@ -41,9 +41,9 @@ When provided with a `name`, the group will participate in forms with the `value
   import '@brightspace-ui/core/components/inputs/input-radio-group.js';
 </script>
 <d2l-input-radio-group label="Bread" name="bread">
-  <d2l-input-radio label="Whole wheat" name="whole-wheat" checked></d2l-input-radio>
-  <d2l-input-radio label="Baguette" name="baguette"></d2l-input-radio>
-  <d2l-input-radio label="Marble Rye" name="marble-rye"></d2l-input-radio>
+  <d2l-input-radio label="Whole wheat" value="whole-wheat" checked></d2l-input-radio>
+  <d2l-input-radio label="Baguette" value="baguette"></d2l-input-radio>
+  <d2l-input-radio label="Marble Rye" value="marble-rye"></d2l-input-radio>
 </d2l-input-radio-group>
 ```
 
@@ -62,7 +62,7 @@ When provided with a `name`, the group will participate in forms with the `value
 When the radio group's state changes, it dispatches the `change` event:
 
 ```javascript
-checkbox.addEventListener('change', e => {
+group.addEventListener('change', e => {
   const newValue = e.target.detail.value;
   const oldValue = e.target.detail.oldValue; // may be undefined
 });
@@ -80,9 +80,9 @@ The `<d2l-input-radio>` element represents an option within its parent `<d2l-inp
   import '@brightspace-ui/core/components/inputs/input-radio-group.js';
 </script>
 <d2l-input-radio-group label="Bread" name="bread">
-  <d2l-input-radio label="Whole wheat" name="whole-wheat" checked></d2l-input-radio>
-  <d2l-input-radio label="Baguette" name="baguette"></d2l-input-radio>
-  <d2l-input-radio label="Marble Rye" name="marble-rye"></d2l-input-radio>
+  <d2l-input-radio label="Whole wheat" value="whole-wheat" checked></d2l-input-radio>
+  <d2l-input-radio label="Baguette" value="baguette"></d2l-input-radio>
+  <d2l-input-radio label="Marble Rye" value="marble-rye"></d2l-input-radio>
 </d2l-input-radio-group>
 ```
 

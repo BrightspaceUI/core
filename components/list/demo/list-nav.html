@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../../icons/icon.js';
+			import '../list-item-content.js';
+			import '../list-item-nav.js';
+			import '../list.js';
+			import '../../tooltip/tooltip-help.js';
+
+			import './demo-list-nav.js';
+			import './demo-list-nested-iterations-helper.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-list (nav)">
+
+			<h2>Side nav list (simple)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid style="width: 334px;">
+						<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded action-href="https://d2l.com" prevent-navigation>
+							<d2l-list-item-content>
+								<div>Welcome!</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid>
+								<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" action-href="https://d2l.com" prevent-navigation>
+									<d2l-list-item-content>
+										<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Syallabus Confirmation</div>
+										<div slot="secondary"><d2l-tooltip-help text="Due: May 2, 2023 at 2 pm" style="padding: 5px;">Start: May 1, 2023 at 12:01 AM</d2l-tooltip-help></div>
+									</d2l-list-item-content>
+								</d2l-list-item-nav>
+							</d2l-list>
+						</d2l-list-item-nav>
+						<d2l-list-item-nav key="L2-2" label="Unit 1: Poetry" color="#29a6ff" expandable expanded action-href="https://d2l.com" prevent-navigation>
+							<d2l-list-item-content>
+								<div>Unit 1: Fiction</div>
+								<div slot="secondary"><d2l-tooltip-help text="Due: May 2, 2023 at 5 pm" style="padding: 5px;">Starts: May 1, 2023 at 12:01 AM</d2l-tooltip-help></div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid>
+								<d2l-list-item-nav key="L3-2" label="Fiction" action-href="https://d2l.com" prevent-navigation>
+									<d2l-list-item-content>
+										<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Fiction</div>
+									</d2l-list-item-content>
+								</d2l-list-item-nav>
+								<d2l-list-item-nav key="L3-2" label="Ten rules for writing fiction" action-href="https://d2l.com" prevent-navigation>
+									<d2l-list-item-content>
+										<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Ten rules for writing fiction</div>
+									</d2l-list-item-content>
+								</d2l-list-item-nav>
+							</d2l-list>
+						</d2l-list-item-nav>
+					</d2l-list>
+					<script>
+						(demo => {
+							let currentItem = document.querySelector('d2l-list-item-nav[current]');
+							demo.addEventListener('d2l-list-item-link-click', (e) => {
+								console.log('d2l-list-item-nav: click event');
+
+								if (!e.target.expandable) {
+									currentItem = e.target;
+									return;
+								}
+
+								if (currentItem !== e.target) {
+									e.target.expanded = true;
+									currentItem = e.target;
+								} else {
+									e.target.expanded = !e.target.expanded;
+								}
+							});
+						})(document.currentScript.parentNode);
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Side nav list (draggable)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-demo-list-nav></d2l-demo-list-nav>
+					</template>
+			</d2l-demo-snippet>
+
+			<h2>Side nav list (draggable, add-button)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-demo-list-nav add-button></d2l-demo-list-nav>
+					</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+	</body>
+</html>

@@ -1,6 +1,8 @@
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
+
 const defaultLines = 2;
 
-export const MenuItemMixin = superclass => class extends superclass {
+export const MenuItemMixin = superclass => class extends PropertyRequiredMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -45,7 +47,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 			 * REQUIRED: Text displayed by the menu item
 			 * @type {string}
 			 */
-			text: { type: String },
+			text: { type: String, required: true },
 			/**
 			 * ACCESSIBILITY: A description of the menu item that will be used by screen readers for additional context
 			 * @type {string}
@@ -166,6 +168,7 @@ export const MenuItemMixin = superclass => class extends superclass {
 			return;
 		}
 		this.focus();
+		this.setAttribute('tabindex', '0');
 	}
 
 	__onKeyDown(e) {

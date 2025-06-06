@@ -416,6 +416,15 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 					target.dispatchSetChildCurrentEvent(true);
 				}, { once: true });
 				prevCurrent.current = false;
+				const firstChild = this.querySelector('[_has-current-parent]');
+				if (firstChild) firstChild._hasCurrentParent = false;
+
+				const prevSiblings = this.querySelectorAll('[_next-sibling-current]');
+				if (prevSiblings.length > 0) {
+					prevSiblings.forEach(sibling => {
+						sibling._nextSiblingCurrent = false;
+					});
+				}
 			} else {
 				target.dispatchSetChildCurrentEvent(true);
 			}
@@ -437,9 +446,21 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	_handleSlotChange() {
 		this._updateItemShowingCount();
-		this.getItems().forEach((item, i) => {
-			if (i === 0) item.first = true;
-			else item.first = false;
+		const items = this.getItems();
+		items.forEach((item, i) => {
+			if (items.length === 1) {
+				item.first = true;
+				item.last = true;
+			} else if (i === 0) {
+				item.first = true;
+				item.last = false;
+			} else if (i === items.length - 1) {
+				item.first = false;
+				item.last = true;
+			} else {
+				item.first = false;
+				item.last = false;
+			}
 		});
 
 		/** @ignore */

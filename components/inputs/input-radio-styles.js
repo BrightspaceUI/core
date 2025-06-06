@@ -1,5 +1,10 @@
 import '../colors/colors.js';
 import { css } from 'lit';
+import { svgToCSS } from '../../helpers/svg-to-css.js';
+
+const radioCheck = svgToCSS(`<svg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+	<circle cx="5" cy="5" r="5" fill="#494c4e"></circle>
+</svg>`);
 
 export const radioStyles = css`
 	.d2l-input-radio,
@@ -23,7 +28,7 @@ export const radioStyles = css`
 	.d2l-input-radio[aria-checked="true"],
 	.d2l-input-radio:checked,
 	.d2l-input-radio-label > input[type="radio"]:checked {
-		background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2210%22%20height%3D%2210%22%20viewBox%3D%220%200%2010%2010%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%0A%09%3Ccircle%20cx%3D%225%22%20cy%3D%225%22%20r%3D%225%22%20fill%3D%22%23494c4e%22%3E%3C/circle%3E%0A%3C/svg%3E");
+		background-image: ${radioCheck};
 	}
 	.d2l-input-radio,
 	.d2l-input-radio:hover:disabled,
@@ -80,5 +85,31 @@ export const radioStyles = css`
 		flex: 0 0 auto;
 		margin-inline-end: 0.5rem;
 		margin-inline-start: -1.7rem;
+	}
+
+	@media (prefers-contrast: more) {
+		.d2l-input-radio[aria-checked="true"],
+		.d2l-input-radio:checked,
+		.d2l-input-radio-label > input[type="radio"]:checked {
+			background-image: none;
+			position: relative;
+		}
+		.d2l-input-radio[aria-checked="true"]::after,
+		.d2l-input-radio:checked::after,
+		.d2l-input-radio-label > input[type="radio"]:checked::after {
+			background-color: FieldText;
+			content: "";
+			display: block;
+			height: 1.2rem;
+			left: 50%;
+			mask-image: ${radioCheck};
+			mask-position: center center;
+			mask-repeat: no-repeat;
+			mask-size: 0.5rem 0.5rem;
+			position: absolute;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: 1.2rem;
+		}
 	}
 `;

@@ -11,7 +11,7 @@ class InputGroup extends LitElement {
 			:host {
 				display: flex;
 				flex-direction: column;
-				gap: 1rem;
+				gap: 0.9rem;
 			}
 			:host([hidden]) {
 				display: none;

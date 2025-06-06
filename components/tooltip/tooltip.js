@@ -1,5 +1,5 @@
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { cssEscape, elemIdListAdd, elemIdListRemove, getBoundingAncestor, getOffsetParent, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, isFocusable } from '../../helpers/focus.js';
 import { interactiveElements, interactiveRoles, isInteractive } from '../../helpers/interactive.js';
@@ -14,7 +14,6 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const usePopoverMixin = getFlag('GAUD-7355-tooltip-popover', false);
-const inputStyleTweaksEnabled = getFlag('input-style-tweaks', true);
 
 const contentBorderSize = 1;
 const contentHorizontalPadding = 15;
@@ -156,11 +155,11 @@ if (usePopoverMixin) {
 					box-sizing: border-box;
 					color: white;
 					max-width: 17.5rem;
-					min-height: ${unsafeCSS(inputStyleTweaksEnabled ? '1.95rem' : '2.1rem')}; /* stylelint-disable-line */
+					min-height: 1.95rem;
 					min-width: 2.1rem;
 					overflow: hidden;
 					overflow-wrap: anywhere;
-					padding-block: ${(inputStyleTweaksEnabled ? 10 : 11) - contentBorderSize}px ${11 - contentBorderSize}px;
+					padding-block: ${10 - contentBorderSize}px ${11 - contentBorderSize}px;
 					padding-inline: ${contentHorizontalPadding - contentBorderSize}px;
 				}
 				::slotted(ul),
@@ -857,12 +856,12 @@ if (usePopoverMixin) {
 					border-radius: ${contentBorderRadius}px;
 					box-sizing: border-box;
 					max-width: 17.5rem;
-					min-height: ${unsafeCSS(inputStyleTweaksEnabled ? '1.95rem' : '2.1rem')}; /* stylelint-disable-line */
+					min-height: 1.95rem;
 					min-width: 2.1rem;
 					outline: ${outlineSize}px solid var(--d2l-tooltip-outline-color);
 					overflow: hidden;
 					overflow-wrap: anywhere;
-					padding-block: ${(inputStyleTweaksEnabled ? 10 : 11) - contentBorderSize}px ${11 - contentBorderSize}px;
+					padding-block: ${10 - contentBorderSize}px ${11 - contentBorderSize}px;
 					padding-inline: ${contentHorizontalPadding - contentBorderSize}px;
 					position: absolute;
 				}

@@ -80,7 +80,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 					--d2l-button-icon-min-height: 1.5rem;
 					--d2l-button-icon-min-width: 1.5rem;
 					--d2l-button-icon-border-radius: 4px;
-					--d2l-button-focus-offset: 1px;
+					--d2l-focus-ring-offset: 1px;
 					margin-left: 0.3rem;
 					margin-right: 0.3rem;
 				}
@@ -132,6 +132,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 			<d2l-input-text
 				label="${ifDefined(this.label)}"
 				label-hidden
+				@d2l-input-text-layout-updated="${this.#handleLayoutUpdated}"
 				description="${this.description}"
 				?disabled="${this.disabled}"
 				@input="${this._handleInput}"
@@ -211,6 +212,16 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 		this._lastSearchValue = val;
 		this.requestUpdate('lastSearchValue', oldVal);
 		return (oldVal !== val);
+	}
+
+	#handleLayoutUpdated() {
+		requestAnimationFrame(() => {
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent(
+				'd2l-input-search-layout-updated',
+				{ bubbles: false, composed: false }
+			));
+		});
 	}
 
 }

@@ -1,6 +1,6 @@
 import '../colors/colors.js';
-import { css, unsafeCSS } from 'lit';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { css } from 'lit';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 
 export const buttonStyles = css`
 	button {
@@ -24,10 +24,7 @@ export const buttonStyles = css`
 		white-space: nowrap;
 		width: auto;
 	}
-	button:${unsafeCSS(getFocusPseudoClass())} {
-		outline: 2px solid var(--d2l-button-focus-color, var(--d2l-color-celestine));
-		outline-offset: var(--d2l-button-focus-offset, 2px);
-	}
+	${getFocusRingStyles('button')}
 	@media (prefers-contrast: more) {
 		button {
 			border: 2px solid transparent;
