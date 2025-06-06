@@ -5,6 +5,13 @@
 	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script>
+		const urlParams = new URLSearchParams(window.location.search);
+		window.D2L = { LP: { Web: { UI: { Flags: { Flag: (key) => {
+			if (key === 'GAUD-7355-tooltip-popover') return (urlParams.get('popover') === 'true');
+			return false;
+		} } } } } };
+	</script>
 	<script type="module">
 		import '../../button/button.js';
 		import '../../colors/colors.js';
