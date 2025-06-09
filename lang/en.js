@@ -1,8 +1,8 @@
 export default {
 	"test":
-		`Some {msg, plural,
-			one {message}
-			other {messages}
+		`{msg, plural,
+			one {Some message}
+			other {Some messages}
 		}`,
 	"components.alert.close": "Close Alert",
 	"components.breadcrumbs.breadcrumb": "Breadcrumb",
