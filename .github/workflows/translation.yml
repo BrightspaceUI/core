@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'lang/**'
+      - '.github/workflows/translation.yml' # :think-smart:
 
 jobs:
   format:
@@ -17,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run formatter
-        uses: BrightspaceUI/actions/t9n-format@main
+        uses: BrightspaceUI/actions/t9n-format@dgleckler/t9n-format-files
         with:
           t9n-source: en
           t9n-path: ./lang/
