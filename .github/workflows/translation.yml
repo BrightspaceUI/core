@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'lang/**'
+      - '.github/workflows/translation.yml'
 
 jobs:
   format:
