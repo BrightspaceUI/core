@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -176,23 +177,17 @@ class Card extends LitElement {
 
 			:host([subtle]) {
 				border: none;
+			}
+			:host([subtle][href]) {
 				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.03);
 			}
-			:host(:hover) {
+			:host([href]:not([_active]):hover) {
 				box-shadow: 0 2px 14px 1px rgba(0, 0, 0, 0.06);
 			}
-			:host([subtle]:hover) {
+			:host([subtle][href]:not([_active]):hover) {
 				box-shadow: 0 4px 18px 2px rgba(0, 0, 0, 0.06);
 			}
-			:host([_active]) {
-				border-color: transparent;
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-			}
-			:host([_active]:hover),
-			:host([subtle][_active]:hover) {
-				border-color: transparent;
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-			}
+			${getFocusRingStyles(() => ':host([_active])', { 'extraStyles': css`border-color: transparent;` })}
 			/* .d2l-card-link-container-hover is used to only color/underline when
 			hovering the anchor; these styles are not applied when hovering actions */
 			:host([href]) .d2l-card-link-container-hover,
@@ -208,13 +203,14 @@ class Card extends LitElement {
 			:host([_dropdown-action-open]) {
 				z-index: 2;
 			}
-			:host(:not([href])),
-			:host([subtle]:not([href])) {
-				box-shadow: none;
-			}
 			@media (prefers-reduced-motion: no-preference) {
 				:host {
 					transition: box-shadow 0.2s;
+				}
+			}
+			@media (prefers-contrast: more) {
+				:host([subtle]) {
+					border: 1px solid var(--d2l-color-gypsum);
 				}
 			}
 		`];

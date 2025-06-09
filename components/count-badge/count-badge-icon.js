@@ -1,9 +1,9 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { CountBadgeMixin } from './count-badge-mixin.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -24,13 +24,7 @@ class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 
 	static get styles() {
 		return [super.styles, css`
-		:host([focus-ring]) d2l-icon,
-		:host(:${unsafeCSS(getFocusPseudoClass())}) d2l-icon,
-		d2l-icon:${unsafeCSS(getFocusPseudoClass())} {
-			box-shadow: 0 0 0 2px var(--d2l-color-celestine);
-			outline: none;
-		}
-
+		${getFocusRingStyles(pseudoClass => `:host([focus-ring]) d2l-icon, d2l-icon:${pseudoClass}`)}
 		:host {
 			/* for long numbers, center the number on the icon */
 			--d2l-count-badge-icon-padding: calc(-50% + (var(--d2l-count-badge-icon-height) / 2) + 2px);
@@ -66,6 +60,7 @@ class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 		}
 
 		d2l-icon {
+			--d2l-focus-ring-offset: 0;
 			border: 2px solid transparent;
 			border-radius: 6px;
 		}
