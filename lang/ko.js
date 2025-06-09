@@ -1,6 +1,6 @@
 export default {
-	"components.alert.close": "경보 닫기",
 	"components.breadcrumbs.breadcrumb": "이동 경로",
+	"new": "new",
 	"components.button-add.addItem": "항목 추가",
 	"components.button-split.otherOptions": "기타 옵션",
 	"components.calendar.hasEvents": "이벤트가 있습니다.",

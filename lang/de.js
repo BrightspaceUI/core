@@ -1,6 +1,6 @@
 export default {
-	"components.alert.close": "Benachrichtigung schließen",
 	"components.breadcrumbs.breadcrumb": "Brotkrümelnavigation",
+	"new": "new",
 	"components.button-add.addItem": "Element hinzufügen",
 	"components.button-split.otherOptions": "Sonstige Optionen",
 	"components.calendar.hasEvents": "Hat Ereignisse.",

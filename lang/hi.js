@@ -1,6 +1,6 @@
 export default {
-	"components.alert.close": "अलर्ट बंद करें",
 	"components.breadcrumbs.breadcrumb": "ब्रेडक्रंब",
+	"new": "new",
 	"components.button-add.addItem": "आइटम जोड़ें",
 	"components.button-split.otherOptions": "अन्य विकल्प",
 	"components.calendar.hasEvents": "ईवेंट हैं।",

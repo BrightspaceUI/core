@@ -1,6 +1,6 @@
 export default {
-	"components.alert.close": "Kati Matohi",
 	"components.breadcrumbs.breadcrumb": "Pānui",
+	"new": "new",
 	"components.button-add.addItem": "Tāpiri Tūemi",
 	"components.button-split.otherOptions": "Ētahi atu kōwhiringa",
 	"components.calendar.hasEvents": "He takatu ēnei.",

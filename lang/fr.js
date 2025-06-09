@@ -1,6 +1,6 @@
 export default {
-	"components.alert.close": "Fermer l’alerte",
 	"components.breadcrumbs.breadcrumb": "Chemin de navigation",
+	"new": "new",
 	"components.button-add.addItem": "Ajouter un élément",
 	"components.button-split.otherOptions": "Autres options",
 	"components.calendar.hasEvents": "Comprend des événements.",

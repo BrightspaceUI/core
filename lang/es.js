@@ -1,6 +1,6 @@
 export default {
-	"components.alert.close": "Cerrar alerta",
 	"components.breadcrumbs.breadcrumb": "Ruta de navegación",
+	"new": "new",
 	"components.button-add.addItem": "Agregar elemento",
 	"components.button-split.otherOptions": "Otras opciones",
 	"components.calendar.hasEvents": "Tiene eventos.",
@@ -15,7 +15,6 @@ export default {
 	"components.filter.additionalContentTooltip": "Utilice <b>las flechas derecha e izquierda</b> para mover el foco dentro de este elemento de lista",
 	"components.filter.clear": "Borrar",
 	"components.filter.clearAll": "Borrar todo",
-	"extra": "extra",
 	"components.filter.clearAllAnnounce": "Borrando todos los filtros",
 	"components.filter.clearAllAnnounceOverride": "Borrando todos los filtros para: {filterText}",
 	"components.filter.clearAllDescription": "Borrar todos los filtros",

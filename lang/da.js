@@ -1,6 +1,6 @@
 export default {
-	"components.alert.close": "Luk besked",
 	"components.breadcrumbs.breadcrumb": "Brødkrumme",
+	"new": "new",
 	"components.button-add.addItem": "Tilføj element",
 	"components.button-split.otherOptions": "Andre indstillinger",
 	"components.calendar.hasEvents": "Har begivenheder.",

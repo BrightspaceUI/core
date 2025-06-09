@@ -1,6 +1,6 @@
 export default {
-	"components.alert.close": "Waarschuwing sluiten",
 	"components.breadcrumbs.breadcrumb": "Kruimelpad",
+	"new": "new",
 	"components.button-add.addItem": "Item toevoegen",
 	"components.button-split.otherOptions": "Overige opties",
 	"components.calendar.hasEvents": "Bevat gebeurtenissen.",

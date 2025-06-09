@@ -1,6 +1,6 @@
 export default {
-	"components.alert.close": "关闭提醒",
 	"components.breadcrumbs.breadcrumb": "痕迹导航",
+	"new": "new",
 	"components.button-add.addItem": "添加项目",
 	"components.button-split.otherOptions": "其他选项",
 	"components.calendar.hasEvents": "有事件。",

@@ -1,6 +1,6 @@
 export default {
-	"components.alert.close": "Cau Hysbysiad",
 	"components.breadcrumbs.breadcrumb": "Briwsionyn Bara",
+	"new": "new",
 	"components.button-add.addItem": "Ychwanegu Eitem",
 	"components.button-split.otherOptions": "Opsiynau Eraill",
 	"components.calendar.hasEvents": "Yn Cynnwys Digwyddiadau.",

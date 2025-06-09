@@ -1,6 +1,6 @@
 export default {
-	"components.alert.close": "Kapatma Uyarısı",
 	"components.breadcrumbs.breadcrumb": "İçerik Haritası",
+	"new": "new",
 	"components.button-add.addItem": "Öğe Ekle",
 	"components.button-split.otherOptions": "Diğer Seçenekler",
 	"components.calendar.hasEvents": "Olayları Var.",

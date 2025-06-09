@@ -1,6 +1,6 @@
 export default {
-	"components.alert.close": "Pani i ka makaʻala",
 	"components.breadcrumbs.breadcrumb": "Palapalapala",
+	"new": "new",
 	"components.button-add.addItem": "Pākuʻi Mea",
 	"components.button-split.otherOptions": "Nā Koho ʻē aʻe",
 	"components.calendar.hasEvents": "Loaʻa nā hanana.",

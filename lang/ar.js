@@ -1,6 +1,6 @@
 export default {
-	"components.alert.close": "إغلاق التنبيه",
 	"components.breadcrumbs.breadcrumb": "شريط التنقل",
+	"new": "new",
 	"components.button-add.addItem": "إضافة عنصر",
 	"components.button-split.otherOptions": "خيارات أخرى",
 	"components.calendar.hasEvents": "يحتوي على أحداث.",
