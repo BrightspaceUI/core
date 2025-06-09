@@ -1,5 +1,9 @@
 export default {
-	"test": "Some {msg, plural, one { message } other { messages }}",
+	"test":
+		`Some {msg, plural,
+			one {message}
+			other {messages}
+		}`,
 	"components.alert.close": "Close Alert",
 	"components.breadcrumbs.breadcrumb": "Breadcrumb",
 	"components.button-add.addItem": "Add Item",
