@@ -17,7 +17,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Run formatter
-        uses: BrightspaceUI/actions/t9n-format@main
+        uses: BrightspaceUI/actions/t9n-format@dgleckler/t9n-format-validate
         with:
           t9n-source: en
           t9n-path: ./lang/
