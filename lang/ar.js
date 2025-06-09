@@ -1,6 +1,5 @@
 export default {
 	"components.breadcrumbs.breadcrumb": "شريط التنقل",
-	"new": "new",
 	"components.button-add.addItem": "إضافة عنصر",
 	"components.button-split.otherOptions": "خيارات أخرى",
 	"components.calendar.hasEvents": "يحتوي على أحداث.",
@@ -21,7 +20,6 @@ export default {
 	"components.filter.clearAllDescriptionOverride": "مسح كل عوامل التصفية لـ: {filterText}",
 	"components.filter.clearAnnounce": "جارٍ مسح عوامل التصفية لـ: {filterName}",
 	"components.filter.clearDescription": "مسح عوامل التصفية لـ: {filterName}",
-	"components.filter.loading": "يتم تحميل عوامل التصفية",
 	"components.filter.filterCountDescription":
 		`{number, plural,
 			=0 {لم يتم تطبيق عوامل تصفية.}
@@ -29,6 +27,7 @@ export default {
 			other {تم تطبيق {number} من عوامل التصفية.}
 		}`,
 	"components.filter.filters": "عوامل التصفية",
+	"components.filter.loading": "يتم تحميل عوامل التصفية",
 	"components.filter.noFilters": "ما من عوامل تصفية متوفرة",
 	"components.filter.searchResults":
 		`{number, plural,
@@ -38,23 +37,23 @@ export default {
 		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. تظهر عوامل التصفية المحددة أولاً.",
 	"components.filter.singleDimensionDescription": "التصفية حسب: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours":
-		`{num, plural,
-			=1 {آخر ساعة}
-			other {آخر {num} من الساعات}
-		}`,
 	"components.filter-dimension-set-date-text-value.textDays":
 		`{num, plural,
 			=0 {يوم}
 			one {آخر {num} يوم}
 			other {آخر {num} من الأيام}
 		}`,
+	"components.filter-dimension-set-date-text-value.textHours":
+		`{num, plural,
+			=1 {آخر ساعة}
+			other {آخر {num} من الساعات}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "آخر {num} من الأشهر",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}، التوسيع لاختيار التواريخ",
-	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} إلى {endValue}",
-	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "بعد {startValue}",
-	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "قبل {endValue}",
 	"components.filter-dimension-set-date-time-range-value.text": "نطاق التاريخ المخصص",
+	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} إلى {endValue}",
+	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "قبل {endValue}",
+	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "بعد {startValue}",
 	"components.form-element.defaultError": "{label} غير صالحة",
 	"components.form-element.defaultFieldLabel": "الحقل",
 	"components.form-element.input.email.typeMismatch": "البريد الإلكتروني غير صالح",
@@ -91,33 +90,33 @@ export default {
 	"components.input-color.backgroundColor": "لون الخلفية",
 	"components.input-color.foregroundColor": "لون المقدمة",
 	"components.input-color.none": "لا شيء",
+	"components.input-date.clear": "مسح",
+	"components.input-date.errorMaxDateOnly": "يجب أن يكون التاريخ في {maxDate} أو قبله",
+	"components.input-date.errorMinDateOnly": "يجب أن يكون التاريخ في {minDate} أو بعده",
+	"components.input-date.errorOutsideRange": "يجب أن يكون التاريخ بين {minDate} و{maxDate}",
+	"components.input-date.now": "الآن",
+	"components.input-date.openInstructions": "استخدم تنسيق التاريخ {format}. انتقل إلى الأسفل أو اضغط على Enter للوصول إلى التقويم المصغّر.",
+	"components.input-date.revert": "تمت إعادة {label} إلى القيمة السابقة.",
+	"components.input-date.today": "اليوم",
+	"components.input-date.useDateFormat": "استخدم تنسيق التاريخ {format}.",
 	"components.input-date-range.endDate": "تاريخ الانتهاء",
 	"components.input-date-range.errorBadInput": "يجب أن يكون تاريخ {startLabel} قبل {endLabel}",
 	"components.input-date-range.interactive-label": "إدخال نطاق التاريخ",
 	"components.input-date-range.startDate": "تاريخ البدء",
-	"components.input-date-time-range-to.to": "إلى",
-	"components.input-date-time-range.endDate": "تاريخ الانتهاء",
-	"components.input-date-time-range.errorBadInput": "يجب أن يكون تاريخ {startLabel} قبل {endLabel}",
-	"components.input-date-time-range.startDate": "تاريخ البدء",
 	"components.input-date-time.date": "التاريخ",
 	"components.input-date-time.errorMaxDateOnly": "يجب أن يكون التاريخ في {maxDate} أو قبله",
 	"components.input-date-time.errorMinDateOnly": "يجب أن يكون التاريخ في {minDate} أو بعده",
 	"components.input-date-time.errorOutsideRange": "يجب أن يكون التاريخ بين {minDate} و{maxDate}",
 	"components.input-date-time.time": "الوقت",
+	"components.input-date-time-range.endDate": "تاريخ الانتهاء",
+	"components.input-date-time-range.errorBadInput": "يجب أن يكون تاريخ {startLabel} قبل {endLabel}",
 	"components.input-date-time-range.interactive-label": "إدخال نطاق التاريخ والوقت",
-	"components.input-date.clear": "مسح",
-	"components.input-date.errorMaxDateOnly": "يجب أن يكون التاريخ في {maxDate} أو قبله",
-	"components.input-date.errorMinDateOnly": "يجب أن يكون التاريخ في {minDate} أو بعده",
-	"components.input-date.errorOutsideRange": "يجب أن يكون التاريخ بين {minDate} و{maxDate}",
-	"components.input-date.openInstructions": "استخدم تنسيق التاريخ {format}. انتقل إلى الأسفل أو اضغط على Enter للوصول إلى التقويم المصغّر.",
-	"components.input-date.now": "الآن",
-	"components.input-date.revert": "تمت إعادة {label} إلى القيمة السابقة.",
-	"components.input-date.today": "اليوم",
-	"components.input-date.useDateFormat": "استخدم تنسيق التاريخ {format}.",
-	"components.input-number.hintInteger": "يقبل هذا الحقل قيم الأعداد الصحيحة فقط (بدون أعداد عشرية)",
+	"components.input-date-time-range.startDate": "تاريخ البدء",
+	"components.input-date-time-range-to.to": "إلى",
 	"components.input-number.hintDecimalDuplicate": "يوجد عدد عشري في هذا الرقم",
 	"components.input-number.hintDecimalIncorrectComma": "لإضافة عدد عشري، استخدم حرف الفاصلة ”,“",
 	"components.input-number.hintDecimalIncorrectPeriod": "لإضافة عدد عشري، استخدم حرف النقطة ”.“",
+	"components.input-number.hintInteger": "يقبل هذا الحقل قيم الأعداد الصحيحة فقط (بدون أعداد عشرية)",
 	"components.input-search.clear": "مسح البحث",
 	"components.input-search.defaultPlaceholder": "البحث...",
 	"components.input-search.search": "بحث",
@@ -131,13 +130,13 @@ export default {
 	"components.list-item.addItem": "إضافة عنصر",
 	"components.list-item-drag-handle.default": "إعادة ترتيب إجراء المادة لـ {name}",
 	"components.list-item-drag-handle.keyboard": "إعادة ترتيب المواد، الموضع الحالي {currentPosition} من أصل {size}. لنقل هذه المادة، اضغط على السهم المتجه إلى أعلى أو السهم المتجه إلى أسفل.",
-	"components.list-item-drag-handle-tooltip.title": "عناصر التحكم بلوحة المفاتيح لإعادة الترتيب:",
-	"components.list-item-drag-handle-tooltip.enter-key": "إدخال",
 	"components.list-item-drag-handle-tooltip.enter-desc": "تبديل وضع إعادة ترتيب لوحة المفاتيح.",
-	"components.list-item-drag-handle-tooltip.up-down-key": "أعلى/أسفل",
-	"components.list-item-drag-handle-tooltip.up-down-desc": "نقل المادة إلى الأعلى أو الأسفل في القائمة.",
-	"components.list-item-drag-handle-tooltip.left-right-key": "يسار/يمين",
+	"components.list-item-drag-handle-tooltip.enter-key": "إدخال",
 	"components.list-item-drag-handle-tooltip.left-right-desc": "غيِّر مستوى التداخل.",
+	"components.list-item-drag-handle-tooltip.left-right-key": "يسار/يمين",
+	"components.list-item-drag-handle-tooltip.title": "عناصر التحكم بلوحة المفاتيح لإعادة الترتيب:",
+	"components.list-item-drag-handle-tooltip.up-down-desc": "نقل المادة إلى الأعلى أو الأسفل في القائمة.",
+	"components.list-item-drag-handle-tooltip.up-down-key": "أعلى/أسفل",
 	"components.menu-item-return.return": "العودة إلى القائمة السابقة.",
 	"components.menu-item-return.returnCurrentlyShowing": "العودة إلى القائمة السابقة. يتم عرض {menuTitle}.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}، ‏{term2}",
@@ -148,8 +147,6 @@ export default {
 	"components.more-less.more": "المزيد",
 	"components.object-property-list.item-placeholder-text": "عنصر نائب",
 	"components.overflow-group.moreActions": "مزيد من الإجراءات",
-	"components.pager-load-more.action": "تحميل المزيد",
-	"components.pager-load-more.action-with-page-size": "تحميل {count} إضافي",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} مادة واحد}
@@ -160,6 +157,8 @@ export default {
 			one {{countFormatted} من أصل {totalCountFormatted} مادة واحدة}
 			other {{countFormatted} من أصل {totalCountFormatted} من المواد}
 		}`,
+	"components.pager-load-more.action": "تحميل المزيد",
+	"components.pager-load-more.action-with-page-size": "تحميل {count} إضافي",
 	"components.pager-load-more.status-loading": "تحميل المزيد من المواد",
 	"components.selection.action-max-hint":
 		`{count, plural,
@@ -172,10 +171,10 @@ export default {
 	"components.selection.selected": "تم تحديد {count}",
 	"components.selection.selected-plus": "تم تحديد {count}+‎",
 	"components.selection-controls.label": "إجراءات التحديد",
+	"components.switch.conditions": "يجب استيفاء الشروط",
+	"components.switch.hidden": "مخفي",
 	"components.switch.visible": "مرئي",
 	"components.switch.visibleWithPeriod": "مرئي.",
-	"components.switch.hidden": "مخفي",
-	"components.switch.conditions": "يجب استيفاء الشروط",
 	"components.table-col-sort-button.addSortOrder": "التحديد لإضافة ترتيب الفرز",
 	"components.table-col-sort-button.changeSortOrder": "التحديد لتغيير ترتيب الفرز",
 	"components.table-col-sort-button.title":
@@ -216,6 +215,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "مسافة للخلف/حذف",
 	"components.tag-list-item.tooltip-delete-key-desc": "حذف العلامة المركّز عليها",
 	"components.tag-list-item.tooltip-title": "عناصر التحكم في لوحة المفاتيح",
+	"new": "new",
 	"templates.primary-secondary.divider": "فاصل اللوحة الثانوية",
 	"templates.primary-secondary.secondary-panel": "اللوحة الثانوية"
 };
