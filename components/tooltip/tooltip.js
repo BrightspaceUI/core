@@ -35,8 +35,8 @@ const tooltipInteractiveRoles = {
 };
 
 const isInteractiveTarget = (elem) => {
-	if (!isFocusable(elem, true, false, true)) return false;
 	if (elem.nodeType !== Node.ELEMENT_NODE) return false;
+	if (!isFocusable(elem, true, false, true)) return false;
 
 	return isInteractive(elem, tooltipInteractiveElements, tooltipInteractiveRoles);
 };
@@ -195,14 +195,6 @@ if (usePopoverMixin) {
 			this.#handleTargetResizeBound = this.#handleTargetResize.bind(this);
 			this.#handleTargetTouchEndBound = this.#handleTargetTouchEnd.bind(this);
 			this.#handleTargetTouchStartBound = this.#handleTargetTouchStart.bind(this);
-
-			this.#dismissibleId = null;
-			this.#isFocusing = false;
-			this.#isHovering = false;
-			this.#isHoveringTooltip = false;
-			this.#isTruncating = false;
-			this.#mouseLeftTooltip = false;
-			this.#resizeRunSinceTruncationCheck = false;
 		}
 
 		/** @ignore */
@@ -223,9 +215,7 @@ if (usePopoverMixin) {
 			this.showing = false;
 			window.addEventListener('resize', this.#handleTargetResizeBound);
 
-			requestAnimationFrame(() => {
-				if (this.isConnected) this.#updateTarget();
-			});
+			requestAnimationFrame(() => this.#updateTarget());
 		}
 
 		disconnectedCallback() {
@@ -288,7 +278,7 @@ if (usePopoverMixin) {
 			this.showing = true;
 		}
 
-		#dismissibleId;
+		#dismissibleId = null;
 		#handleTargetBlurBound;
 		#handleTargetClickBound;
 		#handleTargetFocusBound;
@@ -298,14 +288,14 @@ if (usePopoverMixin) {
 		#handleTargetTouchEndBound;
 		#handleTargetTouchStartBound;
 		#hoverTimeout;
-		#isFocusing;
-		#isHovering;
-		#isHoveringTooltip;
-		#isTruncating;
+		#isFocusing = false;
+		#isHovering = false;
+		#isHoveringTooltip = false;
+		#isTruncating = false;
 		#longPressTimeout;
 		#mouseLeaveTimeout;
-		#mouseLeftTooltip;
-		#resizeRunSinceTruncationCheck;
+		#mouseLeftTooltip = false;
+		#resizeRunSinceTruncationCheck = false;
 		#showing;
 		#target;
 		#targetSizeObserver;
@@ -508,6 +498,9 @@ if (usePopoverMixin) {
 		}
 
 		#updateTarget() {
+
+			if (!this.isConnected) return;
+
 			const newTarget = this.#findTarget();
 			if (this.#target === newTarget) return;
 
