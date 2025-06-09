@@ -104,6 +104,40 @@
 			</template>
 		</d2l-demo-snippet>
 
+		<h2>Tooltip (position)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div>
+					<select id="position">
+						<option value="bottom" selected>bottom</option>
+						<option value="left">left</option>
+						<option value="right">right</option>
+						<option value="top">top</option>
+					</select>
+					<select id="align">
+						<option value="center" selected>center</option>
+						<option value="start">start</option>
+						<option value="end">end</option>
+					</select>
+				</div>
+				<div style="text-align: center;">
+					<d2l-button id="tooltip-position">Tooltip Position</d2l-button>
+					<d2l-tooltip for="tooltip-position">
+						This tooltip will not expand beyond its boundaries unless it is impossible to fit it inside
+					</d2l-tooltip>
+				</div>
+				<script data-demo-hide>
+					const demo = document.currentScript.parentNode;
+					demo.querySelector('#position').addEventListener('change', e => {
+						demo.querySelector('d2l-tooltip').position = e.target.value;
+					});
+					demo.querySelector('#align').addEventListener('change', e => {
+						demo.querySelector('d2l-tooltip').align = (e.target.value !== 'center' ? e.target.value : undefined);
+					});
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
 		<h2>Tooltip (boundary)</h2>
 		<d2l-demo-snippet>
 			<template>
