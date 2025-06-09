@@ -313,8 +313,8 @@ if (usePopoverMixin) {
 		#adaptPositionLocation(val) {
 			switch (val) {
 				case 'bottom': return 'block-end';
-				//case 'left': return 'inline-start'; not suppoted yet
-				//case 'right': return 'inline-end'; not suppoted yet
+				case 'left': return 'inline-start';
+				case 'right': return 'inline-end';
 				case 'top': return 'block-start';
 				default: return 'block-end';
 			}
