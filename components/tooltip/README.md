@@ -216,6 +216,13 @@ The `d2l-tooltip-help` component is used to display additional information when 
 ```
 
 <!-- docs: start hidden content -->
+### Slots
+
+| Slot | Type | Description |
+|--|--|--|
+| `default` | required | Default content placed inside of the tooltip |
+| `icon` | optional | Optional slot for a custom icon |
+
 ### Properties
 
 | Property | Type | Description |
