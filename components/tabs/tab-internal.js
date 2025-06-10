@@ -1,7 +1,7 @@
 import '../colors/colors.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const keyCodes = {
@@ -32,6 +32,7 @@ class Tab extends SkeletonMixin(LitElement) {
 				vertical-align: middle;
 			}
 			.d2l-tab-text {
+				--d2l-focus-ring-offset: 0;
 				margin: 0.5rem;
 				overflow: hidden;
 				padding: 0.1rem;
@@ -67,11 +68,7 @@ class Tab extends SkeletonMixin(LitElement) {
 				margin-inline-start: 0;
 				width: calc(100% - 0.6rem);
 			}
-			:host(:${unsafeCSS(getFocusPseudoClass())}) > .d2l-tab-text {
-				border-radius: 0.3rem;
-				box-shadow: 0 0 0 2px var(--d2l-color-celestine);
-				color: var(--d2l-color-celestine);
-			}
+			${getFocusRingStyles(pseudoClass => `:host(:${pseudoClass}) > .d2l-tab-text`, { extraStyles: css`border-radius: 0.3rem; color: var(--d2l-color-celestine);` })}
 			:host([aria-selected="true"]:focus) {
 				text-decoration: none;
 			}

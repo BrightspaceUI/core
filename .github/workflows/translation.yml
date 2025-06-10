@@ -21,4 +21,5 @@ jobs:
         with:
           t9n-source: en
           t9n-path: ./lang/
+          t9n-newlines: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
