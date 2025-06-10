@@ -144,7 +144,7 @@ class ListDemoNav extends LitElement {
 				color="${ifDefined(item.color)}"
 				?expandable="${hasSubList}"
 				?expanded="${hasSubList}"
-				indentation="${ifDefined(this.indentation ? '20' : undefined)}"
+				indentation="${ifDefined(this.indentation ? '41' : undefined)}"
 				drop-nested
 				label="${item.primaryText}"
 				prevent-navigation>
