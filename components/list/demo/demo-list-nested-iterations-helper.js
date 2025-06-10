@@ -68,7 +68,7 @@ class ListNestedIterationsHelper extends LitElement {
 
 		const tableRows = selectableOptions.map(option => html`
 			<tr class="header">
-				<th rowspan="4" scope="rowgroup">${option.name}</th>
+				<th rowspan="5" scope="rowgroup">${option.name}</th>
 				<th scope="row">Exp/Collapsible Children</th>
 				<td>${this._createList([option.parent, true], [option.child, true])}</td>
 				<td>${this._createList([option.parent, false], [option.child, true])}</td>
@@ -88,12 +88,12 @@ class ListNestedIterationsHelper extends LitElement {
 				<td>${this._createList([option.parent, true, false, true], [option.child, true, false, true])}</td>
 				<td>${this._createList([option.parent, false, false, true], [option.child, true, false, true])}</td>
 			</tr>
+			<tr class="header">
+				<th scope="row">Indentation</th>
+				<td>${this._createList([option.parent, true, true, false, true], [option.child, true, true, false, true])}</td>
+				<td>${this._createList([option.parent, false, true, false, true], [option.child, true, true, false, true])}</td>
+			</tr>
 		`);
-		// <tr class="header">
-		// 	<th scope="row">Indentation</th>
-		// 	<td>${this._createList([option.parent, true, true, false, true], [option.child, true, true, false, true])}</td>
-		// 	<td>${this._createList([option.parent, false, true, false, true], [option.child, true, true, false, true])}</td>
-		// </tr>
 
 		return html`
 			<table>

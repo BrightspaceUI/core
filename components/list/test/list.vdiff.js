@@ -1263,7 +1263,7 @@ describe('list-nested', () => {
 		].forEach(({ name, draggable, media }) => {
 			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
 				const elem = await fixture(html`<d2l-demo-list-nested-iterations-helper ?is-draggable="${draggable}"></d2l-demo-list-nested-iterations-helper>`,
-					{ media, rtl, viewport: { width: 1300, height: 7000 } }
+					{ media, rtl, viewport: { width: 1300, height: 9000 } }
 				);
 				await nextFrame();
 				await expect(elem).to.be.golden();
