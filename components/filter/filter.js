@@ -180,9 +180,9 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			.d2l-filter-dimension-set-value-text {
 				hyphens: auto;
 				${overflowClipEnabled ? getOverflowDeclarations({ lines: 2 }) : css`
-					-webkit-line-clamp: 2;
 					-webkit-box-orient: vertical;
 					display: -webkit-box;
+					-webkit-line-clamp: 2;
 					overflow: hidden;
 					overflow-wrap: anywhere;
 				`}
