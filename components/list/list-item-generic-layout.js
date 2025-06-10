@@ -55,10 +55,10 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			 */
 			gridActive: { type: Boolean, attribute: 'grid-active' },
 			/**
-			 * Inline start padding (in px) to apply to direct nested list items. When this is used, nested list items will not use the grid start calcuations and instead will only using this number to determine indentation.
+			 * Inline start padding (in px) to apply to list item(s) in the nested slot. When used, nested list items will not use the grid start calcuations and will only use this number to determine indentation.
 			 * @type {number}
 			 */
-			indentation: { type: Number, attribute: 'indentation', reflect: true }
+			indentation: { type: Number, reflect: true }
 		};
 	}
 
