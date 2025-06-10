@@ -8,6 +8,11 @@ class Popover extends PopoverMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
+			 * Margin to include when computing space available.
+			 * @type {number}
+			 */
+			margin: { type: Number, reflect: true, attribute: 'margin' },
+			/**
 			 * Max-height. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
 			 * @type {number}
 			 */
@@ -166,8 +171,9 @@ class Popover extends PopoverMixin(LitElement) {
 	}
 
 	willUpdate(changedProperties) {
-		if (changedProperties.has('maxHeight') || changedProperties.has('maxWidth') || changedProperties.has('minHeight') || changedProperties.has('minWidth') || changedProperties.has('noAutoClose') || changedProperties.has('noAutoFocus') || changedProperties.has('positionLocation') || changedProperties.has('positionSpan') || changedProperties.has('trapFocus')) {
+		if (changedProperties.has('margin') || changedProperties.has('maxHeight') || changedProperties.has('maxWidth') || changedProperties.has('minHeight') || changedProperties.has('minWidth') || changedProperties.has('noAutoClose') || changedProperties.has('noAutoFocus') || changedProperties.has('positionLocation') || changedProperties.has('positionSpan') || changedProperties.has('trapFocus')) {
 			super.configure({
+				margin: this.margin,
 				maxHeight: this.maxHeight,
 				maxWidth: this.maxWidth,
 				minHeight: this.minHeight,

@@ -3,10 +3,10 @@ import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-menu.js';
 import '../icons/icon.js';
 import '../menu/menu.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -116,11 +116,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 			button:hover {
 				background-color: var(--d2l-color-gypsum);
 			}
-			button:focus-visible,
-			button:${unsafeCSS(getFocusPseudoClass())} {
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-				outline-style: none;
-			}
+			${getFocusRingStyles('button', { extraStyles: css`box-shadow: 0 0 0 2px #ffffff;` })}
 			d2l-icon {
 				margin-inline-start: 0.6rem;
 			}

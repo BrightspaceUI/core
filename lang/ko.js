@@ -1,5 +1,4 @@
 export default {
-	"__test__": "This will be removed in a follow-up PR (before translation)",
 	"components.alert.close": "경보 닫기",
 	"components.breadcrumbs.breadcrumb": "이동 경로",
 	"components.button-add.addItem": "항목 추가",

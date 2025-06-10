@@ -78,7 +78,7 @@ class DemoSnippet extends LitElement {
 			d2l-dropdown.settings-dropdown {
 				background-color: white;
 				border-radius: 6px;
-				box-shadow: 0 0 0 1px var(--d2l-color-celestine-minus-1);
+				outline: 1px solid var(--d2l-color-celestine-minus-1);
 				position: fixed;
 				right: 1rem;
 				top: -0.25rem;

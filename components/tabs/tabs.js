@@ -4,10 +4,10 @@ import '../../helpers/queueMicrotask.js';
 import './tab-internal.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { cssEscape, findComposedAncestor, getOffsetParent } from '../../helpers/dom.js';
+import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -159,9 +159,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			.d2l-tabs-scroll-button:${unsafeCSS(getFocusPseudoClass())} {
 				background-color: var(--d2l-color-gypsum);
 			}
-			.d2l-tabs-scroll-button:${unsafeCSS(getFocusPseudoClass())} {
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-			}
+			${getFocusRingStyles('.d2l-tabs-scroll-button')}
 			:host([skeleton]) .d2l-tabs-scroll-button {
 				visibility: hidden;
 			}

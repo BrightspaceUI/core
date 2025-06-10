@@ -144,11 +144,18 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 
 			:host(:first-of-type) [slot="control-container"]::before,
-			[slot="control-container"]::after {
+			[slot="control-container"]::after,
+			:host([_list-item-new-styles][expandable][expanded]:not(:last-of-type))::after,
+			:host([_list-item-new-styles][_has-nested-list]:not([expandable]):not(:last-of-type))::after {
 				border-top: 1px solid var(--d2l-color-mica);
 				content: "";
 				position: absolute;
 				width: 100%;
+			}
+			:host([_list-item-new-styles][draggable][expandable][expanded]:not(:last-of-type))::after,
+			:host([_list-item-new-styles][draggable][_has-nested-list]:not([expandable]):not(:last-of-type))::after {
+				inset-inline-start: 1.5rem; /* left and right margins of 0.3rem + drag handle width of 0.9rem */
+				width: calc(100% - 1.5rem);
 			}
 			:host(:not([_white-background-add-button])[_has-nested-list-add-button]) [slot="before-content"] {
 				border-bottom: 1px solid var(--d2l-color-mica);

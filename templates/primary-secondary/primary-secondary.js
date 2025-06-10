@@ -3,9 +3,9 @@ import '../../components/icons/icon-custom.js';
 import '../../components/icons/icon.js';
 import '../../components/offscreen/offscreen.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
+import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { formatPercent } from '@brightspace-ui/intl';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
@@ -939,11 +939,7 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 					color: white;
 					display: block;
 				}
-				.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-mobile {
-					box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem var(--d2l-color-celestine);
-					right: 0.2rem;
-				}
-
+				${getFocusRingStyles(pseudoClass => `.d2l-template-primary-secondary-divider:${pseudoClass} .d2l-template-primary-secondary-divider-handle-mobile`, { extraStyles: css`right: 0.2rem; box-shadow: 0 0 0 2px #ffffff;` })}
 				.d2l-template-primary-secondary-divider-shadow {
 					box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.25);
 					display: block;
