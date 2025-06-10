@@ -22,13 +22,13 @@ import '../selection/selection-summary.js';
 import '../tooltip/tooltip.js';
 
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles } from '../typography/styles.js';
+import { css, html, LitElement, nothing } from 'lit';
+import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { css, html, LitElement, nothing } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { getFlag } from '../../helpers/flags.js';
-import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -180,11 +180,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			.d2l-filter-dimension-set-value-text {
 				hyphens: auto;
 				${overflowClipEnabled ? getOverflowDeclarations({ lines: 2 }) : css`
+					-webkit-line-clamp: 2;
 					-webkit-box-orient: vertical;
 					display: -webkit-box;
 					overflow: hidden;
 					overflow-wrap: anywhere;
-					-webkit-line-clamp: 2;
 				`}
 			}
 
