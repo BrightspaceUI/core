@@ -18,7 +18,7 @@ class TabCustom extends TabMixin(LitElement) {
 			}
 			${getFocusRingStyles(
 				pseudoClass => `:host(:${pseudoClass}) .d2l-tab-custom-content`,
-				{ extraStyles: 'border-radius: 0.3rem; color: var(--d2l-color-celestine);' }
+				{ extraStyles: css`border-radius: 0.3rem; color: var(--d2l-color-celestine);` }
 			)}
 		`];
 

@@ -150,8 +150,9 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				display: none;
 			}
 			.d2l-switch-inner:hover, .switch-hover {
-				border-color: var(--d2l-color-celestine);
-				box-shadow: 0 0 0 1px var(--d2l-color-celestine) inset;
+				border-color: transparent;
+				outline: 2px solid var(--d2l-color-celestine);
+				outline-offset: -2px;
 			}
 			@media (prefers-reduced-motion: reduce) {
 				.d2l-switch-toggle,

@@ -1,8 +1,8 @@
 import '../colors/colors.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { CountBadgeMixin } from './count-badge-mixin.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -10,24 +10,18 @@ class CountBadge extends FocusMixin(CountBadgeMixin(LitElement)) {
 
 	static get styles() {
 		return [super.styles, css`
-		:host([focus-ring]) .d2l-count-badge-wrapper,
-		:host(:${unsafeCSS(getFocusPseudoClass())}) .d2l-count-badge-wrapper,
-		.d2l-count-badge-wrapper:${unsafeCSS(getFocusPseudoClass())} {
-			box-shadow: 0 0 0 2px var(--d2l-color-celestine);
-		}
-
+		${getFocusRingStyles(pseudoClass => `:host([focus-ring]) .d2l-count-badge-wrapper, .d2l-count-badge-wrapper:${pseudoClass}`)}
 		.d2l-count-badge-wrapper {
+			--d2l-focus-ring-offset: 0;
 			border: 2px solid transparent;
 		}
 
 		:host([size="small"]) .d2l-count-badge-wrapper {
 			border-radius: 0.65rem;
-			outline: none;
 		}
 
 		:host([size="large"]) .d2l-count-badge-wrapper {
 			border-radius: 0.8rem;
-			outline: none;
 		}
 		`];
 	}
