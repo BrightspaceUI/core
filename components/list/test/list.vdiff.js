@@ -427,7 +427,7 @@ describe('list', () => {
 			{ name: 'focus current', action: async(elem) => await focusElem(elem.querySelector('[current]')), current: true },
 			{ name: 'hover', action: async(elem) => await hoverElem(elem.querySelector('d2l-list-item-nav')) },
 			{ name: 'focus second item', action: async(elem) => await focusElem(elem.querySelector('d2l-list-item-nav[key="L1-2"]')) },
-			{ name: 'focus second item current', action: async(elem) => await focusElem(elem.querySelector('d2l-list-item-nav[key="L1-2"]')), currentSecond: true }
+			{ name: 'focus second item current', action: async(elem) => await focusElem(elem.querySelector('d2l-list-item-nav[key="L1-2"]')), currentSecond: true },
 		].forEach(({ name, action, current, currentSecond }) => {
 			it(name, async() => {
 				const elem = await fixture(html`
@@ -485,9 +485,15 @@ describe('list', () => {
 				{ name: 'default current', margin: disabled ? undefined : 24, current: true },
 				{ name: 'focus', action: focusElem, margin: disabled ? undefined : 24 },
 				{ name: 'focus current', action: focusElem, margin: disabled ? undefined : 24, current: true },
-				{ name: 'hover', action: hoverElem, margin: disabled ? undefined : 24 }
-			].forEach(({ name, action, margin, current }) => {
+				{ name: 'hover', action: hoverElem, margin: disabled ? undefined : 24 },
+				{ name: 'indentation', indentation: true },
+				{ name: 'indentation current', indentation: true, current: true },
+				{ name: 'focus indentation', action: focusElem, margin: disabled ? undefined : 24, indentation: true },
+				{ name: 'hover indentation', action: hoverElem, margin: disabled ? undefined : 24, indentation: true },
+			].forEach(({ name, action, margin, current, indentation }) => {
 				it(name, async() => {
+					if (indentation) return; // skip indentation test when no nesting
+
 					const elem = await fixture(html`
 						<d2l-list style="width: 400px;">
 							<d2l-list-item-nav ?current="${current || false}" action-href=" ">
@@ -502,16 +508,23 @@ describe('list', () => {
 				it(`nested-${name}`, async() => {
 					const elem = await fixture(html`
 						<d2l-list grid style="width: 334px;">
-							<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable action-href=" ">
+							<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable action-href=" " indentation="${ifDefined(indentation ? 30 : undefined)}">
 								<d2l-list-item-content>
 									<div>Welcome!</div>
 								</d2l-list-item-content>
 								<d2l-list slot="nested" grid>
-									<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" draggable  ?current="${current || false}" action-href=" ">
+									<d2l-list-item-nav key="L2-1" color="#29a6ff" label="Syallabus Confirmation" draggable  ?current="${current || false}" action-href=" " indentation="${ifDefined(indentation ? 35 : undefined)}" expandable expanded>
 										<d2l-list-item-content>
 											<div>Syallabus Confirmation</div>
 											<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
 										</d2l-list-item-content>
+										<d2l-list slot="nested" grid>
+											<d2l-list-item-nav key="L2-1-1" label="Welcome topic" draggable action-href=" ">
+												<d2l-list-item-content>
+													<div>Welcome topic</div>
+												</d2l-list-item-content>
+											</d2l-list-item-nav>
+										</d2l-list>
 									</d2l-list-item-nav>
 								</d2l-list>
 							</d2l-list-item-nav>

@@ -84,6 +84,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 * @type {boolean}
 			 */
 			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
+			/**
+			 * Inline start padding (in px) to apply to direct nested list items. When this is used, nested list items will not use the grid start calcuations and instead will only using this number to determine indentation.
+			 * @type {number}
+			 */
 			indentation: { type: Number, reflect: true },
 			/**
 			 * @ignore
