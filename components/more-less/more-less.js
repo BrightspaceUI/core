@@ -3,6 +3,7 @@ import { css, html, LitElement } from 'lit';
 import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -11,6 +12,8 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const transitionDur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 400;
+const overflowClipEnabled = getFlag('overflow-clip', true);
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
 /**
  * A component used to minimize the display of long content, while providing a way to reveal the full content.
@@ -51,14 +54,18 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	static get styles() {
 		return css`
 			:host {
-				display: flow-root;
+				${overflowClipEnabled ? css`display: flow-root;` : css`display: block;`}
 			}
 
 			.d2l-more-less-content {
-				display: flow-root;
-				margin: -1em -1em 0;
-				padding: 1em 1em 0;
-				${overflowHiddenDeclarations}
+				${overflowClipEnabled ? css`
+					display: flow-root;
+					margin: -1em -1em 0;
+					padding: 1em 1em 0;
+					${overflowHiddenDeclarations}
+				` : css`
+					overflow: hidden;
+				`}
 			}
 			.d2l-more-less-transition {
 				transition: max-height ${transitionDur}ms cubic-bezier(0, 0.7, 0.5, 1);
@@ -231,16 +238,27 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 		const target = e.composedPath()[0] || e.target;
 
-		const em = parseInt(getComputedStyle(this.__content).getPropertyValue('font-size'));
-		const { y: contentY, height: contentHeight } = this.__content.getBoundingClientRect();
-		const { y: targetY, height: targetHeight } = target.getBoundingClientRect();
+		if (overflowClipEnabled) {
+			const em = parseInt(getComputedStyle(this.__content).getPropertyValue('font-size'));
+			const { y: contentY, height: contentHeight } = this.__content.getBoundingClientRect();
+			const { y: targetY, height: targetHeight } = target.getBoundingClientRect();
 
-		if (targetY + targetHeight > contentY + contentHeight - em) {
-			this.__expand();
-			this.__autoExpanded = true;
-			await (transitionDur && new Promise(r => setTimeout(r, transitionDur)));
-			if (target.getRootNode().activeElement === target) {
-				target.scrollIntoView({ block: 'center', inline: 'center', behavior: 'instant' });
+			if (targetY + targetHeight > contentY + contentHeight - em) {
+				this.__expand();
+				this.__autoExpanded = true;
+				await (transitionDur && new Promise(r => setTimeout(r, transitionDur)));
+			}
+		} else {
+			if (isSafari) {
+				target.scrollIntoViewIfNeeded?.();
+				setTimeout(() => this.__content.scrollTo({ top: 0, behavior: 'instant' }), 1);
+			}
+
+			if (this.__content.scrollTop) {
+				this.__content.scrollTo({ top: 0, behavior: 'instant' });
+				this.__expand();
+				this.__autoExpanded = true;
+				await (transitionDur && new Promise(r => setTimeout(r, transitionDur)));
 			}
 		}
 	}
