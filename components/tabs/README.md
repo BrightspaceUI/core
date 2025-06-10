@@ -170,7 +170,8 @@ Before creating a custom tab, ensure that the case is not covered by using a sta
       const styles = [ css`
         .d2l-tab-custom-content {
           margin: 0.5rem;
-          overflow: hidden; /* ask margaree what we want here */
+          overflow: clip;
+          overflow-clip-margin: 1em;
           padding: 0.1rem;
           white-space: nowrap;
         }
