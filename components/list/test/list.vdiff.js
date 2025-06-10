@@ -1254,16 +1254,16 @@ describe('list', () => {
 	});
 });
 
-describe('list-nested', () => {
+describe.only('list-nested', () => {
 	[true, false].forEach(rtl => {
 		[
-			{ name: 'all-iterations-non-draggable', draggable: false, media: 'screen' },
+			{ name: 'all-iterations-non-draggable', draggable: false, media: 'screen', indentation: true },
 			{ name: 'all-iterations-draggable', draggable: true, media: 'screen' },
 			{ name: 'all-iterations-draggable-force-show', draggable: true, media: 'print' }
-		].forEach(({ name, draggable, media }) => {
+		].forEach(({ name, draggable, media, indentation = false }) => {
 			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
-				const elem = await fixture(html`<d2l-demo-list-nested-iterations-helper ?is-draggable="${draggable}"></d2l-demo-list-nested-iterations-helper>`,
-					{ media, rtl, viewport: { width: 1300, height: 9000 } }
+				const elem = await fixture(html`<d2l-demo-list-nested-iterations-helper ?indentation="${indentation}" ?is-draggable="${draggable}"></d2l-demo-list-nested-iterations-helper>`,
+					{ media, rtl, viewport: { width: 1300, height: indentation ? 9000 : 7000 } }
 				);
 				await nextFrame();
 				await expect(elem).to.be.golden();

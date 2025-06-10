@@ -8,7 +8,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 class ListNestedIterationsHelper extends LitElement {
 	static get properties() {
 		return {
-			isDraggable: { attribute: 'is-draggable', type: Boolean }
+			isDraggable: { attribute: 'is-draggable', type: Boolean },
+			indentation: { type: Boolean }
 		};
 	}
 
@@ -68,6 +69,29 @@ class ListNestedIterationsHelper extends LitElement {
 
 		const tableRows = selectableOptions.map(option => html`
 			<tr class="header">
+				<th rowspan="4" scope="rowgroup">${option.name}</th>
+				<th scope="row">Exp/Collapsible Children</th>
+				<td>${this._createList([option.parent, true], [option.child, true])}</td>
+				<td>${this._createList([option.parent, false], [option.child, true])}</td>
+			</tr>
+			<tr class="header">
+				<th scope="row">Non-Exp/Collapsible Children</th>
+				<td>${this._createList([option.parent, true], [option.child, false])}</td>
+				<td>${this._createList([option.parent, false], [option.child, false])}</td>
+			</tr>
+			<tr class="header">
+				<th scope="row">Color on Some</th>
+				<td>${this._createList([option.parent, true, true], [option.child, true, true])}</td>
+				<td>${this._createList([option.parent, false, true], [option.child, true, true])}</td>
+			</tr>
+			<tr class="header">
+				<th scope="row">Color on All</th>
+				<td>${this._createList([option.parent, true, false, true], [option.child, true, false, true])}</td>
+				<td>${this._createList([option.parent, false, false, true], [option.child, true, false, true])}</td>
+			</tr>
+		`);
+		const tableRowsIndentation = selectableOptions.map(option => html`
+			<tr class="header">
 				<th rowspan="5" scope="rowgroup">${option.name}</th>
 				<th scope="row">Exp/Collapsible Children</th>
 				<td>${this._createList([option.parent, true], [option.child, true])}</td>
@@ -106,7 +130,7 @@ class ListNestedIterationsHelper extends LitElement {
 					</tr>
 				</thead>
 				<tbody>
-					${tableRows}
+					${this.indentation ? tableRowsIndentation : tableRows}
 				</tbody>
 			</table>
 		`;
