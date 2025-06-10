@@ -1262,10 +1262,10 @@ describe('list-nested', () => {
 			{ name: 'all-iterations-non-draggable', draggable: false, media: 'screen' },
 			{ name: 'all-iterations-draggable', draggable: true, media: 'screen' },
 			{ name: 'all-iterations-draggable-force-show', draggable: true, media: 'print' }
-		].forEach(({ name, draggable, media, indentation = false }) => {
+		].forEach(({ name, draggable, media }) => {
 			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
 				const elem = await fixture(html`<d2l-demo-list-nested-iterations-helper ?is-draggable="${draggable}"></d2l-demo-list-nested-iterations-helper>`,
-					{ media, rtl, viewport: { width: 1300, height: indentation ? 9000 : 7000 } }
+					{ media, rtl, viewport: { width: 1300, height: 7000 } }
 				);
 				await nextFrame();
 				await expect(elem).to.be.golden();
