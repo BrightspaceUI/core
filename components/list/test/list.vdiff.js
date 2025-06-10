@@ -1254,7 +1254,7 @@ describe('list', () => {
 	});
 });
 
-describe.only('list-nested', () => {
+describe('list-nested', () => {
 	[true, false].forEach(rtl => {
 		[
 			{ name: 'all-iterations-non-draggable', draggable: false, media: 'screen', indentation: true },
