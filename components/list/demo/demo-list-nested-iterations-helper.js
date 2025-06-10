@@ -8,8 +8,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 class ListNestedIterationsHelper extends LitElement {
 	static get properties() {
 		return {
-			isDraggable: { attribute: 'is-draggable', type: Boolean },
-			indentation: { type: Boolean }
+			isDraggable: { attribute: 'is-draggable', type: Boolean }
 		};
 	}
 
@@ -90,34 +89,6 @@ class ListNestedIterationsHelper extends LitElement {
 				<td>${this._createList([option.parent, false, false, true], [option.child, true, false, true])}</td>
 			</tr>
 		`);
-		const tableRowsIndentation = selectableOptions.map(option => html`
-			<tr class="header">
-				<th rowspan="5" scope="rowgroup">${option.name}</th>
-				<th scope="row">Exp/Collapsible Children</th>
-				<td>${this._createList([option.parent, true], [option.child, true])}</td>
-				<td>${this._createList([option.parent, false], [option.child, true])}</td>
-			</tr>
-			<tr class="header">
-				<th scope="row">Non-Exp/Collapsible Children</th>
-				<td>${this._createList([option.parent, true], [option.child, false])}</td>
-				<td>${this._createList([option.parent, false], [option.child, false])}</td>
-			</tr>
-			<tr class="header">
-				<th scope="row">Color on Some</th>
-				<td>${this._createList([option.parent, true, true], [option.child, true, true])}</td>
-				<td>${this._createList([option.parent, false, true], [option.child, true, true])}</td>
-			</tr>
-			<tr class="header">
-				<th scope="row">Color on All</th>
-				<td>${this._createList([option.parent, true, false, true], [option.child, true, false, true])}</td>
-				<td>${this._createList([option.parent, false, false, true], [option.child, true, false, true])}</td>
-			</tr>
-			<tr class="header">
-				<th scope="row">Indentation</th>
-				<td>${this._createList([option.parent, true, true, false, true], [option.child, true, true, false, true])}</td>
-				<td>${this._createList([option.parent, false, true, false, true], [option.child, true, true, false, true])}</td>
-			</tr>
-		`);
 
 		return html`
 			<table>
@@ -130,7 +101,7 @@ class ListNestedIterationsHelper extends LitElement {
 					</tr>
 				</thead>
 				<tbody>
-					${this.indentation ? tableRowsIndentation : tableRows}
+					${tableRows}
 				</tbody>
 			</table>
 		`;
@@ -150,7 +121,6 @@ class ListNestedIterationsHelper extends LitElement {
 	 * - 1: Expandable
 	 * - 2: Color on first items
 	 * - 3: Color on all items
-	 * - 4: Indentation
 	 */
 	_getChildItems(childOptions) {
 		const childL2Text = 'L2 List Item';
@@ -160,7 +130,7 @@ class ListNestedIterationsHelper extends LitElement {
 		for (let i = 0; i < 3; i++) {
 			const childKey = `child-${i}-${childOptions[0]}-${childOptions[1]}`;
 			items.push(html`
-				<d2l-list-item key="${childKey}" label="${childL2Text}" ?selectable="${!!childOptions[0]}" ?draggable="${this.isDraggable}" ?expandable="${childOptions[1] && i !== 1}" color="${ifDefined((childOptions[2] && i === 0) || childOptions[3] ? '#ff0000' : undefined)}" indentation="${ifDefined(childOptions[4] ? '30' : undefined)}">
+				<d2l-list-item key="${childKey}" label="${childL2Text}" ?selectable="${!!childOptions[0]}" ?draggable="${this.isDraggable}" ?expandable="${childOptions[1] && i !== 1}" color="${ifDefined((childOptions[2] && i === 0) || childOptions[3] ? '#ff0000' : undefined)}">
 					<d2l-list-item-content>${childL2Text}</d2l-list-item-content>
 					${i === 1 || !childOptions[1] ? nothing : html`
 						<d2l-list slot="nested">
@@ -182,7 +152,7 @@ class ListNestedIterationsHelper extends LitElement {
 		for (let i = 0; i < 3; i++) {
 			const parentKey = `parent-${i}-${parentOptions[0]}-${parentOptions[1]}`;
 			items.push(html`
-				<d2l-list-item key="${parentKey}" label="${parentText}" ?selectable="${!!parentOptions[0]}" ?draggable="${this.isDraggable}" ?expandable="${parentOptions[1] && i !== 1}" ?expanded="${parentOptions[1] && i === 0}" color="${ifDefined((parentOptions[2] && i === 0) || parentOptions[3] ? '#ff0000' : undefined)}" indentation="${ifDefined(parentOptions[4] ? '20' : undefined)}">
+				<d2l-list-item key="${parentKey}" label="${parentText}" ?selectable="${!!parentOptions[0]}" ?draggable="${this.isDraggable}" ?expandable="${parentOptions[1] && i !== 1}" ?expanded="${parentOptions[1] && i === 0}" color="${ifDefined((parentOptions[2] && i === 0) || parentOptions[3] ? '#ff0000' : undefined)}">
 					<d2l-list-item-content>${parentText}</d2l-list-item-content>
 					${i === 1 || (i === 2 && !parentOptions[1]) ? nothing : html`
 						<d2l-list slot="nested">${nested}</d2l-list>

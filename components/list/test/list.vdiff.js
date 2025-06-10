@@ -928,11 +928,11 @@ describe('list', () => {
 
 	describe('nested', () => {
 		function createNestedList(opts) {
-			const { color1, color3, selected, addButton } = { selected: [false, false, false], addButton: false, ...opts };
+			const { color1, color3, selected, addButton, indentation } = { selected: [false, false, false], addButton: false, indentation: false, ...opts };
 			return html`
 				<d2l-list style="width: 600px;" ?add-button="${addButton}">
 					<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
-					<d2l-list-item selectable label="L1-1" key="L1-1">
+					<d2l-list-item selectable label="L1-1" key="L1-1" indentation="${ifDefined(indentation ? '35' : undefined)}">
 						<d2l-list-item-content>
 							<div>Level 1, Item 1</div>
 							<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm.</div>
@@ -948,7 +948,7 @@ describe('list', () => {
 									<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
 								</d2l-list-item-content>
 							</d2l-list-item>
-							<d2l-list-item selectable label="L2-2" key="L2-2">
+							<d2l-list-item selectable label="L2-2" key="L2-2" indentation="${ifDefined(indentation ? '40' : undefined)}">
 								<d2l-list-item-content>
 									<div>Level 2, Item 2</div>
 									<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
@@ -981,6 +981,8 @@ describe('list', () => {
 			{ name: 'add-button', template: createNestedList({ addButton: true }) },
 			{ name: 'add-button some-selected', template: createNestedList({ addButton: true, selected: [false, false, true] }) },
 			{ name: 'add-button all-selected', template: createNestedList({ addButton: true, selected: [true, true, true] }) },
+			{ name: 'indentation', template: createNestedList({ indentation: true }) },
+			{ name: 'indentation color', template: createNestedList({ color1: '#00ff00', indentation: true }) },
 		].forEach(({ name, template }) => {
 			it(name, async() => {
 				const elem = await fixture(template);
@@ -1257,12 +1259,12 @@ describe('list', () => {
 describe('list-nested', () => {
 	[true, false].forEach(rtl => {
 		[
-			{ name: 'all-iterations-non-draggable', draggable: false, media: 'screen', indentation: true },
+			{ name: 'all-iterations-non-draggable', draggable: false, media: 'screen' },
 			{ name: 'all-iterations-draggable', draggable: true, media: 'screen' },
 			{ name: 'all-iterations-draggable-force-show', draggable: true, media: 'print' }
 		].forEach(({ name, draggable, media, indentation = false }) => {
 			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
-				const elem = await fixture(html`<d2l-demo-list-nested-iterations-helper ?indentation="${indentation}" ?is-draggable="${draggable}"></d2l-demo-list-nested-iterations-helper>`,
+				const elem = await fixture(html`<d2l-demo-list-nested-iterations-helper ?is-draggable="${draggable}"></d2l-demo-list-nested-iterations-helper>`,
 					{ media, rtl, viewport: { width: 1300, height: indentation ? 9000 : 7000 } }
 				);
 				await nextFrame();
