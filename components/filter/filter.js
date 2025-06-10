@@ -22,12 +22,13 @@ import '../selection/selection-summary.js';
 import '../tooltip/tooltip.js';
 
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles } from '../typography/styles.js';
-import { css, html, LitElement, nothing } from 'lit';
-import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { css, html, LitElement, nothing } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
+import { getFlag } from '../../helpers/flags.js';
+import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -38,6 +39,8 @@ const ARROWLEFT_KEY_CODE = 37;
 const ESCAPE_KEY_CODE = 27;
 const FILTER_CONTENT_CLASS = 'd2l-filter-dropdown-content';
 const SET_DIMENSION_ID_PREFIX = 'list-';
+
+const overflowClipEnabled = getFlag('overflow-clip', true);
 
 let hasDisplayedKeyboardTooltip = false;
 
@@ -144,7 +147,11 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				flex-grow: 1;
 				padding-right: calc(2rem + 2px);
 				text-align: center;
-				${overflowEllipsisDeclarations}
+				${overflowClipEnabled ? overflowEllipsisDeclarations : css`
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				`}
 			}
 			:host([dir="rtl"]) .d2l-filter-dimension-header-text {
 				padding-left: calc(2rem + 2px);
@@ -157,6 +164,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				display: flex;
 				gap: 0.45rem;
 				line-height: unset;
+				${overflowClipEnabled ? css`` : css`overflow: hidden;`}
 			}
 			.d2l-filter-dimension-set-value d2l-icon {
 				flex-shrink: 0;
@@ -171,7 +179,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 			.d2l-filter-dimension-set-value-text {
 				hyphens: auto;
-				${getOverflowDeclarations({ lines: 2 })}
+				${overflowClipEnabled ? getOverflowDeclarations({ lines: 2 }) : css`
+					-webkit-box-orient: vertical;
+					display: -webkit-box;
+					overflow: hidden;
+					overflow-wrap: anywhere;
+					-webkit-line-clamp: 2;
+				`}
 			}
 
 			d2l-list-item[selection-disabled] .d2l-filter-dimension-set-value,

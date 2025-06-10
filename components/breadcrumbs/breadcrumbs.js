@@ -1,8 +1,11 @@
 import './breadcrumb.js';
 import { css, html, LitElement } from 'lit';
+import { getFlag } from '../../helpers/flags.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
+
+const overflowClipEnabled = getFlag('overflow-clip', true);
 
 /**
  * Help users understand where they are within the application, and provide useful clues about how the space is organized. They also provide a convenient navigation mechanism.
@@ -27,7 +30,10 @@ class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				font-size: 0.7rem;
 				line-height: 1.05rem;
 				position: relative;
-				${overflowEllipsisDeclarations}
+				${overflowClipEnabled ? overflowEllipsisDeclarations : css`
+					overflow: hidden;
+					white-space: nowrap;
+				`}
 			}
 			:host([hidden]) {
 				display: none;
