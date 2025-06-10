@@ -5,7 +5,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
-const overflowClipEnabled = getFlag('overflow-clip', true);
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 /**
  * Help users understand where they are within the application, and provide useful clues about how the space is organized. They also provide a convenient navigation mechanism.
