@@ -8,6 +8,7 @@ Object property lists are simple dot-separated lists of text, displayed sequenti
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
   import '@brightspace-ui/core/components/object-property-list/object-property-list-item.js';
   import '@brightspace-ui/core/components/object-property-list/object-property-list-item-link.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list-item-tooltip-help.js';
   import '@brightspace-ui/core/components/status-indicator/status-indicator.js';
 </script>
 
@@ -17,6 +18,9 @@ Object property lists are simple dot-separated lists of text, displayed sequenti
   <d2l-object-property-list-item text="Example item with icon" icon="tier1:grade"></d2l-object-property-list-item>
   <d2l-object-property-list-item-link text="Example link" href="https://www.d2l.com/"></d2l-object-property-list-item-link>
   <d2l-object-property-list-item-link text="Example link with icon" href="https://www.d2l.com/" icon="tier1:alert"></d2l-object-property-list-item-link>
+  <d2l-object-property-list-item-tooltip-help text="Example tooltip help with icon" icon="tier1:grade">
+    These are extra details
+  </d2l-object-property-list-item-tooltip-help>
 </d2l-object-property-list>
 ```
 
@@ -42,11 +46,15 @@ An object property list can be defined using `d2l-object-property-list` and a co
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
   import '@brightspace-ui/core/components/object-property-list/object-property-list-item.js';
   import '@brightspace-ui/core/components/object-property-list/object-property-list-item-link.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list-item-tooltip-help.js';
 </script>
 
 <d2l-object-property-list>
   <d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
   <d2l-object-property-list-item-link text="Example link" href="https://www.d2l.com/"></d2l-object-property-list-item-link>
+  <d2l-object-property-list-item-tooltip-help text="Example link">
+    These are extra details
+  </d2l-object-property-list-item-tooltip-help>
 </d2l-object-property-list>
 ```
 
@@ -130,6 +138,32 @@ The `d2l-object-property-list-item-link` component is a link item for the object
 | `target` | String | Where to display the linked URL |
 <!-- docs: end hidden content -->
 
+## Help Tooltip Item [d2l-object-property-list-item-tooltip-help]
+
+The `d2l-object-property-list-item-tooltip-help` component is a help item for the object property list. It displays text as a help tooltip, with an optional leading icon.
+
+<!-- docs: demo code properties name:d2l-object-property-list-item-tooltip-help sandboxTitle:'Object Property List Help Tooltip Item' -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
+  import '@brightspace-ui/core/components/object-property-list/object-property-list-item-tooltip-help.js';
+</script>
+
+<d2l-object-property-list>
+  <d2l-object-property-list-item-tooltip-help text="Example item"></d2l-object-property-list-item-tooltip-help>
+  <d2l-object-property-list-item-tooltip-help text="Example item with icon" icon="tier1:grade"></d2l-object-property-list-item-tooltip-help>
+</d2l-object-property-list>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `text` | String, required | Text displayed by the item |
+| `icon` | String | [Preset icon key](../icons#preset-icons) (e.g. `tier1:gear`) |
+<!-- docs: end hidden content -->
+
 ## Status Slot
 
 Object property lists can optionally contain a single `d2l-status-indicator` inserted into the `status` slot.
@@ -145,7 +179,9 @@ Object property lists can optionally contain a single `d2l-status-indicator` ins
 <d2l-object-property-list>
   <d2l-status-indicator slot="status" state="default" text="Status"></d2l-status-indicator>
   <d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
-  <d2l-object-property-list-item text="Example item with icon" icon="tier1:grade"></d2l-object-property-list-item>
+  <d2l-object-property-list-item text="Example item with icon" icon="tier1:grade">
+    These are extra details
+  </d2l-object-property-list-item>
 </d2l-object-property-list>
 ```
 
