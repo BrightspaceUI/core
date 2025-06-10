@@ -18,7 +18,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const overflowClipEnabled = getFlag('overflow-clip', true);
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 const scrollButtonWidth = 56;
 

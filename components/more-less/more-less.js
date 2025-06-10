@@ -12,7 +12,7 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const transitionDur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 400;
-const overflowClipEnabled = getFlag('overflow-clip', true);
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
 /**

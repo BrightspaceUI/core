@@ -11,7 +11,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-const overflowClipEnabled = getFlag('overflow-clip', true);
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 export const linkStyles = css`
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {

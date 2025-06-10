@@ -7,7 +7,7 @@ import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-const overflowClipEnabled = getFlag('overflow-clip', true);
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 /**
  * A component for a "summary item" child component that describes the content in a collapsible panel.

@@ -5,7 +5,7 @@ import { getFlag } from '../../helpers/flags.js';
 import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { TabMixin } from './tab-mixin.js';
 
-const overflowClipEnabled = getFlag('overflow-clip', true);
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 const focusRingStyles = getFocusRingStyles(
 	pseudoClass => `:host(:${pseudoClass}) .d2l-tab-text-inner-content`,

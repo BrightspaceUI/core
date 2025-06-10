@@ -40,7 +40,7 @@ const ESCAPE_KEY_CODE = 27;
 const FILTER_CONTENT_CLASS = 'd2l-filter-dropdown-content';
 const SET_DIMENSION_ID_PREFIX = 'list-';
 
-const overflowClipEnabled = getFlag('overflow-clip', true);
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 let hasDisplayedKeyboardTooltip = false;
 

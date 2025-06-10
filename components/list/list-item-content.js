@@ -3,7 +3,7 @@ import { bodyCompactStyles, bodySmallStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit';
 import { getFlag } from '../../helpers/flags.js';
 
-const overflowClipEnabled = getFlag('overflow-clip', true);
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 /**
  * A component for consistent layout of primary and secondary text in a list item.

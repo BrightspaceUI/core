@@ -6,7 +6,7 @@ import { getFocusRingStyles } from '../../helpers/focus.js';
 import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-const overflowClipEnabled = getFlag('overflow-clip', true);
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 const keyCodes = {
 	ENTER: 13,
