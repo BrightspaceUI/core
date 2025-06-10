@@ -174,7 +174,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				padding-block: 0.8rem 0.4rem;
 			}
 			d2l-list-item.expanding-content {
-				overflow-y: hidden; /* todo: confirm this is fine */
+				overflow-y: hidden;
 			}
 
 			.d2l-filter-dimension-set-value-text {
