@@ -258,8 +258,8 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 		`;
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
 		if (changedProperties.has('indentation')) {
 			this.style.setProperty('--d2l-list-item-generic-layout-nested-indentation', `${this.indentation}px`);
 		}
