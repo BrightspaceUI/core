@@ -9,7 +9,7 @@ describe('overflow', () => {
 		it('should produce lit css templates by default', () => {
 			const declarations = getOverflowDeclarations();
 			expect(declarations).to.include.all.keys('_$cssResult$', 'cssText');
-		})
+		});
 
 		it('should return precomputed overflowHiddenDeclarations with no arguments', () => {
 			const declarations = getOverflowDeclarations();
@@ -19,7 +19,7 @@ describe('overflow', () => {
 		it('should return an equivalent string when lit == false', () => {
 			const defaultDeclarations = getOverflowDeclarations({ lit: false });
 			expect(defaultDeclarations).to.equal(overflowHiddenDeclarations.cssText);
-		})
+		});
 
 		it('should return line clamping declarations when lines > 0', () => {
 			const declarations = getOverflowDeclarations({ lines: 3 });
