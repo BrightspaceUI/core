@@ -86,6 +86,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
 			/**
+			 * Inline start padding (in px) to apply to list item(s) in the nested slot. When used, nested list items will not use the grid start calcuations and will only use this number to determine indentation.
+			 * @type {number}
+			 */
+			indentation: { type: Number, reflect: true },
+			/**
 			 * @ignore
 			 */
 			last: { type: Boolean, reflect: true },
@@ -777,6 +782,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				@focusout="${this._onFocusOut}"
 				class="${classMap(classes)}"
 				data-separators="${ifDefined(this._separators)}"
+				indentation="${ifDefined(this.indentation)}"
 				?grid-active="${this.role === 'row'}"
 				?no-primary-action="${this.noPrimaryAction}">
 				${this._showAddButton && this.first ? html`

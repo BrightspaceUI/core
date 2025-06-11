@@ -53,7 +53,12 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			 * Specifies whether the grid is active or not
 			 * @type {boolean}
 			 */
-			gridActive: { type: Boolean, attribute: 'grid-active' }
+			gridActive: { type: Boolean, attribute: 'grid-active' },
+			/**
+			 * Inline start padding (in px) to apply to list item(s) in the nested slot. When used, nested list items will not use the grid start calcuations and will only use this number to determine indentation.
+			 * @type {number}
+			 */
+			indentation: { type: Number, reflect: true }
 		};
 	}
 
@@ -185,6 +190,11 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				grid-row: nested;
 			}
 
+			:host([indentation]) ::slotted([slot="nested"]) {
+				grid-column-start: start;
+				padding-inline-start: var(--d2l-list-item-generic-layout-nested-indentation);
+			}
+
 			::slotted([slot="add"]) {
 				grid-row: add;
 			}
@@ -246,6 +256,13 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			<slot name="nested"></slot>
 			<slot name="add" class="d2l-cell" data-cell-num="9"></slot>
 		`;
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('indentation')) {
+			this.style.setProperty('--d2l-list-item-generic-layout-nested-indentation', `${this.indentation}px`);
+		}
 	}
 
 	_focusCellItem(focusInfo) {

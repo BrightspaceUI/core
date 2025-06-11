@@ -14,6 +14,7 @@ class ListDemoNav extends LitElement {
 	static get properties() {
 		return {
 			addButton: { type: Boolean, attribute: 'add-button' },
+			indentation: { type: Boolean },
 			_currentItem: { state: true }
 		};
 	}
@@ -143,6 +144,7 @@ class ListDemoNav extends LitElement {
 				color="${ifDefined(item.color)}"
 				?expandable="${hasSubList}"
 				?expanded="${hasSubList}"
+				indentation="${ifDefined(this.indentation ? '41' : undefined)}"
 				drop-nested
 				label="${item.primaryText}"
 				prevent-navigation>
