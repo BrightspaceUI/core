@@ -234,9 +234,9 @@
 					document.querySelector('#openDialog1').addEventListener('click', () => {
 						document.querySelector('#dialog1').opened = true;
 					});
-					document.querySelector('#openPopover1').addEventListener('click', () => {
+					document.querySelector('#openPopover1').addEventListener('click', e => {
 						const popover = document.querySelector('#popover1');
-						popover.opened = !popover.opened;
+						popover.open(e.target);
 					});
 				</script>
 			</template>
@@ -253,13 +253,13 @@
 					</d2l-test-popover>
 				</d2l-test-popover>
 				<script data-demo-hide>
-					document.querySelector('#outerOpener').addEventListener('click', () => {
+					document.querySelector('#outerOpener').addEventListener('click', e => {
 						const popover = document.querySelector('#outerPopover');
-						popover.opened = !popover.opened;
+						popover.open(e.target);
 					});
-					document.querySelector('#innerOpener').addEventListener('click', () => {
+					document.querySelector('#innerOpener').addEventListener('click', e => {
 						const popover = document.querySelector('#innerPopover');
-						popover.opened = !popover.opened;
+						popover.open(e.target);
 					});
 				</script>
 			</template>
