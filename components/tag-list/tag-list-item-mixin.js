@@ -147,6 +147,12 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			.d2l-heading-4 {
 				margin: 0 0 0.5rem 0;
 			}
+			@media (prefers-contrast: more) {
+				:host(:hover) .tag-list-item-container {
+					outline-offset: -2px;
+					outline-width: 2px;
+				}
+			}
 		`];
 	}
 
