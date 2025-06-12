@@ -206,6 +206,23 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				}
 
 			}
+
+			@media(prefers-contrast:more) {
+				.d2l-tabs-scroll-previous-container,
+				.d2l-tabs-scroll-next-container {
+					margin-inline: 0;
+					padding-inline: 4px;
+				}
+				.d2l-tabs-scroll-next-container {
+					padding-inline-start: 11px;
+					border-inline-start: 1px solid;
+				}
+				.d2l-tabs-scroll-previous-container {
+					margin-inline: 0;
+					padding-inline-end: 11px;
+					border-inline-end: 1px solid;
+				}
+			}
 		`];
 	}
 
