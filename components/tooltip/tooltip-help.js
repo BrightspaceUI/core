@@ -12,6 +12,7 @@ import { SlottedIconMixin } from '../icons/slotted-icon-mixin.js';
 /**
  * A component used to display additional information when users focus or hover over some text.
  * @slot - Default content placed inside of the tooltip
+ * @slot icon - Optional slot for a custom icon
  */
 class TooltipHelp extends SlottedIconMixin(SkeletonMixin(FocusMixin(LitElement))) {
 

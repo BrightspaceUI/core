@@ -8,6 +8,7 @@ import { ObjectPropertyListItem } from './object-property-list-item.js';
  * A single object property, to be used within an object-property-list,
  * rendered as a help tooltip and with an optional icon.
  * @slot - Default content placed inside of the tooltip
+ * @slot icon - Optional slot for a custom icon
  */
 class ObjectPropertyListItemTooltipHelp extends FocusMixin(ObjectPropertyListItem) {
 	static get properties() {
