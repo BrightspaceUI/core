@@ -127,7 +127,7 @@
 				<script data-demo-hide>
 					const demo = document.currentScript.parentNode;
 					demo.querySelector('#position').addEventListener('change', e => {
-						demo.querySelector('d2l-tooltip').position = e.target.value;
+						demo.querySelector('d2l-tooltip').setAttribute('position', e.target.value);
 					});
 					demo.querySelector('#align').addEventListener('change', e => {
 						demo.querySelector('d2l-tooltip').align = (e.target.value !== 'center' ? e.target.value : undefined);
