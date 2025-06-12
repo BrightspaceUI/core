@@ -1,8 +1,12 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
+import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 const keyCodes = {
 	ENTER: 13,
@@ -34,10 +38,12 @@ class Tab extends SkeletonMixin(LitElement) {
 			.d2l-tab-text {
 				--d2l-focus-ring-offset: 0;
 				margin: 0.5rem;
-				overflow: hidden;
 				padding: 0.1rem;
-				text-overflow: ellipsis;
-				white-space: nowrap;
+				${overflowClipEnabled ? overflowEllipsisDeclarations : css`
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				`}
 			}
 			:host([skeleton]) .d2l-tab-text.d2l-skeletize::before {
 				bottom: 0.15rem;

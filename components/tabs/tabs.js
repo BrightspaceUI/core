@@ -8,6 +8,8 @@ import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js'
 import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getFlag } from '../../helpers/flags.js';
+import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { repeat } from 'lit/directives/repeat.js';
@@ -16,6 +18,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 const scrollButtonWidth = 56;
 
@@ -87,13 +90,15 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				box-sizing: border-box;
 				flex: auto;
 				margin-left: -3px;
-				overflow: hidden;
-				overflow-x: hidden;
 				padding-left: 3px;
 				position: relative;
 				-webkit-transition: max-width 200ms ease-in;
 				transition: max-width 200ms ease-in;
-				white-space: nowrap;
+				${overflowClipEnabled ? getOverflowDeclarations({ textOverflow: 'clip' }) : css`
+					overflow: hidden;
+					overflow-x: hidden;
+					white-space: nowrap;
+				`}
 			}
 			.d2l-tabs-container-ext {
 				flex: none;
@@ -110,6 +115,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			.d2l-tabs-scroll-next-container {
 				background-color: var(--d2l-tabs-background-color);
 				box-shadow: 0 0 12px 18px var(--d2l-tabs-background-color);
+				${overflowClipEnabled ? css`clip-path: rect(0% 200% 100% -100%);` : css``}
 				display: none;
 				height: 100%;
 				position: absolute;

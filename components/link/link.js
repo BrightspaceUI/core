@@ -3,11 +3,15 @@ import '../icons/icon.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
+import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { styleMap } from 'lit/directives/style-map.js';
+
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 export const linkStyles = css`
 	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
@@ -109,10 +113,12 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					display: inherit;
 				}
 				a.truncate {
-					-webkit-box-orient: vertical;
-					display: -webkit-box;
-					overflow: hidden;
-					overflow-wrap: anywhere;
+					${overflowClipEnabled ? getOverflowDeclarations({ lines: 1 }) : css`
+						-webkit-box-orient: vertical;
+						display: -webkit-box;
+						overflow: hidden;
+						overflow-wrap: anywhere;
+					`}
 				}
 				d2l-icon {
 					color: var(--d2l-color-celestine);
