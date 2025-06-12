@@ -2,8 +2,12 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getFlag } from '../../helpers/flags.js';
+import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
+
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 /**
  * A component for a "summary item" child component that describes the content in a collapsible panel.
@@ -38,10 +42,12 @@ class CollapsiblePanelSummaryItem extends SkeletonMixin(LitElement) {
 				line-height: 1.2rem;
 			}
 			p.truncate {
-				-webkit-box-orient: vertical;
-				display: -webkit-box;
-				overflow: hidden;
-				overflow-wrap: anywhere;
+				${overflowClipEnabled ? getOverflowDeclarations({ lines: 1 }) : css`
+					-webkit-box-orient: vertical;
+					display: -webkit-box;
+					overflow: hidden;
+					overflow-wrap: anywhere;
+				`}
 			}
 		`];
 	}
