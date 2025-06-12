@@ -17,8 +17,8 @@ describe('overflow', () => {
 		});
 
 		it('should return an equivalent string when lit == false', () => {
-			const defaultDeclarations = getOverflowDeclarations({ lit: false });
-			expect(defaultDeclarations).to.equal(overflowHiddenDeclarations.cssText);
+			const declarations = getOverflowDeclarations({ lit: false });
+			expect(declarations).to.equal(overflowHiddenDeclarations.cssText);
 		});
 
 		it('should return line clamping declarations when lines > 0', () => {
@@ -38,7 +38,7 @@ describe('overflow', () => {
 
 		it('should return text-overflow declarations when textOverflow is provided', () => {
 			const textOverflow = 'clip';
-			const declarations = getOverflowDeclarations({ textOverflow: textOverflow });
+			const declarations = getOverflowDeclarations({ textOverflow });
 			expect(declarations.cssText).to.equal(set`
 				min-width: 0; /* clamps width of flex items */
 				overflow-x: clip;
