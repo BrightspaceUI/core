@@ -220,11 +220,11 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 					padding-inline: 4px;
 				}
 				.d2l-tabs-scroll-next-container {
-					border-inline-start: 1px solid;
+					border-inline-start: 1px solid var(--d2l-color-gypsum);
 					padding-inline-start: 11px;
 				}
 				.d2l-tabs-scroll-previous-container {
-					border-inline-end: 1px solid;
+					border-inline-end: 1px solid var(--d2l-color-gypsum);
 					padding-inline-end: 11px;
 				}
 			}
