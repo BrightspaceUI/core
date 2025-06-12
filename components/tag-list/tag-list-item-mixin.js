@@ -1,8 +1,9 @@
 import '../button/button-icon.js';
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html, nothing } from 'lit';
+import { css, html, nothing, unsafeCSS } from 'lit';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
+import { getFocusRingStyles, isFocusVisibleSupported, isHasSelectorSupported } from '../../helpers/focus.js';
 import { heading4Styles, labelStyles } from '../typography/styles.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -36,6 +37,10 @@ function addTabListener() {
 export function resetHasDisplayedKeyboardTooltip() {
 	hasDisplayedKeyboardTooltip = false;
 }
+
+const focusSelector = isHasSelectorSupported() && isFocusVisibleSupported() ?
+	'.tag-list-item-container:has(:focus-visible)' :
+	':host(:focus-within) .tag-list-item-container';
 
 export const TagListItemMixin = superclass => class extends LocalizeCoreElement(PropertyRequiredMixin(superclass)) {
 
@@ -79,10 +84,11 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				display: none;
 			}
 			.tag-list-item-container {
+				--d2l-focus-ring-offset: -2px;
 				align-items: center;
 				background-color: var(--d2l-color-regolith);
 				border-radius: 6px;
-				box-shadow: inset 0 0 0 1px var(--d2l-color-gypsum), 0 2px 4px rgba(0, 0, 0, 0.03);
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
 				box-sizing: border-box;
 				color: var(--d2l-color-ferrite);
 				cursor: pointer;
@@ -90,7 +96,8 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				line-height: 1rem;
 				max-width: 320px;
 				min-width: 0;
-				outline: none;
+				outline: 1px solid var(--d2l-color-gypsum);
+				outline-offset: -1px;
 				transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
 				white-space: nowrap;
 			}
@@ -103,26 +110,13 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				padding: 0.25rem 0.6rem;
 				text-overflow: ellipsis;
 			}
-			:host(:focus-within) .tag-list-item-container,
-			:host(:focus-within:hover) .tag-list-item-container {
-				box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), 0 2px 4px rgba(0, 0, 0, 0.03);
-			}
-			@supports selector(:has(a, b)) {
-				:host(:focus-within) .tag-list-item-container,
-				:host(:focus-within:hover) .tag-list-item-container {
-					box-shadow: inset 0 0 0 1px var(--d2l-color-gypsum), 0 2px 4px rgba(0, 0, 0, 0.03);
-				}
-				:host(:hover) .tag-list-item-container:has(:focus-visible),
-				.tag-list-item-container:has(:focus-visible) {
-					box-shadow: inset 0 0 0 2px var(--d2l-color-celestine), 0 2px 4px rgba(0, 0, 0, 0.03) !important;
-				}
-			}
+			${getFocusRingStyles(() => focusSelector)}
 			:host(:hover) .tag-list-item-container,
-			:host(:focus-within) .tag-list-item-container {
+			${unsafeCSS(focusSelector)} {
 				background-color: var(--d2l-color-sylvite);
 			}
-			:host(:hover) .tag-list-item-container {
-				box-shadow: inset 0 0 0 1px var(--d2l-color-mica), 0 2px 4px rgba(0, 0, 0, 0.03);
+			:host(:hover) .tag-list-item-container:not(${unsafeCSS(focusSelector)}) {
+				outline-color: var(--d2l-color-mica);
 			}
 
 			@media (prefers-reduced-motion: reduce) {

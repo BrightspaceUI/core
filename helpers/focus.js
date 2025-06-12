@@ -226,3 +226,22 @@ export function isFocusVisibleSupported() {
 
 	return _isFocusVisibleSupported;
 }
+
+let _isHasSelectorSupported;
+
+export function isHasSelectorSupported() {
+	if (_isHasSelectorSupported === undefined) {
+		const style = document.createElement('style');
+		try {
+			document.head.appendChild(style);
+			style.sheet.insertRule(':has(a) { color: inherit; }');
+			_isHasSelectorSupported = true;
+		} catch {
+			_isHasSelectorSupported = false;
+		} finally {
+			style.remove();
+		}
+	}
+
+	return _isHasSelectorSupported;
+}
