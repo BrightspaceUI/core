@@ -341,7 +341,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 			[slot="outside-control-action"] [slot="content"] {
 				padding-inline-start: 1.5rem;  /* left and right margins of 0.3rem + drag handle width of 0.9rem */
-			}	
+			}
 			:host([_render-expand-collapse-slot]) [slot="outside-control-action"] [slot="content"] {
 				padding-inline-start: 3rem; /* draggable padding + 1.2rem wide + 0.3rem padding */
 			}
