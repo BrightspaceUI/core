@@ -15,11 +15,16 @@ A Button is used to communicate and perform an action.
 <d2l-button-icon text="Icon Button" icon="tier1:gear"></d2l-button-icon>
 ```
 
-## Best Practices
+## Button [d2l-button]
+
+The `d2l-button` element can be used just like the native button element, but also supports the `primary` attribute for denoting the primary button.
+
+### Best Practices
+
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
 * Use buttons to cause an action or launch a workflow
-* Keep button text short - see "Writing" guidelines
+* Keep `text` short - see "Writing" guidelines
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
@@ -29,10 +34,6 @@ A Button is used to communicate and perform an action.
 * Don't open menus with buttons - use a [dropdown](../../components/dropdown) instead
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
-
-## Button [d2l-button]
-
-The `d2l-button` element can be used just like the native button element, but also supports the `primary` attribute for denoting the primary button.
 
 <!-- docs: demo code properties name:d2l-button sandboxTitle:'Button' -->
 ```html
@@ -57,7 +58,22 @@ The `d2l-button` element can be used just like the native button element, but al
 
 The `d2l-button-subtle` element can be used just like the native `button`, but for advanced or de-emphasized actions.
 
-**Note:** It is strongly recommended to use `text` and `icon` as opposed to putting content in the `slot` to ensure that the recommended subtle button style is maintained.
+### Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use subtle buttons for secondary, advanced, or de-emphasized actions that should not compete with primary tasks
+* Include an icon if you want to draw attention to the action or improve recognition
+* Keep subtle button `text` short - see "Writing" guidelines
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t put content in the slot to set the visible label or icon; use `text` or `icon` to ensure styles are maintained
+* Don’t use subtle buttons for primary or destructive actions — reserve them for less prominent interactions
+* Don't use subtle buttons for navigation, use a [link](../../components/link) instead
+* Don't open menus with subtle buttons - use a [dropdown](../../components/dropdown) instead
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
 
 <!-- docs: demo code properties name:d2l-button-subtle sandboxTitle:'Subtle Button' -->
 ```html
@@ -103,6 +119,23 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 
 The `d2l-button-icon` element can be used just like the native `button`, for instances where only an icon is displayed.
 
+### Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use icon buttons for compact, supplementary actions where space is limited and the action is visually represented by a familiar icon
+* Ensure the icon is clear, simple, and universally recognized for its intended action — avoid complex or ambiguous icons
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t use icon-only buttons for critical or primary actions; pair with text if the action is essential or not universally understood
+* Don’t use icons that are unfamiliar, decorative, or easily confused with other actions — stick to established conventions
+* Don’t overload interfaces with too many icon buttons — maintain a clear hierarchy and avoid visual clutter
+* Don't use icon buttons for navigation, use a [link](../../components/link) instead
+* Don't open menus with icon buttons - use a [dropdown](../../components/dropdown) instead
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
 <!-- docs: demo code properties name:d2l-button-icon sandboxTitle:'Icon Button' -->
 ```html
 <script type="module">
@@ -147,6 +180,19 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 
 The `d2l-button-toggle` element is a container for buttons that toggle a `pressed` state. The component will automatically show or hide the buttons and manage focus based on the `pressed` state. Simply place a `d2l-button-icon` or `d2l-button-subtle` element in each of the `not-pressed` and `pressed` slots. Each button should describe the state and action the user can take.
 
+### Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use toggle buttons for binary or mutually exclusive options where users need to switch between states or views
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t use toggle buttons for unrelated actions, navigation, or as form inputs — use [checkboxes](../../components/checkbox-input) or [radio buttons](../../components/radio-inputs) for form selection
+* Avoid ambiguous language — users shouldn't have to guess whether the toggle is giving the current state or describing an action it will perform
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
 <!-- docs: demo code properties name:d2l-button-toggle sandboxTitle:'Toggle Button' -->
 ```html
 <script type="module">
@@ -174,6 +220,25 @@ The `d2l-button-toggle` element is a container for buttons that toggle a `presse
 ## Split Button [d2l-button-split]
 
 The `d2l-button-split` element is a button component that provides a main button and a slot for `d2l-button-split-item` elements. Simply provide a `key` and `text` for the main button and each item. The `d2l-button-split`'s `click` event provides the `key` of the selected action.
+
+### Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use a split button when you need to group a main action with a set of closely related alternative actions, especially when space is limited
+* Make the main action the most common action the user takes, while the related actions are similar but less popular or prominent actions
+  * For example, a "Save" button with additional options like "Save As" or "Save and Close"
+* Keep split button `text` short - see "Writing" guidelines
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t use split buttons for unrelated or mutually exclusive actions
+* Don’t use split buttons as a replacement for navigation or for actions that should be separate, standalone buttons
+* Avoid including more than 5 actions
+* Don’t use split buttons excessively or in groups; reserve them for cases where the pattern adds real value
+* Don’t use split buttons if there is enough space to show all actions, since the Split Button requires user interaction to reveal hidden options
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
 
 <!-- docs: demo code properties name:d2l-button-split sandboxTitle:'Split Button' align:flex-start autoSize:false size:medium -->
 ```html
@@ -217,6 +282,20 @@ The `d2l-button-split` element is a button component that provides a main button
 
 The `d2l-button-add` is for quickly adding new items at a specific location, such as when adding items to a curated list. Since the Add button is meant to be subtle, it should always be used in combination with more obvious methods to add items (like a menu or primary button).
 
+### Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use the add button for quickly inserting new items at specific locations within a curated list or collection
+* Place the button where users expect to add items, such as between list elements or at logical insertion points between page sections
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t use the add button as the only method for adding items — always supplement with a more prominent method (such as a main “Add” button or menu option) since the Add button is subtle and may not be discovered by all users
+* Don’t crowd the interface with too many add buttons; use them only where inline addition is helpful and contextually relevant
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
+
 <!-- docs: demo code properties name:d2l-button-add sandboxTitle:'Add Button' display:block autoSize:false size:xsmall -->
 ```html
 <script type="module">
@@ -238,7 +317,20 @@ The `d2l-button-add` is for quickly adding new items at a specific location, suc
 
 Floating workflow buttons `<d2l-floating-buttons>` cause buttons to float or 'dock' to the bottom of the viewport when they would otherwise be below the bottom of the viewport. When their normal position becomes visible, they will undock.
 
-The best time to use floating workflow buttons is when users need immediate access to the buttons without scrolling. An example is a long or complex form page where it's common for users to make frequent isolated edits rather than sequentially completing the form.
+### Best Practices
+
+<!-- docs: start best practices -->
+<!-- docs: start dos -->
+* Use floating workflow buttons to keep important, contextually relevant actions accessible when their normal position would otherwise be out of view
+  * An example is a long or complex form page where it's common for users to make frequent isolated edits rather than sequentially completing the form
+* Limit the number of floating buttons to only the most essential actions to reduce clutter and cognitive load.
+  * Consider using a [Split Button](../../components/button/#d2l-button-split) if there are several related actions (such as Save, Save As...)
+<!-- docs: end dos -->
+
+<!-- docs: start donts -->
+* Don’t use floating buttons for actions that are not critical or frequently needed; avoid floating buttons for secondary or rarely used actions
+<!-- docs: end donts -->
+<!-- docs: end best practices -->
 
 <!-- docs: demo code properties name:d2l-floating-buttons sandboxTitle:'Floating Buttons' autoSize:false display:block size:xlarge -->
 ```html
