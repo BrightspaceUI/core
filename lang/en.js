@@ -19,13 +19,13 @@ export default {
 	"components.filter.clearAllAnnounceOverride": "Clearing all filters for: {filterText}",
 	"components.filter.clearAllDescription": "Clear all filters",
 	"components.filter.clearAllDescriptionOverride": "Clear all filters for: {filterText}",
-	"components.filter.clearAnnounce": "Clearing filters for: {filterName}",
+	"components.filter.clearAnnounce": "Clearing filters for: {filterName",
 	"components.filter.clearDescription": "Clear filters for: {filterName}",
 	"components.filter.loading": "Loading filters",
 	"components.filter.filterCountDescription":
 		`{number, plural,
 			=0 {No filters applied.}
-			one {{number} filter applied.}
+			one {{number} filter applied.
 			other {{number} filters applied.}
 		}`,
 	"components.filter.filters": "Filters",
