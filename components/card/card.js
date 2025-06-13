@@ -1,11 +1,10 @@
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 /**
@@ -16,7 +15,7 @@ import { styleMap } from 'lit/directives/style-map.js';
  * @slot footer - Slot for footer content, such secondary actions
  * @slot header - Slot for header content, such as course image (no actionable elements)
  */
-class Card extends FocusMixin(RtlMixin(LitElement)) {
+class Card extends LitElement {
 
 	static get properties() {
 		return {
@@ -93,15 +92,18 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 				position: relative;
 			}
 			.d2l-card-link-container {
-				border-radius: 6px;
 				flex-basis: auto;
 				flex-grow: 1;
 				flex-shrink: 1;
-				overflow: hidden;
 				width: 100%; /* required for Legacy-Edge and FF when align-items: flex-start is specified */
 			}
 			.d2l-card-link-text {
 				display: inline-block;
+			}
+			.d2l-card-header {
+				border-start-end-radius: 6px;
+				border-start-start-radius: 6px;
+				overflow: hidden;
 			}
 
 			a {
@@ -139,22 +141,14 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 				padding-bottom: 1.2rem;
 			}
 			.d2l-card-actions {
+				inset-inline-end: 0.6rem;
 				position: absolute;
-				right: 0.6rem;
 				top: 0.6rem;
 				/* this must be higher than footer z-index so dropdowns will be on top */
 				z-index: 3;
 			}
-			:host([dir="rtl"]) .d2l-card-actions {
-				left: 0.6rem;
-				right: auto;
-			}
 			.d2l-card-actions ::slotted(*) {
-				margin-left: 0.3rem;
-			}
-			:host([dir="rtl"]) .d2l-card-actions ::slotted(*) {
-				margin-left: 0;
-				margin-right: 0.3rem;
+				margin-inline-start: 0.3rem;
 			}
 			.d2l-card-badge {
 				line-height: 0;
@@ -183,23 +177,17 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 
 			:host([subtle]) {
 				border: none;
+			}
+			:host([subtle][href]) {
 				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.03);
 			}
-			:host(:hover) {
+			:host([href]:not([_active]):hover) {
 				box-shadow: 0 2px 14px 1px rgba(0, 0, 0, 0.06);
 			}
-			:host([subtle]:hover) {
+			:host([subtle][href]:not([_active]):hover) {
 				box-shadow: 0 4px 18px 2px rgba(0, 0, 0, 0.06);
 			}
-			:host([_active]) {
-				border-color: transparent;
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-			}
-			:host([_active]:hover),
-			:host([subtle][_active]:hover) {
-				border-color: transparent;
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-			}
+			${getFocusRingStyles(() => ':host([_active])', { 'extraStyles': css`border-color: transparent;` })}
 			/* .d2l-card-link-container-hover is used to only color/underline when
 			hovering the anchor; these styles are not applied when hovering actions */
 			:host([href]) .d2l-card-link-container-hover,
@@ -215,13 +203,14 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 			:host([_dropdown-action-open]) {
 				z-index: 2;
 			}
-			:host(:not([href])),
-			:host([subtle]:not([href])) {
-				box-shadow: none;
-			}
 			@media (prefers-reduced-motion: no-preference) {
 				:host {
 					transition: box-shadow 0.2s;
+				}
+			}
+			@media (prefers-contrast: more) {
+				:host([subtle]) {
+					border: 1px solid var(--d2l-color-gypsum);
 				}
 			}
 		`];
@@ -234,15 +223,12 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 		this.subtle = false;
 		this._active = false;
 		this._dropdownActionOpen = false;
+		this._focusOnFirstRender = false;
 		this._footerHidden = true;
 		this._hover = false;
 		this._tooltipShowing = false;
 		this._onBadgeResize = this._onBadgeResize.bind(this);
 		this._onFooterResize = this._onFooterResize.bind(this);
-	}
-
-	static get focusElementSelector() {
-		return 'a';
 	}
 
 	firstUpdated(changedProperties) {
@@ -251,6 +237,11 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 		badgeObserver.observe(this.shadowRoot.querySelector('.d2l-card-badge'));
 		const footerObserver = new ResizeObserver(this._onFooterResize);
 		footerObserver.observe(this.shadowRoot.querySelector('.d2l-card-footer'));
+
+		if (this._focusOnFirstRender) {
+			this._focusOnFirstRender = false;
+			this.focus();
+		}
 	}
 
 	render() {
@@ -280,18 +271,20 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 				@d2l-dropdown-close="${this._onDropdownClose}"
 				@d2l-tooltip-show="${this._onTooltipShow}"
 				@d2l-tooltip-hide="${this._onTooltipHide}">
-				<a @blur="${this._onLinkBlur}"
-					?download="${this.download}"
-					@focus="${this._onLinkFocus}"
-					href="${ifDefined(this.href ? this.href : undefined)}"
-					hreflang="${ifDefined(this.hreflang)}"
-					@mouseenter="${this._onLinkMouseEnter}"
-					@mouseleave="${this._onLinkMouseLeave}"
-					rel="${ifDefined(this.rel)}"
-					target="${ifDefined(this.target)}"
-					type="${ifDefined(this.type)}">
-					<span class="d2l-card-link-text d2l-offscreen">${this.text}</span>
-				</a>
+				${ this.href ? html`
+					<a @blur="${this._onLinkBlur}"
+						?download="${this.download}"
+						@focus="${this._onLinkFocus}"
+						href="${ifDefined(this.href ? this.href : undefined)}"
+						hreflang="${ifDefined(this.hreflang)}"
+						@mouseenter="${this._onLinkMouseEnter}"
+						@mouseleave="${this._onLinkMouseLeave}"
+						rel="${ifDefined(this.rel)}"
+						target="${ifDefined(this.target)}"
+						type="${ifDefined(this.type)}">
+						<span class="d2l-card-link-text d2l-offscreen">${this.text}</span>
+					</a>
+				` : nothing}
 				<div class="${classMap(linkContainerClass)}">
 					<div class="d2l-card-header"><slot name="header"></slot></div>
 					<div class="d2l-card-badge" style="${styleMap(badgeStyle)}"><slot name="badge"></slot></div>
@@ -301,6 +294,17 @@ class Card extends FocusMixin(RtlMixin(LitElement)) {
 				<div class="${classMap(footerClass)}"><slot name="footer"></slot></div>
 			</div>
 		`;
+	}
+
+	focus() {
+		if (!this.hasUpdated) {
+			this._focusOnFirstRender = true;
+			return;
+		}
+
+		const elem = this.shadowRoot.querySelector('a[href]');
+		if (elem) elem.focus();
+		else super.focus();
 	}
 
 	_onBadgeResize(entries) {

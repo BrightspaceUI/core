@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Fechar alerta",
 	"components.breadcrumbs.breadcrumb": "Auxiliar de navegação",
 	"components.button-add.addItem": "Adicionar item",
-	"components.button-split.otherOptions": "Other Options",
+	"components.button-split.otherOptions": "Outras Opções",
 	"components.calendar.hasEvents": "Tem eventos.",
 	"components.calendar.notSelected": "Não selecionado.",
 	"components.calendar.selected": "Selecionado.",
@@ -22,14 +22,33 @@ export default {
 	"components.filter.clearAnnounce": "Limpando filtros para: {filterName}",
 	"components.filter.clearDescription": "Limpar filtros para: {filterName}",
 	"components.filter.loading": "Carregar filtros",
-	"components.filter.filterCountDescription": "{number, plural, =0 {Nenhum filtro aplicado.} one {{number} filtro aplicado.} other {{number} filtros aplicados.}}",
+	"components.filter.filterCountDescription":
+		`{number, plural,
+			=0 {Nenhum filtro aplicado.}
+			one {{number} filtro aplicado.}
+			other {{number} filtros aplicados.}
+		}`,
 	"components.filter.filters": "Filtros",
 	"components.filter.noFilters": "Não há filtros disponíveis",
-	"components.filter.searchResults": "{number, plural, =0 {Sem resultados para a pesquisa} one {{number} resultado para a pesquisa} other {{number} resultados para a pesquisa}}",
+	"components.filter.searchResults":
+		`{number, plural,
+			=0 {Sem resultados para a pesquisa}
+			one {{number} resultado para a pesquisa}
+			other {{number} resultados para a pesquisa}
+		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Os filtros selecionados aparecem primeiro.",
 	"components.filter.singleDimensionDescription": "Filtrar por: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Última hora} other {Últimas {num} horas}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Hoje} one {Último {num} dia} other {Últimos {num} dias}}",
+	"components.filter-dimension-set-date-text-value.textHours":
+		`{num, plural,
+			=1 {Última hora}
+			other {Últimas {num} horas}
+		}`,
+	"components.filter-dimension-set-date-text-value.textDays":
+		`{num, plural,
+			=0 {Hoje}
+			one {Último {num} dia}
+			other {Últimos {num} dias}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Últimos {num} meses",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, expandir para escolher datas",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} até {endValue}",
@@ -39,25 +58,47 @@ export default {
 	"components.form-element.defaultError": "{label} é inválido",
 	"components.form-element.defaultFieldLabel": "Campo",
 	"components.form-element.input.email.typeMismatch": "E-mail inválido",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {O número deve ser maior que {min} e menor que {max}.} other {O número deve ser maior que {min} e menor que ou igual a {max}.}}} other {{maxExclusive, select, true {O número deve ser maior ou igual a {min} e menor que {max}.} other {O número deve ser maior que ou igual a {min} e menor que ou igual a {max}.}}}}",
-	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {O número deve ser menor que {max}.} other {O número deve ser menor que ou igual a {max}.}}",
-	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {O número deve ser maior que {min}.} other {O número deve ser maior que ou igual a {min}.}}",
+	"components.form-element.input.number.rangeError":
+		`{minExclusive, select,
+			true {{maxExclusive, select,
+				true {O número deve ser maior que {min} e menor que {max}.}
+				other {O número deve ser maior que {min} e menor que ou igual a {max}.}
+			}}
+			other {{maxExclusive, select,
+				true {O número deve ser maior ou igual a {min} e menor que {max}.}
+				other {O número deve ser maior que ou igual a {min} e menor que ou igual a {max}.}
+			}}
+		}`,
+	"components.form-element.input.number.rangeOverflow":
+		`{maxExclusive, select,
+			true {O número deve ser menor que {max}.}
+			other {O número deve ser menor que ou igual a {max}.}
+		}`,
+	"components.form-element.input.number.rangeUnderflow":
+		`{minExclusive, select,
+			true {O número deve ser maior que {min}.}
+			other {O número deve ser maior que ou igual a {min}.}
+		}`,
 	"components.form-element.input.text.tooShort": "{label} precisa ter, pelo menos, {minlength} caracteres",
 	"components.form-element.input.url.typeMismatch": "URL inválido",
 	"components.form-element.valueMissing": "{label} é obrigatório",
-	"components.form-error-summary.errorSummary": "{count, plural, one {{count} erro foi encontrado nas informações enviadas} other {{count} erros foram encontrados nas informações enviadas}}",
+	"components.form-error-summary.errorSummary":
+		`{count, plural,
+			one {{count} erro foi encontrado nas informações enviadas}
+			other {{count} erros foram encontrados nas informações enviadas}
+		}`,
 	"components.form-error-summary.text": "Alternar detalhes do erro",
 	"components.input-color.backgroundColor": "Cor do Plano de fundo",
 	"components.input-color.foregroundColor": "Cor do Primeiro plano",
 	"components.input-color.none": "Nenhum",
-	"components.input-date-range.endDate": "Data final",
+	"components.input-date-range.endDate": "Data Final",
 	"components.input-date-range.errorBadInput": "{startLabel} precisa ser anterior a {endLabel}",
 	"components.input-date-range.interactive-label": "Entrada do intervalo de datas",
-	"components.input-date-range.startDate": "Data de início",
-	"components.input-date-time-range-to.to": "a",
-	"components.input-date-time-range.endDate": "Data final",
+	"components.input-date-range.startDate": "Data de Início",
+	"components.input-date-time-range-to.to": "para",
+	"components.input-date-time-range.endDate": "Data Final",
 	"components.input-date-time-range.errorBadInput": "{startLabel} precisa ser anterior a {endLabel}",
-	"components.input-date-time-range.startDate": "Data de início",
+	"components.input-date-time-range.startDate": "Data de Início",
 	"components.input-date-time.date": "Data",
 	"components.input-date-time.errorMaxDateOnly": "A data deve ser anterior ou igual a {maxDate}",
 	"components.input-date-time.errorMinDateOnly": "A data deve ser igual ou posterior a {minDate}",
@@ -107,14 +148,26 @@ export default {
 	"components.more-less.more": "mais",
 	"components.object-property-list.item-placeholder-text": "Item de espaço reservado",
 	"components.overflow-group.moreActions": "Mais ações",
-	"components.pager-load-more.action": "Carregar mais",
+	"components.pager-load-more.action": "Carregar Mais",
 	"components.pager-load-more.action-with-page-size": "Carregar mais {count}",
-	"components.pageable.info": "{count, plural, one {{countFormatted} item} other {{countFormatted} itens}}",
-	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} de {totalCountFormatted} item} other {{countFormatted} de {totalCountFormatted} itens}}",
+	"components.pageable.info":
+		`{count, plural,
+			one {{countFormatted} item}
+			other {{countFormatted} itens}
+		}`,
+	"components.pageable.info-with-total":
+		`{totalCount, plural,
+			one {{countFormatted} de {totalCountFormatted} item}
+			other {{countFormatted} de {totalCountFormatted} itens}
+		}`,
 	"components.pager-load-more.status-loading": "Carregando mais itens",
-	"components.selection.action-max-hint": "{count, plural, one {Desativado quando mais de {countFormatted} item é selecionado} other {Desativado quando mais de {countFormatted} itens são selecionados}}",
+	"components.selection.action-max-hint":
+		`{count, plural,
+			one {Desativado quando mais de {countFormatted} item é selecionado}
+			other {Desativado quando mais de {countFormatted} itens são selecionados}
+		}`,
 	"components.selection.action-required-hint": "Selecione um item para realizar esta ação",
-	"components.selection.select-all": "Selecionar tudo",
+	"components.selection.select-all": "Selecionar Tudo",
 	"components.selection.select-all-items": "Selecione todos os {count} itens",
 	"components.selection.selected": "{count} selecionados",
 	"components.selection.selected-plus": "Mais de {count} selecionados",
@@ -125,24 +178,43 @@ export default {
 	"components.switch.conditions": "As condições devem ser atendidas",
 	"components.table-col-sort-button.addSortOrder": "Selecione para adicionar a ordem de classificação",
 	"components.table-col-sort-button.changeSortOrder": "Selecione para alterar a ordem de classificação",
-	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {Ordenado do mais recente ao mais antigo} other {Ordenado do mais antigo ao mais recente}}} numbers {{direction, select, desc {Ordenado do maior para o menor} other {Ordenado do menor para o maior}}} words {{direction, select, desc {Ordenado de Z a A} other {Ordenado de A a Z}}} value {Ordenado {selectedMenuItemText}} other {{direction, select, desc {Ordenado em ordem decrescente} other {Ordenado em ordem crescente}}}}",
+	"components.table-col-sort-button.title":
+		`{sourceType, select,
+			dates {{direction, select,
+				desc {Ordenado do mais recente ao mais antigo}
+				other {Ordenado do mais antigo ao mais recente}
+			}}
+			numbers {{direction, select,
+				desc {Ordenado do maior para o menor}
+				other {Ordenado do menor para o maior}
+			}}
+			words {{direction, select,
+				desc {Ordenado de Z a A}
+				other {Ordenado de A a Z}
+			}}
+			value {Ordenado {selectedMenuItemText}}
+			other {{direction, select,
+				desc {Ordenado em ordem decrescente}
+				other {Ordenado em ordem crescente}
+			}}
+		}`,
 	"components.table-controls.label": "Ações para a tabela",
 	"components.tabs.next": "Ir para frente",
 	"components.tabs.previous": "Ir para trás",
-	"components.tag-list.clear": "Clique em, pressione Backspace ou pressione a tecla Delete para remover o item {value}",
+	"components.tag-list.clear": "Clique, pressione a tecla Backspace ou a tecla Delete para remover o item {value}",
 	"components.tag-list.clear-all": "Limpar tudo",
-	"components.tag-list.cleared-all": "Todos os itens da lista de marcas foram removidos",
-	"components.tag-list.cleared-item": "Item {value} da lista de marcas removido",
+	"components.tag-list.cleared-all": "Todos os itens da lista de etiquetas foram removidos",
+	"components.tag-list.cleared-item": "Item {value} da lista de etiquetas removido",
 	"components.tag-list.interactive-label": "Lista de marcas, {count} itens",
 	"components.tag-list.num-hidden": "+ {count} mais",
 	"components.tag-list.role-description": "Lista de marcas",
 	"components.tag-list.show-less": "Mostrar menos",
-	"components.tag-list.show-more-description": "Selecione para mostrar itens ocultos da lista de marcas",
+	"components.tag-list.show-more-description": "Selecione para mostrar itens ocultos da lista de etiquetas",
 	"components.tag-list-item.role-description": "Marca",
 	"components.tag-list-item.tooltip-arrow-keys": "Teclas de seta",
-	"components.tag-list-item.tooltip-arrow-keys-desc": "Mover entre marcas",
-	"components.tag-list-item.tooltip-delete-key": "Retroceder/Excluir",
-	"components.tag-list-item.tooltip-delete-key-desc": "Excluir a marca de foco",
+	"components.tag-list-item.tooltip-arrow-keys-desc": "Mover entre etiquetas",
+	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
+	"components.tag-list-item.tooltip-delete-key-desc": "Excluir a etiqueta de foco",
 	"components.tag-list-item.tooltip-title": "Controles do teclado",
 	"templates.primary-secondary.divider": "Divisor do painel secundário",
 	"templates.primary-secondary.secondary-panel": "Painel secundário"

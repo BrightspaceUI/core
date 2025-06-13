@@ -23,10 +23,12 @@ import '../tooltip/tooltip.js';
 
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
+import { getFlag } from '../../helpers/flags.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -37,6 +39,8 @@ const ARROWLEFT_KEY_CODE = 37;
 const ESCAPE_KEY_CODE = 27;
 const FILTER_CONTENT_CLASS = 'd2l-filter-dropdown-content';
 const SET_DIMENSION_ID_PREFIX = 'list-';
+
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 let hasDisplayedKeyboardTooltip = false;
 
@@ -143,17 +147,15 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				flex-grow: 1;
 				padding-right: calc(2rem + 2px);
 				text-align: center;
-				text-overflow: ellipsis;
-				white-space: nowrap;
+				${overflowClipEnabled ? overflowEllipsisDeclarations : css`
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				`}
 			}
 			:host([dir="rtl"]) .d2l-filter-dimension-header-text {
 				padding-left: calc(2rem + 2px);
 				padding-right: 0;
-			}
-
-			.d2l-filter-dimension-header-text,
-			.d2l-filter-dimension-set-value-text {
-				overflow: hidden;
 			}
 
 			.d2l-filter-dimension-set-value {
@@ -162,7 +164,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 				display: flex;
 				gap: 0.45rem;
 				line-height: unset;
-				overflow: hidden;
+				${overflowClipEnabled ? css`` : css`overflow: hidden;`}
 			}
 			.d2l-filter-dimension-set-value d2l-icon {
 				flex-shrink: 0;
@@ -176,11 +178,14 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 			}
 
 			.d2l-filter-dimension-set-value-text {
-				-webkit-box-orient: vertical;
-				display: -webkit-box;
 				hyphens: auto;
-				-webkit-line-clamp: 2;
-				overflow-wrap: anywhere;
+				${overflowClipEnabled ? getOverflowDeclarations({ lines: 2 }) : css`
+					-webkit-box-orient: vertical;
+					display: -webkit-box;
+					-webkit-line-clamp: 2;
+					overflow: hidden;
+					overflow-wrap: anywhere;
+				`}
 			}
 
 			d2l-list-item[selection-disabled] .d2l-filter-dimension-set-value,
@@ -236,7 +241,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._displayKeyboardTooltip = false;
 		this._minWidth = 285;
 		this._openedDimensions = [];
-		this._resized = false;
 		this._totalAppliedCount = 0;
 
 		this._activeFilters = null;
@@ -638,8 +642,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 						${item.additionalContent ? html`<d2l-icon icon="${item.selected ? 'tier1:arrow-collapse-small' : 'tier1:arrow-expand-small'}" aria-hidden="true"></d2l-icon>` : nothing}
 					</div>
 					${item.additionalContent ? html`
-						<d2l-expand-collapse-content 
-							?expanded="${item.selected}" 
+						<d2l-expand-collapse-content
+							?expanded="${item.selected}"
 							@d2l-expand-collapse-content-collapse="${this._handleExpandCollapse}"
 							@d2l-expand-collapse-content-expand="${this._handleExpandCollapse}">
 							${item.additionalContent()}
@@ -675,7 +679,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 		this._changeEventsToDispatch = new Map();
 		clearTimeout(this._changeEventTimeout);
 		this._activeFiltersSubscribers.updateSubscribers();
-		this.#handleSearchLayoutUpdated(); // in order to update dropdown position if count-badge size changes pointer position
 	}
 
 	_dispatchChangeEventValueDataChange(dimension, value, valueKey) {

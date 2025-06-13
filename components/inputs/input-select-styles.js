@@ -1,8 +1,14 @@
 import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { invalidIcon } from './input-styles.js';
+import { svgToCSS } from '../../helpers/svg-to-css.js';
 
 const focusClass = unsafeCSS(getFocusPseudoClass());
+
+const chevron = svgToCSS(`<svg width="11" height="7" viewBox="0 0 11 7" xmlns="http://www.w3.org/2000/svg">
+  <path d="M1 2l4.5 4M10 2L5.5 6" stroke="#565A5C" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round"/>
+</svg>`);
 
 export const selectStyles = css`
 	.d2l-input-select {
@@ -10,9 +16,9 @@ export const selectStyles = css`
 		-moz-appearance: none;
 		appearance: none;
 		background-color: #ffffff;
-		background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNyIgdmlld0JveD0iMCAwIDExIDciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTEgMmw0LjUgNE0xMCAyTDUuNSA2IiBzdHJva2U9IiM1NjVBNUMiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+");
+		background-image: ${chevron};
 		background-origin: border-box;
-		background-position: center right 17px;
+		background-position: center var(--d2l-inline-end, right) 17px;
 		background-repeat: no-repeat;
 		background-size: 11px 7px;
 		border: none;
@@ -34,9 +40,6 @@ export const selectStyles = css`
 		padding-inline: calc(0.75rem + 1px) calc(2px + 0.8rem + 1px + 11px + 16px + 1px);
 		vertical-align: middle;
 	}
-	:host([dir="rtl"]) .d2l-input-select {
-		background-position: center left 17px;
-	}
 
 	.d2l-input-select:not([disabled]):hover,
 	.d2l-input-select:not([disabled]):${focusClass} {
@@ -45,8 +48,8 @@ export const selectStyles = css`
 		outline-offset: -2px;
 	}
 	.d2l-input-select[aria-invalid="true"] {
-		background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTEiIGhlaWdodD0iNyIgdmlld0JveD0iMCAwIDExIDciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTEgMmw0LjUgNE0xMCAyTDUuNSA2IiBzdHJva2U9IiM1NjVBNUMiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+"), url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDE4IDE4Ij4KICA8cGF0aCBmaWxsPSIjY2QyMDI2IiBkPSJNMTcuNzkgMTUuMTFsLTctMTRhMiAyIDAgMCAwLTMuNTggMGwtNyAxNGExLjk3NSAxLjk3NSAwIDAgMCAuMDkgMS45NEEyIDIgMCAwIDAgMiAxOGgxNGExLjk5NCAxLjk5NCAwIDAgMCAxLjctLjk1IDEuOTY3IDEuOTY3IDAgMCAwIC4wOS0xLjk0ek05IDE2YTEuNSAxLjUgMCAxIDEgMS41LTEuNUExLjUgMS41IDAgMCAxIDkgMTZ6bS45OC00LjgwNmExIDEgMCAwIDEtMS45NiAwbC0uOTktNUExIDEgMCAwIDEgOC4wMSA1aDEuOTgzYTEgMSAwIDAgMSAuOTggMS4xOTR6Ii8+Cjwvc3ZnPgo=");
-		background-position: center right 17px, center right calc(1px + 11px + 17px);
+		background-image: ${chevron}, ${invalidIcon};
+		background-position: center var(--d2l-inline-end, right) 17px, center var(--d2l-inline-end, right) calc(1px + 11px + 17px);
 		background-repeat: no-repeat, no-repeat;
 		background-size: 11px 7px, 0.8rem 0.8rem;
 	}
@@ -54,9 +57,6 @@ export const selectStyles = css`
 	.d2l-input-select[aria-invalid="true"]:${focusClass},
 	.d2l-input-select[aria-invalid="true"]:hover {
 		outline-color: var(--d2l-color-cinnabar);
-	}
-	:host([dir="rtl"]) .d2l-input-select[aria-invalid="true"] {
-		background-position: center left 17px, center left calc(1px + 11px + 17px);
 	}
 	.d2l-input-select:disabled {
 		opacity: 0.5;
@@ -73,7 +73,7 @@ export const selectStyles = css`
 			color: FieldText;
 			forced-color-adjust: none;
 			height: 2rem;
-			outline: 1px solid FieldText;
+			outline: 1px solid ButtonBorder;
 			padding-inline: 0.6rem 16px;
 		}
 
@@ -83,9 +83,13 @@ export const selectStyles = css`
 			outline: 2px solid Highlight;
 		}
 
+		.d2l-input-select:disabled {
+			outline: 1px solid GrayText;
+		}
+
 		.d2l-input-select[aria-invalid="true"] {
-			background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDE4IDE4Ij4KICA8cGF0aCBmaWxsPSIjY2QyMDI2IiBkPSJNMTcuNzkgMTUuMTFsLTctMTRhMiAyIDAgMCAwLTMuNTggMGwtNyAxNGExLjk3NSAxLjk3NSAwIDAgMCAuMDkgMS45NEEyIDIgMCAwIDAgMiAxOGgxNGExLjk5NCAxLjk5NCAwIDAgMCAxLjctLjk1IDEuOTY3IDEuOTY3IDAgMCAwIC4wOS0xLjk0ek05IDE2YTEuNSAxLjUgMCAxIDEgMS41LTEuNUExLjUgMS41IDAgMCAxIDkgMTZ6bS45OC00LjgwNmExIDEgMCAwIDEtMS45NiAwbC0uOTktNUExIDEgMCAwIDEgOC4wMSA1aDEuOTgzYTEgMSAwIDAgMSAuOTggMS4xOTR6Ii8+Cjwvc3ZnPgo=");
-			background-position: center right calc(1px + 11px + 17px);
+			background-image: ${invalidIcon};
+			background-position: center var(--d2l-inline-end, right) calc(1px + 11px + 17px);
 			background-repeat: no-repeat;
 			background-size: 0.8rem 0.8rem;
 		}
@@ -94,9 +98,6 @@ export const selectStyles = css`
 		.d2l-input-select[aria-invalid="true"]:${focusClass},
 		.d2l-input-select[aria-invalid="true"]:hover {
 			outline-color: var(--d2l-color-cinnabar);
-		}
-		:host([dir="rtl"]) .d2l-input-select[aria-invalid="true"] {
-			background-position: center left calc(1px + 11px + 17px);
 		}
 	}
 `;

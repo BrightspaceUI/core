@@ -6,9 +6,15 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 	<script type="module">
+		import { mockFlag } from '../../../helpers/flags.js';
+		const urlParams = new URLSearchParams(window.location.search);
+		mockFlag('GAUD-7355-tooltip-popover', urlParams.get('popover') === 'true');
+	</script>
+	<script type="module">
 		import '../../button/button.js';
 		import '../../colors/colors.js';
 		import '../../demo/demo-page.js';
+		import '../../icons/icon-custom.js';
 		import '../../inputs/input-text.js';
 		import '../../link/link.js';
 		import '../tooltip.js';
@@ -96,6 +102,40 @@
 			</template>
 		</d2l-demo-snippet>
 
+		<h2>Tooltip (position)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<div>
+					<select id="position">
+						<option value="bottom" selected>bottom</option>
+						<option value="left">left</option>
+						<option value="right">right</option>
+						<option value="top">top</option>
+					</select>
+					<select id="align">
+						<option value="center" selected>center</option>
+						<option value="start">start</option>
+						<option value="end">end</option>
+					</select>
+				</div>
+				<div style="text-align: center;">
+					<d2l-button id="tooltip-position">Tooltip Position</d2l-button>
+					<d2l-tooltip for="tooltip-position">
+						This tooltip will be positioned according to the above selections for location and alignment.
+					</d2l-tooltip>
+				</div>
+				<script data-demo-hide>
+					const demo = document.currentScript.parentNode;
+					demo.querySelector('#position').addEventListener('change', e => {
+						demo.querySelector('d2l-tooltip').setAttribute('position', e.target.value);
+					});
+					demo.querySelector('#align').addEventListener('change', e => {
+						demo.querySelector('d2l-tooltip').align = (e.target.value !== 'center' ? e.target.value : undefined);
+					});
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
 		<h2>Tooltip (boundary)</h2>
 		<d2l-demo-snippet>
 			<template>
@@ -145,7 +185,7 @@
 				<div class="bounded">
 					<d2l-button id="tooltip-bounded">Bounded Tooltip</d2l-button>
 					<d2l-tooltip for="tooltip-bounded">
-						A bounded tooltip message that will wrap to more than one line.
+						A tooltip message inside of a container that hides overflow.
 					</d2l-tooltip>
 				</div>
 			</template>
@@ -198,6 +238,22 @@
 				<p class="d2l-body-compact">
 					This is some sample text.
 					<d2l-tooltip-help text="Helpful label" inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
+				</p>
+				<p class="d2l-body-compact">
+					Using an icon.
+					<d2l-tooltip-help icon="tier1:edit" text="Helpful label" inherit-font-style>Contents should elaborate on the label (be short and concise)</d2l-tooltip-help>
+				</p>
+				<p class="d2l-body-compact">
+					Using a custom icon.
+					<d2l-tooltip-help text="Helpful label" inherit-font-style>
+						Contents should elaborate on the label (be short and concise)
+						<d2l-icon-custom slot="icon">
+							<svg xmlns="http://www.w3.org/2000/svg" mirror-in-rtl="true">
+		 						<path fill="#494c4e" d="M18 12v5a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1v-5a1 1 0 0 1 2 0v4h14v-4a1 1 0 0 1 2 0z"/>
+		 						<path fill="#494c4e" d="M13.85 3.15l-2.99-3A.507.507 0 0 0 10.5 0H5.4A1.417 1.417 0 0 0 4 1.43v11.14A1.417 1.417 0 0 0 5.4 14h7.2a1.417 1.417 0 0 0 1.4-1.43V3.5a.47.47 0 0 0-.15-.35zM7 2h1a1 1 0 0 1 0 2H7a1 1 0 0 1 0-2zm4 10H7a1 1 0 0 1 0-2h4a1 1 0 0 1 0 2zm0-4H7a1 1 0 0 1 0-2h4a1 1 0 0 1 0 2z"/>
+		 					</svg>
+						</d2l-icon-custom>
+					</d2l-tooltip-help>
 				</p>
 			</template>
 		</d2l-demo-snippet>

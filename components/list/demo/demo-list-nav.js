@@ -1,6 +1,6 @@
 import '../../icons/icon.js';
 import '../list-item-content.js';
-import '../list-item-nav-button.js';
+import '../list-item-nav.js';
 import '../list.js';
 import '../../tooltip/tooltip-help.js';
 import { css, html, LitElement, nothing } from 'lit';
@@ -13,6 +13,8 @@ class ListDemoNav extends LitElement {
 
 	static get properties() {
 		return {
+			addButton: { type: Boolean, attribute: 'add-button' },
+			indentation: { type: Boolean },
 			_currentItem: { state: true }
 		};
 	}
@@ -36,6 +38,7 @@ class ListDemoNav extends LitElement {
 
 	constructor() {
 		super();
+		this.addButton = false;
 		this._currentItem = null;
 	}
 
@@ -43,9 +46,10 @@ class ListDemoNav extends LitElement {
 		return html`
 			<div @d2l-list-items-move="${this._handleListItemsMove}">
 				<d2l-list 
+					?add-button="${this.addButton}"
 					grid 
 					drag-multiple
-					@d2l-list-item-button-click="${this._handleItemClick}">
+					@d2l-list-item-link-click="${this._handleItemClick}">
 					${repeat(this.#list, (item) => item.key, (item) => this._renderItem(item))}
 				</d2l-list>
 			</div>
@@ -132,15 +136,18 @@ class ListDemoNav extends LitElement {
 	_renderItem(item) {
 		const hasSubList = item.items && item.items.length > 0;
 		return html`
-			<d2l-list-item-nav-button
+			<d2l-list-item-nav
 				key="${ifDefined(item.key)}"
+				action-href="https://d2l.com"
 				draggable
 				drag-handle-text="${item.primaryText}"
 				color="${ifDefined(item.color)}"
 				?expandable="${hasSubList}"
 				?expanded="${hasSubList}"
+				indentation="${ifDefined(this.indentation ? '41' : undefined)}"
 				drop-nested
-				label="${item.primaryText}">
+				label="${item.primaryText}"
+				prevent-navigation>
 				<d2l-list-item-content>
 					<div>${item.hasIcon ? html`<d2l-icon icon="tier2:file-document"></d2l-icon>` : nothing}${item.primaryText}</div>
 					${item.tooltipOpenerText && item.tooltipText
@@ -149,12 +156,12 @@ class ListDemoNav extends LitElement {
 					}
 				</d2l-list-item-content>
 				${hasSubList ? html`
-					<d2l-list slot="nested">
+					<d2l-list slot="nested" grid ?add-button="${this.addButton}">
 						${repeat(item.items, (subItem) => subItem.key, (subItem) => this._renderItem(subItem))}
 					</d2l-list>`
 						: nothing
 				}
-			</d2l-list-item-nav-button>
+			</d2l-list-item-nav>
 		`;
 	}
 }

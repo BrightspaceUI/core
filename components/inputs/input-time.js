@@ -369,10 +369,10 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 					min-width="195"
 					?opened="${opened}">
 					<d2l-menu
-						aria-labelledby="${this._dropdownId}-label"
 						class="d2l-input-time-menu"
 						@d2l-menu-item-change="${this._handleDropdownChange}"
 						id="${this._dropdownId}"
+						label="${this.label}"
 						role="listbox"
 						root-view>
 						${menuItems}

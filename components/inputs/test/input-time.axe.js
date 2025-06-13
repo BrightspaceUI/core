@@ -43,4 +43,10 @@ describe('d2l-input-time', () => {
 		const elem = await fixture(new inlineHelpFixtures().time());
 		await expect(elem).to.be.accessible();
 	});
+
+	it('should map its label to the menu', async() => {
+		const elem = await fixture(html`<d2l-input-time label="label text"></d2l-input-time>`);
+		expect(elem.shadowRoot.querySelector('d2l-menu').getAttribute('label')).to.equal('label text');
+	});
+
 });

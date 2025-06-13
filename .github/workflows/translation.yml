@@ -1,0 +1,25 @@
+name: translation
+on:
+  pull_request:
+    paths:
+      - 'lang/**'
+
+jobs:
+  format:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Brightspace/third-party-actions@actions/checkout
+      - uses: Brightspace/third-party-actions@actions/setup-node
+        with:
+          node-version-file: .nvmrc
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run formatter
+        uses: BrightspaceUI/actions/t9n-format@main
+        with:
+          t9n-source: en
+          t9n-path: ./lang/
+          t9n-newlines: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}

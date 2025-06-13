@@ -328,7 +328,6 @@ export const listDemos = {
 			primaryText: 'Glaciation',
 			dropNested: true,
 			items: [],
-			color: '#29a6ff',
 			tooltipText: 'Starts: 2023-09-01, Ends: 2023-12-01',
 			tooltipOpenerText: 'Due: 2023-10-10',
 			hasIcon: true
@@ -337,7 +336,6 @@ export const listDemos = {
 			primaryText: 'Weathering',
 			dropNested: true,
 			items: [],
-			color: '#29a6ff',
 			tooltipText: 'Starts: 2023-10-01, Ends: 2023-12-01',
 			tooltipOpenerText: 'Due: 2023-11-10',
 			hasIcon: true
@@ -346,26 +344,36 @@ export const listDemos = {
 			primaryText: 'Volcanism',
 			dropNested: true,
 			items: [],
-			color: '#29a6ff',
 			hasIcon: true
 		}]
 	}, {
 		key: '2',
 		primaryText: 'Applied Wetland Science',
-		color: '#cd2026',
+		color: '#990006',
 		items: [{
 			key: '2-1',
 			primaryText: 'Carbon & Nitrogen Cycling',
 			dropNested: true,
 			items: [],
-			color: '#ff575a',
 			hasIcon: true
 		}, {
 			key: '2-2',
 			primaryText: 'Wetland Engineering',
 			dropNested: true,
-			items: [],
-			color: '#ff575a',
+			color: '#cd2026',
+			items: [{
+				key: '2-2-1',
+				primaryText: 'Wetland Engineering #1',
+				dropNested: true,
+				items: [],
+				hasIcon: true
+			}, {
+				key: '2-2-2',
+				primaryText: 'Wetland Engineering #2',
+				dropNested: true,
+				items: [],
+				hasIcon: true
+			}],
 			hasIcon: true
 		}]
 	}],

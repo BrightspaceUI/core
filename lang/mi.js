@@ -2,8 +2,8 @@ export default {
 	"components.alert.close": "Kati Matohi",
 	"components.breadcrumbs.breadcrumb": "Pānui",
 	"components.button-add.addItem": "Tāpiri Tūemi",
-	"components.button-split.otherOptions": "Other Options",
-	"components.calendar.hasEvents": "He takahanga anō.",
+	"components.button-split.otherOptions": "Ētahi atu kōwhiringa",
+	"components.calendar.hasEvents": "He takatu ēnei.",
 	"components.calendar.notSelected": "Kāore i tīpakona.",
 	"components.calendar.selected": "I tīpakona.",
 	"components.calendar.show": "Whakaatu {month}",
@@ -22,30 +22,71 @@ export default {
 	"components.filter.clearAnnounce": "Ūkui ana i ngā tātari mō: {filterName}",
 	"components.filter.clearDescription": "Ūkui tātari mō: {filterName}",
 	"components.filter.loading": "Uta tātari ana",
-	"components.filter.filterCountDescription": "{number, plural, =0 {Kāore he tātari i hoatu.} one {{number} kua hoatu te tātari.} other {{number} Kua hoatu ngā tātari.}}",
+	"components.filter.filterCountDescription":
+		`{number, plural,
+			=0 {Kāore he tātari i hoatu.}
+			one {{number} kua hoatu te tātari.}
+			other {{number} Kua hoatu ngā tātari.}
+		}`,
 	"components.filter.filters": "Ngā Tātari",
 	"components.filter.noFilters": "Kāore he tātari wātea",
-	"components.filter.searchResults": "{number, plural, =0 {Kāore he hua rapu} one {{number} hua rapu} other {{number} Ngā Huanga Rapu}}",
+	"components.filter.searchResults":
+		`{number, plural,
+			=0 {Kāore he hua rapu}
+			one {{number} hua rapu}
+			other {{number} Ngā Huanga Rapu}
+		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Ka puta tuatahi ngā tātari kua tīpakohia.",
 	"components.filter.singleDimensionDescription": "Tātari mā: {filterName}",
-	"components.filter-dimension-set-date-text-value.textHours": "{num, plural, =1 {Tērā haora} other {Whakamutunga {num} hāora}}",
-	"components.filter-dimension-set-date-text-value.textDays": "{num, plural, =0 {Āianei} one {Whakamutunga {num} Te rā} other {Whakamutunga {num} ngā rā}}",
+	"components.filter-dimension-set-date-text-value.textHours":
+		`{num, plural,
+			=1 {Tērā haora}
+			other {Whakamutunga {num} hāora}
+		}`,
+	"components.filter-dimension-set-date-text-value.textDays":
+		`{num, plural,
+			=0 {Āianei}
+			one {Whakamutunga {num} Te rā}
+			other {Whakamutunga {num} ngā rā}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Ngā marama {num} whakamutunga",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, whakaroha hei kōwhiri i ngā rā",
 	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} ki {endValue}",
-	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "After {startValue}",
-	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "Before {endValue}",
+	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "I muri o {startValue}",
+	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "I mua i {endValue}",
 	"components.filter-dimension-set-date-time-range-value.text": "Awhe rā ritenga",
-	"components.form-element.defaultError": "{label} is invalid",
+	"components.form-element.defaultError": "Kāore i te whai mana te {label}",
 	"components.form-element.defaultFieldLabel": "Āpure",
 	"components.form-element.input.email.typeMismatch": "Kāore te īmēra i te tika",
-	"components.form-element.input.number.rangeError": "{minExclusive, select, true {{maxExclusive, select, true {Number me nui ake i te {min} me iti iho i te {max}.} other {Number me nui ake i te {min} me iti iho rānei i te ōrite ki {max}.}}} other {{maxExclusive, select, true {Number me nui ake, ōrite rānei ki {min} and less than {max}.} other {Number me nui ake, ōrite rānei ki {min} me iti iho, ōrite rānei ki {max}.}}}}",
-	"components.form-element.input.number.rangeOverflow": "{maxExclusive, select, true {Number me iti iho i te {max}.} other {Number me iti iho, kia ōrite rānei ki {max}.}}",
-	"components.form-element.input.number.rangeUnderflow": "{minExclusive, select, true {Number must me nui ake i te {min}.} other {Number me nui ake, ōrite rānei ki {min}.}}",
+	"components.form-element.input.number.rangeError":
+		`{minExclusive, select,
+			true {{maxExclusive, select,
+				true {Number me nui ake i te {min} me iti iho i te {max}.}
+				other {Number me nui ake i te {min} me iti iho rānei i te ōrite ki {max}.}
+			}}
+			other {{maxExclusive, select,
+				true {Number me nui ake, ōrite rānei ki {min} and less than {max}.}
+				other {Number me nui ake, ōrite rānei ki {min} me iti iho, ōrite rānei ki {max}.}
+			}}
+		}`,
+	"components.form-element.input.number.rangeOverflow":
+		`{maxExclusive, select,
+			true {Number me iti iho i te {max}.}
+			other {Number me iti iho, kia ōrite rānei ki {max}.}
+		}`,
+	"components.form-element.input.number.rangeUnderflow":
+		`{minExclusive, select,
+			true {Number must me nui ake i te {min}.}
+			other {Number me nui ake, ōrite rānei ki {min}.}
+		}`,
 	"components.form-element.input.text.tooShort": "Me noho te {label} kia {minlength} ngā pūāhua",
 	"components.form-element.input.url.typeMismatch": "Kāore te URL i te tika",
-	"components.form-element.valueMissing": "{label} is required",
-	"components.form-error-summary.errorSummary": "{count, plural, one {Tērā {count} hapa i kitea i te mōhiohio i tukuna e koe} other {I te {count} ngā hapa i kitea i te mōhiohio i tukuna e koe}}",
+	"components.form-element.valueMissing": "E hiahiatia ana te {label}",
+	"components.form-error-summary.errorSummary":
+		`{count, plural,
+			one {Tērā {count} hapa i kitea i te mōhiohio i tukuna e koe}
+			other {I te {count} ngā hapa i kitea i te mōhiohio i tukuna e koe}
+		}`,
 	"components.form-error-summary.text": "Takahuri taipitopito hapa",
 	"components.input-color.backgroundColor": "Tae papamuri",
 	"components.input-color.foregroundColor": "Tae Papamua",
@@ -70,9 +111,9 @@ export default {
 	"components.input-date.errorOutsideRange": "Me noho te rā ki waenga i te {minDate} me te {maxDate}",
 	"components.input-date.openInstructions": "Whakamahia te hōputu rā {format}. Pere whakararo, pēhi rānei i te tāuru hei uru ki te pae-iti.",
 	"components.input-date.now": "Ināianei",
-	"components.input-date.revert": "{label} reverted to previous value.",
+	"components.input-date.revert": "Kua hokia te {label} ki te uara tōmua.",
 	"components.input-date.today": "Āianei",
-	"components.input-date.useDateFormat": "Use date format {format}.",
+	"components.input-date.useDateFormat": "Whakamahia te hōputu rā {format}.",
 	"components.input-number.hintInteger": "Ka whakaae anake tēnei āpure ki ngā uara tau tōpū (kāore he ira)",
 	"components.input-number.hintDecimalDuplicate": "He ira kē kei tēnei tau",
 	"components.input-number.hintDecimalIncorrectComma": "Hei tāpiri i tētahi ira whakamahi i te piko \",\" pūāhua",
@@ -109,11 +150,23 @@ export default {
 	"components.overflow-group.moreActions": "Ētahi atu Hohenga",
 	"components.pager-load-more.action": "Utaina Anō",
 	"components.pager-load-more.action-with-page-size": "Utaina {count} Ētahi atu",
-	"components.pageable.info": "{count, plural, one {{countFormatted} Tūemi} other {{countFormatted} Ngā tūemi}}",
-	"components.pageable.info-with-total": "{totalCount, plural, one {{countFormatted} o {totalCountFormatted} Tūemi} other {{countFormatted} o {totalCountFormatted} Ngā tūemi}}",
+	"components.pageable.info":
+		`{count, plural,
+			one {{countFormatted} Tūemi}
+			other {{countFormatted} Ngā tūemi}
+		}`,
+	"components.pageable.info-with-total":
+		`{totalCount, plural,
+			one {{countFormatted} o {totalCountFormatted} Tūemi}
+			other {{countFormatted} o {totalCountFormatted} Ngā tūemi}
+		}`,
 	"components.pager-load-more.status-loading": "Uta ana i ētahi atu tūemi",
-	"components.selection.action-max-hint": "{count, plural, one {Disabled when more than {countFormatted} item is selected} other {Disabled when more than {countFormatted} items are selected}}",
-	"components.selection.action-required-hint": "Select an item to perform this action",
+	"components.selection.action-max-hint":
+		`{count, plural,
+			one {Kua whakakorehia ina neke atu i te {countFormatted} o ngā tūemi i tīpakohia}
+			other {Kua whakakorehia ina neke atu i te {countFormatted} o ngā tūemi i tīpakohia}
+		}`,
+	"components.selection.action-required-hint": "Tīpakohia tētahi tūemi hei whakahaere i tēnei mahi",
 	"components.selection.select-all": "Tīpako Katoa",
 	"components.selection.select-all-items": "Tīpakohia Ngā Tūemi {count} Katoa",
 	"components.selection.selected": "{count} kua tīpakohia",
@@ -125,7 +178,26 @@ export default {
 	"components.switch.conditions": "Me tutuki ngā here",
 	"components.table-col-sort-button.addSortOrder": "Tīpakohia hei tāpiri raupapa kōmaka",
 	"components.table-col-sort-button.changeSortOrder": "Tīpakohia hei huri i te raupapa kōmaka",
-	"components.table-col-sort-button.title": "{sourceType, select, dates {{direction, select, desc {Kua kōmakatia he mea hōu ki te tawhito} other {Kua kōmakatia te tawhito ki te mea hōu}}} numbers {{direction, select, desc {Kōmaka teitei ki te iti} other {Kua kōmaka iti iho ki te teitei}}} words {{direction, select, desc {I kōmakatia Z ki A} other {I kōmakatia te A ki Z}}} value {Kua kōmakatia {selectedMenuItemText}} other {{direction, select, desc {Kua kōmakatia te auheke} other {Kua kōmakatia te aupiki}}}}",
+	"components.table-col-sort-button.title":
+		`{sourceType, select,
+			dates {{direction, select,
+				desc {Kua kōmakatia he mea hōu ki te tawhito}
+				other {Kua kōmakatia te tawhito ki te mea hōu}
+			}}
+			numbers {{direction, select,
+				desc {Kōmaka teitei ki te iti}
+				other {Kua kōmaka iti iho ki te teitei}
+			}}
+			words {{direction, select,
+				desc {I kōmakatia Z ki A}
+				other {I kōmakatia te A ki Z}
+			}}
+			value {Kua kōmakatia {selectedMenuItemText}}
+			other {{direction, select,
+				desc {Kua kōmakatia te auheke}
+				other {Kua kōmakatia te aupiki}
+			}}
+		}`,
 	"components.table-controls.label": "Ngā mahinga mō te ripanga",
 	"components.tabs.next": "Panuku Whakamua",
 	"components.tabs.previous": "Panuku Whakamuri",

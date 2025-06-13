@@ -1,7 +1,9 @@
-import { css, unsafeCSS } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
+import { css } from 'lit';
+import { svgToCSS } from '../../helpers/svg-to-css.js';
 
-const inputStyleTweaksEnabled = getFlag('input-style-tweaks', true);
+const requiredIcon = svgToCSS(`<svg width="5" height="6" viewBox="0 0 5 6" xmlns="http://www.w3.org/2000/svg">
+	<path d="M2.38 5.141V3.86c0-.093.006-.184.018-.273.011-.089.031-.173.059-.252a.927.927 0 0 1-.182.175c-.07.051-.145.103-.224.154l-1.106.644-.413-.7 1.113-.644c.084-.051.167-.093.248-.126.082-.033.167-.056.256-.07a.816.816 0 0 1-.256-.07 2.356 2.356 0 0 1-.248-.133L.532 1.914l.406-.7 1.113.658c.08.051.155.104.228.157a.966.966 0 0 1 .185.179 1.002 1.002 0 0 1-.066-.252 2.091 2.091 0 0 1-.018-.273V.388h.826v1.281c0 .098-.006.192-.017.283a1.003 1.003 0 0 1-.067.256c.051-.065.112-.125.182-.179.07-.053.147-.106.231-.157l1.106-.644.413.7-1.113.637a1.954 1.954 0 0 1-.248.13 1.07 1.07 0 0 1-.256.073c.159.028.327.093.504.196l1.113.651-.406.7-1.113-.651a3.307 3.307 0 0 1-.231-.154 1.122 1.122 0 0 1-.189-.175c.06.15.091.322.091.518v1.288H2.38z" fill="#494C4E" fill-rule="evenodd"/>
+</svg>`);
 
 export const inputLabelStyles = css`
 	.d2l-input-label {
@@ -10,14 +12,14 @@ export const inputLabelStyles = css`
 		font-size: 0.7rem;
 		font-weight: 700;
 		letter-spacing: 0.2px;
-		line-height: ${unsafeCSS(inputStyleTweaksEnabled ? '0.9rem' : '1rem')}; /* stylelint-disable-line */
-		margin-block: 0 ${unsafeCSS(inputStyleTweaksEnabled ? '0.4rem' : '7px')}; /* stylelint-disable-line */
+		line-height: 0.9rem;
+		margin-block: 0 0.4rem;
 		margin-inline: 0;
 		padding: 0;
 	}
 	:host([required]) .d2l-input-label::after,
 	.d2l-input-label-required::after {
-		background-image: url("data:image/svg+xml,%3Csvg%20width%3D%225%22%20height%3D%226%22%20viewBox%3D%220%200%205%206%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M2.38%205.141V3.86c0-.093.006-.184.018-.273.011-.089.031-.173.059-.252a.927.927%200%200%201-.182.175c-.07.051-.145.103-.224.154l-1.106.644-.413-.7%201.113-.644c.084-.051.167-.093.248-.126.082-.033.167-.056.256-.07a.816.816%200%200%201-.256-.07%202.356%202.356%200%200%201-.248-.133L.532%201.914l.406-.7%201.113.658c.08.051.155.104.228.157a.966.966%200%200%201%20.185.179%201.002%201.002%200%200%201-.066-.252%202.091%202.091%200%200%201-.018-.273V.388h.826v1.281c0%20.098-.006.192-.017.283a1.003%201.003%200%200%201-.067.256c.051-.065.112-.125.182-.179.07-.053.147-.106.231-.157l1.106-.644.413.7-1.113.637a1.954%201.954%200%200%201-.248.13%201.07%201.07%200%200%201-.256.073c.159.028.327.093.504.196l1.113.651-.406.7-1.113-.651a3.307%203.307%200%200%201-.231-.154%201.122%201.122%200%200%201-.189-.175c.06.15.091.322.091.518v1.288H2.38z%22%20fill%3D%22%23494C4E%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E");
+		background-image: ${requiredIcon};
 		bottom: 0.25rem;
 		content: "";
 		display: inline-block;
@@ -38,5 +40,14 @@ export const inputLabelStyles = css`
 		display: block;
 		margin: 0;
 		padding: 0;
+	}
+
+	@media (prefers-contrast: more) {
+		:host([required]) .d2l-input-label::after,
+		.d2l-input-label-required::after {
+			background-color: FieldText;
+			background-image: none;
+			mask-image: ${requiredIcon};
+		}
 	}
 `;

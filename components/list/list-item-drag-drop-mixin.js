@@ -4,6 +4,7 @@ import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { isInteractiveInListItemComposedPath } from './list-item-mixin.js';
@@ -22,6 +23,8 @@ export const moveLocations = Object.freeze({
 });
 
 export const dropLocation = moveLocations; // backwards compatibility
+
+const dragDropMultipleFlag = getFlag('GAUD-7495-list-item-drag-drop-multiple', true);
 
 const dropTargetLeaveDelay = 1000; // ms
 const touchHoldDuration = 400; // length of time user needs to hold down touch before dragging occurs
@@ -341,6 +344,9 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 					opacity: 0;
 				}
 				:host([selected]) d2l-list-item-drag-handle,
+				:host([current]) d2l-list-item-drag-handle,
+				:host([_focusing-elem]) d2l-list-item-drag-handle,
+				:host([_list-item-new-styles][_focusing]) d2l-list-item-drag-handle,
 				d2l-list-item-drag-handle:hover,
 				d2l-list-item-drag-handle.d2l-hovering,
 				d2l-list-item-drag-handle.d2l-focusing {
@@ -371,6 +377,9 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (!this.key) {
 			this.draggable = false;
 		}
+
+		if (!dragDropMultipleFlag) return;
+		this._dragMultiple = this.getRootList()?.hasAttribute('drag-multiple');
 	}
 
 	disconnectedCallback() {
@@ -901,6 +910,12 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				@d2l-list-item-drag-handle-action="${this._onDragHandleActions}">
 			</d2l-list-item-drag-handle>
 		`) : nothing;
+	}
+
+	_renderDragMultipleImage() {
+		if (!dragDropMultipleFlag) return nothing;
+
+		return this._dragMultiple && this.draggable && (this.selectable || this.expandable) ? html`<d2l-list-item-drag-image></d2l-list-item-drag-image>` : nothing;
 	}
 
 	_renderDragTarget(templateMethod, content) {

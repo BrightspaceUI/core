@@ -270,7 +270,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 		const availableHeight = this._ifrauContextInfo
 			? this._ifrauContextInfo.availableHeight - this._margin.top - this._margin.bottom
 			: window.innerHeight - this._margin.top - this._margin.bottom;
-		let preferredHeight = 2;
+		let preferredHeight = 3; // content height is off by 2px and we need an extra 1px to account for rounding when zoomed
 
 		if (this.fullHeight) {
 			preferredHeight = 2 * this._width;
@@ -454,11 +454,8 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			if (reduceMotion) await new Promise(resolve => requestAnimationFrame(resolve));
 			else await animPromise;
 
-			const flag = window.D2L?.LP?.Web?.UI?.Flags.Flag('GAUD-7397-dialog-resize-update-complete', true) ?? true;
-			if (flag) {
-				await this.waitForUpdateComplete();
-				await this._updateSize();
-			}
+			await this.waitForUpdateComplete();
+			await this._updateSize();
 			/** Dispatched when the dialog is opened */
 			this.dispatchEvent(new CustomEvent(
 				'd2l-dialog-open', { bubbles: true, composed: true }
@@ -550,8 +547,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	_updateOverflow() {
 		if (!this.shadowRoot) return;
 		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
+		// On Windows, browser zoom can cause scrollTop to be a fraction
+		const bottomOverflow = content.scrollHeight - (Math.ceil(content.scrollTop) + content.clientHeight);
 		this._overflowTop = (content.scrollTop > 0);
-		this._overflowBottom = (content.scrollHeight > content.scrollTop + content.clientHeight);
+		this._overflowBottom = (bottomOverflow > 0);
 	}
 
 	async _updateSize() {

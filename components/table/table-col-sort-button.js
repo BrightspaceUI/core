@@ -3,10 +3,10 @@ import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-menu.js';
 import '../icons/icon.js';
 import '../menu/menu.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -54,7 +54,8 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 				type: String
 			},
 			_hasDropdownItems: { state: true },
-			_selectedMenuItemText: { state: true }
+			_selectedMenuItemText: { state: true },
+			_label: { state: true },
 		};
 	}
 
@@ -115,11 +116,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 			button:hover {
 				background-color: var(--d2l-color-gypsum);
 			}
-			button:focus-visible,
-			button:${unsafeCSS(getFocusPseudoClass())} {
-				box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--d2l-color-celestine);
-				outline-style: none;
-			}
+			${getFocusRingStyles('button', { extraStyles: css`box-shadow: 0 0 0 2px #ffffff;` })}
 			d2l-icon {
 				margin-inline-start: 0.6rem;
 			}
@@ -142,6 +139,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		this._describedById = getUniqueId();
 		this._describedBySortedId = getUniqueId();
 		this._hasDropdownItems = false;
+		this._label = '';
 	}
 
 	static get focusElementSelector() {
@@ -181,13 +179,13 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 				class="${classMap({ 'd2l-dropdown-opener': this._hasDropdownItems })}"
 				title="${ifDefined(buttonTitle)}"
 				type="button">
-				<slot></slot>${iconView}
+				<slot @slotchange="${this.#handleDefaultSlotChange}"></slot>${iconView}
 			</button><span id="${this._describedById}" hidden>${buttonDescription}</span>${sortedView}`;
 		if (this._hasDropdownItems) {
 			return html`<d2l-dropdown>
 					${button}
 					<d2l-dropdown-menu no-pointer align="start" vertical-offset="4">
-						<d2l-menu @d2l-table-col-sort-button-item-change="${this._handleTablColSortButtonItemChange}">
+						<d2l-menu label="${ifDefined(this._label)}" @d2l-table-col-sort-button-item-change="${this._handleTablColSortButtonItemChange}">
 							<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 						</d2l-menu>
 					</d2l-dropdown-menu>
@@ -217,6 +215,16 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 
 	_handleTablColSortButtonItemChange(e) {
 		this._selectedMenuItemText = e.target?.text;
+	}
+
+	#handleDefaultSlotChange(e) {
+		const labels = e.target?.assignedNodes({ flatten: false })
+			.map(node => {
+				if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+				if (node.nodeType === Node.ELEMENT_NODE) return node.innerText;
+			}).filter(text => typeof(text) === 'string' && text.trim().length > 0)
+			.map(text => text.replace(/[\t\n\r]+/g, ' ').trim());
+		this._label = labels.join(' ');
 	}
 
 }

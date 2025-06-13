@@ -12,6 +12,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 /**
  * A component wrapper to be used when a page contains multiple inputs which are related (for example to form an address) to wrap those related inputs.
  * @slot - Related input components
+ * @slot inline-help - Help text that will appear below the fieldset. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  */
 class InputFieldset extends PropertyRequiredMixin(InputInlineHelpMixin(SkeletonMixin(LitElement))) {
 

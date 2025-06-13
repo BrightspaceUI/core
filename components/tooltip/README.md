@@ -117,6 +117,7 @@ The `d2l-tooltip` component is used to display additional information when users
 | `disable-focus-lock` | Boolean, default: `false` | Disables focus lock so that the tooltip will automatically close when no longer hovered even if it still has focus |
 | `force-show` | Boolean, default: `false` | Force the tooltip to stay open as long as it remains `true` |
 | `for-type` | String, default: `descriptor` | Accessibility type for the tooltip to specify whether it is the primary label for the target or a secondary descriptor. Valid values are: `label` and `descriptor`. |
+| `icon` | String | [Preset icon key](../../components/icons#preset-icons) (e.g. `tier1:gear`) |
 | `show-truncated-only` | Boolean, default: `false` | Only show the tooltip if we detect the target element is truncated |
 | `position` | String | Optionally force the tooltip to open in a certain direction. Valid values are: `top`, `bottom`, `left` and `right`. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left. |
 
@@ -215,6 +216,13 @@ The `d2l-tooltip-help` component is used to display additional information when 
 ```
 
 <!-- docs: start hidden content -->
+### Slots
+
+| Slot | Type | Description |
+|--|--|--|
+| `default` | required | Default content placed inside of the tooltip |
+| `icon` | optional | Optional slot for a custom icon |
+
 ### Properties
 
 | Property | Type | Description |

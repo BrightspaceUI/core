@@ -2,24 +2,17 @@
 
 Text inputs allow users to input, edit, and select text.
 
-<!-- docs: demo -->
+<!-- docs: demo display:block -->
 ```html
 <script type="module">
+  import '@brightspace-ui/core/components/inputs/input-group.js';
   import '@brightspace-ui/core/components/inputs/input-text.js';
   import '@brightspace-ui/core/components/inputs/input-textarea.js';
 </script>
-<style>
-  div {
-    width: 100%;
-  }
-  d2l-input-text {
-    padding-bottom: 1rem;
-  }
-</style>
-<div>
+<d2l-input-group>
   <d2l-input-text label="Name"></d2l-input-text>
   <d2l-input-textarea label="Description" max-rows="4" rows="4"></d2l-input-textarea>
-</div>
+</d2l-input-group>
 ```
 
 ## Best Practices
