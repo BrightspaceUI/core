@@ -15,6 +15,7 @@ class ListDemoNav extends LitElement {
 		return {
 			addButton: { type: Boolean, attribute: 'add-button' },
 			indentation: { type: Boolean },
+			noHref: { type: Boolean, attribute: 'no-href' },
 			_currentItem: { state: true }
 		};
 	}
@@ -138,7 +139,7 @@ class ListDemoNav extends LitElement {
 		return html`
 			<d2l-list-item-nav
 				key="${ifDefined(item.key)}"
-				action-href="https://d2l.com"
+				action-href="${ifDefined(this.noHref ? undefined : 'https://d2l.com')}"
 				draggable
 				drag-handle-text="${item.primaryText}"
 				color="${ifDefined(item.color)}"
