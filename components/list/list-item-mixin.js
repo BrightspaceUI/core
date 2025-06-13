@@ -109,6 +109,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
 			_hasNestedList: { type: Boolean, reflect: true, attribute: '_has-nested-list' },
 			_hasNestedListAddButton: { type: Boolean, reflect: true, attribute: '_has-nested-list-add-button' },
+			_hiddenContentWidth: { state: true },
 			_hovering: { type: Boolean, reflect: true },
 			_hoveringControl: { type: Boolean, attribute: '_hovering-control', reflect: true },
 			_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
@@ -246,11 +247,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			[slot="content"] {
 				display: flex;
 				justify-content: start;
-				padding: 0.55rem 0.55rem 0.55rem 0;
-			}
-			:host([dir="rtl"]) [slot="content"] {
-				padding-left: 0.55rem;
-				padding-right: 0;
+				padding-block: 0.55rem;
+				padding-inline: 0 0.55rem;
 			}
 			:host([padding-type="none"]) [slot="content"] {
 				padding-bottom: 0;
@@ -477,6 +475,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([dir="rtl"]) .d2l-list-item-color-outer + .d2l-list-expand-collapse {
 				margin-left: 0;
 				margin-right: -6px;
+			}
+			[slot="content"].d2l-draggable-content-hidden {
+				z-index: -1;
 			}
 
 			[slot="add"],
@@ -765,6 +766,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const primaryAction = ((!this.noPrimaryAction && this._renderPrimaryAction) ? this._renderPrimaryAction(this._contentId, this._listItemInteractiveEnabled ? contentAreaContent : nothing) : null);
 		const renderExpandableActionContent = this._listItemInteractiveEnabled && !primaryAction && !this.selectable && this.expandable && !this.noPrimaryAction;
 		const renderCheckboxActionContent = this._listItemInteractiveEnabled && !primaryAction && this.selectable && !this.noPrimaryAction;
+		const renderDraggable = this._listItemInteractiveEnabled && !primaryAction && this.draggable && !this._keyboardActive && !renderExpandableActionContent && !renderCheckboxActionContent && !this.dragTargetHandleOnly;
+		const renderContentSeparately = !this._listItemInteractiveEnabled || (!primaryAction && !renderExpandableActionContent && !renderCheckboxActionContent && !renderDraggable);
 
 		let tooltipForId = null;
 		if (this._showAddButton) {
@@ -800,7 +803,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				<div slot="before-content"></div>
 				${this._renderDropTarget()}
 				${this._renderDragHandle(this._renderOutsideControl)}
-				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction)}
+				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction, renderDraggable ? contentAreaContent : null)}
 				<div slot="control-container" class="${classMap(bottomBorderClasses)}"></div>
 				${this._hasColorSlot ? html`
 				<div slot="color-indicator" class="d2l-list-item-color-outer">
@@ -829,7 +832,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					@mouseleave="${this._onMouseLeavePrimaryAction}">
 						${primaryAction}
 				</div>` : nothing}
-				${!this._listItemInteractiveEnabled || (!primaryAction && !renderExpandableActionContent && !renderCheckboxActionContent) ? contentAreaContent : nothing}
+				${renderDraggable ? html`<div slot="content" class="d2l-draggable-content-hidden" style="${styleMap({ width: this._hiddenContentWidth })}"></div>` : nothing}
+				${renderContentSeparately ? contentAreaContent : nothing}
 				<div slot="actions"
 					@mouseenter="${this._onMouseEnter}"
 					@mouseleave="${this._onMouseLeave}"

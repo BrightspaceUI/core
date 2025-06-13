@@ -3,7 +3,7 @@ import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
-import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, nextFrame, oneEvent, runConstructor, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { listSelectionStates } from '../list.js';
 
 const clickItemInput = async item => {
@@ -544,26 +544,95 @@ describe('d2l-list-item', () => {
 
 	});
 
-	it('has clickable drag arrows', async() => {
-		const list = await fixture(html`
-		<d2l-list>
-			<d2l-list-item draggable key="1">Item 1</d2l-list-item>
-			<d2l-list-item draggable key="2">Item 2</d2l-list-item>
-		</d2l-list>`);
+	describe('draggable', () => {
 
-		const item = list.children[0];
-		expect(item.innerText).to.equal('Item 1');
-		const handle = item.shadowRoot.querySelector('d2l-list-item-drag-handle');
-		let handleRealClicks = 0;
-		handle.addEventListener('click', () => ++handleRealClicks);
-		await clickElem(handle.shadowRoot.querySelector('button')); // focus drag handle
-		expect(handleRealClicks).to.equal(0);
-		await clickElem(handle.shadowRoot.querySelector('button')); // enable keyboard mode
-		const downArrow = handle.shadowRoot.querySelector('d2l-button-move').shadowRoot.querySelector('.down-layer');
-		expect(downArrow).to.exist;
-		clickElem(downArrow);
-		await oneEvent(item, 'd2l-list-item-position-change');
-		expect(handleRealClicks).to.equal(0);
+		it('has clickable drag arrows', async() => {
+			const list = await fixture(html`
+			<d2l-list>
+				<d2l-list-item draggable key="1">Item 1</d2l-list-item>
+				<d2l-list-item draggable key="2">Item 2</d2l-list-item>
+			</d2l-list>`);
+
+			const item = list.children[0];
+			expect(item.innerText).to.equal('Item 1');
+			const handle = item.shadowRoot.querySelector('d2l-list-item-drag-handle');
+			let handleRealClicks = 0;
+			handle.addEventListener('click', () => ++handleRealClicks);
+			await clickElem(handle.shadowRoot.querySelector('button')); // focus drag handle
+			expect(handleRealClicks).to.equal(0);
+			await clickElem(handle.shadowRoot.querySelector('button')); // enable keyboard mode
+			const downArrow = handle.shadowRoot.querySelector('d2l-button-move').shadowRoot.querySelector('.down-layer');
+			expect(downArrow).to.exist;
+			clickElem(downArrow);
+			await oneEvent(item, 'd2l-list-item-position-change');
+			expect(handleRealClicks).to.equal(0);
+		});
+
+		describe('events', () => {
+			it('focuses on drag handle when clicked', async() => {
+				const el = await fixture(html`<d2l-list><d2l-list-item draggable key="1" label="L1-1"></d2l-list-item><d2l-list>`);
+				const listElem = el.querySelector('d2l-list-item');
+				clickElem(listElem.shadowRoot.querySelector('.d2l-list-item-drag-area'));
+				await waitUntil(() => listElem._focusingDragHandle, 'drag handle never received focus');
+			});
+
+			it('focuses on drag handle item when clicked with interactive content', async() => {
+				const el = await fixture(html`
+					<d2l-list>
+						<d2l-list-item draggable key="1" label="L1-1">
+							<div>Item 1</div>
+							<div><d2l-button>Button</d2l-button></div>
+						</d2l-list-item>
+					</d2l-list>`);
+				const listElem = el.querySelector('d2l-list-item');
+				clickElem(listElem.shadowRoot.querySelector('.d2l-list-item-drag-area'));
+				await waitUntil(() => listElem._focusingDragHandle, 'drag handle never received focus');
+			});
+
+			it('focuses on drag handle when non-interactive content clicked', async() => {
+				const el = await fixture(html`
+					<d2l-list>
+						<d2l-list-item draggable key="1" label="item">
+							<div>Item 1</div>
+							<div><d2l-button>Button</d2l-button></div>
+						</d2l-list-item>
+					</d2l-list>`);
+				clickElem(el.querySelector('div'));
+				const listElem = el.querySelector('d2l-list-item');
+				await waitUntil(() => listElem._focusingDragHandle, 'drag handle never received focus');
+			});
+
+			it('does not focus on drag handle when interactive content clicked', async() => {
+				const el = await fixture(html`
+					<d2l-list>
+						<d2l-list-item draggable key="1" label="L1-1">
+							<div>Content</div>
+							<div><d2l-button>Button</d2l-button></div>
+						</d2l-list-item>
+					</d2l-list>
+				`);
+
+				const button = el.querySelector('d2l-button');
+				clickElem(button);
+				await oneEvent(button, 'click');
+				await nextFrame();
+				const listElem = el.querySelector('d2l-list-item');
+				expect(listElem._focusingDragHandle).to.equal(undefined);
+			});
+
+			it('dispatches element\'s click event when interactive content clicked', async() => {
+				const el = await fixture(html`
+					<d2l-list>
+						<d2l-list-item draggable key="1" label="item">
+							<div>Item 1</div>
+							<div><d2l-button>Button</d2l-button></div>
+						</d2l-list-item>
+					</d2l-list>`);
+				const button = el.querySelector('d2l-button');
+				clickElem(button);
+				await oneEvent(button, 'click');
+			});
+		});
 	});
 
 	describe('events', () => {

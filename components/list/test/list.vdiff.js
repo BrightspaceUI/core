@@ -572,6 +572,34 @@ describe('list', () => {
 				`);
 				await expect(elem).to.be.golden();
 			});
+
+			it('nested-indentation-no-action', async() => {
+				const elem = await fixture(html`
+					<d2l-list grid style="width: 334px;">
+						<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" draggable indentation="10">
+							<d2l-list-item-content>
+								<div>Welcome!</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid>
+								<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" draggable color="#29a6ff" indentation="10">
+									<d2l-list-item-content>
+										<div>Syallabus Confirmation</div>
+										<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
+									</d2l-list-item-content>
+									<d2l-list slot="nested" grid>
+										<d2l-list-item-nav key="L2-1-1" label="Welcome topic" draggable>
+											<d2l-list-item-content>
+												<div>Welcome topic</div>
+											</d2l-list-item-content>
+										</d2l-list-item-nav>
+									</d2l-list>
+								</d2l-list-item-nav>
+							</d2l-list>
+						</d2l-list-item-nav>
+					</d2l-list>
+				`);
+				await expect(elem).to.be.golden();
+			});
 		});
 	});
 

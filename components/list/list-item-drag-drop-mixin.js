@@ -7,6 +7,8 @@ import { dragActions } from './list-item-drag-handle.js';
 import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { isInteractiveInListItemComposedPath } from './list-item-mixin.js';
+import ResizeObserver from 'resize-observer-polyfill';
 import { SelectionInfo } from '../selection/selection-mixin.js';
 
 export const moveLocations = Object.freeze({
@@ -337,6 +339,19 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				pointer-events: none;
 			}
 
+			[slot="outside-control-action"] [slot="content"] {
+				padding-inline-start: 1.5rem;  /* left and right margins of 0.3rem + drag handle width of 0.9rem */
+			}
+			:host([_render-expand-collapse-slot]) [slot="outside-control-action"] [slot="content"] {
+				padding-inline-start: 3rem; /* draggable padding + 1.2rem wide + 0.3rem padding */
+			}
+			:host([_has-color-slot]) [slot="outside-control-action"] [slot="content"] {
+				padding-inline-start: calc(1.5rem + 12px + var(--d2l-list-item-color-width, 6px));  /* draggable padding + 12px color padding + color width  */
+			}
+			:host([_render-expand-collapse-slot][_has-color-slot]) [slot="outside-control-action"] [slot="content"] {
+				padding-inline-start: calc(3rem + 12px + var(--d2l-list-item-color-width, 6px) - 6px); /* all of the above - 6px when color + expand */
+			}
+
 			@media only screen and (hover: hover), only screen and (pointer: fine) {
 				d2l-list-item-drag-handle {
 					opacity: 0;
@@ -364,6 +379,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		/** @ignore */
 		this.dragging = false;
 		this.dropNested = false;
+
+		this._contentResizeObserver = null;
+		this._hiddenContentWidth = null;
+		this._contentPaddingInlineStart = null;
 	}
 
 	connectedCallback() {
@@ -376,9 +395,28 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		this._dragMultiple = this.getRootList()?.hasAttribute('drag-multiple');
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.#removeDraggableResizeObserver();
+	}
+
 	firstUpdated(changedProperties) {
 		this.addEventListener('dragenter', this._onHostDragEnter.bind(this));
 		super.firstUpdated(changedProperties);
+	}
+
+	updated(changedProperties) {
+		super.updated(changedProperties);
+
+		if (changedProperties.has('draggable')) {
+			if (this.draggable) {
+				this.#addDraggableResizeObserver();
+			} else {
+				this.#removeDraggableResizeObserver();
+				this._hiddenContentWidth = null;
+				this._contentPaddingInlineStart = null;
+			}
+		}
 	}
 
 	activateDragHandle() {
@@ -680,6 +718,13 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_onDragTargetClick(e) {
 		if (!this.shadowRoot) return;
+
+		const isPrimaryAction = (elem) => elem === this.shadowRoot.querySelector('div.d2l-list-item-drag-area');
+		if (isInteractiveInListItemComposedPath(e, isPrimaryAction)) {
+			e.preventDefault();
+			return;
+		}
+
 		if (this._keyboardActiveOnNextClick) {
 			this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
 		} else {
@@ -883,7 +928,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		return this._dragMultiple && this.draggable && (this.selectable || this.expandable) ? html`<d2l-list-item-drag-image></d2l-list-item-drag-image>` : nothing;
 	}
 
-	_renderDragTarget(templateMethod) {
+	_renderDragTarget(templateMethod, content) {
 		templateMethod = templateMethod || (dragTarget => dragTarget);
 		return this.draggable && !this._keyboardActive ? templateMethod.call(this, html`
 			<div
@@ -899,6 +944,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				@touchcancel="${this._onTouchCancel}"
 				@mousedown="${this._onDragTargetMouseDown}"
 				>
+				${content || nothing}
 			</div>
 		`) : nothing;
 	}
@@ -917,5 +963,25 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_renderTopPlacementMarker(renderTemplate) {
 		return this._dropLocation === dropLocation.above ? html`<div class="d2l-list-item-drag-top-marker">${renderTemplate}</div>` : null;
+	}
+
+	async #addDraggableResizeObserver() {
+		const content = this.shadowRoot.querySelector('[slot="content"].d2l-list-item-content');
+		if (!content) return;
+
+		this._contentResizeObserver = this._contentResizeObserver || new ResizeObserver(() => {
+			const width = Math.ceil(parseFloat(getComputedStyle(content).getPropertyValue('width')));
+			if (isNaN(width)) return; // for case where drag & drop goes to keyboard control and back
+			this._hiddenContentWidth = `${width}px`;
+		});
+
+		this._contentResizeObserver.observe(content);
+	}
+
+	#removeDraggableResizeObserver() {
+		if (this._contentResizeObserver) {
+			this._contentResizeObserver.disconnect();
+			this._contentResizeObserver = null;
+		}
 	}
 };
