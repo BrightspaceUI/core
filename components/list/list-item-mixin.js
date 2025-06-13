@@ -105,7 +105,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
 			_addButtonText: { state: true },
-			_contentPaddingInlineStart: { state: true },
 			_displayKeyboardTooltip: { type: Boolean },
 			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
 			_hasNestedList: { type: Boolean, reflect: true, attribute: '_has-nested-list' },
@@ -248,11 +247,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			[slot="content"] {
 				display: flex;
 				justify-content: start;
-				padding: 0.55rem 0.55rem 0.55rem 0;
-			}
-			:host([dir="rtl"]) [slot="content"] {
-				padding-left: 0.55rem;
-				padding-right: 0;
+				padding-block: 0.55rem;
+				padding-inline: 0 0.55rem;
 			}
 			:host([padding-type="none"]) [slot="content"] {
 				padding-bottom: 0;
@@ -773,17 +769,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const renderDraggable = this._listItemInteractiveEnabled && !primaryAction && this.draggable && !this._keyboardActive && !renderExpandableActionContent && !renderCheckboxActionContent && !this.dragTargetHandleOnly;
 		const renderContentSeparately = !this._listItemInteractiveEnabled || (!primaryAction && !renderExpandableActionContent && !renderCheckboxActionContent && !renderDraggable);
 
-		const draggableContentAreaContet = renderDraggable ? html`
-			<div slot="content"
-				class="d2l-list-item-content"
-				id="${this._contentId}"
-				@mouseenter="${this._onMouseEnter}"
-				@mouseleave="${this._onMouseLeave}"
-				style="${styleMap({ paddingInlineStart: this._contentPaddingInlineStart })}">
-				<slot name="illustration" class="d2l-list-item-illustration">${illustration}</slot>
-				<slot>${content}</slot>
-			</div>
-		` : nothing;
 		let tooltipForId = null;
 		if (this._showAddButton) {
 			tooltipForId = this._addButtonTopId;
@@ -818,7 +803,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				<div slot="before-content"></div>
 				${this._renderDropTarget()}
 				${this._renderDragHandle(this._renderOutsideControl)}
-				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction, renderDraggable ? draggableContentAreaContet : null)}
+				${this._renderDragTarget(this.dragTargetHandleOnly ? this._renderOutsideControlHandleOnly : this._renderOutsideControlAction, renderDraggable ? contentAreaContent : null)}
 				<div slot="control-container" class="${classMap(bottomBorderClasses)}"></div>
 				${this._hasColorSlot ? html`
 				<div slot="color-indicator" class="d2l-list-item-color-outer">

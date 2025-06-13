@@ -339,6 +339,19 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				pointer-events: none;
 			}
 
+			[slot="outside-control-action"] [slot="content"] {
+				padding-inline-start: 1.5rem;  /* left and right margins of 0.3rem + drag handle width of 0.9rem */
+			}	
+			:host([_render-expand-collapse-slot]) [slot="outside-control-action"] [slot="content"] {
+				padding-inline-start: 3rem; /* draggable padding + 1.2rem wide + 0.3rem padding */
+			}
+			:host([_has-color-slot]) [slot="outside-control-action"] [slot="content"] {
+				padding-inline-start: calc(1.5rem + 12px + var(--d2l-list-item-color-width, 6px));  /* draggable padding + 12px color padding + color width  */
+			}
+			:host([_render-expand-collapse-slot][_has-color-slot]) [slot="outside-control-action"] [slot="content"] {
+				padding-inline-start: calc(3rem + 12px + var(--d2l-list-item-color-width, 6px) - 6px); /* all of the above - 6px when color + expand */
+			}
+
 			@media only screen and (hover: hover), only screen and (pointer: fine) {
 				d2l-list-item-drag-handle {
 					opacity: 0;
@@ -403,9 +416,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				this._hiddenContentWidth = null;
 				this._contentPaddingInlineStart = null;
 			}
-		}
-		if (changedProperties.has('_hiddenContentWidth') && this.draggable) {
-			this.#updateContentPadding();
 		}
 	}
 
@@ -968,24 +978,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		this._contentResizeObserver.observe(content);
 	}
 
-	#isRTL() {
-		return document.documentElement.getAttribute('dir') === 'rtl';
-	}
-
 	#removeDraggableResizeObserver() {
 		if (this._contentResizeObserver) {
 			this._contentResizeObserver.disconnect();
 			this._contentResizeObserver = null;
 		}
-	}
-
-	#updateContentPadding() {
-		setTimeout(() => {
-			const hiddenItem = this.shadowRoot.querySelector('.d2l-draggable-content-hidden');
-			if (!hiddenItem) return;
-
-			const offsetLeft = hiddenItem.offsetLeft;
-			this._contentPaddingInlineStart = this.#isRTL() ? `${-1 * offsetLeft}px` : `${offsetLeft}px`;
-		});
 	}
 };
