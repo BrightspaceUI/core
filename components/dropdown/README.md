@@ -214,7 +214,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 
 | Property | Type | Description |
 |---|---|---|
-| `align` | String | Optionally align dropdown to either `start` or `end`. If not set, the dropdown will attempt be centred |
+| `align` | String | Optionally align dropdown to either `start` or `end`. If not set, the dropdown will attempt to be centred. |
 | `boundary` | Object | Optionally provide boundaries to where the dropdown will appear. Valid properties are `"above"`, `"below"`, `"left"` and `"right"`. |
 | `max-height` | Number | Override default `max-height`. _Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed_ |
 | `min-height` | Number | Override default height used for required space when `no-auto-fit` is true. Specify a number that would be the px value. _Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed._ |
