@@ -62,7 +62,6 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Use subtle buttons for secondary, advanced, or de-emphasized actions that should not compete with primary tasks
 * Include an icon if you want to draw attention to the action or improve recognition
 * Keep subtle button `text` short - see [Writing guidelines]({{ project.assetPath }}/style-elements/writing/)
 <!-- docs: end dos -->
