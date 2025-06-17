@@ -116,13 +116,12 @@ The `d2l-button-subtle` element can be used just like the native `button`, but f
 
 ## Icon Button [d2l-button-icon]
 
-The `d2l-button-icon` element can be used just like the native `button`, for instances where only an icon is displayed.
+Use icon buttons for compact, supplementary actions where space is limited and the action is visually represented by a familiar icon.
 
 ### Best Practices
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Use icon buttons for compact, supplementary actions where space is limited and the action is visually represented by a familiar icon
 * Ensure the icon is clear, simple, and universally recognized for its intended action — avoid complex or ambiguous icons
 <!-- docs: end dos -->
 
@@ -177,13 +176,15 @@ The `d2l-button-icon` element can be used just like the native `button`, for ins
 
 ## Toggle Button [d2l-button-toggle]
 
+Use toggle buttons when users need to easily flip between two opposing states, such as when subscribing or unsubscribing.
+
 The `d2l-button-toggle` element is a container for buttons that toggle a `pressed` state. The component will automatically show or hide the buttons and manage focus based on the `pressed` state. Simply place a `d2l-button-icon` or `d2l-button-subtle` element in each of the `not-pressed` and `pressed` slots. Each button should describe the state and action the user can take.
 
 ### Best Practices
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Use toggle buttons for binary or mutually exclusive options where users need to switch between states or views
+* Use when flipping a setting on or off needs to be quick and easy, such as when users are expected to change the setting frequently
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
@@ -218,16 +219,17 @@ The `d2l-button-toggle` element is a container for buttons that toggle a `presse
 
 ## Split Button [d2l-button-split]
 
-The `d2l-button-split` element is a button component that provides a main button and a slot for `d2l-button-split-item` elements. Simply provide a `key` and `text` for the main button and each item. The `d2l-button-split`'s `click` event provides the `key` of the selected action.
+Use a split button when you need to group a main action with a set of closely related alternative actions, especially when space is limited.
+
+The `d2l-button-split` element provides a main button and a slot for `d2l-button-split-item` elements. Simply provide a `key` and `text` for the main button and each item. The `d2l-button-split`'s `click` event provides the `key` of the selected action.
 
 ### Best Practices
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Use a split button when you need to group a main action with a set of closely related alternative actions, especially when space is limited
 * Make the main action the most common action the user takes, while the related actions are similar but less popular or prominent actions
   * For example, a "Save" button with additional options like "Save As" or "Save and Close"
-* Keep split button `text` short - see "Writing" guidelines
+* Keep split button `text` short - see [Writing guidelines]({{ project.assetPath }}/style-elements/writing/)
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
@@ -279,13 +281,12 @@ The `d2l-button-split` element is a button component that provides a main button
 
 ## Add Button [d2l-button-add]
 
-The `d2l-button-add` is for quickly adding new items at a specific location, such as when adding items to a curated list. Since the Add button is meant to be subtle, it should always be used in combination with more obvious methods to add items (like a menu or primary button).
+Use the Add button when users need to quickly insert new items at specific locations within a curated list or collection.
 
 ### Best Practices
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Use the add button for quickly inserting new items at specific locations within a curated list or collection
 * Place the button where users expect to add items, such as between list elements or at logical insertion points between page sections
 <!-- docs: end dos -->
 
