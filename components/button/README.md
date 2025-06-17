@@ -56,7 +56,7 @@ Use a Button for most actions, especially if they need to be obvious to the user
 
 ## Subtle Button [d2l-button-subtle]
 
-The `d2l-button-subtle` element can be used just like the native `button`, but for advanced or de-emphasized actions.
+Use subtle buttons for secondary, advanced, or de-emphasized actions that should not compete with primary tasks.
 
 ### Best Practices
 
