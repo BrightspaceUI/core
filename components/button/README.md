@@ -17,7 +17,7 @@ A Button is used to communicate and perform an action.
 
 ## Button [d2l-button]
 
-The `d2l-button` element can be used just like the native button element, but also supports the `primary` attribute for denoting the primary button.
+Use a Button for most actions, especially if they need to be obvious to the user. For the main action on the page, use the `primary` attribute to draw the user's attention.
 
 ### Best Practices
 
