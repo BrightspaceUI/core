@@ -7,7 +7,6 @@ import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { isVisible } from '../../helpers/dom.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { SlottedIconMixin } from '../icons/slotted-icon-mixin.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
@@ -36,7 +35,7 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 			 * ACCESSIBILITY: REQUIRED: Accessible text for the button
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true, required: { validator: (value, elem) => !!value || !isVisible(elem) } },
+			text: { type: String, reflect: true, required: { validator: (value, elem) => !!value || elem.offsetHeight === 0 } },
 
 			/**
 			 * Indicates to display translucent (e.g., on rich backgrounds)
