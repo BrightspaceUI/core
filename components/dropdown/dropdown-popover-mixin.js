@@ -13,7 +13,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 	static get properties() {
 		return {
 			/**
-			 * Optionally align dropdown to either start or end. If not set, the dropdown will attempt be centred.
+			 * Optionally align dropdown to either start or end. If not set, the dropdown will attempt to be centred.
 			 * @type {'start'|'end'}
 			 */
 			align: { type: String },
