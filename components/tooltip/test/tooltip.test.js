@@ -88,11 +88,25 @@ describe('d2l-tooltip', () => {
 		});
 	});
 
-	describe('explict target', () => {
+	describe('explicit target', () => {
 
-		it('should find target using for attribute', async() => {
+		it('should find target using for attribute', () => {
 			const expectedTarget = tooltipFixture.querySelector('#explicit-target');
 			expect(tooltip._target).to.equal(expectedTarget);
+		});
+
+		it('should update target if current target is removed', async() => {
+			const expectedTarget = tooltipFixture.querySelector('#explicit-target');
+			expectedTarget.remove();
+			await aTimeout(1);
+			expect(tooltip._target).to.be.null;
+		});
+
+		it('should update target if current target id changes', async() => {
+			const expectedTarget = tooltipFixture.querySelector('#explicit-target');
+			expectedTarget.id = '';
+			await aTimeout(1);
+			expect(tooltip._target).to.be.null;
 		});
 	});
 

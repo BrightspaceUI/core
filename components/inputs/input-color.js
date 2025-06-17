@@ -296,10 +296,6 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 			this.setFormValue(this.value);
 		}
 
-		if (changedProperties.has('readonly')) {
-			this.shadowRoot.querySelector('d2l-tooltip[for="opener"]')?.requestUpdate('for', '');
-		}
-
 	}
 
 	_getLabel() {

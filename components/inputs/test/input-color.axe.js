@@ -19,9 +19,7 @@ describe('d2l-input-color', () => {
 	});
 
 	it('readonly', async() => {
-		const elem = await fixture(html`<d2l-input-color type="background"></d2l-input-color>`);
-		elem.readonly = true;
-		await elem.updateComplete;
+		const elem = await fixture(html`<d2l-input-color type="background" readonly></d2l-input-color>`);
 		await expect(elem).to.be.accessible();
 	});
 

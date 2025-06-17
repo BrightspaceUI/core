@@ -192,6 +192,7 @@ if (usePopoverMixin) {
 			this.#handleTargetFocusBound = this.#handleTargetFocus.bind(this);
 			this.#handleTargetMouseEnterBound = this.#handleTargetMouseEnter.bind(this);
 			this.#handleTargetMouseLeaveBound = this.#handleTargetMouseLeave.bind(this);
+			this.#handleTargetMutationBound = this.#handleTargetMutation.bind(this);
 			this.#handleTargetResizeBound = this.#handleTargetResize.bind(this);
 			this.#handleTargetTouchEndBound = this.#handleTargetTouchEnd.bind(this);
 			this.#handleTargetTouchStartBound = this.#handleTargetTouchStart.bind(this);
@@ -284,6 +285,7 @@ if (usePopoverMixin) {
 		#handleTargetFocusBound;
 		#handleTargetMouseEnterBound;
 		#handleTargetMouseLeaveBound;
+		#handleTargetMutationBound;
 		#handleTargetResizeBound;
 		#handleTargetTouchEndBound;
 		#handleTargetTouchStartBound;
@@ -299,6 +301,7 @@ if (usePopoverMixin) {
 		#showing;
 		#target;
 		#targetSizeObserver;
+		#targetMutationObserver;
 
 		#adaptPositionLocation(val) {
 			switch (val) {
@@ -332,6 +335,10 @@ if (usePopoverMixin) {
 
 			this.#targetSizeObserver = new ResizeObserver(this.#handleTargetResizeBound);
 			this.#targetSizeObserver.observe(this.#target);
+
+			this.#targetMutationObserver = new MutationObserver(this.#handleTargetMutationBound);
+			this.#targetMutationObserver.observe(this.#target, { attributes: true, attributeFilter: ['id'] });
+			this.#targetMutationObserver.observe(this.#target.parentNode, { childList: true });
 		}
 
 		#findTarget() {
@@ -341,7 +348,7 @@ if (usePopoverMixin) {
 			if (this.for) {
 				const targetSelector = `#${cssEscape(this.for)}`;
 				target = ownerRoot.querySelector(targetSelector);
-				target = target || ownerRoot?.host?.querySelector(targetSelector);
+				target = (target || ownerRoot?.host?.querySelector(targetSelector)) ?? null;
 			} else {
 				const parentNode = this.parentNode;
 				target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
@@ -402,6 +409,13 @@ if (usePopoverMixin) {
 			setTimeout(() => this.#updateShowing(), 100); // delay to allow for mouseenter to fire if hovering on tooltip
 		}
 
+		#handleTargetMutation([m]) {
+			if (!this.#target.isConnected || (m.target === this.#target && m.attributeName === 'id')) {
+				this.#targetMutationObserver.disconnect();
+				this._updateTarget();
+			}
+		}
+
 		#handleTargetResize() {
 			this.#resizeRunSinceTruncationCheck = true;
 			if (!this.showing) return;
@@ -452,6 +466,11 @@ if (usePopoverMixin) {
 			if (this.#targetSizeObserver) {
 				this.#targetSizeObserver.disconnect();
 				this.#targetSizeObserver = null;
+			}
+
+			if (this.#targetMutationObserver) {
+				this.#targetMutationObserver.disconnect();
+				this.#targetMutationObserver = null;
 			}
 		}
 
@@ -954,6 +973,7 @@ if (usePopoverMixin) {
 			this._onTargetMouseEnter = this._onTargetMouseEnter.bind(this);
 			this._onTargetMouseLeave = this._onTargetMouseLeave.bind(this);
 			this._onTargetResize = this._onTargetResize.bind(this);
+			this._onTargetMutation = this._onTargetMutation.bind(this);
 			this._onTargetClick = this._onTargetClick.bind(this);
 			this._onTargetTouchStart = this._onTargetTouchStart.bind(this);
 			this._onTargetTouchEnd = this._onTargetTouchEnd.bind(this);
@@ -1069,13 +1089,12 @@ if (usePopoverMixin) {
 		willUpdate(changedProperties) {
 			super.willUpdate(changedProperties);
 
-			changedProperties.forEach((_, prop) => {
-				if (prop === 'for') {
-					this._updateTarget();
-				} else if (prop === 'forceShow') {
-					this._updateShowing();
-				}
-			});
+			if (changedProperties.has('for')) {
+				this._updateTarget();
+			}
+			if (changedProperties.has('forceShow')) {
+				this._updateShowing();
+			}
 		}
 
 		hide() {
@@ -1192,6 +1211,10 @@ if (usePopoverMixin) {
 
 			this._targetSizeObserver = new ResizeObserver(this._onTargetResize);
 			this._targetSizeObserver.observe(this._target);
+
+			this._targetMutationObserver = new MutationObserver(this._onTargetMutation);
+			this._targetMutationObserver.observe(this._target, { attributes: true, attributeFilter: ['id'] });
+			this._targetMutationObserver.observe(this._target.parentNode, { childList: true });
 		}
 
 		_computeAvailableSpaces(targetRect, spaceAround) {
@@ -1260,7 +1283,7 @@ if (usePopoverMixin) {
 			if (this.for) {
 				const targetSelector = `#${cssEscape(this.for)}`;
 				target = ownerRoot.querySelector(targetSelector);
-				target = target || ownerRoot?.host?.querySelector(targetSelector);
+				target = (target || ownerRoot?.host?.querySelector(targetSelector)) ?? null;
 			} else {
 				const parentNode = this.parentNode;
 				target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
@@ -1391,6 +1414,13 @@ if (usePopoverMixin) {
 			setTimeout(() => this._updateShowing(), 100); // delay to allow for mouseenter to fire if hovering on tooltip
 		}
 
+		_onTargetMutation([m]) {
+			if (!this._target.isConnected || (m.target === this._target && m.attributeName === 'id')) {
+				this._targetMutationObserver.disconnect();
+				this._updateTarget();
+			}
+		}
+
 		_onTargetResize() {
 			this._resizeRunSinceTruncationCheck = true;
 			if (!this.showing) {
@@ -1425,6 +1455,11 @@ if (usePopoverMixin) {
 			if (this._targetSizeObserver) {
 				this._targetSizeObserver.disconnect();
 				this._targetSizeObserver = null;
+			}
+
+			if (this._targetMutationObserver) {
+				this._targetMutationObserver.disconnect();
+				this._targetMutationObserver = null;
 			}
 		}
 
