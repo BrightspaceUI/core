@@ -24,7 +24,7 @@ Breadcrumbs are a way-finding tool that helps users understand where they are w
 <!-- docs: start donts -->
 * Don't repeat the current page name in the breadcrumb
 * Avoid displaying more than one breadcrumb control on a page
-* Don't use breadcrumbs as a stepper, see [Wizards](https://github.com/BrightspaceUILabs/wizard) instead
+* Don't use breadcrumbs as a stepper, see [Wizards](https://github.com/BrightspaceUI/labs/tree/main/src/components/wizard) instead
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
