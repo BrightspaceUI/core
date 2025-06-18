@@ -448,7 +448,7 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
 
 #### Draggable lists with interactive content
 
-When a list item contains interactive content and the list item is not interactive in any way other than being `draggable` (i.e., not a link, button, `selectable`, or `expandable`) in order for the interactive content to have mouse events work as expected, one of the following should be done:
+When a list item contains interactive content and the list item is not interactive in any way other than being `draggable` (i.e., not a link, button, `selectable`, or `expandable`), in order for the interactive content to have mouse events work as expected, one of the following should be done:
 - use the `drag-target-handle-only` on the list item; this causes the drag target to be the handle only rather than the entire cell
 - put the interactive content in the `actions` slot
 
