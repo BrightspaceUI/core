@@ -446,6 +446,111 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
 <d2l-my-drag-drop-elem></d2l-my-drag-drop-elem>
 ```
 
+#### Draggable lists with interactive content
+
+When a list item contains interactive content and the list item is not interactive in any way other than being `draggable` (i.e., not a link, button, `selectable`, or `expandable`), in order for the interactive content to have mouse events work as expected, one of the following should be done:
+- use the `drag-target-handle-only` on the list item; this causes the drag target to be the handle only rather than the entire cell
+- put the interactive content in the `actions` slot
+
+These scenarios can be seen in the demo below.
+
+<!-- docs: demo code display:block sandboxTitle:'List - Drag & Drop with interactive content'-->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/list/list.js';
+  import '@brightspace-ui/core/components/list/list-item.js';
+  import '@brightspace-ui/core/components/list/list-item-content.js';
+  import '@brightspace-ui/core/components/switch/switch.js';
+  import '@brightspace-ui/core/components/tooltip/tooltip-help.js';
+  import { css, html, LitElement } from 'lit';
+  import { labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
+
+  class ListDemoDragAndDropInteractiveUsage extends LitElement {
+    static get properties() {
+      return {
+        list: { type: Array }
+      };
+    }
+
+    static get styles() {
+      return labelStyles;
+    }
+
+    constructor() {
+      super();
+      this.list = [
+        { key: '1', content: 'Initially first list item' },
+        { key: '2', content: 'Initially second list item' }
+      ];
+    }
+
+    render() {
+      return html`
+        <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+          <div style="flex-grow: 1; min-width: 100px;">
+            <div class="d2l-label-text" style="padding-bottom: 1rem;">Using "drag-target-handle-only":</div>
+            ${this._renderList1()}
+          </div>
+
+          <div style="flex-grow: 1; min-width: 100px;">
+            <div class="d2l-label-text"  style="padding-bottom: 1rem;">Using "actions" slot:</div>
+            ${this._renderList2()}
+          </div>
+        </div>
+      `;
+    }
+
+    _renderList1() {
+      const listItems = this.list.map((item) => {
+        return html`
+          <d2l-list-item draggable key="${item.key}" label="Draggable List Item" drag-target-handle-only>
+            <d2l-list-item-content>
+              ${item.content}
+              <div slot="secondary"><d2l-tooltip-help text="Hover for more info">Secondary information</d2l-tooltip-help></div>
+            </d2l-list-item-content>
+          </d2l-list-item>
+        `;
+      });
+
+      return html`
+        <d2l-list @d2l-list-item-position-change="${this._moveItems}">
+          ${listItems}
+        </d2l-list>
+      `;
+    }
+
+    _renderList2() {
+      const listItems = this.list.map((item) => {
+        return html`
+          <d2l-list-item draggable key="${item.key}" label="Draggable List Item">
+            <d2l-list-item-content>
+              ${item.content}
+              <div slot="secondary">Secondary information</div>
+            </d2l-list-item-content>
+            <div slot="actions">
+              <d2l-switch text="Action switch" text-position="hidden"></d2l-switch>
+            </div>
+          </d2l-list-item>
+        `;
+      });
+
+      return html`
+        <d2l-list @d2l-list-item-position-change="${this._moveItems}" >
+          ${listItems}
+        </d2l-list>
+      `;
+    }
+
+    _moveItems(e) {
+      e.detail.reorder(this.list, { keyFn: (item) => item.key });
+      this.requestUpdate('list', []);
+    }
+  }
+  customElements.define('d2l-my-drag-drop-elem-interactive', ListDemoDragAndDropInteractiveUsage);
+</script>
+<d2l-my-drag-drop-elem-interactive></d2l-my-drag-drop-elem-interactive>
+```
+
 ## List Controls [d2l-list-controls]
 
 The `d2l-list-controls` component can be placed in the `d2l-list`'s `controls` slot to provide a select-all checkbox, summary, a slot for `d2l-selection-action`s, and overflow-group behaviour.
