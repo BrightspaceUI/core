@@ -59,15 +59,14 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				padding: 0.1rem;
 				vertical-align: middle;
 			}
-			${getFocusRingStyles('.d2l-switch-container')}
+			${getFocusRingStyles('.d2l-switch-container', { extraStyles: css`position: relative;` })}
 			:host([disabled]) .d2l-switch-container {
 				cursor: default;
 				opacity: 0.5;
 			}
 			:host([disabled]) .d2l-switch-container:hover > .d2l-switch-inner,
 			:host([disabled]) .d2l-switch-inner:hover {
-				border-color: var(--d2l-color-ferrite);
-				box-shadow: none;
+				outline: none;
 			}
 			.d2l-switch-inner {
 				background-color: var(--d2l-color-regolith);
@@ -150,7 +149,6 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				display: none;
 			}
 			.d2l-switch-inner:hover, .switch-hover {
-				border-color: transparent;
 				outline: 2px solid var(--d2l-color-celestine);
 				outline-offset: -2px;
 			}
