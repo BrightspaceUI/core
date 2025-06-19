@@ -16,6 +16,8 @@ describe('d2l-switch', () => {
 			{ name: 'on-focus', template: onFixture, action: async(elem) => await focusElem(elem) },
 			{ name: 'on-hover', template: onFixture, action: async(elem) => await hoverElem(elem.shadowRoot.querySelector('.d2l-switch-inner')) },
 			{ name: 'on-disabled', template: html`<d2l-switch text="Test Text" on disabled></d2l-switch>` },
+			{ name: 'disabled-hover', template: html`<d2l-switch disabled></d2l-switch>`, action: async(elem) => await hoverElem(elem.shadowRoot.querySelector('.d2l-switch-inner')) },
+			{ name: 'focus-sibling', template: html`<span><d2l-switch on></d2l-switch><br><d2l-switch></d2l-switch></span>`, action: async(elem) => await focusElem(elem.children[0].shadowRoot.querySelector('.d2l-switch-container')) },
 			{ name: 'text-hidden', template: html`<d2l-switch text="Test Text" text-position="hidden"></d2l-switch>` },
 			{ name: 'text-start', template: html`<d2l-switch text="Test Text" text-position="start"></d2l-switch>` },
 			{ name: 'text-end', template: html`<d2l-switch text="Test Text" text-position="end"></d2l-switch>` },
