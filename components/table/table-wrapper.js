@@ -249,7 +249,13 @@ export const tableStyles = css`
 
 	/* sticky + scroll-wrapper */
 	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table {
-		display: block;
+		display: flex;
+		flex-direction: column;
+	}
+
+	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > thead,
+	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > tbody {
+		display: table;
 	}
 
 	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table > thead {
@@ -318,7 +324,12 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				reflect: true,
 				type: String
 			},
-			_controlsScrolled: { state: true }
+			_controlsScrolled: { state: true },
+			_noScrollWidth: {
+				attribute: '_no-scroll-width',
+				reflect: true,
+				type: Boolean,
+			}
 		};
 	}
 
@@ -723,6 +734,8 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				headCell.style.minWidth = `${bodyOverallWidth - parseFloat(headStyle.paddingLeft) - parseFloat(headStyle.paddingRight)}px`;
 			}
 		}
+
+		this._noScrollWidth = Boolean(this.shadowRoot.querySelector('d2l-scroll-wrapper[scrollbar-left][scrollbar-right]'));
 	}
 
 	_updateStickyAncestor(node, popoverOpened) {
