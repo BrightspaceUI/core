@@ -41,6 +41,12 @@ describe('d2l-button-icon', () => {
 				.to.not.throw();
 		});
 
+		it('does not throw error when no text but not visible', async() => {
+			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" style="display:none"></d2l-button-icon>`);
+			expect(() => el.flushRequiredPropertyErrors())
+				.to.not.throw();
+		});
+
 	});
 
 	describe('events', () => {

@@ -35,7 +35,7 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 			 * ACCESSIBILITY: REQUIRED: Accessible text for the button
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true, required: true },
+			text: { type: String, reflect: true, required: { validator: (value, elem) => !!value || elem.offsetHeight === 0 } },
 
 			/**
 			 * Indicates to display translucent (e.g., on rich backgrounds)
