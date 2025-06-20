@@ -394,6 +394,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		this._controlsMutationObserver = null;
 		this._controlsScrolled = false;
 		this._controlsScrolledMutationObserver = null;
+		this._noScrollWidth = true;
 		this._table = null;
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
