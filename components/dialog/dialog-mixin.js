@@ -227,16 +227,10 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 
 	_focusFirst() {
 		if (!this.shadowRoot) return;
-		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
-		if (content) {
-			const elementToFocus = this._findAutofocusElement(content) ?? getNextFocusable(content);
-			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-content'), elementToFocus)) {
-				this.focusableContentElemPresent = true;
-			}
-			if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), elementToFocus)) {
-				this._focusElemOrDescendant(elementToFocus);
-				return;
-			}
+		const elementToFocus = this._updateFocusableContentElemPresent();
+		if (elementToFocus && isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-inner'), elementToFocus)) {
+			this._focusElemOrDescendant(elementToFocus);
+			return;
 		}
 		const focusTrap = this.shadowRoot.querySelector('d2l-focus-trap');
 		if (focusTrap) {
@@ -454,6 +448,9 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			if (reduceMotion) await new Promise(resolve => requestAnimationFrame(resolve));
 			else await animPromise;
 
+			// check if focusable content is present in order to set focusableContentElemPresent to true
+			requestAnimationFrame(() => this._updateFocusableContentElemPresent());
+
 			await this.waitForUpdateComplete();
 			await this._updateSize();
 			/** Dispatched when the dialog is opened */
@@ -542,6 +539,18 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 			}
 		}
 		if (isFocusable(focusable)) focusable.focus();
+	}
+
+	_updateFocusableContentElemPresent() {
+		if (!this.shadowRoot) return;
+		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
+		if (!content) return null;
+
+		const elementToFocus = this._findAutofocusElement(content) ?? getNextFocusable(content);
+		if (isComposedAncestor(this.shadowRoot.querySelector('.d2l-dialog-content'), elementToFocus)) {
+			this.focusableContentElemPresent = true;
+		}
+		return elementToFocus;
 	}
 
 	_updateOverflow() {
