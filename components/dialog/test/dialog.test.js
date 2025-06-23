@@ -1,5 +1,5 @@
 import '../dialog.js';
-import { expect, fixture, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
 import { createMessage } from '../../../mixins/property-required/property-required-mixin.js';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { html } from 'lit';
@@ -76,6 +76,14 @@ describe('d2l-dialog', () => {
 			await oneEvent(el, 'd2l-dialog-open');
 			const paragraph = el.querySelector('p');
 			expect(getComposedActiveElement()).to.not.equal(paragraph);
+		});
+
+		it('should set focusableContentElemPresent to true when there is a focusable element in the dialog added late', async() => {
+			const el = await fixture(html`<d2l-dialog opened></d2l-dialog>`);
+			expect(el.focusableContentElemPresent).to.be.false;
+			await aTimeout(300);
+			el.appendChild(document.createElement('button'));
+			await waitUntil(() => el.focusableContentElemPresent, 'focusableContentElemPresent never became true');
 		});
 
 	});
