@@ -422,13 +422,15 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				do {
 					// this check needs to account for standard list-items as well as custom
 					nestedList = previousElement.querySelector('[slot="nested"]') || previousElement.shadowRoot.querySelector('d2l-list');
-					if (nestedList) {
+					if (nestedList && (!previousElement.expandable || (previousElement.expandable && previousElement.expanded))) {
 						const nestedListItems = [...nestedList.children].filter(node => node.role === 'row');
 						if (nestedListItems.length) {
 							previousElement = nestedListItems[nestedListItems.length - 1];
 						} else {
 							break;
 						}
+					} else {
+						break;
 					}
 				}	while (nestedList);
 				return previousElement;
