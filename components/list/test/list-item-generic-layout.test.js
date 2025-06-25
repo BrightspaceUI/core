@@ -103,26 +103,6 @@ const longFixture = html`
 	</d2l-list>
 `;
 
-const nestedFixture = html`
-	<d2l-list grid>
-		<d2l-list-item label="Test Label" href="http://d2l.com" key="item1">
-			<div class="d2l-list-item-text d2l-body-compact">Root item 1.</div>
-			<d2l-list grid slot="nested">
-				<d2l-list-item label="Test Label" href="http://d2l.com" key="item1a">
-					<div class="d2l-list-item-text d2l-body-compact">Nested item 1a.</div>
-				</d2l-list-item>
-			</d2l-list>
-		</d2l-list-item>
-		<d2l-list-item label="Test Label" href="http://d2l.com" key="item2">
-			<div class="d2l-list-item-text d2l-body-compact">Root item 2.</div>
-			<d2l-list grid slot="nested"></d2l-list>
-		</d2l-list-item>
-		<d2l-list-item label="Test Label" href="http://d2l.com" key="item3">
-			<div class="d2l-list-item-text d2l-body-compact">Root item 3.</div>
-		</d2l-list-item>
-	</d2l-list>
-`;
-
 describe('d2l-list-item-generic-layout', () => {
 	const keyCodes = {
 		DOWN: 40,
@@ -484,13 +464,44 @@ describe('d2l-list-item-generic-layout', () => {
 
 		describe('nested', () => {
 
+			const nestedFixture = html`
+				<d2l-list grid>
+					<d2l-list-item label="Test Label" href="http://d2l.com" key="item1">
+						<div class="d2l-list-item-text d2l-body-compact">Root item 1.</div>
+						<d2l-list grid slot="nested">
+							<d2l-list-item label="Test Label" href="http://d2l.com" key="item1a">
+								<div class="d2l-list-item-text d2l-body-compact">Nested item 1a.</div>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+					<d2l-list-item label="Test Label" href="http://d2l.com" key="item2">
+						<div class="d2l-list-item-text d2l-body-compact">Root item 2.</div>
+						<d2l-list grid slot="nested"></d2l-list>
+					</d2l-list-item>
+					<d2l-list-item label="Test Label" href="http://d2l.com" key="item3">
+						<div class="d2l-list-item-text d2l-body-compact">Root item 3.</div>
+					</d2l-list-item>
+					<d2l-list-item label="Test Label" href="http://d2l.com" key="item4">
+						<div class="d2l-list-item-text d2l-body-compact">Root item 4.</div>
+					</d2l-list-item>
+					<d2l-list-item label="Test Label" href="http://d2l.com" key="item5">
+						<div class="d2l-list-item-text d2l-body-compact">Root item 5.</div>
+					</d2l-list-item>
+					<d2l-list-item label="Test Label" href="http://d2l.com" key="item6">
+						<div class="d2l-list-item-text d2l-body-compact">Root item 6.</div>
+					</d2l-list-item>
+					<d2l-list-item label="Test Label" href="http://d2l.com" key="item7">
+						<div class="d2l-list-item-text d2l-body-compact">Root item 7.</div>
+					</d2l-list-item>
+				</d2l-list>
+			`;
+
 			beforeEach(async() => {
 				el = await fixture(nestedFixture);
 			});
 
-			// todo: add tests for the other interesting nested list grid focus management scenarios
-
 			const tests = [
+				// ArrowUp tests
 				{
 					key: { name: 'ArrowUp', code: keyCodes.UP },
 					desc: 'focuses the same cell of the parent item',
@@ -517,6 +528,215 @@ describe('d2l-list-item-generic-layout', () => {
 					activeElement: getComposedActiveElement,
 					event: () => oneEvent(el.querySelector('[key="item2"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
 					expected: () => el.querySelector('[key="item2"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+
+				// ArrowDown tests
+				{
+					key: { name: 'ArrowDown', code: keyCodes.DOWN },
+					desc: 'focuses the same cell of the child item',
+					itemKey: 'item1',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="item1a"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="item1a"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+				{
+					key: { name: 'ArrowDown', code: keyCodes.DOWN },
+					desc: 'focuses the same cell of the item after the nested list',
+					itemKey: 'item1a',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="item2"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="item2"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+
+				// PageUp tests
+				{
+					key: { name: 'PageUp', code: keyCodes.PAGEUP },
+					desc: 'focuses the first root item when pressing from third item',
+					itemKey: 'item3',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="item1"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="item1"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+				{
+					key: { name: 'PageUp', code: keyCodes.PAGEUP },
+					desc: 'focuses test nested item when pressing from 5 items away',
+					itemKey: 'item6',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="item1a"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="item1a"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+
+				// PageDown tests
+				{
+					key: { name: 'PageDown', code: keyCodes.PAGEDOWN },
+					desc: 'focuses the last root item when pressing from third last item',
+					itemKey: 'item5',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="item7"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="item7"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+				{
+					key: { name: 'PageDown', code: keyCodes.PAGEDOWN },
+					desc: 'focuses the fifth item when pressing from first item',
+					itemKey: 'item1',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="item5"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="item5"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				}
+			];
+
+			for (const test of tests) {
+				it(`${test.desc} when ${test.key.name} pressed`, async() => {
+					return runFocusTest(el, test);
+				});
+			}
+
+		});
+
+		describe('nested expandable', () => {
+
+			const expandableNestedFixture = html`
+				<d2l-list grid>
+					<d2l-list-item label="Expandable Root 1" key="root1" expandable href="http://d2l.com">
+						<div class="d2l-list-item-text d2l-body-compact">Expandable Root 1</div>
+						<d2l-list grid slot="nested">
+							<d2l-list-item label="Nested 1-1" key="nested1-1" expandable href="http://d2l.com">
+								<div class="d2l-list-item-text d2l-body-compact">Nested 1-1</div>
+								<d2l-list grid slot="nested">
+									<d2l-list-item label="Deep Nested 1-1-1" key="deep1-1-1" href="http://d2l.com">
+										<div class="d2l-list-item-text d2l-body-compact">Deep Nested 1-1-1</div>
+									</d2l-list-item>
+									<d2l-list-item label="Deep Nested 1-1-2" key="deep1-1-2" href="http://d2l.com">
+										<div class="d2l-list-item-text d2l-body-compact">Deep Nested 1-1-2</div>
+									</d2l-list-item>
+								</d2l-list>
+							</d2l-list-item>
+							<d2l-list-item label="Nested 1-2" key="nested1-2" href="http://d2l.com">
+								<div class="d2l-list-item-text d2l-body-compact">Nested 1-2</div>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+					<d2l-list-item label="Expandable Root 2" key="root2" expandable expanded href="http://d2l.com">
+						<div class="d2l-list-item-text d2l-body-compact">Expandable Root 2</div>
+						<d2l-list grid slot="nested">
+							<d2l-list-item label="Nested 2-1" key="nested2-1" href="http://d2l.com">
+								<div class="d2l-list-item-text d2l-body-compact">Nested 2-1</div>
+							</d2l-list-item>
+						</d2l-list>
+					</d2l-list-item>
+					<d2l-list-item label="Root 3" key="root3" href="http://d2l.com">
+						<div class="d2l-list-item-text d2l-body-compact">Root 3</div>
+					</d2l-list-item>
+				</d2l-list>
+			`;
+
+			beforeEach(async() => {
+				el = await fixture(expandableNestedFixture);
+			});
+
+			const tests = [
+				// ArrowUp tests
+				{
+					key: { name: 'ArrowUp', code: keyCodes.UP },
+					desc: 'focuses the same cell of nested in expandable expanded',
+					itemKey: 'root3',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="nested2-1"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="nested2-1"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+				{
+					key: { name: 'ArrowUp', code: keyCodes.UP },
+					desc: 'focuses the parent in expandable expanded',
+					itemKey: 'nested2-1',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="root2"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="root2"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+				{
+					key: { name: 'ArrowUp', code: keyCodes.UP },
+					desc: 'focuses the same cell of the previous item when not expanded',
+					itemKey: 'root2',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="root1"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="root1"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+
+				// ArrowDown tests
+				{
+					key: { name: 'ArrowDown', code: keyCodes.DOWN },
+					desc: 'focuses the first nested item when moving down from expandable expanded',
+					itemKey: 'root2',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="nested2-1"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="nested2-1"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+				{
+					key: { name: 'ArrowDown', code: keyCodes.DOWN },
+					desc: 'focuses the next root item after nested',
+					itemKey: 'nested2-1',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="root3"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="root3"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+				{
+					key: { name: 'ArrowDown', code: keyCodes.DOWN },
+					desc: 'focuses the next root item when not expanded',
+					itemKey: 'root1',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="root2"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="root2"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+
+				// PageUp tests
+				{
+					key: { name: 'PageUp', code: keyCodes.PAGEUP },
+					desc: 'focuses the first root item when pressing PageUp from root3',
+					itemKey: 'root3',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="root1"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="root1"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+				{
+					key: { name: 'PageUp', code: keyCodes.PAGEUP },
+					desc: 'focuses the first root item when pressing PageUp from nested2-1',
+					itemKey: 'nested2-1',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="root1"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="root1"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+
+				// PageDown tests
+				{
+					key: { name: 'PageDown', code: keyCodes.PAGEDOWN },
+					desc: 'focuses the last root item when pressing PageDown from root1',
+					itemKey: 'root1',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="root3"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="root3"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
+				},
+				{
+					key: { name: 'PageDown', code: keyCodes.PAGEDOWN },
+					desc: 'focuses the last root item when pressing PageDown from nested2-1',
+					itemKey: 'nested2-1',
+					initial: () => layout.querySelector('[slot="content-action"] a'),
+					activeElement: getComposedActiveElement,
+					event: () => oneEvent(el.querySelector('[key="root3"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a'), 'focusin'),
+					expected: () => el.querySelector('[key="root3"]').shadowRoot.querySelector('d2l-list-item-generic-layout [slot="content-action"] a')
 				}
 			];
 

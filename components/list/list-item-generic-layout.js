@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getFocusableDescendants, getLastFocusableDescendant, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
+import { getFlag } from '../../helpers/flags.js';
 import { isInteractiveDescendant } from '../../mixins/interactive/interactive-mixin.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
@@ -16,6 +17,8 @@ const keyCodes = {
 	SPACE: 32,
 	UP: 38
 };
+
+const listItemUpButtonFixFlag = getFlag('GAUD-8229-list-up-button-fix', true);
 
 /**
  * A component for generating a list item's layout with forced focus ordering and grid support.
@@ -422,15 +425,27 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				do {
 					// this check needs to account for standard list-items as well as custom
 					nestedList = previousElement.querySelector('[slot="nested"]') || previousElement.shadowRoot.querySelector('d2l-list');
-					if (nestedList && (!previousElement.expandable || (previousElement.expandable && previousElement.expanded))) {
-						const nestedListItems = [...nestedList.children].filter(node => node.role === 'row');
-						if (nestedListItems.length) {
-							previousElement = nestedListItems[nestedListItems.length - 1];
+					if (listItemUpButtonFixFlag) {
+						// if there is nested list and nested list content is accessible
+						if (nestedList && (!previousElement.expandable || (previousElement.expandable && previousElement.expanded))) {
+							const nestedListItems = [...nestedList.children].filter(node => node.role === 'row');
+							if (nestedListItems.length) {
+								previousElement = nestedListItems[nestedListItems.length - 1];
+							} else {
+								break;
+							}
 						} else {
 							break;
 						}
 					} else {
-						break;
+						if (nestedList) {
+							const nestedListItems = [...nestedList.children].filter(node => node.role === 'row');
+							if (nestedListItems.length) {
+								previousElement = nestedListItems[nestedListItems.length - 1];
+							} else {
+								break;
+							}
+						}
 					}
 				}	while (nestedList);
 				return previousElement;
