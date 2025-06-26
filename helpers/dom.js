@@ -206,7 +206,7 @@ export function isComposedAncestor(ancestorNode, node) {
 	}) !== null;
 }
 
-export function isVisible(node, parentIsKnownVisible = false) {
+export function isVisible(node, { checkParents = true } = {}) {
 
 	/* this helper is different from checking offsetParent because offsetParent
 	returns null for fixed position elements regardless of visibility */
@@ -223,7 +223,7 @@ export function isVisible(node, parentIsKnownVisible = false) {
 		if (computedStyle.getPropertyValue('visibility') === 'hidden') return false;
 	}
 
-	if (!parentIsKnownVisible) {
+	if (checkParents) {
 		const parentNode = getComposedParent(node);
 		if (parentNode) return isVisible(parentNode);
 	}
@@ -233,11 +233,10 @@ export function isVisible(node, parentIsKnownVisible = false) {
 }
 
 export function getFirstVisibleAncestor(node) {
-
-	let hiddenAncestor = findComposedAncestor(node, n => !isVisible(n, true));
+	let hiddenAncestor = findComposedAncestor(node, n => !isVisible(n, { checkParents: false }));
 	while (hiddenAncestor) {
 		node = getComposedParent(hiddenAncestor);
-		hiddenAncestor = findComposedAncestor(node, n => !isVisible(n, true));
+		hiddenAncestor = findComposedAncestor(node, n => !isVisible(n, { checkParents: false }));
 	}
 	return node;
 }

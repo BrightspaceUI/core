@@ -7,6 +7,7 @@ import {
 	getBoundingAncestor,
 	getComposedChildren,
 	getComposedParent,
+	getFirstVisibleAncestor,
 	getNextAncestorSibling,
 	getOffsetParent,
 	isComposedAncestor,
@@ -102,6 +103,13 @@ const visibilityFixture = html`
 		<div id="displayNone" style="display:none;"></div>
 		<div style="display:none;"><div id="parentDisplayNone"></div></div>
 		<div style="visibility:hidden;"><div id="parentVisibilityNone"></div></div>
+		<div style="display:none;">
+			<div>
+				<div style="display:none;">
+					<div id="deeplyNestedHidden"></div>
+				</div>
+			</div>
+		</div>
 	</div>
 `;
 
@@ -234,6 +242,34 @@ describe('dom', () => {
 
 	});
 
+	describe('getFirstVisibleAncestor', () => {
+
+		let elem;
+		beforeEach(async() => {
+			elem = await fixture(visibilityFixture);
+		});
+
+		it('returns same node if visible', () => {
+			const node = elem.querySelector('#default');
+			expect(getFirstVisibleAncestor(node)).to.equal(node);
+		});
+
+		it('returns parent if hidden and parent is visible', () => {
+			const node = elem.querySelector('#visibilityHidden');
+			expect(getFirstVisibleAncestor(node)).to.equal(node.parentNode);
+		});
+
+		it('returns parent of hidden ancestor if it is visible', () => {
+			const node = elem.querySelector('#parentDisplayNone');
+			expect(getFirstVisibleAncestor(node)).to.equal(elem);
+		});
+
+		it('returns first visible ancestor with nested explicitly hidden ancestors', () => {
+			const node = elem.querySelector('#deeplyNestedHidden');
+			expect(getFirstVisibleAncestor(node)).to.equal(elem);
+		});
+	});
+
 	describe('isVisible', () => {
 
 		let elem;
@@ -273,6 +309,10 @@ describe('dom', () => {
 
 		it('returns false if parent has visibility:hidden', () => {
 			expect(isVisible(elem.querySelector('#parentVisibilityNone'))).to.be.false;
+		});
+
+		it('returns true if not checking parents and visibible', () => {
+			expect(isVisible(elem.querySelector('#parentDisplayNone'), { checkParents: false })).to.be.true;
 		});
 
 	});

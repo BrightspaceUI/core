@@ -3,6 +3,7 @@ import {
 	getComposedActiveElement,
 	getFirstFocusableDescendant,
 	getFocusableDescendants,
+	getFocusAlternative,
 	getLastFocusableDescendant,
 	getNextFocusable,
 	getPreviousFocusable,
@@ -186,6 +187,20 @@ describe('focus', () => {
 				.to.equal(elem.querySelector('#focusable'));
 		});
 
+		it('returns null if elem is hidden', async() => {
+			const elem = await fixture(simpleFixture);
+			elem.style.display = 'none';
+			expect(getFirstFocusableDescendant(elem))
+				.to.be.null;
+		});
+
+		it('returns focusable child if elem is hidden and hidden elements included', async() => {
+			const elem = await fixture(simpleFixture);
+			elem.style.display = 'none';
+			expect(getFirstFocusableDescendant(elem, true))
+				.to.equal(elem.querySelector('#light1'));
+		});
+
 	});
 
 	describe('getFirstFocusableDescendant with predicate', () => {
@@ -229,6 +244,28 @@ describe('focus', () => {
 				.to.equal(elem.querySelector('#focusable'));
 		});
 
+	});
+
+	describe('getFocusAlternative', () => {
+		it('returns itself if focusable', async() => {
+			const elem = (await fixture(wcFixture)).getShadow1();
+			expect(getFocusAlternative(elem))
+				.to.equal(elem);
+		});
+
+		it('returns focusable child in shadow-dom', async() => {
+			const elem = await fixture(wcFixture);
+			expect(getFocusAlternative(elem))
+				.to.equal(elem.getShadow1());
+		});
+		it('returns parent focus alternative if hidden', async() => {
+			const elem = await fixture(mixedFixture);
+			const wc = elem.querySelector('#wc1');
+			wc.style.display = 'none';
+
+			expect(getFocusAlternative(wc))
+				.to.equal(elem.querySelector('#light1'));
+		});
 	});
 
 	describe('getLastFocusableDescendant', () => {

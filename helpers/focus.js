@@ -26,32 +26,32 @@ export function getComposedActiveElement() {
 	return node;
 }
 
-export function getFirstFocusableDescendant(node, includeHidden, predicate = () => true, includeTabbablesOnly, nodeIsKnownVisible) {
+export function getFirstFocusableDescendant(node, includeHidden, predicate = () => true, includeTabbablesOnly, checkNodeVisibility = true) {
 	const composedChildren = getComposedChildren(node);
-	if (!composedChildren?.length || (!includeHidden && !nodeIsKnownVisible && !isVisible(node))) return null;
+	if (!composedChildren?.length || (!includeHidden && checkNodeVisibility && !isVisible(node))) return null;
 
 	for (let i = 0; i < composedChildren.length; i++) {
-		if (!includeHidden && !isVisible(composedChildren[i], true)) continue;
+		if (!includeHidden && !isVisible(composedChildren[i], { checkParents: false })) continue;
 		if (isFocusable(composedChildren[i], true, includeTabbablesOnly) && predicate(composedChildren[i])) return composedChildren[i];
 
-		const focusable = getFirstFocusableDescendant(composedChildren[i], includeHidden, predicate, includeTabbablesOnly, true);
+		const focusable = getFirstFocusableDescendant(composedChildren[i], includeHidden, predicate, includeTabbablesOnly, false);
 		if (focusable) return focusable;
 	}
 
 	return null;
 }
 
-export function getFocusAlternative(node, includeHidden, predicate = () => true, includeTabbablesOnly, nodeIsKnownVisible) {
+export function getFocusAlternative(node, includeHidden, predicate = () => true, includeTabbablesOnly, checkNodeVisibility = true) {
 	if (!node) return null;
 
-	if (!includeHidden && !nodeIsKnownVisible) node = getFirstVisibleAncestor(node);
+	if (!includeHidden && checkNodeVisibility) node = getFirstVisibleAncestor(node);
 
 	if (isFocusable(node, true) && predicate(node)) return node;
 
-	const focusableDescendant = getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly, true);
+	const focusableDescendant = getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly, false);
 	if (focusableDescendant !== null) return focusableDescendant;
 
-	return getFocusAlternative(getComposedParent(node), true);
+	return getFocusAlternative(getComposedParent(node), false);
 }
 
 export function getFocusableDescendants(node, options) {
