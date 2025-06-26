@@ -107,7 +107,7 @@ getOffsetParent(node);
 isComposedAncestor(ancestorNode, node);
 
 // returns true/false whether the element is visible regardless of positioning
-isVisible(node, { checkParents: true });
+isVisible(node, { checkAncestors: true });
 
 // returns the first visible ancestor of the given node
 getFirstVisibleAncestor(node)

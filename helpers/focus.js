@@ -31,7 +31,7 @@ export function getFirstFocusableDescendant(node, includeHidden, predicate = () 
 	if (!composedChildren?.length || (!includeHidden && checkNodeVisibility && !isVisible(node))) return null;
 
 	for (let i = 0; i < composedChildren.length; i++) {
-		if (!includeHidden && !isVisible(composedChildren[i], { checkParents: false })) continue;
+		if (!includeHidden && !isVisible(composedChildren[i], { checkAncestors: false })) continue;
 		if (isFocusable(composedChildren[i], true, includeTabbablesOnly) && predicate(composedChildren[i])) return composedChildren[i];
 
 		const focusable = getFirstFocusableDescendant(composedChildren[i], includeHidden, predicate, includeTabbablesOnly, false);

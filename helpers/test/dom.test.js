@@ -312,7 +312,7 @@ describe('dom', () => {
 		});
 
 		it('returns true if not checking parents and visibible', () => {
-			expect(isVisible(elem.querySelector('#parentDisplayNone'), { checkParents: false })).to.be.true;
+			expect(isVisible(elem.querySelector('#parentDisplayNone'), { checkAncestors: false })).to.be.true;
 		});
 
 	});
