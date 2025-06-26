@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../sort.js';
+			import '../sort-item.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="Sorting">
+			<h2>Default</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-sort>
+						<d2l-sort-item text="Name" value="name"></d2l-sort-item>
+						<d2l-sort-item text="Votes" value="votes"></d2l-sort-item>
+						<d2l-sort-item text="Creation Date" value="creation"></d2l-sort-item>
+					</d2l-sort>
+				</template>
+			</d2l-demo-snippet>
+		</d2l-demo-page>
+	</body>
+</html>

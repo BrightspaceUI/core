@@ -172,6 +172,8 @@ export default {
 	"components.selection.selected": "تم تحديد {count}",
 	"components.selection.selected-plus": "تم تحديد {count}+‎",
 	"components.selection-controls.label": "إجراءات التحديد",
+	"components.sort.label": "فرز: {selectedItemText}",
+	"components.sort.text": "فرز",
 	"components.switch.conditions": "يجب استيفاء الشروط",
 	"components.switch.hidden": "مخفي",
 	"components.switch.visible": "مرئي",

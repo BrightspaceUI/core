@@ -172,6 +172,8 @@ export default {
 	"components.selection.selected": "{count} चयनित",
 	"components.selection.selected-plus": "{count} से अधिक चयनित",
 	"components.selection-controls.label": "चयन के लिए क्रियाएँ",
+	"components.sort.label": "सॉर्ट करें: {selectedItemText}",
+	"components.sort.text": "सॉर्ट करें",
 	"components.switch.conditions": "शर्तें पूरी होनी चाहिए",
 	"components.switch.hidden": "छुपा हुआ",
 	"components.switch.visible": "दृश्यमान",

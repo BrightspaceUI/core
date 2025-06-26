@@ -172,6 +172,8 @@ export default {
 	"components.selection.selected": "{count} wedi’u dewis.",
 	"components.selection.selected-plus": "{count}+ wedi’u dewis",
 	"components.selection-controls.label": "Camau gweithredu ar gyfer detholiad",
+	"components.sort.label": "Trefnu: {selectedItemText}",
+	"components.sort.text": "Trefnu",
 	"components.switch.conditions": "Rhaid bodloni’r amodau",
 	"components.switch.hidden": "Cudd",
 	"components.switch.visible": "Gweladwy",

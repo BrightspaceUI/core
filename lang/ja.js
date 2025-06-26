@@ -164,6 +164,8 @@ export default {
 	"components.selection.selected": "{count} 個を選択済み",
 	"components.selection.selected-plus": "{count} 個以上を選択済み",
 	"components.selection-controls.label": "選択のアクション",
+	"components.sort.label": "並べ替え: {selectedItemText}",
+	"components.sort.text": "並べ替え",
 	"components.switch.conditions": "条件が一致する必要があります",
 	"components.switch.hidden": "非表示",
 	"components.switch.visible": "表示",

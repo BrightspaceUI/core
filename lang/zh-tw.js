@@ -165,6 +165,8 @@ export default {
 	"components.selection.selected": "已選取 {count} 個",
 	"components.selection.selected-plus": "已選取 {count}+ 個",
 	"components.selection-controls.label": "選擇的動作",
+	"components.sort.label": "排序：{selectedItemText}",
+	"components.sort.text": "排序",
 	"components.switch.conditions": "必須符合條件",
 	"components.switch.hidden": "隱藏",
 	"components.switch.visible": "可見",

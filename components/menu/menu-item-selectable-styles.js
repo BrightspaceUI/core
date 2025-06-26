@@ -1,4 +1,3 @@
-import '../colors/colors.js';
 import { css } from 'lit';
 import { menuItemStyles } from './menu-item-styles.js';
 

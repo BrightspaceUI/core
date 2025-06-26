@@ -172,6 +172,8 @@ export default {
 	"components.selection.selected": "{count} seleccionados",
 	"components.selection.selected-plus": "Más de {count} seleccionados",
 	"components.selection-controls.label": "Acciones para la selección",
+	"components.sort.label": "Ordenar: {selectedItemText}",
+	"components.sort.text": "Ordenar",
 	"components.switch.conditions": "Se deben cumplir las condiciones",
 	"components.switch.hidden": "Oculto",
 	"components.switch.visible": "Visible",

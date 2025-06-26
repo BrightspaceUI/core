@@ -172,6 +172,8 @@ export default {
 	"components.selection.selected": "{count} sélectionné(s)",
 	"components.selection.selected-plus": "{count}+ sélectionné",
 	"components.selection-controls.label": "Actions à sélectionner",
+	"components.sort.label": "Trier : {selectedItemText}",
+	"components.sort.text": "Trier",
 	"components.switch.conditions": "Les conditions doivent être remplies",
 	"components.switch.hidden": "Masqué",
 	"components.switch.visible": "Visible",
