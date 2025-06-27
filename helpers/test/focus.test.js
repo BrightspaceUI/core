@@ -3,7 +3,7 @@ import {
 	getComposedActiveElement,
 	getFirstFocusableDescendant,
 	getFocusableDescendants,
-	getFocusAlternative,
+	getFirstFocusableRelative,
 	getLastFocusableDescendant,
 	getNextFocusable,
 	getPreviousFocusable,
@@ -246,16 +246,16 @@ describe('focus', () => {
 
 	});
 
-	describe('getFocusAlternative', () => {
+	describe('getFocusableRelative', () => {
 		it('returns itself if focusable', async() => {
 			const elem = (await fixture(wcFixture)).getShadow1();
-			expect(getFocusAlternative(elem))
+			expect(getFirstFocusableRelative(elem))
 				.to.equal(elem);
 		});
 
 		it('returns focusable child in shadow-dom', async() => {
 			const elem = await fixture(wcFixture);
-			expect(getFocusAlternative(elem))
+			expect(getFirstFocusableRelative(elem))
 				.to.equal(elem.getShadow1());
 		});
 		it('returns parent focus alternative if hidden', async() => {
@@ -263,7 +263,7 @@ describe('focus', () => {
 			const wc = elem.querySelector('#wc1');
 			wc.style.display = 'none';
 
-			expect(getFocusAlternative(wc))
+			expect(getFirstFocusableRelative(wc))
 				.to.equal(elem.querySelector('#light1'));
 		});
 	});

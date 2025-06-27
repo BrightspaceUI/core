@@ -3,7 +3,7 @@ import '../../helpers/viewport-size.js';
 import { allowBodyScroll, preventBodyScroll } from '../backdrop/backdrop.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
-import { getComposedActiveElement, getFirstFocusableDescendant, getFocusAlternative, getNextFocusable, isFocusable } from '../../helpers/focus.js';
+import { getComposedActiveElement, getFirstFocusableDescendant, getFirstFocusableRelative, getNextFocusable, isFocusable } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit';
@@ -531,7 +531,7 @@ export const DialogMixin = superclass => class extends RtlMixin(superclass) {
 	}
 
 	_tryApplyFocus(node) {
-		const focusable = getFocusAlternative(node);
+		const focusable = getFirstFocusableRelative(node);
 		if (focusable) focusable.focus();
 	}
 

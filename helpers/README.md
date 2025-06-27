@@ -130,9 +130,8 @@ getComposedActiveElement()
 // gets the first focusable descendant given a node, including those within the shadow DOM
 getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly, checkNodeVisibility = true)
 
-// gets the first focusable node alternative, including those within the shadow DOM
-// focusable alternatives include itself, a descendant, or it's parent's first focusable alternative
-getFocusAlternative(node, includeHidden, predicate, includeTabbablesOnly, checkNodeVisibility = true)
+// gets the first focusable relative given a node, checking first itself, its children, and lastly, recursively its parent
+getFirstFocusableRelative(node, { includeHidden, predicate, includeTabbablesOnly, checkNodeVisibility: true })
 
 // gets the focusable elements within the specified element
 getFocusableDescendants(node, { deep: false, disabled: false, hidden: false, predicate: elem => false, tabbablesOnly: true })

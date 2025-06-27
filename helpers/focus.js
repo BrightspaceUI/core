@@ -26,9 +26,9 @@ export function getComposedActiveElement() {
 	return node;
 }
 
-export function getFirstFocusableDescendant(node, includeHidden, predicate = () => true, includeTabbablesOnly, checkNodeVisibility = true) {
+export function getFirstFocusableDescendant(node, includeHidden, predicate = () => true, includeTabbablesOnly, nodeVisibilityUnknown = true) {
 	const composedChildren = getComposedChildren(node);
-	if (!composedChildren?.length || (!includeHidden && checkNodeVisibility && !isVisible(node))) return null;
+	if (!composedChildren?.length || (!includeHidden && nodeVisibilityUnknown && !isVisible(node))) return null;
 
 	for (let i = 0; i < composedChildren.length; i++) {
 		if (!includeHidden && !isVisible(composedChildren[i], { checkAncestors: false })) continue;
@@ -41,17 +41,17 @@ export function getFirstFocusableDescendant(node, includeHidden, predicate = () 
 	return null;
 }
 
-export function getFocusAlternative(node, includeHidden, predicate = () => true, includeTabbablesOnly, checkNodeVisibility = true) {
+export function getFirstFocusableRelative(node, {includeHidden, predicate = () => true, includeTabbablesOnly, nodeVisibilityUnknown = true}= {}) {
 	if (!node) return null;
 
-	if (!includeHidden && checkNodeVisibility) node = getFirstVisibleAncestor(node);
+	if (!includeHidden && nodeVisibilityUnknown) node = getFirstVisibleAncestor(node);
 
 	if (isFocusable(node, true) && predicate(node)) return node;
 
-	const focusableDescendant = getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly, false);
+	const focusableDescendant = getFirstFocusableDescendant(node, {includeHidden, predicate, includeTabbablesOnly, nodeVisibilityUnknown: false});
 	if (focusableDescendant !== null) return focusableDescendant;
 
-	return getFocusAlternative(getComposedParent(node), false);
+	return getFirstFocusableRelative(getComposedParent(node), {includeHidden, predicate, includeTabbablesOnly, nodeVisibilityUnknown: false});
 }
 
 export function getFocusableDescendants(node, options) {
