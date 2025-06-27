@@ -113,8 +113,8 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					display: inherit;
 				}
 				:host([lines]) a {
-					display: flex;
 					align-items: baseline;
+					display: flex;
 				}
 				a span.truncate {
 					${overflowClipEnabled ? getOverflowDeclarations({ lines: 1 }) : css`
@@ -128,10 +128,11 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					${overflowEllipsisDeclarations}
 				}
 				#new-window {
-					white-space: nowrap;
+					display: inline-block;
 					line-height: 0;
 					position: relative;
 					top: 0.12em;
+					white-space: nowrap;
 				}
 				d2l-icon {
 					color: var(--d2l-color-celestine);
