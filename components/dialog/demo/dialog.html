@@ -12,11 +12,15 @@
 			import '../../button/button.js';
 			import '../../dropdown/dropdown-button-subtle.js';
 			import '../../dropdown/dropdown-content.js';
+			import '../../dropdown/dropdown.js';
+			import '../../dropdown/dropdown-menu.js';
 			import '../../filter/filter.js';
 			import '../../filter/filter-dimension-set.js';
 			import '../../filter/filter-dimension-set-value.js';
 			import '../../inputs/input-checkbox.js';
 			import '../../list/demo/demo-list.js';
+			import '../../menu/menu.js';
+			import '../../menu/menu-item.js';
 			import '../dialog.js';
 			import './dialog-async-content.js';
 			import './dialog-async-content-until.js';
@@ -77,6 +81,36 @@
 						});
 						document.querySelector('#dialog').addEventListener('d2l-dialog-close', (e) => {
 							console.log('dialog close', e.detail.action);
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Dialog with complex opener</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-dropdown>
+						<button class="d2l-dropdown-opener">Open it!</button>
+						<d2l-dropdown-menu id="dropdown">
+							<d2l-menu label="Astronomy">
+								<d2l-menu-item id="complex-opener" text="Open dialog"></d2l-menu-item>
+								<d2l-menu-item text="Item 2"></d2l-menu-item>
+								<d2l-menu-item text="Item 3"></d2l-menu-item>
+								<d2l-menu-item text="Item 4"></d2l-menu-item>
+							</d2l-menu>
+						</d2l-dropdown-menu>
+					</d2l-dropdown>
+					<d2l-dialog id="complex-opener-dialog" title-text="Dialog Title">
+						<div>
+							Hello
+						</div>
+						<d2l-button slot="footer" primary data-dialog-action="ok">Click Me!</d2l-button>
+						<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+					</d2l-dialog>
+					<script>
+						document.querySelector('#complex-opener').addEventListener('d2l-menu-item-select', () => {
+							document.querySelector('#complex-opener-dialog').opened = true;
 						});
 					</script>
 				</template>
