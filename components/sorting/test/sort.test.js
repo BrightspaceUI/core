@@ -1,22 +1,19 @@
-import '../sort.js';
-import '../sort-item.js';
 import { clickElem, expect, fixture, focusElem, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
+import { sortFixtures } from './sort-fixtures.js';
 
-const closedFixture = html`
-	<d2l-sort>
-		<d2l-sort-item text="Name" value="name" selected></d2l-sort-item>
-		<d2l-sort-item text="Votes" value="votes"></d2l-sort-item>
-		<d2l-sort-item text="Creation Date" value="creation"></d2l-sort-item>
-	</d2l-sort>
-`;
-const openedFixture = html`
-	<d2l-sort opened>
-		<d2l-sort-item text="Name" value="name" selected></d2l-sort-item>
-		<d2l-sort-item text="Votes" value="votes"></d2l-sort-item>
-		<d2l-sort-item text="Creation Date" value="creation"></d2l-sort-item>
-	</d2l-sort>
-`;
+function createItems(selected) {
+	return html`
+		<d2l-sort>
+		${[0, 1, 2].map(i => html`
+			<d2l-sort-item
+				text="Item ${i + 1}"
+				value="item${i + 1}"
+				?selected="${selected[i]}"></d2l-sort-item>
+		`)}
+		</d2l-sort>
+	`;
+}
 
 describe('d2l-sort', () => {
 
@@ -25,41 +22,34 @@ describe('d2l-sort', () => {
 		runConstructor('d2l-sort-item');
 	});
 
-	it('selects the first item by default', async() => {
-		const elem = await fixture(html`
-			<d2l-sort>
-				<d2l-sort-item text="Item 1" value="item1"></d2l-sort-item>
-				<d2l-sort-item text="Item 2" value="item2"></d2l-sort-item>
-				<d2l-sort-item text="Item 3" value="item3"></d2l-sort-item>
-			</d2l-sort>
-		`);
+	it('selects the first item when none are explicitly selected', async() => {
+		const elem = await fixture(createItems([false, false, false]));
 		expect(elem.querySelector('d2l-sort-item[value="item1"]').selected).to.be.true;
 		expect(elem.querySelector('d2l-sort-item[value="item2"]').selected).to.be.false;
 		expect(elem.querySelector('d2l-sort-item[value="item3"]').selected).to.be.false;
 	});
 
 	it('treats only the last selected item as selected', async() => {
-		const elem = await fixture(html`
-			<d2l-sort>
-				<d2l-sort-item text="Item 1" value="item1" selected></d2l-sort-item>
-				<d2l-sort-item text="Item 2" value="item2" selected></d2l-sort-item>
-				<d2l-sort-item text="Item 3" value="item3" selected></d2l-sort-item>
-			</d2l-sort>
-		`);
+		const elem = await fixture(createItems([true, true, true]));
 		expect(elem.querySelector('d2l-sort-item[value="item1"]').selected).to.be.false;
 		expect(elem.querySelector('d2l-sort-item[value="item2"]').selected).to.be.false;
 		expect(elem.querySelector('d2l-sort-item[value="item3"]').selected).to.be.true;
 	});
 
+	it('handles non-first selected items', async() => {
+		const elem = await fixture(createItems([false, true, false]));
+		expect(elem._selectedItemText).to.equal('Item 2');
+	});
+
 	it('dispatches change event', async() => {
-		const elem = await fixture(openedFixture);
-		clickElem(elem.querySelector('d2l-sort-item[value="votes"]'));
+		const elem = await fixture(sortFixtures.opened);
+		clickElem(elem.querySelector('d2l-sort-item[value="updated"]'));
 		const e = await oneEvent(elem, 'd2l-sort-change');
-		expect(e.detail.value).to.equal('votes');
+		expect(e.detail.value).to.equal('updated');
 	});
 
 	it('delegates focus to underlying focusable', async() => {
-		const elem = await fixture(closedFixture);
+		const elem = await fixture(sortFixtures.closed);
 		const innerButton = elem
 			.shadowRoot.querySelector('d2l-dropdown-button-subtle')
 			.shadowRoot.querySelector('d2l-button-subtle')
@@ -70,11 +60,11 @@ describe('d2l-sort', () => {
 	});
 
 	it('updates selected item text when it changes', async() => {
-		const elem = await fixture(closedFixture);
-		const item = elem.querySelector('d2l-sort-item[value="name"]');
-		item.text = 'Name (updated)';
+		const elem = await fixture(sortFixtures.closed);
+		const item = elem.querySelector('d2l-sort-item[value="relevant"]');
+		item.text = 'Irrelevant';
 		await item.updateComplete;
-		expect(elem._selectedItemText).to.equal('Name (updated)');
+		expect(elem._selectedItemText).to.equal('Irrelevant');
 	});
 
 });

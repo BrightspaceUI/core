@@ -1,5 +1,8 @@
 import { MenuItemRadio } from '../menu/menu-item-radio.js';
 
+/**
+ * An item within a <d2l-sort> component.
+ */
 class SortItem extends MenuItemRadio {
 
 	updated(changedProperties) {

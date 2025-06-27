@@ -5,10 +5,20 @@ import { css, html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
+/**
+ * Allows the user to adjust the sort order of data in a list.
+ * @slot - Sort item components
+ * @fires d2l-sort-change - Dispatched when the selected sort item changes
+ */
 class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 	static properties = {
+		/**
+		 * Disabled the sort
+		 * @type {boolean}
+		 */
 		disabled: { type: Boolean, reflect: true },
+		/** @ignore */
 		opened: { type: Boolean, reflect: true },
 		_selectedItemText: { state: true },
 	};
@@ -43,7 +53,7 @@ class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			<d2l-dropdown-button-subtle
 				?disabled="${this.disabled}"
 				text="${this.localize('components.sort.text', { selectedItemText: this._selectedItemText })}">
-				<d2l-dropdown-menu ?opened="${this.opened}">
+				<d2l-dropdown-menu class="vdiff-target" ?opened="${this.opened}">
 					<d2l-menu
 						label="${this.localize('components.sort.label')}"
 						@d2l-menu-item-change="${this.#handleMenuItemChange}">
