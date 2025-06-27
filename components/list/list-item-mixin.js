@@ -150,8 +150,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 			:host(:first-of-type) [slot="control-container"]::before,
 			[slot="control-container"]::after,
-			:host([_list-item-new-styles][expandable][expanded]:not(:last-of-type))::after,
-			:host([_list-item-new-styles][_has-nested-list]:not([expandable]):not(:last-of-type))::after {
+			:host([_list-item-new-styles]:not([_separators="none"])[expandable][expanded]:not(:last-of-type))::after,
+			:host([_list-item-new-styles]:not([_separators="none"])[_has-nested-list]:not([expandable]):not(:last-of-type))::after {
 				border-top: 1px solid var(--d2l-color-mica);
 				content: "";
 				position: absolute;
