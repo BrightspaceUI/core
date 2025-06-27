@@ -977,6 +977,7 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 
 				.d2l-template-primary-secondary-container > footer {
 					box-shadow: none;
+					padding: 0;
 				}
 
 				.d2l-template-primary-secondary-container,
