@@ -128,16 +128,14 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					${overflowEllipsisDeclarations}
 				}
 				#new-window {
-					display: inline-block;
 					line-height: 0;
-					position: relative;
-					top: 0.12em;
 					white-space: nowrap;
 				}
 				d2l-icon {
 					color: var(--d2l-color-celestine);
 					height: 0.95em;
 					margin-inline-start: 0.315em;
+					transform: translateY(.1em);
 					vertical-align: inherit;
 					width: 0.95em;
 				}
