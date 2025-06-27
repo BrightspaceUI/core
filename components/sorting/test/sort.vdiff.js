@@ -1,4 +1,4 @@
-import { aTimeout, clickElem, expect, fixture, focusElem } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem } from '@brightspace-ui/testing';
 import { sortFixtures } from './sort-fixtures.js';
 
 describe('d2l-sort', () => {
