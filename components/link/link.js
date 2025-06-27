@@ -133,11 +133,11 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				}
 				d2l-icon {
 					color: var(--d2l-color-celestine);
-					height: 0.95em;
+					height: calc(1em - 1px);
 					margin-inline-start: 0.315em;
-					transform: translateY(.1em);
+					transform: translateY(.11em);
 					vertical-align: inherit;
-					width: 0.95em;
+					width: calc(1em - 1px);
 				}
 
 				a:hover d2l-icon {
