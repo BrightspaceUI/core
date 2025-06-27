@@ -1,11 +1,11 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFlag } from '../../helpers/flags.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
-import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -114,7 +114,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				}
 				:host([lines]) a {
 					display: flex;
-					align-items: flex-start;
+					align-items: baseline;
 				}
 				a span.truncate {
 					${overflowClipEnabled ? getOverflowDeclarations({ lines: 1 }) : css`
@@ -132,9 +132,6 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					line-height: 0;
 					position: relative;
 					top: 0.12em;
-				}
-				[class*="truncate"] + #new-window {
-					top: 0.3em;
 				}
 				d2l-icon {
 					color: var(--d2l-color-celestine);
@@ -184,19 +181,20 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			? html`<span id="new-window"><span style="font-size: 0;">&nbsp;</span><d2l-icon icon="tier1:new-window"></d2l-icon></span><span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
 			: nothing;
 
-		// The whitespace here is critical to proper rendering and wrapping. Do not modify for readability!
-		return html`
-			<a
+		/*
+		* NOTICE:
+		* All html template whitespace within this component is critical to proper rendering and wrapping.
+		* Do not modify for readability!
+		*/
+		return html`<a
 				aria-label="${ifDefined(this.ariaLabel)}"
 				class="${classMap(linkClasses)}"
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
-				target="${ifDefined(this.target)}">
-				<span
+				target="${ifDefined(this.target)}"
+				><span
 					class="${classMap(spanClasses)}"
-					style="${styleMap(styles)}">
-					<slot></slot></span>${newWindowElements}
-			</a>`;
+					style="${styleMap(styles)}"><slot></slot></span>${newWindowElements}</a>`;
 	}
 
 }
