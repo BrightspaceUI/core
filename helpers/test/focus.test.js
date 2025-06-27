@@ -2,8 +2,8 @@ import { defineCE, expect, fixture, html } from '@brightspace-ui/testing';
 import {
 	getComposedActiveElement,
 	getFirstFocusableDescendant,
-	getFocusableDescendants,
 	getFirstFocusableRelative,
+	getFocusableDescendants,
 	getLastFocusableDescendant,
 	getNextFocusable,
 	getPreviousFocusable,

@@ -41,17 +41,17 @@ export function getFirstFocusableDescendant(node, includeHidden, predicate = () 
 	return null;
 }
 
-export function getFirstFocusableRelative(node, {includeHidden, predicate = () => true, includeTabbablesOnly, nodeVisibilityUnknown = true}= {}) {
+export function getFirstFocusableRelative(node, { includeHidden, predicate = () => true, includeTabbablesOnly, nodeVisibilityUnknown = true } = {}) {
 	if (!node) return null;
 
 	if (!includeHidden && nodeVisibilityUnknown) node = getFirstVisibleAncestor(node);
 
 	if (isFocusable(node, true) && predicate(node)) return node;
 
-	const focusableDescendant = getFirstFocusableDescendant(node, {includeHidden, predicate, includeTabbablesOnly, nodeVisibilityUnknown: false});
+	const focusableDescendant = getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly, false);
 	if (focusableDescendant !== null) return focusableDescendant;
 
-	return getFirstFocusableRelative(getComposedParent(node), {includeHidden, predicate, includeTabbablesOnly, nodeVisibilityUnknown: false});
+	return getFirstFocusableRelative(getComposedParent(node), { includeHidden, predicate, includeTabbablesOnly, nodeVisibilityUnknown: false });
 }
 
 export function getFocusableDescendants(node, options) {
