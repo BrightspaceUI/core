@@ -5,7 +5,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFlag } from '../../helpers/flags.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
-import { getOverflowDeclarations } from '../../helpers/overflow.js';
+import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -112,13 +112,29 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				a {
 					display: inherit;
 				}
-				a.truncate {
+				:host([lines]) a {
+					display: flex;
+					align-items: flex-start;
+				}
+				a span.truncate {
 					${overflowClipEnabled ? getOverflowDeclarations({ lines: 1 }) : css`
 						-webkit-box-orient: vertical;
 						display: -webkit-box;
 						overflow: hidden;
 						overflow-wrap: anywhere;
 					`}
+				}
+				a span.truncate-one {
+					${overflowEllipsisDeclarations}
+				}
+				#new-window {
+					white-space: nowrap;
+					line-height: 0;
+					position: relative;
+					top: 0.12em;
+				}
+				[class*="truncate"] + #new-window {
+					top: 0.3em;
 				}
 				d2l-icon {
 					color: var(--d2l-color-celestine);
@@ -157,22 +173,30 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		const linkClasses = {
 			'd2l-link': true,
 			'd2l-link-main': this.main,
-			'd2l-link-small': this.small,
-			'truncate': this.lines > 0
+			'd2l-link-small': this.small
+		};
+		const spanClasses = {
+			'truncate': this.lines > 1,
+			'truncate-one': this.lines === 1
 		};
 		const styles = { webkitLineClamp: this.lines || null };
 		const newWindowElements = (this.target === '_blank')
-			? html`<span style="white-space: nowrap; line-height: 0;"><span style="font-size: 0;">&nbsp;</span><d2l-icon icon="tier1:new-window"></d2l-icon></span><span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
+			? html`<span id="new-window"><span style="font-size: 0;">&nbsp;</span><d2l-icon icon="tier1:new-window"></d2l-icon></span><span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
 			: nothing;
 
-		return html`<a
+		// The whitespace here is critical to proper rendering and wrapping. Do not modify for readability!
+		return html`
+			<a
 				aria-label="${ifDefined(this.ariaLabel)}"
 				class="${classMap(linkClasses)}"
-				style="${styleMap(styles)}"
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
-				target="${ifDefined(this.target)}"
-			><slot></slot>${newWindowElements}</a>`;
+				target="${ifDefined(this.target)}">
+				<span
+					class="${classMap(spanClasses)}"
+					style="${styleMap(styles)}">
+					<slot></slot></span>${newWindowElements}
+			</a>`;
 	}
 
 }
