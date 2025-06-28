@@ -13,7 +13,7 @@ const longTooltipText = 'Very Very Very Very Long Text - this tooltip will show 
 function wrapTruncatingTooltip(content) {
 	return html`
 		<div style="border: 1px solid #cdd5dc; border-radius: 6px; height: 400px; padding: 20px; width: 200px;">
-			<div id="content" style="display: block; text-align: center;">${content}</div>
+			<div id="content" style="display: flex; justify-content: center;">${content}</div>
 		</div>
 	`;
 }
@@ -43,7 +43,7 @@ describe('tooltip-truncating', () => {
 
 		it(`link${truncating ? '' : '-not'}-truncating`, async() => {
 			const elem = await fixture(wrapTruncatingTooltip(html`
-				<d2l-link id="link" href="https://www.d2l.com" lines="1" style="display: flex; justify-content: center;">
+				<d2l-link id="link" href="https://www.d2l.com" lines="1" style="min-width: 0;">
 					${truncating ? longText : shortText}
 				</d2l-link>
 				<d2l-tooltip class="vdiff-include" for="link" show-truncated-only>
