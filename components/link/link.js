@@ -135,7 +135,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					color: var(--d2l-color-celestine);
 					height: calc(1em - 1px);
 					margin-inline-start: 0.315em;
-					transform: translateY(.11em);
+					transform: translateY(0.1em);
 					vertical-align: inherit;
 					width: calc(1em - 1px);
 				}
