@@ -68,7 +68,7 @@
   "dependencies": {
     "@brightspace-ui/intl": "^3",
     "@brightspace-ui/lms-context-provider": "^1",
-    "@open-wc/dedupe-mixin": "^1",
+    "@open-wc/dedupe-mixin": "^2",
     "ifrau": "^0.41",
     "lit": "^3",
     "prismjs": "^1",
