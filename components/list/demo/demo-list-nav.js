@@ -130,7 +130,7 @@ class ListDemoNav extends LitElement {
 				if (!this.shadowRoot) return;
 				const newItem = this.shadowRoot.querySelector('d2l-list').getListItemByKey(sourceListItems[0].key);
 				newItem.activateDragHandle();
-			}, 10);
+			}, 50);
 		}
 	}
 
