@@ -83,7 +83,7 @@ export const LocalizeMixin = superclass => class extends _LocalizeMixinBase(supe
 export function localizeMarkup(strings, ...expressions) {
 	strings.forEach(str => validateMarkup(str, disallowedTagsRegex));
 	expressions.forEach(exp => validateMarkup(exp, disallowedTagsRegex));
-	return { ...html(strings, ...expressions), _localizeMarkup: true };
+	return Object.freeze({ ...html(strings, ...expressions), _localizeMarkup: true });
 }
 
 export function generateLink({ href, target }) {
