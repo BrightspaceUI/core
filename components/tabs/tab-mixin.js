@@ -135,6 +135,17 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	}
 
 	#handleClick() {
+		const beforeSelectedEvent = new CustomEvent('d2l-tab-before-selected', {
+			detail: {
+				update: (newSelection) => this.selected = newSelection
+			},
+			cancelable: true,
+			bubbles: true,
+			composed: true
+		});
+		this.dispatchEvent(beforeSelectedEvent);
+		if (beforeSelectedEvent.defaultPrevented) return;
+
 		this.selected = true;
 	};
 
