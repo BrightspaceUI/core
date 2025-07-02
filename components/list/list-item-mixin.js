@@ -6,7 +6,7 @@ import './list-item-placement-marker.js';
 import '../tooltip/tooltip.js';
 import '../expand-collapse/expand-collapse-content.js';
 import { css, html, nothing, unsafeCSS } from 'lit';
-import { findComposedAncestor, getComposedParent } from '../../helpers/dom.js';
+import { findComposedAncestor, getComposedChildren, getComposedParent } from '../../helpers/dom.js';
 import { interactiveElements, isInteractiveInComposedPath } from '../../helpers/interactive.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { composeMixins } from '../../helpers/composeMixins.js';
@@ -24,6 +24,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { waitForElem } from '../../helpers/internal/waitForElem.js';
 
 let tabPressed = false;
 let tabListenerAdded = false;
@@ -592,6 +593,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	updateSiblingHasColor(siblingHasColor) {
 		this._siblingHasColor = siblingHasColor;
+	}
+
+	async waitForUpdateComplete() {
+		const predicate = () => true;
+		const composedChildren = getComposedChildren(this, predicate);
+		await Promise.all(composedChildren.map(child => waitForElem(child, predicate)));
 	}
 
 	_getFlattenedListItems(listItem) {

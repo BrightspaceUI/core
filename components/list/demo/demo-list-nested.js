@@ -134,14 +134,14 @@ class ListDemoNested extends LitElement {
 
 		this.requestUpdate();
 		await this.updateComplete;
-		await this.updateComplete;
 
 		if (e.detail.keyboardActive) {
-			setTimeout(() => {
+			setTimeout(async() => {
 				if (!this.shadowRoot) return;
 				const newItem = this.shadowRoot.querySelector('d2l-list').getListItemByKey(sourceListItems[0].key);
+				await newItem.waitForUpdateComplete();
 				newItem.activateDragHandle();
-			}, 50);
+			});
 		}
 
 	}
