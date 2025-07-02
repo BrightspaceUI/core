@@ -136,7 +136,6 @@ class ListDemoNested extends LitElement {
 		await this.updateComplete;
 
 		if (e.detail.keyboardActive) {
-			this._keyThing = sourceListItems[0].key;
 			setTimeout(async() => {
 				if (!this.shadowRoot) return;
 				const newItem = this.shadowRoot.querySelector('d2l-list').getListItemByKey(sourceListItems[0].key);
