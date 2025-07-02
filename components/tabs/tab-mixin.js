@@ -24,7 +24,8 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 			/**
 			 * @ignore
 			 */
-			tabIndex: { type: Number, reflect: true, attribute: 'tabindex' }
+			tabIndex: { type: Number, reflect: true, attribute: 'tabindex' },
+			_clicked: { type: Boolean, reflect: true },
 		};
 	}
 
@@ -66,6 +67,9 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				color: var(--d2l-color-celestine);
 				cursor: pointer;
 			}
+			:host([_clicked]) {
+				color: var(--d2l-color-celestine);
+			}
 			:host([selected]:hover) {
 				color: inherit;
 				cursor: default;
@@ -88,6 +92,8 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		this.role = 'tab';
 		this.selected = false;
 		this.tabIndex = -1;
+
+		this._clicked = false;
 	}
 
 	firstUpdated(changedProperties) {
@@ -135,9 +141,11 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	}
 
 	#handleClick() {
+		this._clicked = true;
 		const beforeSelectedEvent = new CustomEvent('d2l-tab-before-selected', {
 			detail: {
-				update: (newSelection) => this.selected = newSelection
+				select: () => { this.selected = true; this._clicked = false; },
+				reset: () => this._clicked = false
 			},
 			cancelable: true,
 			bubbles: true,
@@ -147,6 +155,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		if (beforeSelectedEvent.defaultPrevented) return;
 
 		this.selected = true;
+		this._clicked = false;
 	};
 
 	#handleKeydown(e) {

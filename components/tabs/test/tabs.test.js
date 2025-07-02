@@ -94,7 +94,7 @@ describe('d2l-tabs', () => {
 				const el = await fixture(normalFixture);
 				el.addEventListener('d2l-tab-before-selected', (e) => {
 					e.preventDefault();
-					e.detail.update(true);
+					e.detail.select();
 				});
 				const tab = el.querySelectorAll('d2l-tab')[1];
 				await clickElem(tab);
