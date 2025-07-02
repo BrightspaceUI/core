@@ -8,7 +8,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 class ListNestedIterationsHelper extends LitElement {
 	static get properties() {
 		return {
-			isDraggable: { attribute: 'is-draggable', type: Boolean }
+			isDraggable: { attribute: 'is-draggable', type: Boolean },
+			separators: { type: String }
 		};
 	}
 
@@ -109,7 +110,7 @@ class ListNestedIterationsHelper extends LitElement {
 
 	_createList(parentOptions, childrenOptions) {
 		return html`
-			<d2l-list>
+			<d2l-list separators=${ifDefined(this.separators)}>
 				${this._getParentItems(parentOptions, this._getChildItems(childrenOptions))}
 			</d2l-list>
 		`;
@@ -133,7 +134,7 @@ class ListNestedIterationsHelper extends LitElement {
 				<d2l-list-item key="${childKey}" label="${childL2Text}" ?selectable="${!!childOptions[0]}" ?draggable="${this.isDraggable}" ?expandable="${childOptions[1] && i !== 1}" color="${ifDefined((childOptions[2] && i === 0) || childOptions[3] ? '#ff0000' : undefined)}">
 					<d2l-list-item-content>${childL2Text}</d2l-list-item-content>
 					${i === 1 || !childOptions[1] ? nothing : html`
-						<d2l-list slot="nested">
+						<d2l-list slot="nested" separators=${ifDefined(this.separators)}>
 							<d2l-list-item key="${`${childKey}-child`}" label="${childL3Text}" ?selectable="${!!childOptions[0]}" ?draggable="${this.isDraggable}" color="${ifDefined(childOptions[3] ? '#00ff00' : undefined)}">
 								<d2l-list-item-content>${childL3Text}</d2l-list-item-content>
 							</d2l-list-item>
@@ -155,7 +156,7 @@ class ListNestedIterationsHelper extends LitElement {
 				<d2l-list-item key="${parentKey}" label="${parentText}" ?selectable="${!!parentOptions[0]}" ?draggable="${this.isDraggable}" ?expandable="${parentOptions[1] && i !== 1}" ?expanded="${parentOptions[1] && i === 0}" color="${ifDefined((parentOptions[2] && i === 0) || parentOptions[3] ? '#ff0000' : undefined)}">
 					<d2l-list-item-content>${parentText}</d2l-list-item-content>
 					${i === 1 || (i === 2 && !parentOptions[1]) ? nothing : html`
-						<d2l-list slot="nested">${nested}</d2l-list>
+						<d2l-list slot="nested" separators=${ifDefined(this.separators)}>${nested}</d2l-list>
 					`}
 				</d2l-list-item>
 			`);
