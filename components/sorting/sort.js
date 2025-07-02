@@ -77,8 +77,6 @@ class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 		this.dispatchEvent(new CustomEvent(
 			'd2l-sort-change', {
-				bubbles: false,
-				composed: false,
 				detail: { value: selectedItem.value }
 			}
 		));
