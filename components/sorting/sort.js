@@ -14,7 +14,7 @@ class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 	static properties = {
 		/**
-		 * Disabled the sort
+		 * Disables the sort
 		 * @type {boolean}
 		 */
 		disabled: { type: Boolean, reflect: true },

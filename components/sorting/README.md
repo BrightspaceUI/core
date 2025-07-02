@@ -22,7 +22,7 @@ The sort menu allows the user to adjust the sort order of data in a list.
 * Make the Sort the right-most component in a group of Search, Filters & Sort controls
 * Carefully consider the user’s workflow before adding a reversible order to the sort. Most sort options do not need to be reversible.
 * Write Sort option labels in Title Case
-* Make sort labels specific rather than general — “Sort: Course Title” is better than “Sort: Alphabetical”.
+* Make Sort labels specific rather than general — “Sort: Course Title” is better than “Sort: Alphabetical”.
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
