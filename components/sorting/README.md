@@ -84,6 +84,6 @@ The `<d2l-sort-item>` element represents an option within its parent `<d2l-sort>
 | Property | Type | Description |
 |---|---|---|
 | `text` | String, required | Option text |
+| `value` | String, required | Value of the option |
 | `selected` | Boolean | Whether this is the selected sort option |
-| `value` | String | Value of the option |
 <!-- docs: end hidden content -->
