@@ -20,8 +20,8 @@ class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		disabled: { type: Boolean, reflect: true },
 		/** @ignore */
 		opened: { type: Boolean, reflect: true },
-		_selectedItem: { state: true },
 		_selectedItemText: { state: true },
+		_selectedItemValue: { state: true },
 	};
 
 	static get styles() {
@@ -42,8 +42,8 @@ class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		super();
 		this.disabled = false;
 		this.opened = false;
-		this._selectedItem = null;
 		this._selectedItemText = '';
+		this._selectedItemValue = '';
 	}
 
 	static get focusElementSelector() {
@@ -75,10 +75,10 @@ class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	#handleMenuItemChange(e) {
-		if (this._selectedItem === e.target) return;
+		if (this._selectedItemValue === e.target.value) return;
 
-		this._selectedItem = e.target;
 		this._selectedItemText = e.target.text;
+		this._selectedItemValue = e.target;
 		this.dispatchEvent(new CustomEvent(
 			'd2l-sort-change', {
 				detail: { value: e.detail.value }
@@ -105,8 +105,9 @@ class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			selectedItems[i].selected = false;
 		}
 
-		this._selectedItem = selectedItems[selectedItems.length - 1];
-		this._selectedItemText = this._selectedItem.text;
+		const selectedItem = selectedItems[selectedItems.length - 1];
+		this._selectedItemText = selectedItem.text;
+		this._selectedItemValue = selectedItem.value;
 	}
 
 }
