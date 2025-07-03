@@ -50,6 +50,7 @@ npm install @brightspace-ui/core
   * [Selection](components/selection/): components for selection and bulk actions
   * [Scroll Wrapper](components/scroll-wrapper/): arrows to scroll content horizontally
   * [Skeleton](components/skeleton/): apply low-fidelity skeletons to your application as it loads
+  * [Sort](components/sorting/): menu for adjusting the sort order of data in a list
   * [Status Indicator](components/status-indicator/): status-indicator components
   * [Switch](components/switch/): switch component with on/off semantics
   * [Table](components/table/): table styles, column sorting and overflow handling
