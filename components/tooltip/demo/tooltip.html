@@ -78,19 +78,6 @@
 
 	<d2l-demo-page page-title="d2l-tooltip">
 
-		<h2>Help Tooltip wrapped</h2>
-		<d2l-demo-snippet>
-			<template>
-				<div style="max-width: 100px;">
-					<d2l-tooltip-help text="Due: Jan 20, 2026">Other due date information</d2l-tooltip-help>
-					<p class="d2l-body-small" style="padding-top: 20px;">
-						This is some sample text.
-						<d2l-tooltip-help text="Due: Jan 20, 2026" inherit-font-style>Other due date information</d2l-tooltip-help>
-					</p>
-				</div>
-			</template>
-		</d2l-demo-snippet>
-
 		<h2>Tooltip (info)</h2>
 		<d2l-demo-snippet>
 			<template>
@@ -267,6 +254,10 @@
 		 					</svg>
 						</d2l-icon-custom>
 					</d2l-tooltip-help>
+				</p>
+				<p class="d2l-body-compact" style="max-width: 100px;">
+					Wrapped:
+					<d2l-tooltip-help text="Due: Jan 20, 2026">Other due date information</d2l-tooltip-help>
 				</p>
 			</template>
 		</d2l-demo-snippet>
