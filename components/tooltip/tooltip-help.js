@@ -58,6 +58,7 @@ class TooltipHelp extends SlottedIconMixin(SkeletonMixin(FocusMixin(LitElement))
 				display: inline-flex;
 				font-family: inherit;
 				padding: 0;
+				text-align: start;
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
 				text-decoration-thickness: 1px;
