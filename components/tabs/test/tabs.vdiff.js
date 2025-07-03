@@ -247,6 +247,36 @@ describe('d2l-tabs', () => {
 			await expect(elem).to.be.golden();
 		});
 
+		it('clicked with state managed by consumer', async() => {
+			const elem = await fixture(panelSelectedFixture[useFixture], { viewport });
+			elem.addEventListener('d2l-tab-before-selected', (e) => {
+				e.preventDefault();
+			});
+			await clickElem(elem.querySelector('d2l-tab'));
+			await hoverElem(elem.querySelectorAll('d2l-tab')[1]); // to avoid hover on clicked elem interfering with the styles we want to test
+			await expect(elem).to.be.golden();
+		});
+
+		it('clicked with state managed by consumer then selected', async() => {
+			const elem = await fixture(panelSelectedFixture[useFixture], { viewport });
+			elem.addEventListener('d2l-tab-before-selected', (e) => {
+				e.preventDefault();
+				e.detail.select();
+			});
+			await clickElem(elem.querySelector('d2l-tab'));
+			await expect(elem).to.be.golden();
+		});
+
+		it('clicked with state managed by consumer then reset', async() => {
+			const elem = await fixture(panelSelectedFixture[useFixture], { viewport });
+			elem.addEventListener('d2l-tab-before-selected', (e) => {
+				e.preventDefault();
+				e.detail.reset();
+			});
+			await clickElem(elem.querySelector('d2l-tab'));
+			await hoverElem(elem.querySelectorAll('d2l-tab')[1]); // to avoid hover on clicked elem interfering with the styles we want to test
+			await expect(elem).to.be.golden();
+		});
 	});
 
 	describe('overflow', () => {

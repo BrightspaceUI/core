@@ -78,6 +78,30 @@ describe('d2l-tabs', () => {
 			await oneEvent(tab, 'd2l-tab-content-change');
 		});
 
+		describe('consumer manages state', () => {
+
+			it('click with no state management', async() => {
+				const el = await fixture(normalFixture);
+				el.addEventListener('d2l-tab-before-selected', (e) => {
+					e.preventDefault();
+				});
+				const tab = el.querySelectorAll('d2l-tab')[1];
+				await clickElem(tab);
+				expect(tab.selected).to.equal(false);
+			});
+
+			it('click with state management', async() => {
+				const el = await fixture(normalFixture);
+				el.addEventListener('d2l-tab-before-selected', (e) => {
+					e.preventDefault();
+					e.detail.select();
+				});
+				const tab = el.querySelectorAll('d2l-tab')[1];
+				await clickElem(tab);
+				expect(tab.selected).to.equal(true);
+			});
+		});
+
 	});
 
 	describe('behavior', () => {
