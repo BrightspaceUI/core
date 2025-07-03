@@ -100,11 +100,6 @@ class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			selectedItems.push(items[0]);
 		}
 
-		// only the last selected item is actually selected
-		for (let i = 0; i < selectedItems.length - 1; i++) {
-			selectedItems[i].selected = false;
-		}
-
 		const selectedItem = selectedItems[selectedItems.length - 1];
 		this._selectedItemText = selectedItem.text;
 		this._selectedItemValue = selectedItem.value;

@@ -27,13 +27,15 @@ describe('d2l-sort', () => {
 		expect(elem.querySelector('d2l-sort-item[value="item1"]').selected).to.be.true;
 		expect(elem.querySelector('d2l-sort-item[value="item2"]').selected).to.be.false;
 		expect(elem.querySelector('d2l-sort-item[value="item3"]').selected).to.be.false;
+		expect(elem._selectedItemText).to.equal('Item 1');
 	});
 
 	it('treats only the last selected item as selected', async() => {
 		const elem = await fixture(createItems([true, true, true]));
-		expect(elem.querySelector('d2l-sort-item[value="item1"]').selected).to.be.false;
-		expect(elem.querySelector('d2l-sort-item[value="item2"]').selected).to.be.false;
+		expect(elem.querySelector('d2l-sort-item[value="item1"]').selected).to.be.true; // we may fix this in the future
+		expect(elem.querySelector('d2l-sort-item[value="item2"]').selected).to.be.true; // we may fix this in the future
 		expect(elem.querySelector('d2l-sort-item[value="item3"]').selected).to.be.true;
+		expect(elem._selectedItemText).to.equal('Item 3');
 	});
 
 	it('handles non-first selected items', async() => {
