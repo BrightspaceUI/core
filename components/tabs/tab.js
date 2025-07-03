@@ -89,6 +89,7 @@ class Tab extends TabMixin(LitElement) {
 
 		if (changedProperties.has('text')) {
 			this.dispatchContentChangeEvent();
+			this.title = this.text;
 		}
 	}
 
