@@ -48,6 +48,14 @@ describe('d2l-sort', () => {
 		expect(e.detail.value).to.equal('updated');
 	});
 
+	it('does not dispatch change event when the selected item does not change', async() => {
+		const elem = await fixture(sortFixtures.opened);
+		let changeEventCount = 0;
+		elem.addEventListener('d2l-sort-change', () => changeEventCount++);
+		await clickElem(elem.querySelector('d2l-sort-item[value="relevant"]'));
+		expect(changeEventCount).to.equal(0);
+	});
+
 	it('delegates focus to underlying focusable', async() => {
 		const elem = await fixture(sortFixtures.closed);
 		const innerButton = elem

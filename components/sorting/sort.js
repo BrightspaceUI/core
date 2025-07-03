@@ -20,6 +20,7 @@ class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		disabled: { type: Boolean, reflect: true },
 		/** @ignore */
 		opened: { type: Boolean, reflect: true },
+		_selectedItem: { state: true },
 		_selectedItemText: { state: true },
 	};
 
@@ -41,6 +42,7 @@ class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		super();
 		this.disabled = false;
 		this.opened = false;
+		this._selectedItem = null;
 		this._selectedItemText = '';
 	}
 
@@ -72,12 +74,14 @@ class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		return elems.filter(el => el.tagName === 'D2L-SORT-ITEM');
 	}
 
-	#handleMenuItemChange() {
-		const selectedItem = this.#recalculateState();
+	#handleMenuItemChange(e) {
+		if (this._selectedItem === e.target) return;
 
+		this._selectedItem = e.target;
+		this._selectedItemText = e.target.text;
 		this.dispatchEvent(new CustomEvent(
 			'd2l-sort-change', {
-				detail: { value: selectedItem.value }
+				detail: { value: e.detail.value }
 			}
 		));
 	}
@@ -95,15 +99,14 @@ class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			items[0].selected = true;
 			selectedItems.push(items[0]);
 		}
-		const selectedItem = selectedItems[selectedItems.length - 1];
 
 		// only the last selected item is actually selected
 		for (let i = 0; i < selectedItems.length - 1; i++) {
 			selectedItems[i].selected = false;
 		}
 
-		this._selectedItemText = selectedItem.text;
-		return selectedItem;
+		this._selectedItem = selectedItems[selectedItems.length - 1];
+		this._selectedItemText = this._selectedItem.text;
 	}
 
 }
