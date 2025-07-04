@@ -57,7 +57,7 @@ export const LinkMixin = superclass => class extends LocalizeCoreElement(supercl
 		`];
 	}
 
-	_render(inner, { rel = undefined, ariaLabel = undefined, linkClasses = {} } = {}) {
+	_render(inner, { rel = undefined, ariaLabel = undefined, linkClasses = {}, tabindex = undefined } = {}) {
 		/*
 		* NOTICE:
 		* All html template whitespace within this component is critical to proper rendering and wrapping.
@@ -70,6 +70,7 @@ export const LinkMixin = superclass => class extends LocalizeCoreElement(supercl
 			href="${ifDefined(this.href)}"
 			target="${ifDefined(this.target)}"
 			rel="${ifDefined(rel)}"
+			tabindex="${ifDefined(tabindex)}"
 			>${inner}</a>`;
 	}
 

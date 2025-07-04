@@ -76,7 +76,7 @@ class MenuItemLink extends LinkMixin(MenuItemMixin(LitElement)) {
 			${this._renderNewWindowIcon()}
 			<div class="d2l-menu-item-supporting"><slot name="supporting"></slot></div>
 		`;
-		return this._render(inner, { rel: this.target ? 'noreferrer noopener' : undefined });
+		return this._render(inner, { rel: this.target ? 'noreferrer noopener' : undefined, tabindex: -1 });
 	}
 
 	_getTarget() {
