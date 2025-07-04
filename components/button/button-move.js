@@ -6,7 +6,6 @@ import { buttonStyles } from './button-styles.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 
 const keyCodes = Object.freeze({
@@ -33,7 +32,7 @@ export const moveActions = Object.freeze({
  * A button component that provides a move action via a single button.
  * @fires d2l-button-move-action - Dispatched when move action occurs
  */
-class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
+class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -140,7 +139,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 				.up-layer,
 				.down-layer {
 					height: 1.2rem;
-					left: -0.2rem;
+					inset-inline-start: -0.2rem;
 					position: absolute;
 					width: 1.3rem;
 				}
@@ -149,11 +148,6 @@ class ButtonMove extends ThemeMixin(FocusMixin(RtlMixin(LitElement))) {
 				}
 				.down-layer {
 					bottom: -0.35rem;
-				}
-				:host([dir="rtl"]) .up-layer,
-				:host([dir="rtl"]) .down-layer {
-					left: auto;
-					right: -0.2rem;
 				}
 
 				/* Firefox includes a hidden border which messes up button dimensions */
