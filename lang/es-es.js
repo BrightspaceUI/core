@@ -209,7 +209,12 @@ export default {
 	"components.tag-list.cleared-item": "Se ha eliminado el elemento {value} de la lista de etiquetas",
 	"components.tag-list.interactive-label": "Lista de etiquetas, {count} elementos",
 	"components.tag-list.num-hidden": "+ {count} más",
-	"components.tag-list.role-description": "Lista de etiquetas",
+	"components.tag-list.role-description":
+		`{count, plural,
+			=0 {Tag List with 0 items}
+			one {Tag List with {count} item}
+			other {Tag List with {count} items}
+		}`,
 	"components.tag-list.show-less": "Mostrar menos",
 	"components.tag-list.show-more-description": "Seleccione esta opción para mostrar los elementos ocultos de la lista de etiquetas",
 	"components.tag-list-item.role-description": "Etiqueta",

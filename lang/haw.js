@@ -209,7 +209,12 @@ export default {
 	"components.tag-list.cleared-item": "Wehe ʻia ka helu helu helu {value}",
 	"components.tag-list.interactive-label": "Papa inoa inoa, {count} mau mea",
 	"components.tag-list.num-hidden": "+ {count} hou aku",
-	"components.tag-list.role-description": "Papa inoa inoa",
+	"components.tag-list.role-description":
+		`{count, plural,
+			=0 {Tag List with 0 items}
+			one {Tag List with {count} item}
+			other {Tag List with {count} items}
+		}`,
 	"components.tag-list.show-less": "Hōʻike liʻiliʻi",
 	"components.tag-list.show-more-description": "E koho e hōʻike i nā mea papa inoa inoa huna",
 	"components.tag-list-item.role-description": "Tag",

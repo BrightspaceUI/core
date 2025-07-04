@@ -202,7 +202,11 @@ export default {
 	"components.tag-list.cleared-item": "已移除標記清單項目 {value}",
 	"components.tag-list.interactive-label": "標記清單，{count} 個項目",
 	"components.tag-list.num-hidden": "還有 {count} 個",
-	"components.tag-list.role-description": "標記列表",
+	"components.tag-list.role-description":
+		`{count, plural,
+			=0 {Tag List with 0 items}
+			other {Tag List with {count} items}
+		}`,
 	"components.tag-list.show-less": "顯示更少",
 	"components.tag-list.show-more-description": "選取以顯示隱藏的標記清單項目",
 	"components.tag-list-item.role-description": "標記",

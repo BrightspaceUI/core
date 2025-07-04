@@ -209,7 +209,12 @@ export default {
 	"components.tag-list.cleared-item": "टैग लिस्ट आइटम {value} हटाए गए",
 	"components.tag-list.interactive-label": "टैग लिस्ट, {count} आइटम",
 	"components.tag-list.num-hidden": "+ {count} और",
-	"components.tag-list.role-description": "टैग सूची",
+	"components.tag-list.role-description":
+		`{count, plural,
+			=0 {Tag List with 0 items}
+			one {Tag List with {count} item}
+			other {Tag List with {count} items}
+		}`,
 	"components.tag-list.show-less": "कम दिखाएँ",
 	"components.tag-list.show-more-description": "छिपे हुए टैग लिस्ट आइटम दिखाने के लिए चुनें",
 	"components.tag-list-item.role-description": "टैग",

@@ -201,7 +201,11 @@ export default {
 	"components.tag-list.cleared-item": "タグリスト項目 {value} を削除しました",
 	"components.tag-list.interactive-label": "タグリスト、{count} 項目",
 	"components.tag-list.num-hidden": "+ {count} 件追加",
-	"components.tag-list.role-description": "タグリスト",
+	"components.tag-list.role-description":
+		`{count, plural,
+			=0 {Tag List with 0 items}
+			other {Tag List with {count} items}
+		}`,
 	"components.tag-list.show-less": "少なく表示",
 	"components.tag-list.show-more-description": "選択すると、非表示のタグリスト項目が表示されます",
 	"components.tag-list-item.role-description": "タグ",

@@ -201,7 +201,11 @@ export default {
 	"components.tag-list.cleared-item": "已移除标签列表项目 {value}",
 	"components.tag-list.interactive-label": "标签列表，{count} 个项目",
 	"components.tag-list.num-hidden": "+ {count} 个",
-	"components.tag-list.role-description": "标签列表",
+	"components.tag-list.role-description":
+		`{count, plural,
+			=0 {Tag List with 0 items}
+			other {Tag List with {count} items}
+		}`,
 	"components.tag-list.show-less": "显示更少",
 	"components.tag-list.show-more-description": "选择以显示隐藏的标签列表项目",
 	"components.tag-list-item.role-description": "标记",
