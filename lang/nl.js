@@ -209,7 +209,12 @@ export default {
 	"components.tag-list.cleared-item": "Item {value} op de labellijst is verwijderd",
 	"components.tag-list.interactive-label": "Labellijst, {count} items",
 	"components.tag-list.num-hidden": "+ {count} extra",
-	"components.tag-list.role-description": "Labellijst",
+	"components.tag-list.role-description":
+		`{count, plural,
+			=0 {Tag List with 0 items}
+			one {Tag List with {count} item}
+			other {Tag List with {count} items}
+		}`,
 	"components.tag-list.show-less": "Minder weergeven",
 	"components.tag-list.show-more-description": "Selecteer deze optie om verborgen items op labellijsten weer te geven",
 	"components.tag-list-item.role-description": "Label",

@@ -194,7 +194,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 				aria-label="${this.description}"
 				class="${classMap(containerClasses)}"
 				role="group"
-				aria-roledescription="${this.localize('components.tag-list.role-description')}"
+				aria-roledescription="${this.localize('components.tag-list.role-description', { count: this._items ? this._items.length : 0 })}"
 				@d2l-tag-list-item-clear="${this._handleItemDeleted}">
 				<slot @slotchange="${this._handleSlotChange}" @focusout="${this._handleSlotFocusOut}" @focusin="${this._handleSlotFocusIn}"></slot>
 				${overflowButton}
