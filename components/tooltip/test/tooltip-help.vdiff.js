@@ -131,4 +131,31 @@ describe('tooltip-help', () => {
 			await expect(elem).to.be.golden();
 		});
 	});
+
+	describe('wrapping text', () => {
+		it('default', async() => {
+			const elem = await fixture(html`
+				<div style="width: 200px;">
+					<d2l-tooltip-help text="Due: Saturday, January 1, 2022 at 11:59 PM">
+						Here is some more information that is wrapped in a tooltip.
+					</d2l-tooltip-help>
+				</div>
+			`);
+			await expect(elem).to.be.golden();
+		});
+
+		it('hover', async() => {
+			const elem = await fixture(html`
+				<div style="width: 200px;">
+					<d2l-tooltip-help text="Due: Saturday, January 1, 2022 at 11:59 PM">
+						Here is some more information that is wrapped in a tooltip.
+					</d2l-tooltip-help>
+				</div>
+			`);
+			const tooltip = elem.querySelector('d2l-tooltip-help');
+			hoverElem(tooltip);
+			await oneEvent(tooltip, 'd2l-tooltip-show');
+			await expect(tooltip).to.be.golden();
+		});
+	});
 });
