@@ -116,16 +116,14 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					align-items: baseline;
 					display: flex;
 				}
-				a span.truncate {
+				a.truncate .content {
 					${overflowClipEnabled ? getOverflowDeclarations({ lines: 1 }) : css`
 						-webkit-box-orient: vertical;
 						display: -webkit-box;
 						overflow: hidden;
 						overflow-wrap: anywhere;
+						color: black;
 					`}
-				}
-				a span.truncate-one {
-					${overflowEllipsisDeclarations}
 				}
 				#new-window {
 					line-height: 0;
@@ -169,11 +167,8 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		const linkClasses = {
 			'd2l-link': true,
 			'd2l-link-main': this.main,
-			'd2l-link-small': this.small
-		};
-		const spanClasses = {
-			'truncate': this.lines > 1,
-			'truncate-one': this.lines === 1
+			'd2l-link-small': this.small,
+			'truncate': this.lines > 0
 		};
 		const styles = { webkitLineClamp: this.lines || null };
 		const newWindowElements = (this.target === '_blank')
@@ -192,7 +187,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				href="${ifDefined(this.href)}"
 				target="${ifDefined(this.target)}"
 				><span
-					class="${classMap(spanClasses)}"
+					class="content"
 					style="${styleMap(styles)}"><slot></slot></span>${newWindowElements}</a>`;
 	}
 
