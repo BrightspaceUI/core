@@ -99,7 +99,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		return [ linkStyles, offscreenStyles,
 			css`
 				:host {
-					display: inline;
+					display: contents;
 				}
 				:host([hidden]) {
 					display: none;
@@ -115,6 +115,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				:host([lines]) a {
 					align-items: baseline;
 					display: flex;
+					min-width: 0;
 				}
 				a span.truncate {
 					${overflowClipEnabled ? getOverflowDeclarations({ lines: 1 }) : css`
@@ -173,11 +174,12 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		};
 		const spanClasses = {
 			'truncate': this.lines > 1,
-			'truncate-one': this.lines === 1
+			'truncate-one': this.lines === 1,
+			'vdiff-target': true
 		};
 		const styles = { webkitLineClamp: this.lines || null };
 		const newWindowElements = (this.target === '_blank')
-			? html`<span id="new-window"><span style="font-size: 0;">&nbsp;</span><d2l-icon icon="tier1:new-window"></d2l-icon></span><span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
+			? html`<span id="new-window" class="vdiff-target"><span style="font-size: 0;">&nbsp;</span><d2l-icon icon="tier1:new-window"></d2l-icon></span><span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
 			: nothing;
 
 		/*
