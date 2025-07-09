@@ -1,12 +1,14 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFlag } from '../../helpers/flags.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
-import { LinkMixin } from './link-mixin.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
@@ -51,7 +53,7 @@ export const linkStyles = css`
  * This component can be used just like the native anchor tag.
  * @slot - The content (e.g., text) that when selected causes navigation
  */
-class Link extends LinkMixin(FocusMixin(LitElement)) {
+class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -60,6 +62,16 @@ class Link extends LinkMixin(FocusMixin(LitElement)) {
 			 * @type {string}
 			 */
 			ariaLabel: { type: String, attribute: 'aria-label' },
+			/**
+			 * Download a URL instead of navigating to it
+			 * @type {boolean}
+			 */
+			download: { type: Boolean },
+			/**
+			 * REQUIRED: URL or URL fragment of the link
+			 * @type {string}
+			 */
+			href: { type: String },
 			/**
 			 * Whether to apply the "main" link style
 			 * @type {boolean}
@@ -75,11 +87,16 @@ class Link extends LinkMixin(FocusMixin(LitElement)) {
 			 * @type {boolean}
 			 */
 			small: { type: Boolean, reflect: true },
+			/**
+			 * Where to display the linked URL
+			 * @type {string}
+			 */
+			target: { type: String }
 		};
 	}
 
 	static get styles() {
-		return [ super.styles, linkStyles,
+		return [ linkStyles, offscreenStyles,
 			css`
 				:host {
 					display: inline;
@@ -113,6 +130,28 @@ class Link extends LinkMixin(FocusMixin(LitElement)) {
 				a span.truncate-one {
 					${overflowEllipsisDeclarations}
 				}
+				#new-window {
+					line-height: 0;
+					white-space: nowrap;
+				}
+				d2l-icon {
+					color: var(--d2l-color-celestine);
+					height: calc(1em - 1px);
+					margin-inline-start: 0.315em;
+					transform: translateY(0.1em);
+					vertical-align: inherit;
+					width: calc(1em - 1px);
+				}
+
+				a:hover d2l-icon {
+					--d2l-icon-fill-color: var(--d2l-color-celestine-minus-1);
+				}
+
+				@media print {
+					d2l-icon {
+						display: none;
+					}
+				}
 			`
 		];
 	}
@@ -140,9 +179,24 @@ class Link extends LinkMixin(FocusMixin(LitElement)) {
 			'truncate-one': this.lines === 1
 		};
 		const styles = { webkitLineClamp: this.lines || null };
+		const newWindowElements = (this.target === '_blank')
+			? html`<span id="new-window"><span style="font-size: 0;">&nbsp;</span><d2l-icon icon="tier1:new-window"></d2l-icon></span><span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
+			: nothing;
 
-		const inner = html`<span class="${classMap(spanClasses)}" style="${styleMap(styles)}"><slot></slot></span>${this._renderNewWindowIcon()}`;
-		return this._render(inner, { ariaLabel: this.ariaLabel, linkClasses });
+		/*
+		* NOTICE:
+		* All html template whitespace within this component is critical to proper rendering and wrapping.
+		* Do not modify for readability!
+		*/
+		return html`<a
+				aria-label="${ifDefined(this.ariaLabel)}"
+				class="${classMap(linkClasses)}"
+				?download="${this.download}"
+				href="${ifDefined(this.href)}"
+				target="${ifDefined(this.target)}"
+				><span
+					class="${classMap(spanClasses)}"
+					style="${styleMap(styles)}"><slot></slot></span>${newWindowElements}</a>`;
 	}
 
 }

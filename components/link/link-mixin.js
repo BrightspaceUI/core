@@ -5,11 +5,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 
-/**
- * A menu item component used for navigating.
- * @fires click - Dispatched when the link is clicked
- * @slot supporting - Allows supporting information to be displayed on the right-most side of the menu item
- */
 export const LinkMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {

@@ -1,16 +1,21 @@
 import { css, html, LitElement } from 'lit';
+import { getFlag } from '../../helpers/flags.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LinkMixin } from '../link/link-mixin.js';
 import { MenuItemMixin } from './menu-item-mixin.js';
 import { menuItemStyles } from './menu-item-styles.js';
+
+const newWindowIconEnabled = getFlag('GAUD-8295-menu-item-link-new-window-icon', true);
 
 /**
  * A menu item component used for navigating.
  * @fires click - Dispatched when the link is clicked
  * @slot supporting - Allows supporting information to be displayed on the right-most side of the menu item
  */
-class MenuItemLink extends LinkMixin(MenuItemMixin(LitElement)) {
+class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitElement)) : MenuItemMixin(LitElement)) {
 
 	static get properties() {
+		if (newWindowIconEnabled) return {}
 		return {
 			/**
 			 * Prompts the user to save the linked URL instead of navigating to it.
@@ -33,7 +38,7 @@ class MenuItemLink extends LinkMixin(MenuItemMixin(LitElement)) {
 	}
 
 	static get styles() {
-		return [ super.styles, menuItemStyles,
+		if (newWindowIconEnabled) return [ super.styles, menuItemStyles,
 			css`
 				:host {
 					display: block;
@@ -62,6 +67,26 @@ class MenuItemLink extends LinkMixin(MenuItemMixin(LitElement)) {
 				}
 			`
 		];
+
+		return [ menuItemStyles,
+			css`
+				:host {
+					display: block;
+					padding: 0;
+				}
+
+				:host > a {
+					align-items: center;
+					color: inherit;
+					display: flex;
+					line-height: 1rem;
+					outline: none;
+					overflow-x: hidden;
+					padding: 0.75rem 1rem;
+					text-decoration: none;
+				}
+			`
+		];
 	}
 
 	firstUpdated() {
@@ -71,12 +96,22 @@ class MenuItemLink extends LinkMixin(MenuItemMixin(LitElement)) {
 	}
 
 	render() {
-		const inner = html`
-			<div class="d2l-menu-item-text">${this.text}</div>
-			${this._renderNewWindowIcon()}
-			<div class="d2l-menu-item-supporting"><slot name="supporting"></slot></div>
+		if (newWindowIconEnabled) {
+			const inner = html`
+				<div class="d2l-menu-item-text">${this.text}</div>
+				${this._renderNewWindowIcon()}
+				<div class="d2l-menu-item-supporting"><slot name="supporting"></slot></div>
+			`;
+			return this._render(inner, { rel: this.target ? 'noreferrer noopener' : undefined, tabindex: -1 });
+		}
+
+		const rel = this.target ? 'noreferrer noopener' : undefined;
+		return html`
+			<a download="${ifDefined(this.download)}" href="${ifDefined(this.href)}" rel="${ifDefined(rel)}" target="${ifDefined(this.target)}" tabindex="-1">
+				<div class="d2l-menu-item-text">${this.text}</div>
+				<div class="d2l-menu-item-supporting"><slot name="supporting"></slot></div>
+			</a>
 		`;
-		return this._render(inner, { rel: this.target ? 'noreferrer noopener' : undefined, tabindex: -1 });
 	}
 
 	_getTarget() {
