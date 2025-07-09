@@ -174,8 +174,6 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		const container = this.shadowRoot.querySelector('.tag-list-item-content');
-
 		this.addEventListener('focus', async(e) => {
 			// ignore focus events coming from inside the tag content
 			if (e.composedPath()[0] !== this) return;
@@ -198,7 +196,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			await this.updateComplete;
 			// delay the focus to allow focusin to fire
 			setTimeout(() => {
-				container.focus();
+				this.shadowRoot.querySelector('.tag-list-item-content').focus();
 			});
 		});
 
