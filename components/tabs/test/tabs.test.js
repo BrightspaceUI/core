@@ -71,11 +71,33 @@ describe('d2l-tabs', () => {
 			await oneEvent(tabs, 'd2l-tab-selected');
 		});
 
+		it('does not dispatch d2l-tab-selected if already selected', async() => {
+			const el = await fixture(normalFixture);
+			let dispatched = false;
+			el.addEventListener('d2l-tab-selected', () => dispatched = true);
+
+			const tab = el.querySelectorAll('d2l-tab')[0]; // first tab is selected by default
+			await clickElem(tab);
+			expect(tab.selected).to.equal(true);
+			expect(dispatched).to.equal(false);
+		});
+
 		it('dispatches d2l-tab-content-change', async() => {
 			const el = await fixture(normalFixture);
 			const tab = el.querySelector('d2l-tab');
 			setTimeout(() => tab.setAttribute('text', 'new text'));
 			await oneEvent(tab, 'd2l-tab-content-change');
+		});
+
+		it('does not dispatch d2l-tab-before-selected if already selected', async() => {
+			const el = await fixture(normalFixture);
+			let dispatched = false;
+			el.addEventListener('d2l-tab-before-selected', () => dispatched = true);
+
+			const tab = el.querySelectorAll('d2l-tab')[0]; // first tab is selected by default
+			await clickElem(tab);
+			expect(tab.selected).to.equal(true);
+			expect(dispatched).to.equal(false);
 		});
 
 		describe('consumer manages state', () => {
