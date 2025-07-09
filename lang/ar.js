@@ -209,7 +209,12 @@ export default {
 	"components.tag-list.cleared-item": "تمت إزالة عنصر قائمة العلامات {value}",
 	"components.tag-list.interactive-label": "قائمة العلامات، {count} من العناصر",
 	"components.tag-list.num-hidden": "زيادة {count} إضافي",
-	"components.tag-list.role-description": "قائمة العلامات",
+	"components.tag-list.role-description":
+		`{count, plural,
+			=0 {Tag List with 0 items}
+			one {Tag List with {count} item}
+			other {Tag List with {count} items}
+		}`,
 	"components.tag-list.show-less": "إظهار أقل",
 	"components.tag-list.show-more-description": "حدد لإظهار عناصر قائمة العلامات المخفية",
 	"components.tag-list-item.role-description": "العلامة",

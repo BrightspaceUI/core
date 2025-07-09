@@ -209,7 +209,12 @@ export default {
 	"components.tag-list.cleared-item": "Wedi tynnu’r eitem rhestr tag {value}",
 	"components.tag-list.interactive-label": "Rhestr Tag, {count} o eitemau",
 	"components.tag-list.num-hidden": "+ {count} yn rhagor",
-	"components.tag-list.role-description": "Rhestr o Dagiau",
+	"components.tag-list.role-description":
+		`{count, plural,
+			=0 {Tag List with 0 items}
+			one {Tag List with {count} item}
+			other {Tag List with {count} items}
+		}`,
 	"components.tag-list.show-less": "Dangos Llai",
 	"components.tag-list.show-more-description": "Dewis i ddangos eitemau rhestr tag cudd",
 	"components.tag-list-item.role-description": "Tag",

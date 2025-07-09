@@ -201,7 +201,11 @@ export default {
 	"components.tag-list.cleared-item": "태그 목록 항목 {value}을(를) 제거했습니다",
 	"components.tag-list.interactive-label": "태그 목록, {count}개 항목",
 	"components.tag-list.num-hidden": "{count}개 더",
-	"components.tag-list.role-description": "태그 목록",
+	"components.tag-list.role-description":
+		`{count, plural,
+			=0 {Tag List with 0 items}
+			other {Tag List with {count} items}
+		}`,
 	"components.tag-list.show-less": "간단히 표시",
 	"components.tag-list.show-more-description": "숨겨진 태그 목록 항목을 표시하려면 선택합니다",
 	"components.tag-list-item.role-description": "태그",

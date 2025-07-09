@@ -1,13 +1,16 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { SlottedIconMixin } from '../icons/slotted-icon-mixin.js';
+
+const startAlignText = getFlag('GAUD-8232-tooltip-help-start-align-text', true);
 
 /**
  * A component used to display additional information when users focus or hover over some text.
@@ -58,6 +61,7 @@ class TooltipHelp extends SlottedIconMixin(SkeletonMixin(FocusMixin(LitElement))
 				display: inline-flex;
 				font-family: inherit;
 				padding: 0;
+				text-align: ${unsafeCSS(startAlignText ? 'start' : 'center')};  /* stylelint-disable-line */
 				text-decoration-line: underline;
 				text-decoration-style: dashed;
 				text-decoration-thickness: 1px;

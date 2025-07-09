@@ -209,7 +209,12 @@ export default {
 	"components.tag-list.cleared-item": "Kua tangohia te tūemi rārangi tūtohu {value}",
 	"components.tag-list.interactive-label": "Rārangi Tūtohu, {count} tūemi",
 	"components.tag-list.num-hidden": "+ {count} anō",
-	"components.tag-list.role-description": "Rārangi Tūtohu",
+	"components.tag-list.role-description":
+		`{count, plural,
+			=0 {Tag List with 0 items}
+			one {Tag List with {count} item}
+			other {Tag List with {count} items}
+		}`,
 	"components.tag-list.show-less": "Whakaaturia mai kia iti iho",
 	"components.tag-list.show-more-description": "Tīpakohia hei whakaatu i ngā tūemi rārangi tūtohu hunahuna",
 	"components.tag-list-item.role-description": "Tūtohu",

@@ -209,7 +209,12 @@ export default {
 	"components.tag-list.cleared-item": "Élément {value} de la liste des balises supprimé",
 	"components.tag-list.interactive-label": "Liste des balises, {count} éléments",
 	"components.tag-list.num-hidden": "+ {count} de plus",
-	"components.tag-list.role-description": "Liste des balises",
+	"components.tag-list.role-description":
+		`{count, plural,
+			=0 {Tag List with 0 items}
+			one {Tag List with {count} item}
+			other {Tag List with {count} items}
+		}`,
 	"components.tag-list.show-less": "Afficher moins",
 	"components.tag-list.show-more-description": "Sélectionnez cette option pour afficher les éléments de la liste des balises cachées",
 	"components.tag-list-item.role-description": "Marquer",
