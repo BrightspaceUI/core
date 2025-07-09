@@ -15,7 +15,7 @@ const newWindowIconEnabled = getFlag('GAUD-8295-menu-item-link-new-window-icon',
 class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitElement)) : MenuItemMixin(LitElement)) {
 
 	static get properties() {
-		if (newWindowIconEnabled) return {}
+		if (newWindowIconEnabled) return {};
 		return {
 			/**
 			 * Prompts the user to save the linked URL instead of navigating to it.
