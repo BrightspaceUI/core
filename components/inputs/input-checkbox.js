@@ -25,9 +25,28 @@ export const cssSizes = {
 
 export const checkboxStyles = css`
 	input[type="checkbox"].d2l-input-checkbox {
+		--d2l-input-checkbox-background-image: none;
+
+		--d2l-input-checkbox-background-color: var(--d2l-color-regolith);
+		--d2l-input-checkbox-background-image-disabled:
+				linear-gradient(
+					rgba(249, 251, 255, 0.5), /* regolith at 50% */
+					rgba(249, 251, 255, 0.5), /* regolith at 50% */
+				),
+				var(--d2l-input-checkbox-background-image);
+
+		@supports (color: color-mix(in srgb, black 50%, transparent)) {
+			--d2l-input-checkbox-background-image-disabled:
+				linear-gradient(
+					color-mix(in srgb, var(--d2l-input-checkbox-background-color) 50%, transparent),
+					color-mix(in srgb, var(--d2l-input-checkbox-background-color) 50%, transparent)
+				),
+				var(--d2l-input-checkbox-background-image);
+		}
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
+		background-image: var(--d2l-input-checkbox-background-image);
 		background-position: center center;
 		background-repeat: no-repeat;
 		background-size: ${cssSizes.inputBoxSize}rem ${cssSizes.inputBoxSize}rem;
@@ -43,16 +62,19 @@ export const checkboxStyles = css`
 		width: ${cssSizes.inputBoxSize}rem;
 	}
 	input[type="checkbox"].d2l-input-checkbox:checked {
-		background-image: ${inputCheck};
+		--d2l-input-checkbox-background-image: ${inputCheck}
 	}
 	input[type="checkbox"].d2l-input-checkbox:indeterminate {
-		background-image: ${inputCheckIndeterminate};
+		--d2l-input-checkbox-background-image: ${inputCheckIndeterminate};
 	}
 	input[type="checkbox"].d2l-input-checkbox,
 	input[type="checkbox"].d2l-input-checkbox:hover:disabled {
-		background-color: var(--d2l-color-regolith);
+		background-color: var(--d2l-input-checkbox-background-color);
 		border-color: var(--d2l-color-galena);
 		border-width: 1px;
+	}
+	input[type="checkbox"].d2l-input-checkbox:hover:disabled {
+		border-color: var(--d2l-color-corundum);
 	}
 	input[type="checkbox"].d2l-input-checkbox:hover,
 	input[type="checkbox"].d2l-input-checkbox:focus,
@@ -63,8 +85,9 @@ export const checkboxStyles = css`
 		outline-width: 0;
 	}
 	input[type="checkbox"].d2l-input-checkbox:disabled,
-	input[type="checkbox"].d2l-input-checkbox[aria-disabled="true"] {
-		opacity: 0.5;
+	input[type="checkbox"].d2l-input-checkbox:where([aria-disabled="true"]) {
+		background-image: var(--d2l-input-checkbox-background-image-disabled);
+		border-color: var(--d2l-color-corundum);
 	}
 	@media (prefers-contrast: more) {
 		input[type="checkbox"].d2l-input-checkbox:checked,
@@ -201,11 +224,8 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 				.d2l-input-checkbox-supporting {
 					margin-inline-start: ${cssSizes.inputBoxSize + cssSizes.checkboxMargin}rem;
 				}
-				.d2l-input-checkbox-text-disabled {
+				:host(:not([skeleton])) .d2l-input-checkbox-text-disabled {
 					opacity: 0.5;
-				}
-				:host([skeleton]) .d2l-input-checkbox-text-disabled {
-					opacity: 1;
 				}
 				input[type="checkbox"].d2l-input-checkbox {
 					vertical-align: top;
