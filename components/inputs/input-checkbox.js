@@ -89,7 +89,7 @@ export const checkboxStyles = css`
 		background-image: var(--d2l-input-checkbox-background-image-disabled);
 		border-color: var(--d2l-color-corundum);
 	}
-	@media (prefers-contrast: more) {
+	@media (forced-colors: active) {
 		input[type="checkbox"].d2l-input-checkbox:checked,
 		input[type="checkbox"].d2l-input-checkbox:indeterminate {
 			background-image: none;
@@ -106,6 +106,11 @@ export const checkboxStyles = css`
 			top: 50%;
 			transform: translate(-50%, -50%);
 			width: ${cssSizes.inputBoxSize}rem;
+		}
+
+		input[type="checkbox"].d2l-input-checkbox:disabled,
+		input[type="checkbox"].d2l-input-checkbox:where([aria-disabled="true"]) {
+			opacity: 0.5;
 		}
 
 		input[type="checkbox"].d2l-input-checkbox:checked::after {
