@@ -109,6 +109,9 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					font-size: 0.7rem;
 					line-height: 1.05rem;
 				}
+				:host([lines]) {
+					min-width: 0;
+				}
 				a {
 					display: inherit;
 				}
