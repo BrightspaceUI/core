@@ -163,11 +163,12 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	}
 
 	_renderCheckbox() {
+		/* eslint-disable lit/no-private-properties */
 		return this.selectable ? html`
 			<d2l-selection-input
 				@d2l-selection-change="${this._onCheckboxChange}"
 				?disabled="${this.selectionDisabled}"
-				.disabledTooltip=${this.selectionDisabledTooltip}
+				._disabledTooltip=${this.selectionDisabledTooltip}
 				.hovering="${this._hoveringSelection}"
 				id="${this._checkboxId}"
 				?_indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}"
@@ -177,6 +178,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 				?skeleton="${this.skeleton}">
 			</d2l-selection-input>
 		` : nothing;
+		/* eslint-enable */
 	}
 
 	_renderCheckboxAction(inner) {
