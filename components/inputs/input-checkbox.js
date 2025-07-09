@@ -26,14 +26,14 @@ export const cssSizes = {
 export const checkboxStyles = css`
 	input[type="checkbox"].d2l-input-checkbox {
 		--d2l-input-checkbox-background-image: none;
-
 		--d2l-input-checkbox-background-color: var(--d2l-color-regolith);
 		--d2l-input-checkbox-background-image-disabled:
-				linear-gradient(
-					rgba(249, 251, 255, 0.5), /* regolith at 50% */
-					rgba(249, 251, 255, 0.5), /* regolith at 50% */
-				),
-				var(--d2l-input-checkbox-background-image);
+			linear-gradient(
+				/* regolith at 50% */
+				rgba(249, 251, 255, 0.5),
+				rgba(249, 251, 255, 0.5)
+			),
+			var(--d2l-input-checkbox-background-image);
 
 		@supports (color: color-mix(in srgb, black 50%, transparent)) {
 			--d2l-input-checkbox-background-image-disabled:
@@ -62,7 +62,7 @@ export const checkboxStyles = css`
 		width: ${cssSizes.inputBoxSize}rem;
 	}
 	input[type="checkbox"].d2l-input-checkbox:checked {
-		--d2l-input-checkbox-background-image: ${inputCheck}
+		--d2l-input-checkbox-background-image: ${inputCheck};
 	}
 	input[type="checkbox"].d2l-input-checkbox:indeterminate {
 		--d2l-input-checkbox-background-image: ${inputCheckIndeterminate};

@@ -41,7 +41,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			 */
 			key: { type: String },
 			/* passthrough for list-item */
-			disabledTooltip: { state: true },
+			_disabledTooltip: { state: true },
 			_indeterminate: { type: Boolean },
 			_provider: { type: Object }
 		};
@@ -122,7 +122,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 					?checked="${this.selected}"
 					class="${ifDefined(this.hovering ? 'd2l-hovering' : undefined)}"
 					?disabled="${this.disabled}"
-					disabled-tooltip="${ifDefined(this.disabledTooltip)}"
+					disabled-tooltip="${ifDefined(this._disabledTooltip)}"
 					?indeterminate="${this._indeterminate}"
 					?skeleton="${this.skeleton}">
 				</d2l-input-checkbox>
