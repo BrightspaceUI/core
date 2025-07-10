@@ -19,6 +19,9 @@ const supportingTemplate = html`
 		<d2l-menu-item-link text="link" href="https://en.wikipedia.org/wiki/Universe">
 			<div slot="supporting">supporting</div>
 		</d2l-menu-item-link>
+		<d2l-menu-item-link text="link new window" target="_blank" href="https://en.wikipedia.org/wiki/Universe">
+			<div slot="supporting">supporting</div>
+		</d2l-menu-item-link>
 	</d2l-menu>
 `;
 
@@ -57,9 +60,19 @@ describe('menu', () => {
 				<d2l-menu-item-link text="c" href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
 			</d2l-menu>
 		` },
+		{ name: 'link-new-window', template: html`
+			<d2l-menu>
+				<d2l-menu-item-link text="c" href="https://en.wikipedia.org/wiki/Universe" target="_blank"></d2l-menu-item-link>
+			</d2l-menu>
+		` },
 		{ name: 'link-long', template: html`
 			<d2l-menu>
 				<d2l-menu-item-link text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
+			</d2l-menu>
+		` },
+		{ name: 'link-new-window-long', template: html`
+			<d2l-menu>
+				<d2l-menu-item-link text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." href="https://en.wikipedia.org/wiki/Universe" target="_blank"></d2l-menu-item-link>
 			</d2l-menu>
 		` },
 		{ name: 'supporting', template: supportingTemplate },
