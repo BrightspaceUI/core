@@ -121,6 +121,11 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				this.dispatchEvent(new CustomEvent(
 					'd2l-tab-selected', { bubbles: true, composed: true }
 				));
+			} else {
+				/** @ignore */
+				this.dispatchEvent(new CustomEvent(
+					'd2l-tab-deselected', { bubbles: true }
+				));
 			}
 		}
 	}
