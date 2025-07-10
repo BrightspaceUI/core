@@ -1,6 +1,7 @@
 import '../tab.js';
 import '../tabs.js';
 import '../tab-panel.js';
+import '../demo/tabs-array.js';
 import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { spy } from 'sinon';
 
@@ -128,10 +129,14 @@ describe('d2l-tabs', () => {
 
 	describe('behavior', () => {
 
-		function checkIfSelected(tab, isSelected) {
+		function checkIfSelected(tab, isSelected, panel) {
 			expect(tab.selected).to.equal(isSelected);
 			expect(tab.tabIndex).to.equal(isSelected ? 0 : -1);
 			expect(tab.ariaSelected).to.equal(isSelected.toString());
+
+			if (panel) {
+				expect(panel.selected).to.equal(isSelected);
+			}
 		}
 
 		it('should only have one panel selected at a time even if multiple have selected attribute', async() => {
@@ -257,6 +262,14 @@ describe('d2l-tabs', () => {
 			`);
 			expect(consoleSpy.called).to.be.true;
 			consoleSpy.restore();
+		});
+
+		it('should only have one panel selected at a time when tabs selected in an array', async() => {
+			const el = await fixture(html`<d2l-tabs-array></d2l-tabs-array>`);
+			const tabs = el.shadowRoot.querySelectorAll('d2l-tab');
+			await clickElem(tabs[2]);
+			checkIfSelected(tabs[0], false, el.shadowRoot.querySelectorAll('d2l-tab-panel')[0]);
+			checkIfSelected(tabs[2], true, el.shadowRoot.querySelectorAll('d2l-tab-panel')[2]);
 		});
 	});
 });
