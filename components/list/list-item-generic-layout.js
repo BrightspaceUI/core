@@ -176,7 +176,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 			:host(:not([no-primary-action])) ::slotted([slot="outside-control-action"]) {
 				grid-column-end: end;
 			}
-				
+
 			:host(:not([no-primary-action])) ::slotted([slot="control-action"]) {
 				grid-column-end: actions-start;
 			}
