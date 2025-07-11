@@ -165,8 +165,6 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 				.d2l-scroll-wrapper-container.print-media-query-only {
 					border: none !important;
 					box-sizing: content-box !important;
-					overflow-x: visible !important;
-					overflow-y: visible !important;
 					overflow: visible !important;
 				}
 			}
