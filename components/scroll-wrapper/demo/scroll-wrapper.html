@@ -20,6 +20,8 @@
 
 		<d2l-demo-page page-title="d2l-scroll-wrapper">
 
+			<button id="print">Print</button>
+
 			<h2>Actions</h2>
 			<d2l-demo-snippet>
 				<template>
@@ -48,5 +50,10 @@
 			</d2l-demo-snippet>
 
 		</d2l-demo-page>
+		<script>
+			document.querySelector('#print').addEventListener('click', ()=> {
+				window.print();
+			});
+		</script>
 	</body>
 </html>
