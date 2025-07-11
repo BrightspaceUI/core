@@ -5,6 +5,11 @@
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 		<script type="module">
+			import { mockFlag } from '../../../helpers/flags.js';
+			const urlParams = new URLSearchParams(window.location.search);
+			mockFlag('GAUD-8263-scroll-wrapper-media-print', urlParams.get('media-query-print') === 'true');
+		</script>
+		<script type="module">
 			import '../../demo/demo-page.js';
 			import './table-test.js';
 		</script>
@@ -12,6 +17,8 @@
 	<body unresolved>
 
 		<d2l-demo-page page-title="d2l-table">
+
+			<button id="print">Print</button>
 
 			<h2>Default</h2>
 			<d2l-demo-snippet>
@@ -89,5 +96,10 @@
 
 			<div style="margin-bottom: 1000px;"></div>
 		</d2l-demo-page>
+		<script>
+			document.querySelector('#print').addEventListener('click', () => {
+				window.print();
+			});
+		</script>
 	</body>
 </html>
