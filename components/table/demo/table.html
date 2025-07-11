@@ -4,12 +4,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
-		<script>
+		<script type="module">
+			import { mockFlag } from '../../../helpers/flags.js';
 			const urlParams = new URLSearchParams(window.location.search);
-			window.D2L = { LP: { Web: { UI: { Flags: { Flag: (key) => {
-				if (key === 'GAUD-8263-scroll-wrapper-media-print') return (urlParams.get('media-query-print') === 'true');
-				return false;
-			} } } } } };
+			mockFlag('GAUD-8263-scroll-wrapper-media-print', urlParams.get('media-query-print') === 'true');
 		</script>
 		<script type="module">
 			import '../../demo/demo-page.js';
