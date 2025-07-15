@@ -3,10 +3,13 @@ import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { cssSizes } from '../inputs/input-checkbox.js';
 import { getComposedParent } from '../../helpers/dom.js';
+import { getFlag } from '../../helpers/flags.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
+
+const colSyncFix = getFlag('GAUD-8228-8186-improved-table-col-sync', true);
 
 export const tableStyles = css`
 	.d2l-table {
@@ -248,17 +251,22 @@ export const tableStyles = css`
 	}
 
 	/* sticky + scroll-wrapper */
-	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper]:not([_no-scroll-width]) .d2l-table {
-		display: flex;
-		flex-direction: column;
-	}
+	${colSyncFix ? css`
+		d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper]:not([_no-scroll-width]) .d2l-table {
+			display: flex;
+			flex-direction: column;
+		}
 
-	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > thead {
-		display: table-header-group;
-	}
+		d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > thead {
+			display: table-header-group;
+		}
 
-	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > tbody {
-		display: table-row-group;
+		d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > tbody {
+			display: table-row-group;
+		}` : css`
+		d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table {
+			display: block;
+		}`
 	}
 
 	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table > thead {
@@ -397,7 +405,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		this._controlsMutationObserver = null;
 		this._controlsScrolled = false;
 		this._controlsScrolledMutationObserver = null;
-		this._noScrollWidth = true;
+		this._noScrollWidth = colSyncFix;
 		this._table = null;
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
@@ -599,7 +607,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 
 		if (!this._tableResizeObserver) this._tableResizeObserver = new ResizeObserver(entries => this._syncColumnWidths(entries));
 		this._tableResizeObserver.observe(this._table);
-		this.querySelectorAll('tr:first-child *').forEach(el => this._tableResizeObserver.observe(el));
+		colSyncFix && this.querySelectorAll('tr:first-child *').forEach(el => this._tableResizeObserver.observe(el));
 
 		this._handleTableChange();
 	}
@@ -634,7 +642,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 
 		if (updates.count) this._updateItemShowingCount();
 		if (updates.classNames) this._applyClassNames();
-		await Promise.all([...updateList, ...this.querySelectorAll('d2l-table-col-sort-button')].map(n => n.updateComplete));
+		colSyncFix && await Promise.all([...updateList, ...this.querySelectorAll('d2l-table-col-sort-button')].map(n => n.updateComplete));
 		if (updates.syncWidths) this._syncColumnWidths();
 		if (updates.sticky) this._updateStickyTops();
 	}
@@ -652,9 +660,10 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		const head = this._table.querySelector('thead');
 		const body = this._table.querySelector('tbody');
 
-		const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
-		this._noScrollWidth = this.clientWidth === maxScrollWidth;
-
+		if (colSyncFix) {
+			const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
+			this._noScrollWidth = this.clientWidth === maxScrollWidth;
+		}
 		if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
 
 		const candidateRowHeadCells = [];
