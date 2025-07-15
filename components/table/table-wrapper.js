@@ -651,12 +651,11 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 	_syncColumnWidths() {
 		const head = this._table.querySelector('thead');
 		const body = this._table.querySelector('tbody');
-		if (!head || !body) return;
 
-		const maxScrollWidth = Math.max(head.scrollWidth, body.scrollWidth);
+		const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
 		this._noScrollWidth = this.clientWidth === maxScrollWidth;
 
-		if (!this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
+		if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
 
 		const candidateRowHeadCells = [];
 
