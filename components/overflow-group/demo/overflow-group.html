@@ -16,6 +16,26 @@
 			import '../../dropdown/dropdown-menu.js';
 			import '../../dropdown/dropdown.js';
 			import '../../link/link.js';
+			import { html, LitElement } from 'lit';
+			import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
+
+			class DemoOverflowGroup extends LocalizeCoreElement(LitElement) {
+				render() {
+					return html`
+						<d2l-overflow-group>
+							<d2l-button primary>${this.localize('components.more-less.more')}</d2l-button>
+							<d2l-button>${this.localize('components.more-less.less')}</d2l-button>
+							<d2l-button>${this.localize('components.more-less.more')}</d2l-button>
+							<d2l-button>${this.localize('components.more-less.less')}</d2l-button>
+							<d2l-button>${this.localize('components.more-less.more')}</d2l-button>
+							<d2l-button>${this.localize('components.more-less.less')}</d2l-button>
+							<d2l-button> ${this.localize('components.more-less.more')}</d2l-button>
+							<d2l-button> ${this.localize('components.more-less.less')}</d2l-button>
+						</d2l-overflow-group>
+					`;
+				}
+			}
+			customElements.define('d2l-demo-overflow-group', DemoOverflowGroup);
 		</script>
 	</head>
 	<body unresolved>
@@ -95,6 +115,13 @@
 						<d2l-button-subtle text="Import"></d2l-button-subtle>
 						<d2l-button-subtle text="Delete"></d2l-button-subtle>
 					</d2l-overflow-group>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Overflow Group with Localized Text and Spaces</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-demo-overflow-group></d2l-demo-overflow-group>
 				</template>
 			</d2l-demo-snippet>
 		</d2l-demo-page>
