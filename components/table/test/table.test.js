@@ -1,8 +1,8 @@
 import '../table-col-sort-button.js';
 import '../table-col-sort-button-item.js';
 import '../table-controls.js';
-import { defineCE, expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
-import { LitElement } from 'lit';
+import { css, LitElement } from 'lit';
+import { defineCE, expect, fixture, html, nextFrame, runConstructor } from '@brightspace-ui/testing';
 import { tableStyles } from '../table-wrapper.js';
 
 describe('d2l-table-wrapper', () => {
@@ -102,6 +102,61 @@ describe('d2l-table-wrapper', () => {
 
 	});
 
+	describe('sticky scrolling async content', () => {
+
+		const tagName = defineCE(
+			class extends LitElement {
+				static get properties() {
+					return {
+						stickyHeaders: { type: Boolean, reflect: true, attribute: 'sticky-headers' }
+					};
+				}
+				static get styles() {
+					return [tableStyles, css`
+						:host {
+							display: block;
+							width: 150px;
+						}
+					`];
+				}
+				render() {
+					return html`
+						<d2l-table-wrapper sticky-headers sticky-headers-scroll-wrapper>
+							<table class="d2l-table">
+								<thead>
+									<tr>
+										<th><span id="slow-content"></span></th>
+										<th>Fast Content</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td id="one-one">1-1</td>
+										<td>1-2</td>
+									</tr>
+								</tbody>
+							</table>
+						</d2l-table-wrapper>
+					`;
+				}
+			}
+		);
+
+		[5, 20, 100].forEach(width => it(`should sync column widths if initial content changes cell widths - ${width}`, async() => {
+			const el = await fixture(`<${tagName}></${tagName}>`);
+			const slowEl = el.shadowRoot.querySelector('#slow-content');
+			const row1_1 = el.shadowRoot.querySelector('#one-one');
+			const row1_1InitialWidth = row1_1.getBoundingClientRect().width;
+			expect(slowEl.getBoundingClientRect().width).to.equal(0);
+			expect(row1_1InitialWidth).to.be.greaterThan(0);
+			slowEl.innerText = Array(width).fill('x').join('');
+			await nextFrame();
+			expect(slowEl.getBoundingClientRect().width).to.be.greaterThan(0);
+			expect(row1_1.getBoundingClientRect().width).to.be.greaterThan(row1_1InitialWidth);
+			expect(slowEl.parentElement.getBoundingClientRect().width).to.equal(row1_1.getBoundingClientRect().width);
+			expect(el.shadowRoot.querySelector('d2l-table-wrapper')._noScrollWidth).to.be[`${width < 20}`];
+		}));
+	});
 });
 
 describe('d2l-table-controls', () => {

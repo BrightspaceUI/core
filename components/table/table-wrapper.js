@@ -248,14 +248,17 @@ export const tableStyles = css`
 	}
 
 	/* sticky + scroll-wrapper */
-	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table {
+	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper]:not([_no-scroll-width]) .d2l-table {
 		display: flex;
 		flex-direction: column;
 	}
 
-	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > thead,
+	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > thead {
+		display: table-header-group;
+	}
+
 	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > tbody {
-		display: table;
+		display: table-row-group;
 	}
 
 	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table > thead {
@@ -329,7 +332,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				attribute: '_no-scroll-width',
 				reflect: true,
 				type: Boolean,
-			}
+			},
 		};
 	}
 
@@ -394,7 +397,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 		this._controlsMutationObserver = null;
 		this._controlsScrolled = false;
 		this._controlsScrolledMutationObserver = null;
-		this._noScrollWidth = false;
+		this._noScrollWidth = true;
 		this._table = null;
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
@@ -594,13 +597,16 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 			this._tableIntersectionObserver.observe(this._table);
 		}
 
-		if (!this._tableResizeObserver) this._tableResizeObserver = new ResizeObserver(() => this._syncColumnWidths());
+		if (!this._tableResizeObserver) this._tableResizeObserver = new ResizeObserver(entries => this._syncColumnWidths(entries));
 		this._tableResizeObserver.observe(this._table);
+		this.querySelectorAll('tr:first-child *').forEach(el => this._tableResizeObserver.observe(el));
 
 		this._handleTableChange();
 	}
 
 	async _handleTableChange(mutationRecords) {
+		const updateList = [];
+
 		const updates = { count: true, classNames: true, sticky: true, syncWidths: true };
 		if (mutationRecords) {
 			for (const key in updates) updates[key] = false;
@@ -613,6 +619,8 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				updates.sticky ||= target.matches(SELECTORS.headers);
 				const affectedNodes = [...removedNodes, ...addedNodes];
 				for (const node of affectedNodes) {
+					updateList.push(target, ...addedNodes);
+
 					if (!(node instanceof Element)) continue;
 					updates.classNames ||= node.matches('tr, td, th');
 					updates.syncWidths ||= node.matches('tr');
@@ -626,6 +634,7 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 
 		if (updates.count) this._updateItemShowingCount();
 		if (updates.classNames) this._applyClassNames();
+		await Promise.all([...updateList, ...this.querySelectorAll('d2l-table-col-sort-button')].map(n => n.updateComplete));
 		if (updates.syncWidths) this._syncColumnWidths();
 		if (updates.sticky) this._updateStickyTops();
 	}
@@ -640,11 +649,14 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 	}
 
 	_syncColumnWidths() {
-		if (!this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper) return;
-
 		const head = this._table.querySelector('thead');
 		const body = this._table.querySelector('tbody');
 		if (!head || !body) return;
+
+		const maxScrollWidth = Math.max(head.scrollWidth, body.scrollWidth);
+		this._noScrollWidth = this.clientWidth === maxScrollWidth;
+
+		if (!this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
 
 		const candidateRowHeadCells = [];
 
@@ -735,8 +747,6 @@ export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitEleme
 				headCell.style.minWidth = `${bodyOverallWidth - parseFloat(headStyle.paddingLeft) - parseFloat(headStyle.paddingRight)}px`;
 			}
 		}
-
-		this._noScrollWidth = Boolean(this.shadowRoot.querySelector('d2l-scroll-wrapper[scrollbar-left][scrollbar-right]'));
 	}
 
 	_updateStickyAncestor(node, popoverOpened) {
