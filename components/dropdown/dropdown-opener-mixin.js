@@ -114,7 +114,8 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.addEventListener('d2l-dropdown-open', this.__onOpened);
 		this.addEventListener('d2l-dropdown-close', this.__onClosed);
 		const content = this.__getContentElement();
-		this._setOpenerElementAttribute(content?.opened || false);
+		const contentRole = content?.tagName === 'D2L-DROPDOWN-MENU' ? 'menu' : 'true';
+		this._setOpenerElementAttribute(content?.opened || false, false, contentRole);
 	}
 
 	updated(changedProperties) {
@@ -190,7 +191,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	__getContentElement() {
 		if (!this.shadowRoot) return undefined;
 		return this.shadowRoot.querySelector('slot:not([name])').assignedNodes()
-			.filter(node => node.hasAttribute && node.hasAttribute('dropdown-content'))[0];
+			.filter(node => node.hasAttribute && (node._dropdownContent || node.hasAttribute('dropdown-content')))[0];
 	}
 
 	__onClosed() {
@@ -331,11 +332,12 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		}
 	}
 
-	_setOpenerElementAttribute(val, setActive = false) {
+	_setOpenerElementAttribute(val, setActive = false, hasPopup) {
 		const opener = this.getOpenerElement();
 		if (!opener) return false;
 		const attribute = opener.isButtonMixin ? 'expanded' : 'aria-expanded';
 		opener.setAttribute(attribute, val.toString());
+		if (hasPopup) opener.setAttribute('aria-haspopup', hasPopup);
 		if (setActive) {
 			if (val) opener.setAttribute('active', 'true');
 			else opener.removeAttribute('active');
