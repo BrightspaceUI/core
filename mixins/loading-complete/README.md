@@ -26,7 +26,7 @@ async removeSkeleton() {
 }
 ```
 
-If for any reason `resolveLoadingComplete` is never called, `loadingComplete` won't resolve and any consumers will hang.
+If for any reason `resolveLoadingComplete` is never called, `loadingComplete` won't resolve and any consumers will hang. A warning will be thrown indicating that the component has entered a bad state.
 
 ### `getLoadingComplete`
 
