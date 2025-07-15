@@ -16,26 +16,7 @@
 			import '../../dropdown/dropdown-menu.js';
 			import '../../dropdown/dropdown.js';
 			import '../../link/link.js';
-			import { html, LitElement } from 'lit';
-			import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
-
-			class DemoOverflowGroup extends LocalizeCoreElement(LitElement) {
-				render() {
-					return html`
-						<d2l-overflow-group>
-							<d2l-button primary>${this.localize('components.more-less.more')}</d2l-button>
-							<d2l-button>${this.localize('components.more-less.less')}</d2l-button>
-							<d2l-button>${this.localize('components.more-less.more')}</d2l-button>
-							<d2l-button>${this.localize('components.more-less.less')}</d2l-button>
-							<d2l-button>${this.localize('components.more-less.more')}</d2l-button>
-							<d2l-button>${this.localize('components.more-less.less')}</d2l-button>
-							<d2l-button> ${this.localize('components.more-less.more')}</d2l-button>
-							<d2l-button> ${this.localize('components.more-less.less')}</d2l-button>
-						</d2l-overflow-group>
-					`;
-				}
-			}
-			customElements.define('d2l-demo-overflow-group', DemoOverflowGroup);
+			import './demo-overflow-group.js';
 		</script>
 	</head>
 	<body unresolved>
@@ -59,7 +40,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-overflow-group auto-show>
-						<d2l-button  disabled primary>New</d2l-button>
+						<d2l-button disabled primary>New</d2l-button>
 						<d2l-dropdown-button text="Explore Topics" class="d2l-button-group-show">
 							<d2l-dropdown-menu id="dropdown">
 								<d2l-menu label="Astronomy">
