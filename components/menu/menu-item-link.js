@@ -108,7 +108,6 @@ class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitEl
 			`;
 		}
 
-
 		const inner = html`
 			<div class="d2l-menu-item-text">${this.text}</div>
 			${this._renderNewWindowIcon()}
