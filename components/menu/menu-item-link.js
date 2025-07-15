@@ -38,7 +38,28 @@ class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitEl
 	}
 
 	static get styles() {
-		if (newWindowIconEnabled) return [ super.styles, menuItemStyles,
+		// remove this block when cleaning up GAUD-8295-menu-item-link-new-window-icon
+		if (!newWindowIconEnabled) return [ menuItemStyles,
+			css`
+				:host {
+					display: block;
+					padding: 0;
+				}
+
+				:host > a {
+					align-items: center;
+					color: inherit;
+					display: flex;
+					line-height: 1rem;
+					outline: none;
+					overflow-x: hidden;
+					padding: 0.75rem 1rem;
+					text-decoration: none;
+				}
+			`
+		];
+
+		return [ super.styles, menuItemStyles,
 			css`
 				:host {
 					display: block;
@@ -67,26 +88,6 @@ class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitEl
 				}
 			`
 		];
-
-		return [ menuItemStyles,
-			css`
-				:host {
-					display: block;
-					padding: 0;
-				}
-
-				:host > a {
-					align-items: center;
-					color: inherit;
-					display: flex;
-					line-height: 1rem;
-					outline: none;
-					overflow-x: hidden;
-					padding: 0.75rem 1rem;
-					text-decoration: none;
-				}
-			`
-		];
 	}
 
 	firstUpdated() {
@@ -96,22 +97,25 @@ class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitEl
 	}
 
 	render() {
-		if (newWindowIconEnabled) {
-			const inner = html`
-				<div class="d2l-menu-item-text">${this.text}</div>
-				${this._renderNewWindowIcon()}
-				<div class="d2l-menu-item-supporting"><slot name="supporting"></slot></div>
+		// remove this block when cleaning up GAUD-8295-menu-item-link-new-window-icon
+		if (!newWindowIconEnabled) {
+			const rel = this.target ? 'noreferrer noopener' : undefined;
+			return html`
+				<a download="${ifDefined(this.download)}" href="${ifDefined(this.href)}" rel="${ifDefined(rel)}" target="${ifDefined(this.target)}" tabindex="-1">
+					<div class="d2l-menu-item-text">${this.text}</div>
+					<div class="d2l-menu-item-supporting"><slot name="supporting"></slot></div>
+				</a>
 			`;
-			return this._render(inner, { rel: this.target ? 'noreferrer noopener' : undefined, tabindex: -1 });
 		}
 
-		const rel = this.target ? 'noreferrer noopener' : undefined;
-		return html`
-			<a download="${ifDefined(this.download)}" href="${ifDefined(this.href)}" rel="${ifDefined(rel)}" target="${ifDefined(this.target)}" tabindex="-1">
-				<div class="d2l-menu-item-text">${this.text}</div>
-				<div class="d2l-menu-item-supporting"><slot name="supporting"></slot></div>
-			</a>
+
+		const inner = html`
+			<div class="d2l-menu-item-text">${this.text}</div>
+			${this._renderNewWindowIcon()}
+			<div class="d2l-menu-item-supporting"><slot name="supporting"></slot></div>
 		`;
+		return this._render(inner, { rel: this.target ? 'noreferrer noopener' : undefined, tabindex: -1 });
+
 	}
 
 	_getTarget() {
