@@ -20,7 +20,18 @@ const OPENER_STYLE = {
 };
 
 function createMenuItem(node) {
-	const childText = node.text || node.firstChild && (node.firstChild.label || node.firstChild.text || node.firstChild.textContent.trim());
+	let childText = node.text;
+	if (!childText) {
+		const childNode = Array.from(node.childNodes).find(childNode => {
+			if (childNode.nodeType === Node.COMMENT_NODE) return false;
+			if (childNode.nodeType === Node.TEXT_NODE && !childNode.textContent.trim()) return false;
+			return true;
+		});
+		if (childNode) {
+			childText = childNode.label || childNode.text || childNode.textContent.trim();
+		}
+	}
+
 	const disabled = !!node.disabled;
 	const handleItemSelect = () => {
 		node.dispatchEvent(new CustomEvent('d2l-button-ghost-click'));
