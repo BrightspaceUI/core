@@ -1,5 +1,7 @@
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 
+const timeoutMs = 30000;
+
 export const LoadingCompleteMixin = dedupeMixin((superclass) => class extends superclass {
 	get loadingComplete() {
 		return this.getLoadingComplete();
@@ -22,7 +24,16 @@ export const LoadingCompleteMixin = dedupeMixin((superclass) => class extends su
 	#loadingCompleteResolve;
 
 	#loadingCompletePromise = !Object.prototype.hasOwnProperty.call(this.constructor.prototype, 'getLoadingComplete')
-		? new Promise(resolve => this.#loadingCompleteResolve = resolve)
+		? new Promise(resolve => {
+			const timeout = setTimeout(() => {
+				console.warn(`Failed to load ${this.localName} in ${timeoutMs}ms: resolveLoadingComplete was not called`);
+			}, timeoutMs);
+
+			this.#loadingCompleteResolve = () => {
+				clearTimeout(timeout);
+				resolve();
+			};
+		})
 		: Promise.resolve();
 
 });
