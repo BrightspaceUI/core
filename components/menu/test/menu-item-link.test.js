@@ -19,6 +19,11 @@ describe('d2l-menu-item-link', () => {
 			const elem = await fixture(html`<d2l-menu-item-link text="link text" description="no this text"></d2l-menu-item-link>`);
 			expect(elem.getAttribute('aria-label')).to.equal('no this text');
 		});
+
+		it('internal anchor element is not focusable', async() => {
+			const elem = await fixture(html`<d2l-menu-item-link text="link text"></d2l-menu-item-link>`);
+			expect(elem.shadowRoot.querySelector('a').getAttribute('tabindex')).to.equal('-1');
+		});
 	});
 
 });
