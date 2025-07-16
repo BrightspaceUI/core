@@ -4,7 +4,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    ignore:
-      # update-package-lock workflow aready handles minor/patch updates
-      - dependency-name: "*"
-        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
+    cooldown:
+      # update-package-lock workflow handles minor/patch updates - delay for a few weeks to give time to handle breaking change in those PRs
+      default-days: 25
+      semver-major-days: 5

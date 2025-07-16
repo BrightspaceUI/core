@@ -1,12 +1,18 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
+export const printMediaQueryOnlyFlag = getFlag('GAUD-8263-scroll-wrapper-media-print', false);
+
 const RTL_MULTIPLIER = navigator.userAgent.indexOf('Edge/') > 0 ? 1 : -1; /* legacy-Edge doesn't reverse scrolling in RTL */
 const SCROLL_AMOUNT = 0.8;
+
+// remove when cleaning up GAUD-8263-scroll-wrapper-media-print
 const PRINT_MEDIA_QUERY_LIST = matchMedia('print');
 
 let focusStyleSheet;
@@ -149,6 +155,20 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 			:host([scrollbar-left]) .d2l-scroll-wrapper-button-left {
 				display: none;
 			}
+
+			@media print {
+				/* remove .print-media-query-only when cleaning up GAUD-8263-scroll-wrapper-media-print */
+				.d2l-scroll-wrapper-actions.print-media-query-only {
+					display: none;
+				}
+				/* remove .print-media-query-only when cleaning up GAUD-8263-scroll-wrapper-media-print */
+				.d2l-scroll-wrapper-container.print-media-query-only {
+					border: none !important;
+					box-sizing: content-box !important;
+					overflow: visible !important;
+				}
+			}
+
 		`;
 	}
 
@@ -160,26 +180,40 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 		this._baseContainer = null;
 		this._container = null;
 		this._hScrollbar = true;
+
+		// remove when cleaning up GAUD-8263-scroll-wrapper-media-print
 		this._printMode = PRINT_MEDIA_QUERY_LIST.matches;
+
 		this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
 		this._scrollbarLeft = false;
 		this._scrollbarRight = false;
 		this._syncDriver = null;
 		this._syncDriverTimeout = null;
 		this._checkScrollThresholds = this._checkScrollThresholds.bind(this);
+
+		// remove when cleaning up GAUD-8263-scroll-wrapper-media-print
 		this._handlePrintChange = this._handlePrintChange.bind(this);
+
 		this._synchronizeScroll = this._synchronizeScroll.bind(this);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		PRINT_MEDIA_QUERY_LIST.addEventListener?.('change', this._handlePrintChange);
+
+		// remove when cleaning up GAUD-8263-scroll-wrapper-media-print
+		if (!printMediaQueryOnlyFlag) {
+			PRINT_MEDIA_QUERY_LIST.addEventListener?.('change', this._handlePrintChange);
+		}
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this._disconnectAll();
-		PRINT_MEDIA_QUERY_LIST.removeEventListener?.('change', this._handlePrintChange);
+
+		// remove when cleaning up GAUD-8263-scroll-wrapper-media-print
+		if (!printMediaQueryOnlyFlag) {
+			PRINT_MEDIA_QUERY_LIST.removeEventListener?.('change', this._handlePrintChange);
+		}
 	}
 
 	firstUpdated(changedProperties) {
@@ -188,11 +222,21 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 	}
 
 	render() {
-		// when printing, just get scroll-wrapper out of the way
-		if (this._printMode) return html`<slot></slot>`;
+
+		// when printing, just get scroll-wrapper out of the way; remove when cleaning up GAUD-8263-scroll-wrapper-media-print
+		if (this._printMode && !printMediaQueryOnlyFlag) return html`<slot></slot>`;
+
+		const containerClasses = {
+			'd2l-scroll-wrapper-container': true,
+			'print-media-query-only': printMediaQueryOnlyFlag // remove when cleaning up GAUD-8263-scroll-wrapper-media-print
+		};
+		const actionsClasses = {
+			'd2l-scroll-wrapper-actions': true,
+			'print-media-query-only': printMediaQueryOnlyFlag // remove when cleaning up GAUD-8263-scroll-wrapper-media-print
+		};
 
 		const actions = !this.hideActions ? html`
-			<div class="d2l-scroll-wrapper-actions">
+			<div class="${classMap(actionsClasses)}">
 				<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left vdiff-target" @click="${this._scrollLeft}">
 					<d2l-icon icon="tier1:chevron-left"></d2l-icon>
 				</div>
@@ -202,7 +246,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 			</div>` : null;
 		return html`
 			${actions}
-			<div class="d2l-scroll-wrapper-container"><slot></slot></div>
+			<div class="${classMap(containerClasses)}"><slot></slot></div>
 		`;
 	}
 
@@ -259,6 +303,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 		}
 	}
 
+	// remove this handler when cleaning up GAUD-8263-scroll-wrapper-media-print
 	async _handlePrintChange() {
 		if (!this._printMode) {
 			this._disconnectAll();

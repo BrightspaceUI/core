@@ -19,6 +19,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
+const newTabStructure = getFlag('GAUD-7146-tabs-new-structure', true);
 
 const scrollButtonWidth = 56;
 
@@ -371,6 +372,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 						<div class="d2l-tabs-container-list"
 							@d2l-tab-content-change="${this._handleTabContentChange}"
 							@d2l-tab-selected="${this._handleTabSelected}"
+							@d2l-tab-deselected="${this.#handleTabDeselected}"
 							@focusout="${this._handleFocusOut}"
 							aria-label="${ifDefined(this.text)}"
 							role="tablist"
@@ -1193,6 +1195,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			}
 			this.#checkTabPanelMatchRequested = false;
 		}, 0);
+	}
+
+	#handleTabDeselected(e) {
+		if (!newTabStructure) return;
+
+		const panel = this._getPanel(e.target.id);
+		if (panel) panel.selected = false;
 	}
 
 	#isRTL() {
