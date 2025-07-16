@@ -16,6 +16,7 @@
 			import '../../dropdown/dropdown-menu.js';
 			import '../../dropdown/dropdown.js';
 			import '../../link/link.js';
+			import './demo-overflow-group.js';
 		</script>
 	</head>
 	<body unresolved>
@@ -39,7 +40,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-overflow-group auto-show>
-						<d2l-button  disabled primary>New</d2l-button>
+						<d2l-button disabled primary>New</d2l-button>
 						<d2l-dropdown-button text="Explore Topics" class="d2l-button-group-show">
 							<d2l-dropdown-menu id="dropdown">
 								<d2l-menu label="Astronomy">
@@ -95,6 +96,13 @@
 						<d2l-button-subtle text="Import"></d2l-button-subtle>
 						<d2l-button-subtle text="Delete"></d2l-button-subtle>
 					</d2l-overflow-group>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Overflow Group with Localized Text and Spaces</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-demo-overflow-group></d2l-demo-overflow-group>
 				</template>
 			</d2l-demo-snippet>
 		</d2l-demo-page>
