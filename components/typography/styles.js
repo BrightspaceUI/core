@@ -505,13 +505,15 @@ export const baseTypographyStyles = css`
 	${unsafeCSS(fontFacesCss)}
 	html {
 		--d2l-document-direction: ltr;
-		--d2l-mirror-transform: none;
 		--d2l-inline-end: right;
+		--d2l-inline-start: left;
+		--d2l-mirror-transform: none;
 	}
 	html[dir="rtl"] {
 		--d2l-document-direction: rtl;
-		--d2l-mirror-transform: scale(-1, 1);
 		--d2l-inline-end: left;
+		--d2l-inline-start: right;
+		--d2l-mirror-transform: scale(-1, 1);
 	}
 
 	.d2l-typography {
