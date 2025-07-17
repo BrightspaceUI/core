@@ -1,5 +1,8 @@
 import '../dropdown.js';
 import '../dropdown-content.js';
+import '../dropdown-menu.js';
+import '../../menu/menu.js';
+import '../../menu/menu-item.js';
 import { aTimeout, clickElem, defineCE, expect, fixture, focusElem, html, nextFrame, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { css, LitElement } from 'lit';
 
@@ -66,6 +69,23 @@ const dropdownD2LButtonOpener = html`
 				<a id="focusable_inside" href="http://www.desire2learn.com">b</a>
 			</d2l-dropdown-content>
 		</d2l-dropdown>
+		</div>
+	</div>
+`;
+
+const menuFixture = html`
+	<div>
+		<div id="optionallyFocusable">
+			<d2l-dropdown>
+				<button class="another-class d2l-dropdown-opener"></button>
+				<d2l-dropdown-menu>
+					<d2l-menu label="Physics Topics">
+						<d2l-menu-item text="Introduction"></d2l-menu-item>
+						<d2l-menu-item text="Matter"></d2l-menu-item>
+						<d2l-menu-item text="Speed"></d2l-menu-item>
+					</d2l-menu>
+				</d2l-dropdown-menu>
+			</d2l-dropdown>
 		</div>
 	</div>
 `;
@@ -437,6 +457,22 @@ describe('d2l-dropdown', () => {
 			await oneEvent(content, 'd2l-dropdown-close');
 			await opener.updateComplete;
 			expect(opener.getAttribute('expanded')).to.equal('false');
+		});
+	});
+
+	describe('aria-haspopup', () => {
+		it('should set aria-haspopup on button openers', async() => {
+			const opener = dropdown.querySelector('.d2l-dropdown-opener');
+			await opener.updateComplete;
+			expect(opener.getAttribute('aria-haspopup')).to.equal('true');
+		});
+
+		it('should set aria-haspopup menu on menu dropdown', async() => {
+			const elem = await fixture(menuFixture);
+			const opener = elem.querySelector('.d2l-dropdown-opener');
+
+			await opener.updateComplete;
+			expect(opener.getAttribute('aria-haspopup')).to.equal('menu');
 		});
 	});
 
