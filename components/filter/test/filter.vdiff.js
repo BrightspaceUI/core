@@ -266,6 +266,32 @@ describe('filter', () => {
 			await expect(document).to.be.golden();
 		});
 
+		it('dates-ignore-enforce-selection-single', async() => {
+			const template = html`
+				<d2l-filter opened>
+					<d2l-filter-dimension-set key="dates" text="Dates" ignore-enforce-selection-single>
+						<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-time-range-value key="custom" selected></d2l-filter-dimension-set-date-time-range-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			`;
+			const elem = await fixture(template);
+			await expect(elem).to.be.golden();
+		});
+
+		it('dates-selection-single-ignore-enforce-selection-single', async() => {
+			const template = html`
+				<d2l-filter opened>
+					<d2l-filter-dimension-set key="dates" text="Dates" ignore-enforce-selection-single selection-single>
+						<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-time-range-value key="custom" selected></d2l-filter-dimension-set-date-time-range-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			`;
+			const elem = await fixture(template);
+			await expect(elem).to.be.golden();
+		});
+
 		describe('searched', () => {
 			[
 				{ name: 'single-selection', search: 'empty', template: createSingleDimSingleSelection() },

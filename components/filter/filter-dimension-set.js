@@ -41,6 +41,10 @@ class FilterDimensionSet extends LitElement {
 			 */
 			minWidth: { type: Number },
 			/**
+			 * ADVANCED: Whether to ignore the enforce single selection setting for this dimension.
+			 */
+			ignoreEnforceSelectionSingle: { type: Boolean, attribute: 'ignore-enforce-selection-single' },
+			/**
 			 * Whether to hide the search input, perform a simple text search, or fire an event on search
 			 * @type {'none'|'automatic'|'manual'}
 			 */
@@ -79,6 +83,7 @@ class FilterDimensionSet extends LitElement {
 		this.introductoryText = '';
 		this.loading = false;
 		this.hasMore = false;
+		this.ignoreEnforceSelectionSingle = false;
 		this.searchType = 'automatic';
 		this.selectAll = false;
 		this.selectedFirst = false;
@@ -151,7 +156,7 @@ class FilterDimensionSet extends LitElement {
 			return value.getValueDetails();
 		});
 		if (noSearchSupport) this.searchType = 'none';
-		if (enforceSingleSelection) this.selectionSingle = true;
+		if (enforceSingleSelection && !this.ignoreEnforceSelectionSingle) this.selectionSingle = true;
 		if (minWidth) this.minWidth = minWidth;
 		return values;
 	}
