@@ -3,7 +3,6 @@ import { css, html, LitElement } from 'lit';
 import { getFlag } from '../../helpers/flags.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
@@ -11,7 +10,8 @@ const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping
  * Help users understand where they are within the application, and provide useful clues about how the space is organized. They also provide a convenient navigation mechanism.
  * @slot - Breadcrumb items
  */
-class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
+class Breadcrumbs extends LocalizeCoreElement(LitElement) {
+
 	static get properties() {
 		return {
 			/**
@@ -38,23 +38,15 @@ class Breadcrumbs extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			:host([hidden]) {
 				display: none;
 			}
-
 			:host::after {
-				background: linear-gradient(to right, rgba(255, 255, 255, 0), rgb(251, 252, 252));
-				bottom: 0;
+				background: linear-gradient(to var(--d2l-inline-end, right), rgba(255, 255, 255, 0), rgb(251, 252, 252));
 				content: "";
+				inset-block: 0;
+				inset-inline-end: 0;
 				pointer-events: none;
 				position: absolute;
-				right: 0;
-				top: 0;
 				width: 10px;
 			}
-			:host([dir="rtl"])::after {
-				background: linear-gradient(to left, rgba(255, 255, 255, 0), rgb(251, 252, 252));
-				left: 0;
-				right: auto;
-			}
-
 			:host([compact]) ::slotted(d2l-breadcrumb:not(:last-of-type)),
 			:host([compact]) ::slotted(d2l-breadcrumb-current-page) {
 				display: none;
