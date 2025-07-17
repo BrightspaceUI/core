@@ -15,6 +15,11 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			 */
 			selectionDisabled: { type: Boolean, attribute: 'selection-disabled', reflect: true },
 			/**
+			 * **Selection:** Tooltip text when selection is disabled
+			 * @type {string}
+			 */
+			selectionDisabledTooltip: { type: String, attribute: 'selection-disabled-tooltip' },
+			/**
 			 * **Selection:** Value to identify item if selectable
 			 * @type {string}
 			 */
@@ -45,8 +50,12 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 				display: block;
 				height: 100%;
 			}
-			:host([selection-disabled]) .d2l-checkbox-action {
-				cursor: default;
+			:host([selection-disabled]) [slot="control-action"] {
+				pointer-events: none;
+			}
+			:host([selection-disabled]) [slot="control"],
+			:host([selection-disabled]) [slot="control-action"] [slot="content"] {
+				pointer-events: all;
 			}
 		` ];
 
@@ -155,10 +164,12 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	}
 
 	_renderCheckbox() {
+		/* eslint-disable lit/no-private-properties */
 		return this.selectable ? html`
 			<d2l-selection-input
 				@d2l-selection-change="${this._onCheckboxChange}"
 				?disabled="${this.selectionDisabled}"
+				._disabledTooltip=${this.selectionDisabledTooltip}
 				.hovering="${this._hoveringSelection}"
 				id="${this._checkboxId}"
 				?_indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}"
@@ -168,6 +179,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 				?skeleton="${this.skeleton}">
 			</d2l-selection-input>
 		` : nothing;
+		/* eslint-enable */
 	}
 
 	_renderCheckboxAction(inner) {
