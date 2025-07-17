@@ -118,12 +118,8 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 			@media (prefers-reduced-motion: no-preference) {
 				button:hover .line,
 				button:focus .line {
-					transition: all var(--d2l-button-add-animation-duration) ease-in var(--d2l-button-add-animation-delay);
-				}
-
-				button:hover .line,
-				button:focus .line {
 					animation: line-start-animation var(--d2l-button-add-animation-duration) ease-in var(--d2l-button-add-animation-delay) 1 forwards;
+					transition: all var(--d2l-button-add-animation-duration) ease-in var(--d2l-button-add-animation-delay);
 				}
 				button:hover .line-end,
 				button:focus .line-end {
