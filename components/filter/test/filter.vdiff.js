@@ -276,6 +276,7 @@ describe('filter', () => {
 				</d2l-filter>
 			`;
 			const elem = await fixture(template);
+			await nextFrame();
 			await expect(elem).to.be.golden();
 		});
 
@@ -289,6 +290,7 @@ describe('filter', () => {
 				</d2l-filter>
 			`;
 			const elem = await fixture(template);
+			await nextFrame();
 			await expect(elem).to.be.golden();
 		});
 
