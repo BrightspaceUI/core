@@ -55,7 +55,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			}
 			:host([selection-disabled]) [slot="control"],
 			:host([selection-disabled]) [slot="control-action"] [slot="content"] {
-				pointer-events: unset;
+				pointer-events: all;
 			}
 		` ];
 

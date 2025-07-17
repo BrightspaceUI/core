@@ -661,6 +661,17 @@ describe('d2l-list-item', () => {
 			expect(e.target).to.equal(el.querySelector('d2l-button'));
 		});
 
+		it('dispatches click event with correct target when interactive content clicked with selection disabled', async() => {
+			const el = await fixture(html`
+				<d2l-list-item selectable selection-disabled label="item">
+					<div>Item 1</div>
+					<div><d2l-button>Button</d2l-button></div>
+				</d2l-list-item>`);
+			const button = el.querySelector('d2l-button');
+			const e = await Promise.any([clickElem(button), oneEvent(button, 'click')]);
+			expect(e.target).to.equal(el.querySelector('d2l-button'));
+		});
+
 		describe('expandable', () => {
 
 			it('does not dispatch d2l-list-item-expand-collapse-toggled event when interactive content clicked', async() => {
