@@ -4,12 +4,11 @@ import { findComposedAncestor } from '../../helpers/dom.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { linkStyles } from '../link/link.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * An entry within a <d2l-breadcrumbs> parent.
  */
-class Breadcrumb extends RtlMixin(FocusMixin(LitElement)) {
+class Breadcrumb extends FocusMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -59,25 +58,13 @@ class Breadcrumb extends RtlMixin(FocusMixin(LitElement)) {
 			.d2l-link:focus {
 				outline-offset: -2px;
 			}
-
 			d2l-icon {
 				height: 8px;
-				padding-left: 8px;
-				padding-right: 3px;
+				padding-inline: 8px 3px;
 				width: 8px;
 			}
-			:host([dir="rtl"]) d2l-icon {
-				padding-left: 3px;
-				padding-right: 8px;
-			}
-
 			d2l-icon[icon="tier1:chevron-left"] {
-				padding-left: 0;
-				padding-right: 8px;
-			}
-			:host([dir="rtl"]) d2l-icon[icon="tier1:chevron-left"] {
-				padding-left: 8px;
-				padding-right: 0;
+				padding-inline: 0 8px;
 			}
 		`];
 	}
