@@ -5,13 +5,12 @@ import { css, html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * An icon link that can be placed in the `footer` slot.
  * @slot tooltip - slot for the link tooltip
  */
-class CardFooterLink extends FocusMixin(RtlMixin(LitElement)) {
+class CardFooterLink extends FocusMixin(LitElement) {
 
 	static get properties() {
 		return {
