@@ -61,7 +61,7 @@ export const LinkMixin = superclass => class extends LocalizeCoreElement(supercl
 		return html`<a
 			aria-label="${ifDefined(ariaLabel)}"
 			class="${classMap(linkClasses)}"
-			download="${this.download}"
+			download="${ifDefined(this.download)}"
 			href="${ifDefined(this.href)}"
 			target="${ifDefined(this.target)}"
 			rel="${ifDefined(rel)}"
