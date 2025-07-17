@@ -9,7 +9,6 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const MODE = {
 	icon: 'icon',
@@ -21,7 +20,7 @@ const whiteAddButtonBackgroundFlag = getFlag('GAUD-7495-add-button-white-backgro
 /**
  * A component for quickly adding items to a specific locaiton.
  */
-class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(LitElement)))) {
+class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(LitElement))) {
 	static get properties() {
 		return {
 			/**
@@ -119,39 +118,32 @@ class ButtonAdd extends RtlMixin(PropertyRequiredMixin(FocusMixin(LocalizeCoreEl
 			@media (prefers-reduced-motion: no-preference) {
 				button:hover .line,
 				button:focus .line {
+					animation: line-start-animation var(--d2l-button-add-animation-duration) ease-in var(--d2l-button-add-animation-delay) 1 forwards;
 					transition: all var(--d2l-button-add-animation-duration) ease-in var(--d2l-button-add-animation-delay);
 				}
-				button:hover .line,
-				button:focus .line,
-				:host([dir="rtl"]) button:hover .line-end,
-				:host([dir="rtl"]) button:focus .line-end {
-					animation: line-start-animation var(--d2l-button-add-animation-duration) ease-in var(--d2l-button-add-animation-delay) 1 forwards;
-				}
 				button:hover .line-end,
-				button:focus .line-end,
-				:host([dir="rtl"]) button:hover .line-start,
-				:host([dir="rtl"]) button:focus .line-start {
+				button:focus .line-end {
 					animation-name: line-end-animation;
 				}
 
 				@keyframes line-start-animation {
 					0% {
-						background: linear-gradient(to right, var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) left center / 113%;
+						background: linear-gradient(to var(--d2l-inline-end, right), var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) var(--d2l-inline-start, left) center / 113%;
 						opacity: 10%;
 					}
 					100% {
-						background: linear-gradient(to right, var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) left center / 113%; /* safari */
-						background-position: right;
+						background: linear-gradient(to var(--d2l-inline-end, right), var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) var(--d2l-inline-start, left) center / 113%; /* safari */
+						background-position: var(--d2l-inline-end, right);
 					}
 				}
 				@keyframes line-end-animation {
 					0% {
-						background: linear-gradient(to left, var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) right center / 113%;
+						background: linear-gradient(to var(--d2l-inline-start, left), var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) var(--d2l-inline-end, right) center / 113%;
 						opacity: 10%;
 					}
 					100% {
-						background: linear-gradient(to left, var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) right center / 113%; /* safari */
-						background-position: left;
+						background: linear-gradient(to var(--d2l-inline-start, left), var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) var(--d2l-inline-end, right) center / 113%; /* safari */
+						background-position: var(--d2l-inline-start, left);
 					}
 				}
 			}
