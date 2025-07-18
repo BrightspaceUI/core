@@ -29,7 +29,7 @@ class FormErrorSummary extends LocalizeCoreElement(LitElement) {
 				display: flex;
 				justify-content: space-between;
 				padding-block: 0.3rem;
-				padding-inline: 1.2rem 0.3rem
+				padding-inline: 1.2rem 0.3rem;
 			}
 
 			.d2l-form-error-summary-text {
