@@ -6,7 +6,6 @@ import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../../components/offscreen/offscreen.js';
-import { RtlMixin } from '../rtl/rtl-mixin.js';
 
 export function isInteractiveDescendant(node) {
 	if (!node) return false;
@@ -15,7 +14,7 @@ export function isInteractiveDescendant(node) {
 	});
 }
 
-export const InteractiveMixin = superclass => class extends LocalizeCoreElement(RtlMixin(superclass)) {
+export const InteractiveMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
 	static get properties() {
 		return {
