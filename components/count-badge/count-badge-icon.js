@@ -26,8 +26,6 @@ class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 		return [super.styles, css`
 		${getFocusRingStyles(pseudoClass => `:host([focus-ring]) d2l-icon, d2l-icon:${pseudoClass}`)}
 		:host {
-			/* for long numbers, center the number on the icon */
-			--d2l-count-badge-icon-padding: calc(-50% + (var(--d2l-count-badge-icon-height) / 2) + 2px);
 			display: inline-block;
 			/* symmetrical padding to prevent overflows for most numbers */
 			padding-left: 0.5rem;
@@ -43,16 +41,6 @@ class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 		:host([size="small"]) {
 			--d2l-count-badge-icon-padding-top: 0.55rem;
 			padding-top: var(--d2l-count-badge-icon-padding-top);
-		}
-
-		:host([icon*="tier1:"]) {
-			--d2l-count-badge-icon-height: 18px;
-		}
-		:host([icon*="tier2:"]) {
-			--d2l-count-badge-icon-height: 24px;
-		}
-		:host([icon*="tier3:"]) {
-			--d2l-count-badge-icon-height: 30px;
 		}
 
 		d2l-tooltip[_open-dir="top"] {
