@@ -158,7 +158,7 @@ export const dialogStyles = css`
 	}
 
 	.d2l-dialog-footer ::slotted(*) {
-		margin-bottom: 18px;
+		margin-block-end: 18px;
 		margin-inline-end: 18px;
 	}
 
