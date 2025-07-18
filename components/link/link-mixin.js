@@ -22,6 +22,11 @@ export const LinkMixin = superclass => class extends LocalizeCoreElement(supercl
 			 */
 			href: { type: String },
 			/**
+			 * Label for the link
+			 * @type {string}
+			 */
+			ariaLabel: { type: String, attribute: 'aria-label' },
+			/**
 			 * Where to display the linked URL
 			 * @type {string}
 			 */
@@ -52,14 +57,14 @@ export const LinkMixin = superclass => class extends LocalizeCoreElement(supercl
 		`];
 	}
 
-	_render(inner, { rel = undefined, ariaLabel = undefined, linkClasses = {}, tabindex = undefined } = {}) {
+	_render(inner, { rel = undefined, linkClasses = {}, tabindex = undefined } = {}) {
 		/*
 		* NOTICE:
 		* All html template whitespace within this component is critical to proper rendering and wrapping.
 		* Do not modify for readability!
 		*/
 		return html`<a
-			aria-label="${ifDefined(ariaLabel)}"
+			aria-label="${ifDefined(this.ariaLabel)}"
 			class="${classMap(linkClasses)}"
 			download="${ifDefined(this.download)}"
 			href="${ifDefined(this.href)}"
