@@ -706,10 +706,6 @@ describe('table', () => {
 								case 'grades-row-header-top':
 									warningGrouping = 'WARNING-dropdown-is-cutoff';
 									break;
-
-								case 'one-column':
-									warningGrouping = 'WARNING-columns-not-expanding-to-fill-available-space';
-									break;
 								default:
 							}
 						}
