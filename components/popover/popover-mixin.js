@@ -8,6 +8,7 @@ import { getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
 import { _offscreenStyleDeclarations } from '../offscreen/offscreen.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { toRGB } from '../../helpers/color.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 
 export const positionLocations = Object.freeze({
@@ -162,14 +163,14 @@ export const PopoverMixin = superclass => class extends superclass {
 				background-color: var(--d2l-popover-background-color, var(--d2l-popover-default-background-color));
 				border: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
 				border-radius: 0.1rem;
-				box-shadow: -4px -4px 12px -5px rgba(32, 33, 34, 0.2); /* ferrite */
+				box-shadow: -4px -4px 12px -5px ${toRGB('ferrite', 0.2)};
 				height: ${pointerLength}px;
 				transform: rotate(45deg);
 				width: ${pointerLength}px;
 			}
 
 			:host([_location="block-start"]) .pointer > div {
-				box-shadow: 4px 4px 12px -5px rgba(32, 33, 34, 0.2); /* ferrite */
+				box-shadow: 4px 4px 12px -5px ${toRGB('ferrite', 0.2)};
 			}
 
 			@keyframes d2l-popover-animation {

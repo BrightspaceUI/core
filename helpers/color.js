@@ -15,3 +15,16 @@ export function getValidHexColor(value, canHaveAlpha) {
 	}
 	return (typeof value === 'string') ? value.toUpperCase() : undefined;
 }
+
+export function toRGB(d2lColor, alpha = 1) {
+	const hex = getComputedStyle(document.documentElement)
+		.getPropertyValue(`--d2l-color-${d2lColor}`);
+	if (!hex) {
+		throw new Error(`Color variable --d2l-color-${d2lColor} not found.`);
+	}
+	const rgb = hex
+		.match(/\w\w/g)
+		.map(v => parseInt(v, 16))
+		.join(' ');
+	return `rgb(${rgb} / ${alpha})`;
+}
