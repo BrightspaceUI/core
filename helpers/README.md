@@ -107,7 +107,10 @@ getOffsetParent(node);
 isComposedAncestor(ancestorNode, node);
 
 // returns true/false whether the element is visible regardless of positioning
-isVisible(node);
+isVisible(node, { checkAncestors: true });
+
+// returns the first visible ancestor of the given node
+getFirstVisibleAncestor(node)
 
 // similar to document.querySelector or element.querySelector,
 // except it queries not just the light DOM but also shadow DOM
@@ -125,7 +128,10 @@ import { ... } from '@brightspace-ui/core/helpers/focus.js';
 getComposedActiveElement()
 
 // gets the first focusable descendant given a node, including those within the shadow DOM
-getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly)
+getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly, checkNodeVisibility = true)
+
+// gets the first focusable relative given a node, checking first itself, its children, and lastly, recursively its parent
+getFirstFocusableRelative(node, { includeHidden, predicate, includeTabbablesOnly, checkNodeVisibility: true })
 
 // gets the focusable elements within the specified element
 getFocusableDescendants(node, { deep: false, disabled: false, hidden: false, predicate: elem => false, tabbablesOnly: true })

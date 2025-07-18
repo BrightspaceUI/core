@@ -1,5 +1,5 @@
 import { css, unsafeCSS } from 'lit';
-import { getComposedChildren, getComposedParent, getNextAncestorSibling, getPreviousAncestorSibling, isVisible } from './dom.js';
+import { getComposedChildren, getComposedParent, getFirstVisibleAncestor, getNextAncestorSibling, getPreviousAncestorSibling, isVisible } from './dom.js';
 
 const focusableElements = {
 	a: true,
@@ -26,19 +26,32 @@ export function getComposedActiveElement() {
 	return node;
 }
 
-export function getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly) {
-	if (predicate === undefined) predicate = () => true;
-
+export function getFirstFocusableDescendant(node, includeHidden, predicate = () => true, includeTabbablesOnly, nodeVisibilityUnknown = true) {
 	const composedChildren = getComposedChildren(node);
+	if (!composedChildren?.length || (!includeHidden && nodeVisibilityUnknown && !isVisible(node))) return null;
 
 	for (let i = 0; i < composedChildren.length; i++) {
-		if (isFocusable(composedChildren[i], includeHidden, includeTabbablesOnly) && predicate(composedChildren[i])) return composedChildren[i];
+		if (!includeHidden && !isVisible(composedChildren[i], { checkAncestors: false })) continue;
+		if (isFocusable(composedChildren[i], true, includeTabbablesOnly) && predicate(composedChildren[i])) return composedChildren[i];
 
-		const focusable = getFirstFocusableDescendant(composedChildren[i], includeHidden, predicate, includeTabbablesOnly);
+		const focusable = getFirstFocusableDescendant(composedChildren[i], includeHidden, predicate, includeTabbablesOnly, false);
 		if (focusable) return focusable;
 	}
 
 	return null;
+}
+
+export function getFirstFocusableRelative(node, { includeHidden, predicate = () => true, includeTabbablesOnly, nodeVisibilityUnknown = true } = {}) {
+	if (!node) return null;
+
+	if (!includeHidden && nodeVisibilityUnknown) node = getFirstVisibleAncestor(node);
+
+	if (isFocusable(node, true) && predicate(node)) return node;
+
+	const focusableDescendant = getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly, false);
+	if (focusableDescendant !== null) return focusableDescendant;
+
+	return getFirstFocusableRelative(getComposedParent(node), { includeHidden, predicate, includeTabbablesOnly, nodeVisibilityUnknown: false });
 }
 
 export function getFocusableDescendants(node, options) {
