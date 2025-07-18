@@ -67,12 +67,8 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 
 			.d2l-dialog-header > div > d2l-button-icon {
 				flex: none;
-				margin: -4px -15px 0 15px;
-			}
-
-			:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
-				margin-left: -15px;
-				margin-right: 15px;
+				margin-block: -4px 0;
+				margin-inline: 15px -15px;
 			}
 
 			.d2l-dialog-content > div {

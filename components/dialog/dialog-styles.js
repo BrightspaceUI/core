@@ -159,12 +159,7 @@ export const dialogStyles = css`
 
 	.d2l-dialog-footer ::slotted(*) {
 		margin-bottom: 18px;
-		margin-right: 18px;
-	}
-
-	:host([dir="rtl"]) .d2l-dialog-footer ::slotted(*) {
-		margin-left: 18px;
-		margin-right: 0;
+		margin-inline-end: 18px;
 	}
 
 	dialog.d2l-dialog-outer.d2l-dialog-fullscreen-within,
@@ -185,11 +180,8 @@ export const dialogStyles = css`
 			padding: 14px 20px 16px 20px;
 		}
 		.d2l-dialog-fullscreen-mobile .d2l-dialog-header > div > d2l-button-icon {
-			margin: -8px -13px 0 15px;
-		}
-		:host([dir="rtl"]) .d2l-dialog-fullscreen-mobile .d2l-dialog-header > div > d2l-button-icon {
-			margin-left: -13px;
-			margin-right: 15px;
+			margin-block: -8px 0;
+			margin-inline: 15px -13px;
 		}
 		.d2l-dialog-content {
 			--d2l-list-controls-padding: 20px;

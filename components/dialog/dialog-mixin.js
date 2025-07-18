@@ -8,7 +8,6 @@ import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 import { waitForElem } from '../../helpers/internal/waitForElem.js';
@@ -29,7 +28,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
 const defaultMargin = { top: 75, right: 30, bottom: 30, left: 30 };
 
-export const DialogMixin = superclass => class extends RtlMixin(superclass) {
+export const DialogMixin = superclass => class extends superclass {
 
 	static get properties() {
 		return {
