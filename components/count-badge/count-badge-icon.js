@@ -26,8 +26,6 @@ class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 		return [super.styles, css`
 		${getFocusRingStyles(pseudoClass => `:host([focus-ring]) d2l-icon, d2l-icon:${pseudoClass}`)}
 		:host {
-			/* for long numbers, center the number on the icon */
-			--d2l-count-badge-icon-padding: calc(-50% + (var(--d2l-count-badge-icon-height) / 2) + 2px);
 			display: inline-block;
 			/* symmetrical padding to prevent overflows for most numbers */
 			padding-left: 0.5rem;
@@ -43,16 +41,6 @@ class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 		:host([size="small"]) {
 			--d2l-count-badge-icon-padding-top: 0.55rem;
 			padding-top: var(--d2l-count-badge-icon-padding-top);
-		}
-
-		:host([icon*="tier1:"]) {
-			--d2l-count-badge-icon-height: 18px;
-		}
-		:host([icon*="tier2:"]) {
-			--d2l-count-badge-icon-height: 24px;
-		}
-		:host([icon*="tier3:"]) {
-			--d2l-count-badge-icon-height: 30px;
 		}
 
 		d2l-tooltip[_open-dir="top"] {
@@ -87,17 +75,16 @@ class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 		const centerNumber = this.getNumberString().length >= 4;
 
 		if (centerNumber) {
-			const xPadding = 'var(--d2l-count-badge-icon-padding)';
+			// left 50% + translateX(-50%) will center for both LTR and RTL
 			numberStyles = {
 				... numberStyles,
-				transform: this.dir === 'rtl'
-					? `translateY(-50%) translateX(calc(0px - ${xPadding}))`
-					: `translateY(-50%) translateX(${xPadding})`
+				left: '50%',
+				transform: 'translate(-50%, -50%)'
 			};
 		} else {
 			numberStyles = {
 				... numberStyles,
-				[this.dir === 'rtl' ? 'left' : 'right'] : '-0.1rem',
+				insetInlineEnd: '-0.1rem',
 				transform: 'translateY(-50%)'
 			};
 		}
