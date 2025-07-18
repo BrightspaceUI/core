@@ -11,7 +11,6 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const daysInWeek = 7;
 const keyCodes = {
@@ -148,7 +147,7 @@ export function getPrevMonth(month) {
  * A component can be used to display a responsively sized calendar that allows for date selection.
  * @slot - Content displayed under the calendar (e.g., buttons)
  */
-class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
+class Calendar extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
@@ -712,6 +711,8 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 		let preventDefault = false;
 
+		const isRtl = (document.documentElement.getAttribute('dir') === 'rtl');
+
 		switch (e.keyCode) {
 			case keyCodes.ENTER:
 			case keyCodes.SPACE:
@@ -728,17 +729,17 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				break;
 			case keyCodes.LEFT:
 				preventDefault = true; // needed for voiceover in safari to properly read aria-label on dates
-				await this._onKeyDownUpdateFocusDate(this.dir === 'rtl' ? 1 : -1);
+				await this._onKeyDownUpdateFocusDate(isRtl ? 1 : -1);
 				break;
 			case keyCodes.RIGHT:
 				preventDefault = true; // needed for voiceover in safari to properly read aria-label on dates
-				await this._onKeyDownUpdateFocusDate(this.dir === 'rtl' ? -1 : 1);
+				await this._onKeyDownUpdateFocusDate(isRtl ? -1 : 1);
 				break;
 			case keyCodes.HOME: {
 				preventDefault = true;
 				let numDaysChange;
 				const dayOfTheWeek = this._focusDate.getDay();
-				if (this.dir === 'rtl') {
+				if (isRtl) {
 					numDaysChange = 6 - dayOfTheWeek + calendarData.firstDayOfWeek;
 					if (numDaysChange > 6) {
 						numDaysChange -= daysInWeek;
@@ -762,7 +763,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				preventDefault = true;
 				let numDaysChange;
 				const dayOfTheWeek = this._focusDate.getDay();
-				if (this.dir === 'rtl') {
+				if (isRtl) {
 					numDaysChange = dayOfTheWeek - calendarData.firstDayOfWeek;
 					if (numDaysChange < 0) {
 						numDaysChange += daysInWeek;
@@ -898,7 +899,7 @@ class Calendar extends LocalizeCoreElement(RtlMixin(LitElement)) {
 
 	_triggerMonthChangeAnimations(increase, keyboardTriggered, transitionUpDown) {
 		this._monthNav = undefined;
-		increase = this.dir === 'rtl' ? !increase : increase;
+		increase = document.documentElement.getAttribute('dir') === 'rtl' ? !increase : increase;
 		if (!keyboardTriggered) this._isInitialFocusDate = true;
 		if (!reduceMotion) {
 			setTimeout(() => {
