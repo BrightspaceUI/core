@@ -87,10 +87,11 @@ class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 		const centerNumber = this.getNumberString().length >= 4;
 
 		if (centerNumber) {
+			// left 50% + translateX(-50%) will center for both LTR and RTL
 			numberStyles = {
 				... numberStyles,
-				marginInlineStart: 'var(--d2l-count-badge-icon-padding)',
-				transform: 'translateY(-50%)'
+				left: '50%',
+				transform: 'translate(-50%, -50%)'
 			};
 		} else {
 			numberStyles = {
