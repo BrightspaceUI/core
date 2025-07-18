@@ -93,11 +93,8 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 
 				.d2l-dialog-header > div > d2l-button-icon {
 					flex: none;
-					margin: -2px -12px 0 0;
-				}
-
-				:host([dir="rtl"]) .d2l-dialog-header > div > d2l-button-icon {
-					margin: -2px 0 0 -12px;
+					margin-block: -2px 0;
+					margin-inline: 0 -12px;
 				}
 
 				dialog.d2l-dialog-outer,
