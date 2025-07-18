@@ -3,9 +3,8 @@ import '../expand-collapse/expand-collapse-content.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { linkStyles } from '../link/link.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
-class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
+class FormErrorSummary extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
@@ -29,12 +28,8 @@ class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 				cursor: pointer;
 				display: flex;
 				justify-content: space-between;
-				padding: 0.3rem 0.3rem 0.3rem 1.2rem;
-			}
-
-			:host([dir="rtl"]) .d2l-form-error-summary-header {
-				padding-left: 0.3rem;
-				padding-right: 1.2rem;
+				padding-block: 0.3rem;
+				padding-inline: 1.2rem 0.3rem
 			}
 
 			.d2l-form-error-summary-text {
@@ -43,14 +38,10 @@ class FormErrorSummary extends LocalizeCoreElement(RtlMixin(LitElement)) {
 			}
 
 			.d2l-form-error-summary-error-list {
-				margin: 0 0 0 1.2rem;
+				margin-block: 0;
+				margin-inline: 1.2rem 0;
 				padding-bottom: 0.6rem;
 				padding-top: 0.3rem;
-			}
-
-			:host([dir="rtl"]) .d2l-form-error-summary-error-list {
-				margin-left: 0;
-				margin-right: 1.2rem;
 			}
 
 			d2l-alert {
