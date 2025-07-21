@@ -9,7 +9,6 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const normalizeHeadingStyle = (number) => {
@@ -53,7 +52,7 @@ function addTabListener() {
  * @fires d2l-collapsible-panel-expand - Dispatched when the panel is expanded
  * @fires d2l-collapsible-panel-collapse - Dispatched when the panel is collapsed
  */
-class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
+class CollapsiblePanel extends SkeletonMixin(FocusMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -261,11 +260,9 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(RtlMixin(LitElement))) {
 				margin: 0.6rem;
 				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
 				position: relative;
-				width: 0.9rem;
-			}
-			:host([dir="rtl"]) d2l-icon-custom {
-				transform: scale(-1, 1);
+				transform: var(--d2l-mirror-transform, ${document.dir === 'rtl' ? css`scale(-1, 1)` : css`none`}); /* stylelint-disable-line @stylistic/string-quotes, @stylistic/function-whitespace-after */
 				transform-origin: center;
+				width: 0.9rem;
 			}
 			d2l-icon-custom svg {
 				position: absolute;
