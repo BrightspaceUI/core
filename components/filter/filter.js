@@ -32,7 +32,6 @@ import { getFlag } from '../../helpers/flags.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
 const ARROWLEFT_KEY_CODE = 37;
@@ -72,7 +71,7 @@ function addSpaceListener() {
  * @fires d2l-filter-dimension-search - Dispatched when a dimension that supports searching and has the "manual" search-type is searched
  * @fires d2l-filter-dimension-load-more - Dispatched when a dimension load more pager clicked
  */
-class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
+class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
@@ -125,13 +124,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 			d2l-input-search {
 				flex: 1 0;
-				margin-left: 0.3rem;
-				margin-right: 0.6rem;
-			}
-
-			:host([dir="rtl"]) d2l-input-search {
-				margin-left: 0.6rem;
-				margin-right: 0.3rem;
+				margin-inline: 0.3rem 0.6rem;
 			}
 
 			.d2l-filter-dimension-select-all {
@@ -145,17 +138,13 @@ class Filter extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
 
 			.d2l-filter-dimension-header-text {
 				flex-grow: 1;
-				padding-right: calc(2rem + 2px);
+				padding-inline-end: calc(2rem + 2px);
 				text-align: center;
 				${overflowClipEnabled ? overflowEllipsisDeclarations : css`
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
 				`}
-			}
-			:host([dir="rtl"]) .d2l-filter-dimension-header-text {
-				padding-left: calc(2rem + 2px);
-				padding-right: 0;
 			}
 
 			.d2l-filter-dimension-set-value {
