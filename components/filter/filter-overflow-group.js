@@ -3,7 +3,6 @@ import './filter-tags.js';
 import { css, html, LitElement } from 'lit';
 import { OVERFLOW_CLASS, OverflowGroupMixin } from '../overflow-group/overflow-group-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 function createFilterItem(node) {
 	const dimensionSets = node.querySelectorAll('d2l-filter-dimension-set');
@@ -15,7 +14,7 @@ function createFilterItem(node) {
  * A component that can be used to display a group of filters that will be put into an overflow filter when they no longer fit on the first line of their container
  * @slot - d2l-filters to be added to the container
 */
-class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
+class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -31,11 +30,7 @@ class FilterOverflowGroup extends OverflowGroupMixin(RtlMixin(LitElement)) {
 	static get styles() {
 		return [super.styles, css`
 			::slotted(d2l-filter) {
-				margin-right: 0.3rem;
-			}
-			:host([dir="rtl"]) ::slotted(d2l-filter) {
-				margin-left: 0.3rem;
-				margin-right: 0;
+				margin-inline-end: 0.3rem;
 			}
 		`];
 	}
