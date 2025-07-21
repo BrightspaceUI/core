@@ -45,7 +45,6 @@ export function getFirstFocusableRelative(node, { includeHidden, predicate = () 
 	if (!includeHidden && nodeVisibilityUnknown) node = getFirstVisibleAncestor(node);
 	if (!node) return null;
 
-
 	if (isFocusable(node, true) && predicate(node)) return node;
 
 	const focusableDescendant = getFirstFocusableDescendant(node, includeHidden, predicate, includeTabbablesOnly, false);
