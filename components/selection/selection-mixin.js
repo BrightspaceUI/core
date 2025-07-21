@@ -1,7 +1,6 @@
 import { getFirstFocusableDescendant, getLastFocusableDescendant, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { CollectionMixin } from '../../mixins/collection/collection-mixin.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const keyCodes = {
 	DOWN: 40,
@@ -50,7 +49,7 @@ export class SelectionInfo {
 
 }
 
-export const SelectionMixin = superclass => class extends RtlMixin(CollectionMixin(superclass)) {
+export const SelectionMixin = superclass => class extends CollectionMixin(superclass) {
 
 	static get properties() {
 		return {
@@ -193,7 +192,8 @@ export const SelectionMixin = superclass => class extends RtlMixin(CollectionMix
 			}
 		};
 
-		const forward = (this.dir !== 'rtl' && e.keyCode === keyCodes.RIGHT) || (this.dir === 'rtl' && e.keyCode === keyCodes.LEFT) || (e.keyCode === keyCodes.DOWN);
+		const isRtl = (document.documentElement.getAttribute('dir') === 'rtl');
+		const forward = (!isRtl && e.keyCode === keyCodes.RIGHT) || (isRtl && e.keyCode === keyCodes.LEFT) || (e.keyCode === keyCodes.DOWN);
 
 		// first try to find next/previous selection-input relative to the event target within the selection component sub-tree that also belongs to the selection component
 		let focusable = forward ? getNextFocusable(target, false, true, true) : getPreviousFocusable(target, false, true, true);
