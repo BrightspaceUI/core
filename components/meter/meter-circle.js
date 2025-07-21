@@ -4,12 +4,11 @@ import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { MeterMixin } from './meter-mixin.js';
 import { meterStyles } from './meter-styles.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A circular progress indicator.
  */
-class MeterCircle extends MeterMixin(RtlMixin(LitElement)) {
+class MeterCircle extends MeterMixin(LitElement) {
 	static get styles() {
 		return [ bodySmallStyles, bodyStandardStyles, meterStyles, css`
 		:host {
