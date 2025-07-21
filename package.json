@@ -54,7 +54,7 @@
     "chalk": "^5",
     "eslint": "^9",
     "eslint-config-brightspace": "^2.0.0",
-    "eslint-plugin-unicorn": "^59",
+    "eslint-plugin-unicorn": "^60",
     "glob-all": "^3",
     "messageformat-validator": "^3.0.0-beta",
     "rollup": "^4",
