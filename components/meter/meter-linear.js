@@ -2,12 +2,11 @@ import { css, html, LitElement, nothing } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { MeterMixin } from './meter-mixin.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * A horizontal progress bar.
  */
-class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
+class MeterLinear extends MeterMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
@@ -86,7 +85,7 @@ class MeterLinear extends MeterMixin(RtlMixin(LitElement)) {
 				align-self: flex-end;
 			}
 
-			:host([dir="rtl"]) .d2l-meter-linear-primary-ltr {
+			.d2l-meter-linear-primary-ltr {
 				direction: ltr;
 			}
 		`];
