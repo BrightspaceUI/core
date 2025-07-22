@@ -33,6 +33,7 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 	static get styles() {
 		return [super.styles, css`
 			:host {
+				unicode-bidi: isolate;
 				vertical-align: middle;
 			}
 			:host([hidden]) {

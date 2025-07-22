@@ -2,7 +2,6 @@ import '../colors/colors.js';
 import { css } from 'lit';
 import { dedupeMixin } from '@open-wc/dedupe-mixin';
 import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 // DE50056: starting in Safari 16, the pulsing animation causes FACE
 // (and possibly elsewhere) to render a blank page
@@ -44,9 +43,15 @@ export const skeletonStyles = css`
 		color: transparent;
 		position: relative;
 	}
+	:host([skeleton]) .d2l-skeletize-paragraph-2,
+	:host([skeleton]) .d2l-skeletize-paragraph-3,
+	:host([skeleton]) .d2l-skeletize-paragraph-5 {
+		color: transparent;
+		transform: var(--d2l-mirror-transform, ${document.dir === 'rtl' ? css`scale(-1, 1)` : css`none`}); /* stylelint-disable-line @stylistic/string-quotes, @stylistic/function-whitespace-after */
+		transform-origin: center;
+	}
 	:host([skeleton]) .d2l-skeletize-paragraph-2 {
 		background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Cstyle%3E%0A%20%20%20%20%40keyframes%20loadingPulse%7B0%25%2C75%25%7Bfill%3A%23f1f5fb%7D50%25%7Bfill%3A%23f9fbff%7D%7D.skeleton%7Banimation%3AloadingPulse%201.8s%20linear%20infinite%3Bfill%3A%23f1f5fb%7D%0A%20%20%3C%2Fstyle%3E%0A%20%20%3Crect%20y%3D%2211%25%22%20width%3D%22100%25%22%20height%3D%2227%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%20%20%3Crect%20y%3D%2261%25%22%20width%3D%2290%25%22%20height%3D%2227%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%3C%2Fsvg%3E');
-		color: transparent;
 	}
 	@media (prefers-reduced-motion: reduce) {
 		:host([skeleton]) .d2l-skeletize-paragraph-2 {
@@ -59,7 +64,6 @@ export const skeletonStyles = css`
 	}
 	:host([skeleton]) .d2l-skeletize-paragraph-3 {
 		background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Cstyle%3E%0A%20%20%20%20%40keyframes%20loadingPulse%7B0%25%2C75%25%7Bfill%3A%23f1f5fb%7D50%25%7Bfill%3A%23f9fbff%7D%7D.skeleton%7Banimation%3AloadingPulse%201.8s%20linear%20infinite%3Bfill%3A%23f1f5fb%7D%0A%20%20%3C%2Fstyle%3E%0A%20%20%3Crect%20y%3D%227%25%22%20width%3D%22100%25%22%20height%3D%2218%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%20%20%3Crect%20y%3D%2240%25%22%20width%3D%22100%25%22%20height%3D%2218%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%20%20%3Crect%20y%3D%2274%25%22%20width%3D%2290%25%22%20height%3D%2218%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%3C%2Fsvg%3E');
-		color: transparent;
 	}
 	@media (prefers-reduced-motion: reduce) {
 		:host([skeleton]) .d2l-skeletize-paragraph-3 {
@@ -72,7 +76,6 @@ export const skeletonStyles = css`
 	}
 	:host([skeleton]) .d2l-skeletize-paragraph-5 {
 		background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%20%20%3Cstyle%3E%0A%20%20%20%20%40keyframes%20loadingPulse%7B0%25%2C75%25%7Bfill%3A%23f1f5fb%7D50%25%7Bfill%3A%23f9fbff%7D%7D.skeleton%7Banimation%3AloadingPulse%201.8s%20linear%20infinite%3Bfill%3A%23f1f5fb%7D%0A%20%20%3C%2Fstyle%3E%0A%20%20%3Crect%20y%3D%224%25%22%20width%3D%22100%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%20%20%3Crect%20y%3D%2224%25%22%20width%3D%22100%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%20%20%3Crect%20y%3D%2244%25%22%20width%3D%22100%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%20%20%3Crect%20y%3D%2264%25%22%20width%3D%22100%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%20%20%3Crect%20y%3D%2284%25%22%20width%3D%2290%25%22%20height%3D%2211%25%22%20rx%3D%224%22%20class%3D%22skeleton%22%2F%3E%0A%3C%2Fsvg%3E');
-		color: transparent;
 	}
 	@media (prefers-reduced-motion: reduce) {
 		:host([skeleton]) .d2l-skeletize-paragraph-5 {
@@ -82,12 +85,6 @@ export const skeletonStyles = css`
 	:host([skeleton]) .d2l-skeletize-paragraph-5::before {
 		content: '\\A \\A \\A \\A';
 		white-space: pre;
-	}
-	:host([skeleton][dir="rtl"]) .d2l-skeletize-paragraph-2,
-	:host([skeleton][dir="rtl"]) .d2l-skeletize-paragraph-3,
-	:host([skeleton][dir="rtl"]) .d2l-skeletize-paragraph-5 {
-		transform: scale(-1, 1);
-		transform-origin: center;
 	}
 	:host([skeleton]) .d2l-skeletize-95::before {
 		width: 95%;
@@ -148,7 +145,7 @@ export const skeletonStyles = css`
 	}
 `;
 
-export const SkeletonMixin = dedupeMixin(superclass => class extends RtlMixin(superclass) {
+export const SkeletonMixin = dedupeMixin(superclass => class extends superclass {
 
 	static get properties() {
 		return {
