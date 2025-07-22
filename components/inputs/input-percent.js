@@ -5,7 +5,6 @@ import { FormElementMixin } from '../form/form-element-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 /**
@@ -14,7 +13,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user. The `value` attribute reflects a JavaScript Number which is parsed from the formatted input value.
  */
-class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement)))))) {
+class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
 
 	static get properties() {
 		return {

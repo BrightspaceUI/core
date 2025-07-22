@@ -1,11 +1,10 @@
 import { css, html, LitElement } from 'lit';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 /**
  * Used to align related content below radio buttons
  * @slot - Additional related content
  */
-class InputRadioSpacer extends RtlMixin(LitElement) {
+class InputRadioSpacer extends LitElement {
 
 	static get styles() {
 		return css`
@@ -13,11 +12,7 @@ class InputRadioSpacer extends RtlMixin(LitElement) {
 					box-sizing: border-box;
 					display: block;
 					margin-bottom: 0.9rem;
-					padding-left: 1.7rem;
-				}
-				:host([dir="rtl"]) {
-					padding-left: 0;
-					padding-right: 1.7rem;
+					padding-inline-start: 1.7rem;
 				}
 				:host(.d2l-input-inline-help) {
 					margin-bottom: 0.9rem !important;

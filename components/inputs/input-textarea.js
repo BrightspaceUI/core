@@ -11,7 +11,6 @@ import { inputLabelStyles } from './input-label-styles.js';
 import { inputStyles } from './input-styles.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -21,7 +20,7 @@ import { styleMap } from 'lit/directives/style-map.js';
  * @fires change - Dispatched when an alteration to the value is committed (typically after focus is lost) by the user
  * @fires input - Dispatched immediately after changes by the user
  */
-class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement)))))) {
+class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -132,8 +131,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 				visibility: hidden;
 			}
 			:host([no-padding]) .d2l-input {
-				padding-left: 0;
-				padding-right: 0;
+				padding-inline: 0;
 			}
 			:host([no-border][no-padding]) textarea.d2l-input:hover,
 			:host([no-border][no-padding]) textarea.d2l-input:focus {
@@ -141,11 +139,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 				border-right-width: 1px;
 			}
 			.d2l-input-textarea-mirror[aria-invalid="true"] {
-				padding-right: calc(18px + 0.8rem);
-			}
-			:host([dir="rtl"]) .d2l-input-textarea-mirror[aria-invalid="true"] {
-				padding-left: calc(18px + 0.8rem);
-				padding-right: 0.75rem;
+				padding-inline-end: calc(18px + 0.8rem);
 			}
 		`];
 	}
