@@ -6,7 +6,6 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputStyles } from './input-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 export const INPUT_TIMEOUT_MS = 400;
 export const SUPPRESS_ENTER_TIMEOUT_MS = 1000;
@@ -16,7 +15,7 @@ export const SUPPRESS_ENTER_TIMEOUT_MS = 1000;
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires d2l-input-search-searched - Dispatched when a search is performed. When the input is cleared, this will be fired with an empty value.
  */
-class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) {
+class InputSearch extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
@@ -81,8 +80,7 @@ class InputSearch extends FocusMixin(LocalizeCoreElement(RtlMixin(LitElement))) 
 					--d2l-button-icon-min-width: 1.5rem;
 					--d2l-button-icon-border-radius: 4px;
 					--d2l-focus-ring-offset: 1px;
-					margin-left: 0.3rem;
-					margin-right: 0.3rem;
+					margin-inline: 0.3rem;
 				}
 			`
 		];

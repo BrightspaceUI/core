@@ -11,7 +11,6 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { InteractiveMixin } from '../../mixins/interactive/interactive-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 function _isSameDate(date1, date2) {
@@ -66,7 +65,7 @@ export function getShiftedEndDateTime(startValue, endValue, prevStartValue, incl
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when there is a change to selected start date-time or selected end date-time. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
  */
-class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement)))))) {
+class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
 
 	static get properties() {
 		return {

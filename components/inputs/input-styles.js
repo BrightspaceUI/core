@@ -92,7 +92,7 @@ export const inputStyles = css`
 	}
 	textarea.d2l-input[aria-invalid="true"] {
 		background-image: ${invalidIcon};
-		background-position: top 12px right 18px;
+		background-position: top 12px var(--d2l-inline-end, right) 18px;
 		background-repeat: no-repeat;
 		background-size: 0.8rem 0.8rem;
 		padding-inline-end: calc(18px + 0.8rem);
@@ -100,16 +100,8 @@ export const inputStyles = css`
 	textarea.d2l-input-focus[aria-invalid="true"],
 	textarea.d2l-input[aria-invalid="true"]:hover,
 	textarea.d2l-input[aria-invalid="true"]:${focusClass} {
-		background-position: top calc(12px - 1px) right calc(18px - 1px);
+		background-position: top calc(12px - 1px) var(--d2l-inline-end, right) calc(18px - 1px);
 		padding-inline-end: calc(18px + 0.8rem - 1px);
-	}
-	:host([dir="rtl"]) textarea.d2l-input[aria-invalid="true"] {
-		background-position: top 12px left 18px;
-	}
-	:host([dir="rtl"]) textarea.d2l-input-focus[aria-invalid="true"],
-	:host([dir="rtl"]) textarea.d2l-input[aria-invalid="true"]:${focusClass},
-	:host([dir="rtl"]) textarea.d2l-input[aria-invalid="true"]:hover {
-		background-position: top calc(12px - 1px) left calc(18px - 1px);
 	}
 	textarea[aria-invalid="true"].d2l-input:disabled {
 		background-image: none;

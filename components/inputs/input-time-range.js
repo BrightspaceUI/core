@@ -9,7 +9,6 @@ import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 export function getShiftedEndTime(startValue, endValue, prevStartValue, inclusive) {
@@ -40,7 +39,7 @@ function getValidISOTimeAtInterval(val, timeInterval) {
  * @fires change - Dispatched when there is a change to selected start time or selected end time. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 calendar time format (`hh:mm:ss`).
  */
 
-class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(RtlMixin(LocalizeCoreElement(LitElement))))) {
+class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement)))) {
 
 	static get properties() {
 		return {

@@ -21,7 +21,6 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -42,7 +41,7 @@ function _getFormattedDefaultTime(defaultValue) {
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when there is a change to selected date or selected time. `value` corresponds to the selected value and is formatted in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`).
  */
-class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(RtlMixin(LitElement)))))) {
+class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
 
 	static get properties() {
 		return {
@@ -219,14 +218,9 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 
 		const dateStyle = {};
 		if (timeHidden) {
-			dateStyle.paddingLeft = '0';
-			dateStyle.paddingRight = '0';
-		} else if (!timeHidden && this.dir === 'rtl') {
-			dateStyle.paddingLeft = '0.3rem';
-			dateStyle.paddingRight = '0';
-		} else if (!timeHidden) {
-			dateStyle.paddingLeft = '0';
-			dateStyle.paddingRight = '0.3rem';
+			dateStyle.paddingInline = '0';
+		} else {
+			dateStyle.paddingInline = '0 0.3rem';
 		}
 
 		const dateOpened = this.opened && !this._timeOpened && !this.disabled && !this.skeleton;
