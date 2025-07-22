@@ -5,7 +5,6 @@ import { classMap } from 'lit/directives/class-map.js';
 import { getFlag } from '../../helpers/flags.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 export const printMediaQueryOnlyFlag = getFlag('GAUD-8263-scroll-wrapper-media-print', false);
 
@@ -44,7 +43,7 @@ function getStyleSheetInsertionPoint(elem) {
  * Wraps content which may overflow its horizontal boundaries, providing left/right scroll buttons.
  * @slot - User provided content to wrap
  */
-class ScrollWrapper extends RtlMixin(LitElement) {
+class ScrollWrapper extends LitElement {
 
 	static get properties() {
 		return {
@@ -97,32 +96,23 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 				overflow-y: var(--d2l-scroll-wrapper-overflow-y, visible);
 			}
 			:host([h-scrollbar]) .d2l-scroll-wrapper-container {
-				border-left: 1px dashed var(--d2l-color-mica);
-				border-right: 1px dashed var(--d2l-color-mica);
+				border-inline: 1px dashed var(--d2l-color-mica);
 			}
 			:host([h-scrollbar][hide-actions]) .d2l-scroll-wrapper-container {
-				border-left: none;
-				border-right: none;
+				border-inline: none;
 			}
-			:host([dir="rtl"][scrollbar-right]) .d2l-scroll-wrapper-container,
-			:host(:not([dir="rtl"])[scrollbar-left]) .d2l-scroll-wrapper-container {
-				border-left: none;
+			:host([scrollbar-left]) .d2l-scroll-wrapper-container {
+				border-inline-start: none;
 			}
-			:host([dir="rtl"][scrollbar-left]) .d2l-scroll-wrapper-container,
-			:host(:not([dir="rtl"])[scrollbar-right]) .d2l-scroll-wrapper-container {
-				border-right: none;
+			:host([scrollbar-right]) .d2l-scroll-wrapper-container {
+				border-inline-end: none;
 			}
 
-			:host([dir="rtl"]) .d2l-scroll-wrapper-button-left,
-			.d2l-scroll-wrapper-button-right {
-				left: auto;
-				right: -10px;
-			}
-
-			:host([dir="rtl"]) .d2l-scroll-wrapper-button-right,
 			.d2l-scroll-wrapper-button-left {
-				left: -10px;
-				right: auto;
+				inset-inline-start: -10px;
+			}
+			.d2l-scroll-wrapper-button-right {
+				inset-inline-end: -10px;
 			}
 
 			.d2l-scroll-wrapper-actions {
@@ -270,7 +260,7 @@ class ScrollWrapper extends RtlMixin(LitElement) {
 
 	scrollDistance(distance, smooth) {
 		if (!this._container) return;
-		if (this.dir === 'rtl') distance = distance * RTL_MULTIPLIER;
+		if (document.documentElement.getAttribute('dir') === 'rtl') distance = distance * RTL_MULTIPLIER;
 		if (this._container.scrollBy) {
 			this._container.scrollBy({ left: distance, behavior: smooth ? 'smooth' : 'auto' });
 		} else {
