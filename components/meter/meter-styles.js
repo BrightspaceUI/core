@@ -34,7 +34,7 @@ export const meterStyles = css`
 		color: white;
 		fill: white;
 	}
-	:host([dir="rtl"]) .d2l-meter-text-ltr {
+	.d2l-meter-text-ltr {
 		direction: ltr;
 	}
 `;
