@@ -6,7 +6,6 @@ import { getComposedParent } from '../../helpers/dom.js';
 import { getFlag } from '../../helpers/flags.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
 
 const colSyncFix = getFlag('GAUD-8228-8186-improved-table-col-sync', true);
@@ -31,11 +30,8 @@ export const tableStyles = css`
 		font-weight: inherit;
 		height: var(--d2l-table-cell-height);
 		padding: var(--d2l-table-cell-padding);
-		text-align: left;
+		text-align: start;
 		vertical-align: middle;
-	}
-	d2l-table-wrapper[dir="rtl"] .d2l-table > * > tr > * {
-		text-align: right;
 	}
 	d2l-table-wrapper d2l-button-icon {
 		--d2l-button-icon-min-height: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-col-sort-button-size-offset));
@@ -75,13 +71,11 @@ export const tableStyles = css`
 	}
 
 	/* default cells */
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > *,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > .d2l-table-cell-first {
-		border-right: var(--d2l-table-border);
+	d2l-table-wrapper[type="default"] .d2l-table > * > tr > * {
+		border-inline-end: var(--d2l-table-border);
 	}
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > * > tr > *,
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > * > tr > .d2l-table-cell-first {
-		border-left: var(--d2l-table-border);
+	d2l-table-wrapper[type="default"] .d2l-table > * > tr > .d2l-table-cell-first {
+		border-inline-start: var(--d2l-table-border);
 	}
 	d2l-table-wrapper[type="default"] .d2l-table-row-first > * {
 		border-top: var(--d2l-table-border); /* add top border to default first row */
@@ -139,34 +133,28 @@ export const tableStyles = css`
 	}
 
 	/* border radiuses */
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-first,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-first > .d2l-table-cell-last {
-		border-top-left-radius: var(--d2l-table-border-radius);
+	d2l-table-wrapper[type="default"] .d2l-table-row-first > .d2l-table-cell-first {
+		border-start-start-radius: var(--d2l-table-border-radius);
 	}
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-first > .d2l-table-cell-last,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-first > .d2l-table-cell-first {
-		border-top-right-radius: var(--d2l-table-border-radius);
+	d2l-table-wrapper[type="default"] .d2l-table-row-first > .d2l-table-cell-last {
+		border-start-end-radius: var(--d2l-table-border-radius);
 	}
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-last > .d2l-table-cell-first,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-last > .d2l-table-cell-last {
-		border-bottom-left-radius: var(--d2l-table-border-radius);
+	d2l-table-wrapper[type="default"] .d2l-table-row-last > .d2l-table-cell-first {
+		border-end-start-radius: var(--d2l-table-border-radius);
 	}
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table-row-last > .d2l-table-cell-last,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table-row-last > .d2l-table-cell-first {
-		border-bottom-right-radius: var(--d2l-table-border-radius);
+	d2l-table-wrapper[type="default"] .d2l-table-row-last > .d2l-table-cell-last {
+		border-end-end-radius: var(--d2l-table-border-radius);
 	}
 
 	/* selected rows */
 	.d2l-table > tbody > tr[selected] {
 		background-color: var(--d2l-table-row-background-color-selected);
 	}
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > tbody > tr[selected] > .d2l-table-cell-last,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > tbody > tr[selected] > .d2l-table-cell-first {
-		border-right-color: var(--d2l-table-row-border-color-selected);
+	d2l-table-wrapper[type="default"] .d2l-table > tbody > tr[selected] > .d2l-table-cell-last {
+		border-inline-end-color: var(--d2l-table-row-border-color-selected);
 	}
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table > tbody > tr[selected] > .d2l-table-cell-first,
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table > tbody > tr[selected] > .d2l-table-cell-last {
-		border-left-color: var(--d2l-table-row-border-color-selected);
+	d2l-table-wrapper[type="default"] .d2l-table > tbody > tr[selected] > .d2l-table-cell-first {
+		border-inline-start-color: var(--d2l-table-row-border-color-selected);
 	}
 	.d2l-table > tbody > tr[selected] > *,
 	.d2l-table > * > tr.d2l-table-selected-previous > * {
@@ -178,17 +166,11 @@ export const tableStyles = css`
 	}
 
 	/* no-column-border */
-	d2l-table-wrapper[type="default"][no-column-border]:not([dir="rtl"]) .d2l-table > tbody > tr > *:not(.d2l-table-cell-last),
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table[no-column-border] > tbody > tr > *:not(.d2l-table-cell-last),
-	d2l-table-wrapper[type="default"][no-column-border]:not([dir="rtl"]) .d2l-table > thead > tr > *:not(.d2l-table-cell-last),
-	d2l-table-wrapper[type="default"]:not([dir="rtl"]) .d2l-table[no-column-border] > thead > tr > *:not(.d2l-table-cell-last) {
-		border-right: none;
-	}
-	d2l-table-wrapper[type="default"][no-column-border][dir="rtl"] .d2l-table > tbody > tr > *:not(.d2l-table-cell-last),
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table[no-column-border] > tbody > tr > *:not(.d2l-table-cell-last),
-	d2l-table-wrapper[type="default"][no-column-border][dir="rtl"] .d2l-table > thead > tr > *:not(.d2l-table-cell-last),
-	d2l-table-wrapper[type="default"][dir="rtl"] .d2l-table[no-column-border] > thead > tr > *:not(.d2l-table-cell-last) {
-		border-left: none;
+	d2l-table-wrapper[type="default"][no-column-border] .d2l-table > tbody > tr > *:not(.d2l-table-cell-last),
+	d2l-table-wrapper[type="default"] .d2l-table[no-column-border] > tbody > tr > *:not(.d2l-table-cell-last),
+	d2l-table-wrapper[type="default"][no-column-border] .d2l-table > thead > tr > *:not(.d2l-table-cell-last),
+	d2l-table-wrapper[type="default"] .d2l-table[no-column-border] > thead > tr > *:not(.d2l-table-cell-last) {
+		border-inline-end: none;
 	}
 
 	/* sticky-headers */
@@ -200,13 +182,9 @@ export const tableStyles = css`
 		position: sticky;
 		z-index: 1;
 	}
-	d2l-table-wrapper:not([dir="rtl"])[sticky-headers] .d2l-table > * > tr > .d2l-table-sticky-cell,
-	d2l-table-wrapper:not([dir="rtl"])[sticky-headers] .d2l-table > * > tr > [sticky] {
-		left: 0;
-	}
-	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > .d2l-table-sticky-cell,
-	d2l-table-wrapper[dir="rtl"][sticky-headers] .d2l-table > * > tr > [sticky] {
-		right: 0;
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr > .d2l-table-sticky-cell,
+	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr > [sticky] {
+		inset-inline-start: 0;
 	}
 
 	/* non-header sticky cells */
@@ -241,13 +219,9 @@ export const tableStyles = css`
 	}
 
 	/* first column that's sticky: offset by size of border-radius so top/bottom border doesn't show through (default style only) */
-	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) .d2l-table > * > tr > .d2l-table-sticky-cell.d2l-table-cell-first,
-	d2l-table-wrapper[sticky-headers][type="default"]:not([dir="rtl"]) .d2l-table > * > tr > [sticky].d2l-table-cell-first {
-		left: var(--d2l-table-border-radius-sticky-offset, 0);
-	}
-	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] .d2l-table > * > tr > .d2l-table-sticky-cell.d2l-table-cell-first,
-	d2l-table-wrapper[sticky-headers][type="default"][dir="rtl"] .d2l-table > * > tr > [sticky].d2l-table-cell-first {
-		right: var(--d2l-table-border-radius-sticky-offset, 0);
+	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > * > tr > .d2l-table-sticky-cell.d2l-table-cell-first,
+	d2l-table-wrapper[sticky-headers][type="default"] .d2l-table > * > tr > [sticky].d2l-table-cell-first {
+		inset-inline-start: var(--d2l-table-border-radius-sticky-offset, 0);
 	}
 
 	/* sticky + scroll-wrapper */
@@ -296,7 +270,7 @@ const SELECTORS = {
  * @slot controls - Slot for `d2l-table-controls` to be rendered above the table
  * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the table
  */
-export class TableWrapper extends RtlMixin(PageableMixin(SelectionMixin(LitElement))) {
+export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 	static get properties() {
 		return {
