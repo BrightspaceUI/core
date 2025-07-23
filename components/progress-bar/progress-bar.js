@@ -79,8 +79,10 @@ class Progress extends LitElement {
 
 	constructor() {
 		super();
-		this.value = 0;
+		this.labelHidden = false;
 		this.maxValue = 100;
+		this.value = 0;
+		this.valueHidden = false;
 	}
 
 	render() {
