@@ -3,8 +3,8 @@ import { bodyCompactStyles, bodySmallStyles } from '../typography/styles.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { formatPercent } from '@brightspace-ui/intl';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 class Progress extends LitElement {
 
@@ -102,7 +102,7 @@ class Progress extends LitElement {
 		return html`
 			<div class=${classMap(textClasses)} >
 				<span ?hidden=${this.labelHidden} id="label">${this.label}</span>
-				<span style="font-size: 0;">${getSeparator({nonBreaking: true})}</span>
+				<span style="font-size: 0;">${getSeparator({ nonBreaking: true })}</span>
 				<span ?hidden=${this.valueHidden}>${perecentageText}</span>
 			</div>
 			<progress
@@ -110,7 +110,8 @@ class Progress extends LitElement {
 				aria-label="${ifDefined(this.labelHidden ? this.label : undefined)}"
 				aria-valuetext="${perecentageText}"
 				class="${classMap(classes)}"
-				value="${percentage}">
+				value="${this.value}"
+				max="${this.maxValue}">
 			</progress>
 		`;
 	}

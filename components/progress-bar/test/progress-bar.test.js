@@ -22,14 +22,6 @@ describe('d2l-progress-bar', () => {
 			expect(element.value).to.equal(0);
 		});
 
-		it('does not change max attribute of progress element', async() => {
-			for (const max of [1, 10, 100]) {
-				element.maxValue = max;
-				await element.updateComplete;
-				expect(bar.getAttribute('max')).to.equal('100');
-			}
-		});
-
 		it('changes value attribute of progress element', async() => {
 			for (const val of [1, 10, 100]) {
 				element.value = val;
@@ -37,17 +29,24 @@ describe('d2l-progress-bar', () => {
 				expect(bar.getAttribute('value')).to.equal(val.toString());
 			}
 		});
-		it('changes value attribute of progress element based on max-value', async() => {
+		it('changes max attribute of progress element', async() => {
+			for (const max of [1, 10, 100]) {
+				element.maxValue = max;
+				await element.updateComplete;
+				expect(bar.getAttribute('max')).to.equal(max.toString());
+			}
+		});
+		it('sets aria-valuetext to a percentage regardless of max value', async() => {
 			element.value = 1;
 			const tests = [
-				{ max: 1, expected: '100' },
-				{ max: 10, expected: '10' },
-				{ max: 100, expected: '1' }
+				{ max: 1, expected: '100 %' },
+				{ max: 10, expected: '10 %' },
+				{ max: 100, expected: '1 %' }
 			];
 			for (const { max, expected } of tests) {
 				element.maxValue = max;
 				await element.updateComplete;
-				expect(bar.getAttribute('value')).to.equal(expected);
+				expect(bar.getAttribute('aria-valuetext')).to.equal(expected);
 			}
 		});
 
@@ -57,7 +56,7 @@ describe('d2l-progress-bar', () => {
 			element.maxValue = 3;
 			await element.updateComplete;
 			expect(valueNode.textContent).to.equal('66 %');
-			expect(bar.getAttribute('value')).to.equal('66');
+			expect(bar.getAttribute('aria-valuetext')).to.equal('66 %');
 		});
 	});
 
