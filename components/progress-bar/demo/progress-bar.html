@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+
+			import '../progress-bar.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-progress-bar">
+
+			<h2>Basic</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-progress-bar label="Progress" value="8" max-value="10"></d2l-progress-bar>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Small</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-progress-bar small label="Progress(small)" value="8" max-value="10"></d2l-progress-bar>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Complete</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-progress-bar label="Progress" value="10" max-value="10"></d2l-progress-bar>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Label Hidden</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-progress-bar label="Progress" label-hidden value="50"></d2l-progress-bar>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Value Hidden</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-progress-bar label="Progress" value-hidden value="50"></d2l-progress-bar>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Both Hidden</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-progress-bar label="Progress" value-hidden label-hidden small value="50"></d2l-progress-bar>
+				</template>
+			</d2l-demo-snippet>
+
+
+			<h2>Animation</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<button id="animation-starter">Start Animation</button>
+					<d2l-progress-bar id="progress" label="Progress"></d2l-progress-bar>
+					<script>
+						const button = document.querySelector('#animation-starter');
+						button.addEventListener('click', () => {
+							const progress = document.querySelector('#progress');
+							for (let i = 0; i < 5; i++) {
+								setTimeout(() => progress.value = i * 25, i * 500);
+
+							}
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+
+
+		</d2l-demo-page>
+	</body>
+</html>
