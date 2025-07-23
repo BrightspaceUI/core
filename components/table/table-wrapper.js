@@ -178,13 +178,10 @@ export const tableStyles = css`
 	/* all sticky cells */
 	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr > .d2l-table-sticky-cell,
 	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr > [sticky] {
+		inset-inline-start: 0;
 		position: -webkit-sticky;
 		position: sticky;
 		z-index: 1;
-	}
-	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr > .d2l-table-sticky-cell,
-	d2l-table-wrapper[sticky-headers] .d2l-table > * > tr > [sticky] {
-		inset-inline-start: 0;
 	}
 
 	/* non-header sticky cells */
