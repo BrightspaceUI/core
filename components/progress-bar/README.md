@@ -9,7 +9,7 @@ A progress bar communicates information relating to the progress of completion o
   import '@brightspace-ui/core/components/progress-bar/progress-bar.js';
 </script>
 
-<d2l-progress-bar label="Progress" detail="8/10" value="8" max="10"></d2l-progress-bar>
+<d2l-progress-bar label="Progress" value="8" max-value="10"></d2l-progress-bar>
 ```
 <!-- docs: start hidden content -->
 ### Properties
