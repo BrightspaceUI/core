@@ -4,6 +4,7 @@ import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
 
 class Progress extends LitElement {
 
@@ -95,19 +96,20 @@ class Progress extends LitElement {
 			'd2l-body-compact': !this.small
 		};
 
-		const percentage = Math.floor(100 * this.value / this.maxValue);
+		const percentage = Math.floor(100 * this.value / this.maxValue) / 100;
+		const perecentageText = formatPercent(percentage);
 
 		return html`
 			<div class=${classMap(textClasses)} >
 				<span ?hidden=${this.labelHidden} id="label">${this.label}</span>
-				<span style="font-size: 0;">&nbsp;</span>
-				<span ?hidden=${this.valueHidden}>${formatPercent(percentage / 100)}</span>
+				<span style="font-size: 0;">${getSeparator({nonBreaking: true})}</span>
+				<span ?hidden=${this.valueHidden}>${perecentageText}</span>
 			</div>
 			<progress
 				aria-labelledby="${ifDefined(this.labelHidden ? undefined : 'label')}"
 				aria-label="${ifDefined(this.labelHidden ? this.label : undefined)}"
+				aria-valuetext="${perecentageText}"
 				class="${classMap(classes)}"
-				max="100"
 				value="${percentage}">
 			</progress>
 		`;

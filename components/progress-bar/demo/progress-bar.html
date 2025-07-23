@@ -66,23 +66,22 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<button id="animation-starter">Start Animation</button>
-					<d2l-progress-bar id="progress" label="Progress"></d2l-progress-bar>
-					<script>
-						const button = document.querySelector('#animation-starter');
-						button.addEventListener('click', () => {
-							const progress = document.querySelector('#progress');
-							for (let i = 0; i < 5; i++) {
-								setTimeout(() => progress.value = i * 25, i * 500);
+					<button>Start Animation</button>
+					<d2l-progress-bar label="Progress"></d2l-progress-bar>
+					<script data-demo-hide>
+						(demo => {
+							const button = demo.querySelector('button');
+							const progress = demo.querySelector('d2l-progress-bar');
+							button.addEventListener('click', () => {
+								for (let i = 0; i < 5; i++) {
+									setTimeout(() => progress.value = i * 25, i * 500);
 
-							}
-						});
+								}
+							});
+						})(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
-
-
-
 		</d2l-demo-page>
 	</body>
 </html>
