@@ -10,7 +10,7 @@ class Progress extends LitElement {
 
 	static get properties() {
 		return {
-			maxValue: { type: Number, attribute: 'max-value' },
+			max: { type: Number, attribute: 'max' },
 			value: { type: Number },
 			label: { type: String },
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
@@ -74,6 +74,11 @@ class Progress extends LitElement {
 				progress[value="0"]::${unsafeCSS(selector)} {
 					border: none;
 				}
+				@media (prefers-reduced-motion: reduce) {
+					progress::${unsafeCSS(selector)} {
+						transition: none;
+					}
+				}
 			`)
 		];
 	}
@@ -81,14 +86,14 @@ class Progress extends LitElement {
 	constructor() {
 		super();
 		this.labelHidden = false;
-		this.maxValue = 100;
+		this.max = 100;
 		this.value = 0;
 		this.valueHidden = false;
 	}
 
 	render() {
 		const classes = {
-			'complete': this.value === this.maxValue
+			'complete': this.value === this.max
 		};
 		const textClasses = {
 			'text': true,
@@ -96,7 +101,7 @@ class Progress extends LitElement {
 			'd2l-body-compact': !this.small
 		};
 
-		const percentage = Math.floor(100 * this.value / this.maxValue) / 100;
+		const percentage = Math.floor(100 * this.value / this.max) / 100;
 		const perecentageText = formatPercent(percentage);
 
 		return html`
@@ -111,11 +116,11 @@ class Progress extends LitElement {
 				aria-valuetext="${perecentageText}"
 				class="${classMap(classes)}"
 				value="${this.value}"
-				max="${this.maxValue}">
+				max="${this.max}">
 			</progress>
 		`;
 	}
 
 }
 
-customElements.define('d2l-progress-bar', Progress);
+customElements.define('d2l-progress', Progress);
