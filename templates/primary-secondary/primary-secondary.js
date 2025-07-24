@@ -8,7 +8,6 @@ import { classMap } from 'lit/directives/class-map.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -27,6 +26,10 @@ const keyCodes = Object.freeze({
 	ENTER: 13,
 	SPACE: 32
 });
+
+function isRtl() {
+	return document.documentElement.getAttribute('dir') === 'rtl';
+}
 
 function isMobile() {
 	return matchMedia('only screen and (max-width: 767px)').matches;
@@ -49,7 +52,6 @@ class Resizer {
 		this.contentBounds = null;
 		this.isCollapsed = false;
 		this.isMobile = false;
-		this.isRtl = false;
 		this.panelSize = 0;
 		this.secondaryFirst = false;
 		this._wasCollapsed = false;
@@ -126,7 +128,7 @@ class DesktopKeyboardResizer extends Resizer {
 		e.preventDefault();
 
 		// The direction of the container is flipped if exactly one of isRtl and secondaryFirst is true
-		const isFlipped = this.isRtl ^ this.secondaryFirst;
+		const isFlipped = isRtl() ^ this.secondaryFirst;
 		const direction = e.keyCode === keyCodes.LEFT && !isFlipped
 			|| e.keyCode === keyCodes.RIGHT && isFlipped ? 1 : -1;
 		let secondaryWidth;
@@ -196,7 +198,7 @@ class DesktopMouseResizer extends Resizer {
 	_computeContentX(clientX) {
 		const x = clientX - this.contentRect.left;
 		// The direction of the container is flipped if exactly one of isRtl and secondaryFirst is true
-		return this.isRtl ^ this.secondaryFirst ? x : this.contentRect.width - x;
+		return isRtl() ^ this.secondaryFirst ? x : this.contentRect.width - x;
 	}
 
 	_onMouseDown(e) {
@@ -546,7 +548,7 @@ class MobileTouchResizer extends Resizer {
  * @fires d2l-template-primary-secondary-resize-start - Dispatched when a user begins moving the divider.
  * @fires d2l-template-primary-secondary-resize-end - Dispatched when a user finishes moving the divider.
  */
-class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement)) {
+class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
@@ -673,13 +675,8 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 			:host([resizable]) [data-is-collapsed] aside {
 				visibility: hidden;
 			}
-			:host([resizable]:not([dir="rtl"]):not([secondary-first])) aside,
-			:host([resizable][dir="rtl"][secondary-first]) aside {
-				float: left;
-			}
-			:host([resizable][dir="rtl"]:not([secondary-first])) aside,
-			:host([resizable]:not([dir="rtl"])[secondary-first]) aside {
-				float: right;
+			:host([resizable]:not([secondary-first])) aside {
+				float: inline-start;
 			}
 			.d2l-template-primary-secondary-divider,
 			.d2l-template-primary-secondary-divider-not-resizable {
@@ -701,26 +698,22 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 				cursor: ew-resize;
 				width: 0.45rem;
 			}
-			:host([resizable]) [data-is-collapsed] .d2l-template-primary-secondary-divider,
-			:host([resizable][dir="rtl"]) [data-is-expanded] .d2l-template-primary-secondary-divider {
-				cursor: w-resize;
+			:host([resizable]) [data-is-expanded] .d2l-template-primary-secondary-divider {
+				cursor: var(--d2l-cursor-resize-inline-end, e-resize);
 			}
-			:host([resizable]) [data-is-expanded] .d2l-template-primary-secondary-divider,
-			:host([resizable][dir="rtl"]) [data-is-collapsed] .d2l-template-primary-secondary-divider {
-				cursor: e-resize;
+			:host([resizable]) [data-is-collapsed] .d2l-template-primary-secondary-divider {
+				cursor: var(--d2l-cursor-resize-inline-start, w-resize);
 			}
 			:host([resizable]) .d2l-template-primary-secondary-divider-handle {
 				align-items: center;
 				display: flex;
 				justify-content: center;
 			}
-			:host([resizable]) [data-background-shading="secondary"] .d2l-template-primary-secondary-divider,
-			:host([resizable][dir="rtl"]) [data-background-shading="primary"] .d2l-template-primary-secondary-divider {
-				box-shadow: 1px 0 0 0 rgba(0, 0, 0, 0.15);
+			:host([resizable]) [data-background-shading="secondary"] .d2l-template-primary-secondary-divider {
+				box-shadow: calc(1px * var(--d2l-length-factor, 1)) 0 0 0 rgba(0, 0, 0, 0.15);
 			}
-			:host([resizable]) [data-background-shading="primary"] .d2l-template-primary-secondary-divider,
-			:host([resizable][dir="rtl"]) [data-background-shading="secondary"] .d2l-template-primary-secondary-divider {
-				box-shadow: -1px 0 0 0 rgba(0, 0, 0, 0.15);
+			:host([resizable]) [data-background-shading="primary"] .d2l-template-primary-secondary-divider {
+				box-shadow: calc(-1px * var(--d2l-length-factor, 1)) 0 0 0 rgba(0, 0, 0, 0.15);
 			}
 			.d2l-template-primary-secondary-divider-handle-desktop {
 				align-items: center;
@@ -735,10 +728,10 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 				position: absolute;
 			}
 			.d2l-template-primary-secondary-divider-handle-left {
-				left: -1rem;
+				inset-inline-start: -1rem;
 			}
 			.d2l-template-primary-secondary-divider-handle-right {
-				right: -1rem;
+				inset-inline-end: -1rem;
 			}
 			.d2l-template-primary-secondary-divider-handle-line {
 				display: flex;
@@ -758,12 +751,10 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-left {
 				display: block;
 			}
-			:host(:not([dir="rtl"]):not([secondary-first])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left,
-			:host([dir="rtl"][secondary-first]) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left {
+			:host(:not([secondary-first])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left {
 				display: none;
 			}
-			:host(:not([dir="rtl"])[secondary-first]) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-right,
-			:host([dir="rtl"]:not([secondary-first])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-right {
+			:host([secondary-first]) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-right {
 				display: none;
 			}
 			d2l-icon {
@@ -781,14 +772,11 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 			}
 
 			:host([resizable]) .d2l-template-primary-secondary-divider:focus,
-			:host([resizable]) .d2l-template-primary-secondary-divider:hover,
-			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider:focus,
-			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider:hover {
+			:host([resizable]) .d2l-template-primary-secondary-divider:hover {
 				background-color: var(--d2l-color-mica);
 				box-shadow: none;
 			}
-			:host([resizable]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())},
-			:host([resizable][dir="rtl"]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} {
+			:host([resizable]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} {
 				background-color: var(--d2l-color-celestine);
 			}
 			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-line::before,
@@ -897,14 +885,9 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 					border-radius: 0;
 					bottom: 0.1rem;
 					display: block;
-					left: auto;
+					inset-inline-end: calc(17px + 0.2rem);
 					overflow: hidden;
-					right: calc(17px + 0.2rem);
 					top: auto;
-				}
-				:host([dir="rtl"]) .d2l-template-primary-secondary-divider-handle {
-					left: calc(17px + 0.2rem);
-					right: auto;
 				}
 				.d2l-template-primary-secondary-divider-handle-mobile {
 					align-items: center;
@@ -928,12 +911,8 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 				.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle {
 					box-shadow: none;
 					height: 1.2rem;
-					right: 17px;
+					inset-inline-end: 17px;
 					width: 2.6rem;
-				}
-				:host([dir="rtl"]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle {
-					left: 17px;
-					right: auto;
 				}
 				d2l-icon {
 					color: white;
@@ -1038,13 +1017,8 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 	}
 
 	firstUpdated(changedProperties) {
-
 		super.firstUpdated(changedProperties);
 
-		const isRtl = this.getAttribute('dir') === 'rtl';
-		for (const resizer of this._resizers) {
-			resizer.isRtl = isRtl;
-		}
 		const contentArea = this.shadowRoot.querySelector('.d2l-template-primary-secondary-content');
 		this._resizeObserver = new ResizeObserver(this._onContentResize);
 		this._resizeObserver.observe(contentArea);
@@ -1290,13 +1264,13 @@ class TemplatePrimarySecondary extends RtlMixin(LocalizeCoreElement(LitElement))
 				<div class="d2l-template-primary-secondary-divider-handle" @click=${this._onHandleTap} @mousedown=${this._onHandleTapStart}>
 					<div class="d2l-template-primary-secondary-divider-handle-desktop">
 						<d2l-icon-custom size="tier1" class="d2l-template-primary-secondary-divider-handle-left">
-							<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+							<svg width="18" height="18" mirror-in-rtl xmlns="http://www.w3.org/2000/svg">
 								<path transform="rotate(90 9.004714965820312,9.000227928161623)" d="m13.708,6.29a1.006,1.006 0 0 0 -0.708,-0.29l-7.995,0a1,1 0 0 0 -0.705,1.71l4,4a1.013,1.013 0 0 0 1.42,0l4,-4a1.01,1.01 0 0 0 -0.013,-1.42l0.001,0z" fill="#494c4e"/>
 							</svg>
 						</d2l-icon-custom>
 						<div class="d2l-template-primary-secondary-divider-handle-line"></div>
 						<d2l-icon-custom size="tier1" class="d2l-template-primary-secondary-divider-handle-right">
-							<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+							<svg width="18" height="18" mirror-in-rtl xmlns="http://www.w3.org/2000/svg">
 								<path transform="rotate(-90 9.004714965820314,9.000227928161621)" d="m13.708,6.29a1.006,1.006 0 0 0 -0.708,-0.29l-7.995,0a1,1 0 0 0 -0.705,1.71l4,4a1.013,1.013 0 0 0 1.42,0l4,-4a1.01,1.01 0 0 0 -0.013,-1.42l0.001,0z" fill="#494c4e"/>
 							</svg>
 						</d2l-icon-custom>
