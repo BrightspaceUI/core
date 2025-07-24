@@ -6,7 +6,7 @@ A progress bar communicates information relating to the progress of completion o
 <!-- docs: demo code properties name:d2l-progress sandboxTitle:'Progress Bar' autoSize:false  -->
 ```html
 <script type="module">
-  import '@brightspace-ui/core/components/progress-bar/progress-bar.js';
+  import '@brightspace-ui/core/components/progress/progress.js';
 </script>
 
 <d2l-progress label="Progress" value="8" max="10"></d2l-progress>

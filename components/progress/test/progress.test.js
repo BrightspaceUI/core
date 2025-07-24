@@ -1,4 +1,4 @@
-import '../progress-bar.js';
+import '../progress.js';
 import { expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-progress', () => {
