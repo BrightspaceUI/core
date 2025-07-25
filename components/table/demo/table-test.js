@@ -19,7 +19,6 @@ import { css, html, nothing } from 'lit';
 import { tableStyles, TableWrapper } from '../table-wrapper.js';
 import { DemoPassthroughMixin } from '../../demo/demo-passthrough-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 
 const columns = ['Population', 'Size', 'Elevation'];
 const thText = ['Additional', 'Placeholder', 'Header', 'Row', 'Cells'];
@@ -36,7 +35,7 @@ const data = () => [
 
 const formatter = new Intl.NumberFormat('en-US');
 
-class TestTable extends RtlMixin(DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper')) {
+class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') {
 
 	static get properties() {
 		return {

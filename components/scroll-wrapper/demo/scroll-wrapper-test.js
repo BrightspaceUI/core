@@ -1,9 +1,8 @@
 import '../scroll-wrapper.js';
 import { css, html, LitElement } from 'lit';
-import { RtlMixin } from '../../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-class TestScrollWrapper extends RtlMixin(LitElement) {
+class TestScrollWrapper extends LitElement {
 
 	static get properties() {
 		return {
