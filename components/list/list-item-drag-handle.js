@@ -7,7 +7,6 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { moveActions } from '../button/button-move.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const keyCodes = Object.freeze({
 	DOWN: 40,
@@ -43,7 +42,7 @@ let hasDisplayedKeyboardTooltip = false;
 /**
  * @fires d2l-list-item-drag-handle-action - Dispatched when an action performed on the drag handle
  */
-class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElement))) {
+class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -186,6 +185,8 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElem
 
 	async _onMoveButtonAction(e) {
 
+		const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+
 		let action = null;
 		switch (e.detail.action) {
 			case moveActions.up:
@@ -199,11 +200,11 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(RtlMixin(LitElem
 				break;
 			case moveActions.right:
 				this._movingElement = true;
-				action = (this.dir === 'rtl' ? dragActions.unnest : dragActions.nest);
+				action = (isRtl ? dragActions.unnest : dragActions.nest);
 				break;
 			case moveActions.left:
 				this._movingElement = true;
-				action = (this.dir === 'rtl' ? dragActions.nest : dragActions.unnest) ;
+				action = (isRtl ? dragActions.nest : dragActions.unnest) ;
 				break;
 			case moveActions.rootHome:
 				this._movingElement = true;

@@ -3,7 +3,6 @@ import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getFocusableDescendants, getLastFocusableDescendant, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { getFlag } from '../../helpers/flags.js';
 import { isInteractiveDescendant } from '../../mixins/interactive/interactive-mixin.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 const keyCodes = {
 	DOWN: 40,
@@ -20,6 +19,10 @@ const keyCodes = {
 
 const listItemUpButtonFixFlag = getFlag('GAUD-8229-list-up-button-fix', true);
 
+function isRtl() {
+	return document.documentElement.getAttribute('dir') === 'rtl';
+}
+
 /**
  * A component for generating a list item's layout with forced focus ordering and grid support.
  * Focusable items placed in the "content" slot will have their focus removed; use the content-action
@@ -33,7 +36,7 @@ const listItemUpButtonFixFlag = getFlag('GAUD-8229-list-up-button-fix', true);
  * @slot actions - Other actions for the list item on the far right, such as a context menu
  * @slot nested - Optional `d2l-list` for creating nested lists
  */
-class ListItemGenericLayout extends RtlMixin(LitElement) {
+class ListItemGenericLayout extends LitElement {
 
 	static get properties() {
 		return {
@@ -289,7 +292,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	_focusFirstRow() {
 		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
 		const row = list.firstElementChild.shadowRoot.querySelector('[role="gridcell"]');
-		if (this.dir === 'rtl') {
+		if (isRtl()) {
 			row._focusLastCell();
 		} else {
 			row._focusFirstCell();
@@ -312,7 +315,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 	_focusLastRow() {
 		const list = findComposedAncestor(this, (node) => node.tagName === 'D2L-LIST');
 		const row = list.lastElementChild.shadowRoot.querySelector('[role="gridcell"]');
-		if (this.dir === 'rtl') {
+		if (isRtl()) {
 			row._focusFirstCell();
 		} else {
 			row._focusLastCell();
@@ -485,14 +488,14 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 
 		switch (e.keyCode) {
 			case keyCodes.RIGHT:
-				if (this.dir === 'rtl') {
+				if (isRtl()) {
 					this._focusPreviousWithinRow(focusInfo, focusables);
 				} else {
 					this._focusNextWithinRow(focusInfo, focusables);
 				}
 				break;
 			case keyCodes.LEFT:
-				if (this.dir === 'rtl') {
+				if (isRtl()) {
 					this._focusNextWithinRow(focusInfo, focusables);
 				} else {
 					this._focusPreviousWithinRow(focusInfo, focusables);
@@ -507,7 +510,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				this._focusNextRow(focusInfo);
 				break;
 			case keyCodes.HOME:
-				if (this.dir === 'rtl') {
+				if (isRtl()) {
 					if (e.ctrlKey) {
 						this._focusFirstRow();
 					} else {
@@ -525,7 +528,7 @@ class ListItemGenericLayout extends RtlMixin(LitElement) {
 				}
 				break;
 			case keyCodes.END:
-				if (this.dir === 'rtl') {
+				if (isRtl()) {
 					if (e.ctrlKey) {
 						// focus first item of last row
 						this._focusLastRow();

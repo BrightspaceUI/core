@@ -4,10 +4,9 @@ import { css, html, LitElement } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
-class ListItemDragImage extends LocalizeCoreElement(SkeletonMixin(RtlMixin(LitElement))) {
+class ListItemDragImage extends LocalizeCoreElement(SkeletonMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -24,17 +23,13 @@ class ListItemDragImage extends LocalizeCoreElement(SkeletonMixin(RtlMixin(LitEl
 			:host {
 				display: block;
 				height: 70px;
-				left: -10000px;
+				inset-inline-start: -10000px;
 				position: absolute;
 				width: 340px;
 				z-index: 0;
 			}
 			:host([hidden]) {
 				display: none;
-			}
-			:host([dir="rtl"]) {
-				left: 0;
-				right: -10000px;
 			}
 			.first, .second, .third {
 				background-color: white;
@@ -89,9 +84,6 @@ class ListItemDragImage extends LocalizeCoreElement(SkeletonMixin(RtlMixin(LitEl
 				text-align: center;
 				top: 30px;
 				z-index: 998; /* must be higher than the skeleton z-index */
-			}
-			:host([dir="rtl"]) .count {
-				left: 14px;
 			}
 		`];
 	}
