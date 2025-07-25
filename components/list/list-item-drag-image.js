@@ -85,6 +85,9 @@ class ListItemDragImage extends LocalizeCoreElement(SkeletonMixin(LitElement)) {
 				top: 30px;
 				z-index: 998; /* must be higher than the skeleton z-index */
 			}
+			.count:dir(rtl) {
+				left: 16px;
+			}
 		`];
 	}
 
