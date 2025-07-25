@@ -751,9 +751,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-left {
 				display: block;
 			}
-			:host(:not([secondary-first])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left {
-				display: none;
-			}
+			:host(:not([secondary-first])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left,
 			:host([secondary-first]) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-right {
 				display: none;
 			}
