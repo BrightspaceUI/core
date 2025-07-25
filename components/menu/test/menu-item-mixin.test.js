@@ -62,6 +62,14 @@ describe('MenuItemMixin', () => {
 			await clickElem(elem);
 			expect(dispatched).to.be.false;
 		});
+
+		it('allows the click event to propagate when property set', async() => {
+			const elem = await fixture(`<${tag} text="my menu item"></${tag}>`);
+			elem._letClickPropagate = true;
+			clickElem(elem);
+			const e = await oneEvent(document, 'click');
+			expect(e.target).to.equal(elem);
+		});
 	});
 
 	describe('validation', () => {
