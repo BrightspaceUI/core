@@ -1,8 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
-class ListItemPlacementMarker extends RtlMixin(LitElement) {
+class ListItemPlacementMarker extends LitElement {
 
 	static get styles() {
 		return css`
@@ -26,30 +25,18 @@ class ListItemPlacementMarker extends RtlMixin(LitElement) {
 			.d2l-list-drag-marker-linecap {
 				fill: var(--d2l-color-celestine);
 				height: 12px;
-				margin-left: -1px;
-				margin-right: 0;
+				margin-inline: -1px 0;
 				stroke: none;
 				width: 4px;
-			}
-
-			:host([dir="rtl"]) .d2l-list-drag-marker-linecap {
-				margin-left: 0;
-				margin-right: -1px;
 			}
 
 			.d2l-list-drag-marker-circle {
 				fill: none;
 				height: 12px;
-				margin-left: 0;
-				margin-right: -1px;
+				margin-inline: 0 -1px;
 				stroke: var(--d2l-color-celestine);
 				stroke-width: 3px;
 				width: 12px;
-			}
-
-			:host([dir="rtl"]) .d2l-list-drag-marker-circle {
-				margin-left: -1px;
-				margin-right: 0;
 			}
 
 			.d2l-list-drag-marker {

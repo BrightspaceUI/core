@@ -247,11 +247,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			[slot="content"] {
 				display: flex;
 				justify-content: start;
-				padding: 0.55rem 0.55rem 0.55rem 0;
-			}
-			:host([dir="rtl"]) [slot="content"] {
-				padding-left: 0.55rem;
-				padding-right: 0;
+				padding-block: 0.55rem;
+				padding-inline: 0 0.55rem;
 			}
 			:host([padding-type="none"]) [slot="content"] {
 				padding-bottom: 0;
@@ -292,12 +289,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 			.d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
 			.d2l-list-item-content-extend-separators .d2l-list-item-actions > * {
-				margin-right: 0.9rem;
-			}
-			:host([dir="rtl"]) .d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
-			:host([dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-actions > * {
-				margin-left: 0.9rem;
-				margin-right: 0;
+				margin-inline-end: 0.9rem;
 			}
 
 			d2l-selection-input {
@@ -453,31 +445,17 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				width: var(--d2l-list-item-color-width, 6px);
 			}
 			.d2l-list-item-color-outer {
-				padding: 2px 12px 1px 0;
-			}
-			:host([dir="rtl"]) .d2l-list-item-color-outer {
-				padding-left: 12px;
-				padding-right: 0;
+				padding-block: 2px 1px;
+				padding-inline: 0 12px;
 			}
 			:host(:not([_nested])) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
-				padding-left: 3px;
-			}
-			:host(:not([_nested])[dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
-				padding-left: 12px;
-				padding-right: 3px;
+				padding-inline-start: 3px;
 			}
 			:host([selectable]:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
-				padding-right: 0;
-			}
-			:host([selectable]:not([_render-expand-collapse-slot])[dir="rtl"]) .d2l-list-item-content-extend-separators .d2l-list-item-color-outer {
-				padding-left: 0;
+				padding-inline-end: 0;
 			}
 			.d2l-list-item-color-outer + .d2l-list-expand-collapse {
-				margin-left: -6px;
-			}
-			:host([dir="rtl"]) .d2l-list-item-color-outer + .d2l-list-expand-collapse {
-				margin-left: 0;
-				margin-right: -6px;
+				margin-inline-start: -6px;
 			}
 
 			[slot="add"],
