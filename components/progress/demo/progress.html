@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+
+			import '../progress.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-progress">
+
+			<h2>Basic</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-progress label="Progress" value="8" max="10"></d2l-progress>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Small</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-progress small label="Progress(small)" value="8" max="10"></d2l-progress>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Complete</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-progress label="Progress" value="10" max="10"></d2l-progress>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Label Hidden</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-progress label="Progress" label-hidden value="50"></d2l-progress>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Value Hidden</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-progress label="Progress" value-hidden value="50"></d2l-progress>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Both Hidden</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-progress label="Progress" value-hidden label-hidden small value="50"></d2l-progress>
+				</template>
+			</d2l-demo-snippet>
+
+
+			<h2>Animation</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<button>Start Animation</button>
+					<d2l-progress label="Progress"></d2l-progress>
+					<script data-demo-hide>
+						(demo => {
+							const button = demo.querySelector('button');
+							const progress = demo.querySelector('d2l-progress');
+							button.addEventListener('click', () => {
+								for (let i = 0; i < 5; i++) {
+									setTimeout(() => progress.value = i * 25, i * 500);
+
+								}
+							});
+						})(document.currentScript.parentNode);
+					</script>
+				</template>
+			</d2l-demo-snippet>
+		</d2l-demo-page>
+	</body>
+</html>
