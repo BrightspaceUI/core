@@ -173,7 +173,7 @@ export default {
 	"components.selection.selected-plus": "Meer dan {count} geselecteerd",
 	"components.selection-controls.label": "Acties voor selectie",
 	"components.sort.label": "Sorteren",
-	"components.sort.text": "Sorteren: {SelectedItemText}",
+	"components.sort.text": "Sorteren: {selectedItemText}",
 	"components.switch.conditions": "Er moet aan de voorwaarden worden voldaan",
 	"components.switch.hidden": "Verborgen",
 	"components.switch.visible": "Zichtbaar",

@@ -204,7 +204,6 @@ export default {
 	"components.tag-list.role-description":
 		`{count, plural,
 			=0 {包含 0 个项目的标签列表}
-			one {包含 {count} 个项目的标签列表}
 			other {包含 {count} 个项目的标签列表}
 		}`,
 	"components.tag-list.show-less": "显示更少",

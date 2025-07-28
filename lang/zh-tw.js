@@ -205,7 +205,6 @@ export default {
 	"components.tag-list.role-description":
 		`{count, plural,
 			=0 {標記列表包含 0 個項目}
-			one {標記列表包含 {count} 個項目}
 			other {標記列表包含 {count} 個項目}
 		}`,
 	"components.tag-list.show-less": "顯示更少",

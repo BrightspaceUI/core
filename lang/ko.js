@@ -204,7 +204,6 @@ export default {
 	"components.tag-list.role-description":
 		`{count, plural,
 			=0 {0개의 항목이 있는 태그 목록}
-			one {{count}개의 항목이 있는 태그 목록}
 			other {{count}개의 항목이 있는 태그 목록}
 		}`,
 	"components.tag-list.show-less": "간단히 표시",

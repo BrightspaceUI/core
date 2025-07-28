@@ -204,7 +204,6 @@ export default {
 	"components.tag-list.role-description":
 		`{count, plural,
 			=0 {0 項目のタグリスト}
-			one {{count} 項目のタグリスト}
 			other {{count} 項目のタグリスト}
 		}`,
 	"components.tag-list.show-less": "少なく表示",

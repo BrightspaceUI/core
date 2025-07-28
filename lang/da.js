@@ -173,7 +173,7 @@ export default {
 	"components.selection.selected-plus": "{count}+ valgt",
 	"components.selection-controls.label": "Handlinger for valg",
 	"components.sort.label": "Sortér",
-	"components.sort.text": "Sortér:{selectedItemText}",
+	"components.sort.text": "Sortér: {selectedItemText}",
 	"components.switch.conditions": "Betingelserne skal være opfyldt",
 	"components.switch.hidden": "Skjult",
 	"components.switch.visible": "Synlig",
