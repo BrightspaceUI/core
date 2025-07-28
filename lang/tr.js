@@ -211,9 +211,9 @@ export default {
 	"components.tag-list.num-hidden": "+{count} tane daha",
 	"components.tag-list.role-description":
 		`{count, plural,
-			=0 {Tag List with 0 items}
-			one {Tag List with {count} item}
-			other {Tag List with {count} items}
+			=0 {0 öğeli Etiket Listesi}
+			one {{count} öğeli Etiket Listesi}
+			other {{count} öğeli Etiket Listesi}
 		}`,
 	"components.tag-list.show-less": "Daha Azını Göster",
 	"components.tag-list.show-more-description": "Gizli etiket listesi öğelerini göstermek için seçin",

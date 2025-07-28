@@ -211,9 +211,9 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} más",
 	"components.tag-list.role-description":
 		`{count, plural,
-			=0 {Tag List with 0 items}
-			one {Tag List with {count} item}
-			other {Tag List with {count} items}
+			=0 {Lista de etiquetas con 0 elementos}
+			one {Lista de etiquetas con {count} elemento}
+			other {Lista de etiquetas con {count} elementos}
 		}`,
 	"components.tag-list.show-less": "Mostrar menos",
 	"components.tag-list.show-more-description": "Seleccione esta opción para mostrar los elementos ocultos de la lista de etiquetas",
