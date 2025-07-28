@@ -211,9 +211,9 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} till",
 	"components.tag-list.role-description":
 		`{count, plural,
-			=0 {Tag List with 0 items}
-			one {Tag List with {count} item}
-			other {Tag List with {count} items}
+			=0 {Tagglista med 0 objekt}
+			one {Tagglista med {count} objekt}
+			other {Tagglista med {count} objekt}
 		}`,
 	"components.tag-list.show-less": "Visa färre",
 	"components.tag-list.show-more-description": "Välj för att visa dolda tagglistobjekt",
