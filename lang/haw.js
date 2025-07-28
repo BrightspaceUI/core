@@ -173,7 +173,7 @@ export default {
 	"components.selection.selected-plus": "{count}+ i koho ʻia",
 	"components.selection-controls.label": "Nā hana no ke koho",
 	"components.sort.label": "Hoʻokaʻawale",
-	"components.sort.text": "Hoʻoka{selectedItemText}ʻawale:",
+	"components.sort.text": "Hoʻokaʻawale: {selectedItemText}",
 	"components.switch.conditions": "Pono e hoʻokō i nā kūlana",
 	"components.switch.hidden": "Huna",
 	"components.switch.visible": "ʻIke ʻia",
