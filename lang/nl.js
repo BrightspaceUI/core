@@ -173,7 +173,7 @@ export default {
 	"components.selection.selected-plus": "Meer dan {count} geselecteerd",
 	"components.selection-controls.label": "Acties voor selectie",
 	"components.sort.label": "Sorteren",
-	"components.sort.text": "Sorteren: {selectedItemText}",
+	"components.sort.text": "Sorteren: {SelectedItemText}",
 	"components.switch.conditions": "Er moet aan de voorwaarden worden voldaan",
 	"components.switch.hidden": "Verborgen",
 	"components.switch.visible": "Zichtbaar",
@@ -211,9 +211,9 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} extra",
 	"components.tag-list.role-description":
 		`{count, plural,
-			=0 {Tag List with 0 items}
-			one {Tag List with {count} item}
-			other {Tag List with {count} items}
+			=0 {Taglijst met 0 items}
+			one {Taglijst met {count} item}
+			other {Taglijst met {count} items}
 		}`,
 	"components.tag-list.show-less": "Minder weergeven",
 	"components.tag-list.show-more-description": "Selecteer deze optie om verborgen items op labellijsten weer te geven",

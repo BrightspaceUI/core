@@ -203,8 +203,9 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} 件追加",
 	"components.tag-list.role-description":
 		`{count, plural,
-			=0 {Tag List with 0 items}
-			other {Tag List with {count} items}
+			=0 {0 項目のタグリスト}
+			one {{count} 項目のタグリスト}
+			other {{count} 項目のタグリスト}
 		}`,
 	"components.tag-list.show-less": "少なく表示",
 	"components.tag-list.show-more-description": "選択すると、非表示のタグリスト項目が表示されます",

@@ -173,7 +173,7 @@ export default {
 	"components.selection.selected-plus": "{count}+ kua tīpakohia",
 	"components.selection-controls.label": "Ngā mahinga mō te tīpakonga",
 	"components.sort.label": "Kōmaka",
-	"components.sort.text": "Kōmaka: {selectedItemText}",
+	"components.sort.text": "Kōmaka{selectedItemText}:",
 	"components.switch.conditions": "Me tutuki ngā here",
 	"components.switch.hidden": "Hunaia",
 	"components.switch.visible": "Ka taea te kite",
@@ -210,10 +210,10 @@ export default {
 	"components.tag-list.interactive-label": "Rārangi Tūtohu, {count} tūemi",
 	"components.tag-list.num-hidden": "+ {count} anō",
 	"components.tag-list.role-description":
-		`{count, plural,
-			=0 {Tag List with 0 items}
-			one {Tag List with {count} item}
-			other {Tag List with {count} items}
+		`{count, plural, 
+			=0{Tag List with 0 items} 
+			kot{Tag List with {count}ahi te mea} 
+			{Tag List with {count}ētahi atu tūemi} 
 		}`,
 	"components.tag-list.show-less": "Whakaaturia mai kia iti iho",
 	"components.tag-list.show-more-description": "Tīpakohia hei whakaatu i ngā tūemi rārangi tūtohu hunahuna",

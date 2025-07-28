@@ -173,7 +173,7 @@ export default {
 	"components.selection.selected-plus": "{count}+ i koho ʻia",
 	"components.selection-controls.label": "Nā hana no ke koho",
 	"components.sort.label": "Hoʻokaʻawale",
-	"components.sort.text": "Hoʻokaʻawale: {selectedItemText}",
+	"components.sort.text": "Hoʻoka{selectedItemText}ʻawale:",
 	"components.switch.conditions": "Pono e hoʻokō i nā kūlana",
 	"components.switch.hidden": "Huna",
 	"components.switch.visible": "ʻIke ʻia",
@@ -210,10 +210,10 @@ export default {
 	"components.tag-list.interactive-label": "Papa inoa inoa, {count} mau mea",
 	"components.tag-list.num-hidden": "+ {count} hou aku",
 	"components.tag-list.role-description":
-		`{count, plural,
-			=0 {Tag List with 0 items}
-			one {Tag List with {count} item}
-			other {Tag List with {count} items}
+		`{helu, nui, 
+			=0 
+		{Tag List with 0 items}	hoʻokah{Tag List with {count}i mea} 
+			nā me{Tag List with {count}a ʻē aʻe} 
 		}`,
 	"components.tag-list.show-less": "Hōʻike liʻiliʻi",
 	"components.tag-list.show-more-description": "E koho e hōʻike i nā mea papa inoa inoa huna",
