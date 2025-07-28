@@ -6,10 +6,10 @@ import './custom-view.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 
 const supportingTemplate = html`
-	<d2l-menu>
+	<d2l-menu label="label">
 		<d2l-menu-item text="nested">
 			<div slot="supporting">supporting</div>
-			<d2l-menu>
+			<d2l-menu label="label">
 				<d2l-menu-item text="a3"></d2l-menu-item>
 			</d2l-menu>
 		</d2l-menu-item>
@@ -28,50 +28,50 @@ const supportingTemplate = html`
 describe('menu', () => {
 	[
 		{ name: 'separator', template: html`
-			<d2l-menu>
+			<d2l-menu label="label">
 				<d2l-menu-item text="a"></d2l-menu-item>
 				<d2l-menu-item-separator></d2l-menu-item-separator>
 				<d2l-menu-item text="b"></d2l-menu-item>
 			</d2l-menu>
 		` },
 		{ name: 'long', template: html`
-			<d2l-menu>
+			<d2l-menu label="label">
 				<d2l-menu-item text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."></d2l-menu-item>
 			</d2l-menu>
 		` },
 		{ name: 'long-unbreakable', template: html`
-			<d2l-menu>
+			<d2l-menu label="label">
 				<d2l-menu-item text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"></d2l-menu-item>
 			</d2l-menu>
 		` },
 		{ name: 'lines', template: html`
-			<d2l-menu>
+			<d2l-menu label="label">
 				<d2l-menu-item lines="3" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."></d2l-menu-item>
 			</d2l-menu>
 		` },
 		{ name: 'hidden', template: html`
-			<d2l-menu>
+			<d2l-menu label="label">
 				<d2l-menu-item text="a" hidden></d2l-menu-item>
 				<d2l-menu-item text="b"></d2l-menu-item>
 			</d2l-menu>
 		` },
 		{ name: 'link', template: html`
-			<d2l-menu>
+			<d2l-menu label="label">
 				<d2l-menu-item-link text="c" href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
 			</d2l-menu>
 		` },
 		{ name: 'link-new-window', template: html`
-			<d2l-menu>
+			<d2l-menu label="label">
 				<d2l-menu-item-link text="c" href="https://en.wikipedia.org/wiki/Universe" target="_blank"></d2l-menu-item-link>
 			</d2l-menu>
 		` },
 		{ name: 'link-long', template: html`
-			<d2l-menu>
+			<d2l-menu label="label">
 				<d2l-menu-item-link text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
 			</d2l-menu>
 		` },
 		{ name: 'link-new-window-long', template: html`
-			<d2l-menu>
+			<d2l-menu label="label">
 				<d2l-menu-item-link text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." href="https://en.wikipedia.org/wiki/Universe" target="_blank"></d2l-menu-item-link>
 			</d2l-menu>
 		` },
@@ -96,7 +96,7 @@ describe('menu', () => {
 		].forEach(({ name, action }) => {
 			it(name, async() => {
 				const elem = await fixture(html`
-					<d2l-menu>
+					<d2l-menu label="label">
 						<d2l-menu-item text="a"></d2l-menu-item>
 						<d2l-menu-item text="b"></d2l-menu-item>
 						<d2l-menu-item text="c"></d2l-menu-item>
@@ -109,7 +109,7 @@ describe('menu', () => {
 
 		it('rtl', async() => {
 			const elem = await fixture(html`
-				<d2l-menu>
+				<d2l-menu label="label">
 					<d2l-menu-item text="a"></d2l-menu-item>
 					<d2l-menu-item text="b"></d2l-menu-item>
 				</d2l-menu>
@@ -126,7 +126,7 @@ describe('menu', () => {
 		].forEach(({ name, action }) => {
 			it(name, async() => {
 				const elem = await fixture(html`
-					<d2l-menu>
+					<d2l-menu label="label">
 						<d2l-menu-item text="a" disabled></d2l-menu-item>
 					</d2l-menu>
 				`);
@@ -144,9 +144,9 @@ describe('menu', () => {
 		].forEach(({ name, action }) => {
 			it(name, async() => {
 				const elem = await fixture(html`
-					<d2l-menu theme="dark">
+					<d2l-menu theme="dark" label="label">
 						<d2l-menu-item text="nested">
-							<d2l-menu theme="dark">
+							<d2l-menu theme="dark" label="label">
 								<d2l-menu-item text="a3"></d2l-menu-item>
 							</d2l-menu>
 						</d2l-menu-item>
@@ -167,18 +167,18 @@ describe('menu', () => {
 
 	describe('nested', () => {
 		const nestedTemplate = html`
-			<d2l-menu>
+			<d2l-menu label="label">
 				<d2l-menu-item text="b">
-					<d2l-menu id="nested-menu">
+					<d2l-menu id="nested-menu" label="label">
 						<d2l-menu-item text="b2"></d2l-menu-item>
 					</d2l-menu>
 				</d2l-menu-item>
 			</d2l-menu>
 		`;
 		const nestedLongTemplate = html`
-			<d2l-menu>
+			<d2l-menu label="label">
 				<d2l-menu-item id="first-item" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.">
-					<d2l-menu>
+					<d2l-menu label="label">
 						<d2l-menu-item text="a3"></d2l-menu-item>
 					</d2l-menu>
 				</d2l-menu-item>
@@ -187,7 +187,7 @@ describe('menu', () => {
 			</d2l-menu>
 		`;
 		const customViewTemplate = html`
-			<d2l-menu>
+			<d2l-menu label="label">
 				<d2l-menu-item text="a">
 					<d2l-custom-view></d2l-custom-view>
 				</d2l-menu-item>
