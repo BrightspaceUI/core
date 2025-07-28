@@ -3,7 +3,7 @@ import '../menu-item.js';
 import '../menu-item-link.js';
 import '../menu-item-separator.js';
 import './custom-view.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 
 const supportingTemplate = html`
 	<d2l-menu label="label">
@@ -80,6 +80,7 @@ describe('menu', () => {
 	].forEach(({ name, rtl, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { rtl });
+			await nextFrame();
 			await expect(elem).to.be.golden();
 		});
 	});
