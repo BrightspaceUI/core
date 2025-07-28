@@ -184,6 +184,7 @@ describe('tag-list', () => {
 			await elem.updateComplete;
 
 			await waitUntil(() => elem.querySelector('d2l-tag-list-item, d2l-tag-list-item-mixin-consumer') === null, 'Element did not remove children', { timeout: 2000 });
+			await nextFrame();
 			await expect(elem).to.be.golden();
 		});
 	});
