@@ -1,6 +1,8 @@
+import { getFlag } from '../../helpers/flags.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 const defaultLines = 2;
+const menuItemClickChangesEnabled = getFlag('GAUD-8369-menu-item-link-click-changes', true);
 
 export const MenuItemMixin = superclass => class extends PropertyRequiredMixin(superclass) {
 
@@ -54,7 +56,8 @@ export const MenuItemMixin = superclass => class extends PropertyRequiredMixin(s
 			 */
 			description: { type: String },
 			_ariaDisabled: { type: String, attribute: 'aria-disabled', reflect: true },
-			_ariaLabel: { type: String, attribute: 'aria-label', reflect: true }
+			_ariaLabel: { type: String, attribute: 'aria-label', reflect: true },
+			_letClickPropagate: { state: true }
 		};
 	}
 
@@ -74,6 +77,7 @@ export const MenuItemMixin = superclass => class extends PropertyRequiredMixin(s
 		this.role = 'menuitem';
 		/** @ignore */
 		this.tabindex = -1;
+		this._letClickPropagate = false;
 	}
 
 	firstUpdated(changedProperties) {
@@ -82,7 +86,7 @@ export const MenuItemMixin = superclass => class extends PropertyRequiredMixin(s
 		this.addEventListener('click', this.__onClick);
 		this.addEventListener('d2l-hierarchical-view-hide-complete', this.__onHideComplete);
 		this.addEventListener('dom-change', this.__onDomChange);
-		this.addEventListener('keydown', this.__onKeyDown);
+		this.addEventListener('keydown', this._onKeyDown);
 
 		this.__initializeItem();
 
@@ -152,7 +156,12 @@ export const MenuItemMixin = superclass => class extends PropertyRequiredMixin(s
 	}
 
 	__onClick(e) {
-		e.stopPropagation();
+		if (menuItemClickChangesEnabled) {
+			if (!this._letClickPropagate) e.stopPropagation();
+		} else { // remove this block when cleaning up GAUD-8369-menu-item-link-click-changes
+			e.stopPropagation();
+		}
+
 		this.__action();
 	}
 
@@ -171,7 +180,12 @@ export const MenuItemMixin = superclass => class extends PropertyRequiredMixin(s
 		this.setAttribute('tabindex', '0');
 	}
 
-	__onKeyDown(e) {
+	_onHidden() {
+		/** Dispatched when the visibility of the menu item changes */
+		this.dispatchEvent(new CustomEvent('d2l-menu-item-visibility-change', { bubbles: true, composed: true }));
+	}
+
+	_onKeyDown(e) {
 		if (e.target !== this) {
 			return;
 		}
@@ -186,11 +200,6 @@ export const MenuItemMixin = superclass => class extends PropertyRequiredMixin(s
 			this.__action();
 			return;
 		}
-	}
-
-	_onHidden() {
-		/** Dispatched when the visibility of the menu item changes */
-		this.dispatchEvent(new CustomEvent('d2l-menu-item-visibility-change', { bubbles: true, composed: true }));
 	}
 
 };

@@ -5,6 +5,12 @@
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 		<script type="module">
+			import { mockFlag } from '../../../helpers/flags.js';
+			const urlParams = new URLSearchParams(window.location.search);
+			mockFlag('GAUD-8295-menu-item-link-new-window-icon', urlParams.get('link-new-window-icon') === 'true');
+			mockFlag('GAUD-8369-menu-item-link-click-changes', urlParams.get('link-click-changes') === 'true');
+		</script>
+		<script type="module">
 			import '../../demo/demo-page.js';
 			import './custom-menu-item.js';
 			import './custom-view.js';
@@ -200,5 +206,12 @@
 				</template>
 			</d2l-demo-snippet>
 		</d2l-demo-page>
+
+		<script>
+			document.addEventListener('click', e => {
+				if (e.target.tagName !== 'D2L-MENU-ITEM-LINK') return;
+				console.log('Click event propagated up for router!', e.target);
+			});
+		</script>
 	</body>
 </html>
