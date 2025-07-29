@@ -203,8 +203,8 @@ export default {
 	"components.tag-list.num-hidden": "{count}개 더",
 	"components.tag-list.role-description":
 		`{count, plural,
-			=0 {Tag List with 0 items}
-			other {Tag List with {count} items}
+			=0 {0개의 항목이 있는 태그 목록}
+			other {{count}개의 항목이 있는 태그 목록}
 		}`,
 	"components.tag-list.show-less": "간단히 표시",
 	"components.tag-list.show-more-description": "숨겨진 태그 목록 항목을 표시하려면 선택합니다",

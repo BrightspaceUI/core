@@ -211,9 +211,9 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} और",
 	"components.tag-list.role-description":
 		`{count, plural,
-			=0 {Tag List with 0 items}
-			one {Tag List with {count} item}
-			other {Tag List with {count} items}
+			=0 {0 आइटम के साथ सूची टैग करें}
+			one {{count} आइटम के साथ सूची टैग करें}
+			other {{count} आइटम के साथ सूची टैग करें}
 		}`,
 	"components.tag-list.show-less": "कम दिखाएँ",
 	"components.tag-list.show-more-description": "छिपे हुए टैग लिस्ट आइटम दिखाने के लिए चुनें",

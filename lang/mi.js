@@ -212,8 +212,8 @@ export default {
 	"components.tag-list.role-description":
 		`{count, plural,
 			=0 {Tag List with 0 items}
-			one {Tag List with {count} item}
-			other {Tag List with {count} items}
+			one {Tag List with {count}ahi te mea}
+			other {Tag List with {count}ētahi atu tūemi}
 		}`,
 	"components.tag-list.show-less": "Whakaaturia mai kia iti iho",
 	"components.tag-list.show-more-description": "Tīpakohia hei whakaatu i ngā tūemi rārangi tūtohu hunahuna",
