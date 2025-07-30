@@ -59,6 +59,21 @@ describe('list', () => {
 			});
 		});
 
+		describe('separators', () => {
+			[
+				{ name: 'default add-button', template: createSimpleList({ color1: '#0000ff' }) },
+				{ name: 'none add-button', template: createSimpleList({ color1: '#00ff00', color2: '#00ff00', separatorType: 'none' }) },
+				{ name: 'all add-button', template: createSimpleList({ separatorType: 'all' }) },
+				{ name: 'between add-button', template: createSimpleList({ separatorType: 'between' }) },
+				{ name: 'extended add-button', template: createSimpleList({ color1: '#00ff00', extendSeparators: true }) }
+			].forEach(({ name, template }) => {
+				it(name, async() => {
+					const elem = await fixture(template);
+					await expect(elem).to.be.golden();
+				});
+			});
+		});
+
 		describe('controls sticky', () => {
 			[
 				{ actionName: 'top', action: elem => elem.scrollTo(0, 0) },

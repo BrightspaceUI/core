@@ -8,7 +8,10 @@ import '../list-item.js';
 import '../list-item-content.js';
 import '../../paging/pager-load-more.js';
 import '../../selection/selection-action.js';
-import { expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
+import '../../dropdown/dropdown.js';
+import '../../dropdown/dropdown-content.js';
+import '../../tooltip/tooltip.js';
+import { expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 function createSimpleList(opts) {
@@ -68,18 +71,16 @@ describe('list', () => {
 	});
 
 	describe('separators', () => {
-		[ true, false ].forEach((addButton) => {
-			[
-				{ name: `default${addButton ? ' add-button' : ''}`, template: createSimpleList({ color1: '#0000ff', addButton }) },
-				{ name: `none${addButton ? ' add-button' : ''}`, template: createSimpleList({ color1: '#00ff00', color2: '#00ff00', separatorType: 'none', addButton }) },
-				{ name: `all${addButton ? ' add-button' : ''}`, template: createSimpleList({ separatorType: 'all', addButton }) },
-				{ name: `between${addButton ? ' add-button' : ''}`, template: createSimpleList({ separatorType: 'between', addButton }) },
-				{ name: `extended${addButton ? ' add-button' : ''}`, template: createSimpleList({ color1: '#00ff00', extendSeparators: true, addButton }) }
-			].forEach(({ name, template }) => {
-				it(name, async() => {
-					const elem = await fixture(template);
-					await expect(elem).to.be.golden();
-				});
+		[
+			{ name: 'default', template: createSimpleList({ color1: '#0000ff' }) },
+			{ name: 'none', template: createSimpleList({ color1: '#00ff00', color2: '#00ff00', separatorType: 'none' }) },
+			{ name: 'all', template: createSimpleList({ separatorType: 'all' }) },
+			{ name: 'between', template: createSimpleList({ separatorType: 'between' }) },
+			{ name: 'extended', template: createSimpleList({ color1: '#00ff00', extendSeparators: true }) }
+		].forEach(({ name, template }) => {
+			it(name, async() => {
+				const elem = await fixture(template);
+				await expect(elem).to.be.golden();
 			});
 		});
 	});
@@ -265,6 +266,41 @@ describe('list', () => {
 					await expect(elem).to.be.golden();
 				});
 			});
+		});
+	});
+
+	describe('action types', () => {
+		const listWithDropdownTooltip = html`
+			<d2l-list style="width: 400px;">
+				<d2l-list-item>
+					Item 1
+					<div slot="actions">
+						<d2l-dropdown id="open-down">
+							<button id="dropdown-btn-down" class="d2l-dropdown-opener">Open</button>
+							<d2l-tooltip class="vdiff-include" for="dropdown-btn-down" position="bottom">Cookie pie apple pie</d2l-tooltip>
+							<d2l-dropdown-content class="vdiff-include">donut gummies</d2l-dropdown-content>
+						</d2l-dropdown>
+					</div>
+				</d2l-list-item>
+				<d2l-list-item>Item 2</d2l-list-item>
+				<d2l-list-item>Item 3</d2l-list-item>
+			</d2l-list>
+		`;
+
+		it('dropdown open down', async() => {
+			const elem = await fixture(listWithDropdownTooltip);
+			const dropdown = elem.querySelector('d2l-dropdown');
+			setTimeout(() => dropdown.toggleOpen());
+			await oneEvent(dropdown, 'd2l-dropdown-open');
+			await expect(elem).to.be.golden({ margin: 24 });
+		});
+
+		it('tooltip open down', async() => {
+			const elem = await fixture(listWithDropdownTooltip);
+			const tooltip = elem.querySelector('d2l-tooltip');
+			setTimeout(() => tooltip.show());
+			await oneEvent(tooltip, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
 		});
 	});
 });
