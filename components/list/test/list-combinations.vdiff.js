@@ -361,10 +361,12 @@ describe('list', () => {
 
 			[
 				{ name: 'hover first add button', template: createExpandableListWithAddButton(), action: async(elem) => {
+					await nextFrame();
 					await hoverElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
 					await oneEvent(elem, 'd2l-tooltip-show');
 				} },
 				{ name: 'hover second add button, not expanded', template: createExpandableListWithAddButton(), action: async(elem) => {
+					await nextFrame();
 					await hoverElem(elem.querySelector('d2l-list-item').shadowRoot.querySelectorAll('d2l-button-add')[1]);
 					await oneEvent(elem, 'd2l-tooltip-show');
 				} },

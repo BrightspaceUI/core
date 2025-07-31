@@ -28,4 +28,10 @@ describe('d2l-list-item-drag-handle', () => {
 		await expect(element).to.be.accessible();
 	});
 
+	it('should have proper ARIA labeling', async() => {
+		const elem = await fixture(html`<d2l-list-item-drag-handle></d2l-list-item-drag-handle>`);
+		const button = elem.shadowRoot.querySelector('button');
+		expect(button.getAttribute('aria-label')).to.exist;
+	});
+
 });

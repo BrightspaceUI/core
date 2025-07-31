@@ -3,8 +3,31 @@ import { dragActions } from '../list-item-drag-handle.js';
 
 describe('ListItemDragHandle', () => {
 
-	it('should construct d2l-list-item-drag-handle', () => {
-		runConstructor('d2l-list-item-drag-handle');
+	describe('constructor', () => {
+		it('should construct d2l-list-item-drag-handle', () => {
+			runConstructor('d2l-list-item-drag-handle');
+		});
+	});
+
+	describe('keyboard mode activation', () => {
+		it('should activate keyboard mode when activateKeyboardMode is called', async() => {
+			const elem = await fixture(html`<d2l-list-item-drag-handle></d2l-list-item-drag-handle>`);
+			expect(elem._keyboardActive).to.be.false;
+
+			elem.activateKeyboardMode();
+			await elem.updateComplete;
+
+			expect(elem._keyboardActive).to.be.true;
+		});
+
+		it('should render move buttons when keyboard mode is active', async() => {
+			const elem = await fixture(html`<d2l-list-item-drag-handle></d2l-list-item-drag-handle>`);
+			elem.activateKeyboardMode();
+			await elem.updateComplete;
+
+			const moveButton = elem.shadowRoot.querySelector('d2l-button-move');
+			expect(moveButton).to.exist;
+		});
 	});
 
 	describe('Events to activate keyboard mode.', () => {
