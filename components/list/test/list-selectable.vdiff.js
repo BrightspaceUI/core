@@ -139,13 +139,12 @@ describe('list', () => {
 			}
 
 			[
-				{ name: 'none selected', template: createListWithControls() },
+				{ name: 'none selected no-actions', template: createListWithControls() },
 				{ name: 'some selected', template: createListWithControls({ color2: '#00ff00', selected: [true, false] }), margin: 24 },
 				{ name: 'all selected', template: createListWithControls({ selected: [true, true] }), margin: 24 },
 				{ name: 'all selected pages', template: createListWithControls({ selectAllPages: true, selected: [true, true] }), margin: 24 },
 				{ name: 'actions', template: createListWithControls({ actions: true }) },
 				{ name: 'actions color', template: createListWithControls({ actions: true, color2: '#00ff00' }) },
-				{ name: 'no-actions', template: createListWithControls() },
 				{ name: 'actions extend', template: createListWithControls({ actions: true, extendSeparators: true }) },
 				{ name: 'actions extend color', template: createListWithControls({ actions: true, color2: '#00ff00', extendSeparators: true }) },
 			].forEach(({ name, template, margin }) => {
