@@ -28,66 +28,64 @@ const simpleListItemContent = html`
 
 describe('list', () => {
 	describe('selectable', () => {
-		describe('general', () => {
-			const selectableButtonList = html`
-				<d2l-list style="width: 400px;">
-					<d2l-list-item-button label="Item 3" selection-disabled selectable key="3">Item 3</d2l-list-item-button>
-					<d2l-list-item-button label="Item 4" selection-disabled button-disabled selectable key="4">Item 4</d2l-list-item-button>
+		const selectableButtonList = html`
+			<d2l-list style="width: 400px;">
+				<d2l-list-item-button label="Item 3" selection-disabled selectable key="3">Item 3</d2l-list-item-button>
+				<d2l-list-item-button label="Item 4" selection-disabled button-disabled selectable key="4">Item 4</d2l-list-item-button>
+			</d2l-list>
+		`;
+		function createSelectableList(opts) {
+			const { selected, addButton, selectionDisabled } = { selected: false, addButton: false, selectionDisabled: false, ...opts };
+			return html`
+				<d2l-list style="width: 400px;" ?add-button="${addButton}">
+					<d2l-list-item label="Item 1" selectable key="1" ?selected="${selected}" color="${ifDefined(!selected ? '#00ff00' : undefined)}">Item 1</d2l-list-item>
+					<d2l-list-item label="Item 2" ?selection-disabled="${selectionDisabled}" selectable key="2" color="${ifDefined(selected ? '#00ff00' : undefined)}">Item 2</d2l-list-item>
 				</d2l-list>
 			`;
-			function createSelectableList(opts) {
-				const { selected, addButton, selectionDisabled } = { selected: false, addButton: false, selectionDisabled: false, ...opts };
-				return html`
-					<d2l-list style="width: 400px;" ?add-button="${addButton}">
-						<d2l-list-item label="Item 1" selectable key="1" ?selected="${selected}" color="${ifDefined(!selected ? '#00ff00' : undefined)}">Item 1</d2l-list-item>
-						<d2l-list-item label="Item 2" ?selection-disabled="${selectionDisabled}" selectable key="2" color="${ifDefined(selected ? '#00ff00' : undefined)}">Item 2</d2l-list-item>
-					</d2l-list>
-				`;
-			}
-			function createSelectableContentList(opts) {
-				const { skeleton, addButton } = { skeleton: false, addButton: false, ...opts };
-				return html`
-					<d2l-list style="width: 400px;" ?add-button="${addButton}">
-						<d2l-list-item label="Item 1" selectable key="1" ?skeleton="${skeleton}">
-							${simpleListItemContent}
-						</d2l-list-item>
-					</d2l-list>
-				`;
-			}
+		}
+		function createSelectableContentList(opts) {
+			const { skeleton, addButton } = { skeleton: false, addButton: false, ...opts };
+			return html`
+				<d2l-list style="width: 400px;" ?add-button="${addButton}">
+					<d2l-list-item label="Item 1" selectable key="1" ?skeleton="${skeleton}">
+						${simpleListItemContent}
+					</d2l-list-item>
+				</d2l-list>
+			`;
+		}
 
-			[
-				{ name: 'not selected', template: createSelectableList() },
-				{ name: 'not selected focus', template: createSelectableList(), action: elem => focusElem(elem.querySelector('[key="1"]')), margin: 24 },
-				{ name: 'not selected hover', template: createSelectableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
-				{ name: 'not selected add-button', template: createSelectableList({ addButton: true }) },
-				{ name: 'selection-disabled hover', template: createSelectableList({ selectionDisabled: true }), action: elem => hoverElem(elem.querySelector('[key="2"]')) },
-				{ name: 'button selection-disabled hover', template: selectableButtonList, action: elem => hoverElem(elem.querySelector('[key="3"]')), margin: 24 },
-				{ name: 'button selection-disabled button-disabled hover', template: selectableButtonList, action: elem => hoverElem(elem.querySelector('[key="4"]')) },
-				{ name: 'selected', template: createSelectableList({ selected: true }), margin: 24 },
-				{ name: 'selected focus', template: createSelectableList({ selected: true }), action: elem => focusElem(elem.querySelector('[key="1"]')), margin: 24 },
-				{ name: 'selected hover', template: createSelectableList({ selected: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
-				{ name: 'selected add-button', template: createSelectableList({ selected: true, addButton: true }), margin: 24 },
-				{ name: 'selected focus sibling', template: createSelectableList({ selected: true }), action: elem => focusElem(elem.querySelector('[key="2"]')), margin: 24 },
-				{ name: 'selected hover sibling', template: createSelectableList({ selected: true }), action: elem => hoverElem(elem.querySelector('[key="2"]')), margin: 24 },
-				{ name: 'item-content', template: createSelectableContentList() },
-				{ name: 'skeleton', template: createSelectableContentList({ skeleton: true }) },
-				{ name: 'skeleton add-button', template: createSelectableContentList({ skeleton: true, addButton: true }) },
-				{ name: 'extended separators', template: html`
-					<d2l-list extend-separators style="width: 400px;">
-						<d2l-list-item label="Item 1" selectable key="1">Item 1</d2l-list-item>
-					</d2l-list>
-				` }
-			].forEach(({ name, template, action, margin }) => {
-				it(name, async() => {
-					const elem = await fixture(template);
-					if (action) await action(elem);
-					await expect(elem).to.be.golden({ margin });
-				});
-				it(`${name} off-color background`, async() => {
-					const elem = await fixture(createOffColorBackground(template));
-					if (action) await action(elem);
-					await expect(elem).to.be.golden({ margin });
-				});
+		[
+			{ name: 'not selected', template: createSelectableList() },
+			{ name: 'not selected focus', template: createSelectableList(), action: elem => focusElem(elem.querySelector('[key="1"]')), margin: 24 },
+			{ name: 'not selected hover', template: createSelectableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
+			{ name: 'not selected add-button', template: createSelectableList({ addButton: true }) },
+			{ name: 'selection-disabled hover', template: createSelectableList({ selectionDisabled: true }), action: elem => hoverElem(elem.querySelector('[key="2"]')) },
+			{ name: 'button selection-disabled hover', template: selectableButtonList, action: elem => hoverElem(elem.querySelector('[key="3"]')), margin: 24 },
+			{ name: 'button selection-disabled button-disabled hover', template: selectableButtonList, action: elem => hoverElem(elem.querySelector('[key="4"]')) },
+			{ name: 'selected', template: createSelectableList({ selected: true }), margin: 24 },
+			{ name: 'selected focus', template: createSelectableList({ selected: true }), action: elem => focusElem(elem.querySelector('[key="1"]')), margin: 24 },
+			{ name: 'selected hover', template: createSelectableList({ selected: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
+			{ name: 'selected add-button', template: createSelectableList({ selected: true, addButton: true }), margin: 24 },
+			{ name: 'selected focus sibling', template: createSelectableList({ selected: true }), action: elem => focusElem(elem.querySelector('[key="2"]')), margin: 24 },
+			{ name: 'selected hover sibling', template: createSelectableList({ selected: true }), action: elem => hoverElem(elem.querySelector('[key="2"]')), margin: 24 },
+			{ name: 'item-content', template: createSelectableContentList() },
+			{ name: 'skeleton', template: createSelectableContentList({ skeleton: true }) },
+			{ name: 'skeleton add-button', template: createSelectableContentList({ skeleton: true, addButton: true }) },
+			{ name: 'extended separators', template: html`
+				<d2l-list extend-separators style="width: 400px;">
+					<d2l-list-item label="Item 1" selectable key="1">Item 1</d2l-list-item>
+				</d2l-list>
+			` }
+		].forEach(({ name, template, action, margin }) => {
+			it(name, async() => {
+				const elem = await fixture(template);
+				if (action) await action(elem);
+				await expect(elem).to.be.golden({ margin });
+			});
+			it(`${name} off-color background`, async() => {
+				const elem = await fixture(createOffColorBackground(template));
+				if (action) await action(elem);
+				await expect(elem).to.be.golden({ margin });
 			});
 		});
 

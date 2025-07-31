@@ -245,57 +245,57 @@ describe('list', () => {
 					await expect(elem).to.be.golden({ margin });
 				});
 			});
-		});
 
-		it('nested-focused-secondary', async() => {
-			const elem = await fixture(html`
-				<d2l-list grid style="width: 334px;">
-					<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable action-href=" ">
-						<d2l-list-item-content>
-							<div>Welcome!</div>
-						</d2l-list-item-content>
-						<d2l-list slot="nested" grid>
-							<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" draggable action-href=" ">
-								<d2l-list-item-content>
-									<div>Syallabus Confirmation</div>
-									<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
-								</d2l-list-item-content>
-							</d2l-list-item-nav>
-						</d2l-list>
-					</d2l-list-item-nav>
-				</d2l-list>
-			`);
-			focusElem(elem.querySelector('d2l-tooltip-help'));
-			await oneEvent(elem, 'd2l-tooltip-show');
-			await expect(elem).to.be.golden({ margin: 24 });
-		});
+			it('nested-focused-secondary', async() => {
+				const elem = await fixture(html`
+					<d2l-list grid style="width: 334px;">
+						<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable action-href=" ">
+							<d2l-list-item-content>
+								<div>Welcome!</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid>
+								<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" draggable action-href=" ">
+									<d2l-list-item-content>
+										<div>Syallabus Confirmation</div>
+										<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
+									</d2l-list-item-content>
+								</d2l-list-item-nav>
+							</d2l-list>
+						</d2l-list-item-nav>
+					</d2l-list>
+				`);
+				focusElem(elem.querySelector('d2l-tooltip-help'));
+				await oneEvent(elem, 'd2l-tooltip-show');
+				await expect(elem).to.be.golden({ margin: 24 });
+			});
 
-		it('nested-indentation', async() => {
-			const elem = await fixture(html`
-				<d2l-list grid style="width: 334px;">
-					<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable action-href=" " indentation="42">
-						<d2l-list-item-content>
-							<div>Welcome!</div>
-						</d2l-list-item-content>
-						<d2l-list slot="nested" grid>
-							<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" draggable action-href=" " color="#29a6ff" expandable expanded indentation="30">
-								<d2l-list-item-content>
-									<div>Syallabus Confirmation</div>
-									<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
-								</d2l-list-item-content>
-								<d2l-list slot="nested" grid>
-									<d2l-list-item-nav key="L2-1-1" label="Welcome topic" draggable action-href=" ">
-										<d2l-list-item-content>
-											<div>Welcome topic</div>
-										</d2l-list-item-content>
-									</d2l-list-item-nav>
-								</d2l-list>
-							</d2l-list-item-nav>
-						</d2l-list>
-					</d2l-list-item-nav>
-				</d2l-list>
-			`);
-			await expect(elem).to.be.golden();
+			it('nested-indentation', async() => {
+				const elem = await fixture(html`
+					<d2l-list grid style="width: 334px;">
+						<d2l-list-item-nav key="L1-1" label="Welcome!" color="#006fbf" expandable expanded draggable action-href=" " indentation="42">
+							<d2l-list-item-content>
+								<div>Welcome!</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" grid>
+								<d2l-list-item-nav key="L2-1" label="Syallabus Confirmation" draggable action-href=" " color="#29a6ff" expandable expanded indentation="30">
+									<d2l-list-item-content>
+										<div>Syallabus Confirmation</div>
+										<div slot="secondary"><d2l-tooltip-help class="vdiff-include" style="padding: 5px;" text="Due: May 2, 2023 at 2 pm">Due: May 2, 2023</d2l-tooltip-help></div>
+									</d2l-list-item-content>
+									<d2l-list slot="nested" grid>
+										<d2l-list-item-nav key="L2-1-1" label="Welcome topic" draggable action-href=" ">
+											<d2l-list-item-content>
+												<div>Welcome topic</div>
+											</d2l-list-item-content>
+										</d2l-list-item-nav>
+									</d2l-list>
+								</d2l-list-item-nav>
+							</d2l-list>
+						</d2l-list-item-nav>
+					</d2l-list>
+				`);
+				await expect(elem).to.be.golden();
+			});
 		});
 	});
 });
