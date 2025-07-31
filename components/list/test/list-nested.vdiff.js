@@ -1,5 +1,6 @@
 import '../demo/demo-list-nested-iterations-helper.js';
 import '../list.js';
+import '../list-controls.js';
 import '../list-item.js';
 import { expect, fixture, html, nextFrame } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
