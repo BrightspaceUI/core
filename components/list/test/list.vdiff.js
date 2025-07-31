@@ -15,14 +15,12 @@ import { expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightsp
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 function createSimpleList(opts) {
-	const { color1, color2, extendSeparators, separatorType, addButton, addButtonText } = { extendSeparators: false, addButton: false, ...opts };
+	const { color1, color2, extendSeparators, separatorType } = { extendSeparators: false, ...opts };
 	return html`
 		<d2l-list
 			?extend-separators="${extendSeparators}"
 			separators="${ifDefined(separatorType)}"
-			style="width: 400px"
-			?add-button="${addButton}"
-			add-button-text="${ifDefined(addButtonText)}">
+			style="width: 400px">
 			<d2l-list-item label="1" color="${ifDefined(color1)}">Item 1</d2l-list-item>
 			<d2l-list-item label="2" color="${ifDefined(color2)}">Item 2</d2l-list-item>
 			<d2l-list-item>Item 3</d2l-list-item>
