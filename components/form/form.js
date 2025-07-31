@@ -1,9 +1,9 @@
-import './form-errory-summary.js';
+import './form-error-summary.js';
 import '../tooltip/tooltip.js';
 import '../link/link.js';
 import { css, html, LitElement } from 'lit';
+import { findComposedAncestor, querySelectorComposed } from '../../helpers/dom.js';
 import { findFormElements, flattenMap, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
-import { findComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -107,7 +107,13 @@ class Form extends LocalizeCoreElement(LitElement) {
 			const errors = [...flattenMap(this._errors)]
 				.filter(([, eleErrors]) => eleErrors.length > 0)
 				.map(([ele, eleErrors]) => ({ href: `#${ele.id}`, message: eleErrors[0], onClick: () => ele.focus() }));
-			errorSummary = html`<d2l-form-error-summary .errors=${errors}></d2l-form-error-summary>`;
+			const existingSummary = querySelectorComposed(this, 'd2l-form-error-summary');
+			if (existingSummary) {
+				existingSummary.errors = errors;
+				existingSummary._hasBottomMargin = true;
+			} else {
+				errorSummary = html`<d2l-form-error-summary .errors=${errors}></d2l-form-error-summary>`;
+			}
 		}
 		return html`
 			${errorSummary}
