@@ -59,6 +59,66 @@ describe('list', () => {
 			});
 		});
 
+		describe('selectable + nested', () => {
+			function createNestedList(opts) {
+				const { color1, color3, selected } = { selected: [false, false, false], ...opts };
+				return html`
+					<d2l-list style="width: 600px;">
+						<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
+						<d2l-list-item selectable label="L1-1" key="L1-1">
+							<d2l-list-item-content>
+								<div>Level 1, Item 1</div>
+								<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm.</div>
+							</d2l-list-item-content>
+							<div slot="actions">
+								<button>action 1</button>
+								<button>action 2</button>
+							</div>
+							<d2l-list slot="nested" separators="between">
+								<d2l-list-item selectable ?selected="${selected[0]}" color="${ifDefined(color1)}" label="L2-1" key="L2-1">
+									<d2l-list-item-content>
+										<div>Level 2, Item 1</div>
+										<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+								<d2l-list-item selectable label="L2-2" key="L2-2">
+									<d2l-list-item-content>
+										<div>Level 2, Item 2</div>
+										<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+									</d2l-list-item-content>
+									<d2l-list slot="nested" separators="between">
+										<d2l-list-item selectable ?selected="${selected[1]}" label="L3-1" key="L3-1">
+											<d2l-list-item-content>
+												<div>Level 3, Item 1</div>
+												<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+											</d2l-list-item-content>
+										</d2l-list-item>
+										<d2l-list-item selectable ?selected="${selected[2]}" color="${ifDefined(color3)}" label="L3-2" key="L3-2">
+											<d2l-list-item-content>
+												<div>Level 3, Item 2</div>
+												<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
+											</d2l-list-item-content>
+										</d2l-list-item>
+									</d2l-list>
+								</d2l-list-item>
+							</d2l-list>
+						</d2l-list-item>
+					</d2l-list>
+				`;
+			}
+
+			[
+				{ name: 'none-selected', template: createNestedList({ color1: '#00ff00' }) },
+				{ name: 'some-selected', template: createNestedList({ selected: [false, false, true], color3: '#00ff00' }) },
+				{ name: 'all-selected', template: createNestedList({ selected: [true, true, true] }) },
+			].forEach(({ name, template }) => {
+				it(name, async() => {
+					const elem = await fixture(template);
+					await expect(elem).to.be.golden({ margin: 24 });
+				});
+			});
+		});
+
 		describe('expandable + selectable', () => {
 			function createExpandableSelectableList(opts) {
 				const { color1, color2, color3, expanded, nested, nestedMultiple } = {

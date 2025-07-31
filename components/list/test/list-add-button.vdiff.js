@@ -27,36 +27,34 @@ describe('list', () => {
 			`;
 		}
 
-		describe('general', () => {
-			it('default', async() => {
-				const elem = await fixture(createSimpleList());
-				await expect(elem).to.be.golden();
-			});
+		it('default', async() => {
+			const elem = await fixture(createSimpleList());
+			await expect(elem).to.be.golden();
+		});
 
-			it('focus first item top', async() => {
-				const elem = await fixture(createSimpleList());
-				await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
-				await expect(elem).to.be.golden({ margin: 20 });
-			});
+		it('focus first item top', async() => {
+			const elem = await fixture(createSimpleList());
+			await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
+			await expect(elem).to.be.golden({ margin: 20 });
+		});
 
-			it('focus first item bottom', async() => {
-				const elem = await fixture(createSimpleList());
-				await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelectorAll('d2l-button-add')[1]);
-				await expect(elem).to.be.golden();
-			});
+		it('focus first item bottom', async() => {
+			const elem = await fixture(createSimpleList());
+			await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelectorAll('d2l-button-add')[1]);
+			await expect(elem).to.be.golden();
+		});
 
-			it('custom text focus', async() => {
-				const elem = await fixture(createSimpleList({ addButtonText: 'Custom Text' }));
-				await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
-				await expect(elem).to.be.golden({ margin: 20 });
-			});
+		it('custom text focus', async() => {
+			const elem = await fixture(createSimpleList({ addButtonText: 'Custom Text' }));
+			await focusElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
+			await expect(elem).to.be.golden({ margin: 20 });
+		});
 
-			it('hover', async() => {
-				const elem = await fixture(createSimpleList());
-				await hoverElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
-				await oneEvent(elem, 'd2l-tooltip-show');
-				await expect(elem).to.be.golden();
-			});
+		it('hover', async() => {
+			const elem = await fixture(createSimpleList());
+			await hoverElem(elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-button-add'));
+			await oneEvent(elem, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
 		});
 
 		describe('separators', () => {
