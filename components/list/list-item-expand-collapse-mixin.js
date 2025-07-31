@@ -22,6 +22,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 			 * @type {boolean}
 			 */
 			expanded: { type: Boolean, reflect: true },
+			_isNested: { state: true },
 			_siblingHasNestedItems: { state: true },
 			_renderExpandCollapseSlot: { type: Boolean, reflect: true, attribute: '_render-expand-collapse-slot' },
 			_showNestedLoadingSpinner: { state: true }
@@ -93,7 +94,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 
 	updated(changedProperties) {
 		if (changedProperties.has('_siblingHasNestedItems') || changedProperties.has('expandable')) {
-			this._renderExpandCollapseSlot = this.expandable || this._siblingHasNestedItems;
+			this._renderExpandCollapseSlot = this.expandable || this._siblingHasNestedItems || this._isNested;
 		}
 		if (changedProperties.has('_draggingOver') && this._draggingOver && this.dropNested && !this.expanded && this.expandable) {
 			let elapsedHoverTime = 0;

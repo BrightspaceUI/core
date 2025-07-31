@@ -360,6 +360,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		let aChildHasColor = false;
 		let aChildHasToggleEnabled = false;
 		for (const item of items) {
+			item._isNested = true;
 			if (item.color) aChildHasColor = true;
 			if (item.expandable) aChildHasToggleEnabled = true;
 			if (aChildHasToggleEnabled && aChildHasColor) break;
