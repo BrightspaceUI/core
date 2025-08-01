@@ -58,19 +58,16 @@ describe('list', () => {
 			{ name: 'not selected', template: createSelectableList() },
 			{ name: 'not selected focus', template: createSelectableList(), action: elem => focusElem(elem.querySelector('[key="1"]')), margin: 24 },
 			{ name: 'not selected hover', template: createSelectableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
-			{ name: 'not selected add-button', template: createSelectableList({ addButton: true }) },
 			{ name: 'selection-disabled hover', template: createSelectableList({ selectionDisabled: true }), action: elem => hoverElem(elem.querySelector('[key="2"]')) },
 			{ name: 'button selection-disabled hover', template: selectableButtonList, action: elem => hoverElem(elem.querySelector('[key="3"]')), margin: 24 },
 			{ name: 'button selection-disabled button-disabled hover', template: selectableButtonList, action: elem => hoverElem(elem.querySelector('[key="4"]')) },
 			{ name: 'selected', template: createSelectableList({ selected: true }), margin: 24 },
 			{ name: 'selected focus', template: createSelectableList({ selected: true }), action: elem => focusElem(elem.querySelector('[key="1"]')), margin: 24 },
 			{ name: 'selected hover', template: createSelectableList({ selected: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
-			{ name: 'selected add-button', template: createSelectableList({ selected: true, addButton: true }), margin: 24 },
 			{ name: 'selected focus sibling', template: createSelectableList({ selected: true }), action: elem => focusElem(elem.querySelector('[key="2"]')), margin: 24 },
 			{ name: 'selected hover sibling', template: createSelectableList({ selected: true }), action: elem => hoverElem(elem.querySelector('[key="2"]')), margin: 24 },
 			{ name: 'item-content', template: createSelectableContentList() },
 			{ name: 'skeleton', template: createSelectableContentList({ skeleton: true }) },
-			{ name: 'skeleton add-button', template: createSelectableContentList({ skeleton: true, addButton: true }) },
 			{ name: 'extended separators', template: html`
 				<d2l-list extend-separators style="width: 400px;">
 					<d2l-list-item label="Item 1" selectable key="1">Item 1</d2l-list-item>

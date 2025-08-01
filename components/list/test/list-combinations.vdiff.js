@@ -567,5 +567,56 @@ describe('list', () => {
 			});
 		});
 
+		describe('selectable + add-button', () => {
+			function createSelectableList(opts) {
+				const { selected } = { selected: false, ...opts };
+				return html`
+					<d2l-list style="width: 400px;" add-button>
+						<d2l-list-item label="Item 1" selectable key="1" ?selected="${selected}" color="${ifDefined(!selected ? '#00ff00' : undefined)}">Item 1</d2l-list-item>
+						<d2l-list-item label="Item 2" selectable key="2" color="${ifDefined(selected ? '#00ff00' : undefined)}">Item 2</d2l-list-item>
+					</d2l-list>
+				`;
+			}
+			
+			function createSelectableContentList(opts) {
+				const { skeleton } = { skeleton: false, ...opts };
+				return html`
+					<d2l-list style="width: 400px;" add-button>
+						<d2l-list-item label="Item 1" selectable key="1" ?skeleton="${skeleton}">
+							<d2l-list-item-content>
+								<div>Item 1</div>
+								<div slot="supporting-info">Secondary info for item 1</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				`;
+			}
+
+			function createOffColorBackground(template, { colorVar = null, colorHex = '#FFBBCC' } = {}) {
+				const backgroundColor = colorVar ? `var(--d2l-color-${colorVar})` : colorHex;
+				const style = `background-color: ${backgroundColor}; padding: 1rem; box-sizing: border-box; width: fit-content;`;
+				return html`
+					<div style=${style}>
+						${template}
+					</div>
+				`;
+			}
+
+			[
+				{ name: 'not selected', template: createSelectableList() },
+				{ name: 'selected', template: createSelectableList({ selected: true }), margin: 24 },
+				{ name: 'skeleton', template: createSelectableContentList({ skeleton: true }) }
+			].forEach(({ name, template, margin }) => {
+				it(name, async() => {
+					const elem = await fixture(template);
+					await expect(elem).to.be.golden({ margin });
+				});
+				it(`${name} off-color background`, async() => {
+					const elem = await fixture(createOffColorBackground(template));
+					await expect(elem).to.be.golden({ margin });
+				});
+			});
+		});
+
 	});
 });
