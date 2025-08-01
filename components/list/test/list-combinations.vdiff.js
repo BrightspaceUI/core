@@ -4,6 +4,7 @@ import '../../dropdown/dropdown.js';
 import '../../dropdown/dropdown-content.js';
 import '../../selection/selection-action.js';
 import '../../tooltip/tooltip.js';
+import '../../tooltip/tooltip-help.js';
 import '../list.js';
 import '../list-controls.js';
 import '../list-item.js';
@@ -22,6 +23,21 @@ function createOffColorBackground(template, { colorVar = null, colorHex = '#FFBB
 		</div>
 	`;
 }
+
+const simpleListItemContent = html`
+	<d2l-list-item-content>
+		<div>Item 1</div>
+		<div slot="supporting-info">Secondary info for item 1</div>
+	</d2l-list-item-content>
+`;
+
+const interactiveListItemContent = html`
+	<d2l-list-item-content>
+		<div>Item 1</div>
+		<div slot="secondary" style="padding: 5px;">Information: <d2l-tooltip-help text="Due: Jan 30, 2023">Available: Aug 11, 2023</d2l-tooltip-help></div>
+		<div slot="supporting-info"><d2l-button style="padding: 10px;">Hi!</d2l-button></div>
+	</d2l-list-item-content>
+`;
 
 describe('list', () => {
 	describe('combinations', () => {
@@ -613,6 +629,57 @@ describe('list', () => {
 				});
 				it(`${name} off-color background`, async() => {
 					const elem = await fixture(createOffColorBackground(template));
+					await expect(elem).to.be.golden({ margin });
+				});
+			});
+		});
+
+		describe('href + selectable', () => {
+			const selectableHrefList = html`
+				<d2l-list style="width: 400px;">
+					<d2l-list-item href="http://www.d2l.com" selectable key="href" label="Introductory Earth Sciences">
+						<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+						<div slot="actions"><d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon></div>
+					</d2l-list-item>
+				</d2l-list>`;
+			[
+				{ name: 'hover href', template: selectableHrefList, action: hoverElem, margin: 24 },
+				{ name: 'hover selection', template: selectableHrefList, action: elem => hoverElem(elem.shadowRoot.querySelector('[slot="control"]')), margin: 24 },
+				{ name: 'hover secondary action', template: selectableHrefList, action: elem => hoverElem(elem.querySelector('d2l-button-icon')) },
+			].forEach(({ name, template, action, margin }) => {
+				it(name, async() => {
+					const elem = await fixture(template);
+					if (action) await action(elem.querySelector('[key="href"]'));
+					await expect(elem).to.be.golden({ margin });
+				});
+				it(`${name} off-color background`, async() => {
+					const elem = await fixture(createOffColorBackground(template));
+					if (action) await action(elem.querySelector('[key="href"]'));
+					await expect(elem).to.be.golden({ margin });
+				});
+			});
+		});
+
+		describe('href + selectable + expandable + color', () => {
+			[
+				{ name: 'default' },
+				{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-list-item')), margin: 24 },
+				{ name: 'hover', action: elem => hoverElem(elem.querySelector('d2l-list-item')), margin: 24 }
+			].forEach(({ name, action, margin }) => {
+				it(name, async() => {
+					const elem = await fixture(html`
+						<d2l-list style="width: 400px;">
+							<d2l-list-item label="Item" href="http://www.d2l.com" expandable selectable key="key-1" color="#00ff00">
+								${interactiveListItemContent}
+								<d2l-list slot="nested">
+									<d2l-list-item>
+									${simpleListItemContent}
+									</d2l-list-item>
+								</d2l-list>
+							</d2l-list-item>
+						</d2l-list>
+					`);
+					if (action) await action(elem);
 					await expect(elem).to.be.golden({ margin });
 				});
 			});

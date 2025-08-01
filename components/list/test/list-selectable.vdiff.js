@@ -86,32 +86,6 @@ describe('list', () => {
 			});
 		});
 
-		describe('href', () => {
-			const selectableHrefList = html`
-				<d2l-list style="width: 400px;">
-					<d2l-list-item href="http://www.d2l.com" selectable key="href" label="Introductory Earth Sciences">
-						<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
-						<div slot="actions"><d2l-button-icon text="My Button" icon="tier1:more"></d2l-button-icon></div>
-					</d2l-list-item>
-				</d2l-list>`;
-			[
-				{ name: 'hover href', template: selectableHrefList, action: hoverElem, margin: 24 },
-				{ name: 'hover selection', template: selectableHrefList, action: elem => hoverElem(elem.shadowRoot.querySelector('[slot="control"]')), margin: 24 },
-				{ name: 'hover secondary action', template: selectableHrefList, action: elem => hoverElem(elem.querySelector('d2l-button-icon')) },
-			].forEach(({ name, template, action, margin }) => {
-				it(name, async() => {
-					const elem = await fixture(template);
-					if (action) await action(elem.querySelector('[key="href"]'));
-					await expect(elem).to.be.golden({ margin });
-				});
-				it(`${name} off-color background`, async() => {
-					const elem = await fixture(createOffColorBackground(template));
-					if (action) await action(elem.querySelector('[key="href"]'));
-					await expect(elem).to.be.golden({ margin });
-				});
-			});
-		});
-
 		describe('controls', () => {
 			function createListWithControls(opts) {
 				const { actions, color2, extendSeparators, selected, selectAllPages } = {
