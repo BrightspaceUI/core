@@ -7,6 +7,7 @@ import '../list-item-button.js';
 import '../list-item-content.js';
 import '../list-item-nav.js';
 import { expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 const simpleListItemContent = html`
 	<d2l-list-item-content>
@@ -25,6 +26,40 @@ const interactiveListItemContent = html`
 
 describe('list', () => {
 	describe('interactive content', () => {
+
+		describe('separators', () => {
+			function createInteractiveListWithSeparators(opts) {
+				const { extendSeparators, separatorType } = { extendSeparators: false, ...opts };
+				return html`
+					<d2l-list
+						style="width: 400px;"
+						?extend-separators="${extendSeparators}"
+						separators="${ifDefined(separatorType)}">
+						<d2l-list-item label="Item 1" href="http://www.d2l.com">
+							${interactiveListItemContent}
+						</d2l-list-item>
+						<d2l-list-item label="Item 2" href="http://www.d2l.com">
+							${simpleListItemContent}
+						</d2l-list-item>
+						<d2l-list-item label="Item 3" href="http://www.d2l.com">
+							${simpleListItemContent}
+						</d2l-list-item>
+					</d2l-list>
+				`;
+			}
+
+			[
+				{ name: 'between', template: createInteractiveListWithSeparators({ separatorType: 'between' }) },
+				{ name: 'none', template: createInteractiveListWithSeparators({ separatorType: 'none' }) },
+				{ name: 'extended', template: createInteractiveListWithSeparators({ extendSeparators: true }) },
+				{ name: 'extended-between', template: createInteractiveListWithSeparators({ extendSeparators: true, separatorType: 'between' }) }
+			].forEach(({ name, template }) => {
+				it(name, async() => {
+					const elem = await fixture(template);
+					await expect(elem).to.be.golden();
+				});
+			});
+		});
 
 		describe('href', () => {
 			[

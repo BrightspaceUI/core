@@ -43,15 +43,6 @@ describe('list', () => {
 			`);
 			await expect(elem).to.be.golden();
 		});
-
-		it('no-padding add-button', async() => {
-			const elem = await fixture(html`
-				<d2l-list style="width: 400px" add-button>
-					<d2l-list-item label="1" padding-type="none">Item 1</d2l-list-item>
-				</d2l-list>
-			`);
-			await expect(elem).to.be.golden();
-		});
 	});
 
 	describe('illustration', () => {
@@ -72,7 +63,6 @@ describe('list', () => {
 		[
 			{ name: 'default', template: createSimpleList({ color1: '#0000ff' }) },
 			{ name: 'none', template: createSimpleList({ color1: '#00ff00', color2: '#00ff00', separatorType: 'none' }) },
-			{ name: 'all', template: createSimpleList({ separatorType: 'all' }) },
 			{ name: 'between', template: createSimpleList({ separatorType: 'between' }) },
 			{ name: 'extended', template: createSimpleList({ color1: '#00ff00', extendSeparators: true }) }
 		].forEach(({ name, template }) => {

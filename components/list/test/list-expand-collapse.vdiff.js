@@ -108,6 +108,77 @@ describe('list', () => {
 			});
 		});
 
+		describe('separators', () => {
+			function createExpandableListWithSeparators(opts) {
+				const { extendSeparators, separatorType, expanded } = { extendSeparators: false, expanded: true, ...opts };
+				return html`
+					<d2l-list
+						style="width: 600px;"
+						?extend-separators="${extendSeparators}"
+						separators="${ifDefined(separatorType)}">
+						<d2l-list-item expandable ?expanded="${expanded}" label="L1-1" key="L1-1">
+							<d2l-list-item-content>
+								<div>Level 1, Item 1</div>
+								<div slot="supporting-info">Supporting text for top level list item</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" ?extend-separators="${extendSeparators}" separators="${ifDefined(separatorType)}">
+								<d2l-list-item label="L2-1" key="L2-1">
+									<d2l-list-item-content>
+										<div>Level 2, Item 1</div>
+										<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+								<d2l-list-item expandable ?expanded="${expanded}" label="L2-2" key="L2-2">
+									<d2l-list-item-content>
+										<div>Level 2, Item 2</div>
+										<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+									</d2l-list-item-content>
+									<d2l-list slot="nested" ?extend-separators="${extendSeparators}" separators="${ifDefined(separatorType)}">
+										<d2l-list-item label="L3-1" key="L3-1">
+											<d2l-list-item-content>
+												<div>Level 3, Item 1</div>
+											</d2l-list-item-content>
+										</d2l-list-item>
+										<d2l-list-item label="L3-2" key="L3-2">
+											<d2l-list-item-content>
+												<div>Level 3, Item 2</div>
+											</d2l-list-item-content>
+										</d2l-list-item>
+									</d2l-list>
+								</d2l-list-item>
+							</d2l-list>
+						</d2l-list-item>
+						<d2l-list-item expandable ?expanded="${expanded}" label="L1-2" key="L1-2">
+							<d2l-list-item-content>
+								<div>Level 1, Item 2</div>
+								<div slot="supporting-info">Supporting text for second item</div>
+							</d2l-list-item-content>
+							<d2l-list slot="nested" ?extend-separators="${extendSeparators}" separators="${ifDefined(separatorType)}">
+								<d2l-list-item label="L2-3" key="L2-3">
+									<d2l-list-item-content>
+										<div>Level 2, Item 3</div>
+									</d2l-list-item-content>
+								</d2l-list-item>
+							</d2l-list>
+						</d2l-list-item>
+					</d2l-list>
+				`;
+			}
+
+			[
+				{ name: 'between', template: createExpandableListWithSeparators({ separatorType: 'between' }) },
+				{ name: 'none', template: createExpandableListWithSeparators({ separatorType: 'none' }) },
+				{ name: 'extended', template: createExpandableListWithSeparators({ extendSeparators: true }) },
+				{ name: 'extended-between', template: createExpandableListWithSeparators({ extendSeparators: true, separatorType: 'between' }) },
+				{ name: 'extended-none', template: createExpandableListWithSeparators({ extendSeparators: true, separatorType: 'none' }) }
+			].forEach(({ name, template }) => {
+				it(name, async() => {
+					const elem = await fixture(template);
+					await expect(elem).to.be.golden();
+				});
+			});
+		});
+
 		describe('complex nested structures', () => {
 			[
 				{ name: 'default', action: null },

@@ -61,9 +61,9 @@ describe('list', () => {
 
 		describe('selectable + nested', () => {
 			function createNestedList(opts) {
-				const { color1, color3, selected } = { selected: [false, false, false], ...opts };
+				const { color1, color3, selected, extendSeparators, separatorType } = { selected: [false, false, false], extendSeparators: false, ...opts };
 				return html`
-					<d2l-list style="width: 600px;">
+					<d2l-list style="width: 600px;" ?extend-separators="${extendSeparators}" separators="${ifDefined(separatorType)}">
 						<d2l-list-controls slot="controls" no-sticky></d2l-list-controls>
 						<d2l-list-item selectable label="L1-1" key="L1-1">
 							<d2l-list-item-content>
@@ -74,7 +74,7 @@ describe('list', () => {
 								<button>action 1</button>
 								<button>action 2</button>
 							</div>
-							<d2l-list slot="nested" separators="between">
+							<d2l-list slot="nested" ?extend-separators="${extendSeparators}" separators="${ifDefined(separatorType || 'between')}">
 								<d2l-list-item selectable ?selected="${selected[0]}" color="${ifDefined(color1)}" label="L2-1" key="L2-1">
 									<d2l-list-item-content>
 										<div>Level 2, Item 1</div>
@@ -86,7 +86,7 @@ describe('list', () => {
 										<div>Level 2, Item 2</div>
 										<div slot="supporting-info">Prow scuttle parrel provost Sail ho shrouds spirits boom mizzenmast yardarm. Pinnace holystone mizzenmast quarter crow's nest nipperkin grog yardarm hempen halter furl.</div>
 									</d2l-list-item-content>
-									<d2l-list slot="nested" separators="between">
+									<d2l-list slot="nested" ?extend-separators="${extendSeparators}" separators="${ifDefined(separatorType || 'between')}">
 										<d2l-list-item selectable ?selected="${selected[1]}" label="L3-1" key="L3-1">
 											<d2l-list-item-content>
 												<div>Level 3, Item 1</div>
@@ -111,6 +111,8 @@ describe('list', () => {
 				{ name: 'none-selected', template: createNestedList({ color1: '#00ff00' }) },
 				{ name: 'some-selected', template: createNestedList({ selected: [false, false, true], color3: '#00ff00' }) },
 				{ name: 'all-selected', template: createNestedList({ selected: [true, true, true] }) },
+				{ name: 'extended-separators', template: createNestedList({ extendSeparators: true, color1: '#00ff00' }) },
+				{ name: 'separators-none', template: createNestedList({ separatorType: 'none', color1: '#00ff00' }) }
 			].forEach(({ name, template }) => {
 				it(name, async() => {
 					const elem = await fixture(template);
@@ -121,21 +123,22 @@ describe('list', () => {
 
 		describe('expandable + selectable', () => {
 			function createExpandableSelectableList(opts) {
-				const { color1, color2, color3, expanded, nested, nestedMultiple } = {
+				const { color1, color2, color3, expanded, nested, nestedMultiple, extendSeparators, separatorType } = {
 					expanded: false,
 					nested: true,
 					nestedMultiple: false,
+					extendSeparators: false,
 					...opts
 				};
 				return html`
-					<d2l-list style="width: 600px;">
+					<d2l-list style="width: 600px;" ?extend-separators="${extendSeparators}" separators="${ifDefined(separatorType)}">
 						<d2l-list-item expandable ?expanded="${expanded}" selectable color="${ifDefined(color1)}" label="L1-1" key="L1-1">
 							<d2l-list-item-content>
 								<div>Level 1, Item 1</div>
 								<div slot="supporting-info">Supporting text for top level list item</div>
 							</d2l-list-item-content>
 							${nested ? html`
-								<d2l-list slot="nested">
+								<d2l-list slot="nested" ?extend-separators="${extendSeparators}" separators="${ifDefined(separatorType)}">
 									<d2l-list-item selectable color="${ifDefined(color2)}" label="L2-1" key="L2-1">
 										<d2l-list-item-content>
 											<div>Level 2, Item 1</div>
@@ -147,7 +150,7 @@ describe('list', () => {
 											<div>Level 2, Item 2</div>
 											<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
 										</d2l-list-item-content>
-										<d2l-list slot="nested">
+										<d2l-list slot="nested" ?extend-separators="${extendSeparators}" separators="${ifDefined(separatorType)}">
 											<d2l-list-item selectable label="L3-1" key="L3-1">
 												<d2l-list-item-content>
 													<div>Level 3, Item 1</div>
@@ -166,7 +169,7 @@ describe('list', () => {
 												<div>Level 2, Item 3</div>
 												<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer enim.</div>
 											</d2l-list-item-content>
-											<d2l-list slot="nested">
+											<d2l-list slot="nested" ?extend-separators="${extendSeparators}" separators="${ifDefined(separatorType)}">
 												<d2l-list-item label="L3-1b" key="L3-1b">
 													<d2l-list-item-content>
 														<div>Level 3, Item 1b</div>
@@ -189,6 +192,9 @@ describe('list', () => {
 
 			[
 				{ name: 'expanded', template: createExpandableSelectableList({ expanded: true }) },
+				{ name: 'expanded-extended-separators', template: createExpandableSelectableList({ expanded: true, extendSeparators: true }) },
+				{ name: 'expanded-separators-between', template: createExpandableSelectableList({ expanded: true, separatorType: 'between' }) },
+				{ name: 'expanded-separators-none', template: createExpandableSelectableList({ expanded: true, separatorType: 'none' }) }
 			].forEach(({ name, template }) => {
 				it(name, async() => {
 					const elem = await fixture(template);
