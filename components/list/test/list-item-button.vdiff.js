@@ -12,7 +12,7 @@ const simpleListItemContent = html`
 `;
 
 describe('list-item-button', () => {
-	
+
 	describe('separators', () => {
 		function createButtonListWithSeparators(opts) {
 			const { extendSeparators, separatorType } = { extendSeparators: false, ...opts };

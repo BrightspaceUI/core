@@ -593,7 +593,7 @@ describe('list', () => {
 					</d2l-list>
 				`;
 			}
-			
+
 			function createSelectableContentList(opts) {
 				const { skeleton } = { skeleton: false, ...opts };
 				return html`
