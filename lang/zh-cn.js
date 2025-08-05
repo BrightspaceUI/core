@@ -203,8 +203,8 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} 个",
 	"components.tag-list.role-description":
 		`{count, plural,
-			=0 {Tag List with 0 items}
-			other {Tag List with {count} items}
+			=0 {包含 0 个项目的标签列表}
+			other {包含 {count} 个项目的标签列表}
 		}`,
 	"components.tag-list.show-less": "显示更少",
 	"components.tag-list.show-more-description": "选择以显示隐藏的标签列表项目",
