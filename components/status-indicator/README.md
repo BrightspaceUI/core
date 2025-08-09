@@ -220,3 +220,6 @@ The text label should be kept short; one or two words at most. If more informati
 
 </div>
 ```
+
+## Accessibility
+Although `aria-description` can be used to provide additional context on the state, it is recommended to provide that context for both sighted and non-sighted users by following the recommendations mentioned in the [Content](#content) section
