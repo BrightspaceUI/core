@@ -6,6 +6,7 @@ import { MenuItemMixin } from './menu-item-mixin.js';
 import { menuItemStyles } from './menu-item-styles.js';
 
 const newWindowIconEnabled = getFlag('GAUD-8295-menu-item-link-new-window-icon', true);
+const menuItemClickChangesEnabled = getFlag('GAUD-8369-menu-item-link-click-changes', true);
 
 /**
  * A menu item component used for navigating.
@@ -90,9 +91,14 @@ class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitEl
 		];
 	}
 
+	constructor() {
+		super();
+		this._letClickPropagate = true;
+	}
+
 	firstUpdated() {
 		super.firstUpdated();
-		this.addEventListener('click', this._onClick);
+		if (!menuItemClickChangesEnabled) this.addEventListener('click', this._onClick); // remove when cleaning up GAUD-8369-menu-item-link-click-changes
 		this.addEventListener('keydown', this._onKeyDown);
 	}
 
@@ -117,6 +123,7 @@ class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitEl
 
 	}
 
+	// remove this function when cleaning up GAUD-8369-menu-item-link-click-changes
 	_getTarget() {
 		if (this.target && this.target !== '') {
 			return this.target;
@@ -129,19 +136,27 @@ class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitEl
 		return null;
 	}
 
+	// remove this function when cleaning up GAUD-8369-menu-item-link-click-changes
 	_onClick() {
 		if (this.shadowRoot) this.shadowRoot.querySelector('a').dispatchEvent(new CustomEvent('click'));
 	}
 
 	_onKeyDown(e) {
-		if (e.keyCode === this.__keyCodes.ENTER || e.keyCode === this.__keyCodes.SPACE) {
-			const target = this._getTarget();
-			if (target === '_parent') {
-				window.parent.location.assign(this.href);
-			} else if (target === '_top') {
-				window.top.location.assign(this.href);
-			} else {
-				window.location.assign(this.href);
+		if (menuItemClickChangesEnabled) {
+			if (e.keyCode === this.__keyCodes.ENTER || e.keyCode === this.__keyCodes.SPACE) {
+				this.shadowRoot.querySelector('a').click();
+			}
+		} else { // remove this block when cleaning up GAUD-8369-menu-item-link-click-changes
+			super._onKeyDown(e);
+			if (e.keyCode === this.__keyCodes.ENTER || e.keyCode === this.__keyCodes.SPACE) {
+				const target = this._getTarget();
+				if (target === '_parent') {
+					window.parent.location.assign(this.href);
+				} else if (target === '_top') {
+					window.top.location.assign(this.href);
+				} else {
+					window.location.assign(this.href);
+				}
 			}
 		}
 	}
