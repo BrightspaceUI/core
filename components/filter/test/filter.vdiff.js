@@ -501,7 +501,10 @@ describe('filter', () => {
 			await expect(elem).to.be.golden();
 		});
 
-		it('select forth then select previous dimension with 3 values and tab 4 times', async() => {
+		/**
+		 * select forth then select previous dimension with <3 values and tab 4 times (search bar, search button, first item, back to search button)
+		 */
+		it('select-forth-then-third-then-tab', async() => {
 			const elem = await fixture(html`
 				<d2l-filter>
 					<d2l-filter-dimension-set key="dates" text="Dates">
