@@ -3,7 +3,7 @@ import '../filter-dimension-set-empty-state.js';
 import '../filter-dimension-set-date-text-value.js';
 import '../filter-dimension-set-date-time-range-value.js';
 import '../filter-dimension-set-value.js';
-import { aTimeout, clickElem, expect, fixture, focusElem, hoverAt, html, nextFrame, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, expect, fixture, focusElem, hoverAt, html, nextFrame, oneEvent, sendKeys, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { nothing } from 'lit';
 import { resetHasDisplayedKeyboardTooltip } from '../filter.js';
@@ -498,6 +498,46 @@ describe('filter', () => {
 
 			await clickElem(elem.shadowRoot.querySelector('[text*="Clear"]'));
 			await hoverAt(0, 0);
+			await expect(elem).to.be.golden();
+		});
+
+		it('select forth then select previous dimension with 3 values and tab 4 times', async() => {
+			const elem = await fixture(html`
+				<d2l-filter>
+					<d2l-filter-dimension-set key="dates" text="Dates">
+						<d2l-filter-dimension-set-value key="lastweek" text="Last week"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="6months" range="6months"></d2l-filter-dimension-set-date-text-value>
+					</d2l-filter-dimension-set>
+					<d2l-filter-dimension-set key="datesCustom" text="Dates with Custom">
+						<d2l-filter-dimension-set-value key="lastweek" text="Last week"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-date-text-value key="lastHour" range="lastHour" selected></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="48hours" range="48hours" disabled></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-text-value key="14days" range="14days"></d2l-filter-dimension-set-date-text-value>
+						<d2l-filter-dimension-set-date-time-range-value key="custom" selected></d2l-filter-dimension-set-date-time-range-value>
+					</d2l-filter-dimension-set>
+					<d2l-filter-dimension-set key="course" text="Course" selected-first>
+						<d2l-filter-dimension-set-value key="art" text="Art"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="astronomy" text="Astronomy"></d2l-filter-dimension-set-value>
+						<d2l-filter-dimension-set-value key="biology" text="Biology" disabled></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+					<d2l-filter-dimension-set key="long" text="Very very very Long Dimension Title For Testing Text Line Clamp Truncation that would span multiple lines." select-all search-type="none">
+						<d2l-filter-dimension-set-value key="long" text="Very very very Long Dimension Title For Testing Text Line Clamp Truncation that would span multiple lines." selected></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>
+			`);
+			sendKeysElem(elem, 'press', 'Enter');
+			await oneEvent(elem.shadowRoot.querySelector('d2l-dropdown-menu'), 'd2l-dropdown-open');
+			await nextFrame();
+			await enterDimension(elem, 4);
+			await clickElem(elem.shadowRoot.querySelector('.d2l-filter-dimension-header > d2l-button-icon'));
+			await enterDimension(elem, 3);
+			await sendKeys('press', 'Tab');
+			await sendKeys('press', 'Tab');
+			await sendKeys('press', 'Tab');
+			await sendKeys('press', 'Tab');
 			await expect(elem).to.be.golden();
 		});
 	});
