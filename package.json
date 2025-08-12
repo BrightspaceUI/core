@@ -9,11 +9,12 @@
   },
   "scripts": {
     "build:clean": "node ./cli/clean.js",
+    "build:flags": "node ./cli/flags-generator.js",
     "build:icons": "node ./cli/icon-generator.js",
     "build:illustrations": "node ./cli/empty-state-illustration-generator.js",
     "build:sass": "sass ./test/sass.scss > ./test/sass.output.css",
     "build:wca": "wca analyze \"{components,templates}/**/*.js\" --format json --outFile custom-elements.json",
-    "build": "npm run build:clean && npm run build:icons && npm run build:illustrations && npm run build:sass && npm run build:wca",
+    "build": "npm run build:clean && npm run build:flags && npm run build:icons && npm run build:illustrations && npm run build:sass && npm run build:wca",
     "build-static": "rollup -c ./rollup/rollup.config.js",
     "lint": "npm run lint:eslint && npm run lint:style",
     "lint:eslint": "eslint .",

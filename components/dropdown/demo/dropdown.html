@@ -5,13 +5,14 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 	<script>
-		const urlParams = new URLSearchParams(window.location.search);
-		window.D2L = { LP: { Web: { UI: { Flags: { Flag: (key) => {
-			if (key === 'GAUD-7472-dropdown-popover') return (urlParams.get('popover') === 'true');
-			return false;
-		} } } } } };
+		//const urlParams = new URLSearchParams(window.location.search);
+		//window.D2L = { LP: { Web: { UI: { Flags: { Flag: (key) => {
+		//	if (key === 'GAUD-7472-dropdown-popover') return (urlParams.get('popover') === 'true');
+		//	return false;
+		//} } } } } };
 	</script>
 	<script type="module">
+		import '../../demo/demo-flags.js';
 		import '../../demo/demo-page.js';
 		import '../../button/button.js';
 		import '../dropdown.js';

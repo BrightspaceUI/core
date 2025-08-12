@@ -1,13 +1,24 @@
+import './demo-flags.js';
 import './demo-snippet.js';
 import './code-view.js';
+import '../button/button.js';
+import '../collapsible-panel/collapsible-panel.js';
+import '../collapsible-panel/collapsible-panel-summary-item.js';
 import '../colors/colors.js';
+import '../inputs/input-checkbox-group.js';
+import '../inputs/input-checkbox.js';
 import '../typography/typography.js';
 import { css, html, LitElement } from 'lit';
 import { getDocumentLocaleSettings, supportedLocalesDetails } from '@brightspace-ui/intl/lib/common.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { heading2Styles } from '../typography/styles.js';
+import { getFlag } from '../../helpers/flags.js';
 import { inputLabelStyles } from '../inputs/input-label-styles.js';
 import { selectStyles } from '../inputs/input-select-styles.js';
+
+const { flags } = await import('/generated/flags.js').catch(() => { return { flags: [] } ; });
+flags.forEach(flag => {
+	flag.value = getFlag(flag.name, flag.defaultValue);
+});
 
 document.body.classList.add('d2l-typography');
 
@@ -32,7 +43,7 @@ class DemoPage extends LitElement {
 	}
 
 	static get styles() {
-		return [ heading2Styles, inputLabelStyles, selectStyles, css`
+		return [ inputLabelStyles, selectStyles, css`
 			:host {
 				background-color: var(--d2l-color-sylvite);
 				display: block;
@@ -49,12 +60,14 @@ class DemoPage extends LitElement {
 				margin-bottom: 1.5rem;
 				max-width: 900px;
 			}
-			.d2l-heading-2 {
-				flex-grow: 1;
-				margin: 0;
+			d2l-collapsible-panel {
+				width: 100%;
 			}
 			.d2l-input-label {
 				margin-bottom: 0;
+			}
+			#applyFlagsButton {
+				margin-block-start: 1rem;
 			}
 			.d2l-demo-page-content > ::slotted(h2),
 			.d2l-demo-page-content > ::slotted(h3) {
@@ -82,6 +95,7 @@ class DemoPage extends LitElement {
 		const classes = {
 			'no-scroll': this._noScroll
 		};
+
 		let selectedLanguageCode = getDocumentLocaleSettings().language;
 		if (selectedLanguageCode === 'en') selectedLanguageCode = 'en-us';
 		let foundSelected = false;
@@ -90,18 +104,49 @@ class DemoPage extends LitElement {
 			foundSelected = foundSelected || selected;
 			return html`<option value="${l.code}" ?selected="${selected}">${l.code} - ${l.name}</option>`;
 		});
+
+		const flagOverrides = flags.filter(flag => flag.value !== flag.defaultValue);
+
 		return html`
 			<header>
-				<h1 class="d2l-heading-2">${this.pageTitle}</h1>
-				<label class="d2l-input-label">
-					Language: 
-					<select class="d2l-input-select" @change="${this._handleLanguageChange}">${languageOptions}</select>
-				</label>
+				<d2l-collapsible-panel panel-title="${this.pageTitle}" heading-level="1" heading-style="3" type="subtle">
+					${ flagOverrides.map(flag => {
+						return html`<d2l-collapsible-panel-summary-item slot="summary" text="${flag.name} overridden (${flag.value})"></d2l-collapsible-panel-summary-item>`;
+					})}
+					<label class="d2l-input-label" slot="actions">
+						Language:
+						<select class="d2l-input-select" @change="${this._handleLanguageChange}">${languageOptions}</select>
+					</label>
+					${flags.length > 0 ? html`
+						<d2l-input-checkbox-group id="flagsCheckboxGroup" label="Flags">
+							${flags.map(flag => {
+								return html`<d2l-input-checkbox label="${flag.name}" data-flag-name="${flag.name}" ?checked="${flag.value}"></d2l-input-checkbox>`;
+							})}
+						</d2l-input-checkbox-group>
+					` : `No Flags`}
+					<d2l-button id="applyFlagsButton" @click="${this._handleApplyFlagsClick}">Apply</d2l-button>
+				</d2l-collapsible-panel>
 			</header>
 			<main class="${classMap(classes)}">
 				<div class="d2l-demo-page-content" @d2l-demo-snippet-fullscreen-toggle="${this._handleFullscreenToggle}"><slot></slot></div>
 			</main>
 		`;
+	}
+
+	_handleApplyFlagsClick() {
+		const urlParams = new URLSearchParams(window.location.search);
+		const elems = [...this.shadowRoot.querySelectorAll('#flagsCheckboxGroup > d2l-input-checkbox')];
+
+		elems.forEach(elem => {
+			const flag = flags.find(flag => flag.name === elem.dataset.flagName);
+			if (flag.defaultValue === elem.checked) {
+				urlParams.delete(flag.name);
+			} else if (flag.defaultValue !== elem.checked) {
+				urlParams.set(flag.name, elem.checked);
+			}
+		});
+
+		window.location.search = urlParams.toString();
 	}
 
 	async _handleFullscreenToggle() {
