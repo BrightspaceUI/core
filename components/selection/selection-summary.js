@@ -39,7 +39,7 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 			return nothing;
 		}
 		return html`
-			<p class="d2l-body-compact">${this._summary}</p>
+			<p class="d2l-body-compact" role="status" aria-atomic="true">${this._summary}</p>
 		`;
 	}
 
