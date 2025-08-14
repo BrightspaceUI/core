@@ -22,11 +22,6 @@ export const LinkMixin = superclass => class extends LocalizeCoreElement(supercl
 			 */
 			href: { type: String },
 			/**
-			 * Label for the link
-			 * @type {string}
-			 */
-			ariaLabel: { type: String, attribute: 'aria-label' },
-			/**
 			 * Where to display the linked URL
 			 * @type {string}
 			 */
@@ -57,14 +52,19 @@ export const LinkMixin = superclass => class extends LocalizeCoreElement(supercl
 		`];
 	}
 
-	_render(inner, { rel = undefined, linkClasses = {}, tabindex = undefined } = {}) {
+	getNewWindowDescription(label) {
+		return label && this.target === '_blank' ? this.localize('components.link.open-in-new-window') : undefined;
+	}
+
+	_render(inner, { ariaLabel = undefined, rel = undefined, linkClasses = {}, tabindex = undefined } = {}) {
 		/*
 		* NOTICE:
 		* All html template whitespace within this component is critical to proper rendering and wrapping.
 		* Do not modify for readability!
 		*/
 		return html`<a
-			aria-label="${ifDefined(this.ariaLabel)}"
+			aria-label="${ifDefined(ariaLabel)}"
+			aria-description="${ifDefined(this.getNewWindowDescription(ariaLabel))}"
 			class="${classMap(linkClasses)}"
 			download="${ifDefined(this.download)}"
 			href="${ifDefined(this.href)}"
