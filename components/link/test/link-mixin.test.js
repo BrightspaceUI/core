@@ -5,13 +5,20 @@ import { LitElement } from 'lit';
 
 const tagName = defineCE(
 	class extends LinkMixin(LitElement) {
+		static get properties() {
+			return {
+				label: { type: String }
+			};
+		}
+
 		render() {
-			return this._render(html`Link Test${this._renderNewWindowIcon()}`);
+			return this._render(html`Link Test${this._renderNewWindowIcon()}`, { ariaLabel: this.label });
 		}
 	}
 );
 
 const emptyFixture = `<${tagName}></${tagName}>`;
+const newWindowFixture = `<${tagName} target="_blank"></${tagName}>`;
 
 describe('LinkMixin', () => {
 	let elem, anchor;
@@ -23,7 +30,7 @@ describe('LinkMixin', () => {
 	describe('attribute binding', () => {
 
 		it('should not bind any properties on empty', () => {
-			for (const attr of ['download', 'href', 'ariaLabel', 'target'])
+			for (const attr of ['download', 'href', 'target'])
 				expect(anchor.hasAttribute(attr)).to.be.false;
 		});
 
@@ -31,7 +38,6 @@ describe('LinkMixin', () => {
 			{ attr: 'download', val: '', details: 'empty boolean attribute' },
 			{ attr: 'download', val: 'filename.txt' },
 			{ attr: 'href', val: 'https://www.d2l.com' },
-			{ attr: 'aria-label', val: 'Label' },
 			{ attr: 'target', val: '_blank' }
 		].forEach(({ attr, val, details }) => {
 			it(`should bind "${attr}" attribute to anchor attribute${details ? `(${details})` : ''}`, async() => {
@@ -46,7 +52,7 @@ describe('LinkMixin', () => {
 	describe('events', () => {
 
 		it('dispatches click event when clicked', async() => {
-			elem = await fixture(html`<d2l-link></d2l-link>`);
+			elem = await fixture(emptyFixture);
 			setTimeout(() => elem.click());
 			const { target } = await oneEvent(elem, 'click');
 			expect(target).to.equal(elem);
@@ -56,8 +62,15 @@ describe('LinkMixin', () => {
 
 	describe('new-window', () => {
 		it('should add offscreen text', async() => {
-			const elem = await fixture(html`<d2l-link target="_blank">link text</d2l-link>`);
+			const elem = await fixture(newWindowFixture);
 			expect(elem.shadowRoot.querySelector('.d2l-offscreen').innerText).to.equal('Opens in a new window.');
+		});
+
+		it('should add description if label is added', async() => {
+			const elem = await fixture(newWindowFixture);
+			elem.label = 'Label';
+			await elem.updateComplete;
+			expect(elem.shadowRoot.querySelector('a').getAttribute('aria-description')).to.equal('Opens in a new window.');
 		});
 	});
 
