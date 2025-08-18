@@ -34,6 +34,10 @@ class Form extends LocalizeCoreElement(LitElement) {
 			 * @type {boolean}
 			 */
 			trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true },
+			/**
+			 * Indicates that the form should hide the error summary alert.
+			 * @type {boolean}
+			 */
 			hideErrorSummary: { type: Boolean, attribute: 'hide-error-summary' },
 			_errors: { type: Object },
 			_hasErrors: { type: Boolean, attribute: '_has-errors', reflect: true },
