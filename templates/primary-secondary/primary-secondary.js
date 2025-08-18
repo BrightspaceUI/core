@@ -1,6 +1,6 @@
 import '../../components/colors/colors.js';
-import '../../../components/form/form.js';
-import '../../../components/form/form-error-summary.js';
+import '../../components/form/form.js';
+import '../../components/form/form-error-summary.js';
 import '../../components/icons/icon-custom.js';
 import '../../components/icons/icon.js';
 import '../../components/offscreen/offscreen.js';
