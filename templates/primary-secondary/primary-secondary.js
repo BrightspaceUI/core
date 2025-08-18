@@ -549,6 +549,9 @@ class MobileTouchResizer extends Resizer {
  * @slot secondary - Supplementary page content
  * @fires d2l-template-primary-secondary-resize-start - Dispatched when a user begins moving the divider.
  * @fires d2l-template-primary-secondary-resize-end - Dispatched when a user finishes moving the divider.
+ * @fires d2l-form-invalid Dispatched when the form fails validation. The error map can be obtained from the detail's errors property.
+ * @fires d2l-form-dirty Dispatched whenever any form element fires an input or change event. Can be used to track whether the form is dirty or not.
+ * @fires d2l-form-submit Dispatched when the form is submitted. The form data can be obtained from the detail's formData property.
  */
 class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 
@@ -589,6 +592,10 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			 * @type {'fullscreen'|'normal'}
 			 */
 			widthType: { type: String, attribute: 'width-type', reflect: true },
+			/**
+			 * Whether to render an encompassing form over all panels
+			 * @type { Boolean }
+			 */
 			hasForm: { type: Boolean, attribute: 'has-form' },
 			_animateResize: { type: Boolean, attribute: false },
 			_formErrorSummary: { type: Array },
@@ -1071,7 +1078,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			</div>
 		`;
 
-		if (this.hasForm) return html`<d2l-form hide-error-summary @d2l-form-invalid=${this.#handleInvalidForm} @d2l-form-submit=${this.#handleFormSubmit}>
+		if (this.hasForm) return html`<d2l-form hide-error-summary @d2l-form-invalid=${this.#handleInvalidForm} @d2l-form-submit=${this.#handleFormSubmit} @d2l-form-dirty=${this.#handleFormDirty}>
 			${content}
 		</d2l-form>`;
 		return content;
@@ -1306,6 +1313,10 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			</div>
 		`;
 
+	}
+
+	#handleFormDirty(e) {
+		this.dispatchEvent(new CustomEvent('d2l-form-dirty', { detail: e.detail }));
 	}
 
 	#handleFormSubmit(e) {
