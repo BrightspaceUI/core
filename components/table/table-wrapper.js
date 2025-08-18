@@ -403,6 +403,8 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._cachedStickyOffset = null;
 		this._cachedStickyHeadersHeight = null;
 		this._focusDebounceId = null;
+
+		this._focusScrollingEnabled = getFlag('d2l-table-focus-scrolling', true);
 	}
 
 	connectedCallback() {
@@ -412,7 +414,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this.addEventListener('d2l-dropdown-close', this._handlePopoverClose);
 		this.addEventListener('d2l-tooltip-show', this._handlePopoverOpen);
 		this.addEventListener('d2l-tooltip-hide', this._handlePopoverClose);
-		this.addEventListener('focusin', this._handleFocusIn);
+
+		if (this._focusScrollingEnabled) {
+			this.addEventListener('focusin', this._handleFocusIn);
+		}
 
 	}
 
@@ -423,7 +428,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this.removeEventListener('d2l-dropdown-close', this._handlePopoverClose);
 		this.removeEventListener('d2l-tooltip-show', this._handlePopoverOpen);
 		this.removeEventListener('d2l-tooltip-hide', this._handlePopoverClose);
-		this.removeEventListener('focusin', this._handleFocusIn);
+
+		if (this._focusScrollingEnabled) {
+			this.removeEventListener('focusin', this._handleFocusIn);
+		}
 
 		this._controlsMutationObserver?.disconnect();
 		this._controlsScrolledMutationObserver?.disconnect();
