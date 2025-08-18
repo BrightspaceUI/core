@@ -211,9 +211,9 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} hou aku",
 	"components.tag-list.role-description":
 		`{count, plural,
-			=0 {Tag List with 0 items}
-			one {Tag List with {count}i mea}
-			other {Tag List with {count}a ʻē aʻe}
+			=0 {Papa inoa me 0 mau mea}
+			one {Papa inoa me {count} mau mea}
+			other {Papa inoa me {count} mau mea}
 		}`,
 	"components.tag-list.show-less": "Hōʻike liʻiliʻi",
 	"components.tag-list.show-more-description": "E koho e hōʻike i nā mea papa inoa inoa huna",
