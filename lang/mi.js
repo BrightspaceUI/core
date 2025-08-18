@@ -210,7 +210,11 @@ export default {
 	"components.tag-list.interactive-label": "Rārangi Tūtohu, {count} tūemi",
 	"components.tag-list.num-hidden": "+ {count} anō",
 	"components.tag-list.role-description":
-		`{count, plural, =0 {Rarangi Tohu me nga mea 0} one {Rarangi Tohu me nga mea {count}} other {Rarangi Tohu me nga mea {count}}}`,
+		`{count, plural,
+			=0 {Rarangi Tohu me nga mea 0}
+			one {Rarangi Tohu me nga mea {count}}
+			other {Rarangi Tohu me nga mea {count}}
+		}`,
 	"components.tag-list.show-less": "Whakaaturia mai kia iti iho",
 	"components.tag-list.show-more-description": "Tīpakohia hei whakaatu i ngā tūemi rārangi tūtohu hunahuna",
 	"components.tag-list-item.role-description": "Tūtohu",
