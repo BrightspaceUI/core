@@ -2,8 +2,8 @@ import './form-error-summary.js';
 import '../tooltip/tooltip.js';
 import '../link/link.js';
 import { css, html, LitElement } from 'lit';
-import { findComposedAncestor, querySelectorComposed } from '../../helpers/dom.js';
 import { findFormElements, flattenMap, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -34,6 +34,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 			 * @type {boolean}
 			 */
 			trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true },
+			hideErrorSummary: { type: Boolean, attribute: 'hide-error-summary' },
 			_errors: { type: Object },
 			_hasErrors: { type: Boolean, attribute: '_has-errors', reflect: true },
 		};
@@ -56,6 +57,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 	constructor() {
 		super();
 		this.trackChanges = false;
+		this.hideErrorSummary = false;
 		this._errors = new Map();
 		this._isSubForm = false;
 		this._nestedForms = new Map();
@@ -74,6 +76,12 @@ class Form extends LocalizeCoreElement(LitElement) {
 		this.addEventListener('d2l-form-errors-change', this._onErrorsChange);
 		this.addEventListener('d2l-form-element-errors-change', this._onErrorsChange);
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
+	}
+
+	get errorSummary() {
+		return [...flattenMap(this._errors)]
+			.filter(([, eleErrors]) => eleErrors.length > 0)
+			.map(([ele, eleErrors]) => ({ href: `#${ele.id}`, message: eleErrors[0], onClick: () => ele.focus() }));
 	}
 
 	connectedCallback() {
@@ -103,17 +111,8 @@ class Form extends LocalizeCoreElement(LitElement) {
 
 	render() {
 		let errorSummary = null;
-		if (this._isRootForm()) {
-			const errors = [...flattenMap(this._errors)]
-				.filter(([, eleErrors]) => eleErrors.length > 0)
-				.map(([ele, eleErrors]) => ({ href: `#${ele.id}`, message: eleErrors[0], onClick: () => ele.focus() }));
-			const existingSummary = querySelectorComposed(this, 'd2l-form-error-summary');
-			if (existingSummary) {
-				existingSummary.errors = errors;
-				existingSummary._hasBottomMargin = true;
-			} else {
-				errorSummary = html`<d2l-form-error-summary .errors=${errors}></d2l-form-error-summary>`;
-			}
+		if (!this.hideErrorSummary && this._isRootForm()) {
+			errorSummary = html`<d2l-form-error-summary .errors=${this.errorSummary}></d2l-form-error-summary>`;
 		}
 		return html`
 			${errorSummary}
