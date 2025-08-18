@@ -1,8 +1,10 @@
 import '../../components/colors/colors.js';
+import '../../../components/form/form.js';
+import '../../../components/form/form-error-summary.js';
 import '../../components/icons/icon-custom.js';
 import '../../components/icons/icon.js';
 import '../../components/offscreen/offscreen.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { formatPercent } from '@brightspace-ui/intl';
@@ -587,7 +589,9 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			 * @type {'fullscreen'|'normal'}
 			 */
 			widthType: { type: String, attribute: 'width-type', reflect: true },
+			hasForm: { type: Boolean, attribute: 'has-form' },
 			_animateResize: { type: Boolean, attribute: false },
+			_formErrorSummary: { type: Array },
 			_hasFooter: { type: Boolean, attribute: false },
 			_isCollapsed: { type: Boolean, attribute: false },
 			_isExpanded: { type: Boolean, attribute: false },
@@ -599,7 +603,8 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 
 	static get styles() {
 		return css`
-			:host {
+			:host,
+			:host > d2l-form {
 				bottom: 0;
 				left: 0;
 				overflow: hidden;
@@ -607,6 +612,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 				right: 0;
 				top: 0;
 			}
+
 			:host([hidden]) {
 				display: none;
 			}
@@ -631,6 +637,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			main {
 				flex: 2 0 0;
 				overflow-x: hidden;
+				padding: var(--d2l-template-primary-secondary-primary-padding, 0);
 				transition: none;
 			}
 			:host([resizable]) main {
@@ -1003,6 +1010,13 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 		this._isMobile = isMobile();
 		this._hasConnectedResizers = false;
 		this._sizeAsPercent = 0;
+
+		this.hasForm = false;
+		this._formErrorSummary = [];
+	}
+
+	get form() {
+		return this.shadowRoot.querySelector('d2l-form');
 	}
 
 	disconnectedCallback() {
@@ -1032,7 +1046,10 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 		const scrollClasses = {
 			'd2l-template-scroll': isWindows
 		};
-		const primarySection = html`<main class="${classMap(scrollClasses)}"><slot name="primary"></slot></main>`;
+		const primarySection = html`<main class="${classMap(scrollClasses)}">
+			${this.hasForm ? html`<d2l-form-error-summary _has-bottom-margin .errors=${this._formErrorSummary}></d2l-form-error-summary>` : nothing}
+			<slot name="primary"></slot>
+		</main>`;
 		const secondarySection = html`
 			<div style=${styleMap(secondaryPanelStyles)} class="d2l-template-primary-secondary-secondary-container" @transitionend=${this._onTransitionEnd}>
 				<div class="d2l-template-primary-secondary-divider-shadow"></div>
@@ -1040,7 +1057,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 					<slot name="secondary"></slot>
 				</aside>
 			</div>`;
-		return html`
+		const content = html`
 			<div class="d2l-template-primary-secondary-container">
 				<header><slot name="header"></slot></header>
 				<div class="d2l-template-primary-secondary-content" data-background-shading="${this.backgroundShading}" ?data-animate-resize=${this._animateResize} ?data-is-collapsed=${this._isCollapsed} ?data-is-expanded=${this._isExpanded}>
@@ -1053,6 +1070,11 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 				</footer>
 			</div>
 		`;
+
+		if (this.hasForm) return html`<d2l-form hide-error-summary @d2l-form-invalid=${this.#handleInvalidForm} @d2l-form-submit=${this.#handleFormSubmit}>
+			${content}
+		</d2l-form>`;
+		return content;
 	}
 
 	updated(changedProperties) {
@@ -1095,6 +1117,10 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			this._mobileMouseResizer.connect(this._divider);
 			this._hasConnectedResizers = true;
 		}
+	}
+
+	submitForm() {
+		this.form.submit();
 	}
 
 	get _size() {
@@ -1280,6 +1306,15 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			</div>
 		`;
 
+	}
+
+	#handleFormSubmit(e) {
+		this.dispatchEvent(new CustomEvent('d2l-form-submit', { detail: e.detail }));
+	}
+
+	#handleInvalidForm(e) {
+		this._formErrorSummary = this.form.errorSummary;
+		this.dispatchEvent(new CustomEvent('d2l-form-invalid', { detail: e.detail }));
 	}
 }
 

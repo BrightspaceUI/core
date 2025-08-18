@@ -31,7 +31,8 @@ const _findFormElementsHelper = (ele, eles, isFormElementPredicate, visitChildre
 		eles.push(ele);
 	}
 	if (visitChildrenPredicate(ele)) {
-		for (const child of ele.children) {
+		const children = ele.tagName === 'SLOT' ? ele.assignedNodes() : ele.children;
+		for (const child of children) {
 			_findFormElementsHelper(child, eles, isFormElementPredicate, visitChildrenPredicate);
 		}
 	}
