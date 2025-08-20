@@ -57,7 +57,7 @@ export const menuItemStyles = css`
 	.d2l-menu-item-text {
 		flex: auto;
 		line-height: 1rem;
-		${overflowClipEnabled ? getOverflowDeclarations({ lines: css`var(--d2l-menu-item-lines, 2)` }) : css`
+		${overflowClipEnabled ? getOverflowDeclarations({ lines: 'var(--d2l-menu-item-lines, 2)' }) : css`
 			-webkit-box-orient: vertical;
 			display: -webkit-box;
 			-webkit-line-clamp: var(--d2l-menu-item-lines, 2);
