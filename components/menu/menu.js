@@ -70,6 +70,7 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 				--d2l-menu-background-color: #333536; /* tungsten @ 70% */
 				--d2l-menu-background-color-hover: #123559; /* celestine-1 @ 50% */
 				--d2l-menu-border-color: var(--d2l-color-tungsten);
+				--d2l-menu-border-color-hover: #ffffff;
 				--d2l-menu-foreground-color: var(--d2l-color-sylvite);
 				--d2l-menu-foreground-color-hover: #ffffff;
 				--d2l-menu-separator-color: var(--d2l-color-galena);
