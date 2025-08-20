@@ -1,6 +1,10 @@
 import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
+import { getFlag } from '../../helpers/flags.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getOverflowDeclarations } from '../../helpers/overflow.js';
+
+const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 export const menuItemStyles = css`
 	:host {
@@ -51,15 +55,17 @@ export const menuItemStyles = css`
 	}
 
 	.d2l-menu-item-text {
-		-webkit-box-orient: vertical;
-		display: -webkit-box;
 		flex: auto;
-		-webkit-line-clamp: var(--d2l-menu-item-lines, 2);
 		line-height: 1rem;
-		overflow-wrap: anywhere;
-		overflow-x: hidden;
-		overflow-y: hidden;
-		white-space: normal;
+		${overflowClipEnabled ? getOverflowDeclarations({ lines: css`var(--d2l-menu-item-lines, 2)` }) : css`
+			-webkit-box-orient: vertical;
+			display: -webkit-box;
+			-webkit-line-clamp: var(--d2l-menu-item-lines, 2);
+			overflow-wrap: anywhere;
+			overflow-x: hidden;
+			overflow-y: hidden;
+			white-space: normal;
+		`}
 	}
 
 	.d2l-menu-item-supporting {
