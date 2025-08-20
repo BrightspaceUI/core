@@ -17,7 +17,7 @@ const SELECTORS = {
 	items: ':not(thead) > tr:not(.d2l-table-header):not([header])',
 };
 
-function _getStickyHeadersHeight(table) {
+export function getStickyHeadersHeight(table) {
 	if (!table) return 0;
 
 	let totalHeight = 0;
@@ -29,6 +29,40 @@ function _getStickyHeadersHeight(table) {
 	});
 
 	return totalHeight;
+}
+
+export function ensureElementVisible(totalStickyOffset, scrollContainer, element) {
+	const rect = element.getBoundingClientRect();
+	const viewportHeight = window.innerHeight;
+
+	// Add buffer for focus rings (typically 2-3px) plus breathing room
+	const totalBuffer = 14; // Covers focus rings + breathing room
+
+	// Check if element (including focus ring) is hidden behind sticky headers or outside viewport
+	const isHiddenBySticky = (rect.top - totalBuffer) < totalStickyOffset;
+	const isOutsideViewport = (rect.bottom + totalBuffer) > viewportHeight || (rect.top - totalBuffer) < 0;
+
+	if (!isHiddenBySticky && !isOutsideViewport) return;
+	const currentScrollTop = scrollContainer.scrollTop || window.pageYOffset || 0;
+
+	// Calculate how much we need to scroll to position the element correctly
+	// We want the element (including focus ring) to appear just below the sticky elements
+	const desiredElementTop = totalStickyOffset + totalBuffer;
+	const scrollAdjustment = rect.top - desiredElementTop;
+	const targetScrollTop = currentScrollTop + scrollAdjustment;
+
+	// Perform custom scroll that accounts for sticky elements
+	if (scrollContainer === document.documentElement) {
+		window.scrollTo({
+			top: Math.max(0, targetScrollTop),
+			behavior: prefersReducedMotion ? 'auto' : 'smooth'
+		});
+	} else {
+		scrollContainer.scrollTo({
+			top: Math.max(0, targetScrollTop),
+			behavior: prefersReducedMotion ? 'auto' : 'smooth'
+		});
+	}
 }
 
 export const tableStyles = css`
@@ -532,43 +566,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		const stickyControls = this._controls && !this._controls.noSticky;
 		if (!element || (!this.stickyHeaders && !stickyControls)) return;
 
-		const rect = element.getBoundingClientRect();
-		const viewportHeight = window.innerHeight;
-
-		// Use cached sticky offset calculation
-		const totalStickyOffset = this._getStickyOffset();
-
-		// Add buffer for focus rings (typically 2-3px) plus breathing room
-		const totalBuffer = 14; // Covers focus rings + breathing room
-
-		// Check if element (including focus ring) is hidden behind sticky headers or outside viewport
-		const isHiddenBySticky = (rect.top - totalBuffer) < totalStickyOffset;
-		const isOutsideViewport = (rect.bottom + totalBuffer) > viewportHeight || (rect.top - totalBuffer) < 0;
-
-		if (isHiddenBySticky || isOutsideViewport) {
-			// Get the cached scroll container
-			const scrollContainer = this._getCachedScrollContainer();
-			const currentScrollTop = scrollContainer.scrollTop || window.pageYOffset || 0;
-
-			// Calculate how much we need to scroll to position the element correctly
-			// We want the element (including focus ring) to appear just below the sticky elements
-			const desiredElementTop = totalStickyOffset + totalBuffer;
-			const scrollAdjustment = rect.top - desiredElementTop;
-			const targetScrollTop = currentScrollTop + scrollAdjustment;
-
-			// Perform custom scroll that accounts for sticky elements
-			if (scrollContainer === document.documentElement) {
-				window.scrollTo({
-					top: Math.max(0, targetScrollTop),
-					behavior: prefersReducedMotion ? 'auto' : 'smooth'
-				});
-			} else {
-				scrollContainer.scrollTo({
-					top: Math.max(0, targetScrollTop),
-					behavior: prefersReducedMotion ? 'auto' : 'smooth'
-				});
-			}
-		}
+		ensureElementVisible(this._getStickyOffset(), this._getCachedScrollContainer(), element);
 	}
 	_getCachedScrollContainer() {
 		if (this._scrollContainer === null) {
@@ -611,7 +609,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 	_getStickyHeadersHeight() {
 		if (this._cachedStickyHeadersHeight === null) {
-			this._cachedStickyHeadersHeight = _getStickyHeadersHeight(this._table);
+			this._cachedStickyHeadersHeight = getStickyHeadersHeight(this._table);
 		}
 		return this._cachedStickyHeadersHeight;
 	}

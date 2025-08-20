@@ -6,10 +6,11 @@ import '../demo/table-test.js';
 import '../table-col-sort-button.js';
 import '../table-col-sort-button-item.js';
 
-import { clickElem, defineCE, expect, fixture, focusElem, hoverElem, html, nextFrame } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, defineCE, expect, fixture, focusElem, hoverElem, html, nextFrame } from '@brightspace-ui/testing';
 import { LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 import { tableStyles } from '../table-wrapper.js';
 
 function createHeaderRow(opts) {
@@ -962,6 +963,88 @@ describe('table', () => {
 						});
 					});
 				});
+			});
+
+			describe('focus-scrolling', () => {
+
+				beforeEach(() => {
+					mockFlag('d2l-table-focus-scrolling', true);
+				});
+
+				afterEach(() => {
+					resetFlag('d2l-table-focus-scrolling');
+				});
+
+				it('sticky-controls-focus-scrolling', async() => {
+					const elem = await fixture(
+						html`
+							<d2l-test-table
+								sticky-controls
+								type="${type}">
+							</d2l-test-table>
+						`,
+						{ rtl, viewport: { width: 500, height: 400 } }
+					);
+					
+					// Scroll down so the header would be hidden behind sticky controls
+					window.scrollTo(0, 250);
+					await nextFrame();
+					
+					// Focus on a header element that should trigger scroll adjustment
+					const headerButton = elem.shadowRoot.querySelector('d2l-table-col-sort-button');
+					await focusElem(headerButton);
+					await nextFrame();
+					
+					await expect(elem).to.be.golden();
+				});
+
+				it('sticky-headers-focus-scrolling', async() => {
+					const elem = await fixture(
+						html`
+							<d2l-test-table
+								sticky-headers
+								type="${type}">
+							</d2l-test-table>
+						`,
+						{ rtl, viewport: { width: 500, height: 400 } }
+					);
+					
+					// Scroll down so body content would be hidden behind sticky headers
+					window.scrollTo(0, 280);
+					await nextFrame();
+					
+					// Focus on a body element that should trigger scroll adjustment
+					const bodyInput = elem.shadowRoot.querySelector('tbody d2l-selection-input');
+					await focusElem(bodyInput);
+					await nextFrame();
+					
+					await expect(elem).to.be.golden();
+				});
+
+				it('all-sticky-focus-scrolling', async() => {
+					const elem = await fixture(
+						html`
+							<d2l-test-table
+								sticky-controls
+								sticky-headers
+								type="${type}">
+							</d2l-test-table>
+						`,
+						{ rtl, viewport: { width: 500, height: 400 } }
+					);
+					
+					// Scroll down so body content would be hidden behind both sticky elements
+					window.scrollTo(0, 320);
+					await nextFrame();
+					
+					// Focus on a body element that should trigger scroll adjustment
+					const bodyInput = elem.shadowRoot.querySelector('tbody d2l-selection-input');
+					await focusElem(bodyInput);
+					await nextFrame();
+					
+					await expect(elem).to.be.golden();
+				});
+
 			});
 
 			describe('paging', () => {
