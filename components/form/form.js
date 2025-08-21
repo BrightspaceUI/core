@@ -39,6 +39,10 @@ class Form extends LocalizeCoreElement(LitElement) {
 			 * @type {boolean}
 			 */
 			hideErrorSummary: { type: Boolean, attribute: 'hide-error-summary' },
+			/**
+			 * Id for an alternative error summary element
+			 * @type {string}
+			 */
 			summaryId: { type: String, attribute: 'summary-id' },
 			_errors: { type: Object },
 			_hasErrors: { type: Boolean, attribute: '_has-errors', reflect: true },
