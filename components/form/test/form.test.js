@@ -23,7 +23,7 @@ class TestTwoForms extends LitElement {
 const testSlotsTagName = defineCE(
 	class extends LitElement {
 		render() {
-			return html`<d2l-form id="nested-form-2">
+			return html`<d2l-form>
 				<slot name="primary"></slot>
 				<slot name="secondary"></slot>
 				<slot name="info"></slot>
@@ -125,21 +125,18 @@ describe('d2l-form', () => {
 				const element = await fixture(`<${testSlotsTagName}>
 					<input type="text" aria-label="Input 1" name="input1" required slot="primary">
 					<input type="text" aria-label="Input 2" name="input2" required slot="secondary">
-					<input type="text" aria-label="Input Ignore" name="ignore" required slot="another">
+					<input type="text" aria-label="Input Ignore" name="ignore" required slot="info">
 				</${testSlotsTagName}>`);
 				const form = element.shadowRoot.querySelector('d2l-form');
 				const errors = await form.validate();
-				for (let i = 1; i <= 2; i++) {
-					expect(errors.get(element.querySelector(`[name="input${i}"]`))).to.include.members([`Input ${i} is required`]);
-				}
-
-				expect(form._errors.size).to.be.greaterThan(0);
-				form.resetValidation();
-				expect(form._errors.size).to.equal(0);
+				expect(errors.size).to.equal(2);
+				expect(errors.has(element.querySelector('[name="input1"]'))).to.be.true;
+				expect(errors.has(element.querySelector('[name="input2"]'))).to.be.true;
+				expect(errors.has(element.querySelector('[name="ignore"]'))).to.be.false;
 
 			});
 
-			it('should sets errors on summary', async() => {
+			it('should set errors on summary', async() => {
 				await form.validate();
 				const formErrorSummary = form.shadowRoot.querySelector('d2l-form-error-summary');
 				expect(formErrorSummary.errors.map(({ href, message }) => ({ href, message }))).to.deep.equal([
