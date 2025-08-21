@@ -17,20 +17,6 @@ const SELECTORS = {
 	items: ':not(thead) > tr:not(.d2l-table-header):not([header])',
 };
 
-export function getStickyHeadersHeight(table) {
-	if (!table) return 0;
-
-	let totalHeight = 0;
-	const stickyRows = table.querySelectorAll(SELECTORS.headers);
-
-	stickyRows.forEach(row => {
-		const rowHeight = row.querySelector('th:not([rowspan]),td:not([rowspan])')?.offsetHeight || 0;
-		totalHeight += rowHeight;
-	});
-
-	return totalHeight;
-}
-
 export function ensureElementVisible(totalStickyOffset, scrollContainer, element) {
 	const rect = element.getBoundingClientRect();
 	const viewportHeight = window.innerHeight;
@@ -63,6 +49,35 @@ export function ensureElementVisible(totalStickyOffset, scrollContainer, element
 			behavior: prefersReducedMotion ? 'auto' : 'smooth'
 		});
 	}
+}
+
+export function getScrollContainer(container) {
+	// For regular sticky headers, find the nearest scrollable container
+	while (container && container !== document.documentElement) {
+		const style = window.getComputedStyle(container);
+		const overflow = style.overflowY || style.overflow;
+		if (overflow === 'auto' || overflow === 'scroll') {
+			return container;
+		}
+		container = container.parentElement;
+	}
+
+	// Fall back to document scroll
+	return document.documentElement;
+}
+
+export function getStickyHeadersHeight(table) {
+	if (!table) return 0;
+
+	let totalHeight = 0;
+	const stickyRows = table.querySelectorAll(SELECTORS.headers);
+
+	stickyRows.forEach(row => {
+		const rowHeight = row.querySelector('th:not([rowspan]),td:not([rowspan])')?.offsetHeight || 0;
+		totalHeight += rowHeight;
+	});
+
+	return totalHeight;
 }
 
 export const tableStyles = css`
@@ -427,16 +442,12 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._controlsScrolled = false;
 		this._controlsScrolledMutationObserver = null;
 		this._noScrollWidth = colSyncFix;
+		this._scrollContainer = null;
+		this._stickyOffset = null;
 		this._table = null;
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
-
-		// Performance caching for focus handling
-		this._scrollContainer = null;
-		this._cachedStickyOffset = null;
-		this._cachedStickyHeadersHeight = null;
-		this._focusDebounceId = null;
 
 		this._focusScrollingEnabled = getFlag('d2l-table-focus-scrolling', true);
 	}
@@ -495,13 +506,11 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			if (this.stickyHeaders) {
 				document.body.classList.add('d2l-table-sticky-headers');
 			}
-			// Invalidate cache when sticky headers configuration changes
-			this._invalidateScrollCache();
+			this._invalidateScrollValues();
 		}
 
-		// Invalidate cache when scroll wrapper mode changes
 		if (changedProperties.has('stickyHeadersScrollWrapper')) {
-			this._invalidateScrollCache();
+			this._invalidateScrollValues();
 		}
 	}
 
@@ -562,18 +571,6 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		c.classList.toggle('d2l-table-header-col-sortable-no-sorted', !hasSorted);
 	}
 
-	_ensureElementVisible(element) {
-		const stickyControls = this._controls && !this._controls.noSticky;
-		if (!element || (!this.stickyHeaders && !stickyControls)) return;
-
-		ensureElementVisible(this._getStickyOffset(), this._getCachedScrollContainer(), element);
-	}
-	_getCachedScrollContainer() {
-		if (this._scrollContainer === null) {
-			this._scrollContainer = this._getScrollContainer();
-		}
-		return this._scrollContainer;
-	}
 	_getItemByIndex(index) {
 		return this._getItems()[index];
 	}
@@ -587,41 +584,27 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	_getScrollContainer() {
-		// Check if we're using sticky-headers-scroll-wrapper mode
-		if (this.stickyHeaders && this.stickyHeadersScrollWrapper) {
-			// In scroll-wrapper mode, the tbody is the scroll container
-			return this._table?.querySelector('tbody') || document.documentElement;
-		}
-
-		// For regular sticky headers, find the nearest scrollable container
-		let container = this.parentElement;
-		while (container && container !== document.documentElement) {
-			const style = window.getComputedStyle(container);
-			const overflow = style.overflowY || style.overflow;
-			if (overflow === 'auto' || overflow === 'scroll') {
-				return container;
+		if (this._scrollContainer === null) {
+			if (this.stickyHeaders && this.stickyHeadersScrollWrapper) {
+				// In scroll-wrapper mode, the tbody is the scroll container
+				this._scrollContainer = this._table?.querySelector('tbody') || document.documentElement;
+			} else {
+				this._scrollContainer = getScrollContainer(this.parentElement);
 			}
-			container = container.parentElement;
 		}
+		return this._scrollContainer;
+	}
 
-		// Fall back to document scroll
-		return document.documentElement;
-	}
-	_getStickyHeadersHeight() {
-		if (this._cachedStickyHeadersHeight === null) {
-			this._cachedStickyHeadersHeight = getStickyHeadersHeight(this._table);
-		}
-		return this._cachedStickyHeadersHeight;
-	}
 	_getStickyOffset() {
-		if (this._cachedStickyOffset === null) {
+		if (this._stickyOffset === null) {
 			const stickyControls = this._controls && !this._controls.noSticky;
 			const controlsOffset = stickyControls ? (this._controls?.offsetHeight || 0) + 6 : 0; // +6 for margin-bottom
-			const stickyHeadersHeight = this.stickyHeaders ? this._getStickyHeadersHeight() : 0;
-			this._cachedStickyOffset = controlsOffset + stickyHeadersHeight;
+			const stickyHeadersHeight = this.stickyHeaders ? getStickyHeadersHeight(this._table) : 0;
+			this._stickyOffset = controlsOffset + stickyHeadersHeight;
 		}
-		return this._cachedStickyOffset;
+		return this._stickyOffset;
 	}
+
 	async _handleControlsChange() {
 		if (this._controls) {
 			await this._controls.updateComplete;
@@ -631,7 +614,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._handleControlsScrolledChange();
 		this._updateStickyTops();
 		// Invalidate cache when controls change as they affect scroll calculations
-		this._invalidateScrollCache();
+		this._invalidateScrollValues();
 	}
 
 	_handleControlsScrolledChange() {
@@ -654,6 +637,8 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	_handleFocusIn(e) {
+		const stickyControls = this._controls && !this._controls.noSticky;
+		if (!this.stickyHeaders && !stickyControls) return;
 		if (!isInteractiveInComposedPath(e.composedPath())) return;
 
 		const focusedElem = e.target;
@@ -668,7 +653,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		}
 
 		requestAnimationFrame(() => {
-			this._ensureElementVisible(focusedElem);
+			ensureElementVisible(this._getStickyOffset(), this._getScrollContainer(), focusedElem);
 		});
 	}
 	_handlePopoverClose(e) {
@@ -688,8 +673,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			secondary: this._table?.querySelector('thead'),
 		} : {};
 
-		// Reset cached values when table changes
-		this._invalidateScrollCache();
+		this._invalidateScrollValues();
 
 		// observes mutations to <table>'s direct children and also
 		// its subtree (rows or cells added/removed to any descendant)
@@ -762,10 +746,9 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		if (updates.sticky) this._updateStickyTops();
 	}
 
-	_invalidateScrollCache() {
+	_invalidateScrollValues() {
 		this._scrollContainer = null;
-		this._cachedStickyOffset = null;
-		this._cachedStickyHeadersHeight = null;
+		this._stickyOffset = null;
 	}
 	_registerMutationObserver(observerName, callback, target, options) {
 		if (this[observerName]) {
@@ -918,8 +901,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			rowTop += rowHeight;
 		});
 
-		// Invalidate cached sticky calculations when tops change
-		this._invalidateScrollCache();
+		this._invalidateScrollValues();
 	}
 
 }
