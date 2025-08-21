@@ -549,9 +549,9 @@ class MobileTouchResizer extends Resizer {
  * @slot secondary - Supplementary page content
  * @fires d2l-template-primary-secondary-resize-start - Dispatched when a user begins moving the divider.
  * @fires d2l-template-primary-secondary-resize-end - Dispatched when a user finishes moving the divider.
- * @fires d2l-form-invalid Dispatched when the form fails validation. The error map can be obtained from the detail's errors property.
- * @fires d2l-form-dirty Dispatched whenever any form element fires an input or change event. Can be used to track whether the form is dirty or not.
- * @fires d2l-form-submit Dispatched when the form is submitted. The form data can be obtained from the detail's formData property.
+ * @fires d2l-template-primary-secondary-form-invalid Dispatched when the form fails validation. The error map can be obtained from the detail's errors property.
+ * @fires d2l-template-primary-secondary-form-dirty Dispatched whenever any form element fires an input or change event. Can be used to track whether the form is dirty or not.
+ * @fires d2l-template-primary-secondary-form-submit Dispatched when the form is submitted. The form data can be obtained from the detail's formData property.
  */
 class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 
@@ -1319,15 +1319,15 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 	}
 
 	#handleFormDirty(e) {
-		this.dispatchEvent(new CustomEvent('d2l-primary-secondary-form-dirty', { detail: e.detail }));
+		this.dispatchEvent(new CustomEvent('d2l-template-primary-secondary-form-dirty', { detail: e.detail }));
 	}
 
 	#handleFormSubmit(e) {
-		this.dispatchEvent(new CustomEvent('d2l-primary-secondary-form-submit', { detail: e.detail }));
+		this.dispatchEvent(new CustomEvent('d2l-template-primary-secondary-form-submit', { detail: e.detail }));
 	}
 
 	#handleInvalidForm(e) {
-		this.dispatchEvent(new CustomEvent('d2l-primary-secondary-form-invalid', { detail: e.detail }));
+		this.dispatchEvent(new CustomEvent('d2l-template-primary-secondary-form-invalid', { detail: e.detail }));
 	}
 }
 
