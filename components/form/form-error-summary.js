@@ -59,6 +59,7 @@ class FormErrorSummary extends LocalizeCoreElement(LitElement) {
 		this.errors = [];
 		this._expanded = true;
 		this._hasBottomMargin = false;
+		this._hasErrors = false;
 	}
 
 	render() {

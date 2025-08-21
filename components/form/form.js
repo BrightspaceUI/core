@@ -35,11 +35,6 @@ class Form extends LocalizeCoreElement(LitElement) {
 			 */
 			trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true },
 			/**
-			 * Indicates that the form should hide the error summary alert.
-			 * @type {boolean}
-			 */
-			hideErrorSummary: { type: Boolean, attribute: 'hide-error-summary' },
-			/**
 			 * Id for an alternative error summary element
 			 * @type {string}
 			 */
@@ -66,7 +61,6 @@ class Form extends LocalizeCoreElement(LitElement) {
 	constructor() {
 		super();
 		this.trackChanges = false;
-		this.hideErrorSummary = false;
 		this.summaryId = null;
 		this._errors = new Map();
 		this._isSubForm = false;
@@ -122,7 +116,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 
 	render() {
 		let errorSummary = null;
-		if (!(this.hideErrorSummary || this.summaryId) && this._isRootForm()) {
+		if (!this.summaryId && this._isRootForm()) {
 			errorSummary = html`<d2l-form-error-summary .errors=${this.errorSummary}></d2l-form-error-summary>`;
 		}
 		return html`

@@ -20,6 +20,18 @@ class TestTwoForms extends LitElement {
 	}
 }
 
+const testSlotsTagName = defineCE(
+	class extends LitElement {
+		render() {
+			return html`<d2l-form id="nested-form-2">
+				<slot name="primary"></slot>
+				<slot name="secondary"></slot>
+				<slot name="info"></slot>
+			</d2l-form>`;
+		}
+	}
+);
+
 describe('d2l-form', () => {
 
 	const _validateCheckbox = e => {
@@ -107,6 +119,65 @@ describe('d2l-form', () => {
 				expect(errors.get(formElement)).to.include.members(['Test form element failed with an overridden validation message']);
 				form.resetValidation();
 				expect(form._errors.size).to.equal(0);
+			});
+
+			it('should validate form elements inside primary and secondary slots', async() => {
+				const element = await fixture(`<${testSlotsTagName}>
+					<input type="text" aria-label="Input 1" name="input1" required slot="primary">
+					<input type="text" aria-label="Input 2" name="input2" required slot="secondary">
+					<input type="text" aria-label="Input Ignore" name="ignore" required slot="another">
+				</${testSlotsTagName}>`);
+				const form = element.shadowRoot.querySelector('d2l-form');
+				const errors = await form.validate();
+				for (let i = 1; i <= 2; i++) {
+					expect(errors.get(element.querySelector(`[name="input${i}"]`))).to.include.members([`Input ${i} is required`]);
+				}
+
+				expect(form._errors.size).to.be.greaterThan(0);
+				form.resetValidation();
+				expect(form._errors.size).to.equal(0);
+
+			});
+
+			it('should sets errors on summary', async() => {
+				await form.validate();
+				const formErrorSummary = form.shadowRoot.querySelector('d2l-form-error-summary');
+				expect(formErrorSummary.errors.map(({ href, message }) => ({ href, message }))).to.deep.equal([
+					{
+						href: '#mycheck',
+						message: 'The checkbox failed validation'
+					},
+					{
+						href: '#pets',
+						message: 'Pets is required'
+					},
+					{
+						href: '#custom-ele',
+						message: 'Test form element is required'
+					}
+				]);
+			});
+
+			it('should use custom summary element', async() => {
+				const form = await fixture(html`<d2l-form summary-id="summary">
+					<input type="text" aria-label="Input 1" name="input1" required>
+					<input type="text" aria-label="Input 2" name="input2" required>
+					<d2l-form-error-summary id="summary"></d2l-form-error-summary>
+				</d2l-form>`);
+				await form.validate();
+				expect(form.shadowRoot.querySelector('d2l-form-error-summary')).to.be.null;
+				const formErrorSummary = form.querySelector('#summary');
+				expect(formErrorSummary.errors.map(({ href, message }) => ({ href, message }))).to.deep.equal([
+					{
+						href: '#d2l-uid-47',
+						message: 'Input 1 is required'
+					},
+					{
+						href: '#d2l-uid-49',
+						message: 'Input 2 is required'
+					},
+				]);
+
 			});
 
 		});
