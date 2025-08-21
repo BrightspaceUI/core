@@ -122,7 +122,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 
 	render() {
 		let errorSummary = null;
-		if (!this.hideErrorSummary && this._isRootForm()) {
+		if (!(this.hideErrorSummary || this.summaryId) && this._isRootForm()) {
 			errorSummary = html`<d2l-form-error-summary .errors=${this.errorSummary}></d2l-form-error-summary>`;
 		}
 		return html`
@@ -136,7 +136,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 		if (changedProperties.has('_errors')) {
 			this._hasErrors = this._errors.size > 0;
 		}
-		if ((changedProperties.has('summary-id') || changedProperties.has('_errors')) && this.summaryId && this._hasErrors) {
+		if ((changedProperties.has('summary-id') || changedProperties.has('_errors')) && this.summaryId) {
 			this.querySelector(`#${this.summaryId}`).errors = this.errorSummary;
 		}
 	}

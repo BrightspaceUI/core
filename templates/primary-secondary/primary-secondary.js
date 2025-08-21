@@ -1077,7 +1077,6 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 		`;
 
 		if (this.hasForm) return html`<d2l-form
-			hide-error-summary
 			summary-id="form-error-summary"
 			@d2l-form-invalid=${this.#handleInvalidForm}
 			@d2l-form-submit=${this.#handleFormSubmit}
