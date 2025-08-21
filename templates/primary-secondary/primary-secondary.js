@@ -597,7 +597,6 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			 * @type { Boolean }
 			 */
 			hasForm: { type: Boolean, attribute: 'has-form' },
-			_animateResize: { type: Boolean, attribute: false },
 			_formErrorSummary: { type: Array },
 			_hasFooter: { type: Boolean, attribute: false },
 			_isCollapsed: { type: Boolean, attribute: false },
@@ -1019,7 +1018,6 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 		this._sizeAsPercent = 0;
 
 		this.hasForm = false;
-		this._formErrorSummary = [];
 	}
 
 	get form() {
@@ -1054,7 +1052,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			'd2l-template-scroll': isWindows
 		};
 		const primarySection = html`<main class="${classMap(scrollClasses)}">
-			${this.hasForm ? html`<d2l-form-error-summary _has-bottom-margin .errors=${this._formErrorSummary}></d2l-form-error-summary>` : nothing}
+			${this.hasForm ? html`<d2l-form-error-summary _has-bottom-margin id="form-error-summary"></d2l-form-error-summary>` : nothing}
 			<slot name="primary"></slot>
 		</main>`;
 		const secondarySection = html`
@@ -1078,7 +1076,12 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			</div>
 		`;
 
-		if (this.hasForm) return html`<d2l-form hide-error-summary @d2l-form-invalid=${this.#handleInvalidForm} @d2l-form-submit=${this.#handleFormSubmit} @d2l-form-dirty=${this.#handleFormDirty}>
+		if (this.hasForm) return html`<d2l-form
+			hide-error-summary
+			summary-id="form-error-summary"
+			@d2l-form-invalid=${this.#handleInvalidForm}
+			@d2l-form-submit=${this.#handleFormSubmit}
+			@d2l-form-dirty=${this.#handleFormDirty}>
 			${content}
 		</d2l-form>`;
 		return content;
@@ -1316,16 +1319,15 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 	}
 
 	#handleFormDirty(e) {
-		this.dispatchEvent(new CustomEvent('d2l-form-dirty', { detail: e.detail }));
+		this.dispatchEvent(new CustomEvent('d2l-primary-secondary-form-dirty', { detail: e.detail }));
 	}
 
 	#handleFormSubmit(e) {
-		this.dispatchEvent(new CustomEvent('d2l-form-submit', { detail: e.detail }));
+		this.dispatchEvent(new CustomEvent('d2l-primary-secondary-form-submit', { detail: e.detail }));
 	}
 
 	#handleInvalidForm(e) {
-		this._formErrorSummary = this.form.errorSummary;
-		this.dispatchEvent(new CustomEvent('d2l-form-invalid', { detail: e.detail }));
+		this.dispatchEvent(new CustomEvent('d2l-primary-secondary-form-invalid', { detail: e.detail }));
 	}
 }
 

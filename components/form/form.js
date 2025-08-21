@@ -39,6 +39,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 			 * @type {boolean}
 			 */
 			hideErrorSummary: { type: Boolean, attribute: 'hide-error-summary' },
+			summaryId: { type: String, attribute: 'summary-id'},
 			_errors: { type: Object },
 			_hasErrors: { type: Boolean, attribute: '_has-errors', reflect: true },
 		};
@@ -62,6 +63,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 		super();
 		this.trackChanges = false;
 		this.hideErrorSummary = false;
+		this.summaryId = null;
 		this._errors = new Map();
 		this._isSubForm = false;
 		this._nestedForms = new Map();
@@ -69,6 +71,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 		this._firstUpdatePromise = new Promise((resolve) => {
 			this._firstUpdateResolve = resolve;
 		});
+		this._hasErrors = false;
 		this._tooltips = new Map();
 		this._validationCustoms = new Set();
 
@@ -128,6 +131,9 @@ class Form extends LocalizeCoreElement(LitElement) {
 		super.willUpdate(changedProperties);
 		if (changedProperties.has('_errors')) {
 			this._hasErrors = this._errors.size > 0;
+		}
+		if ((changedProperties.has('summary-id') || changedProperties.has('_errors')) && this.summaryId && this._hasErrors) {
+			this.querySelector(`#${this.summaryId}`).errors = this.errorSummary;
 		}
 	}
 
