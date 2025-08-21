@@ -449,7 +449,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
 
-		this._focusScrollingEnabled = getFlag('d2l-table-focus-scrolling', true);
+		this._focusScrollingEnabled = getFlag('GAUD-8527-focus-scrolling-bug-fix', true);
 	}
 
 	connectedCallback() {

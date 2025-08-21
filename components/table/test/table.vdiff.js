@@ -1075,11 +1075,11 @@ describe('table', () => {
 	describe('focus-scrolling', () => {
 
 		before(() => {
-			mockFlag('d2l-table-focus-scrolling', true);
+			mockFlag('GAUD-8527-focus-scrolling-bug-fix', true);
 		});
 
 		after(() => {
-			resetFlag('d2l-table-focus-scrolling');
+			resetFlag('GAUD-8527-focus-scrolling-bug-fix');
 		});
 
 		it('sticky-controls-focus-scrolling', async() => {
