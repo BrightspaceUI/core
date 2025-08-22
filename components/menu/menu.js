@@ -143,7 +143,7 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		if (this.getMenuType() === 'menu-radio') {
 			this._focusSelected();
 		} else {
-			const lastFocused = this._items.find(i => i.getAttribute('tabindex') === '0');
+			const lastFocused = this.getTabFocusable();
 			if (lastFocused) this._focusItem(lastFocused);
 			else this._focusFirst();
 		}
@@ -165,6 +165,10 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 			default:
 				return 'menu';
 		}
+	}
+
+	getTabFocusable() {
+		return this._items.find(i => i.getAttribute('tabindex') === '0');
 	}
 
 	_createReturnItem() {

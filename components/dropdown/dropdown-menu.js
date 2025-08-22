@@ -163,7 +163,7 @@ if (usePopoverMixin) {
 
 			// If dropdown-menu is opened on first render, do not focus
 			if (this.#initiallyOpenedSuppressFocus) this.#initiallyOpenedSuppressFocus = false;
-			else menu._focusFirst();
+			else menu.focus();
 		}
 
 		#handleSelect(e) {
@@ -303,6 +303,7 @@ if (usePopoverMixin) {
 			// reset to root view
 			const menu = this.__getMenuElement();
 			menu.show({ preventFocus: true });
+			menu.getTabFocusable().setAttribute('tabindex', '-1')
 		}
 
 		_onFocus(e) {
@@ -346,7 +347,7 @@ if (usePopoverMixin) {
 
 			// If dropdown-menu is opened on first render, do not focus
 			if (this._initiallyOpenedSuppressFocus) this._initiallyOpenedSuppressFocus = false;
-			else menu._focusFirst();
+			else menu.focus();
 		}
 
 		_onSelect(e) {
