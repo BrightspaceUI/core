@@ -104,7 +104,6 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		this.addEventListener('d2l-menu-item-visibility-change', this._onMenuItemsChanged);
 		this.addEventListener('keydown', this._onKeyDown);
 		this.addEventListener('keypress', this._onKeyPress);
-		this.addEventListener('focusout', this._onFocusOut);
 
 		this._labelChanged();
 
@@ -179,6 +178,8 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 	}
 
 	_focusFirst() {
+		const lastFocused = this._items.find(i => i.getAttribute('tabindex') === '0');
+		if (lastFocused) lastFocused.setAttribute('tabindex','-1');
 		const item = this._tryGetNextFocusable();
 		if (item) this._focusItem(item);
 	}
@@ -274,13 +275,6 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		}
 		const returnItem = this._getMenuItemReturn();
 		if (returnItem) returnItem.setAttribute('text', this.label);
-	}
-
-	_onFocusOut(e) {
-		e.stopPropagation();
-		const isMenuItem = e.target.role === 'menuitem' || e.target.role === 'menuitemcheckbox' || e.target.role === 'menuitemradio';
-		if (!isMenuItem || e.target.hasAttribute('first') || e.target.hasChildView) return;
-		e.target.setAttribute('tabindex', '-1');
 	}
 
 	_onKeyDown(e) {

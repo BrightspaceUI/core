@@ -163,7 +163,7 @@ if (usePopoverMixin) {
 
 			// If dropdown-menu is opened on first render, do not focus
 			if (this.#initiallyOpenedSuppressFocus) this.#initiallyOpenedSuppressFocus = false;
-			else menu.focus();
+			else menu._focusFirst();
 		}
 
 		#handleSelect(e) {
@@ -346,7 +346,7 @@ if (usePopoverMixin) {
 
 			// If dropdown-menu is opened on first render, do not focus
 			if (this._initiallyOpenedSuppressFocus) this._initiallyOpenedSuppressFocus = false;
-			else menu.focus();
+			else menu._focusFirst();
 		}
 
 		_onSelect(e) {
