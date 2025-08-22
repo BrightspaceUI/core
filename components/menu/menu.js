@@ -179,7 +179,7 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 
 	_focusFirst() {
 		const lastFocused = this._items.find(i => i.getAttribute('tabindex') === '0');
-		if (lastFocused) lastFocused.setAttribute('tabindex','-1');
+		if (lastFocused) lastFocused.setAttribute('tabindex', '-1');
 		const item = this._tryGetNextFocusable();
 		if (item) this._focusItem(item);
 	}
