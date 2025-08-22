@@ -308,7 +308,8 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 	}
 
 	_onKeyPress(e) {
-		if (this._items.indexOf(e.composedPath()[0]) === -1) return;
+		const currentItem = e.composedPath()[0]
+		if (this._items.indexOf(currentItem) === -1) return;
 
 		if (e.keyCode === keyCodes.DOWN || e.keyCode === keyCodes.UP
 			|| e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER
@@ -317,6 +318,8 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		}
 
 		e.stopPropagation();
+
+		currentItem.setAttribute('tabindex', '-1')
 
 		const startsWith = function(item, value) {
 			if (item.text && item.text.length > 0 && item.text.toLowerCase().substr(0, 1) === value) {

@@ -104,28 +104,28 @@ describe('d2l-menu', () => {
 
 		it('moves focus to last focusable item when up arrow is pressed on first focusable item', async() => {
 			await sendKeysElem(elem.querySelector('#a1'), 'press', 'ArrowUp');
-			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('0'); // first item
+			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('-1'); // first item
 			expect(elem.querySelector('#d1').getAttribute('tabindex')).to.equal('0');
 			expect(document.activeElement).to.equal(elem.querySelector('#d1'));
 		});
 
 		it('sets focus to disabled menu items', async() => {
 			await sendKeysElem(elem.querySelector('#a1'), 'press', 'ArrowDown');
-			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('0'); // first item
+			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('-1'); // first item
 			expect(elem.querySelector('#b1').getAttribute('tabindex')).to.equal('0');
 			expect(document.activeElement).to.equal(elem.querySelector('#b1'));
 		});
 
 		it('sets focus to next item that starts with character pressed', async() => {
 			await sendKeysElem(elem.querySelector('#a1'), 'press', 'c');
-			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('0'); // first item
+			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('-1'); // first item
 			expect(elem.querySelector('#c1').getAttribute('tabindex')).to.equal('0');
 			expect(document.activeElement).to.equal(elem.querySelector('#c1'));
 		});
 
 		it('sets focus to next item that starts with uppercase character pressed', async() => {
 			await sendKeysElem(elem.querySelector('#a1'), 'press', 'C');
-			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('0'); // first item
+			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('-1'); // first item
 			expect(elem.querySelector('#c1').getAttribute('tabindex')).to.equal('0');
 			expect(document.activeElement).to.equal(elem.querySelector('#c1'));
 		});
@@ -203,7 +203,7 @@ describe('d2l-menu', () => {
 			const returnItem = elem.querySelector('#nestedMenu')._getMenuItemReturn();
 			await sendKeysElem(returnItem, 'press', 'ArrowDown');
 
-			expect(returnItem.getAttribute('tabindex')).to.equal('0');
+			expect(returnItem.getAttribute('tabindex')).to.equal('-1');
 			expect(elem.querySelector('#a2').getAttribute('tabindex')).to.equal('0');
 			expect(document.activeElement).to.equal(elem.querySelector('#a2'));
 		});
