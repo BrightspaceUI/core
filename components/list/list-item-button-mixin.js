@@ -28,7 +28,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			[slot="outside-control-container"] {
 				margin: 0 -12px;
 			}
-			:host([_list-item-interactive-enabled]) button {
+			:host button {
 				background-color: transparent;
 				border: none;
 				color: unset;
@@ -44,22 +44,6 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 				padding: 0;
 				text-align: start;
 				width: 100%;
-			}
-			/** clean up with flag GAUD-7495-list-interactive-content */
-			:host(:not([_list-item-interactive-enabled])) button {
-				background-color: transparent;
-				border: none;
-				cursor: pointer;
-				display: block;
-				height: 100%;
-				outline: none;
-				width: 100%;
-			}
-			/** clean up with flag GAUD-7495-list-interactive-content */
-			:host(:not([_list-item-interactive-enabled]):not([button-disabled]):not([no-primary-action])) [slot="content"],
-			:host(:not([_list-item-interactive-enabled]):not([no-primary-action])) [slot="control-action"] ~ [slot="content"],
-			:host(:not([_list-item-interactive-enabled]):not([no-primary-action])) [slot="outside-control-action"] ~ [slot="content"] {
-				pointer-events: none;
 			}
 			:host(:not([button-disabled])) [slot="control-action"],
 			:host(:not([button-disabled])) [slot="outside-control-action"] {
@@ -100,8 +84,6 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			/** Dispatched when the item's primary button action is clicked */
 			this.dispatchEvent(new CustomEvent('d2l-list-item-button-click', { bubbles: true }));
 
-			if (!this._listItemInteractiveEnabled) return; // clean up with flag GAUD-7495-list-interactive-content
-
 			e.stopPropagation();
 
 			// Dispatches click event from the list item to maintain existing functionality in consumers that listen for the click event
@@ -121,11 +103,11 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 	}
 
 	_renderPrimaryAction(labelledBy, content) {
-		return html`<button 
-			id="${this._primaryActionId}" 
+		return html`<button
+			id="${this._primaryActionId}"
 			aria-current="${ifDefined(this._ariaCurrent)}"
-			aria-labelledby="${labelledBy}" 
-			@click="${this._onButtonClick}" 
+			aria-labelledby="${labelledBy}"
+			@click="${this._onButtonClick}"
 			@focusin="${this._onButtonFocus}"
 			?disabled="${this.buttonDisabled}">
 			${content || nothing}
