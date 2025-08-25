@@ -4,7 +4,7 @@ The `LocalizeMixin` allows text in components to be displayed in the user's pref
 
 ## Language Resources
 
-Resources are stored as key-value JSON objects.
+Resources are stored as javascript objects.
 
 ### Keys
 
@@ -14,28 +14,28 @@ For large projects, terms may be grouped using the `:` character. For example: `
 
 ### Values
 
-Term values must conform to the [ICU Message Syntax](https://formatjs.io/docs/core-concepts/icu-syntax/) format. It supports features such as: [simple arguments](https://formatjs.io/docs/core-concepts/icu-syntax/#simple-argument), the [`{select}` format](https://formatjs.io/docs/core-concepts/icu-syntax/#select-format) and [pluralization](https://formatjs.io/docs/core-concepts/icu-syntax/#plural-format).
+Term values must contain a "message" that conforms to [ICU Message Syntax](https://formatjs.github.io/docs/core-concepts/icu-syntax/). The syntax supports features such as [simple arguments](https://formatjs.github.io/docs/core-concepts/icu-syntax/#simple-argument), [selection](https://formatjs.github.io/docs/core-concepts/icu-syntax/#select-format), and [pluralization](https://formatjs.github.io/docs/core-concepts/icu-syntax/#plural-format).
 
-> **Note:** Avoid using the ICU Message Syntax number, date and time formatting functionality. Brightspace allows customization of how these are localized, so use [@brightspace-ui/intl](https://github.com/BrightspaceUI/intl)'s `formatNumber`, `formatDate` and `formatTime` instead.
+> **Note:** Avoid using ICU Message Syntax number and date/time formatting functionality. Brightspace allows customization of how these are localized, which is supported by [@brightspace-ui/intl](https://github.com/BrightspaceUI/intl)'s `formatNumber`, `formatDate` and `formatTime` functions.
 
 ### Files
 
-Store localization resources in their own directory with nothing else in it. There should be one JavaScript file for each supported locale.
+Store resource files in their own directory (i.e. with nothing else in it). There should be one JavaScript file for each supported locale.
 
 ```javascript
-// en.js
+// lang/en.js
 export default {
   "hello": "Hello {firstName}!"
 };
 ```
 ```javascript
-// fr.js
+// lang/fr.js
 export default {
   "hello": "Bonjour {firstName}!"
 };
 ```
 
-Always provide language resources for base languages (e.g. `en`, `fr`, `pt`). That way, if the user prefers a regional language (e.g. `pt-br`) that isn't recognized, it can fall back to the base language (`pt`).
+For every supported language, there should be a base file (e.g. `en.js`, `fr.js`, `pt.js`). That way, if the user prefers a regional language (e.g. `en-au`) that isn't recognized, it can fall back to the base file (`en.js`). You do _not_ need to duplicate a locale. For instance, if you support en-US and en-GB, your English language files would likely be `en.js` and `en-gb.js`.
 
 ## Using `LocalizeMixin`
 
@@ -71,7 +71,7 @@ Two common patterns for using `localize()` are within `render()` to modify the c
 
 The `localize()` method is used to localize a piece of text.
 
-If the localized string contains arguments, pass them as a key-value object as the 2nd parameter:
+If the message contains arguments, supply a replacements object as the second parameter:
 
 ```javascript
 render() {
@@ -82,7 +82,7 @@ render() {
 
 ### `localizeHTML()`
 
-Rich formatting can be included in localization resources and safely converted to HTML with the `localizeHTML()` method.
+Rich formatting can be included in messages and safely converted to HTML with the `localizeHTML()` method.
 
 #### Basic Formatting
 
@@ -113,7 +113,7 @@ this.localizeHTML('myTerm');
 
 #### Links
 
-To wrap text in [a link](../../components/link/), define a unique tag in the localization resource:
+To wrap text in [a link](../../components/link/), surround it with a unique tag in the message:
 
 ```json
 {
@@ -133,7 +133,7 @@ this.localizeHTML('myTerm', {
 
 #### Help Tooltips
 
-To use a [help tooltip](../../components/tooltip/), define a unique tag in the localization resource in addition to the tooltip's text:
+To use a [help tooltip](../../components/tooltip/), surround the tooltip's target text with a unique tag in the message:
 
 ```json
 {
@@ -154,7 +154,7 @@ this.localizeHTML('octopus', {
 
 ### Common Resources
 
-Some localization resources are common and shared across D2L applications. To use these resources, set the `loadCommon` option:
+Some resources are common and shared across D2L applications. To use these, set the `loadCommon` option:
 
 ```javascript
 static get localizeConfig() {
