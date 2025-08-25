@@ -1098,6 +1098,8 @@ describe('table', () => {
 			// Focus on a header element that should trigger scroll adjustment
 			const headerButton = elem.shadowRoot.querySelector('d2l-table-col-sort-button');
 			await focusElem(headerButton);
+
+			await expect(elem).to.be.golden();
 		});
 
 		it('sticky-controls-focus-scrolling-shift-tab', async() => {

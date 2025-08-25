@@ -613,7 +613,6 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 		this._handleControlsScrolledChange();
 		this._updateStickyTops();
-		// Invalidate cache when controls change as they affect scroll calculations
 		this._invalidateScrollValues();
 	}
 
