@@ -98,7 +98,7 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		super.firstUpdated(changedProperties);
 
 		this.addEventListener('d2l-hierarchical-view-show-start', this._onVisibilityChange);
-		this.addEventListener('d2l-hierarchical-view-hide-complete', this._onVisibilityChange);
+		this.addEventListener('d2l-hierarchical-view-hide-complete', this._onHide);
 		this.addEventListener('d2l-hierarchical-view-show-complete', this._onShowComplete);
 		this.addEventListener('d2l-hierarchical-view-resize', this._onViewResize);
 		this.addEventListener('d2l-menu-item-visibility-change', this._onMenuItemsChanged);
@@ -169,6 +169,10 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 
 	getTabFocusable() {
 		return this._items.find(i => i.getAttribute('tabindex') === '0');
+	}
+
+	resetFocusables() {
+		this.getTabFocusable()?.setAttribute('tabindex', '-1');
 	}
 
 	_createReturnItem() {
@@ -279,6 +283,11 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		}
 		const returnItem = this._getMenuItemReturn();
 		if (returnItem) returnItem.setAttribute('text', this.label);
+	}
+
+	_onHide() {
+		this.resetFocusables();
+		this._onVisibilityChange();
 	}
 
 	_onKeyDown(e) {
