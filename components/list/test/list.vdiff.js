@@ -592,9 +592,9 @@ describe('list', () => {
 			`;
 		}
 		function createSelectableContentList(opts) {
-			const { skeleton, addButton } = { skeleton: false, addButton: false, ...opts };
+			const { skeleton, addButton, extendSeparators, href } = { skeleton: false, addButton: false, extendSeparators: false, ...opts };
 			return html`
-				<d2l-list style="width: 400px;" ?add-button="${addButton}">
+				<d2l-list style="width: 400px;" ?add-button="${addButton}" ?extend-separators="${extendSeparators}" href="${ifDefined(href ? href : undefined)}">
 					<d2l-list-item label="Item 1" selectable key="1" ?skeleton="${skeleton}">
 						${simpleListItemContent}
 					</d2l-list-item>
@@ -619,11 +619,8 @@ describe('list', () => {
 			{ name: 'item-content', template: createSelectableContentList() },
 			{ name: 'skeleton', template: createSelectableContentList({ skeleton: true }) },
 			{ name: 'skeleton add-button', template: createSelectableContentList({ skeleton: true, addButton: true }) },
-			{ name: 'extended separators', template: html`
-				<d2l-list extend-separators style="width: 400px;">
-					<d2l-list-item label="Item 1" selectable key="1">Item 1</d2l-list-item>
-				</d2l-list>
-			` }
+			{ name: 'extended separators', template: createSelectableContentList({ extendSeparators: true }) },
+			{ name: 'extended separators href', template: createSelectableContentList({ extendSeparators: true, href: 'http://www.d2l.com' }) }
 		].forEach(({ name, template, action, margin }) => {
 			it(name, async() => {
 				const elem = await fixture(template);
