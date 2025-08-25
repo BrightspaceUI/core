@@ -303,6 +303,7 @@ if (usePopoverMixin) {
 			// reset to root view
 			const menu = this.__getMenuElement();
 			menu.show({ preventFocus: true });
+			menu.getTabFocusable()?.setAttribute('tabindex', '-1');
 		}
 
 		_onFocus(e) {
