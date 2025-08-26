@@ -97,8 +97,8 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this.addEventListener('d2l-hierarchical-view-show-start', this._onVisibilityChange);
-		this.addEventListener('d2l-hierarchical-view-hide-complete', this._onHide);
+		this.addEventListener('d2l-hierarchical-view-show-start', this._onShowStart);
+		this.addEventListener('d2l-hierarchical-view-hide-complete', this._onHideComplete);
 		this.addEventListener('d2l-hierarchical-view-show-complete', this._onShowComplete);
 		this.addEventListener('d2l-hierarchical-view-resize', this._onViewResize);
 		this.addEventListener('d2l-menu-item-visibility-change', this._onMenuItemsChanged);
@@ -143,7 +143,7 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		if (this.getMenuType() === 'menu-radio') {
 			this._focusSelected();
 		} else {
-			const lastFocused = this.getTabFocusable();
+			const lastFocused = this._getTabFocusable();
 			if (lastFocused) this._focusItem(lastFocused);
 			else this._focusFirst();
 		}
@@ -167,12 +167,8 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		}
 	}
 
-	getTabFocusable() {
-		return this._items.find(i => i.getAttribute('tabindex') === '0');
-	}
-
 	resetFocusables() {
-		this.getTabFocusable()?.setAttribute('tabindex', '-1');
+		this._getTabFocusable()?.setAttribute('tabindex', '-1');
 	}
 
 	_createReturnItem() {
@@ -186,7 +182,7 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 	}
 
 	_focusFirst() {
-		const lastFocused = this._items.find(i => i.getAttribute('tabindex') === '0');
+		const lastFocused = this._getTabFocusable();
 		if (lastFocused) lastFocused.setAttribute('tabindex', '-1');
 		const item = this._tryGetNextFocusable();
 		if (item) this._focusItem(item);
@@ -262,6 +258,10 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		});
 	}
 
+	_getTabFocusable() {
+		return this._items.find(i => i.getAttribute('tabindex') === '0');
+	}
+
 	_isFocusable(item) {
 		if (item.nodeType !== 1) {
 			return false;
@@ -285,9 +285,9 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		if (returnItem) returnItem.setAttribute('text', this.label);
 	}
 
-	_onHide() {
+	_onHideComplete() {
 		this.resetFocusables();
-		this._onVisibilityChange();
+		this.active = this.isActive();
 	}
 
 	_onKeyDown(e) {
@@ -375,6 +375,10 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		this.focus();
 	}
 
+	_onShowStart() {
+		this.active = this.isActive();
+	}
+
 	_onViewResize(e) {
 		if (!this.rootView) return;
 
@@ -384,10 +388,6 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 			detail: e.detail
 		};
 		this.dispatchEvent(new CustomEvent('d2l-menu-resize', eventDetails));
-	}
-
-	_onVisibilityChange() {
-		this.active = this.isActive();
 	}
 
 	_tryGetNextFocusable(item) {
