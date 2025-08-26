@@ -217,7 +217,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				--d2l-list-item-content-text-outline: 2px solid var(--d2l-color-celestine);
 				--d2l-list-item-content-text-outline-offset: 1px;
 			}
-			:host([_focusing-primary-action]) .d2l-list-item-content-none {
+			:host([_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content-none {
 				border-radius: 6px;
 				outline: var(--d2l-list-item-content-text-outline);
 				outline-offset: -4px;
@@ -233,12 +233,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					--d2l-list-item-content-text-outline: 2px solid var(--d2l-color-celestine);
 					--d2l-list-item-content-text-outline-offset: 1px;
 				}
-				:host([_list-item-new-styles][_focusing-primary-action]) .d2l-list-item-content-none {
+				:host([_list-item-new-styles][_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content-none {
 					border-radius: initial;
 					outline: initial;
 					outline-offset: initial;
 				}
-				:host([_list-item-new-styles][_focusing-primary-action]):has(:focus-visible) .d2l-list-item-content-none {
+				:host([_list-item-new-styles][_focusing-primary-action]:not([padding-type="none"])):has(:focus-visible) .d2l-list-item-content-none {
 					border-radius: 8px;
 					outline: var(--d2l-list-item-content-text-outline);
 					outline-offset: -4px;
