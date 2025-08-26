@@ -4,7 +4,7 @@ The `LocalizeMixin` allows text in components to be displayed in the user's pref
 
 ## Language Resources
 
-Resources are stored as javascript objects.
+Resources are stored as JavaScript objects.
 
 ### Keys
 
