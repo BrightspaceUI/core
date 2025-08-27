@@ -44,32 +44,30 @@
 
 			<h2>Navigation (href) Primary Action</h2>
 
-			<d2l-demo-snippet id="link-demo">
+			<d2l-demo-snippet>
 				<template>
 					<d2l-list add-button>
-						<d2l-list>
-							<d2l-list-item href="http://www.d2l.com">
-								<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
-							</d2l-list-item>
-							<d2l-list-item href="http://www.d2l.com">
-								<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
-							</d2l-list-item>
-							<d2l-list-item href="http://www.d2l.com">
-								<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
-							</d2l-list-item>
-						</d2l-list>
+						<d2l-list-item href="http://www.d2l.com">
+							<d2l-list-item-content>Introductory Earth Sciences</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item href="http://www.d2l.com">
+							<d2l-list-item-content>Engineering Materials for Energy Systems</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item href="http://www.d2l.com">
+							<d2l-list-item-content>Geomorphology and GIS</d2l-list-item-content>
+						</d2l-list-item>
 					</d2l-list>
 					<script>
-						document.querySelector('#link-demo').addEventListener('d2l-list-item-link-click', (e) => {
-							console.log('d2l-list-item-link clicked!', e);
-						});
+						(demo => {
+							demo.addEventListener('d2l-list-item-link-click', e => console.log('d2l-list-item-link clicked!', e));
+						})(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Button Primary Action</h2>
 
-			<d2l-demo-snippet id="button-demo">
+			<d2l-demo-snippet>
 				<template>
 					<d2l-list>
 						<d2l-list-item-button>
@@ -83,9 +81,9 @@
 						</d2l-list-item-button>
 					</d2l-list>
 					<script>
-						document.querySelector('#button-demo').addEventListener('d2l-list-item-button-click', (e) => {
-							console.log('d2l-list-item-button clicked!', e);
-						});
+						(demo => {
+							demo.addEventListener('d2l-list-item-button-click', e => console.log('d2l-list-item-button clicked!', e));
+						})(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
@@ -240,7 +238,7 @@
 
 			<h2>Selection & Navigation (href) Primary Action</h2>
 
-			<d2l-demo-snippet id="selection-link-demo">
+			<d2l-demo-snippet>
 				<template>
 					<d2l-list>
 						<d2l-list-controls slot="controls">
@@ -258,16 +256,16 @@
 						</d2l-list-item>
 					</d2l-list>
 					<script>
-						document.querySelector('#selection-link-demo').addEventListener('d2l-list-item-link-click', (e) => {
-							console.log('d2l-list-item-link clicked!', e);
-						});
+						(demo => {
+							demo.addEventListener('d2l-list-item-link-click', e => console.log('d2l-list-item-link clicked!', e));
+						})(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Selection & Button Primary Action</h2>
 
-			<d2l-demo-snippet id="selection-button-demo">
+			<d2l-demo-snippet>
 				<template>
 					<d2l-list>
 						<d2l-list-controls slot="controls">
@@ -285,16 +283,16 @@
 						</d2l-list-item-button>
 					</d2l-list>
 					<script>
-						document.querySelector('#selection-button-demo').addEventListener('d2l-list-item-button-click', (e) => {
-							console.log('d2l-list-item-button clicked!', e);
-						});
+						(demo => {
+							demo.addEventListener('d2l-list-item-button-click', e => console.log('d2l-list-item-button clicked!', e));
+						})(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Grid Actions with Navigation (href) Primary Action</h2>
 
-			<d2l-demo-snippet id="grid-link-demo">
+			<d2l-demo-snippet>
 				<template>
 					<d2l-list grid add-button>
 						<d2l-list-controls slot="controls">
@@ -321,16 +319,16 @@
 						</d2l-list-item>
 					</d2l-list>
 					<script>
-						document.querySelector('#grid-link-demo').addEventListener('d2l-list-item-link-click', (e) => {
-							console.log('d2l-list-item-link clicked!', e);
-						});
+						(demo => {
+							demo.addEventListener('d2l-list-item-link-click', e => console.log('d2l-list-item-link clicked!', e));
+						})(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
 
 			<h2>Grid Actions with Button Primary Action</h2>
 
-			<d2l-demo-snippet id="grid-button-demo">
+			<d2l-demo-snippet>
 				<template>
 					<d2l-list grid>
 						<d2l-list-controls slot="controls">
@@ -357,9 +355,9 @@
 						</d2l-list-item-button>
 					</d2l-list>
 					<script>
-						document.querySelector('#grid-button-demo').addEventListener('d2l-list-item-button-click', (e) => {
-							console.log('d2l-list-item-button clicked!', e);
-						});
+						(demo => {
+							demo.addEventListener('d2l-list-item-button-click', e => console.log('d2l-list-item-button clicked!', e));
+						})(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>

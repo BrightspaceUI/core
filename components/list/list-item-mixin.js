@@ -108,6 +108,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_addButtonText: { state: true },
 			_displayKeyboardTooltip: { type: Boolean },
 			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
+			_hasListItemContent: { state: true },
 			_hasNestedList: { type: Boolean, reflect: true, attribute: '_has-nested-list' },
 			_hasNestedListAddButton: { type: Boolean, reflect: true, attribute: '_has-nested-list-add-button' },
 			_hovering: { type: Boolean, reflect: true },
@@ -216,6 +217,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				--d2l-list-item-content-text-outline: 2px solid var(--d2l-color-celestine);
 				--d2l-list-item-content-text-outline-offset: 1px;
 			}
+			:host([_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content-none {
+				border-radius: 6px;
+				outline: var(--d2l-list-item-content-text-outline);
+				outline-offset: -4px;
+			}
 			@supports selector(:has(a, b)) {
 				:host([_list-item-new-styles][_focusing-primary-action]) .d2l-list-item-content {
 					--d2l-list-item-content-text-border-radius: initial;
@@ -227,7 +233,18 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					--d2l-list-item-content-text-outline: 2px solid var(--d2l-color-celestine);
 					--d2l-list-item-content-text-outline-offset: 1px;
 				}
+				:host([_list-item-new-styles][_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content-none {
+					border-radius: initial;
+					outline: initial;
+					outline-offset: initial;
+				}
+				:host([_list-item-new-styles][_focusing-primary-action]:not([padding-type="none"])):has(:focus-visible) .d2l-list-item-content-none {
+					border-radius: 8px;
+					outline: var(--d2l-list-item-content-text-outline);
+					outline-offset: -4px;
+				}
 			}
+
 			[slot="content-action"] {
 				height: 100%;
 			}
@@ -455,6 +472,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
 		this._hasColorSlot = false;
+		this._hasListItemContent = true;
 		this._hasNestedList = false;
 		this._listItemInteractiveEnabled = listItemInteractiveFlag;
 		this._listItemNewStyles = useNewStylesFlag;
@@ -486,6 +504,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	willUpdate(changedProperties) {
 		if (changedProperties.has('_siblingHasColor') || changedProperties.has('color')) {
 			this._hasColorSlot = this.color || this._siblingHasColor;
+		}
+		if (this._focusingPrimaryAction && changedProperties.has('_focusingPrimaryAction')) {
+			this._hasListItemContent = !!this.shadowRoot.querySelector('slot:not([name])').assignedElements({ flatten: true })
+				.find(elem => elem.tagName === 'D2L-LIST-ITEM-CONTENT');
 		}
 	}
 
@@ -698,11 +720,15 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			'd2l-list-item-color-inner': true,
 			'd2l-skeletize': this.color
 		};
+		const contentClasses = {
+			'd2l-list-item-content': true,
+			'd2l-list-item-content-none': !this._hasListItemContent
+		};
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color) || (this._listItemInteractiveEnabled && this.expandable && !this.selectable)) ? 'control' : undefined;
 		const contentAreaContent = html`
 			<div slot="content"
-				class="d2l-list-item-content"
+				class="${classMap(contentClasses)}"
 				id="${this._contentId}"
 				@mouseenter="${this._onMouseEnter}"
 				@mouseleave="${this._onMouseLeave}">
