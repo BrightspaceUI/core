@@ -2,11 +2,13 @@ import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-menu.js';
 import '../menu/menu.js';
 import '../menu/menu-item-radio.js';
+import '../icons/icon.js';
 
 import { css, html, LitElement, nothing } from 'lit';
 import { formatDateInISOTime, getDateFromISOTime, getToday } from '../../helpers/dateTime.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { bodySmallStyles } from '../typography/styles.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -23,6 +25,8 @@ const MIDNIGHT = new Date(2020, 0, 1, 0, 0, 0);
 const START_OF_DAY = new Date(2020, 0, 1, 0, 1, 0);
 const END_OF_DAY = new Date(2020, 0, 1, 23, 59, 59);
 const INTERVALS = new Map();
+
+const defaultTimezone = formatTime(new Date(), { format: 'ZZZ' });
 
 export function getIntervalNumber(size) {
 	switch (size) {
@@ -164,6 +168,11 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 			 */
 			timeInterval: { type: String, attribute: 'time-interval' },
 			/**
+			 * Timezone for the input to use.
+			 * @type {string}
+			 */
+			timezone: { type: String },
+			/**
 			 * Hides the timezone inside the selection dropdown. Should only be used when the input uses a different timezone than the document's settings
 			 * @type {Boolean}
 			 */
@@ -208,6 +217,14 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 					vertical-align: middle;
 					width: auto;
 				}
+				.d2l-input-time-timezone.d2l-input-time-timezone-custom {
+					align-items: center;
+					column-gap: 0.3rem;
+					display: flex;
+					font-weight: 700;
+					justify-content: center;
+				}
+
 				.d2l-input-time-hidden-content {
 					font-family: inherit;
 					font-size: 0.8rem;
@@ -234,7 +251,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 		this._dropdownFirstOpened = false;
 		this._dropdownId = getUniqueId();
 		this._hiddenContentWidth = '6rem';
-		this._timezone = formatTime(new Date(), { format: 'ZZZ' });
+		this.timezone = defaultTimezone;
 		this._inlineHelpId = getUniqueId();
 	}
 
@@ -332,6 +349,12 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 		const opened = this.opened && !this.disabled && !this.skeleton;
 		const dropdownIdTimezone = `${this._dropdownId}-timezone`;
 		const ariaDescribedByIds = `${this._dropdownId ? dropdownIdTimezone : ''} ${this._hasInlineHelp ? this._inlineHelpId : ''}`.trim();
+		const customTimezone = this.timezone !== defaultTimezone;
+		const timeZoneClassMap = {
+			'd2l-input-time-timezone': true,
+			'd2l-body-small': true,
+			'd2l-input-time-timezone-custom': customTimezone
+		};
 
 		return html`
 			<div aria-hidden="true" class="d2l-input-time-hidden-content">
@@ -376,9 +399,10 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 						root-view>
 						${menuItems}
 					</d2l-menu>
-					${!this.timezoneHidden ? html`
-						<div class="d2l-input-time-timezone d2l-body-small" id="${dropdownIdTimezone}" slot="footer">${this._timezone}</div>
-					` : nothing}
+					${!this.timezoneHidden ? html`<div class=${classMap(timeZoneClassMap)} id="${dropdownIdTimezone}" slot="footer">
+						${customTimezone ? html`<d2l-icon icon="tier1:browser"></d2l-icon>` : nothing}
+						${this.timezone}
+					</div>` : nothing}
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
 			${this._renderInlineHelp(this._inlineHelpId)}

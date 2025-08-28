@@ -1,5 +1,6 @@
 import '../input-time.js';
 import { aTimeout, expect, fixture, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { formatTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
 
@@ -65,14 +66,20 @@ describe('d2l-input-time', () => {
 		});
 	});
 
-	describe('hiding timezone', () => {
+	describe('timezone', () => {
+
+		it('should default "timezone" property to default value', async() => {
+			documentLocaleSettings.sync();
+			const elem = await fixture(basicFixture);
+			expect(elem.timezone).to.equal(formatTime(new Date(), { format: 'ZZZ' }));
+		});
 
 		it('should display timezone by default', async() => {
 			const elem = await fixture(basicFixture);
 			expect(elem.shadowRoot.querySelector('.d2l-input-time-timezone')).to.not.be.null;
 		});
 
-		it('should hide timezone when timezon-hidden', async() => {
+		it('should hide timezone when timezone-hidden', async() => {
 			const elem = await fixture(tzHiddenFixture);
 			expect(elem.shadowRoot.querySelector('.d2l-input-time-timezone')).to.be.null;
 		});
