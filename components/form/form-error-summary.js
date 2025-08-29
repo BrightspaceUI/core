@@ -10,7 +10,7 @@ class FormErrorSummary extends LocalizeCoreElement(LitElement) {
 		return {
 			errors: { type: Object, attribute: false },
 			_expanded: { type: Boolean, attribute: false },
-			_hasBottomMargin: { type: Boolean, attribute: '_has-bottom-margin', reflect: true },
+			_hasTopMargin: { type: Boolean, attribute: '_has-top-margin', reflect: true },
 			_hasErrors: { type: Boolean, attribute: '_has-errors', reflect: true },
 		};
 	}
@@ -24,8 +24,8 @@ class FormErrorSummary extends LocalizeCoreElement(LitElement) {
 			:host([hidden]) {
 				display: none;
 			}
-			:host([_has-bottom-margin][_has-errors]) {
-				margin-block-end: 1rem;
+			:host([_has-top-margin][_has-errors]) {
+				margin-block-start: 1rem;
 			}
 
 			.d2l-form-error-summary-header {
@@ -58,7 +58,7 @@ class FormErrorSummary extends LocalizeCoreElement(LitElement) {
 		super();
 		this.errors = [];
 		this._expanded = true;
-		this._hasBottomMargin = false;
+		this._hasTopMargin = false;
 		this._hasErrors = false;
 	}
 

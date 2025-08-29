@@ -643,9 +643,12 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			main {
 				flex: 2 0 0;
 				overflow-x: hidden;
-				padding: var(--d2l-template-primary-secondary-primary-padding, 0);
 				transition: none;
 			}
+			main d2l-form-error-summary {
+				margin-inline: var(--d2l-template-primary-secondary-form-error-inline-margin, 20px);
+			}
+
 			:host([resizable]) main {
 				flex: 1 0 0;
 			}
@@ -1052,7 +1055,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			'd2l-template-scroll': isWindows
 		};
 		const primarySection = html`<main class="${classMap(scrollClasses)}">
-			${this.hasForm ? html`<d2l-form-error-summary _has-bottom-margin id="form-error-summary"></d2l-form-error-summary>` : nothing}
+			${this.hasForm ? html`<d2l-form-error-summary _has-top-margin id="form-error-summary"></d2l-form-error-summary>` : nothing}
 			<slot name="primary"></slot>
 		</main>`;
 		const secondarySection = html`
