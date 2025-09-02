@@ -15,8 +15,8 @@
 			import '../primary-secondary.js';
 		</script>
 		<style>
-			d2l-template-primary-secondary {
-				--d2l-template-primary-secondary-primary-padding: 20px;
+			div[slot="primary"] {
+				padding: 0 20px;
 			}
 			div[slot="secondary"] {
 				padding: 10px;
@@ -47,7 +47,7 @@
 			document
 				.querySelector('d2l-button')
 				.addEventListener('click', () => form.submitForm());
-			form.addEventListener('d2l-form-submit', (e) => {
+			form.addEventListener('d2l-template-primary-secondary-form-submit', (e) => {
 				console.log('Form submitted!', e.detail.formData);
 			});
 		</script>

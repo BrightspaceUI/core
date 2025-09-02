@@ -1,7 +1,7 @@
 # Templates
 Page templates are used to provide generic ways to arrange content on a page
 
-## Primary-Secondary [d2l-primary-secondary]
+## Primary-Secondary [d2l-template-primary-secondary]
 Two Panel (primary and secondary) page template with header and optional footer
 
 Use this template when:
