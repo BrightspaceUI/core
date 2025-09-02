@@ -47,7 +47,7 @@
 			document
 				.querySelector('d2l-button')
 				.addEventListener('click', () => form.submitForm());
-			form.addEventListener('d2l-form-submit', (e) => {
+			form.addEventListener('d2l-template-primary-secondary-form-submit', (e) => {
 				console.log('Form submitted!', e.detail.formData);
 			});
 		</script>
