@@ -1,5 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { getComposedChildren, getComposedParent, getFirstVisibleAncestor, getNextAncestorSibling, getPreviousAncestorSibling, isVisible } from './dom.js';
+import { getFlag } from './flags.js';
 
 const focusableElements = {
 	a: true,
@@ -13,6 +14,8 @@ const focusableElements = {
 	select: true,
 	textarea: true
 };
+
+const focusVisibleSupportChangesEnabled = getFlag('focus-visible-support-changes-for-focus-rings', true);
 
 export function getComposedActiveElement() {
 	let node = document.activeElement;
@@ -75,19 +78,50 @@ export function getFocusableDescendants(node, options) {
 export function getFocusPseudoClass() {
 	return isFocusVisibleSupported() ? 'focus-visible' : 'focus';
 }
-export function getFocusRingStyles(selector, { applyOnHover = false, extraStyles = null } = {}) {
-	const selectorDelegate = typeof selector === 'string' ? pseudoClass => `${selector}:${pseudoClass}` : selector;
-	const cssSelector = unsafeCSS(`${selectorDelegate(getFocusPseudoClass())}${applyOnHover ? `, ${selectorDelegate('hover')}` : ''}`);
-	return css`${cssSelector} {
-		${extraStyles ?? css``}
-		outline: 2px solid var(--d2l-focus-ring-color, var(--d2l-color-celestine));
-		outline-offset: var(--d2l-focus-ring-offset, 2px);
-	}
-	@media (prefers-contrast: more) {
-		${cssSelector} {
-			outline-color: Highlight;
+export function getFocusRingStyles(selector, { extraStyles = null } = {}) {
+	// Remove when cleaning up focus-visible-support-changes-for-focus-rings
+	if (!focusVisibleSupportChangesEnabled) {
+		const selectorDelegate = typeof selector === 'string' ? pseudoClass => `${selector}:${pseudoClass}` : selector;
+		const cssSelector = unsafeCSS(selectorDelegate(getFocusPseudoClass()));
+		return css`${cssSelector} {
+			${extraStyles ?? css``}
+			outline: 2px solid var(--d2l-focus-ring-color, var(--d2l-color-celestine));
+			outline-offset: var(--d2l-focus-ring-offset, 2px);
 		}
-	}`;
+		@media (prefers-contrast: more) {
+			${cssSelector} {
+				outline-color: Highlight;
+			}
+		}`;
+	}
+
+	const stylesDelegate = selector => css`
+		${selector} {
+			${extraStyles ?? css``}
+			outline: 2px solid var(--d2l-focus-ring-color, var(--d2l-color-celestine));
+			outline-offset: var(--d2l-focus-ring-offset, 2px);
+		}
+		@media (prefers-contrast: more) {
+			${selector} {
+				outline-color: Highlight;
+			}
+		}
+	`;
+	return getFocusVisibleStyles(selector, stylesDelegate);
+}
+
+export function getFocusVisibleStyles(selector, stylesDelegate) {
+	const selectorDelegate = typeof selector === 'string' ? pseudoClass => `${selector}:${pseudoClass}` : selector;
+	const focusSelector = unsafeCSS(selectorDelegate('focus'));
+	const focusVisibleSelector = unsafeCSS(selectorDelegate('focus-visible'));
+	return unsafeCSS(css`
+		@supports not selector(:focus-visible) {
+			${stylesDelegate(focusSelector)}
+		}
+		@supports selector(:focus-visible) {
+			${stylesDelegate(focusVisibleSelector)}
+		}
+	`);
 }
 
 export function getLastFocusableDescendant(node, includeHidden) {
