@@ -402,7 +402,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 						root-view>
 						${menuItems}
 					</d2l-menu>
-					${!this.timeZoneHidden ? html`<div class=${classMap(timeZoneClassMap)} id="${dropdownIdTimezone}" slot="footer">
+					${!this.timeZoneHidden && this._timeZone ? html`<div class=${classMap(timeZoneClassMap)} id="${dropdownIdTimezone}" slot="footer">
 						${customTimezone ? html`<d2l-icon icon="tier1:browser"></d2l-icon>` : nothing}
 						${this._timeZone}
 					</div>` : nothing}
@@ -428,9 +428,8 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 			if (validateTimeZone(this.timeZoneId)) {
 				const tzData = await getTimeZoneData(this.timeZoneId);
 				this._timeZone = tzData.friendlyName;
-				this.timeZoneHidden = false;
 			} else {
-				this.timeZoneHidden = true;
+				this._timeZone = null;
 			}
 		}
 	}

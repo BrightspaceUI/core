@@ -1,6 +1,5 @@
 import '../input-time.js';
 import { aTimeout, expect, fixture, oneEvent, runConstructor } from '@brightspace-ui/testing';
-import { formatTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
 
@@ -71,7 +70,7 @@ describe('d2l-input-time', () => {
 		it('should default "timeZoneId" property to default value', async() => {
 			documentLocaleSettings.sync();
 			const elem = await fixture(basicFixture);
-			expect(elem.timeZoneId).to.equal(formatTime(new Date(), { format: 'ZZZ' }));
+			expect(elem.timeZoneId).to.equal(documentLocaleSettings.timezone.identifier);
 		});
 
 		it('should display time zone by default', async() => {

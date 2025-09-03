@@ -39,7 +39,7 @@ describe('d2l-input-date-time-range', () => {
 			describe(`getShiftedEndDateTime in ${timeZone}`, () => {
 
 				before(async() => {
-					documentLocaleSettings.timeZone.identifier = timeZone;
+					documentLocaleSettings.timezone.identifier = timeZone;
 					await aTimeout(10); // Fixes flaky tests likely caused by time zone not yet being set
 				});
 
