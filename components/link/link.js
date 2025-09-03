@@ -2,10 +2,10 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
+import { _generateLinkStyles } from './link-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFlag } from '../../helpers/flags.js';
-import { getFocusRingStyles } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -13,41 +13,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
-export const linkStyles = css`
-	.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
-		--d2l-focus-ring-offset: 1px;
-		color: var(--d2l-color-celestine);
-		cursor: pointer;
-		outline-style: none;
-		text-decoration: none;
-	}
-	:host([skeleton]) .d2l-link.d2l-skeletize::before {
-		bottom: 0.2rem;
-		top: 0.2rem;
-	}
-	.d2l-link:hover {
-		color: var(--d2l-color-celestine-minus-1);
-		text-decoration: underline;
-	}
-	${getFocusRingStyles('.d2l-link', { extraStyles: css`border-radius: 2px; text-decoration: underline;` })}
-	.d2l-link.d2l-link-main {
-		font-weight: 700;
-	}
-	.d2l-link.d2l-link-small {
-		font-size: 0.7rem;
-		letter-spacing: 0.01rem;
-		line-height: 1.05rem;
-	}
-	:host([skeleton]) .d2l-link.d2l-link-small.d2l-skeletize::before {
-		bottom: 0.15rem;
-		top: 0.15rem;
-	}
-	@media print {
-		.d2l-link, .d2l-link:visited, .d2l-link:active, .d2l-link:link {
-			color: var(--d2l-color-ferrite);
-		}
-	}
-`;
+export const linkStyles = _generateLinkStyles('.d2l-link', true);
 
 /**
  * This component can be used just like the native anchor tag.

@@ -1,4 +1,4 @@
-import { _isValidCssSelector } from '../styles.js';
+import { _isValidCssSelector } from '../../../helpers/internal/css.js';
 import { expect } from '@brightspace-ui/testing';
 
 describe('_isValidCssSelector', () => {
