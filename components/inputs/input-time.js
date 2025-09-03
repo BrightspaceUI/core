@@ -170,7 +170,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 			 */
 			timeInterval: { type: String, attribute: 'time-interval' },
 			/**
-			 * Time zone identifier for the input to use.
+			 * Time zone identifier for the input to use. e.g. America/Toronto. Defaults to the user's account or device time zone setting.
 			 * @type {string}
 			 */
 			timeZoneId: { type: String, attribute: 'time-zone-id' },
