@@ -15,6 +15,7 @@ const focusableElements = {
 	textarea: true
 };
 
+// The default here cannot be changed, as BSI relies on it being true. Do not flip this without adding a way for BSI to override it.
 const focusVisibleSupportChangesEnabled = getFlag('focus-visible-support-changes-for-focus-rings', true);
 
 export function getComposedActiveElement() {
