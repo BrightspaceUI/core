@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
-import { _isValidCssSelector } from '../typography/styles.js';
+import { _isValidCssSelector } from '../../helpers/internal/css.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
 
 /**
