@@ -32,7 +32,7 @@ export const _generateLinkStyles = (selector, includeSkeleton = true) => {
 			color: var(--d2l-color-celestine-minus-1);
 			text-decoration: underline;
 		}
-		${getFocusRingStyles('.d2l-link', { extraStyles: css`border-radius: 2px; text-decoration: underline;` })}
+		${getFocusRingStyles(selector, { extraStyles: css`border-radius: 2px; text-decoration: underline;` })}
 		${selectorCSS}.d2l-link-main {
 			font-weight: 700;
 		}
