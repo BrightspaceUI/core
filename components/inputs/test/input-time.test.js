@@ -79,7 +79,7 @@ describe('d2l-input-time', () => {
 			expect(elem.shadowRoot.querySelector('.d2l-input-time-time-zone')).to.not.be.null;
 		});
 
-		it('should hide timezone when timezone-hidden', async() => {
+		it('should hide timezone when time-zone-hidden', async() => {
 			const elem = await fixture(tzHiddenFixture);
 			expect(elem.shadowRoot.querySelector('.d2l-input-time-time-zone')).to.be.null;
 		});
