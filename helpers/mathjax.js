@@ -38,8 +38,17 @@ class HtmlBlockMathRenderer {
 
 	async render(elem, options) {
 		if (!options.contextValues) return elem;
-		const context = options.contextValues.get(mathjaxContextKey);
-		if (context === undefined) return elem;
+		let context = options.contextValues.get(mathjaxContextKey);
+
+		// For 20.25.11, update to default to true if flag helper can't be found
+		if (window.D2L?.LP?.Web?.UI?.Flags?.Flag('shield-12649-mathjax-default-context', false)) {
+			context = context || {
+				renderLatex: false,
+				outputScale: 1
+			};
+		} else {
+			if (context === undefined) return elem;
+		}
 
 		if (!elem.querySelector('math') && !(context.renderLatex && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
 
