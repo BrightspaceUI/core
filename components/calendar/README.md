@@ -16,7 +16,7 @@ The `d2l-calendar` component can be used to display a responsively sized calenda
 <!-- docs: start hidden content -->
 ### Properties
 
-Note: All `*-value` properties should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be localized to the user's timezone (if applicable).
+Note: All `*-value` properties should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be localized to the user's time zone (if applicable).
 
 | Property | Type | Description |
 |--|--|--|

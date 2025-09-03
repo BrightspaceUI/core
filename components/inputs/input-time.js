@@ -7,10 +7,12 @@ import '../icons/icon.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { formatDateInISOTime, getDateFromISOTime, getToday } from '../../helpers/dateTime.js';
 import { formatTime, parseTime } from '@brightspace-ui/intl/lib/dateTime.js';
+import { getTimeZoneData, validateTimeZone } from '@brightspace-ui/intl/lib/timeZones.js';
 import { bodySmallStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
+import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { InputInlineHelpMixin } from './input-inline-help.js';
@@ -26,7 +28,7 @@ const START_OF_DAY = new Date(2020, 0, 1, 0, 1, 0);
 const END_OF_DAY = new Date(2020, 0, 1, 23, 59, 59);
 const INTERVALS = new Map();
 
-const defaultTimezone = formatTime(new Date(), { format: 'ZZZ' });
+const defaultTimezone = getDocumentLocaleSettings().timezone.identifier || new Intl.DateTimeFormat().timeZone;
 
 export function getIntervalNumber(size) {
 	switch (size) {
@@ -168,15 +170,15 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 			 */
 			timeInterval: { type: String, attribute: 'time-interval' },
 			/**
-			 * Timezone for the input to use.
+			 * Time zone identifier for the input to use.
 			 * @type {string}
 			 */
-			timezone: { type: String },
+			timeZoneId: { type: String, attribute: 'time-zone-id' },
 			/**
-			 * Hides the timezone inside the selection dropdown. Should only be used when the input uses a different timezone than the document's settings
+			 * Hides the time zone inside the selection dropdown. Should only be used when the input value is not related to any one timezone
 			 * @type {Boolean}
 			 */
-			timezoneHidden: { type: Boolean, attribute: 'timezone-hidden' },
+			timeZoneHidden: { type: Boolean, attribute: 'time-zone-hidden' },
 			/**
 			 * Value of the input
 			 * @type {string}
@@ -184,7 +186,8 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 			value: { type: String },
 			_dropdownFirstOpened: { type: Boolean },
 			_formattedValue: { type: String },
-			_hiddenContentWidth: { type: String }
+			_hiddenContentWidth: { type: String },
+			_timeZone: { state: true },
 		};
 	}
 
@@ -211,13 +214,13 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 					display: inline-block;
 					vertical-align: top;
 				}
-				.d2l-input-time-timezone {
+				.d2l-input-time-time-zone {
 					line-height: 1.8rem;
 					text-align: center;
 					vertical-align: middle;
 					width: auto;
 				}
-				.d2l-input-time-timezone.d2l-input-time-timezone-custom {
+				.d2l-input-time-time-zone.d2l-input-time-time-zone-custom {
 					align-items: center;
 					column-gap: 0.3rem;
 					display: flex;
@@ -247,11 +250,11 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 		this.opened = false;
 		this.required = false;
 		this.timeInterval = 'thirty';
-		this.timezoneHidden = false;
+		this.timeZoneHidden = false;
 		this._dropdownFirstOpened = false;
 		this._dropdownId = getUniqueId();
 		this._hiddenContentWidth = '6rem';
-		this.timezone = defaultTimezone;
+		this.timeZoneId = defaultTimezone;
 		this._inlineHelpId = getUniqueId();
 	}
 
@@ -347,13 +350,13 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 		const formattedWideTimeAM = formatTime(new Date(2020, 0, 1, 10, 23, 0));
 		const formattedWideTimePM = formatTime(new Date(2020, 0, 1, 23, 23, 0));
 		const opened = this.opened && !this.disabled && !this.skeleton;
-		const dropdownIdTimezone = `${this._dropdownId}-timezone`;
+		const dropdownIdTimezone = `${this._dropdownId}-time-zone`;
 		const ariaDescribedByIds = `${this._dropdownId ? dropdownIdTimezone : ''} ${this._hasInlineHelp ? this._inlineHelpId : ''}`.trim();
-		const customTimezone = this.timezone !== defaultTimezone;
+		const customTimezone = this.timeZoneId !== defaultTimezone;
 		const timeZoneClassMap = {
-			'd2l-input-time-timezone': true,
+			'd2l-input-time-time-zone': true,
 			'd2l-body-small': true,
-			'd2l-input-time-timezone-custom': customTimezone
+			'd2l-input-time-time-zone-custom': customTimezone
 		};
 
 		return html`
@@ -399,9 +402,9 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 						root-view>
 						${menuItems}
 					</d2l-menu>
-					${!this.timezoneHidden ? html`<div class=${classMap(timeZoneClassMap)} id="${dropdownIdTimezone}" slot="footer">
+					${!this.timeZoneHidden && this._timeZone ? html`<div class=${classMap(timeZoneClassMap)} id="${dropdownIdTimezone}" slot="footer">
 						${customTimezone ? html`<d2l-icon icon="tier1:browser"></d2l-icon>` : nothing}
-						${this.timezone}
+						${this._timeZone}
 					</div>` : nothing}
 				</d2l-dropdown-menu>
 			</d2l-dropdown>
@@ -417,9 +420,18 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 		});
 	}
 
-	willUpdate(changedProperties) {
+	async willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 		this.style.maxWidth = `calc(${this._hiddenContentWidth} + 1.5rem + 3px)`; // text and icon width + left & right padding + border width + 1
+
+		if ((changedProperties.has('timeZoneId') || changedProperties.has('localize'))) {
+			if (validateTimeZone(this.timeZoneId)) {
+				const tzData = await getTimeZoneData(this.timeZoneId);
+				this._timeZone = tzData.friendlyName;
+			} else {
+				this._timeZone = null;
+			}
+		}
 	}
 
 	getTime() {

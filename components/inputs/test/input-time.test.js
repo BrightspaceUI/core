@@ -1,6 +1,5 @@
 import '../input-time.js';
 import { aTimeout, expect, fixture, oneEvent, runConstructor } from '@brightspace-ui/testing';
-import { formatTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
 
@@ -9,7 +8,7 @@ const fixtureWithValue = '<d2l-input-time value="11:22:33" label="label text"></
 const hourLongIntervals = '<d2l-input-time label="label text" time-interval="sixty"></d2l-input-time>';
 const hourLongIntervalsEnforced = '<d2l-input-time label="label text" time-interval="sixty" enforce-time-intervals></d2l-input-time>';
 const labelHiddenFixture = '<d2l-input-time label="label text" label-hidden time-interval="sixty"></d2l-input-time>';
-const tzHiddenFixture = '<d2l-input-time label="label text" timezone-hidden time-interval="sixty"></d2l-input-time>';
+const tzHiddenFixture = '<d2l-input-time label="label text" time-zone-hidden time-interval="sixty"></d2l-input-time>';
 
 function dispatchEvent(elem, eventType, composed) {
 	const e = new Event(
@@ -66,22 +65,22 @@ describe('d2l-input-time', () => {
 		});
 	});
 
-	describe('timezone', () => {
+	describe('timeZoneId', () => {
 
-		it('should default "timezone" property to default value', async() => {
+		it('should default "timeZoneId" property to default value', async() => {
 			documentLocaleSettings.sync();
 			const elem = await fixture(basicFixture);
-			expect(elem.timezone).to.equal(formatTime(new Date(), { format: 'ZZZ' }));
+			expect(elem.timeZoneId).to.equal(documentLocaleSettings.timezone.identifier);
 		});
 
-		it('should display timezone by default', async() => {
+		it('should display time zone by default', async() => {
 			const elem = await fixture(basicFixture);
-			expect(elem.shadowRoot.querySelector('.d2l-input-time-timezone')).to.not.be.null;
+			expect(elem.shadowRoot.querySelector('.d2l-input-time-time-zone')).to.not.be.null;
 		});
 
-		it('should hide timezone when timezone-hidden', async() => {
+		it('should hide timezone when time-zone-hidden', async() => {
 			const elem = await fixture(tzHiddenFixture);
-			expect(elem.shadowRoot.querySelector('.d2l-input-time-timezone')).to.be.null;
+			expect(elem.shadowRoot.querySelector('.d2l-input-time-time-zone')).to.be.null;
 		});
 	});
 
@@ -139,7 +138,7 @@ describe('d2l-input-time', () => {
 			clock.restore();
 		});
 
-		it('should default to next interval when timezone is Australia', async() => {
+		it('should default to next interval when time zone is Australia', async() => {
 			documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
 			const newToday = new Date('2018-02-12T11:33Z');
 			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });

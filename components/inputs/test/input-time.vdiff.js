@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
 
 const create = (opts = {}) => {
-	const { disabled, enforceTimeIntervals, label, labelHidden, opened, required, skeleton, timezone, value } = {
+	const { disabled, enforceTimeIntervals, label, labelHidden, opened, required, skeleton, timeZoneId, value } = {
 		disabled: false,
 		enforceTimeIntervals: false,
 		label: 'Start Time',
@@ -13,7 +13,7 @@ const create = (opts = {}) => {
 		opened: false,
 		required: false,
 		skeleton: false,
-		timezone: undefined,
+		timeZoneId: undefined,
 		value: undefined,
 		...opts
 	};
@@ -26,7 +26,7 @@ const create = (opts = {}) => {
 			?opened="${opened}"
 			?required="${required}"
 			?skeleton="${skeleton}"
-			timezone="${ifDefined(timezone)}"
+			time-zone-id="${ifDefined(timeZoneId)}"
 			value="${ifDefined(value)}">
 			</d2l-input-time>
 	`;
@@ -48,7 +48,7 @@ describe('d2l-input-time', () => {
 		{ name: 'label-hidden', template: create({ value: '3:00:00' }) },
 		{ name: 'label-hidden-skeleton', template: create({ skeleton: true, value: '3:00:00' }) },
 		{ name: 'required', template: create({ label: 'End Time', labelHidden: false, required: true }) },
-		{ name: 'timezone-custom', template: create({ timezone: 'Australia/Eucla', opened: true }) },
+		{ name: 'time-zone-custom', template: create({ timeZoneId: 'Australia/Eucla', opened: true }) },
 		{
 			name: 'inline-help',
 			template: new inlineHelpFixtures().time()

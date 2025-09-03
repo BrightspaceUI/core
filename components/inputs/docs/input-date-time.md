@@ -17,7 +17,7 @@ Use date and time inputs to set dates and times in forms. They are available as
 <!-- docs: start dos -->
 * Use short but descriptive labels like "Start Date" or "Due Date"
 * Offer reasonable defaults whenever possible
-* Use date and time values relative to the user's [timezone](#timezone)
+* Use date and time values relative to the user's [time zone](#time-zone)
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
@@ -29,7 +29,7 @@ Use date and time inputs to set dates and times in forms. They are available as
 
 Use the `<d2l-input-date>` component when users need to choose a single date. It consists of a text input field for typing a date and an attached calendar (`<d2l-calendar>`) dropdown. The dropdown opens on click of the text input, or on enter or down arrow press if the text input is focused. It displays the `value` if one is specified, or a placeholder if not, and reflects the selected value when one is selected in the `d2l-calendar` or entered in the text input.
 
-Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be [localized to the user's timezone](#timezone) (if applicable).
+Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-MM-DD`) and should be [localized to the user's time zone](#time-zone) (if applicable).
 
 <!-- docs: demo code properties name:d2l-input-date sandboxTitle:'Date Input' align:flex-start autoSize:false size:xlarge -->
 ```html
@@ -115,7 +115,7 @@ Note: All `*value` properties should be in ISO 8601 calendar date format (`YYYY-
 
 Use the `<d2l-input-time>` component when users need to enter a time, without a date. The component consists of a text input field for typing a time and an attached dropdown for time selection. The dropdown opens on click of the text input, or on enter or down arrow press if the text input is focused. It displays the `value` if one is specified, or a fallback time if not, and reflects the selected value when one is selected in the dropdown or entered in the text input.
 
-Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable).
+Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's time zone](#time-zone) (if applicable).
 
 <!-- docs: demo code properties name:d2l-input-time sandboxTitle:'Time Input' align:flex-start autoSize:false size:large -->
 ```html
@@ -140,9 +140,9 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 | `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `opened` | Boolean | Indicates if the dropdown is open |
 | `required` | Boolean | Indicates that a value is required |
-| `timezone-hidden` | Boolean | Hides the timezone inside the selection dropdown. Should only be used when the input uses a different timezone than the document's settings |
+| `time-zone-hidden` | Boolean | Hides the time zone inside the selection dropdown. Should only be used when the input value is not related to any one timezone |
 | `time-interval` | String, default: `thirty` | Number of minutes between times shown in dropdown. Valid values include `five`, `ten`, `fifteen`, `twenty`, `thirty`, and `sixty`. |
-| `value` | String, default `''` | Value of the input. This should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable). |
+| `value` | String, default `''` | Value of the input. This should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's time zone](#time-zone) (if applicable). |
 
 ### Events
 
@@ -157,7 +157,7 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 
 Use the `<d2l-input-time-range>` component when users need to enter two times in a range, and the date is already known. The component consists of two input-time components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
 
-Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's timezone](#timezone) (if applicable).
+Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and should be [localized to the user's time zone](#time-zone) (if applicable).
 
 <!-- docs: demo code properties name:d2l-input-time-range sandboxTitle:'Time Range Input' align:flex-start autoSize:false size:large -->
 ```html
@@ -199,7 +199,7 @@ Note: All `*value` properties should be in ISO 8601 time format (`hh:mm:ss`) and
 
 Use the `<d2l-input-date-time>` component when users need to enter a single date and time, like a due date. The component consists of a `<d2l-input-date>` and a `<d2l-input-time>` component. The time input only appears once a date is selected. This component displays the `value` if one is specified, and reflects the selected value when one is selected or entered.
 
-Note: All `*value` properties should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone).
+Note: All `*value` properties should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's time zone).
 
 <!-- docs: demo code properties name:d2l-input-date-time sandboxTitle:'Date-Time Input' align:flex-start autoSize:false size:xlarge -->
 ```html
@@ -219,7 +219,7 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 | `disabled` | Boolean | Disables the input |
 | `label-hidden` | Boolean | Hides the fieldset label visually |
 | `labelled-by` | String | HTML id of an element in the same shadow root which acts as the input's label |
-| `localized` | Boolean | Indicates that any timezone localization will be handeld by the consumer and so any values will not be converted from/to UTC |
+| `localized` | Boolean | Indicates that any time zone localization will be handeld by the consumer and so any values will not be converted from/to UTC |
 | `max-value` | String | Maximum valid date/time that could be selected by a user |
 | `min-value` | String | Minimum valid date/time that could be selected by a user |
 | `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
@@ -241,7 +241,7 @@ Note: All `*value` properties should be in ISO 8601 combined date and time forma
 
 Use the `<d2l-input-date-time-range>` component when users need to enter two dates and times in a range, like an assignment start and end date/time. The component consists of two input-date-time components - one for the start of a range and one for the end of a range. Values specified for these components (through the `start-value` and/or `end-value` attributes) are displayed if specified, and selected values are reflected.
 
-Note: All `*value` properties should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's timezone).
+Note: All `*value` properties should be in ISO 8601 combined date and time format (`YYYY-MM-DDTHH:mm:ss.sssZ`) and in UTC time (i.e., do NOT localize to the user's time zone).
 
 <!-- docs: demo code properties name:d2l-input-date-time-range sandboxTitle:'Date-Time Range Input' align:flex-start autoSize:false size:xlarge -->
 ```html
@@ -294,8 +294,8 @@ A few notable accessibility-related features of these components are:
 
 ## Timezone
 
-The `input-date-time` and `input-date-time-range` components expect input in UTC (`YYYY-MM-DDTHH:mm:ss.sssZ`). These components will convert values automatically to the user's timezone to display the date/time to them, and then will provide the value back in UTC. No timezone conversions are needed.
+The `input-date-time` and `input-date-time-range` components expect input in UTC (`YYYY-MM-DDTHH:mm:ss.sssZ`). These components will convert values automatically to the user's time zone to display the date/time to them, and then will provide the value back in UTC. No time zone conversions are needed.
 
-The `input-date`, `input-date-range`, `input-time`, and `input-time-range` components do not handle timezone and so require the input to be in the user's timezone (if applicable), which corresponds to the user's timezone as specified in their account settings. The consumer of the component will need to handle any necessary UTC to local to UTC conversions. The following methods can be used for these conversions:
-* `getLocalDateTimeFromUTCDateTime(utcDateTime)` (where `utcDateTime` is the date/time in the format `YYYY-MM-DDTHH:mm:ss.sssZ`) returns the date/time in the format `YYYY-MM-DDTHH:mm:ss.sss` in the user's local timezone
-* `getUTCDateTimeFromLocalDateTime(localDate, localTime)` (where `localDate` and `localTime` are the date and time in the user's local timezone) returns the date/time in the format `YYYY-MM-DDTHH:mm:ss.sssZ` in UTC
+The `input-date`, `input-date-range`, `input-time`, and `input-time-range` components do not handle time zone and so require the input to be in the user's time zone (if applicable), which corresponds to the user's time zone as specified in their account settings. The consumer of the component will need to handle any necessary UTC to local to UTC conversions. The following methods can be used for these conversions:
+* `getLocalDateTimeFromUTCDateTime(utcDateTime)` (where `utcDateTime` is the date/time in the format `YYYY-MM-DDTHH:mm:ss.sssZ`) returns the date/time in the format `YYYY-MM-DDTHH:mm:ss.sss` in the user's local time zone
+* `getUTCDateTimeFromLocalDateTime(localDate, localTime)` (where `localDate` and `localTime` are the date and time in the user's local time zone) returns the date/time in the format `YYYY-MM-DDTHH:mm:ss.sssZ` in UTC

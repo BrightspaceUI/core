@@ -181,14 +181,14 @@ describe('date-time', () => {
 		});
 	});
 
-	['America/Toronto', 'Australia/Eucla'].forEach((timezone) => {
-		describe(`getClosestValidDate in ${timezone}`, () => {
+	['America/Toronto', 'Australia/Eucla'].forEach((timeZone) => {
+		describe(`getClosestValidDate in ${timeZone}`, () => {
 			let clock;
 			const today = '2018-02-12T20:00:00.000Z';
-			const todayDate = timezone === 'America/Toronto' ? '2018-02-12' : '2018-02-13';
+			const todayDate = timeZone === 'America/Toronto' ? '2018-02-12' : '2018-02-13';
 
 			before(() => {
-				documentLocaleSettings.timezone.identifier = timezone;
+				documentLocaleSettings.timezone.identifier = timeZone;
 				const newToday = new Date(today);
 				clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
 			});
@@ -255,11 +255,11 @@ describe('date-time', () => {
 			});
 		});
 
-		describe(`getUTCDateTimeRange in ${timezone}`, () => {
+		describe(`getUTCDateTimeRange in ${timeZone}`, () => {
 			let clock;
 
 			before(() => {
-				documentLocaleSettings.timezone.identifier = timezone;
+				documentLocaleSettings.timezone.identifier = timeZone;
 				const newToday = new Date('2018-02-12T20:00:00Z');
 				clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
 			});
@@ -294,10 +294,10 @@ describe('date-time', () => {
 
 			it('returns expected startValue and endValue for today when type is days and diff is 0', async() => {
 				const res = getUTCDateTimeRange('days', 0);
-				if (timezone === 'America/Toronto') {
+				if (timeZone === 'America/Toronto') {
 					expect(res.startValue).to.equal('2018-02-12T05:00:00.000Z');
 					expect(res.endValue).to.equal('2018-02-13T04:59:59.000Z');
-				} else if (timezone === 'Australia/Eucla') {
+				} else if (timeZone === 'Australia/Eucla') {
 					expect(res.startValue).to.equal('2018-02-12T15:15:00.000Z');
 					expect(res.endValue).to.equal('2018-02-13T15:14:59.000Z');
 				}
@@ -326,7 +326,7 @@ describe('date-time', () => {
 			expect(getDateFromISODateTime('2019-01-30T12:30:00Z')).to.deep.equal(new Date(2019, 0, 30, 7, 30, 0));
 		});
 
-		it('should return expected date in Australia/Eucla timezone', () => {
+		it('should return expected date in Australia/Eucla time zone', () => {
 			documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
 			expect(getDateFromISODateTime('2019-01-30T12:30:00Z')).to.deep.equal(new Date(2019, 0, 30, 21, 15, 0));
 		});
@@ -369,11 +369,11 @@ describe('date-time', () => {
 			documentLocaleSettings.timezone.identifier = 'America/Toronto';
 		});
 
-		it('should return expected day in America/Toronto timezone', () => {
+		it('should return expected day in America/Toronto time zone', () => {
 			expect(getToday()).to.deep.equal({ year: 2018, month: 2, date: 12, hours: 15, minutes: 0, seconds: 0 });
 		});
 
-		it('should return expected day in Australia/Eucla timezone', () => {
+		it('should return expected day in Australia/Eucla time zone', () => {
 			documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
 			expect(getToday()).to.deep.equal({ year: 2018, month: 2, date: 13, hours: 4, minutes: 45, seconds: 0 });
 		});
