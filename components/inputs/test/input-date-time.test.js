@@ -35,14 +35,14 @@ describe('d2l-input-date-time', () => {
 
 	describe('min and max value', () => {
 		it('should set correct min and max on d2l-input-date', async() => {
-			await aTimeout(5); // Fixes flaky test potentially caused by timezone not yet being set
+			await aTimeout(5); // Fixes flaky test potentially caused by time zone not yet being set
 			const elem = await fixture(minMaxFixture);
 			const inputElem = getChildElem(elem, 'd2l-input-date');
 			expect(inputElem.minValue).to.equal('2018-08-26');
 			expect(inputElem.maxValue).to.equal('2018-09-30');
 		});
 
-		it('should set correct min and max on d2l-input-date in Australia/Eucla timezone', async() => {
+		it('should set correct min and max on d2l-input-date in Australia/Eucla time zone', async() => {
 			documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
 			const elem = await fixture(minMaxFixture);
 			const inputElem = getChildElem(elem, 'd2l-input-date');
@@ -360,8 +360,8 @@ describe('d2l-input-date-time', () => {
 			expect(elem.value).to.equal('');
 		});
 
-		describe('timezone', () => {
-			it('should return expected day in Australia/Eucla timezone', async() => {
+		describe('time zone', () => {
+			it('should return expected day in Australia/Eucla time zone', async() => {
 				documentLocaleSettings.timezone.identifier = 'Australia/Eucla';
 				const elem = await fixture('<d2l-input-date-time label="label text" value="2018-03-03T08:00:00.000Z"></d2l-input-date-time>');
 				const inputElem = getChildElem(elem, 'd2l-input-time');
