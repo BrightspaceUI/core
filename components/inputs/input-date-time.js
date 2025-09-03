@@ -86,6 +86,16 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 			 */
 			timeDefaultValue: { attribute: 'time-default-value', reflect: true, type: String },
 			/**
+			 * Timezone identifier for the time input to use.
+			 * @type {string}
+			 */
+			timeZoneId: { type: String },
+			/**
+			 * Hides the time zone inside the time selection dropdown. Should only be used when the time input value is not related to any one time zone
+			 * @type {Boolean}
+			 */
+			timeZoneHidden: { type: Boolean, attribute: 'time-zone-hidden' },
+			/**
 			 * Value of the input
 			 * @type {string}
 			 */
