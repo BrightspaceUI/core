@@ -22,18 +22,30 @@ export default {
 	"components.filter.clearAnnounce": "ล้างตัวกรองสำหรับ: {filterName}",
 	"components.filter.clearDescription": "ล้างตัวกรองสำหรับ: {filterName}",
 	"components.filter.filterCountDescription":
-		`{number,plural,=0{ไม่มีตัวกรองที่ถูกใช้} one{{number} ตัวกรองที่ถูกใช้} other{{number} ตัวกรองที่ถูกใช้}}`,
+		`{number, plural,
+			=0 {ไม่มีตัวกรองที่ถูกใช้}
+			other {{number} ตัวกรองที่ถูกใช้}
+		}`,
 	"components.filter.filters": "ตัวกรอง",
 	"components.filter.loading": "กำลังโหลดตัวกรอง",
 	"components.filter.noFilters": "ไม่มีตัวกรองที่ใช้ได้",
 	"components.filter.searchResults":
-		`{number,plural,=0{ไม่มีผลลัพธ์การค้นหา} one{{number} ผลลัพธ์การค้นหา} other{{number} ผลลัพธ์การค้นหา}}`,
+		`{number, plural,
+			=0 {ไม่มีผลลัพธ์การค้นหา}
+			other {{number} ผลลัพธ์การค้นหา}
+		}`,
 	"components.filter.selectedFirstListLabel": "{headerText} ตัวกรองที่เลือกจะปรากฏก่อน",
 	"components.filter.singleDimensionDescription": "กรองตาม: {filterName}",
 	"components.filter-dimension-set-date-text-value.textDays":
-		`{num,plural,=0{วันนี้} one{{num} วันที่ผ่านมา} other{{num} วันที่ผ่านมา}}`,
+		`{num, plural,
+			=0 {วันนี้}
+			other {{num} วันที่ผ่านมา}
+		}`,
 	"components.filter-dimension-set-date-text-value.textHours":
-		`{num,plural,=1{ชั่วโมงที่แล้ว} other{{num} ชั่วโมงที่แล้ว}}`,
+		`{num, plural,
+			=1 {ชั่วโมงที่แล้ว}
+			other {{num} ชั่วโมงที่แล้ว}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "{num} เดือนที่ผ่านมา",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}  ขยายเพื่อเลือกวันที่",
 	"components.filter-dimension-set-date-time-range-value.text": "ช่วงวันที่ที่กำหนดเอง",
@@ -44,16 +56,33 @@ export default {
 	"components.form-element.defaultFieldLabel": "ฟิลด์",
 	"components.form-element.input.email.typeMismatch": "อีเมลไม่ถูกต้อง",
 	"components.form-element.input.number.rangeError":
-		`{minExclusive,select,true{{maxExclusive,select,true{จำนวนต้องมากกว่า {min} และน้อยกว่า {max}} other{จำนวนต้องมากกว่า {min} และน้อยกว่าหรือเท่ากับ{max}}}} other{{maxExclusive,select,true{จำนวนต้องมากกว่าหรือเท่ากับ {min} และน้อยกว่า {max}} other{จำนวนต้องมากกว่าหรือเท่ากับ {min} และน้อยกว่าหรือเท่ากับ {max}}}}}`,
+		`{minExclusive, select,
+			true {{maxExclusive, select,
+				true {จำนวนต้องมากกว่า {min} และน้อยกว่า {max}}
+				other {จำนวนต้องมากกว่า {min} และน้อยกว่าหรือเท่ากับ{max}}
+			}}
+			other {{maxExclusive, select,
+				true {จำนวนต้องมากกว่าหรือเท่ากับ {min} และน้อยกว่า {max}}
+				other {จำนวนต้องมากกว่าหรือเท่ากับ {min} และน้อยกว่าหรือเท่ากับ {max}}
+			}}
+		}`,
 	"components.form-element.input.number.rangeOverflow":
-		`{maxExclusive,select,true{จำนวนต้องน้อยกว่า {max}} other{จำนวนต้องน้อยกว่าหรือเท่ากับ {max}}}`,
+		`{maxExclusive, select,
+			true {จำนวนต้องน้อยกว่า {max}}
+			other {จำนวนต้องน้อยกว่าหรือเท่ากับ {max}}
+		}`,
 	"components.form-element.input.number.rangeUnderflow":
-		`{minExclusive,select,true{จำนวนต้องมากกว่า {min}} other{จำนวนต้องมากกว่าหรือเท่ากับ {min}}}`,
+		`{minExclusive, select,
+			true {จำนวนต้องมากกว่า {min}}
+			other {จำนวนต้องมากกว่าหรือเท่ากับ {min}}
+		}`,
 	"components.form-element.input.text.tooShort": "{label} ต้องมีอักขระอย่างน้อย {minlength} ตัว",
 	"components.form-element.input.url.typeMismatch": "URL ไม่ถูกต้อง",
 	"components.form-element.valueMissing": "{label} เป็นฟิลด์บังคับ",
 	"components.form-error-summary.errorSummary":
-		`{count,plural,one{พบ {count} ข้อผิดพลาดในข้อมูลที่คุณส่ง} other{พบ {count} ข้อผิดพลาดในข้อมูลที่คุณส่ง}}`,
+		`{count, plural,
+			other {พบ {count} ข้อผิดพลาดในข้อมูลที่คุณส่ง}
+		}`,
 	"components.form-error-summary.text": "สลับรายละเอียดข้อผิดพลาด",
 	"components.input-color.backgroundColor": "สีพื้นหลัง",
 	"components.input-color.foregroundColor": "สีพื้นหน้า",
@@ -116,14 +145,20 @@ export default {
 	"components.object-property-list.item-placeholder-text": "รายการตัวแทน",
 	"components.overflow-group.moreActions": "การดำเนินการเพิ่มเติม",
 	"components.pageable.info":
-		`{count,plural,one{{countFormatted} รายการ} other{{countFormatted} รายการ}}`,
+		`{count, plural,
+			other {{countFormatted} รายการ}
+		}`,
 	"components.pageable.info-with-total":
-		`{totalCount,plural,one{{countFormatted} จาก {totalCountFormatted} รายการ} other{{countFormatted} จาก {totalCountFormatted} รายการ}}`,
+		`{totalCount, plural,
+			other {{countFormatted} จาก {totalCountFormatted} รายการ}
+		}`,
 	"components.pager-load-more.action": "โหลดเพิ่มเติม",
 	"components.pager-load-more.action-with-page-size": "โหลดเพิ่ม {count} รายการ",
 	"components.pager-load-more.status-loading": "กำลังโหลดรายการเพิ่มเติม",
 	"components.selection.action-max-hint":
-		`{count,plural,one{ปิดใช้งานเมื่อเลือกมากกว่า {countFormatted} รายการ} other{ปิดใช้งานเมื่อเลือกมากกว่า {countFormatted} รายการ}}`,
+		`{count, plural,
+			other {ปิดใช้งานเมื่อเลือกมากกว่า {countFormatted} รายการ}
+		}`,
 	"components.selection.action-required-hint": "เลือกรายการที่จะดำเนินการนี้",
 	"components.selection.select-all": "เลือกทั้งหมด",
 	"components.selection.select-all-items": "เลือกทั้ง {count} รายการ",
@@ -139,7 +174,25 @@ export default {
 	"components.table-col-sort-button.addSortOrder": "เลือกเพื่อเพิ่มลำดับการเรียง",
 	"components.table-col-sort-button.changeSortOrder": "เลือกเพื่อเปลี่ยนลำดับการเรียง",
 	"components.table-col-sort-button.title":
-		`{sourceType,select,dates{{direction,select,desc{เรียงจากใหม่ไปเก่า} other{เรียงจากเก่าไปใหม่}}} numbers{{direction,select,desc{เรียงจากสูงไปต่ำ} other{เรียงจากต่ำไปสูง}}} words{{direction,select,desc{เรียงจาก Z ไป A} other{เรียงจาก A ไป Z}}} value{เรียงลำดับ {selectedMenuItemText}} other{{direction,select,desc{เรียงจากมากไปน้อย} other{เรียงจากน้อยไปมาก}}}}`,
+		`{sourceType, select,
+			dates {{direction, select,
+				desc {เรียงจากใหม่ไปเก่า}
+				other {เรียงจากเก่าไปใหม่}
+			}}
+			numbers {{direction, select,
+				desc {เรียงจากสูงไปต่ำ}
+				other {เรียงจากต่ำไปสูง}
+			}}
+			words {{direction, select,
+				desc {เรียงจาก Z ไป A}
+				other {เรียงจาก A ไป Z}
+			}}
+			value {เรียงลำดับ {selectedMenuItemText}}
+			other {{direction, select,
+				desc {เรียงจากมากไปน้อย}
+				other {เรียงจากน้อยไปมาก}
+			}}
+		}`,
 	"components.table-controls.label": "การดำเนินการสำหรับตาราง",
 	"components.tabs.next": "เลื่อนไปข้างหน้า",
 	"components.tabs.previous": "เลื่อนย้อนกลับ",
@@ -152,7 +205,6 @@ export default {
 	"components.tag-list.role-description":
 		`{count, plural,
 			=0 {Tag List with 0 items}
-			one {Tag List with {count} item}
 			other {Tag List with {count} items}
 		}`,
 	"components.tag-list.show-less": "แสดงน้อยลง",
