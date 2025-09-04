@@ -24,7 +24,6 @@ export default {
 	"components.filter.filterCountDescription":
 		`{number, plural,
 			=0 {ไม่มีตัวกรองที่ถูกใช้}
-			one {{number} ตัวกรองที่ถูกใช้}
 			other {{number} ตัวกรองที่ถูกใช้}
 		}`,
 	"components.filter.filters": "ตัวกรอง",
@@ -33,7 +32,6 @@ export default {
 	"components.filter.searchResults":
 		`{number, plural,
 			=0 {ไม่มีผลลัพธ์การค้นหา}
-			one {{number} ผลลัพธ์การค้นหา}
 			other {{number} ผลลัพธ์การค้นหา}
 		}`,
 	"components.filter.selectedFirstListLabel": "{headerText} ตัวกรองที่เลือกจะปรากฏก่อน",
@@ -41,7 +39,6 @@ export default {
 	"components.filter-dimension-set-date-text-value.textDays":
 		`{num, plural,
 			=0 {วันนี้}
-			one {{num} วันที่ผ่านมา}
 			other {{num} วันที่ผ่านมา}
 		}`,
 	"components.filter-dimension-set-date-text-value.textHours":
@@ -84,7 +81,6 @@ export default {
 	"components.form-element.valueMissing": "{label} เป็นฟิลด์บังคับ",
 	"components.form-error-summary.errorSummary":
 		`{count, plural,
-			one {พบ {count} ข้อผิดพลาดในข้อมูลที่คุณส่ง}
 			other {พบ {count} ข้อผิดพลาดในข้อมูลที่คุณส่ง}
 		}`,
 	"components.form-error-summary.text": "สลับรายละเอียดข้อผิดพลาด",
@@ -150,12 +146,10 @@ export default {
 	"components.overflow-group.moreActions": "การดำเนินการเพิ่มเติม",
 	"components.pageable.info":
 		`{count, plural,
-			one {{countFormatted} รายการ}
 			other {{countFormatted} รายการ}
 		}`,
 	"components.pageable.info-with-total":
 		`{totalCount, plural,
-			one {{countFormatted} จาก {totalCountFormatted} รายการ}
 			other {{countFormatted} จาก {totalCountFormatted} รายการ}
 		}`,
 	"components.pager-load-more.action": "โหลดเพิ่มเติม",
@@ -163,7 +157,6 @@ export default {
 	"components.pager-load-more.status-loading": "กำลังโหลดรายการเพิ่มเติม",
 	"components.selection.action-max-hint":
 		`{count, plural,
-			one {ปิดใช้งานเมื่อเลือกมากกว่า {countFormatted} รายการ}
 			other {ปิดใช้งานเมื่อเลือกมากกว่า {countFormatted} รายการ}
 		}`,
 	"components.selection.action-required-hint": "เลือกรายการที่จะดำเนินการนี้",
@@ -212,7 +205,6 @@ export default {
 	"components.tag-list.role-description":
 		`{count, plural,
 			=0 {Tag List with 0 items}
-			one {Tag List with {count} item}
 			other {Tag List with {count} items}
 		}`,
 	"components.tag-list.show-less": "แสดงน้อยลง",
