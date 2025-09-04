@@ -31,7 +31,7 @@ export default {
 	"components.filter.selectedFirstListLabel": "{headerText}. Các bộ lọc được chọn xuất hiện đầu tiên.",
 	"components.filter.singleDimensionDescription": "Lọc theo: {filterName}",
 	"components.filter-dimension-set-date-text-value.textDays":
-		`{num, plural, =0 { hôm nay} one {{num} ngày trước} other {{num} ngày trước}}`,
+		`{num, plural, =0 {hôm nay} one {{num} ngày trước} other {{num} ngày trước}}`,
 	"components.filter-dimension-set-date-text-value.textHours":
 		`{num, plural, =1 {Giờ trước} other {{num} giờ trước}}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "{num} tháng trước",
