@@ -23,26 +23,13 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 			:host([action-href]:not([action-href=""])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
-			:host([_list-item-interactive-enabled]) a[href] {
+			a[href] {
 				color: unset;
 				display: block;
 				height: 100%;
 				outline: none;
 				text-decoration: none;
 				width: 100%;
-			}
-			/** clean up with flag GAUD-7495-list-interactive-content */
-			:host(:not([_list-item-interactive-enabled])) a[href] {
-				display: block;
-				height: 100%;
-				outline: none;
-				width: 100%;
-			}
-			/** clean up with flag GAUD-7495-list-interactive-content */
-			:host(:not([_list-item-interactive-enabled])[action-href]:not([action-href=""])) [slot="content"],
-			:host(:not([_list-item-interactive-enabled]):not([no-primary-action])) [slot="control-action"] ~ [slot="content"],
-			:host(:not([_list-item-interactive-enabled]):not([no-primary-action])) [slot="outside-control-action"] ~ [slot="content"] {
-				pointer-events: none;
 			}
 			:host([action-href]:not([action-href=""])) [slot="control-action"],
 			:host([action-href]:not([action-href=""])) [slot="outside-control-action"] {
@@ -76,8 +63,6 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		} else {
 			/** Dispatched when the item's primary link action is clicked */
 			this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
-
-			if (!this._listItemInteractiveEnabled) return; // clean up with flag GAUD-7495-list-interactive-content
 
 			e.stopPropagation();
 
