@@ -292,7 +292,7 @@ A few notable accessibility-related features of these components are:
 * When the date input is opened with the keyboard, focus goes to either selected date, today, or earliest valid date if today is prior to `min-date`
 * Extensive intuitive keyboard interaction support
 
-## Timezone
+## Time Zone
 
 The `input-date-time` and `input-date-time-range` components expect input in UTC (`YYYY-MM-DDTHH:mm:ss.sssZ`). These components will convert values automatically to the user's time zone to display the date/time to them, and then will provide the value back in UTC. No time zone conversions are needed.
 

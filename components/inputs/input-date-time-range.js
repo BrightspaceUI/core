@@ -151,6 +151,16 @@ class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormE
 			 * @type {string}
 			 */
 			startValue: { attribute: 'start-value', reflect: true, type: String },
+			/**
+			 * Timezone identifier for the time inputs to use.
+			 * @type {string}
+			 */
+			timeZoneId: { type: String },
+			/**
+			 * Hides the time zone inside the time selection dropdowns. Should only be used when the time input values are not related to any one time zone
+			 * @type {Boolean}
+			 */
+			timeZoneHidden: { type: Boolean, attribute: 'time-zone-hidden' },
 			_slotOccupied: { type: Boolean }
 		};
 	}
@@ -251,6 +261,8 @@ class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormE
 							?required="${this.required}"
 							?skeleton="${this.skeleton}"
 							time-default-value="startOfDay"
+							time-zone-id="${ifDefined(this.timeZoneId)}"
+							?time-zone-hidden="${this.timeZoneHidden}"
 							value="${ifDefined(this.startValue)}">
 						</d2l-input-date-time>
 						<slot name="start" @slotchange="${this._onSlotChange}"></slot>
@@ -273,6 +285,8 @@ class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormE
 							?required="${this.required}"
 							?skeleton="${this.skeleton}"
 							time-default-value="endOfDay"
+							time-zone-id="${ifDefined(this.timeZoneId)}"
+							?time-zone-hidden="${this.timeZoneHidden}"
 							value="${ifDefined(this.endValue)}">
 						</d2l-input-date-time>
 						<slot name="end" @slotchange="${this._onSlotChange}"></slot>
