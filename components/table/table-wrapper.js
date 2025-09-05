@@ -10,6 +10,25 @@ import { SelectionMixin } from '../selection/selection-mixin.js';
 
 const colSyncFix = getFlag('GAUD-8228-8186-improved-table-col-sync', true);
 
+const SELECTORS = {
+	headers: 'tr.d2l-table-header, tr[header], thead tr',
+	items: ':not(thead) > tr:not(.d2l-table-header):not([header])',
+};
+
+export function getStickyHeadersHeight(table) {
+	if (!table) return 0;
+
+	let totalHeight = 0;
+	const stickyRows = table.querySelectorAll(SELECTORS.headers);
+
+	stickyRows.forEach(row => {
+		const rowHeight = row.querySelector('th:not([rowspan]),td:not([rowspan])')?.offsetHeight || 0;
+		totalHeight += rowHeight;
+	});
+
+	return totalHeight;
+}
+
 export const tableStyles = css`
 	.d2l-table {
 		border-collapse: separate; /* needed to override reset stylesheets */
@@ -256,11 +275,6 @@ export const tableStyles = css`
 	}
 `;
 
-const SELECTORS = {
-	headers: 'tr.d2l-table-header, tr[header], thead tr',
-	items: ':not(thead) > tr:not(.d2l-table-header):not([header])',
-};
-
 /**
  * Wraps a native <table> element, providing styling and scroll buttons for overflow.
  * @slot - Content to wrap
@@ -381,6 +395,8 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
+
+		this._focusScrollingEnabled = getFlag('GAUD-8527-focus-scrolling-bug-fix', true);
 	}
 
 	connectedCallback() {
@@ -509,6 +525,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 		this._handleControlsScrolledChange();
 		this._updateStickyTops();
+		this._updateStickyOffset();
 	}
 
 	_handleControlsScrolledChange() {
@@ -546,6 +563,8 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			primary: this._table?.querySelector('tbody'),
 			secondary: this._table?.querySelector('thead'),
 		} : {};
+
+		this._updateStickyOffset();
 
 		// observes mutations to <table>'s direct children and also
 		// its subtree (rows or cells added/removed to any descendant)
@@ -750,6 +769,30 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			}
 			node = getComposedParent(node);
 		}
+	}
+
+	_updateStickyOffset() {
+		const stickyControls = this._controls && !this._controls.noSticky;
+		let stylesheet = document.head.querySelector('#d2l-table-wrapper-sticky');
+		if (!this.stickyHeaders && !stickyControls) {
+			if (stylesheet) {
+				stylesheet.remove();
+			}
+			return;
+		}
+		const controlsOffset = stickyControls ? (this._controls?.offsetHeight || 0) + 6 : 0; // +6 for margin-bottom
+		const stickyHeadersHeight = this.stickyHeaders ? getStickyHeadersHeight(this._table) : 0;
+		const stickyOffset = controlsOffset + stickyHeadersHeight;
+		if (!stylesheet) {
+			stylesheet = document.createElement('style');
+			stylesheet.id = 'd2l-table-wrapper-sticky';
+			document.head.appendChild(stylesheet);
+		}
+		stylesheet.textContent = `
+			html {
+				scroll-padding-top: ${stickyOffset}px !important;
+			}
+		`;
 	}
 
 	_updateStickyTops() {
