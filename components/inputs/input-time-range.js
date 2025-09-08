@@ -121,7 +121,7 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(LocalizeC
 			 */
 			timeInterval: { attribute: 'time-interval', reflect: true, type: String },
 			/**
-			 * Timezone identifier for the inputs to use.
+			 * Time zone identifier for the inputs to use.
 			 * @type {string}
 			 */
 			timeZoneId: { type: String },
