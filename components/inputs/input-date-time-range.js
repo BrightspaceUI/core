@@ -152,7 +152,7 @@ class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormE
 			 */
 			startValue: { attribute: 'start-value', reflect: true, type: String },
 			/**
-			 * Timezone identifier for the time inputs to use.
+			 * Time zone identifier for the time inputs to use.
 			 * @type {string}
 			 */
 			timeZoneId: { type: String },

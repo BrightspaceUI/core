@@ -86,7 +86,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 			 */
 			timeDefaultValue: { attribute: 'time-default-value', reflect: true, type: String },
 			/**
-			 * Timezone identifier for the time input to use.
+			 * Time zone identifier for the time input to use.
 			 * @type {string}
 			 */
 			timeZoneId: { type: String },
