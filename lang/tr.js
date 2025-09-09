@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Daha Fazla Yükle",
 	"components.pager-load-more.action-with-page-size": "{count} Tane Daha Yükle",
 	"components.pager-load-more.status-loading": "Daha fazla öğe yükleniyor",
+	"components.scroll-wrapper.scroll-left": "Scroll left",
+	"components.scroll-wrapper.scroll-right": "Scroll right",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {{countFormatted} öğeden fazlası seçildiğinde devre dışı bırakılır}

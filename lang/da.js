@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Indlæs flere",
 	"components.pager-load-more.action-with-page-size": "Indlæs {count} mere",
 	"components.pager-load-more.status-loading": "Indlæser flere elementer",
+	"components.scroll-wrapper.scroll-left": "Scroll left",
+	"components.scroll-wrapper.scroll-right": "Scroll right",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {Deaktiveret, når mere end {countFormatted} element er valgt}

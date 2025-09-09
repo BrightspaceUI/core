@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Charger plus",
 	"components.pager-load-more.action-with-page-size": "Charger {count} supplémentaire(s)",
 	"components.pager-load-more.status-loading": "Charger plus d’éléments",
+	"components.scroll-wrapper.scroll-left": "Scroll left",
+	"components.scroll-wrapper.scroll-right": "Scroll right",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {désactivé lorsque plus de {countFormatted} élément est sélectionné}

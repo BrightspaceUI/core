@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Hoʻouka hou aku",
 	"components.pager-load-more.action-with-page-size": "Hoʻouka {count} Mea hou aku",
 	"components.pager-load-more.status-loading": "Ke hoʻouka nei i nā mea hou aʻe",
+	"components.scroll-wrapper.scroll-left": "Scroll left",
+	"components.scroll-wrapper.scroll-right": "Scroll right",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {Hoʻopaʻa ʻia ke ʻoi aku ma mua o {countFormatted} koho ʻia ka mea}
