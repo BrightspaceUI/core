@@ -45,10 +45,12 @@ class TestScrollWrapper extends LitElement {
 		this._customScrollers = {};
 	}
 
-	firstUpdated(changedProperties) {
+	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		if (this.scroll !== 0) {
-			requestAnimationFrame(() => this.shadowRoot.querySelector('d2l-scroll-wrapper').scrollDistance(this.scroll, false));
+			const wrapper = this.shadowRoot.querySelector('d2l-scroll-wrapper');
+			await wrapper.updateComplete;
+			requestAnimationFrame(() => wrapper.scrollDistance(this.scroll, false));
 		}
 		if (this.splitScrollers) {
 			this._customScrollers = { primary: this.shadowRoot.querySelector('.primary'), secondary: this.shadowRoot.querySelectorAll('.secondary') };

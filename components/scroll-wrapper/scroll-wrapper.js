@@ -4,8 +4,8 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getFlag } from '../../helpers/flags.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 export const printMediaQueryOnlyFlag = getFlag('GAUD-8263-scroll-wrapper-media-print', false);
 
