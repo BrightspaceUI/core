@@ -17,7 +17,6 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			 */
 			preventNavigation: { type: Boolean, attribute: 'prevent-navigation' },
 			_childCurrent: { type: Boolean, reflect: true, attribute: '_child-current' },
-			_focusingElem: { type: Boolean, reflect: true, attribute: '_focusing-elem' },
 			_hasCurrentParent: { type: Boolean, reflect: true, attribute: '_has-current-parent' },
 			_nextSiblingCurrent: { type: Boolean, reflect: true, attribute: '_next-sibling-current' },
 		};
@@ -66,21 +65,6 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			:host([current]) .d2l-list-item-color-outer {
 				padding-block: 3px;
 			}
-
-			/* clean up with GAUD-7495-list-item-new-styles flag */
-			@supports selector(:has(a, b)) {
-				:host([_focusing-primary-action]) .d2l-list-item-content {
-					--d2l-list-item-content-text-border-radius: initial;
-					--d2l-list-item-content-text-outline: initial;
-					--d2l-list-item-content-text-outline-offset: initial;
-				}
-				:host([_focusing-primary-action]):has(:focus-visible) .d2l-list-item-content {
-					--d2l-list-item-content-text-border-radius: 3px;
-					--d2l-list-item-content-text-outline: 2px solid var(--d2l-color-celestine);
-					--d2l-list-item-content-text-outline-offset: 1px;
-				}
-			}
-
 		` ];
 
 		super.styles && styles.unshift(super.styles);
@@ -91,7 +75,6 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 		super();
 		this.current = false;
 		this._childCurrent = false;
-		this._focusingElem = false;
 		this._hasCurrentParent = false;
 		this._nextSiblingCurrent = false;
 	}
@@ -112,9 +95,6 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 		if (this.current) {
 			this.dispatchSetChildCurrentEvent(true);
 		}
-
-		this.addEventListener('focusin', this.#handleFocusIn);
-		this.addEventListener('focusout', this.#handleFocusOut);
 	}
 
 	updated(changedProperties) {
@@ -171,16 +151,6 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 		}
 		if (this.preventNavigation) e.preventDefault();
 		super._handleLinkClick(e);
-	}
-
-	/* clean up (including _focusingElem) with GAUD-7495-list-item-new-styles flag */
-	#handleFocusIn(e) {
-		e.stopPropagation(); // prevent _focusing from being set on the parent
-		this._focusingElem = true;
-	}
-
-	#handleFocusOut() {
-		this._focusingElem = false;
 	}
 
 	#setAriaCurrent(val) {
