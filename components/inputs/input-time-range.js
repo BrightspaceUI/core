@@ -121,7 +121,7 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(LocalizeC
 			 */
 			timeInterval: { attribute: 'time-interval', reflect: true, type: String },
 			/**
-			 * Timezone identifier for the inputs to use.
+			 * Time zone identifier for the inputs to use.
 			 * @type {string}
 			 */
 			timeZoneId: { type: String },
@@ -281,6 +281,8 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(LocalizeC
 						?skeleton="${this.skeleton}"
 						slot="right"
 						time-interval="${ifDefined(timeInterval)}"
+						time-zone-id="${ifDefined(this.timeZoneId)}"
+						?time-zone-hidden="${this.timeZoneHidden}"
 						value="${ifDefined(this.endValue)}">
 					</d2l-input-time>
 				</d2l-input-date-time-range-to>

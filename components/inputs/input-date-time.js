@@ -86,7 +86,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 			 */
 			timeDefaultValue: { attribute: 'time-default-value', reflect: true, type: String },
 			/**
-			 * Timezone identifier for the time input to use.
+			 * Time zone identifier for the time input to use.
 			 * @type {string}
 			 */
 			timeZoneId: { type: String },
@@ -254,6 +254,8 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 				max-height="430"
 				?required="${this.required}"
 				?skeleton="${this.skeleton}"
+				time-zone-id="${ifDefined(this.timeZoneId)}"
+				?time-zone-hidden="${this.timeZoneHidden}"
 				.value="${parsedValue}">
 			</d2l-input-time>` : null;
 

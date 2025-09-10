@@ -175,7 +175,7 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 			 */
 			timeZoneId: { type: String, attribute: 'time-zone-id' },
 			/**
-			 * Hides the time zone inside the selection dropdown. Should only be used when the input value is not related to any one timezone
+			 * Hides the time zone inside the selection dropdown. Should only be used when the input value is not related to any one time zone
 			 * @type {Boolean}
 			 */
 			timeZoneHidden: { type: Boolean, attribute: 'time-zone-hidden' },
