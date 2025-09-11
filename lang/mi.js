@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Utaina Anō",
 	"components.pager-load-more.action-with-page-size": "Utaina {count} Ētahi atu",
 	"components.pager-load-more.status-loading": "Uta ana i ētahi atu tūemi",
+	"components.scroll-wrapper.scroll-left": "Scroll left",
+	"components.scroll-wrapper.scroll-right": "Scroll right",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {Kua whakakorehia ina neke atu i te {countFormatted} o ngā tūemi i tīpakohia}

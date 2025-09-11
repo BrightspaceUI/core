@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Meer laden",
 	"components.pager-load-more.action-with-page-size": "Laad nog {count} extra",
 	"components.pager-load-more.status-loading": "Er worden meer items geladen",
+	"components.scroll-wrapper.scroll-left": "Scroll left",
+	"components.scroll-wrapper.scroll-right": "Scroll right",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {Uitgeschakeld als meer dan {countFormatted} item is geselecteerd}
