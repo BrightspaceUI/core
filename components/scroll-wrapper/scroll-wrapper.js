@@ -225,13 +225,15 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 			'd2l-scroll-wrapper-actions': true,
 			'print-media-query-only': printMediaQueryOnlyFlag // remove when cleaning up GAUD-8263-scroll-wrapper-media-print
 		};
-
+		const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+		const leftScrollLabel = this.localize('components.scroll-wrapper.scroll-left');
+		const rightScrollLabel = this.localize('components.scroll-wrapper.scroll-right');
 		const actions = !this.hideActions ? html`
 			<div class="${classMap(actionsClasses)}">
-				<div role="button" aria-label="${this.localize('components.scroll-wrapper.scroll-left')}" class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left vdiff-target" @click="${this._scrollLeft}">
+				<div role="button" aria-label="${isRtl ? rightScrollLabel : leftScrollLabel}" class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left vdiff-target" @click="${this._scrollLeft}">
 					<d2l-icon icon="tier1:chevron-left"></d2l-icon>
 				</div>
-				<div role="button" aria-label="${this.localize('components.scroll-wrapper.scroll-right')}" class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-right vdiff-target" @click="${this._scrollRight}">
+				<div role="button" aria-label="${isRtl ? leftScrollLabel : rightScrollLabel}" class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-right vdiff-target" @click="${this._scrollRight}">
 					<d2l-icon icon="tier1:chevron-right"></d2l-icon>
 				</div>
 			</div>` : null;
