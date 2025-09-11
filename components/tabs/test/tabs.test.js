@@ -72,6 +72,38 @@ describe('d2l-tabs', () => {
 			await oneEvent(tabs, 'd2l-tab-selected');
 		});
 
+		it('dispatches d2l-tab-selected on initial render when no tab selected by consumer', async() => {
+			let eventFired = false;
+
+			document.addEventListener('d2l-tab-selected', () => {
+				eventFired = true;
+			});
+			await fixture(normalFixture);
+
+			expect(eventFired).to.equal(true);
+		});
+
+		it('does not dispatch d2l-tab-selected on initial render when consumer has selected tab', async() => {
+			let eventFired = false;
+
+			document.addEventListener('d2l-tab-selected', () => {
+				eventFired = true;
+			});
+
+			await fixture(html`
+				<div>
+					<d2l-tabs>
+						<d2l-tab id="all" text="All" slot="tabs"></d2l-tab>
+						<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
+						<d2l-tab id="biology" text="Biology" slot="tabs" selected></d2l-tab>
+						<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
+					</d2l-tabs>
+				</div>
+			`);
+
+			expect(eventFired).to.equal(false);
+		});
+
 		it('does not dispatch d2l-tab-selected if already selected', async() => {
 			const el = await fixture(normalFixture);
 			let dispatched = false;

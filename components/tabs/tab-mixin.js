@@ -102,6 +102,8 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		this.addEventListener('click', this.#handleClick);
 		this.addEventListener('keydown', this.#handleKeydown);
 		this.addEventListener('keyup', this.#handleKeyup);
+
+		this.#hasInitialized = true;
 	}
 
 	render() {
@@ -116,6 +118,8 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 		if (changedProperties.has('selected')) {
 			this.ariaSelected = `${this.selected}`;
+			if (!this.#hasInitialized) return; // Only fire events if selected changes after initial render
+
 			if (this.selected) {
 				/** Dispatched when a tab is selected */
 				this.dispatchEvent(new CustomEvent(
@@ -144,6 +148,8 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		console.warn('Subclasses to implement/override renderContent');
 		return html`<div>Default Tab Content</div>`;
 	}
+
+	#hasInitialized = false;
 
 	#handleClick() {
 		if (this.selected) return;
