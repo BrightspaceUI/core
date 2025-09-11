@@ -93,6 +93,10 @@ class TestScrollWrapper extends LocalizeCoreElement(LitElement) {
 	}
 
 	async scrollDistance() {
+		const scrollDir = document.documentElement.getAttribute('dir');
+		if (this._dir === scrollDir) return;
+		this._dir = scrollDir;
+
 		if (this.scroll !== 0) {
 			const wrapper = this.shadowRoot.querySelector('d2l-scroll-wrapper');
 			await wrapper.updateComplete;
