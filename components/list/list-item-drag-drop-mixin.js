@@ -4,7 +4,6 @@ import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
-import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { SelectionInfo } from '../selection/selection-mixin.js';
@@ -21,8 +20,6 @@ export const moveLocations = Object.freeze({
 });
 
 export const dropLocation = moveLocations; // backwards compatibility
-
-const dragDropMultipleFlag = getFlag('GAUD-7495-list-item-drag-drop-multiple', true);
 
 const dropTargetLeaveDelay = 1000; // ms
 const touchHoldDuration = 400; // length of time user needs to hold down touch before dragging occurs
@@ -370,8 +367,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (!this.key) {
 			this.draggable = false;
 		}
-
-		if (!dragDropMultipleFlag) return;
 		this._dragMultiple = this.getRootList()?.hasAttribute('drag-multiple');
 	}
 
@@ -877,8 +872,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_renderDragMultipleImage() {
-		if (!dragDropMultipleFlag) return nothing;
-
 		return this._dragMultiple && this.draggable && (this.selectable || this.expandable) ? html`<d2l-list-item-drag-image></d2l-list-item-drag-image>` : nothing;
 	}
 
