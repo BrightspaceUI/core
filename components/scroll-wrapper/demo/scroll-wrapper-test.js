@@ -1,8 +1,9 @@
 import '../scroll-wrapper.js';
 import { css, html, LitElement } from 'lit';
+import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-class TestScrollWrapper extends LitElement {
+class TestScrollWrapper extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
@@ -47,9 +48,7 @@ class TestScrollWrapper extends LitElement {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		if (this.scroll !== 0) {
-			requestAnimationFrame(() => this.shadowRoot.querySelector('d2l-scroll-wrapper').scrollDistance(this.scroll, false));
-		}
+		this.scrollDistance();
 		if (this.splitScrollers) {
 			this._customScrollers = { primary: this.shadowRoot.querySelector('.primary'), secondary: this.shadowRoot.querySelectorAll('.secondary') };
 		}
@@ -84,8 +83,25 @@ class TestScrollWrapper extends LitElement {
 		`;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('localize')) this.scrollDistance();
+	}
+
 	focus() {
 		if (this.shadowRoot) this.shadowRoot.querySelector('d2l-scroll-wrapper')._container.focus();
+	}
+
+	async scrollDistance() {
+		const scrollDir = document.documentElement.getAttribute('dir');
+		if (this._dir === scrollDir) return;
+		this._dir = scrollDir;
+
+		if (this.scroll !== 0) {
+			const wrapper = this.shadowRoot.querySelector('d2l-scroll-wrapper');
+			await wrapper.updateComplete;
+			requestAnimationFrame(() => wrapper.scrollDistance(this.scroll, false));
+		}
 	}
 
 }
