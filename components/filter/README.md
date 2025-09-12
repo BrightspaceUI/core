@@ -586,7 +586,7 @@ The `d2l-filter-overflow-group` is a container for multiple filters that handles
 ## Future Improvements
 
 * Date Dimension - Ability to filter by dates
-* ability to delay change events until the user has pressed an apply button (see [#341](https://github.com/BrightspaceUI/core/issues/341))
+* ability to delay change events until the user has pressed an apply button
 
 Looking for an enhancement not listed here? Create a GitHub issue!
 <!-- docs: end hidden content -->
