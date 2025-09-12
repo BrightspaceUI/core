@@ -5,13 +5,12 @@ import './list-item-generic-layout.js';
 import './list-item-placement-marker.js';
 import '../tooltip/tooltip.js';
 import '../expand-collapse/expand-collapse-content.js';
-import { css, html, nothing, unsafeCSS } from 'lit';
+import { css, html, nothing } from 'lit';
 import { findComposedAncestor, getComposedChildren, getComposedParent } from '../../helpers/dom.js';
 import { interactiveElements, isInteractiveInComposedPath } from '../../helpers/interactive.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { composeMixins } from '../../helpers/composeMixins.js';
 import { getFirstFocusableDescendant } from '../../helpers/focus.js';
-import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { getValidHexColor } from '../../helpers/color.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -40,8 +39,6 @@ function addTabListener() {
 		tabPressed = false;
 	});
 }
-
-const useNewStylesFlag = getFlag('GAUD-7495-list-item-new-styles', true);
 
 let hasDisplayedKeyboardTooltip = false;
 
@@ -116,7 +113,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
-			_listItemNewStyles: { type: Boolean, reflect: true, attribute: '_list-item-new-styles' },
 			_showAddButton: { type: Boolean, attribute: '_show-add-button', reflect: true },
 			_siblingHasColor: { state: true },
 		};
@@ -148,15 +144,15 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 			:host(:first-of-type) [slot="control-container"]::before,
 			[slot="control-container"]::after,
-			:host([_list-item-new-styles]:not([_separators="none"])[expandable][expanded]:not(:last-of-type))::after,
-			:host([_list-item-new-styles]:not([_separators="none"])[_has-nested-list]:not([expandable]):not(:last-of-type))::after {
+			:host(:not([_separators="none"])[expandable][expanded]:not(:last-of-type))::after,
+			:host(:not([_separators="none"])[_has-nested-list]:not([expandable]):not(:last-of-type))::after {
 				border-top: 1px solid var(--d2l-color-mica);
 				content: "";
 				position: absolute;
 				width: 100%;
 			}
-			:host([_list-item-new-styles][draggable][expandable][expanded]:not(:last-of-type))::after,
-			:host([_list-item-new-styles][draggable][_has-nested-list]:not([expandable]):not(:last-of-type))::after {
+			:host([draggable][expandable][expanded]:not(:last-of-type))::after,
+			:host([draggable][_has-nested-list]:not([expandable]):not(:last-of-type))::after {
 				inset-inline-start: 1.5rem; /* left and right margins of 0.3rem + drag handle width of 0.9rem */
 				width: calc(100% - 1.5rem);
 			}
@@ -220,22 +216,22 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				outline-offset: -4px;
 			}
 			@supports selector(:has(a, b)) {
-				:host([_list-item-new-styles][_focusing-primary-action]) .d2l-list-item-content {
+				:host([_focusing-primary-action]) .d2l-list-item-content {
 					--d2l-list-item-content-text-border-radius: initial;
 					--d2l-list-item-content-text-outline: initial;
 					--d2l-list-item-content-text-outline-offset: initial;
 				}
-				:host([_list-item-new-styles][_focusing-primary-action]):has(:focus-visible) .d2l-list-item-content {
+				:host([_focusing-primary-action]):has(:focus-visible) .d2l-list-item-content {
 					--d2l-list-item-content-text-border-radius: 3px;
 					--d2l-list-item-content-text-outline: 2px solid var(--d2l-color-celestine);
 					--d2l-list-item-content-text-outline-offset: 1px;
 				}
-				:host([_list-item-new-styles][_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content-none {
+				:host([_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content-none {
 					border-radius: initial;
 					outline: initial;
 					outline-offset: initial;
 				}
-				:host([_list-item-new-styles][_focusing-primary-action]:not([padding-type="none"])):has(:focus-visible) .d2l-list-item-content-none {
+				:host([_focusing-primary-action]:not([padding-type="none"])):has(:focus-visible) .d2l-list-item-content-none {
 					border-radius: 8px;
 					outline: var(--d2l-list-item-content-text-outline);
 					outline-offset: -4px;
@@ -328,7 +324,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
 				margin: 0;
 			}
-			:host([_list-item-new-styles][draggable]) [slot="outside-control-container"] {
+			:host([draggable]) [slot="outside-control-container"] {
 				margin-inline-end: -12px;
 			}
 
@@ -351,19 +347,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_hovering-selection]) [slot="outside-control-container"],
 			:host([_focusing-primary-action]) [slot="outside-control-container"],
 			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) [slot="outside-control-container"],
-			:host(:not([_list-item-new-styles]):not([selection-disabled]):not([skeleton])[selectable][_focusing]) [slot="outside-control-container"],
-			:host([_list-item-new-styles]:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing]:not([current])) [slot="outside-control-container"] {
-				border-color: ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')}; /* stylelint-disable-line */
-				margin-bottom: -1px;
-			}
-			/* clean up with GAUD-7495-list-item-new-styles flag */
-			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing-elem]:not([current])) [slot="outside-control-container"] {
+			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing]:not([current])) [slot="outside-control-container"] {
 				border-color: var(--d2l-color-mica);
 				margin-bottom: -1px;
-			}
-			/* clean up with GAUD-7495-list-item-new-styles flag */
-			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"].hide-bottom-border {
-				background-image: linear-gradient(#f3fbff, #f3fbff), linear-gradient(to right, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 20%, transparent 20%, transparent 80%, ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')} 80%); /* stylelint-disable-line */
 			}
 			:host([_hovering-control]) d2l-button-add,
 			:host([_hovering-primary-action]) d2l-button-add,
@@ -371,7 +357,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_focusing-primary-action]) d2l-button-add,
 			:host(:not([selection-disabled]):not([skeleton])[selectable][_focusing]) d2l-button-add,
 			:host(:not([selection-disabled]):not([skeleton])[selected]) d2l-button-add {
-				--d2l-button-add-line-color: ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')}; /* stylelint-disable-line */
+				--d2l-button-add-line-color: var(--d2l-color-mica);
 			}
 			:host([_hovering-control]) [slot="outside-control-container"],
 			:host([_hovering-primary-action]) [slot="outside-control-container"],
@@ -380,7 +366,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 			:host(:not([selection-disabled]):not([skeleton])[selected]) [slot="outside-control-container"] {
 				background-color: #f3fbff;
-				border-color: ${unsafeCSS(useNewStylesFlag ? 'var(--d2l-color-mica)' : '#b6cbe8')}; /* stylelint-disable-line */
+				border-color: var(--d2l-color-mica);
 				margin-bottom: -1px;
 			}
 
@@ -471,7 +457,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this._hasColorSlot = false;
 		this._hasListItemContent = true;
 		this._hasNestedList = false;
-		this._listItemNewStyles = useNewStylesFlag;
 		this._siblingHasColor = false;
 	}
 
@@ -642,9 +627,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	_onFocusIn(e) {
-		if (this._listItemNewStyles) {
-			e.stopPropagation(); // prevent _focusing from being set on the parent
-		}
+		e.stopPropagation(); // prevent _focusing from being set on the parent
 		this._focusing = true;
 		if (this.role !== 'row' || !tabPressed || hasDisplayedKeyboardTooltip) return;
 		this._displayKeyboardTooltip = true;
