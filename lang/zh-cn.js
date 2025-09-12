@@ -154,6 +154,8 @@ export default {
 	"components.pager-load-more.action": "加载更多",
 	"components.pager-load-more.action-with-page-size": "再加载 {count} 个",
 	"components.pager-load-more.status-loading": "加载更多项目",
+	"components.scroll-wrapper.scroll-left": "Scroll left",
+	"components.scroll-wrapper.scroll-right": "Scroll right",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			other {选择的项目超过 {countFormatted} 个时禁用}

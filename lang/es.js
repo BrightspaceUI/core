@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Cargar más",
 	"components.pager-load-more.action-with-page-size": "Cargar {count} más",
 	"components.pager-load-more.status-loading": "Cargando más elementos",
+	"components.scroll-wrapper.scroll-left": "Scroll left",
+	"components.scroll-wrapper.scroll-right": "Scroll right",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {Se desactiva cuando se selecciona más de {countFormatted} elemento}

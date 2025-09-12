@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Läs in fler",
 	"components.pager-load-more.action-with-page-size": "Läs in {count} till",
 	"components.pager-load-more.status-loading": "Läser in fler objekt",
+	"components.scroll-wrapper.scroll-left": "Scroll left",
+	"components.scroll-wrapper.scroll-right": "Scroll right",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {inaktiveras när fler än {countFormatted} objekt väljs}

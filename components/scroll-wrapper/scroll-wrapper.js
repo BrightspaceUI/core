@@ -4,6 +4,7 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getFlag } from '../../helpers/flags.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 export const printMediaQueryOnlyFlag = getFlag('GAUD-8263-scroll-wrapper-media-print', false);
@@ -43,7 +44,7 @@ function getStyleSheetInsertionPoint(elem) {
  * Wraps content which may overflow its horizontal boundaries, providing left/right scroll buttons.
  * @slot - User provided content to wrap
  */
-class ScrollWrapper extends LitElement {
+class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
@@ -224,13 +225,15 @@ class ScrollWrapper extends LitElement {
 			'd2l-scroll-wrapper-actions': true,
 			'print-media-query-only': printMediaQueryOnlyFlag // remove when cleaning up GAUD-8263-scroll-wrapper-media-print
 		};
-
+		const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+		const leftScrollLabel = this.localize('components.scroll-wrapper.scroll-left');
+		const rightScrollLabel = this.localize('components.scroll-wrapper.scroll-right');
 		const actions = !this.hideActions ? html`
 			<div class="${classMap(actionsClasses)}">
-				<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left vdiff-target" @click="${this._scrollLeft}">
+				<div role="button" aria-label="${isRtl ? rightScrollLabel : leftScrollLabel}" class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-left vdiff-target" @click="${this._scrollLeft}">
 					<d2l-icon icon="tier1:chevron-left"></d2l-icon>
 				</div>
-				<div class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-right vdiff-target" @click="${this._scrollRight}">
+				<div role="button" aria-label="${isRtl ? leftScrollLabel : rightScrollLabel}" class="d2l-scroll-wrapper-button d2l-scroll-wrapper-button-right vdiff-target" @click="${this._scrollRight}">
 					<d2l-icon icon="tier1:chevron-right"></d2l-icon>
 				</div>
 			</div>` : null;
