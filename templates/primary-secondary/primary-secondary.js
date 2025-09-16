@@ -1074,7 +1074,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 					${this.secondaryFirst && !this._isMobile ? primarySection : secondarySection}
 				</div>
 				<footer ?hidden="${!this._hasFooter}">
-					<div class="d2l-template-primary-secondary-footer"><slot name="footer" @slotchange="${this._handleFooterSlotChange}"></div></slot>
+					<div class="d2l-template-primary-secondary-footer"><slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot></div>
 				</footer>
 			</div>
 		`;
