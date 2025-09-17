@@ -68,6 +68,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
  			 */
 			label: { type: String },
 			/**
+			 * The type of layout for the list items. Valid values are "list" (default) and "tiles". The tile layout is only valid for single level (non-nested) lists.
+			 * @type {string}
+ 			 */
+			layout: { type: String, reflect: true, attribute: 'layout' },
+			/**
 			 * Display separators. Valid values are "all" (default), "between", "none"
 			 * @type {'all'|'between'|'none'}
 			 * @default "all"
@@ -77,6 +82,18 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' }
 		};
 	}
+
+	/*
+	Other layout name ideas
+	Tiles (as you already have)
+	Grid
+	Cards
+	Mosaic
+	Blocks
+	Board
+	Matrix
+	Brick
+	*/
 
 	static get styles() {
 		return css`
@@ -88,6 +105,15 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				--d2l-list-item-illustration-max-width: 4.5rem;
 				display: block;
 			}
+
+			:host([layout="tiles"]) .d2l-list-content {
+				align-items: start;
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
+				gap: 2rem;
+			}
+
 			:host(:not([slot="nested"])) > .d2l-list-content {
 				padding-bottom: 1px;
 			}
@@ -133,6 +159,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this.dragMultiple = false;
 		this.extendSeparators = false;
 		this.grid = false;
+		this.layout = 'list';
 		this._listItemChanges = [];
 		this._childHasColor = false;
 		this._childHasExpandCollapseToggle = false;
@@ -227,6 +254,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		}
 		if (changedProperties.has('grid') && this.grid) {
 			this.selectionNoInputArrowKeyBehaviour = true;
+		}
+		if (changedProperties.has('layout') && this.layout) {
+			this._updateItemLayouts();
 		}
 	}
 
@@ -463,6 +493,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			}
 		});
 
+		this._updateItemLayouts(items);
+
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-showing-count-change', {
 			bubbles: true,
@@ -482,6 +514,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			subscriber.updateSiblingHasColor(this._childHasColor);
 			subscriber.updateParentHasAddButon(this.addButton, this.addButtonText);
 		});
+	}
+
+	_updateItemLayouts(items) {
+		if (!items) items = this.getItems();
+		items.forEach(item => item.layout = (this.layout === 'tiles' ? 'tile' : 'normal'));
 	}
 
 }

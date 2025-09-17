@@ -64,7 +64,11 @@ class ListItemGenericLayout extends LitElement {
 			 * Inline start padding (in px) to apply to list item(s) in the nested slot. When used, nested list items will not use the grid start calcuations and will only use this number to determine indentation.
 			 * @type {number}
 			 */
-			indentation: { type: Number, reflect: true }
+			indentation: { type: Number, reflect: true },
+			/**
+			 * @ignore
+			 */
+			layout: { type: String, reflect: true, attribute: 'layout' }
 		};
 	}
 
@@ -211,6 +215,52 @@ class ListItemGenericLayout extends LitElement {
 			::slotted([slot="add"]) {
 				grid-column: color-start / end;
 			}
+
+			:host([layout="tile"]) {
+				grid-template-columns:
+					[start] minmax(0, auto)
+					[end];
+				grid-template-rows:
+					[start header-start] minmax(0, min-content)
+					[header-end] minmax(0, min-content)
+					[content-end end];
+			}
+
+			:host([layout="tile"]) ::slotted([slot="content-action"]) {
+				grid-row: start / end;
+				grid-column: start;
+			}
+			:host([layout="tile"]) ::slotted([slot="actions"]) {
+				grid-row: header-start / header-end;
+				grid-column: start;
+			}
+
+			:host([layout="tile"]) ::slotted([slot="control"]) {
+				grid-column: start;
+				grid-row: header-start / header-end;
+				padding-block-start: 0.55rem;
+				padding-inline-start: 0.55rem;
+				pointer-events: all;
+				/*width: 2.2rem;*/
+			}
+
+			:host([layout="tile"]) ::slotted([slot="control-action"]) {
+				grid-row: start / end;
+				grid-column: start / end;
+			}
+
+			:host([layout="tile"]) ::slotted([slot="outside-control-container"]) {
+				grid-row: start / end;
+				grid-column: start / end;
+			}
+
+			:host([layout="tile"]) ::slotted([slot="nested"]),
+			:host([layout="tile"]) ::slotted([slot="before-content"]),
+			:host([layout="tile"]) ::slotted([slot="control-container"]),
+			:host([layout="tile"]) ::slotted([slot="expand-collapse"]) {
+				display: none;
+			}
+
 		`;
 	}
 

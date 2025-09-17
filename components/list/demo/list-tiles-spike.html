@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../button/button-icon.js';
+			import '../../button/button-subtle.js';
+			import '../../button/button-toggle.js';
+			import '../../demo/demo-page.js';
+			import '../../dropdown/dropdown-menu.js';
+			import '../../dropdown/dropdown-more.js';
+			import '../../menu/menu.js';
+			import '../../menu/menu-item.js';
+			import '../../tooltip/tooltip.js';
+			import '../../tooltip/tooltip-help.js';
+			import '../list-item-content.js';
+			import '../list-item.js';
+			import '../list-item-button.js';
+			import '../list.js';
+			import '../../tag-list/tag-list.js';
+			import '../../tag-list/tag-list-item.js';
+			import './demo-list.js';
+		</script>
+		<style>
+			img {
+				object-fit: cover;
+			}
+			d2l-list-item[layout="normal"] img {
+				height: 500px;
+			}
+			d2l-list-item[layout="tile"] {
+				width: 300px;
+				/* min-width: 260px;
+				max-width: 340px; */
+			}
+			d2l-button-toggle {
+				margin-block-end: 1rem;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-list">
+
+			<h2>List Layout</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list>
+						<d2l-list-item label="abc" selectable>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Identify categories of physical activities</div>
+								<div slot="secondary">Secondary Information</div>
+								<div slot="supporting-info">Specific Expectation A1.2</div>
+							</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
+						</d2l-list-item>
+						<d2l-list-item label="abc" selectable href="http://www.d2l.com">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+								<div slot="secondary">Secondary Information</div>
+								<div slot="supporting-info">Specific Expectation B2.1</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item label="abc" selectable href="http://www.d2l.com">
+							<d2l-list-item-content>
+								<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+								<div slot="secondary">Secondary Information</div>
+								<div slot="supporting-info">Specific Expectation B2.2</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Tile Layout</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-toggle pressed>
+						<d2l-button-subtle slot="not-pressed" icon="tier1:list-view" text="List"></d2l-button-subtle>
+						<d2l-button-subtle slot="pressed" icon="tier1:tile-view" text="Tiles"></d2l-button-subtle>
+					</d2l-button-toggle>
+					<d2l-list layout="tiles" separators="none">
+						<d2l-list-item label="abc" selectable class="d2l-visible-on-ancestor-target">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Identify categories of physical activities</div>
+								<div slot="secondary">Secondary Information</div>
+								<div slot="supporting-info">Specific Expectation A1.2</div>
+							</d2l-list-item-content>
+							<div slot="actions">
+								<d2l-button-icon translucent visible-on-ancestor id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!" translucent visible-on-ancestor>
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
+						</d2l-list-item>
+						<d2l-list-item label="abc" selectable href="http://www.d2l.com">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+								<div slot="secondary">Secondary Information</div>
+								<div slot="supporting-info">Specific Expectation B2.1</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item label="abc" selectable href="http://www.d2l.com">
+							<d2l-list-item-content>
+								<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+								<div slot="secondary">Secondary Information</div>
+								<div slot="supporting-info">Specific Expectation B2.2</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+					<script data-demo-hide>
+						(demo => {
+							demo.querySelector('d2l-button-toggle').addEventListener('d2l-button-toggle-change', e => {
+								demo.querySelector('d2l-list').layout = (e.target.pressed ? 'tiles' : 'list');
+							});
+						})(document.currentScript.parentNode);
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<!--
+
+			<h2>List with Interactive Content</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid>
+						<d2l-list-item no-primary-action selectable key="1" label="Introductory Earth Sciences">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+							<div>
+								<d2l-list-item-content>
+									<div>Introductory Earth Sciences</div>
+								</d2l-list-item-content>
+								<d2l-tag-list description="Tags for this course">
+									<d2l-tag-list-item text="Science" description="This is a description for the Science tag that is really really really long and will overflow onto the next line."></d2l-tag-list-item>
+									<d2l-tag-list-item text="Environment" description="This is a description for the Environment tag."></d2l-tag-list-item>
+									<d2l-tag-list-item text="Earth" description="This is a description for the Earth tag."></d2l-tag-list-item>
+								</d2l-tag-list>
+							</div>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
+						</d2l-list-item>
+						<d2l-list-item no-primary-action selectable key="2" selected label="Engineering Materials for Energy Systems">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+							<div>
+								<d2l-list-item-content>
+									<div>Engineering Materials for Energy Systems</div>
+								</d2l-list-item-content>
+								<d2l-tag-list description="Tags for this course">
+									<d2l-tag-list-item text="Engineering" description="This is a description for the Engineering tag."></d2l-tag-list-item>
+									<d2l-tag-list-item text="Energy Systems" description="This is a description for the Energy Systems tag."></d2l-tag-list-item>
+								</d2l-tag-list>
+							</div>
+						</d2l-list-item>
+						<d2l-list-item no-primary-action selectable key="3" label="Geomorphology and GIS">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+							<div>
+								<d2l-list-item-content>
+									<div>Geomorphology and GIS</div>
+								</d2l-list-item-content>
+								<d2l-tag-list description="Tags for this course">
+									<d2l-tag-list-item text="Geology" description="This is a description for the Geology tag."></d2l-tag-list-item>
+									<d2l-tag-list-item text="GIS" description="This is a description for the GIS tag."></d2l-tag-list-item>
+									<d2l-tag-list-item text="Earth Sciences" description="This is a description for the Earth Sciences tag."></d2l-tag-list-item>
+								</d2l-tag-list>
+							</div>
+							<div slot="actions">
+								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
+								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
+								<d2l-dropdown-more text="Open!">
+									<d2l-dropdown-menu>
+										<d2l-menu label="Astronomy">
+											<d2l-menu-item text="Introduction"></d2l-menu-item>
+											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
+										</d2l-menu>
+									</d2l-dropdown-menu>
+								</d2l-dropdown-more>
+							</div>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Breakpoints on List</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list breakpoints="[1170, 391, 0, 0]">
+						<d2l-list-item color="#00ff00">
+							<div style="background: blue; height: 400px; width: 400px;" slot="illustration"></div>
+							<d2l-list-item-content>
+								<div>Introductory Pirate Ipsum</div>
+								<div slot="supporting-info">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item>
+							<div style="background: blue; height: 400px; width: 400px;" slot="illustration"></div>
+							<d2l-list-item-content>
+								<div>Introductory Pirate Ipsum</div>
+								<div slot="supporting-info">Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters.</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>List (with interactive primary action content)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid>
+						<d2l-list-item expandable key="expand-1" label="Expandable item #1">
+							<d2l-list-item-content>
+								<div>Week 1: Introduction</div>
+								<div slot="secondary" style="padding: 5px;"><d2l-tooltip-help text="Due: Jan 30, 2023">Available: Aug 11, 2023</d2l-tooltip-help></div>
+								<div slot="supporting-info"><d2l-button-subtle style="padding: 5px;" text="Bookmark" icon="tier1:bookmark-hollow"></d2l-button-subtle></div>
+							</d2l-list-item-content>
+							<d2l-list grid slot="nested">
+								<d2l-list-item selectable key="nested-1" label="Nested 1">
+								  <d2l-list-item-content>
+									<div>Nested item #1</div>
+									<div slot="secondary"><d2l-button-subtle style="padding: 5px;" text="Bookmark" icon="tier1:bookmark-hollow"></d2l-button-subtle></div>
+								</d2l-list-item-content>
+								</d2l-list-item>
+								<d2l-list-item selectable key="nested-2" label="Nested 2" expandable>
+								  <d2l-list-item-content>
+									<div>Nested item #2</div>
+									<div slot="secondary"><d2l-button-subtle style="padding: 5px;" text="Bookmark" icon="tier1:bookmark-hollow"></d2l-button-subtle></div>
+								</d2l-list-item-content>
+								  <d2l-list grid slot="nested">
+									<d2l-list-item selectable key="nested-1-1" label="Nested 1">
+									  <d2l-list-item-content>
+										<div>Nested item #1</div>
+										<div slot="secondary"><d2l-button-subtle style="padding: 5px;" text="Bookmark" icon="tier1:bookmark-hollow"></d2l-button-subtle></div>
+									</d2l-list-item-content>
+									</d2l-list-item>
+									<d2l-list-item selectable key="nested--1" label="Nested 2">
+									  <d2l-list-item-content><div>Nested item #2</div></d2l-list-item-content>
+									</d2l-list-item>
+								</d2l-list>
+								</d2l-list-item>
+							</d2l-list>
+						</d2l-list-item>
+						<d2l-list-item href="http://www.d2l.com">
+							<d2l-list-item-content>
+								<div>Week 2: Learn more</div>
+								<div slot="secondary">Secondary Information</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item href="http://www.d2l.com">
+							<d2l-list-item-content>
+								<div>Week 3: Learn even more!</div>
+								<div slot="secondary">Secondary Information</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</template>
+				<script type="module">
+					requestAnimationFrame(() => {
+						document.querySelectorAll('d2l-button-subtle').forEach((button) => {
+							button.addEventListener('click', () => {
+								console.log('d2l-button: click event');
+							});
+						});
+					});
+				</script>
+			</d2l-demo-snippet>
+
+			<h2>List (with button-items and interactive primary action content) </h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-list grid id="button-item-list">
+						<d2l-list-item-button expandable key="expand-1" label="Expandable item #1">
+							<d2l-list-item-content>
+								<div>Week 1: Introduction</div>
+								<div slot="secondary" style="padding: 5px;"><d2l-tooltip-help text="Due: Jan 30, 2023">Available: Aug 11, 2023</d2l-tooltip-help></div>
+								<div slot="supporting-info"><d2l-button-subtle style="padding: 5px;" text="Bookmark" icon="tier1:bookmark-hollow"></d2l-button-subtle></div>
+							</d2l-list-item-content>
+							<d2l-list grid slot="nested">
+								<d2l-list-item-button selectable key="nested-1" label="Nested 1">
+								  <d2l-list-item-content><div>Nested item #1</div></d2l-list-item-content>
+								</d2l-list-item-button>
+								<d2l-list-item-button selectable key="nested-2" label="Nested 2">
+								  <d2l-list-item-content><div>Nested item #2</div></d2l-list-item-content>
+								</d2l-list-item-button>
+							  </d2l-list>
+						</d2l-list-item-button>
+						<d2l-list-item-button button-disabled>
+							<d2l-list-item-content>
+								<div>Week 2: Learn more</div>
+								<div slot="secondary">Secondary Information</div>
+							</d2l-list-item-content>
+						</d2l-list-item-button>
+						<d2l-list-item-button>
+							<d2l-list-item-content>
+								<div>Week 3: Learn even more!</div>
+								<div slot="secondary">Secondary Information</div>
+							</d2l-list-item-content>
+						</d2l-list-item-button>
+					</d2l-list>
+				</template>
+				<script type="module">
+					requestAnimationFrame(() => {
+						const list = document.querySelector('#button-item-list');
+						list.addEventListener('d2l-list-item-button-click', () => {
+							console.log('d2l-list-item-button: click event');
+						});
+						list.querySelector('d2l-button-subtle').addEventListener('click', () => {
+							console.log('d2l-button: click event');
+						});
+					});
+				</script>
+			</d2l-demo-snippet>
+			-->
+
+		</d2l-demo-page>
+
+	</body>
+</html>

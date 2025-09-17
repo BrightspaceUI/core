@@ -91,6 +91,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			last: { type: Boolean, reflect: true },
 			/**
+			 * @ignore
+			 */
+			layout: { type: String, reflect: true, attribute: 'layout' },
+			/**
 			 * Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive.
 			 * @type {boolean}
 			 */
@@ -124,6 +128,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host {
 				display: block;
 				position: relative;
+			}
+			:host([layout="tile"]) {
+				display: inline-block;
+				flex: none;
 			}
 			:host[hidden] {
 				display: none;
@@ -440,6 +448,36 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			.dragging [slot="add"] {
 				display: none;
 			}
+
+
+
+
+
+			:host([layout="tile"]) .d2l-list-item-content {
+				flex-direction: column;
+				padding: 0;
+			}
+
+			:host([layout="tile"]) [slot="content"] ::slotted([slot="illustration"]),
+			:host([layout="tile"]) [slot="content"] .d2l-list-item-illustration > * {
+				/* border-radius: 6px; */
+				margin-inline-end: 0;
+				max-width: 100%;
+				/* max-height: var(--d2l-list-item-illustration-max-height, 2.6rem);
+				 overflow: hidden; */
+			}
+
+			:host([layout="tile"]) [slot="control"] {
+			}
+
+			:host([layout="tile"]) .d2l-list-item-actions-container {
+				padding-inline-end: 0.55rem;
+			}
+
+			:host([layout="tile"]) d2l-selection-input {
+				margin: 0;
+			}
+
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -687,6 +725,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	_renderListItem({ illustration, content, actions, nested } = {}) {
+		console.log('rendering list item', this.layout);
 		const classes = {
 			'd2l-visible-on-ancestor-target': true,
 			'd2l-list-item-content-extend-separators': this._extendSeparators,
@@ -738,6 +777,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				data-separators="${ifDefined(this._separators)}"
 				indentation="${ifDefined(this.indentation)}"
 				?grid-active="${this.role === 'row'}"
+				layout="${this.layout}"
 				?no-primary-action="${this.noPrimaryAction}">
 				${this._showAddButton && this.first ? html`
 				<div slot="add-top">
