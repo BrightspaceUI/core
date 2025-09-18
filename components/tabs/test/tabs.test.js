@@ -3,6 +3,7 @@ import '../tabs.js';
 import '../tab-panel.js';
 import '../demo/tabs-array.js';
 import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 import { spy } from 'sinon';
 
 const defaultFixture = html`
@@ -48,6 +49,8 @@ describe('d2l-tabs', () => {
 
 	describe('events', () => {
 
+		afterEach(() => resetFlag('GAUD-8605-tab-no-initial-selected-event'));
+
 		// remove after d2l-tab/d2l-tab-panel backport
 		it('dispatches d2l-tab-panel-selected', async() => {
 			const el = await fixture(defaultFixture);
@@ -70,6 +73,61 @@ describe('d2l-tabs', () => {
 			setTimeout(() => tab.selected = true);
 			const tabs = el.querySelector('d2l-tabs');
 			await oneEvent(tabs, 'd2l-tab-selected');
+		});
+
+		it('dispatches d2l-tab-selected on initial render when no tab selected by consumer', async() => {
+			let eventFired = false;
+
+			document.addEventListener('d2l-tab-selected', () => {
+				eventFired = true;
+			});
+			await fixture(normalFixture);
+
+			expect(eventFired).to.equal(true);
+		});
+
+		it('does not dispatch d2l-tab-selected on initial render when consumer has selected tab (flag enabled)', async() => {
+			mockFlag('GAUD-8605-tab-no-initial-selected-event', true);
+			let eventFired = false;
+
+			document.addEventListener('d2l-tab-selected', () => {
+				eventFired = true;
+			});
+
+			await fixture(html`
+				<div>
+					<d2l-tabs>
+						<d2l-tab id="all" text="All" slot="tabs"></d2l-tab>
+						<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
+						<d2l-tab id="biology" text="Biology" slot="tabs" selected></d2l-tab>
+						<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
+					</d2l-tabs>
+				</div>
+			`);
+
+			expect(eventFired).to.equal(false);
+		});
+
+		// remove test with GAUD-8605-tab-no-initial-selected-event clean up
+		it('dispatches d2l-tab-selected on initial render when consumer has selected tab (flag disabled)', async() => {
+			mockFlag('GAUD-8605-tab-no-initial-selected-event', false);
+			let eventFired = false;
+
+			document.addEventListener('d2l-tab-selected', () => {
+				eventFired = true;
+			});
+			await fixture(html`
+				<div>
+					<d2l-tabs>
+						<d2l-tab id="all" text="All" slot="tabs"></d2l-tab>
+						<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
+						<d2l-tab id="biology" text="Biology" slot="tabs" selected></d2l-tab>
+						<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
+					</d2l-tabs>
+				</div>
+			`);
+
+			expect(eventFired).to.equal(true);
 		});
 
 		it('does not dispatch d2l-tab-selected if already selected', async() => {
