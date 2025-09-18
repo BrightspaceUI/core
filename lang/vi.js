@@ -155,6 +155,8 @@ export default {
 	"components.pager-load-more.action": "Tải thêm",
 	"components.pager-load-more.action-with-page-size": "Tải thêm {count} mục",
 	"components.pager-load-more.status-loading": "Đang tải thêm các mục",
+	"components.scroll-wrapper.scroll-left": "Scroll left",
+	"components.scroll-wrapper.scroll-right": "Scroll right",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			other {Vô hiệu hóa khi chọn nhiều hơn {countFormatted} mục}
