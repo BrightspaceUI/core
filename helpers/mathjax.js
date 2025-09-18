@@ -42,8 +42,7 @@ class HtmlBlockMathRenderer {
 		if (!options.contextValues) return elem;
 		let context = options.contextValues.get(mathjaxContextKey);
 
-		// For 20.25.11, update to default to true if flag helper can't be found
-		if (getFlag('shield-12649-mathjax-default-context', false)) {
+		if (getFlag('shield-12649-mathjax-default-context', true)) {
 			context = context || {
 				renderLatex: false,
 				outputScale: 1
