@@ -36,26 +36,27 @@ class Progress extends LitElement {
 			 */
 			valueHidden: { type: Boolean, attribute: 'value-hidden' },
 			/**
-			 * Use d2l-body-small styles
-			 * @type {boolean}
+			 * The size of the progress bar
+			 * @type {'small'|'large'}
 			 */
-			small: { type: Boolean, reflect: true }
+			size: { type: String, reflect: true },
 		};
 	}
 
 	static get styles() {
 		return [bodySmallStyles, bodyCompactStyles, css`
 				:host {
-					display: block;
+					display: flex;
 					min-width: 6rem;
+					flex-wrap: wrap;
+					align-items: center;
+					gap: 0.3em 0.45em;
 				}
-				:host([hidden]),
-				.text[hidden] {
+				:host([hidden]) {
 					display: none;
 				}
-				.text {
-					display: flex;
-					justify-content: space-between;
+				#label {
+					flex: 1 0 100%;
 				}
 
 				progress {
@@ -69,9 +70,9 @@ class Progress extends LitElement {
 					box-shadow: inset 0 2px var(--d2l-color-mica);
 					display: block;
 					height: 0.9rem;
-					width: 100%;
+					flex: 1;
 				}
-				:host([small]) progress {
+				:host([size="small"]) progress {
 					height: 0.6rem;
 				}
 
@@ -114,28 +115,24 @@ class Progress extends LitElement {
 		this.max = 100;
 		this.value = 0;
 		this.valueHidden = false;
-		this.small = false;
+		this.size = 'small';
 	}
 
 	render() {
 		const classes = {
 			'complete': this.value === this.max
 		};
+		const isSmall = this.size === 'small'
 		const textClasses = {
-			'text': true,
-			'd2l-body-small': this.small,
-			'd2l-body-compact': !this.small
+			'd2l-body-small': isSmall,
+			'd2l-body-compact': !isSmall
 		};
 
 		const percentage = Math.floor(100 * this.value / this.max) / 100;
 		const perecentageText = formatPercent(percentage);
 
 		return html`
-			<div class=${classMap(textClasses)} ?hidden=${(this.labelHidden || !this.label) && this.valueHidden}>
-				<span ?hidden=${this.labelHidden} id="label">${this.label}</span>
-				<span style="font-size: 0;">${getSeparator({ nonBreaking: true })}</span>
-				<span ?hidden=${this.valueHidden}>${perecentageText}</span>
-			</div>
+			<div ?hidden=${this.labelHidden} id="label" class=${classMap(textClasses)}>${this.label}</div>
 			<progress
 				aria-labelledby="${ifDefined(this.labelHidden ? undefined : 'label')}"
 				aria-label="${ifDefined(this.labelHidden ? this.label : undefined)}"
@@ -144,6 +141,8 @@ class Progress extends LitElement {
 				value="${this.value}"
 				max="${this.max}">
 			</progress>
+			<div ?hidden=${this.valueHidden} class=${classMap(textClasses)}>${perecentageText}</div>
+
 		`;
 	}
 
