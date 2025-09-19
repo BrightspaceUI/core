@@ -6,7 +6,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PopoverMixin } from '../popover/popover-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-export const usePopoverMixin = getFlag('GAUD-7472-dropdown-popover', false);
+export const usePopoverMixin = getFlag('GAUD-7472-dropdown-popover', true);
 
 export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElement(PopoverMixin(superclass)) {
 
