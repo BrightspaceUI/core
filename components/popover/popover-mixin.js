@@ -318,7 +318,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._noAutoFit = properties?.noAutoFit ?? false;
 		this._noAutoFocus = properties?.noAutoFocus ?? false;
 		this._noPointer = properties?.noPointer ?? false;
-		this._offset = properties?.offset ?? 16;
+		this._offset = Number.isInteger(properties?.offset) ? properties.offset : 16;
 		if (!properties) {
 			this._preferredPosition = defaultPreferredPosition;
 		} else if (this._preferredPosition?.location !== properties.position?.location

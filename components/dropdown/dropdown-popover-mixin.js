@@ -6,7 +6,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PopoverMixin } from '../popover/popover-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-export const usePopoverMixin = getFlag('GAUD-7472-dropdown-popover', false);
+export const usePopoverMixin = getFlag('GAUD-7472-dropdown-popover', true);
 
 export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElement(PopoverMixin(superclass)) {
 
@@ -113,7 +113,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 	static get styles() {
 		return [super.styles, css`
 			.dropdown-content-layout {
-				align-items: flex-start;
+				align-items: stretch;
 				display: flex;
 				flex-direction: column;
 			}
@@ -236,7 +236,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 						${this.localize('components.dropdown.close')}
 					</d2l-button>
 				</div>
-			</div>			
+			</div>
 		`;
 
 		return this.renderPopover(content);
@@ -270,6 +270,18 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 	async open(applyFocus = true) {
 		const opener = this.#getOpener();
 		super.open(opener, applyFocus);
+	}
+
+	/**
+	 * Private.
+	 */
+	scrollTo(scrollTop) {
+		if (this.#contentElement) {
+			if (typeof scrollTop === 'number') {
+				this.#contentElement.scrollTop = scrollTop;
+			}
+			return this.#contentElement.scrollTop;
+		}
 	}
 
 	toggleOpen(applyFocus = true) {
