@@ -113,7 +113,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 	static get styles() {
 		return [super.styles, css`
 			.dropdown-content-layout {
-				align-items: flex-start;
+				align-items: stretch;
 				display: flex;
 				flex-direction: column;
 			}
