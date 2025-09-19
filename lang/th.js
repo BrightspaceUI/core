@@ -155,6 +155,8 @@ export default {
 	"components.pager-load-more.action": "โหลดเพิ่มเติม",
 	"components.pager-load-more.action-with-page-size": "โหลดเพิ่ม {count} รายการ",
 	"components.pager-load-more.status-loading": "กำลังโหลดรายการเพิ่มเติม",
+	"components.scroll-wrapper.scroll-left": "Scroll left",
+	"components.scroll-wrapper.scroll-right": "Scroll right",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			other {ปิดใช้งานเมื่อเลือกมากกว่า {countFormatted} รายการ}
