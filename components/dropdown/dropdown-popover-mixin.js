@@ -236,7 +236,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 						${this.localize('components.dropdown.close')}
 					</d2l-button>
 				</div>
-			</div>			
+			</div>
 		`;
 
 		return this.renderPopover(content);
