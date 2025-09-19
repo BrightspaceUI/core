@@ -272,6 +272,18 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		super.open(opener, applyFocus);
 	}
 
+	/**
+	 * Private.
+	 */
+	scrollTo(scrollTop) {
+		if (this.#contentElement) {
+			if (typeof scrollTop === 'number') {
+				this.#contentElement.scrollTop = scrollTop;
+			}
+			return this.#contentElement.scrollTop;
+		}
+	}
+
 	toggleOpen(applyFocus = true) {
 		const opener = this.#getOpener();
 		super.toggleOpen(opener, applyFocus);
