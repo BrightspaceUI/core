@@ -40,6 +40,11 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
+			 * Restricts the maximum width of the input box without impacting the width of the label.
+			 * @type {string}
+			 */
+			inputWidth: { attribute: 'input-width', type: String },
+			/**
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
 			 * @type {boolean}
 			 */
@@ -225,9 +230,12 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 			'd2l-input': true,
 			'd2l-input-focus': !this.disabled && this._hovered
 		};
+		const inputContainerStyles = {
+			maxWidth: this.inputWidth
+		};
 
 		const textarea = html`
-			<div class="d2l-input-textarea-container d2l-skeletize">
+			<div class="d2l-input-textarea-container d2l-skeletize" style="${styleMap(inputContainerStyles)}">
 				<div class="d2l-input d2l-input-textarea-mirror" style="${styleMap(mirrorStyles)}" aria-invalid="${ifDefined(ariaInvalid)}">
 					${lines.map(line => html`${line}<br />`)}
 				</div>
