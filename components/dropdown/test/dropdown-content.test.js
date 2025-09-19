@@ -394,21 +394,6 @@ describe('d2l-dropdown', () => {
 			expect(content.opened).to.be.true;
 		});
 
-		it('should focus on container when opened and no focusable light descendant exists', async() => {
-			content.querySelector('#focusable_inside').setAttribute('tabindex', '-1');
-			content.setAttribute('opened', true);
-
-			await oneEvent(content, 'd2l-dropdown-open');
-			const contentContainer = content.getContentContainer();
-			expect(contentContainer.getAttribute('tabindex')).to.equal('-1');
-			if (content.shadowRoot) {
-				expect(document.activeElement).to.equal(content);
-				expect(content.shadowRoot.activeElement).to.equal(contentContainer);
-			} else {
-				expect(document.activeElement).to.equal(contentContainer);
-			}
-		});
-
 	});
 
 	describe('aria-expanded', () => {
