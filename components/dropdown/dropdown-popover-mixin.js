@@ -195,6 +195,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		this.addEventListener('d2l-popover-open', this.#handlePopoverOpen);
 		this.addEventListener('d2l-popover-close', this.#handlePopoverClose);
 		this.addEventListener('d2l-popover-position', this.#handlePopoverPosition);
+		this.addEventListener('d2l-popover-focus-enter', this.#handlePopoverFocusEnter);
 	}
 
 	render() {
@@ -354,6 +355,11 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 			/** Dispatched when the dropdown is closed */
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
 		});
+	}
+
+	#handlePopoverFocusEnter(e) {
+		/** Dispatched when user focus enters the dropdown content (trap-focus option only) */
+		this.dispatchEvent(new CustomEvent('d2l-dropdown-focus-enter', { detail:{ applyFocus: e.detail.applyFocus } }));
 	}
 
 	#handlePopoverOpen() {
