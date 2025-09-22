@@ -241,6 +241,10 @@ export const PopoverMixin = superclass => class extends superclass {
 			:host([_offscreen]) {
 				${_offscreenStyleDeclarations}
 			}
+
+			d2l-focus-trap {
+				display: block;
+			}
 		`;
 	}
 
