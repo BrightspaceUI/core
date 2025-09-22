@@ -163,6 +163,19 @@ describe('d2l-tabs', () => {
 			expect(eventFired).to.equal(true);
 		});
 
+		// remove test with GAUD-8605-tab-no-initial-selected-event clean up
+		it('does not dispatch d2l-tab-selected-initial on initial render when consumer has selected tab (flag disabled)', async() => {
+			mockFlag('GAUD-8605-tab-no-initial-selected-event', false);
+			let eventFired = false;
+
+			document.addEventListener('d2l-tab-selected-initial', () => {
+				eventFired = true;
+			});
+			await fixture(selectedFixture);
+
+			expect(eventFired).to.equal(false);
+		});
+
 		it('does not dispatch d2l-tab-selected if already selected', async() => {
 			const el = await fixture(normalFixture);
 			let dispatched = false;

@@ -95,7 +95,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		this.tabIndex = -1;
 
 		this._clicked = false;
-		this._noInitialSelectedEvent = getFlag('GAUD-8605-tab-no-initial-selected-event', true);
+		this._noInitialSelectedEvent = getFlag('GAUD-8605-tab-no-initial-selected-event', false);
 	}
 
 	firstUpdated(changedProperties) {
