@@ -273,7 +273,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	// todo: remove this method when removing GAUD-7472-dropdown-popover flag (d2l-filter calls this)
-	requestRepositionNextResize(elem) {
+	requestRepositionNextResize() {
 	}
 
 	/**
