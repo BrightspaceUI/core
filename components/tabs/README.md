@@ -135,6 +135,7 @@ An element that displays the corresponding tab panel when selected.
 ### Events
 - `d2l-tab-content-change`: Dispatched when the text attribute is changed. Triggers virtual scrolling calculations in parent `d2l-tabs`.
 - `d2l-tab-selected`: Dispatched when a tab is selected
+- `d2l-tab-selected-initial`: Dispatched when a tab is selected on initial render
 <!-- docs: end hidden content -->
 
 ### Removing a Tab

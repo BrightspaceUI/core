@@ -95,7 +95,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		this.tabIndex = -1;
 
 		this._clicked = false;
-		this._noInitialSelectedEvent = getFlag('GAUD-8605-tab-no-initial-selected-event', false);
+		this._noInitialSelectedEvent = getFlag('GAUD-8605-tab-no-initial-selected-event', true);
 	}
 
 	firstUpdated(changedProperties) {
@@ -120,7 +120,15 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 		if (changedProperties.has('selected')) {
 			this.ariaSelected = `${this.selected}`;
-			if (!this.#hasInitialized && this._noInitialSelectedEvent) return; // Only fire events if selected changes after initial render
+			if (!this.#hasInitialized && this._noInitialSelectedEvent) {
+				if (this.selected) {
+					/** Dispatched when a tab is selected on initial render */
+					this.dispatchEvent(new CustomEvent(
+						'd2l-tab-selected-initial', { bubbles: true, composed: true }
+					));
+				}
+				return; // Only fire selected/deselected events after initial render
+			}
 
 			if (this.selected) {
 				/** Dispatched when a tab is selected */
