@@ -200,10 +200,13 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 
 	render() {
 
-		const fillHeight = this._mobile && (this._mobileTrayLocation === 'inline-start' || this._mobileTrayLocation === 'inline-end' || this._mobileTrayLocation === 'block-end');
-		const contentLayoutStyles = {
-			maxHeight: (!fillHeight && this._contentHeight) ? `${this._contentHeight}px` : undefined
-		};
+		const contentLayoutStyles = {};
+		if (this._mobile && this._mobileTrayLocation === 'block-end') {
+			contentLayoutStyles.maxHeight = '100%';
+		} else {
+			const fillHeight = this._mobile && (this._mobileTrayLocation === 'inline-start' || this._mobileTrayLocation === 'inline-end');
+			contentLayoutStyles.maxHeight = (!fillHeight && this._contentHeight) ? `${this._contentHeight}px` : undefined;
+		}
 		const contentClasses = {
 			'dropdown-content': true,
 			'dropdown-no-padding': this.noPadding
