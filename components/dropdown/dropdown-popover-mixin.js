@@ -200,7 +200,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 
 	render() {
 
-		const fillHeight = this._mobile && (this._mobileTrayLocation === 'inline-start' || this._mobileTrayLocation === 'inline-end' || this._mobileTrayLocation === 'block-end' );
+		const fillHeight = this._mobile && (this._mobileTrayLocation === 'inline-start' || this._mobileTrayLocation === 'inline-end' || this._mobileTrayLocation === 'block-end');
 		const contentLayoutStyles = {
 			maxHeight: (!fillHeight && this._contentHeight) ? `${this._contentHeight}px` : undefined
 		};
