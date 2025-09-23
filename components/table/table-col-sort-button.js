@@ -10,6 +10,7 @@ import { getFocusRingStyles } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { usePopoverMixin } from '../dropdown/dropdown-popover-mixin.js';
 
 /**
  * Button for sorting a table column in ascending/descending order.
@@ -184,7 +185,7 @@ export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElemen
 		if (this._hasDropdownItems) {
 			return html`<d2l-dropdown>
 					${button}
-					<d2l-dropdown-menu no-pointer align="start" vertical-offset="4">
+					<d2l-dropdown-menu no-pointer align="start" vertical-offset="${usePopoverMixin ? '0' : '4'}">
 						<d2l-menu label="${ifDefined(this._label)}" @d2l-table-col-sort-button-item-change="${this._handleTablColSortButtonItemChange}">
 							<slot name="items" @slotchange="${this._handleSlotChange}"></slot>
 						</d2l-menu>
