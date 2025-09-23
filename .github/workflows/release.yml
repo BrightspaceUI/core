@@ -5,11 +5,6 @@ on:
       - main
       - '[0-9]+.x'
       - '[0-9]+.[0-9]+.x'
-permissions:
-  contents: write # required to publish a GitHub release
-  id-token: write # required for OIDC
-  issues: write # required to comment on released issues
-  pull-requests: write # required to comment on released pull requests
 jobs:
   release:
     name: Release
@@ -38,6 +33,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.D2L_RELEASE_TOKEN }}
           MINOR_RELEASE_WITH_LMS: true
           NPM: true
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Get new git HEAD
         id: git
         run: echo "head=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
