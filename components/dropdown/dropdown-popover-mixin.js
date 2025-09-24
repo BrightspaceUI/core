@@ -6,7 +6,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PopoverMixin } from '../popover/popover-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-export const usePopoverMixin = getFlag('GAUD-7472-dropdown-popover', false);
+export const usePopoverMixin = getFlag('GAUD-7472-dropdown-popover', true);
 
 export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElement(PopoverMixin(superclass)) {
 
@@ -113,7 +113,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 	static get styles() {
 		return [super.styles, css`
 			.dropdown-content-layout {
-				align-items: flex-start;
+				align-items: stretch;
 				display: flex;
 				flex-direction: column;
 			}
@@ -195,14 +195,18 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		this.addEventListener('d2l-popover-open', this.#handlePopoverOpen);
 		this.addEventListener('d2l-popover-close', this.#handlePopoverClose);
 		this.addEventListener('d2l-popover-position', this.#handlePopoverPosition);
+		this.addEventListener('d2l-popover-focus-enter', this.#handlePopoverFocusEnter);
 	}
 
 	render() {
 
-		const fillHeight = this._mobile && (this._mobileTrayLocation === 'inline-start' || this._mobileTrayLocation === 'inline-end');
-		const contentLayoutStyles = {
-			maxHeight: (!fillHeight && this._contentHeight) ? `${this._contentHeight}px` : undefined
-		};
+		const contentLayoutStyles = {};
+		if (this._mobile && this._mobileTrayLocation === 'block-end') {
+			contentLayoutStyles.maxHeight = '100%';
+		} else {
+			const fillHeight = this._mobile && (this._mobileTrayLocation === 'inline-start' || this._mobileTrayLocation === 'inline-end');
+			contentLayoutStyles.maxHeight = (!fillHeight && this._contentHeight) ? `${this._contentHeight}px` : undefined;
+		}
 		const contentClasses = {
 			'dropdown-content': true,
 			'dropdown-no-padding': this.noPadding
@@ -236,7 +240,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 						${this.localize('components.dropdown.close')}
 					</d2l-button>
 				</div>
-			</div>			
+			</div>
 		`;
 
 		return this.renderPopover(content);
@@ -270,6 +274,22 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 	async open(applyFocus = true) {
 		const opener = this.#getOpener();
 		super.open(opener, applyFocus);
+	}
+
+	// todo: remove this method when removing GAUD-7472-dropdown-popover flag (d2l-filter calls this)
+	requestRepositionNextResize() {
+	}
+
+	/**
+	 * Private.
+	 */
+	scrollTo(scrollTop) {
+		if (this.#contentElement) {
+			if (typeof scrollTop === 'number') {
+				this.#contentElement.scrollTop = scrollTop;
+			}
+			return this.#contentElement.scrollTop;
+		}
 	}
 
 	toggleOpen(applyFocus = true) {
@@ -338,6 +358,11 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 			/** Dispatched when the dropdown is closed */
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
 		});
+	}
+
+	#handlePopoverFocusEnter(e) {
+		/** Dispatched when user focus enters the dropdown content (trap-focus option only) */
+		this.dispatchEvent(new CustomEvent('d2l-dropdown-focus-enter', { detail:{ applyFocus: e.detail.applyFocus } }));
 	}
 
 	#handlePopoverOpen() {

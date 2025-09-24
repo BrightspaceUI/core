@@ -241,6 +241,10 @@ export const PopoverMixin = superclass => class extends superclass {
 			:host([_offscreen]) {
 				${_offscreenStyleDeclarations}
 			}
+
+			d2l-focus-trap {
+				display: block;
+			}
 		`;
 	}
 
@@ -318,7 +322,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._noAutoFit = properties?.noAutoFit ?? false;
 		this._noAutoFocus = properties?.noAutoFocus ?? false;
 		this._noPointer = properties?.noPointer ?? false;
-		this._offset = properties?.offset ?? 16;
+		this._offset = Number.isInteger(properties?.offset) ? properties.offset : 16;
 		if (!properties) {
 			this._preferredPosition = defaultPreferredPosition;
 		} else if (this._preferredPosition?.location !== properties.position?.location
@@ -519,7 +523,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		` : nothing;
 
 		const backdrop = this._mobileTrayLocation ?
-			html`<d2l-backdrop for-target="content-wrapper" ?shown="${this._showBackdrop}"></d2l-backdrop>` :
+			html`<d2l-backdrop for-target="content-wrapper" ?shown="${this._showBackdrop}" @click="${this.#handleBackdropClick}"></d2l-backdrop>` :
 			nothing;
 
 		return html`${content}${backdrop}${pointer}`;
@@ -1082,6 +1086,10 @@ export const PopoverMixin = superclass => class extends superclass {
 			this.close();
 		}, 0);
 
+	}
+
+	#handleBackdropClick() {
+		this.close();
 	}
 
 	#handleFocusTrapEnter() {

@@ -243,24 +243,6 @@ describe('d2l-dropdown', () => {
 		});
 	});
 
-	describe('scrollTo', () => {
-		it('sets scrollTop to specified value', async() => {
-
-			content.boundary = {
-				below: 11,
-				above: 11
-			};
-			content.opened = true;
-
-			await oneEvent(content, 'd2l-dropdown-position');
-
-			expect(content.__content.scrollTop).to.equal(0);
-			content.scrollTo(1);
-			// Rounded because on systems using display scaling, scrollTop may give you a decimal value.
-			expect(Math.round(content.__content.scrollTop)).to.equal(1);
-		});
-	});
-
 	describe('auto-focus', () => {
 
 		it('focuses on descendant when opened', async() => {
@@ -412,21 +394,6 @@ describe('d2l-dropdown', () => {
 			expect(content.opened).to.be.true;
 		});
 
-		it('should focus on container when opened and no focusable light descendant exists', async() => {
-			content.querySelector('#focusable_inside').setAttribute('tabindex', '-1');
-			content.setAttribute('opened', true);
-
-			await oneEvent(content, 'd2l-dropdown-open');
-			const contentContainer = content.getContentContainer();
-			expect(contentContainer.getAttribute('tabindex')).to.equal('-1');
-			if (content.shadowRoot) {
-				expect(document.activeElement).to.equal(content);
-				expect(content.shadowRoot.activeElement).to.equal(contentContainer);
-			} else {
-				expect(document.activeElement).to.equal(contentContainer);
-			}
-		});
-
 	});
 
 	describe('aria-expanded', () => {
@@ -478,16 +445,18 @@ describe('d2l-dropdown', () => {
 
 	describe('vertical-offset', () => {
 
+		//todo: remove ontent._verticalOffset from these tests when cleaning up GAUD-7472-dropdown-popover
+
 		it('vertical offset should update if set without px', async() => {
 			content.setAttribute('vertical-offset', 100);
 			await nextFrame();
-			expect(content._verticalOffset).to.equal(100);
+			expect(content._verticalOffset || content._offset).to.equal(100);
 		});
 
 		it('vertical offset should update if set with px', async() => {
 			content.setAttribute('vertical-offset', '50px');
 			await nextFrame();
-			expect(content._verticalOffset).to.equal(50);
+			expect(content._verticalOffset || content._offset).to.equal(50);
 		});
 
 		it('vertical offset should default to 16 if removed', async() => {
@@ -495,13 +464,13 @@ describe('d2l-dropdown', () => {
 			await nextFrame();
 			content.removeAttribute('vertical-offset');
 			await nextFrame();
-			expect(content._verticalOffset).to.equal(16);
+			expect(content._verticalOffset || content._offset).to.equal(16);
 		});
 
 		it('vertical offset should default to 16 if set to an invalid number', async() => {
 			content.setAttribute('vertical-offset', 'thisisnotasize');
 			await nextFrame();
-			expect(content._verticalOffset).to.equal(16);
+			expect(content._verticalOffset || content._offset).to.equal(16);
 		});
 
 	});

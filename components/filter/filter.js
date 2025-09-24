@@ -806,6 +806,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		if (shouldRecount) this._setFilterCounts(dimension);
 		if (shouldUpdate) this.requestUpdate();
 		if (shouldResizeDropdown) {
+			// todo: remove this when removing GAUD-7472-dropdown-popover flag (this request is no longer needed)
 			this._requestDropdownResize();
 		}
 		if (e.detail.dispatchChangeEvent) this._dispatchChangeEventValueDataChange(dimension, value, e.detail.valueKey);
@@ -1033,10 +1034,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 				break;
 		}
 
+		// todo: remove this when removing GAUD-7472-dropdown-popover flag (this request is no longer needed)
 		this._requestDropdownResize();
 		this.requestUpdate();
 	}
 
+	// todo: remove this method when removing GAUD-7472-dropdown-popover flag (d2l-filter calls requestRepositionNextResize)
 	_requestDropdownResize() {
 		const singleDimension = this._dimensions.length === 1;
 		if (singleDimension && this.opened) {
