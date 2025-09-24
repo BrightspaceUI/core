@@ -186,7 +186,7 @@ describe('selection-components', () => {
 	describe('select-all-pages', () => {
 		function createSelectionTemplate(numInputs, selected) {
 			return html`
-				<d2l-test-selection item-count="50">
+				<d2l-test-selection item-count="5500">
 					<d2l-selection-summary></d2l-selection-summary>
 					<d2l-selection-select-all-pages></d2l-selection-select-all-pages>
 					${createInputList(numInputs, selected)}
@@ -233,6 +233,23 @@ describe('selection-components', () => {
 				if (action) await action(elem);
 				await expect(elem).to.be.golden();
 			});
+		});
+
+		const wrappedTemplate = html`
+			<d2l-test-selection item-count="5500">
+				<d2l-selection-summary></d2l-selection-summary>
+			</d2l-test-selection>
+		`;
+		it('count formatted for locale', async() => {
+			const elem = await fixture(wrappedTemplate, { lang: 'nl' });
+			elem.querySelector('d2l-selection-summary').selectionInfo = { state: 'all-pages', keys: [] };
+			await expect(elem).to.be.golden();
+		});
+		it('count plus formatted for locale', async() => {
+			const elem = await fixture(wrappedTemplate, { lang: 'fr' });
+			elem._getLazyLoadItems = () => new Map([['1', 'item']]);
+			elem.querySelector('d2l-selection-summary').selectionInfo = { state: 'all-pages', keys: ['1'] };
+			await expect(elem).to.be.golden();
 		});
 	});
 });
