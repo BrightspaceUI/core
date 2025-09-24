@@ -214,6 +214,7 @@ describe('filter', () => {
 			await oneEvent(elem, 'd2l-filter-dimension-first-open');
 			await nextFrame();
 			await clickElem(elem.shadowRoot.querySelector('d2l-selection-select-all'));
+			await oneEvent(elem, 'd2l-filter-change');
 			await clickElem(elem.shadowRoot.querySelector('[text="Clear"]'));
 			await expect(elem).to.be.golden();
 		});
@@ -234,6 +235,7 @@ describe('filter', () => {
 			await oneEvent(elem, 'd2l-filter-dimension-first-open');
 			await nextFrame();
 			await clickElem(elem.shadowRoot.querySelector('d2l-selection-select-all'));
+			await oneEvent(elem, 'd2l-filter-change');
 			await clickElem(elem.shadowRoot.querySelector('[text="Clear"]'));
 			await expect(elem).to.be.golden();
 		});
@@ -346,6 +348,7 @@ describe('filter', () => {
 
 				await clickElem(elem.shadowRoot.querySelector(selector));
 				await hoverAt(0, 0);
+				await oneEvent(elem, 'd2l-filter-change');
 				await expect(elem).to.be.golden();
 			});
 		});
