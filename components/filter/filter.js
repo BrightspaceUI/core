@@ -990,6 +990,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		dimension.appliedCount += countChange;
 		this._totalAppliedCount += countChange;
 
+		this.requestUpdate();
+
 		changeEventDetails.forEach(det => this._dispatchChangeEvent(dimension, det));
 	}
 
