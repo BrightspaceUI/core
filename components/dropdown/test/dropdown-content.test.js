@@ -445,16 +445,18 @@ describe('d2l-dropdown', () => {
 
 	describe('vertical-offset', () => {
 
+		//todo: remove ontent._verticalOffset from these tests when cleaning up GAUD-7472-dropdown-popover
+
 		it('vertical offset should update if set without px', async() => {
 			content.setAttribute('vertical-offset', 100);
 			await nextFrame();
-			expect(content._offset).to.equal(100);
+			expect(content._verticalOffset || content._offset).to.equal(100);
 		});
 
 		it('vertical offset should update if set with px', async() => {
 			content.setAttribute('vertical-offset', '50px');
 			await nextFrame();
-			expect(content._offset).to.equal(50);
+			expect(content._verticalOffset || content._offset).to.equal(50);
 		});
 
 		it('vertical offset should default to 16 if removed', async() => {
@@ -462,13 +464,13 @@ describe('d2l-dropdown', () => {
 			await nextFrame();
 			content.removeAttribute('vertical-offset');
 			await nextFrame();
-			expect(content._offset).to.equal(16);
+			expect(content._verticalOffset || content._offset).to.equal(16);
 		});
 
 		it('vertical offset should default to 16 if set to an invalid number', async() => {
 			content.setAttribute('vertical-offset', 'thisisnotasize');
 			await nextFrame();
-			expect(content._offset).to.equal(16);
+			expect(content._verticalOffset || content._offset).to.equal(16);
 		});
 
 	});
