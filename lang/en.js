@@ -172,9 +172,9 @@ export default {
 	"components.selection.select-all": "Select All",
 	"components.selection.select-all-items":
 		`{count, plural,
-  			=1 {Select Item}
-  			one {Select All {countFormatted} Item}
-  			other {Select All {countFormatted} Items}
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {Select All {countFormatted} Items}
 		}`,
 	"components.selection.selected": "{count} selected",
 	"components.selection.selected-plus": "{count}+ selected",

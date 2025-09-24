@@ -165,7 +165,7 @@ export default {
 	"components.selection.select-all": "Chọn tất cả",
 	"components.selection.select-all-items":
 		`{count, plural,
-  			other {Chọn tất cả các mục {countFormatted}}
+			other {Chọn tất cả các mục {countFormatted}}
 		}`,
 	"components.selection.selected": "{count} mục được chọn",
 	"components.selection.selected-plus": "{count}+ mục được chọn",

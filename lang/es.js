@@ -172,9 +172,9 @@ export default {
 	"components.selection.select-all": "Seleccionar todo",
 	"components.selection.select-all-items":
 		`{count, plural,
-  			=1 {Select Item}
-  			one {Select All {countFormatted} Item}
-  			other {Seleccione todos los {countFormatted} elementos}
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {Seleccione todos los {countFormatted} elementos}
 		}`,
 	"components.selection.selected": "{count} seleccionados",
 	"components.selection.selected-plus": "Más de {count} seleccionados",

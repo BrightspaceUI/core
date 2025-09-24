@@ -165,7 +165,7 @@ export default {
 	"components.selection.select-all": "เลือกทั้งหมด",
 	"components.selection.select-all-items":
 		`{count, plural,
-  			other {เลือกทั้ง {countFormatted} รายการ}
+			other {เลือกทั้ง {countFormatted} รายการ}
 		}`,
 	"components.selection.selected": "{count} ที่เลือกแล้ว",
 	"components.selection.selected-plus": "{count}+ ที่เลือกแล้ว",

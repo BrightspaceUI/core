@@ -172,9 +172,9 @@ export default {
 	"components.selection.select-all": "Tīpako Katoa",
 	"components.selection.select-all-items":
 		`{count, plural,
-  			=1 {Select Item}
-  			one {Select All {countFormatted} Item}
-  			other {Tīpakohia Ngā Tūemi {countFormatted} Katoa}
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {Tīpakohia Ngā Tūemi {countFormatted} Katoa}
 		}`,
 	"components.selection.selected": "{count} kua tīpakohia",
 	"components.selection.selected-plus": "{count}+ kua tīpakohia",

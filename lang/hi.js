@@ -172,9 +172,9 @@ export default {
 	"components.selection.select-all": "सभी का चयन करें",
 	"components.selection.select-all-items":
 		`{count, plural,
-  			=1 {Select Item}
-  			one {Select All {countFormatted} Item}
-  			other {सभी {countFormatted} आइटम चुनें।}
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {सभी {countFormatted} आइटम चुनें।}
 		}`,
 	"components.selection.selected": "{count} चयनित",
 	"components.selection.selected-plus": "{count} से अधिक चयनित",

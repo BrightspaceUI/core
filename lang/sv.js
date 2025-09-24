@@ -172,9 +172,9 @@ export default {
 	"components.selection.select-all": "Välj alla",
 	"components.selection.select-all-items":
 		`{count, plural,
-  			=1 {Select Item}
-  			one {Select All {countFormatted} Item}
-  			other {Välj alla {countFormatted} objekt}
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {Välj alla {countFormatted} objekt}
 		}`,
 	"components.selection.selected": "{count} valda",
 	"components.selection.selected-plus": "Över {count} valda",
