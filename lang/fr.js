@@ -161,8 +161,8 @@ export default {
 	"components.pager-load-more.action": "En télécharger plus",
 	"components.pager-load-more.action-with-page-size": "Charger {count} de plus",
 	"components.pager-load-more.status-loading": "Chargement d’autres d’éléments",
-	"components.scroll-wrapper.scroll-left": "Scroll left",
-	"components.scroll-wrapper.scroll-right": "Scroll right",
+	"components.scroll-wrapper.scroll-left": "Défilement de l’écran vers la gauche",
+	"components.scroll-wrapper.scroll-right": "Défilement de l’écran vers la droite",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {Désactivé lorsque plus de {countFormatted} élément est sélectionné}

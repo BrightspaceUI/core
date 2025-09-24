@@ -161,8 +161,8 @@ export default {
 	"components.pager-load-more.action": "Mehr laden",
 	"components.pager-load-more.action-with-page-size": "{count} weitere laden",
 	"components.pager-load-more.status-loading": "Weitere Elemente werden geladen",
-	"components.scroll-wrapper.scroll-left": "Scroll left",
-	"components.scroll-wrapper.scroll-right": "Scroll right",
+	"components.scroll-wrapper.scroll-left": "Bildlauf links",
+	"components.scroll-wrapper.scroll-right": "Bildlauf rechts",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {Deaktiviert, wenn mehr als {countFormatted} Element ausgewählt ist}
