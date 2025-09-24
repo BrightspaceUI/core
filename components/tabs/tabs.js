@@ -19,7 +19,6 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
-const newTabStructure = getFlag('GAUD-7146-tabs-new-structure', true);
 
 const scrollButtonWidth = 56;
 
@@ -1198,8 +1197,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	#handleTabDeselected(e) {
-		if (!newTabStructure) return;
-
 		const panel = this._getPanel(e.target.id);
 		if (panel) panel.selected = false;
 	}
