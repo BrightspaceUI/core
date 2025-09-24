@@ -172,9 +172,9 @@ export default {
 	"components.selection.select-all": "E koho i nā mea a pau",
 	"components.selection.select-all-items":
 		`{count, plural,
-  			=1 {Select Item}
-  			one {Select All {countFormatted} Item}
-  			other {E koho i nā mea a pau {countFormatted}}
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {E koho i nā mea a pau {countFormatted}}
 		}`,
 	"components.selection.selected": "{count} koho",
 	"components.selection.selected-plus": "{count}+ i koho ʻia",

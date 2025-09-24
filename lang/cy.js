@@ -172,9 +172,9 @@ export default {
 	"components.selection.select-all": "Dewis y Cyfan",
 	"components.selection.select-all-items":
 		`{count, plural,
-  			=1 {Select Item}
-  			one {Select All {countFormatted} Item}
-  			other {Dewis Pob {countFormatted} Eitem}
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {Dewis Pob {countFormatted} Eitem}
 		}`,
 	"components.selection.selected": "{count} wedi’u dewis.",
 	"components.selection.selected-plus": "{count}+ wedi’u dewis",

@@ -165,7 +165,7 @@ export default {
 	"components.selection.select-all": "全選",
 	"components.selection.select-all-items":
 		`{count, plural,
-  			other {選取所有 {countFormatted} 個項目}
+			other {選取所有 {countFormatted} 個項目}
 		}`,
 	"components.selection.selected": "已選取 {count} 個",
 	"components.selection.selected-plus": "已選取 {count}+ 個",

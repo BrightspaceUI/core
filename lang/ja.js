@@ -164,7 +164,7 @@ export default {
 	"components.selection.select-all": "すべて選択",
 	"components.selection.select-all-items":
 		`{count, plural,
-  			other {{countFormatted} 個の項目をすべて選択}
+			other {{countFormatted} 個の項目をすべて選択}
 		}`,
 	"components.selection.selected": "{count} 個を選択済み",
 	"components.selection.selected-plus": "{count} 個以上を選択済み",
