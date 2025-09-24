@@ -162,7 +162,10 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "この操作を実行するための項目を選択します",
 	"components.selection.select-all": "すべて選択",
-	"components.selection.select-all-items": "{count} 個の項目をすべて選択",
+	"components.selection.select-all-items":
+		`{count, plural,
+  			other {{countFormatted} 個の項目をすべて選択}
+		}`,
 	"components.selection.selected": "{count} 個を選択済み",
 	"components.selection.selected-plus": "{count} 個以上を選択済み",
 	"components.selection-controls.label": "選択のアクション",

@@ -1,5 +1,6 @@
 import { css, html, LitElement, nothing } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
+import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SelectionInfo } from './selection-mixin.js';
 import { SelectionObserverMixin } from './selection-observer-mixin.js';
@@ -77,9 +78,9 @@ class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 		if (this.selectionInfo.state === SelectionInfo.states.none && this.noSelectionText) {
 			this._summary = this.noSelectionText;
 		} else if (includePlus) {
-			this._summary = this.localize('components.selection.selected-plus', 'count', count);
+			this._summary = this.localize('components.selection.selected-plus', 'count', formatNumber(count));
 		} else {
-			this._summary = this.localize('components.selection.selected', 'count', count);
+			this._summary = this.localize('components.selection.selected', 'count', formatNumber(count));
 		}
 	}
 

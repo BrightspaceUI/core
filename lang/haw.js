@@ -170,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "E koho i kahi mea e hana ai i kēia hana",
 	"components.selection.select-all": "E koho i nā mea a pau",
-	"components.selection.select-all-items": "E koho i nā mea a pau {count}.",
+	"components.selection.select-all-items":
+		`{count, plural,
+  			=1 {Select Item}
+  			one {Select All {countFormatted} Item}
+  			other {E koho i nā mea a pau {countFormatted}}
+		}`,
 	"components.selection.selected": "{count} koho",
 	"components.selection.selected-plus": "{count}+ i koho ʻia",
 	"components.selection-controls.label": "Nā hana no ke koho",

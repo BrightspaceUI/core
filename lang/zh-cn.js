@@ -162,7 +162,10 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "选择一个项目后才能执行此操作",
 	"components.selection.select-all": "全选",
-	"components.selection.select-all-items": "选择全部 {count} 个项目",
+	"components.selection.select-all-items":
+		`{count, plural,
+  			other {选择全部 {countFormatted} 个项目}
+		}`,
 	"components.selection.selected": "已选 {count}",
 	"components.selection.selected-plus": "已选 + {count}",
 	"components.selection-controls.label": "针对所选内容的操作",

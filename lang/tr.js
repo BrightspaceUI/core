@@ -170,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "Bu eylemi gerçekleştirebilmek için bir öğe seçin",
 	"components.selection.select-all": "Tümünü Seç",
-	"components.selection.select-all-items": "{count} Öğenin Tamamını Seç",
+	"components.selection.select-all-items":
+		`{count, plural,
+  			=1 {Select Item}
+  			one {Select All {countFormatted} Item}
+  			other {{countFormatted} Öğenin Tamamını Seç}
+		}`,
 	"components.selection.selected": "{count} öğe seçildi",
 	"components.selection.selected-plus": "{count}+ öğe seçildi",
 	"components.selection-controls.label": "Seçim için eylemler",

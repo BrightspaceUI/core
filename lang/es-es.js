@@ -170,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "Seleccione un elemento para realizar esta acción",
 	"components.selection.select-all": "Seleccionar todo",
-	"components.selection.select-all-items": "Seleccione los {count} elementos",
+	"components.selection.select-all-items":
+		`{count, plural,
+  			=1 {Select Item}
+  			one {Select All {countFormatted} Item}
+  			other {Seleccione los {countFormatted} elementos}
+		}`,
 	"components.selection.selected": "{count} seleccionados",
 	"components.selection.selected-plus": "{count}+ seleccionados",
 	"components.selection-controls.label": "Acciones para la selección",

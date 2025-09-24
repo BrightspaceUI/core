@@ -170,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "حدد عنصرًا لتنفيذ هذا الإجراء",
 	"components.selection.select-all": "تحديد الكل",
-	"components.selection.select-all-items": "تحديد كل المواد الـ {count}.",
+	"components.selection.select-all-items":
+		`{count, plural,
+  			=1 {Select Item}
+  			one {Select All {countFormatted} Item}
+  			other {تحديد كل المواد الـ {countFormatted}}
+		}`,
 	"components.selection.selected": "تم تحديد {count}",
 	"components.selection.selected-plus": "تم تحديد {count}+‎",
 	"components.selection-controls.label": "إجراءات التحديد",
