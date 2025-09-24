@@ -423,7 +423,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	async _toggleHiddenTagVisibility(e) {
 		this._showHiddenTags = !this._showHiddenTags;
 
-		if (!this.shadowRoot) return;
+		if (!this.shadowRoot || !e) return;
 
 		const isMoreButton = e.target.classList.contains('d2l-tag-list-button-show-more');
 		await this.updateComplete;
