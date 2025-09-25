@@ -20,7 +20,6 @@ import { ListItemDragDropMixin } from './list-item-drag-drop-mixin.js';
 import { ListItemExpandCollapseMixin } from './list-item-expand-collapse-mixin.js';
 import { ListItemRoleMixin } from './list-item-role-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { waitForElem } from '../../helpers/internal/waitForElem.js';
@@ -62,7 +61,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	ListItemDragDropMixin,
 	ListItemCheckboxMixin,
 	ListItemRoleMixin,
-	RtlMixin,
 	SkeletonMixin) {
 
 	static get properties() {
@@ -293,7 +291,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 
 			d2l-selection-input {
-				margin: 0.55rem 0.55rem 0.55rem 0;
+				margin-block: 0.55rem;
+				margin-inline-end: 0.55rem;
 			}
 			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-inline-start: 0.9rem;
@@ -304,10 +303,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 			d2l-list-item-drag-handle {
 				margin: 0.25rem 0.3rem;
-			}
-			:host([dir="rtl"]) d2l-selection-input {
-				margin-left: 0.9rem;
-				margin-right: 0;
 			}
 
 			[slot="outside-control-container"] {
@@ -328,18 +323,13 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-inline-end: -12px;
 			}
 
-			:host([_has-color-slot]) .d2l-list-item-content-extend-separators [slot="outside-control-container"],
-			:host([dir="rtl"][_has-color-slot]) .d2l-list-item-content-extend-separators [slot="outside-control-container"] {
+			:host([_has-color-slot]) .d2l-list-item-content-extend-separators [slot="outside-control-container"] {
 				margin-inline-end: 0 !important;
 				margin-inline-start: 0 !important;
 			}
 
 			:host(:not([draggable])[_has-color-slot]) [slot="outside-control-container"] {
-				margin-left: -6px;
-			}
-			:host(:not([draggable])[dir="rtl"][_has-color-slot]) [slot="outside-control-container"] {
-				margin-left: 0;
-				margin-right: -6px;
+				margin-inline-start: -6px;
 			}
 
 			:host([_hovering-control]) [slot="outside-control-container"],
