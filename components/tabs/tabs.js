@@ -39,6 +39,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	static get properties() {
 		return {
 			/**
+			 * @ignore
+			 */
+			hideTabs: { type: Boolean, attribute: 'hide-tabs', reflect: true },
+			/**
 			 * Limit the number of tabs to initially display
 			 * @type {number}
 			 */
@@ -340,7 +344,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			'd2l-body-compact': true,
 			'd2l-skeletize-container': true,
 			'd2l-tabs-layout-anim': this._state === 'anim',
-			'd2l-tabs-layout-shown': this._state === 'shown'
+			'd2l-tabs-layout-shown': this._state === 'shown' && !this.hideTabs
 		};
 		const panelContainerClasses = {
 			'd2l-panels-container': true,

@@ -129,6 +129,25 @@ const actionSlotBasicFixture = {
 	`
 };
 
+const hideTabsFixture = {
+	deprecated: html`
+		<d2l-tabs hide-tabs>
+			<d2l-tab-panel text="All">Tab content for All</d2l-tab-panel>
+			<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
+			<d2l-button slot="ext">Search</d2l-button>
+		</d2l-tabs>
+	`,
+	paired: html`
+		<d2l-tabs hide-tabs>
+			<d2l-tab id="all" text="All" slot="tabs"></d2l-tab>
+			<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
+			<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
+			<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
+			<d2l-button slot="ext">Search</d2l-button>
+		</d2l-tabs>
+	`
+};
+
 const actionSlotOverflowFixture = {
 	deprecated: html`
 		<d2l-tabs>
@@ -244,6 +263,11 @@ describe('d2l-tabs', () => {
 
 		it('no padding', async() => {
 			const elem = await fixture(noPaddingFixture[useFixture], { viewport });
+			await expect(elem).to.be.golden();
+		});
+
+		it('hide tabs', async() => {
+			const elem = await fixture(hideTabsFixture[useFixture], { viewport });
 			await expect(elem).to.be.golden();
 		});
 
