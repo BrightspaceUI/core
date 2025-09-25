@@ -163,7 +163,10 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "選取項目以執行此動作",
 	"components.selection.select-all": "全選",
-	"components.selection.select-all-items": "選取所有 {count} 個項目",
+	"components.selection.select-all-items":
+		`{count, plural,
+			other {選取所有 {countFormatted} 個項目}
+		}`,
 	"components.selection.selected": "已選取 {count} 個",
 	"components.selection.selected-plus": "已選取 {count}+ 個",
 	"components.selection-controls.label": "選擇的動作",

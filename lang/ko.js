@@ -162,7 +162,10 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "이 작업을 수행할 항목을 선택하십시오",
 	"components.selection.select-all": "모두 선택",
-	"components.selection.select-all-items": "{count}개 항목을 모두 선택하십시오.",
+	"components.selection.select-all-items":
+		`{count, plural,
+			other {{countFormatted}개 항목을 모두 선택하십시오}
+		}`,
 	"components.selection.selected": "{count}개 선택됨",
 	"components.selection.selected-plus": "{count}+개 선택됨",
 	"components.selection-controls.label": "선택 작업",

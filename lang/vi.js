@@ -163,7 +163,10 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "Chọn một mục để thực hiện tác vụ này",
 	"components.selection.select-all": "Chọn tất cả",
-	"components.selection.select-all-items": "Chọn tất cả các mục {count}",
+	"components.selection.select-all-items":
+		`{count, plural,
+			other {Chọn tất cả các mục {countFormatted}}
+		}`,
 	"components.selection.selected": "{count} mục được chọn",
 	"components.selection.selected-plus": "{count}+ mục được chọn",
 	"components.selection-controls.label": "Các thao tác để chọn",

@@ -170,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "Välj ett objekt för att utföra åtgärden",
 	"components.selection.select-all": "Välj alla",
-	"components.selection.select-all-items": "Välj alla {count} objekt",
+	"components.selection.select-all-items":
+		`{count, plural,
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {Välj alla {countFormatted} objekt}
+		}`,
 	"components.selection.selected": "{count} valda",
 	"components.selection.selected-plus": "Över {count} valda",
 	"components.selection-controls.label": "Åtgärder för val",

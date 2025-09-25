@@ -170,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "Vælg et element for at udføre denne handling",
 	"components.selection.select-all": "Vælg alle",
-	"components.selection.select-all-items": "Vælg alle {count} elementer",
+	"components.selection.select-all-items":
+		`{count, plural,
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {Vælg alle {countFormatted} elementer}
+		}`,
 	"components.selection.selected": "{count} valgt",
 	"components.selection.selected-plus": "{count}+ valgt",
 	"components.selection-controls.label": "Handlinger for valg",

@@ -163,7 +163,10 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "เลือกรายการที่จะดำเนินการนี้",
 	"components.selection.select-all": "เลือกทั้งหมด",
-	"components.selection.select-all-items": "เลือกทั้ง {count} รายการ",
+	"components.selection.select-all-items":
+		`{count, plural,
+			other {เลือกทั้ง {countFormatted} รายการ}
+		}`,
 	"components.selection.selected": "{count} ที่เลือกแล้ว",
 	"components.selection.selected-plus": "{count}+ ที่เลือกแล้ว",
 	"components.selection-controls.label": "การดำเนินการสำหรับการเลือก",

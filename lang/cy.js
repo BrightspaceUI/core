@@ -170,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "Rhaid i chi ddewis eitem i gyflawni’r weithred hon",
 	"components.selection.select-all": "Dewis y Cyfan",
-	"components.selection.select-all-items": "Dewis Pob {count} Eitem",
+	"components.selection.select-all-items":
+		`{count, plural,
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {Dewis Pob {countFormatted} Eitem}
+		}`,
 	"components.selection.selected": "{count} wedi’u dewis.",
 	"components.selection.selected-plus": "{count}+ wedi’u dewis",
 	"components.selection-controls.label": "Camau gweithredu ar gyfer detholiad",

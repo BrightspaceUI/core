@@ -170,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "Selecteer een item om deze actie uit te voeren",
 	"components.selection.select-all": "Alles selecteren",
-	"components.selection.select-all-items": "Alle {count} records selecteren",
+	"components.selection.select-all-items":
+		`{count, plural,
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {Alle {countFormatted} records selecteren}
+		}`,
 	"components.selection.selected": "{count} geselecteerd",
 	"components.selection.selected-plus": "Meer dan {count} geselecteerd",
 	"components.selection-controls.label": "Acties voor selectie",
