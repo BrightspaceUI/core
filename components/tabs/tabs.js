@@ -1057,6 +1057,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return this.updateComplete;
 	}
 
+	// Legacy structure clean up: if possible base this on visible tabs going forward
 	_updateTabListVisibility(panels) {
 		if (this._state === 'shown' && panels.length < 2) {
 			this.#hideTabsList();
