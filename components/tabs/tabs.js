@@ -1190,7 +1190,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		let visibleTabCount = 0;
 		this._tabs.forEach((tab) => {
-			if (!tab.hasAttribute('hidden')) visibleTabCount++;
+			if (!tab.hidden) visibleTabCount++;
 		});
 
 		if (visibleTabCount > 1 && this._state === 'hidden') this.#showTabsList();
