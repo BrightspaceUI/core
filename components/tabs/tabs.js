@@ -370,6 +370,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 					${this.arrowKeysContainer(html`
 						<div class="d2l-tabs-container-list"
 							@d2l-tab-content-change="${this._handleTabContentChange}"
+							@d2l-tab-hidden-change="${this.#handleTabHiddenChange}"
 							@d2l-tab-selected="${this._handleTabSelected}"
 							@d2l-tab-deselected="${this.#handleTabDeselected}"
 							@focusout="${this._handleFocusOut}"
@@ -1056,31 +1057,15 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return this.updateComplete;
 	}
 
+	// Legacy structure clean up: if possible base this on visible tabs going forward
 	_updateTabListVisibility(panels) {
 		if (this._state === 'shown' && panels.length < 2) {
-			// don't animate the tabs list visibility if it's the inital render
-			if (reduceMotion || !this._initialized) {
-				this._state = 'hidden';
-			} else if (this.shadowRoot) {
-				const layout = this.shadowRoot.querySelector('.d2l-tabs-layout');
-				const handleTransitionEnd = (e) => {
-					if (e.propertyName !== 'max-height') return;
-					layout.removeEventListener('transitionend', handleTransitionEnd);
-					this._state = 'hidden';
-				};
-				layout.addEventListener('transitionend', handleTransitionEnd);
-				this._state = 'anim';
-			}
+			this.#hideTabsList();
 		} else if (this._state === 'hidden' && panels.length > 1) {
-			// don't animate the tabs list visibility if it's the inital render
-			if (reduceMotion || !this._initialized) {
-				this._state = 'shown';
-			} else {
-				this._state = 'anim';
-				requestAnimationFrame(() => {
-					this._state = 'shown';
-				});
-			}
+			this.#showTabsList();
+		} else if (this._state === 'shown' && panels.length > 1) {
+			// check if there are hidden tabs and tab list container should actually be hidden
+			this.#handleTabHiddenChange();
 		}
 	}
 
@@ -1201,6 +1186,34 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		if (panel) panel.selected = false;
 	}
 
+	#handleTabHiddenChange() {
+		if (!this._tabs || this._tabs.length <= 1) return;
+
+		let visibleTabCount = 0;
+		this._tabs.forEach((tab) => {
+			if (!tab.hidden) visibleTabCount++;
+		});
+
+		if (visibleTabCount > 1 && this._state === 'hidden') this.#showTabsList();
+		else if (visibleTabCount <= 1 && this._state === 'shown') this.#hideTabsList();
+	}
+
+	#hideTabsList() {
+		// don't animate the tabs list visibility if it's the inital render
+		if (reduceMotion || !this._initialized) {
+			this._state = 'hidden';
+		} else if (this.shadowRoot) {
+			const layout = this.shadowRoot.querySelector('.d2l-tabs-layout');
+			const handleTransitionEnd = (e) => {
+				if (e.propertyName !== 'max-height') return;
+				layout.removeEventListener('transitionend', handleTransitionEnd);
+				this._state = 'hidden';
+			};
+			layout.addEventListener('transitionend', handleTransitionEnd);
+			this._state = 'anim';
+		}
+	}
+
 	#isRTL() {
 		return document.documentElement.getAttribute('dir') === 'rtl';
 	}
@@ -1221,6 +1234,18 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			});
 			this.#updateAriaControlsRequested = false;
 		}, 0);
+	}
+
+	#showTabsList() {
+		// don't animate the tabs list visibility if it's the inital render
+		if (reduceMotion || !this._initialized) {
+			this._state = 'shown';
+		} else {
+			this._state = 'anim';
+			requestAnimationFrame(() => {
+				this._state = 'shown';
+			});
+		}
 	}
 
 	#updateScrollPositionLogic(measures, newTranslationValue) {

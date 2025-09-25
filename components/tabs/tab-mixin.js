@@ -13,6 +13,10 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	static get properties() {
 		return {
 			/**
+			 * @ignore
+			 */
+			hidden: { type: Boolean, reflect: true },
+			/**
 			 * Use to select the tab. Only one tab can be selected at a time.
 			 * @type {boolean}
 			 */
@@ -39,6 +43,9 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				outline: none;
 				position: relative;
 				vertical-align: middle;
+			}
+			:host([hidden]) {
+				display: none;
 			}
 			.d2l-tab-content {
 				margin: 0.5rem;
@@ -90,6 +97,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	constructor() {
 		super();
+		this.hidden = false;
 		this.role = 'tab';
 		this.selected = false;
 		this.tabIndex = -1;
@@ -133,6 +141,12 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 					'd2l-tab-deselected', { bubbles: true }
 				));
 			}
+		}
+		if (changedProperties.has('hidden') && changedProperties.get('hidden') !== undefined) {
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent(
+				'd2l-tab-hidden-change', { bubbles: true }
+			));
 		}
 	}
 
