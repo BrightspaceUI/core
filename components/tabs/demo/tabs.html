@@ -216,6 +216,49 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h3>Tabs (with hidden)</h3>
+
+			<d2l-demo-snippet>
+				<template>
+					<div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+						<d2l-button-subtle text="Hide Next Tab" primary aria-label="Hide next visible tab" title="Hide next visible tab" id="hide-next-tab-btn"></d2l-button-subtle>
+						<d2l-button-subtle text="Show Next Hidden Tab" primary aria-label="Show next hidden tab" title="Show next hidden tab" id="show-next-hidden-tab-btn"></d2l-button-subtle>
+					</div>
+					<d2l-tabs text="Courses">
+						<d2l-tab id="all" text="All" slot="tabs" ></d2l-tab>
+						<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
+						<d2l-tab id="chemistry" text="Chemistry" slot="tabs" ></d2l-tab>
+						<d2l-tab id="physics" text="Physics" slot="tabs" hidden></d2l-tab>
+						<d2l-tab id="math" text="Math" slot="tabs" hidden></d2l-tab>
+						<d2l-tab id="earth-sciences" text="Earth Sciences" slot="tabs" hidden></d2l-tab>
+						<d2l-tab-panel labelled-by="all" slot="panels" id="all-panel">Tab content for All</d2l-tab-panel>
+						<d2l-tab-panel labelled-by="biology" slot="panels" id="biology-panel">Tab content for Biology</d2l-tab-panel>
+						<d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
+						<d2l-tab-panel labelled-by="physics" slot="panels">Tab content for Physics</d2l-tab-panel>
+						<d2l-tab-panel labelled-by="math" slot="panels">Tab content for Math</d2l-tab-panel>
+						<d2l-tab-panel labelled-by="earth-sciences" slot="panels">Tab content for Earth Sciences</d2l-tab-panel>
+					</d2l-tabs>
+					<script>
+						const templateRoot = document.currentScript.parentNode;
+						const hideBtn = templateRoot.querySelector('#hide-next-tab-btn');
+						const showBtn = templateRoot.querySelector('#show-next-hidden-tab-btn');
+						const tabsEl = templateRoot.querySelector('d2l-tabs');
+
+						hideBtn.addEventListener('click', () => {
+							const visibleTabs = [...tabsEl.querySelectorAll('d2l-tab:not([hidden])')];
+							if (visibleTabs.length === 0) return;
+							visibleTabs[0].setAttribute('hidden', '');
+						});
+
+						showBtn.addEventListener('click', () => {
+							const hiddenTabs = [...tabsEl.querySelectorAll('d2l-tab[hidden]')];
+							if (hiddenTabs.length === 0) return;
+							hiddenTabs[0].removeAttribute('hidden');
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
 			<h3>Tabs (responsive)</h3>
 
 			<d2l-demo-snippet>
