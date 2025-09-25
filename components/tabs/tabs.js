@@ -1188,15 +1188,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	#handleTabHiddenChange() {
 		if (!this._tabs || this._tabs.length <= 1) return;
 
-		let hasVisibleCount = 0;
-		for (let i = 0; i < this._tabs.length; i++) {
-			if (!this._tabs[i].hasAttribute('hidden')) {
-				hasVisibleCount++;
-			}
-		}
+		let visibleTabCount = 0;
+		this._tabs.forEach((tab) => {
+			if (!tab.hasAttribute('hidden')) visibleTabCount++;
+		});
 
-		if (hasVisibleCount > 1 && this._state === 'hidden') this.#showTabsList();
-		else if (hasVisibleCount <= 1 && this._state === 'shown') this.#hideTabsList();
+		if (visibleTabCount > 1 && this._state === 'hidden') this.#showTabsList();
+		else if (visibleTabCount <= 1 && this._state === 'shown') this.#hideTabsList();
 	}
 
 	#hideTabsList() {
