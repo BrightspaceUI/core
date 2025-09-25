@@ -154,8 +154,8 @@ export default {
 	"components.pager-load-more.action": "さらに読み込む",
 	"components.pager-load-more.action-with-page-size": "さらに {count} 件を読み込む",
 	"components.pager-load-more.status-loading": "さらに項目を読み込み中",
-	"components.scroll-wrapper.scroll-left": "Scroll left",
-	"components.scroll-wrapper.scroll-right": "Scroll right",
+	"components.scroll-wrapper.scroll-left": "左にスクロール",
+	"components.scroll-wrapper.scroll-right": "右にスクロール",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			other {{countFormatted} 個を超える項目が選択されている場合は無効になります}
