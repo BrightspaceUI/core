@@ -155,8 +155,8 @@ export default {
 	"components.pager-load-more.action": "載入更多",
 	"components.pager-load-more.action-with-page-size": "再載入 {count} 個",
 	"components.pager-load-more.status-loading": "正在載入更多項目",
-	"components.scroll-wrapper.scroll-left": "Scroll left",
-	"components.scroll-wrapper.scroll-right": "Scroll right",
+	"components.scroll-wrapper.scroll-left": "向左捲動",
+	"components.scroll-wrapper.scroll-right": "向右捲動",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			other {選取超過 {countFormatted} 個項目時即停用}

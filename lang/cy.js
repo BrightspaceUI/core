@@ -161,8 +161,8 @@ export default {
 	"components.pager-load-more.action": "Llwytho Mwy",
 	"components.pager-load-more.action-with-page-size": "Lwytho {count} Arall",
 	"components.pager-load-more.status-loading": "Llwytho rhagor o eitemau",
-	"components.scroll-wrapper.scroll-left": "Scroll left",
-	"components.scroll-wrapper.scroll-right": "Scroll right",
+	"components.scroll-wrapper.scroll-left": "Sgrolio i’r chwith",
+	"components.scroll-wrapper.scroll-right": "Sgrolio i’r dde",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {Wedi’i analluogi pan fydd mwy nag {countFormatted} eitem yn cael ei ddewis}

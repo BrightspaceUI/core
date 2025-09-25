@@ -154,8 +154,8 @@ export default {
 	"components.pager-load-more.action": "더 많이 로드",
 	"components.pager-load-more.action-with-page-size": "{count}개 더 로드",
 	"components.pager-load-more.status-loading": "더 많은 항목 로드",
-	"components.scroll-wrapper.scroll-left": "Scroll left",
-	"components.scroll-wrapper.scroll-right": "Scroll right",
+	"components.scroll-wrapper.scroll-left": "왼쪽으로 스크롤",
+	"components.scroll-wrapper.scroll-right": "오른쪽으로 스크롤",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			other {{countFormatted}개 이상의 항목이 선택되면 비활성화됨}
