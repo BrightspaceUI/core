@@ -216,14 +216,19 @@ class ListItemGenericLayout extends LitElement {
 				grid-column: color-start / end;
 			}
 
+
+
+
+
 			:host([layout="tile"]) {
 				grid-template-columns:
 					[start] minmax(0, auto)
 					[end];
 				grid-template-rows:
 					[start header-start] minmax(0, min-content)
-					[header-end] minmax(0, min-content)
+					[header-end] auto
 					[content-end end];
+				height: 100%;
 			}
 
 			:host([layout="tile"]) ::slotted([slot="content-action"]) {

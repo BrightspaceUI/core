@@ -107,10 +107,10 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			}
 
 			:host([layout="tiles"]) .d2l-list-content {
-				align-items: start;
+				/*align-items: start;*/
 				display: flex;
 				flex-wrap: wrap;
-				justify-content: space-between;
+				justify-content: normal;
 				gap: 2rem;
 			}
 

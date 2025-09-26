@@ -31,7 +31,9 @@
 				height: 500px;
 			}
 			d2l-list-item[layout="tile"] {
-				width: 300px;
+				border: 1px solid orange;
+				/* height: 400px; */
+				width: 260px;
 				/* min-width: 260px;
 				max-width: 340px; */
 			}
@@ -44,50 +46,6 @@
 
 		<d2l-demo-page page-title="d2l-list">
 
-			<h2>List Layout</h2>
-
-			<d2l-demo-snippet>
-				<template>
-					<d2l-list>
-						<d2l-list-item label="abc" selectable>
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Identify categories of physical activities</div>
-								<div slot="secondary">Secondary Information</div>
-								<div slot="supporting-info">Specific Expectation A1.2</div>
-							</d2l-list-item-content>
-							<div slot="actions">
-								<d2l-button-icon id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
-								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
-								<d2l-dropdown-more text="Open!">
-									<d2l-dropdown-menu>
-										<d2l-menu label="Astronomy">
-											<d2l-menu-item text="Introduction"></d2l-menu-item>
-											<d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
-										</d2l-menu>
-									</d2l-dropdown-menu>
-								</d2l-dropdown-more>
-							</div>
-						</d2l-list-item>
-						<d2l-list-item label="abc" selectable href="http://www.d2l.com">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-								<div slot="secondary">Secondary Information</div>
-								<div slot="supporting-info">Specific Expectation B2.1</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-						<d2l-list-item label="abc" selectable href="http://www.d2l.com">
-							<d2l-list-item-content>
-								<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
-								<div slot="secondary">Secondary Information</div>
-								<div slot="supporting-info">Specific Expectation B2.2</div>
-							</d2l-list-item-content>
-						</d2l-list-item>
-					</d2l-list>
-				</template>
-			</d2l-demo-snippet>
-
 			<h2>Tile Layout</h2>
 
 			<d2l-demo-snippet>
@@ -97,13 +55,16 @@
 						<d2l-button-subtle slot="pressed" icon="tier1:tile-view" text="Tiles"></d2l-button-subtle>
 					</d2l-button-toggle>
 					<d2l-list layout="tiles" separators="none">
-						<d2l-list-item label="abc" selectable class="d2l-visible-on-ancestor-target">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Identify categories of physical activities</div>
-								<div slot="secondary">Secondary Information</div>
-								<div slot="supporting-info">Specific Expectation A1.2</div>
-							</d2l-list-item-content>
+						<d2l-list-item label="abc" selectable key="1" class="d2l-visible-on-ancestor-target" style="">
+							<div style="display: flex; flex-direction: column; height: 100%;">
+								<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg" style="flex: 0;"></img>
+								<d2l-list-item-content style="flex: 1;">
+									<div>Identify categories of physical activities</div>
+									<div slot="secondary">Secondary Information</div>
+									<div slot="supporting-info">Specific Expectation A1.2</div>
+								</d2l-list-item-content>
+								<div style="flex: 0;">A footer</div>
+							</div>
 							<div slot="actions">
 								<d2l-button-icon translucent visible-on-ancestor id="tooltip-btn-1" text="My Button" icon="tier1:preview"></d2l-button-icon>
 								<d2l-tooltip for="tooltip-btn-1">Preview</d2l-tooltip>
@@ -117,15 +78,28 @@
 								</d2l-dropdown-more>
 							</div>
 						</d2l-list-item>
-						<d2l-list-item label="abc" selectable href="http://www.d2l.com">
-							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
-							<d2l-list-item-content>
-								<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
-								<div slot="secondary">Secondary Information</div>
-								<div slot="supporting-info">Specific Expectation B2.1</div>
-							</d2l-list-item-content>
+						<d2l-list-item label="abc" selectable key="2" href="http://www.d2l.com">
+							<div style="display: flex; flex-direction: column; height: 100%;">
+								<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-low-density-max-size.jpg" style="flex: 0;"></img>
+								<d2l-list-item-content style="flex: 1;">
+									<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+									<div slot="secondary">Secondary Information</div>
+									<div slot="supporting-info">Specific Expectation B2.1</div>
+								</d2l-list-item-content>
+								<div style="flex: 0;">The Boot... otherwise known as the trunk, but in this case, the footer.</div>
+							</div>
 						</d2l-list-item>
-						<d2l-list-item label="abc" selectable href="http://www.d2l.com">
+						<d2l-list-item label="abc" selectable key="3" href="http://www.d2l.com">
+							<div style="display: flex; flex-direction: column; height: 100%;">
+								<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-low-density-max-size.jpg" style="flex: 0;"></img>
+								<d2l-list-item-content style="flex: 1;">
+									<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+									<div slot="secondary">Secondary Information</div>
+									<div slot="supporting-info">Specific Expectation B2.1</div>
+								</d2l-list-item-content>
+							</div>
+						</d2l-list-item>
+						<d2l-list-item label="abc" selectable key="4" href="http://www.d2l.com">
 							<d2l-list-item-content>
 								<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
 								<div slot="secondary">Secondary Information</div>

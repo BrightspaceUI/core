@@ -455,6 +455,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 			:host([layout="tile"]) .d2l-list-item-content {
 				flex-direction: column;
+				height: 100%;
 				padding: 0;
 			}
 
