@@ -19,6 +19,7 @@
 			import '../list-item.js';
 			import '../list-item-button.js';
 			import '../list.js';
+			import '../../status-indicator/status-indicator.js';
 			import '../../tag-list/tag-list.js';
 			import '../../tag-list/tag-list-item.js';
 			import './demo-list.js';
@@ -61,6 +62,34 @@
 			d2l-list-item[layout="tile"] .container > .footer {
 				flex: 0;
 			}
+			d2l-list-item[layout="normal"] .badge-container-1 {
+				display: none;
+			}
+			d2l-list-item[layout="normal"] .badge-container-2 {
+				display: none;
+			}
+			d2l-list-item[layout="tile"] .badge-container-1 {
+				position: relative;
+				line-height: 0;
+				text-align: center;
+				margin-top: -40px;
+			}
+			d2l-list-item[layout="tile"] .badge-container-2 {
+				line-height: 0;
+			}
+			d2l-list-item[layout="tile"] .badge-container-1 > img {
+				border: 2px solid var(--d2l-color-ferrite);
+				border-radius: 50%;
+				height: 80px;
+				width: 80px;
+			}
+			d2l-list-item[layout="tile"] .badge-container-2 {
+				height: calc-size(fit-content, size / 2);
+			}
+			d2l-list-item[layout="tile"] .badge-container-2 > d2l-status-indicator {
+				background-color: white;
+				translate: 1rem -50%;
+			}
 			d2l-button-toggle {
 				margin-block-end: 1rem;
 			}
@@ -82,6 +111,7 @@
 						<d2l-list-item label="abc" selectable key="1" class="d2l-visible-on-ancestor-target">
 							<div class="container">
 								<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+								<div class="badge-container-1"><img src="./img/homer.png"></div>
 								<d2l-list-item-content>
 									<div>Identify categories of physical activities</div>
 									<div slot="secondary">Secondary Information</div>
@@ -104,7 +134,8 @@
 						</d2l-list-item>
 						<d2l-list-item label="abc" selectable key="2" href="http://www.d2l.com">
 							<div class="container">
-								<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-low-density-max-size.jpg" style="flex: 0;"></img>
+								<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-low-density-max-size.jpg"></img>
+								<div class="badge-container-2"><d2l-status-indicator text="Success" state="success"></d2l-status-indicator></div>
 								<d2l-list-item-content>
 									<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
 									<div slot="secondary">Secondary Information</div>
@@ -115,7 +146,7 @@
 						</d2l-list-item>
 						<d2l-list-item label="abc" selectable key="3" href="http://www.d2l.com">
 							<div class="container">
-								<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-low-density-max-size.jpg" style="flex: 0;"></img>
+								<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-low-density-max-size.jpg"></img>
 								<d2l-list-item-content>
 									<div>Apply a decision-making process to afe decisions in a variety of situations</div>
 									<div slot="secondary">Secondary Information</div>
