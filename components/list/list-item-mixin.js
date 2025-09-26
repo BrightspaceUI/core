@@ -479,6 +479,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin: 0;
 			}
 
+			:host([layout="tile"]) .d2l-list-item-drag-image {
+				height: 100%;
+			}
+
 		`];
 
 		super.styles && styles.unshift(super.styles);

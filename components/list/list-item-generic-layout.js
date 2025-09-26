@@ -225,9 +225,10 @@ class ListItemGenericLayout extends LitElement {
 					[start] minmax(0, auto)
 					[end];
 				grid-template-rows:
-					[start header-start] minmax(0, min-content)
+					[start drag-start] minmax(0, min-content)
+					[drag-end header-start] minmax(0, min-content)
 					[header-end] auto
-					[content-end end];
+					[end];
 				height: 100%;
 			}
 
@@ -250,13 +251,25 @@ class ListItemGenericLayout extends LitElement {
 			}
 
 			:host([layout="tile"]) ::slotted([slot="control-action"]) {
-				grid-row: start / end;
+				grid-row: header-start / end;
 				grid-column: start / end;
 			}
 
 			:host([layout="tile"]) ::slotted([slot="outside-control-container"]) {
 				grid-row: start / end;
 				grid-column: start / end;
+			}
+
+			:host([layout="tile"]) ::slotted([slot="outside-control"]) {
+				grid-row: drag-start / drag-end;
+				grid-column: start / end;
+				order: 1;
+			}
+
+			:host([layout="tile"]) ::slotted([slot="outside-control-action"]) {
+				grid-row: drag-start / drag-end;
+				grid-column: start / end;
+
 			}
 
 			:host([layout="tile"]) ::slotted([slot="nested"]),
