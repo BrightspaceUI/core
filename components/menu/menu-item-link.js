@@ -2,10 +2,12 @@ import { css, html, LitElement } from 'lit';
 import { getFlag } from '../../helpers/flags.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LinkMixin } from '../link/link-mixin.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { MenuItemMixin } from './menu-item-mixin.js';
 import { menuItemStyles } from './menu-item-styles.js';
 
 const newWindowIconEnabled = getFlag('GAUD-8295-menu-item-link-new-window-icon', true);
+
 const menuItemClickChangesEnabled = getFlag('GAUD-8369-menu-item-link-click-changes', true);
 
 /**
@@ -13,11 +15,11 @@ const menuItemClickChangesEnabled = getFlag('GAUD-8369-menu-item-link-click-chan
  * @fires click - Dispatched when the link is clicked
  * @slot supporting - Allows supporting information to be displayed on the right-most side of the menu item
  */
-class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitElement)) : MenuItemMixin(LitElement)) {
+class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitElement)) : LocalizeCoreElement(MenuItemMixin(LitElement))) {
 
 	static get properties() {
-		if (newWindowIconEnabled) return {};
-		return {
+		// remove this block when cleaning up GAUD-8295-menu-item-link-new-window-icon
+		if (!newWindowIconEnabled) return {
 			/**
 			 * Prompts the user to save the linked URL instead of navigating to it.
 			 * Must be to a resource on the same origin.
@@ -34,7 +36,12 @@ class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitEl
 			 * Where to display the linked URL
 			 * @type {string}
 			 */
-			target: { type: String }
+			target: { type: String },
+			_ariaDescription: { type: String, attribute: 'aria-description', reflect: true },
+		};
+
+		return {
+			_ariaDescription: { type: String, attribute: 'aria-description', reflect: true },
 		};
 	}
 
@@ -119,8 +126,20 @@ class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitEl
 			${this._renderNewWindowIcon()}
 			<div class="d2l-menu-item-supporting"><slot name="supporting"></slot></div>
 		`;
-		return this._render(inner, { rel: this.target ? 'noreferrer noopener' : undefined, tabindex: -1 });
+		return this._render(inner, { ariaLabel: this._ariaLabel, rel: this.target ? 'noreferrer noopener' : undefined, tabindex: -1 });
 
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (newWindowIconEnabled && changedProperties.has('_ariaLabel') || changedProperties.has('target')) {
+			this._ariaDescription = this.getNewWindowDescription(this._ariaLabel);
+		}
+	}
+
+	// remove this function when cleaning up GAUD-8295-menu-item-link-new-window-icon
+	getNewWindowDescription(label) {
+		return label && this.target === '_blank' ? this.localize('components.link.open-in-new-window') : undefined;
 	}
 
 	// remove this function when cleaning up GAUD-8369-menu-item-link-click-changes

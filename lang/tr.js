@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Daha Fazla Yükle",
 	"components.pager-load-more.action-with-page-size": "{count} Tane Daha Yükle",
 	"components.pager-load-more.status-loading": "Daha fazla öğe yükleniyor",
+	"components.scroll-wrapper.scroll-left": "Sola kaydır",
+	"components.scroll-wrapper.scroll-right": "Sağa kaydır",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {{countFormatted} öğeden fazlası seçildiğinde devre dışı bırakılır}
@@ -168,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "Bu eylemi gerçekleştirebilmek için bir öğe seçin",
 	"components.selection.select-all": "Tümünü Seç",
-	"components.selection.select-all-items": "{count} Öğenin Tamamını Seç",
+	"components.selection.select-all-items":
+		`{count, plural,
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {{countFormatted} Öğenin Tamamını Seç}
+		}`,
 	"components.selection.selected": "{count} öğe seçildi",
 	"components.selection.selected-plus": "{count}+ öğe seçildi",
 	"components.selection-controls.label": "Seçim için eylemler",

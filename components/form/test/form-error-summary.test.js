@@ -1,4 +1,4 @@
-import '../form-errory-summary.js';
+import '../form-error-summary.js';
 import { expect, fixture, runConstructor } from '@brightspace-ui/testing';
 import { html } from 'lit';
 

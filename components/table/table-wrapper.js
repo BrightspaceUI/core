@@ -759,6 +759,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	_syncColumnWidths() {
+		if (!this._table) return;
 		const head = this._table.querySelector('thead');
 		const body = this._table.querySelector('tbody');
 

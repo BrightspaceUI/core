@@ -140,9 +140,8 @@ describe('tag-list', () => {
 					await expect(elem).to.be.golden();
 				});
 
-				it(`width ${width} click show more`, async() => {
-					const button = elem.shadowRoot.querySelector('.d2l-tag-list-button');
-					if (button) await clickElem(button);
+				it(`width ${width} show more`, async() => {
+					elem._toggleHiddenTagVisibility();
 					await elem.updateComplete;
 
 					await nextFrame();

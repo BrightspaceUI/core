@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "और लोड करें",
 	"components.pager-load-more.action-with-page-size": "{count} और लोड करें",
 	"components.pager-load-more.status-loading": "और आइटम लोड करना",
+	"components.scroll-wrapper.scroll-left": "बाईं ओर स्क्रॉल करें",
+	"components.scroll-wrapper.scroll-right": "दाईं ओर स्क्रॉल करें",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {{countFormatted} से अधिक आइटम चुने जाने पर अक्षम किया गया जाता है}
@@ -168,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "यह कार्रवाई करने के लिए किसी आइटम का चयन करें",
 	"components.selection.select-all": "सभी का चयन करें",
-	"components.selection.select-all-items": "सभी {count} आइटम चुनें।",
+	"components.selection.select-all-items":
+		`{count, plural,
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {सभी {countFormatted} आइटम चुनें।}
+		}`,
 	"components.selection.selected": "{count} चयनित",
 	"components.selection.selected-plus": "{count} से अधिक चयनित",
 	"components.selection-controls.label": "चयन के लिए क्रियाएँ",

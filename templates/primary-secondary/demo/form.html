@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../../components/demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../../components/button/button.js';
+			import '../../../components/demo/demo-page.js';
+			import '../../../components/inputs/input-group.js';
+			import '../../../components/inputs/input-radio-group.js';
+			import '../../../components/inputs/input-radio.js';
+			import '../../../components/inputs/input-text.js';
+			import '../../../components/inputs/input-textarea.js';
+			import '../primary-secondary.js';
+		</script>
+		<style>
+			div[slot="primary"] {
+				padding: 0 20px;
+			}
+			div[slot="secondary"] {
+				padding: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<d2l-template-primary-secondary has-form background-shading="secondary" width-type="normal">
+			<div slot="primary">
+				<h1>Title</h1>
+				<d2l-input-group>
+					<d2l-input-text name="name" label="Name" required></d2l-input-text>
+					<d2l-input-textarea name="description" label="Description"></d2l-input-textarea>
+				</d2l-input-group>
+			</div>
+			<div slot="secondary">
+				<d2l-input-radio-group name="band" label="Band" required>
+					<d2l-input-radio label="FM" value="fm"></d2l-input-radio>
+					<d2l-input-radio label="AM" value="am"></d2l-input-radio>
+				</d2l-input-radio-group>
+			</div>
+			<div slot="footer">
+				<d2l-button primary>Save</d2l-button>
+			</div>
+		</d2l-template-primary-secondary>
+		<script>
+			const form = document.querySelector('d2l-template-primary-secondary');
+			document
+				.querySelector('d2l-button')
+				.addEventListener('click', () => form.submitForm());
+			form.addEventListener('d2l-template-primary-secondary-form-submit', (e) => {
+				console.log('Form submitted!', e.detail.formData);
+			});
+		</script>
+	</body>
+</html>

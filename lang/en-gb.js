@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Load More",
 	"components.pager-load-more.action-with-page-size": "Load {count} More",
 	"components.pager-load-more.status-loading": "Loading more items",
+	"components.scroll-wrapper.scroll-left": "Scroll left",
+	"components.scroll-wrapper.scroll-right": "Scroll right",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {Disabled when more than {countFormatted} item is selected}
@@ -168,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "Select an item to perform this action",
 	"components.selection.select-all": "Select All",
-	"components.selection.select-all-items": "Select All {count} Items",
+	"components.selection.select-all-items":
+		`{count, plural,
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {Select All {countFormatted} Items}
+		}`,
 	"components.selection.selected": "{count} selected",
 	"components.selection.selected-plus": "{count}+ selected",
 	"components.selection-controls.label": "Actions for selection",

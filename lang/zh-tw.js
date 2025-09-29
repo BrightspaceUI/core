@@ -155,13 +155,18 @@ export default {
 	"components.pager-load-more.action": "載入更多",
 	"components.pager-load-more.action-with-page-size": "再載入 {count} 個",
 	"components.pager-load-more.status-loading": "正在載入更多項目",
+	"components.scroll-wrapper.scroll-left": "向左捲動",
+	"components.scroll-wrapper.scroll-right": "向右捲動",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			other {選取超過 {countFormatted} 個項目時即停用}
 		}`,
 	"components.selection.action-required-hint": "選取項目以執行此動作",
 	"components.selection.select-all": "全選",
-	"components.selection.select-all-items": "選取所有 {count} 個項目",
+	"components.selection.select-all-items":
+		`{count, plural,
+			other {選取所有 {countFormatted} 個項目}
+		}`,
 	"components.selection.selected": "已選取 {count} 個",
 	"components.selection.selected-plus": "已選取 {count}+ 個",
 	"components.selection-controls.label": "選擇的動作",

@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Utaina Anō",
 	"components.pager-load-more.action-with-page-size": "Utaina {count} Ētahi atu",
 	"components.pager-load-more.status-loading": "Uta ana i ētahi atu tūemi",
+	"components.scroll-wrapper.scroll-left": "Panuku maui",
+	"components.scroll-wrapper.scroll-right": "Panuku matau",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {Kua whakakorehia ina neke atu i te {countFormatted} o ngā tūemi i tīpakohia}
@@ -168,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "Tīpakohia tētahi tūemi hei whakahaere i tēnei mahi",
 	"components.selection.select-all": "Tīpako Katoa",
-	"components.selection.select-all-items": "Tīpakohia Ngā Tūemi {count} Katoa",
+	"components.selection.select-all-items":
+		`{count, plural,
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {Tīpakohia Ngā Tūemi {countFormatted} Katoa}
+		}`,
 	"components.selection.selected": "{count} kua tīpakohia",
 	"components.selection.selected-plus": "{count}+ kua tīpakohia",
 	"components.selection-controls.label": "Ngā mahinga mō te tīpakonga",
@@ -211,9 +218,9 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} anō",
 	"components.tag-list.role-description":
 		`{count, plural,
-			=0 {Tag List with 0 items}
-			one {Tag List with {count}ahi te mea}
-			other {Tag List with {count}ētahi atu tūemi}
+			=0 {Rarangi Tohu me nga mea 0}
+			one {Rarangi Tohu me nga mea {count}}
+			other {Rarangi Tohu me nga mea {count}}
 		}`,
 	"components.tag-list.show-less": "Whakaaturia mai kia iti iho",
 	"components.tag-list.show-more-description": "Tīpakohia hei whakaatu i ngā tūemi rārangi tūtohu hunahuna",

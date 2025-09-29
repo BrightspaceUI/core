@@ -1,4 +1,4 @@
-import '../form-errory-summary.js';
+import '../form-error-summary.js';
 import { clickElem, expect, fixture, html } from '@brightspace-ui/testing';
 
 const errors = [

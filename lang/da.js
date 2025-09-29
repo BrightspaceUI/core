@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Indlæs flere",
 	"components.pager-load-more.action-with-page-size": "Indlæs {count} mere",
 	"components.pager-load-more.status-loading": "Indlæser flere elementer",
+	"components.scroll-wrapper.scroll-left": "Rul til venstre",
+	"components.scroll-wrapper.scroll-right": "Rul til højre",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {Deaktiveret, når mere end {countFormatted} element er valgt}
@@ -168,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "Vælg et element for at udføre denne handling",
 	"components.selection.select-all": "Vælg alle",
-	"components.selection.select-all-items": "Vælg alle {count} elementer",
+	"components.selection.select-all-items":
+		`{count, plural,
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {Vælg alle {countFormatted} elementer}
+		}`,
 	"components.selection.selected": "{count} valgt",
 	"components.selection.selected-plus": "{count}+ valgt",
 	"components.selection-controls.label": "Handlinger for valg",

@@ -10,11 +10,35 @@ class Progress extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * The maximum value of the progress bar
+			 * @type {number}
+			 */
 			max: { type: Number, attribute: 'max' },
+			/**
+			 * The current value of the progress bar
+			 * @type {number}
+			 */
 			value: { type: Number },
+			/**
+			 * Label for the progress bar
+			 * @type {string}
+			 */
 			label: { type: String },
+			/**
+			 * Hide the bar's label
+			 * @type {boolean}
+			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
+			/**
+			 * Hide the bar's value
+			 * @type {boolean}
+			 */
 			valueHidden: { type: Boolean, attribute: 'value-hidden' },
+			/**
+			 * Use d2l-body-small styles
+			 * @type {boolean}
+			 */
 			small: { type: Boolean, reflect: true }
 		};
 	}
@@ -25,7 +49,8 @@ class Progress extends LitElement {
 					display: block;
 					min-width: 6rem;
 				}
-				:host([hidden]) {
+				:host([hidden]),
+				.text[hidden] {
 					display: none;
 				}
 				.text {
@@ -89,6 +114,7 @@ class Progress extends LitElement {
 		this.max = 100;
 		this.value = 0;
 		this.valueHidden = false;
+		this.small = false;
 	}
 
 	render() {
@@ -105,7 +131,7 @@ class Progress extends LitElement {
 		const perecentageText = formatPercent(percentage);
 
 		return html`
-			<div class=${classMap(textClasses)} >
+			<div class=${classMap(textClasses)} ?hidden=${(this.labelHidden || !this.label) && this.valueHidden}>
 				<span ?hidden=${this.labelHidden} id="label">${this.label}</span>
 				<span style="font-size: 0;">${getSeparator({ nonBreaking: true })}</span>
 				<span ?hidden=${this.valueHidden}>${perecentageText}</span>

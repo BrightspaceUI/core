@@ -2,11 +2,9 @@ import { expect, fixture, html } from '@brightspace-ui/testing';
 import { classMap } from 'lit/directives/class-map.js';
 import { formatCodeElement } from '../prism.js';
 
-const jsFunction =
-`function helloGrumpy(name) { /* ... */ }
+const jsFunction = `function helloGrumpy(name) { /* ... */ }
 helloGrumpy('Wizard');`;
-const jsFullFunction =
-`function helloGrumpy(name) {
+const jsFullFunction = `function helloGrumpy(name) {
 	console.log(\`Hi there \${name}.\`);
 }
 helloGrumpy('Wizard');`;

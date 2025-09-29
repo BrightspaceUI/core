@@ -154,13 +154,18 @@ export default {
 	"components.pager-load-more.action": "さらに読み込む",
 	"components.pager-load-more.action-with-page-size": "さらに {count} 件を読み込む",
 	"components.pager-load-more.status-loading": "さらに項目を読み込み中",
+	"components.scroll-wrapper.scroll-left": "左にスクロール",
+	"components.scroll-wrapper.scroll-right": "右にスクロール",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			other {{countFormatted} 個を超える項目が選択されている場合は無効になります}
 		}`,
 	"components.selection.action-required-hint": "この操作を実行するための項目を選択します",
 	"components.selection.select-all": "すべて選択",
-	"components.selection.select-all-items": "{count} 個の項目をすべて選択",
+	"components.selection.select-all-items":
+		`{count, plural,
+			other {{countFormatted} 個の項目をすべて選択}
+		}`,
 	"components.selection.selected": "{count} 個を選択済み",
 	"components.selection.selected-plus": "{count} 個以上を選択済み",
 	"components.selection-controls.label": "選択のアクション",

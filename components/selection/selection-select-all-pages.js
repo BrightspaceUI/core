@@ -1,6 +1,7 @@
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { SelectionInfo } from './selection-mixin.js';
 import { SelectionObserverMixin } from './selection-observer-mixin.js';
@@ -35,7 +36,7 @@ class SelectAllPages extends FocusMixin(LocalizeCoreElement(SelectionObserverMix
 		return html`
 			<d2l-button-subtle
 				@click="${this._handleClick}"
-				text="${this.localize('components.selection.select-all-items', 'count', this._provider.itemCount)}">
+				text="${this.localize('components.selection.select-all-items', { count: this._provider.itemCount, countFormatted: formatNumber(this._provider.itemCount) })}">
 			</d2l-button-subtle>`;
 	}
 

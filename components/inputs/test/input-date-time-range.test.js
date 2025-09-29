@@ -33,14 +33,14 @@ describe('d2l-input-date-time-range', () => {
 	});
 
 	describe('utility', () => {
-		['America/Toronto', 'Australia/Eucla'].forEach((timezone) => {
+		['America/Toronto', 'Australia/Eucla'].forEach((timeZone) => {
 			const inclusive = false;
 
-			describe(`getShiftedEndDateTime in ${timezone}`, () => {
+			describe(`getShiftedEndDateTime in ${timeZone}`, () => {
 
 				before(async() => {
-					documentLocaleSettings.timezone.identifier = timezone;
-					await aTimeout(10); // Fixes flaky tests likely caused by timezone not yet being set
+					documentLocaleSettings.timezone.identifier = timeZone;
+					await aTimeout(10); // Fixes flaky tests likely caused by time zone not yet being set
 				});
 
 				after(() => {
@@ -58,7 +58,7 @@ describe('d2l-input-date-time-range', () => {
 				it('should shift as expected when times are different but dates the same because of UTC', () => {
 					let prevStartValue, start, prevEnd, newEndValue;
 
-					if (timezone === 'America/Toronto') {
+					if (timeZone === 'America/Toronto') {
 						prevStartValue = '2020-10-14T12:00:00.000Z';
 						prevEnd = '2020-10-15T02:00:00.000Z';
 						start = '2020-10-14T08:00:00.000Z';
@@ -76,7 +76,7 @@ describe('d2l-input-date-time-range', () => {
 					const prevStartValue = '2020-10-20T02:00:00.000Z';
 					const start = '2020-10-20T03:00:00.000Z';
 					let prevEnd;
-					if (timezone === 'America/Toronto') {
+					if (timeZone === 'America/Toronto') {
 						prevEnd = '2020-10-20T06:00:00.000Z';
 					} else {
 						prevEnd = '2020-10-20T20:00:00.000Z';
@@ -87,10 +87,10 @@ describe('d2l-input-date-time-range', () => {
 			});
 
 			[true, false].forEach((localized) => {
-				describe(`getShiftedEndDateTime in ${timezone} with localized ${localized}`, () => {
+				describe(`getShiftedEndDateTime in ${timeZone} with localized ${localized}`, () => {
 
 					beforeEach(async() => {
-						documentLocaleSettings.timezone.identifier = timezone;
+						documentLocaleSettings.timezone.identifier = timeZone;
 					});
 
 					afterEach(() => {
@@ -185,7 +185,7 @@ describe('d2l-input-date-time-range', () => {
 
 						it('should only shift at latest to 11:59 PM', () => {
 							let prevStartValue, prevEnd, start, newEndValue;
-							if (timezone === 'America/Toronto') {
+							if (timeZone === 'America/Toronto') {
 								prevStartValue = '2020-10-15T06:00:00.000Z';
 								prevEnd = '2020-10-15T20:00:00.000Z';
 								start = '2020-10-15T14:00:00.000Z';

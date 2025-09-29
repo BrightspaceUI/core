@@ -154,13 +154,18 @@ export default {
 	"components.pager-load-more.action": "더 많이 로드",
 	"components.pager-load-more.action-with-page-size": "{count}개 더 로드",
 	"components.pager-load-more.status-loading": "더 많은 항목 로드",
+	"components.scroll-wrapper.scroll-left": "왼쪽으로 스크롤",
+	"components.scroll-wrapper.scroll-right": "오른쪽으로 스크롤",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			other {{countFormatted}개 이상의 항목이 선택되면 비활성화됨}
 		}`,
 	"components.selection.action-required-hint": "이 작업을 수행할 항목을 선택하십시오",
 	"components.selection.select-all": "모두 선택",
-	"components.selection.select-all-items": "{count}개 항목을 모두 선택하십시오.",
+	"components.selection.select-all-items":
+		`{count, plural,
+			other {{countFormatted}개 항목을 모두 선택하십시오}
+		}`,
 	"components.selection.selected": "{count}개 선택됨",
 	"components.selection.selected-plus": "{count}+개 선택됨",
 	"components.selection-controls.label": "선택 작업",

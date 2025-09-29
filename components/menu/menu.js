@@ -70,6 +70,7 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 				--d2l-menu-background-color: #333536; /* tungsten @ 70% */
 				--d2l-menu-background-color-hover: #123559; /* celestine-1 @ 50% */
 				--d2l-menu-border-color: var(--d2l-color-tungsten);
+				--d2l-menu-border-color-hover: #ffffff;
 				--d2l-menu-foreground-color: var(--d2l-color-sylvite);
 				--d2l-menu-foreground-color-hover: #ffffff;
 				--d2l-menu-separator-color: var(--d2l-color-galena);
@@ -96,14 +97,13 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
-		this.addEventListener('d2l-hierarchical-view-show-start', this._onVisibilityChange);
-		this.addEventListener('d2l-hierarchical-view-hide-complete', this._onVisibilityChange);
+		this.addEventListener('d2l-hierarchical-view-show-start', this._onShowStart);
+		this.addEventListener('d2l-hierarchical-view-hide-complete', this._onHideComplete);
 		this.addEventListener('d2l-hierarchical-view-show-complete', this._onShowComplete);
 		this.addEventListener('d2l-hierarchical-view-resize', this._onViewResize);
 		this.addEventListener('d2l-menu-item-visibility-change', this._onMenuItemsChanged);
 		this.addEventListener('keydown', this._onKeyDown);
 		this.addEventListener('keypress', this._onKeyPress);
-		this.addEventListener('focusout', this._onFocusOut);
 
 		this._labelChanged();
 
@@ -143,7 +143,9 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		if (this.getMenuType() === 'menu-radio') {
 			this._focusSelected();
 		} else {
-			this._focusFirst();
+			const lastFocused = this._getTabFocusable();
+			if (lastFocused) this._focusItem(lastFocused);
+			else this._focusFirst();
 		}
 	}
 
@@ -165,6 +167,10 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		}
 	}
 
+	resetFocusables() {
+		this._getTabFocusable()?.setAttribute('tabindex', '-1');
+	}
+
 	_createReturnItem() {
 		const item = document.createElement('d2l-menu-item-return');
 		item.addEventListener('d2l-menu-item-select', (e) => {
@@ -176,6 +182,8 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 	}
 
 	_focusFirst() {
+		const lastFocused = this._getTabFocusable();
+		if (lastFocused) lastFocused.setAttribute('tabindex', '-1');
 		const item = this._tryGetNextFocusable();
 		if (item) this._focusItem(item);
 	}
@@ -191,11 +199,13 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 	}
 
 	_focusNext(item) {
+		item.setAttribute('tabindex', '-1');
 		item = this._tryGetNextFocusable(item);
 		item ? this._focusItem(item) : this._focusFirst();
 	}
 
 	_focusPrevious(item) {
+		item.setAttribute('tabindex', '-1');
 		item = this._tryGetPreviousFocusable(item);
 		item ? this._focusItem(item) : this._focusLast();
 	}
@@ -248,6 +258,10 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		});
 	}
 
+	_getTabFocusable() {
+		return this._items.find(i => i.getAttribute('tabindex') === '0');
+	}
+
 	_isFocusable(item) {
 		if (item.nodeType !== 1) {
 			return false;
@@ -271,11 +285,9 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		if (returnItem) returnItem.setAttribute('text', this.label);
 	}
 
-	_onFocusOut(e) {
-		e.stopPropagation();
-		const isMenuItem = e.target.role === 'menuitem' || e.target.role === 'menuitemcheckbox' || e.target.role === 'menuitemradio';
-		if (!isMenuItem || e.target.hasAttribute('first') || e.target.hasChildView) return;
-		e.target.setAttribute('tabindex', '-1');
+	_onHideComplete() {
+		this.resetFocusables();
+		this.active = this.isActive();
 	}
 
 	_onKeyDown(e) {
@@ -303,7 +315,8 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 	}
 
 	_onKeyPress(e) {
-		if (this._items.indexOf(e.composedPath()[0]) === -1) return;
+		const currentItem = e.composedPath()[0];
+		if (this._items.indexOf(currentItem) === -1) return;
 
 		if (e.keyCode === keyCodes.DOWN || e.keyCode === keyCodes.UP
 			|| e.keyCode === keyCodes.SPACE || e.keyCode === keyCodes.ENTER
@@ -312,6 +325,8 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		}
 
 		e.stopPropagation();
+
+		currentItem.setAttribute('tabindex', '-1');
 
 		const startsWith = function(item, value) {
 			if (item.text && item.text.length > 0 && item.text.toLowerCase().substr(0, 1) === value) {
@@ -360,6 +375,10 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		this.focus();
 	}
 
+	_onShowStart() {
+		this.active = this.isActive();
+	}
+
 	_onViewResize(e) {
 		if (!this.rootView) return;
 
@@ -369,10 +388,6 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 			detail: e.detail
 		};
 		this.dispatchEvent(new CustomEvent('d2l-menu-resize', eventDetails));
-	}
-
-	_onVisibilityChange() {
-		this.active = this.isActive();
 	}
 
 	_tryGetNextFocusable(item) {

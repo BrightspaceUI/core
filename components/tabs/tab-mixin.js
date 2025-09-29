@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import { css, html } from 'lit';
+import { getFlag } from '../../helpers/flags.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const keyCodes = {
@@ -11,6 +12,10 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	static get properties() {
 		return {
+			/**
+			 * @ignore
+			 */
+			hidden: { type: Boolean, reflect: true },
 			/**
 			 * Use to select the tab. Only one tab can be selected at a time.
 			 * @type {boolean}
@@ -38,6 +43,9 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				outline: none;
 				position: relative;
 				vertical-align: middle;
+			}
+			:host([hidden]) {
+				display: none;
 			}
 			.d2l-tab-content {
 				margin: 0.5rem;
@@ -89,11 +97,13 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 	constructor() {
 		super();
+		this.hidden = false;
 		this.role = 'tab';
 		this.selected = false;
 		this.tabIndex = -1;
 
 		this._clicked = false;
+		this._noInitialSelectedEvent = getFlag('GAUD-8605-tab-no-initial-selected-event', false);
 	}
 
 	firstUpdated(changedProperties) {
@@ -102,6 +112,8 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		this.addEventListener('click', this.#handleClick);
 		this.addEventListener('keydown', this.#handleKeydown);
 		this.addEventListener('keyup', this.#handleKeyup);
+
+		this.#hasInitialized = true;
 	}
 
 	render() {
@@ -116,6 +128,8 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
 		if (changedProperties.has('selected')) {
 			this.ariaSelected = `${this.selected}`;
+			if (!this.#hasInitialized && this._noInitialSelectedEvent) return; // Only fire events if selected changes after initial render
+
 			if (this.selected) {
 				/** Dispatched when a tab is selected */
 				this.dispatchEvent(new CustomEvent(
@@ -127,6 +141,12 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 					'd2l-tab-deselected', { bubbles: true }
 				));
 			}
+		}
+		if (changedProperties.has('hidden') && changedProperties.get('hidden') !== undefined) {
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent(
+				'd2l-tab-hidden-change', { bubbles: true }
+			));
 		}
 	}
 
@@ -144,6 +164,8 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		console.warn('Subclasses to implement/override renderContent');
 		return html`<div>Default Tab Content</div>`;
 	}
+
+	#hasInitialized = false;
 
 	#handleClick() {
 		if (this.selected) return;

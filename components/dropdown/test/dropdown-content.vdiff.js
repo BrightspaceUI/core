@@ -61,7 +61,6 @@ describe('dropdown-content', () => {
 		{ name: 'max-width', content: html`<d2l-dropdown-content max-width="200" opened>${longerText}</d2l-dropdown-content>` },
 		{ name: 'min-height', dropdownStyles: { left: '50%', top: '50%' }, content: html`<d2l-dropdown-content min-height="1000" no-auto-fit opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'max-height', content: html`<d2l-dropdown-content max-height="100" opened>${basicText}</d2l-dropdown-content>` },
-		{ name: 'max-height-invalid', content: html`<d2l-dropdown-content max-height="30" opened><div slot="header"><h1>Header Larger Than Max</h1></div>${longerText}</d2l-dropdown-content>` },
 		{ name: 'wide-opener', dropdownStyles: { left: '30px', right: '30px', top: '75px' }, openerStyles: { borderRadius: '5px', width: '100%' }, content: html`<d2l-dropdown-content boundary="{&quot;right&quot;:50, &quot;above&quot;:20}" opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'with-header-footer', content: html`<d2l-dropdown-content opened>${withHeaderFooter}</d2l-dropdown-content>` },
 		{ name: 'no-padding-no-pointer', content: html`<d2l-dropdown-content no-padding no-pointer opened>${basicText}</d2l-dropdown-content>` },
@@ -69,9 +68,7 @@ describe('dropdown-content', () => {
 		{ name: 'vertical-offset', dropdownStyles: { left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="100" opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'vertical-offset-above', dropdownStyles: { bottom: '30px', left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="100" opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'vertical-offset-edge', dropdownStyles: { left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="100" opened>${longerText}</d2l-dropdown-content>` },
-		{ name: 'vertical-offset-negative', dropdownStyles: { left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="-25" opened>${blockText}</d2l-dropdown-content>` },
-		{ name: 'boundary-left-below', dropdownStyles: { left: '50%', top: '50%' }, content: html`<d2l-dropdown-content boundary="{&quot;left&quot;:50, &quot;below&quot;:20}" opened>${longerText}</d2l-dropdown-content>` },
-		{ name: 'boundary-right-above', dropdownStyles: { left: '50%', top: '50%' }, content: html`<d2l-dropdown-content boundary="{&quot;right&quot;:50, &quot;above&quot;:20}" opened>${basicText}</d2l-dropdown-content>` }
+		{ name: 'vertical-offset-negative', dropdownStyles: { left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="-25" opened>${blockText}</d2l-dropdown-content>` }
 	].forEach(({ name, content, dropdownStyles = {}, openerStyles = {} }) => {
 		it(name, async() => {
 			await fixture(createDropdown(content, dropdownStyles, openerStyles), { viewport: { height: 400 }, pagePadding: false });

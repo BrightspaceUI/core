@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Hoʻouka hou aku",
 	"components.pager-load-more.action-with-page-size": "Hoʻouka {count} Mea hou aku",
 	"components.pager-load-more.status-loading": "Ke hoʻouka nei i nā mea hou aʻe",
+	"components.scroll-wrapper.scroll-left": "Holo hema",
+	"components.scroll-wrapper.scroll-right": "Oka akau",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {Hoʻopaʻa ʻia ke ʻoi aku ma mua o {countFormatted} koho ʻia ka mea}
@@ -168,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "E koho i kahi mea e hana ai i kēia hana",
 	"components.selection.select-all": "E koho i nā mea a pau",
-	"components.selection.select-all-items": "E koho i nā mea a pau {count}.",
+	"components.selection.select-all-items":
+		`{count, plural,
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {E koho i nā mea a pau {countFormatted}}
+		}`,
 	"components.selection.selected": "{count} koho",
 	"components.selection.selected-plus": "{count}+ i koho ʻia",
 	"components.selection-controls.label": "Nā hana no ke koho",
@@ -211,9 +218,9 @@ export default {
 	"components.tag-list.num-hidden": "+ {count} hou aku",
 	"components.tag-list.role-description":
 		`{count, plural,
-			=0 {Tag List with 0 items}
-			one {Tag List with {count}i mea}
-			other {Tag List with {count}a ʻē aʻe}
+			=0 {Papa inoa me 0 mau mea}
+			one {Papa inoa me {count} mau mea}
+			other {Papa inoa me {count} mau mea}
 		}`,
 	"components.tag-list.show-less": "Hōʻike liʻiliʻi",
 	"components.tag-list.show-more-description": "E koho e hōʻike i nā mea papa inoa inoa huna",

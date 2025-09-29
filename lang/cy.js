@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Llwytho Mwy",
 	"components.pager-load-more.action-with-page-size": "Lwytho {count} Arall",
 	"components.pager-load-more.status-loading": "Llwytho rhagor o eitemau",
+	"components.scroll-wrapper.scroll-left": "Sgrolio i’r chwith",
+	"components.scroll-wrapper.scroll-right": "Sgrolio i’r dde",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {Wedi’i analluogi pan fydd mwy nag {countFormatted} eitem yn cael ei ddewis}
@@ -168,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "Rhaid i chi ddewis eitem i gyflawni’r weithred hon",
 	"components.selection.select-all": "Dewis y Cyfan",
-	"components.selection.select-all-items": "Dewis Pob {count} Eitem",
+	"components.selection.select-all-items":
+		`{count, plural,
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {Dewis Pob {countFormatted} Eitem}
+		}`,
 	"components.selection.selected": "{count} wedi’u dewis.",
 	"components.selection.selected-plus": "{count}+ wedi’u dewis",
 	"components.selection-controls.label": "Camau gweithredu ar gyfer detholiad",

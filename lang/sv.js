@@ -161,6 +161,8 @@ export default {
 	"components.pager-load-more.action": "Läs in fler",
 	"components.pager-load-more.action-with-page-size": "Läs in {count} till",
 	"components.pager-load-more.status-loading": "Läser in fler objekt",
+	"components.scroll-wrapper.scroll-left": "Rulla till vänster",
+	"components.scroll-wrapper.scroll-right": "Rulla till höger",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {inaktiveras när fler än {countFormatted} objekt väljs}
@@ -168,7 +170,12 @@ export default {
 		}`,
 	"components.selection.action-required-hint": "Välj ett objekt för att utföra åtgärden",
 	"components.selection.select-all": "Välj alla",
-	"components.selection.select-all-items": "Välj alla {count} objekt",
+	"components.selection.select-all-items":
+		`{count, plural,
+			=1 {Select Item}
+			one {Select All {countFormatted} Item}
+			other {Välj alla {countFormatted} objekt}
+		}`,
 	"components.selection.selected": "{count} valda",
 	"components.selection.selected-plus": "Över {count} valda",
 	"components.selection-controls.label": "Åtgärder för val",

@@ -123,6 +123,7 @@ if (usePopoverMixin) {
 			// reset to root view
 			const menu = this.#getMenuElement();
 			menu.show({ preventFocus: true });
+			menu.resetFocusables();
 		}
 
 		#handleFocus(e) {
@@ -303,6 +304,7 @@ if (usePopoverMixin) {
 			// reset to root view
 			const menu = this.__getMenuElement();
 			menu.show({ preventFocus: true });
+			menu.resetFocusables();
 		}
 
 		_onFocus(e) {

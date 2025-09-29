@@ -353,7 +353,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 		switch (dimension.type) {
 			case 'd2l-filter-dimension-set':
-				this._performChangeSetDimension(dimension, keyObject.value, false);
+				this._performChangeSetDimension(dimension, [{ key: keyObject.value, selected: false }]);
 				break;
 		}
 	}
@@ -593,7 +593,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			${searchResults}
 			<d2l-list
 				id="${SET_DIMENSION_ID_PREFIX}${dimension.key}"
-				@d2l-list-selection-change="${this._handleChangeSetDimension}"
+				@d2l-list-selection-changes="${this._handleChangeSetDimension}"
 				extend-separators
 				grid
 				label="${ifDefined(listLabel)}"
@@ -715,10 +715,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 	_handleChangeSetDimension(e) {
 		const dimensionKey = e.target.id.slice(SET_DIMENSION_ID_PREFIX.length);
 		const dimension = this._getDimensionByKey(dimensionKey);
-		const valueKey = e.detail.key;
-		const selected = e.detail.selected;
 
-		this._performChangeSetDimension(dimension, valueKey, selected);
+		this._performChangeSetDimension(dimension, e.detail);
 	}
 
 	_handleClear() {
@@ -808,6 +806,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		if (shouldRecount) this._setFilterCounts(dimension);
 		if (shouldUpdate) this.requestUpdate();
 		if (shouldResizeDropdown) {
+			// todo: remove this when removing GAUD-7472-dropdown-popover flag (this request is no longer needed)
 			this._requestDropdownResize();
 		}
 		if (e.detail.dispatchChangeEvent) this._dispatchChangeEventValueDataChange(dimension, value, e.detail.valueKey);
@@ -971,24 +970,30 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		return false;
 	}
 
-	_performChangeSetDimension(dimension, valueKey, selected) {
-		const value = dimension.values.find(value => value.key === valueKey);
-		if (value.selected === selected) return;
-		value.selected = selected;
+	_performChangeSetDimension(dimension, newValues) {
+		let countChange = 0;
+		const changeEventDetails = [];
 
-		if (selected) {
-			dimension.appliedCount++;
-			this._totalAppliedCount++;
-		} else {
-			dimension.appliedCount--;
-			this._totalAppliedCount--;
-		}
+		newValues.forEach(newValue => {
+			const value = dimension.values.find(value => value.key === newValue.key);
+			if (value.selected === newValue.selected) return;
+			value.selected = newValue.selected;
 
-		const details = { valueKey: valueKey, selected: selected };
+			if (newValue.selected) countChange++;
+			else countChange--;
 
-		if (value.getAdditionalEventDetails) Object.assign(details, value.getAdditionalEventDetails(selected));
+			const details = { valueKey: newValue.key, selected: newValue.selected };
 
-		this._dispatchChangeEvent(dimension, details);
+			if (value.getAdditionalEventDetails) Object.assign(details, value.getAdditionalEventDetails(newValue.selected));
+			changeEventDetails.push(details);
+		});
+
+		dimension.appliedCount += countChange;
+		this._totalAppliedCount += countChange;
+
+		this.requestUpdate();
+
+		changeEventDetails.forEach(det => this._dispatchChangeEvent(dimension, det));
 	}
 
 	_performDimensionClear(dimension) {
@@ -1029,10 +1034,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 				break;
 		}
 
+		// todo: remove this when removing GAUD-7472-dropdown-popover flag (this request is no longer needed)
 		this._requestDropdownResize();
 		this.requestUpdate();
 	}
 
+	// todo: remove this method when removing GAUD-7472-dropdown-popover flag (d2l-filter calls requestRepositionNextResize)
 	_requestDropdownResize() {
 		const singleDimension = this._dimensions.length === 1;
 		if (singleDimension && this.opened) {

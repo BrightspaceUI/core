@@ -154,13 +154,18 @@ export default {
 	"components.pager-load-more.action": "加载更多",
 	"components.pager-load-more.action-with-page-size": "再加载 {count} 个",
 	"components.pager-load-more.status-loading": "加载更多项目",
+	"components.scroll-wrapper.scroll-left": "向左滚动",
+	"components.scroll-wrapper.scroll-right": "向右滚动",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			other {选择的项目超过 {countFormatted} 个时禁用}
 		}`,
 	"components.selection.action-required-hint": "选择一个项目后才能执行此操作",
 	"components.selection.select-all": "全选",
-	"components.selection.select-all-items": "选择全部 {count} 个项目",
+	"components.selection.select-all-items":
+		`{count, plural,
+			other {选择全部 {countFormatted} 个项目}
+		}`,
 	"components.selection.selected": "已选 {count}",
 	"components.selection.selected-plus": "已选 + {count}",
 	"components.selection-controls.label": "针对所选内容的操作",

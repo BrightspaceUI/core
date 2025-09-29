@@ -34,7 +34,7 @@ function getValidISOTimeAtInterval(val, timeInterval) {
 }
 
 /**
- * A component consisting of two input-time components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's timezone if applicable and must be in ISO 8601 time format ("hh:mm:ss").
+ * A component consisting of two input-time components - one for start of range and one for end of range. Values specified for these components (through start-value and/or end-value attributes) should be localized to the user's time zone if applicable and must be in ISO 8601 time format ("hh:mm:ss").
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when there is a change to selected start time or selected end time. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 calendar time format (`hh:mm:ss`).
  */
@@ -119,7 +119,17 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(LocalizeC
 			 * Number of minutes between times shown in dropdown menu
 			 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 			 */
-			timeInterval: { attribute: 'time-interval', reflect: true, type: String }
+			timeInterval: { attribute: 'time-interval', reflect: true, type: String },
+			/**
+			 * Time zone identifier for the inputs to use.
+			 * @type {string}
+			 */
+			timeZoneId: { type: String },
+			/**
+			 * Hides the time zone inside the selection dropdowns. Should only be used when the input values are not related to any one time zone
+			 * @type {Boolean}
+			 */
+			timeZoneHidden: { type: Boolean, attribute: 'time-zone-hidden' },
 		};
 	}
 
@@ -251,6 +261,8 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(LocalizeC
 						?skeleton="${this.skeleton}"
 						slot="left"
 						time-interval="${ifDefined(timeInterval)}"
+						time-zone-id="${ifDefined(this.timeZoneId)}"
+						?time-zone-hidden="${this.timeZoneHidden}"
 						value="${ifDefined(this.startValue)}">
 					</d2l-input-time>
 					<d2l-input-time
@@ -269,6 +281,8 @@ class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(LocalizeC
 						?skeleton="${this.skeleton}"
 						slot="right"
 						time-interval="${ifDefined(timeInterval)}"
+						time-zone-id="${ifDefined(this.timeZoneId)}"
+						?time-zone-hidden="${this.timeZoneHidden}"
 						value="${ifDefined(this.endValue)}">
 					</d2l-input-time>
 				</d2l-input-date-time-range-to>

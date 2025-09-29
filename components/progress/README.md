@@ -21,3 +21,4 @@ A progress bar communicates information relating to the progress of completion o
 | `label` | String | Label for the progress bar |
 | `label-hidden` | Boolean | Hide the bar's label |
 | `value-hidden` | Boolean | Hide the bar's value |
+<!-- docs: end hidden content -->

@@ -1,4 +1,4 @@
-import './form-errory-summary.js';
+import './form-error-summary.js';
 import '../tooltip/tooltip.js';
 import '../link/link.js';
 import { css, html, LitElement } from 'lit';
@@ -34,6 +34,11 @@ class Form extends LocalizeCoreElement(LitElement) {
 			 * @type {boolean}
 			 */
 			trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true },
+			/**
+			 * Id for an alternative error summary element
+			 * @type {string}
+			 */
+			summaryId: { type: String, attribute: 'summary-id' },
 			_errors: { type: Object },
 			_hasErrors: { type: Boolean, attribute: '_has-errors', reflect: true },
 		};
@@ -56,6 +61,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 	constructor() {
 		super();
 		this.trackChanges = false;
+		this.summaryId = null;
 		this._errors = new Map();
 		this._isSubForm = false;
 		this._nestedForms = new Map();
@@ -63,6 +69,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 		this._firstUpdatePromise = new Promise((resolve) => {
 			this._firstUpdateResolve = resolve;
 		});
+		this._hasErrors = false;
 		this._tooltips = new Map();
 		this._validationCustoms = new Set();
 
@@ -74,6 +81,12 @@ class Form extends LocalizeCoreElement(LitElement) {
 		this.addEventListener('d2l-form-errors-change', this._onErrorsChange);
 		this.addEventListener('d2l-form-element-errors-change', this._onErrorsChange);
 		this.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
+	}
+
+	get errorSummary() {
+		return [...flattenMap(this._errors)]
+			.filter(([, eleErrors]) => eleErrors.length > 0)
+			.map(([ele, eleErrors]) => ({ href: `#${ele.id}`, message: eleErrors[0], onClick: () => ele.focus() }));
 	}
 
 	connectedCallback() {
@@ -103,11 +116,8 @@ class Form extends LocalizeCoreElement(LitElement) {
 
 	render() {
 		let errorSummary = null;
-		if (this._isRootForm()) {
-			const errors = [...flattenMap(this._errors)]
-				.filter(([, eleErrors]) => eleErrors.length > 0)
-				.map(([ele, eleErrors]) => ({ href: `#${ele.id}`, message: eleErrors[0], onClick: () => ele.focus() }));
-			errorSummary = html`<d2l-form-error-summary .errors=${errors}></d2l-form-error-summary>`;
+		if (!this.summaryId && this._isRootForm()) {
+			errorSummary = html`<d2l-form-error-summary .errors=${this.errorSummary}></d2l-form-error-summary>`;
 		}
 		return html`
 			${errorSummary}
@@ -119,6 +129,9 @@ class Form extends LocalizeCoreElement(LitElement) {
 		super.willUpdate(changedProperties);
 		if (changedProperties.has('_errors')) {
 			this._hasErrors = this._errors.size > 0;
+		}
+		if ((changedProperties.has('summary-id') || changedProperties.has('_errors')) && this.summaryId) {
+			this.querySelector(`#${this.summaryId}`).errors = this.errorSummary;
 		}
 	}
 
