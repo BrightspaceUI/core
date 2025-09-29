@@ -3,10 +3,10 @@ import { bodyCompactStyles, bodySmallStyles } from '../typography/styles.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { formatPercent } from '@brightspace-ui/intl';
-import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
-class Progress extends LitElement {
+class Progress extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
@@ -37,7 +37,7 @@ class Progress extends LitElement {
 			valueHidden: { type: Boolean, attribute: 'value-hidden' },
 			/**
 			 * The size of the progress bar
-			 * @type {'small'|'large'}
+			 * @type {'small'|'medium'|'large'}
 			 */
 			size: { type: String, reflect: true },
 		};
@@ -46,15 +46,19 @@ class Progress extends LitElement {
 	static get styles() {
 		return [bodySmallStyles, bodyCompactStyles, css`
 				:host {
-					display: flex;
-					min-width: 6rem;
-					flex-wrap: wrap;
 					align-items: center;
-					gap: 0.3em 0.45em;
+					display: flex;
+					flex-wrap: wrap;
+					min-width: 6rem;
 				}
 				:host([hidden]) {
 					display: none;
 				}
+				:host([value-hidden]),
+				:host([size="large"]) {
+					row-gap: 0.3rem;
+				}
+
 				#label {
 					flex: 1 0 100%;
 				}
@@ -69,11 +73,33 @@ class Progress extends LitElement {
 					border-radius: 0.9rem;
 					box-shadow: inset 0 2px var(--d2l-color-mica);
 					display: block;
-					height: 0.9rem;
 					flex: 1;
-				}
-				:host([size="small"]) progress {
 					height: 0.6rem;
+					margin-right: 0.4rem;
+				}
+				.value {
+					text-align: right;
+					width: 2.42rem;
+				}
+
+				:host([size="small"]) {
+					progress {
+						height: 0.3rem;
+						margin-right: 0.3rem;
+					}
+
+					.value {
+						width: 2.15rem;
+					}
+				}
+
+				:host([size="large"]) progress {
+					height: 0.9rem;
+					margin-right: 0.5rem;
+
+					.value {
+						width: 2.82rem;
+					}
 				}
 
 				progress.complete {
@@ -115,18 +141,18 @@ class Progress extends LitElement {
 		this.max = 100;
 		this.value = 0;
 		this.valueHidden = false;
-		this.size = 'small';
+		this.size = 'medium';
 	}
 
 	render() {
 		const classes = {
 			'complete': this.value === this.max
 		};
-		const isSmall = this.size === 'small'
 		const textClasses = {
-			'd2l-body-small': isSmall,
-			'd2l-body-compact': !isSmall
+			'd2l-body-small': this.size === 'small',
+			'd2l-body-compact': this.size === 'medium'
 		};
+		const valueClasses = { ...textClasses, value: true };
 
 		const percentage = Math.floor(100 * this.value / this.max) / 100;
 		const perecentageText = formatPercent(percentage);
@@ -141,7 +167,7 @@ class Progress extends LitElement {
 				value="${this.value}"
 				max="${this.max}">
 			</progress>
-			<div ?hidden=${this.valueHidden} class=${classMap(textClasses)}>${perecentageText}</div>
+			<div ?hidden=${this.valueHidden} class=${classMap(valueClasses)}>${perecentageText}</div>
 
 		`;
 	}
