@@ -483,6 +483,19 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				height: 100%;
 			}
 
+			:host([layout="tile"]) .d2l-list-item-color-outer {
+				display: none;
+			}
+			:host([layout="tile"][color]) .d2l-list-item-color-outer {
+				display: block;
+				height: 1rem;
+				padding: 0;
+			}
+			:host([layout="tile"]) .d2l-list-item-color-inner {
+				border-radius: 0;
+				width: 100%;
+			}
+
 		`];
 
 		super.styles && styles.unshift(super.styles);

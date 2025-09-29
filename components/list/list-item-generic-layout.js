@@ -225,7 +225,8 @@ class ListItemGenericLayout extends LitElement {
 					[start] minmax(0, auto)
 					[end];
 				grid-template-rows:
-					[start drag-start] minmax(0, min-content)
+					[start color-indicator-start] minmax(0, min-content)
+					[color-indicator-end drag-start] minmax(0, min-content)
 					[drag-end header-start] minmax(0, min-content)
 					[header-end] auto
 					[end];
@@ -271,6 +272,11 @@ class ListItemGenericLayout extends LitElement {
 				grid-column: start / end;
 
 			}
+
+			 :host([layout="tile"]) ::slotted([slot="color-indicator"]) {
+				grid-row: color-indicator-start / color-indicator-end;
+				grid-column: start / end;
+			 }
 
 			:host([layout="tile"]) ::slotted([slot="nested"]),
 			:host([layout="tile"]) ::slotted([slot="before-content"]),
