@@ -10,6 +10,8 @@ function createFilterItem(node) {
 	return clones;
 }
 
+const updateEvents = ['d2l-filter-change', 'd2l-filter-dimension-load-more', 'd2l-filter-dimension-search', 'd2l-filter-dimension-first-open'];
+
 /**
  * A component that can be used to display a group of filters that will be put into an overflow filter when they no longer fit on the first line of their container
  * @slot - d2l-filters to be added to the container
@@ -39,10 +41,13 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 		super();
 
 		this._filterIds = '';
+		this._updateFilterData = this._handleSlotChange.bind(this);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
+		for (const event of updateEvents)
+			this.addEventListener(event, this._updateFilterData);
 
 		if (!this.tags) return;
 
@@ -51,10 +56,10 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 		this.appendChild(this._filterTags);
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-
-		this.addEventListener('d2l-filter-change', this._handleFilterChange);
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		for (const event of updateEvents)
+			this.removeEventListener(event, this._updateFilterData);
 	}
 
 	updated(changedProperties) {
@@ -83,24 +88,61 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 	}
 
 	getOverflowContainer(overflowItems) {
+		const filters = this._slotItems.filter(node => node.tagName.toLowerCase() === 'd2l-filter');
+		const openedDimensions = [];
+		for (const filter of filters) openedDimensions.push(...filter._openedDimensions);
+		/* eslint-disable lit/no-private-properties */
 		return html`
-			<d2l-filter class="${OVERFLOW_CLASS} vdiff-target" @d2l-filter-change="${this._handleFilterChange}">
+			<d2l-filter
+				class="${OVERFLOW_CLASS} vdiff-target"
+				._openedDimensions=${openedDimensions}
+				@d2l-filter-change="${this.#handleFilterChange}"
+				@d2l-filter-dimension-load-more="${this.#handleFilterLoadMore}"
+				@d2l-filter-dimension-search="${this.#handleFilterSearch}"
+				@d2l-filter-dimension-first-open="${this.#handleFirstOpen}">
 				${overflowItems}
 			</d2l-filter>
 		`;
+		/* eslint-enable */
 	}
 
-	_handleFilterChange(e) {
-		const target = (e.target.classList && e.target.classList.contains(OVERFLOW_CLASS)) ? this : e.target;
+	#getFilterDimensionSet(key, target = this) {
+		const dimension = target.querySelector(`d2l-filter-dimension-set[key=${key}]`);
+		if (dimension?.parentNode?.tagName !== 'D2L-FILTER') return null;
+		return dimension;
+	}
+
+	#handleFilterChange(e) {
 		e.detail.dimensions.forEach((dimension) => {
-			const filterSet = target.querySelector(`d2l-filter-dimension-set[key=${dimension.dimensionKey}`);
+			const filterSet = this.#getFilterDimensionSet(dimension.dimensionKey);
 			if (!filterSet) return;
 			dimension.changes.forEach((change) => {
 				const filterSetValue = filterSet.querySelector(`d2l-filter-dimension-set-value[key=${change.valueKey}]`);
 				if (!filterSetValue) return;
 				filterSetValue.selected = change.selected;
 			});
+			filterSet.parentNode.requestFilterChangeEvent(e.detail.allCleared, [dimension]);
 		});
+	}
+
+	#handleFilterLoadMore(e) {
+		const filter = this.#getFilterDimensionSet(e.detail.key)?.parentNode;
+		if (!filter) return;
+		filter.requestFilterLoadMoreEvent(e.detail.key, e.detail.value, e.detail.loadMoreCompleteCallback);
+		this._handleSlotChange();
+	}
+
+	#handleFilterSearch(e) {
+		const filter = this.#getFilterDimensionSet(e.detail.key)?.parentNode;
+		if (!filter) return;
+		filter.requestFilterSearchEvent(e.detail.key, e.detail.value, e.detail.searchCompleteCallback);
+		this._handleSlotChange();
+	}
+
+	#handleFirstOpen(e) {
+		const filter = this.#getFilterDimensionSet(e.detail.key)?.parentNode;
+		if (!filter) return;
+		filter._openedDimensions.push(e.detail.key);
 	}
 
 }
