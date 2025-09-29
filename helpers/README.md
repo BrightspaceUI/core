@@ -304,3 +304,40 @@ async getUpdateComplete() {
     await visualReady;
 }
 ```
+
+## Visibility (Scrolling & Sticky Offsets)
+
+Helpers for working with scrollable containers and ensuring focused or targeted elements are brought into view while accounting for sticky headers/controls and focus outlines.
+
+```js
+import { ensureElementVisible, getScrollContainer } from '@brightspace-ui/core/helpers/visibility.js';
+```
+
+### `getScrollContainer(element)`
+Walks up the DOM from `element` returning the first ancestor whose computed `overflow-y` (or `overflow`) is `auto` or `scroll`. Falls back to `document.documentElement` when none is found (or when `element` is `null/undefined`).
+
+Use this when you need to programmatically scroll something into view but the scrollable ancestor might be different depending on the embedding context.
+
+Returns: `HTMLElement` (never `null`).
+
+```js
+const scrollContainer = getScrollContainer(someNode.parentElement);
+```
+
+### `ensureElementVisible(totalStickyOffset, scrollContainer, element)`
+Scrolls the page or a specific scroll container so that `element` is fully visible beneath any sticky UI (headers, toolbars, table controls) while preserving a small buffer (14px) for focus rings and breathing room. If the element is already fully visible (not obscured by sticky content and within the viewport), no scrolling occurs.
+
+Parameters:
+* `totalStickyOffset` (number): Combined pixel height of sticky controls/headers above the scrolling region.
+* `scrollContainer` (HTMLElement | `document.documentElement`): The container to scroll. Usually obtained via `getScrollContainer`.
+* `element` (HTMLElement): The target element to reveal.
+
+Typical usage inside a component responding to focus:
+```js
+const scrollContainer = getScrollContainer(this); // or custom logic
+const stickyOffset = controlsHeight + headersHeight; // consumer calculates this
+ensureElementVisible(stickyOffset, scrollContainer, focusedNode);
+```
+
+Notes:
+* Provide the same `totalStickyOffset` you used to position sticky headers so alignment matches.

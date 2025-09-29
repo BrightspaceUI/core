@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { ensureElementVisible, getScrollContainer } from '../../helpers/visibility.js';
 import { getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
 import { cssSizes } from '../inputs/input-checkbox.js';
 import { getFlag } from '../../helpers/flags.js';
@@ -10,61 +11,11 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
 
 const colSyncFix = getFlag('GAUD-8228-8186-improved-table-col-sync', true);
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const SELECTORS = {
 	headers: 'tr.d2l-table-header, tr[header], thead tr',
 	items: ':not(thead) > tr:not(.d2l-table-header):not([header])',
 };
-
-export function ensureElementVisible(totalStickyOffset, scrollContainer, element) {
-	const rect = element.getBoundingClientRect();
-	const viewportHeight = window.innerHeight;
-
-	// Add buffer for focus rings (typically 2-3px) plus breathing room
-	const totalBuffer = 14; // Covers focus rings + breathing room
-
-	// Check if element (including focus ring) is hidden behind sticky headers or outside viewport
-	const isHiddenBySticky = (rect.top - totalBuffer) < totalStickyOffset;
-	const isOutsideViewport = (rect.bottom + totalBuffer) > viewportHeight || (rect.top - totalBuffer) < 0;
-
-	if (!isHiddenBySticky && !isOutsideViewport) return;
-	const currentScrollTop = scrollContainer.scrollTop || window.pageYOffset || 0;
-
-	// Calculate how much we need to scroll to position the element correctly
-	// We want the element (including focus ring) to appear just below the sticky elements
-	const desiredElementTop = totalStickyOffset + totalBuffer;
-	const scrollAdjustment = rect.top - desiredElementTop;
-	const targetScrollTop = currentScrollTop + scrollAdjustment;
-
-	// Perform custom scroll that accounts for sticky elements
-	if (scrollContainer === document.documentElement) {
-		window.scrollTo({
-			top: Math.max(0, targetScrollTop),
-			behavior: prefersReducedMotion ? 'auto' : 'smooth'
-		});
-	} else {
-		scrollContainer.scrollTo({
-			top: Math.max(0, targetScrollTop),
-			behavior: prefersReducedMotion ? 'auto' : 'smooth'
-		});
-	}
-}
-
-export function getScrollContainer(container) {
-	// For regular sticky headers, find the nearest scrollable container
-	while (container && container !== document.documentElement) {
-		const style = window.getComputedStyle(container);
-		const overflow = style.overflowY || style.overflow;
-		if (overflow === 'auto' || overflow === 'scroll') {
-			return container;
-		}
-		container = container.parentElement;
-	}
-
-	// Fall back to document scroll
-	return document.documentElement;
-}
 
 export function getStickyHeadersHeight(table) {
 	if (!table) return 0;
@@ -449,7 +400,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
 
-		this._focusScrollingEnabled = getFlag('GAUD-8527-focus-scrolling-bug-fix', true);
+		this._focusScrollingEnabled = getFlag('GAUD-8527-focus-scrolling-bug-fix', false);
 	}
 
 	connectedCallback() {
@@ -637,7 +588,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 	_handleFocusIn(e) {
 		const stickyControls = this._controls && !this._controls.noSticky;
-		if (!this.stickyHeaders && !stickyControls) return;
+		if (!this.stickyHeaders && !stickyControls || (stickyControls && !this._controlsScrolled)) return;
 		if (!isInteractiveInComposedPath(e.composedPath())) return;
 
 		const focusedElem = e.target;
