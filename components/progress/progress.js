@@ -121,9 +121,6 @@ class Progress extends LocalizeCoreElement(LitElement) {
 					border-radius: 0.9rem;
 					transition: width 0.4s ease-out;
 				}
-				progress.complete::${unsafeCSS(selector)} {
-					transition: none;
-				}
 				/* these are necessary to avoid showing border when value is 0 */
 				progress[value="0"]::${unsafeCSS(selector)} {
 					border: none;
