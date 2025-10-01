@@ -55,12 +55,12 @@ describe('tag-list', () => {
 			await expect(elem).to.be.golden();
 		});
 
-		it.skip('focus twice', async() => {
+		it('focus twice', async() => {
 			const elem = await fixture(createTagList(), { viewport });
 			sendKeys('press', 'Tab');
 			await oneEvent(elem, 'd2l-tooltip-show');
-			clickAt(0, 0);
-			sendKeys('press', 'Tab');
+			await clickAt(0, 0);
+			await sendKeys('press', 'Tab');
 			await expect(elem).to.be.golden();
 		});
 
