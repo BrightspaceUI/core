@@ -78,6 +78,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 					margin-right: 0.4rem;
 				}
 				.value {
+					line-height: 0.9rem;
 					text-align: right;
 					width: 2.42rem;
 				}
@@ -93,9 +94,11 @@ class Progress extends LocalizeCoreElement(LitElement) {
 					}
 				}
 
-				:host([size="large"]) progress {
-					height: 0.9rem;
-					margin-right: 0.5rem;
+				:host([size="large"]) {
+					progress {
+						height: 0.9rem;
+						margin-right: 0.5rem;
+					}
 
 					.value {
 						width: 2.82rem;
@@ -117,7 +120,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 					background-color: var(--d2l-progress-color);
 					border: 1px solid transparent;
 					border-radius: 0.9rem;
-					transition: width 0.25s ease-out;
+					transition: width 0.4s ease-out;
 				}
 				progress.complete::${unsafeCSS(selector)} {
 					transition: none;
