@@ -51,7 +51,7 @@ describe('d2l-progress', () => {
 		});
 
 		it('uses the floor value of the percentage', async() => {
-			const valueNode = element.shadowRoot.querySelector('.text span:last-child');
+			const valueNode = element.shadowRoot.querySelector('.value');
 			element.value = 2;
 			element.max = 3;
 			await element.updateComplete;
