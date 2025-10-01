@@ -57,9 +57,6 @@ class Progress extends LocalizeCoreElement(LitElement) {
 				:host([value-hidden]) {
 					row-gap: 0.3rem;
 				}
-				:host([size="large"]:not([value-hidden])) {
-					row-gap: 0.1rem;
-				}
 
 				#label {
 					flex: 1 0 100%;
@@ -96,6 +93,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 				}
 
 				:host([size="large"]) {
+					line-height: 1.5rem;
 					progress {
 						height: 0.9rem;
 						margin-right: 0.5rem;
