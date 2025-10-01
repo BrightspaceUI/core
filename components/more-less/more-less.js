@@ -198,18 +198,19 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__adjustToContent_makeActive() {
 		this.inactive = false;
-		this.__maxHeight = this.height;
+		// Include 1px of given room to account for issues with rounding the content's scroll height
+		this.__maxHeight = `${this.height + 1}px`;
 	}
 
 	__adjustToContent_makeInactive() {
 		this.inactive = true;
 		this.expanded = false;
-		// Include 1px of given room to account for issues with Firefox rounding the content's scroll height
+		// Include 1px of given room to account for issues with rounding the content's scroll height
 		this.__maxHeight = `${this.__content.scrollHeight + 1}px`;
 	}
 
 	__adjustToContent_resize(contentHeight) {
-		// Include 1px of given room to account for issues with Firefox rounding the content's scroll height
+		// Include 1px of given room to account for issues with rounding the content's scroll height
 		this.__maxHeight = `${contentHeight + 1}px`;
 	}
 
