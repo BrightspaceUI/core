@@ -3,18 +3,13 @@ const prefersReducedMotion = typeof window !== 'undefined'
 	&& window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export function ensureElementVisible(totalStickyOffset, scrollContainer, element) {
-	if (!element) return;
+	if (!element || !scrollContainer) return;
+
 	const rect = element.getBoundingClientRect();
-	const viewportHeight = window.innerHeight;
+	const totalBuffer = 14; // focus rings + breathing room
+	const isHiddenBySticky = (rect.top - totalBuffer) < totalStickyOffset; 	// Determine visibility relative to sticky offset.
 
-	// Buffer for focus rings + breathing room.
-	const totalBuffer = 14;
-
-	// Determine visibility relative to sticky offset & viewport.
-	const isHiddenBySticky = (rect.top - totalBuffer) < totalStickyOffset;
-	const isOutsideViewport = (rect.bottom + totalBuffer) > viewportHeight || (rect.top - totalBuffer) < 0;
-
-	if (!isHiddenBySticky && !isOutsideViewport) return;
+	if (!isHiddenBySticky) return;
 	const currentScrollTop = scrollContainer.scrollTop || window.pageYOffset || 0;
 
 	// Place element just below sticky region while honoring buffer.
@@ -30,14 +25,4 @@ export function ensureElementVisible(totalStickyOffset, scrollContainer, element
 	} else if (typeof scrollContainer.scrollTo === 'function') {
 		scrollContainer.scrollTo({ top, behavior });
 	}
-}
-
-export function getScrollContainer(container) {
-	while (container && container !== document.documentElement) {
-		const style = window.getComputedStyle(container);
-		const overflow = style.overflowY || style.overflow;
-		if (overflow === 'auto' || overflow === 'scroll') return container;
-		container = container.parentElement;
-	}
-	return document.documentElement;
 }

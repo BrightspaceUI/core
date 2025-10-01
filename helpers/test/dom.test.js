@@ -10,6 +10,7 @@ import {
 	getFirstVisibleAncestor,
 	getNextAncestorSibling,
 	getOffsetParent,
+	getScrollContainer,
 	isComposedAncestor,
 	isVisible,
 	querySelectorComposed
@@ -121,6 +122,28 @@ class TestElement extends LitElement {
 customElements.define('test-elem', TestElement);
 
 describe('dom', () => {
+
+	describe('getScrollContainer', () => {
+		it('returns document.documentElement for null/undefined', () => {
+			expect(getScrollContainer(null)).to.equal(document.documentElement);
+			expect(getScrollContainer(undefined)).to.equal(document.documentElement);
+		});
+		it('returns document.documentElement when no scrollable ancestor', async() => {
+			const el = await fixture(html`<div style="overflow:visible"><div style="overflow:visible"><div id="target"></div></div></div>`);
+			const target = el.querySelector('#target');
+			expect(getScrollContainer(target.parentElement)).to.equal(document.documentElement);
+		});
+		it('finds nearest parent with overflow:auto', async() => {
+			const el = await fixture(html`<div style="overflow:visible"><div id="scrollable" style="overflow:auto"><div id="child"></div></div></div>`);
+			const scrollable = el.querySelector('#scrollable');
+			expect(getScrollContainer(scrollable.firstElementChild)).to.equal(scrollable);
+		});
+		it('finds nearest parent with overflow:scroll', async() => {
+			const el = await fixture(html`<div style="overflow:visible"><div id="scrollable" style="overflow:scroll"><div id="child"></div></div></div>`);
+			const scrollable = el.querySelector('#scrollable');
+			expect(getScrollContainer(scrollable.firstElementChild)).to.equal(scrollable);
+		});
+	});
 
 	describe('cssEscape', () => {
 

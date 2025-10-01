@@ -200,6 +200,16 @@ export function getOffsetParent(node) {
 
 }
 
+export function getScrollContainer(container) {
+	while (container && container !== document.documentElement) {
+		const style = window.getComputedStyle(container);
+		const overflow = style.overflowY || style.overflow;
+		if (overflow === 'auto' || overflow === 'scroll') return container;
+		container = container.parentElement;
+	}
+	return document.documentElement;
+}
+
 export function isComposedAncestor(ancestorNode, node) {
 	return findComposedAncestor(node, (node) => {
 		return (node === ancestorNode);

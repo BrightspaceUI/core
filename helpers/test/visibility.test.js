@@ -1,30 +1,8 @@
-import { ensureElementVisible, getScrollContainer } from '../visibility.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
+import { ensureElementVisible } from '../visibility.js';
 import sinon from 'sinon';
 
 describe('helpers/visibility', () => {
-	describe('getScrollContainer', () => {
-		it('returns document.documentElement for null/undefined', () => {
-			expect(getScrollContainer(null)).to.equal(document.documentElement);
-			expect(getScrollContainer(undefined)).to.equal(document.documentElement);
-		});
-		it('returns document.documentElement when no scrollable ancestor', async() => {
-			const el = await fixture(html`<div style="overflow:visible"><div style="overflow:visible"><div id="target"></div></div></div>`);
-			const target = el.querySelector('#target');
-			expect(getScrollContainer(target.parentElement)).to.equal(document.documentElement);
-		});
-		it('finds nearest parent with overflow:auto', async() => {
-			const el = await fixture(html`<div style="overflow:visible"><div id="scrollable" style="overflow:auto"><div id="child"></div></div></div>`);
-			const scrollable = el.querySelector('#scrollable');
-			expect(getScrollContainer(scrollable.firstElementChild)).to.equal(scrollable);
-		});
-		it('finds nearest parent with overflow:scroll', async() => {
-			const el = await fixture(html`<div style="overflow:visible"><div id="scrollable" style="overflow:scroll"><div id="child"></div></div></div>`);
-			const scrollable = el.querySelector('#scrollable');
-			expect(getScrollContainer(scrollable.firstElementChild)).to.equal(scrollable);
-		});
-	});
-
 	describe('ensureElementVisible', () => {
 		let mockScrollTo, originalScrollTo;
 
@@ -60,17 +38,6 @@ describe('helpers/visibility', () => {
 			const scrollCall = mockScrollTo.getCall(0);
 			expect(scrollCall.args[0]).to.have.property('top');
 			expect(scrollCall.args[0]).to.have.property('behavior');
-		});
-
-		it('should scroll when element is outside viewport', async() => {
-			const container = await fixture(html`<div style="height: 400px; overflow: auto;"><button id="test-btn">Outside Button</button></div>`);
-			const button = container.querySelector('#test-btn');
-			sinon.stub(button, 'getBoundingClientRect').returns({ top: 650, bottom: 680, left: 10, right: 100 });
-			Object.defineProperty(container, 'scrollTop', { value: 0, writable: true });
-			container.scrollTo = mockScrollTo;
-			Object.defineProperty(window, 'innerHeight', { value: 600, configurable: true });
-			ensureElementVisible(0, container, button);
-			expect(mockScrollTo).to.have.been.called;
 		});
 
 		it('should calculate correct scroll position with sticky offset', async() => {

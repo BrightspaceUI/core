@@ -1,9 +1,9 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { ensureElementVisible, getScrollContainer } from '../../helpers/visibility.js';
-import { getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
+import { getComposedParent, getScrollContainer, isComposedAncestor } from '../../helpers/dom.js';
 import { cssSizes } from '../inputs/input-checkbox.js';
+import { ensureElementVisible } from '../../helpers/visibility.js';
 import { getFlag } from '../../helpers/flags.js';
 import { isInteractiveInComposedPath } from '../../helpers/interactive.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
