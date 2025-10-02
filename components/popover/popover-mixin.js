@@ -335,6 +335,9 @@ export const PopoverMixin = superclass => class extends superclass {
 			};
 		}
 		this._trapFocus = properties?.trapFocus ?? false;
+
+		this.#removeMediaQueryHandlers();
+		this.#addMediaQueryHandlers();
 	}
 
 	async open(opener, applyFocus = true) {
