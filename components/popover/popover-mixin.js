@@ -266,9 +266,9 @@ export const PopoverMixin = superclass => class extends superclass {
 		super.connectedCallback();
 		if (this._opened) {
 			this.#addAutoCloseHandlers();
-			this.#addMediaQueryHandlers();
 			this.#addRepositionHandlers();
 		}
+		this.#addMediaQueryHandlers();
 	}
 
 	disconnectedCallback() {
@@ -335,14 +335,15 @@ export const PopoverMixin = superclass => class extends superclass {
 			};
 		}
 		this._trapFocus = properties?.trapFocus ?? false;
+
+		this.#removeMediaQueryHandlers();
+		this.#addMediaQueryHandlers();
 	}
 
 	async open(opener, applyFocus = true) {
 		if (this._opened) return;
 
 		const ifrauBackdropService = await tryGetIfrauBackdropService();
-
-		this.#addMediaQueryHandlers();
 
 		this._rtl = document.documentElement.getAttribute('dir') === 'rtl';
 		this._applyFocus = applyFocus !== undefined ? applyFocus : true;
