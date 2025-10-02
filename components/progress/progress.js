@@ -74,17 +74,17 @@ class Progress extends LocalizeCoreElement(LitElement) {
 					display: block;
 					flex: 1;
 					height: 0.6rem;
-					margin-right: 0.4rem;
+					margin-inline-end: 0.4rem;
 				}
 				.value {
-					text-align: right;
+					text-align: end;
 					width: 2.42rem;
 				}
 
 				:host([size="small"]) {
 					progress {
 						height: 0.3rem;
-						margin-right: 0.3rem;
+						margin-inline-end: 0.3rem;
 					}
 
 					.value {
@@ -96,7 +96,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 					line-height: 1.5rem;
 					progress {
 						height: 0.9rem;
-						margin-right: 0.5rem;
+						margin-inline-end: 0.5rem;
 					}
 
 					.value {
