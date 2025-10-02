@@ -356,6 +356,15 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		this._handleClearAll();
 	}
 
+	requestFilterDimensionFirstOpenEvent(dimensionKey) {
+		this._openedDimensions.push(dimensionKey);
+		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-first-open', {
+			bubbles: true,
+			composed: false,
+			detail: { key: dimensionKey }
+		}));
+	}
+
 	requestFilterLoadMoreEvent(key, searchValue, callback = () => {}) {
 		const dimension = this._getDimensionByKey(key);
 		const applySearch = this._getSearchCallback(dimension);
@@ -720,11 +729,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 	_dispatchDimensionFirstOpenEvent(dimension) {
 		if (!this._openedDimensions.includes(dimension.key)) {
-			this.dispatchEvent(new CustomEvent('d2l-filter-dimension-first-open', { bubbles: true, composed: false, detail: { key: dimension.key } }));
+			this.requestFilterDimensionFirstOpenEvent(dimension.key);
 			if (dimension.searchType === 'manual') {
 				this._search(dimension);
 			}
-			this._openedDimensions.push(dimension.key);
 		}
 	}
 

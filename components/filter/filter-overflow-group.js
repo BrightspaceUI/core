@@ -10,7 +10,7 @@ function createFilterItem(node) {
 	return clones;
 }
 
-const updateEvents = ['d2l-filter-change', 'd2l-filter-dimension-load-more', 'd2l-filter-dimension-search', 'd2l-filter-dimension-first-open'];
+const updateEvents = ['d2l-filter-dimension-load-more', 'd2l-filter-dimension-search'];
 
 /**
  * A component that can be used to display a group of filters that will be put into an overflow filter when they no longer fit on the first line of their container
@@ -25,6 +25,7 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 			 * @type {boolean}
 			 */
 			tags: { type: Boolean },
+			_openedDimensions: { state: true },
 			_filterIds: { state: true }
 		};
 	}
@@ -41,13 +42,18 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 		super();
 
 		this._filterIds = '';
+		this._openedDimensions = [];
 		this._updateFilterData = this._handleSlotChange.bind(this);
+		this._handleSlottedFilterChange = this._handleSlottedFilterChange.bind(this);
+		this._handleSlottedDimensionFirstOpen = this._handleSlottedDimensionFirstOpen.bind(this);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
 		for (const event of updateEvents)
 			this.addEventListener(event, this._updateFilterData);
+		this.addEventListener('d2l-filter-change', this._handleSlottedFilterChange);
+		this.addEventListener('d2l-filter-dimension-first-open', this._handleSlottedDimensionFirstOpen);
 
 		if (!this.tags) return;
 
@@ -60,6 +66,8 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 		super.disconnectedCallback();
 		for (const event of updateEvents)
 			this.removeEventListener(event, this._updateFilterData);
+		this.removeEventListener('d2l-filter-change', this._handleSlottedFilterChange);
+		this.removeEventListener('d2l-filter-dimension-first-open', this._handleSlottedDimensionFirstOpen);
 	}
 
 	updated(changedProperties) {
@@ -88,14 +96,11 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 	}
 
 	getOverflowContainer(overflowItems) {
-		const filters = this._slotItems.filter(node => node.tagName.toLowerCase() === 'd2l-filter');
-		const openedDimensions = [];
-		for (const filter of filters) openedDimensions.push(...filter._openedDimensions);
 		/* eslint-disable lit/no-private-properties */
 		return html`
 			<d2l-filter
 				class="${OVERFLOW_CLASS} vdiff-target"
-				._openedDimensions=${openedDimensions}
+				._openedDimensions=${this._openedDimensions}
 				@d2l-filter-change="${this.#handleFilterChange}"
 				@d2l-filter-dimension-load-more="${this.#handleFilterLoadMore}"
 				@d2l-filter-dimension-search="${this.#handleFilterSearch}"
@@ -104,6 +109,22 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 			</d2l-filter>
 		`;
 		/* eslint-enable */
+	}
+
+	_handleSlottedDimensionFirstOpen(e) {
+		this._openedDimensions.push(e.detail.key);
+		this.requestUpdate();
+	}
+
+	_handleSlottedFilterChange(e) {
+		e.detail.dimensions.forEach((dimension) => {
+			const filterSet = this.#getFilterDimensionSet(dimension.dimensionKey);
+			dimension.changes.forEach((change) => {
+				const filterSetValue = filterSet.querySelector(`d2l-filter-dimension-set-value[key=${change.valueKey}]`);
+				if (!filterSetValue) return;
+				filterSetValue.selected = change.selected;
+			});
+		});
 	}
 
 	#getFilterDimensionSet(key, target = this) {
@@ -116,11 +137,6 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 		e.detail.dimensions.forEach((dimension) => {
 			const filterSet = this.#getFilterDimensionSet(dimension.dimensionKey);
 			if (!filterSet) return;
-			dimension.changes.forEach((change) => {
-				const filterSetValue = filterSet.querySelector(`d2l-filter-dimension-set-value[key=${change.valueKey}]`);
-				if (!filterSetValue) return;
-				filterSetValue.selected = change.selected;
-			});
 			filterSet.parentNode.requestFilterChangeEvent(e.detail.allCleared, [dimension]);
 		});
 	}
@@ -142,7 +158,7 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 	#handleFirstOpen(e) {
 		const filter = this.#getFilterDimensionSet(e.detail.key)?.parentNode;
 		if (!filter) return;
-		filter._openedDimensions.push(e.detail.key);
+		filter.requestFilterDimensionFirstOpenEvent(e.detail.key);
 	}
 
 }
