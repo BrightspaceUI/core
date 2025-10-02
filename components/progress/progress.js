@@ -3,10 +3,10 @@ import { bodyCompactStyles, bodySmallStyles } from '../typography/styles.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { formatPercent } from '@brightspace-ui/intl';
-import { getSeparator } from '@brightspace-ui/intl/lib/list.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
-class Progress extends LitElement {
+class Progress extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
@@ -36,26 +36,30 @@ class Progress extends LitElement {
 			 */
 			valueHidden: { type: Boolean, attribute: 'value-hidden' },
 			/**
-			 * Use d2l-body-small styles
-			 * @type {boolean}
+			 * The size of the progress bar
+			 * @type {'small'|'medium'|'large'}
 			 */
-			small: { type: Boolean, reflect: true }
+			size: { type: String, reflect: true },
 		};
 	}
 
 	static get styles() {
 		return [bodySmallStyles, bodyCompactStyles, css`
 				:host {
-					display: block;
+					align-items: center;
+					display: flex;
+					flex-wrap: wrap;
 					min-width: 6rem;
 				}
-				:host([hidden]),
-				.text[hidden] {
+				:host([hidden]) {
 					display: none;
 				}
-				.text {
-					display: flex;
-					justify-content: space-between;
+				:host([value-hidden]) {
+					row-gap: 0.3rem;
+				}
+
+				#label {
+					flex: 1 0 100%;
 				}
 
 				progress {
@@ -68,11 +72,36 @@ class Progress extends LitElement {
 					border-radius: 0.9rem;
 					box-shadow: inset 0 2px var(--d2l-color-mica);
 					display: block;
-					height: 0.9rem;
-					width: 100%;
-				}
-				:host([small]) progress {
+					flex: 1;
 					height: 0.6rem;
+					margin-inline-end: 0.4rem;
+				}
+				.value {
+					text-align: end;
+					width: 2.42rem;
+				}
+
+				:host([size="small"]) {
+					progress {
+						height: 0.3rem;
+						margin-inline-end: 0.3rem;
+					}
+
+					.value {
+						width: 2.15rem;
+					}
+				}
+
+				:host([size="large"]) {
+					line-height: 1.5rem;
+					progress {
+						height: 0.9rem;
+						margin-inline-end: 0.5rem;
+					}
+
+					.value {
+						width: 2.82rem;
+					}
 				}
 
 				progress.complete {
@@ -90,10 +119,7 @@ class Progress extends LitElement {
 					background-color: var(--d2l-progress-color);
 					border: 1px solid transparent;
 					border-radius: 0.9rem;
-					transition: width 0.25s ease-out;
-				}
-				progress.complete::${unsafeCSS(selector)} {
-					transition: none;
+					transition: width 0.4s ease-out;
 				}
 				/* these are necessary to avoid showing border when value is 0 */
 				progress[value="0"]::${unsafeCSS(selector)} {
@@ -114,7 +140,7 @@ class Progress extends LitElement {
 		this.max = 100;
 		this.value = 0;
 		this.valueHidden = false;
-		this.small = false;
+		this.size = 'medium';
 	}
 
 	render() {
@@ -122,20 +148,16 @@ class Progress extends LitElement {
 			'complete': this.value === this.max
 		};
 		const textClasses = {
-			'text': true,
-			'd2l-body-small': this.small,
-			'd2l-body-compact': !this.small
+			'd2l-body-small': this.size === 'small',
+			'd2l-body-compact': this.size === 'medium'
 		};
+		const valueClasses = { ...textClasses, value: true };
 
 		const percentage = Math.floor(100 * this.value / this.max) / 100;
 		const perecentageText = formatPercent(percentage);
 
 		return html`
-			<div class=${classMap(textClasses)} ?hidden=${(this.labelHidden || !this.label) && this.valueHidden}>
-				<span ?hidden=${this.labelHidden} id="label">${this.label}</span>
-				<span style="font-size: 0;">${getSeparator({ nonBreaking: true })}</span>
-				<span ?hidden=${this.valueHidden}>${perecentageText}</span>
-			</div>
+			<div ?hidden=${this.labelHidden} id="label" class=${classMap(textClasses)}>${this.label}</div>
 			<progress
 				aria-labelledby="${ifDefined(this.labelHidden ? undefined : 'label')}"
 				aria-label="${ifDefined(this.labelHidden ? this.label : undefined)}"
@@ -144,6 +166,8 @@ class Progress extends LitElement {
 				value="${this.value}"
 				max="${this.max}">
 			</progress>
+			<div ?hidden=${this.valueHidden} class=${classMap(valueClasses)}>${perecentageText}</div>
+
 		`;
 	}
 
