@@ -633,15 +633,15 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 					}
 				}
 			}
-			e.dataTransfer.setDragImage(getDragImage(selectionInfo.keys.length, includePlus), 24, 26);
+			if (e.dataTransfer.setDragImage) e.dataTransfer.setDragImage(getDragImage(selectionInfo.keys.length, includePlus), 24, 26);
 		} else if (rootList.dragMultiple && this.expandable) {
 			const flattenedListItems = this._getFlattenedListItems(this);
-			e.dataTransfer.setDragImage(getDragImage(flattenedListItems.listItems.size, flattenedListItems.lazyLoadListItems.size > 0), 24, 26);
+			if (e.dataTransfer.setDragImage) e.dataTransfer.setDragImage(getDragImage(flattenedListItems.listItems.size, flattenedListItems.lazyLoadListItems.size > 0), 24, 26);
 		} else {
 			if (this.shadowRoot) {
 				const nodeImage = this.shadowRoot.querySelector('.d2l-list-item-drag-image') || this;
 				nodeImage.classList.add('dragging');
-				e.dataTransfer.setDragImage(nodeImage, 50, 50);
+				if (e.dataTransfer.setDragImage) e.dataTransfer.setDragImage(nodeImage, 50, 50);
 			}
 		}
 
