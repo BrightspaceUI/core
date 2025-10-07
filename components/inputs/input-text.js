@@ -481,7 +481,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 						size="${ifDefined(this.size)}"
 						step="${ifDefined(this.step)}"
 						style="${styleMap(inputStyles)}"
-						tabindex="${ifDefined(this.tabindex)}"
+						tabindex="${ifDefined(this.tabIndex)}"
 						title="${ifDefined(this.title)}"
 						type="${this._getType()}">
 					<div class="d2l-input-inside-before" @keypress="${this._suppressEvent}">${this.dir === 'rtl' ? unit : ''}<slot name="${firstSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>
