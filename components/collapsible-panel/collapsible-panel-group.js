@@ -5,7 +5,7 @@ import { SubscriberRegistryController } from '../../controllers/subscriber/subsc
 
 /**
  * A component that renders a container and layout for collapsible panels
- * @slot default - Slot for panels. Only accepts `d2l-collapsible-panel`
+ * @slot - Slot for panels. Only accepts `d2l-collapsible-panel`
  */
 class CollapsiblePanelGroup extends SkeletonGroupMixin(LitElement) {
 
