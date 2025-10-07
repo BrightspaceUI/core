@@ -41,4 +41,15 @@ describe('alert', () => {
 		const elem = await fixture(createAlertWithCloseButton(), { viewport: { width: 600 } });
 		await expect(elem).to.be.golden();
 	});
+
+	it('stacked', async() => {
+		const elem = await fixture(html`
+			<div style="max-width: 720px;">
+				<d2l-alert type="default">A default message.</d2l-alert>
+				<d2l-alert type="success" button-text="Act" has-close-button subtext="Additional context for success.">A success message.</d2l-alert>
+				<d2l-alert type="critical" has-close-button subtext="Further details to verify wrapping in a stacked scenario.">A critical message.</d2l-alert>
+			</div>
+		`);
+		await expect(elem).to.be.golden();
+	});
 });
