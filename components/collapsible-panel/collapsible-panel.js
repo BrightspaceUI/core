@@ -47,7 +47,7 @@ function addTabListener() {
  * @slot before - Slot for content to be placed at the left side of the header, aligned with the title and header slot
  * @slot header - Slot for supporting header content
  * @slot summary - Slot for the summary of the expanded content. Only accepts `d2l-collapsible-panel-summary-item`
- * @slot default - Slot for the expanded content
+ * @slot - Slot for the expanded content
  * @slot actions - Slot for buttons and dropdown openers to be placed in top right corner of header
  * @fires d2l-collapsible-panel-expand - Dispatched when the panel is expanded
  * @fires d2l-collapsible-panel-collapse - Dispatched when the panel is collapsed
