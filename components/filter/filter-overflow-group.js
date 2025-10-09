@@ -4,12 +4,6 @@ import { css, html, LitElement } from 'lit';
 import { OVERFLOW_CLASS, OverflowGroupMixin } from '../overflow-group/overflow-group-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 
-function createFilterItem(node) {
-	const dimensionSets = node.querySelectorAll('d2l-filter-dimension-set');
-	const clones = Array.from(dimensionSets).map((set) => set.cloneNode(true));
-	return clones;
-}
-
 const updateEvents = ['d2l-filter-dimension-load-more', 'd2l-filter-dimension-search'];
 
 /**
@@ -43,7 +37,7 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 
 		this._filterIds = '';
 		this._openedDimensions = [];
-		this._updateFilterData = this._handleSlotChange.bind(this);
+		this._updateFilterData = this._updateFilterData.bind(this);
 		this._handleSlottedFilterChange = this._handleSlottedFilterChange.bind(this);
 		this._handleSlottedDimensionFirstOpen = this._handleSlottedDimensionFirstOpen.bind(this);
 	}
@@ -92,20 +86,24 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 			node.setAttribute('data-filter-tags-subscribed', 'data-filter-tags-subscribed');
 		}
 
-		return createFilterItem(node);
+		return node._dimensions;
 	}
 
 	getOverflowContainer(overflowItems) {
+		const newDimensions = overflowItems.reduce((p, n) => p.concat(n), []).map(dim => {
+			return { ...dim, values: dim.values.map(v => ({ ...v })) };
+		});
+
 		/* eslint-disable lit/no-private-properties */
 		return html`
 			<d2l-filter
 				class="${OVERFLOW_CLASS} vdiff-target"
 				._openedDimensions=${this._openedDimensions}
+				._dimensions=${newDimensions}
 				@d2l-filter-change="${this.#handleFilterChange}"
 				@d2l-filter-dimension-load-more="${this.#handleFilterLoadMore}"
 				@d2l-filter-dimension-search="${this.#handleFilterSearch}"
 				@d2l-filter-dimension-first-open="${this.#handleFirstOpen}">
-				${overflowItems}
 			</d2l-filter>
 		`;
 		/* eslint-enable */
@@ -118,47 +116,50 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 
 	_handleSlottedFilterChange(e) {
 		e.detail.dimensions.forEach((dimension) => {
-			const filterSet = this.#getFilterDimensionSet(dimension.dimensionKey);
 			dimension.changes.forEach((change) => {
-				const filterSetValue = filterSet.querySelector(`d2l-filter-dimension-set-value[key=${change.valueKey}]`);
+				const filterSetValue = this.querySelector(`d2l-filter-dimension-set[key=${dimension.dimensionKey}] > d2l-filter-dimension-set-value[key="${change.valueKey}"]`);
 				if (!filterSetValue) return;
 				filterSetValue.selected = change.selected;
 			});
 		});
 	}
 
-	#getFilterDimensionSet(key, target = this) {
-		const dimension = target.querySelector(`d2l-filter-dimension-set[key=${key}]`);
-		if (dimension?.parentNode?.tagName !== 'D2L-FILTER') return null;
-		return dimension;
+	async _updateFilterData() {
+		await Promise.all([...this.querySelectorAll('d2l-filter')].map(f => f.updateComplete));
+		this.requestUpdate();
 	}
 
 	#handleFilterChange(e) {
 		e.detail.dimensions.forEach((dimension) => {
-			const filterSet = this.#getFilterDimensionSet(dimension.dimensionKey);
-			if (!filterSet) return;
-			filterSet.parentNode.requestFilterChangeEvent(e.detail.allCleared, [dimension]);
+			this.#runOnFilterDimension(dimension.dimensionKey, filter => {
+				filter.requestFilterChangeEvent(e.detail.allCleared, [dimension]);
+			});
 		});
 	}
 
 	#handleFilterLoadMore(e) {
-		const filter = this.#getFilterDimensionSet(e.detail.key)?.parentNode;
-		if (!filter) return;
-		filter.requestFilterLoadMoreEvent(e.detail.key, e.detail.value, e.detail.loadMoreCompleteCallback);
-		this._handleSlotChange();
+		this.#runOnFilterDimension(e.detail.key, filter => {
+			filter.requestFilterLoadMoreEvent(e.detail.key, e.detail.value, e.detail.loadMoreCompleteCallback);
+		});
 	}
 
 	#handleFilterSearch(e) {
-		const filter = this.#getFilterDimensionSet(e.detail.key)?.parentNode;
-		if (!filter) return;
-		filter.requestFilterSearchEvent(e.detail.key, e.detail.value, e.detail.searchCompleteCallback);
-		this._handleSlotChange();
+		this.#runOnFilterDimension(e.detail.key, filter => {
+			filter.requestFilterSearchEvent(e.detail.key, e.detail.value, e.detail.searchCompleteCallback);
+		});
 	}
 
 	#handleFirstOpen(e) {
-		const filter = this.#getFilterDimensionSet(e.detail.key)?.parentNode;
-		if (!filter) return;
-		filter.requestFilterDimensionFirstOpenEvent(e.detail.key);
+		this.#runOnFilterDimension(e.detail.key, filter => {
+			filter.requestFilterDimensionFirstOpenEvent(e.detail.key);
+		});
+	}
+
+	#runOnFilterDimension(key, callback) {
+		const dimension = this.querySelector(`d2l-filter-dimension-set[key=${key}]`);
+		const filter = dimension?.parentNode;
+		if (filter?.tagName !== 'D2L-FILTER') return;
+		callback(filter);
 	}
 
 }

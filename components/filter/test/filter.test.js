@@ -1214,6 +1214,7 @@ describe('d2l-filter', () => {
 					const elem = await fixture(html`<d2l-filter></d2l-filter>`);
 					const opener = elem.shadowRoot.querySelector('d2l-button-subtle');
 					elem._dimensions = testCase.dimensions;
+					await elem.updateComplete;
 					elem._totalAppliedCount = testCase.count;
 					await elem.updateComplete;
 					const countbadge = opener?.children[0];

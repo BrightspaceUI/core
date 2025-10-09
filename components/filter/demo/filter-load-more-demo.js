@@ -33,6 +33,37 @@ const FullData = [
 			{ key: 'student', selected:false, text: 'Student' }
 		],
 		initialCount: 2
+	},
+	{
+		key: 'dep',
+		text: 'Department',
+		values: [
+			{ key: 'english', selected:false, text: 'English' },
+			{ key: 'spanish', selected:false, text: 'Spanish' },
+			{ key: 'science', selected:false, text: 'Science' }
+		],
+		initialCount: 2
+	},
+	{
+		key: 'grad',
+		text: 'Grade Level',
+		values: [
+			{ key: '1', selected:false, text: '1st Grade' },
+			{ key: '2', selected:false, text: '2nd Grade' },
+			{ key: '3', selected:false, text: '3rd Grade' }
+		],
+		initialCount: 2
+	}
+	,
+	{
+		key: 'city',
+		text: 'City',
+		values: [
+			{ key: '1', selected:false, text: '1st City' },
+			{ key: '2', selected:false, text: '2nd City' },
+			{ key: '3', selected:false, text: '3rd City' }
+		],
+		initialCount: 2
 	}
 ];
 

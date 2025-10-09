@@ -332,7 +332,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		`;
 	}
 
-	update(changedProperties) {
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
 		if (
 			changedProperties.has('opened')
 			&& this.opened
@@ -341,7 +342,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		) {
 			this._updateDimensionShouldBubble(this._dimensions[0]);
 		}
-		super.update(changedProperties);
+		if (changedProperties.has('_dimensions')) {
+			this._setFilterCounts();
+			this._activeFiltersSubscribers.updateSubscribers();
+		}
 	}
 
 	requestFilterChangeEvent(allCleared, dimensions) {
@@ -366,8 +370,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	requestFilterLoadMoreEvent(key, searchValue, callback = () => {}) {
-		const dimension = this._getDimensionByKey(key);
-		const applySearch = this._getSearchCallback(dimension);
+		const applySearch = this._getSearchCallback(key);
 		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-load-more', {
 			detail: {
 				key: key,
@@ -387,7 +390,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		dimension.searchValue = searchValue;
 		dimension.loading = true;
 		this.requestUpdate();
-		const searchCallback = this._getSearchCallback(dimension);
+		const searchCallback = this._getSearchCallback(key);
 
 		this.dispatchEvent(new CustomEvent('d2l-filter-dimension-search', {
 			bubbles: true,
@@ -744,9 +747,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		return this._dimensions.find(dimension => dimension.key === key);
 	}
 
-	_getSearchCallback(dimension) {
+	_getSearchCallback(key) {
 		return function({ keysToDisplay = [], displayAllKeys = false } = {}) {
 			requestAnimationFrame(() => {
+				const dimension = this._getDimensionByKey(key);
 				dimension.displayAllKeys = displayAllKeys;
 				dimension.searchKeysToDisplay = keysToDisplay;
 				this._performDimensionSearch(dimension);
@@ -959,6 +963,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 	_handleSlotChange(e) {
 		const dimensionNodes = this._getSlottedNodes(e.target);
+		if (!dimensionNodes.length) return; // don't overwrite assigned dimensions when re-rendering
 
 		this._dimensions = dimensionNodes.map(dimension => {
 			const type = dimension.tagName.toLowerCase();
@@ -991,9 +996,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 			return info;
 		});
-
-		this._setFilterCounts();
-		this._activeFiltersSubscribers.updateSubscribers();
 	}
 
 	_handleTooltipHide() {
