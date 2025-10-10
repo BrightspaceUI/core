@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../../icons/icon-custom.js';
+			import '../../inputs/input-text.js';
+			import '../button-icon.js';
+			import '../button-copy.js';
+		</script>
+		<style>
+			d2l-button-copy[slot="after"] {
+				margin-inline-start: 0.3rem;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-button-copy">
+
+			<h2>With d2l-input-text</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-text id="text1" label="Name">
+						<d2l-button-copy slot="after" for="text1"></d2l-button-copy>
+					</d2l-input-text>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>With a span</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<span id="text2">Donuts are yummmmmy!</span>
+					<d2l-button-copy for="text2"></d2l-button-copy>
+				</template>
+			</d2l-demo-snippet>
+
+
+		</d2l-demo-page>
+
+	</body>
+</html>
