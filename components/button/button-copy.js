@@ -51,6 +51,8 @@ class ButtonCopy extends FocusMixin(LocalizeCoreElement(LitElement)) {
 	#handleClick(e) {
 		e.stopPropagation();
 		if (this.disabled) return;
+
+		/** Dispatched when button is clicked. The `writeText` method is provided on the event detail. */
 		this.dispatchEvent(new CustomEvent('click', {
 			detail: { writeText: async(text) => {
 				text = text?.trim();
