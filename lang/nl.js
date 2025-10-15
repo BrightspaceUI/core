@@ -3,6 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "Kruimelpad",
 	"components.button-add.addItem": "Item toevoegen",
 	"components.button-copy.copied": "Gekopieerd!",
+	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
 	"components.button-split.otherOptions": "Overige opties",
 	"components.calendar.hasEvents": "Bevat gebeurtenissen.",
 	"components.calendar.notSelected": "Niet geselecteerd.",

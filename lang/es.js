@@ -3,6 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "Ruta de navegación",
 	"components.button-add.addItem": "Agregar elemento",
 	"components.button-copy.copied": "Copiado.",
+	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
 	"components.button-split.otherOptions": "Otras opciones",
 	"components.calendar.hasEvents": "Tiene eventos.",
 	"components.calendar.notSelected": "No seleccionado.",

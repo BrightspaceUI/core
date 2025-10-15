@@ -17,7 +17,7 @@ class ButtonCopy extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			 */
 			disabled: { type: Boolean, reflect: true },
 			_iconCheckTimeoutId: { state: true },
-			_toastMessage: { state: true }
+			_toastState: { state: true }
 		};
 	}
 
@@ -44,7 +44,12 @@ class ButtonCopy extends FocusMixin(LocalizeCoreElement(LitElement)) {
 	render() {
 		return html`
 			<d2l-button-icon ?disabled="${this.disabled}" icon="${this._iconCheckTimeoutId ? 'tier1:check' : 'tier1:copy'}" text="${this.localize('intl-common:actions:copy')}" @click="${this.#handleClick}"></d2l-button-icon>
-			<d2l-alert-toast ?open="${this._toastMessage}" @d2l-alert-toast-close="${this.#handleToastClose}">${this._toastMessage}</d2l-alert-toast>
+			<d2l-alert-toast
+				@d2l-alert-toast-close="${this.#handleToastClose}"
+				?open="${this._toastState}"
+				type="${this._toastState === 'error' ? 'critical' : 'default'}">
+					${this._toastState === 'error' ? this.localize('components.button-copy.error') : this.localize('components.button-copy.copied')}
+			</d2l-alert-toast>
 		`;
 	}
 
@@ -63,10 +68,11 @@ class ButtonCopy extends FocusMixin(LocalizeCoreElement(LitElement)) {
 					try {
 						// writeText can throw NotAllowedError (ex. iframe without allow="clipboard-write" in Chrome)
 						await navigator.clipboard.writeText(text);
-						this._toastMessage = this.localize('components.button-copy.copied');
+						this._toastState = 'copied';
 						this._iconCheckTimeoutId = setTimeout(() => this._iconCheckTimeoutId = null, 2000);
 						return true;
 					} catch {
+						this._toastState = 'error';
 						return false;
 					}
 				}
@@ -77,7 +83,7 @@ class ButtonCopy extends FocusMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	#handleToastClose() {
-		this._toastMessage = null;
+		this._toastState = null;
 	}
 
 }

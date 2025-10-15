@@ -3,6 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "Palapalapala",
 	"components.button-add.addItem": "Pākuʻi Mea",
 	"components.button-copy.copied": "Kope ʻia!",
+	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
 	"components.button-split.otherOptions": "Nā Koho ʻē aʻe",
 	"components.calendar.hasEvents": "Loaʻa nā hanana.",
 	"components.calendar.notSelected": "ʻAʻole i koho ʻia.",

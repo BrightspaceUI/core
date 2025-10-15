@@ -3,6 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "Briwsionyn Bara",
 	"components.button-add.addItem": "Ychwanegu Eitem",
 	"components.button-copy.copied": "Wedi’i gopïo!",
+	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
 	"components.button-split.otherOptions": "Opsiynau Eraill",
 	"components.calendar.hasEvents": "Yn Cynnwys Digwyddiadau.",
 	"components.calendar.notSelected": "Heb ei Ddewis.",

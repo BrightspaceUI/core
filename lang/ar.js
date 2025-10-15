@@ -3,6 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "شريط التنقل",
 	"components.button-add.addItem": "إضافة عنصر",
 	"components.button-copy.copied": "تم النسخ!",
+	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
 	"components.button-split.otherOptions": "خيارات أخرى",
 	"components.calendar.hasEvents": "يحتوي على أحداث.",
 	"components.calendar.notSelected": "لم يتم التحديد.",

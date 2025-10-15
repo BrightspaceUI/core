@@ -3,6 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "แถบนำทาง",
 	"components.button-add.addItem": "เพิ่มรายการ",
 	"components.button-copy.copied": "คัดลอกแล้ว!",
+	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
 	"components.button-split.otherOptions": "ตัวเลือกอื่น",
 	"components.calendar.hasEvents": "มีกิจกรรม",
 	"components.calendar.notSelected": "ยังไม่ได้เลือก",
