@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "關閉警示",
 	"components.breadcrumbs.breadcrumb": "導覽路徑",
 	"components.button-add.addItem": "新增項目",
+	"components.button-copy.copied": "Copied",
 	"components.button-split.otherOptions": "其他選項",
 	"components.calendar.hasEvents": "有事件。",
 	"components.calendar.notSelected": "未選取。",

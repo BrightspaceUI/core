@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "ปิดการแจ้งเตือน",
 	"components.breadcrumbs.breadcrumb": "แถบนำทาง",
 	"components.button-add.addItem": "เพิ่มรายการ",
+	"components.button-copy.copied": "Copied",
 	"components.button-split.otherOptions": "ตัวเลือกอื่น",
 	"components.calendar.hasEvents": "มีกิจกรรม",
 	"components.calendar.notSelected": "ยังไม่ได้เลือก",

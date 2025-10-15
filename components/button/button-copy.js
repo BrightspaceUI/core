@@ -42,7 +42,7 @@ class ButtonCopy extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 	render() {
 		return html`
-			<d2l-button-icon ?disabled="${this.disabled}" icon="tier1:copy" text="Copy" @click="${this.#handleClick}"></d2l-button-icon>
+			<d2l-button-icon ?disabled="${this.disabled}" icon="tier1:copy" text="${this.localize('intl-common:actions:copy')}" @click="${this.#handleClick}"></d2l-button-icon>
 			<d2l-alert-toast ?open="${this._toastMessage}" @d2l-alert-toast-close="${this.#handleToastClose}">${this._toastMessage}</d2l-alert-toast>
 		`;
 	}
@@ -60,7 +60,7 @@ class ButtonCopy extends FocusMixin(LocalizeCoreElement(LitElement)) {
 					try {
 						// writeText can throw NotAllowedError (ex. iframe without allow="clipboard-write" in Chrome)
 						await navigator.clipboard.writeText(text);
-						this._toastMessage = 'Copied';
+						this._toastMessage = this.localize('components.button-copy.copied');
 						return true;
 					} catch {
 						return false;

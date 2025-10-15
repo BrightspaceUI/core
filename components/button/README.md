@@ -315,7 +315,7 @@ Use the Add button when users need to quickly insert new items at specific locat
 
 ## Copy Button [d2l-button-copy]
 
-Use the Copy button to provide a way for users to copy a text value to the clipboard.
+Use the Copy button to enable users to copy a text value to the clipboard. The `d2l-button-copy`'s `click` event provides the `writeTextToClipboard` method for writing the text to the clipboard.
 
 <!-- docs: demo code properties name:d2l-button-copy sandboxTitle:'Copy Button' display:block autoSize:false size:xsmall -->
 ```html
