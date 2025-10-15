@@ -1,5 +1,5 @@
 import '../button-copy.js';
-import { expect, focusElem, fixture, html } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
 
 describe('d2l-button-copy', () => {
 
