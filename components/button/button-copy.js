@@ -16,7 +16,7 @@ class ButtonCopy extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
-			_toastOpen: { state: true }
+			_toastMessage: { state: true }
 		};
 	}
 
@@ -34,7 +34,6 @@ class ButtonCopy extends FocusMixin(LocalizeCoreElement(LitElement)) {
 	constructor() {
 		super();
 		this.disabled = false;
-		this._toastOpen = false;
 	}
 
 	static get focusElementSelector() {
@@ -44,28 +43,37 @@ class ButtonCopy extends FocusMixin(LocalizeCoreElement(LitElement)) {
 	render() {
 		return html`
 			<d2l-button-icon ?disabled="${this.disabled}" icon="tier1:copy" text="Copy" @click="${this.#handleClick}"></d2l-button-icon>
-			<d2l-alert-toast ?open="${this._toastOpen}" @d2l-alert-toast-close="${this.#handleToastClose}">Copied!</d2l-alert-toast>
+			<d2l-alert-toast ?open="${this._toastMessage}" @d2l-alert-toast-close="${this.#handleToastClose}">${this._toastMessage}</d2l-alert-toast>
 		`;
 	}
 
-	#handleClick(e) {
+	async #handleClick(e) {
 		e.stopPropagation();
 		if (this.disabled) return;
 
-		/** Dispatched when button is clicked. The `writeText` method is provided on the event detail. */
+		/** Dispatched when button is clicked. Use the event detail's `writeTextToClipboard` to write to the clipboard. */
 		this.dispatchEvent(new CustomEvent('click', {
-			detail: { writeText: async(text) => {
-				text = text?.trim();
-				if (!text) return;
-				await navigator.clipboard.writeText(text);
-				this._toastOpen = true;
-			} },
+			detail: {
+				writeTextToClipboard: async(text) => {
+					text = text?.trim?.();
+					if (!text) return false;
+					try {
+						// writeText can throw NotAllowedError (ex. iframe without allow="clipboard-write" in Chrome)
+						await navigator.clipboard.writeText(text);
+						this._toastMessage = 'Copied';
+						return true;
+					} catch {
+						return false;
+					}
+				}
+			},
 			bubbles: false
 		}));
+
 	}
 
 	#handleToastClose() {
-		this._toastOpen = false;
+		this._toastMessage = null;
 	}
 
 }

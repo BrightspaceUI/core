@@ -5,7 +5,7 @@ import { stub } from 'sinon';
 const clickAction = async(elem) => {
 	setTimeout(() => clickElem(elem));
 	const { detail } = await oneEvent(elem, 'click');
-	return detail.writeText('donuts are yummy!');
+	return detail.writeTextToClipboard('donuts are yummy!');
 };
 
 describe('button-copy', () => {

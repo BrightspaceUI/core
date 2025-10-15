@@ -31,7 +31,7 @@ describe('d2l-button-copy', () => {
 
 	});
 
-	describe('writeText', () => {
+	describe('writeTextToClipboard', () => {
 
 		let writeTextStub;
 
@@ -50,9 +50,14 @@ describe('d2l-button-copy', () => {
 				const el = await fixture(html`<d2l-button-copy></d2l-button-copy>`);
 				setTimeout(() => clickElem(el));
 				const { detail } = await oneEvent(el, 'click');
-				await detail.writeText(info.text);
-				if (info.called) expect(writeTextStub).to.have.been.calledOnceWith(info.clipboardValue);
-				else expect(writeTextStub).to.not.have.been.called;
+				const copied = await detail.writeTextToClipboard(info.text);
+				if (info.called) {
+					expect(writeTextStub).to.have.been.calledOnceWith(info.clipboardValue);
+					expect(copied).to.be.true;
+				} else {
+					expect(writeTextStub).to.not.have.been.called;
+					expect(copied).to.be.false;
+				}
 			});
 		});
 

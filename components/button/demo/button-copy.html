@@ -30,8 +30,8 @@
 					</d2l-input-text>
 					<script>
 						(demo => {
-							demo.querySelector('d2l-button-copy').addEventListener('click', (e) => {
-								e.detail.writeText(demo.querySelector('d2l-input-text').value);
+							demo.querySelector('d2l-button-copy').addEventListener('click', async(e) => {
+								console.log('Copied', await e.detail.writeTextToClipboard(demo.querySelector('d2l-input-text').value));
 							});
 						})(document.currentScript.parentNode);
 					</script>
@@ -46,8 +46,8 @@
 					<d2l-button-copy disabled></d2l-button-copy>
 					<script>
 						(demo => {
-							demo.querySelector('d2l-button-copy').addEventListener('click', (e) => {
-								e.detail.writeText(demo.querySelector('span').textContent);
+							demo.querySelector('d2l-button-copy').addEventListener('click', async(e) => {
+								console.log('Copied', await e.detail.writeTextToClipboard(demo.querySelector('span').textContent));
 							});
 						})(document.currentScript.parentNode);
 					</script>
