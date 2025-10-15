@@ -14,18 +14,25 @@ describe('button-copy', () => {
 
 	let writeTextStub;
 
-	beforeEach(() => writeTextStub = stub(navigator.clipboard, 'writeText').resolves());
-	afterEach(() => writeTextStub.restore());
+	afterEach(() => writeTextStub?.restore());
 
-	[
-		{ name: 'normal' },
-		{ name: 'click', action: clickAction, scope: document }
-	].forEach(({ action, name, scope }) => {
-		it(name, async() => {
-			const elem = await fixture(template, { viewport: { width: 700, height: 200 } });
-			if (action) await action(elem);
-			await expect(scope || elem).to.be.golden();
-		});
+	it('normal', async() => {
+		const elem = await fixture(template, { viewport: { width: 700, height: 200 } });
+		await expect(elem).to.be.golden();
+	});
+
+	it('click', async() => {
+		writeTextStub = stub(navigator.clipboard, 'writeText').resolves();
+		const elem = await fixture(template, { viewport: { width: 700, height: 200 } });
+		await clickAction(elem);
+		await expect(document).to.be.golden();
+	});
+
+	it('error', async() => {
+		writeTextStub = stub(navigator.clipboard, 'writeText').rejects('NotAllowedError');
+		const elem = await fixture(template, { viewport: { width: 700, height: 200 } });
+		await clickAction(elem);
+		await expect(document).to.be.golden();
 	});
 
 });
