@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Fermer l’alerte",
 	"components.breadcrumbs.breadcrumb": "Chemin de navigation",
 	"components.button-add.addItem": "Ajouter un élément",
-	"components.button-copy.copied": "Copied",
+	"components.button-copy.copied": "Copié !",
 	"components.button-split.otherOptions": "Autres options",
 	"components.calendar.hasEvents": "Comprend des événements.",
 	"components.calendar.notSelected": "Non sélectionné(e)",

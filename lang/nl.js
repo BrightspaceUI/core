@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Waarschuwing sluiten",
 	"components.breadcrumbs.breadcrumb": "Kruimelpad",
 	"components.button-add.addItem": "Item toevoegen",
-	"components.button-copy.copied": "Copied",
+	"components.button-copy.copied": "Gekopieerd!",
 	"components.button-split.otherOptions": "Overige opties",
 	"components.calendar.hasEvents": "Bevat gebeurtenissen.",
 	"components.calendar.notSelected": "Niet geselecteerd.",

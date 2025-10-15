@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Benachrichtigung schließen",
 	"components.breadcrumbs.breadcrumb": "Brotkrümelnavigation",
 	"components.button-add.addItem": "Element hinzufügen",
-	"components.button-copy.copied": "Copied",
+	"components.button-copy.copied": "Kopiert.",
 	"components.button-split.otherOptions": "Sonstige Optionen",
 	"components.calendar.hasEvents": "Hat Ereignisse.",
 	"components.calendar.notSelected": "Nicht ausgewählt.",
