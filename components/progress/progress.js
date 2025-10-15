@@ -145,7 +145,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 
 	render() {
 		const classes = {
-			'complete': this.value === this.max
+			'complete': this.value >= this.max
 		};
 		const textClasses = {
 			'd2l-body-small': this.size === 'small',
@@ -153,11 +153,12 @@ class Progress extends LocalizeCoreElement(LitElement) {
 		};
 		const valueClasses = { ...textClasses, value: true };
 
-		const percentage = Math.floor(100 * this.value / this.max) / 100;
+		const percentage = Math.min(Math.floor(100 * this.value / this.max) / 100, 1);
+
 		const perecentageText = formatPercent(percentage);
 
 		return html`
-			<div ?hidden=${this.labelHidden} id="label" class=${classMap(textClasses)}>${this.label}</div>
+			<div ?hidden=${this.labelHidden || !this.label} id="label" class=${classMap(textClasses)}>${this.label}</div>
 			<progress
 				aria-labelledby="${ifDefined(this.labelHidden ? undefined : 'label')}"
 				aria-label="${ifDefined(this.labelHidden ? this.label : undefined)}"

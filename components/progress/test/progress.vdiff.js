@@ -28,4 +28,9 @@ describe('d2l-progress', () => {
 			await expect(ele).to.be.golden();
 		});
 	});
+
+	it('caps value at 100%', async() => {
+		const ele = await fixture(html`<d2l-progress label="Progress" value="15" max="10"></d2l-progress>`);
+		await expect(ele).to.be.golden();
+	});
 });
