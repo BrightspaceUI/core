@@ -1,5 +1,5 @@
 import '../button-copy.js';
-import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { expect, focusElem, fixture, html } from '@brightspace-ui/testing';
 
 describe('d2l-button-copy', () => {
 
@@ -15,8 +15,7 @@ describe('d2l-button-copy', () => {
 
 	it('focused', async() => {
 		const el = await fixture(html`<d2l-button-copy></d2l-button-copy>`);
-		setTimeout(() => el.focus());
-		await oneEvent(el, 'focus');
+		await focusElem(el);
 		await expect(el).to.be.accessible();
 	});
 

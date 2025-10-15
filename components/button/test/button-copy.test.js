@@ -1,5 +1,5 @@
 import '../button-copy.js';
-import { clickElem, expect, fixture, html, nextFrame, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { stub } from 'sinon';
 
 describe('d2l-button-copy', () => {
@@ -16,7 +16,7 @@ describe('d2l-button-copy', () => {
 
 		it('dispatches click event when clicked', async() => {
 			const el = await fixture(html`<d2l-button-copy></d2l-button-copy>`);
-			setTimeout(() => clickElem(el));
+			clickElem(el);
 			await oneEvent(el, 'click');
 		});
 
@@ -24,8 +24,7 @@ describe('d2l-button-copy', () => {
 			const el = await fixture(html`<d2l-button-copy disabled></d2l-button-copy>`);
 			let dispatched = false;
 			el.addEventListener('click', () => dispatched = true);
-			setTimeout(() => clickElem(el));
-			await nextFrame();
+			await clickElem(el);
 			expect(dispatched).to.be.false;
 		});
 
@@ -48,7 +47,7 @@ describe('d2l-button-copy', () => {
 		].forEach(info => {
 			it(`${info.name}`, async() => {
 				const el = await fixture(html`<d2l-button-copy></d2l-button-copy>`);
-				setTimeout(() => clickElem(el));
+				clickElem(el);
 				const { detail } = await oneEvent(el, 'click');
 				const copied = await detail.writeTextToClipboard(info.text);
 				if (info.called) {
