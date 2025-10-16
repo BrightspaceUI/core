@@ -2,6 +2,8 @@ export default {
 	"components.alert.close": "Kati Matohi",
 	"components.breadcrumbs.breadcrumb": "Pānui",
 	"components.button-add.addItem": "Tāpiri Tūemi",
+	"components.button-copy.copied": "Kua tāruatia!",
+	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
 	"components.button-split.otherOptions": "Ētahi atu kōwhiringa",
 	"components.calendar.hasEvents": "He takatu ēnei.",
 	"components.calendar.notSelected": "Kāore i tīpakona.",

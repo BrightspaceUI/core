@@ -2,6 +2,8 @@ export default {
 	"components.alert.close": "경보 닫기",
 	"components.breadcrumbs.breadcrumb": "이동 경로",
 	"components.button-add.addItem": "항목 추가",
+	"components.button-copy.copied": "복사 완료!",
+	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
 	"components.button-split.otherOptions": "기타 옵션",
 	"components.calendar.hasEvents": "이벤트가 있습니다.",
 	"components.calendar.notSelected": "선택되지 않음.",
