@@ -10,6 +10,7 @@
 			import '../../count-badge/count-badge.js';
 			import '../../dropdown/dropdown-button-subtle.js';
 			import '../../dropdown/dropdown-menu.js';
+			import '../../empty-state/empty-state-illustrated.js';
 			import '../../menu/menu.js';
 			import '../../menu/menu-item.js';
 			import '../tab.js';
@@ -386,6 +387,23 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-tabs-array></d2l-tabs-array>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Tabs (simple empty illustrated)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-tabs text="Simple Empty States">
+						<d2l-tab id="simple-empty-one" slot="tabs" text="One"></d2l-tab>
+						<d2l-tab id="simple-empty-two" slot="tabs" text="Two"></d2l-tab>
+						<d2l-tab-panel labelled-by="simple-empty-one" slot="panels">
+							<d2l-empty-state-illustrated illustration-name="race" title-text="No Items in First Tab" description="none"></d2l-empty-state-illustrated>
+						</d2l-tab-panel>
+						<d2l-tab-panel labelled-by="simple-empty-two" slot="panels">
+							<d2l-empty-state-illustrated illustration-name="calendar" title-text="No Items in Second Tab" description="none"></d2l-empty-state-illustrated>
+						</d2l-tab-panel>
+					</d2l-tabs>
 				</template>
 			</d2l-demo-snippet>
 
