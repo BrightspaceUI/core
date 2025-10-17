@@ -82,6 +82,10 @@ class EmptyStateIllustrated extends LoadingCompleteMixin(EmptyStateMixin(LitElem
 	_onResize(entries) {
 		if (!entries || entries.length === 0) return;
 		const entry = entries[0];
+
+		const width = entry.contentRect.width;
+		if (width === 0) return; // ignore until visible
+
 		requestAnimationFrame(() => {
 			this._contentHeight = Math.min(entry.contentRect.right / illustrationAspectRatio, 330);
 			this._titleSmall = entry.contentRect.right <= 615;
