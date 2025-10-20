@@ -135,8 +135,8 @@ class DemoPage extends LitElement {
 						<d2l-input-checkbox-group id="flagsCheckboxGroup" label="Flags">
 							${knownFlagCheckboxes}
 						</d2l-input-checkbox-group>
+						<d2l-button id="applyFlagsButton" @click="${this.#handleApplyFlagsClick}">Apply</d2l-button>
 					` : 'No known flags'}
-					<d2l-button id="applyFlagsButton" @click="${this.#handleApplyFlagsClick}">Apply</d2l-button>
 					${flagOverrideItems}
 				</d2l-collapsible-panel>
 			</header>
