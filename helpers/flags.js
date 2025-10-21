@@ -12,6 +12,14 @@ export function getFlag(key, defaultValue) {
 	return value;
 }
 
+export function getFlagOverrides() {
+	return flagOverrides;
+}
+
+export function getKnownFlags() {
+	return knownFlags;
+}
+
 export function mockFlag(key, value) {
 	if (knownFlags.has(key)) console.warn(`mockFlag called after getFlag for '${key}'. This is likely to result in unexpected behaviour.`);
 	flagOverrides.set(key, value);

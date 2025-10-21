@@ -10,6 +10,7 @@ import '../colors/colors.js';
 import '../typography/typography.js';
 import { css, html, LitElement } from 'lit';
 import { getDocumentLocaleSettings, supportedLocalesDetails } from '@brightspace-ui/intl/lib/common.js';
+import { getFlagOverrides, getKnownFlags } from '../../helpers/flags.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { inputLabelStyles } from '../inputs/input-label-styles.js';
 import { selectStyles } from '../inputs/input-select-styles.js';
@@ -32,8 +33,6 @@ class DemoPage extends LitElement {
 	static get properties() {
 		return {
 			pageTitle: { type: String, attribute: 'page-title' },
-			_flagOverrides: { state: true },
-			_knownFlags: { state: true },
 			_noScroll: { state: true }
 		};
 	}
@@ -83,8 +82,6 @@ class DemoPage extends LitElement {
 
 	constructor() {
 		super();
-		this._flagOverrides = new Map();
-		this._knownFlags = new Map();
 		this.#handleFlagsKnownBound = this.#handleFlagsKnown.bind(this);
 	}
 
@@ -105,6 +102,7 @@ class DemoPage extends LitElement {
 		const classes = {
 			'no-scroll': this._noScroll
 		};
+
 		let selectedLanguageCode = getDocumentLocaleSettings().language;
 		if (selectedLanguageCode === 'en') selectedLanguageCode = 'en-us';
 		let foundSelected = false;
@@ -114,14 +112,16 @@ class DemoPage extends LitElement {
 			return html`<option value="${l.code}" ?selected="${selected}">${l.code} - ${l.name}</option>`;
 		});
 
+		const knownFlags = getKnownFlags();
 		const knownFlagCheckboxes = [];
-		this._knownFlags.forEach((knownFlag, key) => {
+		knownFlags.forEach((knownFlag, key) => {
 			knownFlagCheckboxes.push(html`<d2l-input-checkbox label="${key}" data-flag-key="${key}" ?checked="${knownFlag.value}"></d2l-input-checkbox>`);
 		});
 
+		const flagOverrides = getFlagOverrides();
 		const flagOverrideItems = [];
-		this._flagOverrides.forEach((value, key) => {
-			const knownFlag = this._knownFlags.get(key);
+		flagOverrides.forEach((value, key) => {
+			const knownFlag = knownFlags.get(key);
 			const defaultValue = knownFlag ? knownFlag.defaultValue : 'unknown';
 			flagOverrideItems.push(html`<d2l-collapsible-panel-summary-item slot="summary" text="${key} (default: ${defaultValue}; override: ${value})"></d2l-collapsible-panel-summary-item>`);
 		});
@@ -154,9 +154,10 @@ class DemoPage extends LitElement {
 		const urlParams = new URLSearchParams(window.location.search);
 		const elems = [...this.shadowRoot.querySelectorAll('#flagsCheckboxGroup > d2l-input-checkbox')];
 
+		const knownFlags = getKnownFlags();
 		elems.forEach(elem => {
 			const key = elem.dataset.flagKey;
-			const flag = this._knownFlags.get(key);
+			const flag = knownFlags.get(key);
 
 			if (flag.defaultValue === elem.checked) {
 				urlParams.delete(`demo-flag-${key}`);
@@ -168,9 +169,8 @@ class DemoPage extends LitElement {
 		window.location.search = urlParams.toString();
 	}
 
-	#handleFlagsKnown(e) {
-		this._flagOverrides = e.detail.flagOverrides;
-		this._knownFlags = e.detail.knownFlags;
+	#handleFlagsKnown() {
+		this.requestUpdate();
 	}
 
 	async #handleFullscreenToggle() {
