@@ -13,10 +13,11 @@ export const inputLabelStyles = css`
 		font-weight: 700;
 		letter-spacing: 0.2px;
 		line-height: 0.9rem;
-		margin-block: 0 0.4rem;
-		margin-inline: 0;
-		padding: 0;
+		margin: 0;
+		padding-block: 0 0.4rem;
+		padding-inline: 0;
 	}
+
 	:host([required]) .d2l-input-label::after,
 	.d2l-input-label-required::after {
 		background-image: ${requiredIcon};
@@ -29,7 +30,7 @@ export const inputLabelStyles = css`
 		width: 0.25rem;
 	}
 	:host([skeleton]) .d2l-input-label.d2l-skeletize::before {
-		bottom: 0.25rem;
+		bottom: 0.65rem; /* 0.25rem + 0.4rem padding-bottom */
 		top: 0.15rem;
 	}
 	:host([skeleton][required]) .d2l-input-label.d2l-skeletize::after {
