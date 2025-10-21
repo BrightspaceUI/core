@@ -210,6 +210,11 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 					display: inline-block;
 					vertical-align: bottom;
 				}
+				:host(:not([skeleton])) .d2l-input-label {
+					margin: 0;
+					padding-block: 0 0.4rem;
+					padding-inline: 0;
+				}
 				:host(:not([skeleton]):not([input-width])) .d2l-input-label {
 					width: 100%;
 				}
@@ -362,14 +367,12 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		if (this.hasAttribute('aria-label')) {
 			this.labelRequired = false;
 		}
-		this.addEventListener('click', this._handleClick);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
 		const container = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-text-container');
-		this.removeEventListener('click', this._handleClick);
 		if (!container) return;
 		container.removeEventListener('blur', this._handleBlur, true);
 		container.removeEventListener('focus', this._handleFocus, true);
@@ -453,7 +456,10 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 
 		const input = html`
 			<div class="d2l-input-container">
-				<div class="d2l-input-text-container d2l-skeletize" style="${styleMap(inputContainerStyles)}">
+				<div class="d2l-input-text-container d2l-skeletize"
+						@mouseenter="${this._handleMouseEnter}"
+						@mouseleave="${this._handleMouseLeave}"
+						style="${styleMap(inputContainerStyles)}">
 					<input
 						aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
 						aria-haspopup="${ifDefined(this.ariaHaspopup)}"
@@ -470,8 +476,6 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 						@input="${this._handleInput}"
 						@invalid="${this._handleInvalid}"
 						@keypress="${this._handleKeypress}"
-						@mouseover="${this._handleMouseEnter}"
-						@mouseout="${this._handleMouseLeave}"
 						max="${ifDefined(this.max)}"
 						maxlength="${ifDefined(this.maxlength)}"
 						min="${ifDefined(this.min)}"
@@ -498,12 +502,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		let label = nothing;
 		if (this.label && !this.labelHidden && !this.labelledBy) {
 			const unitLabel = this._getUnitLabel();
-			label = html`<label
-				class="d2l-input-label d2l-skeletize"
-				for="${this._inputId}"
-				@mouseover="${this._handleMouseEnter}"
-				@mouseout="${this._handleMouseLeave}"
-				style="${styleMap(labelStyles)}">${this.label}${unitLabel ? html`<span class="d2l-offscreen">${unitLabel}</span>` : ''}</label>`;
+			label = html`<label class="d2l-input-label d2l-skeletize" for="${this._inputId}" style="${styleMap(labelStyles)}">${this.label}${unitLabel ? html`<span class="d2l-offscreen">${unitLabel}</span>` : ''}</label>`;
 		}
 
 		let tooltip = nothing;
@@ -592,12 +591,6 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			'change',
 			{ bubbles: true, composed: false }
 		));
-	}
-
-	_handleClick(e) {
-		const input = this.shadowRoot?.querySelector('.d2l-input');
-		if (!input || e.composedPath()[0] !== this) return;
-		input.focus();
 	}
 
 	_handleFocus() {
