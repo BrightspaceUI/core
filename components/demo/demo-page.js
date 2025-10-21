@@ -121,7 +121,9 @@ class DemoPage extends LitElement {
 
 		const flagOverrideItems = [];
 		this._flagOverrides.forEach((value, key) => {
-			flagOverrideItems.push(html`<d2l-collapsible-panel-summary-item slot="summary" text="${key} overridden (${value})"></d2l-collapsible-panel-summary-item>`);
+			const knownFlag = this._knownFlags.get(key);
+			const defaultValue = knownFlag ? knownFlag.defaultValue : 'unknown';
+			flagOverrideItems.push(html`<d2l-collapsible-panel-summary-item slot="summary" text="${key} (default: ${defaultValue}; override: ${value})"></d2l-collapsible-panel-summary-item>`);
 		});
 
 		return html`
