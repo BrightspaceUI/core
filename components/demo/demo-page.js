@@ -112,7 +112,7 @@ class DemoPage extends LitElement {
 			return html`<option value="${l.code}" ?selected="${selected}">${l.code} - ${l.name}</option>`;
 		});
 
-		const knownFlags = getKnownFlags();
+		const knownFlags = this.#getKnownFlagsSorted();
 		const knownFlagCheckboxes = [];
 		knownFlags.forEach((knownFlag, key) => {
 			knownFlagCheckboxes.push(html`<d2l-input-checkbox label="${key}" data-flag-key="${key}" ?checked="${knownFlag.value}"></d2l-input-checkbox>`);
@@ -149,6 +149,16 @@ class DemoPage extends LitElement {
 	}
 
 	#handleFlagsKnownBound;
+
+	#getKnownFlagsSorted() {
+		return new Map([...getKnownFlags().entries()].sort((entry1, entry2) => {
+			const key1 = entry1[0].toLowerCase();
+			const key2 = entry2[0].toLowerCase();
+			if (key1 < key2) return -1;
+			else if (key1 > key2) return 1;
+			else return 0;
+		}));
+	}
 
 	#handleApplyFlagsClick() {
 		const urlParams = new URLSearchParams(window.location.search);
