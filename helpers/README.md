@@ -117,6 +117,23 @@ getFirstVisibleAncestor(node)
 querySelectorComposed(node, selector)
 ```
 
+## Flags
+
+Helper functions to get and mock flag values.
+
+```js
+import { ... } from '@brightspace-ui/core/helpers/flags.js';
+
+// returns the flag's mocked, configured, or default value
+getFlag(key, defaultValue);
+
+// for demos & tests, sets a mocked value for a flag, to be returned by getFlag
+mockFlag(key, value);
+
+// for demos & tests, removes the mocked value for a flag, so that getFlag returns the configured or default value
+resetFlag(key);
+```
+
 ## Focus
 
 Focus helper functions to easily select focusable DOM nodes
