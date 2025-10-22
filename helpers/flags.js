@@ -34,6 +34,8 @@ let dispatchingKnownFlags = false;
 function addKnownFlag(key, value, defaultValue) {
 	if (!knownFlags.has(key)) knownFlags.set(key, { value, defaultValue });
 
+	if (globalThis.document?.dispatchEvent === undefined) return;
+
 	if (dispatchingKnownFlags) return;
 	dispatchingKnownFlags = true;
 	setTimeout(() => {
