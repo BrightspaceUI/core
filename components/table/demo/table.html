@@ -5,11 +5,6 @@
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 		<script type="module">
-			import { mockFlag } from '../../../helpers/flags.js';
-			const urlParams = new URLSearchParams(window.location.search);
-			mockFlag('GAUD-8263-scroll-wrapper-media-print', urlParams.get('media-query-print') === 'true');
-		</script>
-		<script type="module">
 			import '../../demo/demo-page.js';
 			import './table-test.js';
 		</script>

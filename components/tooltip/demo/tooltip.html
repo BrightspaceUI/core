@@ -6,14 +6,9 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 	<script type="module">
-		import { mockFlag } from '../../../helpers/flags.js';
-		const urlParams = new URLSearchParams(window.location.search);
-		mockFlag('GAUD-7355-tooltip-popover', urlParams.get('popover') === 'true');
-	</script>
-	<script type="module">
+		import '../../demo/demo-page.js';
 		import '../../button/button.js';
 		import '../../colors/colors.js';
-		import '../../demo/demo-page.js';
 		import '../../icons/icon-custom.js';
 		import '../../inputs/input-text.js';
 		import '../../link/link.js';
