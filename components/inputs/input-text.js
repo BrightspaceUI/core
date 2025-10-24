@@ -72,7 +72,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			 */
 			hideInvalidTooltip: { attribute: 'hide-invalid-tooltip', type: Boolean, reflect: true },
 			/**
-			 * Restricts the maximum width of the input box without impacting the width of the label.
+			 * Restricts the maximum width of the input box without restricting the width of the label.
 			 * @type {string}
 			 */
 			inputWidth: { attribute: 'input-width', type: String },
@@ -431,7 +431,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			maxWidth: this.inputWidth
 		};
 		const labelStyles = {
-			minWidth: this.skeleton ? undefined : this.inputWidth
+			minWidth: this.inputWidth && !this.skeleton ? `min(100%, ${this.inputWidth})` : undefined
 		};
 
 		const firstSlotName = (this.dir === 'rtl') ? 'right' : 'left';

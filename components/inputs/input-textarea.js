@@ -40,7 +40,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Restricts the maximum width of the input box without impacting the width of the label.
+			 * Restricts the maximum width of the input box without restricting the width of the label.
 			 * @type {string}
 			 */
 			inputWidth: { attribute: 'input-width', type: String },
@@ -229,7 +229,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 			maxWidth: this.inputWidth
 		};
 		const labelStyles = {
-			minWidth: this.skeleton ? undefined : this.inputWidth
+			minWidth: this.inputWidth && !this.skeleton ? `min(100%, ${this.inputWidth})` : undefined
 		};
 
 		const textarea = html`
