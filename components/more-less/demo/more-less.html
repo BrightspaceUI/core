@@ -7,11 +7,22 @@
 		<script type="module">
 			import '../../demo/demo-page.js';
 			import '../more-less.js';
+			import '../../html-block/html-block.js';
 		</script>
 	</head>
 	<body unresolved>
 
 		<d2l-demo-page page-title="d2l-more-less">
+
+			<h2>Jumping Issues</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-more-less>
+						<d2l-html-block inline html="&lt;p&gt;Testing crazy jumping in Chrome.&lt;/p&gt;&lt;p&gt;&lt;a rel=&quot;noopener&quot; href=&quot;https://www.youtube.com/&quot;&gt;https://www.youtube.com/watch&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;/p&gt;"></d2l-html-block>
+					</d2l-more-less>
+				</template>
+			</d2l-demo-snippet>
 
 			<h2>More-less collapsed</h2>
 
