@@ -11,11 +11,11 @@ export const themeStyles = css`
 		color: #ccc;
 		background: none;
 		font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+		overflow-wrap: normal;
 		text-align: left;
 		white-space: pre;
 		word-spacing: normal;
 		word-break: normal;
-		word-wrap: normal;
 		line-height: 1.5;
 
 		-moz-tab-size: 4;
