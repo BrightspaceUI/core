@@ -431,7 +431,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			maxWidth: this.inputWidth
 		};
 		const labelStyles = {
-			minWidth: this.skeleton ? undefined : this.inputWidth
+			minWidth: this.inputWidth && !this.skeleton ? `min(100%, ${this.inputWidth})` : undefined
 		};
 
 		const firstSlotName = (this.dir === 'rtl') ? 'right' : 'left';

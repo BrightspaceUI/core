@@ -229,7 +229,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 			maxWidth: this.inputWidth
 		};
 		const labelStyles = {
-			minWidth: this.skeleton ? undefined : this.inputWidth
+			minWidth: this.inputWidth && !this.skeleton ? `min(100%, ${this.inputWidth})` : undefined
 		};
 
 		const textarea = html`
