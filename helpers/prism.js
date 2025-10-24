@@ -171,10 +171,10 @@ export const codeStyles = css`
 		-moz-hyphens: none;
 		-ms-hyphens: none;
 		hyphens: none;
+		overflow-wrap: normal;
 		white-space: pre;
 		word-break: normal;
 		word-spacing: normal;
-		word-wrap: normal;
 	}
 
 	pre[class*="language-"].d2l-code {
