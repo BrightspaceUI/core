@@ -53,7 +53,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 | `autofocus` | Boolean | When set, will automatically place focus on the input |
 | `description` | String | A description to be added to the `input` for accessibility |
 | `disabled` | Boolean | Disables the input |
-| `input-width` | String, default: `100%` | Restricts the maximum width of the input box without impacting the width of the label |
+| `input-width` | String, default: `100%` | Restricts the maximum width of the input box without restricting the width of the label |
 | `instructions` | String | Additional information relating to how to use the component |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
 | `labelled-by` | String | HTML id of an element in the same shadow root which acts as the input's label |
