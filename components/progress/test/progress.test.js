@@ -84,7 +84,7 @@ describe('d2l-progress', () => {
 			}
 			await aTimeout(500);
 			expect(element._ariaPercentageText).to.equal('0 %');
-			await waitUntil(() =>element._ariaPercentageText !== '0 %', 'live region did not update', { timeout: 2 * liveRegionDebounceTime });
+			await waitUntil(() => element._ariaPercentageText !== '0 %', 'live region did not update', { timeout: 2 * liveRegionDebounceTime });
 			expect(element._ariaPercentageText).to.equal('50 %');
 		});
 
