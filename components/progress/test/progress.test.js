@@ -1,5 +1,5 @@
-import '../progress.js';
-import { expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, html, runConstructor, waitUntil } from '@brightspace-ui/testing';
+import { liveRegionDebounceTime } from '../progress.js';
 
 describe('d2l-progress', () => {
 	describe('constructor', () => {
@@ -60,4 +60,38 @@ describe('d2l-progress', () => {
 		});
 	});
 
+	describe('live region', () => {
+		let element;
+
+		beforeEach(async() => {
+			element = await fixture(html`<d2l-progress live-region label="Progressing"></d2l-progress>`);
+		});
+
+		it('updates live region when value changes with a delay', async() => {
+			element.value = 20;
+			await element.updateComplete;
+			expect(element._ariaPercentageText).to.equal('0 %');
+			await aTimeout(liveRegionDebounceTime);
+			await element.updateComplete;
+			expect(element._ariaPercentageText).to.equal('20 %');
+		});
+
+		it('updates live region only once with multiple updates', async() => {
+			for (let i = 1; i <= 5; i++) {
+				setTimeout(() => {
+					element.value = i * 10;
+				}, i * 100);
+			}
+			await aTimeout(500);
+			expect(element._ariaPercentageText).to.equal('0 %');
+			await waitUntil(() =>element._ariaPercentageText !== '0 %', 'live region did not update', { timeout: 2 * liveRegionDebounceTime });
+			expect(element._ariaPercentageText).to.equal('50 %');
+		});
+
+		it('updates live region immediately when complete', async() => {
+			element.value = 100;
+			await element.updateComplete;
+			expect(element._ariaPercentageText).to.equal('100 %');
+		});
+	});
 });
