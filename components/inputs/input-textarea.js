@@ -253,7 +253,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 					minlength="${ifDefined(this.minlength)}"
 					placeholder="${ifDefined(this.placeholder)}"
 					?required="${this.required}"
-					.value="${this.value}">${this.value}</textarea>
+					.value="${this.value}"></textarea>
 				${this.validationError ? html`<d2l-tooltip for=${this._textareaId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null}
 			</div>
 			${this._renderInlineHelp(this._inlineHelpId)}
