@@ -168,7 +168,6 @@ export default {
 	"components.selection.select-all-items":
 		`{count, plural,
 			=1 {選取項目}
-			one {選取全部 {countFormatted} 個項目}
 			other {選取全部 {countFormatted} 個項目}
 		}`,
 	"components.selection.selected": "已選取 {count} 個",

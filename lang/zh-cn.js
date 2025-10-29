@@ -167,7 +167,6 @@ export default {
 	"components.selection.select-all-items":
 		`{count, plural,
 			=1 {选择项目}
-			one {选择全部 {countFormatted} 个项目}
 			other {选择全部 {countFormatted} 个项目}
 		}`,
 	"components.selection.selected": "已选 {count}",
