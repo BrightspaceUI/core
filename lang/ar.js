@@ -173,7 +173,15 @@ export default {
 	"components.selection.action-required-hint": "حدد عنصرًا لتنفيذ هذا الإجراء",
 	"components.selection.select-all": "تحديد الكل",
 	"components.selection.select-all-items":
-		`{count, plural, =0 {تحديد جميع الـ {countFormatted} عناصر} =1 {اختر عنصر} =2 {تحديد جميع الـ {countFormatted} عنصرين} one {تحديد جميع الـ {countFormatted} عنصر} few {تحديد جميع الـ {countFormatted} عناصر} many {تحديد جميع الـ {countFormatted} عناصر} other {تحديد جميع الـ {countFormatted} عناصر}}`,
+		`{count, plural,
+			=0 {تحديد جميع الـ {countFormatted} عناصر}
+			=1 {اختر عنصر}
+			=2 {تحديد جميع الـ {countFormatted} عنصرين}
+			one {تحديد جميع الـ {countFormatted} عنصر}
+			few {تحديد جميع الـ {countFormatted} عناصر}
+			many {تحديد جميع الـ {countFormatted} عناصر}
+			other {تحديد جميع الـ {countFormatted} عناصر}
+		}`,
 	"components.selection.selected": "تم تحديد {count}",
 	"components.selection.selected-plus": "تم تحديد {count}+‎",
 	"components.selection-controls.label": "إجراءات التحديد",

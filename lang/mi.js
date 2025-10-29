@@ -173,7 +173,11 @@ export default {
 	"components.selection.action-required-hint": "Tīpakohia tētahi tūemi hei whakahaere i tēnei mahi",
 	"components.selection.select-all": "Tīpako Katoa",
 	"components.selection.select-all-items":
-		`{count, plural, =1 {Tīpako Tūemi} one {Tīpakohia Katoa {countFormatted} Tūemi} other {Tīpakohia Katoa {countFormatted} Tūemi}}`,
+		`{count, plural,
+			=1 {Tīpako Tūemi}
+			one {Tīpakohia Katoa {countFormatted} Tūemi}
+			other {Tīpakohia Katoa {countFormatted} Tūemi}
+		}`,
 	"components.selection.selected": "{count} kua tīpakohia",
 	"components.selection.selected-plus": "{count}+ kua tīpakohia",
 	"components.selection-controls.label": "Ngā mahinga mō te tīpakonga",
