@@ -257,8 +257,8 @@ export const tableStyles = css`
 `;
 
 const SELECTORS = {
-	headers: 'tr.d2l-table-header, tr[header], thead tr',
-	items: ':not(thead) > tr:not(.d2l-table-header):not([header])',
+	headers: ':scope thead tr, :scope tr.d2l-table-header, :scope tr[header]',
+	items: ':scope > :not(thead) > tr:not(.d2l-table-header):not([header])',
 };
 
 /**

@@ -5,7 +5,8 @@ import '../../tooltip/tooltip.js';
 import '../demo/table-test.js';
 import '../table-col-sort-button.js';
 import '../table-col-sort-button-item.js';
-
+import '../../tooltip/tooltip-help.js';
+import '../../paging/pager-load-more.js';
 import { clickElem, defineCE, expect, fixture, focusElem, hoverElem, html, nextFrame } from '@brightspace-ui/testing';
 import { LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -212,15 +213,22 @@ async function createTableFixtureShared(type, rtl, tableContents, opts = {}) {
 						?no-column-border="${opts.noColumnBorder}"
 						?sticky-headers="${opts.stickyHeaders}"
 						?sticky-headers-scroll-wrapper="${opts.stickyHeadersScrollWrapper}"
+						item-count="${ifDefined(opts.itemCount)}"
 						style="--d2l-input-position: static;"
 						type="${type}">
 						${ opts.noTable ? tableContents : html`
 							<table class="${classMap(tableClasses)}" ?no-column-border="${opts.legacyNoColumnBorder}">${tableContents}</table>
 						`}
+						${opts.paging ? html`<d2l-pager-load-more slot="pager"
+							has-more
+							page-size="${opts.pageSize}"
+							@d2l-pager-load-more="${this._handlePagerLoadMore}"
+						></d2l-pager-load-more>` : nothing}
 					</d2l-table-wrapper>`;
 				if (!opts.bottomMargin) return wrapper;
 				return html`<div style="margin-bottom: 1000px;">${wrapper}</div>`;
 			}
+			_handlePagerLoadMore() {}
 		}
 	);
 	return fixture(`<${tag}></${tag}>`,
@@ -970,6 +978,151 @@ describe('table', () => {
 						html`<d2l-test-table condensed type="${type}" paging></d2l-test-table>`,
 						{ rtl, viewport: { width: 500 } }
 					);
+					await expect(elem).to.be.golden();
+				});
+
+				it('table-with-paging-with-table-in-cell', async() => {
+					const elem = await createTableFixture(html`
+						<thead>
+							<tr>
+								<th rowspan="2">Country</th>
+								<th colspan="3">Fruit</th>
+							</tr>
+							<tr>
+								<th>Apples</th>
+								<th>Bananas</th>
+								<th>Pears</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th>Canada</th>
+								<td>
+									<d2l-tooltip-help text="$1.29">
+										<d2l-table-wrapper>
+											<table>
+												<thead>
+													<tr>
+														<th>Small</th>
+														<th>Large</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>$0.99</td>
+														<td>$1.59</td>
+													</tr>
+												</tbody>
+											</table>
+										</d2l-table-wrapper>
+									</d2l-tooltip-help>
+								</td>
+								<td>
+									<d2l-tooltip-help text="$0.79">
+										<d2l-table-wrapper>
+											<table>
+												<thead>
+													<tr>
+														<th>Small</th>
+														<th>Large</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>$0.50</td>
+														<td>$1.08</td>
+													</tr>
+												</tbody>
+											</table>
+										</d2l-table-wrapper>
+									</d2l-tooltip-help>
+								</td>
+								<td>
+									<d2l-tooltip-help text="$2.41">
+										<d2l-table-wrapper>
+											<table>
+												<thead>
+													<tr>
+														<th>Small</th>
+														<th>Large</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>$1.87</td>
+														<td>$2.95</td>
+													</tr>
+												</tbody>
+											</table>
+										</d2l-table-wrapper>
+									</d2l-tooltip-help>
+								</td>
+							</tr>
+							<tr>
+								<th>Mexico</th>
+								<td>
+									<d2l-tooltip-help text="$0.59">
+										<d2l-table-wrapper>
+											<table>
+												<thead>
+													<tr>
+														<th>Small</th>
+														<th>Large</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>$0.29</td>
+														<td>$0.89</td>
+													</tr>
+												</tbody>
+											</table>
+										</d2l-table-wrapper>
+									</d2l-tooltip-help>
+								</td>
+								<td>
+									<d2l-tooltip-help text="$0.38">
+										<d2l-table-wrapper>
+											<table>
+												<thead>
+													<tr>
+														<th>Small</th>
+														<th>Large</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>$0.29</td>
+														<td>$0.47</td>
+													</tr>
+												</tbody>
+											</table>
+										</d2l-table-wrapper>
+									</d2l-tooltip-help>
+								</td>
+								<td>
+									<d2l-tooltip-help text="$1.99">
+										<d2l-table-wrapper>
+											<table>
+												<thead>
+													<tr>
+														<th>Small</th>
+														<th>Large</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>$1.09</td>
+														<td>$2.89</td>
+													</tr>
+												</tbody>
+											</table>
+										</d2l-table-wrapper>
+									</d2l-tooltip-help>
+								</td>
+							</tr>
+						</tbody>
+					`, { paging: true, pageSize: 2, itemCount: 5 });
 					await expect(elem).to.be.golden();
 				});
 			});
