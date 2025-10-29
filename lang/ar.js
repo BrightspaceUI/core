@@ -163,8 +163,8 @@ export default {
 	"components.pager-load-more.action": "تحميل المزيد",
 	"components.pager-load-more.action-with-page-size": "تحميل {count} إضافي",
 	"components.pager-load-more.status-loading": "تحميل المزيد من المواد",
-	"components.scroll-wrapper.scroll-left": "مرِّر لليسار",
-	"components.scroll-wrapper.scroll-right": "مرِّر لليمين",
+	"components.scroll-wrapper.scroll-left": "مرِّر لليسار",
+	"components.scroll-wrapper.scroll-right": "مرِّر لليمين",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {يتم التعطيل عند تحديد أكثر من {countFormatted} عنصر}

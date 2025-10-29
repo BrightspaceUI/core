@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "Auxiliar de navegação",
 	"components.button-add.addItem": "Adicionar item",
 	"components.button-copy.copied": "Copiado!",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "Cópia com falha. Tente novamente ou copie manualmente.",
 	"components.button-split.otherOptions": "Outras Opções",
 	"components.calendar.hasEvents": "Tem eventos.",
 	"components.calendar.notSelected": "Não selecionado.",
@@ -174,9 +174,9 @@ export default {
 	"components.selection.select-all": "Selecionar Tudo",
 	"components.selection.select-all-items":
 		`{count, plural,
-			=1 {Select Item}
-			one {Select All {countFormatted} Item}
-			other {Selecione todos os {countFormatted} itens}
+			=1 {Selecionar Item}
+			one {Selecionar {countFormatted} Item}
+			other {Selecionar todos {countFormatted} Itens}
 		}`,
 	"components.selection.selected": "{count} selecionados",
 	"components.selection.selected-plus": "Mais de {count} selecionados",

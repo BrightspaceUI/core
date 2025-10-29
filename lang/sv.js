@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "Sökväg",
 	"components.button-add.addItem": "Lägg till objekt",
 	"components.button-copy.copied": "Kopierat!",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "Det gick inte att genomföra kopieringen. Försök igen eller försök kopiera manuellt.",
 	"components.button-split.otherOptions": "Andra alternativ",
 	"components.calendar.hasEvents": "Har händelser.",
 	"components.calendar.notSelected": "Inte vald.",
@@ -174,8 +174,8 @@ export default {
 	"components.selection.select-all": "Välj alla",
 	"components.selection.select-all-items":
 		`{count, plural,
-			=1 {Select Item}
-			one {Select All {countFormatted} Item}
+			=1 {Välj objekt}
+			one {Välj {countFormatted} objekt}
 			other {Välj alla {countFormatted} objekt}
 		}`,
 	"components.selection.selected": "{count} valda",
