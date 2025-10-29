@@ -167,7 +167,6 @@ export default {
 	"components.selection.select-all-items":
 		`{count, plural,
 			=1 {항목 선택}
-			one {{countFormatted}개 항목 모두 선택}
 			other {{countFormatted}개 항목 모두 선택}
 		}`,
 	"components.selection.selected": "{count}개 선택됨",

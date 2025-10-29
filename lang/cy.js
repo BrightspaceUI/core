@@ -175,8 +175,8 @@ export default {
 	"components.selection.select-all-items":
 		`{count, plural,
 			=1 {Dewis Eitem}
-			one {Dewis Pob Un o'r {countFormatted} Eitem}
-			other {Dewis Pob Un o'r {countFormatted} Eitem}
+			one {Dewis Pob Un o’r {countFormatted} Eitem}
+			other {Dewis Pob Un o’r {countFormatted} Eitem}
 		}`,
 	"components.selection.selected": "{count} wedi’u dewis.",
 	"components.selection.selected-plus": "{count}+ wedi’u dewis",
