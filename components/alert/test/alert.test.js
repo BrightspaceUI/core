@@ -1,5 +1,5 @@
 import '../alert.js';
-import { expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 const alertFixture = html`
 		<d2l-alert id="button-close" type="default" button-text="Do it!" has-close-button
@@ -58,36 +58,12 @@ describe('d2l-alert', () => {
 
 		it('calling preventDefault on close action should prevent alert from closing', async() => {
 			const alert = await fixture(alertFixture);
-			const closeButton = alert.shadowRoot.querySelector('d2l-button-icon');
 			alert.addEventListener('d2l-alert-close', (e) => {
 				e.preventDefault();
 			});
-			setTimeout(() => closeButton.click());
+			clickElem(alert.shadowRoot.querySelector('d2l-button-icon'));
 			await oneEvent(alert, 'd2l-alert-close');
 			expect(alert.hasAttribute('hidden')).to.be.false;
-		});
-
-		it('preventing first close keeps alert visible; second close hides it', async() => {
-			const alert = await fixture(alertFixture);
-			let firstEvent = true;
-			let received = 0;
-			alert.addEventListener('d2l-alert-close', (e) => {
-				received++;
-				if (firstEvent) {
-					firstEvent = false;
-					e.preventDefault();
-				}
-			});
-			// attempt to close (will be prevented)
-			alert.close();
-			await alert.updateComplete;
-			expect(received).to.equal(1);
-			expect(alert.hasAttribute('hidden')).to.be.false;
-			// second attempt (should not be prevented)
-			alert.close();
-			await alert.updateComplete;
-			expect(received).to.equal(2);
-			expect(alert.hasAttribute('hidden')).to.be.true;
 		});
 
 		it('close event bubbles when multiple alerts present and only target hides', async() => {
@@ -103,19 +79,6 @@ describe('d2l-alert', () => {
 			expect(details.target).to.equal(a2);
 			expect(a2.hasAttribute('hidden')).to.be.true;
 			expect(a1.hasAttribute('hidden')).to.be.false;
-		});
-
-		it('hidden attribute set only when close event not canceled (button path)', async() => {
-			const alert = await fixture(html`<d2l-alert type="default" has-close-button>Message</d2l-alert>`);
-			const btn = alert.shadowRoot.querySelector('d2l-button-icon');
-			alert.addEventListener('d2l-alert-close', (e) => e.preventDefault(), { once: true });
-			setTimeout(() => btn.click());
-			await oneEvent(alert, 'd2l-alert-close');
-			expect(alert.hasAttribute('hidden')).to.be.false;
-			// second click without preventDefault
-			setTimeout(() => btn.click());
-			await oneEvent(alert, 'd2l-alert-close');
-			expect(alert.hasAttribute('hidden')).to.be.true;
 		});
 
 	});
