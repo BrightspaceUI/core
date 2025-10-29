@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "شريط التنقل",
 	"components.button-add.addItem": "إضافة عنصر",
 	"components.button-copy.copied": "تم النسخ!",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "فشل النسخ. حاول مرة أخرى، أو حاول النسخ يدويًا.",
 	"components.button-split.otherOptions": "خيارات أخرى",
 	"components.calendar.hasEvents": "يحتوي على أحداث.",
 	"components.calendar.notSelected": "لم يتم التحديد.",
@@ -163,8 +163,8 @@ export default {
 	"components.pager-load-more.action": "تحميل المزيد",
 	"components.pager-load-more.action-with-page-size": "تحميل {count} إضافي",
 	"components.pager-load-more.status-loading": "تحميل المزيد من المواد",
-	"components.scroll-wrapper.scroll-left": "مرِّر لليسار",
-	"components.scroll-wrapper.scroll-right": "مرِّر لليمين",
+	"components.scroll-wrapper.scroll-left": "مرِّر لليسار",
+	"components.scroll-wrapper.scroll-right": "مرِّر لليمين",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			one {يتم التعطيل عند تحديد أكثر من {countFormatted} عنصر}
@@ -173,11 +173,7 @@ export default {
 	"components.selection.action-required-hint": "حدد عنصرًا لتنفيذ هذا الإجراء",
 	"components.selection.select-all": "تحديد الكل",
 	"components.selection.select-all-items":
-		`{count, plural,
-			=1 {Select Item}
-			one {Select All {countFormatted} Item}
-			other {تحديد كل المواد الـ {countFormatted}}
-		}`,
+		`{count,plural,=1{اختر عنصر} one{تحديد جميع الـ {countFormatted} عنصر} other{تحديد جميع الـ {countFormatted} عناصر} =0{تحديد جميع الـ {countFormatted} عناصر} =2{تحديد جميع الـ {countFormatted} عنصرين} few{تحديد جميع الـ {countFormatted} عناصر} many{تحديد جميع الـ {countFormatted} عناصر}}`,
 	"components.selection.selected": "تم تحديد {count}",
 	"components.selection.selected-plus": "تم تحديد {count}+‎",
 	"components.selection-controls.label": "إجراءات التحديد",

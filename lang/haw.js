@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "Palapalapala",
 	"components.button-add.addItem": "Pākuʻi Mea",
 	"components.button-copy.copied": "Kope ʻia!",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "ʻAʻole hiki ke kope. E ho'āʻo hou, a e hoʻāʻo e kope me ka lima.",
 	"components.button-split.otherOptions": "Nā Koho ʻē aʻe",
 	"components.calendar.hasEvents": "Loaʻa nā hanana.",
 	"components.calendar.notSelected": "ʻAʻole i koho ʻia.",
@@ -173,11 +173,7 @@ export default {
 	"components.selection.action-required-hint": "E koho i kahi mea e hana ai i kēia hana",
 	"components.selection.select-all": "E koho i nā mea a pau",
 	"components.selection.select-all-items":
-		`{count, plural,
-			=1 {Select Item}
-			one {Select All {countFormatted} Item}
-			other {E koho i nā mea a pau {countFormatted}}
-		}`,
+		`{count,plural,=1{E koho i ka mea} one{Koho i nā mea āpau {countFormatted}} other{E koho i nā mea a pau {countFormatted} Nā mea}}`,
 	"components.selection.selected": "{count} koho",
 	"components.selection.selected-plus": "{count}+ i koho ʻia",
 	"components.selection-controls.label": "Nā hana no ke koho",

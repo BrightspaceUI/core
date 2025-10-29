@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "Pānui",
 	"components.button-add.addItem": "Tāpiri Tūemi",
 	"components.button-copy.copied": "Kua tāruatia!",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "I rahua te kape. Ngana ano, me ngana ranei te kape a-ringa.",
 	"components.button-split.otherOptions": "Ētahi atu kōwhiringa",
 	"components.calendar.hasEvents": "He takatu ēnei.",
 	"components.calendar.notSelected": "Kāore i tīpakona.",
@@ -173,11 +173,7 @@ export default {
 	"components.selection.action-required-hint": "Tīpakohia tētahi tūemi hei whakahaere i tēnei mahi",
 	"components.selection.select-all": "Tīpako Katoa",
 	"components.selection.select-all-items":
-		`{count, plural,
-			=1 {Select Item}
-			one {Select All {countFormatted} Item}
-			other {Tīpakohia Ngā Tūemi {countFormatted} Katoa}
-		}`,
+		`{count,plural,=1{Tīpako Tūemi} one{Tīpakohia Katoa {countFormatted} Tūemi} other{Tīpakohia Katoa {countFormatted} Tūemi}}`,
 	"components.selection.selected": "{count} kua tīpakohia",
 	"components.selection.selected-plus": "{count}+ kua tīpakohia",
 	"components.selection-controls.label": "Ngā mahinga mō te tīpakonga",
