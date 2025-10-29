@@ -173,7 +173,7 @@ export default {
 	"components.selection.action-required-hint": "E koho i kahi mea e hana ai i kēia hana",
 	"components.selection.select-all": "E koho i nā mea a pau",
 	"components.selection.select-all-items":
-		`{count,plural,=1{E koho i ka mea} one{Koho i nā mea āpau {countFormatted}} other{E koho i nā mea a pau {countFormatted} Nā mea}}`,
+		`{count, plural, =1 {E koho i ka mea} one {Koho i nā mea āpau {countFormatted}} other {E koho i nā mea a pau {countFormatted} Nā mea}}`,
 	"components.selection.selected": "{count} koho",
 	"components.selection.selected-plus": "{count}+ i koho ʻia",
 	"components.selection-controls.label": "Nā hana no ke koho",
