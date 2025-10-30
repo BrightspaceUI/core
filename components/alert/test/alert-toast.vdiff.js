@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture, focusElem, hoverElem, html, oneEvent, setViewport } from '@brightspace-ui/testing';
+import { aTimeout, defineCE, expect, fixture, focusElem, hoverElem, html, oneEvent, setViewport, waitUntil } from '@brightspace-ui/testing';
 import { disableReducedMotionForTesting, restoreReducedMotionForTesting } from '../alert-toast.js';
 import { LitElement } from 'lit';
 import sinon from 'sinon';
@@ -42,7 +42,10 @@ describe('alert-toast', () => {
 		{ name: 'default', template: html`<d2l-alert-toast no-auto-close type="default" open>A default message.</d2l-alert-toast>` },
 		{ name: 'no-close', template: html`<d2l-alert-toast no-auto-close type="success" hide-close-button open>A message.</d2l-alert-toast>` },
 		{ name: 'button-close', template: html`<d2l-alert-toast no-auto-close type="warning" button-text="Do it!" open>A message.</d2l-alert-toast>` },
-		{ name: 'subtext-button-close', template: alertWithSubtextAndCloseButton }
+		{ name: 'subtext-button-close', template: alertWithSubtextAndCloseButton },
+		{ name: 'subtext-no-close', template: html`<d2l-alert-toast no-auto-close type="critical" hide-close-button subtext="More detail explaining the critical issue." open>Critical message.</d2l-alert-toast>` },
+		{ name: 'long-button-text', template: html`<d2l-alert-toast no-auto-close type="warning" button-text="Perform Lengthy Operation Now" open>A message.</d2l-alert-toast>` },
+		{ name: 'long-button-text-subtext', template: html`<d2l-alert-toast no-auto-close type="warning" button-text="Perform Lengthy Operation Now" open subtext="More detail explaining the critical issue.">A message.</d2l-alert-toast>` }
 	].forEach(({ name, template }) => {
 		it(name, async() => {
 			await fixture(template, { viewport: { width: 700, height: 200 } });
@@ -195,6 +198,66 @@ describe('alert-toast', () => {
 				restoreReducedMotionForTesting();
 			});
 
+		});
+
+		describe('larger stacking scenarios', () => {
+			const fourStackTemplate = html`<div id="four-stack">
+				<d2l-alert-toast no-auto-close type="default" id="first">One</d2l-alert-toast>
+				<d2l-alert-toast no-auto-close type="success" id="second" button-text="Act">Two action</d2l-alert-toast>
+				<d2l-alert-toast no-auto-close type="warning" id="third">Three warning</d2l-alert-toast>
+				<d2l-alert-toast no-auto-close type="critical" id="fourth" subtext="Critical details with more explanation for layout testing purposes.">Four critical</d2l-alert-toast>
+			</div>`;
+
+			async function openAlertsStack(elem) {
+				const toasts = ['first', 'second', 'third', 'fourth'].map(id => elem.querySelector(`#${id}`));
+				for (const t of toasts) {
+					// open sequentially to exercise sliding adjustments
+					t.open = true;
+					await oneEvent(t, 'd2l-alert-toast-resize');
+				}
+			}
+
+			it('open four stacked', async() => {
+				const host = await fixture(fourStackTemplate, { viewport });
+				await openAlertsStack(host);
+				await expect(document).to.be.golden();
+			});
+
+			['first', 'second', 'third', 'fourth'].forEach(id => {
+				it(`open four then close ${id}`, async() => {
+					const host = await fixture(fourStackTemplate, { viewport: { width: 700, height: 400 } });
+					await openAlertsStack(host);
+					const toast = host.querySelector(`#${id}`);
+					toast.open = false;
+					await oneEvent(toast, 'd2l-alert-toast-close');
+					await expect(document).to.be.golden();
+				});
+			});
+
+			it('open four then close middle alerts', async() => {
+				const host = await fixture(fourStackTemplate, { viewport });
+				await openAlertsStack(host);
+				const second = host.querySelector('#second');
+				second.open = false;
+				await oneEvent(second, 'd2l-alert-toast-close');
+				const third = host.querySelector('#third');
+				third.open = false;
+				await oneEvent(third, 'd2l-alert-toast-close');
+				await expect(document).to.be.golden();
+			});
+
+			it('open four then re-open middle after closing', async() => {
+				const host = await fixture(fourStackTemplate, { viewport });
+				await openAlertsStack(host);
+				const third = host.querySelector('#third');
+				third.open = false;
+				await oneEvent(third, 'd2l-alert-toast-close');
+				await waitUntil(() => third._state === 'closed', 'never closed');
+				await aTimeout(100);
+				third.open = true;
+				await oneEvent(third, 'd2l-alert-toast-resize');
+				await expect(document).to.be.golden();
+			});
 		});
 
 	});
