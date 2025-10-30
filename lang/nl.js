@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "Kruimelpad",
 	"components.button-add.addItem": "Item toevoegen",
 	"components.button-copy.copied": "Gekopieerd!",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "Kopiëren mislukt. Probeer het opnieuw of probeer handmatig te kopiëren.",
 	"components.button-split.otherOptions": "Overige opties",
 	"components.calendar.hasEvents": "Bevat gebeurtenissen.",
 	"components.calendar.notSelected": "Niet geselecteerd.",
@@ -174,9 +174,9 @@ export default {
 	"components.selection.select-all": "Alles selecteren",
 	"components.selection.select-all-items":
 		`{count, plural,
-			=1 {Select Item}
-			one {Select All {countFormatted} Item}
-			other {Alle {countFormatted} records selecteren}
+			=1 {Item selecteren}
+			one {Alle {countFormatted} item selecteren}
+			other {Alle {countFormatted} items selecteren}
 		}`,
 	"components.selection.selected": "{count} geselecteerd",
 	"components.selection.selected-plus": "Meer dan {count} geselecteerd",
