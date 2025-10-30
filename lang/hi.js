@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "ब्रेडक्रंब",
 	"components.button-add.addItem": "आइटम जोड़ें",
 	"components.button-copy.copied": "कॉपी किया गया!",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "कॉपी बनाना विफल रहा। फिर से प्रयास करें या मैन्युअल रूप से कॉपी करने का प्रयास करें।",
 	"components.button-split.otherOptions": "अन्य विकल्प",
 	"components.calendar.hasEvents": "ईवेंट हैं।",
 	"components.calendar.notSelected": "चयनित नहीं।",
@@ -174,9 +174,9 @@ export default {
 	"components.selection.select-all": "सभी का चयन करें",
 	"components.selection.select-all-items":
 		`{count, plural,
-			=1 {Select Item}
-			one {Select All {countFormatted} Item}
-			other {सभी {countFormatted} आइटम चुनें।}
+			=1 {आइटम का चयन करें}
+			one {सभी {countFormatted} आइटम का चयन करें}
+			other {सभी {countFormatted} आइटम का चयन करें}
 		}`,
 	"components.selection.selected": "{count} चयनित",
 	"components.selection.selected-plus": "{count} से अधिक चयनित",

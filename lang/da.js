@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "Brødkrumme",
 	"components.button-add.addItem": "Tilføj element",
 	"components.button-copy.copied": "Kopieret!",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "Kopiering mislykkedes. Prøv igen, eller prøv at kopiere manuelt.",
 	"components.button-split.otherOptions": "Andre indstillinger",
 	"components.calendar.hasEvents": "Har begivenheder.",
 	"components.calendar.notSelected": "Ikke valgt.",
@@ -174,8 +174,8 @@ export default {
 	"components.selection.select-all": "Vælg alle",
 	"components.selection.select-all-items":
 		`{count, plural,
-			=1 {Select Item}
-			one {Select All {countFormatted} Item}
+			=1 {Vælg element}
+			one {Vælg alle {countFormatted} element}
 			other {Vælg alle {countFormatted} elementer}
 		}`,
 	"components.selection.selected": "{count} valgt",

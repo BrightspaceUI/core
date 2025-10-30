@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "階層",
 	"components.button-add.addItem": "項目の追加",
 	"components.button-copy.copied": "コピーできました。",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "コピーに失敗しました。再試行するか、手動でコピーしてください。",
 	"components.button-split.otherOptions": "その他のオプション",
 	"components.calendar.hasEvents": "イベントがあります。",
 	"components.calendar.notSelected": "選択されていません。",
@@ -166,7 +166,8 @@ export default {
 	"components.selection.select-all": "すべて選択",
 	"components.selection.select-all-items":
 		`{count, plural,
-			other {{countFormatted} 個の項目をすべて選択}
+			=1 {項目を選択}
+			other {{countFormatted} 項目をすべて選択}
 		}`,
 	"components.selection.selected": "{count} 個を選択済み",
 	"components.selection.selected-plus": "{count} 個以上を選択済み",
