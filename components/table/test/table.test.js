@@ -186,7 +186,7 @@ describe('d2l-table-wrapper', () => {
 									</tr>
 								</thead>
 								<tbody>
-									${Array.from({length: this.loadedCount}, (_, i) => i + 1).map(i => html`<tr><td>${i}</td></tr>`)}
+									${Array.from({ length: this.loadedCount }, (_, i) => i + 1).map(i => html`<tr><td>${i}</td></tr>`)}
 								</tbody>
 							</table>
 						</d2l-table-wrapper>
