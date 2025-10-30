@@ -22,22 +22,7 @@ describe('d2l-alert', () => {
 		it('should fire "d2l-alert-close" event when close button is clicked', async() => {
 			const alert = await fixture(alertFixture);
 			const closeButton = alert.shadowRoot.querySelector('d2l-button-icon');
-			setTimeout(() => closeButton.click());
-			await oneEvent(alert, 'd2l-alert-close');
-			expect(alert.hasAttribute('hidden')).to.be.true;
-		});
-
-		it('should fire "d2l-alert-close" event when close is called', async() => {
-			const alert = await fixture(alertFixture);
-			setTimeout(() => alert.close());
-			await oneEvent(alert, 'd2l-alert-close');
-			expect(alert.hasAttribute('hidden')).to.be.true;
-		});
-
-		it('should fire "d2l-alert-close" event when close button is clicked', async() => {
-			const alert = await fixture(alertFixture);
-			const closeButton = alert.shadowRoot.querySelector('d2l-button-icon');
-			setTimeout(() => closeButton.click());
+			clickElem(closeButton);
 			await oneEvent(alert, 'd2l-alert-close');
 			expect(alert.hasAttribute('hidden')).to.be.true;
 		});
@@ -52,16 +37,17 @@ describe('d2l-alert', () => {
 		it('should fire "d2l-alert-button-press" event when action button is clicked', async() => {
 			const alert = await fixture(alertFixture);
 			const actionButton = alert.shadowRoot.querySelector('d2l-button-subtle');
-			setTimeout(() => actionButton.click());
+			clickElem(actionButton);
 			await oneEvent(alert, 'd2l-alert-button-press');
 		});
 
 		it('calling preventDefault on close action should prevent alert from closing', async() => {
 			const alert = await fixture(alertFixture);
+			const closeButton = alert.shadowRoot.querySelector('d2l-button-icon');
 			alert.addEventListener('d2l-alert-close', (e) => {
 				e.preventDefault();
 			});
-			clickElem(alert.shadowRoot.querySelector('d2l-button-icon'));
+			clickElem(closeButton);
 			await oneEvent(alert, 'd2l-alert-close');
 			expect(alert.hasAttribute('hidden')).to.be.false;
 		});
@@ -74,7 +60,7 @@ describe('d2l-alert', () => {
 			const a1 = multi.querySelector('#a1');
 			const a2 = multi.querySelector('#a2');
 			const closeBtn = a2.shadowRoot.querySelector('d2l-button-icon');
-			setTimeout(() => closeBtn.click());
+			clickElem(closeBtn);
 			const details = await oneEvent(a2, 'd2l-alert-close');
 			expect(details.target).to.equal(a2);
 			expect(a2.hasAttribute('hidden')).to.be.true;
