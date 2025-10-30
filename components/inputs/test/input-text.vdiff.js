@@ -1,7 +1,7 @@
 import '../../button/button-icon.js';
 import '../../icons/icon.js';
 import '../input-text.js';
-import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, hoverElem, hoverElemAt, html } from '@brightspace-ui/testing';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
 
@@ -11,6 +11,7 @@ const labelHiddenFixture = html`<d2l-input-text label="Name" label-hidden value=
 const labelledFixture = html`<d2l-input-text label="Name" value="text"></d2l-input-text>`;
 const unitFixture = html`<d2l-input-text label="unit" label-hidden value="value" unit="%"></d2l-input-text>`;
 const unitInvalidFixture = html`<d2l-input-text label="unit" label-hidden value="value" unit="%" aria-invalid="true"></d2l-input-text>`;
+const customWidthFixture = html`<d2l-input-text label="Custom Width Longer Than Input" input-width="80px"></d2l-input-text>`;
 const iconLeftFixture = html`
 	<d2l-input-text label="Name" label-hidden value="Lorem ipsum dolor sit amet, consectetur adipiscing elit">
 		${createIcon('calendar', 'left')}
@@ -59,6 +60,9 @@ describe('d2l-input-text', () => {
 		{ name: 'required', template: html`<d2l-input-text label="Name" required value="text"></d2l-input-text>` },
 		{ name: 'required-skeleton', template: html`<d2l-input-text label="Name" required value="text" skeleton></d2l-input-text>` },
 		{ name: 'custom-width-skeleton', template: html`<d2l-input-text label="Custom Width Longer Than Input" input-width="100px" skeleton></d2l-input-text>` },
+		{ name: 'custom-width-hover-label', template: customWidthFixture, action: async(elem) => await hoverElem(elem.shadowRoot.querySelector('label')) },
+		{ name: 'custom-width-hover-input', template: customWidthFixture, action: async(elem) => await hoverElem(elem.shadowRoot.querySelector('input')) },
+		{ name: 'custom-width-hover-empty', template: customWidthFixture, action: async(elem) => await hoverElemAt(elem, 100, 50) },
 		{ name: 'overflowing', template: html`<d2l-input-text label="Name" label-hidden value="overflowing value that renders ellipsis"></d2l-input-text>` },
 		{ name: 'unit', template: unitFixture },
 		{ name: 'unit-rtl', template: unitFixture, rtl: true },

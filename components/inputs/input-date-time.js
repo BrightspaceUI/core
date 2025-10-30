@@ -89,7 +89,7 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 			 * Time zone identifier for the time input to use.
 			 * @type {string}
 			 */
-			timeZoneId: { type: String },
+			timeZoneId: { type: String, attribute: 'time-zone-id' },
 			/**
 			 * Hides the time zone inside the time selection dropdown. Should only be used when the time input value is not related to any one time zone
 			 * @type {Boolean}

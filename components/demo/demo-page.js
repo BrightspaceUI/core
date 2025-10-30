@@ -1,11 +1,17 @@
+import './demo-flags.js';
+import '../button/button.js';
 import './demo-snippet.js';
+import '../inputs/input-checkbox-group.js';
+import '../inputs/input-checkbox.js';
 import './code-view.js';
+import '../collapsible-panel/collapsible-panel.js';
+import '../collapsible-panel/collapsible-panel-summary-item.js';
 import '../colors/colors.js';
 import '../typography/typography.js';
 import { css, html, LitElement } from 'lit';
 import { getDocumentLocaleSettings, supportedLocalesDetails } from '@brightspace-ui/intl/lib/common.js';
+import { getFlagOverrides, getKnownFlags } from '../../helpers/flags.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { heading2Styles } from '../typography/styles.js';
 import { inputLabelStyles } from '../inputs/input-label-styles.js';
 import { selectStyles } from '../inputs/input-select-styles.js';
 
@@ -32,7 +38,7 @@ class DemoPage extends LitElement {
 	}
 
 	static get styles() {
-		return [ heading2Styles, inputLabelStyles, selectStyles, css`
+		return [ inputLabelStyles, selectStyles, css`
 			:host {
 				background-color: var(--d2l-color-sylvite);
 				display: block;
@@ -49,9 +55,8 @@ class DemoPage extends LitElement {
 				margin-bottom: 1.5rem;
 				max-width: 900px;
 			}
-			.d2l-heading-2 {
-				flex-grow: 1;
-				margin: 0;
+			d2l-collapsible-panel {
+				width: 100%;
 			}
 			.d2l-input-label {
 				margin-bottom: 0;
@@ -68,7 +73,16 @@ class DemoPage extends LitElement {
 			.d2l-demo-page-content > ::slotted(d2l-demo-snippet) {
 				margin-bottom: 36px;
 			}
+
+			#applyFlagsButton {
+				margin-block-start: 1rem;
+			}
 		`];
+	}
+
+	constructor() {
+		super();
+		this.#handleFlagsKnownBound = this.#handleFlagsKnown.bind(this);
 	}
 
 	connectedCallback() {
@@ -76,12 +90,19 @@ class DemoPage extends LitElement {
 		const title = document.createElement('title');
 		title.textContent = this.pageTitle;
 		document.head.insertBefore(title, document.head.firstChild);
+		document.addEventListener('d2l-flags-known', this.#handleFlagsKnownBound);
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		document.removeEventListener('d2l-flags-known', this.#handleFlagsKnownBound);
 	}
 
 	render() {
 		const classes = {
 			'no-scroll': this._noScroll
 		};
+
 		let selectedLanguageCode = getDocumentLocaleSettings().language;
 		if (selectedLanguageCode === 'en') selectedLanguageCode = 'en-us';
 		let foundSelected = false;
@@ -90,21 +111,79 @@ class DemoPage extends LitElement {
 			foundSelected = foundSelected || selected;
 			return html`<option value="${l.code}" ?selected="${selected}">${l.code} - ${l.name}</option>`;
 		});
+
+		const knownFlags = this.#getKnownFlagsSorted();
+		const knownFlagCheckboxes = [];
+		knownFlags.forEach((knownFlag, key) => {
+			knownFlagCheckboxes.push(html`<d2l-input-checkbox label="${key}" data-flag-key="${key}" ?checked="${knownFlag.value}"></d2l-input-checkbox>`);
+		});
+
+		const flagOverrides = getFlagOverrides();
+		const flagOverrideItems = [];
+		flagOverrides.forEach((value, key) => {
+			const knownFlag = knownFlags.get(key);
+			const defaultValue = knownFlag ? knownFlag.defaultValue : 'unknown';
+			flagOverrideItems.push(html`<d2l-collapsible-panel-summary-item slot="summary" text="${key} (default: ${defaultValue}; override: ${value})"></d2l-collapsible-panel-summary-item>`);
+		});
+
 		return html`
 			<header>
-				<h1 class="d2l-heading-2">${this.pageTitle}</h1>
-				<label class="d2l-input-label">
-					Language: 
-					<select class="d2l-input-select" @change="${this._handleLanguageChange}">${languageOptions}</select>
-				</label>
+				<d2l-collapsible-panel panel-title="${this.pageTitle}" heading-level="1" heading-style="3" type="subtle">
+					<label class="d2l-input-label" slot="actions">
+						Language:
+						<select class="d2l-input-select" @change="${this.#handleLanguageChange}">${languageOptions}</select>
+					</label>
+					${knownFlagCheckboxes.length > 0 ? html`
+						<d2l-input-checkbox-group id="flagsCheckboxGroup" label="Flags">
+							${knownFlagCheckboxes}
+						</d2l-input-checkbox-group>
+						<d2l-button id="applyFlagsButton" @click="${this.#handleApplyFlagsClick}">Apply</d2l-button>
+					` : 'No known flags'}
+					${flagOverrideItems}
+				</d2l-collapsible-panel>
 			</header>
 			<main class="${classMap(classes)}">
-				<div class="d2l-demo-page-content" @d2l-demo-snippet-fullscreen-toggle="${this._handleFullscreenToggle}"><slot></slot></div>
+				<div class="d2l-demo-page-content" @d2l-demo-snippet-fullscreen-toggle="${this.#handleFullscreenToggle}"><slot></slot></div>
 			</main>
 		`;
 	}
 
-	async _handleFullscreenToggle() {
+	#handleFlagsKnownBound;
+
+	#getKnownFlagsSorted() {
+		return new Map([...getKnownFlags().entries()].sort((entry1, entry2) => {
+			const key1 = entry1[0].toLowerCase();
+			const key2 = entry2[0].toLowerCase();
+			if (key1 < key2) return -1;
+			else if (key1 > key2) return 1;
+			else return 0;
+		}));
+	}
+
+	#handleApplyFlagsClick() {
+		const urlParams = new URLSearchParams(window.location.search);
+		const elems = [...this.shadowRoot.querySelectorAll('#flagsCheckboxGroup > d2l-input-checkbox')];
+
+		const knownFlags = getKnownFlags();
+		elems.forEach(elem => {
+			const key = elem.dataset.flagKey;
+			const flag = knownFlags.get(key);
+
+			if (flag.defaultValue === elem.checked) {
+				urlParams.delete(`demo-flag-${key}`);
+			} else if (flag.defaultValue !== elem.checked) {
+				urlParams.set(`demo-flag-${key}`, elem.checked);
+			}
+		});
+
+		window.location.search = urlParams.toString();
+	}
+
+	#handleFlagsKnown() {
+		this.requestUpdate();
+	}
+
+	async #handleFullscreenToggle() {
 		if (this._noScroll) {
 			this._noScroll = false;
 			await this.updateComplete;
@@ -116,7 +195,7 @@ class DemoPage extends LitElement {
 		}
 	}
 
-	_handleLanguageChange(e) {
+	#handleLanguageChange(e) {
 		const newLanguageCode = e.target[e.target.selectedIndex].value;
 		document.documentElement.dir = newLanguageCode === 'ar-sa' ? 'rtl' : 'ltr';
 		document.documentElement.lang = newLanguageCode;

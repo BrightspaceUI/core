@@ -40,7 +40,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Restricts the maximum width of the input box without impacting the width of the label.
+			 * Restricts the maximum width of the input box without restricting the width of the label.
 			 * @type {string}
 			 */
 			inputWidth: { attribute: 'input-width', type: String },
@@ -92,8 +92,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 			 * Value of the input
 			 * @type {string}
 			 */
-			value: { type: String },
-			_hovered: { state: true }
+			value: { type: String }
 		};
 	}
 
@@ -108,6 +107,14 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 			.d2l-input-label {
 				display: inline-block;
 				vertical-align: bottom;
+			}
+			:host(:not([skeleton])) .d2l-input-label {
+				margin: 0;
+				padding-block: 0 0.4rem;
+				padding-inline: 0;
+			}
+			:host(:not([skeleton]):not([input-width])) .d2l-input-label {
+				width: 100%;
 			}
 			.d2l-input-textarea-container {
 				height: 100%;
@@ -159,7 +166,6 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 		this.value = '';
 
 		this._descriptionId = getUniqueId();
-		this._hovered = false;
 		this._inlineHelpId = getUniqueId();
 		this._textareaId = getUniqueId();
 	}
@@ -196,16 +202,6 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 		if (this.hasAttribute('aria-label')) {
 			this.labelRequired = false;
 		}
-		this.addEventListener('mouseover', this._handleMouseEnter);
-		this.addEventListener('mouseout', this._handleMouseLeave);
-		this.addEventListener('click', this._handleClick);
-	}
-
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.removeEventListener('mouseover', this._handleMouseEnter);
-		this.removeEventListener('mouseout', this._handleMouseLeave);
-		this.removeEventListener('click', this._handleClick);
 	}
 
 	render() {
@@ -227,11 +223,13 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 		if (this.maxRows > 0) mirrorStyles.maxHeight = `calc(${this.maxRows + 1}rem + 2px)`;
 
 		const inputClasses = {
-			'd2l-input': true,
-			'd2l-input-focus': !this.disabled && this._hovered
+			'd2l-input': true
 		};
 		const inputContainerStyles = {
 			maxWidth: this.inputWidth
+		};
+		const labelStyles = {
+			minWidth: this.inputWidth && !this.skeleton ? `min(100%, ${this.inputWidth})` : undefined
 		};
 
 		const textarea = html`
@@ -255,7 +253,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 					minlength="${ifDefined(this.minlength)}"
 					placeholder="${ifDefined(this.placeholder)}"
 					?required="${this.required}"
-					.value="${this.value}">${this.value}</textarea>
+					.value="${this.value}"></textarea>
 				${this.validationError ? html`<d2l-tooltip for=${this._textareaId} state="error" align="start">${this.validationError}</d2l-tooltip>` : null}
 			</div>
 			${this._renderInlineHelp(this._inlineHelpId)}
@@ -264,7 +262,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 
 		if (this.label && !this.labelHidden && !this.labelledBy) {
 			return html`
-				<label class="d2l-input-label d2l-skeletize" for="${this._textareaId}">${this.label}</label>
+				<label class="d2l-input-label d2l-skeletize" for="${this._textareaId}" style="${styleMap(labelStyles)}">${this.label}</label>
 				${textarea}`;
 		}
 
@@ -332,12 +330,6 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 		));
 	}
 
-	_handleClick(e) {
-		const input = this.shadowRoot && this.shadowRoot.querySelector('textarea');
-		if (!input || e.composedPath()[0] !== this) return;
-		input.focus();
-	}
-
 	_handleInput(e) {
 		this.value = e.target.value;
 		return true;
@@ -345,14 +337,6 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 
 	_handleInvalid(e) {
 		e.preventDefault();
-	}
-
-	_handleMouseEnter() {
-		this._hovered = true;
-	}
-
-	_handleMouseLeave() {
-		this._hovered = false;
 	}
 
 }

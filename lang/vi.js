@@ -2,6 +2,8 @@ export default {
 	"components.alert.close": "Đóng Cảnh Báo",
 	"components.breadcrumbs.breadcrumb": "Breadcrumb",
 	"components.button-add.addItem": "Thêm mục",
+	"components.button-copy.copied": "Đã sao chép!",
+	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
 	"components.button-split.otherOptions": "Các lựa chọn khác",
 	"components.calendar.hasEvents": "Có các sự kiện.",
 	"components.calendar.notSelected": "Không được chọn.",

@@ -3,7 +3,7 @@ import '../icons/icon.js';
 import '../../helpers/queueMicrotask.js';
 import './tab-internal.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
-import { cssEscape, findComposedAncestor, getOffsetParent } from '../../helpers/dom.js';
+import { cssEscape, findComposedAncestor, getOffsetParent, isVisible } from '../../helpers/dom.js';
 import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
@@ -1200,7 +1200,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	#hideTabsList() {
 		// don't animate the tabs list visibility if it's the inital render
-		if (reduceMotion || !this._initialized) {
+		if (reduceMotion || !this._initialized || !isVisible(this)) {
 			this._state = 'hidden';
 		} else if (this.shadowRoot) {
 			const layout = this.shadowRoot.querySelector('.d2l-tabs-layout');

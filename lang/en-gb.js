@@ -2,6 +2,8 @@ export default {
 	"components.alert.close": "Close Alert",
 	"components.breadcrumbs.breadcrumb": "Breadcrumb",
 	"components.button-add.addItem": "Add Item",
+	"components.button-copy.copied": "Copied!",
+	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
 	"components.button-split.otherOptions": "Other Options",
 	"components.calendar.hasEvents": "Has Events.",
 	"components.calendar.notSelected": "Not Selected.",

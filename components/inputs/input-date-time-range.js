@@ -155,7 +155,7 @@ class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormE
 			 * Time zone identifier for the time inputs to use.
 			 * @type {string}
 			 */
-			timeZoneId: { type: String },
+			timeZoneId: { attribute: 'time-zone-id', type: String },
 			/**
 			 * Hides the time zone inside the time selection dropdowns. Should only be used when the time input values are not related to any one time zone
 			 * @type {Boolean}

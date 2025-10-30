@@ -1,5 +1,5 @@
 import '../input-textarea.js';
-import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, hoverElem, hoverElemAt, html } from '@brightspace-ui/testing';
 import { loadSass, unloadSass } from '../../../test/load-sass.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
 
@@ -11,10 +11,14 @@ describe('d2l-input-textarea', () => {
 	const placeholderFixture = html`<d2l-input-textarea label="Label" placeholder="placeholder"></d2l-input-textarea>`;
 	const invalidFixture = html`<d2l-input-textarea label="Label" value="invalid" aria-invalid="true"></d2l-input-textarea>`;
 	const noBorderPaddingFixture = html`<d2l-input-textarea label="Label" value="text" no-border no-padding></d2l-input-textarea>`;
+	const customWidthFixture = html`<d2l-input-textarea label="Custom Width Longer Than Input" input-width="80px"></d2l-input-textarea>`;
 	[
 		{ name: 'default', template: defaultFixture },
 		{ name: 'default-focus', template: defaultFixture, action: async(elem) => await focusElem(elem) },
 		{ name: 'disabled', template: html`<d2l-input-textarea label="Label" value="text disabled" disabled></d2l-input-textarea>` },
+		{ name: 'custom-width-hover-label', template: customWidthFixture, action: async(elem) => await hoverElem(elem.shadowRoot.querySelector('label')) },
+		{ name: 'custom-width-hover-input', template: customWidthFixture, action: async(elem) => await hoverElem(elem.shadowRoot.querySelector('textarea')) },
+		{ name: 'custom-width-hover-empty', template: customWidthFixture, action: async(elem) => await hoverElemAt(elem, 100, 50) },
 		{ name: 'label-hidden', template: html`<d2l-input-textarea label="Label" label-hidden value="text"></d2l-input-textarea>` },
 		{ name: 'wrapping', template: html`<d2l-input-textarea label="Label" value="Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker." min-height="none"></d2l-input-textarea>` },
 		{ name: 'placeholder', template: placeholderFixture },

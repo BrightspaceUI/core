@@ -2,6 +2,8 @@ export default {
 	"components.alert.close": "アラートを閉じる",
 	"components.breadcrumbs.breadcrumb": "階層",
 	"components.button-add.addItem": "項目の追加",
+	"components.button-copy.copied": "コピーできました。",
+	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
 	"components.button-split.otherOptions": "その他のオプション",
 	"components.calendar.hasEvents": "イベントがあります。",
 	"components.calendar.notSelected": "選択されていません。",
