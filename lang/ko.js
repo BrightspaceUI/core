@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "이동 경로",
 	"components.button-add.addItem": "항목 추가",
 	"components.button-copy.copied": "복사 완료!",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "복사에 실패했습니다. 다시 시도하거나 수동으로 복사해 보십시오.",
 	"components.button-split.otherOptions": "기타 옵션",
 	"components.calendar.hasEvents": "이벤트가 있습니다.",
 	"components.calendar.notSelected": "선택되지 않음.",
@@ -166,7 +166,8 @@ export default {
 	"components.selection.select-all": "모두 선택",
 	"components.selection.select-all-items":
 		`{count, plural,
-			other {{countFormatted}개 항목을 모두 선택하십시오}
+			=1 {항목 선택}
+			other {{countFormatted}개 항목 모두 선택}
 		}`,
 	"components.selection.selected": "{count}개 선택됨",
 	"components.selection.selected-plus": "{count}+개 선택됨",

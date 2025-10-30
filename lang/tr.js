@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "İçerik Haritası",
 	"components.button-add.addItem": "Öğe Ekle",
 	"components.button-copy.copied": "Kopyalandı!",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "Kopyalanamadı. Tekrar deneyin veya manuel olarak kopyalamayı deneyin.",
 	"components.button-split.otherOptions": "Diğer Seçenekler",
 	"components.calendar.hasEvents": "Olayları Var.",
 	"components.calendar.notSelected": "Seçili Değil.",
@@ -174,9 +174,9 @@ export default {
 	"components.selection.select-all": "Tümünü Seç",
 	"components.selection.select-all-items":
 		`{count, plural,
-			=1 {Select Item}
-			one {Select All {countFormatted} Item}
-			other {{countFormatted} Öğenin Tamamını Seç}
+			=1 {Öğeyi Seç}
+			one {Tüm {countFormatted} Öğeyi Seç}
+			other {Tüm {countFormatted} Öğeyi Seç}
 		}`,
 	"components.selection.selected": "{count} öğe seçildi",
 	"components.selection.selected-plus": "{count}+ öğe seçildi",

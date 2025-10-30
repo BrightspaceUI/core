@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "Briwsionyn Bara",
 	"components.button-add.addItem": "Ychwanegu Eitem",
 	"components.button-copy.copied": "Wedi’i gopïo!",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "Wedi methu â chopïo. Rhowch gynnig arall arni, neu rhowch gynnig ar gopïo â llaw.",
 	"components.button-split.otherOptions": "Opsiynau Eraill",
 	"components.calendar.hasEvents": "Yn Cynnwys Digwyddiadau.",
 	"components.calendar.notSelected": "Heb ei Ddewis.",
@@ -174,9 +174,9 @@ export default {
 	"components.selection.select-all": "Dewis y Cyfan",
 	"components.selection.select-all-items":
 		`{count, plural,
-			=1 {Select Item}
-			one {Select All {countFormatted} Item}
-			other {Dewis Pob {countFormatted} Eitem}
+			=1 {Dewis Eitem}
+			one {Dewis Pob Un o’r {countFormatted} Eitem}
+			other {Dewis Pob Un o’r {countFormatted} Eitem}
 		}`,
 	"components.selection.selected": "{count} wedi’u dewis.",
 	"components.selection.selected-plus": "{count}+ wedi’u dewis",

@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "痕迹导航",
 	"components.button-add.addItem": "添加项目",
 	"components.button-copy.copied": "已复制！",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "复制失败。请重试，或尝试手动复制。",
 	"components.button-split.otherOptions": "其他选项",
 	"components.calendar.hasEvents": "有事件。",
 	"components.calendar.notSelected": "未选择。",
@@ -166,6 +166,7 @@ export default {
 	"components.selection.select-all": "全选",
 	"components.selection.select-all-items":
 		`{count, plural,
+			=1 {选择项目}
 			other {选择全部 {countFormatted} 个项目}
 		}`,
 	"components.selection.selected": "已选 {count}",
