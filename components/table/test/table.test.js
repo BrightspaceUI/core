@@ -161,6 +161,76 @@ describe('d2l-table-wrapper', () => {
 			expect(el.shadowRoot.querySelector('d2l-table-wrapper')._noScrollWidth).to.be[`${width < 20}`];
 		}));
 	});
+
+	describe('sticky headers with shadow DOM', () => {
+		let element, wrapper;
+		const tagName = defineCE(
+			class extends LitElement {
+				static get properties() {
+					return {
+						loadedCount: { status: true }
+					};
+				}
+				constructor() {
+					super();
+					this.loadedCount = 5;
+				}
+
+				render() {
+					return html`
+						<d2l-table-wrapper>
+							<table class="d2l-table">
+								<thead>
+									<tr>
+										<th>Header</th>
+									</tr>
+								</thead>
+								<tbody>
+									${Array.from({ length: this.loadedCount }, (_, i) => i + 1).map(i => html`<tr><td>${i}</td></tr>`)}
+								</tbody>
+							</table>
+						</d2l-table-wrapper>
+					`;
+				}
+
+				loadData(n) {
+					this.loadedCount += n;
+				}
+			}
+		);
+
+		async function nextWrapperUpdate() {
+			await element.updateComplete;
+			await nextFrame();
+			await wrapper.updateComplete;
+		}
+
+		beforeEach(async() => {
+			element = await fixture(`<${tagName}></${tagName}>`);
+			wrapper = element.shadowRoot.querySelector('d2l-table-wrapper');
+		});
+
+		it('should accurately count items on load', () => {
+			expect(wrapper._itemShowingCount).to.equal(5);
+		});
+
+		it('should update count when items are added', async() => {
+			element.loadData(3);
+			await nextWrapperUpdate();
+
+			expect(wrapper._itemShowingCount).to.equal(8);
+		});
+
+		it('should update count when items are removed', async() => {
+			element.loadData(3);
+			await nextWrapperUpdate();
+			element.loadedCount = 5;
+			await nextWrapperUpdate();
+			expect(wrapper._itemShowingCount).to.equal(5);
+		});
+
+	});
+
 });
 
 describe('d2l-table-controls', () => {

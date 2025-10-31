@@ -258,7 +258,8 @@ export const tableStyles = css`
 
 const SELECTORS = {
 	headers: 'tr.d2l-table-header, tr[header], thead tr',
-	items: ':not(thead) > tr:not(.d2l-table-header):not([header])',
+	body: ':not(thead)',
+	items: 'tr:not(.d2l-table-header):not([header])',
 };
 
 /**
@@ -494,7 +495,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	_getItems() {
-		return this._table?.querySelectorAll(SELECTORS.items) || [];
+		return this._table?.querySelectorAll(`${SELECTORS.body} > ${SELECTORS.items}`) || [];
 	}
 
 	_getItemShowingCount() {
@@ -604,7 +605,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 					updates.classNames ||= node.matches('tr, td, th');
 					updates.syncWidths ||= node.matches('tr');
 					updates.sticky ||= node.matches(SELECTORS.headers);
-					updates.count ||= node.matches(SELECTORS.items);
+					updates.count ||= node.matches(SELECTORS.items) && target.matches(SELECTORS.body);
 				}
 			}
 		}

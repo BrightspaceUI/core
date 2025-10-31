@@ -41,6 +41,7 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 		return {
 			paging: { type: Boolean, reflect: true },
 			multiLine: { type: Boolean, attribute: 'multi-line' },
+			resetOnSort: { type: Boolean, attribute: 'reset-on-sort' },
 			showButtons: { type: Boolean, attribute: 'show-buttons' },
 			stickyControls: { attribute: 'sticky-controls', type: Boolean, reflect: true },
 			visibleBackground: { attribute: 'visible-background', type: Boolean, reflect: true },
@@ -187,7 +188,7 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 	}
 
 	_handleSortData() {
-		this._data = this._data.sort((a, b) => {
+		this._data = (this.resetOnSort ? data() : this._data).sort((a, b) => {
 			if (this._sortDesc) {
 				if (a.data[this._sortField] > b.data[this._sortField]) return -1;
 				if (a.data[this._sortField] < b.data[this._sortField]) return 1;
