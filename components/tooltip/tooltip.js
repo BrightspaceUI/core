@@ -14,7 +14,6 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const usePopoverMixin = getFlag('GAUD-7355-tooltip-popover', false);
-const useMutationObserver = getFlag('GAUD-8203-tooltip-mutation-observer', true);
 
 const contentBorderSize = 1;
 const contentHorizontalPadding = 15;
@@ -337,11 +336,9 @@ if (usePopoverMixin) {
 			this.#targetSizeObserver = new ResizeObserver(this.#handleTargetResizeBound);
 			this.#targetSizeObserver.observe(this.#target);
 
-			if (useMutationObserver) {
-				this.#targetMutationObserver = new MutationObserver(this.#handleTargetMutationBound);
-				this.#targetMutationObserver.observe(this.#target, { attributes: true, attributeFilter: ['id'] });
-				this.#targetMutationObserver.observe(this.#target.parentNode, { childList: true });
-			}
+			this.#targetMutationObserver = new MutationObserver(this.#handleTargetMutationBound);
+			this.#targetMutationObserver.observe(this.#target, { attributes: true, attributeFilter: ['id'] });
+			this.#targetMutationObserver.observe(this.#target.parentNode, { childList: true });
 		}
 
 		#findTarget() {
@@ -1215,11 +1212,9 @@ if (usePopoverMixin) {
 			this._targetSizeObserver = new ResizeObserver(this._onTargetResize);
 			this._targetSizeObserver.observe(this._target);
 
-			if (useMutationObserver) {
-				this._targetMutationObserver = new MutationObserver(this._onTargetMutation);
-				this._targetMutationObserver.observe(this._target, { attributes: true, attributeFilter: ['id'] });
-				this._targetMutationObserver.observe(this._target.parentNode, { childList: true });
-			}
+			this._targetMutationObserver = new MutationObserver(this._onTargetMutation);
+			this._targetMutationObserver.observe(this._target, { attributes: true, attributeFilter: ['id'] });
+			this._targetMutationObserver.observe(this._target.parentNode, { childList: true });
 		}
 
 		_computeAvailableSpaces(targetRect, spaceAround) {
