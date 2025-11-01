@@ -968,7 +968,7 @@ describe('table', () => {
 				it('table-with-paging', async() => {
 					const elem = await fixture(
 						html`<d2l-test-table condensed type="${type}" paging></d2l-test-table>`,
-						{ rtl, viewport: { width: 500 } }
+						{ rtl, viewport: { width: 500, height: 2000 } }
 					);
 					await expect(elem).to.be.golden();
 				});
