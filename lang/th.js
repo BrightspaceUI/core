@@ -166,11 +166,11 @@ export default {
 	"components.selection.action-required-hint": "เลือกรายการที่จะดำเนินการนี้",
 	"components.selection.select-all": "เลือกทั้งหมด",
 	"components.selection.select-all-items":
-		`{count,plural,
-	=1{เลือกรายการ} 
-	one{เลือกทั้ง {countFormatted} รายการ} 
-	other{เลือกทั้ง {countFormatted} รายการ}
-	}`,
+		`{count, plural,
+			=1 {เลือกรายการ}
+			one {เลือกทั้ง {countFormatted} รายการ}
+			other {เลือกทั้ง {countFormatted} รายการ}
+		}`,
 	"components.selection.selected": "{count} ที่เลือกแล้ว",
 	"components.selection.selected-plus": "{count}+ ที่เลือกแล้ว",
 	"components.selection-controls.label": "การดำเนินการสำหรับการเลือก",
@@ -212,10 +212,11 @@ export default {
 	"components.tag-list.interactive-label": "รายการแท็ก {count} รายการ",
 	"components.tag-list.num-hidden": "+ อีก {count} รายการ",
 	"components.tag-list.role-description":
-		`{count,plural,
-	=0 {แท็กรายการที่มี 0 รายการ} 
-	one {แท็กรายการที่มี {count} รายการ} 
-	other {แท็กรายการที่มี {count} รายการ}}`,
+		`{count, plural,
+			=0 {แท็กรายการที่มี 0 รายการ}
+			one {แท็กรายการที่มี {count} รายการ}
+			other {แท็กรายการที่มี {count} รายการ}
+		}`,
 	"components.tag-list.show-less": "แสดงน้อยลง",
 	"components.tag-list.show-more-description": "เลือกเพื่อแสดงรายการแท็กที่ซ่อนอยู่",
 	"components.tag-list-item.role-description": "แท็ก",

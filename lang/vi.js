@@ -166,11 +166,11 @@ export default {
 	"components.selection.action-required-hint": "Chọn một mục để thực hiện tác vụ này",
 	"components.selection.select-all": "Chọn tất cả",
 	"components.selection.select-all-items":
-		`{count,plural,
-	=1{Chọn mục} 
-	one{Chọn tất cả {countFormatted} mục} 
-	other{Chọn tất cả {countFormatted} mục}
-	}`,
+		`{count, plural,
+			=1 {Chọn mục}
+			one {Chọn tất cả {countFormatted} mục}
+			other {Chọn tất cả {countFormatted} mục}
+		}`,
 	"components.selection.selected": "{count} mục được chọn",
 	"components.selection.selected-plus": "{count}+ mục được chọn",
 	"components.selection-controls.label": "Các thao tác để chọn",
@@ -212,11 +212,11 @@ export default {
 	"components.tag-list.interactive-label": "Danh sách thẻ, {count} mục",
 	"components.tag-list.num-hidden": "+ {count} mục nữa",
 	"components.tag-list.role-description":
-		`{count,plural,
-	=0{Danh sách thẻ với 0 mục} 
-	one{Danh sách thẻ với {count} mục} 
-	other{Danh sách thẻ với {count} mục}
-	}`,
+		`{count, plural,
+			=0 {Danh sách thẻ với 0 mục}
+			one {Danh sách thẻ với {count} mục}
+			other {Danh sách thẻ với {count} mục}
+		}`,
 	"components.tag-list.show-less": "Ẩn bớt",
 	"components.tag-list.show-more-description": "Chọn để hiển thị các mục danh sách thẻ ẩn",
 	"components.tag-list-item.role-description": "Thẻ",
