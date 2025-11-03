@@ -168,7 +168,6 @@ export default {
 	"components.selection.select-all-items":
 		`{count, plural,
 			=1 {เลือกรายการ}
-			one {เลือกทั้ง {countFormatted} รายการ}
 			other {เลือกทั้ง {countFormatted} รายการ}
 		}`,
 	"components.selection.selected": "{count} ที่เลือกแล้ว",
@@ -214,7 +213,6 @@ export default {
 	"components.tag-list.role-description":
 		`{count, plural,
 			=0 {แท็กรายการที่มี 0 รายการ}
-			one {แท็กรายการที่มี {count} รายการ}
 			other {แท็กรายการที่มี {count} รายการ}
 		}`,
 	"components.tag-list.show-less": "แสดงน้อยลง",

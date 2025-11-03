@@ -168,7 +168,6 @@ export default {
 	"components.selection.select-all-items":
 		`{count, plural,
 			=1 {Chọn mục}
-			one {Chọn tất cả {countFormatted} mục}
 			other {Chọn tất cả {countFormatted} mục}
 		}`,
 	"components.selection.selected": "{count} mục được chọn",
@@ -214,7 +213,6 @@ export default {
 	"components.tag-list.role-description":
 		`{count, plural,
 			=0 {Danh sách thẻ với 0 mục}
-			one {Danh sách thẻ với {count} mục}
 			other {Danh sách thẻ với {count} mục}
 		}`,
 	"components.tag-list.show-less": "Ẩn bớt",
