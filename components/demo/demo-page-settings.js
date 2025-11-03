@@ -17,7 +17,7 @@ class DemoPageSettings extends LitElement {
 
 	static get properties() {
 		return {
-			pageTitle: { type: String, attribute: 'page-title' },
+			panelTitle: { type: String, attribute: 'panel-title' },
 			_language: { state: true }
 		};
 	}
@@ -96,7 +96,7 @@ class DemoPageSettings extends LitElement {
 		});
 
 		return html`
-			<d2l-collapsible-panel panel-title="${this.pageTitle}" heading-level="1" heading-style="3" type="subtle">
+			<d2l-collapsible-panel panel-title="${this.panelTitle}" heading-level="1" heading-style="3" type="subtle">
 				<d2l-input-group>
 					<label>
 						<span class="d2l-input-label">Language</span>
