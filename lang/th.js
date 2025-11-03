@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "แถบนำทาง",
 	"components.button-add.addItem": "เพิ่มรายการ",
 	"components.button-copy.copied": "คัดลอกแล้ว!",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "การคัดลอกล้มเหลว ลองอีกครั้ง หรือลองคัดลอกด้วยตนเอง",
 	"components.button-split.otherOptions": "ตัวเลือกอื่น",
 	"components.calendar.hasEvents": "มีกิจกรรม",
 	"components.calendar.notSelected": "ยังไม่ได้เลือก",
@@ -114,7 +114,7 @@ export default {
 	"components.input-date-time-range-to.to": "ถึง",
 	"components.input-number.hintDecimalDuplicate": "มีทศนิยมอยู่ในตัวเลขนี้แล้ว",
 	"components.input-number.hintDecimalIncorrectComma": "หากต้องการเพิ่มทศนิยม ใช้อักขระเครื่องหมายจุลภาค “,”",
-	"components.input-number.hintDecimalIncorrectPeriod": "หากต้องการเพิ่มทศนิยม ใช้อักขระจุด “.”",
+	"components.input-number.hintDecimalIncorrectPeriod": "หากต้องการเพิ่มทศนิยม ใช้อักขระเครื่องหมายจุด “.”",
 	"components.input-number.hintInteger": "ฟิลด์นี้ยอมรับค่าจำนวนเต็มเท่านั้น (ไม่ใช้ทศนิยม)",
 	"components.input-search.clear": "ล้างการค้นหา",
 	"components.input-search.defaultPlaceholder": "ค้นหา...",
@@ -157,8 +157,8 @@ export default {
 	"components.pager-load-more.action": "โหลดเพิ่มเติม",
 	"components.pager-load-more.action-with-page-size": "โหลดเพิ่ม {count} รายการ",
 	"components.pager-load-more.status-loading": "กำลังโหลดรายการเพิ่มเติม",
-	"components.scroll-wrapper.scroll-left": "Scroll left",
-	"components.scroll-wrapper.scroll-right": "Scroll right",
+	"components.scroll-wrapper.scroll-left": "เลื่อนไปทางซ้าย",
+	"components.scroll-wrapper.scroll-right": "เลื่อนไปทางขวา",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			other {ปิดใช้งานเมื่อเลือกมากกว่า {countFormatted} รายการ}
@@ -166,14 +166,16 @@ export default {
 	"components.selection.action-required-hint": "เลือกรายการที่จะดำเนินการนี้",
 	"components.selection.select-all": "เลือกทั้งหมด",
 	"components.selection.select-all-items":
-		`{count, plural,
-			other {เลือกทั้ง {countFormatted} รายการ}
-		}`,
+		`{count,plural,
+	=1{เลือกรายการ} 
+	one{เลือกทั้ง {countFormatted} รายการ} 
+	other{เลือกทั้ง {countFormatted} รายการ}
+	}`,
 	"components.selection.selected": "{count} ที่เลือกแล้ว",
 	"components.selection.selected-plus": "{count}+ ที่เลือกแล้ว",
 	"components.selection-controls.label": "การดำเนินการสำหรับการเลือก",
-	"components.sort.label": "Sort",
-	"components.sort.text": "Sort: {selectedItemText}",
+	"components.sort.label": "เรียงลำดับ",
+	"components.sort.text": "เรียงลำดับ: {selectedItemText}",
 	"components.switch.conditions": "ต้องตรงตามเงื่อนไข",
 	"components.switch.hidden": "ซ่อนอยู่",
 	"components.switch.visible": "มองเห็นได้",
@@ -210,10 +212,10 @@ export default {
 	"components.tag-list.interactive-label": "รายการแท็ก {count} รายการ",
 	"components.tag-list.num-hidden": "+ อีก {count} รายการ",
 	"components.tag-list.role-description":
-		`{count, plural,
-			=0 {Tag List with 0 items}
-			other {Tag List with {count} items}
-		}`,
+		`{count,plural,
+	=0 {แท็กรายการที่มี 0 รายการ} 
+	one {แท็กรายการที่มี {count} รายการ} 
+	other {แท็กรายการที่มี {count} รายการ}}`,
 	"components.tag-list.show-less": "แสดงน้อยลง",
 	"components.tag-list.show-more-description": "เลือกเพื่อแสดงรายการแท็กที่ซ่อนอยู่",
 	"components.tag-list-item.role-description": "แท็ก",

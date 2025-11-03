@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "Breadcrumb",
 	"components.button-add.addItem": "Thêm mục",
 	"components.button-copy.copied": "Đã sao chép!",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
+	"components.button-copy.error": "Sao chép không thành công. Hãy thử lại hoặc thử sao chép thủ công.",
 	"components.button-split.otherOptions": "Các lựa chọn khác",
 	"components.calendar.hasEvents": "Có các sự kiện.",
 	"components.calendar.notSelected": "Không được chọn.",
@@ -157,8 +157,8 @@ export default {
 	"components.pager-load-more.action": "Tải thêm",
 	"components.pager-load-more.action-with-page-size": "Tải thêm {count} mục",
 	"components.pager-load-more.status-loading": "Đang tải thêm các mục",
-	"components.scroll-wrapper.scroll-left": "Scroll left",
-	"components.scroll-wrapper.scroll-right": "Scroll right",
+	"components.scroll-wrapper.scroll-left": "Cuộn trái",
+	"components.scroll-wrapper.scroll-right": "Cuộn phải",
 	"components.selection.action-max-hint":
 		`{count, plural,
 			other {Vô hiệu hóa khi chọn nhiều hơn {countFormatted} mục}
@@ -166,14 +166,16 @@ export default {
 	"components.selection.action-required-hint": "Chọn một mục để thực hiện tác vụ này",
 	"components.selection.select-all": "Chọn tất cả",
 	"components.selection.select-all-items":
-		`{count, plural,
-			other {Chọn tất cả các mục {countFormatted}}
-		}`,
+		`{count,plural,
+	=1{Chọn mục} 
+	one{Chọn tất cả {countFormatted} mục} 
+	other{Chọn tất cả {countFormatted} mục}
+	}`,
 	"components.selection.selected": "{count} mục được chọn",
 	"components.selection.selected-plus": "{count}+ mục được chọn",
 	"components.selection-controls.label": "Các thao tác để chọn",
-	"components.sort.label": "Sort",
-	"components.sort.text": "Sort: {selectedItemText}",
+	"components.sort.label": "Sắp xếp",
+	"components.sort.text": "Sắp xếp: {selectedItemText}",
 	"components.switch.conditions": "Phải đáp ứng các điều kiện",
 	"components.switch.hidden": "Bị ẩn",
 	"components.switch.visible": "Nhìn thấy được",
@@ -210,10 +212,11 @@ export default {
 	"components.tag-list.interactive-label": "Danh sách thẻ, {count} mục",
 	"components.tag-list.num-hidden": "+ {count} mục nữa",
 	"components.tag-list.role-description":
-		`{count, plural,
-			=0 {Tag List with 0 items}
-			other {Tag List with {count} items}
-		}`,
+		`{count,plural,
+	=0{Danh sách thẻ với 0 mục} 
+	one{Danh sách thẻ với {count} mục} 
+	other{Danh sách thẻ với {count} mục}
+	}`,
 	"components.tag-list.show-less": "Ẩn bớt",
 	"components.tag-list.show-more-description": "Chọn để hiển thị các mục danh sách thẻ ẩn",
 	"components.tag-list-item.role-description": "Thẻ",
