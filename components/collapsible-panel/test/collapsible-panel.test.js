@@ -192,9 +192,7 @@ describe('d2l-collapsible-panel', () => {
 				</d2l-collapsible-panel>
 			`);
 			const button = elem.querySelector('button');
-			button.addEventListener('click', (e) => {
-				e.target.parentNode.removeChild(e.target);
-			});
+			button.addEventListener('click', () => button.parentNode.removeChild(button));
 			await clickElem(button);
 			expect(elem.expanded).to.be.true;
 		});

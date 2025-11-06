@@ -442,7 +442,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(LitElement)) {
 
 	_handlePanelClick(e) {
 		const content = this.shadowRoot.querySelector('.d2l-collapsible-panel-content');
-		if (e.target !== content && e.target.parentNode && !isComposedAncestor(content, e.target)) this._toggleExpand();
+		if (e.target !== content && e.target.isConnected && !isComposedAncestor(content, e.target)) this._toggleExpand();
 	}
 
 	_handleSummarySlotChange(e) {
