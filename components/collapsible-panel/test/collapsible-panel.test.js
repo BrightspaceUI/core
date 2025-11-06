@@ -184,6 +184,21 @@ describe('d2l-collapsible-panel', () => {
 			expect(dispatched).to.be.false;
 		});
 
+		it('clicking content and removing click target should not collapse', async() => {
+			const elem = await fixture(html`
+				<d2l-collapsible-panel panel-title="Cake Decoration" expanded>
+					Expanded content
+					<button>remove me</button>
+				</d2l-collapsible-panel>
+			`);
+			const button = elem.querySelector('button');
+			button.addEventListener('click', (e) => {
+				e.target.parentNode.removeChild(e.target);
+			});
+			await clickElem(button);
+			expect(elem.expanded).to.be.true;
+		});
+
 		it('clicking summary should expand', async() => {
 			const elemWithSummary = await fixture(html`
 				<d2l-collapsible-panel panel-title="Cake Decoration">
@@ -197,6 +212,7 @@ describe('d2l-collapsible-panel', () => {
 			await oneEvent(elemWithSummary, 'd2l-collapsible-panel-expand');
 			expect(elemWithSummary.expanded).to.be.true;
 		});
+
 	});
 
 	describe('skeleton', () => {
