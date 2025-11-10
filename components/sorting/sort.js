@@ -78,7 +78,7 @@ class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		if (this._selectedItemValue === e.target.value) return;
 
 		this._selectedItemText = e.target.text;
-		this._selectedItemValue = e.target;
+		this._selectedItemValue = e.target.value;
 		this.dispatchEvent(new CustomEvent(
 			'd2l-sort-change', {
 				detail: { value: e.detail.value }

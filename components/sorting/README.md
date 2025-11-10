@@ -9,9 +9,9 @@ The sort menu allows the user to adjust the sort order of data in a list.
   import '@brightspace-ui/core/components/sorting/sort-item.js';
 </script>
 <d2l-sort>
-	<d2l-sort-item text="Most Relevant" selected></d2l-sort-item>
-	<d2l-sort-item text="Recently Updated"></d2l-sort-item>
-	<d2l-sort-item text="Highest Rated"></d2l-sort-item>
+	<d2l-sort-item text="Most Relevant" value="relevant" selected></d2l-sort-item>
+	<d2l-sort-item text="Recently Updated" value="updated"></d2l-sort-item>
+	<d2l-sort-item text="Highest Rated" value="rating"></d2l-sort-item>
 </d2l-sort>
 ```
 
