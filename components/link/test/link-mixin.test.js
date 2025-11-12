@@ -74,4 +74,83 @@ describe('LinkMixin', () => {
 		});
 	});
 
+	describe('getNewWindowDescription', () => {
+
+		it('should return localized string when target is _blank and label is provided', async() => {
+			const elem = await fixture(newWindowFixture);
+			const description = elem.getNewWindowDescription('My Label');
+			expect(description).to.equal('Opens in a new window.');
+		});
+
+		it('should return undefined when target is not _blank', async() => {
+			const elem = await fixture(emptyFixture);
+			const description = elem.getNewWindowDescription('My Label');
+			expect(description).to.be.undefined;
+		});
+
+		it('should return undefined when label is not provided', async() => {
+			const elem = await fixture(newWindowFixture);
+			const description = elem.getNewWindowDescription();
+			expect(description).to.be.undefined;
+		});
+
+	});
+
+	describe('_render parameters', () => {
+
+		it('should apply rel attribute when provided', async() => {
+			const tagNameWithRel = defineCE(
+				class extends LinkMixin(LitElement) {
+					render() {
+						return this._render(html`Link Test`, { rel: 'noopener noreferrer' });
+					}
+				}
+			);
+			const elem = await fixture(`<${tagNameWithRel}></${tagNameWithRel}>`);
+			const anchor = elem.shadowRoot.querySelector('a');
+			expect(anchor.getAttribute('rel')).to.equal('noopener noreferrer');
+		});
+
+		it('should apply custom link classes', async() => {
+			const tagNameWithClasses = defineCE(
+				class extends LinkMixin(LitElement) {
+					render() {
+						return this._render(html`Link Test`, { linkClasses: { 'custom-class': true, 'another-class': true } });
+					}
+				}
+			);
+			const elem = await fixture(`<${tagNameWithClasses}></${tagNameWithClasses}>`);
+			const anchor = elem.shadowRoot.querySelector('a');
+			expect(anchor.classList.contains('custom-class')).to.be.true;
+			expect(anchor.classList.contains('another-class')).to.be.true;
+		});
+
+		it('should apply custom tabindex', async() => {
+			const tagNameWithTabindex = defineCE(
+				class extends LinkMixin(LitElement) {
+					render() {
+						return this._render(html`Link Test`, { tabindex: '-1' });
+					}
+				}
+			);
+			const elem = await fixture(`<${tagNameWithTabindex}></${tagNameWithTabindex}>`);
+			const anchor = elem.shadowRoot.querySelector('a');
+			expect(anchor.getAttribute('tabindex')).to.equal('-1');
+		});
+
+		it('should apply ariaLabel when provided', async() => {
+			const tagNameWithAriaLabel = defineCE(
+				class extends LinkMixin(LitElement) {
+					render() {
+						return this._render(html`Link Test`, { ariaLabel: 'Custom Label' });
+					}
+				}
+			);
+			const elem = await fixture(`<${tagNameWithAriaLabel}></${tagNameWithAriaLabel}>`);
+			const anchor = elem.shadowRoot.querySelector('a');
+			expect(anchor.getAttribute('aria-label')).to.equal('Custom Label');
+		});
+
+	});
+
 });
