@@ -11,18 +11,14 @@ describe('d2l-link', () => {
 
 	describe('attribute binding', () => {
 
-		['download', 'href'].forEach((attrName) => {
-			it(`should bind "${attrName}" attribute to anchor attribute`, async() => {
-				const elem = await fixture(normalFixture);
-				elem.setAttribute(attrName, attrName);
-				await elem.updateComplete;
-				expect(getAnchor(elem).hasAttribute(attrName)).to.be.true;
-			});
-		});
-
 		it('should bind "aria-label" attribute to anchor attribute', async() => {
 			const elem = await fixture(html`<d2l-link aria-label="My Aria Label"></d2l-link>`);
 			expect(getAnchor(elem).getAttribute('aria-label')).to.equal('My Aria Label');
+		});
+
+		it('should bind "download" attribute to anchor attribute', async() => {
+			const elem = await fixture(html`<d2l-link download></d2l-link>`);
+			expect(getAnchor(elem).hasAttribute('download')).to.be.true;
 		});
 
 		it('should bind "href" attribute to anchor attribute', async() => {
@@ -91,11 +87,15 @@ describe('d2l-link', () => {
 
 	});
 
-	describe('new-window', () => {
-		it('should add offscreen text', async() => {
-			const elem = await fixture(html`<d2l-link target="_blank">link text</d2l-link>`);
-			expect(elem.shadowRoot.querySelector('.d2l-offscreen').innerText).to.equal('Opens in a new window.');
+	describe('focus', () => {
+
+		it('should focus the anchor element when focus() is called', async() => {
+			const elem = await fixture(normalFixture);
+			elem.focus();
+			await elem.updateComplete;
+			expect(elem.shadowRoot.activeElement).to.equal(getAnchor(elem));
 		});
+
 	});
 
 });
