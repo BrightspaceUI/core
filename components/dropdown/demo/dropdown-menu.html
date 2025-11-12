@@ -13,6 +13,7 @@
 		import '../../menu/menu-item-radio.js';
 		import '../dropdown.js';
 		import '../dropdown-menu.js';
+		import './dropdown-menu-demo-view.js';
 	</script>
 </head>
 
@@ -195,6 +196,24 @@
 						<d2l-menu label="Helpful Links">
 							<d2l-menu-item-link text="menu.js (View)" href="../../menu/menu.js"></d2l-menu-item-link>
 							<d2l-menu-item-link text="menu.js (Download)" href="../../menu/menu.js" target="_blank" download></d2l-menu-item-link>
+						</d2l-menu>
+					</d2l-dropdown-menu>
+				</d2l-dropdown>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Custom View</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-dropdown>
+					<button class="d2l-dropdown-opener">Open it!</button>
+					<d2l-dropdown-menu>
+						<d2l-menu label="Astronomy">
+							<d2l-menu-item text="Introduction"></d2l-menu-item>
+							<d2l-menu-item text="Searching for the Heavens">
+								<d2l-dropdown-menu-demo-view></d2l-dropdown-menu-demo-view>
+							</d2l-menu-item>
+							<d2l-menu-item text="The Solar System"></d2l-menu-item>
 						</d2l-menu>
 					</d2l-dropdown-menu>
 				</d2l-dropdown>

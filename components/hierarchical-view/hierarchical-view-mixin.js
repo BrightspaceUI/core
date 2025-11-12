@@ -1,11 +1,14 @@
 import { findComposedAncestor, getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { css } from 'lit';
+import { getFlag } from '../../helpers/flags.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const __nativeFocus = document.createElement('div').focus;
 const escapeKeyCode = 27;
+
+const useResizeFix = getFlag('GAUD-8969-hierarchical-view-resize', true);
 
 export const HierarchicalViewMixin = superclass => class extends superclass {
 
@@ -523,7 +526,13 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		}
 
 		if (e.detail.isSource && this.__getParentViewFromEvent(e) === this) {
-			e.detail.sourceView.__dispatchViewResize();
+			if (useResizeFix) {
+				requestAnimationFrame(() => {
+					e.detail.sourceView.__dispatchViewResize();
+				});
+			} else {
+				e.detail.sourceView.__dispatchViewResize();
+			}
 		}
 
 	}
