@@ -93,6 +93,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			_activeDimensionKey: { type: String, attribute: false },
 			_dimensions: { type: Array, attribute: false },
 			_displayKeyboardTooltip: { state: true },
+			_ignoreSlotChanges: { state: true },
 			_minWidth: { type: Number, attribute: false },
 			_totalAppliedCount: { type: Number, attribute: false }
 		};
@@ -228,6 +229,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		this._changeEventsToDispatch = new Map();
 		this._dimensions = [];
 		this._displayKeyboardTooltip = false;
+		this._ignoreSlotChanges = false;
 		this._minWidth = 285;
 		this._openedDimensions = [];
 		this._totalAppliedCount = 0;
@@ -963,7 +965,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 	_handleSlotChange(e) {
 		const dimensionNodes = this._getSlottedNodes(e.target);
-		if (!dimensionNodes.length) return; // don't overwrite assigned dimensions when re-rendering
+		if (this._ignoreSlotChanges) return;
 
 		this._dimensions = dimensionNodes.map(dimension => {
 			const type = dimension.tagName.toLowerCase();

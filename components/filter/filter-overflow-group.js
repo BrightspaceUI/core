@@ -98,6 +98,7 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 		return html`
 			<d2l-filter
 				class="${OVERFLOW_CLASS} vdiff-target"
+				_ignoreSlotChanges
 				._openedDimensions=${this._openedDimensions}
 				._dimensions=${newDimensions}
 				@d2l-filter-change="${this.#handleFilterChange}"
