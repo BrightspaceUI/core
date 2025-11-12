@@ -594,7 +594,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			widthType: { type: String, attribute: 'width-type', reflect: true },
 			/**
 			 * Whether to render an encompassing form over all panels
-			 * @type { Boolean }
+			 * @type {boolean}
 			 */
 			hasForm: { type: Boolean, attribute: 'has-form' },
 			_formErrorSummary: { type: Array },

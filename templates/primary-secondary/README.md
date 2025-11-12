@@ -53,6 +53,7 @@ If either of the panels contain an `iframe`, resizing may not work properly. Thi
 | Property | Type | Description |
 |---|---|---|
 | `background-shading` | String, default: `'none'` | Controls whether the primary and secondary panels have shaded backgrounds. Can be one of `'primary'`, `'secondary'`, `'none'`. |
+| `has-form` | Boolean, default: `false` | Whether to render an encompassing form over all panels |
 | `primary-overflow` | String, default: `'default'` | Controls how the primary panel's contents overflow. Can be one of `'default'`, `'hidden'`. |
 | `resizable` | Boolean, default: `false` | Whether the panels are user resizable. This only applies to desktop users, mobile users will always be able to resize. |
 | `secondary-first` | Boolean, default: `false` | When set to true, the secondary panel will be displayed on the left (or the right in RTL) in the desktop view. This attribute has no effect on the mobile view. |
