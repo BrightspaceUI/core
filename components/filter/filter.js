@@ -93,7 +93,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			_activeDimensionKey: { type: String, attribute: false },
 			_dimensions: { type: Array, attribute: false },
 			_displayKeyboardTooltip: { state: true },
-			_ignoreSlotChanges: { state: true },
+			_ignoreSlotChanges: { type: Boolean },
 			_minWidth: { type: Number, attribute: false },
 			_totalAppliedCount: { type: Number, attribute: false }
 		};

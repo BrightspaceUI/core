@@ -107,7 +107,7 @@ class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 				@d2l-filter-dimension-first-open="${this.#handleFirstOpen}">
 			</d2l-filter>
 		`;
-		/* eslint-enable */
+		/* eslint-enable lit/no-private-properties */
 	}
 
 	_handleSlottedDimensionFirstOpen(e) {

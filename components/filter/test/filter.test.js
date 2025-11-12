@@ -7,7 +7,6 @@ import '../filter-dimension-set-value.js';
 import { expect, fixture, html, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
 import { spy, stub, useFakeTimers } from 'sinon';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
-import { set } from '../../../helpers/template-tags.js';
 
 const singleSetDimensionFixture = html`
 	<d2l-filter>
@@ -1118,7 +1117,7 @@ describe('d2l-filter', () => {
 			elem._dimensions = [{
 				key: 'dim',
 				type: 'd2l-filter-dimension-set',
-				values: [true,false,true].map((selected, i) => ({ key: i, text:i.toString(), selected }))
+				values: [true, false, true].map((selected, i) => ({ key: i, text:i.toString(), selected }))
 			}];
 			await elem.updateComplete;
 
@@ -1132,17 +1131,17 @@ describe('d2l-filter', () => {
 			elem._dimensions = [{
 				key: '1',
 				type: 'd2l-filter-dimension-set',
-				values: [true,false,true].map((selected, i) => ({ key: i, text:i.toString(), selected }))
+				values: [true, false, true].map((selected, i) => ({ key: i, text:i.toString(), selected }))
 			},
 			{
 				key: '2',
 				type: 'd2l-filter-dimension-set',
-				values: [true,false,false].map((selected, i) => ({ key: i, text:i.toString(), selected }))
+				values: [true, false, false].map((selected, i) => ({ key: i, text:i.toString(), selected }))
 			},
 			{
 				key: '3',
 				type: 'd2l-filter-dimension-set',
-				values: [false,false].map((selected, i) => ({ key: i, text:i.toString(), selected }))
+				values: [false, false].map((selected, i) => ({ key: i, text:i.toString(), selected }))
 			}];
 			await elem.updateComplete;
 
@@ -1277,9 +1276,11 @@ describe('d2l-filter', () => {
 		});
 
 		it('slot chnages are ignored if _ignoreSlotChanges is true', async() => {
+			/* eslint-disable lit/no-private-properties */
 			const elem = await fixture(html`<d2l-filter _ignoreSlotChanges ._dimensions=${[
 				{ key: 'dim', type: 'd2l-filter-dimension-set', values: [ { key: 'value', text: 'Value', selected: true } ] }
 			]}></d2l-filter>`);
+			/* eslint-enable lit/no-private-properties */
 
 			// Initial slot change does not update dimensions
 			expect(elem._dimensions.length).to.equal(1);
