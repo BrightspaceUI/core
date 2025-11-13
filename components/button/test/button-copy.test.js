@@ -28,6 +28,16 @@ describe('d2l-button-copy', () => {
 			expect(dispatched).to.be.false;
 		});
 
+		it('stops propagation when clicked', async() => {
+			const el = await fixture(html`<d2l-button-copy></d2l-button-copy>`);
+			let propagated = false;
+			el.parentElement.addEventListener('click', () => propagated = true);
+			const buttonIcon = el.shadowRoot.querySelector('d2l-button-icon');
+			clickElem(buttonIcon);
+			await oneEvent(el, 'click');
+			expect(propagated).to.be.false;
+		});
+
 	});
 
 	describe('writeTextToClipboard', () => {
@@ -58,6 +68,34 @@ describe('d2l-button-copy', () => {
 					expect(copied).to.be.false;
 				}
 			});
+		});
+
+	});
+
+	describe('icon state', () => {
+
+		it('clears previous timeout on multiple clicks', async() => {
+			const writeTextStub = stub(navigator.clipboard, 'writeText').resolves();
+			const el = await fixture(html`<d2l-button-copy></d2l-button-copy>`);
+
+			// First click
+			clickElem(el);
+			let event = await oneEvent(el, 'click');
+			await event.detail.writeTextToClipboard('first');
+			await el.updateComplete;
+
+			const firstTimeoutId = el._iconCheckTimeoutId;
+
+			// Second click before timeout expires
+			clickElem(el);
+			event = await oneEvent(el, 'click');
+			await event.detail.writeTextToClipboard('second');
+			await el.updateComplete;
+
+			const secondTimeoutId = el._iconCheckTimeoutId;
+
+			expect(firstTimeoutId).to.not.equal(secondTimeoutId);
+			writeTextStub.restore();
 		});
 
 	});
