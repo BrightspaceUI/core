@@ -1,5 +1,5 @@
 import '../button.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
 
 describe('button', () => {
 	[
@@ -13,7 +13,9 @@ describe('button', () => {
 				{ name: 'hover', action: hoverElem },
 				{ name: 'focus', action: focusElem },
 				{ name: 'click', action: clickElem },
-				{ name: 'disabled', action: elem => elem.disabled = true }
+				{ name: 'disabled', action: elem => elem.disabled = true },
+				{ name: 'keydown-enter', action: elem => sendKeysElem(elem, 'press', 'Enter') },
+				{ name: 'keydown-space', action: elem => sendKeysElem(elem, 'press', 'Space') }
 			].forEach(({ action, name }) => {
 				it(name, async() => {
 					const elem = await fixture(template);
@@ -28,6 +30,13 @@ describe('button', () => {
 		const elem = await fixture(html`<d2l-button disabled disabled-tooltip="Disabled Tooltip">Disabled Button</d2l-button>`);
 		hoverElem(elem);
 		await oneEvent(elem, 'd2l-tooltip-show');
+		await expect(elem).to.be.golden();
+	});
+
+	it('disabled-tooltip not disabled hover', async() => {
+		const elem = await fixture(html`<d2l-button disabled-tooltip="Disabled Tooltip">Button</d2l-button>`);
+		await hoverElem(elem);
+		await elem.updateComplete;
 		await expect(elem).to.be.golden();
 	});
 
