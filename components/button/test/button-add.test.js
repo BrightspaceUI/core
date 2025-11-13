@@ -47,13 +47,13 @@ describe('d2l-button-add', () => {
 
 		it('dispatches click event when clicked', async() => {
 			const el = await fixture(html`<d2l-button-add text="Add"></d2l-button-add>`);
-			setTimeout(() => clickElem(el));
+			clickElem(el);
 			await oneEvent(el, 'click');
 		});
 
 		it('dispatches click event when press enter', async() => {
 			const el = await fixture(html`<d2l-button-add text="Add"></d2l-button-add>`);
-			setTimeout(() => sendKeysElem(el, 'press', 'Enter'));
+			sendKeysElem(el, 'press', 'Enter');
 			await oneEvent(el, 'click');
 		});
 
