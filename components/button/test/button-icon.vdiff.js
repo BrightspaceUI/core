@@ -46,13 +46,16 @@ describe('button-icon', () => {
 	});
 
 	describe('disabled-tooltip', () => {
+		let elem;
+		beforeEach(async() => {
+			elem = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" disabled disabled-tooltip="This action is not available"></d2l-button-icon>`);
+		});
+
 		it('normal', async() => {
-			const elem = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" disabled disabled-tooltip="This action is not available"></d2l-button-icon>`);
 			await expect(elem).to.be.golden();
 		});
 
 		it('hover', async() => {
-			const elem = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" disabled disabled-tooltip="This action is not available"></d2l-button-icon>`);
 			hoverElem(elem);
 			await oneEvent(elem, 'd2l-tooltip-show');
 			await expect(elem).to.be.golden();
