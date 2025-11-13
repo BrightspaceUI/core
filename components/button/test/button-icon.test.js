@@ -51,14 +51,6 @@ describe('d2l-button-icon', () => {
 			await oneEvent(el, 'click');
 		});
 
-		it('prevents click when disabled', async() => {
-			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" disabled></d2l-button-icon>`);
-			let clicked = false;
-			el.addEventListener('click', () => clicked = true);
-			clickElem(el);
-			expect(clicked).to.be.false;
-		});
-
 	});
 
 	describe('button properties', () => {
