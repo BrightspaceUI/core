@@ -1,6 +1,6 @@
 import '../button-subtle.js';
 import '../../icons/icon-custom.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 
 const defaultCustomIconTemplate = html`
 	<d2l-button-subtle text="Subtle Button">
@@ -71,6 +71,7 @@ describe('button-subtle', () => {
 				{ name: 'hover', action: hoverElem },
 				{ name: 'focus', action: focusElem },
 				{ name: 'click', action: clickElem },
+				{ name: 'active', action: elem => elem.setAttribute('active', '') },
 				{ name: 'disabled', action: elem => elem.disabled = true }
 			].forEach(({ action, name, rtl }) => {
 				it(name, async() => {
@@ -79,6 +80,24 @@ describe('button-subtle', () => {
 					await expect(elem).to.be.golden();
 				});
 			});
+		});
+	});
+
+	describe('disabled-tooltip', () => {
+		let elem;
+		beforeEach(async() => {
+			elem = await fixture(html`<d2l-button-subtle text="Subtle Button" disabled disabled-tooltip="This action is not available"></d2l-button-subtle>`);
+		});
+
+		it('normal', async() => {
+			await expect(elem).to.be.golden();
+		});
+
+		it('hover', async() => {
+			const tooltip = elem.shadowRoot.querySelector('d2l-tooltip');
+			hoverElem(elem);
+			await oneEvent(tooltip, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
 		});
 	});
 
