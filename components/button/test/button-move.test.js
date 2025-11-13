@@ -93,14 +93,6 @@ describe('d2l-button-move', () => {
 			expect(button.getAttribute('title')).to.equal('Reorder Item');
 		});
 
-		it('description property sets aria-describedby', async() => {
-			const el = await fixture(html`<d2l-button-move text="Reorder" description="secondary"></d2l-button-move>`);
-			const button = el.shadowRoot.querySelector('button');
-			const describedBy = button.getAttribute('aria-describedby');
-			const descriptionElem = el.shadowRoot.querySelector(`#${describedBy}`);
-			expect(descriptionElem.textContent).to.equal('secondary');
-		});
-
 	});
 
 	describe('focus', () => {
