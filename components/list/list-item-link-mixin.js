@@ -64,15 +64,17 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 			/** Dispatched when the item's primary link action is clicked */
 			this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
 
-			e.stopPropagation();
+			if (!getFlag('GAUD-8733-list-item-propagate-link-click-event', true)) {
+				e.stopPropagation();
 
-			// Dispatches click event from the list item to maintain existing functionality in consumers that listen for the click event
-			const listItemClickEvent = new e.constructor(e.type, e);
-			listItemClickEvent.preventDefault = () => {
-				e.preventDefault();
-			};
-			/** @ignore */
-			this.dispatchEvent(listItemClickEvent);
+				// Dispatches click event from the list item to maintain existing functionality in consumers that listen for the click event
+				const listItemClickEvent = new e.constructor(e.type, e);
+				listItemClickEvent.preventDefault = () => {
+					e.preventDefault();
+				};
+				/** @ignore */
+				this.dispatchEvent(listItemClickEvent);
+			}
 		}
 	}
 
