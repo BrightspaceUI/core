@@ -67,7 +67,7 @@ describe('button-add', () => {
 
 		it('long text icon-and-text mode constrained width', async() => {
 			const elem = await fixture(html`
-				<div style="width: 500px;">
+				<div style="width: 400px;">
 					<d2l-button-add mode="icon-and-text" text="Add a New Item with a Very Long Description That Should Be Handled Properly"></d2l-button-add>
 				</div>
 			`);
