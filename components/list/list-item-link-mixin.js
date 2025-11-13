@@ -3,6 +3,7 @@ import { css, html, nothing } from 'lit';
 import { isInteractiveInListItemComposedPath, ListItemMixin } from './list-item-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { getFlag } from '../../helpers/flags.js';
 
 export const ListItemLinkMixin = superclass => class extends ListItemMixin(superclass) {
 
