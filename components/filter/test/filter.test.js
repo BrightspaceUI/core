@@ -1113,15 +1113,13 @@ describe('d2l-filter', () => {
 	describe('filter counts', () => {
 		it('single set dimension is counted correctly', async() => {
 			const elem = await fixture('<d2l-filter></d2l-filter>');
-			stub(elem, 'requestUpdate'); // Do not create actual DOM nodes for this test, missing text info for labels
+			expect(elem._totalAppliedCount).to.equal(0);
 			elem._dimensions = [{
 				key: 'dim',
 				type: 'd2l-filter-dimension-set',
-				values: [{ key: 1, selected: true }, { key: 2, selected: false }, { key: 3, selected: true }]
+				values: [true, false, true].map((selected, i) => ({ key: i, text:i.toString(), selected }))
 			}];
-			expect(elem._totalAppliedCount).to.equal(0);
-
-			elem._setFilterCounts();
+			await elem.updateComplete;
 
 			expect(elem._totalAppliedCount).to.equal(2);
 			expect(elem._dimensions[0].appliedCount).to.equal(2);
@@ -1129,25 +1127,23 @@ describe('d2l-filter', () => {
 
 		it('multiple dimensions are counted correctly', async() => {
 			const elem = await fixture('<d2l-filter></d2l-filter>');
-			stub(elem, 'requestUpdate'); // Do not create actual DOM nodes for this test, missing text info for labels
+			expect(elem._totalAppliedCount).to.equal(0);
 			elem._dimensions = [{
 				key: '1',
 				type: 'd2l-filter-dimension-set',
-				values: [{ key: 1, selected: true }, { key: 2, selected: false }, { key: 3, selected: true }]
+				values: [true, false, true].map((selected, i) => ({ key: i, text:i.toString(), selected }))
 			},
 			{
 				key: '2',
 				type: 'd2l-filter-dimension-set',
-				values: [{ key: 1, selected: true }, { key: 2, selected: false }, { key: 3, selected: false }]
+				values: [true, false, false].map((selected, i) => ({ key: i, text:i.toString(), selected }))
 			},
 			{
 				key: '3',
 				type: 'd2l-filter-dimension-set',
-				values: [{ key: 1, selected: false }, { key: 2, selected: false }]
+				values: [false, false].map((selected, i) => ({ key: i, text:i.toString(), selected }))
 			}];
-			expect(elem._totalAppliedCount).to.equal(0);
-
-			elem._setFilterCounts();
+			await elem.updateComplete;
 
 			expect(elem._totalAppliedCount).to.equal(3);
 			expect(elem._dimensions[0].appliedCount).to.equal(2);
@@ -1214,6 +1210,7 @@ describe('d2l-filter', () => {
 					const elem = await fixture(html`<d2l-filter></d2l-filter>`);
 					const opener = elem.shadowRoot.querySelector('d2l-button-subtle');
 					elem._dimensions = testCase.dimensions;
+					await elem.updateComplete;
 					elem._totalAppliedCount = testCase.count;
 					await elem.updateComplete;
 					const countbadge = opener?.children[0];
@@ -1252,11 +1249,7 @@ describe('d2l-filter', () => {
 	});
 
 	describe('slot change', () => {
-		it('dimensions added after initial render are handled and counts are updated', async() => {
-			const elem = await fixture(singleSetDimensionFixture);
-			expect(elem._dimensions.length).to.equal(1);
-			expect(elem._totalAppliedCount).to.equal(1);
-
+		async function addDimensionSet(elem) {
 			const newDim = document.createElement('d2l-filter-dimension-set');
 			newDim.key = 'newDim';
 			newDim.text = 'New Dim';
@@ -1266,14 +1259,37 @@ describe('d2l-filter', () => {
 			newValue.selected = true;
 			newDim.appendChild(newValue);
 			setTimeout(() => elem.appendChild(newDim));
-			await oneEvent(elem.shadowRoot.querySelector('slot'), 'slotchange');
-			elem.requestUpdate();
+			await oneEvent(elem.shadowRoot.querySelector('slot'), 'slotchange');;
 			await elem.updateComplete;
+		}
+		it('dimensions added after initial render are handled and counts are updated', async() => {
+			const elem = await fixture(singleSetDimensionFixture);
+			expect(elem._dimensions.length).to.equal(1);
+			expect(elem._totalAppliedCount).to.equal(1);
+
+			await addDimensionSet(elem);
 
 			expect(elem._dimensions.length).to.equal(2);
 			expect(elem._dimensions[0].key).to.equal('dim');
 			expect(elem._dimensions[1].key).to.equal('newDim');
 			expect(elem._totalAppliedCount).to.equal(2);
+		});
+
+		it('slot chnages are ignored if _ignoreSlotChanges is true', async() => {
+			/* eslint-disable lit/no-private-properties */
+			const elem = await fixture(html`<d2l-filter _ignoreSlotChanges ._dimensions=${[
+				{ key: 'dim', type: 'd2l-filter-dimension-set', values: [ { key: 'value', text: 'Value', selected: true } ] }
+			]}></d2l-filter>`);
+			/* eslint-enable lit/no-private-properties */
+
+			// Initial slot change does not update dimensions
+			expect(elem._dimensions.length).to.equal(1);
+			expect(elem._totalAppliedCount).to.equal(1);
+
+			await addDimensionSet(elem);
+
+			expect(elem._dimensions.length).to.equal(1);
+			expect(elem._totalAppliedCount).to.equal(1);
 		});
 	});
 
