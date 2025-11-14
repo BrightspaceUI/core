@@ -92,6 +92,21 @@ describe('d2l-button-toggle', () => {
 			const e = await oneEvent(el, 'd2l-button-toggle-change');
 			expect(e.target.pressed).to.equal(true);
 		});
+
+		it('d2l-button-toggle-before-change event has correct detail structure', async() => {
+			clickElem(el.querySelector('[slot="not-pressed"]'));
+			const e = await oneEvent(el, 'd2l-button-toggle-before-change');
+			expect(e.detail).to.have.property('update').that.is.a('function');
+		});
+	});
+
+	describe('focus', () => {
+
+		it('throws error when no button exists to focus', async() => {
+			const el = await fixture(html`<d2l-button-toggle></d2l-button-toggle>`);
+			expect(() => el.focus()).to.throw('d2l-button-toggle: no button to focus');
+		});
+
 	});
 
 });
