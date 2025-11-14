@@ -60,4 +60,23 @@ describe('button-split', () => {
 		await expect(container).to.be.golden();
 	});
 
+	describe('rtl', () => {
+
+		[
+			{ name: 'normal', template: getTemplate() },
+			{ name: 'primary', template: getTemplate({ primary: true }) },
+			{ name: 'open', template: getTemplate({ wrap: { height: '175px', width: '225px' } }), action: async elem => {
+				const buttonSplit = elem.tagName === 'D2L-BUTTON-SPLIT' ? elem : elem.querySelector('d2l-button-split');
+				await clickElem(buttonSplit.shadowRoot.querySelector('.d2l-dropdown-opener'));
+			} }
+		].forEach(({ action, name, template }) => {
+			it(name, async() => {
+				const elem = await fixture(template, { rtl: true });
+				if (action) await action(elem);
+				await expect(elem).to.be.golden();
+			});
+		});
+
+	});
+
 });
