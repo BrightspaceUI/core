@@ -46,6 +46,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		super();
 		this.actionHref = null;
 		this._primaryActionId = getUniqueId();
+		this._propagateLinkClickEvent = getFlag('GAUD-8733-list-item-propagate-link-click-event', true);
 	}
 
 	willUpdate(changedProperties) {
@@ -65,7 +66,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 			/** Dispatched when the item's primary link action is clicked */
 			this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
 
-			if (!getFlag('GAUD-8733-list-item-propagate-link-click-event', true)) {
+			if (!this._propagateLinkClickEvent) {
 				e.stopPropagation();
 
 				// Dispatches click event from the list item to maintain existing functionality in consumers that listen for the click event
