@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { css, html, nothing } from 'lit';
 import { isInteractiveInListItemComposedPath, ListItemMixin } from './list-item-mixin.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -45,6 +46,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 		super();
 		this.actionHref = null;
 		this._primaryActionId = getUniqueId();
+		this._propagateLinkClickEvent = getFlag('GAUD-8733-list-item-propagate-link-click-event', true);
 	}
 
 	willUpdate(changedProperties) {
@@ -64,15 +66,17 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 			/** Dispatched when the item's primary link action is clicked */
 			this.dispatchEvent(new CustomEvent('d2l-list-item-link-click', { bubbles: true }));
 
-			e.stopPropagation();
+			if (!this._propagateLinkClickEvent) {
+				e.stopPropagation();
 
-			// Dispatches click event from the list item to maintain existing functionality in consumers that listen for the click event
-			const listItemClickEvent = new e.constructor(e.type, e);
-			listItemClickEvent.preventDefault = () => {
-				e.preventDefault();
-			};
-			/** @ignore */
-			this.dispatchEvent(listItemClickEvent);
+				// Dispatches click event from the list item to maintain existing functionality in consumers that listen for the click event
+				const listItemClickEvent = new e.constructor(e.type, e);
+				listItemClickEvent.preventDefault = () => {
+					e.preventDefault();
+				};
+				/** @ignore */
+				this.dispatchEvent(listItemClickEvent);
+			}
 		}
 	}
 
