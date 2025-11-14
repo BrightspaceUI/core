@@ -1,6 +1,6 @@
 import '../button-icon.js';
 import '../../icons/icon-custom.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 
 const customIconTemplate = html`
 	<d2l-button-icon text="Custom Icon Button">
@@ -28,6 +28,7 @@ describe('button-icon', () => {
 				{ name: 'hover', action: hoverElem },
 				{ name: 'focus', action: focusElem },
 				{ name: 'click', action: clickElem },
+				{ name: 'active', action: elem => elem.setAttribute('active', '') },
 				{ name: 'disabled', action: elem => elem.disabled = true },
 				{ name: 'disabled hover', action: elem => {
 					elem.disabled = true;
@@ -41,6 +42,23 @@ describe('button-icon', () => {
 					await expect(elem).to.be.golden();
 				});
 			});
+		});
+	});
+
+	describe('disabled-tooltip', () => {
+		let elem;
+		beforeEach(async() => {
+			elem = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" disabled disabled-tooltip="This action is not available"></d2l-button-icon>`);
+		});
+
+		it('normal', async() => {
+			await expect(elem).to.be.golden();
+		});
+
+		it('hover', async() => {
+			hoverElem(elem);
+			await oneEvent(elem, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
 		});
 	});
 
