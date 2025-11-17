@@ -1,4 +1,7 @@
 import '../colors/colors.js';
+import '../tabs/tabs.js';
+import '../tabs/tab.js';
+import '../tabs/tab-panel.js';
 import { css, html, LitElement } from 'lit';
 
 /**
@@ -18,11 +21,6 @@ class ColorUsageViewer extends LitElement {
 			 * @type {string}
 			 */
 			selectedColor: { type: String, attribute: 'selected-color' },
-			/**
-			 * The view mode - 'component' or 'color'
-			 * @type {'component'|'color'}
-			 */
-			viewMode: { type: String, attribute: 'view-mode' },
 			_colorData: { state: true },
 			_colorsByUsage: { state: true },
 			_loading: { state: true },
@@ -171,6 +169,10 @@ class ColorUsageViewer extends LitElement {
 				color: #ffffff;
 			}
 
+			d2l-tabs {
+				margin-bottom: 1.5rem;
+			}
+
 			.color-summary {
 				background-color: #e3f0fe;
 				border-left: 3px solid #006fbf;
@@ -214,7 +216,6 @@ class ColorUsageViewer extends LitElement {
 		super();
 		this.selectedComponent = '';
 		this.selectedColor = '';
-		this.viewMode = 'component';
 		this._colorData = null;
 		this._colorsByUsage = null;
 		this._loading = true;
@@ -249,52 +250,45 @@ class ColorUsageViewer extends LitElement {
 			<div class="container">
 				<h1>Color Usage Viewer</h1>
 				
-				<div class="view-mode-selector">
-					<button 
-						class="${this.viewMode === 'component' ? 'active' : ''}"
-						@click="${() => this._setViewMode('component')}">
-						View by Component
-					</button>
-					<button 
-						class="${this.viewMode === 'color' ? 'active' : ''}"
-						@click="${() => this._setViewMode('color')}">
-						View by Color
-					</button>
-				</div>
-
-				${this.viewMode === 'component' ? html`
-					<div class="dropdown-container">
-						<label for="component-select">Select a component:</label>
-						<select 
-							id="component-select" 
-							@change="${this._handleComponentChange}"
-							.value="${this.selectedComponent}">
-							<option value="">-- Choose a component --</option>
-							${this._getComponentNames().map(name => html`
-								<option value="${name}" ?selected="${name === this.selectedComponent}">
-									${name}
-								</option>
-							`)}
-						</select>
-					</div>
-					${this._renderColorList()}
-				` : html`
-					<div class="dropdown-container">
-						<label for="color-select">Select a color:</label>
-						<select 
-							id="color-select" 
-							@change="${this._handleColorChange}"
-							.value="${this.selectedColor}">
-							<option value="">-- Choose a color --</option>
-							${this._getColorNames().map(name => html`
-								<option value="${name}" ?selected="${name === this.selectedColor}">
-									${name}
-								</option>
-							`)}
-						</select>
-					</div>
-					${this._renderComponentList()}
-				`}
+				<d2l-tabs text="View Mode">
+					<d2l-tab id="component-view" text="By Component" slot="tabs" selected></d2l-tab>
+					<d2l-tab-panel labelled-by="component-view" slot="panels">
+						<div class="dropdown-container">
+							<label for="component-select">Select a component:</label>
+							<select 
+								id="component-select" 
+								@change="${this._handleComponentChange}"
+								.value="${this.selectedComponent}">
+								<option value="">-- Choose a component --</option>
+								${this._getComponentNames().map(name => html`
+									<option value="${name}" ?selected="${name === this.selectedComponent}">
+										${name}
+									</option>
+								`)}
+							</select>
+						</div>
+						${this._renderColorList()}
+					</d2l-tab-panel>
+					
+					<d2l-tab id="color-view" text="By Color" slot="tabs"></d2l-tab>
+					<d2l-tab-panel labelled-by="color-view" slot="panels">
+						<div class="dropdown-container">
+							<label for="color-select">Select a color:</label>
+							<select 
+								id="color-select" 
+								@change="${this._handleColorChange}"
+								.value="${this.selectedColor}">
+								<option value="">-- Choose a color --</option>
+								${this._getColorNames().map(name => html`
+									<option value="${name}" ?selected="${name === this.selectedColor}">
+										${name}
+									</option>
+								`)}
+							</select>
+						</div>
+						${this._renderComponentList()}
+					</d2l-tab-panel>
+				</d2l-tabs>
 			</div>
 		`;
 	}
@@ -338,12 +332,6 @@ class ColorUsageViewer extends LitElement {
 
 	_handleColorChange(e) {
 		this.selectedColor = e.target.value;
-	}
-
-	_setViewMode(mode) {
-		this.viewMode = mode;
-		this.selectedComponent = '';
-		this.selectedColor = '';
 	}
 
 	_renderColorList() {

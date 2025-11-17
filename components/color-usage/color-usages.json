@@ -1,4 +1,54 @@
 {
+    "d2l-alert": [
+        {
+            "color": "white",
+            "usage": "background color for alert container"
+        },
+        {
+            "color": "--d2l-color-mica",
+            "usage": "default border color"
+        },
+        {
+            "color": "--d2l-color-feedback-error",
+            "usage": "border-inline-start-color when type is critical or error"
+        },
+        {
+            "color": "--d2l-color-feedback-warning",
+            "usage": "border-inline-start-color when type is warning"
+        },
+        {
+            "color": "--d2l-color-feedback-action",
+            "usage": "border-inline-start-color when type is default or call-to-action"
+        },
+        {
+            "color": "--d2l-color-feedback-success",
+            "usage": "border-inline-start-color when type is success"
+        }
+    ],
+    "d2l-alert-toast": [
+        {
+            "color": "rgba(0, 0, 0, 0.1)",
+            "usage": "box-shadow color for toast container"
+        }
+    ],
+    "d2l-backdrop": [
+        {
+            "color": "--d2l-color-regolith",
+            "usage": "semi-transparent background color for backdrop overlay"
+        }
+    ],
+    "d2l-breadcrumbs": [
+        {
+            "color": "rgba(255, 255, 255, 0)",
+            "usage": "gradient start color (transparent white) for overflow fade effect"
+        },
+        {
+            "color": "rgb(251, 252, 252)",
+            "usage": "gradient end color for overflow fade effect"
+        }
+    ],
+    "d2l-breadcrumb": [],
+    "d2l-breadcrumb-current-page": [],
     "d2l-button": [
         {
             "color": "--d2l-color-gypsum",
@@ -161,5 +211,27 @@
     ],
     "d2l-button-toggle": [],
     "d2l-button-copy": [],
-    "d2l-button-split-item": []
+    "d2l-button-split-item": [],
+    "d2l-calendar": [
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "border-bottom for table headers, background-color on hover for date buttons"
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "text color for date buttons"
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "outline color on focus for date buttons, outline color for selected date, background-color for day info indicator"
+        },
+        {
+            "color": "--d2l-color-celestine-plus-2",
+            "usage": "background-color for selected date button"
+        },
+        {
+            "color": "rgba(73, 76, 78, 0.5)",
+            "usage": "text color for disabled selected date button"
+        }
+    ]
 }

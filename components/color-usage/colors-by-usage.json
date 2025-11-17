@@ -1,6 +1,6 @@
 {
     "--d2l-color-gypsum": {
-        "summary": "Light gray background color used for default and interactive button states",
+        "summary": "Light gray background color used for default and interactive states across buttons and calendar",
         "usages": [
             {
                 "component": "d2l-button",
@@ -17,20 +17,28 @@
             {
                 "component": "d2l-button-icon",
                 "usage": "background-color on hover (default theme)"
+            },
+            {
+                "component": "d2l-calendar",
+                "usage": "border-bottom for table headers, background-color on hover for date buttons"
             }
         ]
     },
     "--d2l-color-ferrite": {
-        "summary": "Dark gray text color used for default button text",
+        "summary": "Dark gray text color used for buttons and calendar dates",
         "usages": [
             {
                 "component": "d2l-button",
                 "usage": "text color for default button state"
+            },
+            {
+                "component": "d2l-calendar",
+                "usage": "text color for date buttons"
             }
         ]
     },
     "--d2l-color-mica": {
-        "summary": "Medium gray color used for interactive states and borders across buttons and floating elements",
+        "summary": "Medium gray color used for interactive states, borders, and dividers across buttons, alerts, and floating elements",
         "usages": [
             {
                 "component": "d2l-button",
@@ -47,11 +55,15 @@
             {
                 "component": "d2l-floating-buttons",
                 "usage": "border-top-color when floating"
+            },
+            {
+                "component": "d2l-alert",
+                "usage": "default border color"
             }
         ]
     },
     "--d2l-color-celestine": {
-        "summary": "Primary brand blue used for primary buttons, text, and icons to indicate main actions",
+        "summary": "Primary brand blue used for primary actions, focus states, and selection indicators across buttons, calendar, and interactive elements",
         "usages": [
             {
                 "component": "d2l-button",
@@ -68,6 +80,10 @@
             {
                 "component": "d2l-button-add",
                 "usage": "icon and text color when visible or in icon-and-text mode"
+            },
+            {
+                "component": "d2l-calendar",
+                "usage": "outline color on focus for date buttons, outline color for selected date, background-color for day info indicator"
             }
         ]
     },
@@ -166,11 +182,15 @@
         ]
     },
     "white": {
-        "summary": "White color used for translucent button icon and focus ring styling",
+        "summary": "White color used for translucent button styling and alert backgrounds",
         "usages": [
             {
                 "component": "d2l-button-icon",
                 "usage": "icon fill color when translucent, focus ring color when translucent"
+            },
+            {
+                "component": "d2l-alert",
+                "usage": "background color for alert container"
             }
         ]
     },
@@ -229,6 +249,96 @@
             {
                 "component": "d2l-button-styles",
                 "usage": "border color in high contrast mode (can be overridden by system colors)"
+            }
+        ]
+    },
+    "--d2l-color-regolith": {
+        "summary": "Semi-transparent gray used for backdrop overlays",
+        "usages": [
+            {
+                "component": "d2l-backdrop",
+                "usage": "semi-transparent background color for backdrop overlay"
+            }
+        ]
+    },
+    "--d2l-color-feedback-error": {
+        "summary": "Red color used to indicate errors or critical states",
+        "usages": [
+            {
+                "component": "d2l-alert",
+                "usage": "border-inline-start-color when type is critical or error"
+            }
+        ]
+    },
+    "--d2l-color-feedback-warning": {
+        "summary": "Orange/yellow color used to indicate warnings",
+        "usages": [
+            {
+                "component": "d2l-alert",
+                "usage": "border-inline-start-color when type is warning"
+            }
+        ]
+    },
+    "--d2l-color-feedback-action": {
+        "summary": "Blue color used to indicate actionable items or information",
+        "usages": [
+            {
+                "component": "d2l-alert",
+                "usage": "border-inline-start-color when type is default or call-to-action"
+            }
+        ]
+    },
+    "--d2l-color-feedback-success": {
+        "summary": "Green color used to indicate success or completion",
+        "usages": [
+            {
+                "component": "d2l-alert",
+                "usage": "border-inline-start-color when type is success"
+            }
+        ]
+    },
+    "--d2l-color-celestine-plus-2": {
+        "summary": "Lightest shade of primary blue used for selected states",
+        "usages": [
+            {
+                "component": "d2l-calendar",
+                "usage": "background-color for selected date button"
+            }
+        ]
+    },
+    "rgba(0, 0, 0, 0.1)": {
+        "summary": "Semi-transparent black used for subtle shadows",
+        "usages": [
+            {
+                "component": "d2l-alert-toast",
+                "usage": "box-shadow color for toast container"
+            }
+        ]
+    },
+    "rgba(255, 255, 255, 0)": {
+        "summary": "Transparent white used for gradient effects",
+        "usages": [
+            {
+                "component": "d2l-breadcrumbs",
+                "usage": "gradient start color (transparent white) for overflow fade effect"
+            }
+        ]
+    },
+    "rgb(251, 252, 252)": {
+        "summary": "Very light gray used for gradient effects and backgrounds",
+        "usages": [
+            {
+                "component": "d2l-breadcrumbs",
+                "usage": "gradient end color for overflow fade effect"
+            }
+        ]
+    },
+    "rgba(73, 76, 78, 0.5)": {
+        "summary": "Semi-transparent dark gray used for disabled text",
+        "usages": [
+            {
+                "component": "d2l-calendar",
+                "usage": "text color for disabled selected date button"
             }
         ]
     }
