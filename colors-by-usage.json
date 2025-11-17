@@ -1,0 +1,235 @@
+{
+    "--d2l-color-gypsum": {
+        "summary": "Light gray background color used for default and interactive button states",
+        "usages": [
+            {
+                "component": "d2l-button",
+                "usage": "background-color for default button state"
+            },
+            {
+                "component": "d2l-button",
+                "usage": "background-color on hover, focus, and active states"
+            },
+            {
+                "component": "d2l-button-subtle",
+                "usage": "background-color on hover, focus, and active states"
+            },
+            {
+                "component": "d2l-button-icon",
+                "usage": "background-color on hover (default theme)"
+            }
+        ]
+    },
+    "--d2l-color-ferrite": {
+        "summary": "Dark gray text color used for default button text",
+        "usages": [
+            {
+                "component": "d2l-button",
+                "usage": "text color for default button state"
+            }
+        ]
+    },
+    "--d2l-color-mica": {
+        "summary": "Medium gray color used for interactive states and borders across buttons and floating elements",
+        "usages": [
+            {
+                "component": "d2l-button",
+                "usage": "background-color on hover, focus, and active states"
+            },
+            {
+                "component": "d2l-button-add",
+                "usage": "default line color"
+            },
+            {
+                "component": "d2l-button-move",
+                "usage": "icon background-color on hover (default theme)"
+            },
+            {
+                "component": "d2l-floating-buttons",
+                "usage": "border-top-color when floating"
+            }
+        ]
+    },
+    "--d2l-color-celestine": {
+        "summary": "Primary brand blue used for primary buttons, text, and icons to indicate main actions",
+        "usages": [
+            {
+                "component": "d2l-button",
+                "usage": "background-color when primary attribute is set"
+            },
+            {
+                "component": "d2l-button-subtle",
+                "usage": "text color and icon color for button content"
+            },
+            {
+                "component": "d2l-button-icon",
+                "usage": "background-color on hover when translucent"
+            },
+            {
+                "component": "d2l-button-add",
+                "usage": "icon and text color when visible or in icon-and-text mode"
+            }
+        ]
+    },
+    "--d2l-color-celestine-minus-1": {
+        "summary": "Darker shade of primary blue used for hover and focus states on primary buttons and interactive elements",
+        "usages": [
+            {
+                "component": "d2l-button",
+                "usage": "background-color on hover, focus, and active states when primary"
+            },
+            {
+                "component": "d2l-button-subtle",
+                "usage": "text color and icon color on hover, focus, and active states"
+            },
+            {
+                "component": "d2l-button-add",
+                "usage": "line color on hover and focus"
+            }
+        ]
+    },
+    "--d2l-color-tungsten": {
+        "summary": "Dark gray icon fill color used as default in light theme",
+        "usages": [
+            {
+                "component": "d2l-button-icon",
+                "usage": "icon fill color (default theme)"
+            },
+            {
+                "component": "d2l-button-move",
+                "usage": "icon fill color (default theme)"
+            }
+        ]
+    },
+    "--d2l-color-sylvite": {
+        "summary": "Light gray icon fill color used in dark theme mode",
+        "usages": [
+            {
+                "component": "d2l-button-icon",
+                "usage": "icon fill color when dark theme"
+            },
+            {
+                "component": "d2l-button-move",
+                "usage": "icon fill color when dark theme"
+            }
+        ]
+    },
+    "--d2l-color-celestine-plus-1": {
+        "summary": "Lighter shade of primary blue used for focus rings in dark theme",
+        "usages": [
+            {
+                "component": "d2l-button-icon",
+                "usage": "focus ring color when dark theme"
+            },
+            {
+                "component": "d2l-button-move",
+                "usage": "focus ring color when dark theme"
+            }
+        ]
+    },
+    "--d2l-color-galena": {
+        "summary": "Gray color used for icons in their default non-interactive state",
+        "usages": [
+            {
+                "component": "d2l-button-add",
+                "usage": "icon color in default state (icon mode)"
+            }
+        ]
+    },
+    "#ffffff": {
+        "summary": "Pure white used for text on primary buttons, backgrounds, and icon colors",
+        "usages": [
+            {
+                "component": "d2l-button",
+                "usage": "text color when primary attribute is set"
+            },
+            {
+                "component": "d2l-button-subtle",
+                "usage": "count badge foreground color"
+            },
+            {
+                "component": "d2l-button-add",
+                "usage": "circle background fill in SVG icon"
+            },
+            {
+                "component": "d2l-button-move",
+                "usage": "background-color on focus (default theme)"
+            },
+            {
+                "component": "d2l-button-split",
+                "usage": "icon color when primary attribute is set"
+            },
+            {
+                "component": "d2l-floating-buttons",
+                "usage": "solid background-color when floating"
+            }
+        ]
+    },
+    "white": {
+        "summary": "White color used for translucent button icon and focus ring styling",
+        "usages": [
+            {
+                "component": "d2l-button-icon",
+                "usage": "icon fill color when translucent, focus ring color when translucent"
+            }
+        ]
+    },
+    "#000000": {
+        "summary": "Pure black used for dark theme focus backgrounds",
+        "usages": [
+            {
+                "component": "d2l-button-move",
+                "usage": "background-color on focus when dark theme"
+            }
+        ]
+    },
+    "rgba(0, 0, 0, 0.5)": {
+        "summary": "Semi-transparent black used for translucent button backgrounds",
+        "usages": [
+            {
+                "component": "d2l-button-icon",
+                "usage": "background-color when translucent attribute is set"
+            }
+        ]
+    },
+    "rgba(51, 53, 54, 0.9)": {
+        "summary": "Semi-transparent dark gray (tungsten variation) used for hover states in dark theme",
+        "usages": [
+            {
+                "component": "d2l-button-icon",
+                "usage": "background-color on hover when dark theme (tungsten @70% @90%)"
+            },
+            {
+                "component": "d2l-button-move",
+                "usage": "icon background-color on hover when dark theme (tungsten @70% @90%)"
+            }
+        ]
+    },
+    "rgba(255, 255, 255, 0.88)": {
+        "summary": "Semi-transparent white used for floating button backgrounds",
+        "usages": [
+            {
+                "component": "d2l-floating-buttons",
+                "usage": "semi-transparent background-color when floating"
+            }
+        ]
+    },
+    "rgba(32, 33, 34, 0.2)": {
+        "summary": "Semi-transparent dark gray (ferrite variation) used for box shadows",
+        "usages": [
+            {
+                "component": "d2l-floating-buttons",
+                "usage": "box-shadow color when floating (ferrite)"
+            }
+        ]
+    },
+    "transparent": {
+        "summary": "Transparent color used for borders in high contrast mode",
+        "usages": [
+            {
+                "component": "d2l-button-styles",
+                "usage": "border color in high contrast mode (can be overridden by system colors)"
+            }
+        ]
+    }
+}

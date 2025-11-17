@@ -1,0 +1,165 @@
+{
+    "d2l-button": [
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "background-color for default button state"
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "text color for default button state"
+        },
+        {
+            "color": "--d2l-color-mica",
+            "usage": "background-color on hover, focus, and active states"
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "background-color when primary attribute is set"
+        },
+        {
+            "color": "#ffffff",
+            "usage": "text color when primary attribute is set"
+        },
+        {
+            "color": "--d2l-color-celestine-minus-1",
+            "usage": "background-color on hover, focus, and active states when primary"
+        }
+    ],
+    "d2l-button-subtle": [
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "background-color on hover, focus, and active states"
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "text color and icon color for button content"
+        },
+        {
+            "color": "--d2l-color-celestine-minus-1",
+            "usage": "text color and icon color on hover, focus, and active states"
+        },
+        {
+            "color": "#ffffff",
+            "usage": "count badge foreground color"
+        }
+    ],
+    "d2l-button-icon": [
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "background-color on hover (default theme)"
+        },
+        {
+            "color": "--d2l-color-tungsten",
+            "usage": "icon fill color (default theme)"
+        },
+        {
+            "color": "rgba(0, 0, 0, 0.5)",
+            "usage": "background-color when translucent attribute is set"
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "background-color on hover when translucent"
+        },
+        {
+            "color": "white",
+            "usage": "icon fill color when translucent, focus ring color when translucent"
+        },
+        {
+            "color": "rgba(51, 53, 54, 0.9)",
+            "usage": "background-color on hover when dark theme (tungsten @70% @90%)"
+        },
+        {
+            "color": "--d2l-color-sylvite",
+            "usage": "icon fill color when dark theme"
+        },
+        {
+            "color": "--d2l-color-celestine-plus-1",
+            "usage": "focus ring color when dark theme"
+        }
+    ],
+    "d2l-button-add": [
+        {
+            "color": "--d2l-color-celestine-minus-1",
+            "usage": "line color on hover and focus"
+        },
+        {
+            "color": "--d2l-color-mica",
+            "usage": "default line color"
+        },
+        {
+            "color": "--d2l-color-galena",
+            "usage": "icon color in default state (icon mode)"
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "icon and text color when visible or in icon-and-text mode"
+        },
+        {
+            "color": "#ffffff",
+            "usage": "circle background fill in SVG icon"
+        }
+    ],
+    "d2l-button-move": [
+        {
+            "color": "#ffffff",
+            "usage": "background-color on focus (default theme)"
+        },
+        {
+            "color": "--d2l-color-mica",
+            "usage": "icon background-color on hover (default theme)"
+        },
+        {
+            "color": "--d2l-color-tungsten",
+            "usage": "icon fill color (default theme)"
+        },
+        {
+            "color": "#000000",
+            "usage": "background-color on focus when dark theme"
+        },
+        {
+            "color": "rgba(51, 53, 54, 0.9)",
+            "usage": "icon background-color on hover when dark theme (tungsten @70% @90%)"
+        },
+        {
+            "color": "--d2l-color-sylvite",
+            "usage": "icon fill color when dark theme"
+        },
+        {
+            "color": "--d2l-color-celestine-plus-1",
+            "usage": "focus ring color when dark theme"
+        }
+    ],
+    "d2l-button-split": [
+        {
+            "color": "#ffffff",
+            "usage": "icon color when primary attribute is set"
+        }
+    ],
+    "d2l-floating-buttons": [
+        {
+            "color": "#ffffff",
+            "usage": "solid background-color when floating"
+        },
+        {
+            "color": "rgba(255, 255, 255, 0.88)",
+            "usage": "semi-transparent background-color when floating"
+        },
+        {
+            "color": "--d2l-color-mica",
+            "usage": "border-top-color when floating"
+        },
+        {
+            "color": "rgba(32, 33, 34, 0.2)",
+            "usage": "box-shadow color when floating (ferrite)"
+        }
+    ],
+    "d2l-button-styles": [
+        {
+            "color": "transparent",
+            "usage": "border color in high contrast mode (can be overridden by system colors)"
+        }
+    ],
+    "d2l-button-toggle": [],
+    "d2l-button-copy": [],
+    "d2l-button-split-item": []
+}
