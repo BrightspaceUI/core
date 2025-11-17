@@ -1,13 +1,12 @@
 import '../../components/colors/colors.js';
 import { bodyCompactStyles, bodySmallStyles } from '../typography/styles.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 
-export const liveRegionDebounceTime = 1000;
 class Progress extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
@@ -26,7 +25,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 			 * Label for the progress bar
 			 * @type {string}
 			 */
-			label: { type: String },
+			label: { type: String, required: true },
 			/**
 			 * Hide the bar's label
 			 * @type {boolean}
@@ -36,7 +35,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 			 * Include aria-live region for percentage text updates
 			 * @type {boolean}
 			 */
-			liveRegion: { type: Boolean, attribute: 'live-region' },
+			liveLabel: { type: Boolean, attribute: 'live-label' },
 			/**
 			 * Hide the bar's value
 			 * @type {boolean}
@@ -46,8 +45,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 			 * The size of the progress bar
 			 * @type {'small'|'medium'|'large'}
 			 */
-			size: { type: String, reflect: true },
-			_livePercentageText: { status: true }
+			size: { type: String, reflect: true }
 		};
 	}
 
@@ -168,7 +166,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 
 		const percentageText = this.getPercentageText();
 		return html`
-			<div ?hidden=${this.labelHidden} id="label" class=${classMap(textClasses)}>${this.label}</div>
+			<div aria-live=${this.liveLabel ? 'polite' : 'off'} ?hidden=${this.labelHidden} id="label" class=${classMap(textClasses)}>${this.label}</div>
 			<progress
 				aria-labelledby="${ifDefined(this.labelHidden ? undefined : 'label')}"
 				aria-label="${ifDefined(this.labelHidden ? this.label : undefined)}"
@@ -178,22 +176,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 				max="${this.max}">
 			</progress>
 			<div ?hidden=${this.valueHidden} class=${classMap(valueClasses)}>${percentageText}</div>
-			${this.liveRegion ? html`<div aria-live="polite" class="d2l-offscreen">${this._ariaPercentageText}</div>` : nothing}
 		`;
-	}
-
-	willUpdate(changedProperties) {
-		super.willUpdate(changedProperties);
-		if (this.liveRegion && (changedProperties.has('liveRegion') || changedProperties.has('value') || changedProperties.has('max'))) {
-			if (this.isComplete) {
-				clearTimeout(this._livePercentageDebounce);
-				this._updateLiveText();
-			} else if (!this._livePercentageDebounce) {
-				this._livePercentageDebounce = setTimeout(() => {
-					this._updateLiveText();
-				}, liveRegionDebounceTime);
-			}
-		}
 	}
 
 	getPercentageText() {
