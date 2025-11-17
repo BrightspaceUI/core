@@ -318,7 +318,9 @@ class ColorUsageViewer extends LitElement {
 
 	_getComponentNames() {
 		if (!this._colorData) return [];
-		return Object.keys(this._colorData).sort();
+		return Object.keys(this._colorData)
+			.filter(name => this._colorData[name] && this._colorData[name].length > 0)
+			.sort();
 	}
 
 	_getColorNames() {

@@ -2,49 +2,79 @@
     "d2l-alert": [
         {
             "color": "white",
-            "usage": "background color for alert container"
+            "usage": "background color for alert container",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "--d2l-color-mica",
-            "usage": "default border color"
+            "usage": "default border color",
+            "categories": [
+                "border"
+            ]
         },
         {
             "color": "--d2l-color-feedback-error",
-            "usage": "border-inline-start-color when type is critical or error"
+            "usage": "border-inline-start-color when type is critical or error",
+            "categories": [
+                "border"
+            ]
         },
         {
             "color": "--d2l-color-feedback-warning",
-            "usage": "border-inline-start-color when type is warning"
+            "usage": "border-inline-start-color when type is warning",
+            "categories": [
+                "border"
+            ]
         },
         {
             "color": "--d2l-color-feedback-action",
-            "usage": "border-inline-start-color when type is default or call-to-action"
+            "usage": "border-inline-start-color when type is default or call-to-action",
+            "categories": [
+                "border"
+            ]
         },
         {
             "color": "--d2l-color-feedback-success",
-            "usage": "border-inline-start-color when type is success"
+            "usage": "border-inline-start-color when type is success",
+            "categories": [
+                "border"
+            ]
         }
     ],
     "d2l-alert-toast": [
         {
             "color": "rgba(0, 0, 0, 0.1)",
-            "usage": "box-shadow color for toast container"
+            "usage": "box-shadow color for toast container",
+            "categories": [
+                "shadow"
+            ]
         }
     ],
     "d2l-backdrop": [
         {
             "color": "--d2l-color-regolith",
-            "usage": "semi-transparent background color for backdrop overlay"
+            "usage": "semi-transparent background color for backdrop overlay",
+            "categories": [
+                "background"
+            ]
         }
     ],
     "d2l-breadcrumbs": [
         {
             "color": "rgba(255, 255, 255, 0)",
-            "usage": "gradient start color (transparent white) for overflow fade effect"
+            "usage": "gradient start color (transparent white) for overflow fade effect",
+            "categories": [
+                "gradient"
+            ]
         },
         {
             "color": "rgb(251, 252, 252)",
-            "usage": "gradient end color for overflow fade effect"
+            "usage": "gradient end color for overflow fade effect",
+            "categories": [
+                "gradient"
+            ]
         }
     ],
     "d2l-breadcrumb": [],
@@ -52,161 +82,269 @@
     "d2l-button": [
         {
             "color": "--d2l-color-gypsum",
-            "usage": "background-color for default button state"
+            "usage": "background-color for default button state",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "--d2l-color-ferrite",
-            "usage": "text color for default button state"
+            "usage": "text color for default button state",
+            "categories": [
+                "foreground"
+            ]
         },
         {
             "color": "--d2l-color-mica",
-            "usage": "background-color on hover, focus, and active states"
+            "usage": "background-color on hover, focus, and active states",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "--d2l-color-celestine",
-            "usage": "background-color when primary attribute is set"
+            "usage": "background-color when primary attribute is set",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "#ffffff",
-            "usage": "text color when primary attribute is set"
+            "usage": "text color when primary attribute is set",
+            "categories": [
+                "foreground"
+            ]
         },
         {
             "color": "--d2l-color-celestine-minus-1",
-            "usage": "background-color on hover, focus, and active states when primary"
+            "usage": "background-color on hover, focus, and active states when primary",
+            "categories": [
+                "background"
+            ]
         }
     ],
     "d2l-button-subtle": [
         {
             "color": "--d2l-color-gypsum",
-            "usage": "background-color on hover, focus, and active states"
+            "usage": "background-color on hover, focus, and active states",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "--d2l-color-celestine",
-            "usage": "text color and icon color for button content"
+            "usage": "text color and icon color for button content",
+            "categories": [
+                "foreground"
+            ]
         },
         {
             "color": "--d2l-color-celestine-minus-1",
-            "usage": "text color and icon color on hover, focus, and active states"
+            "usage": "text color and icon color on hover, focus, and active states",
+            "categories": [
+                "foreground"
+            ]
         },
         {
             "color": "#ffffff",
-            "usage": "count badge foreground color"
+            "usage": "count badge foreground color",
+            "categories": [
+                "foreground"
+            ]
         }
     ],
     "d2l-button-icon": [
         {
             "color": "--d2l-color-gypsum",
-            "usage": "background-color on hover (default theme)"
+            "usage": "background-color on hover (default theme)",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "--d2l-color-tungsten",
-            "usage": "icon fill color (default theme)"
+            "usage": "icon fill color (default theme)",
+            "categories": [
+                "foreground"
+            ]
         },
         {
             "color": "rgba(0, 0, 0, 0.5)",
-            "usage": "background-color when translucent attribute is set"
+            "usage": "background-color when translucent attribute is set",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "--d2l-color-celestine",
-            "usage": "background-color on hover when translucent"
+            "usage": "background-color on hover when translucent",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "white",
-            "usage": "icon fill color when translucent, focus ring color when translucent"
+            "usage": "icon fill color when translucent, focus ring color when translucent",
+            "categories": [
+                "foreground"
+            ]
         },
         {
             "color": "rgba(51, 53, 54, 0.9)",
-            "usage": "background-color on hover when dark theme (tungsten @70% @90%)"
+            "usage": "background-color on hover when dark theme (tungsten @70% @90%)",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "--d2l-color-sylvite",
-            "usage": "icon fill color when dark theme"
+            "usage": "icon fill color when dark theme",
+            "categories": [
+                "foreground"
+            ]
         },
         {
             "color": "--d2l-color-celestine-plus-1",
-            "usage": "focus ring color when dark theme"
+            "usage": "focus ring color when dark theme",
+            "categories": [
+                "other"
+            ]
         }
     ],
     "d2l-button-add": [
         {
             "color": "--d2l-color-celestine-minus-1",
-            "usage": "line color on hover and focus"
+            "usage": "line color on hover and focus",
+            "categories": [
+                "other"
+            ]
         },
         {
             "color": "--d2l-color-mica",
-            "usage": "default line color"
+            "usage": "default line color",
+            "categories": [
+                "other"
+            ]
         },
         {
             "color": "--d2l-color-galena",
-            "usage": "icon color in default state (icon mode)"
+            "usage": "icon color in default state (icon mode)",
+            "categories": [
+                "foreground"
+            ]
         },
         {
             "color": "--d2l-color-celestine",
-            "usage": "icon and text color when visible or in icon-and-text mode"
+            "usage": "icon and text color when visible or in icon-and-text mode",
+            "categories": [
+                "foreground"
+            ]
         },
         {
             "color": "#ffffff",
-            "usage": "circle background fill in SVG icon"
+            "usage": "circle background fill in SVG icon",
+            "categories": [
+                "background"
+            ]
         }
     ],
     "d2l-button-move": [
         {
             "color": "#ffffff",
-            "usage": "background-color on focus (default theme)"
+            "usage": "background-color on focus (default theme)",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "--d2l-color-mica",
-            "usage": "icon background-color on hover (default theme)"
+            "usage": "icon background-color on hover (default theme)",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "--d2l-color-tungsten",
-            "usage": "icon fill color (default theme)"
+            "usage": "icon fill color (default theme)",
+            "categories": [
+                "foreground"
+            ]
         },
         {
             "color": "#000000",
-            "usage": "background-color on focus when dark theme"
+            "usage": "background-color on focus when dark theme",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "rgba(51, 53, 54, 0.9)",
-            "usage": "icon background-color on hover when dark theme (tungsten @70% @90%)"
+            "usage": "icon background-color on hover when dark theme (tungsten @70% @90%)",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "--d2l-color-sylvite",
-            "usage": "icon fill color when dark theme"
+            "usage": "icon fill color when dark theme",
+            "categories": [
+                "foreground"
+            ]
         },
         {
             "color": "--d2l-color-celestine-plus-1",
-            "usage": "focus ring color when dark theme"
+            "usage": "focus ring color when dark theme",
+            "categories": [
+                "other"
+            ]
         }
     ],
     "d2l-button-split": [
         {
             "color": "#ffffff",
-            "usage": "icon color when primary attribute is set"
+            "usage": "icon color when primary attribute is set",
+            "categories": [
+                "foreground"
+            ]
         }
     ],
     "d2l-floating-buttons": [
         {
             "color": "#ffffff",
-            "usage": "solid background-color when floating"
+            "usage": "solid background-color when floating",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "rgba(255, 255, 255, 0.88)",
-            "usage": "semi-transparent background-color when floating"
+            "usage": "semi-transparent background-color when floating",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "--d2l-color-mica",
-            "usage": "border-top-color when floating"
+            "usage": "border-top-color when floating",
+            "categories": [
+                "border"
+            ]
         },
         {
             "color": "rgba(32, 33, 34, 0.2)",
-            "usage": "box-shadow color when floating (ferrite)"
+            "usage": "box-shadow color when floating (ferrite)",
+            "categories": [
+                "shadow"
+            ]
         }
     ],
     "d2l-button-styles": [
         {
             "color": "transparent",
-            "usage": "border color in high contrast mode (can be overridden by system colors)"
+            "usage": "border color in high contrast mode (can be overridden by system colors)",
+            "categories": [
+                "border"
+            ]
         }
     ],
     "d2l-button-toggle": [],
@@ -215,23 +353,1504 @@
     "d2l-calendar": [
         {
             "color": "--d2l-color-gypsum",
-            "usage": "border-bottom for table headers, background-color on hover for date buttons"
+            "usage": "border-bottom for table headers, background-color on hover for date buttons",
+            "categories": [
+                "background",
+                "border"
+            ]
         },
         {
             "color": "--d2l-color-ferrite",
-            "usage": "text color for date buttons"
+            "usage": "text color for date buttons",
+            "categories": [
+                "foreground"
+            ]
         },
         {
             "color": "--d2l-color-celestine",
-            "usage": "outline color on focus for date buttons, outline color for selected date, background-color for day info indicator"
+            "usage": "outline color on focus for date buttons, outline color for selected date, background-color for day info indicator",
+            "categories": [
+                "background",
+                "border"
+            ]
         },
         {
             "color": "--d2l-color-celestine-plus-2",
-            "usage": "background-color for selected date button"
+            "usage": "background-color for selected date button",
+            "categories": [
+                "background"
+            ]
         },
         {
             "color": "rgba(73, 76, 78, 0.5)",
-            "usage": "text color for disabled selected date button"
+            "usage": "text color for disabled selected date button",
+            "categories": [
+                "foreground"
+            ]
         }
-    ]
+    ],
+    "d2l-card": [
+        {
+            "color": "#ffffff",
+            "usage": "background-color for card container",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "border color for card",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "rgba(0, 0, 0, 0.03)",
+            "usage": "box-shadow for subtle card default state",
+            "categories": [
+                "shadow"
+            ]
+        },
+        {
+            "color": "rgba(0, 0, 0, 0.06)",
+            "usage": "box-shadow on hover for both normal and subtle cards",
+            "categories": [
+                "shadow"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "text color and text-decoration when card link is hovered or active",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-card-loading-shimmer": [
+        {
+            "color": "--d2l-color-regolith",
+            "usage": "background-color for loading indicator container and animation",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "box-shadow inset color for bottom border",
+            "categories": [
+                "border",
+                "shadow"
+            ]
+        },
+        {
+            "color": "rgba(249, 250, 251, 0.1)",
+            "usage": "gradient start and end color in loading shimmer animation",
+            "categories": [
+                "gradient"
+            ]
+        },
+        {
+            "color": "rgba(114, 119, 122, 0.1)",
+            "usage": "gradient middle color in loading shimmer animation",
+            "categories": [
+                "gradient"
+            ]
+        }
+    ],
+    "d2l-card-content-meta": [
+        {
+            "color": "--d2l-color-tungsten",
+            "usage": "text color for meta data",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-card-content-title": [],
+    "d2l-card-footer-link": [],
+    "d2l-count-badge": [],
+    "d2l-count-badge-mixin": [
+        {
+            "color": "--d2l-color-carnelian-minus-1",
+            "usage": "background-color when type is notification",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "white",
+            "usage": "text color when type is notification",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "default background-color when type is count (can be overridden by --d2l-count-badge-background-color)",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "default text color when type is count (can be overridden by --d2l-count-badge-foreground-color)",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-count-badge-icon": [
+        {
+            "color": "white",
+            "usage": "border color for badge number positioning",
+            "categories": [
+                "border"
+            ]
+        }
+    ],
+    "d2l-description-list-wrapper": [],
+    "d2l-dialog-styles": [
+        {
+            "color": "white",
+            "usage": "background-color for dialog outer container",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-mica",
+            "usage": "border color for dialog outer container",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "rgba(0, 0, 0, 0.1)",
+            "usage": "box-shadow for dialog outer container",
+            "categories": [
+                "shadow"
+            ]
+        },
+        {
+            "color": "rgba(205, 213, 220, 0.35)",
+            "usage": "border-color when nested dialog is showing",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "text color for native dialog element",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "#f9fbff",
+            "usage": "background-color for dialog backdrop",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-cinnabar",
+            "usage": "border-block-start color for critical dialog header",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "rgba(0, 0, 0, 0.05)",
+            "usage": "box-shadow for header and footer when content overflows",
+            "categories": [
+                "shadow"
+            ]
+        }
+    ],
+    "d2l-dialog": [],
+    "d2l-dialog-fullscreen": [
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "border-bottom for header, border-top for footer in desktop view",
+            "categories": [
+                "border"
+            ]
+        }
+    ],
+    "d2l-dialog-confirm": [],
+    "d2l-dropdown-content-styles": [
+        {
+            "color": "#ffffff",
+            "usage": "default background-color for dropdown content (light theme)",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-mica",
+            "usage": "default border-color for dropdown content (light theme)",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "default foreground-color for dropdown content (light theme)",
+            "categories": [
+                "other"
+            ]
+        },
+        {
+            "color": "rgba(0, 0, 0, 0.15)",
+            "usage": "default shadow-color for dropdown content (light theme)",
+            "categories": [
+                "shadow"
+            ]
+        },
+        {
+            "color": "#333536",
+            "usage": "background-color for dropdown content in dark theme (tungsten @ 70%)",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-tungsten",
+            "usage": "border-color for dropdown content in dark theme",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-sylvite",
+            "usage": "foreground-color for dropdown content in dark theme",
+            "categories": [
+                "other"
+            ]
+        },
+        {
+            "color": "rgba(0, 0, 0, 1)",
+            "usage": "shadow-color for dropdown content in dark theme",
+            "categories": [
+                "shadow"
+            ]
+        },
+        {
+            "color": "rgba(32, 33, 34, 0.2)",
+            "usage": "box-shadow for dropdown pointer (ferrite)",
+            "categories": [
+                "shadow"
+            ]
+        }
+    ],
+    "d2l-dropdown": [],
+    "d2l-dropdown-content": [],
+    "d2l-dropdown-menu": [],
+    "d2l-dropdown-tabs": [],
+    "d2l-dropdown-context-menu": [],
+    "d2l-dropdown-more": [],
+    "d2l-dropdown-button": [
+        {
+            "color": "white",
+            "usage": "icon color when primary attribute is set",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-dropdown-button-subtle": [],
+    "d2l-empty-state-styles": [],
+    "d2l-empty-state-simple": [
+        {
+            "color": "--d2l-color-mica",
+            "usage": "border color for simple empty state container",
+            "categories": [
+                "border"
+            ]
+        }
+    ],
+    "d2l-empty-state-illustrated": [],
+    "d2l-empty-state-action-button": [],
+    "d2l-empty-state-action-link": [],
+    "d2l-expand-collapse-content": [],
+    "d2l-filter": [
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "text color for dimension set values, list header text, and info messages",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-chromite",
+            "usage": "text color for disabled dimension set values and body small text",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-filter-dimension-set": [],
+    "d2l-filter-dimension-set-value": [],
+    "d2l-filter-dimension-set-date-text-value": [],
+    "d2l-filter-dimension-set-date-time-range-value": [],
+    "d2l-filter-dimension-set-empty-state": [],
+    "d2l-filter-tags": [],
+    "d2l-filter-overflow-group": [],
+    "d2l-focus-trap": [],
+    "d2l-form": [],
+    "d2l-form-error-summary": [],
+    "d2l-form-helper": [],
+    "d2l-hierarchical-view": [],
+    "d2l-html-block": [
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "link color for default, visited, link, and active states; focus ring color",
+            "categories": [
+                "other"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine-minus-1",
+            "usage": "link color on hover state",
+            "categories": [
+                "other"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "link color in print media",
+            "categories": [
+                "other"
+            ]
+        }
+    ],
+    "d2l-icon": [
+        {
+            "color": "--d2l-color-tungsten",
+            "usage": "default icon color",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-icon-custom": [],
+    "d2l-input-styles": [
+        {
+            "color": "#ffffff",
+            "usage": "default background-color for inputs",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "rgba(177, 185, 190, 0.2)",
+            "usage": "box-shadow inset color (corundum)",
+            "categories": [
+                "shadow"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "text color for inputs",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-galena",
+            "usage": "default border color and placeholder text color",
+            "categories": [
+                "foreground",
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "border color on hover and focus states",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-cinnabar",
+            "usage": "border color when input is invalid",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "#cd2026",
+            "usage": "fill color for invalid icon SVG",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "#FFF",
+            "usage": "fill color for invalid icon SVG inner details",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-input-text": [],
+    "d2l-input-search": [],
+    "d2l-input-textarea": [],
+    "d2l-input-number": [],
+    "d2l-input-percent": [],
+    "d2l-input-checkbox": [
+        {
+            "color": "--d2l-color-regolith",
+            "usage": "default background-color for checkbox",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "rgba(249, 251, 255, 0.5)",
+            "usage": "gradient color for disabled checkbox background (regolith at 50%)",
+            "categories": [
+                "background",
+                "gradient"
+            ]
+        },
+        {
+            "color": "--d2l-color-galena",
+            "usage": "default border color for checkbox",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-corundum",
+            "usage": "border color for disabled checkbox",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "border color on hover and focus states",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "text color for checkbox label",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "#494C4E",
+            "usage": "fill color for checkbox check mark and indeterminate mark SVG",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-input-checkbox-group": [],
+    "d2l-input-radio": [],
+    "d2l-input-radio-styles": [
+        {
+            "color": "#494c4e",
+            "usage": "fill color for radio check SVG",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-regolith",
+            "usage": "background-color for radio button",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-galena",
+            "usage": "default border color for radio button",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "border color on hover and focus states",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-cinnabar",
+            "usage": "border color when radio is invalid",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "text color for radio label",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-input-radio-group": [],
+    "d2l-input-radio-spacer": [],
+    "d2l-input-select-styles": [
+        {
+            "color": "#ffffff",
+            "usage": "background-color for select",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "rgba(177, 185, 190, 0.2)",
+            "usage": "box-shadow inset color (corundum)",
+            "categories": [
+                "shadow"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "text color for select",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-galena",
+            "usage": "default outline color for select",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "outline color on hover and focus states",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-cinnabar",
+            "usage": "outline color when select is invalid",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "#565A5C",
+            "usage": "stroke color for dropdown arrow SVG",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-input-date": [],
+    "d2l-input-time": [],
+    "d2l-input-date-time": [],
+    "d2l-input-date-range": [],
+    "d2l-input-time-range": [],
+    "d2l-input-date-time-range": [],
+    "d2l-input-date-time-range-to": [],
+    "d2l-input-color": [],
+    "d2l-input-fieldset": [],
+    "d2l-input-group": [],
+    "d2l-input-inline-help": [],
+    "d2l-link": [
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "link color for default, visited, active, and link states; icon color",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine-minus-1",
+            "usage": "link and icon color on hover state",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "link color in print media",
+            "categories": [
+                "other"
+            ]
+        }
+    ],
+    "d2l-list": [],
+    "d2l-list-item": [],
+    "d2l-list-item-mixin": [
+        {
+            "color": "--d2l-color-mica",
+            "usage": "border-top color for separators, border color for dragging states",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "text color and outline for interactive states, border color for selected state",
+            "categories": [
+                "foreground",
+                "border"
+            ]
+        },
+        {
+            "color": "rgba(0, 0, 0, 0.1)",
+            "usage": "box-shadow for hover state",
+            "categories": [
+                "shadow"
+            ]
+        },
+        {
+            "color": "#f3fbff",
+            "usage": "background-color for hover state",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine-plus-2",
+            "usage": "background-color for selected state",
+            "categories": [
+                "background"
+            ]
+        }
+    ],
+    "d2l-list-item-content": [
+        {
+            "color": "--d2l-color-tungsten",
+            "usage": "default secondary text color",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "supporting info text color",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-list-item-button": [],
+    "d2l-list-item-link-mixin": [
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "text color for link items",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-list-item-nav": [],
+    "d2l-list-item-nav-mixin": [
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "text color for nav items",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-regolith",
+            "usage": "background-color when selected",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "border color when selected",
+            "categories": [
+                "border"
+            ]
+        }
+    ],
+    "d2l-list-item-drag-handle": [
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "background-color for drag handle",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "text color for drag handle",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-mica",
+            "usage": "background-color on hover",
+            "categories": [
+                "background"
+            ]
+        }
+    ],
+    "d2l-list-item-drag-image": [
+        {
+            "color": "--d2l-color-mica",
+            "usage": "border color for drag image",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "background-color for drag handle in image",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "#494c4e",
+            "usage": "fill color for drag handle icon SVG",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-list-item-placement-marker": [
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "stroke and fill color for placement marker",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-list-controls": [],
+    "d2l-loading-spinner": [
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "default color for spinner animation",
+            "categories": [
+                "other"
+            ]
+        },
+        {
+            "color": "#ededfa",
+            "usage": "background stroke color for spinner track",
+            "categories": [
+                "background",
+                "foreground"
+            ]
+        },
+        {
+            "color": "#000",
+            "usage": "fill color for spinner SVG elements in certain modes",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "#FFF",
+            "usage": "fill color for spinner SVG paths and circles",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "#E6EAF0",
+            "usage": "fill color for spinner background paths",
+            "categories": [
+                "background",
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-menu": [
+        {
+            "color": "#ffffff",
+            "usage": "default background-color for menu (light theme)",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine-plus-2",
+            "usage": "background-color on hover (light theme)",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "border color (light theme)",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "border color on hover (light theme)",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "foreground color for text (light theme)",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine-minus-1",
+            "usage": "foreground color on hover (light theme)",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-corundum",
+            "usage": "separator color (light theme)",
+            "categories": [
+                "other"
+            ]
+        },
+        {
+            "color": "#333536",
+            "usage": "background-color for menu in dark theme (tungsten @ 70%)",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "#123559",
+            "usage": "background-color on hover in dark theme (celestine-1 @ 50%)",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-tungsten",
+            "usage": "border color in dark theme",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-sylvite",
+            "usage": "foreground color in dark theme",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-galena",
+            "usage": "separator color in dark theme",
+            "categories": [
+                "other"
+            ]
+        },
+        {
+            "color": "--d2l-color-mica",
+            "usage": "icon fill color in dark theme",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-menu-item": [],
+    "d2l-menu-item-link": [],
+    "d2l-menu-item-checkbox": [],
+    "d2l-menu-item-radio": [],
+    "d2l-menu-item-return": [],
+    "d2l-menu-item-separator": [],
+    "d2l-meter-mixin": [],
+    "d2l-meter-styles": [
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "stroke color for full meter bar background",
+            "categories": [
+                "background",
+                "foreground"
+            ]
+        },
+        {
+            "color": "rgba(255, 255, 255, 0.5)",
+            "usage": "stroke color for full meter bar when foreground-light attribute is set",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "stroke color for progress meter bar",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "white",
+            "usage": "stroke and color for progress bar and text when foreground-light attribute is set",
+            "categories": [
+                "other"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "color and fill for meter text",
+            "categories": [
+                "other"
+            ]
+        }
+    ],
+    "d2l-meter-circle": [],
+    "d2l-meter-radial": [],
+    "d2l-meter-linear": [
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "background-color for full linear meter bar",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "rgba(255, 255, 255, 0.5)",
+            "usage": "background-color for full bar when foreground-light attribute is set",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "background-color for inner progress bar",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "white",
+            "usage": "background-color for inner bar and text color when foreground-light attribute is set",
+            "categories": [
+                "background",
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "text color for linear meter",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-more-less": [
+        {
+            "color": "#000000",
+            "usage": "mask-image gradient color for fade effect when collapsed",
+            "categories": [
+                "gradient"
+            ]
+        }
+    ],
+    "d2l-object-property-list": [],
+    "d2l-object-property-list-item": [
+        {
+            "color": "--d2l-color-galena",
+            "usage": "color for separator icon",
+            "categories": [
+                "other"
+            ]
+        },
+        {
+            "color": "--d2l-color-sylvite",
+            "usage": "icon color when skeleton attribute is set",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-object-property-list-item-link": [],
+    "d2l-object-property-list-item-tooltip-help": [],
+    "d2l-overflow-group": [
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "icon fill color when opener-style is subtle",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine-minus-1",
+            "usage": "icon fill color on hover when opener-style is subtle",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-pager-load-more": [
+        {
+            "color": "--d2l-color-regolith",
+            "usage": "background-color for load more button",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-sylvite",
+            "usage": "border color for button and background-color on hover",
+            "categories": [
+                "background",
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "border-color on hover",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "color for action text",
+            "categories": [
+                "other"
+            ]
+        },
+        {
+            "color": "--d2l-color-mica",
+            "usage": "border-right color for separator",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-galena",
+            "usage": "color for info text",
+            "categories": [
+                "other"
+            ]
+        }
+    ],
+    "d2l-progress": [
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "background-color for progress bar",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "background-color for progress bar track",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-mica",
+            "usage": "inset box-shadow color for progress bar track",
+            "categories": [
+                "shadow"
+            ]
+        },
+        {
+            "color": "--d2l-color-olivine",
+            "usage": "background-color for progress bar when complete",
+            "categories": [
+                "background"
+            ]
+        }
+    ],
+    "d2l-scroll-wrapper": [
+        {
+            "color": "--d2l-color-mica",
+            "usage": "dashed border-inline color for container and border color for scroll buttons",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-regolith",
+            "usage": "background-color for scroll buttons",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-sylvite",
+            "usage": "background-color for scroll buttons on hover",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "rgba(0, 0, 0, 0.15)",
+            "usage": "box-shadow color for scroll buttons",
+            "categories": [
+                "shadow"
+            ]
+        },
+        {
+            "color": "#ffffff",
+            "usage": "focus ring box-shadow color",
+            "categories": [
+                "shadow"
+            ]
+        }
+    ],
+    "d2l-selection-controls": [
+        {
+            "color": "white",
+            "usage": "background-color for controls container",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "rgba(0, 0, 0, 0.3)",
+            "usage": "box-shadow color when scrolled",
+            "categories": [
+                "shadow"
+            ]
+        }
+    ],
+    "d2l-selection-input": [],
+    "d2l-selection-action": [],
+    "d2l-selection-select-all": [],
+    "d2l-selection-select-all-pages": [],
+    "d2l-selection-summary": [],
+    "d2l-skeleton-mixin": [
+        {
+            "color": "--d2l-color-sylvite",
+            "usage": "background-color for skeleton elements and border-color for skeleton containers",
+            "categories": [
+                "background",
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-regolith",
+            "usage": "background-color in pulsing animation (50% keyframe)",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "#f1f5fb",
+            "usage": "SVG fill color for paragraph skeleton patterns",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "#f9fbff",
+            "usage": "SVG fill color in paragraph skeleton animations",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-sort": [],
+    "d2l-sort-item": [],
+    "d2l-status-indicator": [
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "default state border, text color, and bold background",
+            "categories": [
+                "background",
+                "foreground",
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-olivine-minus-1",
+            "usage": "success state border, text color, and bold background",
+            "categories": [
+                "background",
+                "foreground",
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-cinnabar",
+            "usage": "alert state border, text color, and bold background",
+            "categories": [
+                "background",
+                "foreground",
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-tungsten",
+            "usage": "none/null state border, text color, and bold background",
+            "categories": [
+                "background",
+                "foreground",
+                "border"
+            ]
+        },
+        {
+            "color": "white",
+            "usage": "text color when bold attribute is set",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-switch": [
+        {
+            "color": "#ffffff",
+            "usage": "background-color for container and toggle button",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-regolith",
+            "usage": "background-color for switch inner when off",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "border color for switch inner and toggle button",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine-plus-2",
+            "usage": "background-color for switch inner when on",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "icon color when on and hover outline color",
+            "categories": [
+                "foreground",
+                "border"
+            ]
+        }
+    ],
+    "d2l-switch-visibility": [],
+    "d2l-table-wrapper": [
+        {
+            "color": "#ffffff",
+            "usage": "background-color for tbody and tfoot, also header background for light type",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-mica",
+            "usage": "border color for default table type",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-regolith",
+            "usage": "header background-color for default table type",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "selected row border color",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-celestine-plus-2",
+            "usage": "selected row background color",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "border color for light table type",
+            "categories": [
+                "border"
+            ]
+        }
+    ],
+    "d2l-table-col-sort-button": [
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "background-color on hover",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "#ffffff",
+            "usage": "box-shadow color for focus ring",
+            "categories": [
+                "shadow"
+            ]
+        }
+    ],
+    "d2l-table-controls": [],
+    "d2l-tabs": [
+        {
+            "color": "white",
+            "usage": "background-color for tabs",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "border-bottom for layout, scroll button background, and overflow borders",
+            "categories": [
+                "background",
+                "border"
+            ]
+        }
+    ],
+    "d2l-tab": [
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "focus ring color, hover color, and icon color",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-tab-internal": [
+        {
+            "color": "--d2l-color-celestine",
+            "usage": "selected indicator border-top color, focus ring color, and hover color",
+            "categories": [
+                "border"
+            ]
+        }
+    ],
+    "d2l-tab-panel": [],
+    "d2l-tag-list": [],
+    "d2l-tag-list-item": [
+        {
+            "color": "--d2l-color-regolith",
+            "usage": "background-color for tag items",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "rgba(0, 0, 0, 0.03)",
+            "usage": "box-shadow for tag items",
+            "categories": [
+                "shadow"
+            ]
+        },
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "text color for tag items",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-gypsum",
+            "usage": "outline color for tag items",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-sylvite",
+            "usage": "background-color on hover and focus",
+            "categories": [
+                "background"
+            ]
+        },
+        {
+            "color": "--d2l-color-mica",
+            "usage": "outline color on hover when not focused",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-chromite",
+            "usage": "clear button icon fill color",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-tungsten",
+            "usage": "clear button icon fill color on hover",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-tooltip": [
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "default background and border color for tooltips",
+            "categories": [
+                "background",
+                "border"
+            ]
+        },
+        {
+            "color": "rgba(255, 255, 255, 0.32)",
+            "usage": "outline color for tooltips",
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "color": "--d2l-color-cinnabar",
+            "usage": "background and border color for error state",
+            "categories": [
+                "background",
+                "border"
+            ]
+        },
+        {
+            "color": "white",
+            "usage": "text color for tooltip content",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-tooltip-help": [],
+    "d2l-typography": [
+        {
+            "color": "--d2l-color-ferrite",
+            "usage": "text color for standard typography and reset styles",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "--d2l-color-tungsten",
+            "usage": "text color for body-small styles",
+            "categories": [
+                "foreground"
+            ]
+        },
+        {
+            "color": "#D3D9E3",
+            "usage": "fill color for blockquote SVG icon",
+            "categories": [
+                "foreground"
+            ]
+        }
+    ],
+    "d2l-validation-custom": []
 }

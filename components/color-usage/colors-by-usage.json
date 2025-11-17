@@ -1,344 +1,2167 @@
 {
-    "--d2l-color-gypsum": {
-        "summary": "Light gray background color used for default and interactive states across buttons and calendar",
+    "white": {
+        "summary": "Pure white providing clean backgrounds for cards, dialogs, and menus, plus high-contrast text on colored surfaces",
+        "categories": [
+            "background",
+            "border",
+            "foreground",
+            "other"
+        ],
         "usages": [
             {
-                "component": "d2l-button",
-                "usage": "background-color for default button state"
-            },
-            {
-                "component": "d2l-button",
-                "usage": "background-color on hover, focus, and active states"
-            },
-            {
-                "component": "d2l-button-subtle",
-                "usage": "background-color on hover, focus, and active states"
+                "component": "d2l-alert",
+                "usage": "background color for alert container",
+                "categories": [
+                    "background"
+                ]
             },
             {
                 "component": "d2l-button-icon",
-                "usage": "background-color on hover (default theme)"
+                "usage": "icon fill color when translucent, focus ring color when translucent",
+                "categories": [
+                    "foreground"
+                ]
             },
             {
-                "component": "d2l-calendar",
-                "usage": "border-bottom for table headers, background-color on hover for date buttons"
-            }
-        ]
-    },
-    "--d2l-color-ferrite": {
-        "summary": "Dark gray text color used for buttons and calendar dates",
-        "usages": [
-            {
-                "component": "d2l-button",
-                "usage": "text color for default button state"
+                "component": "d2l-count-badge-mixin",
+                "usage": "text color when type is notification",
+                "categories": [
+                    "foreground"
+                ]
             },
             {
-                "component": "d2l-calendar",
-                "usage": "text color for date buttons"
+                "component": "d2l-count-badge-icon",
+                "usage": "border color for badge number positioning",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-dialog-styles",
+                "usage": "background-color for dialog outer container",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-button",
+                "usage": "icon color when primary attribute is set",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-meter-styles",
+                "usage": "stroke and color for progress bar and text when foreground-light attribute is set",
+                "categories": [
+                    "other"
+                ]
+            },
+            {
+                "component": "d2l-meter-linear",
+                "usage": "background-color for inner bar and text color when foreground-light attribute is set",
+                "categories": [
+                    "background",
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-selection-controls",
+                "usage": "background-color for controls container",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-status-indicator",
+                "usage": "text color when bold attribute is set",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-tabs",
+                "usage": "background-color for tabs",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-tooltip",
+                "usage": "text color for tooltip content",
+                "categories": [
+                    "foreground"
+                ]
             }
         ]
     },
     "--d2l-color-mica": {
-        "summary": "Medium gray color used for interactive states, borders, and dividers across buttons, alerts, and floating elements",
+        "summary": "Subtle interactive state color creating gentle hover backgrounds and soft structural divisions through borders and separators throughout the UI",
+        "categories": [
+            "background",
+            "border",
+            "foreground",
+            "other",
+            "shadow"
+        ],
         "usages": [
-            {
-                "component": "d2l-button",
-                "usage": "background-color on hover, focus, and active states"
-            },
-            {
-                "component": "d2l-button-add",
-                "usage": "default line color"
-            },
-            {
-                "component": "d2l-button-move",
-                "usage": "icon background-color on hover (default theme)"
-            },
-            {
-                "component": "d2l-floating-buttons",
-                "usage": "border-top-color when floating"
-            },
             {
                 "component": "d2l-alert",
-                "usage": "default border color"
-            }
-        ]
-    },
-    "--d2l-color-celestine": {
-        "summary": "Primary brand blue used for primary actions, focus states, and selection indicators across buttons, calendar, and interactive elements",
-        "usages": [
+                "usage": "default border color",
+                "categories": [
+                    "border"
+                ]
+            },
             {
                 "component": "d2l-button",
-                "usage": "background-color when primary attribute is set"
-            },
-            {
-                "component": "d2l-button-subtle",
-                "usage": "text color and icon color for button content"
-            },
-            {
-                "component": "d2l-button-icon",
-                "usage": "background-color on hover when translucent"
+                "usage": "background-color on hover, focus, and active states",
+                "categories": [
+                    "background"
+                ]
             },
             {
                 "component": "d2l-button-add",
-                "usage": "icon and text color when visible or in icon-and-text mode"
-            },
-            {
-                "component": "d2l-calendar",
-                "usage": "outline color on focus for date buttons, outline color for selected date, background-color for day info indicator"
-            }
-        ]
-    },
-    "--d2l-color-celestine-minus-1": {
-        "summary": "Darker shade of primary blue used for hover and focus states on primary buttons and interactive elements",
-        "usages": [
-            {
-                "component": "d2l-button",
-                "usage": "background-color on hover, focus, and active states when primary"
-            },
-            {
-                "component": "d2l-button-subtle",
-                "usage": "text color and icon color on hover, focus, and active states"
-            },
-            {
-                "component": "d2l-button-add",
-                "usage": "line color on hover and focus"
-            }
-        ]
-    },
-    "--d2l-color-tungsten": {
-        "summary": "Dark gray icon fill color used as default in light theme",
-        "usages": [
-            {
-                "component": "d2l-button-icon",
-                "usage": "icon fill color (default theme)"
+                "usage": "default line color",
+                "categories": [
+                    "other"
+                ]
             },
             {
                 "component": "d2l-button-move",
-                "usage": "icon fill color (default theme)"
-            }
-        ]
-    },
-    "--d2l-color-sylvite": {
-        "summary": "Light gray icon fill color used in dark theme mode",
-        "usages": [
-            {
-                "component": "d2l-button-icon",
-                "usage": "icon fill color when dark theme"
-            },
-            {
-                "component": "d2l-button-move",
-                "usage": "icon fill color when dark theme"
-            }
-        ]
-    },
-    "--d2l-color-celestine-plus-1": {
-        "summary": "Lighter shade of primary blue used for focus rings in dark theme",
-        "usages": [
-            {
-                "component": "d2l-button-icon",
-                "usage": "focus ring color when dark theme"
-            },
-            {
-                "component": "d2l-button-move",
-                "usage": "focus ring color when dark theme"
-            }
-        ]
-    },
-    "--d2l-color-galena": {
-        "summary": "Gray color used for icons in their default non-interactive state",
-        "usages": [
-            {
-                "component": "d2l-button-add",
-                "usage": "icon color in default state (icon mode)"
-            }
-        ]
-    },
-    "#ffffff": {
-        "summary": "Pure white used for text on primary buttons, backgrounds, and icon colors",
-        "usages": [
-            {
-                "component": "d2l-button",
-                "usage": "text color when primary attribute is set"
-            },
-            {
-                "component": "d2l-button-subtle",
-                "usage": "count badge foreground color"
-            },
-            {
-                "component": "d2l-button-add",
-                "usage": "circle background fill in SVG icon"
-            },
-            {
-                "component": "d2l-button-move",
-                "usage": "background-color on focus (default theme)"
-            },
-            {
-                "component": "d2l-button-split",
-                "usage": "icon color when primary attribute is set"
+                "usage": "icon background-color on hover (default theme)",
+                "categories": [
+                    "background"
+                ]
             },
             {
                 "component": "d2l-floating-buttons",
-                "usage": "solid background-color when floating"
-            }
-        ]
-    },
-    "white": {
-        "summary": "White color used for translucent button styling and alert backgrounds",
-        "usages": [
-            {
-                "component": "d2l-button-icon",
-                "usage": "icon fill color when translucent, focus ring color when translucent"
+                "usage": "border-top-color when floating",
+                "categories": [
+                    "border"
+                ]
             },
             {
-                "component": "d2l-alert",
-                "usage": "background color for alert container"
-            }
-        ]
-    },
-    "#000000": {
-        "summary": "Pure black used for dark theme focus backgrounds",
-        "usages": [
-            {
-                "component": "d2l-button-move",
-                "usage": "background-color on focus when dark theme"
-            }
-        ]
-    },
-    "rgba(0, 0, 0, 0.5)": {
-        "summary": "Semi-transparent black used for translucent button backgrounds",
-        "usages": [
-            {
-                "component": "d2l-button-icon",
-                "usage": "background-color when translucent attribute is set"
-            }
-        ]
-    },
-    "rgba(51, 53, 54, 0.9)": {
-        "summary": "Semi-transparent dark gray (tungsten variation) used for hover states in dark theme",
-        "usages": [
-            {
-                "component": "d2l-button-icon",
-                "usage": "background-color on hover when dark theme (tungsten @70% @90%)"
+                "component": "d2l-dialog-styles",
+                "usage": "border color for dialog outer container",
+                "categories": [
+                    "border"
+                ]
             },
             {
-                "component": "d2l-button-move",
-                "usage": "icon background-color on hover when dark theme (tungsten @70% @90%)"
-            }
-        ]
-    },
-    "rgba(255, 255, 255, 0.88)": {
-        "summary": "Semi-transparent white used for floating button backgrounds",
-        "usages": [
+                "component": "d2l-dropdown-content-styles",
+                "usage": "default border-color for dropdown content (light theme)",
+                "categories": [
+                    "border"
+                ]
+            },
             {
-                "component": "d2l-floating-buttons",
-                "usage": "semi-transparent background-color when floating"
-            }
-        ]
-    },
-    "rgba(32, 33, 34, 0.2)": {
-        "summary": "Semi-transparent dark gray (ferrite variation) used for box shadows",
-        "usages": [
+                "component": "d2l-empty-state-simple",
+                "usage": "border color for simple empty state container",
+                "categories": [
+                    "border"
+                ]
+            },
             {
-                "component": "d2l-floating-buttons",
-                "usage": "box-shadow color when floating (ferrite)"
-            }
-        ]
-    },
-    "transparent": {
-        "summary": "Transparent color used for borders in high contrast mode",
-        "usages": [
+                "component": "d2l-list-item-mixin",
+                "usage": "border-top color for separators, border color for dragging states",
+                "categories": [
+                    "border"
+                ]
+            },
             {
-                "component": "d2l-button-styles",
-                "usage": "border color in high contrast mode (can be overridden by system colors)"
-            }
-        ]
-    },
-    "--d2l-color-regolith": {
-        "summary": "Semi-transparent gray used for backdrop overlays",
-        "usages": [
+                "component": "d2l-list-item-drag-handle",
+                "usage": "background-color on hover",
+                "categories": [
+                    "background"
+                ]
+            },
             {
-                "component": "d2l-backdrop",
-                "usage": "semi-transparent background color for backdrop overlay"
+                "component": "d2l-list-item-drag-image",
+                "usage": "border color for drag image",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-menu",
+                "usage": "icon fill color in dark theme",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-pager-load-more",
+                "usage": "border-right color for separator",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-progress",
+                "usage": "inset box-shadow color for progress bar track",
+                "categories": [
+                    "shadow"
+                ]
+            },
+            {
+                "component": "d2l-scroll-wrapper",
+                "usage": "dashed border-inline color for container and border color for scroll buttons",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-table-wrapper",
+                "usage": "border color for default table type",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-tag-list-item",
+                "usage": "outline color on hover when not focused",
+                "categories": [
+                    "border"
+                ]
             }
         ]
     },
     "--d2l-color-feedback-error": {
-        "summary": "Red color used to indicate errors or critical states",
+        "summary": "Error and invalid state indicator providing clear visual feedback for validation failures and critical dialogs",
+        "categories": [
+            "border"
+        ],
         "usages": [
             {
                 "component": "d2l-alert",
-                "usage": "border-inline-start-color when type is critical or error"
+                "usage": "border-inline-start-color when type is critical or error",
+                "categories": [
+                    "border"
+                ]
             }
         ]
     },
     "--d2l-color-feedback-warning": {
-        "summary": "Orange/yellow color used to indicate warnings",
+        "summary": "Cautionary state indicator drawing attention to warnings and information requiring user awareness",
+        "categories": [
+            "border"
+        ],
         "usages": [
             {
                 "component": "d2l-alert",
-                "usage": "border-inline-start-color when type is warning"
+                "usage": "border-inline-start-color when type is warning",
+                "categories": [
+                    "border"
+                ]
             }
         ]
     },
     "--d2l-color-feedback-action": {
-        "summary": "Blue color used to indicate actionable items or information",
+        "summary": "Informational state indicator for actionable alerts and call-to-action messages requiring user response",
+        "categories": [
+            "border"
+        ],
         "usages": [
             {
                 "component": "d2l-alert",
-                "usage": "border-inline-start-color when type is default or call-to-action"
+                "usage": "border-inline-start-color when type is default or call-to-action",
+                "categories": [
+                    "border"
+                ]
             }
         ]
     },
     "--d2l-color-feedback-success": {
-        "summary": "Green color used to indicate success or completion",
+        "summary": "Positive confirmation indicator signaling successful completion and affirmative states",
+        "categories": [
+            "border"
+        ],
         "usages": [
             {
                 "component": "d2l-alert",
-                "usage": "border-inline-start-color when type is success"
-            }
-        ]
-    },
-    "--d2l-color-celestine-plus-2": {
-        "summary": "Lightest shade of primary blue used for selected states",
-        "usages": [
-            {
-                "component": "d2l-calendar",
-                "usage": "background-color for selected date button"
+                "usage": "border-inline-start-color when type is success",
+                "categories": [
+                    "border"
+                ]
             }
         ]
     },
     "rgba(0, 0, 0, 0.1)": {
-        "summary": "Semi-transparent black used for subtle shadows",
+        "summary": "Subtle elevation shadow creating gentle depth for toasts, dialogs, and interactive list items without heavy visual weight",
+        "categories": [
+            "shadow"
+        ],
         "usages": [
             {
                 "component": "d2l-alert-toast",
-                "usage": "box-shadow color for toast container"
+                "usage": "box-shadow color for toast container",
+                "categories": [
+                    "shadow"
+                ]
+            },
+            {
+                "component": "d2l-dialog-styles",
+                "usage": "box-shadow for dialog outer container",
+                "categories": [
+                    "shadow"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usage": "box-shadow for hover state",
+                "categories": [
+                    "shadow"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-regolith": {
+        "summary": "Neutral foundation color for disabled, loading, and low-emphasis backgrounds providing subtle contrast without distraction",
+        "categories": [
+            "background"
+        ],
+        "usages": [
+            {
+                "component": "d2l-backdrop",
+                "usage": "semi-transparent background color for backdrop overlay",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-card-loading-shimmer",
+                "usage": "background-color for loading indicator container and animation",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-input-checkbox",
+                "usage": "default background-color for checkbox",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-input-radio-styles",
+                "usage": "background-color for radio button",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-list-item-nav-mixin",
+                "usage": "background-color when selected",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-pager-load-more",
+                "usage": "background-color for load more button",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-scroll-wrapper",
+                "usage": "background-color for scroll buttons",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-skeleton-mixin",
+                "usage": "background-color in pulsing animation (50% keyframe)",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-switch",
+                "usage": "background-color for switch inner when off",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-table-wrapper",
+                "usage": "header background-color for default table type",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-tag-list-item",
+                "usage": "background-color for tag items",
+                "categories": [
+                    "background"
+                ]
             }
         ]
     },
     "rgba(255, 255, 255, 0)": {
-        "summary": "Transparent white used for gradient effects",
+        "summary": "Transparent gradient anchor creating smooth fade effects for overflow content",
+        "categories": [
+            "gradient"
+        ],
         "usages": [
             {
                 "component": "d2l-breadcrumbs",
-                "usage": "gradient start color (transparent white) for overflow fade effect"
+                "usage": "gradient start color (transparent white) for overflow fade effect",
+                "categories": [
+                    "gradient"
+                ]
             }
         ]
     },
     "rgb(251, 252, 252)": {
-        "summary": "Very light gray used for gradient effects and backgrounds",
+        "summary": "Near-white gradient terminus matching page background for seamless overflow fade transitions",
+        "categories": [
+            "gradient"
+        ],
         "usages": [
             {
                 "component": "d2l-breadcrumbs",
-                "usage": "gradient end color for overflow fade effect"
+                "usage": "gradient end color for overflow fade effect",
+                "categories": [
+                    "gradient"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-gypsum": {
+        "summary": "Lightweight neutral surface color for default button states, subtle borders, and understated interactive backgrounds across the design system",
+        "categories": [
+            "background",
+            "border",
+            "foreground",
+            "shadow"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button",
+                "usage": "background-color for default button state",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-button-subtle",
+                "usage": "background-color on hover, focus, and active states",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-button-icon",
+                "usage": "background-color on hover (default theme)",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-calendar",
+                "usage": "border-bottom for table headers, background-color on hover for date buttons",
+                "categories": [
+                    "background",
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-card",
+                "usage": "border color for card",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-card-loading-shimmer",
+                "usage": "box-shadow inset color for bottom border",
+                "categories": [
+                    "border",
+                    "shadow"
+                ]
+            },
+            {
+                "component": "d2l-count-badge-mixin",
+                "usage": "default background-color when type is count (can be overridden by --d2l-count-badge-background-color)",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-dialog-fullscreen",
+                "usage": "border-bottom for header, border-top for footer in desktop view",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-handle",
+                "usage": "background-color for drag handle",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-menu",
+                "usage": "border color (light theme)",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-meter-styles",
+                "usage": "stroke color for full meter bar background",
+                "categories": [
+                    "background",
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-meter-linear",
+                "usage": "background-color for full linear meter bar",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-pager-load-more",
+                "usage": "border-color on hover",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-progress",
+                "usage": "background-color for progress bar track",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-table-wrapper",
+                "usage": "border color for light table type",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-table-col-sort-button",
+                "usage": "background-color on hover",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-tabs",
+                "usage": "border-bottom for layout, scroll button background, and overflow borders",
+                "categories": [
+                    "background",
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-tag-list-item",
+                "usage": "outline color for tag items",
+                "categories": [
+                    "border"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-ferrite": {
+        "summary": "Primary text and content color ensuring readability and accessibility as the default foreground throughout the interface",
+        "categories": [
+            "background",
+            "border",
+            "foreground",
+            "other"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button",
+                "usage": "text color for default button state",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-calendar",
+                "usage": "text color for date buttons",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-count-badge-mixin",
+                "usage": "default text color when type is count (can be overridden by --d2l-count-badge-foreground-color)",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-dialog-styles",
+                "usage": "text color for native dialog element",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-content-styles",
+                "usage": "default foreground-color for dropdown content (light theme)",
+                "categories": [
+                    "other"
+                ]
+            },
+            {
+                "component": "d2l-filter",
+                "usage": "text color for dimension set values, list header text, and info messages",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-html-block",
+                "usage": "link color in print media",
+                "categories": [
+                    "other"
+                ]
+            },
+            {
+                "component": "d2l-input-styles",
+                "usage": "text color for inputs",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-input-checkbox",
+                "usage": "text color for checkbox label",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-input-radio-styles",
+                "usage": "text color for radio label",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usage": "text color for select",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-link",
+                "usage": "link color in print media",
+                "categories": [
+                    "other"
+                ]
+            },
+            {
+                "component": "d2l-list-item-content",
+                "usage": "supporting info text color",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-list-item-nav-mixin",
+                "usage": "text color for nav items",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-handle",
+                "usage": "text color for drag handle",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-menu",
+                "usage": "foreground color for text (light theme)",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-meter-styles",
+                "usage": "color and fill for meter text",
+                "categories": [
+                    "other"
+                ]
+            },
+            {
+                "component": "d2l-meter-linear",
+                "usage": "text color for linear meter",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-switch",
+                "usage": "border color for switch inner and toggle button",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-tag-list-item",
+                "usage": "text color for tag items",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-tooltip",
+                "usage": "default background and border color for tooltips",
+                "categories": [
+                    "background",
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-typography",
+                "usage": "text color for standard typography and reset styles",
+                "categories": [
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-celestine": {
+        "summary": "Primary brand color driving user interaction through links, primary actions, focus states, and selection indicators across all interactive elements",
+        "categories": [
+            "background",
+            "border",
+            "foreground",
+            "other"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button",
+                "usage": "background-color when primary attribute is set",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-button-subtle",
+                "usage": "text color and icon color for button content",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-button-icon",
+                "usage": "background-color on hover when translucent",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-button-add",
+                "usage": "icon and text color when visible or in icon-and-text mode",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-calendar",
+                "usage": "outline color on focus for date buttons, outline color for selected date, background-color for day info indicator",
+                "categories": [
+                    "background",
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-card",
+                "usage": "text color and text-decoration when card link is hovered or active",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-html-block",
+                "usage": "link color for default, visited, link, and active states; focus ring color",
+                "categories": [
+                    "other"
+                ]
+            },
+            {
+                "component": "d2l-input-styles",
+                "usage": "border color on hover and focus states",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-checkbox",
+                "usage": "border color on hover and focus states",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-radio-styles",
+                "usage": "border color on hover and focus states",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usage": "outline color on hover and focus states",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-link",
+                "usage": "link color for default, visited, active, and link states; icon color",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usage": "text color and outline for interactive states, border color for selected state",
+                "categories": [
+                    "foreground",
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-list-item-link-mixin",
+                "usage": "text color for link items",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-list-item-nav-mixin",
+                "usage": "border color when selected",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-image",
+                "usage": "background-color for drag handle in image",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-list-item-placement-marker",
+                "usage": "stroke and fill color for placement marker",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-loading-spinner",
+                "usage": "default color for spinner animation",
+                "categories": [
+                    "other"
+                ]
+            },
+            {
+                "component": "d2l-menu",
+                "usage": "border color on hover (light theme)",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-meter-styles",
+                "usage": "stroke color for progress meter bar",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-meter-linear",
+                "usage": "background-color for inner progress bar",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-overflow-group",
+                "usage": "icon fill color when opener-style is subtle",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-pager-load-more",
+                "usage": "color for action text",
+                "categories": [
+                    "other"
+                ]
+            },
+            {
+                "component": "d2l-progress",
+                "usage": "background-color for progress bar",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-status-indicator",
+                "usage": "default state border, text color, and bold background",
+                "categories": [
+                    "background",
+                    "foreground",
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-switch",
+                "usage": "icon color when on and hover outline color",
+                "categories": [
+                    "foreground",
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-table-wrapper",
+                "usage": "selected row border color",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-tab",
+                "usage": "focus ring color, hover color, and icon color",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-tab-internal",
+                "usage": "selected indicator border-top color, focus ring color, and hover color",
+                "categories": [
+                    "border"
+                ]
+            }
+        ]
+    },
+    "#ffffff": {
+        "summary": "Pure white providing clean backgrounds for cards, dialogs, and menus, plus high-contrast text on colored surfaces",
+        "categories": [
+            "background",
+            "foreground",
+            "shadow"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button",
+                "usage": "text color when primary attribute is set",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-button-subtle",
+                "usage": "count badge foreground color",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-button-add",
+                "usage": "circle background fill in SVG icon",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-button-move",
+                "usage": "background-color on focus (default theme)",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-button-split",
+                "usage": "icon color when primary attribute is set",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-floating-buttons",
+                "usage": "solid background-color when floating",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-card",
+                "usage": "background-color for card container",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-content-styles",
+                "usage": "default background-color for dropdown content (light theme)",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-input-styles",
+                "usage": "default background-color for inputs",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usage": "background-color for select",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-menu",
+                "usage": "default background-color for menu (light theme)",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-scroll-wrapper",
+                "usage": "focus ring box-shadow color",
+                "categories": [
+                    "shadow"
+                ]
+            },
+            {
+                "component": "d2l-switch",
+                "usage": "background-color for container and toggle button",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-table-wrapper",
+                "usage": "background-color for tbody and tfoot, also header background for light type",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-table-col-sort-button",
+                "usage": "box-shadow color for focus ring",
+                "categories": [
+                    "shadow"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-celestine-minus-1": {
+        "summary": "Deepened brand color for hover states providing visual feedback on interactive elements and reinforcing clickability",
+        "categories": [
+            "background",
+            "foreground",
+            "other"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button",
+                "usage": "background-color on hover, focus, and active states when primary",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-button-subtle",
+                "usage": "text color and icon color on hover, focus, and active states",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-button-add",
+                "usage": "line color on hover and focus",
+                "categories": [
+                    "other"
+                ]
+            },
+            {
+                "component": "d2l-html-block",
+                "usage": "link color on hover state",
+                "categories": [
+                    "other"
+                ]
+            },
+            {
+                "component": "d2l-link",
+                "usage": "link and icon color on hover state",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-menu",
+                "usage": "foreground color on hover (light theme)",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-overflow-group",
+                "usage": "icon fill color on hover when opener-style is subtle",
+                "categories": [
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-tungsten": {
+        "summary": "Dark theme structural color for borders and backgrounds",
+        "categories": [
+            "background",
+            "border",
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-icon",
+                "usage": "icon fill color (default theme)",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-button-move",
+                "usage": "icon fill color (default theme)",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-card-content-meta",
+                "usage": "text color for meta data",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-content-styles",
+                "usage": "border-color for dropdown content in dark theme",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-icon",
+                "usage": "default icon color",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-list-item-content",
+                "usage": "default secondary text color",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-menu",
+                "usage": "border color in dark theme",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-status-indicator",
+                "usage": "none/null state border, text color, and bold background",
+                "categories": [
+                    "background",
+                    "foreground",
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-tag-list-item",
+                "usage": "clear button icon fill color on hover",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-typography",
+                "usage": "text color for body-small styles",
+                "categories": [
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "rgba(0, 0, 0, 0.5)": {
+        "summary": "Semi-transparent dark overlay for translucent button backgrounds ensuring visibility on light and dark surfaces",
+        "categories": [
+            "background"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-icon",
+                "usage": "background-color when translucent attribute is set",
+                "categories": [
+                    "background"
+                ]
+            }
+        ]
+    },
+    "rgba(51, 53, 54, 0.9)": {
+        "summary": "Semi-transparent background for layered interfaces",
+        "categories": [
+            "background"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-icon",
+                "usage": "background-color on hover when dark theme (tungsten @70% @90%)",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-button-move",
+                "usage": "icon background-color on hover when dark theme (tungsten @70% @90%)",
+                "categories": [
+                    "background"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-sylvite": {
+        "summary": "Light neutral for dark theme contexts ensuring legible text and visible icons on dark backgrounds",
+        "categories": [
+            "background",
+            "border",
+            "foreground",
+            "other"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-icon",
+                "usage": "icon fill color when dark theme",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-button-move",
+                "usage": "icon fill color when dark theme",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-content-styles",
+                "usage": "foreground-color for dropdown content in dark theme",
+                "categories": [
+                    "other"
+                ]
+            },
+            {
+                "component": "d2l-menu",
+                "usage": "foreground color in dark theme",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-object-property-list-item",
+                "usage": "icon color when skeleton attribute is set",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-pager-load-more",
+                "usage": "border color for button and background-color on hover",
+                "categories": [
+                    "background",
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-scroll-wrapper",
+                "usage": "background-color for scroll buttons on hover",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-skeleton-mixin",
+                "usage": "background-color for skeleton elements and border-color for skeleton containers",
+                "categories": [
+                    "background",
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-tag-list-item",
+                "usage": "background-color on hover and focus",
+                "categories": [
+                    "background"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-celestine-plus-1": {
+        "summary": "Brightened brand color for dark theme focus rings maintaining accessibility contrast on dark surfaces",
+        "categories": [
+            "other"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-icon",
+                "usage": "focus ring color when dark theme",
+                "categories": [
+                    "other"
+                ]
+            },
+            {
+                "component": "d2l-button-move",
+                "usage": "focus ring color when dark theme",
+                "categories": [
+                    "other"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-galena": {
+        "summary": "Neutral border and placeholder color for form inputs providing subtle structure without competing with content",
+        "categories": [
+            "border",
+            "foreground",
+            "other"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-add",
+                "usage": "icon color in default state (icon mode)",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-input-styles",
+                "usage": "default border color and placeholder text color",
+                "categories": [
+                    "foreground",
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-checkbox",
+                "usage": "default border color for checkbox",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-radio-styles",
+                "usage": "default border color for radio button",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usage": "default outline color for select",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-menu",
+                "usage": "separator color in dark theme",
+                "categories": [
+                    "other"
+                ]
+            },
+            {
+                "component": "d2l-object-property-list-item",
+                "usage": "color for separator icon",
+                "categories": [
+                    "other"
+                ]
+            },
+            {
+                "component": "d2l-pager-load-more",
+                "usage": "color for info text",
+                "categories": [
+                    "other"
+                ]
+            }
+        ]
+    },
+    "#000000": {
+        "summary": "Pure black for maximum contrast in dark theme focus states and gradient masks",
+        "categories": [
+            "background",
+            "gradient"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-move",
+                "usage": "background-color on focus when dark theme",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-more-less",
+                "usage": "mask-image gradient color for fade effect when collapsed",
+                "categories": [
+                    "gradient"
+                ]
+            }
+        ]
+    },
+    "rgba(255, 255, 255, 0.88)": {
+        "summary": "Translucent white background maintaining visibility while reducing visual weight",
+        "categories": [
+            "background"
+        ],
+        "usages": [
+            {
+                "component": "d2l-floating-buttons",
+                "usage": "semi-transparent background-color when floating",
+                "categories": [
+                    "background"
+                ]
+            }
+        ]
+    },
+    "rgba(32, 33, 34, 0.2)": {
+        "summary": "Shadow color providing depth and visual layering",
+        "categories": [
+            "shadow"
+        ],
+        "usages": [
+            {
+                "component": "d2l-floating-buttons",
+                "usage": "box-shadow color when floating (ferrite)",
+                "categories": [
+                    "shadow"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-content-styles",
+                "usage": "box-shadow for dropdown pointer (ferrite)",
+                "categories": [
+                    "shadow"
+                ]
+            }
+        ]
+    },
+    "transparent": {
+        "summary": "Invisible border maintaining layout consistency in high contrast mode while allowing system colors to override",
+        "categories": [
+            "border"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-styles",
+                "usage": "border color in high contrast mode (can be overridden by system colors)",
+                "categories": [
+                    "border"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-celestine-plus-2": {
+        "summary": "Lightest brand tint for selected and hover backgrounds providing clear visual selection without overwhelming content",
+        "categories": [
+            "background"
+        ],
+        "usages": [
+            {
+                "component": "d2l-calendar",
+                "usage": "background-color for selected date button",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usage": "background-color for selected state",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-menu",
+                "usage": "background-color on hover (light theme)",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-switch",
+                "usage": "background-color for switch inner when on",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-table-wrapper",
+                "usage": "selected row background color",
+                "categories": [
+                    "background"
+                ]
             }
         ]
     },
     "rgba(73, 76, 78, 0.5)": {
-        "summary": "Semi-transparent dark gray used for disabled text",
+        "summary": "Semi-transparent color for subtle visual effects",
+        "categories": [
+            "foreground"
+        ],
         "usages": [
             {
                 "component": "d2l-calendar",
-                "usage": "text color for disabled selected date button"
+                "usage": "text color for disabled selected date button",
+                "categories": [
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "rgba(0, 0, 0, 0.03)": {
+        "summary": "Minimal shadow for subtle depth on nested or overlapping elements",
+        "categories": [
+            "shadow"
+        ],
+        "usages": [
+            {
+                "component": "d2l-card",
+                "usage": "box-shadow for subtle card default state",
+                "categories": [
+                    "shadow"
+                ]
+            },
+            {
+                "component": "d2l-tag-list-item",
+                "usage": "box-shadow for tag items",
+                "categories": [
+                    "shadow"
+                ]
+            }
+        ]
+    },
+    "rgba(0, 0, 0, 0.06)": {
+        "summary": "Subtle elevation shadow creating gentle depth for toasts, dialogs, and interactive list items without heavy visual weight",
+        "categories": [
+            "shadow"
+        ],
+        "usages": [
+            {
+                "component": "d2l-card",
+                "usage": "box-shadow on hover for both normal and subtle cards",
+                "categories": [
+                    "shadow"
+                ]
+            }
+        ]
+    },
+    "rgba(249, 250, 251, 0.1)": {
+        "summary": "Gradient color for smooth transitions and visual effects",
+        "categories": [
+            "gradient"
+        ],
+        "usages": [
+            {
+                "component": "d2l-card-loading-shimmer",
+                "usage": "gradient start and end color in loading shimmer animation",
+                "categories": [
+                    "gradient"
+                ]
+            }
+        ]
+    },
+    "rgba(114, 119, 122, 0.1)": {
+        "summary": "Gradient color for smooth transitions and visual effects",
+        "categories": [
+            "gradient"
+        ],
+        "usages": [
+            {
+                "component": "d2l-card-loading-shimmer",
+                "usage": "gradient middle color in loading shimmer animation",
+                "categories": [
+                    "gradient"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-carnelian-minus-1": {
+        "summary": "Attention-grabbing notification color drawing immediate focus to alerts and important count badges",
+        "categories": [
+            "background"
+        ],
+        "usages": [
+            {
+                "component": "d2l-count-badge-mixin",
+                "usage": "background-color when type is notification",
+                "categories": [
+                    "background"
+                ]
+            }
+        ]
+    },
+    "rgba(205, 213, 220, 0.35)": {
+        "summary": "Semi-transparent color for subtle visual effects",
+        "categories": [
+            "border"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dialog-styles",
+                "usage": "border-color when nested dialog is showing",
+                "categories": [
+                    "border"
+                ]
+            }
+        ]
+    },
+    "#f9fbff": {
+        "summary": "Custom icon color for specific component requirements",
+        "categories": [
+            "background",
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dialog-styles",
+                "usage": "background-color for dialog backdrop",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-skeleton-mixin",
+                "usage": "SVG fill color in paragraph skeleton animations",
+                "categories": [
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-cinnabar": {
+        "summary": "Error and invalid state indicator providing clear visual feedback for validation failures and critical dialogs",
+        "categories": [
+            "background",
+            "border",
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dialog-styles",
+                "usage": "border-block-start color for critical dialog header",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-styles",
+                "usage": "border color when input is invalid",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-radio-styles",
+                "usage": "border color when radio is invalid",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usage": "outline color when select is invalid",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-status-indicator",
+                "usage": "alert state border, text color, and bold background",
+                "categories": [
+                    "background",
+                    "foreground",
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-tooltip",
+                "usage": "background and border color for error state",
+                "categories": [
+                    "background",
+                    "border"
+                ]
+            }
+        ]
+    },
+    "rgba(0, 0, 0, 0.05)": {
+        "summary": "Minimal shadow for subtle depth on nested or overlapping elements",
+        "categories": [
+            "shadow"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dialog-styles",
+                "usage": "box-shadow for header and footer when content overflows",
+                "categories": [
+                    "shadow"
+                ]
+            }
+        ]
+    },
+    "rgba(0, 0, 0, 0.15)": {
+        "summary": "Moderate shadow for elevated surfaces like dropdowns and floating elements",
+        "categories": [
+            "shadow"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dropdown-content-styles",
+                "usage": "default shadow-color for dropdown content (light theme)",
+                "categories": [
+                    "shadow"
+                ]
+            },
+            {
+                "component": "d2l-scroll-wrapper",
+                "usage": "box-shadow color for scroll buttons",
+                "categories": [
+                    "shadow"
+                ]
+            }
+        ]
+    },
+    "#333536": {
+        "summary": "Custom background color for specialized component styling",
+        "categories": [
+            "background"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dropdown-content-styles",
+                "usage": "background-color for dropdown content in dark theme (tungsten @ 70%)",
+                "categories": [
+                    "background"
+                ]
+            },
+            {
+                "component": "d2l-menu",
+                "usage": "background-color for menu in dark theme (tungsten @ 70%)",
+                "categories": [
+                    "background"
+                ]
+            }
+        ]
+    },
+    "rgba(0, 0, 0, 1)": {
+        "summary": "Shadow color for depth and elevation",
+        "categories": [
+            "shadow"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dropdown-content-styles",
+                "usage": "shadow-color for dropdown content in dark theme",
+                "categories": [
+                    "shadow"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-chromite": {
+        "summary": "Muted color for disabled elements communicating unavailability through reduced visual prominence",
+        "categories": [
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-filter",
+                "usage": "text color for disabled dimension set values and body small text",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-tag-list-item",
+                "usage": "clear button icon fill color",
+                "categories": [
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "rgba(177, 185, 190, 0.2)": {
+        "summary": "Shadow color providing depth and visual layering",
+        "categories": [
+            "shadow"
+        ],
+        "usages": [
+            {
+                "component": "d2l-input-styles",
+                "usage": "box-shadow inset color (corundum)",
+                "categories": [
+                    "shadow"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usage": "box-shadow inset color (corundum)",
+                "categories": [
+                    "shadow"
+                ]
+            }
+        ]
+    },
+    "#cd2026": {
+        "summary": "Custom icon color for specific component requirements",
+        "categories": [
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-input-styles",
+                "usage": "fill color for invalid icon SVG",
+                "categories": [
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "#FFF": {
+        "summary": "High-contrast white text for maximum legibility on colored and dark backgrounds",
+        "categories": [
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-input-styles",
+                "usage": "fill color for invalid icon SVG inner details",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-loading-spinner",
+                "usage": "fill color for spinner SVG paths and circles",
+                "categories": [
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "rgba(249, 251, 255, 0.5)": {
+        "summary": "Gradient color for smooth transitions and visual effects",
+        "categories": [
+            "background",
+            "gradient"
+        ],
+        "usages": [
+            {
+                "component": "d2l-input-checkbox",
+                "usage": "gradient color for disabled checkbox background (regolith at 50%)",
+                "categories": [
+                    "background",
+                    "gradient"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-corundum": {
+        "summary": "Subdued border color for disabled form controls and subtle separators indicating non-interactive states",
+        "categories": [
+            "border",
+            "other"
+        ],
+        "usages": [
+            {
+                "component": "d2l-input-checkbox",
+                "usage": "border color for disabled checkbox",
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-menu",
+                "usage": "separator color (light theme)",
+                "categories": [
+                    "other"
+                ]
+            }
+        ]
+    },
+    "#494C4E": {
+        "summary": "Custom icon color for specific component requirements",
+        "categories": [
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-input-checkbox",
+                "usage": "fill color for checkbox check mark and indeterminate mark SVG",
+                "categories": [
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "#494c4e": {
+        "summary": "Custom icon color for specific component requirements",
+        "categories": [
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-input-radio-styles",
+                "usage": "fill color for radio check SVG",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-image",
+                "usage": "fill color for drag handle icon SVG",
+                "categories": [
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "#565A5C": {
+        "summary": "Custom icon color for specific component requirements",
+        "categories": [
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-input-select-styles",
+                "usage": "stroke color for dropdown arrow SVG",
+                "categories": [
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "#f3fbff": {
+        "summary": "Custom background color for specialized component styling",
+        "categories": [
+            "background"
+        ],
+        "usages": [
+            {
+                "component": "d2l-list-item-mixin",
+                "usage": "background-color for hover state",
+                "categories": [
+                    "background"
+                ]
+            }
+        ]
+    },
+    "#ededfa": {
+        "summary": "Custom icon color for specific component requirements",
+        "categories": [
+            "background",
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-loading-spinner",
+                "usage": "background stroke color for spinner track",
+                "categories": [
+                    "background",
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "#000": {
+        "summary": "Pure black for maximum contrast in dark theme focus states and gradient masks",
+        "categories": [
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-loading-spinner",
+                "usage": "fill color for spinner SVG elements in certain modes",
+                "categories": [
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "#E6EAF0": {
+        "summary": "Custom icon color for specific component requirements",
+        "categories": [
+            "background",
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-loading-spinner",
+                "usage": "fill color for spinner background paths",
+                "categories": [
+                    "background",
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "#123559": {
+        "summary": "Custom background color for specialized component styling",
+        "categories": [
+            "background"
+        ],
+        "usages": [
+            {
+                "component": "d2l-menu",
+                "usage": "background-color on hover in dark theme (celestine-1 @ 50%)",
+                "categories": [
+                    "background"
+                ]
+            }
+        ]
+    },
+    "rgba(255, 255, 255, 0.5)": {
+        "summary": "Semi-transparent white for translucent backgrounds and progressive disclosure",
+        "categories": [
+            "background",
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-meter-styles",
+                "usage": "stroke color for full meter bar when foreground-light attribute is set",
+                "categories": [
+                    "foreground"
+                ]
+            },
+            {
+                "component": "d2l-meter-linear",
+                "usage": "background-color for full bar when foreground-light attribute is set",
+                "categories": [
+                    "background"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-olivine": {
+        "summary": "Success state color indicating completion and progress achievement",
+        "categories": [
+            "background"
+        ],
+        "usages": [
+            {
+                "component": "d2l-progress",
+                "usage": "background-color for progress bar when complete",
+                "categories": [
+                    "background"
+                ]
+            }
+        ]
+    },
+    "rgba(0, 0, 0, 0.3)": {
+        "summary": "Prominent shadow for scrolled or elevated content requiring clear depth separation",
+        "categories": [
+            "shadow"
+        ],
+        "usages": [
+            {
+                "component": "d2l-selection-controls",
+                "usage": "box-shadow color when scrolled",
+                "categories": [
+                    "shadow"
+                ]
+            }
+        ]
+    },
+    "#f1f5fb": {
+        "summary": "Custom icon color for specific component requirements",
+        "categories": [
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-skeleton-mixin",
+                "usage": "SVG fill color for paragraph skeleton patterns",
+                "categories": [
+                    "foreground"
+                ]
+            }
+        ]
+    },
+    "--d2l-color-olivine-minus-1": {
+        "summary": "Deepened success color for status indicators emphasizing positive outcomes and successful states",
+        "categories": [
+            "background",
+            "border",
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-status-indicator",
+                "usage": "success state border, text color, and bold background",
+                "categories": [
+                    "background",
+                    "foreground",
+                    "border"
+                ]
+            }
+        ]
+    },
+    "rgba(255, 255, 255, 0.32)": {
+        "summary": "Semi-transparent white for translucent backgrounds and progressive disclosure",
+        "categories": [
+            "border"
+        ],
+        "usages": [
+            {
+                "component": "d2l-tooltip",
+                "usage": "outline color for tooltips",
+                "categories": [
+                    "border"
+                ]
+            }
+        ]
+    },
+    "#D3D9E3": {
+        "summary": "Custom icon color for specific component requirements",
+        "categories": [
+            "foreground"
+        ],
+        "usages": [
+            {
+                "component": "d2l-typography",
+                "usage": "fill color for blockquote SVG icon",
+                "categories": [
+                    "foreground"
+                ]
             }
         ]
     }
