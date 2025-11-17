@@ -70,7 +70,7 @@ The list components are fairly complex and aim to be usable by all our users. In
 
 * When the `grid` attribute is used on the `d2l-list` component, it enables the list to follow the [Grid Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/). More details on this are [below](#aria-layout-grid).
 
-* When using the `d2l-list-item-nav` component and/or mixin, usage of the `current` attribute adds the `aria-current` attribute to "page" for the `current` item and "location" for any parent and ancestors of the item. The components work together to keep these attributes up-to-date on subsequent selection. 
+* When using the `d2l-list-item-nav` component and/or mixin, usage of the `current` attribute adds the `aria-current` attribute to "page" for the `current` item and "location" for any parent and ancestors of the item. The components work together to keep these attributes up-to-date on subsequent selection.
 
    * Usage of the new `current` attribute over the existing `selected` attribute corresponds to `aria-current` and also leaves open the possibility of using both `current` and selection behavior together.
 
@@ -635,6 +635,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 
 | Property | Type | Description |
 |---|---|---|
+| `disable-keyboard-drag` | Boolean | Disables keyboard dragging interaction. If enabled while implementing drag & drop, a keyboard alternative should be provided for the dragging functionality. |
 | `draggable` |  Boolean | Whether the item is draggable |
 | `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
 | `drag-target-handle-only` | Boolean | Make the drag target the drag handle only. |

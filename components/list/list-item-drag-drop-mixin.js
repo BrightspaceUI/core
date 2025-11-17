@@ -251,7 +251,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
 			/**
-			 * Disables keyboard dragging interaction
+			 * **Drag & drop:** Disables keyboard dragging interaction. If draggable, a keyboard alternative should be provided for the dragging functionality.
 			 * @type {boolean}
 			 */
 			disableKeyboardDrag: { type: Boolean, attribute: 'disable-keyboard-drag' },
