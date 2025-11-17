@@ -1,6 +1,7 @@
 import { aTimeout, clickElem, expect, fixture, html, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
 import { checkIfDatesEqual,
 	getDatesInMonthArray,
+	getMinMaxDatesInView,
 	getNextMonth,
 	getNumberOfDaysFromPrevMonthToShow,
 	getNumberOfDaysInMonth,
@@ -20,6 +21,85 @@ describe('d2l-calendar', () => {
 		it('should construct', () => {
 			runConstructor('d2l-calendar');
 		});
+	});
+
+	describe('properties', () => {
+
+		describe('minValue and maxValue', () => {
+			// TODO: fix to not use a try catch
+			it('throws error when minValue is after maxValue', async() => {
+				let errorThrown = false;
+				try {
+					await fixture(html`<d2l-calendar min-value="2015-09-20" max-value="2015-09-10"></d2l-calendar>`);
+				} catch (e) {
+					errorThrown = true;
+					expect(e.message).to.include('min-value to be before max-value');
+				}
+				expect(errorThrown).to.be.true;
+			});
+		});
+
+	});
+
+	describe('methods', () => {
+
+		describe('reset', () => {
+			// TODO: think more about this
+			it('resets focus date to initial focus date', async() => {
+				const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-02"></d2l-calendar>`);
+				
+				// Change focus date
+				const el = calendar.shadowRoot.querySelector('td[data-date="15"]');
+				setTimeout(() => dispatchKeyEvent(el, 13)); // Enter key
+				await oneEvent(calendar, 'd2l-calendar-selected');
+				await aTimeout(1);
+				
+				expect(calendar._focusDate).to.deep.equal(new Date(2015, 8, 15));
+				
+				// Reset
+				await calendar.reset();
+				expect(calendar._focusDate).to.deep.equal(new Date(2015, 8, 15)); // Should be selected value
+			});
+
+			it('allows focusing disabled dates when allowDisabled is true', async() => {
+				const calendar = await fixture(html`<d2l-calendar min-value="2015-09-10" max-value="2015-09-20" selected-value="2015-09-15"></d2l-calendar>`);
+				
+				await calendar.reset(true);
+				// Should not throw error even with disabled dates
+				expect(calendar._focusDate).to.exist;
+			});
+		});
+
+		describe('getShownYearAndMonth', () => {
+			it('gets the date of the year and month in view', async() => {
+				const calendar = await fixture(normalFixture);
+				expect(calendar.getShownYearAndMonth()).to.deep.equal({ year: 2015, month: 8 });
+			});
+
+			it('gets the new date of the year and month in view after the view changes', async() => {
+				const calendar = await fixture(normalFixture);
+				const el = calendar.shadowRoot.querySelectorAll('d2l-button-icon')[0];
+				clickElem(el);
+				await oneEvent(calendar, 'd2l-calendar-view-change');
+				expect(calendar.getShownYearAndMonth()).to.deep.equal({ year: 2015, month: 7 });
+			});
+		});
+
+	});
+
+	describe('edge cases', () => {
+
+		it('does not select disabled dates on click', async() => {
+			const calendar = await fixture(html`<d2l-calendar min-value="2015-09-10" max-value="2015-09-20" selected-value="2015-09-15"></d2l-calendar>`);
+			const disabledButton = calendar.shadowRoot.querySelector('td[data-date="5"][data-month="8"] button');
+			
+			const initialSelectedValue = calendar.selectedValue;
+			await clickElem(disabledButton);
+			
+			// selectedValue should not change
+			expect(calendar.selectedValue).to.equal(initialSelectedValue);
+		});
+
 	});
 
 	describe('events', () => {
@@ -585,6 +665,32 @@ describe('d2l-calendar', () => {
 
 			it('should return November as previous month of December', () => {
 				expect(getPrevMonth(11)).to.equal(10);
+			});
+		});
+
+		describe('getMinMaxDatesInView', () => {
+			it('returns correct min and max dates for month in view', () => {
+				const result = getMinMaxDatesInView(null, '2020-02-15', null, null);
+				// February 2020 starts on Saturday, so first week includes Jan 26-Feb 1
+				expect(result.minValue).to.deep.equal(new Date(2020, 0, 26));
+				// February 2020 ends on Saturday Feb 29, so last week is Feb 23-29
+				expect(result.maxValue).to.deep.equal(new Date(2020, 1, 29));
+			});
+
+			it('returns correct dates when using initialValue', () => {
+				const result = getMinMaxDatesInView('2020-03-15', null, null, null);
+				expect(result.minValue).to.deep.equal(new Date(2020, 2, 1));
+				expect(result.maxValue).to.deep.equal(new Date(2020, 3, 4));
+			});
+
+			it('returns correct dates when using minValue fallback', () => {
+				const newToday = new Date('2018-01-10T12:00Z');
+				const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
+
+				const result = getMinMaxDatesInView(null, null, '2020-02-01', null);
+				expect(result.minValue).to.deep.equal(new Date(2020, 0, 26));
+
+				clock.restore();
 			});
 		});
 	});
