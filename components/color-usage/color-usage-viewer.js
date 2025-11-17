@@ -9,7 +9,7 @@ import { css, html, LitElement } from 'lit';
  */
 class ColorUsageViewer extends LitElement {
 
-	static get properties() {
+		static get properties() {
 		return {
 			/**
 			 * The selected component name
@@ -21,6 +21,11 @@ class ColorUsageViewer extends LitElement {
 			 * @type {string}
 			 */
 			selectedColor: { type: String, attribute: 'selected-color' },
+			/**
+			 * The selected category filter
+			 * @type {string}
+			 */
+			selectedCategory: { type: String, attribute: 'selected-category' },
 			_colorData: { state: true },
 			_colorsByUsage: { state: true },
 			_loading: { state: true },
@@ -209,6 +214,67 @@ class ColorUsageViewer extends LitElement {
 				font-size: 0.8rem;
 				line-height: 1.5;
 			}
+
+			.category-badges {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.25rem;
+				margin-top: 0.5rem;
+			}
+
+			.category-badge {
+				border-radius: 0.25rem;
+				display: inline-block;
+				font-size: 0.7rem;
+				font-weight: 600;
+				padding: 0.15rem 0.4rem;
+				text-transform: uppercase;
+			}
+
+			.category-background {
+				background-color: #e3f0fe;
+				color: #004489;
+			}
+
+			.category-foreground {
+				background-color: #fef4e9;
+				color: #8b5a00;
+			}
+
+			.category-border {
+				background-color: #f0e6ff;
+				color: #49286d;
+			}
+
+			.category-shadow {
+				background-color: #e8e8e8;
+				color: #494c4e;
+			}
+
+			.category-gradient {
+				background-color: #ffe6f5;
+				color: #7d3f6b;
+			}
+
+			.category-other {
+				background-color: #f9fafb;
+				border: 1px solid #cdd5dc;
+				color: #565a5c;
+			}
+
+			.category-summary {
+				align-items: center;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				margin-bottom: 1rem;
+			}
+
+			.category-summary strong {
+				color: #565a5c;
+				font-size: 0.8rem;
+				font-weight: 700;
+			}
 		`;
 	}
 
@@ -216,6 +282,7 @@ class ColorUsageViewer extends LitElement {
 		super();
 		this.selectedComponent = '';
 		this.selectedColor = '';
+		this.selectedCategory = '';
 		this._colorData = null;
 		this._colorsByUsage = null;
 		this._loading = true;
@@ -267,6 +334,23 @@ class ColorUsageViewer extends LitElement {
 								`)}
 							</select>
 						</div>
+						${this.selectedComponent ? html`
+							<div class="dropdown-container">
+								<label for="category-filter">Filter by category:</label>
+								<select 
+									id="category-filter" 
+									@change="${this._handleCategoryChange}"
+									.value="${this.selectedCategory}">
+									<option value="">All categories</option>
+									<option value="background">Background</option>
+									<option value="foreground">Foreground (text/icons)</option>
+									<option value="border">Border</option>
+									<option value="shadow">Shadow</option>
+									<option value="gradient">Gradient</option>
+									<option value="other">Other</option>
+								</select>
+							</div>
+						` : ''}
 						${this._renderColorList()}
 					</d2l-tab-panel>
 					
@@ -336,6 +420,10 @@ class ColorUsageViewer extends LitElement {
 		this.selectedColor = e.target.value;
 	}
 
+	_handleCategoryChange(e) {
+		this.selectedCategory = e.target.value;
+	}
+
 	_renderColorList() {
 		if (!this.selectedComponent) {
 			return html`
@@ -345,7 +433,7 @@ class ColorUsageViewer extends LitElement {
 			`;
 		}
 
-		const colors = this._colorData[this.selectedComponent];
+		let colors = this._colorData[this.selectedComponent];
 		
 		if (!colors || colors.length === 0) {
 			return html`
@@ -353,6 +441,21 @@ class ColorUsageViewer extends LitElement {
 					This component does not use any colors directly.
 				</div>
 			`;
+		}
+
+		// Filter by category if selected
+		if (this.selectedCategory) {
+			colors = colors.filter(item => 
+				item.categories && item.categories.includes(this.selectedCategory)
+			);
+			
+			if (colors.length === 0) {
+				return html`
+					<div class="no-colors">
+						No colors found for the "${this.selectedCategory}" category.
+					</div>
+				`;
+			}
 		}
 
 		return html`
@@ -363,7 +466,16 @@ class ColorUsageViewer extends LitElement {
 							${this._renderColorSwatch(item.color)}
 							<span>${item.color}</span>
 						</div>
-						<div class="color-usage">${item.usage}</div>
+						<div class="color-usage">
+							${item.usage}
+							${item.categories && item.categories.length > 0 ? html`
+								<div class="category-badges">
+									${item.categories.map(cat => html`
+										<span class="category-badge category-${cat}">${cat}</span>
+									`)}
+								</div>
+							` : ''}
+						</div>
 					</li>
 				`)}
 			</ul>
@@ -422,12 +534,29 @@ class ColorUsageViewer extends LitElement {
 				${colorInfo.summary ? html`
 					<div class="color-summary">${colorInfo.summary}</div>
 				` : ''}
+				${colorInfo.categories && colorInfo.categories.length > 0 ? html`
+					<div class="category-summary">
+						<strong>Used for:</strong>
+						${colorInfo.categories.map(cat => html`
+							<span class="category-badge category-${cat}">${cat}</span>
+						`)}
+					</div>
+				` : ''}
 			</div>
 			<ul class="component-list">
 				${colorInfo.usages.map(item => html`
 					<li class="component-item">
 						<div class="component-name">${item.component}</div>
-						<div class="component-usage">${item.usage}</div>
+						<div class="component-usage">
+							${item.usage}
+							${item.categories && item.categories.length > 0 ? html`
+								<div class="category-badges">
+									${item.categories.map(cat => html`
+										<span class="category-badge category-${cat}">${cat}</span>
+									`)}
+								</div>
+							` : ''}
+						</div>
 					</li>
 				`)}
 			</ul>
