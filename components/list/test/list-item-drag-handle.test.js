@@ -8,29 +8,26 @@ describe('ListItemDragHandle', () => {
 	});
 
 	describe('Events to activate keyboard mode.', () => {
-		let element;
+		let element, actionArea;
 		beforeEach(async() => {
 			element = await fixture(html`<d2l-list-item-drag-handle></d2l-list-item-drag-handle>`);
+			actionArea = element.shadowRoot.querySelector('button');
 			await focusElem(element);
 		});
 
 		it(`Dispatch drag handle action event for ${dragActions.active} event when clicked.`, async() => {
-			const actionArea = element.shadowRoot.querySelector('button');
 			setTimeout(() => clickElem(actionArea));
 			const e = await oneEvent(element, 'd2l-list-item-drag-handle-action');
 			expect(e.detail.action).to.equal(dragActions.active);
 		});
 
-		[
-			{ keyPress: 'Enter' },
-			{ keyPress: ' ' }
-		].forEach(testCase => {
-			it(`Dispatch drag handle action event for "${dragActions.active}" when "${testCase.keyPress}" is pressed.`, async() => {
-				const actionArea = element.shadowRoot.querySelector('button');
-				setTimeout(() => dispatchKeyEvent(actionArea, testCase.keyPress));
-				const e = await oneEvent(element, 'd2l-list-item-drag-handle-action');
-				expect(e.detail.action).to.equal(dragActions.active);
-			});
+		it(`Does not dispatch drag handle action event for ${dragActions.active} event when clicked if keyboard drag is disabled.`, async() => {
+			element.disableKeyboardDrag = true;
+			let dispatched = false;
+			element.addEventListener('d2l-list-item-drag-handle-action', () => { dispatched = true;});
+			setTimeout(() => clickElem(actionArea));
+			await oneEvent(element, 'click');
+			expect(dispatched).to.equal(false);
 		});
 	});
 

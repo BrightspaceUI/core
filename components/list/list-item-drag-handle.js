@@ -52,6 +52,11 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
+			 * Disables keyboard dragging interaction
+			 * @type {boolean}
+			 */
+			disableKeyboardDrag: { type: Boolean, attribute: 'disable-keyboard-drag' },
+			/**
 			 * Additional context information for accessibility
 			 * @type {object}
 			 */
@@ -174,12 +179,7 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 	}
 
 	_onDraggerButtonClick() {
-		this.activateKeyboardMode();
-	}
-
-	_onDraggerButtonKeydown(e) {
-		if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.SPACE) return;
-		e.preventDefault();
+		if (this.disableKeyboardDrag) return;
 		this.activateKeyboardMode();
 	}
 
@@ -287,7 +287,6 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			<button
 				class="d2l-list-item-drag-handle-dragger-button d2l-list-item-drag-handle-button"
 				@click="${this._onDraggerButtonClick}"
-				@keydown="${this._onDraggerButtonKeydown}"
 				aria-label="${this._defaultLabel}"
 				?disabled="${this.disabled}">
 				<d2l-icon icon="tier1:dragger" class="d2l-button-dragger-icon"></d2l-icon>

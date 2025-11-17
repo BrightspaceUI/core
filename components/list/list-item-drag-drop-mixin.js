@@ -251,6 +251,11 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
 			/**
+			 * Disables keyboard dragging interaction
+			 * @type {boolean}
+			 */
+			disableKeyboardDrag: { type: Boolean, attribute: 'disable-keyboard-drag' },
+			/**
 			 * **Drag & drop:** Whether the item is draggable
 			 * @type {boolean}
 			 */
@@ -862,6 +867,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			<d2l-list-item-drag-handle
 				id="${this._itemDragId}"
 				class="${classMap(classes)}"
+				?disable-keyboard-drag="${this.disableKeyboardDrag}"
 				text="${ifDefined(this.dragHandleText)}"
 				keyboard-text-info="${ifDefined(this._keyboardTextInfo)}"
 				@focusin="${this._onFocusinDragHandle}"
