@@ -1,4 +1,4 @@
-import '../components/colors/colors.js';
+import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 
 /**
@@ -302,8 +302,8 @@ class ColorUsageViewer extends LitElement {
 	async _loadColorData() {
 		try {
 			const [colorDataResponse, colorsByUsageResponse] = await Promise.all([
-				fetch('../color-usages.json'),
-				fetch('../colors-by-usage.json')
+				fetch('./color-usages.json'),
+				fetch('./colors-by-usage.json')
 			]);
 			
 			if (!colorDataResponse.ok) {
