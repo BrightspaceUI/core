@@ -34,7 +34,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			 * Disables the link
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean, reflect: true },
+			disabled: { type: Boolean },
 			/**
 			 * Tooltip text when disabled
 			 * @type {string}
@@ -130,12 +130,6 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 						display: none;
 					}
 				}
-
-				a[aria-disabled="true"] {
-					cursor: default;
-					opacity: 0.5;
-					pointer-events: none;
-				}
 			`
 		];
 	}
@@ -182,8 +176,9 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				class="${classMap(linkClasses)}"
 				@click="${this.#handleClick}"
 				?download="${this.download}"
-				href="${ifDefined(this.href)}"
+				href="${ifDefined(!this.disabled ? this.href : undefined)}"
 				id="${this.#linkId}"
+				tabindex="${ifDefined(this.disabled && this.disabledTooltip ? 0 : undefined)}"
 				target="${ifDefined(this.target)}"
 				><span
 					class="${classMap(spanClasses)}"
@@ -193,7 +188,10 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 	#linkId = getUniqueId();
 
 	#handleClick(e) {
-		if (this.disabled) e.preventDefault();
+		if (this.disabled) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
 	}
 
 }
