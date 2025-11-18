@@ -21,13 +21,10 @@ describe('ListItemDragHandle', () => {
 			expect(e.detail.action).to.equal(dragActions.active);
 		});
 
-		it(`Does not dispatch drag handle action event for ${dragActions.active} event when clicked if keyboard drag is disabled.`, async() => {
-			element.disableKeyboardDrag = true;
-			let dispatched = false;
-			element.addEventListener('d2l-list-item-drag-handle-action', () => { dispatched = true;});
-			setTimeout(() => clickElem(actionArea));
-			await oneEvent(element, 'click');
-			expect(dispatched).to.equal(false);
+		it(`Disables the action if disabled.`, async() => {
+			element.disabled = true;
+			await element.updateComplete;
+			expect(actionArea.disabled).to.be.true;
 		});
 	});
 
