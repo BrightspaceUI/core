@@ -578,12 +578,12 @@ class ColorUsageViewer extends LitElement {
 	async _loadColorData() {
 		try {
 			const [colorDataResponse, colorsByUsageResponse] = await Promise.all([
-				fetch('./color-usages.json'),
+				fetch('./color-usages-by-component.json'),
 				fetch('./colors-summary.json')
 			]);
 			
 			if (!colorDataResponse.ok) {
-				throw new Error(`Failed to load color-usages.json: ${colorDataResponse.statusText}`);
+				throw new Error(`Failed to load color-usages-by-component.json: ${colorDataResponse.statusText}`);
 			}
 			if (!colorsByUsageResponse.ok) {
 				throw new Error(`Failed to load colors-summary.json: ${colorsByUsageResponse.statusText}`);

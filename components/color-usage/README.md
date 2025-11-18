@@ -1,0 +1,238 @@
+# Color Usage Documentation System
+
+This directory contains tools and components for documenting color usage across D2L Brightspace UI components.
+
+## Overview
+
+The color documentation system provides:
+- **Automated color extraction** from component CSS/JS files
+- **Categorization** of colors by usage type (background, foreground, border, shadow, gradient, other)
+- **Interactive viewer** with multiple navigation modes
+- **Semantic summaries** explaining the purpose of each color
+
+## Files
+
+### Scripts
+
+- **`extract-colors-by-component.js`** - Extracts color usage from component directories
+- **`generate-colors-summary.js`** - Generates inverse mapping and semantic summaries
+- **`add-categories.js`** - Adds category metadata to color usages
+- **`regenerate-colors-summary.js`** - Alternative script for generating inverse mapping
+
+### Data Files
+
+- **`color-usages-by-component.json`** - Component-centric view: `{ "component-name": [{ color, usage, categories }] }`
+- **`colors-summary.json`** - Color-centric view: `{ "color-value": { summary, categories, usages } }`
+
+### Components
+
+- **`color-usage-viewer.js`** - Interactive Lit web component for browsing color documentation
+
+## Usage
+
+### Extracting Colors from a Component
+
+To extract color usage from a component directory and update `color-usages-by-component.json`:
+
+```bash
+node extract-colors-by-component.js <path-to-component-directory>
+```
+
+**Example:**
+
+```bash
+# From the color-usage directory
+node extract-colors-by-component.js ../button/
+
+# Or from the workspace root
+node components/color-usage/extract-colors-by-component.js components/button/
+```
+
+**What it does:**
+1. Recursively scans all `.css` and `.js` files in the component directory
+2. Extracts color values (CSS custom properties, hex, rgb/rgba)
+3. Detects usage context (background, text, border, shadow, etc.)
+4. Automatically categorizes each color usage
+5. Updates `color-usages-by-component.json` with the extracted data
+
+**Features:**
+- Creates `color-usages-by-component.json` if it doesn't exist
+- Preserves existing component data
+- Detects interactive states (hover, focus, disabled, selected)
+- Infers semantic meaning from CSS context
+
+### Generating Color Summary
+
+After extracting colors, generate the inverse mapping and semantic summaries:
+
+```bash
+node generate-colors-summary.js
+```
+
+**What it does:**
+1. Reads `color-usages-by-component.json`
+2. Creates inverse mapping (grouped by color instead of component)
+3. Generates AI-analyzed semantic summaries for each color
+4. Aggregates categories at both color and usage levels
+5. Writes output to `colors-summary.json`
+
+**Output format:**
+```json
+{
+  "--d2l-color-primary": {
+    "summary": "Primary brand color used for backgrounds, text, icons",
+    "categories": ["background", "foreground"],
+    "usages": [
+      {
+        "component": "d2l-button",
+        "usage": "background-color for primary button",
+        "categories": ["background"]
+      }
+    ]
+  }
+}
+```
+
+## Workflow
+
+### Complete Extraction Workflow
+
+To document colors for all components:
+
+```bash
+# 1. Extract colors from each component directory
+for dir in components/*/; do
+  node components/color-usage/extract-colors-by-component.js "$dir"
+done
+
+# 2. Generate the summary and inverse mapping
+cd components/color-usage
+node generate-colors-summary.js
+```
+
+### Updating a Single Component
+
+```bash
+# Extract colors from the updated component
+node extract-colors-by-component.js ../button/
+
+# Regenerate the summary
+node generate-colors-summary.js
+```
+
+## Color Categories
+
+The system automatically categorizes colors into six types:
+
+- **background** - Background colors for elements
+- **foreground** - Text, icon, fill, and stroke colors
+- **border** - Border and outline colors
+- **shadow** - Box shadow colors
+- **gradient** - Gradient definitions
+- **other** - Uncategorized color usage
+
+Categories are detected using pattern matching on the usage context.
+
+## Interactive Viewer
+
+The `color-usage-viewer.js` component provides three viewing modes:
+
+### Summary View
+- Color-category matrix showing which colors fall into which categories
+- Expandable rows revealing component details
+- Clickable column headers for filtering by category
+- Collapsible panel with category definitions
+
+### By Component View
+- Dropdown to select a component
+- Shows all colors used by that component
+- Category badges and filtering
+- Usage descriptions for each color
+
+### By Color View
+- Dropdown to select a color
+- Shows all components using that color
+- Semantic summary of the color's purpose
+- Usage descriptions for each component
+
+### Integration
+
+To use the viewer in a demo page:
+
+```html
+<script type="module" src="./color-usage-viewer.js"></script>
+
+<color-usage-viewer></color-usage-viewer>
+```
+
+## Technical Details
+
+### Color Detection Patterns
+
+The extraction script detects:
+- CSS custom properties: `--d2l-color-*`
+- Hex colors: `#RGB`, `#RRGGBB`
+- RGB/RGBA: `rgb()`, `rgba()`
+
+### Context Analysis
+
+The script analyzes surrounding CSS to infer:
+- **CSS properties**: `background-color`, `color`, `border`, `box-shadow`, `fill`, `stroke`, `outline`
+- **Pseudo-classes**: `:hover`, `:focus`, `:active`
+- **States**: `disabled`, `selected`, `primary`, `invalid`
+
+### Category Detection
+
+Categories are assigned based on regex patterns:
+
+```javascript
+{
+  background: /background(?:-color)?/i,
+  foreground: /(?:text|icon|foreground|fill|stroke)\s+color/i,
+  border: /border|outline/i,
+  shadow: /(?:box-)?shadow/i,
+  gradient: /gradient/i
+}
+```
+
+## Maintenance
+
+### Adding New Components
+
+When adding a new component:
+1. Run extraction script on the component directory
+2. Regenerate the summary
+3. Verify categories are correctly assigned
+4. Check the viewer to ensure proper display
+
+### Updating Existing Components
+
+When modifying component styles:
+1. Re-run extraction on the modified component
+2. Regenerate the summary
+3. Review changes in the viewer
+
+### Troubleshooting
+
+**Issue: No colors extracted**
+- Verify the component directory contains `.css` or `.js` files
+- Check that color values are in supported formats
+- Ensure colors are used in context of CSS properties (not just comments)
+
+**Issue: Incorrect categories**
+- Review usage descriptions in `color-usages-by-component.json`
+- Adjust category patterns in the extraction script if needed
+- Re-run extraction after pattern updates
+
+**Issue: Missing semantic summaries**
+- Ensure `generate-colors-summary.js` was run after extraction
+- Check `colors-summary.json` for the summary field
+
+## Future Enhancements
+
+Potential improvements:
+- Automatic detection of color tokens vs. hard-coded values
+- Validation against design system color palette
+- Dark theme color mapping
+- Export to documentation formats (Markdown, HTML)
+- Integration with component Storybook documentation
