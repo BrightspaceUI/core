@@ -21,7 +21,7 @@ const nonJsGlob = [
 	'!**/golden/**/*',
 	'./custom-elements.json',
 	'./components/color-usage/color-usages.json',
-	'./components/color-usage/colors-by-usage.json',
+	'./components/color-usage/colors-summary.json',
 ];
 
 export default {
