@@ -16,8 +16,6 @@ The color documentation system provides:
 
 - **`extract-colors-by-component.js`** - Extracts color usage from component directories
 - **`generate-colors-summary.js`** - Generates inverse mapping and semantic summaries
-- **`add-categories.js`** - Adds category metadata to color usages
-- **`regenerate-colors-summary.js`** - Alternative script for generating inverse mapping
 
 ### Data Files
 
@@ -227,12 +225,3 @@ When modifying component styles:
 **Issue: Missing semantic summaries**
 - Ensure `generate-colors-summary.js` was run after extraction
 - Check `colors-summary.json` for the summary field
-
-## Future Enhancements
-
-Potential improvements:
-- Automatic detection of color tokens vs. hard-coded values
-- Validation against design system color palette
-- Dark theme color mapping
-- Export to documentation formats (Markdown, HTML)
-- Integration with component Storybook documentation

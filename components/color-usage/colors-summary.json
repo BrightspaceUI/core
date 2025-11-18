@@ -313,7 +313,8 @@
                     "shadow"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#e6e6e6"
     },
     "--d2l-color-regolith": {
         "summary": "Neutral foundation color for disabled, loading, and low-emphasis backgrounds providing subtle contrast without distraction",
@@ -413,7 +414,8 @@
                     "gradient"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#ffffff"
     },
     "rgb(251, 252, 252)": {
         "summary": "Near-white gradient terminus matching page background for seamless overflow fade transitions",
@@ -1225,7 +1227,8 @@
                     "background"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#808080"
     },
     "rgba(51, 53, 54, 0.9)": {
         "summary": "Semi-transparent background for layered interfaces",
@@ -1247,7 +1250,8 @@
                     "background"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#47494a"
     },
     "--d2l-color-sylvite": {
         "summary": "Light neutral for dark theme contexts ensuring legible text and visible icons on dark backgrounds",
@@ -1450,7 +1454,8 @@
                     "background"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#ffffff"
     },
     "rgba(32, 33, 34, 0.2)": {
         "summary": "Shadow color providing depth and visual layering",
@@ -1472,7 +1477,8 @@
                     "shadow"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#d2d3d3"
     },
     "transparent": {
         "summary": "Invisible border maintaining layout consistency in high contrast mode while allowing system colors to override",
@@ -1545,7 +1551,8 @@
                     "foreground"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#a4a6a7"
     },
     "rgba(0, 0, 0, 0.03)": {
         "summary": "Minimal shadow for subtle depth on nested or overlapping elements",
@@ -1567,7 +1574,8 @@
                     "shadow"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#f7f7f7"
     },
     "rgba(0, 0, 0, 0.06)": {
         "summary": "Subtle elevation shadow creating gentle depth for toasts, dialogs, and interactive list items without heavy visual weight",
@@ -1582,7 +1590,8 @@
                     "shadow"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#f0f0f0"
     },
     "rgba(249, 250, 251, 0.1)": {
         "summary": "Gradient color for smooth transitions and visual effects",
@@ -1597,7 +1606,8 @@
                     "gradient"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#feffff"
     },
     "rgba(114, 119, 122, 0.1)": {
         "summary": "Gradient color for smooth transitions and visual effects",
@@ -1612,7 +1622,8 @@
                     "gradient"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#f1f1f2"
     },
     "--d2l-color-carnelian-minus-1": {
         "summary": "Attention-grabbing notification color drawing immediate focus to alerts and important count badges",
@@ -1642,7 +1653,8 @@
                     "border"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#eef0f3"
     },
     "#f9fbff": {
         "summary": "Custom icon color for specific component requirements",
@@ -1735,7 +1747,8 @@
                     "shadow"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#f2f2f2"
     },
     "rgba(0, 0, 0, 0.15)": {
         "summary": "Moderate shadow for elevated surfaces like dropdowns and floating elements",
@@ -1757,7 +1770,8 @@
                     "shadow"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#d9d9d9"
     },
     "#333536": {
         "summary": "Custom background color for specialized component styling",
@@ -1838,7 +1852,8 @@
                     "shadow"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#eff1f2"
     },
     "#cd2026": {
         "summary": "Custom icon color for specific component requirements",
@@ -1892,7 +1907,8 @@
                     "gradient"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#fcfdff"
     },
     "--d2l-color-corundum": {
         "summary": "Subdued border color for disabled form controls and subtle separators indicating non-interactive states",
@@ -2069,7 +2085,8 @@
                     "background"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#ffffff"
     },
     "--d2l-color-olivine": {
         "summary": "Success state color indicating completion and progress achievement",
@@ -2099,7 +2116,8 @@
                     "shadow"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#b3b3b3"
     },
     "#f1f5fb": {
         "summary": "Custom icon color for specific component requirements",
@@ -2148,7 +2166,8 @@
                     "border"
                 ]
             }
-        ]
+        ],
+        "resultantOnWhite": "#ffffff"
     },
     "#D3D9E3": {
         "summary": "Custom icon color for specific component requirements",

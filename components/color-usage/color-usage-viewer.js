@@ -11,7 +11,7 @@ import { css, html, LitElement } from 'lit';
  */
 class ColorUsageViewer extends LitElement {
 
-		static get properties() {
+	static get properties() {
 		return {
 			/**
 			 * The selected component name
@@ -575,20 +575,39 @@ class ColorUsageViewer extends LitElement {
 		`;
 	}
 
+	_getColorNames() {
+		if (!this._colorsByUsage) return [];
+		return Object.keys(this._colorsByUsage).sort();
+	}
+	_getComponentNames() {
+		if (!this._colorData) return [];
+		return Object.keys(this._colorData)
+			.filter(name => this._colorData[name] && this._colorData[name].length > 0)
+			.sort();
+	}
+	_handleCategoryChange(e) {
+		this.selectedCategory = e.target.value;
+	}
+	_handleColorChange(e) {
+		this.selectedColor = e.target.value;
+	}
+	_handleComponentChange(e) {
+		this.selectedComponent = e.target.value;
+	}
 	async _loadColorData() {
 		try {
 			const [colorDataResponse, colorsByUsageResponse] = await Promise.all([
 				fetch('./color-usages-by-component.json'),
 				fetch('./colors-summary.json')
 			]);
-			
+
 			if (!colorDataResponse.ok) {
 				throw new Error(`Failed to load color-usages-by-component.json: ${colorDataResponse.statusText}`);
 			}
 			if (!colorsByUsageResponse.ok) {
 				throw new Error(`Failed to load colors-summary.json: ${colorsByUsageResponse.statusText}`);
 			}
-			
+
 			this._colorData = await colorDataResponse.json();
 			this._colorsByUsage = await colorsByUsageResponse.json();
 			this._loading = false;
@@ -598,30 +617,17 @@ class ColorUsageViewer extends LitElement {
 		}
 	}
 
-	_getComponentNames() {
-		if (!this._colorData) return [];
-		return Object.keys(this._colorData)
-			.filter(name => this._colorData[name] && this._colorData[name].length > 0)
-			.sort();
+	_navigateToComponent(componentName) {
+		this.selectedComponent = componentName;
+		// Switch to the By Component tab
+		const tabs = this.shadowRoot.querySelector('d2l-tabs');
+		if (tabs) {
+			const componentTab = this.shadowRoot.querySelector('#component-view');
+			if (componentTab) {
+				componentTab.selected = true;
+			}
+		}
 	}
-
-	_getColorNames() {
-		if (!this._colorsByUsage) return [];
-		return Object.keys(this._colorsByUsage).sort();
-	}
-
-	_handleComponentChange(e) {
-		this.selectedComponent = e.target.value;
-	}
-
-	_handleColorChange(e) {
-		this.selectedColor = e.target.value;
-	}
-
-	_handleCategoryChange(e) {
-		this.selectedCategory = e.target.value;
-	}
-
 	_renderColorList() {
 		if (!this.selectedComponent) {
 			return html`
@@ -632,7 +638,7 @@ class ColorUsageViewer extends LitElement {
 		}
 
 		let colors = this._colorData[this.selectedComponent];
-		
+
 		if (!colors || colors.length === 0) {
 			return html`
 				<div class="no-colors">
@@ -643,10 +649,10 @@ class ColorUsageViewer extends LitElement {
 
 		// Filter by category if selected
 		if (this.selectedCategory) {
-			colors = colors.filter(item => 
+			colors = colors.filter(item =>
 				item.categories && item.categories.includes(this.selectedCategory)
 			);
-			
+
 			if (colors.length === 0) {
 				return html`
 					<div class="no-colors">
@@ -658,11 +664,18 @@ class ColorUsageViewer extends LitElement {
 
 		return html`
 			<ul class="color-list">
-				${colors.map(item => html`
+				${colors.map(item => {
+					const colorInfo = this._colorsByUsage[item.color];
+					return html`
 					<li class="color-item">
 						<div class="color-name">
 							${this._renderColorSwatch(item.color)}
 							<span>${item.color}</span>
+							${colorInfo?.resultantOnWhite ? html`
+								<span style="margin-left: 0.5rem; color: #565a5c; font-size: 0.85rem;">
+									→ ${colorInfo.resultantOnWhite} on white
+								</span>
+							` : ''}
 						</div>
 						<div class="color-usage">
 							${item.usage}
@@ -675,15 +688,16 @@ class ColorUsageViewer extends LitElement {
 							` : ''}
 						</div>
 					</li>
-				`)}
+				`;
+				})}
 			</ul>
 		`;
 	}
 
 	_renderColorSwatch(colorValue) {
 		// Try to resolve the color value for display
-		let displayColor = colorValue;
-		
+		const displayColor = colorValue;
+
 		// If it's a CSS variable, check if it's a d2l-color
 		if (colorValue.startsWith('--')) {
 			if (colorValue.startsWith('--d2l-color-')) {
@@ -697,7 +711,7 @@ class ColorUsageViewer extends LitElement {
 				<span class="color-swatch" style="background: linear-gradient(135deg, #e3e9f1 0%, #cdd5dc 100%);"></span>
 			`;
 		}
-		
+
 		// For hex or rgb colors, show them directly
 		return html`
 			<span class="color-swatch" style="background-color: ${displayColor};"></span>
@@ -714,7 +728,7 @@ class ColorUsageViewer extends LitElement {
 		}
 
 		const colorInfo = this._colorsByUsage[this.selectedColor];
-		
+
 		if (!colorInfo || !colorInfo.usages || colorInfo.usages.length === 0) {
 			return html`
 				<div class="no-colors">
@@ -726,8 +740,15 @@ class ColorUsageViewer extends LitElement {
 		return html`
 			<div class="color-item">
 				<div class="color-name">
-					${this._renderColorSwatch(this.selectedColor)}
-					<span>${this.selectedColor}</span>
+				${this._renderColorSwatch(this.selectedColor)}
+				<span>${this.selectedColor}</span>
+				${colorInfo.resultantOnWhite ? html`
+					<span style="margin-left: 0.5rem; color: #565a5c; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.25rem;">
+						→
+						<span class="color-swatch" style="background-color: ${colorInfo.resultantOnWhite}; width: 1rem; height: 1rem; margin: 0;"></span>
+						${colorInfo.resultantOnWhite} on white
+					</span>
+				` : ''}
 				</div>
 				${colorInfo.summary ? html`
 					<div class="color-summary">${colorInfo.summary}</div>
@@ -759,7 +780,7 @@ class ColorUsageViewer extends LitElement {
 				`)}
 				</ul>
 			`;
-		}
+	}
 
 	_renderSummaryTable() {
 		if (!this._colorData || !this._colorsByUsage) {
@@ -834,14 +855,22 @@ class ColorUsageViewer extends LitElement {
 						const isExpanded = this._expandedRows.has(color);
 						const colorInfo = this._colorsByUsage[color];
 						const hasComponents = colorInfo && colorInfo.usages && colorInfo.usages.length > 0;
-						
+
 						return html`
 							<tr>
 								<td>
-									${color}
-									${hasComponents ? html`
+								${color}
+								${colorInfo?.resultantOnWhite ? html`
+									<br>
+									<span style="color: #565a5c; font-size: 0.75rem; font-family: 'Monaco', 'Menlo', 'Consolas', monospace; display: inline-flex; align-items: center; gap: 0.25rem;">
+										→
+										<span class="color-swatch" style="background-color: ${colorInfo.resultantOnWhite}; width: 0.9rem; height: 0.9rem; margin: 0;"></span>
+										${colorInfo.resultantOnWhite} on white
+									</span>
+								` : ''}
+								${hasComponents ? html`
 										<br>
-										<button 
+										<button
 											class="expand-button"
 											@click="${() => this._toggleRow(color)}"
 											aria-expanded="${isExpanded}">
@@ -917,18 +946,6 @@ class ColorUsageViewer extends LitElement {
 			this._selectedSummaryCategory = '';
 		} else {
 			this._selectedSummaryCategory = category;
-		}
-	}
-
-	_navigateToComponent(componentName) {
-		this.selectedComponent = componentName;
-		// Switch to the By Component tab
-		const tabs = this.shadowRoot.querySelector('d2l-tabs');
-		if (tabs) {
-			const componentTab = this.shadowRoot.querySelector('#component-view');
-			if (componentTab) {
-				componentTab.selected = true;
-			}
 		}
 	}
 
