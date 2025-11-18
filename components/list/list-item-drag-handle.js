@@ -52,11 +52,6 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
-			 * Disables keyboard dragging interaction
-			 * @type {boolean}
-			 */
-			disableKeyboardDrag: { type: Boolean, attribute: 'disable-keyboard-drag' },
-			/**
 			 * Additional context information for accessibility
 			 * @type {object}
 			 */
@@ -179,7 +174,7 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 	}
 
 	_onDraggerButtonClick() {
-		if (this.disableKeyboardDrag) return;
+		if (this.disabled) return;
 		this.activateKeyboardMode();
 	}
 

@@ -23,6 +23,7 @@ class ListDemoNested extends LitElement {
 			demoItemKey: { type: String, attribute: 'demo-item-key' },
 			isDraggable: { attribute: 'is-draggable', type: Boolean },
 			selectable: { type: Boolean },
+			disableKeyboardDrag: { type: Boolean, attribute: 'disable-keyboard-drag' },
 			disableExpandFeature: { type: Boolean, attribute: 'disable-expand-feature' },
 			expanded: { type: Boolean },
 			includeSecondaryActions: { type: Boolean, attribute: 'include-secondary-actions' },
@@ -203,6 +204,7 @@ class ListDemoNested extends LitElement {
 		return html`
 			<d2l-list-item
 				action-href="${this.includeActionHref ? 'http://www.d2l.com' : ''}"
+				?disable-keyboard-drag="${this.disableKeyboardDrag}"
 				?draggable="${this.isDraggable}"
 				drag-handle-text="${item.primaryText}"
 				?drop-nested="${item.dropNested}"

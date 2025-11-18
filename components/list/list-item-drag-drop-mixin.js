@@ -867,7 +867,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			<d2l-list-item-drag-handle
 				id="${this._itemDragId}"
 				class="${classMap(classes)}"
-				?disable-keyboard-drag="${this.disableKeyboardDrag}"
+				?disabled="${this.disableKeyboardDrag}"
 				text="${ifDefined(this.dragHandleText)}"
 				keyboard-text-info="${ifDefined(this._keyboardTextInfo)}"
 				@focusin="${this._onFocusinDragHandle}"
