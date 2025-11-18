@@ -167,6 +167,9 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		const newWindowElements = (this.target === '_blank')
 			? html`<span id="new-window"><span style="font-size: 0;">&nbsp;</span><d2l-icon icon="tier1:new-window"></d2l-icon></span><span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
 			: nothing;
+		const disabledTooltip = this.disabled && this.disabledTooltip
+			? html`<d2l-tooltip class="vdiff-target" for="${this.#linkId}">${this.disabledTooltip}</d2l-tooltip>`
+			: nothing;
 
 		/*
 		* NOTICE:
@@ -184,9 +187,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				target="${ifDefined(this.target)}"
 				><span
 					class="${classMap(spanClasses)}"
-					style="${styleMap(styles)}"><slot></slot></span>${newWindowElements}</a>
-			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip class="vdiff-target" for="${this.#linkId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
-		`;
+					style="${styleMap(styles)}"><slot></slot></span>${newWindowElements}</a>${disabledTooltip}`;
 	}
 
 	#linkId = getUniqueId();
