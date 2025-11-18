@@ -21,7 +21,7 @@ describe('ListItemDragHandle', () => {
 			expect(e.detail.action).to.equal(dragActions.active);
 		});
 
-		it(`Disables the action if disabled.`, async() => {
+		it('Disables the action if disabled.', async() => {
 			element.disabled = true;
 			await element.updateComplete;
 			expect(actionArea.disabled).to.be.true;
