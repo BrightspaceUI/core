@@ -273,12 +273,12 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			/**
 			 * **Drag & drop:** Text to drag and drop
 			 * @type {string}
-			*/
+			 */
 			dropText: { type: String, attribute: 'drop-text' },
 			/**
 			 * Value to identify item if selectable
 			 * @type {string}
-			*/
+			 */
 			key: { type: String, reflect: true },
 			_draggingOver: { type: Boolean },
 			_dropLocation: { type: Number, reflect: true, attribute: '_drop-location' },
