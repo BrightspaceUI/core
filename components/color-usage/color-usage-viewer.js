@@ -2,6 +2,8 @@ import '../colors/colors.js';
 import '../tabs/tabs.js';
 import '../tabs/tab.js';
 import '../tabs/tab-panel.js';
+import '../expand-collapse/expand-collapse-content.js';
+import '../collapsible-panel/collapsible-panel.js';
 import { css, html, LitElement } from 'lit';
 
 /**
@@ -29,7 +31,9 @@ class ColorUsageViewer extends LitElement {
 			_colorData: { state: true },
 			_colorsByUsage: { state: true },
 			_loading: { state: true },
-			_error: { state: true }
+			_error: { state: true },
+			_expandedRows: { state: true },
+			_selectedSummaryCategory: { state: true }
 		};
 	}
 
@@ -275,7 +279,194 @@ class ColorUsageViewer extends LitElement {
 				font-size: 0.8rem;
 				font-weight: 700;
 			}
-		`;
+
+			d2l-collapsible-panel {
+				margin-bottom: 1.5rem;
+			}
+
+			.category-definitions-content dl {
+				display: grid;
+				gap: 0.5rem;
+				grid-template-columns: auto 1fr;
+				margin: 0;
+			}
+
+			.category-definitions-content dt {
+				color: #202122;
+				font-size: 0.8rem;
+				font-weight: 700;
+			}
+
+			.category-definitions-content dd {
+				color: #565a5c;
+				font-size: 0.8rem;
+				line-height: 1.5;
+				margin: 0;
+			}
+
+			.summary-table {
+				border-collapse: collapse;
+				width: 100%;
+			}
+
+			.summary-table th,
+			.summary-table td {
+				border: 1px solid #cdd5dc;
+				padding: 0.5rem;
+				text-align: left;
+			}
+
+			.summary-table th {
+				background-color: #f9fafb;
+				color: #565a5c;
+				font-size: 0.75rem;
+				font-weight: 700;
+				text-align: center;
+			}
+
+			.summary-table th:first-child {
+				text-align: left;
+			}
+
+			.summary-table th button {
+				background: none;
+				border: none;
+				color: #565a5c;
+				cursor: pointer;
+				font-size: 0.75rem;
+				font-weight: 700;
+				padding: 0;
+				text-decoration: none;
+				width: 100%;
+			}
+
+			.summary-table th button:hover {
+				color: #006fbf;
+			}
+
+			.summary-table th button:focus {
+				outline: 2px solid #006fbf;
+				outline-offset: 2px;
+			}
+
+			.summary-table th button.active {
+				color: #006fbf;
+				font-weight: 700;
+			}
+
+			.summary-table td {
+				font-size: 0.8rem;
+				text-align: center;
+			}
+
+			.summary-table td:first-child {
+				color: #202122;
+				font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+				font-size: 0.85rem;
+				font-weight: 600;
+				text-align: left;
+			}
+
+			.summary-table .check {
+				color: #46a661;
+				font-size: 1rem;
+				font-weight: 700;
+			}
+
+			.summary-table tbody tr:hover {
+				background-color: #f9fafb;
+			}
+
+			.summary-table .expand-button {
+				background: none;
+				border: none;
+				color: #006fbf;
+				cursor: pointer;
+				font-size: 0.8rem;
+				padding: 0;
+				text-decoration: underline;
+			}
+
+			.summary-table .expand-button:hover {
+				color: #004489;
+			}
+
+			.summary-table .expand-button:focus {
+				outline: 2px solid #006fbf;
+				outline-offset: 2px;
+			}
+
+			.summary-table .expanded-content {
+				background-color: #f9fafb;
+			}
+
+			.summary-table .expanded-content td {
+				padding: 0;
+			}
+
+			.component-details {
+				padding: 1rem;
+			}
+
+			.component-details table {
+				border-collapse: collapse;
+				width: 100%;
+			}
+
+			.component-details th,
+			.component-details td {
+				border: 1px solid #cdd5dc;
+				padding: 0.4rem;
+				text-align: left;
+			}
+
+			.component-details th {
+				background-color: #ffffff;
+				color: #565a5c;
+				font-size: 0.7rem;
+				font-weight: 700;
+				text-align: center;
+			}
+
+			.component-details th:first-child {
+				text-align: left;
+			}
+
+			.component-details td {
+				font-size: 0.75rem;
+				text-align: center;
+			}
+
+		.component-details td:first-child {
+			color: #202122;
+			font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+			font-size: 0.8rem;
+			font-weight: 600;
+			text-align: left;
+		}
+
+		.component-link {
+			background: none;
+			border: none;
+			color: #006fbf;
+			cursor: pointer;
+			font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+			font-size: 0.8rem;
+			font-weight: 600;
+			padding: 0;
+			text-align: left;
+			text-decoration: underline;
+		}
+
+		.component-link:hover {
+			color: #004489;
+		}
+
+		.component-link:focus {
+			outline: 2px solid #006fbf;
+			outline-offset: 2px;
+		}
+	`;
 	}
 
 	constructor() {
@@ -287,6 +478,8 @@ class ColorUsageViewer extends LitElement {
 		this._colorsByUsage = null;
 		this._loading = true;
 		this._error = null;
+		this._expandedRows = new Set();
+		this._selectedSummaryCategory = '';
 	}
 
 	connectedCallback() {
@@ -318,7 +511,12 @@ class ColorUsageViewer extends LitElement {
 				<h1>Color Usage Viewer</h1>
 				
 				<d2l-tabs text="View Mode">
-					<d2l-tab id="component-view" text="By Component" slot="tabs" selected></d2l-tab>
+					<d2l-tab id="summary-view" text="Summary" slot="tabs"></d2l-tab>
+					<d2l-tab-panel labelled-by="summary-view" slot="panels">
+						${this._renderSummaryTable()}
+					</d2l-tab-panel>
+
+					<d2l-tab id="component-view" text="By Component" slot="tabs"></d2l-tab>
 					<d2l-tab-panel labelled-by="component-view" slot="panels">
 						<div class="dropdown-container">
 							<label for="component-select">Select a component:</label>
@@ -381,14 +579,14 @@ class ColorUsageViewer extends LitElement {
 		try {
 			const [colorDataResponse, colorsByUsageResponse] = await Promise.all([
 				fetch('./color-usages.json'),
-				fetch('./colors-by-usage.json')
+				fetch('./colors-summary.json')
 			]);
 			
 			if (!colorDataResponse.ok) {
 				throw new Error(`Failed to load color-usages.json: ${colorDataResponse.statusText}`);
 			}
 			if (!colorsByUsageResponse.ok) {
-				throw new Error(`Failed to load colors-by-usage.json: ${colorsByUsageResponse.statusText}`);
+				throw new Error(`Failed to load colors-summary.json: ${colorsByUsageResponse.statusText}`);
 			}
 			
 			this._colorData = await colorDataResponse.json();
@@ -559,8 +757,179 @@ class ColorUsageViewer extends LitElement {
 						</div>
 					</li>
 				`)}
-			</ul>
+				</ul>
+			`;
+		}
+
+	_renderSummaryTable() {
+		if (!this._colorData || !this._colorsByUsage) {
+			return html`<div class="empty-state">No data available</div>`;
+		}
+
+		const categories = ['background', 'foreground', 'border', 'shadow', 'gradient', 'other'];
+		const colors = this._getColorNames();
+
+		// Build a map of color -> categories used
+		const colorCategories = new Map();
+		colors.forEach(colorName => {
+			const colorInfo = this._colorsByUsage[colorName];
+			const usedCategories = new Set();
+			if (colorInfo && colorInfo.categories && colorInfo.categories.length > 0) {
+				colorInfo.categories.forEach(cat => usedCategories.add(cat));
+			}
+			colorCategories.set(colorName, usedCategories);
+		});
+
+		// Filter colors by selected category if one is active
+		const filteredColors = this._selectedSummaryCategory
+			? colors.filter(color => {
+				const usedCategories = colorCategories.get(color);
+				return usedCategories && usedCategories.has(this._selectedSummaryCategory);
+			})
+			: colors;
+
+		return html`
+			<d2l-collapsible-panel panel-title="Category Definitions">
+				<div class="category-definitions-content">
+					<dl>
+						<dt>Background:</dt>
+						<dd>Colors used for backgrounds, including component backgrounds and container fills.</dd>
+						
+						<dt>Foreground:</dt>
+						<dd>Colors used for text, icons, and other foreground elements including fills and strokes.</dd>
+						
+						<dt>Border:</dt>
+						<dd>Colors used for borders and outlines around elements.</dd>
+						
+						<dt>Shadow:</dt>
+						<dd>Colors used in box shadows and drop shadows for depth and elevation effects.</dd>
+						
+						<dt>Gradient:</dt>
+						<dd>Colors used as part of gradient fills or backgrounds.</dd>
+						
+						<dt>Other:</dt>
+						<dd>Colors that don't fit into the above categories or have miscellaneous usage.</dd>
+					</dl>
+				</div>
+			</d2l-collapsible-panel>
+			<table class="summary-table">
+				<thead>
+					<tr>
+						<th>Color</th>
+						${categories.map(cat => html`
+							<th>
+								<button 
+									class="${this._selectedSummaryCategory === cat ? 'active' : ''}"
+									@click="${() => this._toggleSummaryCategory(cat)}"
+									title="Click to filter by ${cat}">
+									${cat.charAt(0).toUpperCase() + cat.slice(1)}
+								</button>
+							</th>
+						`)}
+					</tr>
+				</thead>
+				<tbody>
+					${filteredColors.map(color => {
+						const usedCategories = colorCategories.get(color);
+						const isExpanded = this._expandedRows.has(color);
+						const colorInfo = this._colorsByUsage[color];
+						const hasComponents = colorInfo && colorInfo.usages && colorInfo.usages.length > 0;
+						
+						return html`
+							<tr>
+								<td>
+									${color}
+									${hasComponents ? html`
+										<br>
+										<button 
+											class="expand-button"
+											@click="${() => this._toggleRow(color)}"
+											aria-expanded="${isExpanded}">
+											${isExpanded ? '▼ Hide' : '▶ Show'} components (${colorInfo.usages.length})
+										</button>
+									` : ''}
+								</td>
+								${categories.map(cat => html`
+									<td>${usedCategories.has(cat) ? html`<span class="check">✓</span>` : ''}</td>
+								`)}
+							</tr>
+							${isExpanded && hasComponents ? html`
+								<tr class="expanded-content">
+									<td colspan="${categories.length + 1}">
+										<d2l-expand-collapse-content expanded>
+											<div class="component-details">
+												${colorInfo.summary ? html`
+													<div class="color-summary">${colorInfo.summary}</div>
+												` : ''}
+												<table>
+													<thead>
+														<tr>
+															<th>Component</th>
+															${categories.map(cat => html`
+																<th>${cat.charAt(0).toUpperCase() + cat.slice(1)}</th>
+															`)}
+														</tr>
+													</thead>
+													<tbody>
+														${colorInfo.usages.map(usage => {
+															const componentCategories = new Set(usage.categories || []);
+															return html`
+																<tr>
+																	<td>
+																		<button 
+																			class="component-link"
+																			@click="${() => this._navigateToComponent(usage.component)}"
+																			title="View ${usage.component} details">
+																			${usage.component}
+																		</button>
+																	</td>
+																	${categories.map(cat => html`
+																		<td>${componentCategories.has(cat) ? html`<span class="check">✓</span>` : ''}</td>
+																	`)}
+																</tr>
+															`;
+														})}
+													</tbody>
+												</table>
+											</div>
+										</d2l-expand-collapse-content>
+									</td>
+								</tr>
+							` : ''}
+						`;
+					})}
+				</tbody>
+			</table>
 		`;
+	}
+
+	_toggleRow(color) {
+		if (this._expandedRows.has(color)) {
+			this._expandedRows.delete(color);
+		} else {
+			this._expandedRows.add(color);
+		}
+		this._expandedRows = new Set(this._expandedRows);
+	}
+
+	_toggleSummaryCategory(category) {
+		if (this._selectedSummaryCategory === category) {
+			this._selectedSummaryCategory = '';
+		} else {
+			this._selectedSummaryCategory = category;
+		}
+	}
+
+	_navigateToComponent(componentName) {
+		this.selectedComponent = componentName;
+		// Switch to the By Component tab
+		const tabs = this.shadowRoot.querySelector('d2l-tabs');
+		if (tabs) {
+			const componentTab = this.shadowRoot.querySelector('#component-view');
+			if (componentTab) {
+				componentTab.selected = true;
+			}
+		}
 	}
 
 }
