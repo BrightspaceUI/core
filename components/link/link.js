@@ -147,8 +147,6 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		this.main = false;
 		this.small = false;
 		this.lines = 0;
-
-		this._linkId = getUniqueId();
 	}
 
 	static get focusElementSelector() {
@@ -182,14 +180,16 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				@click="${this.#handleClick}"
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
-				id="${this._linkId}"
+				id="${this.#linkId}"
 				target="${ifDefined(this.target)}"
 				><span
 					class="${classMap(spanClasses)}"
 					style="${styleMap(styles)}"><slot></slot></span>${newWindowElements}</a>
-			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip class="vdiff-target" for="${this._linkId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
+			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip class="vdiff-target" for="${this.#linkId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
 		`;
 	}
+
+	#linkId = getUniqueId();
 
 	#handleClick(e) {
 		if (this.disabled) e.preventDefault();
