@@ -1,11 +1,13 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { _generateLinkStyles } from './link-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFlag } from '../../helpers/flags.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -28,6 +30,16 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			 * @type {string}
 			 */
 			ariaLabel: { type: String, attribute: 'aria-label' },
+			/**
+			 * Disables the link
+			 * @type {boolean}
+			 */
+			disabled: { type: Boolean, reflect: true },
+			/**
+			 * Tooltip text when disabled
+			 * @type {string}
+			 */
+			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
 			/**
 			 * Download a URL instead of navigating to it
 			 * @type {boolean}
@@ -118,16 +130,25 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 						display: none;
 					}
 				}
+
+				a[aria-disabled="true"] {
+					cursor: default;
+					opacity: 0.5;
+					pointer-events: none;
+				}
 			`
 		];
 	}
 
 	constructor() {
 		super();
+		this.disabled = false;
 		this.download = false;
 		this.main = false;
 		this.small = false;
 		this.lines = 0;
+
+		this._linkId = getUniqueId();
 	}
 
 	static get focusElementSelector() {
@@ -155,14 +176,23 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		* Do not modify for readability!
 		*/
 		return html`<a
+				aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}"
 				aria-label="${ifDefined(this.ariaLabel)}"
 				class="${classMap(linkClasses)}"
+				@click="${this.#handleClick}"
 				?download="${this.download}"
 				href="${ifDefined(this.href)}"
+				id="${this._linkId}"
 				target="${ifDefined(this.target)}"
 				><span
 					class="${classMap(spanClasses)}"
-					style="${styleMap(styles)}"><slot></slot></span>${newWindowElements}</a>`;
+					style="${styleMap(styles)}"><slot></slot></span>${newWindowElements}</a>
+			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip class="vdiff-target" for="${this._linkId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
+		`;
+	}
+
+	#handleClick(e) {
+		if (this.disabled) e.preventDefault();
 	}
 
 }
