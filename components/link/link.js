@@ -134,7 +134,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				a[aria-disabled="true"] .d2l-link-content {
 					opacity: 0.74;
 				}
-				a[aria-disabled="true"] .new-window {
+				a[aria-disabled="true"] d2l-icon {
 					opacity: 0.54;
 				}
 
