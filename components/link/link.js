@@ -140,7 +140,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					opacity: 0.74;
 				}
 				a[aria-disabled="true"] d2l-icon {
-					opacity: 0.54;
+					opacity: 0.64;
 				}
 
 				@media print {
