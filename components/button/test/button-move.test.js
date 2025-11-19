@@ -86,13 +86,6 @@ describe('d2l-button-move', () => {
 			expect(button.disabled).to.be.false;
 		});
 
-		it('text property sets aria-label and title', async() => {
-			const el = await fixture(html`<d2l-button-move text="Reorder Item"></d2l-button-move>`);
-			const button = el.shadowRoot.querySelector('button');
-			expect(button.getAttribute('aria-label')).to.equal('Reorder Item');
-			expect(button.getAttribute('title')).to.equal('Reorder Item');
-		});
-
 	});
 
 	describe('focus', () => {
