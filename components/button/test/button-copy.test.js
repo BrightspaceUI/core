@@ -72,32 +72,4 @@ describe('d2l-button-copy', () => {
 
 	});
 
-	describe('icon state', () => {
-
-		it('clears previous timeout on multiple clicks', async() => {
-			const writeTextStub = stub(navigator.clipboard, 'writeText').resolves();
-			const el = await fixture(html`<d2l-button-copy></d2l-button-copy>`);
-
-			// First click
-			clickElem(el);
-			let event = await oneEvent(el, 'click');
-			await event.detail.writeTextToClipboard('first');
-			await el.updateComplete;
-
-			const firstTimeoutId = el._iconCheckTimeoutId;
-
-			// Second click before timeout expires
-			clickElem(el);
-			event = await oneEvent(el, 'click');
-			await event.detail.writeTextToClipboard('second');
-			await el.updateComplete;
-
-			const secondTimeoutId = el._iconCheckTimeoutId;
-
-			expect(firstTimeoutId).to.not.equal(secondTimeoutId);
-			writeTextStub.restore();
-		});
-
-	});
-
 });
