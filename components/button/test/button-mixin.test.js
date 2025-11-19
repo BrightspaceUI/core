@@ -73,7 +73,7 @@ describe('ButtonMixin', () => {
 
 	});
 
-	describe('internal methods', () => {
+	describe('protected methods', () => {
 
 		describe('_getType', () => {
 			it('should return "submit" when type is "submit"', async() => {
