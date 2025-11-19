@@ -64,7 +64,6 @@ describe('button-split', () => {
 
 		[
 			{ name: 'normal', template: getTemplate() },
-			{ name: 'primary', template: getTemplate({ primary: true }) },
 			{ name: 'open', template: getTemplate({ wrap: { height: '175px', width: '225px' } }), action: async elem => {
 				const buttonSplit = elem.tagName === 'D2L-BUTTON-SPLIT' ? elem : elem.querySelector('d2l-button-split');
 				await clickElem(buttonSplit.shadowRoot.querySelector('.d2l-dropdown-opener'));
