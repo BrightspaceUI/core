@@ -46,11 +46,6 @@ export const _generateLinkStyles = (selector, includeSkeleton = true) => {
 				color: var(--d2l-color-ferrite);
 			}
 		}
-		${selectorCSS}[aria-disabled="true"] {
-			cursor: default;
-			opacity: 0.5;
-			pointer-events: none;
-		}
 		${skeletonStyles}
 	`;
 };

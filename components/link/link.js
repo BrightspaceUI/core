@@ -34,12 +34,12 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			 * Disables the link
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean },
+			disabled: { type: Boolean, reflect: true },
 			/**
 			 * Tooltip text when disabled
 			 * @type {string}
 			 */
-			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
+			disabledTooltip: { type: String, attribute: 'disabled-tooltip', reflect: true },
 			/**
 			 * Download a URL instead of navigating to it
 			 * @type {boolean}
@@ -125,6 +125,19 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					--d2l-icon-fill-color: var(--d2l-color-celestine-minus-1);
 				}
 
+				:host([disabled]:not([disabled-tooltip])) a {
+					pointer-events: none;
+				}
+				a[aria-disabled="true"] {
+					cursor: default;
+				}
+				a[aria-disabled="true"] .d2l-link-content {
+					opacity: 0.74;
+				}
+				a[aria-disabled="true"] .new-window {
+					opacity: 0.54;
+				}
+
 				@media print {
 					d2l-icon {
 						display: none;
@@ -154,6 +167,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			'd2l-link-small': this.small
 		};
 		const spanClasses = {
+			'd2l-link-content': true,
 			'truncate': this.lines > 1,
 			'truncate-one': this.lines === 1
 		};
