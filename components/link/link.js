@@ -125,10 +125,15 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					--d2l-icon-fill-color: var(--d2l-color-celestine-minus-1);
 				}
 
-				:host([disabled]:not([disabled-tooltip])) a {
-					pointer-events: none;
+				:host([disabled]:not([disabled-tooltip])) a:hover {
+					color: var(--d2l-color-celestine);
+					text-decoration: none;
 				}
-				a[aria-disabled="true"] {
+				:host([disabled]:not([disabled-tooltip])) a:hover d2l-icon {
+					--d2l-icon-fill-color: var(--d2l-color-celestine);
+				}
+				a[aria-disabled="true"],
+				a[aria-disabled="true"]:active {
 					cursor: default;
 				}
 				a[aria-disabled="true"] .d2l-link-content {

@@ -1,5 +1,5 @@
 import '../link.js';
-import { expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 const normalFixture = html`<d2l-link href="https://www.d2l.com">Link Test</d2l-link>`;
 
@@ -100,8 +100,7 @@ describe('d2l-link', () => {
 			const elem = await fixture(html`<d2l-link href="https://www.d2l.com" disabled>Link</d2l-link>`);
 			let anchorClicked = false;
 			elem.addEventListener('click', () => anchorClicked = true);
-			getAnchor(elem).click();
-			await elem.updateComplete;
+			await clickElem(getAnchor(elem));
 			expect(anchorClicked).to.be.false;
 		});
 
@@ -109,8 +108,7 @@ describe('d2l-link', () => {
 			const elem = await fixture(html`<d2l-link href="https://www.d2l.com" disabled disabled-tooltip="Tooltip text">Link</d2l-link>`);
 			let anchorClicked = false;
 			elem.addEventListener('click', () => anchorClicked = true);
-			getAnchor(elem).click();
-			await elem.updateComplete;
+			await clickElem(getAnchor(elem));
 			expect(anchorClicked).to.be.false;
 		});
 
@@ -121,8 +119,7 @@ describe('d2l-link', () => {
 				e.preventDefault();
 				anchorClicked = true;
 			});
-			getAnchor(elem).click();
-			await elem.updateComplete;
+			await clickElem(getAnchor(elem));
 			expect(anchorClicked).to.be.true;
 		});
 

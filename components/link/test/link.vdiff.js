@@ -25,7 +25,7 @@ describe('d2l-link', () => {
 		{ name: 'wc-clamp-unbreakable-one-line', template: html`<div style="width: 400px;"><d2l-link href="https://www.d2l.com" lines="1">Areallyreallylongunbreakablelinkthatwilloverflowitscontainer.</d2l-link></div>` },
 		{ name: 'wc-clamp-two-lines', template: html`<div style="width: 400px;"><d2l-link href="https://www.d2l.com" lines="2">A really really long link that wraps in its container and then truncates after two lines of text like this.</d2l-link></div>` },
 		{ name: 'wc-clamp-unbreakable-two-lines', template: html`<div style="width: 400px;"><d2l-link href="https://www.d2l.com" lines="2">Areallyreallyreallylongunbreakablelinkthatwrapsinitscontainerandthentruncatesaftertwolinesoftextlikethis.</d2l-link></div>` },
-		{ name: 'wc-disabled', template: html`<d2l-link href="https://www.d2l.com" disabled>Disabled Link</d2l-link>` },
+		{ name: 'wc-disabled', template: html`<d2l-link href="https://www.d2l.com" disabled target="_blank">Disabled Link</d2l-link>` },
 		{ name: 'wc-disabled-tooltip', template: html`<d2l-link href="https://www.d2l.com" disabled disabled-tooltip="This link is disabled" target="_blank">Disabled Link with Tooltip</d2l-link>` },
 		{ name: 'wc-disabled-tooltip-not-disabled', template: html`<d2l-link href="https://www.d2l.com" disabled-tooltip="This link is disabled">Disabled Link with Tooltip</d2l-link>` },
 		{ name: 'sass-standard', template: html`<a href="https://www.d2l.com" class="d2l-test-link">Standard Link</a>` },
