@@ -382,6 +382,13 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		super.firstUpdated(changedProperties);
 	}
 
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (this._dropNestedOnly) {
+			this.keyboardDragDisabled = true;
+		}
+	}
+
 	activateDragHandle() {
 		if (this.shadowRoot) this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
 	}
