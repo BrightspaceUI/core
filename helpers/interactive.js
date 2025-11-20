@@ -35,7 +35,7 @@ export function isInteractive(ele, elems, roles) {
 		return true;
 	}
 	const role = (ele.getAttribute('role') || '');
-	return (nodeName === 'a' && ele.hasAttribute('href')) || roles[role] || false;
+	return (nodeName === 'a' && (ele.hasAttribute('href') || ele.getAttribute('tabindex') === '0')) || roles[role] || false;
 }
 
 export function isInteractiveInComposedPath(composedPath, predicate, options) {
