@@ -49,6 +49,8 @@ Import and use the `<d2l-link>` web component instead of the native `<a>` elemen
 |--|--|--|
 | `aria-label` | String | Label to provide more context for screen reader users when the link text is not enough |
 | `href` | String, required | URL or URL fragment of the link |
+| `disabled` | Boolean | Disables the link |
+| `disabled-tooltip` | String | Tooltip text when disabled |
 | `download` | String | If the attribute is provided, it will prompt the user to download the resource instead of navigating to it. Additionally, if the attribute is provided with a value, that value will be used for the filename. |
 | `main` | Boolean | Whether to apply the "main" link style |
 | `lines` | Number | The number of lines to display before truncating text with an ellipsis. The text will not be truncated unless a value is specified. |

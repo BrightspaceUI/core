@@ -32,7 +32,19 @@ describe('interactive', () => {
 			expect(isInteractive(ele)).to.be.true;
 		});
 
-		it('should return false for anchor elements without href', () => {
+		it('should return true for anchor elements without href but with tabindex 0', () => {
+			const ele = document.createElement('a');
+			ele.setAttribute('tabindex', '0');
+			expect(isInteractive(ele)).to.be.true;
+		});
+
+		it('should return false for anchor elements without href and with tabindex -1', () => {
+			const ele = document.createElement('a');
+			ele.setAttribute('tabindex', '-1');
+			expect(isInteractive(ele)).to.be.false;
+		});
+
+		it('should return false for anchor elements without href and tabindex', () => {
 			const ele = document.createElement('a');
 			expect(isInteractive(ele)).to.be.false;
 		});
