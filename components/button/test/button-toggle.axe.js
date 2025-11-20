@@ -1,6 +1,6 @@
 import '../button-icon.js';
 import '../button-toggle.js';
-import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 
 describe('d2l-button-toggle', () => {
 
