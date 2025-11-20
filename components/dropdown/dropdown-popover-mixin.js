@@ -351,7 +351,9 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		this._hasHeaderSlotContent = e.target.assignedNodes().length !== 0;
 	}
 
-	#handlePopoverClose() {
+	#handlePopoverClose(e) {
+		// ignore popover close events from nested popovers
+		if (e.target !== this) return;
 		setTimeout(() => {
 			this.opened = false;
 
@@ -365,7 +367,9 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		this.dispatchEvent(new CustomEvent('d2l-dropdown-focus-enter', { detail:{ applyFocus: e.detail.applyFocus } }));
 	}
 
-	#handlePopoverOpen() {
+	#handlePopoverOpen(e) {
+		// ignore popover open events from nested popovers
+		if (e.target !== this) return;
 		this.opened = true;
 
 		if (!this.noAutoFit && this.#contentElement) {

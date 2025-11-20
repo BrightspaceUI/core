@@ -22,6 +22,21 @@ const normalFixture = html`
 	</div>
 `;
 
+const nestedFixture = html`
+	<d2l-dropdown>
+		<button class="d2l-dropdown-opener"></button>
+		<d2l-dropdown-content>
+			<d2l-dropdown>
+				<button class="d2l-dropdown-opener"></button>
+				<d2l-dropdown-content>
+					<p id="non_focusable_inside">a</p>
+					<a id="focusable_inside" href="http://www.desire2learn.com">b</a>
+				</d2l-dropdown-content>
+			</d2l-dropdown>
+		</d2l-dropdown-content>
+	</d2l-dropdown>
+`;
+
 const openOnHoverFixture = html`
 	<div>
 		<div id="optionallyFocusable">
@@ -163,7 +178,7 @@ describe('d2l-dropdown', () => {
 			expect(content.opened).to.be.false;
 		});
 
-		it('doesnt fire open event when already opened', async() => {
+		it('does not fire open event when already opened', async() => {
 			content.opened = true;
 			await oneEvent(content, 'd2l-dropdown-open');
 			let hasDuplicateEvent = false;
@@ -173,12 +188,53 @@ describe('d2l-dropdown', () => {
 			expect(hasDuplicateEvent).to.be.false;
 		});
 
-		it('doesnt fire close event when already closed', async() => {
+		it('does not fire close event when already closed', async() => {
 			let hasDuplicateEvent = false;
 			oneEvent(content, 'd2l-dropdown-close').then(() => hasDuplicateEvent = true);
 			content.opened = false;
 			await aTimeout(100);
 			expect(hasDuplicateEvent).to.be.false;
+		});
+
+		it('does not fire open event on outer dropdown when nested dropdown is opened', async() => {
+			dropdown = await fixture(nestedFixture);
+
+			const outerContent = dropdown.querySelector('d2l-dropdown-content');
+			outerContent.opened = true;
+			await oneEvent(outerContent, 'd2l-dropdown-open');
+
+			let dispatchedFromInnerOnly = true;
+			const innerContent = outerContent.querySelector('d2l-dropdown-content');
+			outerContent.addEventListener('d2l-dropdown-open', e => {
+				if (e.target !== innerContent) dispatchedFromInnerOnly = false;
+			});
+
+			innerContent.opened = true;
+			await aTimeout(100);
+
+			expect(dispatchedFromInnerOnly).to.be.true;
+		});
+
+		it('does not fire close event on outer dropdown when nested dropdown is closed', async() => {
+			dropdown = await fixture(nestedFixture);
+
+			const outerContent = dropdown.querySelector('d2l-dropdown-content');
+			outerContent.opened = true;
+			await oneEvent(outerContent, 'd2l-dropdown-open');
+
+			const innerContent = outerContent.querySelector('d2l-dropdown-content');
+			innerContent.opened = true;
+			await oneEvent(innerContent, 'd2l-dropdown-open');
+
+			let dispatchedFromInnerOnly = true;
+			outerContent.addEventListener('d2l-dropdown-close', e => {
+				if (e.target !== innerContent) dispatchedFromInnerOnly = false;
+			});
+
+			innerContent.opened = false;
+			await aTimeout(100);
+
+			expect(dispatchedFromInnerOnly).to.be.true;
 		});
 
 	});
