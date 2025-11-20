@@ -113,7 +113,7 @@ class ColorUsageViewer extends LitElement {
 				border-radius: 0.2rem;
 				display: inline-block;
 				height: 1.5rem;
-				margin-right: 0.75rem;
+				margin-right: 0.25rem;
 				width: 1.5rem;
 			}
 
@@ -859,7 +859,10 @@ class ColorUsageViewer extends LitElement {
 						return html`
 							<tr>
 								<td>
-								${color}
+								<div style="display: inline-flex; align-items: center; gap: 0.5rem;">
+									${this._renderColorSwatch(color)}
+									<span>${color}</span>
+								</div>
 								${colorInfo?.resultantOnWhite ? html`
 									<br>
 									<span style="color: #565a5c; font-size: 0.75rem; font-family: 'Monaco', 'Menlo', 'Consolas', monospace; display: inline-flex; align-items: center; gap: 0.25rem;">
