@@ -1,11 +1,13 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { _generateLinkStyles } from './link-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFlag } from '../../helpers/flags.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -28,6 +30,16 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			 * @type {string}
 			 */
 			ariaLabel: { type: String, attribute: 'aria-label' },
+			/**
+			 * Disables the link
+			 * @type {boolean}
+			 */
+			disabled: { type: Boolean, reflect: true },
+			/**
+			 * Tooltip text when disabled
+			 * @type {string}
+			 */
+			disabledTooltip: { type: String, attribute: 'disabled-tooltip', reflect: true },
 			/**
 			 * Download a URL instead of navigating to it
 			 * @type {boolean}
@@ -113,6 +125,24 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					--d2l-icon-fill-color: var(--d2l-color-celestine-minus-1);
 				}
 
+				:host([disabled]:not([disabled-tooltip])) a:hover {
+					color: var(--d2l-color-celestine);
+					text-decoration: none;
+				}
+				:host([disabled]:not([disabled-tooltip])) a:hover d2l-icon {
+					--d2l-icon-fill-color: var(--d2l-color-celestine);
+				}
+				a[aria-disabled="true"],
+				a[aria-disabled="true"]:active {
+					cursor: default;
+				}
+				a[aria-disabled="true"] .d2l-link-content {
+					opacity: 0.74;
+				}
+				a[aria-disabled="true"] d2l-icon {
+					opacity: 0.64;
+				}
+
 				@media print {
 					d2l-icon {
 						display: none;
@@ -124,6 +154,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 
 	constructor() {
 		super();
+		this.disabled = false;
 		this.download = false;
 		this.main = false;
 		this.small = false;
@@ -141,12 +172,16 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			'd2l-link-small': this.small
 		};
 		const spanClasses = {
+			'd2l-link-content': true,
 			'truncate': this.lines > 1,
 			'truncate-one': this.lines === 1
 		};
 		const styles = { webkitLineClamp: this.lines || null };
 		const newWindowElements = (this.target === '_blank')
 			? html`<span id="new-window"><span style="font-size: 0;">&nbsp;</span><d2l-icon icon="tier1:new-window"></d2l-icon></span><span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
+			: nothing;
+		const disabledTooltip = this.disabled && this.disabledTooltip
+			? html`<d2l-tooltip class="vdiff-target" for="${this.#linkId}">${this.disabledTooltip}</d2l-tooltip>`
 			: nothing;
 
 		/*
@@ -155,14 +190,27 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		* Do not modify for readability!
 		*/
 		return html`<a
+				aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}"
 				aria-label="${ifDefined(this.ariaLabel)}"
 				class="${classMap(linkClasses)}"
+				@click="${this.#handleClick}"
 				?download="${this.download}"
-				href="${ifDefined(this.href)}"
+				href="${ifDefined(!this.disabled ? this.href : undefined)}"
+				id="${this.#linkId}"
+				tabindex="${ifDefined(this.disabled && this.disabledTooltip ? 0 : undefined)}"
 				target="${ifDefined(this.target)}"
 				><span
 					class="${classMap(spanClasses)}"
-					style="${styleMap(styles)}"><slot></slot></span>${newWindowElements}</a>`;
+					style="${styleMap(styles)}"><slot></slot></span>${newWindowElements}</a>${disabledTooltip}`;
+	}
+
+	#linkId = getUniqueId();
+
+	#handleClick(e) {
+		if (this.disabled) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
 	}
 
 }
