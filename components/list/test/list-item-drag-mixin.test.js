@@ -1,3 +1,4 @@
+import '../list.js';
 import { defineCE, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { dropLocation, ListItemDragDropMixin, NewPositionEventDetails } from '../list-item-drag-drop-mixin.js';
 import { html, LitElement } from 'lit';
@@ -21,6 +22,16 @@ describe('ListItemDragDropMixin', () => {
 	it('Sets draggable to false when no key is given', async() => {
 		const element = await fixture(`<${tag} draggable></${tag}>`);
 		expect(element.draggable).to.be.false;
+	});
+
+	it.only('Sets _dropNestedOnly and keyboardDragDisabled to true when drop-nested-only is set', async() => {
+		const element = await fixture(`<d2l-list drop-nested-only>
+			<${tag} key="1" draggable></${tag}>
+		</d2l-list>`);
+		const listItem = element.querySelector(tag);
+
+		expect(listItem._dropNestedOnly).to.be.true;
+		expect(listItem.keyboardDragDisabled).to.be.true;
 	});
 
 	describe('Track placement as item is being moved', () => {
