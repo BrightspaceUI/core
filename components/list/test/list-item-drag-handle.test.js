@@ -16,7 +16,7 @@ describe('ListItemDragHandle', () => {
 		});
 
 		it(`Dispatch drag handle action event for ${dragActions.active} event when clicked.`, async() => {
-			setTimeout(() => clickElem(actionArea));
+			clickElem(actionArea)
 			const e = await oneEvent(element, 'd2l-list-item-drag-handle-action');
 			expect(e.detail.action).to.equal(dragActions.active);
 		});
