@@ -14,6 +14,8 @@ describe('button', () => {
 				{ name: 'focus', action: focusElem },
 				{ name: 'click', action: clickElem },
 				{ name: 'disabled', action: elem => elem.disabled = true },
+				{ name: 'active', action: elem => elem.setAttribute('active', '') },
+				{ name: 'active-disabled', action: elem => { elem.setAttribute('active', ''); elem.disabled = true; } },
 				{ name: 'keydown-enter', action: elem => sendKeysElem(elem, 'press', 'Enter') },
 				{ name: 'keydown-space', action: elem => sendKeysElem(elem, 'press', 'Space') }
 			].forEach(({ action, name }) => {
