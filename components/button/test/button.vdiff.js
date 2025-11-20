@@ -1,5 +1,5 @@
 import '../button.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 
 describe('button', () => {
 	[
