@@ -101,7 +101,8 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 				}
 
 				button:hover:not([disabled]),
-				button:focus:not([disabled]) {
+				button:focus:not([disabled]),
+				:host([active]) button:not([disabled]) {
 					--d2l-button-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-tungsten));
 					background-color: var(--d2l-button-icon-background-color-hover);
 				}
