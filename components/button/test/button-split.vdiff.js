@@ -34,7 +34,8 @@ describe('button-split', () => {
 				{ name: 'focus-main', action: elem => focusElem(elem.shadowRoot.querySelector('.main-action')) },
 				{ name: 'hover-opener', action: elem => hoverElem(elem.shadowRoot.querySelector('.d2l-dropdown-opener')) },
 				{ name: 'focus-opener', action: elem => focusElem(elem.shadowRoot.querySelector('.d2l-dropdown-opener')) },
-				{ name: 'disabled', action: elem => elem.disabled = true }
+				{ name: 'disabled', action: elem => elem.disabled = true },
+				{ name: 'focus', action: elem => focusElem(elem) }
 			].forEach(({ action, name }) => {
 				it(name, async() => {
 					const elem = await fixture(template);

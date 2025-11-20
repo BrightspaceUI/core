@@ -76,15 +76,6 @@ describe('d2l-button-split', () => {
 
 	});
 
-	describe('focus', () => {
-
-		it('should return correct focusElementSelector', async() => {
-			const el = await fixture(getTemplate());
-			expect(el.constructor.focusElementSelector).to.equal('.main-action');
-		});
-
-	});
-
 	describe('events', () => {
 
 		it('dispatches click event when main action button clicked', async() => {
