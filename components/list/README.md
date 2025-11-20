@@ -635,7 +635,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 
 | Property | Type | Description |
 |---|---|---|
-| `disable-keyboard-drag` | Boolean | Disables keyboard dragging interaction. If enabled while implementing drag & drop, a keyboard alternative should be provided for the dragging functionality. |
+| `keyboard-drag-disabled` | Boolean | Disables keyboard dragging interaction. If enabled while implementing drag & drop, a keyboard alternative should be provided for the dragging functionality. |
 | `draggable` |  Boolean | Whether the item is draggable |
 | `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
 | `drag-target-handle-only` | Boolean | Make the drag target the drag handle only. |
