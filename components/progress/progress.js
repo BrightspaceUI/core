@@ -22,20 +22,20 @@ class Progress extends LocalizeCoreElement(LitElement) {
 			 */
 			value: { type: Number },
 			/**
-			 * Label for the progress bar
+			 * REQUIRED: Label for the progress bar
 			 * @type {string}
 			 */
-			label: { type: String, required: true },
+			label: { type: String },
 			/**
 			 * Hide the bar's label
 			 * @type {boolean}
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
-			 * Include aria-live region for percentage text updates
+			 * Announce the label when it changes
 			 * @type {boolean}
 			 */
-			liveLabel: { type: Boolean, attribute: 'live-label' },
+			announceLabel: { type: Boolean, attribute: 'announce-label' },
 			/**
 			 * Hide the bar's value
 			 * @type {boolean}
@@ -147,7 +147,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 		this.value = 0;
 		this.valueHidden = false;
 		this.size = 'medium';
-		this._updateLiveText();
+		this.announceLabel = false;
 	}
 
 	get isComplete() {
@@ -164,9 +164,9 @@ class Progress extends LocalizeCoreElement(LitElement) {
 		};
 		const valueClasses = { ...textClasses, value: true };
 
-		const percentageText = this.getPercentageText();
+		const percentageText = formatPercent(this.isComplete ? 1 : Math.floor(100 * this.value / this.max) / 100);;
 		return html`
-			<div aria-live=${this.liveLabel ? 'polite' : 'off'} ?hidden=${this.labelHidden} id="label" class=${classMap(textClasses)}>${this.label}</div>
+			<div aria-live=${this.announceLabel ? 'polite' : 'off'} ?hidden=${this.labelHidden} id="label" class=${classMap(textClasses)}>${this.label}</div>
 			<progress
 				aria-labelledby="${ifDefined(this.labelHidden ? undefined : 'label')}"
 				aria-label="${ifDefined(this.labelHidden ? this.label : undefined)}"
@@ -179,14 +179,6 @@ class Progress extends LocalizeCoreElement(LitElement) {
 		`;
 	}
 
-	getPercentageText() {
-		return formatPercent(this.isComplete ? 1 : Math.floor(100 * this.value / this.max) / 100);
-	}
-
-	_updateLiveText() {
-		this._livePercentageDebounce = null;
-		this._ariaPercentageText = this.getPercentageText();
-	}
 }
 
 customElements.define('d2l-progress', Progress);
