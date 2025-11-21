@@ -5,6 +5,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 
 class Progress extends LocalizeCoreElement(LitElement) {
 
@@ -21,7 +22,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 			 */
 			value: { type: Number },
 			/**
-			 * Label for the progress bar
+			 * REQUIRED: Label for the progress bar
 			 * @type {string}
 			 */
 			label: { type: String },
@@ -31,6 +32,11 @@ class Progress extends LocalizeCoreElement(LitElement) {
 			 */
 			labelHidden: { type: Boolean, attribute: 'label-hidden' },
 			/**
+			 * Announce the label when it changes
+			 * @type {boolean}
+			 */
+			announceLabel: { type: Boolean, attribute: 'announce-label' },
+			/**
 			 * Hide the bar's value
 			 * @type {boolean}
 			 */
@@ -39,12 +45,12 @@ class Progress extends LocalizeCoreElement(LitElement) {
 			 * The size of the progress bar
 			 * @type {'small'|'medium'|'large'}
 			 */
-			size: { type: String, reflect: true },
+			size: { type: String, reflect: true }
 		};
 	}
 
 	static get styles() {
-		return [bodySmallStyles, bodyCompactStyles, css`
+		return [bodySmallStyles, bodyCompactStyles, offscreenStyles, css`
 				:host {
 					align-items: center;
 					display: flex;
@@ -141,11 +147,16 @@ class Progress extends LocalizeCoreElement(LitElement) {
 		this.value = 0;
 		this.valueHidden = false;
 		this.size = 'medium';
+		this.announceLabel = false;
+	}
+
+	get isComplete() {
+		return this.value >= this.max;
 	}
 
 	render() {
 		const classes = {
-			'complete': this.value === this.max
+			'complete': this.isComplete
 		};
 		const textClasses = {
 			'd2l-body-small': this.size === 'small',
@@ -153,21 +164,18 @@ class Progress extends LocalizeCoreElement(LitElement) {
 		};
 		const valueClasses = { ...textClasses, value: true };
 
-		const percentage = Math.floor(100 * this.value / this.max) / 100;
-		const perecentageText = formatPercent(percentage);
-
+		const percentageText = formatPercent(this.isComplete ? 1 : Math.floor(100 * this.value / this.max) / 100);;
 		return html`
-			<div ?hidden=${this.labelHidden} id="label" class=${classMap(textClasses)}>${this.label}</div>
+			<div aria-live=${this.announceLabel ? 'polite' : 'off'} ?hidden=${this.labelHidden} id="label" class=${classMap(textClasses)}>${this.label}</div>
 			<progress
 				aria-labelledby="${ifDefined(this.labelHidden ? undefined : 'label')}"
 				aria-label="${ifDefined(this.labelHidden ? this.label : undefined)}"
-				aria-valuetext="${perecentageText}"
+				aria-valuetext="${percentageText}"
 				class="${classMap(classes)}"
 				value="${this.value}"
 				max="${this.max}">
 			</progress>
-			<div ?hidden=${this.valueHidden} class=${classMap(valueClasses)}>${perecentageText}</div>
-
+			<div ?hidden=${this.valueHidden} class=${classMap(valueClasses)}>${percentageText}</div>
 		`;
 	}
 
