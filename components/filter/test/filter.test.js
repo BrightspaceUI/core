@@ -4,7 +4,7 @@ import '../filter-dimension-set-empty-state.js';
 import '../filter-dimension-set-date-text-value.js';
 import '../filter-dimension-set-date-time-range-value.js';
 import '../filter-dimension-set-value.js';
-import { expect, fixture, html, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
+import { expect, fixture, html, nextFrame, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
 import { spy, stub, useFakeTimers } from 'sinon';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 
@@ -472,6 +472,14 @@ describe('d2l-filter', () => {
 	});
 
 	describe('events', () => {
+		function search(elem, value) {
+			const search = elem.shadowRoot.querySelector('d2l-input-search');
+			search.value = value;
+			setTimeout(() => search.search());
+			return oneEvent(elem, 'd2l-filter-dimension-search');
+
+		}
+
 		describe('d2l-filter-change', () => {
 			it('single set dimension fires change events', async() => {
 				const elem = await fixture(singleSetDimensionFixture);
@@ -1011,7 +1019,28 @@ describe('d2l-filter', () => {
 
 				const e = await oneEvent(elem, 'd2l-filter-dimension-load-more');
 				expect(e.detail.key).to.equal('dim');
+				expect(e.detail.value).to.equal('');
 				expect(eventSpy).to.be.calledOnce;
+			});
+
+			it('dimension set fires load more event with search value', async() => {
+				const elem = await fixture(html`<d2l-filter>
+					<d2l-filter-dimension-set key="dim" has-more search-type="manual">
+						<d2l-filter-dimension-set-value key="admin" text="Admin"></d2l-filter-dimension-set-value>
+					</d2l-filter-dimension-set>
+				</d2l-filter>`);
+				(await search(elem, 'search value')).detail.searchCompleteCallback({ displayAllKeys: true });
+				await nextFrame(); // wait for paging callback
+				await elem.updateComplete;
+
+				const loadMore = elem.shadowRoot.querySelector('d2l-pager-load-more');
+				await nextFrame(); // wait for paging info to update
+				await loadMore.updateComplete;
+
+				setTimeout(() => loadMore.shadowRoot.querySelector('button').click());
+				const e = await oneEvent(elem, 'd2l-filter-dimension-load-more');
+				expect(e.detail.key).to.equal('dim');
+				expect(e.detail.value).to.equal('search value');
 			});
 		});
 
@@ -1019,11 +1048,7 @@ describe('d2l-filter', () => {
 			it('single set dimension fires search event for manual search-type', async() => {
 				const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" search-type="manual"></d2l-filter-dimension-set></d2l-filter>');
 				const eventSpy = spy(elem, 'dispatchEvent');
-				const search = elem.shadowRoot.querySelector('d2l-input-search');
-				search.value = 'searching';
-
-				setTimeout(() => search.search());
-				const e = await oneEvent(elem, 'd2l-filter-dimension-search');
+				const e = await search(elem, 'searching');
 
 				expect(elem._dimensions[0].searchValue).to.equal('searching');
 				expect(e.detail.value).to.equal('searching');

@@ -887,7 +887,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		const dimensionKey = e.target.parentNode.id.slice(SET_DIMENSION_ID_PREFIX.length);
 		const dimension = this._getDimensionByKey(dimensionKey);
 
-		this.requestFilterLoadMoreEvent(dimensionKey, dimension.value, () => {
+		this.requestFilterLoadMoreEvent(dimensionKey, dimension.searchValue, () => {
 			const menu = this.shadowRoot.querySelector('d2l-dropdown-menu');
 			menu ? menu.addEventListener('d2l-dropdown-position', e.detail.complete, { once: true }) : e.detail.complete();
 		});
