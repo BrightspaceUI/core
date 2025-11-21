@@ -163,6 +163,40 @@ To use the viewer in a demo page:
 <color-usage-viewer></color-usage-viewer>
 ```
 
+### Configuration
+
+The viewer accepts the following attributes for customizing data file paths:
+
+#### `color-data-file`
+Path to the JSON file containing color usage data organized by component.
+
+**Default:** `./color-usages-by-component.json`
+
+**Example:**
+```html
+<color-usage-viewer color-data-file="./custom-color-data.json"></color-usage-viewer>
+```
+
+#### `color-summary-file`
+Path to the JSON file containing color summary data organized by color.
+
+**Default:** `./colors-summary.json`
+
+**Example:**
+```html
+<color-usage-viewer color-summary-file="./custom-summary.json"></color-usage-viewer>
+```
+
+#### Combined Example
+```html
+<color-usage-viewer 
+  color-data-file="../../data/color-usages.json"
+  color-summary-file="../../data/colors-summary.json">
+</color-usage-viewer>
+```
+
+This allows you to use the viewer with different datasets or place the data files in alternative locations.
+
 ## Technical Details
 
 ### Color Detection Patterns

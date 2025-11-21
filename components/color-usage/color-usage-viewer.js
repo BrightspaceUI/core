@@ -39,6 +39,16 @@ class ColorUsageViewer extends LitElement {
 			 * @type {string}
 			 */
 			selectedCategory: { type: String, attribute: 'selected-category' },
+			/**
+			 * The path to the color data file (by component)
+			 * @type {string}
+			 */
+			colorDataFile: { type: String, attribute: 'color-data-file' },
+			/**
+			 * The path to the color summary file (by color)
+			 * @type {string}
+			 */
+			colorSummaryFile: { type: String, attribute: 'color-summary-file' },
 			_colorData: { state: true },
 			_colorsByUsage: { state: true },
 			_loading: { state: true },
@@ -225,6 +235,8 @@ class ColorUsageViewer extends LitElement {
 
 	constructor() {
 		super();
+		this.colorDataFile = './color-usages-by-component.json';
+		this.colorSummaryFile = './colors-summary.json';
 		this.selectedComponent = '';
 		this.selectedColor = '';
 		this.selectedCategory = '';
@@ -381,15 +393,15 @@ class ColorUsageViewer extends LitElement {
 	async _loadColorData() {
 		try {
 			const [colorDataResponse, colorsByUsageResponse] = await Promise.all([
-				fetch('./color-usages-by-component.json'),
-				fetch('./colors-summary.json')
+				fetch(this.colorDataFile),
+				fetch(this.colorSummaryFile)
 			]);
 
 			if (!colorDataResponse.ok) {
-				throw new Error(`Failed to load color-usages-by-component.json: ${colorDataResponse.statusText}`);
+				throw new Error(`Failed to load ${this.colorDataFile}: ${colorDataResponse.statusText}`);
 			}
 			if (!colorsByUsageResponse.ok) {
-				throw new Error(`Failed to load colors-summary.json: ${colorsByUsageResponse.statusText}`);
+				throw new Error(`Failed to load ${this.colorSummaryFile}: ${colorsByUsageResponse.statusText}`);
 			}
 
 			this._colorData = await colorDataResponse.json();
