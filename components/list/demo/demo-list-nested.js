@@ -25,6 +25,7 @@ class ListDemoNested extends LitElement {
 			selectable: { type: Boolean },
 			keyboardDragDisabled: { type: Boolean, attribute: 'keyboard-drag-disabled' },
 			disableExpandFeature: { type: Boolean, attribute: 'disable-expand-feature' },
+			dropNestedOnly: { type: Boolean, attribute: 'drop-nested-only' },
 			expanded: { type: Boolean },
 			includeSecondaryActions: { type: Boolean, attribute: 'include-secondary-actions' },
 			includeListControls: { type: Boolean, attribute: 'include-list-controls' },
@@ -174,7 +175,9 @@ class ListDemoNested extends LitElement {
 		return html`
 			<d2l-list
 				?grid="${!this.disableListGrid}"
-				drag-multiple slot="${ifDefined(nested ? 'nested' : undefined)}"
+				drag-multiple
+				?drop-nested-only="${this.dropNestedOnly}"
+				slot="${ifDefined(nested ? 'nested' : undefined)}"
 				item-count="${this._items.length}"
 				?add-button="${this.addButton}">
 				${ includeControls ? this._renderListControls() : nothing }
