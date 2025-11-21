@@ -26,7 +26,7 @@ describe('d2l-button', () => {
 			expect(btn.disabled).to.be.true;
 		});
 
-		it('should set aria-disabled when disabledTooltip is set', async() => {
+		it('should set aria-disabled and unset disabled property when disabledTooltip is set', async() => {
 			const el = await fixture(html`<d2l-button disabled disabled-tooltip="tooltip text">Disabled Button</d2l-button>`);
 			const btn = el.shadowRoot.querySelector('button');
 			expect(btn.getAttribute('aria-disabled')).to.equal('true');
