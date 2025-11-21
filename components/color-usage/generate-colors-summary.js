@@ -198,4 +198,4 @@ const colorsSummary = generateColorsByUsage(colorUsages);
 const outputPath = `${__dirname}/colors-summary.json`;
 writeFileSync(outputPath, JSON.stringify(colorsSummary, null, 4));
 
-console.log('✓ colors-summary.json regenerated successfully');
+console.log('✓ colors-summary.json regenerated successfully'); // eslint-disable-line no-console

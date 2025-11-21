@@ -1,10 +1,21 @@
+/* eslint-disable lit/no-template-arrow */
+
 import '../colors/colors.js';
 import '../tabs/tabs.js';
 import '../tabs/tab.js';
 import '../tabs/tab-panel.js';
 import '../expand-collapse/expand-collapse-content.js';
 import '../collapsible-panel/collapsible-panel.js';
+import '../collapsible-panel/collapsible-panel-group.js';
+import '../empty-state/empty-state-simple.js';
+import '../alert/alert.js';
+import '../button/button-subtle.js';
+import { bodyStandardStyles, heading2Styles, labelStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit';
+import { inputLabelStyles } from '../inputs/input-label-styles.js';
+import { linkStyles } from '../link/link.js';
+import { selectStyles } from '../inputs/input-select-styles.js';
+import { tableStyles } from '../table/table-wrapper.js';
 
 /**
  * A component for viewing color usage across different components.
@@ -38,435 +49,178 @@ class ColorUsageViewer extends LitElement {
 	}
 
 	static get styles() {
-		return css`
-			:host {
-				display: block;
-				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-				padding: 1rem;
-			}
+		return [ bodyStandardStyles, heading2Styles, labelStyles, inputLabelStyles, linkStyles, selectStyles, tableStyles, css`
+		:host {
+			display: block;
+			padding: 1rem;
+		}
 
-			.container {
-				max-width: 800px;
-				margin: 0 auto;
-			}
+		.container {
+			margin: 0 auto;
+			max-width: 800px;
+		}
 
-			h1 {
-				color: #202122;
-				font-size: 1.5rem;
-				font-weight: 700;
-				margin: 0 0 1.5rem 0;
-			}
+		h1 {
+			margin: 0 0 1.5rem 0;
+		}
 
-			.dropdown-container {
-				margin-bottom: 2rem;
-			}
+		.dropdown-container {
+			margin-bottom: 2rem;
+		}
 
-			label {
-				color: #565a5c;
-				display: block;
-				font-size: 0.875rem;
-				font-weight: 700;
-				margin-bottom: 0.5rem;
-			}
+		.color-list {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
 
-			select {
-				background-color: #ffffff;
-				border: 1px solid #cdd5dc;
-				border-radius: 0.3rem;
-				font-size: 0.875rem;
-				padding: 0.5rem;
-				width: 100%;
-				max-width: 400px;
-			}
+		.color-item {
+			background-color: var(--d2l-color-regolith);
+			border: 1px solid var(--d2l-color-gypsum);
+			border-radius: 0.3rem;
+			margin-bottom: 1rem;
+			padding: 1rem;
+		}
 
-			select:focus {
-				border-color: #006fbf;
-				outline: 2px solid #006fbf;
-				outline-offset: 0;
-			}
+		.color-name {
+			align-items: center;
+			display: flex;
+			font-family: "Monaco", "Menlo", "Consolas", monospace;
+			font-weight: 700;
+			margin-bottom: 0.5rem;
+		}
 
-			.color-list {
-				list-style: none;
-				margin: 0;
-				padding: 0;
-			}
+		.color-swatch {
+			border: 1px solid var(--d2l-color-mica);
+			border-radius: 0.2rem;
+			display: inline-block;
+			height: 1.5rem;
+			margin-right: 0.25rem;
+			width: 1.5rem;
+		}
 
-			.color-item {
-				background-color: #f9fafb;
-				border: 1px solid #e3e9f1;
-				border-radius: 0.3rem;
-				margin-bottom: 1rem;
-				padding: 1rem;
-			}
+		.color-usage {
+			color: var(--d2l-color-tungsten);
+		}
 
-			.color-name {
-				align-items: center;
-				display: flex;
-				font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-				font-size: 0.9rem;
-				font-weight: 700;
-				margin-bottom: 0.5rem;
-			}
+		d2l-tabs {
+			margin-bottom: 1.5rem;
+		}
 
-			.color-swatch {
-				border: 1px solid #cdd5dc;
-				border-radius: 0.2rem;
-				display: inline-block;
-				height: 1.5rem;
-				margin-right: 0.25rem;
-				width: 1.5rem;
-			}
+		.color-summary {
+			background-color: var(--d2l-color-celestine-plus-2);
+			border-left: 3px solid var(--d2l-color-celestine);
+			font-style: italic;
+			margin-bottom: 1rem;
+			padding: 0.75rem;
+		}
 
-			.color-usage {
-				color: #565a5c;
-				font-size: 0.8rem;
-				line-height: 1.5;
-			}
+		.category-badge {
+			border-radius: 0.25rem;
+			display: inline-block;
+			font-size: 0.7rem;
+			font-weight: 600;
+			padding: 0.15rem 0.4rem;
+			text-transform: uppercase;
+		}
 
-			.empty-state {
-				color: #565a5c;
-				font-size: 0.875rem;
-				padding: 2rem;
-				text-align: center;
-			}
+		.category-badge.background {
+			background-color: var(--d2l-color-celestine-plus-2);
+			color: var(--d2l-color-celestine-minus-1);
+		}
 
-			.loading {
-				color: #565a5c;
-				font-size: 0.875rem;
-				padding: 2rem;
-				text-align: center;
-			}
+		.category-badge.foreground {
+			background-color: var(--d2l-color-carnelian-plus-1);
+			color: var(--d2l-color-carnelian-minus-1);
+		}
 
-			.error {
-				background-color: #fef4f4;
-				border: 1px solid #f8cfcf;
-				border-radius: 0.3rem;
-				color: #cd2026;
-				font-size: 0.875rem;
-				padding: 1rem;
-			}
+		.category-badge.border {
+			background-color: var(--d2l-color-amethyst-plus-2);
+			color: var(--d2l-color-amethyst-minus-1);
+		}
 
-			.no-colors {
-				color: #565a5c;
-				font-size: 0.875rem;
-				font-style: italic;
-			}
+		.category-badge.shadow {
+			background-color: var(--d2l-color-gypsum);
+			color: var(--d2l-color-tungsten);
+		}
 
-			.view-mode-selector {
-				display: flex;
-				gap: 1rem;
-				margin-bottom: 1.5rem;
-			}
+		.category-badge.gradient {
+			background-color: var(--d2l-color-tourmaline-plus-2);
+			color: var(--d2l-color-tourmaline-minus-1);
+		}
 
-			.view-mode-selector button {
-				background-color: #f9fafb;
-				border: 1px solid #cdd5dc;
-				border-radius: 0.3rem;
-				color: #565a5c;
-				cursor: pointer;
-				font-size: 0.875rem;
-				padding: 0.5rem 1rem;
-			}
+		.category-badge.other {
+			background-color: var(--d2l-color-sylvite);
+			border: 1px solid var(--d2l-color-mica);
+			color: var(--d2l-color-tungsten);
+		}
 
-			.view-mode-selector button:hover {
-				background-color: #e3e9f1;
-			}
+		.category-summary {
+			align-items: center;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+			margin-bottom: 1rem;
+		}
 
-			.view-mode-selector button.active {
-				background-color: #006fbf;
-				border-color: #006fbf;
-				color: #ffffff;
-			}
+		.category-summary strong {
+			color: var(--d2l-color-tungsten);
+			font-weight: 700;
+		}
 
-			d2l-tabs {
-				margin-bottom: 1.5rem;
-			}
+		d2l-collapsible-panel {
+			margin-bottom: 1.5rem;
+		}
 
-			.color-summary {
-				background-color: #e3f0fe;
-				border-left: 3px solid #006fbf;
-				font-size: 0.85rem;
-				font-style: italic;
-				margin-bottom: 1rem;
-				padding: 0.75rem;
-			}
+		.category-definitions-content dl {
+			display: grid;
+			gap: 0.5rem;
+			grid-template-columns: auto 1fr;
+			margin: 0;
+		}
 
-			.component-list {
-				list-style: none;
-				margin: 0;
-				padding: 0;
-			}
+		.category-definitions-content dt {
+			color: var(--d2l-color-ferrite);
+			font-weight: 700;
+		}
 
-			.component-item {
-				background-color: #f9fafb;
-				border: 1px solid #e3e9f1;
-				border-radius: 0.3rem;
-				margin-bottom: 0.75rem;
-				padding: 0.75rem 1rem;
-			}
+		.category-definitions-content dd {
+			color: var(--d2l-color-tungsten);
+			margin: 0;
+		}
 
-			.component-name {
-				color: #202122;
-				font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-				font-size: 0.85rem;
-				font-weight: 700;
-				margin-bottom: 0.25rem;
-			}
-
-			.component-usage {
-				color: #565a5c;
-				font-size: 0.8rem;
-				line-height: 1.5;
-			}
-
-			.category-badges {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.25rem;
-				margin-top: 0.5rem;
-			}
-
-			.category-badge {
-				border-radius: 0.25rem;
-				display: inline-block;
-				font-size: 0.7rem;
-				font-weight: 600;
-				padding: 0.15rem 0.4rem;
-				text-transform: uppercase;
-			}
-
-			.category-background {
-				background-color: #e3f0fe;
-				color: #004489;
-			}
-
-			.category-foreground {
-				background-color: #fef4e9;
-				color: #8b5a00;
-			}
-
-			.category-border {
-				background-color: #f0e6ff;
-				color: #49286d;
-			}
-
-			.category-shadow {
-				background-color: #e8e8e8;
-				color: #494c4e;
-			}
-
-			.category-gradient {
-				background-color: #ffe6f5;
-				color: #7d3f6b;
-			}
-
-			.category-other {
-				background-color: #f9fafb;
-				border: 1px solid #cdd5dc;
-				color: #565a5c;
-			}
-
-			.category-summary {
-				align-items: center;
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.5rem;
-				margin-bottom: 1rem;
-			}
-
-			.category-summary strong {
-				color: #565a5c;
-				font-size: 0.8rem;
-				font-weight: 700;
-			}
-
-			d2l-collapsible-panel {
-				margin-bottom: 1.5rem;
-			}
-
-			.category-definitions-content dl {
-				display: grid;
-				gap: 0.5rem;
-				grid-template-columns: auto 1fr;
-				margin: 0;
-			}
-
-			.category-definitions-content dt {
-				color: #202122;
-				font-size: 0.8rem;
-				font-weight: 700;
-			}
-
-			.category-definitions-content dd {
-				color: #565a5c;
-				font-size: 0.8rem;
-				line-height: 1.5;
-				margin: 0;
-			}
-
-			.summary-table {
-				border-collapse: collapse;
-				width: 100%;
-			}
-
-			.summary-table th,
-			.summary-table td {
-				border: 1px solid #cdd5dc;
-				padding: 0.5rem;
-				text-align: left;
-			}
-
-			.summary-table th {
-				background-color: #f9fafb;
-				color: #565a5c;
-				font-size: 0.75rem;
-				font-weight: 700;
-				text-align: center;
-			}
-
-			.summary-table th:first-child {
-				text-align: left;
-			}
-
-			.summary-table th button {
-				background: none;
-				border: none;
-				color: #565a5c;
-				cursor: pointer;
-				font-size: 0.75rem;
-				font-weight: 700;
-				padding: 0;
-				text-decoration: none;
-				width: 100%;
-			}
-
-			.summary-table th button:hover {
-				color: #006fbf;
-			}
-
-			.summary-table th button:focus {
-				outline: 2px solid #006fbf;
-				outline-offset: 2px;
-			}
-
-			.summary-table th button.active {
-				color: #006fbf;
-				font-weight: 700;
-			}
-
-			.summary-table td {
-				font-size: 0.8rem;
-				text-align: center;
-			}
-
-			.summary-table td:first-child {
-				color: #202122;
-				font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-				font-size: 0.85rem;
-				font-weight: 600;
-				text-align: left;
-			}
-
-			.summary-table .check {
-				color: #46a661;
-				font-size: 1rem;
-				font-weight: 700;
-			}
-
-			.summary-table tbody tr:hover {
-				background-color: #f9fafb;
-			}
-
-			.summary-table .expand-button {
-				background: none;
-				border: none;
-				color: #006fbf;
-				cursor: pointer;
-				font-size: 0.8rem;
-				padding: 0;
-				text-decoration: underline;
-			}
-
-			.summary-table .expand-button:hover {
-				color: #004489;
-			}
-
-			.summary-table .expand-button:focus {
-				outline: 2px solid #006fbf;
-				outline-offset: 2px;
-			}
-
-			.summary-table .expanded-content {
-				background-color: #f9fafb;
-			}
-
-			.summary-table .expanded-content td {
-				padding: 0;
-			}
-
-			.component-details {
-				padding: 1rem;
-			}
-
-			.component-details table {
-				border-collapse: collapse;
-				width: 100%;
-			}
-
-			.component-details th,
-			.component-details td {
-				border: 1px solid #cdd5dc;
-				padding: 0.4rem;
-				text-align: left;
-			}
-
-			.component-details th {
-				background-color: #ffffff;
-				color: #565a5c;
-				font-size: 0.7rem;
-				font-weight: 700;
-				text-align: center;
-			}
-
-			.component-details th:first-child {
-				text-align: left;
-			}
-
-			.component-details td {
-				font-size: 0.75rem;
-				text-align: center;
-			}
-
-		.component-details td:first-child {
-			color: #202122;
-			font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-			font-size: 0.8rem;
+		.d2l-table td:first-child {
+			color: var(--d2l-color-ferrite);
+			font-family: "Monaco", "Menlo", "Consolas", monospace;
 			font-weight: 600;
 			text-align: left;
 		}
 
-		.component-link {
+		.d2l-table .check {
+			color: var(--d2l-color-feedback-success);
+			font-size: 1rem;
+			font-weight: 700;
+		}
+
+		.d2l-table .check-cell {
+			text-align: center;
+		}
+
+		.expanded-content td {
+			padding: 0;
+		}
+
+		.component-details {
+			padding: 1rem;
+		}
+
+		button.d2l-link {
 			background: none;
 			border: none;
-			color: #006fbf;
-			cursor: pointer;
-			font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
-			font-size: 0.8rem;
+			font-family: "Monaco", "Menlo", "Consolas", monospace;
 			font-weight: 600;
-			padding: 0;
-			text-align: left;
-			text-decoration: underline;
 		}
-
-		.component-link:hover {
-			color: #004489;
-		}
-
-		.component-link:focus {
-			outline: 2px solid #006fbf;
-			outline-offset: 2px;
-		}
-	`;
+	` ];
 	}
 
 	constructor() {
@@ -491,8 +245,8 @@ class ColorUsageViewer extends LitElement {
 		if (this._loading) {
 			return html`
 				<div class="container">
-					<h1>Color Usage Viewer</h1>
-					<div class="loading">Loading color data...</div>
+					<h1 class="d2l-heading-2">Color Usage Viewer</h1>
+					<d2l-alert type="default">Loading color data...</d2l-alert>
 				</div>
 			`;
 		}
@@ -500,15 +254,15 @@ class ColorUsageViewer extends LitElement {
 		if (this._error) {
 			return html`
 				<div class="container">
-					<h1>Color Usage Viewer</h1>
-					<div class="error">${this._error}</div>
+					<h1 class="d2l-heading-2">Color Usage Viewer</h1>
+					<d2l-alert type="critical">${this._error}</d2l-alert>
 				</div>
 			`;
 		}
 
 		return html`
 			<div class="container">
-				<h1>Color Usage Viewer</h1>
+				<h1 class="d2l-heading-2">Color Usage Viewer</h1>
 				
 				<d2l-tabs text="View Mode">
 					<d2l-tab id="summary-view" text="Summary" slot="tabs"></d2l-tab>
@@ -519,24 +273,29 @@ class ColorUsageViewer extends LitElement {
 					<d2l-tab id="component-view" text="By Component" slot="tabs"></d2l-tab>
 					<d2l-tab-panel labelled-by="component-view" slot="panels">
 						<div class="dropdown-container">
-							<label for="component-select">Select a component:</label>
-							<select 
-								id="component-select" 
-								@change="${this._handleComponentChange}"
-								.value="${this.selectedComponent}">
-								<option value="">-- Choose a component --</option>
-								${this._getComponentNames().map(name => html`
-									<option value="${name}" ?selected="${name === this.selectedComponent}">
-										${name}
-									</option>
-								`)}
-							</select>
-						</div>
-						${this.selectedComponent ? html`
-							<div class="dropdown-container">
-								<label for="category-filter">Filter by category:</label>
+							<label>
+								<span class="d2l-input-label">Select a component:</span>
 								<select 
-									id="category-filter" 
+									id="component-select"
+									class="d2l-input-select"
+									@change="${this._handleComponentChange}"
+									.value="${this.selectedComponent}">
+									<option value="">-- Choose a component --</option>
+									${this._getComponentNames().map(name => html`
+										<option value="${name}" ?selected="${name === this.selectedComponent}">
+											${name}
+										</option>
+									`)}
+								</select>
+							</label>
+						</div>
+					${this.selectedComponent ? html`
+						<div class="dropdown-container">
+							<label>
+								<span class="d2l-input-label">Filter by category:</span>
+								<select 
+									id="category-filter"
+									class="d2l-input-select"
 									@change="${this._handleCategoryChange}"
 									.value="${this.selectedCategory}">
 									<option value="">All categories</option>
@@ -547,17 +306,20 @@ class ColorUsageViewer extends LitElement {
 									<option value="gradient">Gradient</option>
 									<option value="other">Other</option>
 								</select>
-							</div>
-						` : ''}
+							</label>
+						</div>
+					` : ''}
 						${this._renderColorList()}
 					</d2l-tab-panel>
 					
 					<d2l-tab id="color-view" text="By Color" slot="tabs"></d2l-tab>
 					<d2l-tab-panel labelled-by="color-view" slot="panels">
-						<div class="dropdown-container">
-							<label for="color-select">Select a color:</label>
+					<div class="dropdown-container">
+						<label>
+							<span class="d2l-input-label">Select a color:</span>
 							<select 
-								id="color-select" 
+								id="color-select"
+								class="d2l-input-select"
 								@change="${this._handleColorChange}"
 								.value="${this.selectedColor}">
 								<option value="">-- Choose a color --</option>
@@ -567,12 +329,34 @@ class ColorUsageViewer extends LitElement {
 									</option>
 								`)}
 							</select>
-						</div>
+						</label>
+					</div>
 						${this._renderComponentList()}
 					</d2l-tab-panel>
 				</d2l-tabs>
 			</div>
 		`;
+	}
+
+	_getColorDisplayName(colorValue) {
+		// Extract the color name from CSS variable or hex value
+		if (colorValue.startsWith('--d2l-color-')) {
+			// Remove '--d2l-color-' prefix and format the name
+			const name = colorValue.substring('--d2l-color-'.length);
+			// Capitalize first letter of each word separated by hyphens
+			return name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+		} else if (colorValue.startsWith('#')) {
+			// Map common hex colors to names
+			const colorNames = {
+				'#ffffff': 'White',
+				'#000000': 'Black',
+				'#ff0000': 'Red',
+				'#00ff00': 'Green',
+				'#0000ff': 'Blue'
+			};
+			return colorNames[colorValue.toLowerCase()] || colorValue;
+		}
+		return colorValue;
 	}
 
 	_getColorNames() {
@@ -631,9 +415,7 @@ class ColorUsageViewer extends LitElement {
 	_renderColorList() {
 		if (!this.selectedComponent) {
 			return html`
-				<div class="empty-state">
-					Please select a component to view its color usage.
-				</div>
+				<d2l-empty-state-simple description="Please select a component to view its color usage."></d2l-empty-state-simple>
 			`;
 		}
 
@@ -641,9 +423,7 @@ class ColorUsageViewer extends LitElement {
 
 		if (!colors || colors.length === 0) {
 			return html`
-				<div class="no-colors">
-					This component does not use any colors directly.
-				</div>
+				<d2l-empty-state-simple description="This component does not use any colors directly."></d2l-empty-state-simple>
 			`;
 		}
 
@@ -655,42 +435,34 @@ class ColorUsageViewer extends LitElement {
 
 			if (colors.length === 0) {
 				return html`
-					<div class="no-colors">
-						No colors found for the "${this.selectedCategory}" category.
-					</div>
+					<d2l-empty-state-simple description='No colors found for the "${this.selectedCategory}" category.'></d2l-empty-state-simple>
 				`;
 			}
 		}
 
 		return html`
-			<ul class="color-list">
+			<d2l-collapsible-panel-group>
 				${colors.map(item => {
 					const colorInfo = this._colorsByUsage[item.color];
 					return html`
-					<li class="color-item">
-						<div class="color-name">
+					<d2l-collapsible-panel panel-title="${this._getColorDisplayName(item.color)}" expanded>
+						<div slot="header" style="display: flex; align-items: center; gap: 0.5rem;">
 							${this._renderColorSwatch(item.color)}
-							<span>${item.color}</span>
+							<span style="font-family: 'Monaco', 'Menlo', 'Consolas', monospace; font-weight: 700;">${item.color}</span>
+						${item.categories && item.categories.length > 0 ? html`
+							${item.categories.map(cat => html`<span class="category-badge ${cat}">${cat}</span>`)}
+						` : ''}
 							${colorInfo?.resultantOnWhite ? html`
-								<span style="margin-left: 0.5rem; color: #565a5c; font-size: 0.85rem;">
+								<span style="margin-left: auto; color: var(--d2l-color-tungsten); font-size: 0.85rem;">
 									→ ${colorInfo.resultantOnWhite} on white
 								</span>
 							` : ''}
 						</div>
-						<div class="color-usage">
-							${item.usage}
-							${item.categories && item.categories.length > 0 ? html`
-								<div class="category-badges">
-									${item.categories.map(cat => html`
-										<span class="category-badge category-${cat}">${cat}</span>
-									`)}
-								</div>
-							` : ''}
-						</div>
-					</li>
+						${item.usage}
+					</d2l-collapsible-panel>
 				`;
 				})}
-			</ul>
+			</d2l-collapsible-panel-group>
 		`;
 	}
 
@@ -721,9 +493,7 @@ class ColorUsageViewer extends LitElement {
 	_renderComponentList() {
 		if (!this.selectedColor) {
 			return html`
-				<div class="empty-state">
-					Please select a color to view its usage across components.
-				</div>
+				<d2l-empty-state-simple description="Please select a color to view its usage across components."></d2l-empty-state-simple>
 			`;
 		}
 
@@ -731,9 +501,7 @@ class ColorUsageViewer extends LitElement {
 
 		if (!colorInfo || !colorInfo.usages || colorInfo.usages.length === 0) {
 			return html`
-				<div class="no-colors">
-					This color is not used by any components.
-				</div>
+				<d2l-empty-state-simple description="This color is not used by any components."></d2l-empty-state-simple>
 			`;
 		}
 
@@ -743,7 +511,7 @@ class ColorUsageViewer extends LitElement {
 				${this._renderColorSwatch(this.selectedColor)}
 				<span>${this.selectedColor}</span>
 				${colorInfo.resultantOnWhite ? html`
-					<span style="margin-left: 0.5rem; color: #565a5c; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.25rem;">
+					<span style="margin-left: 0.5rem; color: var(--d2l-color-tungsten); font-size: 0.85rem; display: inline-flex; align-items: center; gap: 0.25rem;">
 						→
 						<span class="color-swatch" style="background-color: ${colorInfo.resultantOnWhite}; width: 1rem; height: 1rem; margin: 0;"></span>
 						${colorInfo.resultantOnWhite} on white
@@ -756,35 +524,28 @@ class ColorUsageViewer extends LitElement {
 				${colorInfo.categories && colorInfo.categories.length > 0 ? html`
 					<div class="category-summary">
 						<strong>Used for:</strong>
-						${colorInfo.categories.map(cat => html`
-							<span class="category-badge category-${cat}">${cat}</span>
-						`)}
+						${colorInfo.categories.map(cat => html`<span class="category-badge ${cat}">${cat}</span>`)}
 					</div>
 				` : ''}
 			</div>
-			<ul class="component-list">
+			<d2l-collapsible-panel-group>
 				${colorInfo.usages.map(item => html`
-					<li class="component-item">
-						<div class="component-name">${item.component}</div>
-						<div class="component-usage">
-							${item.usage}
+					<d2l-collapsible-panel panel-title="${item.component}" expanded>
+						<div slot="header" style="display: flex; align-items: center; gap: 0.5rem;">
 							${item.categories && item.categories.length > 0 ? html`
-								<div class="category-badges">
-									${item.categories.map(cat => html`
-										<span class="category-badge category-${cat}">${cat}</span>
-									`)}
-								</div>
+								${item.categories.map(cat => html`<span class="category-badge ${cat}">${cat}</span>`)}
 							` : ''}
 						</div>
-					</li>
+						${item.usage}
+					</d2l-collapsible-panel>
 				`)}
-				</ul>
-			`;
+			</d2l-collapsible-panel-group>
+		`;
 	}
 
 	_renderSummaryTable() {
 		if (!this._colorData || !this._colorsByUsage) {
-			return html`<div class="empty-state">No data available</div>`;
+			return html`<d2l-empty-state-simple description="No data available."></d2l-empty-state-simple>`;
 		}
 
 		const categories = ['background', 'foreground', 'border', 'shadow', 'gradient', 'other'];
@@ -830,23 +591,24 @@ class ColorUsageViewer extends LitElement {
 						
 						<dt>Other:</dt>
 						<dd>Colors that don't fit into the above categories or have miscellaneous usage.</dd>
-					</dl>
-				</div>
-			</d2l-collapsible-panel>
-			<table class="summary-table">
-				<thead>
+				</dl>
+			</div>
+		</d2l-collapsible-panel>
+			<d2l-table-wrapper>
+				<table class="d2l-table">
+					<thead>
 					<tr>
-						<th>Color</th>
-						${categories.map(cat => html`
-							<th>
-								<button 
-									class="${this._selectedSummaryCategory === cat ? 'active' : ''}"
-									@click="${() => this._toggleSummaryCategory(cat)}"
-									title="Click to filter by ${cat}">
-									${cat.charAt(0).toUpperCase() + cat.slice(1)}
-								</button>
-							</th>
-						`)}
+					<th>Color</th>
+					${categories.map(cat => html`
+						<th class="check-cell">
+							<d2l-button-subtle
+								text="${cat.charAt(0).toUpperCase() + cat.slice(1)}"
+								icon="${this._selectedSummaryCategory === cat ? 'tier1:filter' : ''}"
+								description="Click to filter by ${cat}"
+								@click="${() => this._toggleSummaryCategory(cat)}">
+							</d2l-button-subtle>
+						</th>
+					`)}
 					</tr>
 				</thead>
 				<tbody>
@@ -863,10 +625,10 @@ class ColorUsageViewer extends LitElement {
 									${this._renderColorSwatch(color)}
 									<span>${color}</span>
 								</div>
-								${colorInfo?.resultantOnWhite ? html`
-									<br>
-									<span style="color: #565a5c; font-size: 0.75rem; font-family: 'Monaco', 'Menlo', 'Consolas', monospace; display: inline-flex; align-items: center; gap: 0.25rem;">
-										→
+							${colorInfo?.resultantOnWhite ? html`
+								<br>
+								<span style="color: var(--d2l-color-tungsten); font-size: 0.75rem; font-family: 'Monaco', 'Menlo', 'Consolas', monospace; display: inline-flex; align-items: center; gap: 0.25rem;">
+									→
 										<span class="color-swatch" style="background-color: ${colorInfo.resultantOnWhite}; width: 0.9rem; height: 0.9rem; margin: 0;"></span>
 										${colorInfo.resultantOnWhite} on white
 									</span>
@@ -874,7 +636,7 @@ class ColorUsageViewer extends LitElement {
 								${hasComponents ? html`
 										<br>
 										<button
-											class="expand-button"
+											class="d2l-link"
 											@click="${() => this._toggleRow(color)}"
 											aria-expanded="${isExpanded}">
 											${isExpanded ? '▼ Hide' : '▶ Show'} components (${colorInfo.usages.length})
@@ -882,7 +644,7 @@ class ColorUsageViewer extends LitElement {
 									` : ''}
 								</td>
 								${categories.map(cat => html`
-									<td>${usedCategories.has(cat) ? html`<span class="check">✓</span>` : ''}</td>
+									<td class="check-cell">${usedCategories.has(cat) ? html`<span class="check">✓</span>` : ''}</td>
 								`)}
 							</tr>
 							${isExpanded && hasComponents ? html`
@@ -890,15 +652,16 @@ class ColorUsageViewer extends LitElement {
 									<td colspan="${categories.length + 1}">
 										<d2l-expand-collapse-content expanded>
 											<div class="component-details">
-												${colorInfo.summary ? html`
-													<div class="color-summary">${colorInfo.summary}</div>
-												` : ''}
-												<table>
+											${colorInfo.summary ? html`
+												<div class="color-summary">${colorInfo.summary}</div>
+											` : ''}
+											<d2l-table-wrapper type="light">
+												<table class="d2l-table">
 													<thead>
 														<tr>
 															<th>Component</th>
 															${categories.map(cat => html`
-																<th>${cat.charAt(0).toUpperCase() + cat.slice(1)}</th>
+																<th class="check-cell">${cat.charAt(0).toUpperCase() + cat.slice(1)}</th>
 															`)}
 														</tr>
 													</thead>
@@ -909,20 +672,21 @@ class ColorUsageViewer extends LitElement {
 																<tr>
 																	<td>
 																		<button 
-																			class="component-link"
+																			class="d2l-link"
 																			@click="${() => this._navigateToComponent(usage.component)}"
 																			title="View ${usage.component} details">
 																			${usage.component}
 																		</button>
 																	</td>
 																	${categories.map(cat => html`
-																		<td>${componentCategories.has(cat) ? html`<span class="check">✓</span>` : ''}</td>
+																		<td class="check-cell">${componentCategories.has(cat) ? html`<span class="check">✓</span>` : ''}</td>
 																	`)}
 																</tr>
 															`;
 														})}
 													</tbody>
 												</table>
+											</d2l-table-wrapper>
 											</div>
 										</d2l-expand-collapse-content>
 									</td>
@@ -932,6 +696,7 @@ class ColorUsageViewer extends LitElement {
 					})}
 				</tbody>
 			</table>
+		</d2l-table-wrapper>
 		`;
 	}
 
