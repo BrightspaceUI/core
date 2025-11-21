@@ -1,8 +1,6 @@
-import { getFlag } from '../../helpers/flags.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 const defaultLines = 2;
-const menuItemClickChangesEnabled = getFlag('GAUD-8369-menu-item-link-click-changes', true);
 
 export const MenuItemMixin = superclass => class extends PropertyRequiredMixin(superclass) {
 
@@ -156,11 +154,7 @@ export const MenuItemMixin = superclass => class extends PropertyRequiredMixin(s
 	}
 
 	__onClick(e) {
-		if (menuItemClickChangesEnabled) {
-			if (!this._letClickPropagate) e.stopPropagation();
-		} else { // remove this block when cleaning up GAUD-8369-menu-item-link-click-changes
-			e.stopPropagation();
-		}
+		if (!this._letClickPropagate) e.stopPropagation();
 
 		this.__action();
 	}
