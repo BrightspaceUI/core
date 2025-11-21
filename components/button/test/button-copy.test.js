@@ -28,6 +28,16 @@ describe('d2l-button-copy', () => {
 			expect(dispatched).to.be.false;
 		});
 
+		it('stops propagation when clicked', async() => {
+			const el = await fixture(html`<d2l-button-copy></d2l-button-copy>`);
+			let propagated = false;
+			el.parentElement.addEventListener('click', () => propagated = true);
+			const buttonIcon = el.shadowRoot.querySelector('d2l-button-icon');
+			clickElem(buttonIcon);
+			await oneEvent(el, 'click');
+			expect(propagated).to.be.false;
+		});
+
 	});
 
 	describe('writeTextToClipboard', () => {

@@ -34,7 +34,8 @@ describe('button-split', () => {
 				{ name: 'focus-main', action: elem => focusElem(elem.shadowRoot.querySelector('.main-action')) },
 				{ name: 'hover-opener', action: elem => hoverElem(elem.shadowRoot.querySelector('.d2l-dropdown-opener')) },
 				{ name: 'focus-opener', action: elem => focusElem(elem.shadowRoot.querySelector('.d2l-dropdown-opener')) },
-				{ name: 'disabled', action: elem => elem.disabled = true }
+				{ name: 'disabled', action: elem => elem.disabled = true },
+				{ name: 'focus', action: elem => focusElem(elem) }
 			].forEach(({ action, name }) => {
 				it(name, async() => {
 					const elem = await fixture(template);
@@ -58,6 +59,24 @@ describe('button-split', () => {
 		const elem = container.querySelector('d2l-button-split');
 		await focusElem(elem.shadowRoot.querySelector('.main-action'));
 		await expect(container).to.be.golden();
+	});
+
+	describe('rtl', () => {
+
+		[
+			{ name: 'normal', template: getTemplate() },
+			{ name: 'open', template: getTemplate({ wrap: { height: '175px', width: '225px' } }), action: async elem => {
+				const buttonSplit = elem.tagName === 'D2L-BUTTON-SPLIT' ? elem : elem.querySelector('d2l-button-split');
+				await clickElem(buttonSplit.shadowRoot.querySelector('.d2l-dropdown-opener'));
+			} }
+		].forEach(({ action, name, template }) => {
+			it(name, async() => {
+				const elem = await fixture(template, { rtl: true });
+				if (action) await action(elem);
+				await expect(elem).to.be.golden();
+			});
+		});
+
 	});
 
 });
