@@ -8,8 +8,6 @@ import { menuItemStyles } from './menu-item-styles.js';
 
 const newWindowIconEnabled = getFlag('GAUD-8295-menu-item-link-new-window-icon', true);
 
-const menuItemClickChangesEnabled = getFlag('GAUD-8369-menu-item-link-click-changes', true);
-
 /**
  * A menu item component used for navigating.
  * @fires click - Dispatched when the link is clicked
@@ -105,7 +103,6 @@ class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitEl
 
 	firstUpdated() {
 		super.firstUpdated();
-		if (!menuItemClickChangesEnabled) this.addEventListener('click', this._onClick); // remove when cleaning up GAUD-8369-menu-item-link-click-changes
 		this.addEventListener('keydown', this._onKeyDown);
 	}
 
@@ -142,41 +139,9 @@ class MenuItemLink extends (newWindowIconEnabled ? LinkMixin(MenuItemMixin(LitEl
 		return label && this.target === '_blank' ? this.localize('components.link.open-in-new-window') : undefined;
 	}
 
-	// remove this function when cleaning up GAUD-8369-menu-item-link-click-changes
-	_getTarget() {
-		if (this.target && this.target !== '') {
-			return this.target;
-		}
-		let base = document.getElementsByTagName('base');
-		if (base && base.length > 0) {
-			base = base[0];
-			return base.getAttribute('target');
-		}
-		return null;
-	}
-
-	// remove this function when cleaning up GAUD-8369-menu-item-link-click-changes
-	_onClick() {
-		if (this.shadowRoot) this.shadowRoot.querySelector('a').dispatchEvent(new CustomEvent('click'));
-	}
-
 	_onKeyDown(e) {
-		if (menuItemClickChangesEnabled) {
-			if (e.keyCode === this.__keyCodes.ENTER || e.keyCode === this.__keyCodes.SPACE) {
-				this.shadowRoot.querySelector('a').click();
-			}
-		} else { // remove this block when cleaning up GAUD-8369-menu-item-link-click-changes
-			super._onKeyDown(e);
-			if (e.keyCode === this.__keyCodes.ENTER || e.keyCode === this.__keyCodes.SPACE) {
-				const target = this._getTarget();
-				if (target === '_parent') {
-					window.parent.location.assign(this.href);
-				} else if (target === '_top') {
-					window.top.location.assign(this.href);
-				} else {
-					window.location.assign(this.href);
-				}
-			}
+		if (e.keyCode === this.__keyCodes.ENTER || e.keyCode === this.__keyCodes.SPACE) {
+			this.shadowRoot.querySelector('a').click();
 		}
 	}
 }
