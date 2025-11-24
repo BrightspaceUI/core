@@ -121,7 +121,7 @@ describe('d2l-button-subtle', () => {
 				expect(button.hasAttribute('aria-label')).to.be.false;
 			});
 
-			it('should set aria-disabled and render tooltip when disabled with disabledTooltip', async() => {
+			it('should set aria-disabled when disabled with disabledTooltip', async() => {
 				const el = await fixture(html`<d2l-button-subtle text="Subtle Button" disabled disabled-tooltip="Cannot perform action"></d2l-button-subtle>`);
 				const button = el.shadowRoot.querySelector('button');
 				expect(button.getAttribute('aria-disabled')).to.equal('true');
@@ -141,7 +141,7 @@ describe('d2l-button-subtle', () => {
 				expect(button.getAttribute('aria-expanded')).to.equal('true');
 			});
 
-			it('should set aria-expanded from ariaExpanded property', async() => {
+			it('should set aria-expanded', async() => {
 				const el = await fixture(html`<d2l-button-subtle text="Subtle Button" aria-expanded="false"></d2l-button-subtle>`);
 				const button = el.shadowRoot.querySelector('button');
 				expect(button.getAttribute('aria-expanded')).to.equal('false');

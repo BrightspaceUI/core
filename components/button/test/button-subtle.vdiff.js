@@ -72,6 +72,7 @@ describe('button-subtle', () => {
 				{ name: 'focus', action: focusElem },
 				{ name: 'click', action: clickElem },
 				{ name: 'active', action: elem => elem.setAttribute('active', '') },
+				{ name: 'active-disabled', action: elem => { elem.setAttribute('active', ''); elem.disabled = true; } },
 				{ name: 'disabled', action: elem => elem.disabled = true }
 			].forEach(({ action, name, rtl }) => {
 				it(name, async() => {
