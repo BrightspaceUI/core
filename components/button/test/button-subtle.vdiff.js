@@ -85,19 +85,28 @@ describe('button-subtle', () => {
 	});
 
 	describe('disabled-tooltip', () => {
-		let elem;
-		beforeEach(async() => {
-			elem = await fixture(html`<d2l-button-subtle text="Subtle Button" disabled disabled-tooltip="This action is not available"></d2l-button-subtle>`);
-		});
 
-		it('normal', async() => {
+		it('disabled', async() => {
+			const elem = await fixture(html`<d2l-button-subtle text="Subtle Button" disabled disabled-tooltip="This action is not available"></d2l-button-subtle>`);
 			await expect(elem).to.be.golden();
 		});
 
-		it('hover', async() => {
+		it('disabled hover', async() => {
+			const elem = await fixture(html`<d2l-button-subtle text="Subtle Button" disabled disabled-tooltip="This action is not available"></d2l-button-subtle>`);
 			const tooltip = elem.shadowRoot.querySelector('d2l-tooltip');
 			hoverElem(elem);
 			await oneEvent(tooltip, 'd2l-tooltip-show');
+			await expect(elem).to.be.golden();
+		});
+
+		it('not disabled', async() => {
+			const elem = await fixture(html`<d2l-button-subtle text="Subtle Button" disabled-tooltip="This action is not available"></d2l-button-subtle>`);
+			await expect(elem).to.be.golden();
+		});
+
+		it('not disabled hover', async() => {
+			const elem = await fixture(html`<d2l-button-subtle text="Subtle Button" disabled-tooltip="This action is not available"></d2l-button-subtle>`);
+			await hoverElem(elem);
 			await expect(elem).to.be.golden();
 		});
 	});
