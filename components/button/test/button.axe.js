@@ -1,5 +1,5 @@
 import '../button.js';
-import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, html, oneEvent } from '@brightspace-ui/testing';
 
 const normalFixture = html`<d2l-button>Normal Button</d2l-button>`;
 const primaryFixture = html`<d2l-button primary>Primary Button</d2l-button>`;
@@ -52,6 +52,32 @@ describe('d2l-button', () => {
 		const btnElem = el.shadowRoot.querySelector('button');
 		const description = el.shadowRoot.querySelector(`#${btnElem.getAttribute('aria-describedby')}`);
 		expect(description.innerText).to.equal('secondary');
+	});
+
+	it('aria-label', async() => {
+		const el = await fixture(html`<d2l-button aria-label="Custom Button Label">Button</d2l-button>`);
+		await expect(el).to.be.accessible();
+	});
+
+	it('aria-haspopup', async() => {
+		const el = await fixture(html`<d2l-button aria-haspopup="menu">Menu Button</d2l-button>`);
+		await expect(el).to.be.accessible();
+	});
+
+	it('expanded', async() => {
+		const el = await fixture(html`<d2l-button expanded="true">Expandable Button</d2l-button>`);
+		await expect(el).to.be.accessible();
+	});
+
+	it('aria-haspopup and expanded', async() => {
+		const el = await fixture(html`<d2l-button aria-haspopup="menu" expanded="true">Menu Button</d2l-button>`);
+		await expect(el).to.be.accessible();
+	});
+
+	it('focused', async() => {
+		const el = await fixture(html`<d2l-button>Button</d2l-button>`);
+		await focusElem(el);
+		await expect(el).to.be.accessible();
 	});
 
 });
