@@ -22,6 +22,8 @@ const nonJsGlob = [
 	'./custom-elements.json',
 	'./components/color-usage/color-usages-by-component.json',
 	'./components/color-usage/colors-summary.json',
+	'./components/color-usage/spacing-usages-by-component.json',
+	'./components/color-usage/spacing-summary.json',
 ];
 
 export default {

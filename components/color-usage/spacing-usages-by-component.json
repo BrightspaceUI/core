@@ -1,0 +1,4129 @@
+{
+    "d2l-alert-toast": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "1.5rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "12px",
+            "usages": [
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-alert": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border",
+                "border-inline"
+            ],
+            "categories": [
+                "border",
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "padding-block",
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1.5rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1.2rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin-block",
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.45rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-breadcrumb": [
+        {
+            "spacing": "8px",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "3px",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-button-add": [
+        {
+            "spacing": "6.5px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1.5rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "11px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "5px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border",
+                "padding"
+            ],
+            "categories": [
+                "border-radius",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.2rem",
+            "usages": [
+                "border",
+                "padding-inline"
+            ],
+            "categories": [
+                "border-radius",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.15rem",
+            "usages": [
+                "margin",
+                "padding"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        }
+    ],
+    "d2l-button-icon": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        }
+    ],
+    "d2l-button-move": [
+        {
+            "spacing": "2px",
+            "usages": [
+                "gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        },
+        {
+            "spacing": "0.1rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border-bottom-left",
+                "border-bottom-right",
+                "border-top-left",
+                "border-top-right"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        }
+    ],
+    "d2l-button-split-item": [
+        {
+            "spacing": "0.75rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-button-split": [
+        {
+            "spacing": "2px",
+            "usages": [
+                "gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "4px",
+            "usages": [
+                "margin-inline",
+                "padding-inline"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1.5rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-button-styles": [
+        {
+            "spacing": "2px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        }
+    ],
+    "d2l-button-subtle": [
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "column-gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        },
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-button": [
+        {
+            "spacing": "1.5rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-floating-buttons": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border-top"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.75rem",
+            "usages": [
+                "margin-bottom",
+                "margin-inline",
+                "padding",
+                "padding-bottom"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        }
+    ],
+    "d2l-calendar": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border-bottom"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "padding-bottom"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border",
+                "margin-top",
+                "padding-top"
+            ],
+            "categories": [
+                "border-radius",
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "4px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "20px",
+            "usages": [
+                "padding-bottom",
+                "padding-left",
+                "padding-right",
+                "padding-top"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "3px",
+            "usages": [
+                "border",
+                "padding"
+            ],
+            "categories": [
+                "border-radius",
+                "padding"
+            ]
+        }
+    ],
+    "d2l-card-loading-shimmer": [
+        {
+            "spacing": "7px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        }
+    ],
+    "d2l-card": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "6px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "1.2rem",
+            "usages": [
+                "padding",
+                "padding-bottom"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.8rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-collapsible-panel-group": [
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "row-gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        }
+    ],
+    "d2l-collapsible-panel": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border",
+                "border-bottom",
+                "border-inline"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "gap",
+                "margin",
+                "margin-top"
+            ],
+            "categories": [
+                "gap",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.75rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-color-usage-viewer": [
+        {
+            "spacing": "1rem",
+            "usages": [
+                "margin",
+                "margin-bottom",
+                "padding"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1.5rem",
+            "usages": [
+                "margin",
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "2rem",
+            "usages": [
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "gap",
+                "margin-bottom",
+                "margin-left"
+            ],
+            "categories": [
+                "gap",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.2rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.25rem",
+            "usages": [
+                "border",
+                "gap",
+                "margin-left",
+                "margin-right"
+            ],
+            "categories": [
+                "border-radius",
+                "gap",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "3px",
+            "usages": [
+                "border-left"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.75rem",
+            "usages": [
+                "gap",
+                "padding"
+            ],
+            "categories": [
+                "gap",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.15rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.85rem",
+            "usages": [
+                "margin-left"
+            ],
+            "categories": [
+                "gap",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-semantic-usage-viewer": [
+        {
+            "spacing": "1rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1.5rem",
+            "usages": [
+                "margin",
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-spacing-usage-viewer": [
+        {
+            "spacing": "1rem",
+            "usages": [
+                "margin-bottom",
+                "padding"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1.5rem",
+            "usages": [
+                "margin",
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "2rem",
+            "usages": [
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "gap",
+                "margin-bottom",
+                "margin-right"
+            ],
+            "categories": [
+                "gap",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.2rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.25rem",
+            "usages": [
+                "border",
+                "margin-bottom"
+            ],
+            "categories": [
+                "border-radius",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.15rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-count-badge-icon": [
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "padding-left",
+                "padding-right"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.7rem",
+            "usages": [
+                "padding-top"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.55rem",
+            "usages": [
+                "padding-top"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0px",
+            "usages": [
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "2px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "6px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        }
+    ],
+    "d2l-count-badge-mixin": [
+        {
+            "spacing": "0.55rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "padding-left",
+                "padding-right"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.7rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "padding-left",
+                "padding-right"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-count-badge": [
+        {
+            "spacing": "2px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.65rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.8rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        }
+    ],
+    "d2l-description-list-wrapper": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "gap",
+                "margin"
+            ],
+            "categories": [
+                "gap",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1.5rem",
+            "usages": [
+                "gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        },
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-dialog-confirm": [
+        {
+            "spacing": "30px",
+            "usages": [
+                "padding-top"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "20px",
+            "usages": [
+                "padding-top"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-dialog-fullscreen": [
+        {
+            "spacing": "0px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border-bottom",
+                "border-top"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "padding-bottom",
+                "padding-top"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "padding-top"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "2px",
+            "usages": [
+                "margin-block"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "12px",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "8px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "1.5rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "15px",
+            "usages": [
+                "padding-bottom"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "5px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-dialog-styles": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border",
+                "margin-block",
+                "margin-inline"
+            ],
+            "categories": [
+                "border",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "8px",
+            "usages": [
+                "border",
+                "margin-block"
+            ],
+            "categories": [
+                "border-radius",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "border-block"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "31px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "23px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "19px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "30px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "2px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "6px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "18px",
+            "usages": [
+                "margin-block",
+                "margin-inline",
+                "padding"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "14px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "20px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "16px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "15px",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "13px",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-dialog": [
+        {
+            "spacing": "15px",
+            "usages": [
+                "margin-inline",
+                "padding-bottom"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "4px",
+            "usages": [
+                "margin-block"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border-bottom"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "5px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "9px",
+            "usages": [
+                "padding-bottom"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-dropdown-button": [
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-dropdown-content-mixin": [
+        {
+            "spacing": "12px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-dropdown-content-styles": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border",
+                "border-bottom",
+                "border-top"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.1rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border",
+                "border-bottom-left",
+                "border-bottom-right",
+                "border-top-left",
+                "border-top-right"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-dropdown-popover-mixin": [
+        {
+            "spacing": "1rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border-block"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "12px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-empty-state-styles": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "1.2rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1.5rem",
+            "usages": [
+                "margin",
+                "padding"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.75rem",
+            "usages": [
+                "column-gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        },
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.8rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-filter-overflow-group": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-filter": [
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "margin-top",
+                "padding",
+                "padding-bottom"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "margin-inline",
+                "padding"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin-inline",
+                "padding",
+                "padding-bottom",
+                "padding-top"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "2rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "2px",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.45rem",
+            "usages": [
+                "gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        },
+        {
+            "spacing": "2.1rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.8rem",
+            "usages": [
+                "padding-block"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "padding-block"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1.5rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "5px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.05rem",
+            "usages": [
+                "padding-bottom"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.65rem",
+            "usages": [
+                "padding-top"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-form-error-summary": [
+        {
+            "spacing": "1rem",
+            "usages": [
+                "margin-block"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "padding-block",
+                "padding-inline",
+                "padding-top"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1.2rem",
+            "usages": [
+                "margin-inline",
+                "padding-inline"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "padding-bottom"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-form": [
+        {
+            "spacing": "1rem",
+            "usages": [
+                "margin-block"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-html-block": [
+        {
+            "spacing": "21px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "20px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "19px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "22px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "25px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "13px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.5em",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1em",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "3em",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1.5em",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "2px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        }
+    ],
+    "d2l-input-checkbox-group": [
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "gap",
+                "margin-block"
+            ],
+            "categories": [
+                "gap",
+                "margin"
+            ]
+        }
+    ],
+    "d2l-input-checkbox": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border-width"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "2px",
+            "usages": [
+                "border-width"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin-block"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-input-color": [
+        {
+            "spacing": "0.15rem",
+            "usages": [
+                "border",
+                "gap"
+            ],
+            "categories": [
+                "border-radius",
+                "gap"
+            ]
+        },
+        {
+            "spacing": "0.55rem",
+            "usages": [
+                "margin",
+                "padding"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "7px",
+            "usages": [
+                "padding-bottom"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.1rem",
+            "usages": [
+                "border",
+                "gap"
+            ],
+            "categories": [
+                "border-radius",
+                "gap"
+            ]
+        },
+        {
+            "spacing": "10px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-input-date-time-range-to": [
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "column-gap",
+                "margin-top"
+            ],
+            "categories": [
+                "gap",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "7px",
+            "usages": [
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1.5rem",
+            "usages": [
+                "column-gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        },
+        {
+            "spacing": "1.2rem",
+            "usages": [
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-input-date-time-range": [
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-input-date-time": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-input-date": [
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin-left",
+                "margin-right",
+                "padding"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "2rem",
+            "usages": [
+                "padding-left"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.25rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border-top"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "margin-top",
+                "padding-top"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        }
+    ],
+    "d2l-input-fieldset": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "margin-block"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin-block"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-input-group": [
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        }
+    ],
+    "d2l-input-inline-help": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-input-label-styles": [
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "margin-block"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-input-radio-group": [
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        }
+    ],
+    "d2l-input-radio-spacer": [
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1.7rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-input-radio-styles": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border-width"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "2px",
+            "usages": [
+                "border-width"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1.7rem",
+            "usages": [
+                "margin-inline",
+                "padding-inline"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-input-radio": [
+        {
+            "spacing": "1.7rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin-block"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-input-search": [
+        {
+            "spacing": "4px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-input-select-styles": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "padding-block"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "padding-block",
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.75rem",
+            "usages": [
+                "border-inline",
+                "padding-inline"
+            ],
+            "categories": [
+                "border",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "2px",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.8rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "11px",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "16px",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-input-styles": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border-width",
+                "padding",
+                "padding-block",
+                "padding-inline"
+            ],
+            "categories": [
+                "border",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.75rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "2px",
+            "usages": [
+                "border-width"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "padding-block"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "18px",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.8rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-input-text": [
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "padding-block"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.05rem",
+            "usages": [
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "12px",
+            "usages": [
+                "margin-left",
+                "margin-right"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "6px",
+            "usages": [
+                "margin-left",
+                "margin-right"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-input-textarea": [
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "padding-block"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "padding-bottom",
+                "padding-top"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border-left-width",
+                "border-right-width"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "18px",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.8rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-input-time": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "column-gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        }
+    ],
+    "d2l-link-mixin": [
+        {
+            "spacing": "0.315em",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-link-styles": [
+        {
+            "spacing": "2px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        }
+    ],
+    "d2l-link": [
+        {
+            "spacing": "0.315em",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-list-controls": [
+        {
+            "spacing": "18px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1.8rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "9px",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-list-item-button-mixin": [
+        {
+            "spacing": "12px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-list-item-content": [
+        {
+            "spacing": "0.15rem",
+            "usages": [
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-list-item-drag-drop-mixin": [
+        {
+            "spacing": "2px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "6px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        }
+    ],
+    "d2l-list-item-drag-handle": [
+        {
+            "spacing": "0.25rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-list-item-drag-image": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "4px",
+            "usages": [
+                "border",
+                "margin-bottom"
+            ],
+            "categories": [
+                "border-radius",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "16px",
+            "usages": [
+                "margin-inline",
+                "padding"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "8px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "6px",
+            "usages": [
+                "margin-inline",
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "12px",
+            "usages": [
+                "margin-inline",
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.7rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.25rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-list-item-expand-collapse-mixin": [
+        {
+            "spacing": "0.55rem",
+            "usages": [
+                "padding-block"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-list-item-mixin": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border",
+                "border-top",
+                "margin-bottom",
+                "padding-block"
+            ],
+            "categories": [
+                "border",
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "3rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "margin-inline",
+                "padding-inline"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "3px",
+            "usages": [
+                "border",
+                "padding-inline"
+            ],
+            "categories": [
+                "border-radius",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "6px",
+            "usages": [
+                "border",
+                "margin-inline",
+                "padding-inline"
+            ],
+            "categories": [
+                "border-radius",
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "8px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.55rem",
+            "usages": [
+                "margin-block",
+                "margin-inline",
+                "padding",
+                "padding-block",
+                "padding-inline"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "2.2rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "gap",
+                "margin"
+            ],
+            "categories": [
+                "gap",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.25rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "12px",
+            "usages": [
+                "margin",
+                "margin-inline",
+                "padding-inline"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "2px",
+            "usages": [
+                "padding-block"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "12.5px",
+            "usages": [
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "11.5px",
+            "usages": [
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-list-item-nav-mixin": [
+        {
+            "spacing": "3px",
+            "usages": [
+                "border",
+                "padding-block"
+            ],
+            "categories": [
+                "border",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "14.5px",
+            "usages": [
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "13.5px",
+            "usages": [
+                "margin-bottom",
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "10.5px",
+            "usages": [
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-list-item-placement-marker": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "margin-inline",
+                "margin-left",
+                "margin-right"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-list": [
+        {
+            "spacing": "6px",
+            "usages": [
+                "border",
+                "margin-bottom"
+            ],
+            "categories": [
+                "border-radius",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "margin-inline",
+                "margin-left",
+                "margin-right"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "padding-bottom"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "10px",
+            "usages": [
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "3px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-menu-item-link": [
+        {
+            "spacing": "0.75rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-menu-item-return": [
+        {
+            "spacing": "0.75rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "margin-inline",
+                "padding"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.1rem",
+            "usages": [
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-menu-item-selectable-styles": [
+        {
+            "spacing": "0.75rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.8rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-menu-item-separator": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border-top",
+                "margin-top"
+            ],
+            "categories": [
+                "border",
+                "margin"
+            ]
+        }
+    ],
+    "d2l-menu-item-styles": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border-top",
+                "margin-top"
+            ],
+            "categories": [
+                "border",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "6px",
+            "usages": [
+                "border",
+                "margin-inline"
+            ],
+            "categories": [
+                "border-radius",
+                "margin"
+            ]
+        }
+    ],
+    "d2l-menu-item": [
+        {
+            "spacing": "0.75rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "6px",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-menu": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "padding-top"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-meter-linear": [
+        {
+            "spacing": "0.45rem",
+            "usages": [
+                "gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        },
+        {
+            "spacing": "0.225rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        }
+    ],
+    "d2l-more-less": [
+        {
+            "spacing": "1em",
+            "usages": [
+                "margin",
+                "padding"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        }
+    ],
+    "d2l-object-property-list-item": [
+        {
+            "spacing": "0.05rem",
+            "usages": [
+                "margin",
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "10px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "5px",
+            "usages": [
+                "margin",
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "6px",
+            "usages": [
+                "margin",
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.1rem",
+            "usages": [
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-object-property-list": [
+        {
+            "spacing": "0.25rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "10px",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "5px",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-overflow-group": [
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.2rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-pager-load-more": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border",
+                "border-right"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        }
+    ],
+    "d2l-popover-mixin": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.1rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        }
+    ],
+    "d2l-progress": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "margin-inline",
+                "row-gap"
+            ],
+            "categories": [
+                "gap",
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.4rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        }
+    ],
+    "d2l-scroll-wrapper": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border",
+                "border-inline"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "10px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-selection-action-menu-item": [
+        {
+            "spacing": "0.75rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "6px",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-selection-controls": [
+        {
+            "spacing": "0px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "6px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.9rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.45rem",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-skeleton-mixin": [
+        {
+            "spacing": "0.2rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        }
+    ],
+    "d2l-status-indicator": [
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border-width"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "2px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "10px",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-switch-mixin": [
+        {
+            "spacing": "1rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.1rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.8rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.65rem",
+            "usages": [
+                "margin-left",
+                "margin-right"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-table-col-sort-button": [
+        {
+            "spacing": "0px",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin-inline",
+                "padding-inline"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "18px",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "4px",
+            "usages": [
+                "border",
+                "margin-block",
+                "margin-inline",
+                "padding",
+                "padding-inline"
+            ],
+            "categories": [
+                "border-radius",
+                "margin",
+                "padding"
+            ]
+        }
+    ],
+    "d2l-table-wrapper": [
+        {
+            "spacing": "1px",
+            "usages": [
+                "border",
+                "border-top",
+                "margin-top",
+                "padding-top"
+            ],
+            "categories": [
+                "border",
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0px",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "18px",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.7rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "12px",
+            "usages": [
+                "margin-top"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-tab-internal": [
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.1rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "4px",
+            "usages": [
+                "border-top",
+                "border-top-left",
+                "border-top-right"
+            ],
+            "categories": [
+                "border",
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        }
+    ],
+    "d2l-tab-mixin": [
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "4px",
+            "usages": [
+                "border-top",
+                "border-top-left",
+                "border-top-right"
+            ],
+            "categories": [
+                "border",
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-tab-panel-mixin": [
+        {
+            "spacing": "1.2rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-tab": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border",
+                "padding-inline"
+            ],
+            "categories": [
+                "border-radius",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.1rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-tabs": [
+        {
+            "spacing": "1.2rem",
+            "usages": [
+                "margin-bottom"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border",
+                "border-bottom",
+                "border-inline"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "3px",
+            "usages": [
+                "margin-left",
+                "padding-left"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "4px",
+            "usages": [
+                "margin-inline",
+                "padding-inline"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "15px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "11px",
+            "usages": [
+                "padding-inline"
+            ],
+            "categories": [
+                "padding"
+            ]
+        }
+    ],
+    "d2l-tag-list-item-mixin": [
+        {
+            "spacing": "6px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.2rem",
+            "usages": [
+                "margin-top",
+                "padding-inline"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.25rem",
+            "usages": [
+                "padding"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.6rem",
+            "usages": [
+                "margin-inline",
+                "padding"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "3px",
+            "usages": [
+                "margin-inline"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ],
+    "d2l-tag-list": [
+        {
+            "spacing": "6px",
+            "usages": [
+                "gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        }
+    ],
+    "d2l-tooltip-help": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "column-gap"
+            ],
+            "categories": [
+                "gap"
+            ]
+        },
+        {
+            "spacing": "0.05rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "0.1rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        }
+    ],
+    "d2l-tooltip": [
+        {
+            "spacing": "0.3rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "padding-inline",
+                "padding-left",
+                "padding-right"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1px",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border"
+            ]
+        },
+        {
+            "spacing": "0.1rem",
+            "usages": [
+                "border"
+            ],
+            "categories": [
+                "border-radius"
+            ]
+        }
+    ],
+    "d2l-styles": [
+        {
+            "spacing": "1.5rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        },
+        {
+            "spacing": "1.2rem",
+            "usages": [
+                "margin-inline",
+                "padding-inline"
+            ],
+            "categories": [
+                "margin",
+                "padding"
+            ]
+        },
+        {
+            "spacing": "0.5rem",
+            "usages": [
+                "padding-block"
+            ],
+            "categories": [
+                "padding"
+            ]
+        },
+        {
+            "spacing": "1rem",
+            "usages": [
+                "margin"
+            ],
+            "categories": [
+                "margin"
+            ]
+        }
+    ]
+}

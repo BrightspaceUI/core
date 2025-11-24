@@ -10,6 +10,7 @@ import '../collapsible-panel/collapsible-panel-group.js';
 import '../empty-state/empty-state-simple.js';
 import '../alert/alert.js';
 import '../button/button-subtle.js';
+import '../table/table-col-sort-button.js';
 import { bodyStandardStyles, heading2Styles, labelStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit';
 import { inputLabelStyles } from '../inputs/input-label-styles.js';
@@ -54,22 +55,15 @@ class ColorUsageViewer extends LitElement {
 			_loading: { state: true },
 			_error: { state: true },
 			_expandedRows: { state: true },
-			_selectedSummaryCategory: { state: true }
+			_selectedSummaryCategory: { state: true },
+			_sortDesc: { state: true },
+			_sortByColor: { state: true },
+			_sortColorDesc: { state: true }
 		};
 	}
 
 	static get styles() {
 		return [ bodyStandardStyles, heading2Styles, labelStyles, inputLabelStyles, linkStyles, selectStyles, tableStyles, css`
-		:host {
-			display: block;
-			padding: 1rem;
-		}
-
-		.container {
-			margin: 0 auto;
-			max-width: 800px;
-		}
-
 		h1 {
 			margin: 0 0 1.5rem 0;
 		}
@@ -246,6 +240,9 @@ class ColorUsageViewer extends LitElement {
 		this._error = null;
 		this._expandedRows = new Set();
 		this._selectedSummaryCategory = '';
+		this._sortDesc = false;
+		this._sortByColor = false;
+		this._sortColorDesc = false;
 	}
 
 	connectedCallback() {
@@ -582,6 +579,28 @@ class ColorUsageViewer extends LitElement {
 			})
 			: colors;
 
+		// Sort colors
+		const sortedColors = [...filteredColors].sort((a, b) => {
+			if (this._sortByColor) {
+				// Sort by color name (alphabetically)
+				if (this._sortColorDesc) {
+					return b.localeCompare(a);
+				}
+				return a.localeCompare(b);
+			} else {
+				// Sort by usage count
+				const aInfo = this._colorsByUsage[a];
+				const bInfo = this._colorsByUsage[b];
+				const aCount = aInfo && aInfo.usages ? aInfo.usages.length : 0;
+				const bCount = bInfo && bInfo.usages ? bInfo.usages.length : 0;
+				
+				if (this._sortDesc) {
+					return bCount - aCount;
+				}
+				return aCount - bCount;
+			}
+		});
+
 		return html`
 			<d2l-collapsible-panel panel-title="Category Definitions">
 				<div class="category-definitions-content">
@@ -610,7 +629,23 @@ class ColorUsageViewer extends LitElement {
 				<table class="d2l-table">
 					<thead>
 					<tr>
-					<th>Color</th>
+					<th>
+						<d2l-table-col-sort-button
+							?desc="${this._sortColorDesc}"
+							?nosort="${!this._sortByColor}"
+							@click="${this._handleSortByColor}">
+							Color
+						</d2l-table-col-sort-button>
+					</th>
+					<th>
+						<d2l-table-col-sort-button
+							?desc="${this._sortDesc}"
+							?nosort="${this._sortByColor}"
+							source-type="numbers"
+							@click="${this._handleSortByUsages}">
+							Usages
+						</d2l-table-col-sort-button>
+					</th>
 					${categories.map(cat => html`
 						<th class="check-cell">
 							<d2l-button-subtle
@@ -624,11 +659,12 @@ class ColorUsageViewer extends LitElement {
 					</tr>
 				</thead>
 				<tbody>
-					${filteredColors.map(color => {
+					${sortedColors.map(color => {
 						const usedCategories = colorCategories.get(color);
 						const isExpanded = this._expandedRows.has(color);
 						const colorInfo = this._colorsByUsage[color];
 						const hasComponents = colorInfo && colorInfo.usages && colorInfo.usages.length > 0;
+						const usageCount = colorInfo && colorInfo.usages ? colorInfo.usages.length : 0;
 
 						return html`
 							<tr>
@@ -651,17 +687,18 @@ class ColorUsageViewer extends LitElement {
 											class="d2l-link"
 											@click="${() => this._toggleRow(color)}"
 											aria-expanded="${isExpanded}">
-											${isExpanded ? '▼ Hide' : '▶ Show'} components (${colorInfo.usages.length})
+											${isExpanded ? '▼ Hide' : '▶ Show'} components
 										</button>
 									` : ''}
 								</td>
+								<td>${usageCount}</td>
 								${categories.map(cat => html`
 									<td class="check-cell">${usedCategories.has(cat) ? html`<span class="check">✓</span>` : ''}</td>
 								`)}
 							</tr>
 							${isExpanded && hasComponents ? html`
 								<tr class="expanded-content">
-									<td colspan="${categories.length + 1}">
+									<td colspan="${categories.length + 2}">
 										<d2l-expand-collapse-content expanded>
 											<div class="component-details">
 											${colorInfo.summary ? html`
@@ -727,6 +764,16 @@ class ColorUsageViewer extends LitElement {
 		} else {
 			this._selectedSummaryCategory = category;
 		}
+	}
+
+	_handleSortByUsages() {
+		this._sortByColor = false;
+		this._sortDesc = !this._sortDesc;
+	}
+
+	_handleSortByColor() {
+		this._sortByColor = true;
+		this._sortColorDesc = !this._sortColorDesc;
 	}
 
 }

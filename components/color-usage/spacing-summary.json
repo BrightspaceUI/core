@@ -1,0 +1,4515 @@
+{
+    "0.3rem": {
+        "summary": "0.3rem (4.8px) used for border, border-radius, gap, margin, padding across 19 properties across 37 components",
+        "categories": [
+            "border",
+            "border-radius",
+            "gap",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-alert-toast",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-alert",
+                "usages": [
+                    "border",
+                    "border-inline"
+                ],
+                "categories": [
+                    "border",
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-button-add",
+                "usages": [
+                    "border",
+                    "padding"
+                ],
+                "categories": [
+                    "border-radius",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-button-icon",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-button-move",
+                "usages": [
+                    "border-bottom-left",
+                    "border-bottom-right",
+                    "border-top-left",
+                    "border-top-right"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-button-subtle",
+                "usages": [
+                    "column-gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-calendar",
+                "usages": [
+                    "border",
+                    "margin-top",
+                    "padding-top"
+                ],
+                "categories": [
+                    "border-radius",
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-card",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-collapsible-panel",
+                "usages": [
+                    "gap",
+                    "margin",
+                    "margin-top"
+                ],
+                "categories": [
+                    "gap",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-color-usage-viewer",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-spacing-usage-viewer",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-count-badge-mixin",
+                "usages": [
+                    "padding-left",
+                    "padding-right"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-description-list-wrapper",
+                "usages": [
+                    "gap",
+                    "margin"
+                ],
+                "categories": [
+                    "gap",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-content-styles",
+                "usages": [
+                    "border",
+                    "border-bottom-left",
+                    "border-bottom-right",
+                    "border-top-left",
+                    "border-top-right"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-empty-state-styles",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-filter-overflow-group",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-filter",
+                "usages": [
+                    "margin-inline",
+                    "padding"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-form-error-summary",
+                "usages": [
+                    "padding-block",
+                    "padding-inline",
+                    "padding-top"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-checkbox",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-input-date-time",
+                "usages": [
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-date",
+                "usages": [
+                    "margin-top",
+                    "padding-top"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-fieldset",
+                "usages": [
+                    "margin-block"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-inline-help",
+                "usages": [
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-search",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-input-styles",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-input-time",
+                "usages": [
+                    "column-gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-list-item-expand-collapse-mixin",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "gap",
+                    "margin"
+                ],
+                "categories": [
+                    "gap",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-popover-mixin",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-progress",
+                "usages": [
+                    "margin-inline",
+                    "row-gap"
+                ],
+                "categories": [
+                    "gap",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-switch-mixin",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-table-wrapper",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-tab-internal",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-tab",
+                "usages": [
+                    "border",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "border-radius",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-tooltip-help",
+                "usages": [
+                    "column-gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-tooltip",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            }
+        ]
+    },
+    "1.5rem": {
+        "summary": "1.5rem (24px) used for gap, margin, padding across 6 properties across 14 components",
+        "categories": [
+            "gap",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-alert-toast",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-alert",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-button-add",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-button-split",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-button",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-color-usage-viewer",
+                "usages": [
+                    "margin",
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-semantic-usage-viewer",
+                "usages": [
+                    "margin",
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-spacing-usage-viewer",
+                "usages": [
+                    "margin",
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-description-list-wrapper",
+                "usages": [
+                    "gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-dialog-fullscreen",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-empty-state-styles",
+                "usages": [
+                    "margin",
+                    "padding"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-filter",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-date-time-range-to",
+                "usages": [
+                    "column-gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-styles",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "12px": {
+        "summary": "12px (0.75rem) used for margin, padding across 8 properties across 9 components",
+        "categories": [
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-alert-toast",
+                "usages": [
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-dialog-fullscreen",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-content-mixin",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-popover-mixin",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-text",
+                "usages": [
+                    "margin-left",
+                    "margin-right"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-list-item-button-mixin",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-image",
+                "usages": [
+                    "margin-inline",
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "margin",
+                    "margin-inline",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-table-wrapper",
+                "usages": [
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "1px": {
+        "summary": "1px (0.063rem) used for border, margin, padding across 21 properties across 38 components",
+        "categories": [
+            "border",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-alert",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-floating-buttons",
+                "usages": [
+                    "border-top"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-calendar",
+                "usages": [
+                    "border-bottom"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-card",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-collapsible-panel",
+                "usages": [
+                    "border",
+                    "border-bottom",
+                    "border-inline"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-color-usage-viewer",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-spacing-usage-viewer",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-dialog-fullscreen",
+                "usages": [
+                    "border-bottom",
+                    "border-top"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "border",
+                    "margin-block",
+                    "margin-inline"
+                ],
+                "categories": [
+                    "border",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-dialog",
+                "usages": [
+                    "border-bottom"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-content-styles",
+                "usages": [
+                    "border",
+                    "border-bottom",
+                    "border-top"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-popover-mixin",
+                "usages": [
+                    "border-block"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-empty-state-styles",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-checkbox",
+                "usages": [
+                    "border-width"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-color",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-date",
+                "usages": [
+                    "border-top"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-radio-styles",
+                "usages": [
+                    "border-width"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usages": [
+                    "padding-block",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-styles",
+                "usages": [
+                    "border-width",
+                    "padding",
+                    "padding-block",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "border",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-textarea",
+                "usages": [
+                    "border-left-width",
+                    "border-right-width"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-image",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "border",
+                    "border-top",
+                    "margin-bottom",
+                    "padding-block"
+                ],
+                "categories": [
+                    "border",
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-item-placement-marker",
+                "usages": [
+                    "margin-inline",
+                    "margin-left",
+                    "margin-right"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-list",
+                "usages": [
+                    "padding-bottom"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-menu-item-separator",
+                "usages": [
+                    "border-top",
+                    "margin-top"
+                ],
+                "categories": [
+                    "border",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-menu-item-styles",
+                "usages": [
+                    "border-top",
+                    "margin-top"
+                ],
+                "categories": [
+                    "border",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-menu",
+                "usages": [
+                    "padding-top"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-pager-load-more",
+                "usages": [
+                    "border",
+                    "border-right"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-popover-mixin",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-progress",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-scroll-wrapper",
+                "usages": [
+                    "border",
+                    "border-inline"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-status-indicator",
+                "usages": [
+                    "border-width"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-switch-mixin",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-table-wrapper",
+                "usages": [
+                    "border",
+                    "border-top",
+                    "margin-top",
+                    "padding-top"
+                ],
+                "categories": [
+                    "border",
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-tab-internal",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-tab-mixin",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-tabs",
+                "usages": [
+                    "border",
+                    "border-bottom",
+                    "border-inline"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-tooltip",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            }
+        ]
+    },
+    "0.9rem": {
+        "summary": "0.9rem (14.4px) used for border-radius, gap, margin, padding across 14 properties across 16 components",
+        "categories": [
+            "border-radius",
+            "gap",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-alert",
+                "usages": [
+                    "padding-block",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-collapsible-panel",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-color-usage-viewer",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-description-list-wrapper",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-dialog-fullscreen",
+                "usages": [
+                    "padding-bottom",
+                    "padding-top"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-empty-state-styles",
+                "usages": [
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-filter",
+                "usages": [
+                    "margin-top",
+                    "padding",
+                    "padding-bottom"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-date-time-range-to",
+                "usages": [
+                    "column-gap",
+                    "margin-top"
+                ],
+                "categories": [
+                    "gap",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-group",
+                "usages": [
+                    "gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-input-radio-spacer",
+                "usages": [
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-radio-styles",
+                "usages": [
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-list-controls",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "margin-inline",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list",
+                "usages": [
+                    "margin-inline",
+                    "margin-left",
+                    "margin-right"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-progress",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-selection-controls",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "1.2rem": {
+        "summary": "1.2rem (19.2px) used for margin, padding across 6 properties across 8 components",
+        "categories": [
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-alert",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-card",
+                "usages": [
+                    "padding",
+                    "padding-bottom"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-empty-state-styles",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-form-error-summary",
+                "usages": [
+                    "margin-inline",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-date-time-range-to",
+                "usages": [
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-tab-panel-mixin",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-tabs",
+                "usages": [
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-styles",
+                "usages": [
+                    "margin-inline",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "0.5rem": {
+        "summary": "0.5rem (8px) used for gap, margin, padding across 14 properties across 16 components",
+        "categories": [
+            "gap",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-alert",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-button-subtle",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-collapsible-panel-group",
+                "usages": [
+                    "row-gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-color-usage-viewer",
+                "usages": [
+                    "gap",
+                    "margin-bottom",
+                    "margin-left"
+                ],
+                "categories": [
+                    "gap",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-spacing-usage-viewer",
+                "usages": [
+                    "gap",
+                    "margin-bottom",
+                    "margin-right"
+                ],
+                "categories": [
+                    "gap",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-count-badge-icon",
+                "usages": [
+                    "padding-left",
+                    "padding-right"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-empty-state-styles",
+                "usages": [
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-radio-styles",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-styles",
+                "usages": [
+                    "padding-block"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-textarea",
+                "usages": [
+                    "padding-bottom",
+                    "padding-top"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-pager-load-more",
+                "usages": [
+                    "gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-progress",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-tab-internal",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-tab-mixin",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-tag-list-item-mixin",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-styles",
+                "usages": [
+                    "padding-block"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "0.6rem": {
+        "summary": "0.6rem (9.6px) used for border-radius, gap, margin, padding across 13 properties across 28 components",
+        "categories": [
+            "border-radius",
+            "gap",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-alert",
+                "usages": [
+                    "margin-block",
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-button-split",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-button-subtle",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-calendar",
+                "usages": [
+                    "padding-bottom"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-card",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-collapsible-panel",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-button",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-filter",
+                "usages": [
+                    "margin-inline",
+                    "padding",
+                    "padding-bottom",
+                    "padding-top"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-form-error-summary",
+                "usages": [
+                    "padding-bottom"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-checkbox-group",
+                "usages": [
+                    "gap",
+                    "margin-block"
+                ],
+                "categories": [
+                    "gap",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-checkbox",
+                "usages": [
+                    "margin-block"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-date-time-range-to",
+                "usages": [
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-date-time-range",
+                "usages": [
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-date",
+                "usages": [
+                    "margin-left",
+                    "margin-right",
+                    "padding"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-fieldset",
+                "usages": [
+                    "margin-block"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-radio-group",
+                "usages": [
+                    "gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-input-radio",
+                "usages": [
+                    "margin-block"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-controls",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-overflow-group",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-status-indicator",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-switch-mixin",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-table-col-sort-button",
+                "usages": [
+                    "margin-inline",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-table-wrapper",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-tab-internal",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-tab-mixin",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-tag-list-item-mixin",
+                "usages": [
+                    "margin-inline",
+                    "padding"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "0.45rem": {
+        "summary": "0.45rem (7.2px) used for gap, margin (margin, gap, margin-inline) across 4 components",
+        "categories": [
+            "gap",
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-alert",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-filter",
+                "usages": [
+                    "gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-meter-linear",
+                "usages": [
+                    "gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-selection-controls",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "8px": {
+        "summary": "8px (0.5rem) used for border-radius, margin, padding (padding-inline, border, margin-block, padding) across 5 components",
+        "categories": [
+            "border-radius",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-breadcrumb",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-dialog-fullscreen",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "border",
+                    "margin-block"
+                ],
+                "categories": [
+                    "border-radius",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-image",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            }
+        ]
+    },
+    "3px": {
+        "summary": "3px (0.188rem) used for border, border-radius, margin, padding across 8 properties across 8 components",
+        "categories": [
+            "border",
+            "border-radius",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-breadcrumb",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-calendar",
+                "usages": [
+                    "border",
+                    "padding"
+                ],
+                "categories": [
+                    "border-radius",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-color-usage-viewer",
+                "usages": [
+                    "border-left"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "border",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "border-radius",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-item-nav-mixin",
+                "usages": [
+                    "border",
+                    "padding-block"
+                ],
+                "categories": [
+                    "border",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-tabs",
+                "usages": [
+                    "margin-left",
+                    "padding-left"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-tag-list-item-mixin",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "6.5px": {
+        "summary": "6.5px (0.406rem) used for margin (margin) in d2l-button-add",
+        "categories": [
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-add",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "11px": {
+        "summary": "11px (0.688rem) used for margin, padding (margin, padding-inline) across d2l-button-add, d2l-input-select-styles, d2l-tabs",
+        "categories": [
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-add",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-tabs",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "5px": {
+        "summary": "5px (0.313rem) used for margin, padding (margin, padding, margin-inline) across 6 components",
+        "categories": [
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-add",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-dialog-fullscreen",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-dialog",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-filter",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-object-property-list-item",
+                "usages": [
+                    "margin",
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-object-property-list",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "0.2rem": {
+        "summary": "0.2rem (3.2px) used for border-radius, margin, padding (border, padding-inline, margin-inline, margin-top) across 6 components",
+        "categories": [
+            "border-radius",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-add",
+                "usages": [
+                    "border",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "border-radius",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-color-usage-viewer",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-spacing-usage-viewer",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-overflow-group",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-skeleton-mixin",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-tag-list-item-mixin",
+                "usages": [
+                    "margin-top",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "0.15rem": {
+        "summary": "0.15rem (2.4px) used for border-radius, gap, margin, padding (margin, padding, border, gap, margin-top) across 5 components",
+        "categories": [
+            "border-radius",
+            "gap",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-add",
+                "usages": [
+                    "margin",
+                    "padding"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-color-usage-viewer",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-spacing-usage-viewer",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-color",
+                "usages": [
+                    "border",
+                    "gap"
+                ],
+                "categories": [
+                    "border-radius",
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-list-item-content",
+                "usages": [
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "2px": {
+        "summary": "2px (0.125rem) used for border, border-radius, gap, margin, padding across 7 properties across 17 components",
+        "categories": [
+            "border",
+            "border-radius",
+            "gap",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-move",
+                "usages": [
+                    "gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-button-split",
+                "usages": [
+                    "gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-button-styles",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-count-badge-icon",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-count-badge",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-dialog-fullscreen",
+                "usages": [
+                    "margin-block"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-filter",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-html-block",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-input-checkbox",
+                "usages": [
+                    "border-width"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-radio-styles",
+                "usages": [
+                    "border-width"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-styles",
+                "usages": [
+                    "border-width"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-link-styles",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-drop-mixin",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "padding-block"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-status-indicator",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "0.1rem": {
+        "summary": "0.1rem (1.6px) used for border-radius, gap, margin, padding (border, gap, margin-top, padding) across 11 components",
+        "categories": [
+            "border-radius",
+            "gap",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-move",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-content-styles",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-input-color",
+                "usages": [
+                    "border",
+                    "gap"
+                ],
+                "categories": [
+                    "border-radius",
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-menu-item-return",
+                "usages": [
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-object-property-list-item",
+                "usages": [
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-popover-mixin",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-switch-mixin",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-tab-internal",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-tab",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-tooltip-help",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-tooltip",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            }
+        ]
+    },
+    "0.75rem": {
+        "summary": "0.75rem (12px) used for border, gap, margin, padding across 8 properties across 12 components",
+        "categories": [
+            "border",
+            "gap",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-split-item",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-floating-buttons",
+                "usages": [
+                    "margin-bottom",
+                    "margin-inline",
+                    "padding",
+                    "padding-bottom"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-collapsible-panel",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-color-usage-viewer",
+                "usages": [
+                    "gap",
+                    "padding"
+                ],
+                "categories": [
+                    "gap",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-empty-state-styles",
+                "usages": [
+                    "column-gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usages": [
+                    "border-inline",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "border",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-styles",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-menu-item-link",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-menu-item-return",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-menu-item-selectable-styles",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-menu-item",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-selection-action-menu-item",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "1rem": {
+        "summary": "1rem (16px) used for border-radius, margin, padding across 10 properties across 23 components",
+        "categories": [
+            "border-radius",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-split-item",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-color-usage-viewer",
+                "usages": [
+                    "margin",
+                    "margin-bottom",
+                    "padding"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-semantic-usage-viewer",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-spacing-usage-viewer",
+                "usages": [
+                    "margin-bottom",
+                    "padding"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-dialog-confirm",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-dialog-fullscreen",
+                "usages": [
+                    "padding-top"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-content-styles",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-dropdown-popover-mixin",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-empty-state-styles",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-form-error-summary",
+                "usages": [
+                    "margin-block"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-form",
+                "usages": [
+                    "margin-block"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-handle",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-menu-item-link",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-menu-item-return",
+                "usages": [
+                    "margin-inline",
+                    "padding"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-menu-item-selectable-styles",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-menu-item",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-selection-action-menu-item",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-switch-mixin",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-tooltip",
+                "usages": [
+                    "padding-inline",
+                    "padding-left",
+                    "padding-right"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-styles",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "4px": {
+        "summary": "4px (0.25rem) used for border, border-radius, margin, padding across 9 properties across 9 components",
+        "categories": [
+            "border",
+            "border-radius",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-split",
+                "usages": [
+                    "margin-inline",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-calendar",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-dialog",
+                "usages": [
+                    "margin-block"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-search",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-image",
+                "usages": [
+                    "border",
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "border-radius",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-table-col-sort-button",
+                "usages": [
+                    "border",
+                    "margin-block",
+                    "margin-inline",
+                    "padding",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "border-radius",
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-tab-internal",
+                "usages": [
+                    "border-top",
+                    "border-top-left",
+                    "border-top-right"
+                ],
+                "categories": [
+                    "border",
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-tab-mixin",
+                "usages": [
+                    "border-top",
+                    "border-top-left",
+                    "border-top-right"
+                ],
+                "categories": [
+                    "border",
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-tabs",
+                "usages": [
+                    "margin-inline",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "0.4rem": {
+        "summary": "0.4rem (6.4px) used for border, border-radius, margin, padding across 10 properties across 16 components",
+        "categories": [
+            "border",
+            "border-radius",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-button-subtle",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-collapsible-panel",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-color-usage-viewer",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-spacing-usage-viewer",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-count-badge-mixin",
+                "usages": [
+                    "padding-left",
+                    "padding-right"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "border-block"
+                ],
+                "categories": [
+                    "border"
+                ]
+            },
+            {
+                "component": "d2l-filter",
+                "usages": [
+                    "padding-block"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-label-styles",
+                "usages": [
+                    "margin-block"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usages": [
+                    "padding-block"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-styles",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-text",
+                "usages": [
+                    "padding-block"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-textarea",
+                "usages": [
+                    "padding-block"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-image",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-item-expand-collapse-mixin",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list",
+                "usages": [
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-progress",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "20px": {
+        "summary": "20px (1.25rem) used for margin, padding across 6 properties across 4 components",
+        "categories": [
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-calendar",
+                "usages": [
+                    "padding-bottom",
+                    "padding-left",
+                    "padding-right",
+                    "padding-top"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-dialog-confirm",
+                "usages": [
+                    "padding-top"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-html-block",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "7px": {
+        "summary": "7px (0.438rem) used for border-radius, margin, padding (border, padding-bottom, margin-top) across d2l-card-loading-shimmer, d2l-input-color, d2l-input-date-time-range-to",
+        "categories": [
+            "border-radius",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-card-loading-shimmer",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-input-color",
+                "usages": [
+                    "padding-bottom"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-date-time-range-to",
+                "usages": [
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "6px": {
+        "summary": "6px (0.375rem) used for border-radius, gap, margin, padding across 9 properties across 15 components",
+        "categories": [
+            "border-radius",
+            "gap",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-card",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-count-badge-icon",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-input-text",
+                "usages": [
+                    "margin-left",
+                    "margin-right"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-drop-mixin",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-image",
+                "usages": [
+                    "margin-inline",
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "border",
+                    "margin-inline",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "border-radius",
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list",
+                "usages": [
+                    "border",
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "border-radius",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-menu-item-styles",
+                "usages": [
+                    "border",
+                    "margin-inline"
+                ],
+                "categories": [
+                    "border-radius",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-menu-item",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-object-property-list-item",
+                "usages": [
+                    "margin",
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-selection-action-menu-item",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-selection-controls",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-tag-list-item-mixin",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-tag-list",
+                "usages": [
+                    "gap"
+                ],
+                "categories": [
+                    "gap"
+                ]
+            }
+        ]
+    },
+    "0.8rem": {
+        "summary": "0.8rem (12.8px) used for border-radius, margin, padding across 6 properties across 9 components",
+        "categories": [
+            "border-radius",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-card",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-count-badge",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-empty-state-styles",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-filter",
+                "usages": [
+                    "padding-block"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-styles",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-textarea",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-menu-item-selectable-styles",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-switch-mixin",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            }
+        ]
+    },
+    "2rem": {
+        "summary": "2rem (32px) used for margin, padding (margin-bottom, padding-inline, padding-left) across 4 components",
+        "categories": [
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-color-usage-viewer",
+                "usages": [
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-spacing-usage-viewer",
+                "usages": [
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-filter",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-date",
+                "usages": [
+                    "padding-left"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "0.25rem": {
+        "summary": "0.25rem (4px) used for border-radius, gap, margin, padding across 8 properties across 8 components",
+        "categories": [
+            "border-radius",
+            "gap",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-color-usage-viewer",
+                "usages": [
+                    "border",
+                    "gap",
+                    "margin-left",
+                    "margin-right"
+                ],
+                "categories": [
+                    "border-radius",
+                    "gap",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-spacing-usage-viewer",
+                "usages": [
+                    "border",
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "border-radius",
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-input-date",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-handle",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-image",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-object-property-list",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-tag-list-item-mixin",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "0.85rem": {
+        "summary": "0.85rem (13.6px) used for gap, margin (margin-left) in d2l-color-usage-viewer",
+        "categories": [
+            "gap",
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-color-usage-viewer",
+                "usages": [
+                    "margin-left"
+                ],
+                "categories": [
+                    "gap",
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "0.7rem": {
+        "summary": "0.7rem (11.2px) used for border-radius, padding (padding-top, border, padding) across 4 components",
+        "categories": [
+            "border-radius",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-count-badge-icon",
+                "usages": [
+                    "padding-top"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-count-badge-mixin",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-image",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-table-wrapper",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "0.55rem": {
+        "summary": "0.55rem (8.8px) used for border-radius, margin, padding across 8 properties across 5 components",
+        "categories": [
+            "border-radius",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-count-badge-icon",
+                "usages": [
+                    "padding-top"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-count-badge-mixin",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-input-color",
+                "usages": [
+                    "margin",
+                    "padding"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-item-expand-collapse-mixin",
+                "usages": [
+                    "padding-block"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "margin-block",
+                    "margin-inline",
+                    "padding",
+                    "padding-block",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "0px": {
+        "summary": "0px (0rem) used for margin, padding (margin-top, padding, margin, padding-inline) across 5 components",
+        "categories": [
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-count-badge-icon",
+                "usages": [
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-dialog-fullscreen",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-selection-controls",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-table-col-sort-button",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-table-wrapper",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "0.65rem": {
+        "summary": "0.65rem (10.4px) used for border-radius, margin, padding (border, padding-top, margin-left, margin-right) across d2l-count-badge, d2l-filter, d2l-switch-mixin",
+        "categories": [
+            "border-radius",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-count-badge",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            },
+            {
+                "component": "d2l-filter",
+                "usages": [
+                    "padding-top"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-switch-mixin",
+                "usages": [
+                    "margin-left",
+                    "margin-right"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "30px": {
+        "summary": "30px (1.875rem) used for padding (padding-top, padding) across d2l-dialog-confirm, d2l-dialog-styles",
+        "categories": [
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dialog-confirm",
+                "usages": [
+                    "padding-top"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "15px": {
+        "summary": "15px (0.938rem) used for border-radius, margin, padding (padding-bottom, margin-inline, border) across 4 components",
+        "categories": [
+            "border-radius",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dialog-fullscreen",
+                "usages": [
+                    "padding-bottom"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-dialog",
+                "usages": [
+                    "margin-inline",
+                    "padding-bottom"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-tabs",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            }
+        ]
+    },
+    "31px": {
+        "summary": "31px (1.938rem) used for padding (padding) in d2l-dialog-styles",
+        "categories": [
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "23px": {
+        "summary": "23px (1.438rem) used for padding (padding) in d2l-dialog-styles",
+        "categories": [
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "19px": {
+        "summary": "19px (1.188rem) used for margin, padding (padding, margin) across d2l-dialog-styles, d2l-html-block",
+        "categories": [
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-html-block",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "18px": {
+        "summary": "18px (1.125rem) used for margin, padding (margin-block, margin-inline, padding, padding-inline) across 6 components",
+        "categories": [
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "margin-block",
+                    "margin-inline",
+                    "padding"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-styles",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-textarea",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-controls",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-table-col-sort-button",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-table-wrapper",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "14px": {
+        "summary": "14px (0.875rem) used for padding (padding) in d2l-dialog-styles",
+        "categories": [
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "16px": {
+        "summary": "16px (1rem) used for margin, padding (padding, padding-inline, margin-inline) across d2l-dialog-styles, d2l-input-select-styles, d2l-list-item-drag-image",
+        "categories": [
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-select-styles",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-item-drag-image",
+                "usages": [
+                    "margin-inline",
+                    "padding"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "13px": {
+        "summary": "13px (0.813rem) used for margin (margin-inline, margin) across d2l-dialog-styles, d2l-html-block",
+        "categories": [
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dialog-styles",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-html-block",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "9px": {
+        "summary": "9px (0.563rem) used for padding (padding-bottom, padding-inline) across d2l-dialog, d2l-list-controls",
+        "categories": [
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-dialog",
+                "usages": [
+                    "padding-bottom"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list-controls",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "2.1rem": {
+        "summary": "2.1rem (33.6px) used for margin (margin-inline) in d2l-filter",
+        "categories": [
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-filter",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "0.05rem": {
+        "summary": "0.05rem (0.8px) used for border-radius, margin, padding (padding-bottom, margin-top, margin, margin-inline, border) across 4 components",
+        "categories": [
+            "border-radius",
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-filter",
+                "usages": [
+                    "padding-bottom"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-text",
+                "usages": [
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-object-property-list-item",
+                "usages": [
+                    "margin",
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-tooltip-help",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            }
+        ]
+    },
+    "21px": {
+        "summary": "21px (1.313rem) used for margin (margin) in d2l-html-block",
+        "categories": [
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-html-block",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "22px": {
+        "summary": "22px (1.375rem) used for margin (margin) in d2l-html-block",
+        "categories": [
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-html-block",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "25px": {
+        "summary": "25px (1.563rem) used for margin (margin) in d2l-html-block",
+        "categories": [
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-html-block",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "0.5em": {
+        "summary": "0.5em used for margin (margin) in d2l-html-block",
+        "categories": [
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-html-block",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "1em": {
+        "summary": "1em used for margin, padding (margin, padding) across d2l-html-block, d2l-more-less",
+        "categories": [
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-html-block",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-more-less",
+                "usages": [
+                    "margin",
+                    "padding"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "3em": {
+        "summary": "3em used for padding (padding-inline) in d2l-html-block",
+        "categories": [
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-html-block",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "1.5em": {
+        "summary": "1.5em used for padding (padding-inline) in d2l-html-block",
+        "categories": [
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-html-block",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "10px": {
+        "summary": "10px (0.625rem) used for margin, padding (padding, margin-top, margin, margin-inline) across 6 components",
+        "categories": [
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-input-color",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-list",
+                "usages": [
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-object-property-list-item",
+                "usages": [
+                    "margin"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-object-property-list",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-scroll-wrapper",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-status-indicator",
+                "usages": [
+                    "padding"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "1.7rem": {
+        "summary": "1.7rem (27.2px) used for margin, padding (padding-inline, margin-inline) across d2l-input-radio-spacer, d2l-input-radio-styles, d2l-input-radio",
+        "categories": [
+            "margin",
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-input-radio-spacer",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-radio-styles",
+                "usages": [
+                    "margin-inline",
+                    "padding-inline"
+                ],
+                "categories": [
+                    "margin",
+                    "padding"
+                ]
+            },
+            {
+                "component": "d2l-input-radio",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "0.315em": {
+        "summary": "0.315em used for margin (margin-inline) across d2l-link-mixin, d2l-link",
+        "categories": [
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-link-mixin",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            },
+            {
+                "component": "d2l-link",
+                "usages": [
+                    "margin-inline"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "1.8rem": {
+        "summary": "1.8rem (28.8px) used for padding (padding-inline) in d2l-list-controls",
+        "categories": [
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-list-controls",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "3rem": {
+        "summary": "3rem (48px) used for padding (padding-inline) in d2l-list-item-mixin",
+        "categories": [
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "2.2rem": {
+        "summary": "2.2rem (35.2px) used for padding (padding-inline) in d2l-list-item-mixin",
+        "categories": [
+            "padding"
+        ],
+        "usages": [
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "padding-inline"
+                ],
+                "categories": [
+                    "padding"
+                ]
+            }
+        ]
+    },
+    "12.5px": {
+        "summary": "12.5px (0.781rem) used for margin (margin-bottom) in d2l-list-item-mixin",
+        "categories": [
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "11.5px": {
+        "summary": "11.5px (0.719rem) used for margin (margin-top) in d2l-list-item-mixin",
+        "categories": [
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-list-item-mixin",
+                "usages": [
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "14.5px": {
+        "summary": "14.5px (0.906rem) used for margin (margin-bottom) in d2l-list-item-nav-mixin",
+        "categories": [
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-list-item-nav-mixin",
+                "usages": [
+                    "margin-bottom"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "13.5px": {
+        "summary": "13.5px (0.844rem) used for margin (margin-bottom, margin-top) in d2l-list-item-nav-mixin",
+        "categories": [
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-list-item-nav-mixin",
+                "usages": [
+                    "margin-bottom",
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "10.5px": {
+        "summary": "10.5px (0.656rem) used for margin (margin-top) in d2l-list-item-nav-mixin",
+        "categories": [
+            "margin"
+        ],
+        "usages": [
+            {
+                "component": "d2l-list-item-nav-mixin",
+                "usages": [
+                    "margin-top"
+                ],
+                "categories": [
+                    "margin"
+                ]
+            }
+        ]
+    },
+    "0.225rem": {
+        "summary": "0.225rem (3.6px) used for border-radius (border) in d2l-meter-linear",
+        "categories": [
+            "border-radius"
+        ],
+        "usages": [
+            {
+                "component": "d2l-meter-linear",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            }
+        ]
+    },
+    "0rem": {
+        "summary": "0rem (0px) used for border-radius (border) in d2l-table-wrapper",
+        "categories": [
+            "border-radius"
+        ],
+        "usages": [
+            {
+                "component": "d2l-table-wrapper",
+                "usages": [
+                    "border"
+                ],
+                "categories": [
+                    "border-radius"
+                ]
+            }
+        ]
+    }
+}
