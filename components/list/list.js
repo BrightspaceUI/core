@@ -53,6 +53,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
  			 */
 			dragMultiple: { type: Boolean, reflect: true, attribute: 'drag-multiple' },
 			/**
+			 * Disable ability to drop items above or below this item
+			 * @type {boolean}
+			 */
+			dropNestedOnly: { type: Boolean, attribute: 'drop-nested-only' },
+			/**
 			 * Whether to extend the separators beyond the content's edge
 			 * @type {boolean}
 			 */

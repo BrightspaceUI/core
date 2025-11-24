@@ -473,6 +473,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
 		if (changedProperties.has('_siblingHasColor') || changedProperties.has('color')) {
 			this._hasColorSlot = this.color || this._siblingHasColor;
 		}

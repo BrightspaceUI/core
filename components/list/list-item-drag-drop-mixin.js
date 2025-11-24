@@ -372,7 +372,9 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (!this.key) {
 			this.draggable = false;
 		}
-		this._dragMultiple = this.getRootList()?.hasAttribute('drag-multiple');
+		const list = this.getRootList();
+		this._dragMultiple = list?.hasAttribute('drag-multiple');
+		this._dropNestedOnly = list?.hasAttribute('drop-nested-only');
 	}
 
 	firstUpdated(changedProperties) {
@@ -380,8 +382,19 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		super.firstUpdated(changedProperties);
 	}
 
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (this._dropNestedOnly) {
+			this.keyboardDragDisabled = true;
+		}
+	}
+
 	activateDragHandle() {
 		if (this.shadowRoot) this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
+	}
+
+	get #disabledDrop() {
+		return this._dropNestedOnly && !this.dropNested;
 	}
 
 	_annoucePositionChange(dragTargetKey, dropTargetKey, dropLocation) {
@@ -538,7 +551,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		this.dragging = false;
 
 		// check the dropEffect in case the user cancelled by Escape while dragging ('none' set by browser)
-		if (e.dataTransfer.dropEffect !== 'none' && dragState.shouldDrop(e.timeStamp)) {
+		if (!this.#disabledDrop && e.dataTransfer.dropEffect !== 'none' && dragState.shouldDrop(e.timeStamp)) {
 
 			const dropTargetList = findComposedAncestor(dragState.dropTarget, node => node.tagName === 'D2L-LIST');
 			const shouldDispatchPositionChange = !dragState.dragTargets.find(dragTarget => {
@@ -602,7 +615,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_onDragOver(e) {
-		if (!this.key) return;
+		if (!this.key || this.#disabledDrop) return;
 		const dragState = getDragState();
 		dragState.updateTime(e.timeStamp);
 		e.preventDefault();
@@ -700,47 +713,19 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_onDropTargetBottomDragEnter(e) {
-		e.dataTransfer.dropEffect = 'move';
-		const dragState = getDragState();
-		dragState.setActiveDropTarget(this, dropLocation.below);
-		this._inBottomArea = true;
+		this.#onDropEnterHelper(e, false, false);
 	}
 
 	_onDropTargetLowerDragEnter(e) {
-		e.dataTransfer.dropEffect = 'move';
-		if (this.dropNested) {
-			this._inBottomArea = false;
-			const dragState = getDragState();
-			dragState.setActiveDropTarget(this, moveLocations.nest);
-		} else {
-			if (this._inBottomArea) {
-				const dragState = getDragState();
-				dragState.setActiveDropTarget(this, dropLocation.above);
-				this._inBottomArea = false;
-			}
-		}
+		this.#onDropEnterHelper(e, false, true);
 	}
 
 	_onDropTargetTopDragEnter(e) {
-		e.dataTransfer.dropEffect = 'move';
-		const dragState = getDragState();
-		dragState.setActiveDropTarget(this, dropLocation.above);
-		this._inTopArea = true;
+		this.#onDropEnterHelper(e, true, false);
 	}
 
 	_onDropTargetUpperDragEnter(e) {
-		e.dataTransfer.dropEffect = 'move';
-		if (this.dropNested) {
-			this._inTopArea = false;
-			const dragState = getDragState();
-			dragState.setActiveDropTarget(this, moveLocations.nest);
-		} else {
-			if (this._inTopArea) {
-				const dragState = getDragState();
-				dragState.setActiveDropTarget(this, dropLocation.below);
-				this._inTopArea = false;
-			}
-		}
+		this.#onDropEnterHelper(e, true, true);
 	}
 
 	_onFocusinDragHandle() {
@@ -915,5 +900,27 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_renderTopPlacementMarker(renderTemplate) {
 		return this._dropLocation === dropLocation.above ? html`<div class="d2l-list-item-drag-top-marker">${renderTemplate}</div>` : null;
+	}
+
+	#onDropEnterHelper(e, isTopHalf, isMiddle) {
+		if (this.#disabledDrop) return;
+		e.dataTransfer.dropEffect = 'move';
+
+		let location;
+		if (this._dropNestedOnly || (isMiddle && this.dropNested)) {
+			location = moveLocations.nest;
+		} else if (!isMiddle) {
+			location = isTopHalf ? dropLocation.above : dropLocation.below;
+			this._inTopArea = isTopHalf;
+			this._inBottomArea = !isTopHalf;
+		} else if (isTopHalf) {
+			location = this._inTopArea ? moveLocations.below : moveLocations.above;
+			this._inTopArea = false;
+		} else {
+			location = this._inBottomArea ? moveLocations.above : moveLocations.below;
+			this._inBottomArea = false;
+		}
+		const dragState = getDragState();
+		dragState.setActiveDropTarget(this, location);
 	}
 };

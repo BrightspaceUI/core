@@ -1,3 +1,4 @@
+import '../list.js';
 import { defineCE, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { dropLocation, ListItemDragDropMixin, NewPositionEventDetails } from '../list-item-drag-drop-mixin.js';
 import { html, LitElement } from 'lit';
@@ -21,6 +22,16 @@ describe('ListItemDragDropMixin', () => {
 	it('Sets draggable to false when no key is given', async() => {
 		const element = await fixture(`<${tag} draggable></${tag}>`);
 		expect(element.draggable).to.be.false;
+	});
+
+	it.only('Sets _dropNestedOnly and keyboardDragDisabled to true when drop-nested-only is set', async() => {
+		const element = await fixture(`<d2l-list drop-nested-only>
+			<${tag} key="1" draggable></${tag}>
+		</d2l-list>`);
+		const listItem = element.querySelector(tag);
+
+		expect(listItem._dropNestedOnly).to.be.true;
+		expect(listItem.keyboardDragDisabled).to.be.true;
 	});
 
 	describe('Track placement as item is being moved', () => {
@@ -59,48 +70,60 @@ describe('ListItemDragDropMixin', () => {
 			expect(dropGrid).not.be.null;
 		});
 
-		[{
-			description: 'shows top marker when entering from top',
-			dropTargetNumber: 0,
-			marker: 'top'
-		},
-		{
-			description: 'shows bottom marker when entering top half from top',
-			dropTargetNumber: 1,
-			marker: 'bottom'
-		},
-		{
-			description: 'shows bottom marker when entering bottom half from top',
-			dropTargetNumber: 2,
-			marker: 'bottom'
-		},
-		{
-			description: 'shows bottom marker when entering bottom from top',
-			dropTargetNumber: 3,
-			marker: 'bottom'
-		},
-		{
-			description: 'shows top marker when entering bottom half from bottom',
-			dropTargetNumber: 2,
-			marker: 'top'
-		},
-		{
-			description: 'shows top marker when entering top half from bottom',
-			dropTargetNumber: 1,
-			marker: 'top'
-		}].forEach((test) => {
-			it(test.description, async() => {
-				setDropGrid();
-				const dropTarget = dropGrid.querySelectorAll('div')[test.dropTargetNumber];
-				dispatchDragEvent(dropTarget, 'dragenter');
-				await oneEvent(dropTarget, 'dragenter');
-				await element.updateComplete;
-				const markers = {
-					'top' : element.shadowRoot.querySelector('#top-placement-marker'),
-					'bottom': element.shadowRoot.querySelector('#bottom-placement-marker')
-				};
-				expect(markers[test.marker]).to.exist;
-				expect(markers[test.marker === 'top' ? 'bottom' : 'top']).to.be.null;
+		[
+			{ dropNestedOnly: false, dropNested: false },
+			{ dropNestedOnly: false, dropNested: true },
+			{ dropNestedOnly: true, dropNested: false },
+			{ dropNestedOnly: true, dropNested: true },
+		].forEach(({ dropNestedOnly, dropNested }) => {
+			[{
+				description: 'shows top marker when entering from top',
+				dropTargetNumber: 0,
+				marker: 'top'
+			},
+			{
+				description: 'shows bottom marker when entering top half from top',
+				dropTargetNumber: 1,
+				marker: 'bottom'
+			},
+			{
+				description: 'shows bottom marker when entering bottom half from top',
+				dropTargetNumber: 2,
+				marker: 'bottom'
+			},
+			{
+				description: 'shows bottom marker when entering bottom from top',
+				dropTargetNumber: 3,
+				marker: 'bottom'
+			},
+			{
+				description: 'shows top marker when entering bottom half from bottom',
+				dropTargetNumber: 2,
+				marker: 'top'
+			},
+			{
+				description: 'shows top marker when entering top half from bottom',
+				dropTargetNumber: 1,
+				marker: 'top'
+			}].forEach((test) => {
+				it(`${test.description}${dropNestedOnly ? '(drop-nested-only)' : ''}${dropNested ? '(drop-nested)' : ''}`, async() => {
+					element._dropNestedOnly = dropNestedOnly;
+					element.dropNested = dropNested;
+					await element.updateComplete;
+
+					setDropGrid();
+					const dropTarget = dropGrid.querySelectorAll('div')[test.dropTargetNumber];
+					dispatchDragEvent(dropTarget, 'dragenter');
+					await oneEvent(dropTarget, 'dragenter');
+					await element.updateComplete;
+					const markers = {
+						'top' : element.shadowRoot.querySelector('#top-placement-marker'),
+						'bottom': element.shadowRoot.querySelector('#bottom-placement-marker')
+					};
+					if (dropNestedOnly || (dropNested && (test.dropTargetNumber === 1 || test.dropTargetNumber === 2))) expect(markers[test.marker]).to.be.null;
+					else expect(markers[test.marker]).to.exist;
+					expect(markers[test.marker === 'top' ? 'bottom' : 'top']).to.be.null;
+				});
 			});
 		});
 

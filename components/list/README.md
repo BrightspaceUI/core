@@ -145,6 +145,7 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 |---|---|---|
 | `breakpoints` | Array | Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used. |
 | `drag-multiple` | Boolean | Whether the user can drag multiple items |
+| `drop-nested-only` | Boolean | Whether draggable items can only be dropped as nested items within other items. Disables keyboard drag and drop on all items. |
 | `grid` | Boolean | Enables keyboard grid for supported list items. See [Accessibility](#accessibility). |
 | `label` | String | Sets an accessible label. For use when the list context is unclear. This property is only valid on top-level lists and will have no effect on nested lists. |
 | `selection-single` | Boolean | Whether to render with single selection behaviour. If `selection-single` is specified, the list-items will render with radios instead of checkboxes, and the list component will maintain a single selected item. |
