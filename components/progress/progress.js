@@ -5,7 +5,6 @@ import { classMap } from 'lit/directives/class-map.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { offscreenStyles } from '../offscreen/offscreen.js';
 
 class Progress extends LocalizeCoreElement(LitElement) {
 
@@ -50,7 +49,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 	}
 
 	static get styles() {
-		return [bodySmallStyles, bodyCompactStyles, offscreenStyles, css`
+		return [bodySmallStyles, bodyCompactStyles, css`
 				:host {
 					align-items: center;
 					display: flex;
@@ -142,12 +141,12 @@ class Progress extends LocalizeCoreElement(LitElement) {
 
 	constructor() {
 		super();
+		this.announceLabel = false;
 		this.labelHidden = false;
 		this.max = 100;
+		this.size = 'medium';
 		this.value = 0;
 		this.valueHidden = false;
-		this.size = 'medium';
-		this.announceLabel = false;
 	}
 
 	get isComplete() {
@@ -164,7 +163,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 		};
 		const valueClasses = { ...textClasses, value: true };
 
-		const percentageText = formatPercent(this.isComplete ? 1 : Math.floor(100 * this.value / this.max) / 100);;
+		const percentageText = formatPercent(this.isComplete ? 1 : Math.floor(100 * this.value / this.max) / 100);
 		return html`
 			<div aria-live=${this.announceLabel ? 'polite' : 'off'} ?hidden=${this.labelHidden} id="label" class=${classMap(textClasses)}>${this.label}</div>
 			<progress

@@ -33,9 +33,8 @@ Use the `announce-label` property to announce changes to the progress label. Thi
 <script type="module">
   import '@brightspace-ui/core/components/progress/progress.js';
 </script>
-<!-- docs: start hidden content -->
 <script>
-	const button = document.querySelector('button');
+  const button = document.querySelector('button');
   const progress = document.querySelector('d2l-progress');
   button.addEventListener('click', () => {
     for (let i = 0; i < 5; i++) {
@@ -49,7 +48,6 @@ Use the `announce-label` property to announce changes to the progress label. Thi
     }
   });
 </script>
-<!-- docs: end hidden content -->
 
 <button>Start Animation</button>
 <d2l-progress label="Uploading..." announce-label></d2l-progress>
