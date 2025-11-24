@@ -33,14 +33,14 @@ describe('d2l-dialog', () => {
 			expect(getComposedActiveElement().getAttribute('aria-label')).to.equal('Close this dialog');
 		});
 
-		it.skip('should focus on first element when opened initially', async() => {
+		it('should focus on first element when opened initially', async() => {
 			const el = await fixture(html`<d2l-dialog opened><button>focus</button></d2l-dialog>`);
 			const button = el.querySelector('button');
 			await oneEvent(el, 'd2l-dialog-open');
 			expect(getComposedActiveElement()).to.equal(button);
 		});
 
-		it.skip('should focus on first element when opened later', async() => {
+		it('should focus on first element when opened later', async() => {
 			const el = await fixture(html`<d2l-dialog><button>focus</button></d2l-dialog>`);
 			const button = el.querySelector('button');
 			setTimeout(() => el.opened = true);
@@ -48,14 +48,14 @@ describe('d2l-dialog', () => {
 			expect(getComposedActiveElement()).to.equal(button);
 		});
 
-		it.skip('should focus on an autofocus element', async() => {
+		it('should focus on an autofocus element', async() => {
 			const el = await fixture(html`<d2l-dialog opened><p autofocus tabindex="-1">focus</p><button>focus</button></d2l-dialog>`);
 			const paragraph = el.querySelector('p');
 			await oneEvent(el, 'd2l-dialog-open');
 			expect(getComposedActiveElement()).to.equal(paragraph);
 		});
 
-		it.skip('should focus on a descendant autofocus element', async() => {
+		it('should focus on a descendant autofocus element', async() => {
 			const el = await fixture(html`<d2l-dialog opened><div><p autofocus tabindex="-1">focus</p></div><button>focus</button></d2l-dialog>`);
 			const paragraph = el.querySelector('p');
 			await oneEvent(el, 'd2l-dialog-open');

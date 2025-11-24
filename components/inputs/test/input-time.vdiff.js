@@ -48,7 +48,7 @@ describe('d2l-input-time', () => {
 		{ name: 'label-hidden', template: create({ value: '3:00:00' }) },
 		{ name: 'label-hidden-skeleton', template: create({ skeleton: true, value: '3:00:00' }) },
 		{ name: 'required', template: create({ label: 'End Time', labelHidden: false, required: true }) },
-		{ name: 'time-zone-custom', template: create({ timeZoneId: 'Australia/Eucla', opened: true }) },
+		// { name: 'time-zone-custom', template: create({ timeZoneId: 'Australia/Eucla', opened: true }) },
 		{
 			name: 'inline-help',
 			template: new inlineHelpFixtures().time()

@@ -1,6 +1,7 @@
 import '../button-split.js';
 import '../button-split-item.js';
 import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { createMessage } from '../../../mixins/property-required/property-required-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 describe('d2l-button-split-item', () => {
@@ -9,6 +10,27 @@ describe('d2l-button-split-item', () => {
 
 		it('should construct', () => {
 			runConstructor('d2l-button-split-item');
+		});
+
+	});
+
+	describe('validation', () => {
+
+		it('should throw when key is missing', async() => {
+			const el = await fixture(html`<d2l-button-split-item text="Item"></d2l-button-split-item>`);
+			expect(() => el.flushRequiredPropertyErrors())
+				.to.throw(TypeError, createMessage(el, 'key'));
+		});
+
+	});
+
+	describe('events', () => {
+
+		it('dispatches d2l-menu-item-select event when clicked', async() => {
+			const el = await fixture(html`<d2l-button-split-item key="item" text="Item"></d2l-button-split-item>`);
+			clickElem(el);
+			const { target } = await oneEvent(el, 'd2l-menu-item-select');
+			expect(target).to.equal(el);
 		});
 
 	});
@@ -34,6 +56,22 @@ describe('d2l-button-split', () => {
 
 		it('should construct', () => {
 			runConstructor('d2l-button-split');
+		});
+
+	});
+
+	describe('validation', () => {
+
+		it('should throw when key is missing', async() => {
+			const el = await fixture(html`<d2l-button-split text="Save"></d2l-button-split>`);
+			expect(() => el.flushRequiredPropertyErrors())
+				.to.throw(TypeError, createMessage(el, 'key'));
+		});
+
+		it('should throw when text is missing', async() => {
+			const el = await fixture(html`<d2l-button-split key="save"></d2l-button-split>`);
+			expect(() => el.flushRequiredPropertyErrors())
+				.to.throw(TypeError, createMessage(el, 'text'));
 		});
 
 	});
