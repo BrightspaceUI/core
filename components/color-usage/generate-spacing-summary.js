@@ -68,26 +68,7 @@ function generateSummary(spacing, usages, categories) {
 	const uniqueUsages = [...new Set(allUsagesList)];
 
 	// Build summary
-	let summary = '';
-
-	// Describe the spacing value
-	const match = spacing.match(/^([\d.]+)(rem|px|em|%)$/);
-	if (match) {
-		const value = parseFloat(match[1]);
-		const unit = match[2];
-		
-		if (unit === 'rem') {
-			const pixels = value * 16;
-			summary = `${spacing} (${pixels}px)`;
-		} else if (unit === 'px') {
-			const rems = (value / 16).toFixed(3).replace(/\.?0+$/, '');
-			summary = `${spacing} (${rems}rem)`;
-		} else {
-			summary = spacing;
-		}
-	} else {
-		summary = spacing;
-	}
+	let summary = spacing;
 
 	// Describe primary usage
 	if (categories.length > 0) {
