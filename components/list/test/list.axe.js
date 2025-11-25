@@ -7,7 +7,7 @@ import { expect, fixture, html } from '@brightspace-ui/testing';
 
 const getListTemplate = options => {
 	return html`
-		<d2l-list ?grid="${options.grid}">
+		<d2l-list layout="${options.layout}" ?grid="${options.grid}">
 			<d2l-list-controls slot="controls">
 				<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
 				<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
@@ -30,14 +30,21 @@ const getListTemplate = options => {
 
 describe('d2l-list', () => {
 
-	it('should pass all aXe tests in list mode', async() => {
-		const elem = await fixture(getListTemplate({ grid: false }));
-		await expect(elem).to.be.accessible();
-	});
+	[
+		{ layout: 'list', grid: false },
+		{ layout: 'list', grid: true },
+		{ layout: 'tiles', grid: false },
+		{ layout: 'tiles', grid: true }
+	].forEach((options) => {
 
-	it('should pass all aXe tests in grid mode', async() => {
-		const elem = await fixture(getListTemplate({ grid: true }));
-		await expect(elem).to.be.accessible({ ignoredRules: ['aria-required-parent'] }); // d2l-list's grid mode does not apply the grid role because Safari does not properly handle cases where the roles (grid, row, gridcell) are distributed across DOM scopes
+		it(`should pass all aXe tests in ${options.layout} layout mode and grid ${options.grid}`, async() => {
+			// d2l-list's grid mode does not apply the grid role because Safari does not properly handle cases where the roles (grid, row, gridcell) are distributed across DOM scopes
+			const ruleOptions = options.grid ? { ignoredRules: ['aria-required-parent'] } : undefined;
+
+			const elem = await fixture(getListTemplate(options));
+			await expect(elem).to.be.accessible(ruleOptions);
+		});
+
 	});
 
 });
