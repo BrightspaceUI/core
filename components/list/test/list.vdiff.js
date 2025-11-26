@@ -69,8 +69,8 @@ function createItem({ color, itemWidth, paddingType, template = 'Item 1' } = {})
 
 function createItems({ itemWidth, paddingType, withColors = false } = {}) {
 	return html`
-		${createItem({ color: withColors ? '#006fbf': undefined, itemWidth, paddingType, template: 'Item 1' })}
-		${createItem({ color: withColors ? '#46a661': undefined, itemWidth, paddingType, template: 'Item 2 - The super fancy awesome item!' })}
+		${createItem({ color: withColors ? '#006fbf' : undefined, itemWidth, paddingType, template: 'Item 1' })}
+		${createItem({ color: withColors ? '#46a661' : undefined, itemWidth, paddingType, template: 'Item 2 - The super fancy awesome item!' })}
 		${createItem({ itemWidth, paddingType, template: 'Item 3' })}
 	`;
 }
