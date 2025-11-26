@@ -72,7 +72,6 @@
     "ifrau": "^0.41",
     "lit": "^3",
     "prismjs": "^1",
-    "resize-observer-polyfill": "^1",
-    "safe-chain-test": "^0.0.1-security"
+    "resize-observer-polyfill": "^1"
   }
 }
