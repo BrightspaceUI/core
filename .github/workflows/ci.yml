@@ -20,10 +20,10 @@ jobs:
           echo GITHUB_PATH:
           echo $GITHUB_PATH
           
-          echo: which
+          echo which:
           which npm
 
-          echo: install
+          echo install:
           npm install safe-chain-test
       - name: Build
         run: npm run build
