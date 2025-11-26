@@ -156,7 +156,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this.dragMultiple = false;
 		this.extendSeparators = false;
 		this.grid = false;
-		this.layout = 'list';
+		this.layout = listLayouts.list;
 		this._listItemChanges = [];
 		this._childHasColor = false;
 		this._childHasExpandCollapseToggle = false;
@@ -515,7 +515,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 	_updateItemLayouts(items) {
 		if (!items) items = this.getItems();
-		items.forEach(item => item.layout = (this.layout === 'tiles' ? 'tile' : 'normal'));
+		items.forEach(item => item.layout = (this.layout === listLayouts.tiles ? 'tile' : 'normal'));
 	}
 
 }
