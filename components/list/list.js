@@ -74,8 +74,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			label: { type: String },
 			/**
 			 * The type of layout for the list items. Valid values are "list" (default) and "tiles". The tile layout is only valid for single level (non-nested) lists.
-			 * @type {string}
- 			 */
+			 * @type {'list'|'tiles'}
+			 * @default "list"
+			 */
 			layout: { type: String, reflect: true },
 			/**
 			 * Display separators. Valid values are "all" (default), "between", "none"
