@@ -77,6 +77,12 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			:host([inactive]) .d2l-more-less-toggle {
 				display: none;
 			}
+
+			.force-margin-scroll {
+				height: 1px;
+				margin-top: -1px;
+			}
+
 			@media (prefers-reduced-motion: reduce) {
 				.d2l-more-less-transition {
 					transition: none;
@@ -121,6 +127,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		super.firstUpdated();
 
 		this.__content = this.shadowRoot.querySelector('.d2l-more-less-content');
+		this.__reactToChanges();
+		this.__resizeObserver.observe(this.__content);
 
 		this.__bound_transitionEvents = this.__transitionEvents.bind(this);
 		this.shadowRoot.addEventListener('transitionstart', this.__bound_transitionEvents);
@@ -141,7 +149,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 				style=${styleMap({ maxHeight: `${this.__maxHeight}` })}
 				@focusin="${this.__focusIn}"
 				@focusout="${this.__focusOut}">
-				<slot @slotchange="${this.#handleSlotChange}"></slot>
+				<slot></slot>
+				<div class="force-margin-scroll"></div>
 			</div>
 			<d2l-button-subtle
 				class="d2l-more-less-toggle"
@@ -166,13 +175,15 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 		if (contentHeight <= this.__baseHeight) {
 			if (!this.inactive) {
-				this.__adjustToContent_makeInactive();
+				this.inactive = true;
+				this.expanded = false;
+				this.__adjustToContent_resize();
 			}
 			return;
 		}
 
 		if (this.expanded && contentHeight !== currentHeight) {
-			this.__adjustToContent_resize.bind(this, contentHeight)();
+			this.__adjustToContent_resize();
 			return;
 		}
 
@@ -186,16 +197,9 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.__maxHeight = this.height;
 	}
 
-	__adjustToContent_makeInactive() {
-		this.inactive = true;
-		this.expanded = false;
+	__adjustToContent_resize() {
 		// Include 1px of given room to account for issues with Firefox rounding the content's scroll height
 		this.__maxHeight = `${this.__content.scrollHeight + 1}px`;
-	}
-
-	__adjustToContent_resize(contentHeight) {
-		// Include 1px of given room to account for issues with Firefox rounding the content's scroll height
-		this.__maxHeight = `${contentHeight + 1}px`;
 	}
 
 	__computeAriaExpanded() {
@@ -283,11 +287,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		});
 	}
 
-	__isOwnMutation(mutation) {
-		return mutation.target === this.__content
-			&& (mutation.type === 'style' || mutation.type === 'attributes');
-	}
-
 	__reactToChanges() {
 		this.__transitionAdded = true;
 		this.__adjustToContent();
@@ -312,23 +311,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__transitionEvents(e) {
 		this.dispatchEvent(new CustomEvent(e.type, { bubbles: true, composed: true, detail: e.detail }));
-	}
-
-	#handleSlotChange(e) {
-		this.__reactToChanges();
-		this.__resizeObserver.disconnect();
-		this.__mutationObserver.disconnect();
-
-		const children = e.target.assignedNodes({ flatten: true }).filter((node) => node.nodeType === Node.ELEMENT_NODE);
-		for (let i = 0; i < children.length; ++i) {
-			this.__resizeObserver.observe(children[i]);
-			this.__mutationObserver.observe(children[i], {
-				childList: true,
-				subtree: true,
-				characterData: true,
-				attributes: true
-			});
-		}
 	}
 
 }
