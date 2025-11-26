@@ -9,7 +9,6 @@ import '../../selection/selection-action.js';
 import '../../tooltip/tooltip.js';
 import '../../tooltip/tooltip-help.js';
 import '../demo/demo-list-nested-iterations-helper.js';
-import '../list.js';
 import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
@@ -17,7 +16,9 @@ import '../list-item-content.js';
 import '../list-item-nav.js';
 import { expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { listLayouts } from '../list.js';
 import { nothing } from 'lit';
+import { styleMap } from 'lit/directives/style-map.js';
 
 const simpleListItemContent = html`
 	<d2l-list-item-content>
@@ -60,8 +61,58 @@ function createSimpleList(opts) {
 	`;
 }
 
+function createItem({ color, itemWidth, paddingType, template = 'Item 1' } = {}) {
+	const itemStyles = {};
+	if (itemWidth) itemStyles['width'] = itemWidth;
+	return html`<d2l-list-item label="some label" color="${ifDefined(color)}" padding-type="${ifDefined(paddingType)}" style="${styleMap(itemStyles)}">${template}</d2l-list-item>`;
+}
+
+function createItems({ itemWidth, paddingType, withColors = false } = {}) {
+	return html`
+		${createItem({ color: withColors ? '#006fbf' : undefined, itemWidth, paddingType, template: 'Item 1' })}
+		${createItem({ color: withColors ? '#46a661' : undefined, itemWidth, paddingType, template: 'Item 2 - The super fancy awesome item!' })}
+		${createItem({ itemWidth, paddingType, template: 'Item 3' })}
+	`;
+}
+
+function createList({ extendSeparators = false, itemsTemplate = createItems(), layout, separators } = {}) {
+	return html`
+		<d2l-list
+			?extend-separators="${extendSeparators}"
+			layout="${ifDefined(layout)}"
+			separators="${ifDefined(separators)}">
+			${itemsTemplate}
+		</d2l-list>
+	`;
+}
+
 describe('list', () => {
+
+	[
+		// basic
+		{ name: 'list', template: createList({ layout: listLayouts.list }) },
+		{ name: 'tiles', template: createList({ layout: listLayouts.tiles }) },
+		{ name: 'tiles item width', template: createList({ itemsTemplate: createItems({ itemWidth: '250px' }), layout: listLayouts.tiles }) },
+		// separators
+		{ name: 'list separators none', template: createList({ separators: 'none', layout: listLayouts.list }) },
+		{ name: 'list separators all', template: createList({ separators: 'all', layout: listLayouts.list }) },
+		{ name: 'list separators between', template: createList({ separators: 'between', layout: listLayouts.list }) },
+		{ name: 'list extend-separators', template: createList({ extendSeparators: true, separators: 'all', layout: listLayouts.list }) },
+		{ name: 'tiles extend-separators', template: createList({ extendSeparators: true, separators: 'all', layout: listLayouts.tiles }) },
+		// padding-type
+		{ name: 'list item padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none' }), layout: listLayouts.list }), goldenTarget: 'd2l-list-item' },
+		{ name: 'tiles item padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none' }), layout: listLayouts.tiles }), goldenTarget: 'd2l-list-item' }
+	].forEach(options => {
+
+		it(options.name, async() => {
+			const elem = await fixture(options.template);
+			await expect(elem.querySelector(options.goldenTarget) ?? elem).to.be.golden();
+		});
+
+	});
+
 	describe('general', () => {
+
 		it('simple', async() => {
 			const elem = await fixture(createSimpleList({ color1: '#0000ff' }));
 			await expect(elem).to.be.golden();
@@ -131,6 +182,7 @@ describe('list', () => {
 	});
 
 	describe('separators', () => {
+
 		[ true, false ].forEach((addButton) => {
 			[
 				{ name: `default${addButton ? ' add-button' : ''}`, template: createSimpleList({ color1: '#0000ff', addButton }) },
