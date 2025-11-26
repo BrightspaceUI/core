@@ -92,16 +92,16 @@ describe('list', () => {
 		// basic
 		{ name: 'list', template: createList({ layout: 'list' }) },
 		{ name: 'tiles', template: createList({ layout: 'tiles' }) },
-		{ name: 'tiles item width', template: createList({ layout: 'tiles', itemsTemplate: createItems({ itemWidth: '250px' }) }) },
+		{ name: 'tiles item width', template: createList({ itemsTemplate: createItems({ itemWidth: '250px' }), layout: 'tiles' }) },
 		// separators
-		{ name: 'list separators none', template: createList({ layout: 'list', itemsTemplate: createItems(), separators: 'none' }) },
-		{ name: 'list separators all', template: createList({ layout: 'list', itemsTemplate: createItems(), separators: 'all' }) },
-		{ name: 'list separators between', template: createList({ layout: 'list', itemsTemplate: createItems(), separators: 'between' }) },
-		{ name: 'list extend-separators', template: createList({ layout: 'list', extendSeparators: true, itemsTemplate: createItems(), separators: 'all' }) },
-		{ name: 'tiles extend-separators', template: createList({ layout: 'tiles', extendSeparators: true, itemsTemplate: createItems(), separators: 'all' }) },
+		{ name: 'list separators none', template: createList({ separators: 'none', layout: 'list' }) },
+		{ name: 'list separators all', template: createList({ separators: 'all', layout: 'list' }) },
+		{ name: 'list separators between', template: createList({ separators: 'between', layout: 'list' }) },
+		{ name: 'list extend-separators', template: createList({ extendSeparators: true, separators: 'all', layout: 'list' }) },
+		{ name: 'tiles extend-separators', template: createList({ extendSeparators: true, separators: 'all', layout: 'tiles' }) },
 		// padding-type
-		{ name: 'list item padding-type none', template: createList({ layout: 'list', itemsTemplate: createItem({ paddingType: 'none' }) }), goldenTarget: 'd2l-list-item' },
-		{ name: 'tiles item padding-type none', template: createList({ layout: 'tiles', itemsTemplate: createItem({ paddingType: 'none' }) }), goldenTarget: 'd2l-list-item' }
+		{ name: 'list item padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none' }), layout: 'list' }), goldenTarget: 'd2l-list-item' },
+		{ name: 'tiles item padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none' }), layout: 'tiles' }), goldenTarget: 'd2l-list-item' }
 	].forEach(options => {
 
 		it(options.name, async() => {
