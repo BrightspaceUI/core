@@ -77,19 +77,19 @@ describe('calendar', () => {
 			{ name: 'rtl-arrow-left', template: simpleTemplate, action: async() => {
 				await focusElem(elem.shadowRoot.querySelector('td[data-date="14"]'));
 				await sendKeys('press', 'ArrowLeft');
-			}},
+			} },
 			{ name: 'rtl-arrow-right', template: simpleTemplate, action: async() => {
 				await focusElem(elem.shadowRoot.querySelector('td[data-date="14"]'));
 				await sendKeys('press', 'ArrowRight');
-			}},
+			} },
 			{ name: 'rtl-home', template: html`<d2l-calendar selected-value="2018-02-08"></d2l-calendar>`, action: async() => {
 				await focusElem(elem.shadowRoot.querySelector('td[data-date="8"]'));
 				await sendKeys('press', 'Home');
-			}},
+			} },
 			{ name: 'rtl-end', template: html`<d2l-calendar selected-value="2018-02-08"></d2l-calendar>`, action: async() => {
 				await focusElem(elem.shadowRoot.querySelector('td[data-date="8"]'));
 				await sendKeys('press', 'End');
-			}}
+			} }
 		].forEach(({ name, template, action }) => {
 			it(name, async() => {
 				await setupFixture(template, { rtl: true });
@@ -152,21 +152,6 @@ describe('calendar', () => {
 			await sendKeys('press', 'Tab');
 			await sendKeys('press', 'Tab');
 		}
-
-		it('focus-arrow-blur-focus', async() => {
-			await setupFixture(simpleTemplate);
-			await tabToDates(elem);
-			// // Focus initial date
-			// await focusElem(elem.shadowRoot.querySelector('td[data-date="14"]'));
-			// Move to new date with arrow key
-			await sendKeys('press', 'ArrowRight');
-			// Blur the calendar
-			elem.blur();
-			await tabToDates(elem);
-			// // Focus again - should show initial focus animation
-			// await focusElem(elem.shadowRoot.querySelector('td[data-date="15"]'));
-			// await expect(elem).to.be.golden();
-		});
 
 		it('click left arrow', async() => {
 			await setupFixture(simpleTemplate);

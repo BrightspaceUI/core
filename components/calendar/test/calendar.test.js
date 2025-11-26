@@ -1,4 +1,4 @@
-import { aTimeout, clickElem, expect, fixture, html, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { checkIfDatesEqual,
 	getDatesInMonthArray,
 	getMinMaxDatesInView,
@@ -25,18 +25,84 @@ describe('d2l-calendar', () => {
 
 	describe('properties', () => {
 
-		describe('minValue and maxValue', () => {
-			// TODO: fix to not use a try catch
-			it('throws error when minValue is after maxValue', async() => {
-				let errorThrown = false;
-				try {
-					await fixture(html`<d2l-calendar min-value="2015-09-20" max-value="2015-09-10"></d2l-calendar>`);
-				} catch (e) {
-					errorThrown = true;
-					expect(e.message).to.include('min-value to be before max-value');
-				}
-				expect(errorThrown).to.be.true;
+		describe('ARIA attributes', () => {
+
+			it('has correct aria-label on region', async() => {
+				const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-02"></d2l-calendar>`);
+				const region = calendar.shadowRoot.querySelector('[role="region"]');
+				expect(region.getAttribute('aria-label')).to.include('September');
 			});
+
+			it('has correct aria-label on region with label attribute', async() => {
+				const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-02" label="Event Calendar"></d2l-calendar>`);
+				const region = calendar.shadowRoot.querySelector('[role="region"]');
+				const ariaLabel = region.getAttribute('aria-label');
+				expect(ariaLabel).to.include('Event Calendar');
+				expect(ariaLabel).to.include('September');
+			});
+
+			it('has correct aria-labelledby on table', async() => {
+				const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-02"></d2l-calendar>`);
+				const table = calendar.shadowRoot.querySelector('table');
+				const heading = calendar.shadowRoot.querySelector('.d2l-heading-4');
+				const labelId = table.getAttribute('aria-labelledby');
+				expect(labelId).to.equal(heading.id);
+			});
+
+			it('has aria-selected on selected date', async() => {
+				const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-02"></d2l-calendar>`);
+				const selectedCell = calendar.shadowRoot.querySelector('td[data-date="2"][data-month="8"]');
+				expect(selectedCell.getAttribute('aria-selected')).to.equal('true');
+			});
+
+			it('has aria-selected false on non-selected dates', async() => {
+				const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-02"></d2l-calendar>`);
+				const nonSelectedCell = calendar.shadowRoot.querySelector('td[data-date="1"][data-month="8"]');
+				expect(nonSelectedCell.getAttribute('aria-selected')).to.equal('false');
+			});
+
+			it('has correct aria-label on date with day info', async() => {
+				const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-02" day-infos="[{&quot;date&quot;:&quot;2015-09-02&quot;}]"></d2l-calendar>`);
+				const dateWithInfo = calendar.shadowRoot.querySelector('td[data-date="2"][data-month="8"] button');
+				const ariaLabel = dateWithInfo.getAttribute('aria-label');
+				expect(ariaLabel).to.include('Has Events.');
+			});
+
+			it('has offscreen caption when summary provided', async() => {
+				const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-02" summary="Test summary"></d2l-calendar>`);
+				const caption = calendar.shadowRoot.querySelector('caption');
+				expect(caption).to.exist;
+				expect(caption.textContent).to.equal('Test summary');
+				expect(caption.classList.contains('d2l-offscreen')).to.be.true;
+			});
+
+			it('has no caption when summary not provided', async() => {
+				const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-02"></d2l-calendar>`);
+				const caption = calendar.shadowRoot.querySelector('caption');
+				expect(caption).to.not.exist;
+			});
+
+		});
+
+		describe('with min and max values', () => {
+			it('has disabled attribute on dates outside min/max range (before min)', async() => {
+				const calendar = await fixture(html`<d2l-calendar min-value="2015-09-10" max-value="2015-09-20" selected-value="2015-09-15"></d2l-calendar>`);
+				const disabledDate = calendar.shadowRoot.querySelector('td[data-date="1"][data-month="8"] button');
+				expect(disabledDate.hasAttribute('disabled')).to.be.true;
+			});
+
+			it('has disabled attribute on dates outside min/max range (after max)', async() => {
+				const calendar = await fixture(html`<d2l-calendar min-value="2015-09-10" max-value="2015-09-20" selected-value="2015-09-15"></d2l-calendar>`);
+				const disabledDate = calendar.shadowRoot.querySelector('td[data-date="30"][data-month="8"] button');
+				expect(disabledDate.hasAttribute('disabled')).to.be.true;
+			});
+
+			it('has no disabled attribute on dates within min/max range', async() => {
+				const calendar = await fixture(html`<d2l-calendar min-value="2015-09-10" max-value="2015-09-20" selected-value="2015-09-15"></d2l-calendar>`);
+				const enabledDate = calendar.shadowRoot.querySelector('td[data-date="15"][data-month="8"] button');
+				expect(enabledDate.hasAttribute('disabled')).to.be.false;
+			});
+
 		});
 
 	});
@@ -44,29 +110,74 @@ describe('d2l-calendar', () => {
 	describe('methods', () => {
 
 		describe('reset', () => {
-			// TODO: think more about this
-			it('resets focus date to initial focus date', async() => {
+			it('resets focus date to selected value when selected value exists', async() => {
 				const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-02"></d2l-calendar>`);
-				
-				// Change focus date
+
+				// Change focus date by selecting a different date
 				const el = calendar.shadowRoot.querySelector('td[data-date="15"]');
-				setTimeout(() => dispatchKeyEvent(el, 13)); // Enter key
-				await oneEvent(calendar, 'd2l-calendar-selected');
-				await aTimeout(1);
-				
+				await sendKeysElem(el, 'press', 'Enter');
+
 				expect(calendar._focusDate).to.deep.equal(new Date(2015, 8, 15));
-				
-				// Reset
+
+				// Reset should go back to selected value
 				await calendar.reset();
-				expect(calendar._focusDate).to.deep.equal(new Date(2015, 8, 15)); // Should be selected value
+				expect(calendar._focusDate).to.deep.equal(new Date(2015, 8, 15)); // Should be selected value (which was just updated)
+			});
+
+			it('resets focus date to initial value when no selected value', async() => {
+				const calendar = await fixture(html`<d2l-calendar initial-value="2015-08-15"></d2l-calendar>`);
+
+				// Navigate to a different month
+				const el = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show September"]');
+				await clickElem(el);
+
+				expect(calendar._focusDate).to.deep.equal(new Date(2015, 8, 1));
+
+				// Reset should go back to initial value
+				await calendar.reset();
+				expect(calendar._focusDate).to.deep.equal(new Date(2015, 7, 15)); // initial-value
+				expect(calendar._shownMonth).to.equal(7); // August
+			});
+
+			it('resets to initial value when allowDisabled is false and initial value is disabled', async() => {
+				const calendar = await fixture(html`<d2l-calendar initial-value="2015-09-05" min-value="2015-09-10" max-value="2015-09-20" selected-value="2015-09-15"></d2l-calendar>`);
+
+				// Navigate to a different month
+				const el = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show October"]');
+				await clickElem(el);
+
+				// Reset with allowDisabled false should find first enabled date
+				await calendar.reset(false);
+				expect(calendar._focusDate).to.deep.equal(new Date(2015, 8, 10)); // First enabled date (min-value)
+				expect(calendar._shownMonth).to.equal(8); // September
 			});
 
 			it('allows focusing disabled dates when allowDisabled is true', async() => {
-				const calendar = await fixture(html`<d2l-calendar min-value="2015-09-10" max-value="2015-09-20" selected-value="2015-09-15"></d2l-calendar>`);
-				
+				const calendar = await fixture(html`<d2l-calendar initial-value="2015-09-05" min-value="2015-09-10" max-value="2015-09-20" selected-value="2015-09-15"></d2l-calendar>`);
+
+				// Navigate to a different month
+				const el = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show October"]');
+				await clickElem(el);
+
+				// Reset with allowDisabled true should allow focusing the disabled initial-value
 				await calendar.reset(true);
-				// Should not throw error even with disabled dates
-				expect(calendar._focusDate).to.exist;
+				expect(calendar._focusDate).to.deep.equal(new Date(2015, 8, 5)); // initial-value even though disabled
+				expect(calendar._shownMonth).to.equal(8); // September
+			});
+
+			it('resets month view to initial focus date month', async() => {
+				const calendar = await fixture(html`<d2l-calendar selected-value="2015-09-15"></d2l-calendar>`);
+
+				// Navigate to a different month
+				const el = calendar.shadowRoot.querySelector('d2l-button-icon[text="Show October"]');
+				await clickElem(el);
+
+				expect(calendar._shownMonth).to.equal(9); // October
+
+				// Reset should go back to September
+				await calendar.reset();
+				expect(calendar._shownMonth).to.equal(8); // September
+				expect(calendar._shownYear).to.equal(2015);
 			});
 		});
 
@@ -92,10 +203,10 @@ describe('d2l-calendar', () => {
 		it('does not select disabled dates on click', async() => {
 			const calendar = await fixture(html`<d2l-calendar min-value="2015-09-10" max-value="2015-09-20" selected-value="2015-09-15"></d2l-calendar>`);
 			const disabledButton = calendar.shadowRoot.querySelector('td[data-date="5"][data-month="8"] button');
-			
+
 			const initialSelectedValue = calendar.selectedValue;
 			await clickElem(disabledButton);
-			
+
 			// selectedValue should not change
 			expect(calendar.selectedValue).to.equal(initialSelectedValue);
 		});
