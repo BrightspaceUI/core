@@ -11,6 +11,12 @@ const keyCodes = {
 };
 
 export const listSelectionStates = SelectionInfo.states;
+
+export const listLayouts = Object.freeze({
+	list: 'list',
+	tiles: 'tiles'
+});
+
 const DEFAULT_BREAKPOINTS = [842, 636, 580, 0];
 const SLIM_COLOR_BREAKPOINT = 400;
 

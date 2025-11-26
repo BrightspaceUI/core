@@ -1,9 +1,9 @@
-import '../list.js';
 import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
 import '../../selection/selection-action.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
+import { listLayouts } from '../list.js';
 
 const getListTemplate = options => {
 	return html`
@@ -31,10 +31,10 @@ const getListTemplate = options => {
 describe('d2l-list', () => {
 
 	[
-		{ layout: 'list', grid: false },
-		{ layout: 'list', grid: true },
-		{ layout: 'tiles', grid: false },
-		{ layout: 'tiles', grid: true }
+		{ layout: listLayouts.list, grid: false },
+		{ layout: listLayouts.list, grid: true },
+		{ layout: listLayouts.tiles, grid: false },
+		{ layout: listLayouts.tiles, grid: true }
 	].forEach((options) => {
 
 		it(`should pass all aXe tests in ${options.layout} layout mode and grid ${options.grid}`, async() => {

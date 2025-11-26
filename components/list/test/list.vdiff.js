@@ -9,7 +9,6 @@ import '../../selection/selection-action.js';
 import '../../tooltip/tooltip.js';
 import '../../tooltip/tooltip-help.js';
 import '../demo/demo-list-nested-iterations-helper.js';
-import '../list.js';
 import '../list-controls.js';
 import '../list-item.js';
 import '../list-item-button.js';
@@ -17,6 +16,7 @@ import '../list-item-content.js';
 import '../list-item-nav.js';
 import { expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { listLayouts } from '../list.js';
 import { nothing } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -90,18 +90,18 @@ describe('list', () => {
 
 	[
 		// basic
-		{ name: 'list', template: createList({ layout: 'list' }) },
-		{ name: 'tiles', template: createList({ layout: 'tiles' }) },
-		{ name: 'tiles item width', template: createList({ itemsTemplate: createItems({ itemWidth: '250px' }), layout: 'tiles' }) },
+		{ name: 'list', template: createList({ layout: listLayouts.list }) },
+		{ name: 'tiles', template: createList({ layout: listLayouts.tiles }) },
+		{ name: 'tiles item width', template: createList({ itemsTemplate: createItems({ itemWidth: '250px' }), layout: listLayouts.tiles }) },
 		// separators
-		{ name: 'list separators none', template: createList({ separators: 'none', layout: 'list' }) },
-		{ name: 'list separators all', template: createList({ separators: 'all', layout: 'list' }) },
-		{ name: 'list separators between', template: createList({ separators: 'between', layout: 'list' }) },
-		{ name: 'list extend-separators', template: createList({ extendSeparators: true, separators: 'all', layout: 'list' }) },
-		{ name: 'tiles extend-separators', template: createList({ extendSeparators: true, separators: 'all', layout: 'tiles' }) },
+		{ name: 'list separators none', template: createList({ separators: 'none', layout: listLayouts.list }) },
+		{ name: 'list separators all', template: createList({ separators: 'all', layout: listLayouts.list }) },
+		{ name: 'list separators between', template: createList({ separators: 'between', layout: listLayouts.list }) },
+		{ name: 'list extend-separators', template: createList({ extendSeparators: true, separators: 'all', layout: listLayouts.list }) },
+		{ name: 'tiles extend-separators', template: createList({ extendSeparators: true, separators: 'all', layout: listLayouts.tiles }) },
 		// padding-type
-		{ name: 'list item padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none' }), layout: 'list' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'tiles item padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none' }), layout: 'tiles' }), goldenTarget: 'd2l-list-item' }
+		{ name: 'list item padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none' }), layout: listLayouts.list }), goldenTarget: 'd2l-list-item' },
+		{ name: 'tiles item padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none' }), layout: listLayouts.tiles }), goldenTarget: 'd2l-list-item' }
 	].forEach(options => {
 
 		it(options.name, async() => {
