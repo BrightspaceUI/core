@@ -109,13 +109,11 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.__bound_transitionEvents = null;
 
 		this.__resizeObserver = new ResizeObserver(this.__reactToChanges.bind(this));
-		this.__mutationObserver = new MutationObserver(this.__reactToChanges.bind(this));
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.__resizeObserver.disconnect();
-		this.__mutationObserver.disconnect();
 
 		this.shadowRoot.removeEventListener('transitionstart', this.__bound_transitionEvents);
 		this.shadowRoot.removeEventListener('transitionend', this.__bound_transitionEvents);
