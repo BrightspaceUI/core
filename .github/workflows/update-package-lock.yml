@@ -13,10 +13,6 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - name: do something bad
-        shell: bash
-        run: |
-          npm config set ignore-scripts false
       - name: Update package-lock.json
         uses: BrightspaceUI/actions/update-package-lock@GAUD-9074/remove-kill-switch
         with:
