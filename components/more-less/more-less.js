@@ -140,6 +140,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 			'd2l-more-less-content': true,
 			'd2l-more-less-transition': this.__transitionAdded
 		};
+
+		// The .force-margin-scroll div is used to force content bottom margin to be included in scrollHeight calculations.
 		return html`
 			<div
 				id="${this.__contentId}"
