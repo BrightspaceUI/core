@@ -226,10 +226,7 @@ class ListItemGenericLayout extends LitElement {
 					[end];
 				height: 100%;
 			}
-			:host([layout="tile"]) ::slotted([slot="content"]) {
-				grid-column: start / end;
-				grid-row: start / end;
-			}
+			:host([layout="tile"]) ::slotted([slot="content"]),
 			:host([layout="tile"]) ::slotted([slot="content-action"]) {
 				grid-column: start / end;
 				grid-row: start / end;
