@@ -108,12 +108,15 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.__shift = false;
 		this.__bound_transitionEvents = null;
 
-		this.__resizeObserver = new ResizeObserver(this.__reactToChanges.bind(this));
+		this._mutationObserver = new MutationObserver(this.__reactToMutationChanges.bind(this));
+		this._resizeObserver = new ResizeObserver(this.__reactToChanges.bind(this));
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this.__resizeObserver.disconnect();
+
+		this._resizeObserver.disconnect();
+		this._mutationObserver.disconnect();
 
 		this.shadowRoot.removeEventListener('transitionstart', this.__bound_transitionEvents);
 		this.shadowRoot.removeEventListener('transitionend', this.__bound_transitionEvents);
@@ -127,6 +130,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.__content = this.shadowRoot.querySelector('.d2l-more-less-content');
 		this.__reactToChanges();
 		this.__resizeObserver.observe(this.__content);
+		this.__contentSlot = this.shadowRoot.querySelector('.d2l-more-less-content slot');
+		this.__startObserving();
 
 		this.__bound_transitionEvents = this.__transitionEvents.bind(this);
 		this.shadowRoot.addEventListener('transitionstart', this.__bound_transitionEvents);
@@ -148,7 +153,9 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 				class=${classMap(contentClasses)}
 				style=${styleMap({ maxHeight: `${this.__maxHeight}` })}
 				@focusin="${this.__focusIn}"
-				@focusout="${this.__focusOut}">
+				@focusout="${this.__focusOut}"
+				@load=${this.__reactToChanges}
+				@slotchange=${this.#handleSlotChange}>
 				<slot></slot>
 				<div class="force-margin-scroll"></div>
 			</div>
@@ -287,6 +294,11 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		});
 	}
 
+	__isOwnMutation(mutation) {
+		return mutation.target === this.__content
+			&& (mutation.type === 'style' || mutation.type === 'attributes');
+	}
+
 	__reactToChanges() {
 		this.__transitionAdded = true;
 		this.__adjustToContent();
@@ -297,6 +309,31 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.__maxHeight = this.height;
 		this.expanded = false;
 		this.__content.scrollTo({ top: 0, behavior: 'instant' });
+	}
+
+	__startObserving() {
+		this._resizeObserver.disconnect();
+		this._mutationObserver.disconnect();
+
+		if (this.__contentSlot) {
+			const children = getComposedChildren(this.__contentSlot);
+			for (let i = 0; i < children.length; ++i) {
+				this._resizeObserver.observe(children[i]);
+				this._mutationObserver.observe(children[i], {
+					childList: true,
+					subtree: true,
+					characterData: true,
+					attributes: true
+				});
+			}
+		}
+		this._resizeObserver.observe(this.__content);
+		this._mutationObserver.observe(this.__content, {
+			childList: true,
+			subtree: true,
+			characterData: true,
+			attributes: true
+		});
 	}
 
 	__toggleOnClick() {
@@ -313,6 +350,10 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.dispatchEvent(new CustomEvent(e.type, { bubbles: true, composed: true, detail: e.detail }));
 	}
 
+	#handleSlotChange() {
+		this.__reactToChanges();
+		this.__startObserving();
+	}
 }
 
 customElements.define('d2l-more-less', MoreLess);
