@@ -73,20 +73,20 @@ describe('calendar', () => {
 
 	describe('rtl', () => {
 		[
-			{ name: 'rtl', template: simpleTemplate },
-			{ name: 'rtl-arrow-left', template: simpleTemplate, action: async() => {
+			{ name: 'basic', template: simpleTemplate },
+			{ name: 'arrow-left', template: simpleTemplate, action: async() => {
 				await focusElem(elem.shadowRoot.querySelector('td[data-date="14"]'));
 				await sendKeys('press', 'ArrowLeft');
 			} },
-			{ name: 'rtl-arrow-right', template: simpleTemplate, action: async() => {
+			{ name: 'arrow-right', template: simpleTemplate, action: async() => {
 				await focusElem(elem.shadowRoot.querySelector('td[data-date="14"]'));
 				await sendKeys('press', 'ArrowRight');
 			} },
-			{ name: 'rtl-home', template: html`<d2l-calendar selected-value="2018-02-08"></d2l-calendar>`, action: async() => {
+			{ name: 'home', template: html`<d2l-calendar selected-value="2018-02-08"></d2l-calendar>`, action: async() => {
 				await focusElem(elem.shadowRoot.querySelector('td[data-date="8"]'));
 				await sendKeys('press', 'Home');
 			} },
-			{ name: 'rtl-end', template: html`<d2l-calendar selected-value="2018-02-08"></d2l-calendar>`, action: async() => {
+			{ name: 'end', template: html`<d2l-calendar selected-value="2018-02-08"></d2l-calendar>`, action: async() => {
 				await focusElem(elem.shadowRoot.querySelector('td[data-date="8"]'));
 				await sendKeys('press', 'End');
 			} }
