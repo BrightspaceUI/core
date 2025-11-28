@@ -1,11 +1,11 @@
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
+import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { isComposedAncestor } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { overflowHiddenDeclarations } from '../../helpers/overflow.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -103,13 +103,14 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 		this.__baseHeight = 0;
 		this.__contentId = getUniqueId();
+		this.__contentSlot = null;
 		this.__content = null;
 		this.__autoExpanded = false;
 		this.__shift = false;
 		this.__bound_transitionEvents = null;
 
 		this._observeContentOnly = getFlag('GAUD-8725-more-less-refactor-resizing', true);
-		this._mutationObserver = new MutationObserver(this.__reactToMutationChanges.bind(this));
+		if (!this._observeContentOnly) this._mutationObserver = new MutationObserver(this.__reactToMutationChanges.bind(this));
 		this._resizeObserver = new ResizeObserver(this.__reactToChanges.bind(this));
 	}
 
@@ -117,7 +118,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		super.disconnectedCallback();
 
 		this._resizeObserver.disconnect();
-		this._mutationObserver.disconnect();
+		if (!this._observeContentOnly) this._mutationObserver.disconnect();
 
 		this.shadowRoot.removeEventListener('transitionstart', this.__bound_transitionEvents);
 		this.shadowRoot.removeEventListener('transitionend', this.__bound_transitionEvents);
@@ -199,13 +200,9 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		}
 
 		if (this.inactive) {
-			this.__adjustToContent_makeActive();
+			this.inactive = false;
+			this.__maxHeight = this.height;
 		}
-	}
-
-	__adjustToContent_makeActive() {
-		this.inactive = false;
-		this.__maxHeight = this.height;
 	}
 
 	__adjustToContent_resize() {
@@ -298,6 +295,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		});
 	}
 
+	// Remove when GAUD-8725-more-less-refactor-resizing is removed
 	__isOwnMutation(mutation) {
 		return mutation.target === this.__content
 			&& (mutation.type === 'style' || mutation.type === 'attributes');
@@ -308,6 +306,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.__adjustToContent();
 	}
 
+	// Remove when GAUD-8725-more-less-refactor-resizing is removed
 	__reactToMutationChanges(mutations) {
 		if (mutations
 			&& Array.isArray(mutations)
@@ -326,6 +325,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.__content.scrollTo({ top: 0, behavior: 'instant' });
 	}
 
+	// Remove when GAUD-8725-more-less-refactor-resizing is removed
 	__startObserving() {
 		this._resizeObserver.disconnect();
 		this._mutationObserver.disconnect();
