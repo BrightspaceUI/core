@@ -1,8 +1,21 @@
 import '../button-icon.js';
 import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { html as staticHtml, unsafeStatic } from 'lit/static-html.js';
 import { createMessage } from '../../../mixins/property-required/property-required-mixin.js';
+import { runButtonPropertyTests } from './button-shared-tests.js';
 
 describe('d2l-button-icon', () => {
+
+	const getFixture = async(props = {}) => {
+		const attrs = Object.entries(props).map(([key, value]) => {
+			const attrName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+			if (typeof value === 'boolean') {
+				return value ? attrName : '';
+			}
+			return `${attrName}="${value}"`;
+		}).filter(Boolean).join(' ');
+		return await fixture(staticHtml`<d2l-button-icon icon="tier1:gear" text="Icon Button" ${unsafeStatic(attrs)}></d2l-button-icon>`);
+	};
 
 	describe('constructor', () => {
 
@@ -53,151 +66,26 @@ describe('d2l-button-icon', () => {
 
 	});
 
-	describe('button properties', () => {
+	runButtonPropertyTests(getFixture);
 
-		it('should set form attribute', async() => {
-			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" form="my-form"></d2l-button-icon>`);
+	describe('button-icon specific properties', () => {
+
+		it('should use ariaLabel when provided instead of text for aria-label', async() => {
+			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" aria-label="Custom Label"></d2l-button-icon>`);
 			const button = el.shadowRoot.querySelector('button');
-			expect(button.getAttribute('form')).to.equal('my-form');
+			expect(button.getAttribute('aria-label')).to.equal('Custom Label');
 		});
 
-		it('should set formaction attribute', async() => {
-			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" formaction="/submit"></d2l-button-icon>`);
-			const button = el.shadowRoot.querySelector('button');
-			expect(button.getAttribute('formaction')).to.equal('/submit');
-		});
-
-		it('should set formenctype attribute', async() => {
-			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" formenctype="multipart/form-data"></d2l-button-icon>`);
-			const button = el.shadowRoot.querySelector('button');
-			expect(button.getAttribute('formenctype')).to.equal('multipart/form-data');
-		});
-
-		it('should set formmethod attribute', async() => {
-			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" formmethod="post"></d2l-button-icon>`);
-			const button = el.shadowRoot.querySelector('button');
-			expect(button.getAttribute('formmethod')).to.equal('post');
-		});
-
-		it('should set formnovalidate attribute', async() => {
-			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" formnovalidate="formnovalidate"></d2l-button-icon>`);
-			const button = el.shadowRoot.querySelector('button');
-			expect(button.hasAttribute('formnovalidate')).to.be.true;
-		});
-
-		it('should set formtarget attribute', async() => {
-			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" formtarget="_blank"></d2l-button-icon>`);
-			const button = el.shadowRoot.querySelector('button');
-			expect(button.getAttribute('formtarget')).to.equal('_blank');
-		});
-
-		it('should set name attribute', async() => {
-			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" name="my-button"></d2l-button-icon>`);
-			const button = el.shadowRoot.querySelector('button');
-			expect(button.getAttribute('name')).to.equal('my-button');
-		});
-
-		it('should default to type="button"', async() => {
+		it('should use text for aria-label when ariaLabel is not provided', async() => {
 			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button"></d2l-button-icon>`);
 			const button = el.shadowRoot.querySelector('button');
-			expect(button.getAttribute('type')).to.equal('button');
+			expect(button.getAttribute('aria-label')).to.equal('Icon Button');
 		});
 
-		it('should set type="submit"', async() => {
-			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" type="submit"></d2l-button-icon>`);
+		it('should set title attribute from text', async() => {
+			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button"></d2l-button-icon>`);
 			const button = el.shadowRoot.querySelector('button');
-			expect(button.getAttribute('type')).to.equal('submit');
-		});
-
-		it('should set type="reset"', async() => {
-			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" type="reset"></d2l-button-icon>`);
-			const button = el.shadowRoot.querySelector('button');
-			expect(button.getAttribute('type')).to.equal('reset');
-		});
-
-		it('should set autofocus attribute', async() => {
-			const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" autofocus></d2l-button-icon>`);
-			const button = el.shadowRoot.querySelector('button');
-			expect(button.hasAttribute('autofocus')).to.be.true;
-		});
-
-		describe('accessibility', () => {
-
-			it('should set description and aria-describedby', async() => {
-				const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" description="Additional context"></d2l-button-icon>`);
-				const button = el.shadowRoot.querySelector('button');
-				const describedById = button.getAttribute('aria-describedby');
-				expect(describedById).to.not.be.null;
-				const descriptionSpan = el.shadowRoot.querySelector(`#${describedById}`);
-				expect(descriptionSpan.textContent).to.equal('Additional context');
-			});
-
-			it('should not set aria-describedby when description is not provided', async() => {
-				const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button"></d2l-button-icon>`);
-				const button = el.shadowRoot.querySelector('button');
-				expect(button.hasAttribute('aria-describedby')).to.be.false;
-			});
-
-			it('should use ariaLabel when provided instead of text for aria-label', async() => {
-				const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" aria-label="Custom Label"></d2l-button-icon>`);
-				const button = el.shadowRoot.querySelector('button');
-				expect(button.getAttribute('aria-label')).to.equal('Custom Label');
-			});
-
-			it('should use text for aria-label when ariaLabel is not provided', async() => {
-				const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button"></d2l-button-icon>`);
-				const button = el.shadowRoot.querySelector('button');
-				expect(button.getAttribute('aria-label')).to.equal('Icon Button');
-			});
-
-			it('should set title attribute from text', async() => {
-				const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button"></d2l-button-icon>`);
-				const button = el.shadowRoot.querySelector('button');
-				expect(button.getAttribute('title')).to.equal('Icon Button');
-			});
-
-			it('should set aria-disabled when disabled with disabledTooltip', async() => {
-				const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" disabled disabled-tooltip="Cannot perform action"></d2l-button-icon>`);
-				const button = el.shadowRoot.querySelector('button');
-				expect(button.getAttribute('aria-disabled')).to.equal('true');
-				expect(button.hasAttribute('disabled')).to.be.false;
-			});
-
-			it('should set disabled attribute when disabled without disabledTooltip', async() => {
-				const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" disabled></d2l-button-icon>`);
-				const button = el.shadowRoot.querySelector('button');
-				expect(button.hasAttribute('disabled')).to.be.true;
-				expect(button.hasAttribute('aria-disabled')).to.be.false;
-			});
-
-			it('should set aria-expanded from expanded property', async() => {
-				const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" expanded="true"></d2l-button-icon>`);
-				const button = el.shadowRoot.querySelector('button');
-				expect(button.getAttribute('aria-expanded')).to.equal('true');
-			});
-
-			it('should set aria-expanded from ariaExpanded property', async() => {
-				const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" aria-expanded="false"></d2l-button-icon>`);
-				const button = el.shadowRoot.querySelector('button');
-				expect(button.getAttribute('aria-expanded')).to.equal('false');
-			});
-
-			it('should set aria-haspopup', async() => {
-				const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" aria-haspopup="menu"></d2l-button-icon>`);
-				const button = el.shadowRoot.querySelector('button');
-				expect(button.getAttribute('aria-haspopup')).to.equal('menu');
-			});
-
-			it('should reflect hAlign attribute', async() => {
-				const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" h-align="text"></d2l-button-icon>`);
-				expect(el.getAttribute('h-align')).to.equal('text');
-			});
-
-			it('should reflect translucent attribute', async() => {
-				const el = await fixture(html`<d2l-button-icon icon="tier1:gear" text="Icon Button" translucent></d2l-button-icon>`);
-				expect(el.hasAttribute('translucent')).to.be.true;
-			});
-
+			expect(button.getAttribute('title')).to.equal('Icon Button');
 		});
 
 	});
