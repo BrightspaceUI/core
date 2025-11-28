@@ -1,0 +1,32 @@
+name: Setup Node Test
+on:
+      push:
+        branches:
+          - GAUD-9095/test-setup-node
+jobs:
+  test1:
+    name: Setup Node Test (Linux, No CodeArtifact)
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+    - uses: Brightspace/third-party-actions@actions/checkout
+    - uses: Brightspace/third-party-actions@actions-setup-node-test
+      with:
+        node-version-file: .nvmrc
+    - name: Install dependencies
+      run: npm ci
+    - run: |
+        npm install safe-chain-test
+  test2:
+    name: Setup Node Test (Windows, No CodeArtifact)
+    timeout-minutes: 10
+    runs-on: windows-latest
+    steps:
+    - uses: Brightspace/third-party-actions@actions/checkout
+    - uses: Brightspace/third-party-actions@actions-setup-node-test
+      with:
+        node-version-file: .nvmrc
+    - name: Install dependencies
+      run: npm ci
+    - run: |
+        npm install safe-chain-test
