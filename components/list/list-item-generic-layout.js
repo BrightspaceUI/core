@@ -226,7 +226,8 @@ class ListItemGenericLayout extends LitElement {
 					[end];
 				height: 100%;
 			}
-			:host([layout="tile"]) ::slotted([slot="content"]) {
+			:host([layout="tile"]) ::slotted([slot="content"]),
+			:host([layout="tile"]) ::slotted([slot="content-action"]) {
 				grid-column: start / end;
 				grid-row: start / end;
 			}
@@ -238,7 +239,6 @@ class ListItemGenericLayout extends LitElement {
 			:host([layout="tile"]) slot[name="add-top"],
 			:host([layout="tile"]) slot[name="control-container"],
 			:host([layout="tile"]) slot[name="before-content"],
-			:host([layout="tile"]) slot[name="content-action"],
 			:host([layout="tile"]) slot[name="outside-control"],
 			:host([layout="tile"]) slot[name="outside-control-action"],
 			:host([layout="tile"]) slot[name="color-indicator"],
