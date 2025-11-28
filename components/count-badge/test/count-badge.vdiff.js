@@ -15,7 +15,16 @@ describe('count-badge', () => {
 		{ name: 'large-count-colorway-override', template: html`<d2l-count-badge style="--d2l-count-badge-foreground-color: #ffffff; --d2l-count-badge-background-color: purple;" size="large" type="count" number="10"></d2l-count-badge>` },
 		{ name: 'hide-zero-nonzero-shown', template: html`<d2l-count-badge number="10" hide-zero></d2l-count-badge>` },
 		{ name: 'hide-zero-hidden', template: html`<d2l-count-badge number="0" hide-zero></d2l-count-badge>` },
-		{ name: 'skeleton', template: html`<d2l-count-badge has-tooltip number="10" text="10 new notifications" skeleton></d2l-count-badge>` }
+		{ name: 'no-hide-zero', template: html`<d2l-count-badge number="0"></d2l-count-badge>` },
+		{ name: 'skeleton', template: html`<d2l-count-badge has-tooltip number="10" text="10 new notifications" skeleton></d2l-count-badge>` },
+		{ name: 'max-digits-3', template: html`<d2l-count-badge max-digits="3" number="5000" text="5000 items"></d2l-count-badge>` },
+		{ name: 'max-digits-4', template: html`<d2l-count-badge max-digits="4" number="50000" text="50000 items"></d2l-count-badge>` },
+		{ name: 'small-count', template: html`<d2l-count-badge size="small" type="count" number="42"></d2l-count-badge>` },
+		{ name: 'large-notification', template: html`<d2l-count-badge size="large" type="notification" number="5"></d2l-count-badge>` },
+		{ name: 'not-tabbable-by-default', template: html`<d2l-count-badge number="5" text="5 items"></d2l-count-badge>`, action: elem => focusElem(elem) },
+		{ name: 'not-tabbable-hide-zero-with-zero', template: html`<d2l-count-badge tab-stop hide-zero number="0" text="0 items"></d2l-count-badge>`, action: elem => focusElem(elem) },
+		{ name: 'not-tabbable-skeleton', template: html`<d2l-count-badge tab-stop skeleton number="5" text="5 items"></d2l-count-badge>`, action: elem => focusElem(elem) },
+		{ name: 'no-tooltip-when-skeleton', template: html`<d2l-count-badge has-tooltip skeleton number="5" text="5 items"></d2l-count-badge>` }
 	].forEach(({ name, template, rtl, action }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { rtl });
