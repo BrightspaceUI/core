@@ -152,6 +152,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		};
 
 		// The .force-margin-scroll div is used to force content bottom margin to be included in scrollHeight calculations.
+		// The load and slotchange events can be removed when GAUD-8725-more-less-refactor-resizing is removed
 		return html`
 			<div
 				id="${this.__contentId}"
@@ -159,9 +160,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 				style=${styleMap({ maxHeight: `${this.__maxHeight}` })}
 				@focusin="${this.__focusIn}"
 				@focusout="${this.__focusOut}"
-				@load=${this.__reactToChanges}
-				@slotchange=${this.#handleSlotChange}>
-				<slot></slot>
+				@load=${this.__reactToChanges}>
+				<slot @slotchange=${this.#handleSlotChange}></slot>
 				<div class="force-margin-scroll"></div>
 			</div>
 			<d2l-button-subtle
@@ -187,27 +187,36 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 		if (contentHeight <= this.__baseHeight) {
 			if (!this.inactive) {
-				this.inactive = true;
-				this.expanded = false;
-				this.__adjustToContent_resize();
+				this.__adjustToContent_makeInactive();
 			}
 			return;
 		}
 
 		if (this.expanded && contentHeight !== currentHeight) {
-			this.__adjustToContent_resize();
+			this.__adjustToContent_resize.bind(this, contentHeight)();
 			return;
 		}
 
 		if (this.inactive) {
-			this.inactive = false;
-			this.__maxHeight = this.height;
+			this.__adjustToContent_makeActive();
 		}
 	}
 
-	__adjustToContent_resize() {
+	__adjustToContent_makeActive() {
+		this.inactive = false;
+		this.__maxHeight = this.height;
+	}
+
+	__adjustToContent_makeInactive() {
+		this.inactive = true;
+		this.expanded = false;
 		// Include 1px of given room to account for issues with Firefox rounding the content's scroll height
 		this.__maxHeight = `${this.__content.scrollHeight + 1}px`;
+	}
+
+	__adjustToContent_resize(contentHeight) {
+		// Include 1px of given room to account for issues with Firefox rounding the content's scroll height
+		this.__maxHeight = `${contentHeight + 1}px`;
 	}
 
 	__computeAriaExpanded() {
@@ -365,6 +374,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.dispatchEvent(new CustomEvent(e.type, { bubbles: true, composed: true, detail: e.detail }));
 	}
 
+	// Remove when GAUD-8725-more-less-refactor-resizing is removed
 	#handleSlotChange() {
 		if (this._observeContentOnly) return;
 		this.__reactToChanges();
