@@ -1,5 +1,5 @@
 import '../button/button-subtle.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
@@ -162,7 +162,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 				@focusout="${this.__focusOut}"
 				@load=${this.__reactToChanges}>
 				<slot @slotchange=${this.#handleSlotChange}></slot>
-				<div class="force-margin-scroll"></div>
+				${this._observeContentOnly ? html`<div class="force-margin-scroll"></div>` : nothing}
 			</div>
 			<d2l-button-subtle
 				class="d2l-more-less-toggle"
