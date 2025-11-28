@@ -108,6 +108,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.__shift = false;
 		this.__bound_transitionEvents = null;
 
+		this._observeContentOnly = getFlag('GAUD-8725-more-less-refactor-resizing', true);
 		this._mutationObserver = new MutationObserver(this.__reactToMutationChanges.bind(this));
 		this._resizeObserver = new ResizeObserver(this.__reactToChanges.bind(this));
 	}
@@ -128,10 +129,13 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		super.firstUpdated();
 
 		this.__content = this.shadowRoot.querySelector('.d2l-more-less-content');
-		this.__reactToChanges();
-		this.__resizeObserver.observe(this.__content);
-		this.__contentSlot = this.shadowRoot.querySelector('.d2l-more-less-content slot');
-		this.__startObserving();
+		if (this._observeContentOnly) {
+			this.__reactToChanges();
+			this._resizeObserver.observe(this.__content);
+		} else {
+			this.__contentSlot = this.shadowRoot.querySelector('.d2l-more-less-content slot');
+			this.__startObserving();
+		}
 
 		this.__bound_transitionEvents = this.__transitionEvents.bind(this);
 		this.shadowRoot.addEventListener('transitionstart', this.__bound_transitionEvents);
@@ -304,6 +308,17 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.__adjustToContent();
 	}
 
+	__reactToMutationChanges(mutations) {
+		if (mutations
+			&& Array.isArray(mutations)
+			&& mutations.every(this.__isOwnMutation.bind(this))
+		) {
+			return;
+		}
+
+		this.__reactToChanges();
+	}
+
 	__shrink() {
 		this.__transitionAdded = true;
 		this.__maxHeight = this.height;
@@ -351,6 +366,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	}
 
 	#handleSlotChange() {
+		if (this._observeContentOnly) return;
 		this.__reactToChanges();
 		this.__startObserving();
 	}
