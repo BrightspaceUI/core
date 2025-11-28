@@ -89,6 +89,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			last: { type: Boolean, reflect: true },
 			/**
+			 * @ignore
+			 */
+			layout: { type: String, reflect: true },
+			/**
 			 * Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive.
 			 * @type {boolean}
 			 */
@@ -122,6 +126,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host {
 				display: block;
 				position: relative;
+			}
+			:host([layout="tile"]) {
+				display: inline-block;
+				flex: none;
+				width: 14rem;
 			}
 			:host[hidden] {
 				display: none;
@@ -310,7 +319,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-radius: 6px;
 				margin: 0 -12px;
 			}
-			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
+			:host(:not([layout="tile"])) .d2l-list-item-content-extend-separators [slot="outside-control-container"] {
 				border-left: none !important;
 				border-radius: 0 !important;
 				border-right: none !important;
@@ -430,6 +439,24 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			.dragging [slot="add"] {
 				display: none;
 			}
+
+			:host([layout="tile"]) .d2l-list-item-content {
+				flex-direction: column;
+				height: 100%;
+				padding: 0.6rem;
+			}
+
+			:host([layout="tile"]:not([selection-disabled]):not([skeleton])[padding-type="none"]) [slot="outside-control-container"],
+			:host([layout="tile"]) [slot="outside-control-container"] {
+				border-color: var(--d2l-color-mica);
+				margin: 0;
+			}
+			:host([layout="tile"]:not([draggable])[_has-color-slot]) [slot="outside-control-container"] {
+				margin-inline-start: 0;
+			}
+			:host([layout="tile"]:not([_has-color-slot])) .d2l-list-item-content-extend-separators [slot="content"] {
+				padding-inline: 0.6rem;
+			}
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -473,6 +500,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	}
 
 	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
 		if (changedProperties.has('_siblingHasColor') || changedProperties.has('color')) {
 			this._hasColorSlot = this.color || this._siblingHasColor;
 		}
@@ -728,6 +756,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				data-separators="${ifDefined(this._separators)}"
 				indentation="${ifDefined(this.indentation)}"
 				?grid-active="${this.role === 'row'}"
+				layout="${this.layout}"
 				?no-primary-action="${this.noPrimaryAction}">
 				${this._showAddButton && this.first ? html`
 				<div slot="add-top">

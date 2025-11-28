@@ -60,4 +60,10 @@ describe('d2l-progress', () => {
 		});
 	});
 
+	describe('attributes', () => {
+		it('sets aria-live region', async() => {
+			const el = await fixture(html`<d2l-progress announce-label></d2l-progress>`);
+			expect(el.shadowRoot.querySelector('#label').getAttribute('aria-live')).to.equal('polite');
+		});
+	});
 });

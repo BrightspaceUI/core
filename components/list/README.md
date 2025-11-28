@@ -70,7 +70,7 @@ The list components are fairly complex and aim to be usable by all our users. In
 
 * When the `grid` attribute is used on the `d2l-list` component, it enables the list to follow the [Grid Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/). More details on this are [below](#aria-layout-grid).
 
-* When using the `d2l-list-item-nav` component and/or mixin, usage of the `current` attribute adds the `aria-current` attribute to "page" for the `current` item and "location" for any parent and ancestors of the item. The components work together to keep these attributes up-to-date on subsequent selection. 
+* When using the `d2l-list-item-nav` component and/or mixin, usage of the `current` attribute adds the `aria-current` attribute to "page" for the `current` item and "location" for any parent and ancestors of the item. The components work together to keep these attributes up-to-date on subsequent selection.
 
    * Usage of the new `current` attribute over the existing `selected` attribute corresponds to `aria-current` and also leaves open the possibility of using both `current` and selection behavior together.
 
@@ -145,6 +145,7 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 |---|---|---|
 | `breakpoints` | Array | Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used. |
 | `drag-multiple` | Boolean | Whether the user can drag multiple items |
+| `drop-nested-only` | Boolean | Whether draggable items can only be dropped as nested items within other items. Disables keyboard drag and drop on all items. |
 | `grid` | Boolean | Enables keyboard grid for supported list items. See [Accessibility](#accessibility). |
 | `label` | String | Sets an accessible label. For use when the list context is unclear. This property is only valid on top-level lists and will have no effect on nested lists. |
 | `selection-single` | Boolean | Whether to render with single selection behaviour. If `selection-single` is specified, the list-items will render with radios instead of checkboxes, and the list component will maintain a single selected item. |
@@ -635,6 +636,7 @@ The `d2l-list-item` provides the appropriate `listitem` semantics for children w
 
 | Property | Type | Description |
 |---|---|---|
+| `keyboard-drag-disabled` | Boolean | Disables keyboard dragging interaction. If enabled while implementing drag & drop, a keyboard alternative should be provided for the dragging functionality. |
 | `draggable` |  Boolean | Whether the item is draggable |
 | `drag-handle-text` | String | The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode. |
 | `drag-target-handle-only` | Boolean | Make the drag target the drag handle only. |

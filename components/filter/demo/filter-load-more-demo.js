@@ -1,6 +1,7 @@
 import '../filter.js';
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
+import '../filter-overflow-group.js';
 import { html, LitElement } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 
@@ -21,7 +22,7 @@ const FullData = [
 			{ key: 'stats', selected:false, text: 'Statistics' },
 			{ key: 'writerscraft', selected:true, text: 'Writer\'s Craft' },
 		],
-		initialCount: 6
+		loadCount: 6
 	},
 	{
 		key: 'role',
@@ -31,37 +32,65 @@ const FullData = [
 			{ key: 'instructor', selected:false, text: 'Instructor' },
 			{ key: 'student', selected:false, text: 'Student' }
 		],
-		initialCount: 2
+		loadCount: 2
+	},
+	{
+		key: 'dep',
+		text: 'Department',
+		values: [
+			{ key: 'english', selected:false, text: 'English' },
+			{ key: 'spanish', selected:false, text: 'Spanish' },
+			{ key: 'science', selected:false, text: 'Science' }
+		],
+		loadCount: 2
+	},
+	{
+		key: 'grad',
+		text: 'Grade Level',
+		values: [
+			{ key: '1', selected:false, text: '1st Grade' },
+			{ key: '2', selected:false, text: '2nd Grade' },
+			{ key: '3', selected:false, text: '3rd Grade' }
+		],
+		loadCount: 2
+	}
+	,
+	{
+		key: 'city',
+		text: 'City',
+		values: [
+			{ key: '1', selected:false, text: '1st City' },
+			{ key: '2', selected:false, text: '2nd City' },
+			{ key: '3', selected:false, text: '3rd City' }
+		],
+		loadCount: 2
 	}
 ];
 
 class FilterLoadMoreDemo extends LitElement {
 
+	static get properties() {
+		return {
+			useOverflowGroup: { type: Boolean, attribute: 'use-overflow-group' }
+		};
+	}
+
 	constructor() {
 		super();
-		const dimensions = [];
-		for (const dim of FullData) {
-			const values = {};
-			let selectedCount = 0;
-			for (const v of dim.values) {
-				if (!v.selected) continue;
-				values[v.key] = { ...v };
-				selectedCount++;
-			}
-			const data = {
-				key: dim.key,
-				text: dim.text,
-				values
-			};
-			this._addKeys(data, dim.initialCount - selectedCount);
-			dimensions.push(data);
-		}
-		this._dimensions = dimensions;
+		this._dimensions = FullData.map(dim => ({ ...dim }));
 	}
 
 	render() {
+		if (this.useOverflowGroup) return html`<d2l-filter-overflow-group min-to-show="0">
+			${repeat(this._dimensions, dimension => dimension.key, dimension => html`<d2l-filter
+				@d2l-filter-change="${this._handleFilterChange}"
+				@d2l-filter-dimension-load-more=${this._handleLoadMore}
+				@d2l-filter-dimension-search=${this._handleSearch}>
+				${this._renderDimensionSet(dimension)}
+			</d2l-filter>`)}
+		</d2l-filter-overflow-group>`;
 		return html`
-			<d2l-filter 
+			<d2l-filter
 				@d2l-filter-change="${this._handleFilterChange}"
 				@d2l-filter-dimension-load-more=${this._handleLoadMore}
 				@d2l-filter-dimension-search=${this._handleSearch}>
@@ -71,26 +100,22 @@ class FilterLoadMoreDemo extends LitElement {
 	}
 
 	_addKeys(dimension, addCount, searchValue = '') {
-		const dimData = FullData.find(dim => dim.key === dimension.key);
+		dimension.loadCount += addCount;
+		const keys = dimension.values.filter(val => this._textIsInSearch(searchValue, val.text));
+		const selectedKeys = [];
+		const unselectedKeys = [];
+		for (const val of keys) {
+			if (val.selected) {
+				selectedKeys.push(val.key);
+			} else {
+				unselectedKeys.push(val.key);
+			}
+		}
 
-		const keys = [];
-		for (const valKey in dimension.values) {
-			if (this._textIsInSearch(searchValue, dimension.values[valKey].text)) {
-				keys.push(valKey);
-			}
-		}
-		const total = keys.length + addCount;
-		dimension.hasMore = false;
-		for (const v of dimData.values) {
-			if (v.key in dimension.values || !this._textIsInSearch(searchValue, v.text)) continue;
-			if (total <= keys.length) {
-				dimension.hasMore = true;
-				break;
-			}
-			dimension.values[v.key] = { ...v };
-			keys.push(v.key);
-		}
-		return keys;
+		dimension.loadCount = Math.max(selectedKeys.length, dimension.loadCount);
+		dimension.hasMore = keys.length > dimension.loadCount;
+
+		return selectedKeys.concat(unselectedKeys).slice(0, dimension.loadCount);
 	}
 
 	_handleFilterChange(e) {
@@ -125,12 +150,8 @@ class FilterLoadMoreDemo extends LitElement {
 		const dimension = this._dimensions.find(dim => dim.key === dimensionKey);
 		const dimData = FullData.find(dim => dim.key === dimensionKey);
 
-		let selectedCount = 0;
-		for (const valKey in dimension.values) {
-			if (!dimension.values[valKey].selected) delete dimension.values[valKey];
-			else if (this._textIsInSearch(e.detail.value, dimension.values[valKey].text)) selectedCount++;
-		}
-		const keysToDisplay = this._addKeys(dimension, dimData.initialCount - selectedCount, e.detail.value);
+		dimension.loadCount = 0;
+		const keysToDisplay = this._addKeys(dimension, dimData.loadCount, e.detail.value);
 
 		this.requestUpdate();
 		await this.updateComplete;

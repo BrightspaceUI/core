@@ -23,4 +23,14 @@ describe('d2l-button-toggle', () => {
 		await expect(el).to.be.accessible();
 	});
 
+	it('disabled', async() => {
+		const el = await fixture(html`
+			<d2l-button-toggle>
+				<d2l-button-icon slot="not-pressed" disabled icon="tier1:pin-hollow" text="Unpinned, click to pin."></d2l-button-icon>
+				<d2l-button-icon slot="pressed" disabled icon="tier1:pin-filled" text="Pinned, click to unpin."></d2l-button-icon>
+			</d2l-button-toggle>
+		`);
+		await expect(el).to.be.accessible();
+	});
+
 });

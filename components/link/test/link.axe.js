@@ -1,5 +1,5 @@
 import '../link.js';
-import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, html, oneEvent } from '@brightspace-ui/testing';
 
 describe('d2l-link', () => {
 
@@ -47,6 +47,22 @@ describe('d2l-link', () => {
 
 	it('without href', async() => {
 		const elem = await fixture(html`<d2l-link>Link without href</d2l-link>`);
+		await expect(elem).to.be.accessible();
+	});
+
+	it('disabled', async() => {
+		const elem = await fixture(html`<d2l-link href="https://www.d2l.com" disabled>Disabled Link</d2l-link>`);
+		await expect(elem).to.be.accessible();
+	});
+
+	it('disabled focused', async() => {
+		const elem = await fixture(html`<d2l-link href="https://www.d2l.com" disabled>Disabled Link</d2l-link>`);
+		await focusElem(elem);
+		await expect(elem).to.be.accessible();
+	});
+
+	it('disabled with tooltip', async() => {
+		const elem = await fixture(html`<d2l-link href="https://www.d2l.com" disabled disabled-tooltip="This link is disabled">Disabled Link</d2l-link>`);
 		await expect(elem).to.be.accessible();
 	});
 

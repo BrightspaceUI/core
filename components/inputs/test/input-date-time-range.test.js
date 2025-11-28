@@ -106,7 +106,7 @@ describe('d2l-input-date-time-range', () => {
 							expect(getShiftedEndDateTime(start, prevEnd, prevStartValue, inclusive, localized)).to.equal(newEndValue);
 						});
 
-						it.skip('should return correctly backward shifted end date', () => {
+						it('should return correctly backward shifted end date', () => {
 							const prevStartValue = '2020-10-15T04:00:00.000Z';
 							const prevEnd = '2020-10-17T04:00:00.000Z';
 							const start = '2020-10-14T04:00:00.000Z';
