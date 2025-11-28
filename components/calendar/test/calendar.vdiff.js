@@ -18,6 +18,7 @@ describe('calendar', () => {
 	[
 		{ name: 'dec-2019', template: html`<d2l-calendar selected-value="2019-12-01"></d2l-calendar>` }, // first row only current month days last row contains next month days
 		{ name: 'initial-value', template: html`<d2l-calendar initial-value="2024-07-01"></d2l-calendar>` },
+		{ name: 'initial-value-selected-value', template: html`<d2l-calendar initial-value="2024-07-01" selected-value="2024-10-01"></d2l-calendar>` },
 		{ name: 'max', template: html`<d2l-calendar max-value="2017-02-27"></d2l-calendar>` },
 		{ name: 'min', template: html`<d2l-calendar min-value="2020-01-31"></d2l-calendar>` },
 		{ name: 'min-max', template: minMaxTemplate },
@@ -27,7 +28,9 @@ describe('calendar', () => {
 		{ name: 'day-infos', template: eventsTemplate },
 		{ name: 'day-infos-focus', template: eventsTemplate, action: () => focusElem(elem.shadowRoot.querySelector('td[data-date="29"]')) },
 		{ name: 'day-infos-today-focus', template: eventsTemplate, action: () => focusElem(elem.shadowRoot.querySelector('td[data-date="12"]')) },
-		{ name: 'day-infos-selected-focus', template: eventsTemplate, action: () => focusElem(elem.shadowRoot.querySelector('td[data-date="14"]')) }
+		{ name: 'day-infos-selected-focus', template: eventsTemplate, action: () => focusElem(elem.shadowRoot.querySelector('td[data-date="14"]')) },
+		{ name: 'with-slot', template: html`<d2l-calendar selected-value="2018-02-14"><div style="padding: 10px; text-align: center;">Slot Content</div></d2l-calendar>` },
+		{ name: 'all-attributes', template: html`<d2l-calendar selected-value="2018-02-14" label="Event Calendar" summary="Select a date" min-value="2018-02-01" max-value="2018-02-28" day-infos="[{&quot;date&quot;:&quot;2018-02-12&quot;},{&quot;date&quot;:&quot;2018-02-14&quot;}]"></d2l-calendar>` }
 	].forEach(({ name, template, action }) => {
 		it(name, async() => {
 			await setupFixture(template);
@@ -51,6 +54,46 @@ describe('calendar', () => {
 		].forEach((lang) => {
 			it(`${lang}`, async() => {
 				await setupFixture(simpleTemplate, { lang });
+				await expect(elem).to.be.golden();
+			});
+		});
+	});
+
+	describe('viewport sizes', () => {
+		[
+			{ name: 'medium', width: 600 },
+			{ name: 'wide', width: 800 }
+		].forEach(({ name, width }) => {
+			it(name, async() => {
+				await setupFixture(simpleTemplate, { viewport: { width } });
+				await expect(elem).to.be.golden();
+			});
+		});
+	});
+
+	describe('rtl', () => {
+		[
+			{ name: 'basic', template: simpleTemplate },
+			{ name: 'arrow-left', template: simpleTemplate, action: async() => {
+				await focusElem(elem.shadowRoot.querySelector('td[data-date="14"]'));
+				await sendKeys('press', 'ArrowLeft');
+			} },
+			{ name: 'arrow-right', template: simpleTemplate, action: async() => {
+				await focusElem(elem.shadowRoot.querySelector('td[data-date="14"]'));
+				await sendKeys('press', 'ArrowRight');
+			} },
+			{ name: 'home', template: html`<d2l-calendar selected-value="2018-02-08"></d2l-calendar>`, action: async() => {
+				await focusElem(elem.shadowRoot.querySelector('td[data-date="8"]'));
+				await sendKeys('press', 'Home');
+			} },
+			{ name: 'end', template: html`<d2l-calendar selected-value="2018-02-08"></d2l-calendar>`, action: async() => {
+				await focusElem(elem.shadowRoot.querySelector('td[data-date="8"]'));
+				await sendKeys('press', 'End');
+			} }
+		].forEach(({ name, template, action }) => {
+			it(name, async() => {
+				await setupFixture(template, { rtl: true });
+				if (action) await action();
 				await expect(elem).to.be.golden();
 			});
 		});
