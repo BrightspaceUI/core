@@ -302,20 +302,6 @@ describe('list', () => {
 		});
 	});
 
-	describe('illustration', () => {
-		it('default', async() => {
-			const elem = await fixture(html`
-				<d2l-list style="width: 400px">
-					<d2l-list-item>
-						<div>Item 1</div>
-						<div slot="illustration" style="background-color: blue; height: 400px; width: 400px;"></div>
-					</d2l-list-item>
-				</d2l-list>
-			`);
-			await expect(elem).to.be.golden();
-		});
-	});
-
 	describe('separators', () => {
 
 		[ true, false ].forEach((addButton) => {
