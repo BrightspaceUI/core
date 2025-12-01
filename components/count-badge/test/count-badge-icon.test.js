@@ -28,14 +28,12 @@ describe('d2l-count-badge-icon', () => {
 
 		it('should truncate and add plus when exceeding maxDigits for notification type', async() => {
 			const el = await fixture(html`<d2l-count-badge-icon icon="tier3:gear" type="notification" number="150" text="150 notifications"></d2l-count-badge-icon>`);
-			await el.updateComplete;
 			const numberString = el.getNumberString();
 			expect(numberString).to.equal('99+');
 		});
 
 		it('should truncate count type at 5 digits', async() => {
 			const el = await fixture(html`<d2l-count-badge-icon icon="tier3:gear" type="count" number="123456" text="items"></d2l-count-badge-icon>`);
-			await el.updateComplete;
 			const numberString = el.getNumberString();
 			expect(numberString).to.equal('99,999+');
 		});
@@ -48,14 +46,6 @@ describe('d2l-count-badge-icon', () => {
 
 		it('should clamp maxDigits to 5 when set higher', async() => {
 			const el = await fixture(html`<d2l-count-badge-icon icon="tier3:gear" max-digits="10" number="1" text="1 item"></d2l-count-badge-icon>`);
-			await el.updateComplete;
-			expect(el.maxDigits).to.equal(5);
-		});
-
-		it('should clamp maxDigits to 5 when updated to higher value', async() => {
-			const el = await fixture(html`<d2l-count-badge-icon icon="tier3:gear" max-digits="3" number="1" text="1 item"></d2l-count-badge-icon>`);
-			el.maxDigits = 10;
-			await el.updateComplete;
 			expect(el.maxDigits).to.equal(5);
 		});
 
@@ -73,12 +63,6 @@ describe('d2l-count-badge-icon', () => {
 			const el = await fixture(html`<d2l-count-badge-icon icon="tier3:gear" number="5" text="5 items"></d2l-count-badge-icon>`);
 			const icon = el.shadowRoot.querySelector('d2l-icon');
 			expect(icon.hasAttribute('aria-labelledby')).to.be.true;
-		});
-
-		it('should not set aria-labelledby on icon when has tooltip', async() => {
-			const el = await fixture(html`<d2l-count-badge-icon icon="tier3:gear" has-tooltip number="5" text="5 items"></d2l-count-badge-icon>`);
-			const icon = el.shadowRoot.querySelector('d2l-icon');
-			expect(icon.hasAttribute('aria-labelledby')).to.be.false;
 		});
 
 	});

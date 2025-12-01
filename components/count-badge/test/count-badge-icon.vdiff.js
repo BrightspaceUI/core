@@ -7,8 +7,12 @@ describe('count-badge-icon', () => {
 		[
 			{ name: 'small-notification', template: html`<d2l-count-badge-icon icon="tier3:gear" size="small" type="notification" number="1" text="1 notification"></d2l-count-badge-icon>` },
 			{ name: 'large-notification', template: html`<d2l-count-badge-icon icon="tier3:gear" size="large" type="notification" number="5" text="5 notifications"></d2l-count-badge-icon>` },
+			{ name: 'small-notification-triple-digit', template: html`<d2l-count-badge-icon icon="tier3:gear" size="small" type="notification" number="100" text="100 notifications"></d2l-count-badge-icon>` },
+			{ name: 'small-notification-four-digit', template: html`<d2l-count-badge-icon icon="tier3:gear" size="small" type="notification" number="5555" text="5555 notifications"></d2l-count-badge-icon>` },
 			{ name: 'small-count', template: html`<d2l-count-badge-icon icon="tier3:gear" size="small" type="count" number="42" text="42 items"></d2l-count-badge-icon>` },
-			{ name: 'large-count-icon', template: html`<d2l-count-badge-icon icon="tier3:gear" size="large" type="count" number="1" text="1 item"></d2l-count-badge-icon>` }
+			{ name: 'large-count', template: html`<d2l-count-badge-icon icon="tier3:gear" size="large" type="count" number="1" text="1 item"></d2l-count-badge-icon>` },
+			{ name: 'small-count-triple-digit', template: html`<d2l-count-badge-icon icon="tier3:gear" size="small" type="count" number="100" text="100 items"></d2l-count-badge-icon>` },
+			{ name: 'small-count-four-digit', template: html`<d2l-count-badge-icon icon="tier3:gear" size="small" type="count" number="5555" text="5555 items"></d2l-count-badge-icon>` }
 		].forEach(({ name, template }) => {
 			it(name, async() => {
 				const elem = await fixture(template);
@@ -22,9 +26,7 @@ describe('count-badge-icon', () => {
 			{ name: 'small-notification-truncated-2-digits', template: html`<d2l-count-badge-icon icon="tier3:gear" size="small" type="notification" number="100" text="100 notifications"></d2l-count-badge-icon>` },
 			{ name: 'large-count-3-digits', template: html`<d2l-count-badge-icon icon="tier3:gear" size="large" type="count" number="123" text="123 items"></d2l-count-badge-icon>` },
 			{ name: 'large-count-4-digits', template: html`<d2l-count-badge-icon icon="tier3:gear" size="large" type="count" number="1234" text="1234 items"></d2l-count-badge-icon>` },
-			{ name: 'large-count-5-digits', template: html`<d2l-count-badge-icon icon="tier3:gear" size="large" type="count" number="12345" text="12345 items"></d2l-count-badge-icon>` },
-			{ name: 'large-number-centered', template: html`<d2l-count-badge-icon icon="tier3:gear" size="large" type="count" number="100000" text="100000 items"></d2l-count-badge-icon>` },
-			{ name: 'custom-max-digits-3', template: html`<d2l-count-badge-icon icon="tier3:gear" max-digits="3" number="5000" text="5000 items"></d2l-count-badge-icon>` },
+			{ name: 'large-number', template: html`<d2l-count-badge-icon icon="tier3:gear" size="large" type="count" number="100000" text="100000 items"></d2l-count-badge-icon>` },
 			{ name: 'custom-max-digits-4', template: html`<d2l-count-badge-icon icon="tier3:gear" max-digits="4" number="50000" text="50000 items"></d2l-count-badge-icon>` }
 		].forEach(({ name, template }) => {
 			it(name, async() => {
@@ -64,13 +66,15 @@ describe('count-badge-icon', () => {
 	});
 
 	describe('skeleton', () => {
-		it('icon-skeleton', async() => {
-			const elem = await fixture(html`<d2l-count-badge-icon has-tooltip skeleton icon="tier3:gear" number="100" text="100 items"></d2l-count-badge-icon>`);
+		const template = html`<d2l-count-badge-icon has-tooltip skeleton icon="tier3:gear" number="100" text="100 items"></d2l-count-badge-icon>`;
+
+		it('default', async() => {
+			const elem = await fixture(template);
 			await expect(elem).to.be.golden();
 		});
 
-		it('no-tooltip-when-skeleton', async() => {
-			const elem = await fixture(html`<d2l-count-badge-icon has-tooltip skeleton icon="tier3:gear" number="5" text="5 items"></d2l-count-badge-icon>`);
+		it('no-tooltip', async() => {
+			const elem = await fixture(template);
 			await focusElem(elem);
 			await expect(elem).to.be.golden();
 		});
@@ -78,11 +82,11 @@ describe('count-badge-icon', () => {
 
 	describe('rtl', () => {
 		[
-			{ name: 'small-notification-rtl', template: html`<d2l-count-badge-icon icon="tier3:gear" size="small" type="notification" number="1" text="1 notification"></d2l-count-badge-icon>` },
-			{ name: 'large-count-rtl', template: html`<d2l-count-badge-icon icon="tier3:gear" size="large" type="count" number="42" text="42 items"></d2l-count-badge-icon>` },
-			{ name: 'large-number-centered-rtl', template: html`<d2l-count-badge-icon icon="tier3:gear" size="large" type="count" number="100000" text="100000 items"></d2l-count-badge-icon>` },
-			{ name: 'truncated-notification-rtl', template: html`<d2l-count-badge-icon icon="tier3:gear" type="notification" number="150" text="150 notifications"></d2l-count-badge-icon>` },
-			{ name: 'focused-rtl', template: html`<d2l-count-badge-icon tab-stop icon="tier3:gear" number="10" text="10 items"></d2l-count-badge-icon>`, action: elem => focusElem(elem) }
+			{ name: 'small-notification', template: html`<d2l-count-badge-icon icon="tier3:gear" size="small" type="notification" number="1" text="1 notification"></d2l-count-badge-icon>` },
+			{ name: 'large-count', template: html`<d2l-count-badge-icon icon="tier3:gear" size="large" type="count" number="42" text="42 items"></d2l-count-badge-icon>` },
+			{ name: 'large-number', template: html`<d2l-count-badge-icon icon="tier3:gear" size="large" type="count" number="100000" text="100000 items"></d2l-count-badge-icon>` },
+			{ name: 'truncated-notification', template: html`<d2l-count-badge-icon icon="tier3:gear" type="notification" number="150" text="150 notifications"></d2l-count-badge-icon>` },
+			{ name: 'focused', template: html`<d2l-count-badge-icon tab-stop icon="tier3:gear" number="10" text="10 items"></d2l-count-badge-icon>`, action: elem => focusElem(elem) }
 		].forEach(({ name, template, action }) => {
 			it(name, async() => {
 				const elem = await fixture(template, { rtl: true });
@@ -104,20 +108,6 @@ describe('count-badge-icon', () => {
 			focusElem(elem);
 			await oneEvent(elem, 'd2l-tooltip-show');
 			await expect(elem).to.be.golden();
-		});
-	});
-
-	describe('badge number positioning', () => {
-		[
-			{ name: 'single-digit-position', template: html`<d2l-count-badge-icon icon="tier3:gear" number="5" text="5 items"></d2l-count-badge-icon>` },
-			{ name: 'double-digit-position', template: html`<d2l-count-badge-icon icon="tier3:gear" number="42" text="42 items"></d2l-count-badge-icon>` },
-			{ name: 'triple-digit-position', template: html`<d2l-count-badge-icon icon="tier3:gear" number="999" text="999 items"></d2l-count-badge-icon>` },
-			{ name: 'four-digit-centered', template: html`<d2l-count-badge-icon icon="tier3:gear" number="1234" text="1234 items"></d2l-count-badge-icon>` }
-		].forEach(({ name, template }) => {
-			it(name, async() => {
-				const elem = await fixture(template);
-				await expect(elem).to.be.golden();
-			});
 		});
 	});
 

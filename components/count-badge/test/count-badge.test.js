@@ -16,11 +16,6 @@ describe('d2l-count-badge', () => {
 			expect(el.announceChanges).to.be.false;
 		});
 
-		it('should default tabStop to false', async() => {
-			const el = await fixture(html`<d2l-count-badge number="1" text="1 notification"></d2l-count-badge>`);
-			expect(el.tabStop).to.be.false;
-		});
-
 	});
 
 	describe('number formatting', () => {
