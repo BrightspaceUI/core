@@ -447,6 +447,32 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				padding: 0.6rem;
 			}
 
+			:host([layout="tile"]) [slot="content"] ::slotted([slot="illustration"]),
+			:host([layout="tile"]) .d2l-list-item-illustration > * {
+				border-end-end-radius: 0;
+				border-end-start-radius: 0;
+				border-start-end-radius: 5px;
+				border-start-start-radius: 5px;
+				box-sizing: border-box;
+				margin-block: -0.55rem 0.6rem;
+				margin-inline: -0.55rem;
+				max-height: unset;
+				max-width: calc(100% + 1.1rem);
+			}
+
+			:host([layout="tile"]) [slot="content"] ::slotted(d2l-icon[slot="illustration"]),
+			:host([layout="tile"]) .d2l-list-item-illustration > d2l-icon[slot="illustration"] {
+				padding: 1rem;
+			}
+
+			:host([layout="tile"]) [slot="content"] ::slotted(div[slot="illustration"]),
+			:host([layout="tile"]) .d2l-list-item-illustration > div[slot="illustration"],
+			:host([layout="tile"]) [slot="content"] ::slotted(d2l-icon[slot="illustration"]),
+			:host([layout="tile"]) .d2l-list-item-illustration > d2l-icon[slot="illustration"] {
+				border-bottom: 1px solid var(--d2l-color-mica);
+				width: calc(100% + 1.1rem);
+			}
+
 			:host([layout="tile"]:not([selection-disabled]):not([skeleton])[padding-type="none"]) [slot="outside-control-container"],
 			:host([layout="tile"]) [slot="outside-control-container"] {
 				border-color: var(--d2l-color-mica);
