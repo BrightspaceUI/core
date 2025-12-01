@@ -99,6 +99,10 @@ function createListItemContent({ primary = 'Item 1', secondary = 'Secondary info
 	`;
 }
 
+function createDivIllustration() {
+	return html`<div slot="illustration" style="background-color: var(--d2l-color-olivine); color: white; height: 4rem; padding: 1rem;">I'm a &lt;div&gt;</div>`;
+}
+
 function createIconIllustration({ styles = illustrationStyles } = {}) {
 	return html`<d2l-icon slot="illustration" style="${styleMap(styles)}" icon="tier3:home"></d2l-icon>`;
 }
@@ -240,7 +244,8 @@ describe('list', () => {
 				// illustration slot
 				{ name: 'item illustration slot img', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' },
 				{ name: 'item illustration slot icon', template: createList({ itemsTemplate: createItem({ illustration: createIconIllustration(), template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' },
-				{ name: 'item illustration slot icon custom', template: createList({ itemsTemplate: createItem({ illustration: createIconIllustration({ styles: { height: '6rem', padding: '1.5rem' } }), template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' }
+				{ name: 'item illustration slot icon custom', template: createList({ itemsTemplate: createItem({ illustration: createIconIllustration({ styles: { height: '6rem', padding: '1.5rem' } }), template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' },
+				{ name: 'item illustration slot div', template: createList({ itemsTemplate: createItem({ illustration: createDivIllustration(), template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' }
 			].forEach(({ name, template, action, margin, target }) => {
 
 				it(name, async() => {

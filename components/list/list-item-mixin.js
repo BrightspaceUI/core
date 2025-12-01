@@ -462,8 +462,14 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 			:host([layout="tile"]) [slot="content"] ::slotted(d2l-icon[slot="illustration"]),
 			:host([layout="tile"]) .d2l-list-item-illustration > d2l-icon[slot="illustration"] {
-				border-bottom: 1px solid var(--d2l-color-mica);
 				padding: 1rem;
+			}
+
+			:host([layout="tile"]) [slot="content"] ::slotted(div[slot="illustration"]),
+			:host([layout="tile"]) .d2l-list-item-illustration > div[slot="illustration"],
+			:host([layout="tile"]) [slot="content"] ::slotted(d2l-icon[slot="illustration"]),
+			:host([layout="tile"]) .d2l-list-item-illustration > d2l-icon[slot="illustration"] {
+				border-bottom: 1px solid var(--d2l-color-mica);
 				width: calc(100% + 1.1rem);
 			}
 
