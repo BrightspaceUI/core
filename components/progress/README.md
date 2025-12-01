@@ -72,7 +72,7 @@ Use the `announce-label` property to announce changes to the progress label. Thi
 
 ## Accessibility
 
-The progress bar aligns with web standards by using the [progress](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/progress) element and by assigning the `label` as the aria label.
+The progress bar aligns with web standards by using the [progress](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/progress) element and by assigning `label` as the accessible label.
 
 Note that using `label-hidden` or `value-hidden` will visibly hide the label or value, but they remain available to screen reader users, and developers should make sure to provide equivalent information to sighted users.
 
