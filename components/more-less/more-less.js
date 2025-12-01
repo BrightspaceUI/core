@@ -160,8 +160,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 				style=${styleMap({ maxHeight: `${this.__maxHeight}` })}
 				@focusin="${this.__focusIn}"
 				@focusout="${this.__focusOut}"
-				@load=${this.__reactToChanges}>
-				<slot @slotchange=${this.#handleSlotChange}></slot>
+				@load=${this._observeContentOnly ? undefined : this.__reactToChanges}>
+				<slot @slotchange=${this._observeContentOnly ? undefined : this.#handleSlotChange}></slot>
 				${this._observeContentOnly ? html`<div class="force-margin-scroll"></div>` : nothing}
 			</div>
 			<d2l-button-subtle
@@ -376,7 +376,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	// Remove when GAUD-8725-more-less-refactor-resizing is removed
 	#handleSlotChange() {
-		if (this._observeContentOnly) return;
 		this.__reactToChanges();
 		this.__startObserving();
 	}
