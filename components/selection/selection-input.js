@@ -59,12 +59,12 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 				display: none;
 			}
 
-			.d2l-input-radio.d2l-disabled:hover,
-			.d2l-input-radio.d2l-disabled.d2l-hovering,
-			.d2l-input-radio.d2l-disabled:${unsafeCSS(getFocusPseudoClass())} {
-				opacity: 1 !important;
+			.d2l-input-radio-disabled-tooltip.d2l-disabled:hover,
+			.d2l-input-radio-disabled-tooltip.d2l-disabled.d2l-hovering,
+			.d2l-input-radio-disabled-tooltip.d2l-disabled:${unsafeCSS(getFocusPseudoClass())} {
 				border-color: var(--d2l-color-celestine) !important;
 				border-width: 2px !important;
+				opacity: 1 !important;
 			}
 		`];
 	}
@@ -113,10 +113,11 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 				'd2l-selection-input-radio': true,
 				'd2l-skeletize': true,
 				'd2l-hovering': this.hovering,
-				'd2l-disabled': this.disabled
+				'd2l-disabled': this.disabled,
+				'd2l-input-radio-disabled-tooltip': this.disabled && this._disabledTooltip
 			};
 			const disabledTooltip = this.disabled && this._disabledTooltip ?
-				html`<d2l-tooltip align="start" class="vdiff-target" for="${this.#inputId}" ?force-show="${this.hovering}" position="top">${this._disabledTooltip}</d2l-tooltip>` :
+				html`<d2l-tooltip align="start" class="vdiff-include" for="${this.#inputId}" ?force-show="${this.hovering}" position="top">${this._disabledTooltip}</d2l-tooltip>` :
 				nothing;
 			return html`
 				<div
