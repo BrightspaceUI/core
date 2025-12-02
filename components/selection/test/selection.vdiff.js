@@ -139,7 +139,7 @@ describe('selection-components', () => {
 		});
 	});
 
-	describe.only('radio', () => {
+	describe('radio', () => {
 		const defaultTemplate = html`<d2l-test-selection selection-single><d2l-selection-input label="item 1" key="key1"></d2l-selection-input></d2l-test-selection>`;
 		const selectedTemplate = html`<d2l-test-selection selection-single><d2l-selection-input label="item 1" key="key1" selected></d2l-selection-input></d2l-test-selection>`;
 		const disabledTemplate = html`<d2l-test-selection selection-single><d2l-selection-input label="item 1" key="key1" disabled></d2l-selection-input></d2l-test-selection>`;
