@@ -167,7 +167,10 @@ describe('d2l-input-radio', () => {
 		});
 
 		it('should restore focusability to checked item after blur', async() => {
-			const elem = await fixture(radioFixtures.disabledFirstTooltipThirdChecked);
+			const elem = await fixture(html`
+				${radioFixtures.disabledFirstTooltipThirdChecked}
+				<button></button>
+			`);
 			await focusElem(elem);
 			await sendKeysElem(elem, 'press', 'ArrowDown'); // focus on disabled item with tooltip
 			expectActive('whole-wheat', false);
