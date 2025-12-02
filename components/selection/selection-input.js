@@ -1,12 +1,12 @@
 import '../inputs/input-checkbox.js';
 import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { radioStyles } from '../inputs/input-radio-styles.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
-import { getUniqueId } from '../../helpers/uniqueId.js';
 
 const keyCodes = {
 	SPACE: 32
@@ -116,8 +116,8 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 				'd2l-disabled': this.disabled
 			};
 			const disabledTooltip = this.disabled && this._disabledTooltip ?
-						html`<d2l-tooltip align="start" class="vdiff-target" for="${this.#inputId}" ?force-show="${this.hovering}" position="top">${this._disabledTooltip}</d2l-tooltip>` :
-						nothing;
+				html`<d2l-tooltip align="start" class="vdiff-target" for="${this.#inputId}" ?force-show="${this.hovering}" position="top">${this._disabledTooltip}</d2l-tooltip>` :
+				nothing;
 			return html`
 				<div
 					aria-disabled="${ifDefined(this.disabled)}"
@@ -170,6 +170,8 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 		if (elem) elem.focus();
 	}
 
+	#inputId = getUniqueId();
+
 	_handleCheckboxChange(e) {
 		e.stopPropagation();
 		this.selected = e.target.checked;
@@ -189,8 +191,6 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 		if (e.keyCode !== keyCodes.SPACE || this.disabled) return;
 		this.selected = !this.selected;
 	}
-
-	#inputId = getUniqueId();
 
 }
 

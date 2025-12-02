@@ -142,9 +142,11 @@ describe('selection-components', () => {
 	describe('radio', () => {
 		const defaultTemplate = html`<d2l-test-selection selection-single><d2l-selection-input label="item 1" key="key1"></d2l-selection-input></d2l-test-selection>`;
 		const selectedTemplate = html`<d2l-test-selection selection-single><d2l-selection-input label="item 1" key="key1" selected></d2l-selection-input></d2l-test-selection>`;
+		/* eslint-disable lit/no-private-properties */
 		const disabledTooltipTemplate = html`<d2l-test-selection selection-single>
-			<d2l-selection-input label="item 1" key="key1" disabled ._disabledTooltip=${"Tooltip text"}></d2l-selection-input>
+			<d2l-selection-input label="item 1" key="key1" disabled ._disabledTooltip=${'Tooltip text'}></d2l-selection-input>
 		</d2l-test-selection>`;
+		/* eslint-enable lit/no-private-properties */
 
 		[
 			{ name: 'default', template: defaultTemplate },

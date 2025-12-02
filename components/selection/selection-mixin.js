@@ -206,7 +206,7 @@ export const SelectionMixin = superclass => class extends CollectionMixin(superc
 		}
 
 		if (selectionInput) {
-			if(!selectionInput.disabled) selectionInput.selected = true;
+			if (!selectionInput.disabled) selectionInput.selected = true;
 			selectionInput.focus();
 		}
 
