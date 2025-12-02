@@ -92,8 +92,8 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 
 			.d2l-input-radio-label-disabled > *:${unsafeCSS(getFocusPseudoClass())},
 			.d2l-input-radio-label-disabled > .d2l-hovering {
-				opacity: 1 !important;
 				background-color: color-mix(in srgb, var(--d2l-color-regolith) 50%, transparent);
+				opacity: 1 !important;
 			}
 
 			.d2l-input-radio-label-disabled > * {
