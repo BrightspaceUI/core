@@ -217,7 +217,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				--d2l-list-item-content-text-outline: 2px solid var(--d2l-color-celestine);
 				--d2l-list-item-content-text-outline-offset: 1px;
 			}
-			:host([_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content-none {
+			:host([_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content.d2l-list-item-content-none {
 				border-radius: 6px;
 				outline: var(--d2l-list-item-content-text-outline);
 				outline-offset: -4px;
@@ -233,12 +233,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					--d2l-list-item-content-text-outline: 2px solid var(--d2l-color-celestine);
 					--d2l-list-item-content-text-outline-offset: 1px;
 				}
-				:host([_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content-none {
+				:host([_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content.d2l-list-item-content-none {
 					border-radius: initial;
 					outline: initial;
 					outline-offset: initial;
 				}
-				:host([_focusing-primary-action]:not([padding-type="none"])):has(:focus-visible) .d2l-list-item-content-none {
+				:host([_focusing-primary-action]:not([padding-type="none"])):has(:focus-visible) .d2l-list-item-content.d2l-list-item-content-none {
 					border-radius: 8px;
 					outline: var(--d2l-list-item-content-text-outline);
 					outline-offset: -4px;
@@ -441,9 +441,36 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 
 			:host([layout="tile"]) .d2l-list-item-content {
+				box-sizing: border-box;
 				flex-direction: column;
 				height: 100%;
 				padding: 0.6rem;
+			}
+
+			:host([layout="tile"]) [slot="content"] ::slotted([slot="illustration"]),
+			:host([layout="tile"]) .d2l-list-item-illustration > * {
+				border-end-end-radius: 0;
+				border-end-start-radius: 0;
+				border-start-end-radius: 5px;
+				border-start-start-radius: 5px;
+				box-sizing: border-box;
+				margin-block: -0.55rem 0.6rem;
+				margin-inline: -0.55rem;
+				max-height: unset;
+				max-width: calc(100% + 1.1rem);
+			}
+
+			:host([layout="tile"]) [slot="content"] ::slotted(d2l-icon[slot="illustration"]),
+			:host([layout="tile"]) .d2l-list-item-illustration > d2l-icon[slot="illustration"] {
+				padding: 1rem;
+			}
+
+			:host([layout="tile"]) [slot="content"] ::slotted(div[slot="illustration"]),
+			:host([layout="tile"]) .d2l-list-item-illustration > div[slot="illustration"],
+			:host([layout="tile"]) [slot="content"] ::slotted(d2l-icon[slot="illustration"]),
+			:host([layout="tile"]) .d2l-list-item-illustration > d2l-icon[slot="illustration"] {
+				border-bottom: 1px solid var(--d2l-color-mica);
+				width: calc(100% + 1.1rem);
 			}
 
 			:host([layout="tile"]:not([selection-disabled]):not([skeleton])[padding-type="none"]) [slot="outside-control-container"],
@@ -456,6 +483,33 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 			:host([layout="tile"]:not([_has-color-slot])) .d2l-list-item-content-extend-separators [slot="content"] {
 				padding-inline: 0.6rem;
+			}
+
+			:host([layout="tile"][_focusing-primary-action]:not([selection-disabled]):not([button-disabled]):not([skeleton]):not([current])) [slot="outside-control-container"].d2l-list-item-content-none {
+				border-color: transparent;
+			}
+			:host([layout="tile"][_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content.d2l-list-item-content-none {
+				border-radius: 6px;
+				outline: var(--d2l-list-item-content-text-outline);
+				outline-offset: 2px;
+			}
+			@supports selector(:has(a, b)) {
+				:host([layout="tile"][_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content.d2l-list-item-content-none {
+					border-radius: initial;
+					outline: initial;
+					outline-offset: initial;
+				}
+				:host([layout="tile"][_focusing-primary-action]:not([selection-disabled]):not([button-disabled]):not([skeleton]):not([current])) [slot="outside-control-container"].d2l-list-item-content-none {
+					border-color: var(--d2l-color-mica);
+				}
+				:host([layout="tile"][_focusing-primary-action]:not([padding-type="none"])):has(:focus-visible) .d2l-list-item-content.d2l-list-item-content-none {
+					border-radius: 6px;
+					outline: var(--d2l-list-item-content-text-outline);
+					outline-offset: 2px;
+				}
+				:host([layout="tile"][_focusing-primary-action]:not([selection-disabled]):not([button-disabled]):not([skeleton]):not([current])):has(:focus-visible) [slot="outside-control-container"].d2l-list-item-content-none {
+					border-color: transparent;
+				}
 			}
 		`];
 
@@ -721,6 +775,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			'd2l-list-item-content': true,
 			'd2l-list-item-content-none': !this._hasListItemContent
 		};
+		const outsideClasses = {
+			'd2l-list-item-content-none': !this._hasListItemContent
+		};
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color) || (this.expandable && !this.selectable)) ? 'control' : undefined;
 		const contentAreaContent = html`
@@ -769,7 +826,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					</d2l-button-add>
 				</div>
 				` : nothing}
-				<div slot="outside-control-container"></div>
+				<div slot="outside-control-container" class="${classMap(outsideClasses)}"></div>
 				<div slot="before-content"></div>
 				${this._renderDropTarget()}
 				${this._renderDragHandle(this._renderOutsideControl)}

@@ -3,6 +3,7 @@ import '../../button/button-icon.js';
 import '../../colors/colors.js';
 import '../../dropdown/dropdown.js';
 import '../../dropdown/dropdown-content.js';
+import '../../icons/icon.js';
 import '../../link/link.js';
 import '../../paging/pager-load-more.js';
 import '../../selection/selection-action.js';
@@ -61,20 +62,6 @@ function createSimpleList(opts) {
 	`;
 }
 
-function createItem({ color, paddingType, template = 'Item 1', width } = {}) {
-	const styles = {};
-	if (width) styles['width'] = width;
-	return html`
-		<d2l-list-item
-			label="some label"
-			color="${ifDefined(color)}"
-			padding-type="${ifDefined(paddingType)}"
-			style="${styleMap(styles)}">
-			${template}
-		</d2l-list-item>
-	`;
-}
-
 const clampSingleStyles = {
 	overflow: 'hidden',
 	overflowWrap: 'anywhere',
@@ -90,6 +77,18 @@ const clampMultiStyles = {
 	webkitLineClamp: '2'
 };
 
+const illustrationStyles = {
+	height: '4rem'
+};
+
+function focusFirstItem(elem) {
+	return focusElem(elem.querySelector('d2l-list-item') || elem.querySelector('d2l-list-item-button'));
+}
+
+function hoverFirstItem(elem) {
+	return hoverElem(elem.querySelector('d2l-list-item') || elem.querySelector('d2l-list-item-button'));
+}
+
 function createListItemContent({ primary = 'Item 1', secondary = 'Secondary info for item 1', supportingInfo = 'Supporting info for item 1', styles = {} } = {}) {
 	return html`
 		<d2l-list-item-content>
@@ -98,6 +97,18 @@ function createListItemContent({ primary = 'Item 1', secondary = 'Secondary info
 			<div slot="supporting-info" style="${styleMap(styles)}">${supportingInfo}</div>
 		</d2l-list-item-content>
 	`;
+}
+
+function createDivIllustration() {
+	return html`<div slot="illustration" style="background-color: var(--d2l-color-olivine); color: white; height: 4rem; padding: 1rem;">I'm a &lt;div&gt;</div>`;
+}
+
+function createIconIllustration({ styles = illustrationStyles } = {}) {
+	return html`<d2l-icon slot="illustration" style="${styleMap(styles)}" icon="tier3:home"></d2l-icon>`;
+}
+
+function createImgIllustration() {
+	return html`<img slot="illustration" style="height: 4rem;" src="data:image/png;base64,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ICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KE+0EygAABEFJREFUeAHt07ENwCAQBEGgJ5dFg27OSI7RVjCEfDa6nc9+v+ERIHAVWNdfnwQI/AICMQQCISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEiIBAbIBACAgkcJwICsQECISCQwHEicADECgPrw9IKqwAAAABJRU5ErkJggg==" alt="" />`;
 }
 
 function createListItemContentParams({ includeLongText = true, nested = false, prefix = '', styles } = {}) {
@@ -117,11 +128,41 @@ function createListItemContentParams({ includeLongText = true, nested = false, p
 	}
 }
 
+function createItem({ color, href, illustration = nothing, paddingType, template = 'Item 1', width } = {}) {
+	const styles = {};
+	if (width) styles['width'] = width;
+	return html`
+		<d2l-list-item
+			label="some label"
+			color="${ifDefined(color)}"
+			href="${ifDefined(href)}"
+			padding-type="${ifDefined(paddingType)}"
+			style="${styleMap(styles)}">
+			${illustration}
+			${template}
+		</d2l-list-item>
+	`;
+}
+
+function createLinkItem({ color, paddingType, template = 'Item 1', width } = {}) {
+	return createItem({ color, href: 'https://www.d2l.com', paddingType, template, width });
+}
+
+function createButtonItem({ disabled = false, template = 'Item 1' } = {}) {
+	return html`
+		<d2l-list-item-button
+			?button-disabled="${disabled}"
+			label="some label">
+			${template}
+		</d2l-list-item-button>
+	`;
+}
+
 function createItems({ paddingType, width, withColors = false } = {}) {
 	return html`
-		${createItem({ color: withColors ? '#006fbf' : undefined, width, paddingType, template: 'Item 1' })}
-		${createItem({ color: withColors ? '#46a661' : undefined, width, paddingType, template: 'Item 2 - The super fancy awesome item!' })}
-		${createItem({ width, paddingType, template: 'Item 3' })}
+		${createItem({ color: withColors ? '#006fbf' : undefined, paddingType, template: 'Item 1', width })}
+		${createItem({ color: withColors ? '#46a661' : undefined, paddingType, template: 'Item 2 - The super fancy awesome item!', width })}
+		${createItem({ paddingType, template: 'Item 3', width })}
 	`;
 }
 
@@ -151,32 +192,70 @@ describe('list', () => {
 		{ name: 'list separators all', template: createList({ separators: 'all', layout: listLayouts.list }) },
 		{ name: 'list separators between', template: createList({ separators: 'between', layout: listLayouts.list }) },
 		{ name: 'list extend-separators', template: createList({ extendSeparators: true, separators: 'all', layout: listLayouts.list }) },
-		{ name: 'tiles extend-separators', template: createList({ extendSeparators: true, separators: 'all', layout: listLayouts.tiles }) },
-		// padding-type
-		{ name: 'list item padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none' }), layout: listLayouts.list }), goldenTarget: 'd2l-list-item' },
-		{ name: 'tile item padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none' }), layout: listLayouts.tiles }), goldenTarget: 'd2l-list-item' },
-		// list-item-content
-		{ name: 'list item content all', template: createList({ itemsTemplate: createItem({ template: createListItemContent() }), layout: listLayouts.list, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'tile item content all', template: createList({ itemsTemplate: createItem({ template: createListItemContent() }), layout: listLayouts.tiles, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'list item content padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none', template: createListItemContent() }), layout: listLayouts.list, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'tile item content padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none', template: createListItemContent() }), layout: listLayouts.tiles, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'list item content long wrapping', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ prefix: 'Overflow: wrap.' })) }), layout: listLayouts.list, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'tile item content long wrapping', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ prefix: 'Overflow: wrap.' })) }), layout: listLayouts.tiles, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'list item content long single line ellipsis', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ prefix: 'Overflow: single-line, ellipsis.', styles: clampSingleStyles })) }), layout: listLayouts.list, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'tile item content long single line ellipsis', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ prefix: 'Overflow: single-line, ellipsis.', styles: clampSingleStyles })) }), layout: listLayouts.tiles, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'list item content long unbreakable single line ellipsis', template: createList({ itemsTemplate: createItem({ template: createListItemContent({ primary: 'a'.repeat(77), secondary: 'b'.repeat(77), supportingInfo: 'c'.repeat(77), styles: clampSingleStyles }) }), layout: listLayouts.list, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'tile item content long unbreakable single line ellipsis', template: createList({ itemsTemplate: createItem({ template: createListItemContent({ primary: 'a'.repeat(77), secondary: 'b'.repeat(77), supportingInfo: 'c'.repeat(77), styles: clampSingleStyles }) }), layout: listLayouts.tiles, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'list item content long single line ellipsis nested', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ prefix: 'Overflow: single-line, ellipsis.', nested: true, styles: clampSingleStyles })) }), layout: listLayouts.list, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'tile item content long single line ellipsis nested', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ prefix: 'Overflow: single-line, ellipsis.', nested: true, styles: clampSingleStyles })) }), layout: listLayouts.tiles, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'list item content short single line ellipsis', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ includeLongText: false, prefix: 'Overflow: ellipsis.', styles: clampSingleStyles })) }), layout: listLayouts.list, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'tile item content short single line ellipsis', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ includeLongText: false, prefix: 'Overflow: ellipsis.', styles: clampSingleStyles })) }), layout: listLayouts.tiles, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'list item content long multi line ellipsis', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ prefix: 'Overflow: multi-line, ellipsis.', styles: clampMultiStyles })) }), layout: listLayouts.list, width: '400px' }), goldenTarget: 'd2l-list-item' },
-		{ name: 'tile item content long multi line ellipsis', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ prefix: 'Overflow: multi-line, ellipsis.', styles: clampMultiStyles })) }), layout: listLayouts.tiles, width: '400px' }), goldenTarget: 'd2l-list-item' }
-	].forEach(options => {
+		{ name: 'tiles extend-separators', template: createList({ extendSeparators: true, separators: 'all', layout: listLayouts.tiles }) }
+	].forEach(({ name, template, action, margin, target }) => {
 
-		it(options.name, async() => {
-			const elem = await fixture(options.template);
-			await expect(elem.querySelector(options.goldenTarget) ?? elem).to.be.golden();
+		it(name, async() => {
+			const elem = await fixture(template);
+			if (action) await action(elem);
+			await expect(elem.querySelector(target) ?? elem).to.be.golden({ margin });
+		});
+
+	});
+
+	[listLayouts.list, listLayouts.tiles].forEach(layout => {
+
+		describe(layout, () => {
+
+			[
+				// padding-type
+				{ name: 'item padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none' }), layout }), target: 'd2l-list-item' },
+				// list-item-content
+				{ name: 'item content all', template: createList({ itemsTemplate: createItem({ template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' },
+				{ name: 'item content padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none', template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' },
+				{ name: 'item content long wrapping', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ prefix: 'Overflow: wrap.' })) }), layout, width: '400px' }), target: 'd2l-list-item' },
+				{ name: 'item content long single line ellipsis', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ prefix: 'Overflow: single-line, ellipsis.', styles: clampSingleStyles })) }), layout, width: '400px' }), target: 'd2l-list-item' },
+				{ name: 'item content long unbreakable single line ellipsis', template: createList({ itemsTemplate: createItem({ template: createListItemContent({ primary: 'a'.repeat(77), secondary: 'b'.repeat(77), supportingInfo: 'c'.repeat(77), styles: clampSingleStyles }) }), layout, width: '400px' }), target: 'd2l-list-item' },
+				{ name: 'item content long single line ellipsis nested', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ prefix: 'Overflow: single-line, ellipsis.', nested: true, styles: clampSingleStyles })) }), layout, width: '400px' }), target: 'd2l-list-item' },
+				{ name: 'item content short single line ellipsis', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ includeLongText: false, prefix: 'Overflow: ellipsis.', styles: clampSingleStyles })) }), layout, width: '400px' }), target: 'd2l-list-item' },
+				{ name: 'item content long multi line ellipsis', template: createList({ itemsTemplate: createItem({ template: createListItemContent(createListItemContentParams({ prefix: 'Overflow: multi-line, ellipsis.', styles: clampMultiStyles })) }), layout, width: '400px' }), target: 'd2l-list-item' },
+				// link without d2l-list-item-content
+				{ name: 'item link', template: createList({ itemsTemplate: createLinkItem(), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item link focus', template: createList({ itemsTemplate: createLinkItem(), layout, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item link hover', template: createList({ itemsTemplate: createLinkItem(), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
+				// link with d2l-list-item-content
+				{ name: 'item link content', template: createList({ itemsTemplate: createLinkItem({ template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item link content focus', template: createList({ itemsTemplate: createLinkItem({ template: createListItemContent() }), layout, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item link content hover', template: createList({ itemsTemplate: createLinkItem({ template: createListItemContent() }), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
+				// button without d2l-list-item-content
+				{ name: 'item button', template: createList({ itemsTemplate: createButtonItem(), layout, width: '400px' }), margin: 24, target: 'd2l-list-item-button' },
+				{ name: 'item button disabled', template: createList({ itemsTemplate: createButtonItem({ disabled: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item-button' },
+				{ name: 'item button focus', template: createList({ itemsTemplate: createButtonItem(), layout, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item-button' },
+				{ name: 'item button disabled focus', template: createList({ itemsTemplate: createButtonItem({ disabled: true }), layout, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item-button' },
+				{ name: 'item button hover', template: createList({ itemsTemplate: createButtonItem(), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item-button' },
+				{ name: 'item button disabled hover', template: createList({ itemsTemplate: createButtonItem({ disabled: true }), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item-button' },
+				// button with d2l-list-item-content
+				{ name: 'item button content', template: createList({ itemsTemplate: createButtonItem({ template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item-button' },
+				{ name: 'item button disabled content', template: createList({ itemsTemplate: createButtonItem({ disabled: true, template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item-button' },
+				{ name: 'item button content focus', template: createList({ itemsTemplate: createButtonItem({ template: createListItemContent() }), layout, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item-button' },
+				{ name: 'item button disabled content focus', template: createList({ itemsTemplate: createButtonItem({ disabled: true, template: createListItemContent() }), layout, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item-button' },
+				{ name: 'item button content hover', template: createList({ itemsTemplate: createButtonItem({ template: createListItemContent() }), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item-button' },
+				{ name: 'item button disabled content hover', template: createList({ itemsTemplate: createButtonItem({ disabled: true, template: createListItemContent() }), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item-button' },
+				// illustration slot
+				{ name: 'item illustration slot img', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' },
+				{ name: 'item illustration slot icon', template: createList({ itemsTemplate: createItem({ illustration: createIconIllustration(), template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' },
+				{ name: 'item illustration slot icon custom', template: createList({ itemsTemplate: createItem({ illustration: createIconIllustration({ styles: { height: '6rem', padding: '1.5rem' } }), template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' },
+				{ name: 'item illustration slot div', template: createList({ itemsTemplate: createItem({ illustration: createDivIllustration(), template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' }
+			].forEach(({ name, template, action, margin, target }) => {
+
+				it(name, async() => {
+					const elem = await fixture(template);
+					if (action) await action(elem);
+					await expect(elem.querySelector(target) ?? elem).to.be.golden({ margin });
+				});
+
+			});
+
 		});
 
 	});
@@ -222,20 +301,6 @@ describe('list', () => {
 			const elem = await fixture(html`
 				<d2l-list style="width: 400px" add-button>
 					<d2l-list-item label="1" padding-type="none">Item 1</d2l-list-item>
-				</d2l-list>
-			`);
-			await expect(elem).to.be.golden();
-		});
-	});
-
-	describe('illustration', () => {
-		it('default', async() => {
-			const elem = await fixture(html`
-				<d2l-list style="width: 400px">
-					<d2l-list-item>
-						<div>Item 1</div>
-						<div slot="illustration" style="background-color: blue; height: 400px; width: 400px;"></div>
-					</d2l-list-item>
 				</d2l-list>
 			`);
 			await expect(elem).to.be.golden();
@@ -447,33 +512,10 @@ describe('list', () => {
 		});
 	});
 
-	describe('href', () => {
-		[
-			{ name: 'default' },
-			{ name: 'focus', action: focusElem, margin: 24 },
-			{ name: 'hover', action: hoverElem, margin: 24 }
-		].forEach(({ name, action, margin }) => {
-			it(name, async() => {
-				const elem = await fixture(html`
-					<d2l-list style="width: 400px;">
-						<d2l-list-item label="Item" href="http://www.d2l.com">
-							${simpleListItemContent}
-						</d2l-list-item>
-					</d2l-list>
-				`);
-				if (action) await action(elem.querySelector('d2l-list-item'));
-				await expect(elem).to.be.golden({ margin });
-			});
-		});
-	});
-
 	[true, false].forEach(disabled => {
 		describe(`button${disabled ? '-disabled' : ''}`, () => {
 			[
-				{ name: 'default' },
-				{ name: 'focus', action: focusElem, margin: disabled ? undefined : 24 },
-				{ name: 'focus add-button', action: focusElem, margin: disabled ? 75 : 24, addButton: true },
-				{ name: 'hover', action: hoverElem, margin: disabled ? undefined : 24 }
+				{ name: 'focus add-button', action: focusElem, margin: disabled ? 75 : 24, addButton: true }
 			].forEach(({ name, action, margin, addButton }) => {
 				it(name, async() => {
 					const elem = await fixture(html`
