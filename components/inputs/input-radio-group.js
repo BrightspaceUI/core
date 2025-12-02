@@ -94,6 +94,7 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 		const radios = this.#getRadios();
 		if (radios.length === 0) return;
 		const focusElem = this.#getFirstFocusableRadio();
+		if (!focusElem) return;
 		focusElem.focus();
 		setTimeout(() => focusElem.focus()); // timeout required when following link from form validation
 	}
