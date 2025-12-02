@@ -142,6 +142,9 @@ describe('selection-components', () => {
 	describe('radio', () => {
 		const defaultTemplate = html`<d2l-test-selection selection-single><d2l-selection-input label="item 1" key="key1"></d2l-selection-input></d2l-test-selection>`;
 		const selectedTemplate = html`<d2l-test-selection selection-single><d2l-selection-input label="item 1" key="key1" selected></d2l-selection-input></d2l-test-selection>`;
+		const disabledTooltipTemplate = html`<d2l-test-selection selection-single>
+			<d2l-selection-input label="item 1" key="key1" disabled ._disabledTooltip=${"Tooltip text"}></d2l-selection-input>
+		</d2l-test-selection>`;
 
 		[
 			{ name: 'default', template: defaultTemplate },
@@ -152,6 +155,8 @@ describe('selection-components', () => {
 			{ name: 'skeleton', template: html`<d2l-test-selection selection-single><d2l-selection-input label="item 1" key="key1" skeleton></d2l-selection-input></d2l-test-selection>` },
 			{ name: 'selected-focus', template: selectedTemplate, action: focusElem },
 			{ name: 'selected-click', template: selectedTemplate, action: clickElem },
+			{ name: 'disabled-tooltip', template: disabledTooltipTemplate },
+			{ name: 'disabled-tooltip-focus', template: disabledTooltipTemplate, action: focusElem },
 			{ name: 'selected-space', template: selectedTemplate, action: elem => sendKeysElem(elem, 'press', 'Space') },
 		].forEach(({ name, template, action }) => {
 			it(name, async() => {

@@ -1,10 +1,12 @@
 import '../inputs/input-checkbox.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { radioStyles } from '../inputs/input-radio-styles.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 
 const keyCodes = {
 	SPACE: 32
@@ -56,6 +58,14 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			:host([hidden]) {
 				display: none;
 			}
+
+			.d2l-input-radio.d2l-disabled:hover,
+			.d2l-input-radio.d2l-disabled.d2l-hovering,
+			.d2l-input-radio.d2l-disabled:${unsafeCSS(getFocusPseudoClass())} {
+				opacity: 1 !important;
+				border-color: var(--d2l-color-celestine) !important;
+				border-width: 2px !important;
+			}
 		`];
 	}
 
@@ -63,6 +73,10 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 		super();
 		this.selected = false;
 		this._indeterminate = false;
+	}
+
+	get focusDisabled() {
+		return this.disabled && !this._disabledTooltip;
 	}
 
 	connectedCallback() {
@@ -101,17 +115,22 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 				'd2l-hovering': this.hovering,
 				'd2l-disabled': this.disabled
 			};
+			const disabledTooltip = this.disabled && this._disabledTooltip ?
+						html`<d2l-tooltip align="start" class="vdiff-target" for="${this.#inputId}" ?force-show="${this.hovering}" position="top">${this._disabledTooltip}</d2l-tooltip>` :
+						nothing;
 			return html`
 				<div
 					aria-disabled="${ifDefined(this.disabled)}"
 					aria-label="${this.label}"
 					aria-checked="${this.selected ? 'true' : 'false'}"
 					class="${classMap(radioClasses)}"
+					id="${this.#inputId}"
 					@click="${this._handleRadioClick}"
 					@keydown="${this._handleRadioKeyDown}"
 					@keyup="${this._handleRadioKeyUp}"
 					role="radio"
-					tabindex="${ifDefined(this.disabled ? undefined : 0)}"></div>
+					tabindex="${ifDefined(this.focusDisabled ? undefined : 0)}"></div>
+					${disabledTooltip}
 			`;
 		} else {
 			return html`
@@ -167,8 +186,11 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 	}
 
 	_handleRadioKeyUp(e) {
-		if (e.keyCode === keyCodes.SPACE) this.selected = !this.selected;
+		if (e.keyCode !== keyCodes.SPACE || this.disabled) return;
+		this.selected = !this.selected;
 	}
+
+	#inputId = getUniqueId();
 
 }
 
