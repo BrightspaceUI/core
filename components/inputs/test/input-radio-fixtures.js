@@ -31,6 +31,20 @@ export const radioFixtures = {
 			<d2l-input-radio label="Marble Rye" value="marble-rye"></d2l-input-radio>
 		</d2l-input-radio-group>
 	`,
+	disabledFirstTooltip: html`
+		<d2l-input-radio-group label="Bread">
+			<d2l-input-radio label="Whole wheat" value="whole-wheat" disabled disabled-tooltip="Tooltip text"></d2l-input-radio>
+			<d2l-input-radio label="Baguette" value="baguette"></d2l-input-radio>
+			<d2l-input-radio label="Marble Rye" value="marble-rye"></d2l-input-radio>
+		</d2l-input-radio-group>
+	`,
+	disabledFirstTooltipThirdChecked: html`
+		<d2l-input-radio-group label="Bread">
+			<d2l-input-radio label="Whole wheat" value="whole-wheat" disabled disabled-tooltip="This option is currently unavailable."></d2l-input-radio>
+			<d2l-input-radio label="Baguette" value="baguette"></d2l-input-radio>
+			<d2l-input-radio label="Marble Rye" value="marble-rye" checked></d2l-input-radio>
+		</d2l-input-radio-group>
+	`,
 	inlineHelp: html`
 		<d2l-input-radio-group label="Bread">
 			<d2l-input-radio label="Whole wheat">
@@ -91,6 +105,13 @@ export const radioFixtures = {
 			<d2l-input-radio label="Whole wheat" value="whole-wheat"></d2l-input-radio>
 			<d2l-input-radio label="Baguette" value="baguette" checked></d2l-input-radio>
 			<d2l-input-radio label="Marble Rye" value="marble-rye" disabled></d2l-input-radio>
+		</d2l-input-radio-group>
+	`,
+	secondCheckedThirdDisabledTooltip: html`
+		<d2l-input-radio-group label="Bread">
+			<d2l-input-radio label="Whole wheat" value="whole-wheat"></d2l-input-radio>
+			<d2l-input-radio label="Baguette" value="baguette" checked></d2l-input-radio>
+			<d2l-input-radio label="Marble Rye" value="marble-rye" disabled disabled-tooltip="This option is not available"></d2l-input-radio>
 		</d2l-input-radio-group>
 	`,
 	skeleton: html`

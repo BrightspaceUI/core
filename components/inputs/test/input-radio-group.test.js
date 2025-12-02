@@ -154,6 +154,28 @@ describe('d2l-input-radio', () => {
 			expectActive('baguette', false);
 		});
 
+		it('should focus on the disabled item if it has a tooltip if none are checked', async() => {
+			const elem = await fixture(radioFixtures.disabledFirstTooltip);
+			await focusElem(elem);
+			expectActive('whole-wheat', false);
+		});
+
+		it('should focus on the checked item even if it after a disabled item with a tooltip', async() => {
+			const elem = await fixture(radioFixtures.disabledFirstTooltipThirdChecked);
+			await focusElem(elem);
+			expectActive('marble-rye', true);
+		});
+
+		it('should restore focusability to checked item after blur', async() => {
+			const elem = await fixture(radioFixtures.disabledFirstTooltipThirdChecked);
+			await focusElem(elem);
+			await sendKeysElem(elem, 'press', 'ArrowDown'); // focus on disabled item with tooltip
+			expectActive('whole-wheat', false);
+			await sendKeysElem(elem, 'press', 'Tab'); // blur
+			await focusElem(elem);
+			expectActive('marble-rye', true);
+		});
+
 		it('should restore focusability to the first item if checked item is unchecked programatically', async() => {
 			const elem = await fixture(radioFixtures.secondChecked);
 			elem.querySelector('d2l-input-radio[value="baguette"]').checked = false;
@@ -274,6 +296,24 @@ describe('d2l-input-radio', () => {
 			const elem = await fixture(radioFixtures.secondCheckedThirdDisabled);
 			await sendKeysElem(elem, 'press', 'ArrowDown');
 			expectActive('whole-wheat', true);
+		});
+
+		it('should not skip disabled items with tooltips when arrowing', async() => {
+			const elem = await fixture(radioFixtures.secondCheckedThirdDisabledTooltip);
+			await sendKeysElem(elem, 'press', 'ArrowDown');
+			expectActive('marble-rye', false);
+		});
+
+		it('should not check items with tooltips when focused', async() => {
+			const elem = await fixture(radioFixtures.disabledFirstTooltip);
+			await sendKeysElem(elem, 'press', ' ');
+			expectActive('whole-wheat', false);
+		});
+
+		it('should check items even when arrowing from items with tooltips', async() => {
+			const elem = await fixture(radioFixtures.disabledFirstTooltip);
+			await sendKeysElem(elem, 'press', 'ArrowDown');
+			expectActive('baguette', true);
 		});
 
 	});
