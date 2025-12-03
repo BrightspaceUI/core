@@ -1,8 +1,7 @@
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { InputInlineHelpMixin } from './input-inline-help.js';
@@ -85,20 +84,6 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 			.d2l-input-radio-supporting-visible {
 				display: block;
 			}
-
-			.d2l-input-radio-label-disabled {
-				opacity: 1;
-			}
-
-			.d2l-input-radio-label-disabled > *:${unsafeCSS(getFocusPseudoClass())},
-			.d2l-input-radio-label-disabled > .d2l-hovering {
-				background-color: color-mix(in srgb, var(--d2l-color-regolith) 50%, transparent);
-				opacity: 1 !important;
-			}
-
-			.d2l-input-radio-label-disabled > * {
-				opacity: 0.5 !important;
-			}
 		`];
 	}
 
@@ -144,6 +129,7 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 		const labelClasses = {
 			'd2l-input-radio-label': true,
 			'd2l-input-radio-label-disabled': this.disabled && !this.skeleton,
+			'd2l-input-radio-label-disabled-tooltip': this.disabled && this.disabledTooltip
 		};
 		const radioClasses = {
 			'd2l-input-radio': true,
