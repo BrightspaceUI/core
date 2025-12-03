@@ -44,7 +44,7 @@ export const radioStyles = css`
 	.d2l-input-radio:focus,
 	.d2l-input-radio-label > input[type="radio"]:hover,
 	.d2l-input-radio-label > input[type="radio"]:focus {
-		border-color: var(--d2l-color-celestine);
+		border-color: var(--d2l-input-radio-border-color-hover-focus, var(--d2l-color-celestine));
 		border-width: 2px;
 		outline: none;
 	}
