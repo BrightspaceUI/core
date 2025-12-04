@@ -193,10 +193,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-top: 0;
 			}
 
-			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] {
+			:host(:not([layout="tile"]):not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] {
 				width: 3rem;
 			}
-			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] ~ [slot="control-action"] [slot="content"] {
+			:host(:not([layout="tile"]):not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] ~ [slot="control-action"] [slot="content"] {
 				padding-inline-start: 3rem;
 			}
 			:host(:not([_has-color-slot])) .d2l-list-item-content-extend-separators [slot="content"] {
@@ -303,7 +303,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-block: 0.55rem;
 				margin-inline-end: 0.55rem;
 			}
-			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators d2l-selection-input {
+			:host(:not([layout="tile"]):not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-inline-start: 0.9rem;
 			}
 			:host(:not([_render-expand-collapse-slot])[_has-color-slot]) .d2l-list-item-content-extend-separators d2l-selection-input {
@@ -511,6 +511,33 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					border-color: transparent;
 				}
 			}
+
+			:host([layout="tile"]) d2l-selection-input {
+				--d2l-input-checkbox-border-color-hover-focus: var(--d2l-color-celestine-minus-1);
+				--d2l-input-radio-border-color-hover-focus: var(--d2l-color-celestine-minus-1);
+				border: 2px solid transparent;
+				border-radius: 8px;
+				margin: 0;
+				padding: 3px;
+			}
+			:host([layout="tile"][_focusing]) d2l-selection-input {
+				border: 2px solid white;
+			}
+			:host([layout="tile"]) [slot="control"] {
+				background-color: rgba(0, 0, 0, 0.5);
+				border-radius: 8px;
+				box-sizing: border-box;
+				margin: 0.5rem;
+				outline: 2px solid transparent;
+			}
+			:host([layout="tile"][_focusing]) [slot="control"] {
+				background-color: var(--d2l-color-celestine);
+				outline-color: var(--d2l-color-celestine-minus-1);
+			}
+			:host([layout="tile"][skeleton]) [slot="control"] {
+				background-color: transparent;
+			}
+
 		`];
 
 		super.styles && styles.unshift(super.styles);

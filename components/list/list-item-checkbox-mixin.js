@@ -175,6 +175,8 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 				?_indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}"
 				key="${this.key}"
 				label="${this.label}"
+				@mouseenter="${this._onMouseEnterSelection}"
+				@mouseleave="${this._onMouseLeaveSelection}"
 				?selected="${this.selected}"
 				?skeleton="${this.skeleton}">
 			</d2l-selection-input>
