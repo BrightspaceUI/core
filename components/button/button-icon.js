@@ -49,11 +49,11 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 		return [super.styles, buttonStyles, visibleOnAncestorStyles,
 			css`
 				:host {
-					--d2l-button-icon-background-color: transparent;
-					--d2l-button-icon-background-color-hover: var(--d2l-color-gypsum);
-					--d2l-button-icon-border-radius: 0.3rem;
-					--d2l-button-icon-min-height: calc(2rem + 2px);
-					--d2l-button-icon-min-width: calc(2rem + 2px);
+					--d2l-button-icon-background-color-default: transparent;
+					--d2l-button-icon-background-color-hover-default: var(--d2l-color-gypsum);
+					--d2l-button-icon-border-radius-default: 0.3rem;
+					--d2l-button-icon-min-height-default: calc(2rem + 2px);
+					--d2l-button-icon-min-width-default: calc(2rem + 2px);
 					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
 					display: inline-block;
 					line-height: 0;
@@ -62,28 +62,28 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 					display: none;
 				}
 				:host([translucent]) {
-					--d2l-button-icon-background-color: rgba(0, 0, 0, 0.5);
-					--d2l-button-icon-background-color-hover: var(--d2l-color-celestine);
+					--d2l-button-icon-background-color-default: rgba(0, 0, 0, 0.5);
+					--d2l-button-icon-background-color-hover-default: var(--d2l-color-celestine);
 					--d2l-focus-ring-color: white;
 					--d2l-focus-ring-offset: -4px;
 					--d2l-button-icon-fill-color: white;
 					--d2l-button-icon-fill-color-hover: white;
 				}
 				:host([theme="dark"]) {
-					--d2l-button-icon-background-color: transparent;
-					--d2l-button-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
+					--d2l-button-icon-background-color-default: transparent;
+					--d2l-button-icon-background-color-hover-default: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
 					--d2l-button-icon-fill-color: var(--d2l-color-sylvite);
 					--d2l-button-icon-fill-color-hover: var(--d2l-color-sylvite);
 					--d2l-focus-ring-color: var(--d2l-color-celestine-plus-1);
 				}
 
 				button {
-					background-color: var(--d2l-button-icon-background-color);
+					background-color: var(--d2l-button-icon-background-color, var(--d2l-button-icon-background-color-default));
 					border-color: transparent;
-					border-radius: var(--d2l-button-icon-border-radius);
+					border-radius: var(--d2l-button-icon-border-radius, var(--d2l-button-icon-border-radius-default));
 					font-family: inherit;
-					min-height: var(--d2l-button-icon-min-height);
-					min-width: var(--d2l-button-icon-min-width);
+					min-height: var(--d2l-button-icon-min-height, var(--d2l-button-icon-min-height-default));
+					min-width: var(--d2l-button-icon-min-width, var(--d2l-button-icon-min-width-default));
 					padding: 0;
 					position: relative;
 				}
@@ -104,7 +104,7 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 				button:focus:not([disabled]),
 				:host([active]) button:not([disabled]) {
 					--d2l-button-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-tungsten));
-					background-color: var(--d2l-button-icon-background-color-hover);
+					background-color: var(--d2l-button-icon-background-color-hover, var(--d2l-button-icon-background-color-hover-default));
 				}
 
 				d2l-icon,
