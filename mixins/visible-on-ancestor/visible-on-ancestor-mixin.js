@@ -125,9 +125,10 @@ export const VisibleOnAncestorMixin = superclass => class extends superclass {
 		if (!this.visibleOnAncestor) return;
 
 		this.__voaTarget = findComposedAncestor(this, (node) => {
-			if (!node || node.nodeType !== 1) return false;
-			return (node.classList.contains('d2l-visible-on-ancestor-target'));
+			if (!node || node.nodeType !== Node.ELEMENT_NODE) return false;
+			return (node.isVisibleOnAncestorTarget || node.classList.contains('d2l-visible-on-ancestor-target'));
 		});
+
 		if (!this.__voaTarget) {
 			this.__voaState = null;
 			return;
