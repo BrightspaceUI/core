@@ -144,7 +144,7 @@ describe('selection-components', () => {
 		const selectedTemplate = html`<d2l-test-selection selection-single><d2l-selection-input label="item 1" key="key1" selected></d2l-selection-input></d2l-test-selection>`;
 		const disabledTemplate = html`<d2l-test-selection selection-single><d2l-selection-input label="item 1" key="key1" disabled></d2l-selection-input></d2l-test-selection>`;
 		/* eslint-disable lit/no-private-properties */
-		const disabledTooltipTemplate = html`<d2l-test-selection selection-single>
+		const disabledTooltipTemplate = html`<d2l-test-selection style="display:inline-block; padding:60px 60px 0 20px;"  selection-single>
 			<d2l-selection-input label="item 1" key="key1" disabled ._disabledTooltip=${'Tooltip text'}></d2l-selection-input>
 		</d2l-test-selection>`;
 		/* eslint-enable lit/no-private-properties */
@@ -161,14 +161,14 @@ describe('selection-components', () => {
 			{ name: 'disabled', template: disabledTemplate },
 			{ name: 'disabled-hover', template: disabledTemplate, action: hoverElem },
 			{ name: 'disabled-tooltip', template: disabledTooltipTemplate },
-			{ name: 'disabled-tooltip-focus', template: disabledTooltipTemplate, action: focusElem },
+			{ name: 'disabled-tooltip-focus', template: disabledTooltipTemplate, action: focusElem, checkWholeElem: true },
 			{ name: 'selected-space', template: selectedTemplate, action: elem => sendKeysElem(elem, 'press', 'Space') },
-		].forEach(({ name, template, action }) => {
+		].forEach(({ name, template, action, checkWholeElem }) => {
 			it(name, async() => {
 				const elem = await fixture(template);
 				const input = elem.querySelector('d2l-selection-input');
 				if (action) await action(input);
-				await expect(input).to.be.golden();
+				await expect(checkWholeElem ? elem : input).to.be.golden();
 			});
 		});
 	});
