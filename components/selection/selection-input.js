@@ -1,7 +1,6 @@
 import '../inputs/input-checkbox.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';

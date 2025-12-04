@@ -89,8 +89,8 @@ export const radioStyles = css`
 		background-color: color-mix(in srgb, var(--d2l-color-regolith) 50%, transparent); /* mock background opacity */
 		border-color: var(--d2l-input-radio-border-color-hover-focus, var(--d2l-color-celestine));
 		border-width: 2px;
-		outline: none;
 		opacity: 1;
+		outline: none;
 	}
 
 	.d2l-input-radio-label:last-of-type {
