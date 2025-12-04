@@ -220,8 +220,8 @@ class ListItemGenericLayout extends LitElement {
 			:host([layout="tile"]) {
 				grid-template-columns:
 					[start control-start] minmax(0, min-content)
-					[control-end] minmax(0, auto)
-					[end];
+					[control-end actions-start] minmax(0, auto)
+					[actions-end end];
 				grid-template-rows:
 					[start header-start] minmax(0, min-content)
 					[header-end content-start] auto
@@ -251,6 +251,11 @@ class ListItemGenericLayout extends LitElement {
 				width: unset;
 			}
 
+			:host([layout="tile"]) ::slotted([slot="actions"]) {
+				grid-column: actions-start / actions-end;
+				grid-row: start / start;
+			}
+
 			:host(:not([layout="tile"])) slot[name="header"],
 			:host([layout="tile"]) slot[name="add-top"],
 			:host([layout="tile"]) slot[name="control-container"],
@@ -259,7 +264,6 @@ class ListItemGenericLayout extends LitElement {
 			:host([layout="tile"]) slot[name="outside-control-action"],
 			:host([layout="tile"]) slot[name="color-indicator"],
 			:host([layout="tile"]) slot[name="expand-collapse"],
-			:host([layout="tile"]) slot[name="actions"],
 			:host([layout="tile"]) slot[name="drop-target"],
 			:host([layout="tile"]) slot[name="nested"],
 			:host([layout="tile"]) slot[name="add"] {
@@ -298,9 +302,9 @@ class ListItemGenericLayout extends LitElement {
 		return html`
 			<slot name="add-top" class="d2l-cell" data-cell-num="10"></slot>
 
-			<slot name="header"></slot>
 			<slot name="control-container"></slot>
 			<slot name="outside-control-container"></slot>
+			<slot name="header"></slot>
 			<slot name="before-content"></slot>
 
 			<slot name="content-action" class="d2l-cell" data-cell-num="6"></slot>

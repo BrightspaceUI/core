@@ -552,16 +552,35 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 			:host([layout="tile"][tile-header]) [slot="control"] {
 				background-color: transparent;
-				margin: 0.2rem 0.6rem;
+				display: inline-flex;
+				margin: 0.4rem 0.6rem;
+				outline: none;
 				position: static;
 			}
 
-			:host([layout="tile"]) [slot="header"] {
+			:host([layout="tile"]) [slot="actions"] {
+				--d2l-button-icon-min-height: 1.5rem;
+				--d2l-button-icon-min-width: 1.5rem;
+				--d2l-button-icon-border-radius: 4px;
+				margin-block: 0.6rem;
+				margin-inline-end: 0.6rem;
+				padding: 0;
+				position: absolute;
+			}
+			:host([layout="tile"][tile-header]) [slot="actions"] {
+				--d2l-button-icon-background-color-hover: var(--d2l-color-mica);
+				margin: 0.25rem 0.6rem;
+				position: static;
+			}
+
+			:host([layout="tile"][tile-header]) [slot="header"] {
 				background-color: var(--d2l-color-gypsum);
 				border-end-end-radius: 0;
 				border-end-start-radius: 0;
 				border-start-end-radius: 5px;
 				border-start-start-radius: 5px;
+				margin-block-start: 1px;
+				margin-inline: 1px;
 			}
 
 		`];
@@ -573,6 +592,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	constructor() {
 		super();
 		this.first = false;
+		this.isVisibleOnAncestorTarget = true;
 		this.noPrimaryAction = false;
 		this.paddingType = 'normal';
 		this.tileHeader = false;
