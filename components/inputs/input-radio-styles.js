@@ -44,7 +44,7 @@ export const radioStyles = css`
 	.d2l-input-radio:focus,
 	.d2l-input-radio-label > input[type="radio"]:hover,
 	.d2l-input-radio-label > input[type="radio"]:focus {
-		border-color: var(--d2l-color-celestine);
+		border-color: var(--d2l-input-radio-border-color-hover-focus, var(--d2l-color-celestine));
 		border-width: 2px;
 		outline: none;
 	}
@@ -70,13 +70,23 @@ export const radioStyles = css`
 		padding-inline-start: 1.7rem;
 		vertical-align: middle;
 	}
-	.d2l-input-radio-label-disabled {
+	.d2l-input-radio-label-disabled:not(.d2l-input-radio-label-disabled-tooltip),
+	.d2l-input-radio-label-disabled-tooltip > * {
 		opacity: 0.5;
 	}
-	.d2l-input-radio-label-disabled > .d2l-input-radio,
-	.d2l-input-radio-label-disabled > input[type="radio"] {
+	.d2l-input-radio-label-disabled:not(.d2l-input-radio-label-disabled-tooltip) > .d2l-input-radio,
+	.d2l-input-radio-label-disabled:not(.d2l-input-radio-label-disabled-tooltip) > input[type="radio"] {
 		opacity: 1;
 	}
+	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio.d2l-hovering,
+	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio:hover,
+	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio:focus,
+	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio-label > input[type="radio"]:hover,
+	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio-label > input[type="radio"]:focus {
+		background-color: color-mix(in srgb, var(--d2l-color-regolith) 50%, transparent); /* mock background opacity */
+		opacity: 1;
+	}
+
 	.d2l-input-radio-label:last-of-type {
 		margin-bottom: 0;
 	}
