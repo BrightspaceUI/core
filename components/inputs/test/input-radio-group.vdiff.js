@@ -1,4 +1,4 @@
-import { clickElem, expect, fixture, focusElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, oneEvent } from '@brightspace-ui/testing';
 import { radioFixtures } from './input-radio-fixtures.js';
 
 describe('d2l-input-radio', () => {
@@ -9,6 +9,15 @@ describe('d2l-input-radio', () => {
 		{ name: 'required', template: radioFixtures.requiredSecondChecked },
 		{ name: 'required-invalid', template: radioFixtures.requiredNoneChecked, validate: true },
 		{ name: 'disabled', template: radioFixtures.disabledAllSecondChecked },
+		{ name: 'disabled-tooltip', template: radioFixtures.disabledFirstTooltip },
+		{ name: 'disabled-tooltip-focus', template: radioFixtures.disabledFirstTooltip, action: async(elem) => {
+			focusElem(elem);
+			await oneEvent(elem, 'd2l-tooltip-show');
+		} },
+		{ name: 'disabled-tooltip-hover', template: radioFixtures.disabledFirstTooltip, action: async(elem) => {
+			hoverElem(elem.querySelector('d2l-input-radio'));
+			await oneEvent(elem, 'd2l-tooltip-show');
+		} },
 		{ name: 'inline-help', template: radioFixtures.inlineHelp },
 		{ name: 'skeleton', template: radioFixtures.skeleton },
 		{ name: 'supporting-hidden', template: radioFixtures.supporting },
