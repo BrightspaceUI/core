@@ -82,7 +82,8 @@ class ListItemGenericLayout extends LitElement {
 					[color-start outside-control-end] minmax(0, min-content)
 					[expand-collapse-start color-end] minmax(0, min-content)
 					[control-start expand-collapse-end] minmax(0, min-content)
-					[control-end content-start] minmax(0, auto)
+					[spacer-start control-end] minmax(0, min-content)
+					[spacer-end content-start] minmax(0, auto)
 					[content-end actions-start] minmax(0, min-content)
 					[end actions-end];
 				grid-template-rows:
@@ -144,8 +145,9 @@ class ListItemGenericLayout extends LitElement {
 				grid-column: color-start / color-end;
 			}
 
-			::slotted([slot="before-content"]) {
-				grid-column: color-start / content-start;
+			::slotted([slot="spacer"]) {
+				grid-column: spacer-start / spacer-end;
+				grid-row: 2 / 3;
 			}
 
 			::slotted([slot="control-action"]) ~ ::slotted([slot="content"]),
@@ -293,6 +295,7 @@ class ListItemGenericLayout extends LitElement {
 			<slot name="outside-control-action" class="d2l-cell" data-cell-num="1"></slot>
 			<slot name="color-indicator"></slot>
 			<slot name="expand-collapse" class="d2l-cell" data-cell-num="4"></slot>
+			<slot name="spacer"></slot>
 			<slot name="content" class="d2l-cell" data-cell-num="8" @focus="${!this.noPrimaryAction ? this._preventFocus : null}"></slot>
 			<slot name="control-action" class="d2l-cell" data-cell-num="3"></slot>
 			<slot name="control" class="d2l-cell" data-cell-num="5"></slot>
