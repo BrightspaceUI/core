@@ -374,7 +374,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		const layoutRect = layout.getBoundingClientRect();
 		const contentRect = content.getBoundingClientRect();
 		const spacerWidth = spacer ? spacer.getBoundingClientRect().width : 0;
-		let totalWidth = Math.max(0, contentRect.left - layoutRect.left - spacerWidth);
+		const isRtl = getComputedStyle(layout).direction === 'rtl';
+		const inlineStartWidth = isRtl ? layoutRect.right - contentRect.right : contentRect.left - layoutRect.left;
+		let totalWidth = Math.max(0, inlineStartWidth - spacerWidth);
 
 		const illustrationSlot = content.querySelector('.d2l-list-item-illustration');
 		const illustration = illustrationSlot?.assignedElements({ flatten: true })?.[0];
