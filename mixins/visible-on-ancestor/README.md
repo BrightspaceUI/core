@@ -1,6 +1,6 @@
 # VisibleOnAncestorMixin
 
-The `VisibleOnAncestorMixin` adds a behavior to a component so that it is initially hidden, and becomes visible when user hovers or focuses within an ancestor marked with the `d2l-visible-on-ancestor-target` class. It includes styles that must be included with the component. If the device does not support hovering, the element will be visible regardless of whether the user is hovering or focusing within the target.
+The `VisibleOnAncestorMixin` adds a behavior to a component so that it is initially hidden, and becomes visible when a user hovers or focuses within an ancestor that sets `isVisibleOnAncestorTarget = true` or  has the `d2l-visible-on-ancestor-target` class. It includes styles that must be included with the component. If the device does not support hovering, the element will be visible regardless of whether the user is hovering or focusing within the target.
 
 ## Usage
 
