@@ -1,3 +1,4 @@
+import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
@@ -33,6 +34,11 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
+			 * Tooltip text displayed when the input is disabled
+			 * @type {string}
+			 */
+			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
+			/**
 			 * REQUIRED: Label for the input
 			 * @type {string}
 			 */
@@ -48,7 +54,7 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 			 */
 			value: { type: String },
 			_checked: { state: true },
-			_firstFocusable: { state: true },
+			_focusable: { state: true },
 			_hasSupporting: { state: true },
 			_isHovered: { state: true },
 			_invalid: { state: true }
@@ -87,7 +93,7 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 		this.supportingHiddenWhenUnchecked = false;
 		this.value = 'on';
 		this._checked = false;
-		this._firstFocusable = false;
+		this._focusable = false;
 		this._hasSupporting = false;
 		this._isHovered = false;
 		this._isInitFromGroup = false;
@@ -110,20 +116,25 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 		}
 	}
 
+	get focusDisabled() {
+		return (this.disabled && !this.disabledTooltip) || this.skeleton;
+	}
+
 	static get focusElementSelector() {
 		return '.d2l-input-radio';
 	}
 
 	render() {
-		const disabled = this.disabled || this.skeleton;
+		const allowFocus = !this.focusDisabled && this._focusable;
 		const labelClasses = {
 			'd2l-input-radio-label': true,
 			'd2l-input-radio-label-disabled': this.disabled && !this.skeleton,
+			'd2l-input-radio-label-disabled-tooltip': this.disabled && this.disabledTooltip
 		};
 		const radioClasses = {
 			'd2l-input-radio': true,
-			'd2l-disabled': this.disabled && !this.skeleton,
-			'd2l-hovering': this._isHovered && !disabled,
+			'd2l-disabled': this.focusDisabled && !this.skeleton,
+			'd2l-hovering': this._isHovered && !this.focusDisabled,
 			'd2l-skeletize': true
 		};
 		const supportingClasses = {
@@ -132,28 +143,33 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 		};
 		const description = this.description ? html`<div id="${this.#descriptionId}" hidden>${this.description}</div>` : nothing;
 		const ariaDescribedByIds = `${this.description ? this.#descriptionId : ''} ${this._hasInlineHelp ? this.#inlineHelpId : ''}`.trim();
-		const tabindex = (!disabled && (this._checked || this._firstFocusable)) ? '0' : undefined;
+		const disabledTooltip = this.disabled && this.disabledTooltip ?
+			html`<d2l-tooltip align="start" class="vdiff-target" for="${this.#inputId}" ?force-show="${this._isHovered}" position="top">${this.disabledTooltip}</d2l-tooltip>` :
+			nothing;
 		return html`
 			<div class="${classMap(labelClasses)}" @mouseover="${this.#handleMouseOver}" @mouseout="${this.#handleMouseOut}">
 				<div
 					aria-checked="${this._checked}"
 					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
-					aria-disabled="${ifDefined(disabled ? 'true' : undefined)}"
+					aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}"
 					aria-invalid="${ifDefined(this._invalid ? 'true' : undefined)}"
 					aria-labelledby="${this.#labelId}"
 					class="${classMap(radioClasses)}"
+					id="${this.#inputId}"
 					role="radio"
-					tabindex="${ifDefined(tabindex)}"></div>
+					tabindex="${ifDefined(allowFocus ? '0' : undefined)}"></div>
 				<div id="${this.#labelId}" class="d2l-skeletize">${this.label}</div>
 			</div>
 			${this._renderInlineHelp(this.#inlineHelpId)}
 			${description}
+			${disabledTooltip}
 			<div class="${classMap(supportingClasses)}" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
 		`;
 	}
 
 	#descriptionId = getUniqueId();
 	#inlineHelpId = getUniqueId();
+	#inputId = getUniqueId();
 	#labelId = getUniqueId();
 
 	#handleMouseOut() {
