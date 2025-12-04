@@ -228,11 +228,17 @@ class ListItemGenericLayout extends LitElement {
 					[content-end end];
 				height: 100%;
 			}
+
+			:host([layout="tile"]) ::slotted([slot="header"]) {
+				grid-column: start / end;
+				grid-row: header-start / header-end;
+			}
+
 			:host([layout="tile"]) ::slotted([slot="content"]),
 			:host([layout="tile"]) ::slotted([slot="content-action"]),
 			:host([layout="tile"]) ::slotted([slot="control-action"]) {
 				grid-column: start / end;
-				grid-row: start / end;
+				grid-row: content-start / end;
 			}
 			:host([layout="tile"]) ::slotted([slot="outside-control-container"]) {
 				grid-column: start / end;
@@ -240,11 +246,12 @@ class ListItemGenericLayout extends LitElement {
 			}
 			:host([layout="tile"]) ::slotted([slot="control"]) {
 				grid-column: control-start / control-end;
-				grid-row: start;
+				grid-row: start / start;
 				pointer-events: all;
 				width: unset;
 			}
 
+			:host(:not([layout="tile"])) slot[name="header"],
 			:host([layout="tile"]) slot[name="add-top"],
 			:host([layout="tile"]) slot[name="control-container"],
 			:host([layout="tile"]) slot[name="before-content"],
@@ -291,6 +298,7 @@ class ListItemGenericLayout extends LitElement {
 		return html`
 			<slot name="add-top" class="d2l-cell" data-cell-num="10"></slot>
 
+			<slot name="header"></slot>
 			<slot name="control-container"></slot>
 			<slot name="outside-control-container"></slot>
 			<slot name="before-content"></slot>

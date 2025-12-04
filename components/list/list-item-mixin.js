@@ -102,6 +102,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 * @type {'normal'|'none'}
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
+			/**
+			 * Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive.
+			 * @type {boolean}
+			 */
+			tileHeader: { type: Boolean, reflect: true, attribute: 'tile-header' },
 			_addButtonText: { state: true },
 			_displayKeyboardTooltip: { type: Boolean },
 			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
@@ -459,6 +464,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				max-height: unset;
 				max-width: calc(100% + 1.1rem);
 			}
+			:host([layout="tile"][tile-header]) [slot="content"] ::slotted([slot="illustration"]),
+			:host([layout="tile"][tile-header]) .d2l-list-item-illustration > * {
+				border-radius: 0;
+				margin-block: -0.6rem 0.6rem;
+			}
 
 			:host([layout="tile"]) [slot="content"] ::slotted(d2l-icon[slot="illustration"]),
 			:host([layout="tile"]) .d2l-list-item-illustration > d2l-icon[slot="illustration"] {
@@ -513,14 +523,16 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 
 			:host([layout="tile"]) d2l-selection-input {
+				margin: 0;
+			}
+			:host([layout="tile"]:not([tile-header])) d2l-selection-input {
 				--d2l-input-checkbox-border-color-hover-focus: var(--d2l-color-celestine-minus-1);
 				--d2l-input-radio-border-color-hover-focus: var(--d2l-color-celestine-minus-1);
 				border: 2px solid transparent;
 				border-radius: 8px;
-				margin: 0;
 				padding: 3px;
 			}
-			:host([layout="tile"][_focusing]) d2l-selection-input {
+			:host([layout="tile"][_focusing]:not([tile-header])) d2l-selection-input {
 				border: 2px solid white;
 			}
 			:host([layout="tile"]) [slot="control"] {
@@ -529,13 +541,27 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				box-sizing: border-box;
 				margin: 0.5rem;
 				outline: 2px solid transparent;
+				position: absolute;
 			}
-			:host([layout="tile"][_focusing]) [slot="control"] {
+			:host([layout="tile"][_focusing]:not([tile-header])) [slot="control"] {
 				background-color: var(--d2l-color-celestine);
 				outline-color: var(--d2l-color-celestine-minus-1);
 			}
 			:host([layout="tile"][skeleton]) [slot="control"] {
 				background-color: transparent;
+			}
+			:host([layout="tile"][tile-header]) [slot="control"] {
+				background-color: transparent;
+				margin: 0.2rem 0.6rem;
+				position: static;
+			}
+
+			:host([layout="tile"]) [slot="header"] {
+				background-color: var(--d2l-color-gypsum);
+				border-end-end-radius: 0;
+				border-end-start-radius: 0;
+				border-start-end-radius: 5px;
+				border-start-start-radius: 5px;
 			}
 
 		`];
@@ -549,6 +575,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this.first = false;
 		this.noPrimaryAction = false;
 		this.paddingType = 'normal';
+		this.tileHeader = false;
 		this._addButtonTopId = getUniqueId();
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
@@ -853,6 +880,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					</d2l-button-add>
 				</div>
 				` : nothing}
+				<div slot="header"></div>
 				<div slot="outside-control-container" class="${classMap(outsideClasses)}"></div>
 				<div slot="before-content"></div>
 				${this._renderDropTarget()}
