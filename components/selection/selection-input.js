@@ -58,14 +58,6 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			:host([hidden]) {
 				display: none;
 			}
-
-			.d2l-input-radio-disabled-tooltip.d2l-disabled:hover,
-			.d2l-input-radio-disabled-tooltip.d2l-disabled.d2l-hovering,
-			.d2l-input-radio-disabled-tooltip.d2l-disabled:${unsafeCSS(getFocusPseudoClass())} {
-				border-color: var(--d2l-color-celestine) !important;
-				border-width: 2px !important;
-				opacity: 1 !important;
-			}
 		`];
 	}
 

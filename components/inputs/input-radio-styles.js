@@ -78,12 +78,18 @@ export const radioStyles = css`
 	.d2l-input-radio-label-disabled:not(.d2l-input-radio-label-disabled-tooltip) > input[type="radio"] {
 		opacity: 1;
 	}
+	.d2l-input-radio.d2l-input-radio-disabled-tooltip.d2l-hovering,
+	.d2l-input-radio.d2l-input-radio-disabled-tooltip:hover,
+	.d2l-input-radio.d2l-input-radio-disabled-tooltip:focus,
 	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio.d2l-hovering,
 	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio:hover,
 	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio:focus,
 	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio-label > input[type="radio"]:hover,
 	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio-label > input[type="radio"]:focus {
 		background-color: color-mix(in srgb, var(--d2l-color-regolith) 50%, transparent); /* mock background opacity */
+		border-color: var(--d2l-input-radio-border-color-hover-focus, var(--d2l-color-celestine));
+		border-width: 2px;
+		outline: none;
 		opacity: 1;
 	}
 
