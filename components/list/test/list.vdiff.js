@@ -132,7 +132,17 @@ function createListItemContentParams({ includeLongText = true, nested = false, p
 	}
 }
 
-function createItem({ color, href, illustration = nothing, paddingType, selectable = false, selected = false, selectionDisabled = false, skeleton = false, template = 'Item 1', tileHeader = false, width } = {}) {
+function createItemActions({ template, translucent = false } = {}) {
+	template = template || html`
+		<d2l-button-icon icon="tier1:pin-filled" text="Pin" ?translucent="${translucent}"></d2l-button-icon>
+		<d2l-button-icon icon="tier1:more" text="More" ?translucent="${translucent}"></d2l-button-icon>
+	`;
+	return html`
+		<div slot="actions">${template}</div>
+	`;
+}
+
+function createItem({ actions = nothing, color, href, illustration = nothing, paddingType, selectable = false, selected = false, selectionDisabled = false, skeleton = false, template = 'Item 1', tileHeader = false, width } = {}) {
 	const styles = {};
 	if (width) styles['width'] = width;
 	return html`
@@ -150,6 +160,7 @@ function createItem({ color, href, illustration = nothing, paddingType, selectab
 			?tile-header="${tileHeader}">
 			${illustration}
 			${template}
+			${actions}
 		</d2l-list-item>
 	`;
 }
@@ -201,14 +212,7 @@ describe('list', () => {
 		// separators
 		{ name: 'list separators none', template: createList({ separators: 'none', layout: listLayouts.list }) },
 		{ name: 'list separators all', template: createList({ separators: 'all', layout: listLayouts.list }) },
-		{ name: 'list separators between', template: createList({ separators: 'between', layout: listLayouts.list }) },
-		{ name: 'list extend-separators', template: createList({ extendSeparators: true, separators: 'all', layout: listLayouts.list }) },
-		{ name: 'tiles extend-separators', template: createList({ extendSeparators: true, separators: 'all', layout: listLayouts.tiles }) },
-		// selection
-		{ name: 'tiles item selectable tile-header no illustration', template: createList({ itemsTemplate: createItem({ selectable: true, template: createListItemContent(), tileHeader: true }), layout: listLayouts.tiles, width: '400px' }), margin: 24, target: 'd2l-list-item' },
-		{ name: 'tiles item selectable tile-header no illustration focus', template: createList({ itemsTemplate: createItem({ selectable: true, template: createListItemContent(), tileHeader: true }), layout: listLayouts.tiles, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
-		{ name: 'tiles item selectable tile-header no illustration hover', template: createList({ itemsTemplate: createItem({ selectable: true, template: createListItemContent(), tileHeader: true }), layout: listLayouts.tiles, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
-		{ name: 'tiles item selectable tile-header illustration', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent(), tileHeader: true }), layout: listLayouts.tiles, width: '400px' }), margin: 24, target: 'd2l-list-item' }
+		{ name: 'list separators between', template: createList({ separators: 'between', layout: listLayouts.list }) }
 	].forEach(({ name, template, action, margin, target }) => {
 
 		it(name, async() => {
@@ -224,6 +228,8 @@ describe('list', () => {
 		describe(layout, () => {
 
 			[
+				// separators
+				{ name: 'extend-separators', template: createList({ extendSeparators: true, separators: 'all', layout }) },
 				// padding-type
 				{ name: 'item padding-type none', template: createList({ itemsTemplate: createItem({ paddingType: 'none' }), layout }), target: 'd2l-list-item' },
 				// list-item-content
@@ -262,33 +268,59 @@ describe('list', () => {
 				{ name: 'item illustration slot icon', template: createList({ itemsTemplate: createItem({ illustration: createIconIllustration(), template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' },
 				{ name: 'item illustration slot icon custom', template: createList({ itemsTemplate: createItem({ illustration: createIconIllustration({ styles: { height: '6rem', padding: '1.5rem' } }), template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' },
 				{ name: 'item illustration slot div', template: createList({ itemsTemplate: createItem({ illustration: createDivIllustration(), template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' },
-				// selection
-				{ name: 'item multiple selectable no illustration', template: createList({ itemsTemplate: createItem({ selectable: true, template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				// selection (multiple)
 				{ name: 'item multiple selectable illustration', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
-				{ name: 'item multiple selectable selected', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selected: true, template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
-				{ name: 'item multiple selectable selection-disabled', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selectionDisabled: true, template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
-				{ name: 'item multiple selectable selection-disabled selected', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selectionDisabled: true, selected: true, template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
-				{ name: 'item multiple selectable not selected focus', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent() }), layout, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
-				{ name: 'item multiple selectable not selected hover', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent() }), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
-				{ name: 'item multiple selectable selected focus', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selected: true, template: createListItemContent() }), layout, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
-				{ name: 'item multiple selectable selected hover', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selected: true, template: createListItemContent() }), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
-				{ name: 'item multiple selectable selection-disabled focus', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selectionDisabled: true, template: createListItemContent() }), layout, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
-				{ name: 'item multiple selectable selection-disabled hover', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selectionDisabled: true, template: createListItemContent() }), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
-				{ name: 'item multiple selectable skeleton', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, skeleton: true, template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
-				{ name: 'item multiple selectable extend-separators', template: createList({ extendSeparators: true, itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
-				{ name: 'item single selectable no illustration', template: createList({ itemsTemplate: createItem({ selectable: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable illustration rtl', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent() }), layout, width: '400px' }), margin: 24, rtl: true, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable illustration selected', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selected: true, template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable illustration selection-disabled', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selectionDisabled: true, template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable illustration selection-disabled selected', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selected: true, selectionDisabled: true, template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable illustration not selected focus', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent() }), layout, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable illustration not selected hover', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent() }), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable illustration selected focus', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selected: true, template: createListItemContent() }), layout, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable illustration selected hover', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selected: true, template: createListItemContent() }), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable illustration skeleton', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, skeleton: true, template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable tile-header', template: createList({ itemsTemplate: createItem({ selectable: true, template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable tile-header rtl', template: createList({ itemsTemplate: createItem({ selectable: true, template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, rtl: true, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable tile-header selected', template: createList({ itemsTemplate: createItem({ selectable: true, selected: true, template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable tile-header selection-disabled', template: createList({ itemsTemplate: createItem({ selectable: true, selectionDisabled: true, template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable tile-header selection-disabled selected', template: createList({ itemsTemplate: createItem({ selectable: true, selected: true, selectionDisabled: true, template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable tile-header not selected focus', template: createList({ itemsTemplate: createItem({ selectable: true, template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable tile-header not selected hover', template: createList({ itemsTemplate: createItem({ selectable: true, template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable tile-header selected focus', template: createList({ itemsTemplate: createItem({ selectable: true, selected: true, template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable tile-header selected hover', template: createList({ itemsTemplate: createItem({ selectable: true, selected: true, template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item multiple selectable tile-header skeleton', template: createList({ itemsTemplate: createItem({ selectable: true, skeleton: true, template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				// selection (single)
 				{ name: 'item single selectable illustration', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), margin: 24, target: 'd2l-list-item' },
-				{ name: 'item single selectable selected', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selected: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), margin: 24, target: 'd2l-list-item' },
-				{ name: 'item single selectable selection-disabled', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selectionDisabled: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), margin: 24, target: 'd2l-list-item' },
-				{ name: 'item single selectable not selected focus', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
-				{ name: 'item single selectable not selected hover', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
-				{ name: 'item single selectable selected focus', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selected: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
-				{ name: 'item single selectable selected hover', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selected: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
-				{ name: 'item single selectable extend-separators', template: createList({ extendSeparators: true, itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), margin: 24, target: 'd2l-list-item' }
-			].forEach(({ name, template, action, margin, target }) => {
+				{ name: 'item single selectable illustration selected', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selected: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item single selectable illustration selection-disabled', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selectionDisabled: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item single selectable illustration skeleton', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, skeleton: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item single selectable illustration not selected focus', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item single selectable illustration not selected hover', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item single selectable illustration selected focus', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selected: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item single selectable illustration selected hover', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, selected: true, template: createListItemContent() }), layout, selectionSingle: true, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item single selectable tile-header', template: createList({ itemsTemplate: createItem({ selectable: true, template: createListItemContent(), tileHeader: true }), layout, selectionSingle: true, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item single selectable tile-header selected', template: createList({ itemsTemplate: createItem({ selectable: true, selected: true, template: createListItemContent(), tileHeader: true }), layout, selectionSingle: true, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item single selectable tile-header selection-disabled', template: createList({ itemsTemplate: createItem({ selectable: true, selectionDisabled: true, template: createListItemContent(), tileHeader: true }), layout, selectionSingle: true, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item single selectable tile-header skeleton', template: createList({ itemsTemplate: createItem({ selectable: true, skeleton: true, template: createListItemContent(), tileHeader: true }), layout, selectionSingle: true, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item single selectable tile-header not selected focus', template: createList({ itemsTemplate: createItem({ selectable: true, template: createListItemContent(), tileHeader: true }), layout, selectionSingle: true, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item single selectable tile-header not selected hover', template: createList({ itemsTemplate: createItem({ selectable: true, template: createListItemContent(), tileHeader: true }), layout, selectionSingle: true, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item single selectable tile-header selected focus', template: createList({ itemsTemplate: createItem({ selectable: true, selected: true, template: createListItemContent(), tileHeader: true }), layout, selectionSingle: true, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item' },
+				{ name: 'item single selectable tile-header selected hover', template: createList({ itemsTemplate: createItem({ selectable: true, selected: true, template: createListItemContent(), tileHeader: true }), layout, selectionSingle: true, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item' },
+				// other odd selection cases
+				{ name: 'item selectable tile-header illustration', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item selectable extend-separators', template: createList({ extendSeparators: true, itemsTemplate: createItem({ illustration: createImgIllustration(), selectable: true, template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				// actions
+				{ name: 'item actions illustration translucent', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createImgIllustration(), template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item actions illustration translucent rtl', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createImgIllustration(), template: createListItemContent() }), layout, width: '400px' }), margin: 24, rtl: true, target: 'd2l-list-item' },
+				{ name: 'item actions illustration extend-separators', template: createList({ extendSeparators: true, itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createImgIllustration(), template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item actions tile-header', template: createList({ itemsTemplate: createItem({ actions: createItemActions(), template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item actions tile-header rtl', template: createList({ itemsTemplate: createItem({ actions: createItemActions(), template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, rtl: true, target: 'd2l-list-item' },
+				{ name: 'item actions tile-header extend-separators', template: createList({ extendSeparators: true, itemsTemplate: createItem({ actions: createItemActions(), template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item actions tile-header link', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ template: html`<d2l-link href="http://www.d2l.com">Action 1</d2l-link>` }), template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' }
+			].forEach(({ name, template, action, margin, rtl, target }) => {
 
 				it(name, async() => {
-					const elem = await fixture(template);
+					const elem = await fixture(template, { rtl });
 					if (action) await action(elem);
 					await expect(elem.querySelector(target) ?? elem).to.be.golden({ margin });
 				});
@@ -360,45 +392,6 @@ describe('list', () => {
 					const elem = await fixture(template);
 					await expect(elem).to.be.golden();
 				});
-			});
-		});
-	});
-
-	describe('actions', () => {
-		function createActionsList(opts) {
-			const { extendSeparators } = { extendSeparators: false, ...opts };
-			return html`
-				<d2l-list ?extend-separators="${extendSeparators}" style="width: 400px;">
-					<d2l-list-item>
-						<div>Item 1</div>
-						<div slot="actions">
-							<d2l-link href="http://www.d2l.com">Action 1</d2l-link>
-							<d2l-button-icon text="Action 2" icon="tier1:preview"></d2l-button-icon>
-						</div>
-					</d2l-list-item>
-				</d2l-list>
-			`;
-		}
-
-		[
-			{ name: 'default', template: createActionsList() },
-			{ name: 'extended separators', template: createActionsList({ extendSeparators: true }) },
-			{ name: 'rtl', rtl: true, template: html`
-				<d2l-list style="width: 400px;">
-					<d2l-list-item>
-						<div slot="illustration" style="background-color: blue; height: 400px; width: 400px;"></div>
-						<div>Item 1</div>
-						<div slot="actions">
-							<d2l-button-icon text="Action 1" icon="tier1:preview"></d2l-button-icon>
-							<d2l-button-icon text="Action 2" icon="tier1:more"></d2l-button-icon>
-						</div>
-					</d2l-list-item>
-				</d2l-list>
-			` },
-		].forEach(({ name, template, rtl }) => {
-			it(name, async() => {
-				const elem = await fixture(template, { rtl });
-				await expect(elem).to.be.golden();
 			});
 		});
 	});
