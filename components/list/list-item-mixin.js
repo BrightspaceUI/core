@@ -583,6 +583,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-inline: 1px;
 			}
 
+			:host([layout="tile"]) .d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
+			:host([layout="tile"]) .d2l-list-item-content-extend-separators .d2l-list-item-actions > * {
+				margin-inline: 0;
+			}
+
 		`];
 
 		super.styles && styles.unshift(super.styles);
