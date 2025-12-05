@@ -28,7 +28,6 @@ import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
-import { getFlag } from '../../helpers/flags.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -38,8 +37,6 @@ const ARROWLEFT_KEY_CODE = 37;
 const ESCAPE_KEY_CODE = 27;
 const FILTER_CONTENT_CLASS = 'd2l-filter-dropdown-content';
 const SET_DIMENSION_ID_PREFIX = 'list-';
-
-const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 let hasDisplayedKeyboardTooltip = false;
 
@@ -141,11 +138,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 				flex-grow: 1;
 				padding-inline-end: calc(2rem + 2px);
 				text-align: center;
-				${overflowClipEnabled ? overflowEllipsisDeclarations : css`
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-				`}
+				${overflowEllipsisDeclarations}
 			}
 
 			.d2l-filter-dimension-set-value {
@@ -154,7 +147,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 				display: flex;
 				gap: 0.45rem;
 				line-height: unset;
-				${overflowClipEnabled ? css`` : css`overflow: hidden;`}
 			}
 			.d2l-filter-dimension-set-value d2l-icon {
 				flex-shrink: 0;
@@ -169,13 +161,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 			.d2l-filter-dimension-set-value-text {
 				hyphens: auto;
-				${overflowClipEnabled ? getOverflowDeclarations({ lines: 2 }) : css`
-					-webkit-box-orient: vertical;
-					display: -webkit-box;
-					-webkit-line-clamp: 2;
-					overflow: hidden;
-					overflow-wrap: anywhere;
-				`}
+				${getOverflowDeclarations({ lines: 2 })}
 			}
 
 			d2l-list-item[selection-disabled] .d2l-filter-dimension-set-value,

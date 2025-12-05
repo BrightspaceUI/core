@@ -1,10 +1,7 @@
 import './breadcrumb.js';
 import { css, html, LitElement } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
-
-const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 /**
  * Help users understand where they are within the application, and provide useful clues about how the space is organized. They also provide a convenient navigation mechanism.
@@ -25,15 +22,12 @@ class Breadcrumbs extends LocalizeCoreElement(LitElement) {
 	static get styles() {
 		return css`
 			:host {
-				${overflowClipEnabled ? css`clip-path: rect(-1em 100% calc(100% + 1em) -1em);` : css``}
+				clip-path: rect(-1em 100% calc(100% + 1em) -1em);
 				display: block;
 				font-size: 0.7rem;
 				line-height: 1.05rem;
 				position: relative;
-				${overflowClipEnabled ? overflowEllipsisDeclarations : css`
-					overflow: hidden;
-					white-space: nowrap;
-				`}
+				${overflowEllipsisDeclarations}
 			}
 			:host([hidden]) {
 				display: none;
