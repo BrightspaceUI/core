@@ -183,7 +183,7 @@ export const SelectionMixin = superclass => class extends CollectionMixin(superc
 			while (focusable) {
 				if (focusable.classList.contains('d2l-selection-input-radio')) {
 					const selectionInput = focusable.getRootNode().host;
-					if (!selectionInput.disabled && this._selectionSelectables.has(selectionInput)) return selectionInput;
+					if (!selectionInput.focusDisabled && this._selectionSelectables.has(selectionInput)) return selectionInput;
 				}
 
 				if (!isComposedAncestor(this, focusable)) return null;
@@ -206,7 +206,7 @@ export const SelectionMixin = superclass => class extends CollectionMixin(superc
 		}
 
 		if (selectionInput) {
-			selectionInput.selected = true;
+			if (!selectionInput.disabled) selectionInput.selected = true;
 			selectionInput.focus();
 		}
 
