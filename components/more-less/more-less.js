@@ -12,8 +12,6 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const transitionDur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 400;
-const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
-const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
 /**
  * A component used to minimize the display of long content, while providing a way to reveal the full content.
@@ -54,18 +52,14 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	static get styles() {
 		return css`
 			:host {
-				${overflowClipEnabled ? css`display: flow-root;` : css`display: block;`}
+				display: flow-root;
 			}
 
 			.d2l-more-less-content {
-				${overflowClipEnabled ? css`
-					display: flow-root;
-					margin: -1em -1em 0;
-					padding: 1em 1em 0;
-					${overflowHiddenDeclarations}
-				` : css`
-					overflow: hidden;
-				`}
+				display: flow-root;
+				margin: -1em -1em 0;
+				padding: 1em 1em 0;
+				${overflowHiddenDeclarations}
 			}
 			.d2l-more-less-transition {
 				transition: max-height ${transitionDur}ms cubic-bezier(0, 0.7, 0.5, 1);
@@ -244,28 +238,14 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 		const target = e.composedPath()[0] || e.target;
 
-		if (overflowClipEnabled) {
-			const em = parseInt(getComputedStyle(this.__content).getPropertyValue('font-size'));
-			const { y: contentY, height: contentHeight } = this.__content.getBoundingClientRect();
-			const { y: targetY, height: targetHeight } = target.getBoundingClientRect();
+		const em = parseInt(getComputedStyle(this.__content).getPropertyValue('font-size'));
+		const { y: contentY, height: contentHeight } = this.__content.getBoundingClientRect();
+		const { y: targetY, height: targetHeight } = target.getBoundingClientRect();
 
-			if (targetY + targetHeight > contentY + contentHeight - em) {
-				this.__expand();
-				this.__autoExpanded = true;
-				await (transitionDur && new Promise(r => setTimeout(r, transitionDur)));
-			}
-		} else {
-			if (isSafari) {
-				target.scrollIntoViewIfNeeded?.();
-				setTimeout(() => this.__content.scrollTo({ top: 0, behavior: 'instant' }), 1);
-			}
-
-			if (this.__content.scrollTop) {
-				this.__content.scrollTo({ top: 0, behavior: 'instant' });
-				this.__expand();
-				this.__autoExpanded = true;
-				await (transitionDur && new Promise(r => setTimeout(r, transitionDur)));
-			}
+		if (targetY + targetHeight > contentY + contentHeight - em) {
+			this.__expand();
+			this.__autoExpanded = true;
+			await (transitionDur && new Promise(r => setTimeout(r, transitionDur)));
 		}
 	}
 

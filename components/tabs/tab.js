@@ -1,11 +1,8 @@
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { getFlag } from '../../helpers/flags.js';
 import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { TabMixin } from './tab-mixin.js';
-
-const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 const focusRingStyles = getFocusRingStyles(
 	pseudoClass => `:host(:${pseudoClass}) .d2l-tab-text-inner-content`,
@@ -56,11 +53,7 @@ class Tab extends TabMixin(LitElement) {
 				color: var(--d2l-color-celestine);
 			}
 			span {
-				${overflowClipEnabled ? overflowEllipsisDeclarations : css`
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-				`}
+				${overflowEllipsisDeclarations}
 			}
 			.d2l-tab-text-skeletize-override {
 				min-width: 50px;

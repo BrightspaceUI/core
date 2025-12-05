@@ -1,12 +1,9 @@
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { MenuItemMixin } from './menu-item-mixin.js';
 import { menuItemStyles } from './menu-item-styles.js';
 import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
-
-const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 class MenuItemReturn extends LocalizeCoreElement(MenuItemMixin(LitElement)) {
 
@@ -21,13 +18,7 @@ class MenuItemReturn extends LocalizeCoreElement(MenuItemMixin(LitElement)) {
 				span {
 					flex: auto;
 					line-height: 1rem;
-					${overflowClipEnabled ? overflowEllipsisDeclarations : css`
-						overflow-x: hidden;
-						overflow-y: hidden;
-						text-decoration: none;
-						text-overflow: ellipsis;
-						white-space: nowrap;
-					`}
+					${overflowEllipsisDeclarations}
 				}
 
 				d2l-icon {
