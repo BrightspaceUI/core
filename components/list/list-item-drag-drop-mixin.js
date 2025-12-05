@@ -367,6 +367,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		this.dropNested = false;
 	}
 
+	get disabledDrop() {
+		return this._dropNestedOnly && !this.dropNested;
+	}
+
 	connectedCallback() {
 		super.connectedCallback();
 		if (!this.key) {
@@ -391,10 +395,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	activateDragHandle() {
 		if (this.shadowRoot) this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
-	}
-
-	get disabledDrop() {
-		return this._dropNestedOnly && !this.dropNested;
 	}
 
 	_annoucePositionChange(dragTargetKey, dropTargetKey, dropLocation) {
