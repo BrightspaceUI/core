@@ -220,19 +220,25 @@ class ListItemGenericLayout extends LitElement {
 			:host([layout="tile"]) {
 				grid-template-columns:
 					[start control-start] minmax(0, min-content)
-					[control-end] minmax(0, auto)
-					[end];
+					[control-end actions-start] minmax(0, auto)
+					[actions-end end];
 				grid-template-rows:
 					[start header-start] minmax(0, min-content)
 					[header-end content-start] auto
 					[content-end end];
 				height: 100%;
 			}
+
+			:host([layout="tile"]) ::slotted([slot="header"]) {
+				grid-column: start / end;
+				grid-row: header-start / header-end;
+			}
+
 			:host([layout="tile"]) ::slotted([slot="content"]),
 			:host([layout="tile"]) ::slotted([slot="content-action"]),
 			:host([layout="tile"]) ::slotted([slot="control-action"]) {
 				grid-column: start / end;
-				grid-row: start / end;
+				grid-row: content-start / end;
 			}
 			:host([layout="tile"]) ::slotted([slot="outside-control-container"]) {
 				grid-column: start / end;
@@ -240,11 +246,17 @@ class ListItemGenericLayout extends LitElement {
 			}
 			:host([layout="tile"]) ::slotted([slot="control"]) {
 				grid-column: control-start / control-end;
-				grid-row: start;
+				grid-row: start / start;
 				pointer-events: all;
 				width: unset;
 			}
 
+			:host([layout="tile"]) ::slotted([slot="actions"]) {
+				grid-column: actions-start / actions-end;
+				grid-row: start / start;
+			}
+
+			:host(:not([layout="tile"])) slot[name="header"],
 			:host([layout="tile"]) slot[name="add-top"],
 			:host([layout="tile"]) slot[name="control-container"],
 			:host([layout="tile"]) slot[name="before-content"],
@@ -252,7 +264,6 @@ class ListItemGenericLayout extends LitElement {
 			:host([layout="tile"]) slot[name="outside-control-action"],
 			:host([layout="tile"]) slot[name="color-indicator"],
 			:host([layout="tile"]) slot[name="expand-collapse"],
-			:host([layout="tile"]) slot[name="actions"],
 			:host([layout="tile"]) slot[name="drop-target"],
 			:host([layout="tile"]) slot[name="nested"],
 			:host([layout="tile"]) slot[name="add"] {
@@ -293,6 +304,7 @@ class ListItemGenericLayout extends LitElement {
 
 			<slot name="control-container"></slot>
 			<slot name="outside-control-container"></slot>
+			<slot name="header"></slot>
 			<slot name="before-content"></slot>
 
 			<slot name="content-action" class="d2l-cell" data-cell-num="6"></slot>
