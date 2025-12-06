@@ -55,11 +55,12 @@ input.addEventListener('change', (e) => {
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
 
-### Accessibility Properties
+## Accessibility
 
-To make your usage of `d2l-input-color` accessible, use the following properties when applicable:
+At its core, the color input is a button, so it relies on standard button semantics and adheres to [W3C's Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button) to ensure a smooth experience for all assistive technologies, but there are a few interesting details to note:
 
-| Attribute | Description |
-|---|---|
-| `label` | **REQUIRED** when type is `custom`. [Acts as a primary label for the button](https://www.w3.org/WAI/tutorials/forms/labels/). Visible unless `label-hidden` is also used. |
-| `label-hidden` | Use if label should be visually hidden. |
+ * `label` is required if `type` is `custom`, since it acts as a primary label for the button
+   * However, if `type` is set to `background` or `foreground` the `label` a simple default will be used if `label` is left empty
+ * `label-hidden` can be used to hide the label when there is sufficient visual context for sighted users; the label will remain available to screen reader users who may lack the visual context
+ * `associated-value` allows you to set a hex color against which the input's color contrast will be measured by the MVC color picker dialog, which ensures end users will get appropriate warnings if they choose inaccessible color combinations
+ * The color input remains focusable even when `disabled` or in `read-only` mode, so that users can access the tooltip giving the current value
