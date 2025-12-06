@@ -1,5 +1,5 @@
 import '../typography.js';
-import { expect, fixture, html } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
 
 const longText = 'Grumpy wizards make toxic brew for the evil Queen and Jack. Grumpy wizards make toxic brew for the evil Queen and Jack.';
 
@@ -24,6 +24,14 @@ describe('typography', () => {
 				it(`heading-${level}`, async() => {
 					const elem = await fixture(createTypographyWrapper(html`<h1 class="d2l-heading-${level}">${`Heading ${level}`}</h1>`), { viewport });
 					await expect(elem).to.be.golden({ margin: 0 });
+				});
+				it(`heading-${level}-focus`, async() => {
+					const elem = await fixture(html`
+							<div class="d2l-typography" style="max-width: 320px;">
+								<h1 class="d2l-heading-${level}" tabindex="-1">${`Heading ${level}`}</h1>
+							</div>`, { viewport });
+					await focusElem(elem.firstElementChild);
+					await expect(elem).to.be.golden();
 				});
 			});
 
