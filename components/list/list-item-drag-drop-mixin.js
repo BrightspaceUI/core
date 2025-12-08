@@ -367,7 +367,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		this.dropNested = false;
 	}
 
-	get disabledDrop() {
+	get dropDisabled() {
 		return this._dropNestedOnly && !this.dropNested;
 	}
 
@@ -551,7 +551,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		this.dragging = false;
 
 		// check the dropEffect in case the user cancelled by Escape while dragging ('none' set by browser)
-		if (!dragState.dropTarget?.disabledDrop && e.dataTransfer.dropEffect !== 'none' && dragState.shouldDrop(e.timeStamp)) {
+		if (!dragState.dropTarget?.dropDisabled && e.dataTransfer.dropEffect !== 'none' && dragState.shouldDrop(e.timeStamp)) {
 
 			const dropTargetList = findComposedAncestor(dragState.dropTarget, node => node.tagName === 'D2L-LIST');
 			const shouldDispatchPositionChange = !dragState.dragTargets.find(dragTarget => {
@@ -615,7 +615,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	_onDragOver(e) {
-		if (!this.key || this.disabledDrop) return;
+		if (!this.key || this.dropDisabled) return;
 		const dragState = getDragState();
 		dragState.updateTime(e.timeStamp);
 		e.preventDefault();
@@ -903,7 +903,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	}
 
 	#onDropEnterHelper(e, isTopHalf, isMiddle) {
-		if (this.disabledDrop) return;
+		if (this.dropDisabled) return;
 		e.dataTransfer.dropEffect = 'move';
 
 		let location;
