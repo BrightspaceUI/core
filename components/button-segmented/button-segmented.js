@@ -6,13 +6,12 @@ import '../icons/icon.js';
 import '../menu/menu.js';
 import { css, html, LitElement } from 'lit';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
-import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
  * A segmented button component.
  */
-class ButtonSegmented extends ArrowKeysMixin(FocusMixin(LocalizeCoreElement(LitElement))) {
+class ButtonSegmented extends ArrowKeysMixin(LocalizeCoreElement(LitElement)) {
 
 	static get styles() {
 		return css`
@@ -31,10 +30,6 @@ class ButtonSegmented extends ArrowKeysMixin(FocusMixin(LocalizeCoreElement(LitE
 				min-height: calc(2rem + 2px);
 			}
 		`;
-	}
-
-	static get focusElementSelector() {
-		return '.main-action';
 	}
 
 	get items() {
