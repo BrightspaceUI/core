@@ -58,6 +58,10 @@ class ButtonSegmented extends ArrowKeysMixin(LocalizeCoreElement(LitElement)) {
 		elem._focusable = true;
 	}
 
+	focus() {
+		this.items.find(i => i._focusable).focus();
+	}
+
 	#handleItemSelect(e) {
 		const items = this.items;
 		for (const item of items) {

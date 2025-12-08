@@ -71,6 +71,12 @@ class ButtonSegmentedItem extends PropertyRequiredMixin(ButtonMixin(LitElement))
 		`];
 	}
 
+	constructor() {
+		super();
+		this.selected = false;
+		this._focusable = false;
+	}
+
 	render() {
 		return html`
 			<button
