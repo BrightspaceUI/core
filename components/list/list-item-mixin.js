@@ -626,6 +626,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this.noPrimaryAction = false;
 		this.paddingType = 'normal';
 		this.tileHeader = false;
+		this.tilePaddingType = 'normal';
 		this._addButtonTopId = getUniqueId();
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
