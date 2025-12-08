@@ -8,7 +8,8 @@ import { labelStyles } from '../typography/styles.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 /**
- * An split button item component used with JS handlers.
+ * A segmented button item component used with JS handlers.
+ * @fires d2l-button-segmented-item-select - Dispatched when the item is selected
  */
 class ButtonSegmentedItem extends PropertyRequiredMixin(ButtonMixin(LitElement)) {
 

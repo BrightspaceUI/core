@@ -18,7 +18,13 @@ describe('d2l-button-segmented', () => {
 
 	[
 		{ name: 'basic' },
-		{ name: 'selected focus', action: focusElem },
+		{
+			name: 'selected focus',
+			action: async() => {
+				items[0]._focusable = true;
+				await focusElem(items[0]);
+			}
+		},
 		{
 			name: 'selected hover',
 			action: async() => {
@@ -41,7 +47,7 @@ describe('d2l-button-segmented', () => {
 	].forEach(({ name, action }) => {
 		it(name, async() => {
 			if (action) await action(elem);
-			expect(elem).to.be.golden();
+			await expect(elem).to.be.golden();
 		});
 	});
 
