@@ -142,7 +142,7 @@ function createItemActions({ template, translucent = false } = {}) {
 	`;
 }
 
-function createItem({ actions = nothing, color, href, illustration = nothing, paddingType, selectable = false, selected = false, selectionDisabled = false, skeleton = false, template = 'Item 1', tileHeader = false, width } = {}) {
+function createItem({ actions = nothing, color, href, illustration = nothing, paddingType, selectable = false, selected = false, selectionDisabled = false, skeleton = false, template = 'Item 1', tileHeader = false, tilePaddingType, width } = {}) {
 	const styles = {};
 	if (width) styles['width'] = width;
 	return html`
@@ -157,7 +157,8 @@ function createItem({ actions = nothing, color, href, illustration = nothing, pa
 			?selection-disabled="${selectionDisabled}"
 			?skeleton="${skeleton}"
 			style="${styleMap(styles)}"
-			?tile-header="${tileHeader}">
+			?tile-header="${tileHeader}"
+			tile-padding-type="${ifDefined(tilePaddingType)}">
 			${illustration}
 			${template}
 			${actions}
@@ -212,7 +213,13 @@ describe('list', () => {
 		// separators
 		{ name: 'list separators none', template: createList({ separators: 'none', layout: listLayouts.list }) },
 		{ name: 'list separators all', template: createList({ separators: 'all', layout: listLayouts.list }) },
-		{ name: 'list separators between', template: createList({ separators: 'between', layout: listLayouts.list }) }
+		{ name: 'list separators between', template: createList({ separators: 'between', layout: listLayouts.list }) },
+		// tile-padding-type
+		{ name: 'tiles item tile-padding-type none', template: createList({ itemsTemplate: createItem({ template: createListItemContent(), tilePaddingType: 'none' }), layout: listLayouts.tiles, width: '400px' }), target: 'd2l-list-item' },
+		{ name: 'tiles item tile-padding-type none illustration', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createImgIllustration(), template: createListItemContent(), tilePaddingType: 'none', selectable: true }), layout: listLayouts.tiles, width: '400px' }), target: 'd2l-list-item' },
+		{ name: 'tiles item tile-padding-type none icon', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createIconIllustration(), template: createListItemContent(), tilePaddingType: 'none', selectable: true }), layout: listLayouts.tiles, width: '400px' }), target: 'd2l-list-item' },
+		{ name: 'tiles item tile-padding-type none tile-header illustration', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createImgIllustration(), template: createListItemContent(), tileHeader: true, tilePaddingType: 'none', selectable: true }), layout: listLayouts.tiles, width: '400px' }), target: 'd2l-list-item' },
+		{ name: 'tiles item tile-padding-type none tile-header icon', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createIconIllustration(), template: createListItemContent(), tileHeader: true, tilePaddingType: 'none', selectable: true }), layout: listLayouts.tiles, width: '400px' }), target: 'd2l-list-item' }
 	].forEach(({ name, template, action, margin, target }) => {
 
 		it(name, async() => {
