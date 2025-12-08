@@ -14,6 +14,10 @@ describe('d2l-input-radio', () => {
 			focusElem(elem);
 			await oneEvent(elem, 'd2l-tooltip-show');
 		} },
+		{ name: 'disabled-tooltip-focus-selected', template: radioFixtures.disabledFirstTooltipChecked, action: async(elem) => {
+			focusElem(elem);
+			await oneEvent(elem, 'd2l-tooltip-show');
+		} },
 		{ name: 'disabled-tooltip-hover', template: radioFixtures.disabledFirstTooltip, action: async(elem) => {
 			hoverElem(elem.querySelector('d2l-input-radio'));
 			await oneEvent(elem, 'd2l-tooltip-show');

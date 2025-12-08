@@ -38,6 +38,13 @@ export const radioFixtures = {
 			<d2l-input-radio label="Marble Rye" value="marble-rye"></d2l-input-radio>
 		</d2l-input-radio-group>
 	`,
+	disabledFirstTooltipChecked: html`
+		<d2l-input-radio-group label="Bread" style="padding: 20px;">
+			<d2l-input-radio label="Whole wheat" value="whole-wheat" checked disabled disabled-tooltip="Tooltip text"></d2l-input-radio>
+			<d2l-input-radio label="Baguette" value="baguette"></d2l-input-radio>
+			<d2l-input-radio label="Marble Rye" value="marble-rye"></d2l-input-radio>
+		</d2l-input-radio-group>
+	`,
 	disabledFirstTooltipThirdChecked: html`
 		<d2l-input-radio-group label="Bread">
 			<d2l-input-radio label="Whole wheat" value="whole-wheat" disabled disabled-tooltip="This option is currently unavailable."></d2l-input-radio>

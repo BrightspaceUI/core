@@ -83,6 +83,7 @@ export const radioStyles = css`
 	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio:focus,
 	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio-label > input[type="radio"]:hover,
 	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio-label > input[type="radio"]:focus {
+	    background-blend-mode: lighten;
 		background-color: color-mix(in srgb, var(--d2l-color-regolith) 50%, transparent); /* mock background opacity */
 		opacity: 1;
 	}
