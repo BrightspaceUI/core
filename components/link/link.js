@@ -6,14 +6,11 @@ import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../hel
 import { _generateLinkStyles } from './link-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { styleMap } from 'lit/directives/style-map.js';
-
-const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 export const linkStyles = _generateLinkStyles('.d2l-link', true);
 
@@ -98,12 +95,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					display: flex;
 				}
 				a span.truncate {
-					${overflowClipEnabled ? getOverflowDeclarations({ lines: 1 }) : css`
-						-webkit-box-orient: vertical;
-						display: -webkit-box;
-						overflow: hidden;
-						overflow-wrap: anywhere;
-					`}
+					${getOverflowDeclarations({ lines: 1 })}
 				}
 				a span.truncate-one {
 					${overflowEllipsisDeclarations}
