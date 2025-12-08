@@ -62,5 +62,5 @@ At its core, the color input is a button, so it relies on standard button semant
  * `label` is required if `type` is `custom`, since it acts as a primary label for the button
    * However, if `type` is set to `background` or `foreground` a simple default will be used if `label` is left empty
  * `label-hidden` can be used to hide the label when there is sufficient visual context for sighted users; the label will remain available to screen reader users who may lack the visual context
- * `associated-value` allows you to set a hex color against which the input's color contrast will be measured by the MVC color picker dialog, which ensures end users will get appropriate warnings if they choose inaccessible color combinations
+ * `associated-value` allows you to set a hex color against which the input's color contrast will be measured, which ensures end users will get appropriate warnings if they choose inaccessible color combinations
  * The color input remains focusable even when `disabled` or in `read-only` mode, so that users can access the tooltip giving the current value
