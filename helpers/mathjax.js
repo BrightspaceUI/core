@@ -38,9 +38,7 @@ class HtmlBlockMathRenderer {
 
 	async render(elem, options) {
 		if (!options.contextValues) return elem;
-		let context = options.contextValues.get(mathjaxContextKey);
-
-		context = context || {
+		let context = options.contextValues.get(mathjaxContextKey) || {
 			renderLatex: false,
 			outputScale: 1
 		};
