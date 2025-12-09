@@ -6,6 +6,16 @@ import { css, html, LitElement } from 'lit';
  */
 class ButtonSegmented extends LitElement {
 
+	static get properties() {
+		return {
+			/**
+			 * ACCESSIBILITY: Label for the segmented button
+			 * @type {string}
+			 */
+			label: { type: String, required: true }
+		};
+	}
+
 	static get styles() {
 		return css`
 			:host {
@@ -35,6 +45,7 @@ class ButtonSegmented extends LitElement {
 			<div
 				class="container"
 				role="listbox"
+				aria-label="${this.label}"
 				@d2l-button-segmented-item-select=${this.#handleItemSelect}
 				@keydown="${this._handleArrowKeys}">
 				<slot @slotchange="${this.#handleSlotChange}"></slot>

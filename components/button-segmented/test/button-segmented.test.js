@@ -1,6 +1,6 @@
 import '../button-segmented.js';
 import '../button-segmented-item.js';
-import { clickElem, expect, fixture, focusElem, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-button-segmented', () => {
 
@@ -12,7 +12,7 @@ describe('d2l-button-segmented', () => {
 
 	});
 
-	let elem, items, after;
+	let elem, items;
 	beforeEach(async() => {
 		elem = await fixture(html`
 			<d2l-button-segmented>
@@ -20,10 +20,8 @@ describe('d2l-button-segmented', () => {
 				<d2l-button-segmented-item key="saveAndClose" text="Save and Close"></d2l-button-segmented-item>
 				<d2l-button-segmented-item key="saveAndNew" text="Save and New"></d2l-button-segmented-item>
 			</d2l-button-segmented>
-			<button id="after">After</button>
 		`);
 		items = elem.querySelectorAll('d2l-button-segmented-item');
-		after = elem.parentElement.querySelector('#after');
 	});
 
 	describe('selection', () => {
