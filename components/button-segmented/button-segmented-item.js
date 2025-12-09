@@ -1,4 +1,3 @@
-import '../button/button.js';
 import '../colors/colors.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { ButtonMixin } from '../button/button-mixin.js';
@@ -29,8 +28,7 @@ class ButtonSegmentedItem extends PropertyRequiredMixin(ButtonMixin(LitElement))
 			 * Indicates if the item is selected
 			 * @type {boolean}
 			 */
-			selected: { type: Boolean, reflect: true },
-			_focusable: { status: true }
+			selected: { type: Boolean, reflect: true }
 		};
 	}
 
@@ -49,10 +47,10 @@ class ButtonSegmentedItem extends PropertyRequiredMixin(ButtonMixin(LitElement))
 				padding-block: 0.3rem;
 				padding-inline: 1rem;
 			}
-			:host(:first-of-type) button {
+			:host(:first-child) button {
 				margin-inline-start: 0.3rem;
 			}
-			:host(:last-of-type) button {
+			:host(:last-child) button {
 				margin-inline-end: 0.3rem;
 			}
 
@@ -74,14 +72,15 @@ class ButtonSegmentedItem extends PropertyRequiredMixin(ButtonMixin(LitElement))
 	constructor() {
 		super();
 		this.selected = false;
-		this._focusable = false;
 	}
 
 	render() {
 		return html`
 			<button
-				tabindex="${this._focusable ? '0' : '-1'}"
 				class="d2l-label-text"
+				role="option"
+				type="button"
+				aria-selected="${this.selected ? 'true' : 'false'}"
 				@click="${this.#handleClick}">
 				${this.text}
 			</button>

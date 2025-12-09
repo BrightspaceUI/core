@@ -33,7 +33,7 @@ class ButtonSegmented extends ArrowKeysMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	get items() {
-		return [...this.querySelectorAll('d2l-button-segmented-item')];
+		return this.shadowRoot.querySelector('slot').assignedElements({ flatten: true }).filter(e => e.tagName.toLowerCase() === 'd2l-button-segmented-item');
 	}
 
 	render() {
@@ -41,6 +41,7 @@ class ButtonSegmented extends ArrowKeysMixin(LocalizeCoreElement(LitElement)) {
 		return html`
 			<div
 				class="container"
+				role="listbox"
 				@d2l-button-segmented-item-select=${this.#handleItemSelect}
 				@keydown="${this._handleArrowKeys}">
 				<slot @slotchange="${this.#handleSlotChange}"></slot>
@@ -48,18 +49,10 @@ class ButtonSegmented extends ArrowKeysMixin(LocalizeCoreElement(LitElement)) {
 		`;
 	}
 
-	arrowKeysFocusablesProvider() {
-		return this.items;
-	}
-
-	arrowKeysOnBeforeFocus(elem) {
-		const currentFocusable = this.items.find(i => i._focusable);
-		if (currentFocusable) currentFocusable._focusable = false;
-		elem._focusable = true;
-	}
-
 	focus() {
-		this.items.find(i => i._focusable).focus();
+		const items = this.items;
+		if (items.length === 0) return;
+		items[0].focus();
 	}
 
 	#handleItemSelect(e) {
@@ -74,7 +67,6 @@ class ButtonSegmented extends ArrowKeysMixin(LocalizeCoreElement(LitElement)) {
 		const items = this.items;
 		if (items.length === 0) return;
 		if (!items.find(i => i.selected)) items[0].selected = true;
-		if (!items.find(i => i._focusable)) items[0]._focusable = true;
 	}
 
 }
