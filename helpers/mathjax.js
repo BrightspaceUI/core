@@ -1,5 +1,3 @@
-import { getFlag } from './flags.js';
-
 /* When updating MathJax, update mathjaxBaseUrl to use the new version
  * and verify that the font mappings included in mathjaxFontMappings
  * match what's present in the MathJax-src repo.
@@ -42,14 +40,10 @@ class HtmlBlockMathRenderer {
 		if (!options.contextValues) return elem;
 		let context = options.contextValues.get(mathjaxContextKey);
 
-		if (getFlag('shield-12649-mathjax-default-context', true)) {
-			context = context || {
-				renderLatex: false,
-				outputScale: 1
-			};
-		} else {
-			if (context === undefined) return elem;
-		}
+		context = context || {
+			renderLatex: false,
+			outputScale: 1
+		};
 
 		if (!elem.querySelector('math') && !(context.renderLatex && /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(elem.innerHTML))) return elem;
 
