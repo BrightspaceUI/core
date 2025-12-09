@@ -20,10 +20,10 @@ if (!document.head.querySelector('#d2l-typography-font-face')) {
 		${_generateBodyCompactStyles('.d2l-typography .d2l-body-compact', false)}
 		${_generateBodySmallStyles('.d2l-typography .d2l-body-small', false)}
 		${_generateLabelStyles('.d2l-typography .d2l-label-text', false)}
-		${_generateHeading1Styles('.d2l-typography .d2l-heading-1')}
-		${_generateHeading2Styles('.d2l-typography .d2l-heading-2')}
-		${_generateHeading3Styles('.d2l-typography .d2l-heading-3')}
-		${_generateHeading4Styles('.d2l-typography .d2l-heading-4')}
+		${_generateHeading1Styles('.d2l-typography .d2l-heading-1', true)}
+		${_generateHeading2Styles('.d2l-typography .d2l-heading-2', true)}
+		${_generateHeading3Styles('.d2l-typography .d2l-heading-3', true)}
+		${_generateHeading4Styles('.d2l-typography .d2l-heading-4', true)}
 		${_generateBlockquoteStyles('.d2l-typography .d2l-blockquote')}
 	`;
 	document.head.appendChild(style);
