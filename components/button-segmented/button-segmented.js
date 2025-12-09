@@ -1,17 +1,10 @@
-import '../button/button.js';
 import '../colors/colors.js';
-import '../dropdown/dropdown.js';
-import '../dropdown/dropdown-menu.js';
-import '../icons/icon.js';
-import '../menu/menu.js';
 import { css, html, LitElement } from 'lit';
-import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
-import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
  * A segmented button component.
  */
-class ButtonSegmented extends ArrowKeysMixin(LocalizeCoreElement(LitElement)) {
+class ButtonSegmented extends LitElement {
 
 	static get styles() {
 		return css`
