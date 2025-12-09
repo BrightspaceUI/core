@@ -98,7 +98,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			noPrimaryAction: { type: Boolean, attribute: 'no-primary-action' },
 			/**
-			 * How much padding to render list items with
+			 * How much padding to render in standard/normal list items
 			 * @type {'normal'|'none'}
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
@@ -107,6 +107,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 * @type {boolean}
 			 */
 			tileHeader: { type: Boolean, reflect: true, attribute: 'tile-header' },
+			/**
+			 * How much padding to render in tile list items
+			 * @type {'normal'|'none'}
+			 * @default "normal"
+			 */
+			tilePaddingType: { type: String, attribute: 'tile-padding-type' },
 			_addButtonText: { state: true },
 			_displayKeyboardTooltip: { type: Boolean },
 			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
@@ -451,6 +457,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				height: 100%;
 				padding: 0.6rem;
 			}
+			:host([layout="tile"][tile-padding-type="none"]) .d2l-list-item-content {
+				padding: 0;
+			}
 
 			:host([layout="tile"]) [slot="content"] ::slotted([slot="illustration"]),
 			:host([layout="tile"]) .d2l-list-item-illustration > * {
@@ -464,10 +473,20 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				max-height: unset;
 				max-width: calc(100% + 1.1rem);
 			}
+			:host([layout="tile"][tile-padding-type="none"]) [slot="content"] ::slotted([slot="illustration"]),
+			:host([layout="tile"][tile-padding-type="none"]) .d2l-list-item-illustration > * {
+				margin-block: 0;
+				margin-inline: 0;
+			}
+
 			:host([layout="tile"][tile-header]) [slot="content"] ::slotted([slot="illustration"]),
 			:host([layout="tile"][tile-header]) .d2l-list-item-illustration > * {
 				border-radius: 0;
 				margin-block: -0.6rem 0.6rem;
+			}
+			:host([layout="tile"][tile-header][tile-padding-type="none"]) [slot="content"] ::slotted([slot="illustration"]),
+			:host([layout="tile"][tile-header][tile-padding-type="none"]) .d2l-list-item-illustration > * {
+				margin-block: 0;
 			}
 
 			:host([layout="tile"]) [slot="content"] ::slotted(d2l-icon[slot="illustration"]),
@@ -481,6 +500,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([layout="tile"]) .d2l-list-item-illustration > d2l-icon[slot="illustration"] {
 				border-bottom: 1px solid var(--d2l-color-mica);
 				width: calc(100% + 1.1rem);
+			}
+			:host([layout="tile"][tile-padding-type="none"]) [slot="content"] ::slotted(div[slot="illustration"]),
+			:host([layout="tile"][tile-padding-type="none"]) .d2l-list-item-illustration > div[slot="illustration"],
+			:host([layout="tile"][tile-padding-type="none"]) [slot="content"] ::slotted(d2l-icon[slot="illustration"]),
+			:host([layout="tile"][tile-padding-type="none"]) .d2l-list-item-illustration > d2l-icon[slot="illustration"] {
+				width: 100%;
 			}
 
 			:host([layout="tile"]:not([selection-disabled]):not([skeleton])[padding-type="none"]) [slot="outside-control-container"],
@@ -601,6 +626,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this.noPrimaryAction = false;
 		this.paddingType = 'normal';
 		this.tileHeader = false;
+		this.tilePaddingType = 'normal';
 		this._addButtonTopId = getUniqueId();
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
