@@ -180,9 +180,10 @@ function createButtonItem({ disabled = false, template = 'Item 1' } = {}) {
 	`;
 }
 
-function createItems({ paddingType, width, withColors = false } = {}) {
+function createItems({ lineBreak, paddingType, width, withColors = false } = {}) {
 	return html`
 		${createItem({ color: withColors ? '#006fbf' : undefined, paddingType, template: 'Item 1', width })}
+		${lineBreak ? html`<div class="d2l-list-item-break"></div>` : nothing}
 		${createItem({ color: withColors ? '#46a661' : undefined, paddingType, template: 'Item 2 - The super fancy awesome item!', width })}
 		${createItem({ paddingType, template: 'Item 3', width })}
 	`;
@@ -270,6 +271,8 @@ describe('list', () => {
 				{ name: 'item button disabled content focus', template: createList({ itemsTemplate: createButtonItem({ disabled: true, template: createListItemContent() }), layout, width: '400px' }), action: focusFirstItem, margin: 24, target: 'd2l-list-item-button' },
 				{ name: 'item button content hover', template: createList({ itemsTemplate: createButtonItem({ template: createListItemContent() }), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item-button' },
 				{ name: 'item button disabled content hover', template: createList({ itemsTemplate: createButtonItem({ disabled: true, template: createListItemContent() }), layout, width: '400px' }), action: hoverFirstItem, margin: 24, target: 'd2l-list-item-button' },
+				// line break
+				{ name: 'line break', template: createList({ itemsTemplate: createItems({ lineBreak: true }), layout }) },
 				// illustration slot
 				{ name: 'item illustration slot img', template: createList({ itemsTemplate: createItem({ illustration: createImgIllustration(), template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' },
 				{ name: 'item illustration slot icon', template: createList({ itemsTemplate: createItem({ illustration: createIconIllustration(), template: createListItemContent() }), layout, width: '400px' }), target: 'd2l-list-item' },

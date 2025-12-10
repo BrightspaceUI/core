@@ -146,6 +146,16 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			:host([add-button]) ::slotted([slot="controls"]) {
 				margin-bottom: calc(6px + 0.4rem); /* controls section margin-bottom + spacing for add-button */
 			}
+
+			::slotted(.d2l-list-item-break) {
+				display: none;
+			}
+			:host([layout="tiles"]) ::slotted(.d2l-list-item-break) {
+				border-top: 1px solid var(--d2l-color-mica);
+				display: block;
+				flex-basis: 100%;
+				height: 0;
+			}
 		`;
 	}
 
