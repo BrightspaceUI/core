@@ -2,11 +2,11 @@ import '../colors/colors.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { ButtonMixin } from '../button/button-mixin.js';
 import { buttonStyles } from '../button/button-styles.js';
+import { formatNumber } from '@brightspace-ui/intl';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { labelStyles } from '../typography/styles.js';
-import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { formatNumber } from '@brightspace-ui/intl';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 /**
@@ -84,12 +84,12 @@ class ButtonSegmentedItem extends PropertyRequiredMixin(ButtonMixin(LocalizeCore
 		const styles = {
 			marginInlineEnd: this._index === this._total - 1 ? '0.3rem' : '0rem',
 			marginInlineStart: this._index === 0 ? '0.3rem' : '0rem'
-		}
+		};
 		return html`
 			<button
 				class="d2l-label-text"
 				type="button"
-				aria-description="${this.localize('components.view-switcher-item-button.position',  {
+				aria-description="${this.localize('components.view-switcher-item-button.position', {
 					index: formatNumber(this._index + 1),
 					total: formatNumber(this._total)
 				})}"
