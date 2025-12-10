@@ -22,12 +22,21 @@ describe('d2l-input-radio', () => {
 			hoverElem(elem.querySelector('d2l-input-radio'));
 			await oneEvent(elem, 'd2l-tooltip-show');
 		} },
+		{ name: 'horizontal-layout', template: radioFixtures.horizontalLayout },
 		{ name: 'inline-help', template: radioFixtures.inlineHelp },
 		{ name: 'skeleton', template: radioFixtures.skeleton },
 		{ name: 'supporting-hidden', template: radioFixtures.supporting },
 		{
 			name: 'supporting',
 			template: radioFixtures.supporting,
+			action: async(elem) => {
+				await clickElem(elem.querySelector('d2l-input-radio[label="Other"]'));
+				await elem.updateComplete;
+			}
+		},
+		{
+			name: 'supporting-horizontal',
+			template: radioFixtures.supportingHorizontal,
 			action: async(elem) => {
 				await clickElem(elem.querySelector('d2l-input-radio[label="Other"]'));
 				await elem.updateComplete;

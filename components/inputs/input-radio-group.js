@@ -16,6 +16,11 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 	static get properties() {
 		return {
 			/**
+			 * Display the radio buttons horizontally
+			 * @type {boolean}
+			 */
+			horizontal: { type: Boolean, reflect: true },
+			/**
 			 * REQUIRED: Label for the group of radio inputs
 			 * @type {string}
 			 */
@@ -46,6 +51,10 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 				flex-direction: column;
 				gap: 0.6rem;
 			}
+			:host([horizontal]) div[role="radiogroup"] {
+				flex-direction: row;
+			}
+
 			.d2l-input-label[hidden] {
 				display: none;
 			}
