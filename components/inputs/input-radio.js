@@ -57,7 +57,7 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 			_checked: { state: true },
 			_focusable: { state: true },
 			_hasSupporting: { state: true },
-			_horizontal: { type: Boolean, reflect: true },
+			_horizontal: { state: true },
 			_isHovered: { state: true },
 			_invalid: { state: true }
 		};
@@ -85,9 +85,6 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 			}
 			.d2l-input-radio-supporting-visible {
 				display: block;
-			}
-			:host([_horizontal]) .d2l-input-radio-label {
-				align-items: flex-start;
 			}
 		`];
 	}
