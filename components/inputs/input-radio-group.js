@@ -53,6 +53,7 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 			}
 			:host([horizontal]) div[role="radiogroup"] {
 				flex-direction: row;
+				flex-wrap: wrap;
 			}
 
 			.d2l-input-label[hidden] {
