@@ -8,6 +8,7 @@ import { InputInlineHelpMixin } from './input-inline-help.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { radioStyles } from './input-radio-styles.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 /**
  * A radio input within a <d2l-input-radio-group>.
@@ -131,6 +132,9 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 
 	render() {
 		const allowFocus = !this.focusDisabled && this._focusable;
+		const labelStyles = {
+			alignItems: this._horizontal ? 'flex-start' : undefined
+		};
 		const labelClasses = {
 			'd2l-input-radio-label': true,
 			'd2l-input-radio-label-disabled': this.disabled && !this.skeleton,
@@ -152,7 +156,7 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 			html`<d2l-tooltip align="start" class="vdiff-target" for="${this.#inputId}" ?force-show="${this._isHovered}" position="top">${this.disabledTooltip}</d2l-tooltip>` :
 			nothing;
 		return html`
-			<div class="${classMap(labelClasses)}" @mouseover="${this.#handleMouseOver}" @mouseout="${this.#handleMouseOut}">
+			<div class="${classMap(labelClasses)}" style="${styleMap(labelStyles)}" @mouseover="${this.#handleMouseOver}" @mouseout="${this.#handleMouseOut}">
 				<div
 					aria-checked="${this._checked}"
 					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
