@@ -86,7 +86,7 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 				display: block;
 			}
 			:host([_horizontal]) .d2l-input-radio-label {
-				align-items: flex-start
+				align-items: flex-start;
 			}
 		`];
 	}
