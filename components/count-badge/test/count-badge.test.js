@@ -28,14 +28,12 @@ describe('d2l-count-badge', () => {
 
 		it('should truncate and add plus when exceeding maxDigits', async() => {
 			const el = await fixture(html`<d2l-count-badge type="notification" number="150" text="150 notifications"></d2l-count-badge>`);
-			await el.updateComplete;
 			const numberString = el.getNumberString();
 			expect(numberString).to.equal('99+');
 		});
 
 		it('should truncate count type at 5 digits', async() => {
 			const el = await fixture(html`<d2l-count-badge type="count" number="123456" text="items"></d2l-count-badge>`);
-			await el.updateComplete;
 			const numberString = el.getNumberString();
 			expect(numberString).to.equal('99,999+');
 		});
@@ -48,7 +46,6 @@ describe('d2l-count-badge', () => {
 
 		it('should clamp maxDigits to 5 when set higher', async() => {
 			const el = await fixture(html`<d2l-count-badge max-digits="10" number="1" text="1 item"></d2l-count-badge>`);
-			await el.updateComplete;
 			expect(el.maxDigits).to.equal(5);
 		});
 
