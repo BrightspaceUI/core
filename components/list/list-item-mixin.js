@@ -135,9 +135,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 		const styles = [ css`
 			:host {
-				--d2l-list-item-border-color: var(--d2l-color-mica);
-				--d2l-list-item-illustration-border-radius: 5px;
-				--d2l-list-item-padding: 0.6rem;
 				display: block;
 				position: relative;
 			}
@@ -148,6 +145,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 			:host[hidden] {
 				display: none;
+			}
+
+			:host d2l-list-item-generic-layout {
+				--d2l-list-item-border-color: var(--d2l-color-mica);
+				--d2l-list-item-illustration-border-radius: 5px;
+				--d2l-list-item-padding: 0.6rem;
 			}
 
 			:host([dragging]) d2l-list-item-generic-layout {
