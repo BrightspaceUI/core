@@ -232,6 +232,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Hokimuri/Muku",
 	"components.tag-list-item.tooltip-delete-key-desc": "Mukua te tūtohu arotahi",
 	"components.tag-list-item.tooltip-title": "Ngā Mana Papapātuhi",
+	"components.view-switcher-item-button.position": "{index} of {total}",
 	"templates.primary-secondary.divider": "Kaiwehe paepae tuarua",
 	"templates.primary-secondary.secondary-panel": "Pae tuarua"
 };

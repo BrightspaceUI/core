@@ -222,6 +222,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Backspace キー／Delete キー",
 	"components.tag-list-item.tooltip-delete-key-desc": "フォーカスされたタグを削除します",
 	"components.tag-list-item.tooltip-title": "キーボードコントロール",
+	"components.view-switcher-item-button.position": "{index} of {total}",
 	"templates.primary-secondary.divider": "セカンダリパネルディバイダ",
 	"templates.primary-secondary.secondary-panel": "セカンダリパネル"
 };

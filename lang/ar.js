@@ -236,6 +236,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "مسافة للخلف/حذف",
 	"components.tag-list-item.tooltip-delete-key-desc": "حذف العلامة المركّز عليها",
 	"components.tag-list-item.tooltip-title": "عناصر التحكم في لوحة المفاتيح",
+	"components.view-switcher-item-button.position": "{index} of {total}",
 	"templates.primary-secondary.divider": "فاصل اللوحة الثانوية",
 	"templates.primary-secondary.secondary-panel": "اللوحة الثانوية"
 };

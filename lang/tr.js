@@ -232,6 +232,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Geri Al/Sil",
 	"components.tag-list-item.tooltip-delete-key-desc": "Odaklanılan etiketi sil",
 	"components.tag-list-item.tooltip-title": "Klavye Kontrolleri",
+	"components.view-switcher-item-button.position": "{index} of {total}",
 	"templates.primary-secondary.divider": "İkincil panel ayırıcı",
 	"templates.primary-secondary.secondary-panel": "İkincil panel"
 };

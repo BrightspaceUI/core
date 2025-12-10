@@ -232,6 +232,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Retour arrière/suppression",
 	"components.tag-list-item.tooltip-delete-key-desc": "Supprimer la balise ciblée",
 	"components.tag-list-item.tooltip-title": "Commandes du clavier",
+	"components.view-switcher-item-button.position": "{index} of {total}",
 	"templates.primary-secondary.divider": "Séparateur de panneau secondaire",
 	"templates.primary-secondary.secondary-panel": "Panneau secondaire"
 };

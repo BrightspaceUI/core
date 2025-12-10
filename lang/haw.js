@@ -232,6 +232,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Hoʻi hope / Holoi",
 	"components.tag-list-item.tooltip-delete-key-desc": "Holoi i ka hōʻailona kikoʻī",
 	"components.tag-list-item.tooltip-title": "Nā Mana Keyboard",
+	"components.view-switcher-item-button.position": "{index} of {total}",
 	"templates.primary-secondary.divider": "Mea hoʻokaʻawale papa lua",
 	"templates.primary-secondary.secondary-panel": "Pane lua"
 };

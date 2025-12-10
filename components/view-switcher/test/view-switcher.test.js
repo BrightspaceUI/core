@@ -1,13 +1,13 @@
-import '../button-segmented.js';
-import '../button-segmented-item.js';
+import '../view-switcher.js';
+import '../view-switcher-item-button.js';
 import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
-describe('d2l-button-segmented', () => {
+describe('d2l-view-switcher', () => {
 
 	describe('constructor', () => {
 
 		it('should construct', () => {
-			runConstructor('d2l-button-segmented');
+			runConstructor('d2l-view-switcher');
 		});
 
 	});
@@ -15,13 +15,13 @@ describe('d2l-button-segmented', () => {
 	let elem, items;
 	beforeEach(async() => {
 		elem = await fixture(html`
-			<d2l-button-segmented>
-				<d2l-button-segmented-item key="saveAsDraft" text="Save as Draft"></d2l-button-segmented-item>
-				<d2l-button-segmented-item key="saveAndClose" text="Save and Close"></d2l-button-segmented-item>
-				<d2l-button-segmented-item key="saveAndNew" text="Save and New"></d2l-button-segmented-item>
-			</d2l-button-segmented>
+			<d2l-view-switcher>
+				<d2l-view-switcher-item-button key="saveAsDraft" text="Save as Draft"></d2l-view-switcher-item-button>
+				<d2l-view-switcher-item-button key="saveAndClose" text="Save and Close"></d2l-view-switcher-item-button>
+				<d2l-view-switcher-item-button key="saveAndNew" text="Save and New"></d2l-view-switcher-item-button>
+			</d2l-view-switcher>
 		`);
-		items = elem.querySelectorAll('d2l-button-segmented-item');
+		items = elem.querySelectorAll('d2l-view-switcher-item-button');
 	});
 
 	describe('selection', () => {
@@ -32,14 +32,14 @@ describe('d2l-button-segmented', () => {
 		});
 		it('should fire select event when item is clicked', async() => {
 			setTimeout(() => clickElem(items[2]));
-			const e = await oneEvent(items[2], 'd2l-button-segmented-item-select');
+			const e = await oneEvent(items[2], 'd2l-view-switcher-item-button-select');
 
 			expect(e.detail.key).to.equal('saveAndNew');
 		});
 
 		it('should select clicked item and deselect others', async() => {
 			setTimeout(() => clickElem(items[1]));
-			await oneEvent(items[1], 'd2l-button-segmented-item-select');
+			await oneEvent(items[1], 'd2l-view-switcher-item-button-select');
 
 			expect(items[0].selected).to.be.false;
 			expect(items[1].selected).to.be.true;

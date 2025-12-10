@@ -5,12 +5,15 @@ import { buttonStyles } from '../button/button-styles.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { labelStyles } from '../typography/styles.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { formatNumber } from '@brightspace-ui/intl';
+import { styleMap } from 'lit/directives/style-map.js';
 
 /**
  * A segmented button item component used with JS handlers.
- * @fires d2l-button-segmented-item-select - Dispatched when the item is selected
+ * @fires d2l-view-switcher-item-button-select - Dispatched when the item is selected
  */
-class ButtonSegmentedItem extends PropertyRequiredMixin(ButtonMixin(LitElement)) {
+class ButtonSegmentedItem extends PropertyRequiredMixin(ButtonMixin(LocalizeCoreElement(LitElement))) {
 
 	static get properties() {
 		return {
@@ -28,7 +31,9 @@ class ButtonSegmentedItem extends PropertyRequiredMixin(ButtonMixin(LitElement))
 			 * Indicates if the item is selected
 			 * @type {boolean}
 			 */
-			selected: { type: Boolean, reflect: true }
+			selected: { type: Boolean, reflect: true },
+			_index: { type: Number },
+			_total: { type: Number }
 		};
 	}
 
@@ -47,12 +52,6 @@ class ButtonSegmentedItem extends PropertyRequiredMixin(ButtonMixin(LitElement))
 				padding-block: 0.3rem;
 				padding-inline: 1rem;
 			}
-			:host(:first-child) button {
-				margin-inline-start: 0.3rem;
-			}
-			:host(:last-child) button {
-				margin-inline-end: 0.3rem;
-			}
 
 			button:hover {
 				background-color: var(--d2l-color-mica);
@@ -66,21 +65,36 @@ class ButtonSegmentedItem extends PropertyRequiredMixin(ButtonMixin(LitElement))
 				background-color: var(--d2l-color-tungsten);
 				color: #ffffff;
 			}
+
+			:host([selected]) d2l-icon,
+			slot[name="icon"]::slotted(d2l-icon-custom) {
+				color: #ffffff;
+			}
 		`];
 	}
 
 	constructor() {
 		super();
 		this.selected = false;
+		this._index = 0;
+		this._total = 1;
 	}
 
 	render() {
+		const styles = {
+			marginInlineEnd: this._index === this._total - 1 ? '0.3rem' : '0rem',
+			marginInlineStart: this._index === 0 ? '0.3rem' : '0rem'
+		}
 		return html`
 			<button
 				class="d2l-label-text"
-				role="option"
 				type="button"
-				aria-selected="${this.selected ? 'true' : 'false'}"
+				aria-description="${this.localize('components.view-switcher-item-button.position',  {
+					index: formatNumber(this._index + 1),
+					total: formatNumber(this._total)
+				})}"
+				aria-pressed="${this.selected ? 'true' : 'false'}"
+				style="${styleMap(styles)}"
 				@click="${this.#handleClick}">
 				${this.text}
 			</button>
@@ -90,7 +104,7 @@ class ButtonSegmentedItem extends PropertyRequiredMixin(ButtonMixin(LitElement))
 	async #handleClick() {
 		if (this.disabled || this.selected) return;
 		this.selected = true;
-		this.dispatchEvent(new CustomEvent('d2l-button-segmented-item-select', {
+		this.dispatchEvent(new CustomEvent('d2l-view-switcher-item-button-select', {
 			detail: { key: this.key },
 			bubbles: true,
 			composed: true
@@ -103,4 +117,4 @@ class ButtonSegmentedItem extends PropertyRequiredMixin(ButtonMixin(LitElement))
 
 }
 
-customElements.define('d2l-button-segmented-item', ButtonSegmentedItem);
+customElements.define('d2l-view-switcher-item-button', ButtonSegmentedItem);

@@ -232,6 +232,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
 	"components.tag-list-item.tooltip-delete-key-desc": "Delete the focused tag",
 	"components.tag-list-item.tooltip-title": "Keyboard Controls",
+	"components.view-switcher-item-button.position": "{index} of {total}",
 	"templates.primary-secondary.divider": "Secondary panel divider",
 	"templates.primary-secondary.secondary-panel": "Secondary panel"
 };

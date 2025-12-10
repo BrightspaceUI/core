@@ -223,6 +223,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
 	"components.tag-list-item.tooltip-delete-key-desc": "ลบแท็กที่โฟกัส",
 	"components.tag-list-item.tooltip-title": "การควบคุมแป้นพิมพ์",
+	"components.view-switcher-item-button.position": "{index} of {total}",
 	"templates.primary-secondary.divider": "ตัวแบ่งบานหน้าต่างรอง",
 	"templates.primary-secondary.secondary-panel": "บานหน้าต่างรอง"
 };

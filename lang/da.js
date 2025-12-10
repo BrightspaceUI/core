@@ -232,6 +232,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Tilbage/Slet",
 	"components.tag-list-item.tooltip-delete-key-desc": "Slet det fokuserede tag",
 	"components.tag-list-item.tooltip-title": "Kontrolelementer på tastaturet",
+	"components.view-switcher-item-button.position": "{index} of {total}",
 	"templates.primary-secondary.divider": "Sekundær panelskillelinje",
 	"templates.primary-secondary.secondary-panel": "Sekundært panel"
 };

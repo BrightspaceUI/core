@@ -36,7 +36,7 @@ class ButtonSegmented extends LitElement {
 	}
 
 	get items() {
-		return this.shadowRoot.querySelector('slot').assignedElements({ flatten: true }).filter(e => e.tagName.toLowerCase() === 'd2l-button-segmented-item');
+		return this.shadowRoot.querySelector('slot').assignedElements({ flatten: true }).filter(e => e.tagName.toLowerCase() === 'd2l-view-switcher-item-button');
 	}
 
 	render() {
@@ -44,9 +44,9 @@ class ButtonSegmented extends LitElement {
 		return html`
 			<div
 				class="container"
-				role="listbox"
+				role="group"
 				aria-label="${this.label}"
-				@d2l-button-segmented-item-select=${this.#handleItemSelect}
+				@d2l-view-switcher-item-button-select=${this.#handleItemSelect}
 				@keydown="${this._handleArrowKeys}">
 				<slot @slotchange="${this.#handleSlotChange}"></slot>
 			</div>
@@ -71,8 +71,12 @@ class ButtonSegmented extends LitElement {
 		const items = this.items;
 		if (items.length === 0) return;
 		if (!items.find(i => i.selected)) items[0].selected = true;
+		for (let i = 0; i < items.length; i++) {
+			items[i]._index = i;
+			items[i]._total = items.length;
+		}
 	}
 
 }
 
-customElements.define('d2l-button-segmented', ButtonSegmented);
+customElements.define('d2l-view-switcher', ButtonSegmented);

@@ -232,6 +232,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
 	"components.tag-list-item.tooltip-delete-key-desc": "Excluir a etiqueta de foco",
 	"components.tag-list-item.tooltip-title": "Controles do teclado",
+	"components.view-switcher-item-button.position": "{index} of {total}",
 	"templates.primary-secondary.divider": "Divisor do painel secundário",
 	"templates.primary-secondary.secondary-panel": "Painel secundário"
 };

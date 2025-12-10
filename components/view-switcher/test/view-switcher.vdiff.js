@@ -1,19 +1,19 @@
-import '../button-segmented.js';
-import '../button-segmented-item.js';
+import '../view-switcher.js';
+import '../view-switcher-item-button.js';
 import { expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
 
-describe('d2l-button-segmented', () => {
+describe('d2l-view-switcher', () => {
 
 	let elem, items;
 	beforeEach(async() => {
 		elem = await fixture(html`
-			<d2l-button-segmented>
-				<d2l-button-segmented-item selected key="saveAsDraft" text="Save as Draft"></d2l-button-segmented-item>
-				<d2l-button-segmented-item key="saveAndClose" text="Save and Close"></d2l-button-segmented-item>
-				<d2l-button-segmented-item key="saveAndNew" text="Save and New"></d2l-button-segmented-item>
-			</d2l-button-segmented>
+			<d2l-view-switcher>
+				<d2l-view-switcher-item-button selected key="saveAsDraft" text="Save as Draft"></d2l-view-switcher-item-button>
+				<d2l-view-switcher-item-button key="saveAndClose" text="Save and Close"></d2l-view-switcher-item-button>
+				<d2l-view-switcher-item-button key="saveAndNew" text="Save and New"></d2l-view-switcher-item-button>
+			</d2l-view-switcher>
 		`);
-		items = elem.querySelectorAll('d2l-button-segmented-item');
+		items = elem.querySelectorAll('d2l-view-switcher-item-button');
 	});
 
 	[

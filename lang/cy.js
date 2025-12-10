@@ -232,6 +232,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Yn ôl/Dileu",
 	"components.tag-list-item.tooltip-delete-key-desc": "Dileu’r tag â ffocws",
 	"components.tag-list-item.tooltip-title": "Rheolyddion Bysellfwrdd",
+	"components.view-switcher-item-button.position": "{index} of {total}",
 	"templates.primary-secondary.divider": "Rhannwr panel eilaidd",
 	"templates.primary-secondary.secondary-panel": "Panel eilaidd"
 };
