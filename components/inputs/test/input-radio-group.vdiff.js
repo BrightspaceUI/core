@@ -22,7 +22,7 @@ describe('d2l-input-radio', () => {
 			hoverElem(elem.querySelector('d2l-input-radio'));
 			await oneEvent(elem, 'd2l-tooltip-show');
 		} },
-		{ name: 'horizontal-layout', template: radioFixtures.horizontalLayout },
+		{ name: 'horizontal-layout', template: radioFixtures.horizontalLayout, viewportWidth: 600 },
 		{ name: 'inline-help', template: radioFixtures.inlineHelp },
 		{ name: 'skeleton', template: radioFixtures.skeleton },
 		{ name: 'supporting-hidden', template: radioFixtures.supporting },
@@ -40,11 +40,12 @@ describe('d2l-input-radio', () => {
 			action: async(elem) => {
 				await clickElem(elem.querySelector('d2l-input-radio[label="Other"]'));
 				await elem.updateComplete;
-			}
+			},
+			viewportWidth: 600
 		}
-	].forEach(({ name, template, focus, validate, action }) => {
+	].forEach(({ name, template, focus, validate, action, viewportWidth = 300 }) => {
 		it(name, async() => {
-			const elem = await fixture(template, { viewport: { width: 300 } });
+			const elem = await fixture(template, { viewport: { width: viewportWidth } });
 			if (action) await action(elem);
 			if (focus) await focusElem(elem);
 			if (validate) await elem.validate();
