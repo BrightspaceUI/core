@@ -67,6 +67,7 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 
 	constructor() {
 		super();
+		this.horizontal = false;
 		this.labelHidden = false;
 		this.required = false;
 		this.setFormValue('');
@@ -97,6 +98,10 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 		}
 		if (changedProperties.has('required')) {
 			this.#recalculateState(true);
+		}
+		if (changedProperties.has('horizontal')) {
+			const radios = this.#getRadios();
+			radios.forEach(el => el._horizontal = this.horizontal);
 		}
 	}
 
@@ -228,6 +233,7 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 			if (el._checked) checkedRadios.push(el);
 			el._isInitFromGroup = true;
 			el._focusable = false;
+			el._horizontal = this.horizontal;
 		});
 
 		// only the last checked radio is actually checked
