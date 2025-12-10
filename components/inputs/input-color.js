@@ -91,7 +91,7 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 	static get properties() {
 		return {
 			/**
-			 * Value of an associated color as a HEX which will be used for color contrast analysis
+			 * ACCESSIBILITY: Value of an associated color as a HEX which will be used for color contrast analysis
 			 * @type {string}
 			 */
 			associatedValue: { attribute: 'associated-value', type: String },
@@ -106,7 +106,7 @@ class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(F
 			 */
 			disallowNone: { attribute: 'disallow-none', type: Boolean },
 			/**
-			 * REQUIRED: Label for the input, comes with a default value for background & foreground types.
+			 * ACCESSIBILITY: REQUIRED: Label for the input, comes with a default value for background & foreground types.
 			 * @type {string}
 			 */
 			label: {
