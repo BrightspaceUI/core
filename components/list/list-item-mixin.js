@@ -147,6 +147,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				display: none;
 			}
 
+			:host d2l-list-item-generic-layout {
+				--d2l-list-item-border-color: var(--d2l-color-mica);
+				--d2l-list-item-illustration-border-radius: 5px;
+				--d2l-list-item-padding: 0.6rem;
+			}
+
 			:host([dragging]) d2l-list-item-generic-layout {
 				filter: grayscale(75%);
 				opacity: 0.4;
@@ -455,7 +461,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				box-sizing: border-box;
 				flex-direction: column;
 				height: 100%;
-				padding: 0.6rem;
+				padding: var(--d2l-list-item-padding);
 			}
 			:host([layout="tile"][tile-padding-type="none"]) .d2l-list-item-content {
 				padding: 0;
@@ -465,11 +471,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([layout="tile"]) .d2l-list-item-illustration > * {
 				border-end-end-radius: 0;
 				border-end-start-radius: 0;
-				border-start-end-radius: 5px;
-				border-start-start-radius: 5px;
+				border-start-end-radius: var(--d2l-list-item-illustration-border-radius);
+				border-start-start-radius: var(--d2l-list-item-illustration-border-radius);
 				box-sizing: border-box;
-				margin-block: -0.55rem 0.6rem;
-				margin-inline: -0.55rem;
+				margin-block: calc(-1 * var(--d2l-list-item-padding) + 1px) var(--d2l-list-item-padding);
+				margin-inline: calc(-1 * var(--d2l-list-item-padding) + 1px);
 				max-height: unset;
 				max-width: calc(100% + 1.1rem);
 			}
@@ -482,7 +488,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([layout="tile"][tile-header]) [slot="content"] ::slotted([slot="illustration"]),
 			:host([layout="tile"][tile-header]) .d2l-list-item-illustration > * {
 				border-radius: 0;
-				margin-block: -0.6rem 0.6rem;
+				margin-block: calc(-1 * var(--d2l-list-item-padding)) var(--d2l-list-item-padding);
 			}
 			:host([layout="tile"][tile-header][tile-padding-type="none"]) [slot="content"] ::slotted([slot="illustration"]),
 			:host([layout="tile"][tile-header][tile-padding-type="none"]) .d2l-list-item-illustration > * {
@@ -498,7 +504,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([layout="tile"]) .d2l-list-item-illustration > div[slot="illustration"],
 			:host([layout="tile"]) [slot="content"] ::slotted(d2l-icon[slot="illustration"]),
 			:host([layout="tile"]) .d2l-list-item-illustration > d2l-icon[slot="illustration"] {
-				border-bottom: 1px solid var(--d2l-color-mica);
+				border-bottom: 1px solid var(--d2l-list-item-border-color);
 				width: calc(100% + 1.1rem);
 			}
 			:host([layout="tile"][tile-padding-type="none"]) [slot="content"] ::slotted(div[slot="illustration"]),
@@ -510,14 +516,14 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 			:host([layout="tile"]:not([selection-disabled]):not([skeleton])[padding-type="none"]) [slot="outside-control-container"],
 			:host([layout="tile"]) [slot="outside-control-container"] {
-				border-color: var(--d2l-color-mica);
+				border-color: var(--d2l-list-item-border-color);
 				margin: 0;
 			}
 			:host([layout="tile"]:not([draggable])[_has-color-slot]) [slot="outside-control-container"] {
 				margin-inline-start: 0;
 			}
 			:host([layout="tile"]:not([_has-color-slot])) .d2l-list-item-content-extend-separators [slot="content"] {
-				padding-inline: 0.6rem;
+				padding-inline: var(--d2l-list-item-padding);
 			}
 
 			:host([layout="tile"][_focusing-primary-action]:not([selection-disabled]):not([button-disabled]):not([skeleton]):not([current])) [slot="outside-control-container"].d2l-list-item-content-none {
@@ -535,7 +541,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					outline-offset: initial;
 				}
 				:host([layout="tile"][_focusing-primary-action]:not([selection-disabled]):not([button-disabled]):not([skeleton]):not([current])) [slot="outside-control-container"].d2l-list-item-content-none {
-					border-color: var(--d2l-color-mica);
+					border-color: var(--d2l-list-item-border-color);
 				}
 				:host([layout="tile"][_focusing-primary-action]:not([padding-type="none"])):has(:focus-visible) .d2l-list-item-content.d2l-list-item-content-none {
 					border-radius: 6px;
@@ -578,7 +584,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([layout="tile"][tile-header]) [slot="control"] {
 				background-color: transparent;
 				display: inline-flex;
-				margin: 0.4rem 0.6rem;
+				margin: 0.4rem var(--d2l-list-item-padding);
 				outline: none;
 				position: static;
 			}
@@ -587,14 +593,14 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				--d2l-button-icon-min-height: 1.5rem;
 				--d2l-button-icon-min-width: 1.5rem;
 				--d2l-button-icon-border-radius: 4px;
-				margin-block: 0.6rem;
-				margin-inline-end: 0.6rem;
+				margin-block: var(--d2l-list-item-padding);
+				margin-inline-end: var(--d2l-list-item-padding);
 				padding: 0;
 				position: absolute;
 			}
 			:host([layout="tile"][tile-header]) [slot="actions"] {
 				--d2l-button-icon-background-color-hover: var(--d2l-color-mica);
-				margin: 0.25rem 0.6rem;
+				margin: 0.25rem var(--d2l-list-item-padding);
 				position: static;
 			}
 

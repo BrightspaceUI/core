@@ -6,6 +6,7 @@
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 		<script type="module">
 			import '../../demo/demo-page.js';
+			import '../../button/button.js';
 			import '../../button/button-icon.js';
 			import '../../button/button-subtle.js';
 			import '../../button/button-toggle.js';
@@ -43,6 +44,59 @@
 			}
 			d2l-list-item[layout="tile"] img[slot="illustration"] {
 				object-fit: cover;
+			}
+
+			d2l-list-item > .custom-content {
+				display: flex;
+				gap: var(--d2l-list-item-padding);
+			}
+			d2l-list-item > .custom-content > d2l-list-item-content {
+				flex: auto;
+			}
+			d2l-list-item > .custom-content > d2l-icon {
+				flex: none;
+			}
+
+			d2l-list-item[layout="normal"] > .custom-content {
+				flex-direction: row;
+				width: 100%;
+			}
+			d2l-list-item[layout="normal"] > .custom-content > d2l-icon {
+				height: 3rem;
+				width: 3rem;
+			}
+			d2l-list-item[layout="normal"] > .custom-content > img {
+				display: none;
+			}
+
+			d2l-list-item[layout="tile"] > .custom-content {
+				flex-direction: column;
+				height: 100%;
+			}
+			d2l-list-item[layout="tile"] > .custom-content > img {
+				border-bottom: 1px solid var(--d2l-list-item-border-color);
+				border-start-end-radius: var(--d2l-list-item-illustration-border-radius);
+				border-start-start-radius: var(--d2l-list-item-illustration-border-radius);
+				height: 5rem;
+				object-fit: cover;
+				width: 100%;
+			}
+			d2l-list-item[layout="tile"] > .custom-content > d2l-icon {
+				background-color: white;
+				border: 1px solid var(--d2l-list-item-border-color);
+				border-radius: var(--d2l-list-item-illustration-border-radius);
+				box-sizing: border-box;
+				height: 4rem;
+				margin-block-start: calc(-1 * var(--d2l-list-item-padding) - 2rem);
+				margin-inline: auto;
+				padding: var(--d2l-list-item-padding);
+				width: 4rem;
+			}
+			d2l-list-item[layout="tile"] > .custom-content > d2l-list-item-content {
+				padding-inline: var(--d2l-list-item-padding);
+			}
+			d2l-list-item[layout="tile"] > .custom-content > .footer {
+				padding: var(--d2l-list-item-padding);
 			}
 		</style>
 	</head>
@@ -316,6 +370,55 @@
 								<div slot="supporting-info">Specific Expectation B2.2</div>
 							</d2l-list-item-content>
 						</d2l-list-item-button>
+					</d2l-list>
+					<script data-demo-hide>
+						(demo => window.wireupListTileToggle(demo))(document.currentScript.parentNode);
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Custom Layout</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-toggle pressed>
+						<d2l-button-subtle slot="not-pressed" icon="tier1:tile-view" text="Tiles"></d2l-button-subtle>
+						<d2l-button-subtle slot="pressed" icon="tier1:list-view" text="List"></d2l-button-subtle>
+					</d2l-button-toggle>
+					<d2l-list layout="tiles">
+						<d2l-list-item label="item 1" key="1" selectable tile-padding-type="none">
+							<div class="custom-content">
+								<img src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+								<d2l-list-item-content>
+									<div>Identify categories of physical activities</div>
+									<div slot="secondary">Secondary Information</div>
+									<div slot="supporting-info">Specific Expectation A1.2</div>
+								</d2l-list-item-content>
+								<div class="footer">
+									<d2l-button style="width: 100%;">Shiny Button</d2l-button>
+								</div>
+							</div>
+							<div slot="actions">
+								<d2l-button-icon text="More" icon="tier1:more" translucent></d2l-button-icon>
+							</div>
+						</d2l-list-item>
+						<d2l-list-item label="item 2" key="2" selectable tile-padding-type="none">
+							<div class="custom-content">
+								<img src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+								<d2l-icon icon="tier3:home"></d2l-icon>
+								<d2l-list-item-content>
+									<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+									<div slot="secondary">Secondary Information</div>
+									<div slot="supporting-info">Specific Expectation B2.1</div>
+								</d2l-list-item-content>
+								<div class="footer">
+									<d2l-button style="width: 100%;">Shiny Button</d2l-button>
+								</div>
+							</div>
+							<div slot="actions">
+								<d2l-button-icon text="More" icon="tier1:more" translucent></d2l-button-icon>
+							</div>
+						</d2l-list-item>
 					</d2l-list>
 					<script data-demo-hide>
 						(demo => window.wireupListTileToggle(demo))(document.currentScript.parentNode);
