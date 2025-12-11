@@ -26,7 +26,6 @@ export default {
 	"components.filter.filterCountDescription":
 		`{number, plural,
 			=0 {Chưa áp dụng bộ lọc nào.}
-			one {{number} bộ lọc đã áp dụng.}
 			other {{number} bộ lọc đã áp dụng.}
 		}`,
 	"components.filter.filters": "Bộ lọc",
@@ -35,7 +34,6 @@ export default {
 	"components.filter.searchResults":
 		`{number, plural,
 			=0 {Không có kết quả tìm kiếm}
-			one {{number} kết quả tìm kiếm}
 			other {{number} kết quả tìm kiếm}
 		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Các bộ lọc được chọn xuất hiện đầu tiên.",
@@ -43,7 +41,6 @@ export default {
 	"components.filter-dimension-set-date-text-value.textDays":
 		`{num, plural,
 			=0 {hôm nay}
-			one {{num} ngày trước}
 			other {{num} ngày trước}
 		}`,
 	"components.filter-dimension-set-date-text-value.textHours":
@@ -86,7 +83,6 @@ export default {
 	"components.form-element.valueMissing": "{label} là bắt buộc",
 	"components.form-error-summary.errorSummary":
 		`{count, plural,
-			one {Có {count} lỗi được tìm thấy trong thông tin bạn đã gửi}
 			other {Có {count} lỗi được tìm thấy trong thông tin bạn đã gửi}
 		}`,
 	"components.form-error-summary.text": "Chuyển đổi chi tiết lỗi",
@@ -152,12 +148,10 @@ export default {
 	"components.overflow-group.moreActions": "Thêm các Tác vụ",
 	"components.pageable.info":
 		`{count, plural,
-			one {{countFormatted} mục}
 			other {{countFormatted} mục}
 		}`,
 	"components.pageable.info-with-total":
 		`{totalCount, plural,
-			one {{countFormatted} của {totalCountFormatted} mục}
 			other {{countFormatted} của {totalCountFormatted} mục}
 		}`,
 	"components.pager-load-more.action": "Tải thêm",
@@ -167,7 +161,6 @@ export default {
 	"components.scroll-wrapper.scroll-right": "Cuộn phải",
 	"components.selection.action-max-hint":
 		`{count, plural,
-			one {Vô hiệu hóa khi chọn nhiều hơn {countFormatted} mục}
 			other {Vô hiệu hóa khi chọn nhiều hơn {countFormatted} mục}
 		}`,
 	"components.selection.action-required-hint": "Chọn một mục để thực hiện tác vụ này",
@@ -175,7 +168,6 @@ export default {
 	"components.selection.select-all-items":
 		`{count, plural,
 			=1 {Chọn mục}
-			one {Chọn tất cả {countFormatted} mục}
 			other {Chọn tất cả {countFormatted} mục}
 		}`,
 	"components.selection.selected": "{count} mục được chọn",
@@ -221,7 +213,6 @@ export default {
 	"components.tag-list.role-description":
 		`{count, plural,
 			=0 {Danh sách thẻ với 0 mục}
-			one {Danh sách thẻ với {count} mục}
 			other {Danh sách thẻ với {count} mục}
 		}`,
 	"components.tag-list.show-less": "Ẩn bớt",
