@@ -183,7 +183,7 @@ function createButtonItem({ disabled = false, template = 'Item 1' } = {}) {
 function createItems({ lineBreak, paddingType, width, withColors = false } = {}) {
 	return html`
 		${createItem({ color: withColors ? '#006fbf' : undefined, paddingType, template: 'Item 1', width })}
-		${lineBreak ? html`<div class="d2l-list-item-break"></div>` : nothing}
+		${lineBreak ? html`<d2l-list-tile-break></d2l-list-tile-break>` : nothing}
 		${createItem({ color: withColors ? '#46a661' : undefined, paddingType, template: 'Item 2 - The super fancy awesome item!', width })}
 		${createItem({ paddingType, template: 'Item 3', width })}
 	`;

@@ -14,6 +14,7 @@
 			import '../list-item-button.js';
 			import '../list-item-content.js';
 			import '../list-item.js';
+			import '../list-tile-break.js';
 			import '../list.js';
 			window.wireupListTileToggle = demo => {
 				demo.querySelector('d2l-button-toggle').addEventListener('d2l-button-toggle-change', e => {
@@ -418,6 +419,47 @@
 							<div slot="actions">
 								<d2l-button-icon text="More" icon="tier1:more" translucent></d2l-button-icon>
 							</div>
+						</d2l-list-item>
+					</d2l-list>
+					<script data-demo-hide>
+						(demo => window.wireupListTileToggle(demo))(document.currentScript.parentNode);
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Tile Breaks</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-toggle pressed>
+						<d2l-button-subtle slot="not-pressed" icon="tier1:tile-view" text="Tiles"></d2l-button-subtle>
+						<d2l-button-subtle slot="pressed" icon="tier1:list-view" text="List"></d2l-button-subtle>
+					</d2l-button-toggle>
+					<d2l-list layout="tiles">
+						<d2l-list-item label="item 1" key="1">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Identify categories of physical activities</div>
+								<div slot="secondary">Secondary Information</div>
+								<div slot="supporting-info">Specific Expectation A1.2</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-tile-break></d2l-list-tile-break>
+						<d2l-list-item label="item 2" key="2">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+								<div slot="secondary">Secondary Information</div>
+								<div slot="supporting-info">Specific Expectation B2.1</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item label="item 3" key="3">
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+								<div slot="secondary">Secondary Information</div>
+								<div slot="supporting-info">Specific Expectation B2.2</div>
+							</d2l-list-item-content>
 						</d2l-list-item>
 					</d2l-list>
 					<script data-demo-hide>
