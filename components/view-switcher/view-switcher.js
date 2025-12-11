@@ -1,18 +1,20 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
- * A segmented button component.
+ * A segmented view switcher.
  */
-class ButtonSegmented extends LitElement {
+class ViewSwitcher extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
 			/**
-			 * ACCESSIBILITY: Label for the segmented button
+			 * ACCESSIBILITY: Label for the switcher
 			 * @type {string}
 			 */
-			label: { type: String, required: true }
+			label: { type: String, required: true },
+			_count: { state: true }
 		};
 	}
 
@@ -28,15 +30,29 @@ class ButtonSegmented extends LitElement {
 				align-items: center;
 				background-color: var(--d2l-color-gypsum);
 				border-radius: 0.3rem;
-				column-gap: 0.3rem;
 				display: flex;
+				gap: 0.3rem;
 				min-height: calc(2rem + 2px);
+				padding-inline: 0.3rem;
 			}
 		`;
 	}
+	constructor() {
+		super();
+		this._count = 0;
+		this._focusOnFirstRender = false;
+	}
 
 	get items() {
-		return this.shadowRoot.querySelector('slot').assignedElements({ flatten: true }).filter(e => e.tagName.toLowerCase() === 'd2l-view-switcher-item-button');
+		return this.shadowRoot?.querySelector('slot')?.assignedElements({ flatten: true }).filter(e => e._isSwitcherItem) || [];
+	}
+
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		if (this._focusOnFirstRender) {
+			this.focus();
+			this._focusOnFirstRender = false;
+		}
 	}
 
 	render() {
@@ -46,14 +62,18 @@ class ButtonSegmented extends LitElement {
 				class="container"
 				role="group"
 				aria-label="${this.label}"
-				@d2l-view-switcher-item-button-select=${this.#handleItemSelect}
-				@keydown="${this._handleArrowKeys}">
+				aria-roledescription="${this.localize('components.view-switcher.role-description', { count: this._count })}"
+				@d2l-view-switcher-item-select=${this.#handleItemSelect}>
 				<slot @slotchange="${this.#handleSlotChange}"></slot>
 			</div>
 		`;
 	}
 
 	focus() {
+		if (!this.hasUpdated) {
+			this._focusOnFirstRender = true;
+			return;
+		}
 		const items = this.items;
 		if (items.length === 0) return;
 		items[0].focus();
@@ -75,8 +95,9 @@ class ButtonSegmented extends LitElement {
 			items[i]._index = i;
 			items[i]._total = items.length;
 		}
+		this._count = items.length;
 	}
 
 }
 
-customElements.define('d2l-view-switcher', ButtonSegmented);
+customElements.define('d2l-view-switcher', ViewSwitcher);

@@ -223,7 +223,11 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Phím lùi/Xóa",
 	"components.tag-list-item.tooltip-delete-key-desc": "Xóa thẻ được chọn",
 	"components.tag-list-item.tooltip-title": "Các điều khiển bàn phím",
-	"components.view-switcher-item-button.position": "{index} of {total}",
+	"components.view-switcher.role-description":
+		`{count, plural,
+			=0 {View Switcher with 0 items}
+			other {View Switcher with {count} items}
+		}`,
 	"templates.primary-secondary.divider": "Bộ phân cách bảng phụ",
 	"templates.primary-secondary.secondary-panel": "Bảng phụ"
 };

@@ -232,7 +232,12 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Backspace/Verwijderen",
 	"components.tag-list-item.tooltip-delete-key-desc": "Verwijder de gerichte tag",
 	"components.tag-list-item.tooltip-title": "Bedieningselementen op het toetsenbord",
-	"components.view-switcher-item-button.position": "{index} of {total}",
+	"components.view-switcher.role-description":
+		`{count, plural,
+			=0 {View Switcher with 0 items}
+			one {View Switcher with {count} item}
+			other {View Switcher with {count} items}
+		}`,
 	"templates.primary-secondary.divider": "Scheidingslijn secundair venster",
 	"templates.primary-secondary.secondary-panel": "Secundair venster"
 };

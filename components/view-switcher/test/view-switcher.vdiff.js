@@ -8,12 +8,12 @@ describe('d2l-view-switcher', () => {
 	beforeEach(async() => {
 		elem = await fixture(html`
 			<d2l-view-switcher>
-				<d2l-view-switcher-item-button selected key="saveAsDraft" text="Save as Draft"></d2l-view-switcher-item-button>
-				<d2l-view-switcher-item-button key="saveAndClose" text="Save and Close"></d2l-view-switcher-item-button>
-				<d2l-view-switcher-item-button key="saveAndNew" text="Save and New"></d2l-view-switcher-item-button>
+				<d2l-view-switcher-button selected key="saveAsDraft" text="Save as Draft"></d2l-view-switcher-button>
+				<d2l-view-switcher-button key="saveAndClose" text="Save and Close"></d2l-view-switcher-button>
+				<d2l-view-switcher-button key="saveAndNew" text="Save and New"></d2l-view-switcher-button>
 			</d2l-view-switcher>
 		`);
-		items = elem.querySelectorAll('d2l-view-switcher-item-button');
+		items = elem.items;
 	});
 
 	[

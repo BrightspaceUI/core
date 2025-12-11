@@ -232,7 +232,12 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Retroceso/Suprimir",
 	"components.tag-list-item.tooltip-delete-key-desc": "Eliminar la etiqueta enfocada",
 	"components.tag-list-item.tooltip-title": "Controles del teclado",
-	"components.view-switcher-item-button.position": "{index} of {total}",
+	"components.view-switcher.role-description":
+		`{count, plural,
+			=0 {View Switcher with 0 items}
+			one {View Switcher with {count} item}
+			other {View Switcher with {count} items}
+		}`,
 	"templates.primary-secondary.divider": "Divisor de panel secundario",
 	"templates.primary-secondary.secondary-panel": "Panel secundario"
 };

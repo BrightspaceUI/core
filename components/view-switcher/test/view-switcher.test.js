@@ -16,12 +16,12 @@ describe('d2l-view-switcher', () => {
 	beforeEach(async() => {
 		elem = await fixture(html`
 			<d2l-view-switcher>
-				<d2l-view-switcher-item-button key="saveAsDraft" text="Save as Draft"></d2l-view-switcher-item-button>
-				<d2l-view-switcher-item-button key="saveAndClose" text="Save and Close"></d2l-view-switcher-item-button>
-				<d2l-view-switcher-item-button key="saveAndNew" text="Save and New"></d2l-view-switcher-item-button>
+				<d2l-view-switcher-button key="saveAsDraft" text="Save as Draft"></d2l-view-switcher-button>
+				<d2l-view-switcher-button key="saveAndClose" text="Save and Close"></d2l-view-switcher-button>
+				<d2l-view-switcher-button key="saveAndNew" text="Save and New"></d2l-view-switcher-button>
 			</d2l-view-switcher>
 		`);
-		items = elem.querySelectorAll('d2l-view-switcher-item-button');
+		items = elem.items;
 	});
 
 	describe('selection', () => {
@@ -31,15 +31,15 @@ describe('d2l-view-switcher', () => {
 			expect(items[2].selected).to.be.false;
 		});
 		it('should fire select event when item is clicked', async() => {
-			setTimeout(() => clickElem(items[2]));
-			const e = await oneEvent(items[2], 'd2l-view-switcher-item-button-select');
+			clickElem(items[2]);
+			const e = await oneEvent(items[2], 'd2l-view-switcher-item-select');
 
 			expect(e.detail.key).to.equal('saveAndNew');
 		});
 
 		it('should select clicked item and deselect others', async() => {
-			setTimeout(() => clickElem(items[1]));
-			await oneEvent(items[1], 'd2l-view-switcher-item-button-select');
+			clickElem(items[1]);
+			await oneEvent(items[1], 'd2l-view-switcher-item-select');
 
 			expect(items[0].selected).to.be.false;
 			expect(items[1].selected).to.be.true;
