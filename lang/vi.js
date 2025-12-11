@@ -28,7 +28,7 @@ export default {
 			=0 {Chưa áp dụng bộ lọc nào.}
 			other {{number} bộ lọc đã áp dụng.}
 		}`,
-	"components.filter.filters": "Các bộ lọc",
+	"components.filter.filters": "Bộ lọc",
 	"components.filter.loading": "Đang tải các bộ lọc",
 	"components.filter.noFilters": "Không có bộ lọc nào khả dụng",
 	"components.filter.searchResults":
@@ -164,7 +164,7 @@ export default {
 			other {Vô hiệu hóa khi chọn nhiều hơn {countFormatted} mục}
 		}`,
 	"components.selection.action-required-hint": "Chọn một mục để thực hiện tác vụ này",
-	"components.selection.select-all": "Chọn tất cả",
+	"components.selection.select-all": "Chọn Tất cả",
 	"components.selection.select-all-items":
 		`{count, plural,
 			=1 {Chọn mục}
@@ -188,17 +188,17 @@ export default {
 				other {Sắp xếp từ cũ đến mới}
 			}}
 			numbers {{direction, select,
-				desc {Sorted high to low}
-				other {Sorted low to high}
+				desc {Sắp xếp từ cao đến thấp}
+				other {Sắp xếp từ thấp đến cao}
 			}}
 			words {{direction, select,
-				desc {Sorted Z to A}
-				other {Sorted A to Z}
+				desc {Sắp xếp từ Z đến A}
+				other {Sắp xếp theo thứ tự A đến Z}
 			}}
-			value {Sorted {selectedMenuItemText}}
+			value {Đã sắp xếp {selectedMenuItemText}}
 			other {{direction, select,
-				desc {Sorted descending}
-				other {Sorted ascending}
+				desc {Sắp xếp giảm dần}
+				other {Sắp xếp tăng dần}
 			}}
 		}`,
 	"components.table-controls.label": "Các tác vụ cho bảng",
