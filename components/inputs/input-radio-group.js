@@ -16,6 +16,11 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 	static get properties() {
 		return {
 			/**
+			 * Display the radio buttons horizontally
+			 * @type {boolean}
+			 */
+			horizontal: { type: Boolean, reflect: true },
+			/**
 			 * REQUIRED: Label for the group of radio inputs
 			 * @type {string}
 			 */
@@ -46,6 +51,11 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 				flex-direction: column;
 				gap: 0.6rem;
 			}
+			:host([horizontal]) div[role="radiogroup"] {
+				flex-direction: row;
+				flex-wrap: wrap;
+			}
+
 			.d2l-input-label[hidden] {
 				display: none;
 			}
@@ -57,6 +67,7 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 
 	constructor() {
 		super();
+		this.horizontal = false;
 		this.labelHidden = false;
 		this.required = false;
 		this.setFormValue('');
@@ -87,6 +98,10 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 		}
 		if (changedProperties.has('required')) {
 			this.#recalculateState(true);
+		}
+		if (changedProperties.has('horizontal')) {
+			const radios = this.#getRadios();
+			radios.forEach(el => el._horizontal = this.horizontal);
 		}
 	}
 
@@ -218,6 +233,7 @@ class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMix
 			if (el._checked) checkedRadios.push(el);
 			el._isInitFromGroup = true;
 			el._focusable = false;
+			el._horizontal = this.horizontal;
 		});
 
 		// only the last checked radio is actually checked

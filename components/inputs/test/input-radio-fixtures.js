@@ -52,6 +52,13 @@ export const radioFixtures = {
 			<d2l-input-radio label="Marble Rye" value="marble-rye" checked></d2l-input-radio>
 		</d2l-input-radio-group>
 	`,
+	horizontalLayout: html`
+		<d2l-input-radio-group horizontal label="Bread">
+			<d2l-input-radio label="Whole wheat" value="whole-wheat"></d2l-input-radio>
+			<d2l-input-radio label="Baguette" value="baguette"></d2l-input-radio>
+			<d2l-input-radio label="Marble Rye" value="marble-rye" checked></d2l-input-radio>
+		</d2l-input-radio-group>
+	`,
 	inlineHelp: html`
 		<d2l-input-radio-group label="Bread">
 			<d2l-input-radio label="Whole wheat">
@@ -130,6 +137,16 @@ export const radioFixtures = {
 	`,
 	supporting: html`
 		<d2l-input-radio-group label="Bread">
+			<d2l-input-radio label="Whole wheat" checked></d2l-input-radio>
+			<d2l-input-radio label="Baguette"></d2l-input-radio>
+			<d2l-input-radio label="Marble Rye"></d2l-input-radio>
+			<d2l-input-radio label="Other" supporting-hidden-when-unchecked>
+				<div slot="supporting" style="border: 1px solid black; padding: 6px;">Sourdough</div>
+			</d2l-input-radio>
+		</d2l-input-radio-group>
+	`,
+	supportingHorizontal: html`
+		<d2l-input-radio-group label="Bread" horizontal>
 			<d2l-input-radio label="Whole wheat" checked></d2l-input-radio>
 			<d2l-input-radio label="Baguette"></d2l-input-radio>
 			<d2l-input-radio label="Marble Rye"></d2l-input-radio>
