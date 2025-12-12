@@ -1,9 +1,6 @@
 import '../colors/colors.js';
 import { bodyCompactStyles, bodySmallStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
-
-const overflowClipEnabled = getFlag('GAUD-7887-core-components-overflow-clipping', true);
 
 /**
  * A component for consistent layout of primary and secondary text in a list item.
@@ -36,18 +33,10 @@ class ListItemContent extends LitElement {
 
 			.d2l-list-item-content-text-secondary {
 				color: var(--d2l-list-item-content-text-secondary-color, var(--d2l-color-tungsten));
-				${overflowClipEnabled ? css`` : css`
-					margin: 0;
-					overflow: hidden;
-				`}
 			}
 
 			.d2l-list-item-content-text-supporting-info {
 				color: var(--d2l-color-ferrite);
-				${overflowClipEnabled ? css`` : css`
-					margin: 0;
-					overflow: hidden;
-				`}
 			}
 
 			.d2l-list-item-content-text-secondary ::slotted(*),

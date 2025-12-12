@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
 import { _isValidCssSelector } from '../../helpers/internal/css.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { svgToCSS } from '../../helpers/svg-to-css.js';
 
 /**
@@ -160,12 +161,20 @@ export const _generateBodySmallStyles = (selector, includeSkeleton = true) => {
 
 export const bodySmallStyles = _generateBodySmallStyles('.d2l-body-small', true);
 
+const getHeadingFocusStyles = (selector) => {
+	return getFocusRingStyles(
+		selector,
+		{ extraStyles: css`border-radius: 0.3rem;` }
+	);
+};
+
 /**
  * A private helper method that should not be used by general consumers
  */
-export const _generateHeading1Styles = (selector) => {
+export const _generateHeading1Styles = (selector, includeFocus = false) => {
 	if (!_isValidCssSelector(selector)) return;
 
+	const focusStyles = includeFocus ? getHeadingFocusStyles(selector) : unsafeCSS('');
 	selector = unsafeCSS(selector);
 	return css`
 		${selector} {
@@ -174,6 +183,7 @@ export const _generateHeading1Styles = (selector) => {
 			line-height: 2.4rem;
 			margin: 1.5rem 0 1.5rem 0;
 		}
+		${focusStyles}
 		@media (max-width: 615px) {
 			${selector} {
 				font-size: 1.5rem;
@@ -184,7 +194,7 @@ export const _generateHeading1Styles = (selector) => {
 	`;
 };
 export const heading1Styles = css`
-	${_generateHeading1Styles('.d2l-heading-1')}
+	${_generateHeading1Styles('.d2l-heading-1', true)}
 	:host([skeleton]) .d2l-heading-1.d2l-skeletize {
 		height: 2.4rem;
 		overflow: hidden;
@@ -207,9 +217,10 @@ export const heading1Styles = css`
 /**
  * A private helper method that should not be used by general consumers
  */
-export const _generateHeading2Styles = (selector) => {
+export const _generateHeading2Styles = (selector, includeFocus = false) => {
 	if (!_isValidCssSelector(selector)) return;
 
+	const focusStyles = includeFocus ? getHeadingFocusStyles(selector) : unsafeCSS('');
 	selector = unsafeCSS(selector);
 	return css`
 		${selector} {
@@ -218,6 +229,7 @@ export const _generateHeading2Styles = (selector) => {
 			line-height: 1.8rem;
 			margin: 1.5rem 0 1.5rem 0;
 		}
+		${focusStyles}
 		@media (max-width: 615px) {
 			${selector} {
 				font-size: 1rem;
@@ -229,7 +241,7 @@ export const _generateHeading2Styles = (selector) => {
 	`;
 };
 export const heading2Styles = css`
-	${_generateHeading2Styles('.d2l-heading-2')}
+	${_generateHeading2Styles('.d2l-heading-2', true)}
 	:host([skeleton]) .d2l-heading-2.d2l-skeletize {
 		height: 1.8rem;
 		overflow: hidden;
@@ -252,9 +264,10 @@ export const heading2Styles = css`
 /**
  * A private helper method that should not be used by general consumers
  */
-export const _generateHeading3Styles = (selector) => {
+export const _generateHeading3Styles = (selector, includeFocus = false) => {
 	if (!_isValidCssSelector(selector)) return;
 
+	const focusStyles = includeFocus ? getHeadingFocusStyles(selector) : unsafeCSS('');
 	selector = unsafeCSS(selector);
 	return css`
 		${selector} {
@@ -263,6 +276,7 @@ export const _generateHeading3Styles = (selector) => {
 			line-height: 1.5rem;
 			margin: 1.5rem 0 1.5rem 0;
 		}
+		${focusStyles}
 		@media (max-width: 615px) {
 			${selector} {
 				font-size: 0.8rem;
@@ -273,7 +287,7 @@ export const _generateHeading3Styles = (selector) => {
 	`;
 };
 export const heading3Styles = css`
-	${_generateHeading3Styles('.d2l-heading-3')}
+	${_generateHeading3Styles('.d2l-heading-3', true)}
 	:host([skeleton]) .d2l-heading-3.d2l-skeletize {
 		height: 1.5rem;
 		overflow: hidden;
@@ -296,9 +310,10 @@ export const heading3Styles = css`
 /**
  * A private helper method that should not be used by general consumers
  */
-export const _generateHeading4Styles = (selector) => {
+export const _generateHeading4Styles = (selector, includeFocus = false) => {
 	if (!_isValidCssSelector(selector)) return;
 
+	const focusStyles = includeFocus ? getHeadingFocusStyles(selector) : unsafeCSS('');
 	selector = unsafeCSS(selector);
 	return css`
 		${selector} {
@@ -307,10 +322,11 @@ export const _generateHeading4Styles = (selector) => {
 			line-height: 1.2rem;
 			margin: 1.5rem 0 1.5rem 0;
 		}
+		${focusStyles}
 	`;
 };
 export const heading4Styles = css`
-	${_generateHeading4Styles('.d2l-heading-4')}
+	${_generateHeading4Styles('.d2l-heading-4', true)}
 	:host([skeleton]) .d2l-heading-4.d2l-skeletize {
 		height: 1.2rem;
 		overflow: hidden;

@@ -45,7 +45,7 @@ describe('d2l-more-less', () => {
 			expect(elem.offsetHeight).to.be.above(content.scrollHeight);
 
 			const p = document.getElementById('clone-target');
-			content.appendChild(p.cloneNode(true));
+			elem.appendChild(p.cloneNode(true));
 
 			await waitForHeight(elem);
 

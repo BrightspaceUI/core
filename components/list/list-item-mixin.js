@@ -89,15 +89,30 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			 */
 			last: { type: Boolean, reflect: true },
 			/**
+			 * @ignore
+			 */
+			layout: { type: String, reflect: true },
+			/**
 			 * Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive.
 			 * @type {boolean}
 			 */
 			noPrimaryAction: { type: Boolean, attribute: 'no-primary-action' },
 			/**
-			 * How much padding to render list items with
+			 * How much padding to render in standard/normal list items
 			 * @type {'normal'|'none'}
 			 */
 			paddingType: { type: String, attribute: 'padding-type' },
+			/**
+			 * Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive.
+			 * @type {boolean}
+			 */
+			tileHeader: { type: Boolean, reflect: true, attribute: 'tile-header' },
+			/**
+			 * How much padding to render in tile list items
+			 * @type {'normal'|'none'}
+			 * @default "normal"
+			 */
+			tilePaddingType: { type: String, attribute: 'tile-padding-type' },
 			_addButtonText: { state: true },
 			_displayKeyboardTooltip: { type: Boolean },
 			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
@@ -123,8 +138,19 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				display: block;
 				position: relative;
 			}
+			:host([layout="tile"]) {
+				display: inline-block;
+				flex: none;
+				width: 14rem;
+			}
 			:host[hidden] {
 				display: none;
+			}
+
+			:host d2l-list-item-generic-layout {
+				--d2l-list-item-border-color: var(--d2l-color-mica);
+				--d2l-list-item-illustration-border-radius: 5px;
+				--d2l-list-item-padding: 0.6rem;
 			}
 
 			:host([dragging]) d2l-list-item-generic-layout {
@@ -184,10 +210,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-top: 0;
 			}
 
-			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] {
+			:host(:not([layout="tile"]):not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] {
 				width: 3rem;
 			}
-			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] ~ [slot="control-action"] [slot="content"] {
+			:host(:not([layout="tile"]):not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] ~ [slot="control-action"] [slot="content"] {
 				padding-inline-start: 3rem;
 			}
 			:host(:not([_has-color-slot])) .d2l-list-item-content-extend-separators [slot="content"] {
@@ -208,7 +234,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				--d2l-list-item-content-text-outline: 2px solid var(--d2l-color-celestine);
 				--d2l-list-item-content-text-outline-offset: 1px;
 			}
-			:host([_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content-none {
+			:host([_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content.d2l-list-item-content-none {
 				border-radius: 6px;
 				outline: var(--d2l-list-item-content-text-outline);
 				outline-offset: -4px;
@@ -224,12 +250,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					--d2l-list-item-content-text-outline: 2px solid var(--d2l-color-celestine);
 					--d2l-list-item-content-text-outline-offset: 1px;
 				}
-				:host([_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content-none {
+				:host([_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content.d2l-list-item-content-none {
 					border-radius: initial;
 					outline: initial;
 					outline-offset: initial;
 				}
-				:host([_focusing-primary-action]:not([padding-type="none"])):has(:focus-visible) .d2l-list-item-content-none {
+				:host([_focusing-primary-action]:not([padding-type="none"])):has(:focus-visible) .d2l-list-item-content.d2l-list-item-content-none {
 					border-radius: 8px;
 					outline: var(--d2l-list-item-content-text-outline);
 					outline-offset: -4px;
@@ -294,7 +320,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-block: 0.55rem;
 				margin-inline-end: 0.55rem;
 			}
-			:host(:not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators d2l-selection-input {
+			:host(:not([layout="tile"]):not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators d2l-selection-input {
 				margin-inline-start: 0.9rem;
 			}
 			:host(:not([_render-expand-collapse-slot])[_has-color-slot]) .d2l-list-item-content-extend-separators d2l-selection-input {
@@ -310,7 +336,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				border-radius: 6px;
 				margin: 0 -12px;
 			}
-			.d2l-list-item-content-extend-separators [slot="outside-control-container"] {
+			:host(:not([layout="tile"])) .d2l-list-item-content-extend-separators [slot="outside-control-container"] {
 				border-left: none !important;
 				border-radius: 0 !important;
 				border-right: none !important;
@@ -430,6 +456,169 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			.dragging [slot="add"] {
 				display: none;
 			}
+
+			:host([layout="tile"]) .d2l-list-item-content {
+				box-sizing: border-box;
+				flex-direction: column;
+				height: 100%;
+				padding: var(--d2l-list-item-padding);
+			}
+			:host([layout="tile"][tile-padding-type="none"]) .d2l-list-item-content {
+				padding: 0;
+			}
+
+			:host([layout="tile"]) [slot="content"] ::slotted([slot="illustration"]),
+			:host([layout="tile"]) .d2l-list-item-illustration > * {
+				border-end-end-radius: 0;
+				border-end-start-radius: 0;
+				border-start-end-radius: var(--d2l-list-item-illustration-border-radius);
+				border-start-start-radius: var(--d2l-list-item-illustration-border-radius);
+				box-sizing: border-box;
+				margin-block: calc(-1 * var(--d2l-list-item-padding) + 1px) var(--d2l-list-item-padding);
+				margin-inline: calc(-1 * var(--d2l-list-item-padding) + 1px);
+				max-height: unset;
+				max-width: calc(100% + 1.1rem);
+			}
+			:host([layout="tile"][tile-padding-type="none"]) [slot="content"] ::slotted([slot="illustration"]),
+			:host([layout="tile"][tile-padding-type="none"]) .d2l-list-item-illustration > * {
+				margin-block: 0;
+				margin-inline: 0;
+			}
+
+			:host([layout="tile"][tile-header]) [slot="content"] ::slotted([slot="illustration"]),
+			:host([layout="tile"][tile-header]) .d2l-list-item-illustration > * {
+				border-radius: 0;
+				margin-block: calc(-1 * var(--d2l-list-item-padding)) var(--d2l-list-item-padding);
+			}
+			:host([layout="tile"][tile-header][tile-padding-type="none"]) [slot="content"] ::slotted([slot="illustration"]),
+			:host([layout="tile"][tile-header][tile-padding-type="none"]) .d2l-list-item-illustration > * {
+				margin-block: 0;
+			}
+
+			:host([layout="tile"]) [slot="content"] ::slotted(d2l-icon[slot="illustration"]),
+			:host([layout="tile"]) .d2l-list-item-illustration > d2l-icon[slot="illustration"] {
+				padding: 1rem;
+			}
+
+			:host([layout="tile"]) [slot="content"] ::slotted(div[slot="illustration"]),
+			:host([layout="tile"]) .d2l-list-item-illustration > div[slot="illustration"],
+			:host([layout="tile"]) [slot="content"] ::slotted(d2l-icon[slot="illustration"]),
+			:host([layout="tile"]) .d2l-list-item-illustration > d2l-icon[slot="illustration"] {
+				border-bottom: 1px solid var(--d2l-list-item-border-color);
+				width: calc(100% + 1.1rem);
+			}
+			:host([layout="tile"][tile-padding-type="none"]) [slot="content"] ::slotted(div[slot="illustration"]),
+			:host([layout="tile"][tile-padding-type="none"]) .d2l-list-item-illustration > div[slot="illustration"],
+			:host([layout="tile"][tile-padding-type="none"]) [slot="content"] ::slotted(d2l-icon[slot="illustration"]),
+			:host([layout="tile"][tile-padding-type="none"]) .d2l-list-item-illustration > d2l-icon[slot="illustration"] {
+				width: 100%;
+			}
+
+			:host([layout="tile"]:not([selection-disabled]):not([skeleton])[padding-type="none"]) [slot="outside-control-container"],
+			:host([layout="tile"]) [slot="outside-control-container"] {
+				border-color: var(--d2l-list-item-border-color);
+				margin: 0;
+			}
+			:host([layout="tile"]:not([draggable])[_has-color-slot]) [slot="outside-control-container"] {
+				margin-inline-start: 0;
+			}
+			:host([layout="tile"]:not([_has-color-slot])) .d2l-list-item-content-extend-separators [slot="content"] {
+				padding-inline: var(--d2l-list-item-padding);
+			}
+
+			:host([layout="tile"][_focusing-primary-action]:not([selection-disabled]):not([button-disabled]):not([skeleton]):not([current])) [slot="outside-control-container"].d2l-list-item-content-none {
+				border-color: transparent;
+			}
+			:host([layout="tile"][_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content.d2l-list-item-content-none {
+				border-radius: 6px;
+				outline: var(--d2l-list-item-content-text-outline);
+				outline-offset: 2px;
+			}
+			@supports selector(:has(a, b)) {
+				:host([layout="tile"][_focusing-primary-action]:not([padding-type="none"])) .d2l-list-item-content.d2l-list-item-content-none {
+					border-radius: initial;
+					outline: initial;
+					outline-offset: initial;
+				}
+				:host([layout="tile"][_focusing-primary-action]:not([selection-disabled]):not([button-disabled]):not([skeleton]):not([current])) [slot="outside-control-container"].d2l-list-item-content-none {
+					border-color: var(--d2l-list-item-border-color);
+				}
+				:host([layout="tile"][_focusing-primary-action]:not([padding-type="none"])):has(:focus-visible) .d2l-list-item-content.d2l-list-item-content-none {
+					border-radius: 6px;
+					outline: var(--d2l-list-item-content-text-outline);
+					outline-offset: 2px;
+				}
+				:host([layout="tile"][_focusing-primary-action]:not([selection-disabled]):not([button-disabled]):not([skeleton]):not([current])):has(:focus-visible) [slot="outside-control-container"].d2l-list-item-content-none {
+					border-color: transparent;
+				}
+			}
+
+			:host([layout="tile"]) d2l-selection-input {
+				margin: 0;
+			}
+			:host([layout="tile"]:not([tile-header])) d2l-selection-input {
+				--d2l-input-checkbox-border-color-hover-focus: var(--d2l-color-celestine-minus-1);
+				--d2l-input-radio-border-color-hover-focus: var(--d2l-color-celestine-minus-1);
+				border: 2px solid transparent;
+				border-radius: 8px;
+				padding: 3px;
+			}
+			:host([layout="tile"][_focusing]:not([tile-header])) d2l-selection-input {
+				border: 2px solid white;
+			}
+			:host([layout="tile"]) [slot="control"] {
+				background-color: rgba(0, 0, 0, 0.5);
+				border-radius: 8px;
+				box-sizing: border-box;
+				margin: 0.5rem;
+				outline: 2px solid transparent;
+				position: absolute;
+			}
+			:host([layout="tile"][_focusing]:not([tile-header])) [slot="control"] {
+				background-color: var(--d2l-color-celestine);
+				outline-color: var(--d2l-color-celestine-minus-1);
+			}
+			:host([layout="tile"][skeleton]) [slot="control"] {
+				background-color: transparent;
+			}
+			:host([layout="tile"][tile-header]) [slot="control"] {
+				background-color: transparent;
+				display: inline-flex;
+				margin: 0.4rem var(--d2l-list-item-padding);
+				outline: none;
+				position: static;
+			}
+
+			:host([layout="tile"]) [slot="actions"] {
+				--d2l-button-icon-min-height: 1.5rem;
+				--d2l-button-icon-min-width: 1.5rem;
+				--d2l-button-icon-border-radius: 4px;
+				margin-block: var(--d2l-list-item-padding);
+				margin-inline-end: var(--d2l-list-item-padding);
+				padding: 0;
+				position: absolute;
+			}
+			:host([layout="tile"][tile-header]) [slot="actions"] {
+				--d2l-button-icon-background-color-hover: var(--d2l-color-mica);
+				margin: 0.25rem var(--d2l-list-item-padding);
+				position: static;
+			}
+
+			:host([layout="tile"][tile-header]) [slot="header"] {
+				background-color: var(--d2l-color-gypsum);
+				border-end-end-radius: 0;
+				border-end-start-radius: 0;
+				border-start-end-radius: 5px;
+				border-start-start-radius: 5px;
+				margin-block-start: 1px;
+				margin-inline: 1px;
+			}
+
+			:host([layout="tile"]) .d2l-list-item-content-extend-separators ::slotted([slot="actions"]),
+			:host([layout="tile"]) .d2l-list-item-content-extend-separators .d2l-list-item-actions > * {
+				margin-inline: 0;
+			}
+
 		`];
 
 		super.styles && styles.unshift(super.styles);
@@ -439,8 +628,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	constructor() {
 		super();
 		this.first = false;
+		this.isVisibleOnAncestorTarget = true;
 		this.noPrimaryAction = false;
 		this.paddingType = 'normal';
+		this.tileHeader = false;
+		this.tilePaddingType = 'normal';
 		this._addButtonTopId = getUniqueId();
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
@@ -694,6 +886,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			'd2l-list-item-content': true,
 			'd2l-list-item-content-none': !this._hasListItemContent
 		};
+		const outsideClasses = {
+			'd2l-list-item-content-none': !this._hasListItemContent
+		};
 
 		const alignNested = ((this.draggable && this.selectable) || (this.expandable && this.selectable && this.color) || (this.expandable && !this.selectable)) ? 'control' : undefined;
 		const contentAreaContent = html`
@@ -729,6 +924,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				data-separators="${ifDefined(this._separators)}"
 				indentation="${ifDefined(this.indentation)}"
 				?grid-active="${this.role === 'row'}"
+				layout="${this.layout}"
 				?no-primary-action="${this.noPrimaryAction}">
 				${this._showAddButton && this.first ? html`
 				<div slot="add-top">
@@ -741,7 +937,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					</d2l-button-add>
 				</div>
 				` : nothing}
-				<div slot="outside-control-container"></div>
+				<div slot="header"></div>
+				<div slot="outside-control-container" class="${classMap(outsideClasses)}"></div>
 				<div slot="before-content"></div>
 				${this._renderDropTarget()}
 				${this._renderDragHandle(this._renderOutsideControl)}

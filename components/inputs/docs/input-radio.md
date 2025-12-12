@@ -52,6 +52,7 @@ When provided with a `name`, the group will participate in forms with the `value
 
 | Property | Type | Description |
 |---|---|---|
+| `horizontal` | Boolean | Display the radio buttons horizontally |
 | `label` | String, required | Label for the group of radio inputs |
 | `label-hidden` | Boolean | Hides the label visually |
 | `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
