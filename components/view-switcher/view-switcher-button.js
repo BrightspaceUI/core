@@ -42,6 +42,7 @@ class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(LitElement)) {
 			button {
 				background-color: transparent;
 				border-radius: 0.2rem;
+				display: block;
 				font-family: inherit;
 				min-height: auto;
 				padding-block: 0.3rem;

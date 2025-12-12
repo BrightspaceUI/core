@@ -30,10 +30,10 @@ class ViewSwitcher extends LocalizeCoreElement(LitElement) {
 				align-items: center;
 				background-color: var(--d2l-color-gypsum);
 				border-radius: 0.3rem;
+				box-sizing: border-box;
 				display: flex;
 				gap: 0.3rem;
-				min-height: calc(2rem + 2px);
-				padding-inline: 0.3rem;
+				padding: 0.3rem;
 			}
 		`;
 	}
