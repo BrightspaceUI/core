@@ -232,6 +232,12 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "Rücktaste/Entfernen",
 	"components.tag-list-item.tooltip-delete-key-desc": "Ausgewählten Tag löschen",
 	"components.tag-list-item.tooltip-title": "Tastatursteuerung",
+	"components.view-switcher.role-description":
+		`{count, plural,
+			=0 {View Switcher with 0 items}
+			one {View Switcher with {count} item}
+			other {View Switcher with {count} items}
+		}`,
 	"templates.primary-secondary.divider": "Sekundäre Bereichstrennung",
 	"templates.primary-secondary.secondary-panel": "Sekundärer Bereich"
 };

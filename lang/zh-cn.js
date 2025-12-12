@@ -222,6 +222,11 @@ export default {
 	"components.tag-list-item.tooltip-delete-key": "退格键/Delete 键",
 	"components.tag-list-item.tooltip-delete-key-desc": "删除具有焦点的标签",
 	"components.tag-list-item.tooltip-title": "键盘控制",
+	"components.view-switcher.role-description":
+		`{count, plural,
+			=0 {View Switcher with 0 items}
+			other {View Switcher with {count} items}
+		}`,
 	"templates.primary-secondary.divider": "辅助面板分隔条",
 	"templates.primary-secondary.secondary-panel": "辅助面板"
 };
