@@ -89,13 +89,9 @@ class ViewSwitcher extends LocalizeCoreElement(LitElement) {
 
 	#handleSlotChange() {
 		const items = this.items;
+		this._count = items.length;
 		if (items.length === 0) return;
 		if (!items.find(i => i.selected)) items[0].selected = true;
-		for (let i = 0; i < items.length; i++) {
-			items[i]._index = i;
-			items[i]._total = items.length;
-		}
-		this._count = items.length;
 	}
 
 }

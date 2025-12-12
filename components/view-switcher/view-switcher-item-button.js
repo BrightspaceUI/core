@@ -7,7 +7,7 @@ import { labelStyles } from '../typography/styles.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 /**
- * A segmented button item component used with JS handlers.
+ * A button component to be used in d2l-view-switcher.
  * @fires d2l-view-switcher-item-select - Dispatched when the item is selected
  */
 class ViewSwitcherButton extends PropertyRequiredMixin(ButtonMixin(LitElement)) {
@@ -73,8 +73,8 @@ class ViewSwitcherButton extends PropertyRequiredMixin(ButtonMixin(LitElement)) 
 			<button
 				aria-pressed="${this.selected ? 'true' : 'false'}"
 				class="d2l-label-text"
-				type="button"
-				@click="${this.#handleClick}">
+				@click="${this.#handleClick}"
+				type="button">
 				${this.text}
 			</button>
 		`;
@@ -85,7 +85,7 @@ class ViewSwitcherButton extends PropertyRequiredMixin(ButtonMixin(LitElement)) 
 	}
 
 	async #handleClick() {
-		if (this.disabled || this.selected) return;
+		if (this.selected) return;
 		this.selected = true;
 		this.dispatchEvent(new CustomEvent('d2l-view-switcher-item-select', {
 			detail: { key: this.key },
