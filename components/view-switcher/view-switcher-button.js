@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
-import { ButtonMixin } from '../button/button-mixin.js';
 import { buttonStyles } from '../button/button-styles.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { labelStyles } from '../typography/styles.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
@@ -10,7 +10,7 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
  * A button component to be used in d2l-view-switcher.
  * @fires d2l-view-switcher-item-select - Dispatched when the item is selected
  */
-class ViewSwitcherButton extends PropertyRequiredMixin(ButtonMixin(LitElement)) {
+class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -66,6 +66,10 @@ class ViewSwitcherButton extends PropertyRequiredMixin(ButtonMixin(LitElement)) 
 	constructor() {
 		super();
 		this.selected = false;
+	}
+
+	static get focusElementSelector() {
+		return 'button';
 	}
 
 	render() {
