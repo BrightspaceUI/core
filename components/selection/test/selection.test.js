@@ -218,6 +218,14 @@ describe('d2l-selection-input', () => {
 			expect(el.querySelector('[key="key3"]').selected).to.be.false;
 		});
 
+		it('does not set the selected property to true when a disabled element is clicked, even if tooltip is set', async() => {
+			const input = el.querySelector('[key="key3"]');
+			input._disabledTooltip = 'Tooltip text';
+			const clickEvent = new Event('click');
+			input._handleRadioClick(clickEvent);
+			expect(input.selected).to.be.false;
+		});
+
 	});
 
 });

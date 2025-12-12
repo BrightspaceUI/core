@@ -1,6 +1,7 @@
 import '../inputs/input-checkbox.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { radioStyles } from '../inputs/input-radio-styles.js';
@@ -65,6 +66,10 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 		this._indeterminate = false;
 	}
 
+	get focusDisabled() {
+		return this.disabled && !this._disabledTooltip;
+	}
+
 	connectedCallback() {
 		super.connectedCallback();
 		// delay subscription otherwise import/upgrade order can cause selection mixin to miss event
@@ -99,19 +104,25 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 				'd2l-selection-input-radio': true,
 				'd2l-skeletize': true,
 				'd2l-hovering': this.hovering,
-				'd2l-disabled': this.disabled
+				'd2l-disabled': this.disabled,
+				'd2l-input-radio-disabled-tooltip': this.disabled && this._disabledTooltip
 			};
+			const disabledTooltip = this.disabled && this._disabledTooltip ?
+				html`<d2l-tooltip align="start" class="vdiff-include" for="${this.#inputId}" ?force-show="${this.hovering}" position="top">${this._disabledTooltip}</d2l-tooltip>` :
+				nothing;
 			return html`
 				<div
 					aria-disabled="${ifDefined(this.disabled)}"
 					aria-label="${this.label}"
 					aria-checked="${this.selected ? 'true' : 'false'}"
 					class="${classMap(radioClasses)}"
+					id="${this.#inputId}"
 					@click="${this._handleRadioClick}"
 					@keydown="${this._handleRadioKeyDown}"
 					@keyup="${this._handleRadioKeyUp}"
 					role="radio"
-					tabindex="${ifDefined(this.disabled ? undefined : 0)}"></div>
+					tabindex="${ifDefined(this.focusDisabled ? undefined : 0)}"></div>
+					${disabledTooltip}
 			`;
 		} else {
 			return html`
@@ -151,6 +162,8 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 		if (elem) elem.focus();
 	}
 
+	#inputId = getUniqueId();
+
 	_handleCheckboxChange(e) {
 		e.stopPropagation();
 		this.selected = e.target.checked;
@@ -167,7 +180,8 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 	}
 
 	_handleRadioKeyUp(e) {
-		if (e.keyCode === keyCodes.SPACE) this.selected = !this.selected;
+		if (e.keyCode !== keyCodes.SPACE || this.disabled) return;
+		this.selected = !this.selected;
 	}
 
 }
