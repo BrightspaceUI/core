@@ -1,5 +1,5 @@
 import '../view-switcher.js';
-import '../view-switcher-item-button.js';
+import '../view-switcher-button.js';
 import { expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
 
 describe('d2l-view-switcher', () => {
