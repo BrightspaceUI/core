@@ -92,10 +92,6 @@ class ViewSwitcherButton extends PropertyRequiredMixin(ButtonMixin(LitElement)) 
 			bubbles: true,
 			composed: true
 		}));
-
-		this.focusable = true;
-		await this.updateComplete;
-		this.shadowRoot.querySelector('button').focus();
 	}
 
 }
