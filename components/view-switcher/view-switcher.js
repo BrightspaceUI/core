@@ -63,7 +63,7 @@ class ViewSwitcher extends LocalizeCoreElement(LitElement) {
 				role="group"
 				aria-label="${this.label}"
 				aria-roledescription="${this.localize('components.view-switcher.role-description', { count: this._count })}"
-				@d2l-view-switcher-item-select=${this.#handleItemSelect}>
+				@d2l-view-switcher-select=${this.#handleItemSelect}>
 				<slot @slotchange="${this.#handleSlotChange}"></slot>
 			</div>
 		`;

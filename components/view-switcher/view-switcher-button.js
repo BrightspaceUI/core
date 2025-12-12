@@ -8,7 +8,7 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
 
 /**
  * A button component to be used in d2l-view-switcher.
- * @fires d2l-view-switcher-item-select - Dispatched when the item is selected
+ * @fires d2l-view-switcher-select - Dispatched when the item is selected
  */
 class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(LitElement)) {
 
@@ -92,7 +92,7 @@ class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(LitElement)) {
 	async #handleClick() {
 		if (this.selected) return;
 		this.selected = true;
-		this.dispatchEvent(new CustomEvent('d2l-view-switcher-item-select', {
+		this.dispatchEvent(new CustomEvent('d2l-view-switcher-select', {
 			detail: { key: this.key },
 			bubbles: true,
 			composed: true

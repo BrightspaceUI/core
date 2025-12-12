@@ -32,14 +32,14 @@ describe('d2l-view-switcher', () => {
 		});
 		it('should fire select event when item is clicked', async() => {
 			clickElem(items[2]);
-			const e = await oneEvent(items[2], 'd2l-view-switcher-item-select');
+			const e = await oneEvent(items[2], 'd2l-view-switcher-select');
 
 			expect(e.detail.key).to.equal('saveAndNew');
 		});
 
 		it('should select clicked item and deselect others', async() => {
 			clickElem(items[1]);
-			await oneEvent(items[1], 'd2l-view-switcher-item-select');
+			await oneEvent(items[1], 'd2l-view-switcher-select');
 
 			expect(items[0].selected).to.be.false;
 			expect(items[1].selected).to.be.true;
