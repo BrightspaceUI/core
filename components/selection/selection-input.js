@@ -31,6 +31,11 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
+			 * Tooltip text when disabled
+			 * @type {string}
+			 */
+			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
+			/**
 			 * Private. Force hovering state of input
 			 * @ignore
 			 * @type {boolean}
@@ -41,8 +46,6 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			 * @type {string}
 			 */
 			key: { type: String },
-			/* passthrough for list-item */
-			_disabledTooltip: { state: true },
 			_indeterminate: { type: Boolean },
 			_provider: { type: Object }
 		};
@@ -67,7 +70,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 	}
 
 	get focusDisabled() {
-		return this.disabled && !this._disabledTooltip;
+		return this.disabled && !this.disabledTooltip;
 	}
 
 	connectedCallback() {
@@ -105,10 +108,10 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 				'd2l-skeletize': true,
 				'd2l-hovering': this.hovering,
 				'd2l-disabled': this.disabled,
-				'd2l-input-radio-disabled-tooltip': this.disabled && this._disabledTooltip
+				'd2l-input-radio-disabled-tooltip': this.disabled && this.disabledTooltip
 			};
-			const disabledTooltip = this.disabled && this._disabledTooltip ?
-				html`<d2l-tooltip align="start" class="vdiff-include" for="${this.#inputId}" ?force-show="${this.hovering}" position="top">${this._disabledTooltip}</d2l-tooltip>` :
+			const disabledTooltip = this.disabled && this.disabledTooltip ?
+				html`<d2l-tooltip align="start" class="vdiff-include" for="${this.#inputId}" ?force-show="${this.hovering}" position="top">${this.disabledTooltip}</d2l-tooltip>` :
 				nothing;
 			return html`
 				<div
@@ -133,7 +136,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 					?checked="${this.selected}"
 					class="${ifDefined(this.hovering ? 'd2l-hovering' : undefined)}"
 					?disabled="${this.disabled}"
-					disabled-tooltip="${ifDefined(this._disabledTooltip)}"
+					disabled-tooltip="${ifDefined(this.disabledTooltip)}"
 					?indeterminate="${this._indeterminate}"
 					?skeleton="${this.skeleton}">
 				</d2l-input-checkbox>

@@ -169,7 +169,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			<d2l-selection-input
 				@d2l-selection-change="${this._onCheckboxChange}"
 				?disabled="${this.selectionDisabled}"
-				._disabledTooltip=${this.selectionDisabledTooltip}
+				disabled-tooltip=${this.selectionDisabledTooltip}
 				.hovering="${this._hoveringSelection}"
 				id="${this._checkboxId}"
 				?_indeterminate="${this.selectionInfo.state === SelectionInfo.states.some}"

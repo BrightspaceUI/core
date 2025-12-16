@@ -247,6 +247,7 @@ Note: `d2l-list-item` already provides a selection input for selectable list ite
 | `label` | String | Accessible hidden label for the input. |
 | `labelled-by` | String | Id reference to the accessible label for the input. **Note:** if specified, it must reference an element in the same DOM context. |
 | `disabled` | Boolean | Disables the input element(checkbox/radio btn). |
+| `disabled-tooltip` | String | Tooltip text when disabled. |
 | `selected` | Boolean | State of the input. |
 
 ### Events
