@@ -31,6 +31,11 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			 */
 			disabled: { type: Boolean, reflect: true },
 			/**
+			 * Tooltip text when disabled
+			 * @type {string}
+			 */
+			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
+			/**
 			 * Private. Force hovering state of input
 			 * @ignore
 			 * @type {boolean}
@@ -41,8 +46,6 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 			 * @type {string}
 			 */
 			key: { type: String },
-			/* passthrough for list-item */
-			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
 			_indeterminate: { type: Boolean },
 			_provider: { type: Object }
 		};
