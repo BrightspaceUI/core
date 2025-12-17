@@ -619,6 +619,24 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin-inline: 0;
 			}
 
+			:host([layout="tile"]) .d2l-list-item-color-outer {
+				padding: 1px;
+			}
+			:host([layout="tile"]) .d2l-list-item-color-inner {
+				border-end-end-radius: 0;
+				border-end-start-radius: 6px;
+				border-start-end-radius: 0;
+				border-start-start-radius: 6px;
+				width: 5px;
+			}
+			:host([layout="tile"][tile-header]) .d2l-list-item-color-outer {
+				padding-block-start: 0;
+			}
+			:host([layout="tile"][tile-header]) .d2l-list-item-color-inner {
+				border-start-end-radius: 0;
+				border-start-start-radius: 0;
+			}
+
 		`];
 
 		super.styles && styles.unshift(super.styles);

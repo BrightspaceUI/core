@@ -326,7 +326,13 @@ describe('list', () => {
 				{ name: 'item actions tile-header', template: createList({ itemsTemplate: createItem({ actions: createItemActions(), template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
 				{ name: 'item actions tile-header rtl', template: createList({ itemsTemplate: createItem({ actions: createItemActions(), template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, rtl: true, target: 'd2l-list-item' },
 				{ name: 'item actions tile-header extend-separators', template: createList({ extendSeparators: true, itemsTemplate: createItem({ actions: createItemActions(), template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
-				{ name: 'item actions tile-header link', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ template: html`<d2l-link href="http://www.d2l.com">Action 1</d2l-link>` }), template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' }
+				{ name: 'item actions tile-header link', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ template: html`<d2l-link href="http://www.d2l.com">Action 1</d2l-link>` }), template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				// color
+				{ name: 'item color indicator', template: createList({ itemsTemplate: createItem({ color: '#46a661', template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item color indicator rtl', template: createList({ itemsTemplate: createItem({ color: '#46a661', template: createListItemContent() }), layout, width: '400px' }), margin: 24, rtl: true, target: 'd2l-list-item' },
+				{ name: 'item color indicator alpha', template: createList({ itemsTemplate: createItem({ color: '#46a66199', template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item color indicator illustration', template: createList({ itemsTemplate: createItem({ color: '#46a661', illustration: createImgIllustration(), template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				{ name: 'item color indicator tile-header', template: createList({ itemsTemplate: createItem({ actions: createItemActions(), color: '#46a661', template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' }
 			].forEach(({ name, template, action, margin, rtl, target }) => {
 
 				it(name, async() => {
