@@ -256,13 +256,17 @@ class ListItemGenericLayout extends LitElement {
 				grid-row: start / start;
 			}
 
+			:host([layout="tile"]) ::slotted([slot="color-indicator"]) {
+				grid-column: start;
+				grid-row: content-start / content-end;
+			}
+
 			:host(:not([layout="tile"])) slot[name="header"],
 			:host([layout="tile"]) slot[name="add-top"],
 			:host([layout="tile"]) slot[name="control-container"],
 			:host([layout="tile"]) slot[name="before-content"],
 			:host([layout="tile"]) slot[name="outside-control"],
 			:host([layout="tile"]) slot[name="outside-control-action"],
-			:host([layout="tile"]) slot[name="color-indicator"],
 			:host([layout="tile"]) slot[name="expand-collapse"],
 			:host([layout="tile"]) slot[name="drop-target"],
 			:host([layout="tile"]) slot[name="nested"],
