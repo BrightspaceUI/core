@@ -37,8 +37,8 @@ describe('meter-radial', () => {
 				<d2l-meter-radial value="16" max="47" style="width: 30%;"></d2l-meter-radial>
 			</div>
 		` },
-		{ name: 'rounding-ceil', template: html`<d2l-meter-radial value="1" max="3" percent percent-rounding="ceil"></d2l-meter-radial>` },
-		{ name: 'rounding-floor', template: html`<d2l-meter-radial value="2" max="3" percent percent-rounding="floor"></d2l-meter-radial>` },
+		{ name: 'rounding-ceil', template: html`<d2l-meter-radial value="1" max="3" percent percent-rounding-mode="ceil"></d2l-meter-radial>` },
+		{ name: 'rounding-floor', template: html`<d2l-meter-radial value="2" max="3" percent percent-rounding-mode="floor"></d2l-meter-radial>` },
 	].forEach(({ name, template, wrapped }) => {
 		it(name, async() => {
 			const elem = await fixture(template);

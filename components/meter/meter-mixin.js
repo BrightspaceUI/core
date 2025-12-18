@@ -20,7 +20,7 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 			 * Rounding mode for percentage text values
 			 * @type {"round" | "ceil" | "floor"}
 			 */
-			percentRounding: { type: String, attribute: 'percent-rounding' },
+			percentRoundingMode: { type: String, attribute: 'percent-rounding-mode' },
 			/**
 			 * Context information for the meter. If the text contains {%} or {x/y}, they will be replaced with a percentage or fraction respectively.
 			 * @type {string}
@@ -46,6 +46,7 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 		this.percent = false;
 		this.textHidden = false;
 		this.value = 0;
+		this.percentRoundingMode = 'round';
 
 		this._namespace = 'components.meter-mixin';
 	}
@@ -59,10 +60,11 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 
 	_getPecentage() {
 		const value = this.max > 0 ? this.value / this.max : 0;
-		if (this.percentRounding === 'ceil') return Math.ceil(value * 100) / 100;
-		if (this.percentRounding === 'floor') return Math.floor(value * 100) / 100;
-		if (this.percentRounding === 'round') return Math.round(value * 100) / 100;
-		return value;
+		switch (this.percentRoundingMode) {
+			case 'ceil': return Math.ceil(value * 100) / 100;
+			case 'floor': return Math.floor(value * 100) / 100;
+			default: return Math.round(value * 100) / 100;
+		}
 	}
 
 	_primary(value, max, aria = false) {
