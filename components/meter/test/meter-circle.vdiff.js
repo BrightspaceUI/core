@@ -42,7 +42,9 @@ describe('meter-circle', () => {
 			<div style="width: 90px;">
 				<d2l-meter-circle value="16" max="47" style="width: 30%;"></d2l-meter-circle>
 			</div>
-		` }
+		` },
+		{ name: 'rounding-ceil', template: html`<d2l-meter-circle value="1" max="3" percent percent-rounding="ceil"></d2l-meter-circle>` },
+		{ name: 'rounding-floor', template: html`<d2l-meter-circle value="2" max="3" percent percent-rounding="floor"></d2l-meter-circle>` }
 	].forEach(({ name, template, wrapped }) => {
 		it(name, async() => {
 			const elem = await fixture(template);
