@@ -17,6 +17,11 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 			 */
 			percent: { type: Boolean },
 			/**
+			 * Rounding mode for percentage text values
+			 * @type {"round" | "ceil" | "floor"}
+			 */
+			percentRoundingMode: { type: String, attribute: 'percent-rounding-mode' },
+			/**
 			 * Context information for the meter. If the text contains {%} or {x/y}, they will be replaced with a percentage or fraction respectively.
 			 * @type {string}
 			 */
@@ -41,6 +46,7 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 		this.percent = false;
 		this.textHidden = false;
 		this.value = 0;
+		this.percentRoundingMode = 'round';
 
 		this._namespace = 'components.meter-mixin';
 	}
@@ -52,8 +58,17 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 		return secondary ? this.localize(`${this._namespace}.commaSeperatedAria`, { term1: secondary, term2: mainLabel }) : mainLabel;
 	}
 
+	_getPecentage() {
+		const value = this.max > 0 ? this.value / this.max : 0;
+		switch (this.percentRoundingMode) {
+			case 'ceil': return Math.ceil(value * 100) / 100;
+			case 'floor': return Math.floor(value * 100) / 100;
+			default: return Math.round(value * 100) / 100;
+		}
+	}
+
 	_primary(value, max, aria = false) {
-		const percentage = max > 0 ? value / max : 0;
+		const percentage = this._getPecentage();
 		const key = aria ? 'fractionAria' : 'fraction';
 
 		return this.percent
@@ -68,7 +83,7 @@ export const MeterMixin = superclass => class extends LocalizeCoreElement(superc
 
 		const key = aria ? 'fractionAria' : 'fraction';
 
-		const percentage = this.max > 0 ? value / max : 0;
+		const percentage = this._getPecentage();
 		context = context.replace('{%}', formatPercent(percentage, { maximumFractionDigits: 0 }));
 		context = context.replace('{x/y}', this.localize(`${this._namespace}.${key}`, { x: value, y: max }));
 		context = context.replace('{x}', value);
