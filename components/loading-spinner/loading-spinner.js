@@ -1,5 +1,6 @@
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, svg } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 
 /**
  * A loading spinner component.
@@ -43,54 +44,57 @@ class LoadingSpinner extends LitElement {
 				position: relative;
 				width: var(--d2l-loading-spinner-size, 50px);
 			}
-			.d2l-loading-spinner-bg,
-			.d2l-loading-spinner-bg-blur {
+			svg {
 				height: 100%;
 				position: absolute;
-				stroke: var(--d2l-loading-spinner-color, var(--d2l-color-celestine));
 				top: 0;
 				width: 100%;
 			}
-			.d2l-loading-spinner-bg-stroke {
+			.outer-circle-stroke {
+				fill: none;
 				stroke: #ededfa;
+				stroke-width: 0.5;
 			}
-			.d2l-loading-spinner-bg-blur {
+			.outer-circle-blur {
+				fill: black;
 				filter: blur(calc(var(--d2l-loading-spinner-size, 50px) / 10));
 				opacity: 0.1;
+				stroke: none;
 			}
 
-			.d2l-loading-spinner-slice1,
-			.d2l-loading-spinner-slice2,
-			.d2l-loading-spinner-slice3,
-			.d2l-loading-spinner-slice4,
-			.d2l-loading-spinner-slice5 {
+			.outer-circle {
+				fill: white;
+				stroke: none;
+			}
+			.inner-circle {
+				fill: none;
+				stroke: var(--d2l-loading-spinner-color, var(--d2l-color-celestine));
+				stroke-width: 2;
+			}
+
+			.slice {
 				animation-duration: 1.5s;
 				animation-iteration-count: infinite;
 				animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1);
-				height: 50%;
-				left: 50%;
-				position: absolute;
-				top: 0;
-				transform-origin: left bottom;
-				width: 50%;
+				transform-origin: center;
 			}
-			.d2l-loading-spinner-slice1 {
+			.slice-1 {
 				animation-name: slicespin1;
 				transform: rotate(54deg);
 			}
-			.d2l-loading-spinner-slice2 {
+			.slice-2 {
 				animation-name: slicespin2;
 				transform: rotate(124deg);
 			}
-			.d2l-loading-spinner-slice3 {
+			.slice-3 {
 				animation-name: slicespin3;
 				transform: rotate(198deg);
 			}
-			.d2l-loading-spinner-slice4 {
+			.slice-4 {
 				animation-name: slicespin4;
 				transform: rotate(270deg);
 			}
-			.d2l-loading-spinner-slice5 {
+			.slice-5 {
 				animation-name: slicespin5;
 				transform: rotate(344deg);
 			}
@@ -121,47 +125,14 @@ class LoadingSpinner extends LitElement {
 	render() {
 		return html`
 			<div class="d2l-loading-spinner-wrapper">
-				<svg viewBox="0 0 42 42" class="d2l-loading-spinner-bg-blur" focusable="false">
-					<g fill="none" fill-rule="evenodd" transform="translate(5 5)">
-						<circle stroke="none" fill="#000" cx="16" cy="16" r="14"></circle>
+				<svg viewBox="0 0 50 50" fill-rule="evenodd">
+					<g>
+						<circle cx="25" cy="25" r="16" class="outer-circle-blur"></circle>
+						<circle cx="25" cy="25" r="19" class="outer-circle-stroke"></circle>
+						<circle cx="25" cy="25" r="19" class="outer-circle"></circle>
+						<circle cx="25" cy="25" r="13" class="inner-circle"></circle>
 					</g>
-				</svg>
-				<svg viewBox="0 0 42 42" class="d2l-loading-spinner-bg" focusable="false">
-					<g fill="none" fill-rule="evenodd" transform="translate(5 5)">
-						<circle stroke-width="0.5" cx="16" cy="16" r="16" class="d2l-loading-spinner-bg-stroke"></circle>
-						<circle stroke="none" fill="#FFF" cx="16" cy="16" r="16"></circle>
-						<circle stroke-width="2" cx="16" cy="16" r="11"></circle>
-					</g>
-				</svg>
-				<svg viewBox="0 0 42 42" class="d2l-loading-spinner-slice1" focusable="false">
-					<g fill="none" fill-rule="evenodd">
-						<path d="M24 42h8c0-17.673-14.327-32-32-32v8c1.105 0 2 .895 2 2s-.895 2-2 2v20h20c0-1.105.895-2 2-2s2 .895 2 2z" fill="#FFF"></path>
-						<path d="M0 22c1.105 0 2-.895 2-2s-.895-2-2-2c13.255 0 24 10.745 24 24 0-1.105-.895-2-2-2s-2 .895-2 2c0-11.046-8.954-20-20-20z" fill="#E6EAF0"></path>
-					</g>
-				</svg>
-				<svg viewBox="0 0 42 42" class="d2l-loading-spinner-slice2" focusable="false">
-					<g fill="none" fill-rule="evenodd">
-						<path d="M24 42h8c0-17.673-14.327-32-32-32v8c1.105 0 2 .895 2 2s-.895 2-2 2v20h20c0-1.105.895-2 2-2s2 .895 2 2z" fill="#FFF"></path>
-						<path d="M0 22c1.105 0 2-.895 2-2s-.895-2-2-2c13.255 0 24 10.745 24 24 0-1.105-.895-2-2-2s-2 .895-2 2c0-11.046-8.954-20-20-20z" fill="#E6EAF0"></path>
-					</g>
-				</svg>
-				<svg viewBox="0 0 42 42" class="d2l-loading-spinner-slice3" focusable="false">
-					<g fill="none" fill-rule="evenodd">
-						<path d="M24 42h8c0-17.673-14.327-32-32-32v8c1.105 0 2 .895 2 2s-.895 2-2 2v20h20c0-1.105.895-2 2-2s2 .895 2 2z" fill="#FFF"></path>
-						<path d="M0 22c1.105 0 2-.895 2-2s-.895-2-2-2c13.255 0 24 10.745 24 24 0-1.105-.895-2-2-2s-2 .895-2 2c0-11.046-8.954-20-20-20z" fill="#E6EAF0"></path>
-					</g>
-				</svg>
-				<svg viewBox="0 0 42 42" class="d2l-loading-spinner-slice4" focusable="false">
-					<g fill="none" fill-rule="evenodd">
-						<path d="M24 42h8c0-17.673-14.327-32-32-32v8c1.105 0 2 .895 2 2s-.895 2-2 2v20h20c0-1.105.895-2 2-2s2 .895 2 2z" fill="#FFF"></path>
-						<path d="M0 22c1.105 0 2-.895 2-2s-.895-2-2-2c13.255 0 24 10.745 24 24 0-1.105-.895-2-2-2s-2 .895-2 2c0-11.046-8.954-20-20-20z" fill="#E6EAF0"></path>
-					</g>
-				</svg>
-				<svg viewBox="0 0 42 42" class="d2l-loading-spinner-slice5" focusable="false">
-					<g fill="none" fill-rule="evenodd">
-						<path d="M24 42h8c0-17.673-14.327-32-32-32v8c1.105 0 2 .895 2 2s-.895 2-2 2v20h20c0-1.105.895-2 2-2s2 .895 2 2z" fill="#FFF"></path>
-						<path d="M0 22c1.105 0 2-.895 2-2s-.895-2-2-2c13.255 0 24 10.745 24 24 0-1.105-.895-2-2-2s-2 .895-2 2c0-11.046-8.954-20-20-20z" fill="#E6EAF0"></path>
-					</g>
+					${Array.from({ length: 5 }).map((_, i) => this.#renderSlice(i + 1))}
 				</svg>
 			</div>
 		`;
@@ -175,6 +146,17 @@ class LoadingSpinner extends LitElement {
 				this.style.setProperty('--d2l-loading-spinner-size', `${this.size}px`);
 			}
 		});
+	}
+
+	#renderSlice(index) {
+		const classes = {
+			'slice': true
+		};
+		classes[`slice-${index}`] = true;
+		return svg`<g class="${classMap(classes)}">
+			<path d="M39 25h5a19 19 0 0 0 -19 -19v5a 1 1 0 0 1 0 2v12h12a1 1 0 0 1 2 0z" fill="#FFF"></path>
+			<path d="M25 13a1 1 0 0 0 0 -2a14 14 0 0 1 14 14a1 1 0 0 0 -2 0a12 12 0 0 0 -12 -12z" fill="#E6EAF0"></path>
+		</g>`;
 	}
 
 }
