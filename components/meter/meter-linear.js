@@ -99,6 +99,7 @@ class MeterLinear extends MeterMixin(LitElement) {
 	constructor() {
 		super();
 		this.textInline = false;
+		this.textAlignEnd = false;
 	}
 
 	render() {
