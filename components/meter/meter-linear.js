@@ -15,10 +15,10 @@ class MeterLinear extends MeterMixin(LitElement) {
 			 */
 			textInline: { type: Boolean, attribute: 'text-inline', reflect: true },
 			/**
-			 * Force text to be right aligned
+			 * Force text to be aligned to the end of the meter
 			 * @type {boolean}
 			 */
-			textRightAlign: { type: Boolean, attribute: 'text-right-align', reflect: true }
+			textAlignEnd: { type: Boolean, attribute: 'text-align-end', reflect: true }
 		};
 	}
 	static get styles() {
@@ -111,7 +111,7 @@ class MeterLinear extends MeterMixin(LitElement) {
 		const primaryAria = this._primary(this.value, this.max, true);
 		const secondaryAria = this._secondary(this.value, this.max, this.text, true);
 		const textClasses = {
-			'd2l-meter-linear-text-space-between': !this.textInline && (secondary !== this.text || this.textRightAlign),
+			'd2l-meter-linear-text-space-between': !this.textInline && (secondary !== this.text || this.textAlignEnd),
 			'd2l-body-small': true,
 			'd2l-meter-linear-text': true
 		};
