@@ -1,4 +1,6 @@
 # Templates
+*These templates are meant to take up the whole page and have a navbar slotted into them, rather than be used on a page that already includes a navbar. Therefore, a current limitation is they can only be used with the immersive nav. Work is actively underway to overhaul our page template strategy.*
+
 Page templates are used to provide generic ways to arrange content on a page
 
 ## Primary-Secondary [d2l-template-primary-secondary]

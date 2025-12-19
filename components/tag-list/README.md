@@ -1,5 +1,4 @@
 # Tag List
-*This component is in progress. The API is generally stable but there could be some appearance or minor behavior churn in the short-term.*
 
 Tag lists are used to present a list of compact, discrete pieces of information.
 
