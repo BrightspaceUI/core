@@ -5,12 +5,9 @@ import { css, html, LitElement } from 'lit';
 import { findFormElements, flattenMap, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
-import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { localizeFormElement } from './form-element-localize-helper.js';
-
-const formElementMixinWithNestedFormsParticipates = getFlag('form-element-mixin-nested-forms', true);
 
 /**
  * A component that can be used to build sections containing interactive controls that are validated and submitted as a group.
@@ -181,17 +178,10 @@ class Form extends LocalizeCoreElement(LitElement) {
 						}
 					}
 				}
-			} else if (!formElementMixinWithNestedFormsParticipates) {
-				const eleErrors = await this._validateFormElement(ele, true);
-				if (eleErrors.length > 0) {
-					errorMap.set(ele, eleErrors);
-				}
 			}
-			if (formElementMixinWithNestedFormsParticipates) {
-				const eleErrors = await this._validateFormElement(ele, true);
-				if (eleErrors.length > 0) {
-					errorMap.set(ele, eleErrors);
-				}
+			const eleErrors = await this._validateFormElement(ele, true);
+			if (eleErrors.length > 0) {
+				errorMap.set(ele, eleErrors);
 			}
 		}
 		const flattenedErrorMap = flattenMap(errorMap);
