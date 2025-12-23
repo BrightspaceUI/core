@@ -224,7 +224,11 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "ลบแท็กที่โฟกัส",
 	"components.tag-list-item.tooltip-title": "การควบคุมแป้นพิมพ์",
 	"components.view-switcher.role-description":
-		`{count, plural, =0 {Xem Trình chuyển đổi với 0 mục} one {Xem Trình chuyển đổi với {count} mục} other {Xem Trình chuyển đổi với {count} mục}}`,
+		`{count, plural,
+			=0 {Xem Trình chuyển đổi với 0 mục}
+			one {Xem Trình chuyển đổi với {count} mục}
+			other {Xem Trình chuyển đổi với {count} mục}
+		}`,
 	"templates.primary-secondary.divider": "ตัวแบ่งบานหน้าต่างรอง",
 	"templates.primary-secondary.secondary-panel": "บานหน้าต่างรอง"
 };
