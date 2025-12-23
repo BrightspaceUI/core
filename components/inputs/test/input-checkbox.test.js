@@ -1,7 +1,6 @@
 import '../../form/form.js';
 import '../input-checkbox.js';
 import { clickElem, expect, fixture, focusElem, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
-import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 import { checkboxFixtures } from './input-checkbox-fixtures.js';
 
 function getInput(elem) {
@@ -17,8 +16,6 @@ function getText(elem) {
 }
 
 describe('d2l-input-checkbox', () => {
-
-	afterEach(() => resetFlag('input-checkbox-form-element'));
 
 	describe('constructor', () => {
 
@@ -336,18 +333,6 @@ describe('d2l-input-checkbox', () => {
 			const elem = await fixture(html`
 				<d2l-form>
 					<d2l-input-checkbox label="cb" checked></d2l-input-checkbox>
-				</d2l-form>
-			`);
-			setTimeout(() => elem.submit());
-			const evt = await oneEvent(elem, 'd2l-form-submit');
-			expect(evt.detail.formData).to.deep.equal({});
-		});
-
-		it('should not submit anything when FormElementMixin flag is disabled', async() => {
-			mockFlag('input-checkbox-form-element', false);
-			const elem = await fixture(html`
-				<d2l-form>
-					<d2l-input-checkbox label="cb" name="foo" checked></d2l-input-checkbox>
 				</d2l-form>
 			`);
 			setTimeout(() => elem.submit());
