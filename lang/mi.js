@@ -233,7 +233,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "Mukua te tūtohu arotahi",
 	"components.tag-list-item.tooltip-title": "Ngā Mana Papapātuhi",
 	"components.view-switcher.role-description":
-		`{count,plural,=0{Xem Trình chuyển đổi với 0 mục} one{Xem Trình chuyển đổi với {count} mục} other{Xem Trình chuyển đổi với {count} mục}}`,
+		`{count, plural, =0 {Xem Trình chuyển đổi với 0 mục} one {Xem Trình chuyển đổi với {count} mục} other {Xem Trình chuyển đổi với {count} mục}}`,
 	"templates.primary-secondary.divider": "Kaiwehe paepae tuarua",
 	"templates.primary-secondary.secondary-panel": "Pae tuarua"
 };
