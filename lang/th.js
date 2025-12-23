@@ -226,7 +226,6 @@ export default {
 	"components.view-switcher.role-description":
 		`{count, plural,
 			=0 {Xem Trình chuyển đổi với 0 mục}
-			one {Xem Trình chuyển đổi với {count} mục}
 			other {Xem Trình chuyển đổi với {count} mục}
 		}`,
 	"templates.primary-secondary.divider": "ตัวแบ่งบานหน้าต่างรอง",

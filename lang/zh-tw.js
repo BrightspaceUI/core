@@ -226,7 +226,6 @@ export default {
 	"components.view-switcher.role-description":
 		`{count, plural,
 			=0 {檢視有 0 個項目的切換器}
-			one {檢視有 {count} 個項目的切換器}
 			other {檢視有 {count} 個項目的切換器}
 		}`,
 	"templates.primary-secondary.divider": "次要面板分隔線",
