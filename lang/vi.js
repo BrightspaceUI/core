@@ -224,10 +224,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "Xóa thẻ được chọn",
 	"components.tag-list-item.tooltip-title": "Các điều khiển bàn phím",
 	"components.view-switcher.role-description":
-		`{count, plural,
-			=0 {View Switcher with 0 items}
-			other {View Switcher with {count} items}
-		}`,
+		`{count,plural,=0{Xem Trình chuyển đổi với 0 mục} one{Xem Trình chuyển đổi với {count} mục} other{Xem Trình chuyển đổi với {count} mục}}`,
 	"templates.primary-secondary.divider": "Bộ phân cách bảng phụ",
 	"templates.primary-secondary.secondary-panel": "Bảng phụ"
 };

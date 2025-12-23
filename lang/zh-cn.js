@@ -224,8 +224,9 @@ export default {
 	"components.tag-list-item.tooltip-title": "键盘控制",
 	"components.view-switcher.role-description":
 		`{count, plural,
-			=0 {View Switcher with 0 items}
-			other {View Switcher with {count} items}
+			=0 {包含 0 个项目的视图切换开关}
+			one {包含 {count} 个项目的视图切换开关}
+			other {包含 {count} 个项目的视图切换开关}
 		}`,
 	"templates.primary-secondary.divider": "辅助面板分隔条",
 	"templates.primary-secondary.secondary-panel": "辅助面板"

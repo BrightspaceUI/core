@@ -233,11 +233,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "Holoi i ka hōʻailona kikoʻī",
 	"components.tag-list-item.tooltip-title": "Nā Mana Keyboard",
 	"components.view-switcher.role-description":
-		`{count, plural,
-			=0 {View Switcher with 0 items}
-			one {View Switcher with {count} item}
-			other {View Switcher with {count} items}
-		}`,
+		`{count,plural,=0{Xem Trình chuyển đổi với 0 mục} one{Xem Trình chuyển đổi với {count} mục} other{Xem Trình chuyển đổi với {count} mục}}`,
 	"templates.primary-secondary.divider": "Mea hoʻokaʻawale papa lua",
 	"templates.primary-secondary.secondary-panel": "Pane lua"
 };

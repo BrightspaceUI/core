@@ -237,11 +237,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "حذف العلامة المركّز عليها",
 	"components.tag-list-item.tooltip-title": "عناصر التحكم في لوحة المفاتيح",
 	"components.view-switcher.role-description":
-		`{count, plural,
-			=0 {View Switcher with 0 items}
-			one {View Switcher with {count} item}
-			other {View Switcher with {count} items}
-		}`,
+		`{count,plural,=0{Xem Trình chuyển đổi với 0 mục} one{Xem Trình chuyển đổi với {count} mục} other{Xem Trình chuyển đổi với {count} mục}}`,
 	"templates.primary-secondary.divider": "فاصل اللوحة الثانوية",
 	"templates.primary-secondary.secondary-panel": "اللوحة الثانوية"
 };

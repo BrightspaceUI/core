@@ -234,9 +234,9 @@ export default {
 	"components.tag-list-item.tooltip-title": "Tastatursteuerung",
 	"components.view-switcher.role-description":
 		`{count, plural,
-			=0 {View Switcher with 0 items}
-			one {View Switcher with {count} item}
-			other {View Switcher with {count} items}
+			=0 {Ansichtswechsel mit 0 Elementen}
+			one {Ansichtswechsel mit {count} Element}
+			other {Ansichtswechsel mit {count} Elementen}
 		}`,
 	"templates.primary-secondary.divider": "Sekundäre Bereichstrennung",
 	"templates.primary-secondary.secondary-panel": "Sekundärer Bereich"
