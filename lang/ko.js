@@ -225,7 +225,6 @@ export default {
 	"components.view-switcher.role-description":
 		`{count, plural,
 			=0 {0개의 항목이 있는 보기 전환기}
-			one {{count}개의 항목이 있는 보기 전환기}
 			other {{count}개의 항목이 있는 보기 전환기}
 		}`,
 	"templates.primary-secondary.divider": "보조 패널 디바이더",

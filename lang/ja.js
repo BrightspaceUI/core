@@ -225,7 +225,6 @@ export default {
 	"components.view-switcher.role-description":
 		`{count, plural,
 			=0 {表示切り替えに 0 項目}
-			one {表示切り替えに {count} 項目}
 			other {表示切り替えに {count} 項目}
 		}`,
 	"templates.primary-secondary.divider": "セカンダリパネルディバイダ",

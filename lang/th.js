@@ -226,7 +226,6 @@ export default {
 	"components.view-switcher.role-description":
 		`{count, plural,
 			=0 {ดู Switcher ที่มี 0 รายการ}
-			one {ดู Switcher ที่มี {count} รายการ}
 			other {ดู Switcher ที่มี {count} รายการ}
 		}`,
 	"templates.primary-secondary.divider": "ตัวแบ่งบานหน้าต่างรอง",
