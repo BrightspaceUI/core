@@ -225,7 +225,6 @@ export default {
 	"components.view-switcher.role-description":
 		`{count, plural,
 			=0 {包含 0 个项目的视图切换开关}
-			one {包含 {count} 个项目的视图切换开关}
 			other {包含 {count} 个项目的视图切换开关}
 		}`,
 	"templates.primary-secondary.divider": "辅助面板分隔条",
