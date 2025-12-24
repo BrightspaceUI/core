@@ -224,8 +224,9 @@ export default {
 	"components.tag-list-item.tooltip-title": "키보드 컨트롤",
 	"components.view-switcher.role-description":
 		`{count, plural,
-			=0 {View Switcher with 0 items}
-			other {View Switcher with {count} items}
+			=0 {0개의 항목이 있는 보기 전환기}
+			one {{count}개의 항목이 있는 보기 전환기}
+			other {{count}개의 항목이 있는 보기 전환기}
 		}`,
 	"templates.primary-secondary.divider": "보조 패널 디바이더",
 	"templates.primary-secondary.secondary-panel": "보조 패널"

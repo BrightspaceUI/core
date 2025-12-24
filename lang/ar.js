@@ -237,11 +237,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "حذف العلامة المركّز عليها",
 	"components.tag-list-item.tooltip-title": "عناصر التحكم في لوحة المفاتيح",
 	"components.view-switcher.role-description":
-		`{count, plural,
-			=0 {View Switcher with 0 items}
-			one {View Switcher with {count} item}
-			other {View Switcher with {count} items}
-		}`,
+		`{count,plural,=0{مبدّل العرض يتضمن 0 عنصر} one{مبدّل العرض يتضمن {count} عنصر} other{مبدّل العرض يتضمن {count} عنصر} =2{مبدّل العرض يتضمن {count} عنصرين} few{مبدّل العرض يتضمن {count} عناصر} many{مبدّل العرض يتضمن {count} عنصر}}`,
 	"templates.primary-secondary.divider": "فاصل اللوحة الثانوية",
 	"templates.primary-secondary.secondary-panel": "اللوحة الثانوية"
 };

@@ -224,10 +224,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "ลบแท็กที่โฟกัส",
 	"components.tag-list-item.tooltip-title": "การควบคุมแป้นพิมพ์",
 	"components.view-switcher.role-description":
-		`{count, plural,
-			=0 {View Switcher with 0 items}
-			other {View Switcher with {count} items}
-		}`,
+		`{count,plural,=0{ดู Switcher ที่มี 0 รายการ} one{ดู Switcher ที่มี {count} รายการ} other{ดู Switcher ที่มี {count} รายการ}}`,
 	"templates.primary-secondary.divider": "ตัวแบ่งบานหน้าต่างรอง",
 	"templates.primary-secondary.secondary-panel": "บานหน้าต่างรอง"
 };

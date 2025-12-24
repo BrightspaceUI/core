@@ -234,9 +234,9 @@ export default {
 	"components.tag-list-item.tooltip-title": "Commandes du clavier",
 	"components.view-switcher.role-description":
 		`{count, plural,
-			=0 {View Switcher with 0 items}
-			one {View Switcher with {count} item}
-			other {View Switcher with {count} items}
+			=0 {Sélecteur de vue comportant 0 élément}
+			one {Sélecteur de vue comportant {count} élément}
+			other {Sélecteur de vue comportant {count} éléments}
 		}`,
 	"templates.primary-secondary.divider": "Séparateur de panneau secondaire",
 	"templates.primary-secondary.secondary-panel": "Panneau secondaire"

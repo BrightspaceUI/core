@@ -234,9 +234,9 @@ export default {
 	"components.tag-list-item.tooltip-title": "Tangentbordskontroller",
 	"components.view-switcher.role-description":
 		`{count, plural,
-			=0 {View Switcher with 0 items}
-			one {View Switcher with {count} item}
-			other {View Switcher with {count} items}
+			=0 {Visa växlare med 0 objekt}
+			one {Visa växlare med {count} objekt}
+			other {Visa växlare med {count} objekt}
 		}`,
 	"templates.primary-secondary.divider": "Avgränsare för sekundär panel",
 	"templates.primary-secondary.secondary-panel": "Sekundär panel"
