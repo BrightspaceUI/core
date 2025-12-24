@@ -233,7 +233,10 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "Holoi i ka hōʻailona kikoʻī",
 	"components.tag-list-item.tooltip-title": "Nā Mana Keyboard",
 	"components.view-switcher.role-description":
-		`{count, plural, one {Nānā i ka mea hoʻololi me {count} nā mea} other {Nānā i ka mea hoʻololi me {count} nā mea}}`,
+		`{count, plural,
+			one {Nānā i ka mea hoʻololi me {count} nā mea}
+			other {Nānā i ka mea hoʻololi me {count} nā mea}
+		}`,
 	"templates.primary-secondary.divider": "Mea hoʻokaʻawale papa lua",
 	"templates.primary-secondary.secondary-panel": "Pane lua"
 };
