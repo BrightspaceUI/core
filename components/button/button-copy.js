@@ -16,6 +16,11 @@ class ButtonCopy extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
+			/**
+			 * Description of the content being copied to clipboard
+			 * @type {string}
+			 */
+			text: { type: String },
 			_iconCheckTimeoutId: { state: true },
 			_toastState: { state: true }
 		};
