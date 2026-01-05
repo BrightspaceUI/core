@@ -45,6 +45,7 @@ class LoadingSpinner extends LitElement {
 				width: var(--d2l-loading-spinner-size, 50px);
 			}
 			svg {
+				background: radial-gradient(#000000 0%, transparent 58%);
 				height: 100%;
 				position: absolute;
 				top: 0;
@@ -55,13 +56,6 @@ class LoadingSpinner extends LitElement {
 				stroke: #ededfa;
 				stroke-width: 0.5;
 			}
-			.outer-circle-blur {
-				fill: black;
-				filter: blur(calc(var(--d2l-loading-spinner-size, 50px) / 10));
-				opacity: 0.1;
-				stroke: none;
-			}
-
 			.outer-circle {
 				fill: white;
 				stroke: none;
@@ -127,7 +121,6 @@ class LoadingSpinner extends LitElement {
 			<div class="d2l-loading-spinner-wrapper">
 				<svg viewBox="0 0 50 50" fill-rule="evenodd">
 					<g>
-						<circle cx="25" cy="25" r="16" class="outer-circle-blur"></circle>
 						<circle cx="25" cy="25" r="19" class="outer-circle-stroke"></circle>
 						<circle cx="25" cy="25" r="19" class="outer-circle"></circle>
 						<circle cx="25" cy="25" r="13" class="inner-circle"></circle>
