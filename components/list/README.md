@@ -1042,9 +1042,6 @@ In addition, the list item's `tile-padding-type` property enables consumers to o
 </div>
 ```
 
-
-
-
 ## ListItemMixin
 
 Want to maintain consistency with `d2l-list-item` but need more modularity? This mixin is for you! This mixin allows you to make a component into a list item without requiring custom styling. All of the properties and functionality from `d2l-list-item` (listed above) will be added to your new component.
