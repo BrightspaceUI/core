@@ -226,9 +226,7 @@ if (usePopoverMixin) {
 			this.#removeListeners();
 			window.removeEventListener('resize', this.#handleTargetResizeBound);
 
-			clearDismissible(this.#dismissibleId);
 			delayTimeoutId = null;
-			this.#dismissibleId = null;
 
 			if (this.#target) {
 				elemIdListRemove(this.#target, 'aria-labelledby', this.id);
@@ -279,7 +277,6 @@ if (usePopoverMixin) {
 			this.showing = true;
 		}
 
-		#dismissibleId = null;
 		#handleTargetBlurBound;
 		#handleTargetClickBound;
 		#handleTargetFocusBound;
@@ -302,6 +299,11 @@ if (usePopoverMixin) {
 		#target;
 		#targetSizeObserver;
 		#targetMutationObserver;
+
+		// for testing only!
+		_getTarget() {
+			return this.#target;
+		}
 
 		#adaptPositionLocation(val) {
 			switch (val) {
@@ -488,7 +490,6 @@ if (usePopoverMixin) {
 					activeTooltip = this;
 				}
 
-				this.#dismissibleId = setDismissible(() => this.hide());
 				this.setAttribute('aria-hidden', 'false');
 				await this.updateComplete;
 
@@ -503,10 +504,6 @@ if (usePopoverMixin) {
 				if (activeTooltip === this) activeTooltip = null;
 
 				this.setAttribute('aria-hidden', 'true');
-				if (this.#dismissibleId) {
-					clearDismissible(this.#dismissibleId);
-					this.#dismissibleId = null;
-				}
 
 				super.close();
 
@@ -599,11 +596,6 @@ if (usePopoverMixin) {
 			this.#isTruncating = (clone.scrollWidth - target.offsetWidth) > 2; // Safari adds 1px to scrollWidth necessitating a subtraction comparison.
 			this.#resizeRunSinceTruncationCheck = false;
 			target.removeChild(cloneContainer);
-		}
-
-		// for testing only!
-		_getTarget() {
-			return this.#target;
 		}
 
 	}
