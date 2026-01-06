@@ -13,7 +13,7 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-const usePopoverMixin = getFlag('GAUD-7355-tooltip-popover', false);
+const usePopoverMixin = getFlag('GAUD-7355-tooltip-popover', true);
 
 const contentBorderSize = 1;
 const contentHorizontalPadding = 15;
@@ -322,6 +322,8 @@ if (usePopoverMixin) {
 		}
 
 		#addListeners() {
+			this.addEventListener('d2l-popover-close', this.hide);
+
 			if (!this.#target) return;
 
 			this.#target.addEventListener('mouseenter', this.#handleTargetMouseEnterBound);
@@ -412,7 +414,7 @@ if (usePopoverMixin) {
 		#handleTargetMutation([m]) {
 			if (!this.#target.isConnected || (m.target === this.#target && m.attributeName === 'id')) {
 				this.#targetMutationObserver.disconnect();
-				this._updateTarget();
+				this.#updateTarget();
 			}
 		}
 
@@ -452,6 +454,8 @@ if (usePopoverMixin) {
 		}
 
 		#removeListeners() {
+			this.removeEventListener('d2l-popover-close', this.hide);
+
 			if (!this.#target) return;
 
 			this.#target.removeEventListener('mouseenter', this.#handleTargetMouseEnterBound);
@@ -595,6 +599,11 @@ if (usePopoverMixin) {
 			this.#isTruncating = (clone.scrollWidth - target.offsetWidth) > 2; // Safari adds 1px to scrollWidth necessitating a subtraction comparison.
 			this.#resizeRunSinceTruncationCheck = false;
 			target.removeChild(cloneContainer);
+		}
+
+		// for testing only!
+		_getTarget() {
+			return this.#target;
 		}
 
 	}
@@ -1347,6 +1356,11 @@ if (usePopoverMixin) {
 
 		_getContent() {
 			return this.shadowRoot && this.shadowRoot.querySelector('.d2l-tooltip-content');
+		}
+
+		// for testing only!
+		_getTarget() {
+			return this._target;
 		}
 
 		_isAboveOrBelow() {
