@@ -925,7 +925,7 @@ Apply the `tile-header` property to the list item when using selection or second
 
 In addition, the list item's `tile-padding-type` property enables consumers to opt out of the default item padding, enabling greater flexibility when rendering custom item layouts. To opt out of the default item padding, set the item's `tile-padding-type` property to `none`. Use the list item's existing CSS variables to apply consistent border and padding properties in the item's custom layout.
 
-**Note:** For a custom item layouts, consumers are respondisble for laying out their content in both the standard `list` and `tiles` layouts if the user can change the layout. Idealy this is accomplished by simply applying slightly different styles.
+**Note:** For custom item layouts, consumers are responsible for laying out their content in both the standard `list` and `tiles` layouts if the user can change the layout. Ideally this is accomplished by simply applying slightly different styles.
 
 <!-- docs: demo code display:block autoSize:false size:large sandboxTitle:'List - Tile Custom Layout'-->
 ```html
