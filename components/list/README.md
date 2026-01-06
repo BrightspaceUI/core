@@ -803,6 +803,248 @@ The example below also includes expand/collapse behavior in order to expand or c
 - `d2l-list-item-expand-collapse-toggled`: dispatched when the item's expand/collapse toggle is clicked
 <!-- docs: end hidden content -->
 
+## Tile Layout
+
+The `d2l-list` component supports displaying items in a tile layout. The built-in rendering will take care of laying out the illustration, selection, secondary actions, and color indicators for each item in either the `list` (default) or `tiles` layout. To display items in a tile layout, set the `d2l-list`'s `layout` property to `tiles`.
+
+**Note:** Nested lists, separators, and drag & drop are not supported in the tile layout.
+
+<!-- docs: demo code display:block autoSize:false size:large sandboxTitle:'List - Tile Layout'-->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/list/list-item.js';
+  import '@brightspace-ui/core/components/list/list-item-content.js';
+  import '@brightspace-ui/core/components/view-switcher/view-switcher.js';
+  import '@brightspace-ui/core/components/view-switcher/view-switcher-button.js';
+  import { listLayouts } from '@brightspace-ui/core/components/list/list.js';
+   document.querySelector('d2l-view-switcher').addEventListener('d2l-view-switcher-select', e => {
+    document.querySelector('d2l-list').layout = (e.detail.key === 'tiles' ? listLayouts.tiles : listLayouts.list);
+  });
+</script>
+<style>
+  d2l-view-switcher {
+    margin-block-end: 0.9rem;
+  }
+  img[slot="illustration"] {
+    object-fit: cover;
+  }
+  d2l-list-item[layout="normal"] img[slot="illustration"] {
+    height: 500px;
+  }
+  d2l-list-item[layout="tile"] img[slot="illustration"] {
+    height: 5rem;
+  }
+</style>
+
+<div>
+  <d2l-view-switcher label="Layout Options">
+    <d2l-view-switcher-button key="list" text="List"></d2l-view-switcher-button>
+    <d2l-view-switcher-button selected key="tiles" text="Tiles"></d2l-view-switcher-button>
+  </d2l-view-switcher>
+  <d2l-list layout="tiles">
+    <d2l-list-item>
+      <img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
+      <d2l-list-item-content>
+        <div>Earth Sciences</div>
+        <div slot="secondary">Secondary information</div>
+        <div slot="supporting-info">Supporting information</div>
+      </d2l-list-item-content>
+    </d2l-list-item>
+    <d2l-list-item>
+      <img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg">
+      <d2l-list-item-content>
+        <div>Grade 2</div>
+        <div slot="secondary">Secondary information</div>
+        <div slot="supporting-info">Supporting information</div>
+      </d2l-list-item-content>
+    </d2l-list-item>
+  </d2l-list>
+</div>
+```
+
+Apply the `tile-header` property to the list item when using selection or secondary actions and there isn't a decorative image to render over.
+
+<!-- docs: demo code display:block autoSize:false size:large sandboxTitle:'List - Tile Header'-->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/button-icon.js';
+  import '@brightspace-ui/core/components/list/list-item.js';
+  import '@brightspace-ui/core/components/list/list-item-content.js';
+  import '@brightspace-ui/core/components/view-switcher/view-switcher.js';
+  import '@brightspace-ui/core/components/view-switcher/view-switcher-button.js';
+  import { listLayouts } from '@brightspace-ui/core/components/list/list.js';
+   document.querySelector('d2l-view-switcher').addEventListener('d2l-view-switcher-select', e => {
+    document.querySelector('d2l-list').layout = (e.detail.key === 'tiles' ? listLayouts.tiles : listLayouts.list);
+  });
+</script>
+<style>
+  d2l-view-switcher {
+    margin-block-end: 0.9rem;
+  }
+  img[slot="illustration"] {
+    object-fit: cover;
+  }
+  d2l-list-item[layout="normal"] img[slot="illustration"] {
+    height: 500px;
+  }
+  d2l-list-item[layout="tile"] img[slot="illustration"] {
+    height: 5rem;
+  }
+</style>
+
+<div>
+  <d2l-view-switcher label="Layout Options">
+    <d2l-view-switcher-button key="list" text="List"></d2l-view-switcher-button>
+    <d2l-view-switcher-button selected key="tiles" text="Tiles"></d2l-view-switcher-button>
+  </d2l-view-switcher>
+  <d2l-list layout="tiles">
+    <d2l-list-item label="Earth Sciences" key="earth" selectable>
+      <img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg">
+      <d2l-list-item-content>
+        <div>Earth Sciences</div>
+        <div slot="secondary">Secondary information</div>
+        <div slot="supporting-info">Supporting information</div>
+      </d2l-list-item-content>
+      <div slot="actions">
+        <d2l-button-icon text="More" icon="tier1:gear" translucent visible-on-ancestor></d2l-button-icon>
+      </div>
+    </d2l-list-item>
+    <d2l-list-item label="Grade 2" key="grade2" selectable tile-header>
+      <d2l-list-item-content>
+        <div>Grade 2</div>
+        <div slot="secondary">Secondary information</div>
+        <div slot="supporting-info">Supporting information</div>
+      </d2l-list-item-content>
+      <div slot="actions">
+        <d2l-button-icon text="More" icon="tier1:gear"></d2l-button-icon>
+      </div>
+    </d2l-list-item>
+  </d2l-list>
+</div>
+```
+
+In addition, the list item's `tile-padding-type` property enables consumers to opt out of the default item padding, enabling greater flexibility when rendering custom item layouts. To opt out of the default item padding, set the item's `tile-padding-type` property to `none`. Use the list item's existing CSS variables to apply consistent border and padding properties in the item's custom layout.
+
+**Note:** For a custom item layouts, consumers are respondisble for laying out their content in both the standard `list` and `tiles` layouts if the user can change the layout. Idealy this is accomplished by simply applying slightly different styles.
+
+<!-- docs: demo code display:block autoSize:false size:large sandboxTitle:'List - Tile Custom Layout'-->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/button.js';
+  import '@brightspace-ui/core/components/button/button-icon.js';
+  import '@brightspace-ui/core/components/list/list-item.js';
+  import '@brightspace-ui/core/components/list/list-item-content.js';
+  import '@brightspace-ui/core/components/view-switcher/view-switcher.js';
+  import '@brightspace-ui/core/components/view-switcher/view-switcher-button.js';
+  import { listLayouts } from '@brightspace-ui/core/components/list/list.js';
+   document.querySelector('d2l-view-switcher').addEventListener('d2l-view-switcher-select', e => {
+    document.querySelector('d2l-list').layout = (e.detail.key === 'tiles' ? listLayouts.tiles : listLayouts.list);
+  });
+</script>
+<style>
+  d2l-view-switcher {
+    margin-block-end: 0.9rem;
+  }
+  d2l-list-item > .custom-content {
+    display: flex;
+    gap: var(--d2l-list-item-padding);
+  }
+  d2l-list-item > .custom-content > d2l-list-item-content {
+    flex: auto;
+  }
+  d2l-list-item > .custom-content > d2l-icon {
+    flex: none;
+  }
+
+  d2l-list-item[layout="normal"] > .custom-content {
+    flex-direction: row;
+    width: 100%;
+  }
+  d2l-list-item[layout="normal"] > .custom-content > d2l-icon {
+    height: 3rem;
+    width: 3rem;
+  }
+  d2l-list-item[layout="normal"] > .custom-content > img {
+    display: none;
+  }
+
+  d2l-list-item[layout="tile"] > .custom-content {
+    flex-direction: column;
+    height: 100%;
+  }
+  d2l-list-item[layout="tile"] > .custom-content > img {
+    border-bottom: 1px solid var(--d2l-list-item-border-color);
+    border-start-end-radius: var(--d2l-list-item-illustration-border-radius);
+    border-start-start-radius: var(--d2l-list-item-illustration-border-radius);
+    height: 5rem;
+    object-fit: cover;
+    width: 100%;
+  }
+  d2l-list-item[layout="tile"] > .custom-content > d2l-icon {
+    background-color: white;
+    border: 1px solid var(--d2l-list-item-border-color);
+    border-radius: var(--d2l-list-item-illustration-border-radius);
+    box-sizing: border-box;
+    height: 4rem;
+    margin-block-start: calc(-1 * var(--d2l-list-item-padding) - 2rem);
+    margin-inline: auto;
+    padding: var(--d2l-list-item-padding);
+    width: 4rem;
+  }
+  d2l-list-item[layout="tile"] > .custom-content > d2l-list-item-content {
+    padding-inline: var(--d2l-list-item-padding);
+  }
+  d2l-list-item[layout="tile"] > .custom-content > .footer {
+    padding: var(--d2l-list-item-padding);
+  }
+</style>
+
+<div>
+  <d2l-view-switcher label="Layout Options">
+    <d2l-view-switcher-button key="list" text="List"></d2l-view-switcher-button>
+    <d2l-view-switcher-button selected key="tiles" text="Tiles"></d2l-view-switcher-button>
+  </d2l-view-switcher>
+  <d2l-list layout="tiles">
+    <d2l-list-item label="Earth Sciences" key="earth" selectable tile-padding-type="none">
+      <div class="custom-content">
+        <img src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+        <d2l-list-item-content>
+          <div>Identify categories of physical activities</div>
+          <div slot="secondary">Secondary Information</div>
+          <div slot="supporting-info">Specific Expectation A1.2</div>
+        </d2l-list-item-content>
+        <div class="footer">
+          <d2l-button style="width: 100%;">Shiny Button</d2l-button>
+        </div>
+      </div>
+      <div slot="actions">
+        <d2l-button-icon text="More" icon="tier1:more" translucent></d2l-button-icon>
+      </div>
+    </d2l-list-item>
+    <d2l-list-item label="Grade 2" key="grade2" selectable tile-padding-type="none">
+      <div class="custom-content">
+        <img src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+        <d2l-icon icon="tier3:home"></d2l-icon>
+        <d2l-list-item-content>
+          <div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+          <div slot="secondary">Secondary Information</div>
+          <div slot="supporting-info">Specific Expectation B2.1</div>
+        </d2l-list-item-content>
+        <div class="footer">
+          <d2l-button style="width: 100%;">Shiny Button</d2l-button>
+        </div>
+      </div>
+      <div slot="actions">
+        <d2l-button-icon text="More" icon="tier1:more" translucent></d2l-button-icon>
+      </div>
+    </d2l-list-item>
+  </d2l-list>
+</div>
+```
+
+
+
+
 ## ListItemMixin
 
 Want to maintain consistency with `d2l-list-item` but need more modularity? This mixin is for you! This mixin allows you to make a component into a list item without requiring custom styling. All of the properties and functionality from `d2l-list-item` (listed above) will be added to your new component.
