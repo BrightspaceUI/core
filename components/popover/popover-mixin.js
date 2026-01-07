@@ -129,6 +129,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				display: flex;
 				max-width: 370px;
 				min-width: 70px;
+				outline: var(--d2l-popover-outline-width, 0) solid var(--d2l-popover-outline-color, transparent);
 				width: 100vw;
 			}
 			.content-container {

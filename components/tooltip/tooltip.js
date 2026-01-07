@@ -144,8 +144,10 @@ if (usePopoverMixin) {
 					--d2l-tooltip-border-color: var(--d2l-color-ferrite); /* Deprecated, use state attribute instead */
 					--d2l-tooltip-outline-color: rgba(255, 255, 255, 0.32);
 					--d2l-popover-background-color: var(--d2l-tooltip-background-color);
-					--d2l-popover-border-color: var(--d2l-tooltip-outline-color);
+					--d2l-popover-border-color: var(--d2l-tooltip-border-color);
 					--d2l-popover-border-radius: 0.3rem;
+					--d2l-popover-outline-color: var(--d2l-tooltip-outline-color);
+					--d2l-popover-outline-width: 1px;
 				}
 				:host([state="error"]) {
 					--d2l-tooltip-background-color: var(--d2l-color-cinnabar);
