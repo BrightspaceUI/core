@@ -515,7 +515,8 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		const pointerClasses = {
 			'pointer': true,
-			'pointer-mirror': this._rtl
+			'pointer-mirror': this._rtl,
+			'vdiff-target': true
 		};
 		const pointer = !this._noPointer ? html`
 			<div class="${classMap(pointerClasses)}" style="${styleMap(pointerPositionStyles)}">

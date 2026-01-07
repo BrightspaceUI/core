@@ -493,7 +493,8 @@ if (usePopoverMixin) {
 				this.setAttribute('aria-hidden', 'false');
 				await this.updateComplete;
 
-				super.open(this.#target, false);
+				// wait for popover before dispatching (ex. otherwise visual-diff won't capture complete target area)
+				await super.open(this.#target, false);
 
 				if (dispatch) {
 					this.dispatchEvent(new CustomEvent('d2l-tooltip-show', { bubbles: true, composed: true }));
