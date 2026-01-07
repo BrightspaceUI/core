@@ -8,21 +8,21 @@
 			import '../../demo/demo-page.js';
 			import '../../button/button.js';
 			import '../../button/button-icon.js';
-			import '../../button/button-subtle.js';
-			import '../../button/button-toggle.js';
 			import '../../icons/icon.js';
 			import '../list-item-button.js';
 			import '../list-item-content.js';
 			import '../list-item.js';
-			import '../list.js';
-			window.wireupListTileToggle = demo => {
-				demo.querySelector('d2l-button-toggle').addEventListener('d2l-button-toggle-change', e => {
-					demo.querySelector('d2l-list').layout = (e.target.pressed ? 'tiles' : 'list');
+			import '../../view-switcher/view-switcher.js';
+			import '../../view-switcher/view-switcher-button.js';
+			import { listLayouts } from '../list.js';
+			window.wireupViewSwitcher = demo => {
+				demo.querySelector('d2l-view-switcher').addEventListener('d2l-view-switcher-select', e => {
+					demo.querySelector('d2l-list').layout = (e.detail.key === 'tiles' ? listLayouts.tiles : listLayouts.list);
 				});
 			};
 		</script>
 		<style>
-			d2l-button-toggle {
+			d2l-view-switcher {
 				margin-block-end: 0.9rem;
 			}
 			d2l-list-item[layout="normal"] div[slot="illustration"],
@@ -107,10 +107,10 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-toggle pressed>
-						<d2l-button-subtle slot="not-pressed" icon="tier1:tile-view" text="Tiles"></d2l-button-subtle>
-						<d2l-button-subtle slot="pressed" icon="tier1:list-view" text="List"></d2l-button-subtle>
-					</d2l-button-toggle>
+					<d2l-view-switcher label="Layout Options">
+						<d2l-view-switcher-button key="list" text="List"></d2l-view-switcher-button>
+						<d2l-view-switcher-button selected key="tiles" text="Tiles"></d2l-view-switcher-button>
+					</d2l-view-switcher>
 					<d2l-list layout="tiles">
 						<d2l-list-item label="item 1">
 							<d2l-list-item-content>
@@ -135,7 +135,7 @@
 						</d2l-list-item>
 					</d2l-list>
 					<script data-demo-hide>
-						(demo => window.wireupListTileToggle(demo))(document.currentScript.parentNode);
+						(demo => window.window.wireupViewSwitcher(demo))(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
@@ -144,10 +144,10 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-toggle pressed>
-						<d2l-button-subtle slot="not-pressed" icon="tier1:tile-view" text="Tiles"></d2l-button-subtle>
-						<d2l-button-subtle slot="pressed" icon="tier1:list-view" text="List"></d2l-button-subtle>
-					</d2l-button-toggle>
+					<d2l-view-switcher label="Layout Options">
+						<d2l-view-switcher-button key="list" text="List"></d2l-view-switcher-button>
+						<d2l-view-switcher-button selected key="tiles" text="Tiles"></d2l-view-switcher-button>
+					</d2l-view-switcher>
 					<d2l-list layout="tiles">
 						<d2l-list-item label="item 1">
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
@@ -191,7 +191,7 @@
 						</d2l-list-item>
 					</d2l-list>
 					<script data-demo-hide>
-						(demo => window.wireupListTileToggle(demo))(document.currentScript.parentNode);
+						(demo => window.window.wireupViewSwitcher(demo))(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
@@ -200,10 +200,10 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-toggle pressed>
-						<d2l-button-subtle slot="not-pressed" icon="tier1:tile-view" text="Tiles"></d2l-button-subtle>
-						<d2l-button-subtle slot="pressed" icon="tier1:list-view" text="List"></d2l-button-subtle>
-					</d2l-button-toggle>
+					<d2l-view-switcher label="Layout Options">
+						<d2l-view-switcher-button key="list" text="List"></d2l-view-switcher-button>
+						<d2l-view-switcher-button selected key="tiles" text="Tiles"></d2l-view-switcher-button>
+					</d2l-view-switcher>
 					<d2l-list layout="tiles">
 						<d2l-list-item label="item 1" key="1" selectable tile-header>
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
@@ -238,7 +238,7 @@
 						</d2l-list-item>
 					</d2l-list>
 					<script data-demo-hide>
-						(demo => window.wireupListTileToggle(demo))(document.currentScript.parentNode);
+						(demo => window.window.wireupViewSwitcher(demo))(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
@@ -247,10 +247,10 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-toggle pressed>
-						<d2l-button-subtle slot="not-pressed" icon="tier1:tile-view" text="Tiles"></d2l-button-subtle>
-						<d2l-button-subtle slot="pressed" icon="tier1:list-view" text="List"></d2l-button-subtle>
-					</d2l-button-toggle>
+					<d2l-view-switcher label="Layout Options">
+						<d2l-view-switcher-button key="list" text="List"></d2l-view-switcher-button>
+						<d2l-view-switcher-button selected key="tiles" text="Tiles"></d2l-view-switcher-button>
+					</d2l-view-switcher>
 					<d2l-list layout="tiles">
 						<d2l-list-item label="item 1" key="1" tile-header>
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
@@ -298,7 +298,7 @@
 						</d2l-list-item>
 					</d2l-list>
 					<script data-demo-hide>
-						(demo => window.wireupListTileToggle(demo))(document.currentScript.parentNode);
+						(demo => window.window.wireupViewSwitcher(demo))(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
@@ -307,10 +307,10 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-toggle pressed>
-						<d2l-button-subtle slot="not-pressed" icon="tier1:tile-view" text="Tiles"></d2l-button-subtle>
-						<d2l-button-subtle slot="pressed" icon="tier1:list-view" text="List"></d2l-button-subtle>
-					</d2l-button-toggle>
+					<d2l-view-switcher label="Layout Options">
+						<d2l-view-switcher-button key="list" text="List"></d2l-view-switcher-button>
+						<d2l-view-switcher-button selected key="tiles" text="Tiles"></d2l-view-switcher-button>
+					</d2l-view-switcher>
 					<d2l-list layout="tiles">
 						<d2l-list-item label="item 1" href="http://www.d2l.com">
 							<d2l-list-item-content>
@@ -335,7 +335,7 @@
 						</d2l-list-item>
 					</d2l-list>
 					<script data-demo-hide>
-						(demo => window.wireupListTileToggle(demo))(document.currentScript.parentNode);
+						(demo => window.window.wireupViewSwitcher(demo))(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
@@ -344,10 +344,10 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-toggle pressed>
-						<d2l-button-subtle slot="not-pressed" icon="tier1:tile-view" text="Tiles"></d2l-button-subtle>
-						<d2l-button-subtle slot="pressed" icon="tier1:list-view" text="List"></d2l-button-subtle>
-					</d2l-button-toggle>
+					<d2l-view-switcher label="Layout Options">
+						<d2l-view-switcher-button key="list" text="List"></d2l-view-switcher-button>
+						<d2l-view-switcher-button selected key="tiles" text="Tiles"></d2l-view-switcher-button>
+					</d2l-view-switcher>
 					<d2l-list layout="tiles">
 						<d2l-list-item-button label="item 1" href="http://www.d2l.com">
 							<d2l-list-item-content>
@@ -372,7 +372,7 @@
 						</d2l-list-item-button>
 					</d2l-list>
 					<script data-demo-hide>
-						(demo => window.wireupListTileToggle(demo))(document.currentScript.parentNode);
+						(demo => window.window.wireupViewSwitcher(demo))(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
@@ -381,10 +381,10 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-toggle pressed>
-						<d2l-button-subtle slot="not-pressed" icon="tier1:tile-view" text="Tiles"></d2l-button-subtle>
-						<d2l-button-subtle slot="pressed" icon="tier1:list-view" text="List"></d2l-button-subtle>
-					</d2l-button-toggle>
+					<d2l-view-switcher label="Layout Options">
+						<d2l-view-switcher-button key="list" text="List"></d2l-view-switcher-button>
+						<d2l-view-switcher-button selected key="tiles" text="Tiles"></d2l-view-switcher-button>
+					</d2l-view-switcher>
 					<d2l-list layout="tiles">
 						<d2l-list-item label="item 1" key="1" selectable tile-padding-type="none">
 							<div class="custom-content">
@@ -421,7 +421,7 @@
 						</d2l-list-item>
 					</d2l-list>
 					<script data-demo-hide>
-						(demo => window.wireupListTileToggle(demo))(document.currentScript.parentNode);
+						(demo => window.window.wireupViewSwitcher(demo))(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
@@ -430,10 +430,10 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-toggle pressed>
-						<d2l-button-subtle slot="not-pressed" icon="tier1:tile-view" text="Tiles"></d2l-button-subtle>
-						<d2l-button-subtle slot="pressed" icon="tier1:list-view" text="List"></d2l-button-subtle>
-					</d2l-button-toggle>
+					<d2l-view-switcher label="Layout Options">
+						<d2l-view-switcher-button key="list" text="List"></d2l-view-switcher-button>
+						<d2l-view-switcher-button selected key="tiles" text="Tiles"></d2l-view-switcher-button>
+					</d2l-view-switcher>
 					<d2l-list layout="tiles">
 						<d2l-list-item label="item 1" key="1">
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
@@ -462,7 +462,7 @@
 						</d2l-list-item>
 					</d2l-list>
 					<script data-demo-hide>
-						(demo => window.wireupListTileToggle(demo))(document.currentScript.parentNode);
+						(demo => window.window.wireupViewSwitcher(demo))(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
@@ -471,10 +471,10 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-toggle pressed>
-						<d2l-button-subtle slot="not-pressed" icon="tier1:tile-view" text="Tiles"></d2l-button-subtle>
-						<d2l-button-subtle slot="pressed" icon="tier1:list-view" text="List"></d2l-button-subtle>
-					</d2l-button-toggle>
+					<d2l-view-switcher label="Layout Options">
+						<d2l-view-switcher-button key="list" text="List"></d2l-view-switcher-button>
+						<d2l-view-switcher-button selected key="tiles" text="Tiles"></d2l-view-switcher-button>
+					</d2l-view-switcher>
 					<d2l-list layout="tiles">
 						<d2l-list-item label="item 1" key="1" color="#29a6ff" selectable tile-header>
 							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
@@ -518,7 +518,7 @@
 						</d2l-list-item>
 					</d2l-list>
 					<script data-demo-hide>
-						(demo => window.wireupListTileToggle(demo))(document.currentScript.parentNode);
+						(demo => window.window.wireupViewSwitcher(demo))(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>

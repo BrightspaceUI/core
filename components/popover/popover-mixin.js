@@ -962,11 +962,11 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		if (this._preferredPosition.span === positionSpans.all && centerDelta <= 0) {
 			// center with target (opener wider than content)
-			return contentXAdjustment * -1;
+			return (contentXAdjustment + 1.5) * -1; // 1.5px to account for extra 3px that is being applied to width
 		}
 		if (this._preferredPosition.span === positionSpans.all && spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
 			// center with target (content wider than opener and enough space around)
-			return contentXAdjustment * -1;
+			return (contentXAdjustment + 1.5) * -1; // 1.5px to account for extra 3px that is being applied to width
 		}
 
 		if (!this._rtl) {
