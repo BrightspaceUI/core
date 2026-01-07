@@ -157,7 +157,7 @@ if (usePopoverMixin) {
 					box-sizing: border-box;
 					color: white;
 					max-width: 17.5rem;
-					min-height: 1.95rem;
+					min-height: 1.85rem;
 					min-width: 2.1rem;
 					overflow: hidden;
 					overflow-wrap: anywhere;
