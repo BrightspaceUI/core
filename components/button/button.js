@@ -40,8 +40,6 @@ class Button extends ButtonMixin(LitElement) {
 				}
 
 				button {
-					background-color: var(--d2l-button-background-color);
-					color: var(--d2l-button-color);
 					font-family: inherit;
 					padding-block-end: 0;
 					padding-block-start: 0;
@@ -59,43 +57,43 @@ class Button extends ButtonMixin(LitElement) {
 				button[disabled]:hover,
 				button[disabled]:focus,
 				:host([active]) button[disabled] {
-					--d2l-button-background-color: var(--d2l-color-gypsum);
-					--d2l-button-color: var(--d2l-color-ferrite);
+					background-color: var(--d2l-color-gypsum);
+					color: var(--d2l-color-ferrite);
 				}
 
 				button:hover,
 				button:focus,
 				:host([active]) button {
-					--d2l-button-background-color: var(--d2l-color-mica);
-				}
-
-				@supports (color: color-mix(in srgb, currentColor 50%, transparent)) {
-					:host([disabled]) button {
-						/* mock opacity, ignoring focus outline */
-						background-color: color-mix(in srgb, var(--d2l-button-background-color) 50%, transparent);
-						color: color-mix(in srgb, var(--d2l-button-color) 50%, #ffffff);
-						opacity: 1 !important;
-					}
-					:host([disabled]) ::slotted(*) {
-						opacity: 0.5;
-					}
+					background-color: var(--d2l-color-mica);
 				}
 
 				:host([disabled]) button {
 					cursor: default;
-					opacity: 0.5;
+					position: relative;
 				}
+				:host([disabled]) button::before {
+					background-color: white;
+					border-radius: inherit;
+					content: "";
+					height: 100%;
+					left: 0;
+					opacity: 0.5;
+					position: absolute;
+					top: 0;
+					width: 100%;
+				}
+
 				:host([primary]) button,
 				:host([primary]) button[disabled]:hover,
 				:host([primary]) button[disabled]:focus,
 				:host([primary][active]) button[disabled] {
-					--d2l-button-background-color: var(--d2l-color-celestine);
-					--d2l-button-color: #ffffff;
+					background-color: var(--d2l-color-celestine);
+					color: #ffffff;
 				}
 				:host([primary]) button:hover,
 				:host([primary]) button:focus,
 				:host([primary][active]) button {
-					--d2l-button-background-color: var(--d2l-color-celestine-minus-1);
+					background-color: var(--d2l-color-celestine-minus-1);
 				}
 			`
 		];
