@@ -342,7 +342,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	}
 
 	async open(opener, applyFocus = true) {
-		if (this._opened) return;
+		if (!this.isConnected || this._opened) return;
 
 		const ifrauBackdropService = await tryGetIfrauBackdropService();
 
