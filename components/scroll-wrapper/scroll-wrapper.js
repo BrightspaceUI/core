@@ -2,18 +2,12 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { getFlag } from '../../helpers/flags.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
-export const printMediaQueryOnlyFlag = getFlag('GAUD-8263-scroll-wrapper-media-print', true);
-
 const RTL_MULTIPLIER = navigator.userAgent.indexOf('Edge/') > 0 ? 1 : -1; /* legacy-Edge doesn't reverse scrolling in RTL */
 const SCROLL_AMOUNT = 0.8;
-
-// remove when cleaning up GAUD-8263-scroll-wrapper-media-print
-const PRINT_MEDIA_QUERY_LIST = matchMedia('print');
 
 let focusStyleSheet;
 function getFocusStyleSheet() {
@@ -69,7 +63,6 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 				reflect: true,
 				type: Boolean
 			},
-			_printMode: { state: true },
 			_scrollbarLeft: {
 				attribute: 'scrollbar-left',
 				reflect: true,
@@ -146,20 +139,6 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 			:host([scrollbar-left]) .d2l-scroll-wrapper-button-left {
 				display: none;
 			}
-
-			@media print {
-				/* remove .print-media-query-only when cleaning up GAUD-8263-scroll-wrapper-media-print */
-				.d2l-scroll-wrapper-actions.print-media-query-only {
-					display: none;
-				}
-				/* remove .print-media-query-only when cleaning up GAUD-8263-scroll-wrapper-media-print */
-				.d2l-scroll-wrapper-container.print-media-query-only {
-					border: none !important;
-					box-sizing: content-box !important;
-					overflow: visible !important;
-				}
-			}
-
 		`;
 	}
 
@@ -172,9 +151,6 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 		this._container = null;
 		this._hScrollbar = true;
 
-		// remove when cleaning up GAUD-8263-scroll-wrapper-media-print
-		this._printMode = PRINT_MEDIA_QUERY_LIST.matches;
-
 		this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
 		this._scrollbarLeft = false;
 		this._scrollbarRight = false;
@@ -182,29 +158,12 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 		this._syncDriverTimeout = null;
 		this._checkScrollThresholds = this._checkScrollThresholds.bind(this);
 
-		// remove when cleaning up GAUD-8263-scroll-wrapper-media-print
-		this._handlePrintChange = this._handlePrintChange.bind(this);
-
 		this._synchronizeScroll = this._synchronizeScroll.bind(this);
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
-
-		// remove when cleaning up GAUD-8263-scroll-wrapper-media-print
-		if (!printMediaQueryOnlyFlag) {
-			PRINT_MEDIA_QUERY_LIST.addEventListener?.('change', this._handlePrintChange);
-		}
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this._disconnectAll();
-
-		// remove when cleaning up GAUD-8263-scroll-wrapper-media-print
-		if (!printMediaQueryOnlyFlag) {
-			PRINT_MEDIA_QUERY_LIST.removeEventListener?.('change', this._handlePrintChange);
-		}
 	}
 
 	firstUpdated(changedProperties) {
@@ -213,17 +172,11 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 	}
 
 	render() {
-
-		// when printing, just get scroll-wrapper out of the way; remove when cleaning up GAUD-8263-scroll-wrapper-media-print
-		if (this._printMode && !printMediaQueryOnlyFlag) return html`<slot></slot>`;
-
 		const containerClasses = {
-			'd2l-scroll-wrapper-container': true,
-			'print-media-query-only': printMediaQueryOnlyFlag // remove when cleaning up GAUD-8263-scroll-wrapper-media-print
+			'd2l-scroll-wrapper-container': true
 		};
 		const actionsClasses = {
-			'd2l-scroll-wrapper-actions': true,
-			'print-media-query-only': printMediaQueryOnlyFlag // remove when cleaning up GAUD-8263-scroll-wrapper-media-print
+			'd2l-scroll-wrapper-actions': true
 		};
 		const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
 		const leftScrollLabel = this.localize('components.scroll-wrapper.scroll-left');
@@ -296,18 +249,6 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 		}
 	}
 
-	// remove this handler when cleaning up GAUD-8263-scroll-wrapper-media-print
-	async _handlePrintChange() {
-		if (!this._printMode) {
-			this._disconnectAll();
-		}
-		this._printMode = PRINT_MEDIA_QUERY_LIST.matches;
-		if (!this._printMode) {
-			await this.updateComplete;
-			this._updateScrollTargets();
-		}
-	}
-
 	_scrollLeft() {
 		if (!this._container) return;
 		const scrollDistance = this._container.clientWidth * SCROLL_AMOUNT * -1;
@@ -333,8 +274,6 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 
 	_updateScrollTargets() {
 		this._disconnectAll();
-
-		if (this._printMode) return;
 
 		this._baseContainer = this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
 		this._container = this.customScrollers?.primary || this._baseContainer;
