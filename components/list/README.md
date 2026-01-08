@@ -809,7 +809,7 @@ The `d2l-list` component supports displaying items in a tile layout. The built-i
 
 **Note:** Nested lists, separators, and drag & drop are not supported in the tile layout.
 
-<!-- docs: demo code display:block autoSize:false size:large sandboxTitle:'List - Tile Layout'-->
+<!-- docs: demo code display:block autoSize:true sandboxTitle:'List - Tile Layout'-->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list-item.js';
@@ -864,7 +864,7 @@ The `d2l-list` component supports displaying items in a tile layout. The built-i
 
 Apply the `tile-header` property to the list item when using selection or secondary actions and there isn't a decorative image to render over.
 
-<!-- docs: demo code display:block autoSize:false size:large sandboxTitle:'List - Tile Header'-->
+<!-- docs: demo code display:block autoSize:true sandboxTitle:'List - Tile Header'-->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button-icon.js';
@@ -927,7 +927,7 @@ In addition, the list item's `tile-padding-type` property enables consumers to o
 
 **Note:** For custom item layouts, consumers are responsible for laying out their content in both the standard `list` and `tiles` layouts if the user can change the layout. Ideally this is accomplished by simply applying slightly different styles.
 
-<!-- docs: demo code display:block autoSize:false size:large sandboxTitle:'List - Tile Custom Layout'-->
+<!-- docs: demo code display:block autoSize:true sandboxTitle:'List - Tile Custom Layout'-->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button.js';
