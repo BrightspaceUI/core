@@ -121,14 +121,14 @@ The `d2l-list` is the container to create a styled list of items using `d2l-list
 </script>
 
 <d2l-list>
-  <d2l-list-item selectable label="List Item 1">
+  <d2l-list-item selectable label="List Item 1" tile-header>
     <d2l-list-item-content>
       <div>Regular list item</div>
       <div slot="secondary">Secondary information</div>
       <div slot="supporting-info">Supporting information</div>
     </d2l-list-item-content>
   </d2l-list-item>
-  <d2l-list-item selectable label="List Item 2">
+  <d2l-list-item selectable label="List Item 2" tile-header>
     <d2l-list-item-content>
       <div>Regular list item 2</div>
       <div slot="secondary">Secondary information</div>
