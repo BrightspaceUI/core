@@ -40,6 +40,8 @@ class Button extends ButtonMixin(LitElement) {
 				}
 
 				button {
+					background-color: var(--d2l-button-background-color);
+					color: var(--d2l-button-color);
 					font-family: inherit;
 					padding-block-end: 0;
 					padding-block-start: 0;
@@ -57,14 +59,26 @@ class Button extends ButtonMixin(LitElement) {
 				button[disabled]:hover,
 				button[disabled]:focus,
 				:host([active]) button[disabled] {
-					background-color: var(--d2l-color-gypsum);
-					color: var(--d2l-color-ferrite);
+					--d2l-button-background-color: var(--d2l-color-gypsum);
+					--d2l-button-color: var(--d2l-color-ferrite);
 				}
 
 				button:hover,
 				button:focus,
 				:host([active]) button {
-					background-color: var(--d2l-color-mica);
+					--d2l-button-background-color: var(--d2l-color-mica);
+				}
+
+				@supports (color: color-mix(in srgb, currentColor 50%, transparent)) {
+					:host([disabled]) button {
+						/* mock opacity, ignoring focus outline */
+						background-color: color-mix(in srgb, var(--d2l-button-background-color) 50%, transparent);
+						color: color-mix(in srgb, var(--d2l-button-color) 50%, #ffffff);
+						opacity: 1 !important;
+					}
+					:host([disabled]) ::slotted(*) {
+						opacity: 0.5;
+					}
 				}
 
 				:host([disabled]) button {
@@ -75,13 +89,13 @@ class Button extends ButtonMixin(LitElement) {
 				:host([primary]) button[disabled]:hover,
 				:host([primary]) button[disabled]:focus,
 				:host([primary][active]) button[disabled] {
-					background-color: var(--d2l-color-celestine);
-					color: #ffffff;
+					--d2l-button-background-color: var(--d2l-color-celestine);
+					--d2l-button-color: #ffffff;
 				}
 				:host([primary]) button:hover,
 				:host([primary]) button:focus,
 				:host([primary][active]) button {
-					background-color: var(--d2l-color-celestine-minus-1);
+					--d2l-button-background-color: var(--d2l-color-celestine-minus-1);
 				}
 			`
 		];
