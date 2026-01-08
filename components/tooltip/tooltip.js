@@ -279,7 +279,7 @@ if (usePopoverMixin) {
 			this.showing = true;
 		}
 
-		async updatePosition() {
+		updatePosition() {
 			return super.position();
 		}
 
