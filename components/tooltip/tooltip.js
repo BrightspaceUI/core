@@ -13,7 +13,7 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-const usePopoverMixin = getFlag('GAUD-7355-tooltip-popover', false);
+const usePopoverMixin = getFlag('GAUD-7355-tooltip-popover', true);
 
 const contentBorderSize = 1;
 const contentHorizontalPadding = 15;
@@ -144,8 +144,10 @@ if (usePopoverMixin) {
 					--d2l-tooltip-border-color: var(--d2l-color-ferrite); /* Deprecated, use state attribute instead */
 					--d2l-tooltip-outline-color: rgba(255, 255, 255, 0.32);
 					--d2l-popover-background-color: var(--d2l-tooltip-background-color);
-					--d2l-popover-border-color: var(--d2l-tooltip-outline-color);
+					--d2l-popover-border-color: var(--d2l-tooltip-border-color);
 					--d2l-popover-border-radius: 0.3rem;
+					--d2l-popover-outline-color: var(--d2l-tooltip-outline-color);
+					--d2l-popover-outline-width: 1px;
 				}
 				:host([state="error"]) {
 					--d2l-tooltip-background-color: var(--d2l-color-cinnabar);
@@ -155,7 +157,7 @@ if (usePopoverMixin) {
 					box-sizing: border-box;
 					color: white;
 					max-width: 17.5rem;
-					min-height: 1.95rem;
+					min-height: 1.85rem;
 					min-width: 2.1rem;
 					overflow: hidden;
 					overflow-wrap: anywhere;
@@ -226,9 +228,7 @@ if (usePopoverMixin) {
 			this.#removeListeners();
 			window.removeEventListener('resize', this.#handleTargetResizeBound);
 
-			clearDismissible(this.#dismissibleId);
 			delayTimeoutId = null;
-			this.#dismissibleId = null;
 
 			if (this.#target) {
 				elemIdListRemove(this.#target, 'aria-labelledby', this.id);
@@ -279,7 +279,6 @@ if (usePopoverMixin) {
 			this.showing = true;
 		}
 
-		#dismissibleId = null;
 		#handleTargetBlurBound;
 		#handleTargetClickBound;
 		#handleTargetFocusBound;
@@ -303,6 +302,11 @@ if (usePopoverMixin) {
 		#targetSizeObserver;
 		#targetMutationObserver;
 
+		// for testing only!
+		_getTarget() {
+			return this.#target;
+		}
+
 		#adaptPositionLocation(val) {
 			switch (val) {
 				case 'bottom': return 'block-end';
@@ -322,6 +326,8 @@ if (usePopoverMixin) {
 		}
 
 		#addListeners() {
+			this.addEventListener('d2l-popover-close', this.hide);
+
 			if (!this.#target) return;
 
 			this.#target.addEventListener('mouseenter', this.#handleTargetMouseEnterBound);
@@ -412,7 +418,7 @@ if (usePopoverMixin) {
 		#handleTargetMutation([m]) {
 			if (!this.#target.isConnected || (m.target === this.#target && m.attributeName === 'id')) {
 				this.#targetMutationObserver.disconnect();
-				this._updateTarget();
+				this.#updateTarget();
 			}
 		}
 
@@ -452,6 +458,8 @@ if (usePopoverMixin) {
 		}
 
 		#removeListeners() {
+			this.removeEventListener('d2l-popover-close', this.hide);
+
 			if (!this.#target) return;
 
 			this.#target.removeEventListener('mouseenter', this.#handleTargetMouseEnterBound);
@@ -484,11 +492,11 @@ if (usePopoverMixin) {
 					activeTooltip = this;
 				}
 
-				this.#dismissibleId = setDismissible(() => this.hide());
 				this.setAttribute('aria-hidden', 'false');
 				await this.updateComplete;
 
-				super.open(this.#target, false);
+				// wait for popover before dispatching (ex. otherwise visual-diff won't capture complete target area)
+				await super.open(this.#target, false);
 
 				if (dispatch) {
 					this.dispatchEvent(new CustomEvent('d2l-tooltip-show', { bubbles: true, composed: true }));
@@ -499,10 +507,6 @@ if (usePopoverMixin) {
 				if (activeTooltip === this) activeTooltip = null;
 
 				this.setAttribute('aria-hidden', 'true');
-				if (this.#dismissibleId) {
-					clearDismissible(this.#dismissibleId);
-					this.#dismissibleId = null;
-				}
 
 				super.close();
 
@@ -1347,6 +1351,11 @@ if (usePopoverMixin) {
 
 		_getContent() {
 			return this.shadowRoot && this.shadowRoot.querySelector('.d2l-tooltip-content');
+		}
+
+		// for testing only!
+		_getTarget() {
+			return this._target;
 		}
 
 		_isAboveOrBelow() {
