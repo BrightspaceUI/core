@@ -139,6 +139,17 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 			:host([scrollbar-left]) .d2l-scroll-wrapper-button-left {
 				display: none;
 			}
+
+			@media print {
+				.d2l-scroll-wrapper-actions {
+					display: none;
+				}
+				.d2l-scroll-wrapper-container {
+					border: none !important;
+					box-sizing: content-box !important;
+					overflow: visible !important;
+				}
+			}
 		`;
 	}
 
