@@ -342,7 +342,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	}
 
 	async open(opener, applyFocus = true) {
-		if (!this.isConnected || this._opened) return;
+		if (this._opened) return;
 
 		const ifrauBackdropService = await tryGetIfrauBackdropService();
 
@@ -351,7 +351,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._opened = true;
 
 		await this.updateComplete; // wait for popover attribute before managing top-layer
-		if (this._useNativePopover) this.showPopover();
+		if (this.isConnected && this._useNativePopover) this.showPopover();
 
 		this._previousFocusableAncestor = getPreviousFocusableAncestor(this, false, false);
 
