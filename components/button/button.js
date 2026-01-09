@@ -69,8 +69,17 @@ class Button extends ButtonMixin(LitElement) {
 
 				:host([disabled]) button {
 					cursor: default;
-					opacity: 0.5;
+					position: relative;
 				}
+				:host([disabled]) button::before {
+					background-color: white;
+					border-radius: inherit;
+					content: "";
+					inset: 0;
+					opacity: 0.5;
+					position: absolute;
+				}
+
 				:host([primary]) button,
 				:host([primary]) button[disabled]:hover,
 				:host([primary]) button[disabled]:focus,
