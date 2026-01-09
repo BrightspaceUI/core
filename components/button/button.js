@@ -75,12 +75,9 @@ class Button extends ButtonMixin(LitElement) {
 					background-color: white;
 					border-radius: inherit;
 					content: "";
-					height: 100%;
-					left: 0;
+					inset: 0;
 					opacity: 0.5;
 					position: absolute;
-					top: 0;
-					width: 100%;
 				}
 
 				:host([primary]) button,
