@@ -45,9 +45,9 @@ class ListDemoNav extends LitElement {
 	render() {
 		return html`
 			<div @d2l-list-items-move="${this._handleListItemsMove}">
-				<d2l-list 
+				<d2l-list
 					?add-button="${this.addButton}"
-					grid 
+					grid
 					drag-multiple
 					@d2l-list-item-link-click="${this._handleItemClick}">
 					${repeat(this.#list, (item) => item.key, (item) => this._renderItem(item))}
@@ -149,8 +149,9 @@ class ListDemoNav extends LitElement {
 				drop-nested
 				label="${item.primaryText}"
 				prevent-navigation>
+				${item.hasIcon ? html`<d2l-icon slot="illustration" icon="tier2:file-document"></d2l-icon>` : nothing}
 				<d2l-list-item-content>
-					<div>${item.hasIcon ? html`<d2l-icon icon="tier2:file-document"></d2l-icon>` : nothing}${item.primaryText}</div>
+					<div>${item.primaryText}</div>
 					${item.tooltipOpenerText && item.tooltipText
 							? html`<div slot="secondary"><d2l-tooltip-help text="${item.tooltipOpenerText}">${item.tooltipText}</d2l-tooltip-help></div>`
 							: nothing

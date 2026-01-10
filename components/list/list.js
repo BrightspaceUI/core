@@ -173,6 +173,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._breakpoint = 0;
 		this._slimColor = false;
 		this._width = 0;
+		this._spacerMeasurementScheduled = false;
 
 		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(this, 'list-child-status', {
 			onSubscribe: this._updateActiveSubscriber.bind(this),
@@ -267,7 +268,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	getItems(slot) {
-		if (!this.shadowRoot) return;
+		if (!this.shadowRoot) return [];
 		if (!slot) slot = this.shadowRoot.querySelector('slot:not([name])');
 		if (!slot) return [];
 		return slot.assignedNodes({ flatten: true }).filter((node) => {
@@ -343,6 +344,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				return true;
 			}
 		});
+		this._updateSpacerSlotWidth();
 	}
 
 	setSelectionForAll(selected, selectAllPages) {
@@ -367,6 +369,29 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	_getLazyLoadItems() {
 		const items = this.getItems();
 		return items.length > 0 ? items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
+	}
+
+	_getSpacerWidth(item) {
+		const shadowRoot = item.shadowRoot;
+		if (!shadowRoot) return 0;
+
+		const layout = shadowRoot.querySelector('d2l-list-item-generic-layout');
+		const content = shadowRoot.querySelector('[slot="content"]');
+		const spacer = shadowRoot.querySelector('[slot="spacer"]');
+		if (!layout || !content || layout.offsetParent === null || content.offsetParent === null) return 0;
+
+		const layoutRect = layout.getBoundingClientRect();
+		const contentRect = content.getBoundingClientRect();
+		const spacerWidth = spacer ? spacer.getBoundingClientRect().width : 0;
+		const isRtl = getComputedStyle(layout).direction === 'rtl';
+		const inlineStartWidth = isRtl ? layoutRect.right - contentRect.right : contentRect.left - layoutRect.left;
+		let totalWidth = Math.max(0, inlineStartWidth - spacerWidth);
+
+		const illustrationSlot = content.querySelector('.d2l-list-item-illustration');
+		const illustration = illustrationSlot?.assignedElements({ flatten: true })?.[0];
+		totalWidth += this._measureWithMargins(illustration);
+
+		return totalWidth;
 	}
 
 	_handleKeyDown(e) {
@@ -403,6 +428,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._childHasColor = aChildHasColor;
 		this._childHasExpandCollapseToggle = aChildHasToggleEnabled;
 		this._listChildrenUpdatedSubscribers.updateSubscribers();
+		this._updateSpacerSlotWidth();
 	}
 
 	_handleListItemPropertyChange(e) {
@@ -500,12 +526,21 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		});
 
 		this._updateItemLayouts(items);
+		this._updateSpacerSlotWidth();
 
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-showing-count-change', {
 			bubbles: true,
 			composed: true
 		}));
+	}
+
+	_measureWithMargins(element) {
+		if (!element || element.offsetParent === null) return 0;
+		const rect = element.getBoundingClientRect();
+		const styles = getComputedStyle(element);
+		const margin = (parseFloat(styles.marginInlineStart) || 0) + (parseFloat(styles.marginInlineEnd) || 0);
+		return rect.width + margin;
 	}
 
 	_updateActiveSubscriber(subscriber) {
@@ -525,6 +560,35 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	_updateItemLayouts(items) {
 		if (!items) items = this.getItems();
 		items.forEach(item => item.layout = (this.layout === listLayouts.tiles ? 'tile' : 'normal'));
+	}
+
+	_updateSpacerSlotWidth() {
+		if (this._spacerMeasurementScheduled) return;
+		this._spacerMeasurementScheduled = true;
+
+		requestAnimationFrame(() => {
+			this._spacerMeasurementScheduled = false;
+
+			const items = this.getItems() || [];
+			if (items.length === 0) return;
+
+			let maxWidth = 0;
+			const measurements = [];
+
+			for (const item of items) {
+				const totalWidth = this._getSpacerWidth(item);
+				if (totalWidth === 0) continue;
+				measurements.push({ item, width: totalWidth });
+				if (totalWidth > maxWidth) maxWidth = totalWidth;
+			}
+
+			if (measurements.length === 0) return;
+
+			for (const { item, width } of measurements) {
+				if (!item?.style) continue;
+				item.style.setProperty('--d2l-list-item-spacer-width', `${Math.max(0, maxWidth - width)}px`);
+			}
+		});
 	}
 
 }
