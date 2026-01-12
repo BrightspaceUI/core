@@ -45,7 +45,7 @@ class LoadingSpinner extends LitElement {
 				width: var(--d2l-loading-spinner-size, 50px);
 			}
 			svg {
-				background: radial-gradient(#000000 0%, transparent 58%);
+				background: radial-gradient(rgba(0, 0, 0, 0.1), transparent 70%); // 70% ≈ 100%/sqrt(2) = radius of circle since corners lie on 100% of radial gradient
 				height: 100%;
 				position: absolute;
 				top: 0;
