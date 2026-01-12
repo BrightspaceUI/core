@@ -1002,21 +1002,24 @@ export const PopoverMixin = superclass => class extends superclass {
 			return (contentXAdjustment + 1.5) * -1; // 1.5px to account for extra 3px that is being applied to width
 		}
 
+		// extra offset for small openers (so pointer does not look broken from content)
+		const extraOffset = (this._preferredPosition.span !== positionSpans.all && openerRect.width < 36) ? 15 : 0;
+
 		if (!this._rtl) {
 			if (spaceAround.left < contentXAdjustment) {
 				// slide content right (not enough space to center)
-				return spaceAround.left * -1;
+				return (spaceAround.left * -1) - extraOffset;
 			} else if (spaceAround.right < contentXAdjustment) {
 				// slide content left (not enough space to center)
-				return (centerDelta * -1) + spaceAround.right;
+				return (centerDelta * -1) + spaceAround.right + extraOffset;
 			}
 		} else {
 			if (spaceAround.left < contentXAdjustment) {
 				// slide content right (not enough space to center)
-				return (centerDelta * -1) + spaceAround.left;
+				return (centerDelta * -1) + spaceAround.left + extraOffset;
 			} else if (spaceAround.right < contentXAdjustment) {
 				// slide content left (not enough space to center)
-				return spaceAround.right * -1;
+				return (spaceAround.right * -1) - extraOffset;
 			}
 		}
 
