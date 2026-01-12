@@ -31,6 +31,7 @@ import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
 const ARROWLEFT_KEY_CODE = 37;
@@ -635,6 +636,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			listItems = dimension.values.map(item => this._createSetDimensionItem(item));
 		}
 
+		const listStyles = {
+			paddingBlockEnd: dimension.hasMore ? '10px' : undefined
+		}
+
 		return html`
 			${searchResults}
 			<d2l-list
@@ -644,7 +649,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 				grid
 				label="${ifDefined(listLabel)}"
 				?selection-single="${dimension.selectionSingle}"
-				separators="between">
+				separators="between"
+				style=${styleMap(listStyles)}>
 				${selectedListItems}
 				${listHeader}
 				${listItems}
