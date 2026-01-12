@@ -163,6 +163,7 @@ if (usePopoverMixin) {
 					overflow-wrap: anywhere;
 					padding-block: ${10 - contentBorderSize}px ${11 - contentBorderSize}px;
 					padding-inline: ${contentHorizontalPadding - contentBorderSize}px;
+					white-space: normal;
 				}
 				::slotted(ul),
 				::slotted(ol) {
