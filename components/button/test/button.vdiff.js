@@ -15,7 +15,15 @@ describe('button', () => {
 				{ name: 'click', action: clickElem },
 				{ name: 'disabled', action: elem => elem.disabled = true },
 				{ name: 'active', action: elem => elem.setAttribute('active', '') },
-				{ name: 'active-disabled', action: elem => { elem.setAttribute('active', ''); elem.disabled = true; } }
+				{ name: 'active-disabled', action: elem => { elem.setAttribute('active', ''); elem.disabled = true; } },
+				{ name: 'disabled-slotted content', action: async elem => { // Test opacity with slotted content
+					const span = document.createElement('span');
+					span.textContent = 'Slotted Content';
+					elem.innerHTML = '';
+					elem.appendChild(span);
+					elem.disabled = true;
+					await elem.updateComplete;
+				} },
 			].forEach(({ action, name }) => {
 				it(name, async() => {
 					const elem = await fixture(template);
