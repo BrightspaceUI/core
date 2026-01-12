@@ -1,9 +1,7 @@
 import '../loading-spinner.js';
-import { expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
+import { expect, fixture, html } from '@brightspace-ui/testing';
 
 describe('d2l-loading-spinner', () => {
-
-
 	[false, true].forEach((end) => {
 		describe(end ? 'end' : 'start', () => {
 			let elem, slices;
@@ -15,7 +13,7 @@ describe('d2l-loading-spinner', () => {
 					slice.style.animation = 'none';
 					if (end) slice.style.display = 'none';
 				}
-			})
+			});
 
 			it('default', async() => {
 				await expect(elem).to.be.golden();
@@ -32,6 +30,6 @@ describe('d2l-loading-spinner', () => {
 				await elem.updateComplete;
 				await expect(elem).to.be.golden();
 			});
-		})
-	})
+		});
+	});
 });
