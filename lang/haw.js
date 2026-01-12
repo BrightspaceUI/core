@@ -234,9 +234,8 @@ export default {
 	"components.tag-list-item.tooltip-title": "Nā Mana Keyboard",
 	"components.view-switcher.role-description":
 		`{count, plural,
-			=0 {View Switcher with 0 items}
-			one {View Switcher with {count} item}
-			other {View Switcher with {count} items}
+			one {Nānā i ka mea hoʻololi me {count} nā mea}
+			other {Nānā i ka mea hoʻololi me {count} nā mea}
 		}`,
 	"templates.primary-secondary.divider": "Mea hoʻokaʻawale papa lua",
 	"templates.primary-secondary.secondary-panel": "Pane lua"

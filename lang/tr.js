@@ -234,9 +234,9 @@ export default {
 	"components.tag-list-item.tooltip-title": "Klavye Kontrolleri",
 	"components.view-switcher.role-description":
 		`{count, plural,
-			=0 {View Switcher with 0 items}
-			one {View Switcher with {count} item}
-			other {View Switcher with {count} items}
+			=0 {0 öğeli Değiştiriciyi görüntüle}
+			one {{count} öğeli Değiştiriciyi görüntüle}
+			other {{count} öğeli Değiştiriciyi görüntüle}
 		}`,
 	"templates.primary-secondary.divider": "İkincil panel ayırıcı",
 	"templates.primary-secondary.secondary-panel": "İkincil panel"

@@ -234,9 +234,9 @@ export default {
 	"components.tag-list-item.tooltip-title": "Rheolyddion Bysellfwrdd",
 	"components.view-switcher.role-description":
 		`{count, plural,
-			=0 {View Switcher with 0 items}
-			one {View Switcher with {count} item}
-			other {View Switcher with {count} items}
+			=0 {Newidydd Gwedd gyda 0 eitem}
+			one {Newidydd Gwedd gyda {count} eitem}
+			other {Newidydd Gwedd gyda {count} eitem}
 		}`,
 	"templates.primary-secondary.divider": "Rhannwr panel eilaidd",
 	"templates.primary-secondary.secondary-panel": "Panel eilaidd"

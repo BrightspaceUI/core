@@ -16,6 +16,11 @@ class ButtonCopy extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			 * @type {boolean}
 			 */
 			disabled: { type: Boolean, reflect: true },
+			/**
+			 * Description of the content being copied to clipboard
+			 * @type {string}
+			 */
+			text: { type: String },
 			_iconCheckTimeoutId: { state: true },
 			_toastState: { state: true }
 		};
@@ -43,7 +48,11 @@ class ButtonCopy extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 	render() {
 		return html`
-			<d2l-button-icon ?disabled="${this.disabled}" icon="${this._iconCheckTimeoutId ? 'tier1:check' : 'tier1:copy'}" text="${this.localize('intl-common:actions:copy')}" @click="${this.#handleClick}"></d2l-button-icon>
+			<d2l-button-icon
+				?disabled="${this.disabled}"
+				icon="${this._iconCheckTimeoutId ? 'tier1:check' : 'tier1:copy'}"
+				text="${this.text ?? this.localize('intl-common:actions:copy')}"
+				@click="${this.#handleClick}"></d2l-button-icon>
 			<d2l-alert-toast
 				@d2l-alert-toast-close="${this.#handleToastClose}"
 				?open="${this._toastState}"

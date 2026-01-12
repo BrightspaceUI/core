@@ -279,6 +279,10 @@ if (usePopoverMixin) {
 			this.showing = true;
 		}
 
+		updatePosition() {
+			return super.position();
+		}
+
 		#dismissibleId = null;
 		#handleTargetBlurBound;
 		#handleTargetClickBound;

@@ -13,7 +13,12 @@ class MeterLinear extends MeterMixin(LitElement) {
 			 * Keeps the meter to a single line
 			 * @type {boolean}
 			 */
-			textInline: { type: Boolean, attribute: 'text-inline', reflect: true }
+			textInline: { type: Boolean, attribute: 'text-inline', reflect: true },
+			/**
+			 * Force text to be aligned to the end of the meter
+			 * @type {boolean}
+			 */
+			textAlignEnd: { type: Boolean, attribute: 'text-align-end', reflect: true }
 		};
 	}
 	static get styles() {
@@ -94,6 +99,7 @@ class MeterLinear extends MeterMixin(LitElement) {
 	constructor() {
 		super();
 		this.textInline = false;
+		this.textAlignEnd = false;
 	}
 
 	render() {
@@ -106,7 +112,7 @@ class MeterLinear extends MeterMixin(LitElement) {
 		const primaryAria = this._primary(this.value, this.max, true);
 		const secondaryAria = this._secondary(this.value, this.max, this.text, true);
 		const textClasses = {
-			'd2l-meter-linear-text-space-between': !this.textInline && secondary !== this.text,
+			'd2l-meter-linear-text-space-between': !this.textInline && (secondary !== this.text || this.textAlignEnd),
 			'd2l-body-small': true,
 			'd2l-meter-linear-text': true
 		};

@@ -129,6 +129,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				display: flex;
 				max-width: 370px;
 				min-width: 70px;
+				outline: var(--d2l-popover-outline-width, 0) solid var(--d2l-popover-outline-color, transparent);
 				width: 100vw;
 			}
 			.content-container {
@@ -350,7 +351,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._opened = true;
 
 		await this.updateComplete; // wait for popover attribute before managing top-layer
-		if (this._useNativePopover) this.showPopover();
+		if (this.isConnected && this._useNativePopover) this.showPopover();
 
 		this._previousFocusableAncestor = getPreviousFocusableAncestor(this, false, false);
 
@@ -515,7 +516,8 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		const pointerClasses = {
 			'pointer': true,
-			'pointer-mirror': this._rtl
+			'pointer-mirror': this._rtl,
+			'vdiff-target': true
 		};
 		const pointer = !this._noPointer ? html`
 			<div class="${classMap(pointerClasses)}" style="${styleMap(pointerPositionStyles)}">
@@ -960,11 +962,11 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		if (this._preferredPosition.span === positionSpans.all && centerDelta <= 0) {
 			// center with target (opener wider than content)
-			return contentXAdjustment * -1;
+			return (contentXAdjustment + 1.5) * -1; // 1.5px to account for extra 3px that is being applied to width
 		}
 		if (this._preferredPosition.span === positionSpans.all && spaceAround.left > contentXAdjustment && spaceAround.right > contentXAdjustment) {
 			// center with target (content wider than opener and enough space around)
-			return contentXAdjustment * -1;
+			return (contentXAdjustment + 1.5) * -1; // 1.5px to account for extra 3px that is being applied to width
 		}
 
 		if (!this._rtl) {

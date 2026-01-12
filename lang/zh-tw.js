@@ -225,8 +225,8 @@ export default {
 	"components.tag-list-item.tooltip-title": "鍵盤控制項",
 	"components.view-switcher.role-description":
 		`{count, plural,
-			=0 {View Switcher with 0 items}
-			other {View Switcher with {count} items}
+			=0 {檢視有 0 個項目的切換器}
+			other {檢視有 {count} 個項目的切換器}
 		}`,
 	"templates.primary-secondary.divider": "次要面板分隔線",
 	"templates.primary-secondary.secondary-panel": "次要面板"

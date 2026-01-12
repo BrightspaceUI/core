@@ -234,9 +234,9 @@ export default {
 	"components.tag-list-item.tooltip-title": "कीबोर्ड कंट्रोल",
 	"components.view-switcher.role-description":
 		`{count, plural,
-			=0 {View Switcher with 0 items}
-			one {View Switcher with {count} item}
-			other {View Switcher with {count} items}
+			=0 {0 आइटम के साथ स्विचर को देखें}
+			one {{count} आइटम के साथ स्विचर को देखें}
+			other {{count} आइटम के साथ स्विचर को देखें}
 		}`,
 	"templates.primary-secondary.divider": "सेकेंडरी पैनल डिवाइडर",
 	"templates.primary-secondary.secondary-panel": "सेकेंडरी पैनल"
