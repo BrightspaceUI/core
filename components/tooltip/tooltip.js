@@ -281,6 +281,10 @@ if (usePopoverMixin) {
 			this.showing = true;
 		}
 
+		updatePosition() {
+			return super.position();
+		}
+
 		#handleTargetBlurBound;
 		#handleTargetClickBound;
 		#handleTargetFocusBound;
