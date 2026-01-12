@@ -165,6 +165,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				border-radius: 0.1rem;
 				box-shadow: -4px -4px 12px -5px rgba(32, 33, 34, 0.2); /* ferrite */
 				height: ${pointerLength}px;
+				outline: var(--d2l-popover-outline-width, 0) solid var(--d2l-popover-outline-color, transparent);
 				transform: rotate(45deg);
 				width: ${pointerLength}px;
 			}
