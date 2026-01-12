@@ -718,7 +718,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				if (spaceAround.right >= spaceRequired.width) return positionLocations.inlineStart;
 			} else {
 				if (spaceAround.right >= spaceRequired.width) return positionLocations.inlineEnd;
-				else if (spaceAround.left >= spaceRequired.width) return positionLocations.inlineStart;
+				if (spaceAround.left >= spaceRequired.width) return positionLocations.inlineStart;
 			}
 		}
 
