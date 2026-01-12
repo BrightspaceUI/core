@@ -1,4 +1,5 @@
 export default {
+	"test": "test",
 	"components.alert.close": "إغلاق التنبيه",
 	"components.breadcrumbs.breadcrumb": "شريط التنقل",
 	"components.button-add.addItem": "إضافة عنصر",
