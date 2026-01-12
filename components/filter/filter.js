@@ -638,7 +638,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 		const listStyles = {
 			paddingBlockEnd: dimension.hasMore ? '10px' : undefined
-		}
+		};
 
 		return html`
 			${searchResults}
