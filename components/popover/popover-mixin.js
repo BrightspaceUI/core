@@ -392,6 +392,13 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		await this.updateComplete;
 
+		const getSpaceRequired = (height, contentRect) => {
+			return {
+				height: height + 10,
+				width: contentRect.width
+			};
+		};
+
 		const adjustPosition = async() => {
 
 			const scrollHeight = document.documentElement.scrollHeight;
@@ -399,11 +406,7 @@ export const PopoverMixin = superclass => class extends superclass {
 			contentRect = contentRect ?? content.getBoundingClientRect();
 
 			const height = this._minHeight ?? Math.min(this._maxHeight ?? Number.MAX_VALUE, contentRect.height);
-
-			const spaceRequired = {
-				height: height + 10,
-				width: contentRect.width
-			};
+			let spaceRequired = getSpaceRequired(height, contentRect);
 
 			// space in viewport
 			const prefersInline = this._preferredPosition.location === positionLocations.inlineStart || this._preferredPosition.location === positionLocations.inlineEnd;
@@ -423,6 +426,35 @@ export const PopoverMixin = superclass => class extends superclass {
 				above: openerRect.top + document.documentElement.scrollTop,
 				below: scrollHeight - openerRect.bottom - document.documentElement.scrollTop
 			}, spaceRequired, openerRect);
+
+			if (prefersInline) {
+				const inlinePadding = 20;
+				const minWidth = this.minWidth || 70;
+				if (!this._rtl) {
+					if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.left - inlinePadding) > minWidth) {
+						this._width = spaceAround.left - inlinePadding;
+					} else if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.right - inlinePadding) > minWidth) {
+						this._width = spaceAround.right - inlinePadding;
+					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.right - inlinePadding) > minWidth) {
+						this._width = spaceAround.right - inlinePadding;
+					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.left - inlinePadding) > minWidth) {
+						this._width = spaceAround.left - inlinePadding;
+					}
+				} else {
+					if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.right - inlinePadding) > minWidth) {
+						this._width = spaceAround.right - inlinePadding;
+					} else if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.left - inlinePadding) > minWidth) {
+						this._width = spaceAround.left - inlinePadding;
+					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.left - inlinePadding) > minWidth) {
+						this._width = spaceAround.left - inlinePadding;
+					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.right - inlinePadding) > minWidth) {
+						this._width = spaceAround.right - inlinePadding;
+					}
+				}
+				await this.updateComplete;
+				contentRect = content.getBoundingClientRect();
+				spaceRequired = getSpaceRequired(height, contentRect);
+			}
 
 			if (options.updateLocation) {
 				this._location = this.#getLocation(spaceAround, spaceAroundScroll, spaceRequired);
@@ -686,7 +718,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				if (spaceAround.right >= spaceRequired.width) return positionLocations.inlineStart;
 			} else {
 				if (spaceAround.right >= spaceRequired.width) return positionLocations.inlineEnd;
-				if (spaceAround.left >= spaceRequired.width) return positionLocations.inlineStart;
+				else if (spaceAround.left >= spaceRequired.width) return positionLocations.inlineStart;
 			}
 		}
 
