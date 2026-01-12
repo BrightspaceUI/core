@@ -7,7 +7,7 @@ describe('d2l-loading-spinner', () => {
 			let elem, slices;
 			beforeEach(async() => {
 				elem = await fixture(html`<d2l-loading-spinner></d2l-loading-spinner>`);
-				slices = elem.shadowRoot.querySelectorAll('.d2l-loading-spinner-slice');
+				slices = elem.shadowRoot.querySelectorAll('.slice');
 				for (const slice of slices) {
 					slice.style.animation = 'none';
 					if (end) slice.style.display = 'none';
