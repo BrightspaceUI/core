@@ -257,6 +257,7 @@ if (usePopoverMixin) {
 
 			if (changedProperties.has('align') || changedProperties.has('forceShow') || changedProperties.has('offset') || changedProperties.has('positionLocation')) {
 				super.configure({
+					maxWidth: '350',
 					minWidth: '48',
 					noAutoClose: this.forceShow,
 					offset: (this.offset !== undefined ? Number.parseInt(this.offset) : undefined),
