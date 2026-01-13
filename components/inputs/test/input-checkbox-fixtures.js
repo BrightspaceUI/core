@@ -16,7 +16,7 @@ export const checkboxFixtures = {
 	indeterminateUnchecked: html`<d2l-input-checkbox label="label" indeterminate></d2l-input-checkbox>`,
 	/* disabled variants */
 	disabled: html`<d2l-input-checkbox label="label" disabled></d2l-input-checkbox>`,
-	disabledTooltip: html`<d2l-input-checkbox label="label" disabled disabled-tooltip="Tooltip text"></d2l-input-checkbox>`,
+	disabledTooltip: html`<d2l-input-checkbox label="label" disabled disabled-tooltip="Tooltip text" style="margin-top: 100px;"></d2l-input-checkbox>`,
 	/* supporting slot */
 	supporting: html`
 		<d2l-input-checkbox label="Label for checkbox">
