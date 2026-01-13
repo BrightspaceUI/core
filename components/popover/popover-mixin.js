@@ -29,6 +29,7 @@ const defaultPreferredPosition = {
 };
 const minBackdropHeightMobile = 42;
 const minBackdropWidthMobile = 30;
+const minOpenerSizeNoShift = 42;
 const pointerLength = 16;
 const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
 const isSupported = ('popover' in HTMLElement.prototype);
@@ -1003,7 +1004,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		}
 
 		// extra offset for small openers (so pointer does not look broken from content)
-		const extraOffset = (this._preferredPosition.span !== positionSpans.all && openerRect.width < 36) ? 15 : 0;
+		const extraOffset = (!this._noPointer && this._preferredPosition.span !== positionSpans.all && openerRect.width < minOpenerSizeNoShift ? ((minOpenerSizeNoShift / 2) - (openerRect.width / 2)) : 0 );
 
 		if (!this._rtl) {
 			if (spaceAround.left < contentXAdjustment) {
