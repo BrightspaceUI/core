@@ -27,6 +27,8 @@ const defaultPreferredPosition = {
 	span: positionSpans.all,
 	allowFlip: true
 };
+const defaultMinWidth = 70;
+const inlineMargin = 20;
 const minBackdropHeightMobile = 42;
 const minBackdropWidthMobile = 30;
 const minOpenerSizeNoShift = 42;
@@ -430,27 +432,26 @@ export const PopoverMixin = superclass => class extends superclass {
 			}, spaceRequired, openerRect);
 
 			if (prefersInline) {
-				const inlinePadding = 20;
-				const minWidth = this.minWidth || 70;
+				const minWidth = this.minWidth || defaultMinWidth;
 				if (!this._rtl) {
-					if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.left - inlinePadding) > minWidth) {
-						this._width = spaceAround.left - inlinePadding;
-					} else if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.right - inlinePadding) > minWidth) {
-						this._width = spaceAround.right - inlinePadding;
-					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.right - inlinePadding) > minWidth) {
-						this._width = spaceAround.right - inlinePadding;
-					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.left - inlinePadding) > minWidth) {
-						this._width = spaceAround.left - inlinePadding;
+					if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.left - inlineMargin) > minWidth) {
+						this._width = spaceAround.left - inlineMargin;
+					} else if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.right - inlineMargin) > minWidth) {
+						this._width = spaceAround.right - inlineMargin;
+					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.right - inlineMargin) > minWidth) {
+						this._width = spaceAround.right - inlineMargin;
+					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.left - inlineMargin) > minWidth) {
+						this._width = spaceAround.left - inlineMargin;
 					}
 				} else {
-					if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.right - inlinePadding) > minWidth) {
-						this._width = spaceAround.right - inlinePadding;
-					} else if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.left - inlinePadding) > minWidth) {
-						this._width = spaceAround.left - inlinePadding;
-					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.left - inlinePadding) > minWidth) {
-						this._width = spaceAround.left - inlinePadding;
-					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.right - inlinePadding) > minWidth) {
-						this._width = spaceAround.right - inlinePadding;
+					if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.right - inlineMargin) > minWidth) {
+						this._width = spaceAround.right - inlineMargin;
+					} else if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.left - inlineMargin) > minWidth) {
+						this._width = spaceAround.left - inlineMargin;
+					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.left - inlineMargin) > minWidth) {
+						this._width = spaceAround.left - inlineMargin;
+					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.right - inlineMargin) > minWidth) {
+						this._width = spaceAround.right - inlineMargin;
 					}
 				}
 				await this.updateComplete;
