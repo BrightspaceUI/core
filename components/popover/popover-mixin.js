@@ -1005,7 +1005,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		}
 
 		// extra offset for small openers (so pointer does not look broken from content)
-		const extraOffset = (!this._noPointer && this._preferredPosition.span !== positionSpans.all && openerRect.width < minOpenerSizeNoShift ? ((minOpenerSizeNoShift / 2) - (openerRect.width / 2)) : 0 );
+		const extraOffset = (!this._noPointer && this._preferredPosition.span !== positionSpans.all && openerRect.width < minOpenerSizeNoShift ? ((minOpenerSizeNoShift / 2) - (openerRect.width / 2)) : 0);
 
 		if (!this._rtl) {
 			if (spaceAround.left < contentXAdjustment) {
