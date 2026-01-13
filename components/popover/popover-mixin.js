@@ -27,8 +27,11 @@ const defaultPreferredPosition = {
 	span: positionSpans.all,
 	allowFlip: true
 };
+const defaultMinWidth = 70;
+const inlineMargin = 20;
 const minBackdropHeightMobile = 42;
 const minBackdropWidthMobile = 30;
+const minOpenerSizeNoShift = 52;
 const pointerLength = 16;
 const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
 const isSupported = ('popover' in HTMLElement.prototype);
@@ -165,6 +168,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				border-radius: 0.1rem;
 				box-shadow: -4px -4px 12px -5px rgba(32, 33, 34, 0.2); /* ferrite */
 				height: ${pointerLength}px;
+				outline: var(--d2l-popover-outline-width, 0) solid var(--d2l-popover-outline-color, transparent);
 				transform: rotate(45deg);
 				width: ${pointerLength}px;
 			}
@@ -392,6 +396,13 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		await this.updateComplete;
 
+		const getSpaceRequired = (height, contentRect) => {
+			return {
+				height: height + 10,
+				width: contentRect.width
+			};
+		};
+
 		const adjustPosition = async() => {
 
 			const scrollHeight = document.documentElement.scrollHeight;
@@ -399,11 +410,7 @@ export const PopoverMixin = superclass => class extends superclass {
 			contentRect = contentRect ?? content.getBoundingClientRect();
 
 			const height = this._minHeight ?? Math.min(this._maxHeight ?? Number.MAX_VALUE, contentRect.height);
-
-			const spaceRequired = {
-				height: height + 10,
-				width: contentRect.width
-			};
+			let spaceRequired = getSpaceRequired(height, contentRect);
 
 			// space in viewport
 			const prefersInline = this._preferredPosition.location === positionLocations.inlineStart || this._preferredPosition.location === positionLocations.inlineEnd;
@@ -423,6 +430,34 @@ export const PopoverMixin = superclass => class extends superclass {
 				above: openerRect.top + document.documentElement.scrollTop,
 				below: scrollHeight - openerRect.bottom - document.documentElement.scrollTop
 			}, spaceRequired, openerRect);
+
+			if (prefersInline) {
+				const minWidth = this.minWidth || defaultMinWidth;
+				if (!this._rtl) {
+					if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.left - inlineMargin) > minWidth) {
+						this._width = spaceAround.left - inlineMargin;
+					} else if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.right - inlineMargin) > minWidth) {
+						this._width = spaceAround.right - inlineMargin;
+					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.right - inlineMargin) > minWidth) {
+						this._width = spaceAround.right - inlineMargin;
+					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.left - inlineMargin) > minWidth) {
+						this._width = spaceAround.left - inlineMargin;
+					}
+				} else {
+					if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.right - inlineMargin) > minWidth) {
+						this._width = spaceAround.right - inlineMargin;
+					} else if (this._preferredPosition.location === positionLocations.inlineStart && (spaceAround.left - inlineMargin) > minWidth) {
+						this._width = spaceAround.left - inlineMargin;
+					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.left - inlineMargin) > minWidth) {
+						this._width = spaceAround.left - inlineMargin;
+					} else if (this._preferredPosition.location === positionLocations.inlineEnd && (spaceAround.right - inlineMargin) > minWidth) {
+						this._width = spaceAround.right - inlineMargin;
+					}
+				}
+				await this.updateComplete;
+				contentRect = content.getBoundingClientRect();
+				spaceRequired = getSpaceRequired(height, contentRect);
+			}
 
 			if (options.updateLocation) {
 				this._location = this.#getLocation(spaceAround, spaceAroundScroll, spaceRequired);
@@ -969,21 +1004,24 @@ export const PopoverMixin = superclass => class extends superclass {
 			return (contentXAdjustment + 1.5) * -1; // 1.5px to account for extra 3px that is being applied to width
 		}
 
+		// extra offset for small openers (so pointer does not look broken from content)
+		const extraOffset = (!this._noPointer && this._preferredPosition.span !== positionSpans.all && openerRect.width < minOpenerSizeNoShift ? ((minOpenerSizeNoShift / 2) - (openerRect.width / 2)) : 0);
+
 		if (!this._rtl) {
 			if (spaceAround.left < contentXAdjustment) {
 				// slide content right (not enough space to center)
-				return spaceAround.left * -1;
+				return (spaceAround.left * -1) - extraOffset;
 			} else if (spaceAround.right < contentXAdjustment) {
 				// slide content left (not enough space to center)
-				return (centerDelta * -1) + spaceAround.right;
+				return (centerDelta * -1) + spaceAround.right + extraOffset;
 			}
 		} else {
 			if (spaceAround.left < contentXAdjustment) {
 				// slide content right (not enough space to center)
-				return (centerDelta * -1) + spaceAround.left;
+				return (centerDelta * -1) + spaceAround.left + extraOffset;
 			} else if (spaceAround.right < contentXAdjustment) {
 				// slide content left (not enough space to center)
-				return spaceAround.right * -1;
+				return (spaceAround.right * -1) - extraOffset;
 			}
 		}
 

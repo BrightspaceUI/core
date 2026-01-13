@@ -92,22 +92,23 @@ describe('d2l-tooltip', () => {
 
 		it('should find target using for attribute', () => {
 			const expectedTarget = tooltipFixture.querySelector('#explicit-target');
-			expect(tooltip._target).to.equal(expectedTarget);
+			expect(tooltip._getTarget()).to.equal(expectedTarget);
 		});
 
 		it('should update target if current target is removed', async() => {
 			const expectedTarget = tooltipFixture.querySelector('#explicit-target');
 			expectedTarget.remove();
 			await aTimeout(1);
-			expect(tooltip._target).to.be.null;
+			expect(tooltip._getTarget()).to.be.null;
 		});
 
 		it('should update target if current target id changes', async() => {
 			const expectedTarget = tooltipFixture.querySelector('#explicit-target');
 			expectedTarget.id = '';
 			await aTimeout(1);
-			expect(tooltip._target).to.be.null;
+			expect(tooltip._getTarget()).to.be.null;
 		});
+
 	});
 
 	describe('implicit target', () => {
@@ -119,7 +120,7 @@ describe('d2l-tooltip', () => {
 
 		it('should find parent target', async() => {
 			const expectedTarget = tooltipFixture.querySelector('#implicit-target');
-			expect(tooltip._target).to.equal(expectedTarget);
+			expect(tooltip._getTarget()).to.equal(expectedTarget);
 		});
 	});
 
@@ -320,6 +321,7 @@ describe('d2l-tooltip', () => {
 			await aTimeout(tooltip.delay / 2);
 			expect(tooltip2.showing).to.be.true;
 		});
+
 	});
 
 	describe('force-show', () => {
@@ -361,4 +363,5 @@ describe('d2l-tooltip', () => {
 			expect(tooltip.showing).to.be.false;
 		});
 	});
+
 });

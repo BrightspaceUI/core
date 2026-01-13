@@ -99,26 +99,6 @@ describe('d2l-input-number', () => {
 		await expect(elem).to.be.golden();
 	});
 
-	it('right side tooltip', async() => {
-		const elem = await fixture(
-			html`<d2l-input-number label="Label" value=1 max=0 label-hidden></d2l-input-number>`,
-			{ viewport: { width:600, height:80 } }
-		);
-		focusElem(elem);
-		await oneEvent(elem, 'd2l-tooltip-show');
-		await expect(elem).to.be.golden();
-	});
-
-	it('right side tooltip with percentage input-width', async() => {
-		const elem = await fixture(
-			html`<d2l-input-number label="Label" value=1 max=0 label-hidden input-width="50%"></d2l-input-number>`,
-			{ viewport: { width:800, height:80 } }
-		);
-		focusElem(elem);
-		await oneEvent(elem, 'd2l-tooltip-show');
-		await expect(elem).to.be.golden();
-	});
-
 	describe('skeleton', () => {
 		[
 			{ name: 'simple', template: html`<d2l-input-number skeleton label="Number"></d2l-input-number>` },

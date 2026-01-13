@@ -11,7 +11,7 @@ const longTextNoSpaces = 'Loremipsumdolorsitamet,consecteturadipiscingelit,seddo
 const additionalText = 'Aliquam ut porttitor leo a diam sollicitudin tempor id eu.';
 
 function createTooltip(tooltipOpts, target) {
-	const { content, align, boundary, bounded, dark, position, offset, state, wrapped } = {
+	const { content, align, bounded, dark, position, offset, state, wrapped } = {
 		content: 'Lorem ipsum dolor sit amet.',
 		bounded: false,
 		dark: false,
@@ -40,7 +40,6 @@ function createTooltip(tooltipOpts, target) {
 			for="${ifDefined(wrapped ? undefined : 'target')}"
 			align="${ifDefined(align)}"
 			position="${ifDefined(position)}"
-			boundary="${ifDefined(boundary)}"
 			offset="${ifDefined(offset)}"
 			state="${ifDefined(state)}">
 			${content}
@@ -79,15 +78,8 @@ describe('tooltip', () => {
 		{ name: 'bottom-right', targetStyles: { bottom: edge, right: edge } },
 		{ name: 'middle-left', opts: { wrapped: true }, targetStyles: { left: edge, top: mid } },
 		{ name: 'middle-right', targetStyles: { right: edge, top: mid } },
-		{ name: 'boundary-top-right', opts: { content: longText, boundary: '{"top":150, "right":165}' }, targetStyles: { left: mid, top: mid } },
-		{ name: 'boundary-bottom-left', opts: { content: longText, boundary: '{"bottom":150, "left":165}' }, targetStyles: { left: mid, top: mid } },
 		{ name: 'min-width', opts: { content: ':)', offset: '0', state: 'error', wrapped: true }, targetStyles: { left: mid, top: mid } },
 		{ name: 'max-width', opts: { content: `${longText} ${additionalText}`, offset: '0', state: 'error' }, targetStyles: { left: mid, top: mid } },
-		{ name: 'horizontal', opts: { content: shortText, boundary: '{"top":175, "bottom":145}' }, targetStyles: { left: mid, top: mid } },
-		{ name: 'horizontal-rtl', rtl: true, opts: { content: shortText, boundary: '{"top":175, "bottom":145}' }, targetStyles: { left: mid, top: mid } },
-		{ name: 'wide-target-horizontal', opts: { wrapped: true }, targetStyles: { left: edge, right: edge, borderRadius: '5px', width: undefined } },
-		{ name: 'wide-target-vertical', opts: { content: `${longText} ${additionalText}` }, targetStyles: { bottom: edge, top: edge, borderRadius: '5px', height: undefined } },
-		{ name: 'too-big-for-space', opts: { content: additionalText, boundary: '{"bottom":180, "top":160, "left":65, "right":150}' }, targetStyles: { left: mid, top: mid } },
 		{ name: 'align-start', opts: { align: 'start' }, targetStyles: { left: edge, right: edge, borderRadius: '5px', width: undefined } },
 		{ name: 'align-start-narrow', opts: { align: 'start' }, targetStyles: { left: mid, top: mid } },
 		{ name: 'align-start-rtl', rtl: true, opts: { align: 'start', wrapped: true }, targetStyles: { left: edge, right: edge, borderRadius: '5px', width: undefined } },
