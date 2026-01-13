@@ -12,7 +12,7 @@ jobs:
       - uses: Brightspace/third-party-actions@actions/checkout
         with:
           token: ${{ secrets.CORE_GITHUB_TOKEN }}
-      - uses: Brightspace/third-party-actions@actions/setup-node
+      - uses: Brightspace/setup-node@main
         with:
           node-version-file: .nvmrc
           cache: npm
