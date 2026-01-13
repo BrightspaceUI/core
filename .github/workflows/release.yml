@@ -16,7 +16,7 @@ jobs:
       - uses: Brightspace/third-party-actions@actions/checkout
         with:
           persist-credentials: false
-      - uses: Brightspace/third-party-actions@actions/setup-node
+      - uses: Brightspace/setup-node@main
         with:
           node-version-file: .nvmrc
           cache: 'npm'
@@ -47,7 +47,7 @@ jobs:
       - uses: Brightspace/third-party-actions@actions/checkout
         with:
           ref: ${{needs.release.outputs.git-head}}
-      - uses: Brightspace/third-party-actions@actions/setup-node
+      - uses: Brightspace/setup-node@main
         with:
           node-version-file: .nvmrc
           cache: 'npm'
