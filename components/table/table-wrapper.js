@@ -714,6 +714,11 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		if (candidateRowHeadCells.length !== candidateRowBodyLength) return;
 
 		for (let i = 0; i < candidateRowHeadCells.length; i++) {
+			candidateRowHeadCells[i].style.minWidth = '';
+			candidateRowBody.cells[i].style.minWidth = '';
+		}
+
+		for (let i = 0; i < candidateRowHeadCells.length; i++) {
 			const headCell = candidateRowHeadCells[i];
 			const headStyle = getComputedStyle(headCell);
 
