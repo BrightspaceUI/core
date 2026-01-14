@@ -378,6 +378,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._controlsScrolled = false;
 		this._controlsScrolledMutationObserver = null;
 		this._noScrollWidth = colSyncFix;
+		this._lastTableScrollWidth = 0;
 		this._table = null;
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
@@ -634,29 +635,22 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		const body = this._table.querySelector('tbody');
 
 		if (colSyncFix) {
-			// Always measure in table mode (_no-scroll-width attribute present) for consistency.
-			// Directly manipulate the attribute to avoid triggering Lit's reactive updates during measurement.
-			const hadAttribute = this.hasAttribute('_no-scroll-width');
-			if (!hadAttribute) {
-				this.setAttribute('_no-scroll-width', '');
-			}
-
-			// Force synchronous layout so CSS changes take effect before measuring
-			const maxScrollWidth = Math.max(head?.scrollWidth ?? 0, body?.scrollWidth ?? 0);
 			const clientWidth = this.clientWidth;
 
-			// Restore original attribute state
-			if (!hadAttribute) {
-				this.removeAttribute('_no-scroll-width');
-			}
+			if (this._noScrollWidth) {
+				const tableScrollWidth = this._table.scrollWidth;
+				this._lastTableScrollWidth = tableScrollWidth;
 
-			// Now decide what the value should be, and only update if changed
-			const shouldBeNoScrollWidth = maxScrollWidth <= clientWidth;
-			if (this._noScrollWidth !== shouldBeNoScrollWidth) {
-				this._noScrollWidth = shouldBeNoScrollWidth;
+				if (tableScrollWidth > clientWidth) {
+					this._noScrollWidth = false;
+				}
+			} else {
+				if (this._lastTableScrollWidth > 0 && this._lastTableScrollWidth <= clientWidth) {
+					this._noScrollWidth = true;
+				}
 			}
 		}
-		if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper) return;
+		if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
 
 		const candidateRowHeadCells = [];
 
