@@ -634,14 +634,29 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		const body = this._table.querySelector('tbody');
 
 		if (colSyncFix) {
-			const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
-			if (this._noScrollWidth && maxScrollWidth > this.clientWidth) {
-				this._noScrollWidth = false;
-			} else if (!this._noScrollWidth && maxScrollWidth < this.clientWidth) {
-				this._noScrollWidth = true;
+			// Always measure in table mode (_no-scroll-width attribute present) for consistency.
+			// Directly manipulate the attribute to avoid triggering Lit's reactive updates during measurement.
+			const hadAttribute = this.hasAttribute('_no-scroll-width');
+			if (!hadAttribute) {
+				this.setAttribute('_no-scroll-width', '');
+			}
+
+			// Force synchronous layout so CSS changes take effect before measuring
+			const maxScrollWidth = Math.max(head?.scrollWidth ?? 0, body?.scrollWidth ?? 0);
+			const clientWidth = this.clientWidth;
+
+			// Restore original attribute state
+			if (!hadAttribute) {
+				this.removeAttribute('_no-scroll-width');
+			}
+
+			// Now decide what the value should be, and only update if changed
+			const shouldBeNoScrollWidth = maxScrollWidth <= clientWidth;
+			if (this._noScrollWidth !== shouldBeNoScrollWidth) {
+				this._noScrollWidth = shouldBeNoScrollWidth;
 			}
 		}
-		if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
+		if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper) return;
 
 		const candidateRowHeadCells = [];
 
