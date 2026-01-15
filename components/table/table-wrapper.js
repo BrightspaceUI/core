@@ -635,19 +635,12 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		const body = this._table.querySelector('tbody');
 
 		if (colSyncFix) {
-			const clientWidth = this.clientWidth;
-
-			if (this._noScrollWidth) {
-				const tableScrollWidth = this._table.scrollWidth;
-				this._lastTableScrollWidth = tableScrollWidth;
-
-				if (tableScrollWidth > clientWidth) {
-					this._noScrollWidth = false;
-				}
-			} else {
-				if (this._lastTableScrollWidth > 0 && this._lastTableScrollWidth <= clientWidth) {
-					this._noScrollWidth = true;
-				}
+			const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
+			this.removeAttribute('_no-scroll-width');
+			if (this._noScrollWidth && maxScrollWidth > this.clientWidth) {
+				this._noScrollWidth = false;
+			} else if (!this._noScrollWidth && maxScrollWidth <= this.clientWidth) {
+				this._noScrollWidth = true;
 			}
 		}
 		if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
