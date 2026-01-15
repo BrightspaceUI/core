@@ -38,11 +38,11 @@ class LoadingSpinner extends LitElement {
 			}
 
 			.d2l-loading-spinner-wrapper {
-				height: var(--d2l-loading-spinner-size, 50px);
+				height: var(--d2l-loading-spinner-size, 48px);
 				margin: auto;
 				overflow: hidden;
 				position: relative;
-				width: var(--d2l-loading-spinner-size, 50px);
+				width: var(--d2l-loading-spinner-size, 48px);
 			}
 			svg {
 				background: radial-gradient(rgba(0, 0, 0, 0.1), transparent 70%); /* 70% ≈ 100%/sqrt(2) = radius of circle since corners lie on 100% of radial gradient */
@@ -63,7 +63,7 @@ class LoadingSpinner extends LitElement {
 			.inner-circle {
 				fill: none;
 				stroke: var(--d2l-loading-spinner-color, var(--d2l-color-celestine));
-				stroke-width: 2;
+				stroke-width: 3;
 			}
 
 			.slice {
@@ -119,11 +119,11 @@ class LoadingSpinner extends LitElement {
 	render() {
 		return html`
 			<div class="d2l-loading-spinner-wrapper">
-				<svg viewBox="0 0 50 50" fill-rule="evenodd">
+				<svg viewBox="0 0 48 48" fill-rule="evenodd">
 					<g>
-						<circle cx="25" cy="25" r="19" class="outer-circle-stroke"></circle>
-						<circle cx="25" cy="25" r="19" class="outer-circle"></circle>
-						<circle cx="25" cy="25" r="13" class="inner-circle"></circle>
+						<circle cx="24" cy="24" r="18" class="outer-circle-stroke"></circle>
+						<circle cx="24" cy="24" r="18" class="outer-circle"></circle>
+						<circle cx="24" cy="24" r="12" class="inner-circle"></circle>
 					</g>
 					${Array.from({ length: 5 }).map((_, i) => this.#renderSlice(i + 1))}
 				</svg>
@@ -147,8 +147,8 @@ class LoadingSpinner extends LitElement {
 		};
 		classes[`slice-${index}`] = true;
 		return svg`<g class="${classMap(classes)}">
-			<path d="M39 25h5a19 19 0 0 0 -19 -19v5a 1 1 0 0 1 0 2v12h12a1 1 0 0 1 2 0z" fill="#FFF"></path>
-			<path d="M25 13a1 1 0 0 0 0 -2a14 14 0 0 1 14 14a1 1 0 0 0 -2 0a12 12 0 0 0 -12 -12z" fill="#E6EAF0"></path>
+			<path d="M37.5 24h4.5a18 18 0 0 0 -18 -18v4.5a 1.5 1.5 0 0 1 0 3v10.5h10.5a1.5 1.5 0 0 1 3 0z" fill="#FFF"></path>
+			<path d="M24 13.5a1.5 1.5 0 0 0 0 -3a13.5 13.5 0 0 1 13.5 13.5a1.5 1.5 0 0 0 -3 0a10.5 10.5 0 0 0 -10.5 -10.5z" fill="#E6EAF0"></path>
 		</g>`;
 	}
 
