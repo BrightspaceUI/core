@@ -121,9 +121,9 @@ class LoadingSpinner extends LitElement {
 			<div class="d2l-loading-spinner-wrapper">
 				<svg viewBox="0 0 48 48" fill-rule="evenodd">
 					<g>
-						<circle cx="24" cy="24" r="18" class="outer-circle-stroke"></circle>
-						<circle cx="24" cy="24" r="18" class="outer-circle"></circle>
-						<circle cx="24" cy="24" r="12" class="inner-circle"></circle>
+						<circle cx="24" cy="24" r="21" class="outer-circle-stroke"></circle>
+						<circle cx="24" cy="24" r="21" class="outer-circle"></circle>
+						<circle cx="24" cy="24" r="13.5" class="inner-circle"></circle>
 					</g>
 					${Array.from({ length: 5 }).map((_, i) => this.#renderSlice(i + 1))}
 				</svg>
@@ -147,8 +147,8 @@ class LoadingSpinner extends LitElement {
 		};
 		classes[`slice-${index}`] = true;
 		return svg`<g class="${classMap(classes)}">
-			<path d="M37.5 24h4.5a18 18 0 0 0 -18 -18v4.5a 1.5 1.5 0 0 1 0 3v10.5h10.5a1.5 1.5 0 0 1 3 0z" fill="#FFF"></path>
-			<path d="M24 13.5a1.5 1.5 0 0 0 0 -3a13.5 13.5 0 0 1 13.5 13.5a1.5 1.5 0 0 0 -3 0a10.5 10.5 0 0 0 -10.5 -10.5z" fill="#E6EAF0"></path>
+			<path d="M39 24h6a21 21 0 0 0 -21 -21v6a 1.5 1.5 0 0 1 0 3v12h12a1.5 1.5 0 0 1 3 0z" fill="#FFF"></path>
+			<path d="M39 24a15 15 0 0 0 -15 -15a1.5 1.5 0 0 1 0 3a12 12 0 0 1 12 12a1.5 1.5 0 0 1 3 0z" fill="#E6EAF0"></path>
 		</g>`;
 	}
 
