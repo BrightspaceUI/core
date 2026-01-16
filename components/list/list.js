@@ -90,6 +90,10 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 * @default "all"
 			 */
 			separators: { type: String, reflect: true },
+			/**
+			 * Show selection only on hover, focus or if at least one item is selected. Exclusive for the tile layout
+			 * @type {boolean}
+			 */
 			showSelectionDynamically: { type: Boolean, attribute: 'show-selection-dynamically', reflect: true },
 			_breakpoint: { type: Number, reflect: true },
 			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' }
