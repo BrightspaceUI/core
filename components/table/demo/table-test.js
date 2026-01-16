@@ -20,17 +20,17 @@ import { tableStyles, TableWrapper } from '../table-wrapper.js';
 import { DemoPassthroughMixin } from '../../demo/demo-passthrough-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-const columns = ['Population', 'Size', 'Elevation'];
-const thText = ['Additional', 'Placeholder', 'Header', 'Row', 'Cells'];
+const columns = ['Population', 'Size', 'Elevation', 'P2', 'Size2', 'Elevation2', 'Population3', 'Size3', 'Elevation3'];
+const thText = ['Additional', 'Placeholder', 'Header', 'Row', 'Cells', 'Empty2', 'Empty2', 'Empty2', 'Empty3', 'Empty3', 'Empty3'];
 
 const data = () => [
-	{ name: 'Ottawa, Canada', data: { 'city': 'Ottawa', 'country': 'Canada', 'population': 994837, 'size': 2790, 'elevation': 70, 'latitude': 45.32, 'longitude': -75.71 }, selected: true },
-	{ name: 'Toronto, Canada', data: { 'city': 'Toronto', 'country': 'Canada', 'population': 2930000, 'size': 630, 'elevation': 76, 'latitude': 43.69, 'longitude': -79.41 }, selected: true },
-	{ name: 'Sydney, Australia', data: { 'city': 'Sydney', 'country': 'Australia', 'population': 5312000, 'size': 12368, 'elevation': 3, 'latitude': -33.86, 'longitude': 151.13 }, selected: false },
-	{ name: 'Cairo, Egypt', data: { 'city': 'Cairo', 'country': 'Egypt', 'population': 9540000, 'size': 3085, 'elevation': 23, 'latitude': 30.05, 'longitude': 31.25 }, selected: false },
-	{ name: 'Moscow, Russia', data: { 'city': 'Moscow', 'country': 'Russia', 'population': 12712305, 'size': 2511, 'elevation': 124, 'latitude': 55.70, 'longitude': 35.59 }, selected: false },
-	{ name: 'London, England', data: { 'city': 'London', 'country': 'England', 'population': 8982000, 'size': 1572, 'elevation': 11, 'latitude': 51.49, 'longitude': -0.12 }, selected: false },
-	{ name: 'Tokyo, Japan', data: { 'city': 'Tokyo', 'country': 'Japan', 'population': 13960000, 'size': 2194, 'elevation': 40, 'latitude': 35.68, 'longitude': 139.74 }, selected: false }
+	{ name: 'Ottawa, Canada', data: { 'city': 'Ottawa', 'country': 'Canada', 'population': 994837, 'size': 2790, 'elevation': 70, 'latitude': 45.32, 'longitude': -75.71, 'p2': 123, 'size2': 123, 'elevation2': 567, 'population3': 123, 'size3': 123, 'elevation3': 567 }, selected: true },
+	{ name: 'Toronto, Canada', data: { 'city': 'Toronto', 'country': 'Canada', 'population': 2930000, 'size': 630, 'elevation': 76, 'latitude': 43.69, 'longitude': -79.41, 'p2': 123, 'size2': 123, 'elevation2': 567, 'elevation2': 567, 'population3': 123, 'size3': 123, 'elevation3': 567 }, selected: true },
+	{ name: 'Sydney, Australia', data: { 'city': 'Sydney', 'country': 'Australia', 'population': 5312000, 'size': 12368, 'elevation': 3, 'latitude': -33.86, 'longitude': 151.13, 'p2': 123, 'size2': 123, 'elevation2': 567, 'elevation2': 567, 'population3': 123, 'size3': 123, 'elevation3': 567 }, selected: false },
+	{ name: 'Cairo, Egypt', data: { 'city': 'Cairo', 'country': 'Egypt', 'population': 9540000, 'size': 3085, 'elevation': 23, 'latitude': 30.05, 'longitude': 31.25, 'p2': 123, 'size2': 123, 'elevation2': 567, 'elevation2': 567, 'population3': 123, 'size3': 123, 'elevation3': 567 }, selected: false },
+	{ name: 'Moscow, Russia', data: { 'city': 'Moscow', 'country': 'Russia', 'population': 12712305, 'size': 2511, 'elevation': 124, 'latitude': 55.70, 'longitude': 35.59, 'p2': 123, 'size2': 123, 'elevation2': 567, 'elevation2': 567, 'population3': 123, 'size3': 123, 'elevation3': 567 }, selected: false },
+	{ name: 'London, England', data: { 'city': 'London', 'country': 'England', 'population': 8982000, 'size': 1572, 'elevation': 11, 'latitude': 51.49, 'longitude': -0.12, 'p2': 123, 'size2': 123, 'elevation2': 567, 'elevation2': 567, 'population3': 123, 'size3': 123, 'elevation3': 567 }, selected: false },
+	{ name: 'Tokyo, Japan', data: { 'city': 'Tokyo', 'country': 'Japan', 'population': 13960000, 'size': 2194, 'elevation': 40, 'latitude': 35.68, 'longitude': 139.74, 'p2': 123, 'size2': 123, 'elevation2': 567, 'elevation2': 567, 'population3': 123, 'size3': 123, 'elevation3': 567 }, selected: false }
 ];
 
 const formatter = new Intl.NumberFormat('en-US');
