@@ -90,6 +90,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 * @default "all"
 			 */
 			separators: { type: String, reflect: true },
+			showSelectionDynamically: { type: Boolean, attribute: 'show-selection-dynamically', reflect: true },
 			_breakpoint: { type: Number, reflect: true },
 			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' }
 		};
@@ -211,6 +212,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		// check if list items are expandable on first render so we adjust sibling spacing appropriately
 		this._handleListItemNestedChange();
 		this.addEventListener('d2l-list-item-selected', e => {
+			this._updateItemShowSelection();
 
 			// batch the changes from select-all and nested lists
 			if (this._listItemChanges.length === 0) {
@@ -263,6 +265,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		}
 		if (changedProperties.has('layout') && changedProperties.get('layout') !== undefined && this.layout) {
 			this._updateItemLayouts();
+		}
+		if (changedProperties.has('showSelectionDynamically')) {
+			this._updateItemShowSelection();
 		}
 	}
 
@@ -525,6 +530,15 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	_updateItemLayouts(items) {
 		if (!items) items = this.getItems();
 		items.forEach(item => item.layout = (this.layout === listLayouts.tiles ? 'tile' : 'normal'));
+	}
+
+	_updateItemShowSelection(items) {
+		if (!items) items = this.getItems();
+		const state = this.getSelectionInfo().state;
+		items.forEach(item => {
+			item._showSelectionDynamically = this.showSelectionDynamically;
+			item._forceShowSelection = this.showSelectionDynamically && (state === SelectionInfo.states.some || state === SelectionInfo.states.all);
+		});
 	}
 
 }
