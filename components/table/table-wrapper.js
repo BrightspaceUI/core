@@ -635,7 +635,9 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 		if (colSyncFix) {
 			const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
-			this._noScrollWidth = this.clientWidth === maxScrollWidth;
+			setTimeout(() => {
+				this._noScrollWidth = this.clientWidth === maxScrollWidth;
+			});
 		}
 		if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
 
