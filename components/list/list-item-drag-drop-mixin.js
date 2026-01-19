@@ -268,23 +268,24 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			/**
 			 * **Drag & drop:** The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode.
 			 * @type {string}
-			 */
+			*/
 			dragHandleText: { type: String, attribute: 'drag-handle-text' },
 			/**
 			 * **Drag & drop:** Whether nested items can be dropped on this item
 			 * @type {boolean}
-			 */
+			*/
 			dropNested: { type: Boolean, attribute: 'drop-nested' },
 			/**
 			 * **Drag & drop:** Text to drag and drop
 			 * @type {string}
-			 */
+			*/
 			dropText: { type: String, attribute: 'drop-text' },
 			/**
 			 * Value to identify item if selectable
 			 * @type {string}
-			 */
+			*/
 			key: { type: String, reflect: true },
+			_dragAlwaysShow: { type: Boolean, attribute: '_drag-always-show', reflect: true },
 			_draggingOver: { type: Boolean },
 			_dropLocation: { type: Number, reflect: true, attribute: '_drop-location' },
 			_focusingDragHandle: { type: Boolean },
@@ -345,6 +346,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				}
 				:host([selected]) d2l-list-item-drag-handle,
 				:host([current]) d2l-list-item-drag-handle,
+				:host([_drag-always-show]) d2l-list-item-drag-handle,
 				:host([_focusing]) d2l-list-item-drag-handle,
 				d2l-list-item-drag-handle:hover,
 				d2l-list-item-drag-handle.d2l-hovering,
@@ -379,6 +381,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		const list = this.getRootList();
 		this._dragMultiple = list?.hasAttribute('drag-multiple');
 		this._dropNestedOnly = list?.hasAttribute('drop-nested-only');
+		this._dragAlwaysShow = list?.dragAlwaysShow;
 	}
 
 	firstUpdated(changedProperties) {

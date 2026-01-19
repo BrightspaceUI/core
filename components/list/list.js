@@ -54,6 +54,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 */
 			breakpoints: { type: Array },
 			/**
+			 * Always show drag handle
+			 * @type {boolean}
+			 */
+			dragAlwaysShow: { type: Boolean, attribute: 'drag-always-show' },
+			/**
 			 * Whether the user can drag multiple items
 			 * @type {boolean}
  			 */
@@ -263,6 +268,10 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		}
 		if (changedProperties.has('layout') && changedProperties.get('layout') !== undefined && this.layout) {
 			this._updateItemLayouts();
+		}
+		if (changedProperties.has('dragAlwaysShow')) {
+			const items = this.getItems();
+			items.forEach(item => item._dragAlwaysShow = this.dragAlwaysShow);
 		}
 	}
 
