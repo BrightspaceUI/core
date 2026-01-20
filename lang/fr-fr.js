@@ -174,7 +174,7 @@ export default {
 	"components.selection.select-all": "Tout sélectionner",
 	"components.selection.select-all-items":
 		`{count, plural,
-			one {Sélectionner {count} élément}
+			one {Sélectionner {countFormatted} élément}
 			other {Sélectionner {countFormatted} éléments}
 		}`,
 	"components.selection.selected": "{count} sélectionnés",
