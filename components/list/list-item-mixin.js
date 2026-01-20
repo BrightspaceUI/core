@@ -284,20 +284,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			[slot="control"] ~ [slot="control-action"] [slot="content"] {
 				padding-inline-start: 2.2rem; /* width of "control" slot set in generic-layout */
 			}
-			:host([layout="tile"][_selection-when-interacted]) [slot="control"] {
-				opacity: 0;
-				transform: translateY(-10px);
-				transition: opacity 200ms ease-out, transform 0ms ease-out 300ms;
-			}
-			:host([layout="tile"][_selection-when-interacted]) [slot="control"]:hover,
-			:host([layout="tile"][_selection-when-interacted][_focusing]) [slot="control"],
-			:host([layout="tile"][_selection-when-interacted][_force-show-selection]) [slot="control"],
-			:host([layout="tile"][_selection-when-interacted][_hovering-selection]) [slot="control"],
-			:host([layout="tile"][_selection-when-interacted][_hovering]) [slot="control"] {
-				opacity: 1;
-				transform: none;
-				transition: opacity 200ms ease-out, transform 200ms ease-out;
-			}
 
 			[slot="content"] ::slotted([slot="illustration"]),
 			[slot="content"] .d2l-list-item-illustration > * {
@@ -481,6 +467,35 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 			:host([layout="tile"][tile-padding-type="none"]) .d2l-list-item-content {
 				padding: 0;
+			}
+
+			:host([layout="tile"][_selection-when-interacted]) [slot="control"] {
+				opacity: 0;
+				transform: translateY(-10px);
+				transition: opacity 200ms ease-out, transform 0ms ease-out 300ms;
+			}
+			:host([layout="tile"][_selection-when-interacted]) [slot="control"]:hover,
+			:host([layout="tile"][_selection-when-interacted][_focusing]) [slot="control"],
+			:host([layout="tile"][_selection-when-interacted][_force-show-selection]) [slot="control"],
+			:host([layout="tile"][_selection-when-interacted][_hovering-selection]) [slot="control"],
+			:host([layout="tile"][_selection-when-interacted][_hovering]) [slot="control"] {
+				opacity: 1;
+				transform: none;
+				transition: opacity 200ms ease-out, transform 200ms ease-out;
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				:host([layout="tile"][_selection-when-interacted]) [slot="control"] {
+					transform: none;
+					transition: none;
+				}
+				:host([layout="tile"][_selection-when-interacted]) [slot="control"]:hover,
+				:host([layout="tile"][_selection-when-interacted][_focusing]) [slot="control"],
+				:host([layout="tile"][_selection-when-interacted][_force-show-selection]) [slot="control"],
+				:host([layout="tile"][_selection-when-interacted][_hovering-selection]) [slot="control"],
+				:host([layout="tile"][_selection-when-interacted][_hovering]) [slot="control"] {
+					transition: none;
+				}
 			}
 
 			:host([layout="tile"]) [slot="content"] ::slotted([slot="illustration"]),
