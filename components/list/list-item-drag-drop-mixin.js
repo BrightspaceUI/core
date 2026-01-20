@@ -285,7 +285,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			 * @type {string}
 			*/
 			key: { type: String, reflect: true },
-			_dragAlwaysShow: { type: Boolean, attribute: '_drag-always-show', reflect: true },
+			_dragHandleShowAlways: { type: Boolean, attribute: '_drag-handle-show-always', reflect: true },
 			_draggingOver: { type: Boolean },
 			_dropLocation: { type: Number, reflect: true, attribute: '_drop-location' },
 			_focusingDragHandle: { type: Boolean },
@@ -381,7 +381,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		const list = this.getRootList();
 		this._dragMultiple = list?.hasAttribute('drag-multiple');
 		this._dropNestedOnly = list?.hasAttribute('drop-nested-only');
-		this._dragAlwaysShow = list?.dragAlwaysShow;
+		this._dragHandleShowAlways = list?.dragHandleShowAlways;
 	}
 
 	firstUpdated(changedProperties) {
