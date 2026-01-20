@@ -974,7 +974,7 @@ describe('list', () => {
 	describe('draggable', () => {
 		function createDraggableList({ color1, color2, extendSeparators = false, handleOnly = false, selectable = false, addButton = false, dragAlwaysShow = false } = {}) {
 			return html`
-				<d2l-list style="width: 400px;" ?extend-separators="${extendSeparators}" ?add-button="${addButton}" ?drag-always-show="${dragAlwaysShow}">
+				<d2l-list style="width: 400px;" ?extend-separators="${extendSeparators}" ?add-button="${addButton}" ?drag-handle-show-always="${dragAlwaysShow}">
 					<d2l-list-item label="Item 1" color="${ifDefined(color1)}" draggable ?drag-target-handle-only="${handleOnly}" ?selectable="${selectable}" key="1" href="${ifDefined(selectable ? 'http://www.d2l.com' : undefined)}">Item 1</d2l-list-item>
 					<d2l-list-item label="Item 2" color="${ifDefined(color2)}" draggable ?drag-target-handle-only="${handleOnly}" ?selectable="${selectable}" key="2" href="${ifDefined(selectable ? 'http://www.d2l.com' : undefined)}">Item 2</d2l-list-item>
 				</d2l-list>
@@ -990,7 +990,7 @@ describe('list', () => {
 			{ name: 'focus list item', template: createDraggableList(), action: elem => focusElem(elem.querySelector('[key="1"]')), margin: 24 },
 			{ name: 'hover list item', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
 			{ name: 'hover outside control', template: createDraggableList(), action: elem => hoverElem(elem.querySelector('[key="1"]').shadowRoot.querySelector('[slot="outside-control"]')), margin: 24 },
-			{ name: 'drag-always-show', template: createDraggableList({ dragAlwaysShow: true }) },
+			{ name: 'drag-handle-show-always', template: createDraggableList({ dragAlwaysShow: true }) },
 			{ name: 'drag-target-handle-only hover list item', template: createDraggableList({ handleOnly: true }), action: elem => hoverElem(elem.querySelector('[key="1"]')) },
 			{ name: 'drag-target-handle-only hover outside control', template: createDraggableList({ handleOnly: true }), action: elem => hoverElem(elem.querySelector('[key="1"]').shadowRoot.querySelector('[slot="outside-control"]')) },
 			{ name: 'selectable', template: createDraggableList({ selectable: true }) },

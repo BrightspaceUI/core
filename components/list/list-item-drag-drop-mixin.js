@@ -346,7 +346,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				}
 				:host([selected]) d2l-list-item-drag-handle,
 				:host([current]) d2l-list-item-drag-handle,
-				:host([_drag-always-show]) d2l-list-item-drag-handle,
+				:host([_drag-handle-show-always]) d2l-list-item-drag-handle,
 				:host([_focusing]) d2l-list-item-drag-handle,
 				d2l-list-item-drag-handle:hover,
 				d2l-list-item-drag-handle.d2l-hovering,

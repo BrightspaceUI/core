@@ -57,7 +57,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 * Always show drag handle
 			 * @type {boolean}
 			 */
-			dragHandleShowAlways: { type: Boolean, attribute: 'drag-always-show' },
+			dragHandleShowAlways: { type: Boolean, attribute: 'drag-handle-show-always' },
 			/**
 			 * Whether the user can drag multiple items
 			 * @type {boolean}
