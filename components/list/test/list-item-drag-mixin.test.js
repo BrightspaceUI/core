@@ -24,7 +24,7 @@ describe('ListItemDragDropMixin', () => {
 		expect(element.draggable).to.be.false;
 	});
 
-	it.only('Sets _dropNestedOnly and keyboardDragDisabled to true when drop-nested-only is set', async() => {
+	it('Sets _dropNestedOnly and keyboardDragDisabled to true when drop-nested-only is set', async() => {
 		const element = await fixture(`<d2l-list drop-nested-only>
 			<${tag} key="1" draggable></${tag}>
 		</d2l-list>`);
