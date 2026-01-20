@@ -283,6 +283,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				padding-inline-start: 2.2rem; /* width of "control" slot set in generic-layout */
 			}
 
+			.d2l-list-item-spacer {
+				width: var(--d2l-list-item-spacer-width, 0);
+			}
+
 			[slot="content"] ::slotted([slot="illustration"]),
 			[slot="content"] .d2l-list-item-illustration > * {
 				border-radius: 6px;
@@ -974,6 +978,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					${this._renderExpandCollapse()}
 				</div>
 				${this.selectable ? html`<div slot="control">${this._renderCheckbox()}</div>` : nothing}
+				<div slot="spacer" class="d2l-list-item-spacer"></div>
 				${this.selectable || this.expandable ? html`
 				<div slot="control-action"
 					@mouseenter="${this._onMouseEnter}"

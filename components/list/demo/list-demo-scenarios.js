@@ -372,9 +372,9 @@ export const listDemos = {
 				primaryText: 'Wetland Engineering #2',
 				dropNested: true,
 				items: [],
-				hasIcon: true
+				hasIcon: false
 			}],
-			hasIcon: true
+			hasIcon: false
 		}]
 	}],
 };

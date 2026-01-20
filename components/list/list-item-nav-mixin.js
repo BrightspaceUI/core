@@ -31,6 +31,9 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			.d2l-list-item-content ::slotted(*) {
 				width: 100%;
 			}
+			.d2l-list-item-content ::slotted([slot="illustration"]) {
+				width: auto;
+			}
 			:host([current]) [slot="outside-control-container"] {
 				background-color: var(--d2l-color-regolith);
 				border: 3px solid var(--d2l-color-celestine);
