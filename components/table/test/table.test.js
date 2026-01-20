@@ -143,14 +143,19 @@ describe('d2l-table-wrapper', () => {
 		);
 
 		[1, 20, 100].forEach(width => it(`should sync column widths if initial content changes cell widths - ${width}`, async() => {
+
 			const el = await fixture(`<${tagName}></${tagName}>`);
 			const slowEl = el.shadowRoot.querySelector('#slow-content');
 			const row1_1 = el.shadowRoot.querySelector('#one-one');
 			const row1_1InitialWidth = row1_1.getBoundingClientRect().width;
+
 			expect(slowEl.getBoundingClientRect().width).to.equal(0);
 			expect(row1_1InitialWidth).to.be.greaterThan(0);
+
 			slowEl.innerText = Array(width).fill('x').join('');
 			await nextFrame();
+			await nextFrame();
+
 			expect(slowEl.getBoundingClientRect().width).to.be.greaterThan(0);
 			if (width > 1) {
 				expect(row1_1.getBoundingClientRect().width).to.be.greaterThan(row1_1InitialWidth);
@@ -159,6 +164,7 @@ describe('d2l-table-wrapper', () => {
 			}
 			expect(slowEl.parentElement.getBoundingClientRect().width).to.equal(row1_1.getBoundingClientRect().width);
 			expect(el.shadowRoot.querySelector('d2l-table-wrapper')._noScrollWidth).to.be[`${width < 20}`];
+
 		}));
 	});
 
