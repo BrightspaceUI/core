@@ -94,7 +94,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 * Show selection only on hover, focus or if at least one item is selected. Exclusive for the tile layout
 			 * @type {boolean}
 			 */
-			showSelectionDynamically: { type: Boolean, attribute: 'show-selection-dynamically', reflect: true },
+			selectionWhenInteracted: { type: Boolean, attribute: 'selection-when-interacted', reflect: true },
 			_breakpoint: { type: Number, reflect: true },
 			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' }
 		};
@@ -270,7 +270,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		if (changedProperties.has('layout') && changedProperties.get('layout') !== undefined && this.layout) {
 			this._updateItemLayouts();
 		}
-		if (changedProperties.has('showSelectionDynamically')) {
+		if (changedProperties.has('selectionWhenInteracted')) {
 			this._updateItemShowSelection();
 		}
 	}
@@ -509,6 +509,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		});
 
 		this._updateItemLayouts(items);
+		this._updateItemShowSelection(items);
 
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-showing-count-change', {
@@ -540,8 +541,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		if (!items) items = this.getItems();
 		const state = this.getSelectionInfo().state;
 		items.forEach(item => {
-			item._showSelectionDynamically = this.showSelectionDynamically;
-			item._forceShowSelection = this.showSelectionDynamically && (state === SelectionInfo.states.some || state === SelectionInfo.states.all);
+			item._selectionWhenInteracted = this.selectionWhenInteracted;
+			item._forceShowSelection = this.selectionWhenInteracted && (state === SelectionInfo.states.some || state === SelectionInfo.states.all);
 		});
 	}
 

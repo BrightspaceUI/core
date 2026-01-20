@@ -189,7 +189,7 @@ function createItems({ lineBreak, paddingType, width, withColors = false } = {})
 	`;
 }
 
-function createList({ extendSeparators = false, itemsTemplate = createItems(), layout, selectionSingle = false, separators, showSelectionDynamically = false, width } = {}) {
+function createList({ extendSeparators = false, itemsTemplate = createItems(), layout, selectionSingle = false, separators, selectionWhenInteracted = false, width } = {}) {
 	const styles = {};
 	if (width) styles['width'] = width;
 	return html`
@@ -198,7 +198,7 @@ function createList({ extendSeparators = false, itemsTemplate = createItems(), l
 			layout="${ifDefined(layout)}"
 			?selection-single="${selectionSingle}"
 			separators="${ifDefined(separators)}"
-			?show-selection-dynamically="${showSelectionDynamically}"
+			?selection-when-interacted="${selectionWhenInteracted}"
 			style="${styleMap(styles)}">
 			${itemsTemplate}
 		</d2l-list>
@@ -222,7 +222,7 @@ describe('list', () => {
 		{ name: 'tiles item tile-padding-type none icon', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createIconIllustration(), template: createListItemContent(), tilePaddingType: 'none', selectable: true }), layout: listLayouts.tiles, width: '400px' }), target: 'd2l-list-item' },
 		{ name: 'tiles item tile-padding-type none tile-header illustration', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createImgIllustration(), template: createListItemContent(), tileHeader: true, tilePaddingType: 'none', selectable: true }), layout: listLayouts.tiles, width: '400px' }), target: 'd2l-list-item' },
 		{ name: 'tiles item tile-padding-type none tile-header icon', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createIconIllustration(), template: createListItemContent(), tileHeader: true, tilePaddingType: 'none', selectable: true }), layout: listLayouts.tiles, width: '400px' }), target: 'd2l-list-item' },
-		// tile-show-selection-dynamically
+		// tile-selection-when-interacted
 		...[
 			{ name: '' },
 			{ name: 'hover', action: hoverFirstItem },
@@ -234,10 +234,10 @@ describe('list', () => {
 			} },
 		].map(({ name, action }) => ({
 			action,
-			name: `tiles show-selection-dynamically ${name}`,
+			name: `tiles selection-when-interacted ${name}`,
 			template: createList({
 				itemsTemplate: [createItem({ selectable: true, tileHeader: true }), createItem({ selectable: true, illustration: createDivIllustration() })],
-				layout: listLayouts.tiles, showSelectionDynamically: true
+				layout: listLayouts.tiles, selectionWhenInteracted: true
 			})
 		})),
 	].forEach(({ name, template, action, margin, target }) => {

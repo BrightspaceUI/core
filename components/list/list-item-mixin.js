@@ -128,7 +128,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_showAddButton: { type: Boolean, attribute: '_show-add-button', reflect: true },
-			_showSelectionDynamically: { type: Boolean, attribute: '_show-selection-dynamically', reflect: true },
+			_selectionWhenInteracted: { type: Boolean, attribute: '_selection-when-interacted', reflect: true },
 			_siblingHasColor: { state: true },
 		};
 	}
@@ -284,15 +284,19 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			[slot="control"] ~ [slot="control-action"] [slot="content"] {
 				padding-inline-start: 2.2rem; /* width of "control" slot set in generic-layout */
 			}
-			:host([_show-selection-dynamically]) [slot="control"] {
+			:host([layout="tile"][_selection-when-interacted]) [slot="control"] {
 				opacity: 0;
+				transform: translateY(-10px);
+				transition: opacity 200ms ease-out, transform 0ms ease-out 300ms;
 			}
-			:host([_show-selection-dynamically]) [slot="control"]:hover,
-			:host([_show-selection-dynamically][_focusing]) [slot="control"],
-			:host([_show-selection-dynamically][_force-show-selection]) [slot="control"],
-			:host([_show-selection-dynamically][_hovering-selection]) [slot="control"],
-			:host([_show-selection-dynamically][_hovering]) [slot="control"] {
+			:host([layout="tile"][_selection-when-interacted]) [slot="control"]:hover,
+			:host([layout="tile"][_selection-when-interacted][_focusing]) [slot="control"],
+			:host([layout="tile"][_selection-when-interacted][_force-show-selection]) [slot="control"],
+			:host([layout="tile"][_selection-when-interacted][_hovering-selection]) [slot="control"],
+			:host([layout="tile"][_selection-when-interacted][_hovering]) [slot="control"] {
 				opacity: 1;
+				transform: none;
+				transition: opacity 200ms ease-out, transform 200ms ease-out;
 			}
 
 			[slot="content"] ::slotted([slot="illustration"]),
@@ -661,7 +665,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this.isVisibleOnAncestorTarget = true;
 		this.noPrimaryAction = false;
 		this.paddingType = 'normal';
-		this._showSelectionDynamically = false;
+		this._selectionWhenInteracted = false;
 		this.tileHeader = false;
 		this.tilePaddingType = 'normal';
 		this._addButtonTopId = getUniqueId();
