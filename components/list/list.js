@@ -531,14 +531,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		});
 	}
 
-	_updateItemLayouts(items) {
-		if (!items) items = this.getItems();
-		items.forEach(item => item.layout = (this.layout === listLayouts.tiles ? 'tile' : 'normal'));
-	}
-
 	_updateItemDragHandleShowAlways(items) {
 		if (!items) items = this.getItems();
 		items.forEach(item => item._dragHandleShowAlways = this.dragHandleShowAlways);
+	}
+
+	_updateItemLayouts(items) {
+		if (!items) items = this.getItems();
+		items.forEach(item => item.layout = (this.layout === listLayouts.tiles ? 'tile' : 'normal'));
 	}
 }
 
