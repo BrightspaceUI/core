@@ -124,9 +124,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
 			_focusing: { type: Boolean, reflect: true },
 			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
+			_forceShowSelection: { type: Boolean, attribute: '_force-show-selection', reflect: true },
 			_highlight: { type: Boolean, reflect: true },
 			_highlighting: { type: Boolean, reflect: true },
 			_showAddButton: { type: Boolean, attribute: '_show-add-button', reflect: true },
+			_selectionWhenInteracted: { type: Boolean, attribute: '_selection-when-interacted', reflect: true },
 			_siblingHasColor: { state: true },
 		};
 	}
@@ -467,6 +469,35 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				padding: 0;
 			}
 
+			:host([layout="tile"][_selection-when-interacted]) [slot="control"] {
+				opacity: 0;
+				transform: translateY(-10px);
+				transition: opacity 200ms ease-out, transform 0ms ease-out 300ms;
+			}
+			:host([layout="tile"][_selection-when-interacted]) [slot="control"]:hover,
+			:host([layout="tile"][_selection-when-interacted][_focusing]) [slot="control"],
+			:host([layout="tile"][_selection-when-interacted][_force-show-selection]) [slot="control"],
+			:host([layout="tile"][_selection-when-interacted][_hovering-selection]) [slot="control"],
+			:host([layout="tile"][_selection-when-interacted][_hovering]) [slot="control"] {
+				opacity: 1;
+				transform: none;
+				transition: opacity 200ms ease-out, transform 200ms ease-out;
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				:host([layout="tile"][_selection-when-interacted]) [slot="control"] {
+					transform: none;
+					transition: none;
+				}
+				:host([layout="tile"][_selection-when-interacted]) [slot="control"]:hover,
+				:host([layout="tile"][_selection-when-interacted][_focusing]) [slot="control"],
+				:host([layout="tile"][_selection-when-interacted][_force-show-selection]) [slot="control"],
+				:host([layout="tile"][_selection-when-interacted][_hovering-selection]) [slot="control"],
+				:host([layout="tile"][_selection-when-interacted][_hovering]) [slot="control"] {
+					transition: none;
+				}
+			}
+
 			:host([layout="tile"]) [slot="content"] ::slotted([slot="illustration"]),
 			:host([layout="tile"]) .d2l-list-item-illustration > * {
 				border-end-end-radius: 0;
@@ -649,11 +680,13 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		this.isVisibleOnAncestorTarget = true;
 		this.noPrimaryAction = false;
 		this.paddingType = 'normal';
+		this._selectionWhenInteracted = false;
 		this.tileHeader = false;
 		this.tilePaddingType = 'normal';
 		this._addButtonTopId = getUniqueId();
 		this._contentId = getUniqueId();
 		this._displayKeyboardTooltip = false;
+		this._forceShowSelection = false;
 		this._hasColorSlot = false;
 		this._hasListItemContent = true;
 		this._hasNestedList = false;
@@ -955,7 +988,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					</d2l-button-add>
 				</div>
 				` : nothing}
-				<div slot="header"></div>
+				<div slot="header" @mouseenter="${this._onMouseEnter}" @mouseleave="${this._onMouseLeave}"></div>
 				<div slot="outside-control-container" class="${classMap(outsideClasses)}"></div>
 				<div slot="before-content"></div>
 				${this._renderDropTarget()}

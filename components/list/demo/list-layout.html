@@ -243,6 +243,53 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Selectable (show selection when one or more selected or on hover/focus)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-view-switcher label="Layout Options">
+						<d2l-view-switcher-button key="list" text="List"></d2l-view-switcher-button>
+						<d2l-view-switcher-button selected key="tiles" text="Tiles"></d2l-view-switcher-button>
+					</d2l-view-switcher>
+					<d2l-list layout="tiles" selection-when-interacted>
+						<d2l-list-item label="item 1" key="1" selectable tile-header>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/38e839b1-37fa-470c-8830-b189ce4ae134/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Identify categories of physical activities</div>
+								<div slot="secondary">Secondary Information</div>
+								<div slot="supporting-info">Specific Expectation A1.2</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item label="item 2" key="2" selectable>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/e5fd575a-bc14-4a80-89e1-46f349a76178/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Apply a decision-making process to assess risks and make safe decisions in a variety of situations</div>
+								<div slot="secondary">Secondary Information</div>
+								<div slot="supporting-info">Specific Expectation B2.1</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item label="item 3" key="3" selectable>
+							<img slot="illustration" src="https://s.brightspace.com/course-images/images/63b162ab-b582-4bf9-8c1d-1dad04714121/tile-high-density-max-size.jpg"></img>
+							<d2l-list-item-content>
+								<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+								<div slot="secondary">Secondary Information</div>
+								<div slot="supporting-info">Specific Expectation B2.2</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item label="item 4" key="4" selectable tile-header>
+							<d2l-list-item-content>
+								<div>Retain objects of various shapes and sizes in different ways, while moving around others and equipment</div>
+								<div slot="secondary">Secondary Information</div>
+								<div slot="supporting-info">Specific Expectation B2.2</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+					<script data-demo-hide>
+						(demo => window.window.wireupViewSwitcher(demo))(document.currentScript.parentNode);
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
 			<h2>Actions</h2>
 
 			<d2l-demo-snippet>

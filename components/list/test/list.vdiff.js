@@ -15,7 +15,7 @@ import '../list-item.js';
 import '../list-item-button.js';
 import '../list-item-content.js';
 import '../list-item-nav.js';
-import { expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { listLayouts } from '../list.js';
 import { nothing } from 'lit';
@@ -189,7 +189,7 @@ function createItems({ lineBreak, paddingType, width, withColors = false } = {})
 	`;
 }
 
-function createList({ extendSeparators = false, itemsTemplate = createItems(), layout, selectionSingle = false, separators, width } = {}) {
+function createList({ extendSeparators = false, itemsTemplate = createItems(), layout, selectionSingle = false, separators, selectionWhenInteracted = false, width } = {}) {
 	const styles = {};
 	if (width) styles['width'] = width;
 	return html`
@@ -198,6 +198,7 @@ function createList({ extendSeparators = false, itemsTemplate = createItems(), l
 			layout="${ifDefined(layout)}"
 			?selection-single="${selectionSingle}"
 			separators="${ifDefined(separators)}"
+			?selection-when-interacted="${selectionWhenInteracted}"
 			style="${styleMap(styles)}">
 			${itemsTemplate}
 		</d2l-list>
@@ -220,7 +221,25 @@ describe('list', () => {
 		{ name: 'tiles item tile-padding-type none illustration', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createImgIllustration(), template: createListItemContent(), tilePaddingType: 'none', selectable: true }), layout: listLayouts.tiles, width: '400px' }), target: 'd2l-list-item' },
 		{ name: 'tiles item tile-padding-type none icon', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createIconIllustration(), template: createListItemContent(), tilePaddingType: 'none', selectable: true }), layout: listLayouts.tiles, width: '400px' }), target: 'd2l-list-item' },
 		{ name: 'tiles item tile-padding-type none tile-header illustration', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createImgIllustration(), template: createListItemContent(), tileHeader: true, tilePaddingType: 'none', selectable: true }), layout: listLayouts.tiles, width: '400px' }), target: 'd2l-list-item' },
-		{ name: 'tiles item tile-padding-type none tile-header icon', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createIconIllustration(), template: createListItemContent(), tileHeader: true, tilePaddingType: 'none', selectable: true }), layout: listLayouts.tiles, width: '400px' }), target: 'd2l-list-item' }
+		{ name: 'tiles item tile-padding-type none tile-header icon', template: createList({ itemsTemplate: createItem({ actions: createItemActions({ translucent: true }), illustration: createIconIllustration(), template: createListItemContent(), tileHeader: true, tilePaddingType: 'none', selectable: true }), layout: listLayouts.tiles, width: '400px' }), target: 'd2l-list-item' },
+		// tile-selection-when-interacted
+		...[
+			{ name: '' },
+			{ name: 'hover', action: hoverFirstItem },
+			{ name: 'focus', action: focusFirstItem },
+			{ name: 'select one', action: async elem => {
+				const input = elem.querySelector('d2l-list-item').shadowRoot.querySelector('d2l-selection-input').shadowRoot.querySelector('d2l-input-checkbox').shadowRoot.querySelector('input');
+				clickElem(input);
+				await oneEvent(elem, 'd2l-list-selection-changes');
+			} },
+		].map(({ name, action }) => ({
+			action,
+			name: `tiles selection-when-interacted ${name}`,
+			template: createList({
+				itemsTemplate: [createItem({ selectable: true, tileHeader: true }), createItem({ selectable: true, illustration: createDivIllustration() })],
+				layout: listLayouts.tiles, selectionWhenInteracted: true
+			})
+		})),
 	].forEach(({ name, template, action, margin, target }) => {
 
 		it(name, async() => {

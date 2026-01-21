@@ -95,6 +95,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 * @default "all"
 			 */
 			separators: { type: String, reflect: true },
+			/**
+			 * Show selection only on hover, focus or if at least one item is selected. Exclusive for the tile layout
+			 * @type {boolean}
+			 */
+			selectionWhenInteracted: { type: Boolean, attribute: 'selection-when-interacted', reflect: true },
 			_breakpoint: { type: Number, reflect: true },
 			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' }
 		};
@@ -216,6 +221,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		// check if list items are expandable on first render so we adjust sibling spacing appropriately
 		this._handleListItemNestedChange();
 		this.addEventListener('d2l-list-item-selected', e => {
+			this._updateItemShowSelection();
 
 			// batch the changes from select-all and nested lists
 			if (this._listItemChanges.length === 0) {
@@ -268,6 +274,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		}
 		if (changedProperties.has('layout') && changedProperties.get('layout') !== undefined && this.layout) {
 			this._updateItemLayouts();
+		}
+		if (changedProperties.has('selectionWhenInteracted')) {
+			this._updateItemShowSelection();
 		}
 		if (changedProperties.has('dragHandleShowAlways')) {
 			this._updateItemDragHandleShowAlways();
@@ -508,6 +517,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		});
 
 		this._updateItemLayouts(items);
+		this._updateItemShowSelection(items);
 		this._updateItemDragHandleShowAlways(items);
 
 		/** @ignore */
@@ -540,6 +550,15 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		if (!items) items = this.getItems();
 		items.forEach(item => item.layout = (this.layout === listLayouts.tiles ? 'tile' : 'normal'));
 	}
+	_updateItemShowSelection(items) {
+		if (!items) items = this.getItems();
+		const state = this.getSelectionInfo().state;
+		items.forEach(item => {
+			item._selectionWhenInteracted = this.selectionWhenInteracted;
+			item._forceShowSelection = this.selectionWhenInteracted && (state === SelectionInfo.states.some || state === SelectionInfo.states.all);
+		});
+	}
+
 }
 
 customElements.define('d2l-list', List);
