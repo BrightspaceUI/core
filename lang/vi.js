@@ -24,18 +24,29 @@ export default {
 	"components.filter.clearAnnounce": "Xóa các bộ lọc cho: {filterName}",
 	"components.filter.clearDescription": "Xóa các bộ lọc cho: {filterName}",
 	"components.filter.filterCountDescription":
-		`{number,plural,=0{Chưa áp dụng bộ lọc nào.} one{{number} bộ lọc đã áp dụng.} other{{number} bộ lọc đã áp dụng.}}`,
+		`{number, plural,
+			=0 {Chưa áp dụng bộ lọc nào.}
+			other {{number} bộ lọc đã áp dụng.}
+		}`,
 	"components.filter.filters": "Bộ lọc",
 	"components.filter.loading": "Đang tải các bộ lọc",
 	"components.filter.noFilters": "Không có bộ lọc nào tính khả dụng",
 	"components.filter.searchResults":
-		`{number,plural,other{{number} Không có kết quả tìm kiếm nào}}`,
+		`{number, plural,
+			other {{number} Không có kết quả tìm kiếm nào}
+		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Các bộ lọc được chọn xuất hiện đầu tiên.",
 	"components.filter.singleDimensionDescription": "Lọc theo: {filterName}",
 	"components.filter-dimension-set-date-text-value.textDays":
-		`{num,plural,=0{Hôm nay} one{{num} ngày trước} other{{num} ngày trước}}`,
+		`{num, plural,
+			=0 {Hôm nay}
+			other {{num} ngày trước}
+		}`,
 	"components.filter-dimension-set-date-text-value.textHours":
-		`{num,plural,=1{Giờ trước} other{{num} giờ trước}}`,
+		`{num, plural,
+			=1 {Giờ trước}
+			other {{num} giờ trước}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "{num} tháng qua",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, mở rộng để chọn ngày",
 	"components.filter-dimension-set-date-time-range-value.text": "Phạm vi ngày tùy chỉnh",
@@ -46,16 +57,33 @@ export default {
 	"components.form-element.defaultFieldLabel": "Trường",
 	"components.form-element.input.email.typeMismatch": "Email không hợp lệ",
 	"components.form-element.input.number.rangeError":
-		`{minExclusive,select,true{{maxExclusive,select,true{Số phải lớn hơn {min} và nhỏ hơn {max}.} other{Số phải lớn hơn {min} và nhỏ hơn hoặc bằng {max}.}}} other{{maxExclusive,select,true{Số phải lớn hơn hoặc bằng {min} và nhỏ hơn {max}.} other{Số phải lớn hơn hoặc bằng {min} và nhỏ hơn hoặc bằng {max}.}}}}`,
+		`{minExclusive, select,
+			true {{maxExclusive, select,
+				true {Số phải lớn hơn {min} và nhỏ hơn {max}.}
+				other {Số phải lớn hơn {min} và nhỏ hơn hoặc bằng {max}.}
+			}}
+			other {{maxExclusive, select,
+				true {Số phải lớn hơn hoặc bằng {min} và nhỏ hơn {max}.}
+				other {Số phải lớn hơn hoặc bằng {min} và nhỏ hơn hoặc bằng {max}.}
+			}}
+		}`,
 	"components.form-element.input.number.rangeOverflow":
-		`{maxExclusive,select,true{Số phải nhỏ hơn {max}.} other{Số phải nhỏ hơn hoặc bằng {max}.}}`,
+		`{maxExclusive, select,
+			true {Số phải nhỏ hơn {max}.}
+			other {Số phải nhỏ hơn hoặc bằng {max}.}
+		}`,
 	"components.form-element.input.number.rangeUnderflow":
-		`{minExclusive,select,true{Số phải lớn hơn {min}.} other{Số phải lớn hơn hoặc bằng {min}.}}`,
+		`{minExclusive, select,
+			true {Số phải lớn hơn {min}.}
+			other {Số phải lớn hơn hoặc bằng {min}.}
+		}`,
 	"components.form-element.input.text.tooShort": "{label} phải có ít nhất {minlength} ký tự",
 	"components.form-element.input.url.typeMismatch": "URL không hợp lệ",
 	"components.form-element.valueMissing": "{label} là bắt buộc",
 	"components.form-error-summary.errorSummary":
-		`{count,plural,one{Có {count} lỗi được tìm thấy trong thông tin bạn đã gửi} other{Có {count} lỗi được tìm thấy trong thông tin bạn đã gửi}}`,
+		`{count, plural,
+			other {Có {count} lỗi được tìm thấy trong thông tin bạn đã gửi}
+		}`,
 	"components.form-error-summary.text": "Chuyển đổi các chi tiết lỗi",
 	"components.input-color.backgroundColor": "Màu nền",
 	"components.input-color.foregroundColor": "Màu tiền cảnh",
@@ -118,20 +146,28 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Mục Giữ chỗ",
 	"components.overflow-group.moreActions": "Thêm các Tác vụ",
 	"components.pageable.info":
-		`{count,plural,one{{countFormatted} mục} other{{countFormatted} mục}}`,
+		`{count, plural,
+			other {{countFormatted} mục}
+		}`,
 	"components.pageable.info-with-total":
-		`{totalCount,plural,one{{countFormatted} của {totalCountFormatted} mục} other{{countFormatted} của {totalCountFormatted} mục}}`,
+		`{totalCount, plural,
+			other {{countFormatted} của {totalCountFormatted} mục}
+		}`,
 	"components.pager-load-more.action": "Tải thêm",
 	"components.pager-load-more.action-with-page-size": "Tải thêm {count} mục",
 	"components.pager-load-more.status-loading": "Đang tải thêm các mục",
 	"components.scroll-wrapper.scroll-left": "Cuộn trái",
 	"components.scroll-wrapper.scroll-right": "Cuộn phải",
 	"components.selection.action-max-hint":
-		`{count,plural,one{Vô hiệu hóa khi chọn nhiều hơn {countFormatted} mục} other{Vô hiệu hóa khi chọn nhiều hơn {countFormatted} mục}}`,
+		`{count, plural,
+			other {Vô hiệu hóa khi chọn nhiều hơn {countFormatted} mục}
+		}`,
 	"components.selection.action-required-hint": "Chọn một mục để thực hiện tác vụ này",
 	"components.selection.select-all": "Chọn Tất cả",
 	"components.selection.select-all-items":
-		`{count,plural,other{Chọn tất cả {countFormatted} mục}}`,
+		`{count, plural,
+			other {Chọn tất cả {countFormatted} mục}
+		}`,
 	"components.selection.selected": "{count} mục được chọn",
 	"components.selection.selected-plus": "{count}+ mục được chọn",
 	"components.selection-controls.label": "Các thao tác để chọn",
@@ -144,7 +180,25 @@ export default {
 	"components.table-col-sort-button.addSortOrder": "Chọn để thêm thứ tự sắp xếp",
 	"components.table-col-sort-button.changeSortOrder": "Chọn để thay đổi thứ tự sắp xếp",
 	"components.table-col-sort-button.title":
-		`{sourceType,select,dates{{direction,select,desc{Sắp xếp từ mới đến cũ} other{Sắp xếp từ cũ đến mới}}} numbers{{direction,select,desc{Sắp xếp từ cao đến thấp} other{Sắp xếp từ thấp đến cao}}} words{{direction,select,desc{Sắp xếp từ Z đến A} other{Sắp xếp theo thứ tự A đến Z}}} value{Đã sắp xếp {selectedMenuItemText}} other{{direction,select,desc{Sắp xếp giảm dần} other{Sắp xếp tăng dần}}}}`,
+		`{sourceType, select,
+			dates {{direction, select,
+				desc {Sắp xếp từ mới đến cũ}
+				other {Sắp xếp từ cũ đến mới}
+			}}
+			numbers {{direction, select,
+				desc {Sắp xếp từ cao đến thấp}
+				other {Sắp xếp từ thấp đến cao}
+			}}
+			words {{direction, select,
+				desc {Sắp xếp từ Z đến A}
+				other {Sắp xếp theo thứ tự A đến Z}
+			}}
+			value {Đã sắp xếp {selectedMenuItemText}}
+			other {{direction, select,
+				desc {Sắp xếp giảm dần}
+				other {Sắp xếp tăng dần}
+			}}
+		}`,
 	"components.table-controls.label": "Các tác vụ cho bảng",
 	"components.tabs.next": "Cuộn tới",
 	"components.tabs.previous": "Cuộn ngược",
@@ -155,7 +209,10 @@ export default {
 	"components.tag-list.interactive-label": "Danh sách Thẻ, {count} mục",
 	"components.tag-list.num-hidden": "+ {count} mục nữa",
 	"components.tag-list.role-description":
-		`{count,plural,=0{Danh sách thẻ với 0 mục} one{Danh sách thẻ với {count} mục} other{Danh sách thẻ với {count} mục}}`,
+		`{count, plural,
+			=0 {Danh sách thẻ với 0 mục}
+			other {Danh sách thẻ với {count} mục}
+		}`,
 	"components.tag-list.show-less": "Ẩn bớt",
 	"components.tag-list.show-more-description": "Chọn để hiển thị các mục danh sách thẻ ẩn",
 	"components.tag-list-item.role-description": "Thẻ",
@@ -165,7 +222,10 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "Xóa thẻ được chọn",
 	"components.tag-list-item.tooltip-title": "Điều khiển Bàn phím",
 	"components.view-switcher.role-description":
-		`{count,plural,=0{Xem Trình chuyển đổi với 0 mục} one{Xem Trình chuyển đổi với {count} mục} other{Xem Trình chuyển đổi với {count} mục}}`,
+		`{count, plural,
+			=0 {Xem Trình chuyển đổi với 0 mục}
+			other {Xem Trình chuyển đổi với {count} mục}
+		}`,
 	"templates.primary-secondary.divider": "Bộ phân cách bảng phụ",
 	"templates.primary-secondary.secondary-panel": "Bảng phụ"
 };
