@@ -51,7 +51,7 @@ The skeleton loader pattern has a feeling of "an existing structure coming into 
 | Property | Type | Description |
 |--|--|--|
 | `color` | String | Color of the animated bar (default is `--d2l-color-celestine`) |
-| `size` | Number, default: `50` | Height and width (`px`) of the spinner |
+| `size` | Number, default: `48` | Height and width (`px`) of the spinner |
 
 ## Future Improvements
 
