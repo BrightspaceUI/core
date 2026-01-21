@@ -54,6 +54,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 */
 			breakpoints: { type: Array },
 			/**
+			 * Always show drag handle
+			 * @type {boolean}
+			 */
+			dragHandleShowAlways: { type: Boolean, attribute: 'drag-handle-show-always' },
+			/**
 			 * Whether the user can drag multiple items
 			 * @type {boolean}
  			 */
@@ -272,6 +277,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		}
 		if (changedProperties.has('selectionWhenInteracted')) {
 			this._updateItemShowSelection();
+		}
+		if (changedProperties.has('dragHandleShowAlways')) {
+			this._updateItemDragHandleShowAlways();
 		}
 	}
 
@@ -510,6 +518,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 
 		this._updateItemLayouts(items);
 		this._updateItemShowSelection(items);
+		this._updateItemDragHandleShowAlways(items);
 
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-showing-count-change', {
@@ -532,11 +541,15 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		});
 	}
 
+	_updateItemDragHandleShowAlways(items) {
+		if (!items) items = this.getItems();
+		items.forEach(item => item._dragHandleShowAlways = this.dragHandleShowAlways);
+	}
+
 	_updateItemLayouts(items) {
 		if (!items) items = this.getItems();
 		items.forEach(item => item.layout = (this.layout === listLayouts.tiles ? 'tile' : 'normal'));
 	}
-
 	_updateItemShowSelection(items) {
 		if (!items) items = this.getItems();
 		const state = this.getSelectionInfo().state;

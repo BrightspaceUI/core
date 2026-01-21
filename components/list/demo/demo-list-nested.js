@@ -34,6 +34,7 @@ class ListDemoNested extends LitElement {
 			showLoadMore: { type: Boolean, attribute: 'show-load-more' },
 			noPrimaryAction: { type: Boolean, attribute: 'no-primary-action' },
 			disableListGrid: { type: Boolean, attribute: 'disable-list-grid' },
+			dragHandleShowAlways: { type: Boolean, attribute: 'drag-handle-show-always' },
 			_items: { state: true },
 			_loadedItems: { state: true },
 			_remainingItemCount: { state: true },
@@ -176,6 +177,7 @@ class ListDemoNested extends LitElement {
 			<d2l-list
 				?grid="${!this.disableListGrid}"
 				drag-multiple
+				?drag-handle-show-always="${this.dragHandleShowAlways}"
 				?drop-nested-only="${this.dropNestedOnly}"
 				slot="${ifDefined(nested ? 'nested' : undefined)}"
 				item-count="${this._items.length}"
