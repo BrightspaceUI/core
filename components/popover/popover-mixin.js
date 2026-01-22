@@ -579,6 +579,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		else return this.open(opener, (!this._noAutoFocus && applyFocus));
 	}
 
+	#ancestorMutations;
 	#ifrauContextInfo;
 	#mediaQueryList;
 	#handleAncestorMutationBound;
@@ -608,6 +609,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		};
 
 		this.#removeRepositionHandlers();
+		this.#ancestorMutations = new Map();
 
 		window.addEventListener('resize', this.#handleResizeBound);
 
@@ -1087,8 +1089,20 @@ export const PopoverMixin = superclass => class extends superclass {
 
 	#handleAncestorMutation(mutations) {
 		if (!this._opener) return;
-		// ignore mutations that are within this popover
-		const reposition = !!mutations.find(mutation => !isComposedAncestor(this._opener, mutation.target));
+		const reposition = !!mutations.find(mutation => {
+
+			// ignore mutations that are within this popover
+			if (isComposedAncestor(this._opener, mutation.target)) return false;
+
+			// ignore elements that are thrashing (ex. iframe's being resized on a setTimeout)
+			const previousMutation = this.#ancestorMutations?.get(mutation.target);
+			if (previousMutation && previousMutation === mutation.target.style.cssText) return false;
+			if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+				this.#ancestorMutations?.set(mutation.target, mutation.target.style.cssText);
+			}
+
+			return true;
+		});
 		if (reposition) this.#reposition();
 	}
 

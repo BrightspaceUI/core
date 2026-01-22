@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+	<script type="module">
+		import '../../demo/demo-page.js';
+		import '../../menu/menu.js';
+		import '../../menu/menu-item.js';
+		import '../dropdown-more.js';
+		import '../dropdown-menu.js';
+	</script>
+	<style>
+		iframe {
+			border: 0;
+			margin: 0;
+			outline: 0;
+			padding: 0;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body unresolved>
+
+	<d2l-demo-page page-title="d2l-dropdown-more" style="width: 900px;">
+
+		<div style="text-align: right;">
+			<d2l-dropdown-more text="Open!">
+				<d2l-dropdown-menu>
+					<d2l-menu label="Astronomy">
+						<d2l-menu-item text="Introduction"></d2l-menu-item>
+						<d2l-menu-item text="Searching for the Heavens"></d2l-menu-item>
+						<d2l-menu-item text="The Night Sky"></d2l-menu-item>
+						<d2l-menu-item text="The Universe"></d2l-menu-item>
+						<d2l-menu-item text="Constellations"></d2l-menu-item>
+						<d2l-menu-item text="Mapping the Heavens"></d2l-menu-item>
+						<d2l-menu-item text="Reading Star Maps"></d2l-menu-item>
+						<d2l-menu-item text="Telescopes"></d2l-menu-item>
+					</d2l-menu>
+				</d2l-dropdown-menu>
+			</d2l-dropdown-more>
+		</div>
+		<iframe src="dropdown-flicker-inner.html"></iframe>
+
+	</d2l-demo-page>
+
+	<script>
+
+		function doIFrameStuff(iframe) {
+
+			const pollInterval = 50;
+
+			const getSafeHeight = height => {
+				// If the client gives us content with no size restrictions then it will shrink to the minimal size allowed
+				// The minimal allowed size in this case will be 150: http://www.w3.org/TR/CSS2/visudet.html#inline-replaced-height
+				// Major browsers may add 8px of margins to top and bottom depending on what tags client wrap their content in or client might put their own defaults in place too
+				// So we'll use the greater of the configured default height on the frame or 200, which will account for 150 from the auto size and another 50 of tolerance.
+				// For tiny content this may unfortunately force some unnecessary whitespace
+				// But in most cases this will allow us to give clients a reasonable default if they forget to enforce minimums in their content.
+				// The default height can be confgured from within the frame by setting `window.frameElement.dataset.defaultHeight`. Values lower then 200 are not respected.
+				const defaultHeight = Math.max(iframe.dataset.defaultHeight || 0, 200);
+
+				if (!height || height < defaultHeight) {
+					height = defaultHeight;
+				}
+				return `${height}px`;
+			};
+
+			const getMinHeight = (iframe, currentHeight) => {
+				const doc = iframe.contentDocument;
+				const docElem = doc.documentElement;
+				const rootScrollHeight = docElem.scrollHeight;
+				const bodyScrollHeight = doc.body.scrollHeight;
+				const rootHeight = doc.documentElement.getBoundingClientRect().height;
+				const bodyHeight = doc.body.getBoundingClientRect().height;
+				const minHeight = Math.ceil(Math.min(rootScrollHeight, bodyScrollHeight, rootHeight, bodyHeight));
+				return minHeight < currentHeight ? minHeight : currentHeight - 100;
+			};
+
+			const getHeight = iframe => {
+				const doc = iframe.contentDocument;
+				const docElem = doc.documentElement;
+				const rootScrollHeight = docElem.scrollHeight > docElem.clientHeight ? docElem.scrollHeight : 0;
+				const bodyScrollHeight = doc.body.scrollHeight > doc.body.clientHeight ? doc.body.scrollHeight : 0;
+				const rootHeight = doc.documentElement.getBoundingClientRect().height;
+				const bodyHeight = doc.body.getBoundingClientRect().height;
+				return Math.ceil(Math.max(rootScrollHeight, bodyScrollHeight, rootHeight, bodyHeight));
+			};
+
+			const doResize = (height, location) => {
+
+				//console.log('doResize');
+
+				let newHeight, newLocation, stopResizing;
+
+				try {
+					const targetWindow = iframe.contentWindow;
+					const targetDoc = targetWindow.document;
+
+					iframe.style.height = getSafeHeight(getMinHeight(iframe, height));
+					newHeight = getHeight(iframe);
+
+					targetWindow.document.body.style.overflowY = 'hidden';
+					newLocation = targetWindow.location.href;
+
+					iframe.style.height = getSafeHeight(newHeight);
+					iframe.style.overflowY = 'hidden';
+
+					iframe.parentElement.style.minHeight = iframe.style.height; // This ensures that we will not reset scrollbar to the top ( see US52307 )
+
+				} catch (e) {
+					// We were unable to size content so we should go to defaults
+					iframe.style.height = getSafeHeight();
+					iframe.parentElement.style.minHeight = iframe.style.height;
+
+					if (iframe.contentDocument?.body) {
+						iframe.contentDocument.body.style.overflowY = 'auto';
+					}
+				}
+
+				if (newLocation !== location && newHeight !== height) {
+					//Now that content is resized we should snap back to the top when we follow a link to a new page
+					window.parent.scroll(0, 0);
+				}
+
+				if (!stopResizing) {
+					setTimeout(() => doResize(newHeight, newLocation), pollInterval);
+				}
+			};
+
+			var resize = function() {
+				if (iframe.contentDocument) doResize();
+				else {
+					// The content is on another domain. If it includes /d2l/common/iframe/iframe-client.js, it can tell us its height
+					// via message passing: we start listening, and tell the client to send us updates with an iframe-specific id
+					window.addEventListener('message', listenForCrossDomainSizeChanges, false);
+					requestIframeSize();
+				}
+			};
+
+			var requestIframeSize = function () {
+				//iframe.contentWindow.postMessage(JSON.stringify({ handler: 'd2l.iframe.client', id: id }), '*');
+			};
+
+			resize();
+		}
+
+		doIFrameStuff(document.querySelector('iframe'));
+
+	</script>
+
+</body>
+
+</html>
