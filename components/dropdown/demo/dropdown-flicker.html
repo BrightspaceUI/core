@@ -46,9 +46,7 @@
 		<iframe src="dropdown-flicker-inner.html"></iframe>
 
 	</d2l-demo-page>
-
 	<script>
-
 		function doIFrameStuff(iframe) {
 
 			const pollInterval = 50;
@@ -98,7 +96,6 @@
 
 				try {
 					const targetWindow = iframe.contentWindow;
-					const targetDoc = targetWindow.document;
 
 					iframe.style.height = getSafeHeight(getMinHeight(iframe, height));
 					newHeight = getHeight(iframe);
@@ -111,7 +108,7 @@
 
 					iframe.parentElement.style.minHeight = iframe.style.height; // This ensures that we will not reset scrollbar to the top ( see US52307 )
 
-				} catch (e) {
+				} catch {
 					// We were unable to size content so we should go to defaults
 					iframe.style.height = getSafeHeight();
 					iframe.parentElement.style.minHeight = iframe.style.height;
@@ -131,27 +128,15 @@
 				}
 			};
 
-			var resize = function() {
+			const resize = function() {
 				if (iframe.contentDocument) doResize();
-				else {
-					// The content is on another domain. If it includes /d2l/common/iframe/iframe-client.js, it can tell us its height
-					// via message passing: we start listening, and tell the client to send us updates with an iframe-specific id
-					window.addEventListener('message', listenForCrossDomainSizeChanges, false);
-					requestIframeSize();
-				}
-			};
-
-			var requestIframeSize = function () {
-				//iframe.contentWindow.postMessage(JSON.stringify({ handler: 'd2l.iframe.client', id: id }), '*');
 			};
 
 			resize();
 		}
 
 		doIFrameStuff(document.querySelector('iframe'));
-
 	</script>
-
 </body>
 
 </html>
