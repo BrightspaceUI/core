@@ -46,8 +46,7 @@
 	&:focus {
 		border-color: colors.$d2l-color-celestine;
 		border-width: 2px;
-		outline-style: none; /* Safari */
-		outline-width: 0;
+		outline: none;
 		padding: calc(0.4rem - 1px) calc(0.75rem - 1px);
 		padding-right: calc(2px + 0.8rem + 1px + 11px + 16px - 1px);
 	}
