@@ -429,6 +429,169 @@ If your table supports row selection, apply the `selected` attribute to `<tr>` r
 </tr>
 ```
 
+The `d2l-table-wrapper` is a [selection control component](../../components/selection/#selectionmixin), meaning you can use `d2l-input-select` components inside the table alongside a `d2l-selection-select-all` component in the header.
+
+<!-- docs: demo -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/selection/selection-input.js';
+  import '@brightspace-ui/core/components/selection/selection-select-all.js';
+  import { html, LitElement } from 'lit';
+  import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
+
+  class SampleTableWithSelectionInputs extends LitElement {
+
+    static get properties() {
+      return {
+        _data: { state: true }
+      }
+    }
+
+    static get styles() {
+      return tableStyles;
+    }
+
+    constructor() {
+      super();
+      this._data = [{ name: 'John Smith', checked: true }, { name: 'Emily Jones', checked: false }];
+    }
+
+    render() {
+      return html`
+        <d2l-table-wrapper>
+          <table class="d2l-table">
+            <thead>
+              <tr>
+                <th><d2l-selection-select-all></d2l-selection-select-all></th>
+                <th>Learner</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${this._data.map((rowData, i) => html`
+                <tr ?selected="${rowData.checked}">
+                  <td>
+                    <d2l-selection-input key="${i}" label="${rowData.name}" ?selected="${rowData.checked}" @d2l-selection-change="${this._selectRow}"></d2l-selection-input>
+                  </td>
+                  <td>${rowData.name}</td>
+                </tr>
+              `)}
+            </tbody>
+          </table>
+        </d2l-table-wrapper>
+      `;
+    }
+
+    _selectRow(e) {
+      const key = e.target.key;
+      this._data[key].checked = e.target.selected;
+      this.requestUpdate();
+    }
+
+  }
+  customElements.define('d2l-sample-table-with-selection-input', SampleTableWithSelectionInputs);
+</script>
+<d2l-sample-table-with-selection-input></d2l-sample-table-with-selection-input>
+```
+
+```html
+<d2l-table-wrapper>
+  <table class="d2l-table">
+    <thead>
+      <tr>
+        <th><d2l-selection-select-all></d2l-selection-select-all></th>
+        <th>Learner</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr selected>
+          <td><d2l-selection-input key="1" label="John Smith" selected></d2l-selection-input></td>
+          <td>John Smith</td>
+        </tr>
+        <tr>
+          <td><d2l-selection-input key="2" label="Emily Jones"></d2l-selection-input></td>
+          <td>Emily Jones</td>
+        </tr>
+    </tbody>
+  </table>
+</d2l-table-wrapper>
+```
+
+If your table uses single selection, you should add an `aria-label` to the header instead (or use `offscreen` text).
+<!-- docs: demo -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/selection/selection-input.js';
+  import { html, LitElement } from 'lit';
+  import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
+
+  class SampleTableWithSingleSelection extends LitElement {
+
+    static get properties() {
+      return {
+        _data: { state: true }
+      }
+    }
+
+    static get styles() {
+      return tableStyles;
+    }
+
+    constructor() {
+      super();
+      this._data = [{ name: 'John Smith', checked: true }, { name: 'Emily Jones', checked: false }];
+    }
+
+    render() {
+      return html`
+        <d2l-table-wrapper selection-single>
+          <table class="d2l-table">
+            <thead>
+              <tr>
+                <th aria-label="Selection column"></th>
+                <th>Learner</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${this._data.map((rowData, i) => html`
+                <tr ?selected="${rowData.checked}">
+                  <td>
+                    <d2l-selection-input key="${i}" label="${rowData.name}" ?selected="${rowData.checked}" @d2l-selection-change="${this._selectRow}"></d2l-selection-input>
+                  </td>
+                  <td>${rowData.name}</td>
+                </tr>
+              `)}
+            </tbody>
+          </table>
+        </d2l-table-wrapper>
+      `;
+    }
+
+    _selectRow(e) {
+      const key = e.target.key;
+      this._data[key].checked = e.target.selected;
+      this.requestUpdate();
+    }
+
+  }
+  customElements.define('d2l-sample-table-with-single-selection', SampleTableWithSingleSelection);
+</script>
+<d2l-sample-table-with-single-selection></d2l-sample-table-with-single-selection>
+```
+
+```html
+<d2l-table-wrapper selection-single>
+  <table class="d2l-table">
+    <thead>
+      <tr>
+        <th aria-label="Selection column"></th>
+        <th>Learner</th>
+      </tr>
+    </thead>
+    ...
+  </table>
+</d2l-table-wrapper>  
+```
+
 ## Pageable Tables
 
 Load-More paging functionality can be implemented in tables by placing a `d2l-pager-load-more` in `d2l-table-wrapper`'s `pager` slot. The consumer must handle the `d2l-pager-load-more` event by loading more items, updating the pager state, and signalling completion by calling `complete()` on the event detail. Focus will be automatically moved on the first new item once complete. See [Paging](../../components/paging) for more details.
