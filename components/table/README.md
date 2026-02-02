@@ -516,7 +516,7 @@ The `d2l-table-wrapper` is a [selection control component](../../components/sele
 </d2l-table-wrapper>
 ```
 
-If your table uses single selection, you should add an `aria-label` to the header instead (or use `offscreen` text).
+If your table uses single selection, you should add a simple `aria-label` to the header instead.
 <!-- docs: demo -->
 ```html
 <script type="module">
