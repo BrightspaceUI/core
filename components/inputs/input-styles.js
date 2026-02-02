@@ -57,8 +57,7 @@ export const inputStyles = css`
 	.d2l-input-focus {
 		border-color: var(--d2l-color-celestine);
 		border-width: 2px;
-		outline-style: none;
-		outline-width: 0;
+		outline: none;
 		padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
 	}
 	[aria-invalid="true"].d2l-input {
