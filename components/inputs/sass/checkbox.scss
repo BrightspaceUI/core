@@ -29,7 +29,7 @@
 	&:focus {
 		border-color: colors.$d2l-color-celestine;
 		border-width: 2px;
-		outline: 0;
+		outline: none;
 	}
 	&:disabled {
 		opacity: 0.5;
