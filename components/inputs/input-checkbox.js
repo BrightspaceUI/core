@@ -56,7 +56,6 @@ export const checkboxStyles = css`
 		display: inline-block;
 		height: ${cssSizes.inputBoxSize}rem;
 		margin: 0;
-		outline: none;
 		padding: 0;
 		vertical-align: middle;
 		width: ${cssSizes.inputBoxSize}rem;
@@ -82,7 +81,7 @@ export const checkboxStyles = css`
 	:host(.d2l-hovering) input[type="checkbox"]:not(:disabled).d2l-input-checkbox {
 		border-color: var(--d2l-input-checkbox-border-color-hover-focus, var(--d2l-color-celestine));
 		border-width: 2px;
-		outline-width: 0;
+		outline: none;
 	}
 	input[type="checkbox"].d2l-input-checkbox:disabled,
 	input[type="checkbox"].d2l-input-checkbox:where([aria-disabled="true"]) {
