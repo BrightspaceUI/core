@@ -301,7 +301,7 @@ Use the Add button when users need to quickly insert new items at specific locat
 <script type="module">
   import '@brightspace-ui/core/components/button/button-add.js';
 </script>
-<d2l-button-add text="Add New Item"></d2l-button-add>
+<d2l-button-add></d2l-button-add>
 ```
 
 <!-- docs: start hidden content -->
