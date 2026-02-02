@@ -208,7 +208,8 @@ class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 				--d2l-button-add-icon-text-color: var(--d2l-color-galena);
 				align-items: center;
 				display: flex;
-				fill: var(--d2l-button-add-icon-text-color);
+				stroke: var(--d2l-button-add-icon-text-color);
+				stroke-width: 2;
 			}
 			:host([visible-on-ancestor]),
 			:host([text]) {
@@ -241,9 +242,8 @@ class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
 		return html`
 			<svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
 				<g>
-					<circle cx="9" cy="9" r="9" fill="#fff"/>
-					<path fill-rule="evenodd" clip-rule="evenodd" d="M9 2a7 7 0 1 1-7 7 7.008 7.008 0 0 1 7-7Zm0-2a9 9 0 1 0 0 18A9 9 0 0 0 9 0Z"/>
-					<path fill-rule="evenodd" clip-rule="evenodd" d="M10 5a1 1 0 0 0-2 0v3H5a1 1 0 0 0 0 2h3v3a1 1 0 1 0 2 0v-3h3a1 1 0 1 0 0-2h-3V5Z"/>
+					<circle cx="9" cy="9" r="8" fill="#fff" />
+					<path stroke-linecap="round" d="M9 6v6M6 9h6"/>
 				</g>
 			</svg>
 			${this.text ? html`<span class="d2l-label-text">${this.text}</span>` : nothing}
