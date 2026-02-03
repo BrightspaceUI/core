@@ -19,7 +19,7 @@ describe('d2l-progress', () => {
 
 		it('sets default values', () => {
 			expect(element.max).to.equal(100);
-			expect(element.value).to.equal(0);
+			expect(element.value).to.equal(undefined);
 		});
 
 		it('changes value attribute of progress element', async() => {
@@ -57,6 +57,17 @@ describe('d2l-progress', () => {
 			await element.updateComplete;
 			expect(valueNode.textContent).to.equal('66 %');
 			expect(bar.getAttribute('aria-valuetext')).to.equal('66 %');
+		});
+
+		it('undefined value hides text and adds indeterminate bar', async() => {
+			const valueNode = element.shadowRoot.querySelector('.value');
+			element.value = undefined;
+			element.max = 3;
+			await element.updateComplete;
+			expect(valueNode.hidden).to.be.true;
+			expect(bar.getAttribute('aria-valuetext')).to.be.null;
+			const indeterminateBar = element.shadowRoot.querySelector('.indeterminate-bar');
+			expect(indeterminateBar).to.exist;
 		});
 	});
 
