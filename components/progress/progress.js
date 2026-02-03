@@ -86,9 +86,9 @@ class Progress extends LocalizeCoreElement(LitElement) {
 				}
 				.value {
 					grid-area: value;
+					margin-inline-start: 0.4rem;
 					text-align: end;
 					width: 2.42rem;
-					margin-inline-start: 0.4rem;
 				}
 
 				:host([size="small"]) {
