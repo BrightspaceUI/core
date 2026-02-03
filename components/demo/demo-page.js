@@ -31,7 +31,7 @@ class DemoPage extends LitElement {
 	static get styles() {
 		return [ css`
 			:host {
-				background-color: var(--d2l-color-sylvite);
+				background-color: var(--d2l-color-background-base);
 				display: block;
 				padding: 30px;
 			}

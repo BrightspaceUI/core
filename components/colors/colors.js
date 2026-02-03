@@ -1,3 +1,7 @@
+import { resolveTheme } from '../../helpers/theme.js';
+
+resolveTheme();
+
 if (globalThis.document !== undefined && !globalThis.document.head.querySelector('#d2l-colors')) {
 	const style = globalThis.document.createElement('style');
 	style.id = 'd2l-colors';
@@ -90,6 +94,21 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 			--d2l-color-feedback-success: var(--d2l-color-olivine);
 			--d2l-color-feedback-action: var(--d2l-color-celestine);
 		}
+
+		/* semantic palette */
+		html {
+			--d2l-color-background-base: var(--d2l-color-sylvite);
+			--d2l-color-background-default: #ffffff; /* default */
+
+			--d2l-color-border-medium: var(--d2l-color-mica); /* dropdowns */
+		}
+		html[data-theme="dark"] {
+			--d2l-color-background-base: #000000;
+			--d2l-color-background-default: #18191a; /* default (new color) */
+
+			--d2l-color-border-medium: var(--d2l-color-tungsten); /* dropdowns */
+		}
+
 	`;
 	globalThis.document.head.appendChild(style);
 }

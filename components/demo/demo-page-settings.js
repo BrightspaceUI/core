@@ -1,4 +1,5 @@
 import './demo-flags.js';
+import './demo-theme.js';
 import '../button/button.js';
 import '../inputs/input-checkbox-group.js';
 import '../inputs/input-checkbox.js';
