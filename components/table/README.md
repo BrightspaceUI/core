@@ -366,70 +366,11 @@ When a single column is responsible for sorting in multiple facets (e.g., first 
 
 ## Selection
 
-If your table supports row selection, apply the `selected` attribute to `<tr>` row elements which are actively selected.
+Table rows can support both single- and multi-select by leveraging [Selection](../../components/selection/) components.
 
-<!-- docs: demo -->
-```html
-<script type="module">
-  import { html, LitElement } from 'lit';
-  import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
+To enable selection, add `d2l-selection-input` components in the selection column, and a `d2l-selection-select-all` component in the the column's header cell. Apply the `selected` attribute to `<tr>` row elements which are actively selected.
 
-  class MySelectableTableElem extends LitElement {
-
-    static get properties() {
-      return {
-        _checked: { type: Boolean }
-      }
-    }
-
-    static get styles() {
-      return tableStyles;
-    }
-
-    constructor() {
-      super();
-      this._checked = true;
-    }
-
-    render() {
-      return html`
-        <d2l-table-wrapper>
-          <table class="d2l-table">
-            <thead>
-              <tr>
-                <th>Column A</th>
-                <th>Column B</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ?selected="${this._checked}">
-                <td><input type="checkbox" ?checked="${this._checked}" @click="${this._selectRow}"></td>
-                <td>this row is ${!this._checked ? 'not' : ''} selected</td>
-              </tr>
-            </tbody>
-          </table>
-        </d2l-table-wrapper>
-      `;
-    }
-
-    _selectRow() {
-      this._checked = !this._checked;
-    }
-
-  }
-  customElements.define('d2l-my-selectable-table-elem', MySelectableTableElem);
-</script>
-<d2l-my-selectable-table-elem></d2l-my-selectable-table-elem>
-```
-
-```html
-<tr selected>
-  <td><input type="checkbox" checked></td>
-  <td>this row is selected</td>
-</tr>
-```
-
-The `d2l-table-wrapper` is a [selection control component](../../components/selection/#selectionmixin), meaning you can use `d2l-input-select` components inside the table alongside a `d2l-selection-select-all` component in the header.
+**Important:** Single selection tables won't need the Select All component in the header, so be sure to add an `aria-label` for screen reader users.
 
 <!-- docs: demo -->
 ```html
@@ -443,6 +384,7 @@ The `d2l-table-wrapper` is a [selection control component](../../components/sele
 
     static get properties() {
       return {
+        selectionSingle: { type: Boolean, attribute: 'selection-single' },
         _data: { state: true }
       }
     }
@@ -453,16 +395,17 @@ The `d2l-table-wrapper` is a [selection control component](../../components/sele
 
     constructor() {
       super();
+      this.selectionSingle = false;
       this._data = [{ name: 'John Smith', checked: true }, { name: 'Emily Jones', checked: false }];
     }
 
     render() {
       return html`
-        <d2l-table-wrapper>
+        <d2l-table-wrapper ?selection-single="${this.selectionSingle}">
           <table class="d2l-table">
             <thead>
               <tr>
-                <th><d2l-selection-select-all></d2l-selection-select-all></th>
+                ${!this.selectionSingle ? html`<th><d2l-selection-select-all></d2l-selection-select-all></th>` : html`<th aria-label="Selection column"></th>`}
                 <th>Learner</th>
               </tr>
             </thead>
@@ -488,9 +431,10 @@ The `d2l-table-wrapper` is a [selection control component](../../components/sele
     }
 
   }
-  customElements.define('d2l-sample-table-with-selection-input', SampleTableWithSelectionInputs);
+  customElements.define('d2l-sample-table-with-selection-inputs', SampleTableWithSelectionInputs);
 </script>
-<d2l-sample-table-with-selection-input></d2l-sample-table-with-selection-input>
+<d2l-sample-table-with-selection-inputs></d2l-sample-table-with-selection-inputs>
+<d2l-sample-table-with-selection-inputs selection-single></d2l-sample-table-with-selection-inputs>
 ```
 
 ```html
@@ -514,68 +458,6 @@ The `d2l-table-wrapper` is a [selection control component](../../components/sele
     </tbody>
   </table>
 </d2l-table-wrapper>
-```
-
-If your table uses single selection, you should add a simple `aria-label` to the header instead.
-<!-- docs: demo -->
-```html
-<script type="module">
-  import '@brightspace-ui/core/components/selection/selection-input.js';
-  import { html, LitElement } from 'lit';
-  import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
-
-  class SampleTableWithSingleSelection extends LitElement {
-
-    static get properties() {
-      return {
-        _data: { state: true }
-      }
-    }
-
-    static get styles() {
-      return tableStyles;
-    }
-
-    constructor() {
-      super();
-      this._data = [{ name: 'John Smith', checked: true }, { name: 'Emily Jones', checked: false }];
-    }
-
-    render() {
-      return html`
-        <d2l-table-wrapper selection-single>
-          <table class="d2l-table">
-            <thead>
-              <tr>
-                <th aria-label="Selection column"></th>
-                <th>Learner</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${this._data.map((rowData, i) => html`
-                <tr ?selected="${rowData.checked}">
-                  <td>
-                    <d2l-selection-input key="${i}" label="${rowData.name}" ?selected="${rowData.checked}" @d2l-selection-change="${this._selectRow}"></d2l-selection-input>
-                  </td>
-                  <td>${rowData.name}</td>
-                </tr>
-              `)}
-            </tbody>
-          </table>
-        </d2l-table-wrapper>
-      `;
-    }
-
-    _selectRow(e) {
-      const key = e.target.key;
-      this._data[key].checked = e.target.selected;
-      this.requestUpdate();
-    }
-
-  }
-  customElements.define('d2l-sample-table-with-single-selection', SampleTableWithSingleSelection);
-</script>
-<d2l-sample-table-with-single-selection></d2l-sample-table-with-single-selection>
 ```
 
 ```html
