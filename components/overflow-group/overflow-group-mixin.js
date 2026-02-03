@@ -133,7 +133,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 		const containerStyles = {
 			flexWrap: this._wrapping ? 'wrap' : 'nowrap',
-			minHeight: this.autoShow ? 'none' : (this._itemHeight ? `${this._itemHeight}px` : 'auto'),
+			minHeight: this.autoShow ? 'auto' : (this._itemHeight ? `${this._itemHeight}px` : 'auto'),
 			maxHeight: this.autoShow ? 'none' : (this._itemHeight ? `${this._itemHeight}px` : 'auto')
 		};
 
