@@ -9,6 +9,7 @@ const themes = Object.freeze({
 export function setPreferredTheme(theme) {
 	if (!themes[theme]) return;
 	document.documentElement.dataset.preferredTheme = theme;
+	resolveTheme();
 }
 
 function setTheme(theme) {
@@ -19,7 +20,7 @@ function handleMediaQueryChange(e) {
 	setTheme(e.matches ? themes.dark : themes.light);
 }
 
-export function resolveTheme() {
+function resolveTheme() {
 	const preferredTheme = document.documentElement.dataset.preferredTheme ?? themes.light;
 	if (preferredTheme === themes.os) {
 		if (!mediaQuery) {
@@ -35,3 +36,6 @@ export function resolveTheme() {
 		setTheme(preferredTheme);
 	}
 }
+
+resolveTheme();
+resolveTheme();

@@ -1,6 +1,4 @@
-import { resolveTheme } from '../../helpers/theme.js';
-
-resolveTheme();
+import '../../helpers/theme.js';
 
 if (globalThis.document !== undefined && !globalThis.document.head.querySelector('#d2l-colors')) {
 	const style = globalThis.document.createElement('style');
