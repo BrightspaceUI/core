@@ -1,8 +1,18 @@
-import '../../helpers/theme.js';
-
 if (globalThis.document !== undefined && !globalThis.document.head.querySelector('#d2l-colors')) {
 	const style = globalThis.document.createElement('style');
 	style.id = 'd2l-colors';
+
+	const lightSemanticPalette = `
+			--d2l-color-background-base: var(--d2l-color-sylvite);
+			--d2l-color-background-default: #ffffff;
+			--d2l-color-border-medium: var(--d2l-color-mica);
+	`;
+	const darkSemanticPalette = `
+			--d2l-color-background-base: #000000;
+			--d2l-color-background-default: #18191a; /* new color */
+			--d2l-color-border-medium: var(--d2l-color-tungsten);
+	`;
+
 	style.textContent = `
 		html {
 			/* basic grays (lightest to darkest) */
@@ -95,18 +105,16 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 
 		/* semantic palette */
 		html {
-			--d2l-color-background-base: var(--d2l-color-sylvite);
-			--d2l-color-background-default: #ffffff;
-
-			--d2l-color-border-medium: var(--d2l-color-mica);
+			${lightSemanticPalette}
 		}
 		html[data-theme="dark"] {
-			--d2l-color-background-base: #000000;
-			--d2l-color-background-default: #18191a; /* new color */
-
-			--d2l-color-border-medium: var(--d2l-color-tungsten);
+			${darkSemanticPalette}
 		}
-
+		@media (prefers-color-scheme: dark) {
+			html[data-theme="os"] {
+				${darkSemanticPalette}
+			}
+		}
 	`;
 	globalThis.document.head.appendChild(style);
 }

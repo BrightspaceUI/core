@@ -1,4 +1,7 @@
-import { setPreferredTheme } from '../../helpers/theme.js';
-
 const urlParams = new URLSearchParams(window.location.search);
-setPreferredTheme(urlParams.get('preferred-theme'));
+const theme = urlParams.get('theme');
+if (theme) {
+	document.documentElement.dataset.theme = theme;
+} else {
+	delete document.documentElement.dataset.theme;
+}
