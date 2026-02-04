@@ -2,12 +2,12 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 	const style = globalThis.document.createElement('style');
 	style.id = 'd2l-colors';
 
-	const lightSemanticPalette = `
+	const lightPalette = `
 			--d2l-color-background-base: var(--d2l-color-sylvite);
 			--d2l-color-background-default: #ffffff;
 			--d2l-color-border-medium: var(--d2l-color-mica);
 	`;
-	const darkSemanticPalette = `
+	const darkPalette = `
 			--d2l-color-background-base: #000000;
 			--d2l-color-background-default: #18191a; /* new color */
 			--d2l-color-border-medium: var(--d2l-color-tungsten);
@@ -105,14 +105,14 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 
 		/* semantic palette */
 		html {
-			${lightSemanticPalette}
+			${lightPalette}
 		}
 		html[data-theme="dark"] {
-			${darkSemanticPalette}
+			${darkPalette}
 		}
 		@media (prefers-color-scheme: dark) {
 			html[data-theme="os"] {
-				${darkSemanticPalette}
+				${darkPalette}
 			}
 		}
 	`;
