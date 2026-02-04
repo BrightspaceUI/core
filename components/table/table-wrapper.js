@@ -254,6 +254,7 @@ export const tableStyles = css`
 	[data-popover-count] {
 		z-index: 6 !important; /* if opened above, we want to stack on top of sticky table-controls */
 	}
+
 `;
 
 const SELECTORS = {
@@ -313,6 +314,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				reflect: true,
 				type: Boolean,
 			},
+			loading: {
+				reflect: true,
+				type: Boolean
+			},
 		};
 	}
 
@@ -363,6 +368,104 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			slot[name="pager"]::slotted(*) {
 				margin-top: 12px;
 			}
+
+			.loading-spinner-table-overlap {
+				left: 50%;
+				transform: translate(-50%, 0);
+				top: 100px;
+				position: absolute;
+				z-index: 999;
+				display: none;
+				opacity: 0;
+			}
+
+			.loading-spinner-table-overlap.fade-in {
+				display: block;
+				animation-name: loader-fade-in;
+				animation-duration: 0.8s;
+				animation-timing-function: ease-in;
+				animation-fill-mode: forwards;
+			}
+
+			.loading-spinner-table-overlap.fade-out {
+				animation-name: loading-fade-out;
+				animation-duration: 0.8s;
+				animation-timing-function: ease-out;
+				animation-fill-mode: forwards;
+			}
+
+			.skrim {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				z-index: 998;
+				background-color: var(--d2l-color-regolith);
+				display: none;
+				opacity: 0;
+			}
+
+			.skrim.fade-in {
+				display: block;
+				animation-name: skrim-fade-in;
+				animation-duration: 0.8s;
+				animation-timing-function: ease-in;
+				animation-fill-mode: forwards;
+			}
+
+			.skrim.fade-out {
+				animation-name: skrim-fade-out;
+				animation-duration: 0.8s;
+				animation-timing-function: ease-out;
+				animation-fill-mode: forwards;
+			}
+
+			@keyframes skrim-fade-in {
+				0% {
+					opacity: 0;
+					display: none;
+				}
+
+				100% {
+					opacity: 0.7;
+					display: block;
+				}
+			}
+
+			@keyframes skrim-fade-out {
+				0% {
+					opacity: 0.7;
+					display: block;
+				}
+
+				100% {
+					opacity: 0;
+					display: none;
+				}
+			}
+
+			@keyframes loader-fade-in {
+				0% {
+					opacity: 0;
+					display: none;
+				}
+
+				100% {
+					opacity: 1;
+					display: block;
+				}
+			}
+
+			@keyframes loader-fade-out {
+				0% {
+					opacity: 1;
+					display: block;
+				}
+
+				100% {
+					opacity: 0;
+					display: none;
+				}
+			}
 		`;
 	}
 
@@ -382,6 +485,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
+		this._loading = false;
 	}
 
 	connectedCallback() {
@@ -410,7 +514,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	render() {
-		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
+		const slot = html`
+			${this._renderLoadingState()}
+			<slot @slotchange="${this._handleSlotChange}"></slot>
+		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
@@ -429,6 +536,22 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		if (changedProperties.has('stickyHeaders')) {
 			if (this.stickyHeaders) {
 				document.body.classList.add('d2l-table-sticky-headers');
+			}
+		}
+
+		if (changedProperties.has('loading')) {
+			if (this.loading) {
+				this.shadowRoot.querySelector('.skrim').classList.add('fade-in');
+				this.shadowRoot.querySelector('.loading-spinner-table-overlap').classList.add('fade-in');
+
+				this.shadowRoot.querySelector('.skrim').classList.remove('fade-out');
+				this.shadowRoot.querySelector('.loading-spinner-table-overlap').classList.remove('fade-out');
+			} else if (changedProperties.get('loading')) {
+				this.shadowRoot.querySelector('.skrim').classList.add('fade-out');
+				this.shadowRoot.querySelector('.loading-spinner-table-overlap').classList.add('fade-out');
+
+				this.shadowRoot.querySelector('.skrim').classList.remove('fade-in');
+				this.shadowRoot.querySelector('.loading-spinner-table-overlap').classList.remove('fade-in');
 			}
 		}
 	}
@@ -626,6 +749,13 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			this[observerName] = new MutationObserver(callback);
 		}
 		if (target) this[observerName].observe(target, options);
+	}
+
+	_renderLoadingState() {
+		return html`
+			<d2l-loading-spinner class="loading-spinner-table-overlap" size="100"></d2l-loading-spinner>
+			<div class="skrim"></div>
+		`;
 	}
 
 	_syncColumnWidths() {
