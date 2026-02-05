@@ -73,5 +73,8 @@
     "lit": "^3",
     "prismjs": "^1",
     "resize-observer-polyfill": "^1"
+  },
+  "overrides": {
+    "playwright": "1.57.0"
   }
 }
