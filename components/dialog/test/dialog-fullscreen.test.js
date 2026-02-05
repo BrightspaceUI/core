@@ -1,5 +1,5 @@
 import '../dialog-fullscreen.js';
-import { aTimeout, expect, fixture, html, runConstructor, waitUntil } from '@brightspace-ui/testing';
+import { expect, fixture, html, runConstructor, waitUntil } from '@brightspace-ui/testing';
 import { createMessage } from '../../../mixins/property-required/property-required-mixin.js';
 
 describe('d2l-dialog-fullscreen', () => {
@@ -27,7 +27,6 @@ describe('d2l-dialog-fullscreen', () => {
 		it('should set focusableContentElemPresent to true when there is a focusable element in the dialog added late', async() => {
 			const el = await fixture(html`<d2l-dialog-fullscreen opened></d2l-dialog-fullscreen>`);
 			expect(el.focusableContentElemPresent).to.be.false;
-			await aTimeout(300);
 			el.appendChild(document.createElement('button'));
 			await waitUntil(() => el.focusableContentElemPresent, 'focusableContentElemPresent never became true');
 		});
