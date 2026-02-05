@@ -35,6 +35,10 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				attribute: 'auto-show',
 			},
 			/**
+			 * @ignore
+			 */
+			itemGap: { state: true },
+			/**
 			 * minimum amount of slotted items to show
 			 * @type {number}
 			 */
