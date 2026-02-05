@@ -12,13 +12,12 @@ const tag = defineCE(
 		constructor() {
 			super();
 			this.hasGap = false;
-			this.itemGap = 0;
 		}
 
 		willUpdate(changedProperties) {
 			super.willUpdate(changedProperties);
 			if (changedProperties.has('hasGap')) {
-				this.itemGap = this.hasGap ? 10 : 0;
+				this._itemGap = this.hasGap ? 10 : 0;
 			}
 		}
 
