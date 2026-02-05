@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../../demo/demo-page.js';
+			import '../../../button/button.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-button id="open">Open Dialog from Inner Frame</d2l-button>
+		<d2l-button>Other</d2l-button>
+		<d2l-button>Other</d2l-button>
+		<d2l-button>Other</d2l-button>
+		<script>
+			requestAnimationFrame((() => {
+				document.querySelector('#open').addEventListener('click', () => {
+					parent.OpenFullscreenDialog();
+				});
+			}));
+		</script>
+	</body>
+</html>
