@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
-import './table-loading-backdrop.js';
+import '../backdrop/backdrop-loading.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { cssSizes } from '../inputs/input-checkbox.js';
 import { getComposedParent } from '../../helpers/dom.js';
@@ -388,7 +388,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
-		this._loading = false;
+		this.loading = false;
 	}
 
 	connectedCallback() {
@@ -418,8 +418,8 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 	render() {
 		const slot = html`
-			<d2l-table-loading-backdrop ?shown=${this.loading}></d2l-table-loading-backdrop>
 			<slot @slotchange="${this._handleSlotChange}"></slot>
+			<d2l-backdrop-loading ?shown=${this.loading}></d2l-backdrop-loading>
 		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
 		return html`

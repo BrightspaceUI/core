@@ -1,20 +1,25 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
+import { getOffsetParent } from '../../helpers/dom.js';
 
 const BACKDROP_DELAY_MS = 800;
 const BACKDROP_FADE_IN_DURATION_MS = 500;
-const BACKDROP_FADE_OUT_DURATION_MS = 500;
+const BACKDROP_FADE_OUT_DURATION_MS = 200;
 const SPINNER_DELAY_MS = BACKDROP_DELAY_MS + BACKDROP_FADE_IN_DURATION_MS;
 const SPINNER_FADE_IN_DURATION_MS = 500;
-const SPINNER_FADE_OUT_DURATION_MS = 500;
+const SPINNER_FADE_OUT_DURATION_MS = 200;
 
 /**
- * A component for displaying a semi-transparent backdrop and a loading spinner when a table enters a loading state.
+ * A component for displaying a semi-transparent backdrop and a loading spinner over the containing element
  */
-class TableLoadingBackdrop extends LitElement {
+class LoadingBackdrop extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * Used to control whether the loading backdrop is shown
+			 * @type {boolean}
+			 */
 			shown: { type: Boolean },
 			_state: { type: String, reflect: true },
 		};
@@ -33,16 +38,15 @@ class TableLoadingBackdrop extends LitElement {
 			}
 
 			:host {
-				z-index: 997
+				z-index: 999;
+				top: 0px;
 			}
 
 			.backdrop {
-				z-index: 998;
 				background-color: var(--d2l-color-regolith);
 			}
 
 			d2l-loading-spinner {
-				z-index: 999;
 				top: 100px;
 			}
 
@@ -58,20 +62,20 @@ class TableLoadingBackdrop extends LitElement {
 
 			d2l-loading-spinner[_state="showing"] {
 				opacity: 1;
-				transition: opacity ${SPINNER_FADE_IN_DURATION_MS}ms ease-in-out ${SPINNER_DELAY_MS}ms;
+				transition: opacity ${SPINNER_FADE_IN_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
 			}
 
 			.backdrop[_state="showing"] {
 				opacity: 0.7;
-				transition: opacity ${BACKDROP_FADE_IN_DURATION_MS}ms ease-in-out ${BACKDROP_DELAY_MS}ms;
+				transition: opacity ${BACKDROP_FADE_IN_DURATION_MS}ms ease-in ${BACKDROP_DELAY_MS}ms;
 			}
 
 			d2l-loading-spinner[_state="hiding"] {
-				transition: opacity ${SPINNER_FADE_OUT_DURATION_MS}ms ease-in-out;
+				transition: opacity ${SPINNER_FADE_OUT_DURATION_MS}ms ease-out;
 			}
 
 			.backdrop[_state="hiding"] {
-				transition: opacity ${BACKDROP_FADE_OUT_DURATION_MS}ms ease-in-out;
+				transition: opacity ${BACKDROP_FADE_OUT_DURATION_MS}ms ease-out;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
@@ -88,24 +92,24 @@ class TableLoadingBackdrop extends LitElement {
 
 	render() {
 		return html`
-			<d2l-loading-spinner _state=${this._state} size="100"></d2l-loading-spinner>
 			<div class="backdrop" _state=${this._state}></div>
+			<d2l-loading-spinner _state=${this._state}></d2l-loading-spinner>
 		`;
 	}
 
 	willUpdate(changedProperties) {
-		if (changedProperties.get('shown') !== undefined) {
+		if (changedProperties.has('shown')) {
 			if (this.shown) {
-				this._state = 'showing';
-			} else {
-				this._state = 'hiding';
-
-				this._hideAfterFading();
+				this._show();
+			} else if (changedProperties.get('shown') !== undefined) {
+				this._fadeThenHide();
 			}
 		}
 	}
 
-	_hideAfterFading() {
+	_fadeThenHide() {
+		this._state = 'hiding';
+
 		const backdrop = this.shadowRoot.querySelector('.backdrop');
 		const loadingSpinner = this.shadowRoot.querySelector('d2l-loading-spinner');
 
@@ -118,11 +122,30 @@ class TableLoadingBackdrop extends LitElement {
 				loadingSpinner.addEventListener('transitionend', resolve, { once: true });
 				loadingSpinner.addEventListener('transitioncancel', resolve, { once: true });
 			})
-		]).then(() => {
-			this._state = null;
-		});
+		]).then(() => { this._hide(); });
+	}
+
+	_hide() {
+		this._state = null;
+
+		const containingBlock = getOffsetParent(this);
+
+		containingBlock.setAttribute('aria-busy', 'false');
+
+		if (!this._initiallyIntert) containingBlock.removeAttribute('inert');
+	}
+
+	_show() {
+		this._state = 'showing';
+
+		const containingBlock = getOffsetParent(this);
+
+		containingBlock.setAttribute('aria-busy', 'true');
+
+		this._initiallyIntert = containingBlock.getAttribute('inert') !== null;
+		if (!this._initiallyIntert) containingBlock.setAttribute('inert', '');
 	}
 
 }
 
-customElements.define('d2l-table-loading-backdrop', TableLoadingBackdrop);
+customElements.define('d2l-backdrop-loading', LoadingBackdrop);
