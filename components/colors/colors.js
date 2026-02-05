@@ -1,6 +1,18 @@
 if (globalThis.document !== undefined && !globalThis.document.head.querySelector('#d2l-colors')) {
 	const style = globalThis.document.createElement('style');
 	style.id = 'd2l-colors';
+
+	const lightPalette = `
+			--d2l-color-background-base: var(--d2l-color-sylvite);
+			--d2l-color-background-default: #ffffff;
+			--d2l-color-border-medium: var(--d2l-color-mica);
+	`;
+	const darkPalette = `
+			--d2l-color-background-base: #000000;
+			--d2l-color-background-default: #18191a; /* new color */
+			--d2l-color-border-medium: var(--d2l-color-tungsten);
+	`;
+
 	style.textContent = `
 		html {
 			/* basic grays (lightest to darkest) */
@@ -89,6 +101,19 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 			--d2l-color-feedback-warning: var(--d2l-color-carnelian);
 			--d2l-color-feedback-success: var(--d2l-color-olivine);
 			--d2l-color-feedback-action: var(--d2l-color-celestine);
+		}
+
+		/* semantic palette */
+		html {
+			${lightPalette}
+		}
+		html[data-theme="dark"] {
+			${darkPalette}
+		}
+		@media (prefers-color-scheme: dark) {
+			html[data-theme="os"] {
+				${darkPalette}
+			}
 		}
 	`;
 	globalThis.document.head.appendChild(style);
