@@ -1,6 +1,5 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
-import '../../helpers/queueMicrotask.js';
 import './tab-internal.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { cssEscape, findComposedAncestor, getOffsetParent, isVisible } from '../../helpers/dom.js';
