@@ -32,6 +32,13 @@ class Backdrop extends LitElement {
 			noAnimateHide: { type: Boolean, attribute: 'no-animate-hide' },
 
 			/**
+			 * Determines whether the backdrop applies to the entire viewport or just the containing element.
+			 * When disabled, body scrolling will be disabled when the backdrop is shown.
+			 * @type {boolean}
+			 */
+			contained: { type: Boolean, attribute: 'contained' },
+
+			/**
 			 * Used to control whether the backdrop is shown
 			 * @type {boolean}
 			 */
@@ -52,6 +59,9 @@ class Backdrop extends LitElement {
 				transition: opacity ${TRANSITION_DURATION}ms ease-in;
 				width: 0;
 				z-index: 999;
+			}
+			:host([contained]) {
+				position: absolute
 			}
 			:host([slow-transition]) {
 				transition: opacity 1200ms ease-in;
@@ -80,6 +90,7 @@ class Backdrop extends LitElement {
 		super();
 		this.shown = false;
 		this.noAnimateHide = false;
+		this.contained = false;
 		this._state = null;
 	}
 
@@ -102,14 +113,13 @@ class Backdrop extends LitElement {
 		if (!changedProperties.has('shown')) return;
 
 		if (this.shown) {
-
 			if (this._state === null) {
-				preventBodyScroll(this);
+				if (!this.contained) preventBodyScroll(this);
 				const target = this.parentNode.querySelector(`#${cssEscape(this.forTarget)}`);
 				// aria-hidden elements cannot have focus, so wait for focus to be within target
 				waitForFocusWithinTarget(target, Date.now() + 200).then(() => {
 					if (!this.shown || this._state !== 'showing') return;
-					this._hiddenElements = hideAccessible(target);
+					this._hiddenElements = hideAccessible(target, { contained: this.contained });
 				});
 			}
 			this._state = 'showing';
@@ -118,7 +128,7 @@ class Backdrop extends LitElement {
 
 			const hide = () => {
 				if (!this.shown) {
-					allowBodyScroll(this);
+					if (!this.contained) allowBodyScroll(this);
 					showAccessible(this._hiddenElements);
 					this._hiddenElements = null;
 					this._state = null;
@@ -155,7 +165,15 @@ export function preventBodyScroll(modal) {
 	modals.add(modal);
 }
 
-function hideAccessible(target) {
+function isPositionedElement(elem) {
+	if (elem.nodeType !== Node.ELEMENT_NODE) { return false; }
+
+	const position = window.getComputedStyle(elem).position;
+
+	return position !== 'static';
+}
+
+function hideAccessible(target, options) {
 
 	const hiddenElements = [];
 	const path = [target];
@@ -185,6 +203,11 @@ function hideAccessible(target) {
 			path.push(parent);
 			hideAccessibleChildren(parent);
 		}
+
+		if (options.contained && isPositionedElement(parent)) {
+			break;
+		}
+
 		parent = getComposedParent(parent);
 	}
 
