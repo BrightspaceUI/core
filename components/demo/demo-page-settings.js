@@ -59,6 +59,7 @@ class DemoPageSettings extends LitElement {
 		super.connectedCallback();
 		document.addEventListener('d2l-flags-known', this.#handleFlagsKnownBound);
 		localeSettings.addChangeListener(this.#handleDocumentLanguageChangeBound);
+		this._theme = document.documentElement.dataset.theme || 'os';
 	}
 
 	disconnectedCallback() {
@@ -82,6 +83,8 @@ class DemoPageSettings extends LitElement {
 			languageItem = html`<d2l-collapsible-panel-summary-item slot="summary" text="Language: ${selectedLanguageCode}"></d2l-collapsible-panel-summary-item>`;
 		}
 
+		const themeOptions = ['os', 'light', 'dark'].map(theme => html`<option value="${theme}" ?selected="${this._theme === theme}">${theme}</option>`);
+
 		const knownFlags = this.#getKnownFlagsSorted();
 		const knownFlagCheckboxes = [];
 		knownFlags.forEach((knownFlag, key) => {
@@ -102,6 +105,10 @@ class DemoPageSettings extends LitElement {
 					<label>
 						<span class="d2l-input-label">Language</span>
 						<select class="d2l-input-select" @change="${this.#handleLanguageChange}">${languageOptions}</select>
+					</label>
+					<label>
+						<span class="d2l-input-label">Theme</span>
+						<select class="d2l-input-select" @change="${this.#handleThemeChange}">${themeOptions}</select>
 					</label>
 					${knownFlagCheckboxes.length > 0 ? html`
 						<d2l-input-checkbox-group id="flagsCheckboxGroup" label="Flags">
@@ -167,6 +174,18 @@ class DemoPageSettings extends LitElement {
 		const newLanguageCode = e.target[e.target.selectedIndex].value;
 		document.documentElement.dir = newLanguageCode === 'ar-sa' ? 'rtl' : 'ltr';
 		document.documentElement.lang = newLanguageCode;
+	}
+
+	#handleThemeChange(e) {
+		const newTheme = e.target[e.target.selectedIndex].value;
+		document.documentElement.setAttribute('data-theme', newTheme);
+		const url = new URL(window.location.href);
+		if (newTheme === 'os') {
+			url.searchParams.delete('theme');
+		} else {
+			url.searchParams.set('theme', newTheme);
+		}
+		window.history.replaceState({}, '', url.toString());
 	}
 
 }
