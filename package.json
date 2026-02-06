@@ -24,7 +24,8 @@
     "test:unit": "d2l-test-runner",
     "test:translations": "mfv -s en -p ./lang/ -i untranslated,category-missing",
     "test:vdiff": "d2l-test-runner vdiff --timeout 10000",
-    "test:wca": "node ./cli/validate-wca.js"
+    "test:wca": "node ./cli/validate-wca.js",
+    "perf": "node ./perf/d2l-test.js"
   },
   "files": [
     "custom-elements.json",
