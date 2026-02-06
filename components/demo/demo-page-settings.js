@@ -19,8 +19,7 @@ class DemoPageSettings extends LitElement {
 	static get properties() {
 		return {
 			panelTitle: { type: String, attribute: 'panel-title' },
-			_language: { state: true },
-			_theme: { state: true }
+			_language: { state: true }
 		};
 	}
 
@@ -54,19 +53,13 @@ class DemoPageSettings extends LitElement {
 		} else {
 			this._language = getDocumentLocaleSettings().language;
 		}
-		if (urlParams.has('theme')) {
-			const newTheme = urlParams.get('theme');
-			document.documentElement.setAttribute('data-theme', newTheme);
-			this._theme = newTheme;
-		} else {
-			this._theme = 'os';
-		}
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
 		document.addEventListener('d2l-flags-known', this.#handleFlagsKnownBound);
 		localeSettings.addChangeListener(this.#handleDocumentLanguageChangeBound);
+		this._theme = document.documentElement.dataset.theme || 'os';
 	}
 
 	disconnectedCallback() {
