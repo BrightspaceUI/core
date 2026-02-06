@@ -90,7 +90,7 @@ class DemoPageSettings extends LitElement {
 			languageItem = html`<d2l-collapsible-panel-summary-item slot="summary" text="Language: ${selectedLanguageCode}"></d2l-collapsible-panel-summary-item>`;
 		}
 
-		const themeOptions = ['os','light','dark'].map(theme => html`<option value="${theme}" ?selected="${this._theme === theme}">${theme}</option>`);
+		const themeOptions = ['os', 'light', 'dark'].map(theme => html`<option value="${theme}" ?selected="${this._theme === theme}">${theme}</option>`);
 
 		const knownFlags = this.#getKnownFlagsSorted();
 		const knownFlagCheckboxes = [];
