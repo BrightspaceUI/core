@@ -47,6 +47,7 @@ class DemoPage extends LitElement {
 			.d2l-demo-page-content > ::slotted(h2),
 			.d2l-demo-page-content > ::slotted(h3) {
 				font-size: 0.8rem;
+				color: var(--d2l-color-font-base);
 				font-weight: 700;
 				line-height: 1.2rem;
 				margin: 1.5rem 0 1.5rem 0;
