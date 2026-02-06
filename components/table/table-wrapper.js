@@ -1,5 +1,7 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
+import '../backdrop/backdrop.js';
+import '../loading-spinner/loading-spinner.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { cssSizes } from '../inputs/input-checkbox.js';
 import { getComposedParent } from '../../helpers/dom.js';
@@ -307,6 +309,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				reflect: true,
 				type: String
 			},
+			loading: {
+				reflect: true,
+				type: String
+			},
 			_controlsScrolled: { state: true },
 			_noScrollWidth: {
 				attribute: '_no-scroll-width',
@@ -363,6 +369,14 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			slot[name="pager"]::slotted(*) {
 				margin-top: 12px;
 			}
+			d2l-loading-spinner {
+				position: absolute;
+				z-index: 1000;
+				left: 50%;
+				transform: (-50%, 0);
+				top: 100px;
+				display: block;
+			}
 		`;
 	}
 
@@ -372,6 +386,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this.stickyHeaders = false;
 		this.stickyHeadersScrollWrapper = false;
 		this.type = 'default';
+		this.loading = false;
 
 		this._controls = null;
 		this._controlsMutationObserver = null;
@@ -410,7 +425,11 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	render() {
-		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
+		const slot = html`
+			<slot @slotchange="${this._handleSlotChange}"></slot>
+			<d2l-backdrop contained ?shown=${this.loading} for-target="loading-spinner"></d2l-backdrop>
+			${this.loading ? html`<d2l-loading-spinner id="loading-spinner"></d2l-loading-spinner>` : nothing}
+		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
