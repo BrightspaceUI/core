@@ -507,8 +507,8 @@ The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `c
     constructor() {
       super();
       this._data = {
-        a: { checked: true },
-        b: { checked: false },
+        a: { checked: false, name: 'John Smith', grade: '85', notes: 'Scroll down to see sticky header behaviour.'  },
+        b: { checked: false, name: 'Emily Jones', grade: '92', notes: 'Reduce the width to see the control actions chomp.' },
       };
     }
 
@@ -516,23 +516,31 @@ The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `c
       return html`
         <d2l-table-wrapper>
           <d2l-table-controls slot="controls">
+            <d2l-selection-action icon="tier1:email" text="Email" requires-selection></d2l-selection-action>
+            <d2l-selection-action icon="tier1:edit" text="Edit" requires-selection></d2l-selection-action>
             <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
+            <d2l-selection-action icon="tier1:print" text="Print"></d2l-selection-action>
             <d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+            <d2l-selection-action icon="tier1:help" text="Help"></d2l-selection-action>
           </d2l-table-controls>
           <table class="d2l-table">
             <thead>
               <tr>
                 <th><d2l-selection-select-all></d2l-selection-select-all></th>
-                <th>Column B</th>
+                <th>Learner</th>
+                <th>Grade</th>
+                <th>Notes</th>
               </tr>
             </thead>
             <tbody>
               ${Object.keys(this._data).map((key, i) => html`
-                <tr>
-                  <td>
+                <tr ?selected="${this._data[key].checked}">
+                  <td style="max-width: 3rem;">
                     <d2l-selection-input key="${key}" label="${key}" ?selected="${this._data[key].checked}" @d2l-selection-change="${this._selectRow}"></d2l-selection-input>
                   </td>
-                  <td>this row is ${!this._data[key].checked ? 'not' : ''} selected</td>
+                  <td>${this._data[key].name}</td>
+                  <td>${this._data[key].grade}</td>
+                  <td>${this._data[key].notes}</td>
                 </tr>
               `)}
             </tbody>
