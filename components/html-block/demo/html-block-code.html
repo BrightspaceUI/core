@@ -6,6 +6,7 @@
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 		<script type="module">
+			import '../../demo/demo-page.js';
 			import '../../colors/colors.js';
 			import '../../typography/typography.js';
 			import '../html-block.js';
@@ -19,27 +20,36 @@
 			}
 		</style>
 	</head>
-	<body class="d2l-typography">
+	<body>
+		<d2l-demo-page page-title="d2l-html-block (code)">
 
-		<h1 class="d2l-heading-2">d2l-html-block (code)</h1>
+			<h2 class="d2l-heading-3">Block Samples</h2>
 
-		<h2 class="d2l-heading-3">Block Samples</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-html-block html="
+	&lt;pre class=&quot;d2l-code d2l-code-dark&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;function helloGrumpy(name) {
+		console.log(`Hi there ${name}.`);
+	}
+	helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;
+	&lt;br&gt;
+	&lt;pre class=&quot;d2l-code d2l-code-dark&quot;&gt;&lt;code class=&quot;language-javascript line-numbers&quot;&gt;function helloGrumpy(name) {
+		console.log(`Hi there ${name}. Here's some really long text to test overflowing the bounding container.`);
+	}
+	helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;">
+					</d2l-html-block>
+				</template>
+			</d2l-demo-snippet>
 
-		<d2l-html-block html="
-&lt;pre class=&quot;d2l-code d2l-code-dark&quot;&gt;&lt;code class=&quot;language-javascript&quot;&gt;function helloGrumpy(name) {
-	console.log(`Hi there ${name}.`);
-}
-helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;
-&lt;br&gt;
-&lt;pre class=&quot;d2l-code d2l-code-dark&quot;&gt;&lt;code class=&quot;language-javascript line-numbers&quot;&gt;function helloGrumpy(name) {
-	console.log(`Hi there ${name}. Here's some really long text to test overflowing the bounding container.`);
-}
-helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;">
-		</d2l-html-block>
+			<h2 class="d2l-heading-3">Inline Samples</h2>
 
-		<h2 class="d2l-heading-3">Inline Samples</h2>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-html-block html="The best type of donuts are he kind you assign in code, for example: &lt;code class=&quot;d2l-code d2l-code-dark language-javascript&quot;&gt;const jelly = 'donuts';&lt;/code&gt;. The next best type of thing you can assign in code is stuff you can ferment. &lt;code class=&quot;d2l-code d2l-code-dark language-javascript&quot;&gt;let beer = hopsAndWater.map(ingredients => ferment(ingredients));&lt;/code&gt;"></d2l-html-block>
+				</template>
+			</d2l-demo-snippet>
 
-		<d2l-html-block html="The best type of donuts are he kind you assign in code, for example: &lt;code class=&quot;d2l-code d2l-code-dark language-javascript&quot;&gt;const jelly = 'donuts';&lt;/code&gt;. The next best type of thing you can assign in code is stuff you can ferment. &lt;code class=&quot;d2l-code d2l-code-dark language-javascript&quot;&gt;let beer = hopsAndWater.map(ingredients => ferment(ingredients));&lt;/code&gt;"></d2l-html-block>
+		</d2l-demo-page>
 
 	</body>
 </html>
