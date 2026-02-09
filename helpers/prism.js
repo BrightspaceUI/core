@@ -453,6 +453,7 @@ export async function formatCodeElement(elem, forceVersionBump) {
 	const languageInfo = getLanguageInfo(code);
 	const lineNumbers = elem.classList.contains('line-numbers') || code.classList.contains('line-numbers');
 
+	// Remove when shield-14201-update-prismjs-1-30 is removed (remove pass-throughs and use prismLocation directly in loadLanguage, loadPrism, and loadPlugin)
 	const location = forceVersionBump ? 'https://s.brightspace.com/lib/prismjs/1.30.0' : prismLocation;
 
 	await loadPrism(location); // must be loaded before loading plugins or languages
