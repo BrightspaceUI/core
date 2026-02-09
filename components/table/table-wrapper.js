@@ -11,7 +11,7 @@ import { SelectionMixin } from '../selection/selection-mixin.js';
 import { usePopoverMixin as useDropdownPopover } from '../dropdown/dropdown-popover-mixin.js';
 import { usePopoverMixin as useTooltipPopover } from '../tooltip/tooltip.js';
 
-const isUsingNativePopover = isPopoverSupported && useDropdownPopover && useTooltipPopover;
+export const isUsingNativePopover = isPopoverSupported && useDropdownPopover && useTooltipPopover;
 
 const colSyncFix = getFlag('GAUD-8228-8186-improved-table-col-sync', true);
 
