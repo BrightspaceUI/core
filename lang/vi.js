@@ -24,7 +24,11 @@ export default {
 	"components.filter.clearAnnounce": "Xóa các bộ lọc cho: {filterName}",
 	"components.filter.clearDescription": "Xóa các bộ lọc cho: {filterName}",
 	"components.filter.filterCountDescription":
-		`{number, plural, =0 {Chưa áp dụng bộ lọc nào.} one {{number} bộ lọc đã áp dụng.} other {{number} bộ lọc đã áp dụng.}}`,
+		`{number, plural,
+			=0 {Chưa áp dụng bộ lọc nào.}
+			one {{number} bộ lọc đã áp dụng.}
+			other {{number} bộ lọc đã áp dụng.}
+		}`,
 	"components.filter.filters": "Bộ lọc",
 	"components.filter.loading": "Đang tải các bộ lọc",
 	"components.filter.noFilters": "Không có bộ lọc nào khả dụng",
@@ -35,7 +39,11 @@ export default {
 	"components.filter.selectedFirstListLabel": "{headerText}. Các bộ lọc được chọn xuất hiện đầu tiên.",
 	"components.filter.singleDimensionDescription": "Lọc theo: {filterName}",
 	"components.filter-dimension-set-date-text-value.textDays":
-		`{num, plural, =0 {Hôm nay} one {{num} ngày trước} other {{num} ngày trước}}`,
+		`{num, plural,
+			=0 {Hôm nay}
+			one {{num} ngày trước}
+			other {{num} ngày trước}
+		}`,
 	"components.filter-dimension-set-date-text-value.textHours":
 		`{num, plural,
 			other {{num} giờ trước}
@@ -143,7 +151,10 @@ export default {
 			other {{countFormatted} mục}
 		}`,
 	"components.pageable.info-with-total":
-		`{totalCount, plural, one {{countFormatted} của {totalCountFormatted} mục} other {{countFormatted} của {totalCountFormatted} mục}}`,
+		`{totalCount, plural,
+			one {{countFormatted} của {totalCountFormatted} mục}
+			other {{countFormatted} của {totalCountFormatted} mục}
+		}`,
 	"components.pager-load-more.action": "Tải thêm",
 	"components.pager-load-more.action-with-page-size": "Tải thêm {count} mục",
 	"components.pager-load-more.status-loading": "Đang tải thêm các mục",
@@ -156,7 +167,9 @@ export default {
 	"components.selection.action-required-hint": "Chọn một mục để thực hiện tác vụ này",
 	"components.selection.select-all": "Chọn Tất cả",
 	"components.selection.select-all-items":
-		`{count, plural, other {Chọn tất cả {countFormatted} mục}}`,
+		`{count, plural,
+			other {Chọn tất cả {countFormatted} mục}
+		}`,
 	"components.selection.selected": "{count} mục được chọn",
 	"components.selection.selected-plus": "{count}+ mục được chọn",
 	"components.selection-controls.label": "Các thao tác để chọn",
@@ -169,7 +182,25 @@ export default {
 	"components.table-col-sort-button.addSortOrder": "Chọn để thêm thứ tự sắp xếp",
 	"components.table-col-sort-button.changeSortOrder": "Chọn để thay đổi thứ tự sắp xếp",
 	"components.table-col-sort-button.title":
-		`{sourceType, select, dates {{direction, select, desc {Đã sắp xếp từ mới đến cũ} other {Đã sắp xếp từ cũ đến mới}}} numbers {{direction, select, desc {Đã sắp xếp từ cao đến thấp} other {Đã sắp xếp từ thấp đến cao}}} words {{direction, select, desc {Đã sắp xếp từ Z đến A} other {Đã sắp xếp từ A đến Z}}} value {Đã sắp xếp {selectedMenuItemText}} other {{direction, select, desc {Đã sắp xếp giảm dần} other {Đã sắp xếp tăng dần}}}}`,
+		`{sourceType, select,
+			dates {{direction, select,
+				desc {Đã sắp xếp từ mới đến cũ}
+				other {Đã sắp xếp từ cũ đến mới}
+			}}
+			numbers {{direction, select,
+				desc {Đã sắp xếp từ cao đến thấp}
+				other {Đã sắp xếp từ thấp đến cao}
+			}}
+			words {{direction, select,
+				desc {Đã sắp xếp từ Z đến A}
+				other {Đã sắp xếp từ A đến Z}
+			}}
+			value {Đã sắp xếp {selectedMenuItemText}}
+			other {{direction, select,
+				desc {Đã sắp xếp giảm dần}
+				other {Đã sắp xếp tăng dần}
+			}}
+		}`,
 	"components.table-controls.label": "Các tác vụ cho bảng",
 	"components.tabs.next": "Cuộn tới",
 	"components.tabs.previous": "Cuộn ngược",
