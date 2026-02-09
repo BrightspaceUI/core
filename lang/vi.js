@@ -3,7 +3,7 @@ export default {
 	"components.breadcrumbs.breadcrumb": "Đường dẫn",
 	"components.button-add.addItem": "Thêm mục",
 	"components.button-copy.copied": "Đã sao chép!",
-	"components.button-copy.error": "Sao chép không thành công. Hãy thử lại, hoặc thử sao chép thủ công.",
+	"components.button-copy.error": "Sao chép không thành công. Hãy thử lại hoặc thử sao chép thủ công.",
 	"components.button-split.otherOptions": "Các lựa chọn khác",
 	"components.calendar.hasEvents": "Có các sự kiện.",
 	"components.calendar.notSelected": "Không được chọn.",
@@ -13,7 +13,7 @@ export default {
 	"components.dialog.close": "Đóng hộp thoại này",
 	"components.dialog.critical": "Rất quan trọng!",
 	"components.dropdown.close": "Đóng",
-	"components.filter.activeFilters": "Các bộ lọc Hoạt động:",
+	"components.filter.activeFilters": "Các bộ lọc hoạt động:",
 	"components.filter.additionalContentTooltip": "Sử dụng <b>các phím mũi tên trái/phải</b> để di chuyển trọng tâm bên trong mục danh sách này",
 	"components.filter.clear": "Xóa",
 	"components.filter.clearAll": "Xóa tất cả",
@@ -24,35 +24,28 @@ export default {
 	"components.filter.clearAnnounce": "Xóa các bộ lọc cho: {filterName}",
 	"components.filter.clearDescription": "Xóa các bộ lọc cho: {filterName}",
 	"components.filter.filterCountDescription":
-		`{number, plural,
-			=0 {Chưa áp dụng bộ lọc nào.}
-			other {{number} bộ lọc đã áp dụng.}
-		}`,
+		`{number,plural,=0{Chưa áp dụng bộ lọc nào.} one{{number} bộ lọc đã áp dụng.} other{{number} bộ lọc đã áp dụng.}}`,
 	"components.filter.filters": "Bộ lọc",
 	"components.filter.loading": "Đang tải các bộ lọc",
-	"components.filter.noFilters": "Không có bộ lọc nào tính khả dụng",
+	"components.filter.noFilters": "Không có bộ lọc nào khả dụng",
 	"components.filter.searchResults":
 		`{number, plural,
-			other {{number} Không có kết quả tìm kiếm nào}
+			other {{number} kết quả tìm kiếm}
 		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Các bộ lọc được chọn xuất hiện đầu tiên.",
 	"components.filter.singleDimensionDescription": "Lọc theo: {filterName}",
 	"components.filter-dimension-set-date-text-value.textDays":
-		`{num, plural,
-			=0 {Hôm nay}
-			other {{num} ngày trước}
-		}`,
+		`{num,plural,=0{Hôm nay} one{{num} ngày trước} other{{num} ngày trước}}`,
 	"components.filter-dimension-set-date-text-value.textHours":
 		`{num, plural,
-			=1 {Giờ trước}
 			other {{num} giờ trước}
 		}`,
-	"components.filter-dimension-set-date-text-value.textMonths": "{num} tháng qua",
+	"components.filter-dimension-set-date-text-value.textMonths": "{num} tháng trước",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, mở rộng để chọn ngày",
 	"components.filter-dimension-set-date-time-range-value.text": "Phạm vi ngày tùy chỉnh",
-	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} tới {endValue}",
-	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "Trước khi {endValue}",
-	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "Sau khi {startValue}",
+	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} đến {endValue}",
+	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "Trước {endValue}",
+	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "Sau {startValue}",
 	"components.form-element.defaultError": "{label} không hợp lệ",
 	"components.form-element.defaultFieldLabel": "Trường",
 	"components.form-element.input.email.typeMismatch": "Email không hợp lệ",
@@ -93,13 +86,13 @@ export default {
 	"components.input-date.errorMinDateOnly": "Ngày phải nằm trong hoặc sau {minDate}",
 	"components.input-date.errorOutsideRange": "Ngày phải nằm trong khoảng giữa {minDate} và {maxDate}",
 	"components.input-date.now": "Bây giờ",
-	"components.input-date.openInstructions": "Sử dụng định dạng ngày {format}. Nhấn phím mũi tên xuống hoặc nhấn Enter để truy cập lịch nhỏ.",
+	"components.input-date.openInstructions": "Sử dụng định dạng ngày {format}. Nhấn phím mũi tên xuống hoặc phím Enter để truy cập lịch nhỏ.",
 	"components.input-date.revert": "{label} được trả về giá trị trước đó.",
 	"components.input-date.today": "Hôm nay",
 	"components.input-date.useDateFormat": "Sử dụng định dạng ngày {format}.",
 	"components.input-date-range.endDate": "Ngày Kết thúc",
 	"components.input-date-range.errorBadInput": "{startLabel} phải nằm trước {endLabel}",
-	"components.input-date-range.interactive-label": "Trường nhập phạm vi ngày",
+	"components.input-date-range.interactive-label": "Phạm vi ngày",
 	"components.input-date-range.startDate": "Ngày Bắt đầu",
 	"components.input-date-time.date": "Ngày tháng",
 	"components.input-date-time.errorMaxDateOnly": "Ngày phải là ngày trước hoặc vào {maxDate}",
@@ -122,37 +115,35 @@ export default {
 	"components.input-time-range.errorBadInput": "{startLabel} phải trước {endLabel}",
 	"components.input-time-range.startTime": "Thời gian Bắt đầu",
 	"components.interactive.instructions": "Nhấn phím Enter để tương tác, Nhấn Escape để thoát",
-	"components.link.open-in-new-window": "Mở trong một cửa sổ mới.",
+	"components.link.open-in-new-window": "Mở trong một cửa sổ mới được mở.",
 	"components.list.keyboard": "Sử dụng <b>phím mũi tên</b> để di chuyển trọng tâm bên trong danh sách này hoặc <b>page up/down</b> để di chuyển lên hoặc xuống 5",
-	"components.list-controls.label": "Các hành động cho danh sách",
+	"components.list-controls.label": "Các hành động cho danh sách.",
 	"components.list-item.addItem": "Thêm mục",
-	"components.list-item-drag-handle.default": "Sắp xếp lại mục hành động cho {name}",
+	"components.list-item-drag-handle.default": "Sắp xếp lại hành động mục cho {name}",
 	"components.list-item-drag-handle.keyboard": "Sắp xếp lại mục, vị trí hiện tại là {currentPosition} trong tổng số {size}. Để di chuyển mục này, nhấn phím mũi tên lên hoặc xuống.",
 	"components.list-item-drag-handle-tooltip.enter-desc": "Bật chế độ sắp xếp lại bằng bàn phím.",
 	"components.list-item-drag-handle-tooltip.enter-key": "Phím Enter.",
 	"components.list-item-drag-handle-tooltip.left-right-desc": "Thay đổi cấp độ lồng ghép.",
 	"components.list-item-drag-handle-tooltip.left-right-key": "Trái/Phải",
-	"components.list-item-drag-handle-tooltip.title": "Các điều khiển Bàn phím để Sắp xếp lại:",
+	"components.list-item-drag-handle-tooltip.title": "Các điều khiển bàn phím để sắp xếp lại:",
 	"components.list-item-drag-handle-tooltip.up-down-desc": "Di chuyển mục lên hoặc xuống trong danh sách.",
 	"components.list-item-drag-handle-tooltip.up-down-key": "Lên/Xuống",
-	"components.menu-item-return.return": "Quay lại tới menu trước.",
+	"components.menu-item-return.return": "Quay lại menu trước đó.",
 	"components.menu-item-return.returnCurrentlyShowing": "Quay lại tới menu trước. Bạn đang xem {menuTitle}.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",
 	"components.meter-mixin.fraction": "{x}⁄{y}",
 	"components.meter-mixin.fractionAria": "{x} trên tổng số {y}",
 	"components.meter-mixin.progressIndicator": "Chỉ báo tiến trình",
-	"components.more-less.less": "ít hơn",
+	"components.more-less.less": "ít",
 	"components.more-less.more": "thêm",
-	"components.object-property-list.item-placeholder-text": "Mục Giữ chỗ",
+	"components.object-property-list.item-placeholder-text": "Mục giữ chỗ",
 	"components.overflow-group.moreActions": "Thêm các Tác vụ",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} mục}
 		}`,
 	"components.pageable.info-with-total":
-		`{totalCount, plural,
-			other {{countFormatted} của {totalCountFormatted} mục}
-		}`,
+		`{totalCount,plural,one{{countFormatted} của {totalCountFormatted} mục} other{{countFormatted} của {totalCountFormatted} mục}}`,
 	"components.pager-load-more.action": "Tải thêm",
 	"components.pager-load-more.action-with-page-size": "Tải thêm {count} mục",
 	"components.pager-load-more.status-loading": "Đang tải thêm các mục",
@@ -165,9 +156,7 @@ export default {
 	"components.selection.action-required-hint": "Chọn một mục để thực hiện tác vụ này",
 	"components.selection.select-all": "Chọn Tất cả",
 	"components.selection.select-all-items":
-		`{count, plural,
-			other {Chọn tất cả {countFormatted} mục}
-		}`,
+		`{count,plural,other{Chọn tất cả {countFormatted} mục}}`,
 	"components.selection.selected": "{count} mục được chọn",
 	"components.selection.selected-plus": "{count}+ mục được chọn",
 	"components.selection-controls.label": "Các thao tác để chọn",
@@ -180,50 +169,30 @@ export default {
 	"components.table-col-sort-button.addSortOrder": "Chọn để thêm thứ tự sắp xếp",
 	"components.table-col-sort-button.changeSortOrder": "Chọn để thay đổi thứ tự sắp xếp",
 	"components.table-col-sort-button.title":
-		`{sourceType, select,
-			dates {{direction, select,
-				desc {Sắp xếp từ mới đến cũ}
-				other {Sắp xếp từ cũ đến mới}
-			}}
-			numbers {{direction, select,
-				desc {Sắp xếp từ cao đến thấp}
-				other {Sắp xếp từ thấp đến cao}
-			}}
-			words {{direction, select,
-				desc {Sắp xếp từ Z đến A}
-				other {Sắp xếp theo thứ tự A đến Z}
-			}}
-			value {Đã sắp xếp {selectedMenuItemText}}
-			other {{direction, select,
-				desc {Sắp xếp giảm dần}
-				other {Sắp xếp tăng dần}
-			}}
-		}`,
+		`{sourceType,select,dates{{direction,select,desc{Đã sắp xếp từ mới đến cũ} other{Đã sắp xếp từ cũ đến mới}}} numbers{{direction,select,desc{Đã sắp xếp từ cao đến thấp} other{Đã sắp xếp từ thấp đến cao}}} words{{direction,select,desc{Đã sắp xếp từ Z đến A} other{Đã sắp xếp từ A đến Z}}} value{Đã sắp xếp {selectedMenuItemText}} other{{direction,select,desc{Đã sắp xếp giảm dần} other{Đã sắp xếp tăng dần}}}}`,
 	"components.table-controls.label": "Các tác vụ cho bảng",
 	"components.tabs.next": "Cuộn tới",
 	"components.tabs.previous": "Cuộn ngược",
 	"components.tag-list.clear": "Nhấp, nhấn phím xoá lùi hoặc nhấn phím xoá để xoá mục {value}",
 	"components.tag-list.clear-all": "Xóa tất cả",
 	"components.tag-list.cleared-all": "Đã xóa tất cả các mục danh sách thẻ",
-	"components.tag-list.cleared-item": "Đã xóa mục danh sách thẻ {value}",
-	"components.tag-list.interactive-label": "Danh sách Thẻ, {count} mục",
+	"components.tag-list.cleared-item": "Xóa mục danh sách thẻ {value}",
+	"components.tag-list.interactive-label": "Danh sách thẻ, {count} mục",
 	"components.tag-list.num-hidden": "+ {count} mục nữa",
 	"components.tag-list.role-description":
 		`{count, plural,
-			=0 {Danh sách thẻ với 0 mục}
 			other {Danh sách thẻ với {count} mục}
 		}`,
 	"components.tag-list.show-less": "Ẩn bớt",
 	"components.tag-list.show-more-description": "Chọn để hiển thị các mục danh sách thẻ ẩn",
 	"components.tag-list-item.role-description": "Thẻ",
-	"components.tag-list-item.tooltip-arrow-keys": "Phím mũi tên",
+	"components.tag-list-item.tooltip-arrow-keys": "Các phím mũi tên",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Di chuyển giữa các thẻ",
 	"components.tag-list-item.tooltip-delete-key": "Phím lùi/Xóa",
 	"components.tag-list-item.tooltip-delete-key-desc": "Xóa thẻ được chọn",
-	"components.tag-list-item.tooltip-title": "Điều khiển Bàn phím",
+	"components.tag-list-item.tooltip-title": "Các điều khiển bàn phím",
 	"components.view-switcher.role-description":
 		`{count, plural,
-			=0 {Xem Trình chuyển đổi với 0 mục}
 			other {Xem Trình chuyển đổi với {count} mục}
 		}`,
 	"templates.primary-secondary.divider": "Bộ phân cách bảng phụ",
