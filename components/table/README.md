@@ -531,7 +531,7 @@ The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `c
             <tbody>
               ${Object.keys(this._data).map((key, i) => html`
                 <tr ?selected="${this._data[key].checked}">
-                  <td style="max-width: 3rem;">
+                  <td>
                     <d2l-selection-input key="${key}" label="${key}" ?selected="${this._data[key].checked}" @d2l-selection-change="${this._selectRow}"></d2l-selection-input>
                   </td>
                   <td>${this._data[key].notes}</td>
