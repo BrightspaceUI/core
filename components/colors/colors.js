@@ -6,11 +6,13 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 			--d2l-color-background-base: var(--d2l-color-sylvite);
 			--d2l-color-background-default: #ffffff;
 			--d2l-color-border-medium: var(--d2l-color-mica);
+			--d2l-color-font-base: var(--d2l-color-ferrite);
 	`;
 	const darkPalette = `
 			--d2l-color-background-base: #000000;
 			--d2l-color-background-default: #18191a; /* new color */
 			--d2l-color-border-medium: var(--d2l-color-tungsten);
+			--d2l-color-font-base: var(--d2l-color-regolith);
 	`;
 
 	style.textContent = `
