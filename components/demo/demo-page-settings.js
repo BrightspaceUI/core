@@ -13,6 +13,7 @@ import { inputLabelStyles } from '../inputs/input-label-styles.js';
 import { selectStyles } from '../inputs/input-select-styles.js';
 
 const localeSettings = getDocumentLocaleSettings();
+const defaultTheme = 'light';
 
 class DemoPageSettings extends LitElement {
 
@@ -53,13 +54,13 @@ class DemoPageSettings extends LitElement {
 		} else {
 			this._language = getDocumentLocaleSettings().language;
 		}
+		this._theme = document.documentElement.dataset.theme || defaultTheme;
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
 		document.addEventListener('d2l-flags-known', this.#handleFlagsKnownBound);
 		localeSettings.addChangeListener(this.#handleDocumentLanguageChangeBound);
-		this._theme = document.documentElement.dataset.theme || 'os';
 	}
 
 	disconnectedCallback() {
@@ -83,7 +84,7 @@ class DemoPageSettings extends LitElement {
 			languageItem = html`<d2l-collapsible-panel-summary-item slot="summary" text="Language: ${selectedLanguageCode}"></d2l-collapsible-panel-summary-item>`;
 		}
 
-		const themeOptions = ['os', 'light', 'dark'].map(theme => html`<option value="${theme}" ?selected="${this._theme === theme}">${theme}</option>`);
+		const themeOptions = ['light', 'dark', 'os'].map(theme => html`<option value="${theme}" ?selected="${this._theme === theme}">${theme}</option>`);
 
 		const knownFlags = this.#getKnownFlagsSorted();
 		const knownFlagCheckboxes = [];
@@ -180,7 +181,7 @@ class DemoPageSettings extends LitElement {
 		const newTheme = e.target[e.target.selectedIndex].value;
 		document.documentElement.setAttribute('data-theme', newTheme);
 		const url = new URL(window.location.href);
-		if (newTheme === 'os') {
+		if (newTheme === defaultTheme) {
 			url.searchParams.delete('theme');
 		} else {
 			url.searchParams.set('theme', newTheme);
