@@ -253,17 +253,6 @@ const plugins = getPlugins('foo-plugins');
 const plugin = tryGetPluginByKey('foo-plugins', 'key-1');
 ```
 
-## queueMicrotask
-
-A polyfill for [queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask). For more information on microtasks, read [this article from Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide).
-
-```js
-import '@brightspace-ui/core/helpers/queueMicrotask.js';
-queueMicrotask(() => {
-    // do some work
-});
-```
-
 ## requestIdleCallback
 
 A simple shim for [requestIdleCallback](https://www.w3.org/TR/requestidlecallback/#the-requestidlecallback-method) and [cancelIdleCallback](https://www.w3.org/TR/requestidlecallback/#the-cancelidlecallback-method) that transparently falls back to `setTimeout` if it's not natively supported.
