@@ -3,7 +3,7 @@ import '../table-col-sort-button-item.js';
 import '../table-controls.js';
 import { css, LitElement } from 'lit';
 import { defineCE, expect, fixture, html, nextFrame, runConstructor } from '@brightspace-ui/testing';
-import { tableStyles } from '../table-wrapper.js';
+import { isUsingNativePopover, tableStyles } from '../table-wrapper.js';
 
 describe('d2l-table-wrapper', () => {
 
@@ -31,76 +31,81 @@ describe('d2l-table-wrapper', () => {
 
 	});
 
-	describe('popover', () => {
+	if (!isUsingNativePopover) {
 
-		const tagName = defineCE(
-			class extends LitElement {
-				static get properties() {
-					return {
-						stickyHeaders: { type: Boolean, reflect: true, attribute: 'sticky-headers' }
-					};
+		// Remove these tests when GAUD-7472-dropdown-popover and GAUD-7355-tooltip-popover are both removed since all latest browsers support native popover
+		describe('popover', () => {
+
+			const tagName = defineCE(
+				class extends LitElement {
+					static get properties() {
+						return {
+							stickyHeaders: { type: Boolean, reflect: true, attribute: 'sticky-headers' }
+						};
+					}
+					static get styles() {
+						return tableStyles;
+					}
+					render() {
+						return html`
+							<d2l-table-wrapper ?sticky-headers="${this.stickyHeaders}">
+								<table class="d2l-table">
+									<thead>
+										<tr>
+											<th><span id="some-popover"></span></th>
+										</tr>
+									</thead>
+								</table>
+							</d2l-table-wrapper>
+						`;
+					}
 				}
-				static get styles() {
-					return tableStyles;
-				}
-				render() {
-					return html`
-						<d2l-table-wrapper ?sticky-headers="${this.stickyHeaders}">
-							<table class="d2l-table">
-								<thead>
-									<tr>
-										<th><span id="some-popover"></span></th>
-									</tr>
-								</thead>
-							</table>
-						</d2l-table-wrapper>
-					`;
-				}
-			}
-		);
+			);
 
-		it('should not set data-popover-count attribute when not sticky and popover opens', async() => {
-			const el = await fixture(`<${tagName}></${tagName}>`);
-			const popoverElement = el.shadowRoot.querySelector('#some-popover');
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
-			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.be.null;
+			it('should not set data-popover-count attribute when not sticky and popover opens', async() => {
+				const el = await fixture(`<${tagName}></${tagName}>`);
+				const popoverElement = el.shadowRoot.querySelector('#some-popover');
+				popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
+				expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.be.null;
+			});
+
+			it('should not set data-popover-count attribute when not sticky and popover closes', async() => {
+				const el = await fixture(`<${tagName}></${tagName}>`);
+				const popoverElement = el.shadowRoot.querySelector('#some-popover');
+				popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
+				expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.be.null;
+			});
+
+			it('should increment data-popover-count attribute when sticky and popover opens', async() => {
+				const el = await fixture(`<${tagName} sticky-headers></${tagName}>`);
+				const popoverElement = el.shadowRoot.querySelector('#some-popover');
+				popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
+				popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
+				expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.equal('2');
+			});
+
+			it('should decrement data-popover-count attribute when sticky and popover closes', async() => {
+				const el = await fixture(`<${tagName} sticky-headers></${tagName}>`);
+				const popoverElement = el.shadowRoot.querySelector('#some-popover');
+				popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
+				popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
+				expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.equal('2');
+				popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
+				expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.equal('1');
+			});
+
+			it('should remove data-popover-count attribute when sticky and all popovers are closed', async() => {
+				const el = await fixture(`<${tagName} sticky-headers></${tagName}>`);
+				const popoverElement = el.shadowRoot.querySelector('#some-popover');
+				popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
+				expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.equal('1');
+				popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
+				expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.be.null;
+			});
+
 		});
 
-		it('should not set data-popover-count attribute when not sticky and popover closes', async() => {
-			const el = await fixture(`<${tagName}></${tagName}>`);
-			const popoverElement = el.shadowRoot.querySelector('#some-popover');
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
-			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.be.null;
-		});
-
-		it('should increment data-popover-count attribute when sticky and popover opens', async() => {
-			const el = await fixture(`<${tagName} sticky-headers></${tagName}>`);
-			const popoverElement = el.shadowRoot.querySelector('#some-popover');
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
-			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.equal('2');
-		});
-
-		it('should decrement data-popover-count attribute when sticky and popover closes', async() => {
-			const el = await fixture(`<${tagName} sticky-headers></${tagName}>`);
-			const popoverElement = el.shadowRoot.querySelector('#some-popover');
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
-			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.equal('2');
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
-			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.equal('1');
-		});
-
-		it('should remove data-popover-count attribute when sticky and all popovers are closed', async() => {
-			const el = await fixture(`<${tagName} sticky-headers></${tagName}>`);
-			const popoverElement = el.shadowRoot.querySelector('#some-popover');
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
-			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.equal('1');
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
-			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.be.null;
-		});
-
-	});
+	}
 
 	describe('sticky scrolling async content', () => {
 
