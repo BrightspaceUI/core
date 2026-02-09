@@ -26,7 +26,6 @@ export default {
 	"components.filter.filterCountDescription":
 		`{number, plural,
 			=0 {Chưa áp dụng bộ lọc nào.}
-			one {{number} bộ lọc đã áp dụng.}
 			other {{number} bộ lọc đã áp dụng.}
 		}`,
 	"components.filter.filters": "Bộ lọc",
@@ -41,7 +40,6 @@ export default {
 	"components.filter-dimension-set-date-text-value.textDays":
 		`{num, plural,
 			=0 {Hôm nay}
-			one {{num} ngày trước}
 			other {{num} ngày trước}
 		}`,
 	"components.filter-dimension-set-date-text-value.textHours":
@@ -152,7 +150,6 @@ export default {
 		}`,
 	"components.pageable.info-with-total":
 		`{totalCount, plural,
-			one {{countFormatted} của {totalCountFormatted} mục}
 			other {{countFormatted} của {totalCountFormatted} mục}
 		}`,
 	"components.pager-load-more.action": "Tải thêm",
