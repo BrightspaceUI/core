@@ -88,7 +88,7 @@ class LoadingBackdrop extends LitElement {
 
 	render() {
 		return html`
-			<div class="backdrop" _state=${this._state} ${this._transitionEventHandling}></div>
+			<div class="backdrop" _state=${this._state} @transitionend=${this.#handleTransitionEnd} @transitioncancel=${this.#hide}></div>
 			<d2l-loading-spinner _state=${this._state}></d2l-loading-spinner>
 		`;
 	}
@@ -96,42 +96,39 @@ class LoadingBackdrop extends LitElement {
 	willUpdate(changedProperties) {
 		if (changedProperties.has('shown')) {
 			if (this.shown) {
-				this._show();
+				this.#show();
 			} else if (changedProperties.get('shown') !== undefined) {
-				this._fade();
+				this.#fade();
 			}
 		}
 	}
 
-	_fade() {
+	#fade() {
 		this._state = 'hiding';
 	}
 
-	_hide() {
+	#handleTransitionEnd() {
+		if (this._state === 'hiding') {
+			this.#hide();
+		}
+	}
+
+	#hide() {
 		this._state = null;
 
 		const containingBlock = getOffsetParent(this);
 
-		containingBlock.setAttribute('aria-busy', 'false');
-
-		if (!this._initiallyIntert) containingBlock.removeAttribute('inert');
+		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
 	}
 
-	_show() {
+	#show() {
 		this._state = 'showing';
 
 		const containingBlock = getOffsetParent(this);
 
-		containingBlock.setAttribute('aria-busy', 'true');
+		if (containingBlock.getAttribute('inert') !== null) containingBlock.dataset.initiallyInert = '1';
 
-		this._initiallyIntert = containingBlock.getAttribute('inert') !== null;
-		if (!this._initiallyIntert) containingBlock.setAttribute('inert', '');
-	}
-
-	_transitionEventHandlers() {
-		// Ensure that we hide the backdrop after the fade completes or is cancelled
-		this._state === 'hiding' ?
-			`@transitionend=${this._hide} @transitioncancel=${this._hide}` : '';
+		containingBlock.setAttribute('inert', 'inert');
 	}
 
 }
