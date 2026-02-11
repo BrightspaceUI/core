@@ -315,6 +315,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				reflect: true,
 				type: Boolean,
 			},
+			/**
+			 * Whether or not to display a loading backdrop. Set this property when the content in the table is being refreshed.
+			 * @type {boolean}
+			 */
 			loading: {
 				reflect: true,
 				type: Boolean
