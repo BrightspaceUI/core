@@ -47,7 +47,7 @@ Note: this template automatically includes `<header>`, `<main>`, `<aside>` and `
 
 ### IFrames
 
-If either of the panels contain an `iframe`, resizing may not work properly. This occurs because `iframe`s prevent the page template from receiving mouse events. To handle situations like these, setting `pointer-events: none` for the `iframe` is recommended during resizing. This can be done by listening for `d2l-template-primary-secondary-resize-start` and `d2l-template-primary-secondary-resize-end` events.
+If either of the panels contain an `iframe`, resizing may not work properly. This occurs because `iframe`s prevent the page template from receiving mouse events. To handle situations like these, setting `pointer-events: none` for the `iframe` is recommended during resizing. This can be done by listening for `d2l-iframe-pointer-events-disable` and `d2l-iframe-pointer-events-enable` events.
 
 <!-- docs: start hidden content -->
 ### Properties
