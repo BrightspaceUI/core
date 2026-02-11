@@ -8,6 +8,8 @@ const FADE_IN_DURATION_MS = 500;
 const FADE_OUT_DURATION_MS = 500;
 const SPINNER_DELAY_MS = BACKDROP_DELAY_MS + FADE_IN_DURATION_MS;
 
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 /**
  * A component for displaying a semi-transparent backdrop and a loading spinner over the containing element
  */
@@ -27,9 +29,9 @@ class LoadingBackdrop extends LitElement {
 	static get styles() {
 		return css`
 			:host, .backdrop, d2l-loading-spinner {
-				width: 0%;
 				height: 0%;
 				position: absolute;
+				width: 0%;
 			}
 
 			.backdrop, d2l-loading-spinner {
@@ -37,8 +39,8 @@ class LoadingBackdrop extends LitElement {
 			}
 
 			:host {
+				top: 0;
 				z-index: 999;
-				top: 0px;
 			}
 
 			.backdrop {
@@ -55,8 +57,8 @@ class LoadingBackdrop extends LitElement {
 			d2l-loading-spinner[_state="hiding"],
 			.backdrop[_state="showing"],
 			.backdrop[_state="hiding"] {
-				width: 100%;
 				height: 100%;
+				width: 100%;
 			}
 
 			d2l-loading-spinner[_state="showing"] {
@@ -75,7 +77,7 @@ class LoadingBackdrop extends LitElement {
 			}
 
 			@media (prefers-reduced-motion: reduce) {
-				* { transition: none}
+				* { transition: none; }
 			}
 		`;
 	}
@@ -104,7 +106,11 @@ class LoadingBackdrop extends LitElement {
 	}
 
 	#fade() {
-		this._state = 'hiding';
+		if (reduceMotion) {
+			this.#hide();
+		} else {
+			this._state = 'hiding';
+		}
 	}
 
 	#handleTransitionEnd() {
