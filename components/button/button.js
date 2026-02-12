@@ -76,7 +76,7 @@ class Button extends ButtonMixin(LitElement) {
 					border-radius: inherit;
 					content: "";
 					inset: 0;
-					opacity: 0.5;
+					opacity: var(--d2l-opacity-disabled-control);
 					position: absolute;
 				}
 
