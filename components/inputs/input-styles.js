@@ -15,7 +15,7 @@ export const inputStyles = css`
 		background-color: var(--d2l-input-background-color, var(--d2l-color-control-sunken-default));
 		border-radius: var(--d2l-input-border-radius, 0.3rem);
 		border-style: solid;
-		box-shadow: inset 0 2px 0 0 rgba(177, 185, 190, 0.2); /* corundum */
+		box-shadow: var(--d2l-shadow-inset);
 		box-sizing: border-box;
 		color: var(--d2l-color-text-static-standard);
 		display: inline-block;
