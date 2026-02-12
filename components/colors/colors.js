@@ -51,6 +51,9 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-color-text-status-error: var(--d2l-color-cinnabar);
 		--d2l-color-text-status-success: var(--d2l-color-olivine-minus-1);
 		--d2l-color-text-status-warning: var(--d2l-color-carnelian-minus-1);
+		--d2l-opacity-disabled-control: 0.5;
+		--d2l-opacity-disabled-link: 0.74;
+		--d2l-opacity-disabled-linkicon: 0.64;
 	`;
 	const darkPalette = `
 		--d2l-brandoverride-highlight: var(--d2l-color-celestine-minus-1);
@@ -101,6 +104,9 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-color-text-status-error: var(--d2l-color-cinnabar-plus-1);
 		--d2l-color-text-status-success: var(--d2l-color-icon-status-success);
 		--d2l-color-text-status-warning: var(--d2l-color-icon-status-warning);
+		--d2l-opacity-disabled-control: 0.5;
+		--d2l-opacity-disabled-link: 0.74;
+		--d2l-opacity-disabled-linkicon: 0.64;
 	`;
 
 	style.textContent = `
