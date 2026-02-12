@@ -34,7 +34,8 @@ const minBackdropWidthMobile = 30;
 const minOpenerSizeNoShift = 52;
 const pointerLength = 16;
 const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
-const isSupported = ('popover' in HTMLElement.prototype);
+
+export const isPopoverSupported = ('popover' in HTMLElement.prototype);
 
 const getScrollbarWidth = () => {
 	const width = window.innerWidth - document.documentElement.clientWidth;
@@ -258,7 +259,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		this.configure();
 		this._mobile = false;
 		this._showBackdrop = false;
-		this._useNativePopover = isSupported ? 'manual' : undefined;
+		this._useNativePopover = isPopoverSupported ? 'manual' : undefined;
 		this.#handleAncestorMutationBound = this.#handleAncestorMutation.bind(this);
 		this.#handleAutoCloseClickBound = this.#handleAutoCloseClick.bind(this);
 		this.#handleAutoCloseFocusBound = this.#handleAutoCloseFocus.bind(this);

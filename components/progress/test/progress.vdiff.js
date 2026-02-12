@@ -18,11 +18,11 @@ describe('d2l-progress', () => {
 
 		it(`hidden states${rtl ? '-rtl' : ''}`, async() => {
 			const ele = await fixture(html`<div>
-				<d2l-progress label="Progress" label-hidden></d2l-progress>
+				<d2l-progress label="Progress" value="0" label-hidden></d2l-progress>
 				<br>
-				<d2l-progress label="Progress" value-hidden></d2l-progress>
+				<d2l-progress label="Progress" value="0" value-hidden></d2l-progress>
 				<br>
-				<d2l-progress label="Progress" label-hidden value-hidden></d2l-progress>
+				<d2l-progress label="Progress" value="0" label-hidden value-hidden></d2l-progress>
 			</div>`, { rtl });
 
 			await expect(ele).to.be.golden();

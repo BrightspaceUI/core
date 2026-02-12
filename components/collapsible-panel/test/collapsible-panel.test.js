@@ -157,8 +157,8 @@ describe('d2l-collapsible-panel', () => {
 		it('tabbing into header then clicking should not remove focused class', async() => {
 			await sendKeys('press', 'Tab');
 			expect(panel.classList.contains(focusedClass)).to.be.true;
-			const header = elem.shadowRoot.querySelector('.d2l-collapsible-panel-header');
-			clickElem(header);
+			const button = elem.shadowRoot.querySelector('.d2l-collapsible-panel-opener');
+			clickElem(button);
 			await oneEvent(elem, 'd2l-collapsible-panel-expand');
 			expect(panel.classList.contains(focusedClass)).to.be.true;
 		});

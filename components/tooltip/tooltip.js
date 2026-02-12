@@ -13,7 +13,7 @@ import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-const usePopoverMixin = getFlag('GAUD-7355-tooltip-popover', true);
+export const usePopoverMixin = getFlag('GAUD-7355-tooltip-popover', true);
 
 const contentBorderSize = 1;
 const contentHorizontalPadding = 15;

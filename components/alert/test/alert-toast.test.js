@@ -1,5 +1,5 @@
 import '../alert-toast.js';
-import { expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import sinon from 'sinon';
 
 describe('d2l-alert-toast', () => {
@@ -17,7 +17,8 @@ describe('d2l-alert-toast', () => {
 		it('should fire "d2l-alert-toast-button-press" event when alert button is pressed', async() => {
 			const el = await fixture(html`<d2l-alert-toast button-text="Click Me" open>message</d2l-alert-toast>`);
 			const alert = el.shadowRoot.querySelector('d2l-alert');
-			setTimeout(() => alert.dispatchEvent(new CustomEvent('d2l-alert-button-press', { bubbles: true, composed: true })));
+			const button = alert.shadowRoot.querySelector('d2l-button-subtle[text="Click Me"]');
+			clickElem(button);
 			await oneEvent(el, 'd2l-alert-toast-button-press');
 		});
 

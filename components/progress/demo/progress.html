@@ -68,22 +68,32 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<button>Start Animation</button>
-					<d2l-progress label="Uploading..." announce-label></d2l-progress>
+					<button id="start">Start Animation</button><button id="reset">Reset</button>
+					<d2l-progress label="Waiting..." announce-label></d2l-progress>
 					<script data-demo-hide>
 						(demo => {
-							const button = demo.querySelector('button');
+							const startButton = demo.querySelector('#start');
+							const resetButton = demo.querySelector('#reset');
 							const progress = demo.querySelector('d2l-progress');
-							button.addEventListener('click', () => {
-								for (let i = 0; i < 5; i++) {
-									setTimeout(() => {
-										if (i === 4) progress.label = 'Complete';
-										else if (i >= 2) progress.label = 'Validating...';
-										else progress.label = 'Uploading...';
-										progress.value = i * 25;
-									}, i * 1000);
+							let to = null;
+							startButton.addEventListener('click', () => {
+								let i = 0;
+								const step = () => {
+									console.log(i);
 
-								}
+									if (i === 4) progress.label = 'Complete';
+									else if (i >= 2) progress.label = 'Validating...';
+									else progress.label = 'Uploading...';
+									progress.value = i * 25;
+									i++;
+									if (i < 5) to = setTimeout(step, 1000);
+								};
+								step();
+							});
+							resetButton.addEventListener('click', () => {
+								clearTimeout(to);
+								progress.value = undefined;
+								progress.label = 'Waiting...';
 							});
 						})(document.currentScript.parentNode);
 					</script>

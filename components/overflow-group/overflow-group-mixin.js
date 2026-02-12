@@ -60,6 +60,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				attribute: 'opener-type'
 			},
 			_chompIndex: { state: true },
+			_itemGap: { state: true },
 			_mini: { state: true },
 			_wrapping: { state: true }
 		};
@@ -74,6 +75,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 				display: none;
 			}
 			.d2l-overflow-group-container {
+				align-items: var(--d2l-overflow-group-align-items, normal);
 				display: flex;
 				justify-content: var(--d2l-overflow-group-justify-content, normal);
 			}
@@ -106,6 +108,7 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 		this._firstChompCompleteResolve = undefined;
 		this._firstChompCompletePromise = new Promise(resolve => this._firstChompCompleteResolve = resolve);
+		this._itemGap = 0;
 	}
 
 	disconnectedCallback() {
@@ -132,8 +135,9 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		});
 
 		const containerStyles = {
+			columnGap: this._itemGap > 0 ? `${this._itemGap}px` : undefined,
 			flexWrap: this._wrapping ? 'wrap' : 'nowrap',
-			minHeight: this.autoShow ? 'none' : (this._itemHeight ? `${this._itemHeight}px` : 'auto'),
+			minHeight: this.autoShow ? 'auto' : (this._itemHeight ? `${this._itemHeight}px` : 'auto'),
 			maxHeight: this.autoShow ? 'none' : (this._itemHeight ? `${this._itemHeight}px` : 'auto')
 		};
 
@@ -213,9 +217,9 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		this._overflowContainer = this.shadowRoot.querySelector(`.${OVERFLOW_CLASS}`);
 		this._overflowContainerMini = this.shadowRoot.querySelector(`.${OVERFLOW_MINI_CLASS}`);
 		if (this.openerType === OPENER_TYPE.ICON && this._overflowContainerMini) {
-			this._overflowContainerWidth = this._overflowContainerMini.offsetWidth;
+			this._overflowContainerWidth = this._overflowContainerMini.offsetWidth + this._itemGap;
 		} else if (this._overflowContainer) {
-			this._overflowContainerWidth = this._overflowContainer.offsetWidth;
+			this._overflowContainerWidth = this._overflowContainer.offsetWidth + this._itemGap;
 		}
 
 		const showing = {
@@ -223,13 +227,15 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			width: 0
 		};
 
-		let isSoftOverflowing, isForcedOverflowing;
+		let isSoftOverflowing = false;
+		let isForcedOverflowing = false;
 		for (let i = 0; i < this._itemLayouts.length; i++) {
 			const itemLayout = this._itemLayouts[i];
+			const gap = showing.count > 0 ? this._itemGap : 0;
 
 			// handle minimum items to show
 			if (showing.count < this.minToShow) {
-				showing.width += itemLayout.width;
+				showing.width += itemLayout.width + gap;
 				showing.count += 1;
 				itemLayout.trigger = 'force-show';
 				itemLayout.isChomped = false;
@@ -245,8 +251,8 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 			}
 
 			// chomp or unchomp based on space available, and we've already handled min/max above
-			if (!isSoftOverflowing && showing.width + itemLayout.width < this._availableWidth) {
-				showing.width += itemLayout.width;
+			if (!isSoftOverflowing && showing.width + itemLayout.width + gap < this._availableWidth) {
+				showing.width += itemLayout.width + gap;
 				showing.count += 1;
 				itemLayout.isChomped = false;
 				itemLayout.trigger = 'soft-show';
