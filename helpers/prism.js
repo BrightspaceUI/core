@@ -367,7 +367,7 @@ const loadLanguage = async(key, location) => {
 	// eslint-disable-next-line no-async-promise-executor
 	languagesLoaded[key] = new Promise(async resolve => {
 		if (languageDependencies[key]) {
-			await Promise.all(languageDependencies[key].map(dependencyKey => loadLanguage(dependencyKey)));
+			await Promise.all(languageDependencies[key].map(dependencyKey => loadLanguage(dependencyKey, location)));
 		}
 
 		const script = document.createElement('script');
