@@ -18,6 +18,16 @@ const backdropLoadingFixture = html`
 
 describe('d2l-backdrop-loading', () => {
 
+	let elem, backdropLoading, containingBlock, containingBlockSibling, containingBlockParent;
+	beforeEach(async() => {
+		elem = await fixture(backdropLoadingFixture);
+
+		backdropLoading = elem.querySelector('d2l-backdrop-loading');
+		containingBlock = elem.querySelector('#containing-block');
+		containingBlockSibling = elem.querySelector('#containing-block-sibling');
+		containingBlockParent = elem.querySelector('#containing-block-parent');
+	});
+
 	describe('constructor', () => {
 
 		it('should construct', () => {
@@ -26,39 +36,15 @@ describe('d2l-backdrop-loading', () => {
 
 	});
 
-	describe('showing', () => {
+	describe('show and hide', () => {
 
-		it('makes containing block inert', async() => {
-			const elem = await fixture(backdropLoadingFixture);
-
-			const backdropLoading = elem.querySelector('d2l-backdrop-loading');
-			const containingBlock = elem.querySelector('#containing-block');
-			const containingBlockSibling = elem.querySelector('#containing-block-sibling');
-			const containingBlockParent = elem.querySelector('#containing-block-parent');
-
+		it('toggles inert property on containing block', async() => {
 			backdropLoading.shown = true;
 			await backdropLoading.updateComplete;
 
 			expect(containingBlock.hasAttribute('inert')).to.be.true;
 			expect(containingBlockSibling.hasAttribute('inert')).to.be.false;
 			expect(containingBlockParent.hasAttribute('inert')).to.be.false;
-		});
-	});
-
-	describe('hiding', () => {
-		it('removes inertness property from containing block if it did not start inert', async() => {
-			const elem = await fixture(backdropLoadingFixture);
-
-			const backdropLoading = elem.querySelector('d2l-backdrop-loading');
-			const containingBlock = elem.querySelector('#containing-block');
-			containingBlock.removeAttribute('inert');
-
-			expect(containingBlock.hasAttribute('inert')).to.be.false;
-
-			backdropLoading.shown = true;
-			await backdropLoading.updateComplete;
-
-			expect(containingBlock.hasAttribute('inert')).to.be.true;
 
 			backdropLoading.shown = false;
 			await backdropLoading.updateComplete;
@@ -67,13 +53,7 @@ describe('d2l-backdrop-loading', () => {
 		});
 
 		it('Maintains inertness property of containing block after fading if it started inert', async() => {
-			const elem = await fixture(backdropLoadingFixture);
-
-			const backdropLoading = elem.querySelector('d2l-backdrop-loading');
-			const containingBlock = elem.querySelector('#containing-block');
 			containingBlock.setAttribute('inert', 'inert');
-
-			expect(containingBlock.hasAttribute('inert')).to.be.true;
 
 			backdropLoading.shown = true;
 			await backdropLoading.updateComplete;
