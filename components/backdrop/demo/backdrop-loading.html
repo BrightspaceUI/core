@@ -1,56 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-	<script type="module">
-		import '../../demo/demo-page.js';
-		import '../../button/button.js';
-		import '../backdrop-loading.js';
-
-		const loadingBackdrop = document.querySelector('d2l-backdrop-loading');
-		document.querySelector('#target > d2l-button').addEventListener('click', () => {
-			loadingBackdrop.shown = !loadingBackdrop.shown;
-
-			setTimeout(() => {
-				document.querySelectorAll('.grade').forEach((grade) => {
-					grade.innerHTML = `${Math.round(Math.random() * 100).toString()}%`;
-				});
-				loadingBackdrop.shown = !loadingBackdrop.shown;
-			}, 5000);
-		});
-
-	</script>
-	<style>
-		th, td {
-			border-bottom: 1px solid #dddddd;
-			padding: 30px;
-			text-align: left;
-		}
-		#grade-container {
-			position: relative;
-			width: fit-content;
-		}
-	</style>
-
-	<d2l-demo-page page-title="d2l-backdrop">
-		<div id="target"><d2l-button primary>Refresh Content</d2l-button></div>
-		<div id="grade-container">
-			<table>
-				<thead>
-					<th>Course</th>
-					<th>Grade</th>
-					<th>Hours Spent in Content</th>
-				</thead>
-				<tr>
-					<td>Math</td>
-					<td class="grade">85%</td>
-					<td>100</td>
-				</tr>
-				<tr>
-					<td>Art</td>
-					<td class="grade">98%</td>
-					<td>10</td>
-				</tr>
-			</table>
-			<d2l-backdrop-loading></d2l-backdrop-loading>
-		</div>
-	</d2l-demo-page>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../../button/button.js';
+			import '../backdrop-loading.js';
+		</script>
+		<style>
+			th, td {
+				border-bottom: 1px solid #dddddd;
+				padding: 30px;
+				text-align: left;
+			}
+			#grade-container {
+				position: relative;
+				width: fit-content;
+			}
+		</style>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-backdrop">
+			<d2l-demo-snippet>
+				<template>
+					<div id="target"><d2l-button primary>Refresh Content</d2l-button></div>
+					<div id="grade-container">
+						<table>
+							<thead>
+								<th>Course</th>
+								<th>Grade</th>
+								<th>Hours Spent in Content</th>
+							</thead>
+							<tr>
+								<td>Math</td>
+								<td class="grade">85%</td>
+								<td>100</td>
+							</tr>
+							<tr>
+								<td>Art</td>
+								<td class="grade">98%</td>
+								<td>10</td>
+							</tr>
+						</table>
+						<d2l-backdrop-loading></d2l-backdrop-loading>
+					</div>
+					<script data-demo-hide>
+						const demo = document.currentScript.parentNode;
+						const loadingBackdrop = demo.querySelector('d2l-backdrop-loading');
+						demo.querySelector('#target > d2l-button').addEventListener('click', () => {
+							loadingBackdrop.shown = !loadingBackdrop.shown;
+							setTimeout(() => {
+								demo.querySelectorAll('.grade').forEach((grade) => {
+									grade.innerHTML = `${Math.round(Math.random() * 100).toString()}%`;
+								});
+								loadingBackdrop.shown = !loadingBackdrop.shown;
+							}, 5000);
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+		</d2l-demo-page>
+	</body>
 </html>
