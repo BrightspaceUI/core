@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
+import '../backdrop/backdrop-loading.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { cssSizes } from '../inputs/input-checkbox.js';
 import { getComposedParent } from '../../helpers/dom.js';
@@ -259,6 +260,7 @@ export const tableStyles = css`
 	[data-popover-count] {
 		z-index: 6 !important; /* if opened above, we want to stack on top of sticky table-controls */
 	}
+
 `;
 
 const SELECTORS = {
@@ -317,6 +319,14 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				attribute: '_no-scroll-width',
 				reflect: true,
 				type: Boolean,
+			},
+			/**
+			 * Whether or not to display a loading backdrop. Set this property when the content in the table is being refreshed.
+			 * @type {boolean}
+			 */
+			loading: {
+				reflect: true,
+				type: Boolean
 			},
 		};
 	}
@@ -387,6 +397,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
+		this.loading = false;
 	}
 
 	connectedCallback() {
@@ -415,7 +426,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	render() {
-		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
+		const slot = html`
+			<slot @slotchange="${this._handleSlotChange}"></slot>
+			<d2l-backdrop-loading ?shown=${this.loading}></d2l-backdrop-loading>
+		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
