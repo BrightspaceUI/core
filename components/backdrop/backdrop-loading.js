@@ -91,7 +91,7 @@ class LoadingBackdrop extends LitElement {
 	render() {
 		return html`
 			<div class="backdrop" _state=${this._state} @transitionend=${this.#handleTransitionEnd} @transitioncancel=${this.#hide}></div>
-			<d2l-loading-spinner _state=${this._state}></d2l-loading-spinner>
+			<d2l-loading-spinner _state=${this._state} size="${this._state === null ? '0' : '50'}"></d2l-loading-spinner>
 		`;
 	}
 
