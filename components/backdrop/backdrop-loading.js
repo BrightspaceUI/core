@@ -1,12 +1,11 @@
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { getOffsetParent } from '../../helpers/dom.js';
 
 const BACKDROP_DELAY_MS = 800;
-const FADE_IN_DURATION_MS = 500;
-const FADE_OUT_DURATION_MS = 500;
-const SPINNER_DELAY_MS = BACKDROP_DELAY_MS + FADE_IN_DURATION_MS;
+const FADE_DURATION_MS = 500;
+const SPINNER_DELAY_MS = FADE_DURATION_MS;
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -28,52 +27,47 @@ class LoadingBackdrop extends LitElement {
 
 	static get styles() {
 		return css`
-			:host, .backdrop, d2l-loading-spinner {
-				height: 0%;
-				position: absolute;
-				width: 0%;
-			}
-
-			.backdrop, d2l-loading-spinner {
-				opacity: 0;
-			}
-
 			:host {
+				display: none;
+				height: 100%;
+				justify-content: center;
+				position: absolute;
 				top: 0;
+				width: 100%;
 				z-index: 999;
+			}
+			:host([_state="showing"]),
+			:host([_state="shown"]),
+			:host([_state="hiding"]) {
+				display: flex;
 			}
 
 			.backdrop {
 				background-color: var(--d2l-color-regolith);
+				height: 100%;
+				opacity: 0;
+				position: absolute;
+				top: 0;
+				transition: opacity ${FADE_DURATION_MS}ms ease-in;
+				width: 100%;
+			}
+			:host([_state="shown"]) .backdrop {
+				opacity: 0.7;
 			}
 
 			d2l-loading-spinner {
+				opacity: 0;
+				position: absolute;
 				top: 100px;
+				transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
 			}
-
-			:host([_state="showing"]),
-			:host([_state="hiding"]),
-			d2l-loading-spinner[_state="showing"],
-			d2l-loading-spinner[_state="hiding"],
-			.backdrop[_state="showing"],
-			.backdrop[_state="hiding"] {
-				height: 100%;
-				width: 100%;
-			}
-
-			d2l-loading-spinner[_state="showing"] {
+			:host([_state="shown"]) d2l-loading-spinner {
 				opacity: 1;
-				transition: opacity ${FADE_IN_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
 			}
-
-			.backdrop[_state="showing"] {
-				opacity: 0.7;
-				transition: opacity ${FADE_IN_DURATION_MS}ms ease-in ${BACKDROP_DELAY_MS}ms;
-			}
-
-			d2l-loading-spinner[_state="hiding"],
-			.backdrop[_state="hiding"] {
-				transition: opacity ${FADE_OUT_DURATION_MS}ms ease-out;
+			
+			:host([_state="hiding"]) .d2l-backdrop,
+			:host([_state="hiding"]) d2l-loading-spinner {
+				transition: opacity ${FADE_DURATION_MS}ms ease-out;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
@@ -85,14 +79,23 @@ class LoadingBackdrop extends LitElement {
 	constructor() {
 		super();
 		this.shown = false;
-		this._state = null;
+		this._state = 'hidden';
 	}
 
 	render() {
+		if (this._state === 'hidden') return nothing;
 		return html`
-			<div class="backdrop" _state=${this._state} @transitionend=${this.#handleTransitionEnd} @transitioncancel=${this.#hide}></div>
-			<d2l-loading-spinner _state=${this._state} size="${this._state === null ? '0' : '50'}"></d2l-loading-spinner>
+			<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#hide}"></div>
+			<d2l-loading-spinner></d2l-loading-spinner>
 		`;
+	}
+
+	updated(changedProperties) {
+		if (changedProperties.has('_state')) {
+			if (this._state === 'showing') {
+				setTimeout(() => this._state = 'shown', BACKDROP_DELAY_MS);
+			}
+		}
 	}
 
 	willUpdate(changedProperties) {
@@ -120,7 +123,7 @@ class LoadingBackdrop extends LitElement {
 	}
 
 	#hide() {
-		this._state = null;
+		this._state = 'hidden';
 
 		const containingBlock = getOffsetParent(this);
 
@@ -128,7 +131,7 @@ class LoadingBackdrop extends LitElement {
 	}
 
 	#show() {
-		this._state = 'showing';
+		this._state = reduceMotion ? 'shown' : 'showing';
 
 		const containingBlock = getOffsetParent(this);
 
