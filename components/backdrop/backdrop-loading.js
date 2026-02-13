@@ -93,7 +93,9 @@ class LoadingBackdrop extends LitElement {
 	updated(changedProperties) {
 		if (changedProperties.has('_state')) {
 			if (this._state === 'showing') {
-				setTimeout(() => this._state = 'shown', BACKDROP_DELAY_MS);
+				setTimeout(() => {
+					if (this._state === 'showing') this._state = 'shown';
+				}, BACKDROP_DELAY_MS);
 			}
 		}
 	}
@@ -109,7 +111,7 @@ class LoadingBackdrop extends LitElement {
 	}
 
 	#fade() {
-		if (reduceMotion) {
+		if (reduceMotion || this._state === 'showing') {
 			this.#hide();
 		} else {
 			this._state = 'hiding';
