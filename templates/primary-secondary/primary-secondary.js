@@ -1263,18 +1263,10 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 
 	_onPanelResizeEnd() {
 		this.dispatchEvent(new CustomEvent('d2l-iframe-pointer-events-enable', { bubbles: true, composed: true }));
-		/**
-		 * @ignore
-		 */
-		this.dispatchEvent(new CustomEvent('d2l-template-primary-secondary-resize-end', { bubbles: true, composed: true }));
 	}
 
 	_onPanelResizeStart() {
 		this.dispatchEvent(new CustomEvent('d2l-iframe-pointer-events-disable', { bubbles: true, composed: true }));
-		/**
-		 * @ignore
-		 */
-		this.dispatchEvent(new CustomEvent('d2l-template-primary-secondary-resize-start', { bubbles: true, composed: true }));
 	}
 
 	_onTransitionEnd() {
