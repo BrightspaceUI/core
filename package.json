@@ -52,7 +52,7 @@
     "@rollup/plugin-replace": "^6",
     "@web/dev-server": "^0.4",
     "chalk": "^5",
-    "eslint": "^9",
+    "eslint": "^10",
     "eslint-config-brightspace": "^2.0.0",
     "eslint-plugin-unicorn": "^62",
     "glob-all": "^3",
