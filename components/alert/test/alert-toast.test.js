@@ -252,6 +252,15 @@ export async function reset(opts = {}) {
 
 describe('d2l-alert-toast', () => {
 
+	before(async() => {
+		console.log(performance.now(), 'before start');
+		const sheet = new CSSStyleSheet();
+		sheet.replaceSync("a { color: red; }");
+		document.adoptedStyleSheets.push(sheet);
+		await nextFrame();
+		console.log(performance.now(), 'test1 end');
+	});
+
 	describe('constructor', () => {
 
 		it('should construct', () => {
