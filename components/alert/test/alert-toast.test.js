@@ -15,17 +15,17 @@ describe('d2l-alert-toast', () => {
 	describe('button-press', () => {
 
 		it.only('should fire "d2l-alert-toast-button-press" event when alert button is pressed', async() => {
-			console.log('test start');
+			console.log(performance.now(), 'test start');
 			const el = await fixture(html`<d2l-alert-toast button-text="Click Me" open>message</d2l-alert-toast>`);
-			console.log('fixture created');
+			console.log(performance.now(), 'fixture created');
 			const alert = el.shadowRoot.querySelector('d2l-alert');
-			console.log('alert found');
+			console.log(performance.now(), 'alert found');
 			const button = alert.shadowRoot.querySelector('d2l-button-subtle[text="Click Me"]');
-			console.log('button found', button.getBoundingClientRect());
+			console.log(performance.now(), 'button found', button.getBoundingClientRect());
 			clickElem(button);
-			console.log('button clicked, waiting for event');
+			console.log(performance.now(), 'button clicked, waiting for event');
 			await oneEvent(el, 'd2l-alert-toast-button-press');
-			console.log('event received');
+			console.log(performance.now(), 'event received');
 		});
 
 	});
