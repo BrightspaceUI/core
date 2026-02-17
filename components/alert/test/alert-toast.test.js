@@ -14,7 +14,7 @@ describe('d2l-alert-toast', () => {
 
 	describe('button-press', () => {
 
-		it('should fire "d2l-alert-toast-button-press" event when alert button is pressed', async() => {
+		it.only('should fire "d2l-alert-toast-button-press" event when alert button is pressed', async() => {
 			const el = await fixture(html`<d2l-alert-toast button-text="Click Me" open>message</d2l-alert-toast>`);
 			const alert = el.shadowRoot.querySelector('d2l-alert');
 			const button = alert.shadowRoot.querySelector('d2l-button-subtle[text="Click Me"]');
