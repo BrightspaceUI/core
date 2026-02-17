@@ -295,6 +295,7 @@ class AlertToast extends LitElement {
 	}
 
 	_handleButtonPress(e) {
+		console.log('alert._handleButtonPress called, dispatching "d2l-alert-toast-button-press"...');
 		e.stopPropagation();
 		this.dispatchEvent(new CustomEvent('d2l-alert-toast-button-press'));
 	}
