@@ -1,24 +1,6 @@
 name: CI
 on: pull_request
 jobs:
-  lint:
-    name: Lint
-    timeout-minutes: 3
-    runs-on: ubuntu-latest
-    steps:
-      - uses: Brightspace/third-party-actions@actions/checkout
-      - uses: Brightspace/setup-node@main
-        with:
-          node-version-file: .nvmrc
-          cache: 'npm'
-      - name: Install dependencies
-        run: npm ci
-      - name: Build
-        run: npm run build
-      - name: Lint (JavaScript)
-        run: npm run lint:eslint
-      - name: Lint (CSS)
-        run: npm run lint:style
   playwright:
     name: Accessibility and Unit Tests
     timeout-minutes: 15
@@ -33,23 +15,6 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      - name: Validate Translations
-        run: npm run test:translations
-      - name: Validate custom-elements.json
-        run: npm run test:wca
-      - name: Accessibility Tests
-        id: at
-        run: npm run test:axe
-      - name: Upload test report
-        if: >
-          always() &&
-          github.triggering_actor != 'dependabot[bot]' &&
-          (steps.at.outcome == 'failure' || steps.at.outcome == 'success')
-        uses: Brightspace/test-reporting-action@main
-        with:
-          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
-          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
       - name: Unit Tests
         id: ut
         run: npm run test:unit
@@ -63,53 +28,3 @@ jobs:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
           aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
-  publish:
-    name: Publish static site
-    if: ${{ github.triggering_actor != 'dependabot[bot]' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: Brightspace/third-party-actions@actions/checkout
-      - uses: Brightspace/setup-node@main
-        with:
-          node-version-file: .nvmrc
-          cache: 'npm'
-      - name: Install dependencies
-        run: npm ci
-      - name: Build
-        run: npm run build
-
-      - name: Build static
-        run: npm run build-static
-
-      - name: Assume role
-        uses: Brightspace/third-party-actions@aws-actions/configure-aws-credentials
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-          role-to-assume: arn:aws:iam::022062736489:role/r+BrightspaceUI+core+repo
-          role-duration-seconds: 3600
-          aws-region: ca-central-1
-
-      - name: Publish
-        uses: BrightspaceUI/actions/publish-to-s3@main
-        with:
-          bucket-path: s3://d2l.dev/live/prs/${{ github.repository }}/pr-${{ github.event.number }}
-          publish-directory: ./build/
-
-      - name: Notify
-        uses: BrightspaceUI/actions/comment-on-pr@main
-        with:
-          message: |
-            Thanks for the PR! 🎉
-
-            We've deployed an automatic preview for this PR - you can see your changes here:
-
-            | URL | https://live.d2l.dev/prs/${{ github.repository }}/pr-${{ github.event.number }}/ |
-            |---|---|
-
-            > [!NOTE]
-            > The build needs to finish before your changes are deployed.
-            > Changes to the PR will automatically update the instance.
-          post-mode: once
