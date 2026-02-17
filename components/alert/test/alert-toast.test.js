@@ -25,6 +25,7 @@ describe('d2l-alert-toast', () => {
 			clickElem(button);
 			console.log('button clicked, waiting for event');
 			await oneEvent(el, 'd2l-alert-toast-button-press');
+			console.log('event received');
 		});
 
 	});

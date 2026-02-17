@@ -180,6 +180,7 @@ class Alert extends LocalizeCoreElement(LitElement) {
 	}
 
 	_onButtonClick() {
+		console.log('alert._onButtonClick called, dispatching "d2l-alert-toast-button-press"...');
 		this.dispatchEvent(new CustomEvent(
 			'd2l-alert-button-press', { bubbles: true, composed: true }
 		));

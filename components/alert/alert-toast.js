@@ -189,6 +189,7 @@ class AlertToast extends LitElement {
 	}
 
 	async connectedCallback() {
+		console.log('alert-toast.connectedCallback');
 		super.connectedCallback();
 		document.body.addEventListener('d2l-alert-toast-close', this._handleSiblingResize);
 		document.body.addEventListener('d2l-alert-toast-resize', this._handleSiblingResize);
@@ -197,11 +198,13 @@ class AlertToast extends LitElement {
 		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this._handlePageResize);
 
 		await this.updateComplete;
+		console.log('alert-toast.setting up ResizeObserver');
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
 		this._resizeObserver.observe(this._innerContainer);
 	}
 
 	disconnectedCallback() {
+		console.log('alert-toast.disconnectedCallback');
 		super.disconnectedCallback();
 		document.body.removeEventListener('d2l-alert-toast-close', this._handleSiblingResize);
 		document.body.removeEventListener('d2l-alert-toast-resize', this._handleSiblingResize);
@@ -215,6 +218,7 @@ class AlertToast extends LitElement {
 	}
 
 	firstUpdated(changedProperties) {
+		console.log('alert-toast.firstUpdated');
 		super.firstUpdated(changedProperties);
 
 		this._innerContainer = this.shadowRoot.querySelector('.d2l-alert-toast-container');
@@ -222,6 +226,7 @@ class AlertToast extends LitElement {
 	}
 
 	render() {
+		console.log('alert-toast.render');
 		const spaceBetweenAlerts = this._numAlertsBelow * (this._smallWidth ? TOAST_SPACING_SMALL : TOAST_SPACING);
 		const containerStyles = {
 			bottom: (this._totalSiblingHeightBelow || this._numAlertsBelow) ? `calc(${this._totalSiblingHeightBelow}px + ${spaceBetweenAlerts}rem)` : 0
@@ -259,6 +264,7 @@ class AlertToast extends LitElement {
 	}
 
 	updated(changedProperties) {
+		console.log('alert-toast.updated', changedProperties.get('open'));
 		if (changedProperties.get('open') && this.open === false) {
 			this._hasFocus = false;
 			this._hasMouse = false;
@@ -284,6 +290,7 @@ class AlertToast extends LitElement {
 		if (!this.noAutoClose && !ALERT_HAS_FOCUS && !ALERT_HAS_HOVER) {
 			const duration = this.buttonText ? 10000 : 4000;
 			this._setTimeoutId = setTimeout(() => {
+				console.log('alert-toast. close timer expired, closing...');
 				this.open = false;
 			}, duration);
 		}
@@ -295,7 +302,7 @@ class AlertToast extends LitElement {
 	}
 
 	_handleButtonPress(e) {
-		console.log('alert._handleButtonPress called, dispatching "d2l-alert-toast-button-press"...');
+		console.log('alert-toast._handleButtonPress called, dispatching "d2l-alert-toast-button-press"...');
 		e.stopPropagation();
 		this.dispatchEvent(new CustomEvent('d2l-alert-toast-button-press'));
 	}
@@ -326,6 +333,7 @@ class AlertToast extends LitElement {
 
 	_handleSiblingCloseTimerStart() {
 		if (!this.open) return;
+		console.log('alert-toast._handleSiblingCloseTimerStart');
 		this._closeTimerStart();
 	}
 
@@ -351,6 +359,7 @@ class AlertToast extends LitElement {
 	_onBlur() {
 		ALERT_HAS_FOCUS = false;
 		this._hasFocus = false;
+		console.log('alert-toast._onBlur, starting close timer');
 		this._closeTimerStart();
 		if (!ALERT_HAS_HOVER) {
 			/** @ignore */
@@ -367,6 +376,7 @@ class AlertToast extends LitElement {
 	_onFocus() {
 		ALERT_HAS_FOCUS = true;
 		this._hasFocus = true;
+		console.log('alert-toast._onFocus, stopping close timer');
 		this._closeTimerStop();
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-stop', { bubbles: true, composed: false }));
@@ -375,6 +385,7 @@ class AlertToast extends LitElement {
 	_onMouseEnter() {
 		ALERT_HAS_HOVER = true;
 		this._hasMouse = true;
+		console.log('alert-toast._onMouseEnter, stopping close timer');
 		this._closeTimerStop();
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-stop', { bubbles: true, composed: false }));
@@ -383,6 +394,7 @@ class AlertToast extends LitElement {
 	_onMouseLeave() {
 		ALERT_HAS_HOVER = false;
 		this._hasMouse = false;
+		console.log('alert-toast._onMouseLeave, starting close timer');
 		this._closeTimerStart();
 		if (!ALERT_HAS_FOCUS) {
 			/** @ignore */
