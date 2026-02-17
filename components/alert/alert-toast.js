@@ -187,7 +187,7 @@ class AlertToast extends LitElement {
 		}
 	}
 
-	connectedCallback() {
+	/*connectedCallback() {
 		console.log(performance.now(), 'alert-toast.connectedCallback');
 		super.connectedCallback();
 		document.body.addEventListener('d2l-alert-toast-close', this._handleSiblingResize);
@@ -196,11 +196,11 @@ class AlertToast extends LitElement {
 		document.body.addEventListener('d2l-alert-toast-timer-stop', this._closeTimerStop);
 		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this._handlePageResize);
 
-		/*this.updateComplete.then(() => {
+		this.updateComplete.then(() => {
 			console.log(performance.now(), 'alert-toast.setting up ResizeObserver');
 			this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
 			this._resizeObserver.observe(this._innerContainer);
-		});*/
+		});
 	}
 
 	disconnectedCallback() {
@@ -223,11 +223,11 @@ class AlertToast extends LitElement {
 
 		this._innerContainer = this.shadowRoot.querySelector('.d2l-alert-toast-container');
 		this._smallWidth = mediaQueryList.matches;
-	}
+	}*/
 
 	render() {
 		console.log(performance.now(), 'alert-toast.render');
-		const spaceBetweenAlerts = this._numAlertsBelow * (this._smallWidth ? TOAST_SPACING_SMALL : TOAST_SPACING);
+		/*const spaceBetweenAlerts = this._numAlertsBelow * (this._smallWidth ? TOAST_SPACING_SMALL : TOAST_SPACING);
 		const containerStyles = {
 			bottom: (this._totalSiblingHeightBelow || this._numAlertsBelow) ? `calc(${this._totalSiblingHeightBelow}px + ${spaceBetweenAlerts}rem)` : 0
 		};
@@ -260,16 +260,17 @@ class AlertToast extends LitElement {
 					<slot></slot>
 				</d2l-alert>
 			</div>
-		`;
+		`;*/
+		return html`<p>hello world</p>`;
 	}
 
-	updated(changedProperties) {
+	/*updated(changedProperties) {
 		console.log(performance.now(), 'alert-toast.updated', changedProperties.get('open'));
 		if (changedProperties.get('open') && this.open === false) {
 			this._hasFocus = false;
 			this._hasMouse = false;
 		}
-	}
+	}*/
 
 	/** @ignore */
 	get _state() {
