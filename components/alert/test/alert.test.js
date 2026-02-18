@@ -1,6 +1,15 @@
 import '../alert.js';
 import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
+let testStartTime;
+mocha.setup({
+	rootHooks: {
+		beforeEach() {
+			testStartTime = performance.now();
+		}
+	}
+});
+
 const alertFixture = html`
 		<d2l-alert id="button-close" type="default" button-text="Do it!" has-close-button
 			subtext="I am subtext. I'm here to test the wrapping capabilities of adding subtext to these alerts, as well as other styling issues. Feel free to add to me!">
@@ -21,6 +30,7 @@ describe('d2l-alert', () => {
 
 		it('should fire "d2l-alert-close" event when close button is clicked', async() => {
 			const alert = await fixture(alertFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			const closeButton = alert.shadowRoot.querySelector('d2l-button-icon');
 			clickElem(closeButton);
 			await oneEvent(alert, 'd2l-alert-close');
@@ -29,6 +39,7 @@ describe('d2l-alert', () => {
 
 		it('should fire "d2l-alert-close" event when close is called', async() => {
 			const alert = await fixture(alertFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			setTimeout(() => alert.close());
 			await oneEvent(alert, 'd2l-alert-close');
 			expect(alert.hasAttribute('hidden')).to.be.true;
@@ -36,6 +47,7 @@ describe('d2l-alert', () => {
 
 		it('should fire "d2l-alert-button-press" event when action button is clicked', async() => {
 			const alert = await fixture(alertFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			const actionButton = alert.shadowRoot.querySelector('d2l-button-subtle');
 			clickElem(actionButton);
 			await oneEvent(alert, 'd2l-alert-button-press');
@@ -43,6 +55,7 @@ describe('d2l-alert', () => {
 
 		it('calling preventDefault on close action should prevent alert from closing', async() => {
 			const alert = await fixture(alertFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			const closeButton = alert.shadowRoot.querySelector('d2l-button-icon');
 			alert.addEventListener('d2l-alert-close', (e) => {
 				e.preventDefault();
@@ -57,6 +70,7 @@ describe('d2l-alert', () => {
 				<d2l-alert id="a1" type="default" has-close-button>First</d2l-alert>
 				<d2l-alert id="a2" type="default" has-close-button>Second</d2l-alert>
 			</div>`);
+			console.log(Math.round(performance.now() - testStartTime));
 			const a1 = multi.querySelector('#a1');
 			const a2 = multi.querySelector('#a2');
 			const closeBtn = a2.shadowRoot.querySelector('d2l-button-icon');

@@ -7,6 +7,15 @@ import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysEle
 import { listSelectionStates } from '../list.js';
 import { mockFlag } from '../../../helpers/flags.js';
 
+let testStartTime;
+mocha.setup({
+	rootHooks: {
+		beforeEach() {
+			testStartTime = performance.now();
+		}
+	}
+});
+
 const clickItemInput = async item => {
 	const selectionInput = item.shadowRoot.querySelector('d2l-selection-input');
 	const inputCheckbox = selectionInput.shadowRoot.querySelector('d2l-input-checkbox');
@@ -34,12 +43,14 @@ describe('d2l-list', () => {
 
 		it('should set aria-label on list when label is defined', async() => {
 			const elem = await fixture(html`<d2l-list label="Test Label"></d2l-list>`);
+			console.log(Math.round(performance.now() - testStartTime));
 			const list = elem.shadowRoot.querySelector('[role="list"]');
 			expect(list.getAttribute('aria-label')).to.equal('Test Label');
 		});
 
 		it('should not set aria-label on list when label is not defined', async() => {
 			const elem = await fixture(html`<d2l-list></d2l-list>`);
+			console.log(Math.round(performance.now() - testStartTime));
 			const list = elem.shadowRoot.querySelector('[role="list"]');
 			expect(list.hasAttribute('aria-label')).to.be.false;
 		});
@@ -54,6 +65,7 @@ describe('d2l-list', () => {
 						</d2l-list-item>
 					</d2l-list>
 				`);
+			console.log(Math.round(performance.now() - testStartTime));
 			const nestedList = elem.querySelector('#L2').shadowRoot.querySelector('[role="application"]');
 			expect(nestedList.hasAttribute('aria-label')).to.be.false;
 		});
@@ -82,7 +94,7 @@ describe('d2l-list', () => {
 						</d2l-list>
 					</div>
 				`);
-
+				console.log(Math.round(performance.now() - testStartTime));
 				const listItem = elem.querySelector('[key="L2-2"]');
 
 				await sendKeysElem(listItem, 'down', testCase.keyPress);
@@ -113,7 +125,7 @@ describe('d2l-list', () => {
 						<d2l-list-item selectable key="L1-2" label="item"></d2l-list-item>
 					</d2l-list>
 				`);
-
+console.log(Math.round(performance.now() - testStartTime));
 				const listItem = elem.querySelector(`[key="${initialFocus}"]`);
 				listItem.focus();
 
@@ -131,7 +143,7 @@ describe('d2l-list', () => {
 					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
-
+console.log(Math.round(performance.now() - testStartTime));
 			const listItem = elem.querySelector('[key="L1-2"]');
 
 			await sendKeysElem(listItem, 'down', 'ArrowUp');
@@ -155,6 +167,7 @@ describe('d2l-list', () => {
 					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
+			console.log(Math.round(performance.now() - testStartTime));
 		});
 
 		it('does not dispatch d2l-list-selection-changes event when interactive element is clicked in selectable item', async() => {
@@ -197,6 +210,7 @@ describe('d2l-list', () => {
 
 		it('dispatches d2l-list-add-button-click event when add button clicked', async() => {
 			const el = await fixture(html`<d2l-list add-button><d2l-list-item label="item" key="L1-1"></d2l-list-item></d2l-list>`);
+			console.log(Math.round(performance.now() - testStartTime));
 			const item = el.querySelector('d2l-list-item');
 			clickElem(item.shadowRoot.querySelector('d2l-button-add'));
 			const e = await oneEvent(el, 'd2l-list-add-button-click');
@@ -211,6 +225,7 @@ describe('d2l-list', () => {
 					<d2l-list-item label="item 2" key="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
+			console.log(Math.round(performance.now() - testStartTime));
 			const item = el.querySelector('d2l-list-item');
 			clickElem(item.shadowRoot.querySelectorAll('d2l-button-add')[1]);
 			const e = await oneEvent(el, 'd2l-list-add-button-click');
@@ -225,6 +240,7 @@ describe('d2l-list', () => {
 					<d2l-list-item label="item 2" key="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
+			console.log(Math.round(performance.now() - testStartTime));
 			const item = el.querySelectorAll('d2l-list-item')[1];
 			clickElem(item.shadowRoot.querySelector('d2l-button-add'));
 			const e = await oneEvent(el, 'd2l-list-add-button-click');
@@ -239,6 +255,7 @@ describe('d2l-list', () => {
 					<d2l-list-item key="L1-2" label="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
+			console.log(Math.round(performance.now() - testStartTime));
 			expectSelectionInfo(list, false, listSelectionStates.notSet, []);
 		});
 
@@ -249,6 +266,7 @@ describe('d2l-list', () => {
 					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
+			console.log(Math.round(performance.now() - testStartTime));
 			expectSelectionInfo(list, false, listSelectionStates.none, []);
 		});
 
@@ -259,6 +277,7 @@ describe('d2l-list', () => {
 					<d2l-list-item selectable key="L1-2" label="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
+			console.log(Math.round(performance.now() - testStartTime));
 			expectSelectionInfo(list, false, listSelectionStates.some, ['L1-1']);
 		});
 
@@ -269,6 +288,7 @@ describe('d2l-list', () => {
 					<d2l-list-item selectable selected key="L1-2" label="L1-2"></d2l-list-item>
 				</d2l-list>
 			`);
+			console.log(Math.round(performance.now() - testStartTime));
 			expectSelectionInfo(list, false, listSelectionStates.all, ['L1-1', 'L1-2']);
 		});
 

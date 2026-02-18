@@ -151,7 +151,6 @@ class Alert extends LocalizeCoreElement(LitElement) {
 	}
 
 	render() {
-		console.log(performance.now(), 'alert.render');
 		const hasActions = this.buttonText && this.buttonText.length > 0 || this.hasCloseButton;
 		const alertTextClasses = {
 			'd2l-alert-text': true,
@@ -181,7 +180,6 @@ class Alert extends LocalizeCoreElement(LitElement) {
 	}
 
 	_onButtonClick() {
-		console.log(performance.now(), 'alert._onButtonClick called, dispatching "d2l-alert-toast-button-press"...');
 		this.dispatchEvent(new CustomEvent(
 			'd2l-alert-button-press', { bubbles: true, composed: true }
 		));

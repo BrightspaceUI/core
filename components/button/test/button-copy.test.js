@@ -2,6 +2,15 @@ import '../button-copy.js';
 import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { stub } from 'sinon';
 
+let testStartTime;
+mocha.setup({
+	rootHooks: {
+		beforeEach() {
+			testStartTime = performance.now();
+		}
+	}
+});
+
 describe('d2l-button-copy', () => {
 
 	describe('constructor', () => {
@@ -16,18 +25,21 @@ describe('d2l-button-copy', () => {
 
 		it('disabled attribute disables the button', async() => {
 			const el = await fixture(html`<d2l-button-copy disabled></d2l-button-copy>`);
+			console.log(Math.round(performance.now() - testStartTime));
 			const buttonIcon = el.shadowRoot.querySelector('d2l-button-icon');
 			expect(buttonIcon.disabled).to.be.true;
 		});
 
 		it('button text defaults to localized "Copy" string', async() => {
 			const el = await fixture(html`<d2l-button-copy></d2l-button-copy>`);
+			console.log(Math.round(performance.now() - testStartTime));
 			const buttonIcon = el.shadowRoot.querySelector('d2l-button-icon');
 			expect(buttonIcon.text).to.equal(el.localize('intl-common:actions:copy'));
 		});
 
 		it('button text can be set via text attribute', async() => {
 			const el = await fixture(html`<d2l-button-copy text="Custom text!"></d2l-button-copy>`);
+			console.log(Math.round(performance.now() - testStartTime));
 			const buttonIcon = el.shadowRoot.querySelector('d2l-button-icon');
 			expect(buttonIcon.text).to.equal('Custom text!');
 		});
@@ -37,12 +49,14 @@ describe('d2l-button-copy', () => {
 
 		it('dispatches click event when clicked', async() => {
 			const el = await fixture(html`<d2l-button-copy></d2l-button-copy>`);
+			console.log(Math.round(performance.now() - testStartTime));
 			clickElem(el);
 			await oneEvent(el, 'click');
 		});
 
 		it('does not dispatch click event when disabled', async() => {
 			const el = await fixture(html`<d2l-button-copy disabled></d2l-button-copy>`);
+			console.log(Math.round(performance.now() - testStartTime));
 			let dispatched = false;
 			el.addEventListener('click', () => dispatched = true);
 			await clickElem(el);
@@ -51,6 +65,7 @@ describe('d2l-button-copy', () => {
 
 		it('stops propagation when clicked', async() => {
 			const el = await fixture(html`<d2l-button-copy></d2l-button-copy>`);
+			console.log(Math.round(performance.now() - testStartTime));
 			let propagated = false;
 			el.parentElement.addEventListener('click', () => propagated = true);
 			const buttonIcon = el.shadowRoot.querySelector('d2l-button-icon');
@@ -78,6 +93,7 @@ describe('d2l-button-copy', () => {
 		].forEach(info => {
 			it(`${info.name}`, async() => {
 				const el = await fixture(html`<d2l-button-copy></d2l-button-copy>`);
+				console.log(Math.round(performance.now() - testStartTime));
 				clickElem(el);
 				const { detail } = await oneEvent(el, 'click');
 				const copied = await detail.writeTextToClipboard(info.text);
