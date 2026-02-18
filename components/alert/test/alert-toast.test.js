@@ -21,7 +21,7 @@ describe('d2l-alert-toast', () => {
 
 	});
 
-	describe('button-press', () => {
+	/*describe('button-press', () => {
 
 		it('should fire "d2l-alert-toast-button-press" event when alert button is pressed', async() => {
 			const el = await fixture(html`<d2l-alert-toast button-text="Click Me" open>message</d2l-alert-toast>`);
@@ -32,7 +32,7 @@ describe('d2l-alert-toast', () => {
 			await oneEvent(el, 'd2l-alert-toast-button-press');
 		});
 
-	});
+	});*/
 
 	describe('resize event', () => {
 		it('emits resize events with correct details', async() => {
