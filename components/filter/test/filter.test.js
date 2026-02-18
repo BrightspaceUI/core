@@ -8,6 +8,15 @@ import { expect, fixture, html, nextFrame, oneEvent, runConstructor, waitUntil }
 import { spy, stub, useFakeTimers } from 'sinon';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 
+let testStartTime;
+mocha.setup({
+	rootHooks: {
+		beforeEach() {
+			testStartTime = performance.now();
+		}
+	}
+});
+
 const singleSetDimensionFixture = html`
 	<d2l-filter>
 		<d2l-filter-dimension-set key="dim" text="Dim" select-all>
@@ -101,6 +110,7 @@ describe('d2l-filter', () => {
 	describe('loading', () => {
 		it('single set dimension - loading spinner and select all hidden', async() => {
 			const elem = await fixture(singleSetDimensionFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			const dim = elem.querySelector('d2l-filter-dimension-set');
 			expect(elem.shadowRoot.querySelector('d2l-loading-spinner')).to.be.null;
 			expect(elem.shadowRoot.querySelector('d2l-selection-select-all')).to.not.be.null;
@@ -117,12 +127,14 @@ describe('d2l-filter', () => {
 	describe('header-text', () => {
 		it('should set label on dimension set list when header-text is defined', async() => {
 			const elem = await fixture(headerTextFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			const list = elem.shadowRoot.querySelector('d2l-list');
 			expect(list.getAttribute('label')).to.equal('Test Header');
 		});
 
 		it('should not set label on dimension set list when header-text is defined while searching', async() => {
 			const elem = await fixture(headerTextFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			const list = elem.shadowRoot.querySelector('d2l-list');
 
 			elem._handleSearch({ detail: { value: 'V' } });
@@ -134,6 +146,7 @@ describe('d2l-filter', () => {
 
 		it('should not set label on dimension set list when header-text is not defined', async() => {
 			const elem = await fixture(singleSetDimensionFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			const list = elem.shadowRoot.querySelector('d2l-list');
 			expect(list.hasAttribute('label')).to.be.false;
 		});
@@ -142,6 +155,7 @@ describe('d2l-filter', () => {
 	describe('selected-first', () => {
 		it('should not update shouldBubble after dimension is opened', async() => {
 			const elem = await fixture(selectedFirstFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 
 			elem.opened = true;
@@ -171,6 +185,7 @@ describe('d2l-filter', () => {
 					</d2l-filter-dimension-set>
 				</d2l-filter>
 			`);
+			console.log(Math.round(performance.now() - testStartTime));
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 			const menu = elem.shadowRoot.querySelector('d2l-menu');
 			const dimensions = elem.shadowRoot.querySelectorAll('d2l-menu-item');
@@ -201,6 +216,7 @@ describe('d2l-filter', () => {
 
 		it('should update shouldBubble when dimension is searched', async() => {
 			const elem = await fixture(selectedFirstFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 
 			elem.opened = true;
@@ -225,11 +241,13 @@ describe('d2l-filter', () => {
 	describe('info messages', () => {
 		it('set dimension - empty state', async() => {
 			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim"></d2l-filter-dimension-set></d2l-filter>');
+			console.log(Math.round(performance.now() - testStartTime));
 			expect(elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message').description).to.include('No available filters');
 		});
 
 		it('set dimension - custom empty state', async() => {
 			const elem = await fixture(singleSetSetEmptyStateDimensionFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			const emptyState = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
 			const emptyStateAction = emptyState.querySelector('d2l-empty-state-action-button');
 			expect(emptyState.description).to.equal('Test description');
@@ -238,6 +256,7 @@ describe('d2l-filter', () => {
 
 		it('set dimension - no search results', async() => {
 			const elem = await fixture(singleSetDimensionFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			elem._handleSearch({ detail: { value: 'no results' } });
 			elem.requestUpdate();
 			await elem.updateComplete;
@@ -250,6 +269,7 @@ describe('d2l-filter', () => {
 
 		it('set dimension - custom no search results', async() => {
 			const elem = await fixture(singleSetLinkSearchEmptyStateDimensionFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			elem._handleSearch({ detail: { value: 'no results' } });
 			elem.requestUpdate();
 			await elem.updateComplete;
@@ -265,6 +285,7 @@ describe('d2l-filter', () => {
 
 		it('set dimension - search results (offscreen)', async() => {
 			const elem = await fixture(singleSetDimensionFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			elem._handleSearch({ detail: { value: '1' } });
 			elem.requestUpdate();
 			await elem.updateComplete;
@@ -286,6 +307,7 @@ describe('d2l-filter', () => {
 	describe('introductory-text', () => {
 		it('sets introductory text on a single dimension', async() => {
 			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set introductory-text="Intro" key="dim"></d2l-filter-dimension-set></d2l-filter>');
+			console.log(Math.round(performance.now() - testStartTime));
 			expect(elem._dimensions[0].introductoryText).to.equal('Intro');
 			const introText = elem.shadowRoot.querySelector('.d2l-filter-dimension-intro-text');
 			expect(introText.classList.contains('multi-dimension')).to.be.false;
@@ -294,6 +316,7 @@ describe('d2l-filter', () => {
 
 		it('sets introductory text on a dimension in a multi-dimensional filter', async() => {
 			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set introductory-text="Intro" key="dim"></d2l-filter-dimension-set><d2l-filter-dimension-set introductory-text="intro" key="dim"></d2l-filter-dimension-set></d2l-filter>');
+			console.log(Math.round(performance.now() - testStartTime));
 			const dropdown = elem.shadowRoot.querySelector('d2l-dropdown');
 			const menu = elem.shadowRoot.querySelector('d2l-menu');
 			const dimension = elem.shadowRoot.querySelector('d2l-menu-item');
@@ -314,6 +337,7 @@ describe('d2l-filter', () => {
 	describe('clearing', () => {
 		it('set dimension', async() => {
 			const elem = await fixture(singleSetDimensionFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			expect(elem._dimensions[0].values[0].selected).to.be.true;
 			expect(elem._dimensions[0].values[1].selected).to.be.false;
 			expect(elem._dimensions[0].appliedCount).to.equal(1);
@@ -337,6 +361,7 @@ describe('d2l-filter', () => {
 				<d2l-filter-dimension-set key="1" text="Dim 1"><d2l-filter-dimension-set-value key="test" text="test" selected></d2l-filter-dimension-set-value></d2l-filter-dimension-set>
 				<d2l-filter-dimension-set key="2" text="Dim 2" selection-single><d2l-filter-dimension-set-value key="test" text="test" selected></d2l-filter-dimension-set-value></d2l-filter-dimension-set>
 			</d2l-filter>`);
+			console.log(Math.round(performance.now() - testStartTime));
 			elem._dimensions[0].searchValue = 'searched';
 			elem._dimensions[1].searchValue = 'searched';
 
@@ -363,6 +388,7 @@ describe('d2l-filter', () => {
 
 		it('requestFilterValueClear clears the corresponding active filter value', async() => {
 			const elem = await fixture(multiDimensionFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			expect(elem._dimensions[2].values[1].selected).to.be.true;
 			expect(elem._dimensions[2].appliedCount).to.equal(1);
 			expect(elem._totalAppliedCount).to.equal(2);
@@ -383,6 +409,7 @@ describe('d2l-filter', () => {
 
 		it('requestFilterValueClear does nothing if the filter value is already inactive', async() => {
 			const elem = await fixture(multiDimensionFixture);
+			console.log(Math.round(performance.now() - testStartTime));
 			expect(elem._dimensions[2].values[0].selected).to.be.false;
 			expect(elem._dimensions[2].appliedCount).to.equal(1);
 			expect(elem._totalAppliedCount).to.equal(2);
@@ -398,11 +425,13 @@ describe('d2l-filter', () => {
 	describe('searching', () => {
 		it('set dimension - no search', async() => {
 			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" text="dim" search-type="none"></d2l-filter-dimension-set></d2l-filter>');
+			console.log(Math.round(performance.now() - testStartTime));
 			expect(elem.shadowRoot.querySelector('d2l-input-search')).to.be.null;
 		});
 
 		it('set dimension - manual search sets loading state to true and then back to false when callback is run', async() => {
 			const elem = await fixture('<d2l-filter><d2l-filter-dimension-set key="dim" text="dim" search-type="manual"></d2l-filter-dimension-set></d2l-filter>');
+			console.log(Math.round(performance.now() - testStartTime));
 			expect(elem._dimensions[0].loading).to.be.false;
 
 			setTimeout(() => elem._handleSearch({ detail: { value: 'manual search' } }));
@@ -422,6 +451,7 @@ describe('d2l-filter', () => {
 				<d2l-filter-dimension-set-value key="test" text="test"></d2l-filter-dimension-set-value>
 				<d2l-filter-dimension-set-value key="test2" text="test2"></d2l-filter-dimension-set-value>
 			</d2l-filter-dimension-set></d2l-filter>`);
+			console.log(Math.round(performance.now() - testStartTime));
 			expect(elem._dimensions[0].values[0].hidden).to.be.undefined;
 			expect(elem._dimensions[0].values[1].hidden).to.be.undefined;
 
@@ -439,6 +469,7 @@ describe('d2l-filter', () => {
 				<d2l-filter-dimension-set-value key="test" text="test"></d2l-filter-dimension-set-value>
 				<d2l-filter-dimension-set-value key="test2" text="test2"></d2l-filter-dimension-set-value>
 			</d2l-filter-dimension-set></d2l-filter>`);
+			console.log(Math.round(performance.now() - testStartTime));
 			expect(elem._dimensions[0].values[0].hidden).to.be.undefined;
 			expect(elem._dimensions[0].values[1].hidden).to.be.undefined;
 
@@ -461,6 +492,7 @@ describe('d2l-filter', () => {
 		].forEach(testCase => {
 			it(`set dimension - automatic search ${testCase.name}`, async() => {
 				const elem = await fixture(singleSetDimensionFixture);
+				console.log(Math.round(performance.now() - testStartTime));
 				elem._handleSearch({ detail: { value: testCase.value } });
 				elem.requestUpdate();
 				await elem.updateComplete;
@@ -483,6 +515,7 @@ describe('d2l-filter', () => {
 		describe('d2l-filter-change', () => {
 			it('single set dimension fires change events', async() => {
 				const elem = await fixture(singleSetDimensionFixture);
+				console.log(Math.round(performance.now() - testStartTime));
 				const value = elem.shadowRoot.querySelector('d2l-list-item[key="2"]');
 				expect(elem._dimensions[0].values[1].selected).to.be.false;
 
