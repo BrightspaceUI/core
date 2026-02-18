@@ -187,7 +187,7 @@ class AlertToast extends LitElement {
 		}
 	}
 
-	async connectedCallback() {
+	connectedCallback() {
 		super.connectedCallback();
 		document.body.addEventListener('d2l-alert-toast-close', this._handleSiblingResize);
 		document.body.addEventListener('d2l-alert-toast-resize', this._handleSiblingResize);
@@ -195,9 +195,10 @@ class AlertToast extends LitElement {
 		document.body.addEventListener('d2l-alert-toast-timer-stop', this._closeTimerStop);
 		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this._handlePageResize);
 
-		await this.updateComplete;
-		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
-		this._resizeObserver.observe(this._innerContainer);
+		this.updateComplete.then(() => {
+			this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
+			this._resizeObserver.observe(this._innerContainer);
+		});
 	}
 
 	disconnectedCallback() {
