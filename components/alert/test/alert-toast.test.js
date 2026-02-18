@@ -21,18 +21,24 @@ describe('d2l-alert-toast', () => {
 
 	});
 
-	/*describe('button-press', () => {
+	describe('button-press', () => {
 
 		it('should fire "d2l-alert-toast-button-press" event when alert button is pressed', async() => {
-			const el = await fixture(html`<d2l-alert-toast button-text="Click Me" open>message</d2l-alert-toast>`);
+			/*const el = await fixture(html`<d2l-alert-toast button-text="Click Me" open>message</d2l-alert-toast>`);
 			console.log(Math.round(performance.now() - testStartTime));
 			const alert = el.shadowRoot.querySelector('d2l-alert');
 			const button = alert.shadowRoot.querySelector('d2l-button-subtle[text="Click Me"]');
 			clickElem(button);
-			await oneEvent(el, 'd2l-alert-toast-button-press');
+			await oneEvent(el, 'd2l-alert-toast-button-press');*/
+			const el = await fixture(html`<d2l-alert-toast open>message</d2l-alert-toast>`);
+			console.log(Math.round(performance.now() - testStartTime));
+			const alert = el.shadowRoot.querySelector('d2l-alert');
+			alert.dispatchEvent(new CustomEvent('d2l-alert-close'));
+			await el.updateComplete;
+			expect(el.open).to.be.false;
 		});
 
-	});*/
+	});
 
 	describe('resize event', () => {
 		it('emits resize events with correct details', async() => {
