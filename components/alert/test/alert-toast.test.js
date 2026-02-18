@@ -1,5 +1,5 @@
 import '../alert-toast.js';
-import { clickElem, expect, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, expect, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { setViewport as cmdSetViewport, emulateMedia, sendMouse } from '@web/test-runner-commands';
 import { nextFrame, fixture as wcFixture } from '@open-wc/testing';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
@@ -254,11 +254,13 @@ describe('d2l-alert-toast', () => {
 
 	before(async() => {
 		console.log(performance.now(), 'before start');
-		const sheet = new CSSStyleSheet();
-		sheet.replaceSync("a { color: red; }");
-		document.adoptedStyleSheets.push(sheet);
+		//const sheet = new CSSStyleSheet();
+		//sheet.replaceSync("a { color: red; }");
+		//document.adoptedStyleSheets.push(sheet);
 		await nextFrame();
-		console.log(performance.now(), 'test1 end');
+		await aTimeout(1000);
+		await nextFrame();
+		console.log(performance.now(), 'before end');
 	});
 
 	describe('constructor', () => {
