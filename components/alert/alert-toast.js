@@ -101,9 +101,6 @@ class AlertToast extends LitElement {
 				width: 100%;
 				z-index: 10000;
 			}
-			.d2l-alert-toast-container[data-state="open"] {
-				box-shadow: 0 0.1rem 0.6rem 0 rgba(0, 0, 0, 0.1);
-			}
 
 			.d2l-alert-toast-container:not([data-state="closed"]) {
 				display: block;
@@ -226,7 +223,8 @@ class AlertToast extends LitElement {
 	render() {
 		const spaceBetweenAlerts = this._numAlertsBelow * (this._smallWidth ? TOAST_SPACING_SMALL : TOAST_SPACING);
 		const containerStyles = {
-			bottom: (this._totalSiblingHeightBelow || this._numAlertsBelow) ? `calc(${this._totalSiblingHeightBelow}px + ${spaceBetweenAlerts}rem)` : 0
+			bottom: (this._totalSiblingHeightBelow || this._numAlertsBelow) ? `calc(${this._totalSiblingHeightBelow}px + ${spaceBetweenAlerts}rem)` : 0,
+			boxShadow: '0 0.1rem 0.6rem 0 rgba(0, 0, 0, 0.1)'
 		};
 		const containerClasses = {
 			'd2l-alert-toast-container': true,
