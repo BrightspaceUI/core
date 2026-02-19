@@ -26,7 +26,7 @@ describe('d2l-alert-toast', () => {
 		// which results in frequent timeouts.
 		// In the future, we should try removing this to check if it's been
 		// resolved. (March 2026)
-		}).timeout(3000);;
+		}).timeout(3000);
 
 	});
 
