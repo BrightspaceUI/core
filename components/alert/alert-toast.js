@@ -92,6 +92,7 @@ class AlertToast extends LitElement {
 
 			.d2l-alert-toast-container {
 				border-radius: 0.3rem;
+				box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
 				display: none;
 				left: 0;
 				margin: 0 auto 1.5rem;
