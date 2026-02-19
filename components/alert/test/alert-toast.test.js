@@ -15,6 +15,13 @@ describe('d2l-alert-toast', () => {
 	describe('button-press', () => {
 
 		it('should fire "d2l-alert-toast-button-press" event when alert button is pressed', async() => {
+			// GAUD-9496: only in CI and only in Safari, the box-shadow on the
+			// toast container causes a 1-2s delay for an animation frame to
+			// occur within the "fixture" call below, which results in frequent
+			// timeouts.
+			// In the future, we should try removing this to check if it's been
+			// resolved. (March 2026)
+			this.timeout(3000);
 			const el = await fixture(html`<d2l-alert-toast button-text="Click Me" open>message</d2l-alert-toast>`);
 			const alert = el.shadowRoot.querySelector('d2l-alert');
 			const button = alert.shadowRoot.querySelector('d2l-button-subtle[text="Click Me"]');
