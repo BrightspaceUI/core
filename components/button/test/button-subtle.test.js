@@ -44,6 +44,12 @@ describe('d2l-button-subtle', () => {
 			await oneEvent(el, 'click');
 		});
 
+		it('dispatches click event when button clicked', async() => {
+			const el = await fixture(html`<button>button</button>`);
+			clickElem(el);
+			await oneEvent(el, 'click');
+		});
+
 	});
 
 	/*runButtonPropertyTests(getFixture);
