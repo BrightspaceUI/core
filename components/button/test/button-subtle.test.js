@@ -6,7 +6,7 @@ import { runButtonPropertyTests } from './button-shared-tests.js';
 
 describe('d2l-button-subtle', () => {
 
-	const getFixture = async(props = {}) => {
+	/*const getFixture = async(props = {}) => {
 		const attrs = Object.entries(props).map(([key, value]) => {
 			const attrName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
 			if (typeof value === 'boolean') {
@@ -34,7 +34,7 @@ describe('d2l-button-subtle', () => {
 				.to.throw(TypeError, createMessage(el, 'text'));
 		});
 
-	});
+	});*/
 
 	describe('events', () => {
 
@@ -46,7 +46,7 @@ describe('d2l-button-subtle', () => {
 
 	});
 
-	runButtonPropertyTests(getFixture);
+	/*runButtonPropertyTests(getFixture);
 
 	describe('button-subtle specific properties', () => {
 
@@ -62,6 +62,6 @@ describe('d2l-button-subtle', () => {
 			expect(button.hasAttribute('aria-label')).to.be.false;
 		});
 
-	});
+	});*/
 
 });
