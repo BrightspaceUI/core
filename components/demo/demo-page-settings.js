@@ -1,5 +1,5 @@
 import './demo-flags.js';
-import './demo-theme.js';
+import './demo-color-mode.js';
 import '../button/button.js';
 import '../inputs/input-checkbox-group.js';
 import '../inputs/input-checkbox.js';
@@ -13,7 +13,7 @@ import { inputLabelStyles } from '../inputs/input-label-styles.js';
 import { selectStyles } from '../inputs/input-select-styles.js';
 
 const localeSettings = getDocumentLocaleSettings();
-const defaultTheme = 'light';
+const defaultColorMode = 'light';
 
 class DemoPageSettings extends LitElement {
 
@@ -54,7 +54,7 @@ class DemoPageSettings extends LitElement {
 		} else {
 			this._language = getDocumentLocaleSettings().language;
 		}
-		this._theme = document.documentElement.dataset.theme || defaultTheme;
+		this._colorMode = document.documentElement.dataset.colorMode || defaultColorMode;
 	}
 
 	connectedCallback() {
@@ -84,7 +84,7 @@ class DemoPageSettings extends LitElement {
 			languageItem = html`<d2l-collapsible-panel-summary-item slot="summary" text="Language: ${selectedLanguageCode}"></d2l-collapsible-panel-summary-item>`;
 		}
 
-		const themeOptions = ['light', 'dark', 'os'].map(theme => html`<option value="${theme}" ?selected="${this._theme === theme}">${theme}</option>`);
+		const colorModeOptions = ['light', 'dark', 'os'].map(colorMode => html`<option value="${colorMode}" ?selected="${this._colorMode === colorMode}">${colorMode}</option>`);
 
 		const knownFlags = this.#getKnownFlagsSorted();
 		const knownFlagCheckboxes = [];
@@ -108,8 +108,8 @@ class DemoPageSettings extends LitElement {
 						<select class="d2l-input-select" @change="${this.#handleLanguageChange}">${languageOptions}</select>
 					</label>
 					<label>
-						<span class="d2l-input-label">Theme</span>
-						<select class="d2l-input-select" @change="${this.#handleThemeChange}">${themeOptions}</select>
+						<span class="d2l-input-label">Color Mode</span>
+						<select class="d2l-input-select" @change="${this.#handleColorModeChange}">${colorModeOptions}</select>
 					</label>
 					${knownFlagCheckboxes.length > 0 ? html`
 						<d2l-input-checkbox-group id="flagsCheckboxGroup" label="Flags">
@@ -156,6 +156,18 @@ class DemoPageSettings extends LitElement {
 		window.location.search = urlParams.toString();
 	}
 
+	#handleColorModeChange(e) {
+		const newColorMode = e.target[e.target.selectedIndex].value;
+		document.documentElement.dataset.colorMode = newColorMode;
+		const url = new URL(window.location.href);
+		if (newColorMode === defaultColorMode) {
+			url.searchParams.delete('color-mode');
+		} else {
+			url.searchParams.set('color-mode', newColorMode);
+		}
+		window.history.replaceState({}, '', url.toString());
+	}
+
 	#handleDocumentLanguageChange() {
 		this._language = localeSettings.language;
 		const url = new URL(window.location.href);
@@ -175,18 +187,6 @@ class DemoPageSettings extends LitElement {
 		const newLanguageCode = e.target[e.target.selectedIndex].value;
 		document.documentElement.dir = newLanguageCode === 'ar-sa' ? 'rtl' : 'ltr';
 		document.documentElement.lang = newLanguageCode;
-	}
-
-	#handleThemeChange(e) {
-		const newTheme = e.target[e.target.selectedIndex].value;
-		document.documentElement.setAttribute('data-theme', newTheme);
-		const url = new URL(window.location.href);
-		if (newTheme === defaultTheme) {
-			url.searchParams.delete('theme');
-		} else {
-			url.searchParams.set('theme', newTheme);
-		}
-		window.history.replaceState({}, '', url.toString());
 	}
 
 }

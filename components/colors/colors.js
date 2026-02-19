@@ -243,11 +243,11 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		html {
 			${lightPalette}
 		}
-		html[data-theme="dark"] {
+		html[data-color-mode="dark"] {
 			${darkPalette}
 		}
 		@media (prefers-color-scheme: dark) {
-			html[data-theme="os"] {
+			html[data-color-mode="os"] {
 				${darkPalette}
 			}
 		}
