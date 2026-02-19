@@ -7,6 +7,8 @@ const BACKDROP_DELAY_MS = 800;
 const FADE_DURATION_MS = 500;
 const SPINNER_DELAY_MS = FADE_DURATION_MS;
 
+const LOADING_SPINNER_BUFFER = 300;
+
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /**
@@ -58,13 +60,18 @@ class LoadingBackdrop extends LitElement {
 			d2l-loading-spinner {
 				opacity: 0;
 				position: absolute;
-				top: 100px;
-				transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
+				top: ${LOADING_SPINNER_BUFFER}px;
+				transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms, top .2s ease-in;
+				transition
+			}
+			:host([_state="shown"]) d2l-loading-spinner.fixed {
+				position: fixed;
+				top: 50% !important;
 			}
 			:host([_state="shown"]) d2l-loading-spinner {
 				opacity: 1;
 			}
-			
+
 			:host([_state="hiding"]) .d2l-backdrop,
 			:host([_state="hiding"]) d2l-loading-spinner {
 				transition: opacity ${FADE_DURATION_MS}ms ease-out;
@@ -80,6 +87,11 @@ class LoadingBackdrop extends LitElement {
 		super();
 		this.shown = false;
 		this._state = 'hidden';
+
+	}
+
+	firstUpdated() {
+		document.addEventListener('scroll', this.#updateLoadingSpinnerPos.bind(this));
 	}
 
 	render() {
@@ -89,15 +101,17 @@ class LoadingBackdrop extends LitElement {
 			<d2l-loading-spinner></d2l-loading-spinner>
 		`;
 	}
-
 	updated(changedProperties) {
 		if (changedProperties.has('_state')) {
 			if (this._state === 'showing') {
 				setTimeout(() => this._state = 'shown', BACKDROP_DELAY_MS);
 			}
 		}
-	}
 
+		if (this._state !== 'hidden') {
+			this.#updateLoadingSpinnerPos();
+		};
+	}
 	willUpdate(changedProperties) {
 		if (changedProperties.has('shown')) {
 			if (this.shown) {
@@ -107,7 +121,6 @@ class LoadingBackdrop extends LitElement {
 			}
 		}
 	}
-
 	#fade() {
 		if (reduceMotion) {
 			this.#hide();
@@ -115,13 +128,11 @@ class LoadingBackdrop extends LitElement {
 			this._state = 'hiding';
 		}
 	}
-
 	#handleTransitionEnd() {
 		if (this._state === 'hiding') {
 			this.#hide();
 		}
 	}
-
 	#hide() {
 		this._state = 'hidden';
 
@@ -129,7 +140,6 @@ class LoadingBackdrop extends LitElement {
 
 		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
 	}
-
 	#show() {
 		this._state = reduceMotion ? 'shown' : 'showing';
 
@@ -138,6 +148,25 @@ class LoadingBackdrop extends LitElement {
 		if (containingBlock.getAttribute('inert') !== null) containingBlock.dataset.initiallyInert = '1';
 
 		containingBlock.setAttribute('inert', 'inert');
+	}
+	#updateLoadingSpinnerPos() {
+		if (this._state === 'hidden') { return; }
+
+		const loadingSpinner = this.shadowRoot.querySelector('d2l-loading-spinner');
+		const boundingRect = this.getBoundingClientRect();
+		const top = boundingRect.top;
+
+		if (top > 0) {
+			const innerHeight = window.innerHeight;
+			const visibleHeight = innerHeight - boundingRect.top;
+			const centerPoint = visibleHeight / 2;
+			const minimumOffset = 100;
+			const adjustedOffset = Math.max(minimumOffset, centerPoint);
+			loadingSpinner.style.top = `${adjustedOffset}px`;
+			loadingSpinner.classList.remove('fixed');
+		} else {
+			loadingSpinner.classList.add('fixed');
+		}
 	}
 
 }
