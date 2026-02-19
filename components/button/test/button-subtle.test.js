@@ -1,40 +1,80 @@
 import '../button-subtle.js';
-import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
-import { html as staticHtml, unsafeStatic } from 'lit/static-html.js';
-import { createMessage } from '../../../mixins/property-required/property-required-mixin.js';
-import { runButtonPropertyTests } from './button-shared-tests.js';
+import { fixture, html, oneEvent } from '@brightspace-ui/testing';
+
+const PARAM_SESSION_ID = 'wtr-session-id';
+
+const sessionId = new URL(window.location.href).searchParams.get(PARAM_SESSION_ID);
+
+async function executeServerCommand(command, payload, pluginName) {
+	if (typeof sessionId !== 'string') {
+		throw new Error(
+			'Unable to execute server commands in a browser not controlled by the test runner. ' +
+			'Use the debug option from the watch menu to debug in a controlled browser.',
+		);
+	}
+
+	let sendMessageWaitForResponse;
+	try {
+		const webSocketModule = await import('/__web-dev-server__web-socket.js');
+		({ sendMessageWaitForResponse } = webSocketModule);
+	} catch (error) {
+		throw new Error(
+			'Could not setup web socket connection. Are you executing this test through Web Test Runner?',
+		);
+	}
+
+	try {
+		const response = await sendMessageWaitForResponse({
+			type: 'wtr-command',
+			sessionId,
+			command,
+			payload,
+		});
+
+		if (!response.executed) {
+			let msg;
+			if (pluginName) {
+				msg = `Unknown command ${command}. Add the ${pluginName} to your config.`;
+			} else {
+				msg = `Unknown command ${command}. Did you install a plugin to handle this command?`;
+			}
+			throw new Error(msg);
+		}
+
+		return response.result;
+	} catch (error) {
+		throw new Error(
+			`Error while executing command ${command}${
+				payload ? ` with payload ${JSON.stringify(payload)}` : ''
+			}: ${error.message}`,
+		);
+	}
+}
+
+function getElementPosition(elem) {
+	const { x, y, width, height } = elem.getBoundingClientRect();
+	return {
+		left: Math.floor(x + window.scrollX),
+		top: Math.floor(y + window.scrollY),
+		x: Math.floor(x + window.scrollX + width / 2),
+		y: Math.floor(y + window.scrollY + height / 2),
+	};
+}
+
+async function clickAt(x, y) {
+	await sendMouse({ type: 'click', position: [x, y] });
+}
+
+async function clickElem(elem) {
+	const position = getElementPosition(elem);
+	return clickAt(position.x, position.y);
+}
+
+function sendMouse(options) {
+  return executeServerCommand('send-mouse', options);
+}
 
 describe('d2l-button-subtle', () => {
-
-	/*const getFixture = async(props = {}) => {
-		const attrs = Object.entries(props).map(([key, value]) => {
-			const attrName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
-			if (typeof value === 'boolean') {
-				return value ? attrName : '';
-			}
-			return `${attrName}="${value}"`;
-		}).filter(Boolean).join(' ');
-		return await fixture(staticHtml`<d2l-button-subtle text="Subtle Button" ${unsafeStatic(attrs)}></d2l-button-subtle>`);
-	};
-
-	describe('constructor', () => {
-
-		it('should construct', () => {
-			runConstructor('d2l-button-subtle');
-		});
-
-	});
-
-	describe('errors', () => {
-
-		// enable when PropertyRequiredMixin is used
-		it.skip('throws error when no text', async() => {
-			const el = await fixture(html`<d2l-button-subtle></d2l-button-subtle>`);
-			expect(() => el.flushRequiredPropertyErrors())
-				.to.throw(TypeError, createMessage(el, 'text'));
-		});
-
-	});*/
 
 	describe('events', () => {
 
