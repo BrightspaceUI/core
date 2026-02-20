@@ -762,11 +762,11 @@ describe('list', () => {
 			</d2l-list>
 		`;
 		function createSelectableList(opts) {
-			const { selected, addButton, selectionDisabled } = { selected: false, addButton: false, selectionDisabled: false, ...opts };
+			const { selected, addButton, selectionDisabled, selectionDisabledTooltip } = { selected: false, addButton: false, selectionDisabled: false, selectionDisabledTooltip: false, ...opts };
 			return html`
 				<d2l-list style="width: 400px;" ?add-button="${addButton}">
 					<d2l-list-item label="Item 1" selectable key="1" ?selected="${selected}" color="${ifDefined(!selected ? '#00ff00' : undefined)}">Item 1</d2l-list-item>
-					<d2l-list-item label="Item 2" ?selection-disabled="${selectionDisabled}" selectable key="2" color="${ifDefined(selected ? '#00ff00' : undefined)}">Item 2</d2l-list-item>
+					<d2l-list-item label="Item 2" ?selection-disabled="${selectionDisabled}" selection-disabled-tooltip="${ifDefined(selectionDisabled && selectionDisabledTooltip ? 'disabled tooltip' : undefined)}" selectable key="2" color="${ifDefined(selected ? '#00ff00' : undefined)}">Item 2</d2l-list-item>
 				</d2l-list>
 			`;
 		}
@@ -787,6 +787,7 @@ describe('list', () => {
 			{ name: 'not selected hover', template: createSelectableList(), action: elem => hoverElem(elem.querySelector('[key="1"]')), margin: 24 },
 			{ name: 'not selected add-button', template: createSelectableList({ addButton: true }) },
 			{ name: 'selection-disabled hover', template: createSelectableList({ selectionDisabled: true }), action: elem => hoverElem(elem.querySelector('[key="2"]')) },
+			{ name: 'selection-disabled tooltip focus', template: createSelectableList({ selectionDisabled: true, selectionDisabledTooltip: true }), action: elem => focusElem(elem.querySelector('[key="2"]')) },
 			{ name: 'button selection-disabled hover', template: selectableButtonList, action: elem => hoverElem(elem.querySelector('[key="3"]')), margin: 24 },
 			{ name: 'button selection-disabled button-disabled hover', template: selectableButtonList, action: elem => hoverElem(elem.querySelector('[key="4"]')) },
 			{ name: 'selected', template: createSelectableList({ selected: true }), margin: 24 },
