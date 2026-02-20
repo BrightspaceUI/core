@@ -204,7 +204,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::before,
 			:host([selected]:not([selection-disabled]):not([skeleton])) [slot="control-container"]::after,
 			:host(:first-of-type[_nested]) [slot="control-container"]::before {
-				/* here */
 				border-top-color: transparent;
 			}
 
@@ -365,7 +364,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([_hovering-primary-action]) [slot="outside-control-container"],
 			:host([_hovering-selection]) [slot="outside-control-container"],
 			:host([_focusing-primary-action]) [slot="outside-control-container"],
-			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) [slot="outside-control-container"], /* here */
+			:host(:not([selection-disabled]):not([skeleton])[selected][_hovering-selection]) [slot="outside-control-container"],
 			:host(:not([selection-disabled]):not([button-disabled]):not([skeleton])[_focusing]:not([current])) [slot="outside-control-container"] {
 				border-color: var(--d2l-color-mica);
 				margin-bottom: -1px;
