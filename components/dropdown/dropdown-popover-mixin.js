@@ -1,3 +1,4 @@
+import '../../button/button.js';
 import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';

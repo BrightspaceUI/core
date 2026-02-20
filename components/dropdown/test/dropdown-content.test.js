@@ -1,3 +1,4 @@
+import '../../button/button.js';
 import '../dropdown.js';
 import '../dropdown-content.js';
 import '../dropdown-menu.js';
