@@ -8,10 +8,9 @@ import { isPopoverSupported } from '../popover/popover-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
-import { usePopoverMixin as useDropdownPopover } from '../dropdown/dropdown-popover-mixin.js';
 import { usePopoverMixin as useTooltipPopover } from '../tooltip/tooltip.js';
 
-export const isUsingNativePopover = isPopoverSupported && useDropdownPopover && useTooltipPopover;
+export const isUsingNativePopover = isPopoverSupported && useTooltipPopover;
 
 export const tableStyles = css`
 	.d2l-table {

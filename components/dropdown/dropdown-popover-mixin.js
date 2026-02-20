@@ -1,12 +1,9 @@
 import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
-import { getFlag } from '../../helpers/flags.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PopoverMixin } from '../popover/popover-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
-
-export const usePopoverMixin = getFlag('GAUD-7472-dropdown-popover', true);
 
 export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElement(PopoverMixin(superclass)) {
 
@@ -274,10 +271,6 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 	async open(applyFocus = true) {
 		const opener = this.#getOpener();
 		super.open(opener, applyFocus);
-	}
-
-	// todo: remove this method when removing GAUD-7472-dropdown-popover flag (d2l-filter calls this)
-	requestRepositionNextResize() {
 	}
 
 	/**
