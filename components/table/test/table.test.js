@@ -33,7 +33,7 @@ describe('d2l-table-wrapper', () => {
 
 	if (!isUsingNativePopover) {
 
-		// Remove these tests when GAUD-7472-dropdown-popover and GAUD-7355-tooltip-popover are both removed since all latest browsers support native popover
+		// Remove these tests when GAUD-7355-tooltip-popover is removed since all latest browsers support native popover
 		describe('popover', () => {
 
 			const tagName = defineCE(

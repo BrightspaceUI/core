@@ -61,7 +61,7 @@ describe('dropdown-content', () => {
 		{ name: 'max-width', content: html`<d2l-dropdown-content max-width="200" opened>${longerText}</d2l-dropdown-content>` },
 		{ name: 'min-height', dropdownStyles: { left: '50%', top: '50%' }, content: html`<d2l-dropdown-content min-height="1000" no-auto-fit opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'max-height', content: html`<d2l-dropdown-content max-height="100" opened>${basicText}</d2l-dropdown-content>` },
-		{ name: 'wide-opener', dropdownStyles: { left: '30px', right: '30px', top: '75px' }, openerStyles: { borderRadius: '5px', width: '100%' }, content: html`<d2l-dropdown-content boundary="{&quot;right&quot;:50, &quot;above&quot;:20}" opened>${basicText}</d2l-dropdown-content>` },
+		{ name: 'wide-opener', dropdownStyles: { left: '30px', right: '30px', top: '75px' }, openerStyles: { borderRadius: '5px', width: '100%' }, content: html`<d2l-dropdown-content opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'with-header-footer', content: html`<d2l-dropdown-content opened>${withHeaderFooter}</d2l-dropdown-content>` },
 		{ name: 'no-padding-no-pointer', content: html`<d2l-dropdown-content no-padding no-pointer opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'scroll-bottom-shadow', content: html`<d2l-dropdown-content opened>${scroll}</d2l-dropdown-content>` },
