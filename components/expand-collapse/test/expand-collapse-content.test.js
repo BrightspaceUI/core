@@ -1,4 +1,4 @@
-import { defineCE, expect, fixture, html, nextFrame, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { defineCE, expect, fixture, html, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
 import { LitElement, nothing } from 'lit';
 import { states } from '../expand-collapse-content.js';
 
@@ -63,7 +63,7 @@ describe('d2l-expand-collapse-content', () => {
 	describe('events', () => {
 
 		[true, false].forEach(expand => {
-			const event = `d2l-expand-collapse-content-${expand ? 'expand' : 'collapse'}`;
+			const event =  expand ? 'd2l-expand-collapse-content-expand' : 'd2l-expand-collapse-content-collapse';
 
 			async function changeState(content) {
 				setTimeout(() => content.expanded = expand);
@@ -87,14 +87,14 @@ describe('d2l-expand-collapse-content', () => {
 			it(`should fire ${event} event with transition states`, async() => {
 				const content = (await fixture(`<${tagName}${expand ? '' : ' expanded'} transitions></${tagName}>`)).shadowRoot.querySelector('d2l-expand-collapse-content');
 
+
 				const e = await changeState(content);
+
 				expect(content._state).to.equal(expand ? states.PREEXPANDING : states.PRECOLLAPSING);
 
-				await content.updateComplete;
-				await nextFrame();
-				await nextFrame();
+				const transitionState = (expand ? states.EXPANDING : states.COLLAPSING);
+				await waitUntil(() => content._state === transitionState, `never reached state: ${transitionState}`);;
 
-				expect(content._state).to.equal(expand ? states.EXPANDING : states.COLLAPSING);
 				await e.detail[`${expand ? 'expand' : 'collapse'}Complete`];
 				expect(content._state).to.equal(expand ? states.EXPANDED : states.COLLAPSED);
 			});
