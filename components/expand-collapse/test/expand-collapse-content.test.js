@@ -63,7 +63,7 @@ describe('d2l-expand-collapse-content', () => {
 	describe('events', () => {
 
 		[true, false].forEach(expand => {
-			const event =  expand ? 'd2l-expand-collapse-content-expand' : 'd2l-expand-collapse-content-collapse';
+			const event = expand ? 'd2l-expand-collapse-content-expand' : 'd2l-expand-collapse-content-collapse';
 
 			async function changeState(content) {
 				setTimeout(() => content.expanded = expand);
@@ -86,7 +86,6 @@ describe('d2l-expand-collapse-content', () => {
 
 			it(`should fire ${event} event with transition states`, async() => {
 				const content = (await fixture(`<${tagName}${expand ? '' : ' expanded'} transitions></${tagName}>`)).shadowRoot.querySelector('d2l-expand-collapse-content');
-
 
 				const e = await changeState(content);
 
