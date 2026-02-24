@@ -111,9 +111,13 @@ class LoadingBackdrop extends LitElement {
 	}
 
 	#fade() {
-		const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('.backdrop')).opacity;
+		let hideImmediately = reduceMotion || this._state === 'showing';
+		if (this._state === 'shown') {
+			const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('.backdrop')).opacity;
+			hideImmediately = (currentOpacity === '0');
+		}
 
-		if (reduceMotion || this._state === 'showing' || currentOpacity === '0') {
+		if (hideImmediately) {
 			this.#hide();
 		} else {
 			this._state = 'hiding';
