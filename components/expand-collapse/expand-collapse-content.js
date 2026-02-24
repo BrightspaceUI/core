@@ -3,7 +3,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const states = {
+export const states = {
 	PRECOLLAPSING: 'precollapsing', // setting up the styles so the collapse transition will run
 	COLLAPSING: 'collapsing', // in the process of collapsing
 	COLLAPSED: 'collapsed', // fully collapsed
@@ -88,6 +88,7 @@ class ExpandCollapseContent extends LitElement {
 		this._height = '0';
 		this._isFirstUpdate = true;
 		this._state = states.COLLAPSED;
+		this._reduceMotion = reduceMotion;
 	}
 
 	render() {
@@ -118,7 +119,7 @@ class ExpandCollapseContent extends LitElement {
 					{ bubbles: true, detail: { expandComplete: eventPromise } }
 				));
 			}
-			if (reduceMotion || firstUpdate) {
+			if (this._reduceMotion || firstUpdate) {
 				this._setExpanded();
 			} else {
 				this._state = states.PREEXPANDING;
@@ -139,7 +140,7 @@ class ExpandCollapseContent extends LitElement {
 					{ bubbles: true, detail: { collapseComplete: eventPromise } }
 				));
 			}
-			if (reduceMotion || firstUpdate) {
+			if (this._reduceMotion || firstUpdate) {
 				this._state = states.COLLAPSED;
 				this._height = '0';
 				this._eventPromiseResolve();
