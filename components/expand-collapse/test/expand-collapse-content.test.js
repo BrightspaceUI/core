@@ -21,6 +21,7 @@ const tagName = defineCE(
 			this.hasCollapsed = false;
 		}
 		render() {
+			/* eslint-disable lit/no-private-properties	*/
 			return html`
 				<d2l-expand-collapse-content
 					._reduceMotion="${!this.transitions}"
@@ -28,6 +29,7 @@ const tagName = defineCE(
 					@d2l-expand-collapse-content-expand="${this.onExpand}"
 					?expanded="${this.expanded}">${this.empty ? nothing : 'Content'}</d2l-expand-collapse-content>
 			`;
+			/* eslint-enable lit/no-private-properties */
 		}
 		async updated(changedProperties) {
 			super.updated(changedProperties);
