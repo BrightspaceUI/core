@@ -21,8 +21,8 @@ export const PageableMixin = superclass => class extends CollectionMixin(supercl
 		});
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
+	firstUpdated() {
+		super.firstUpdated();
 		this._updateItemShowingCount();
 	}
 
