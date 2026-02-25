@@ -260,9 +260,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			${this._renderPagerContainer()}
 		`;
 	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
 		if (changedProperties.has('breakpoints') && changedProperties.get('breakpoints') !== undefined) {
 			this.resizedCallback(this.offsetWidth, true);
 		}
