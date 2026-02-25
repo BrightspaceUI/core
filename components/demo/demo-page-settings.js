@@ -3,6 +3,7 @@ import './demo-color-mode.js';
 import '../button/button.js';
 import '../inputs/input-checkbox-group.js';
 import '../inputs/input-checkbox.js';
+import '../inputs/input-fieldset.js';
 import '../inputs/input-group.js';
 import '../collapsible-panel/collapsible-panel.js';
 import '../collapsible-panel/collapsible-panel-summary-item.js';
@@ -35,8 +36,14 @@ class DemoPageSettings extends LitElement {
 			d2l-collapsible-panel {
 				width: 100%;
 			}
+			.color-mode-group {
+				display: inline-flex;
+			}
 			#applyFlagsButton {
-				margin-block-start: 1rem;
+				max-width: max-content;
+			}
+			#useAsDefaultColorMode {
+				margin-block-end: 0;
 			}
 		`];
 	}
@@ -107,15 +114,19 @@ class DemoPageSettings extends LitElement {
 						<span class="d2l-input-label">Language</span>
 						<select class="d2l-input-select" @change="${this.#handleLanguageChange}">${languageOptions}</select>
 					</label>
-					<label>
-						<span class="d2l-input-label">Color Mode</span>
-						<select class="d2l-input-select" @change="${this.#handleColorModeChange}">${colorModeOptions}</select>
-					</label>
+
+					<d2l-input-fieldset label="Color Mode">
+						<d2l-input-group class="color-mode-group">
+							<select id="colorMode" aria-label="Color Mode" class="d2l-input-select" @change="${this.#handleColorModeChange}">${colorModeOptions}</select>
+							<d2l-input-checkbox id="useAsDefaultColorMode" label="Use as Default" @change="${this.#handleUseAsDefaultColorModeChange}"></d2l-input-checkbox>
+						</d2l-input-group>
+					</d2l-input-fieldset>
+
 					${knownFlagCheckboxes.length > 0 ? html`
 						<d2l-input-checkbox-group id="flagsCheckboxGroup" label="Flags">
 							${knownFlagCheckboxes}
 						</d2l-input-checkbox-group>
-						<d2l-button id="applyFlagsButton" @click="${this.#handleApplyFlagsClick}">Apply</d2l-button>
+						<d2l-button id="applyFlagsButton" @click="${this.#handleApplyFlagsClick}">Apply Flags</d2l-button>
 					` : 'No known flags'}
 				</d2l-input-group>
 				${languageItem}
@@ -160,11 +171,13 @@ class DemoPageSettings extends LitElement {
 		const newColorMode = e.target[e.target.selectedIndex].value;
 		document.documentElement.dataset.colorMode = newColorMode;
 		const url = new URL(window.location.href);
-		if (newColorMode === defaultColorMode) {
-			url.searchParams.delete('color-mode');
-		} else {
-			url.searchParams.set('color-mode', newColorMode);
+
+		const useAsDefault = this.shadowRoot.querySelector('#useAsDefaultColorMode').checked;
+		if (useAsDefault) {
+			this.#updateDefaultColorMode(newColorMode);
 		}
+
+		url.searchParams.set('color-mode', newColorMode);
 		window.history.replaceState({}, '', url.toString());
 	}
 
@@ -187,6 +200,17 @@ class DemoPageSettings extends LitElement {
 		const newLanguageCode = e.target[e.target.selectedIndex].value;
 		document.documentElement.dir = newLanguageCode === 'ar-sa' ? 'rtl' : 'ltr';
 		document.documentElement.lang = newLanguageCode;
+	}
+
+	#handleUseAsDefaultColorModeChange(e) {
+		const useAsDefault = e.target.checked;
+		if (useAsDefault) {
+			this.#updateDefaultColorMode(this.shadowRoot.querySelector('#colorMode').value);
+		}
+	}
+
+	#updateDefaultColorMode(colorMode) {
+		localStorage.setItem('color-mode', colorMode);
 	}
 
 }

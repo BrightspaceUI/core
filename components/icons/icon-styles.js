@@ -5,7 +5,7 @@ export const iconStyles = css`
 	:host {
 		-webkit-align-items: center;
 		align-items: center;
-		color: var(--d2l-color-icon-standard);
+		color: var(--d2l-sem-icon-color-standard);
 		display: -ms-inline-flexbox;
 		display: -webkit-inline-flex;
 		display: inline-flex;

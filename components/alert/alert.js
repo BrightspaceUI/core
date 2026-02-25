@@ -52,8 +52,8 @@ class Alert extends LocalizeCoreElement(LitElement) {
 
 			:host {
 				animation: 600ms ease drop-in;
-				background: white;
-				border: 1px solid var(--d2l-color-mica);
+				background: var(--d2l-sem-background-color-base);
+				border: 1px solid var(--d2l-sem-border-color-standard);
 				border-inline-start-width: 0.3rem;
 				border-radius: 0.3rem;
 				box-sizing: border-box;
@@ -70,17 +70,17 @@ class Alert extends LocalizeCoreElement(LitElement) {
 
 			:host([type="critical"]),
 			:host([type="error"]) {
-				border-inline-start-color: var(--d2l-color-feedback-error);
+				border-inline-start-color: var(--d2l-sem-status-color-error);
 			}
 			:host([type="warning"]) {
-				border-inline-start-color: var(--d2l-color-feedback-warning);
+				border-inline-start-color: var(--d2l-sem-status-color-warning);
 			}
 			:host([type="default"]),
 			:host([type="call-to-action"]) {
-				border-inline-start-color: var(--d2l-color-feedback-action);
+				border-inline-start-color: var(--d2l-sem-status-color-default);
 			}
 			:host([type="success"]) {
-				border-inline-start-color: var(--d2l-color-feedback-success);
+				border-inline-start-color: var(--d2l-sem-status-color-success);
 			}
 
 			.d2l-alert-text {

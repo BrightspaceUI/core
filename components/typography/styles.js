@@ -67,7 +67,7 @@ export const _generateResetStyles = (selector) => {
 	selector = unsafeCSS(selector);
 	return css`
 		${selector} {
-			color: var(--d2l-color-text-static-standard);
+			color: var(--d2l-sem-text-color-static-standard);
 			font-size: 0.95rem;
 			font-weight: 400;
 			line-height: 1.4rem;
@@ -149,7 +149,7 @@ export const _generateBodySmallStyles = (selector, includeSkeleton = true) => {
 		}` : unsafeCSS('');
 	return css`
 		${selector} {
-			color: var(--d2l-color-text-static-subtle);
+			color: var(--d2l-sem-text-color-static-subtle);
 			font-size: 0.7rem;
 			font-weight: 400;
 			line-height: 0.9rem;
@@ -523,7 +523,7 @@ export const baseTypographyStyles = css`
 	}
 
 	.d2l-typography {
-		color: var(--d2l-color-text-static-standard);
+		color: var(--d2l-sem-text-color-static-standard);
 		display: block;
 		font-family: "Lato", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 		letter-spacing: 0.01rem;

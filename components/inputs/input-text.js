@@ -249,7 +249,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 					right: 0;
 				}
 				.d2l-input-unit {
-					color: var(--d2l-color-text-static-faint);
+					color: var(--d2l-sem-text-color-static-faint);
 					font-size: 0.7rem;
 					margin-top: 0.05rem;
 				}
@@ -263,7 +263,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 					margin-right: 12px;
 				}
 				:host([disabled]) .d2l-input-unit {
-					opacity: var(--d2l-opacity-disabled-control);
+					opacity: var(--d2l-sem-opacity-disabled-control);
 				}
 				.d2l-input-text-invalid-icon {
 					background-image: ${invalidIcon};
