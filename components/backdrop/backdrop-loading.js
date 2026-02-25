@@ -64,7 +64,7 @@ class LoadingBackdrop extends LitElement {
 			:host([_state="shown"]) d2l-loading-spinner {
 				opacity: 1;
 			}
-			
+
 			:host([_state="hiding"]) .d2l-backdrop,
 			:host([_state="hiding"]) d2l-loading-spinner {
 				transition: opacity ${FADE_DURATION_MS}ms ease-out;
@@ -111,7 +111,13 @@ class LoadingBackdrop extends LitElement {
 	}
 
 	#fade() {
-		if (reduceMotion || this._state === 'showing') {
+		let hideImmediately = reduceMotion || this._state === 'showing';
+		if (this._state === 'shown') {
+			const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('.backdrop')).opacity;
+			hideImmediately ||= (currentOpacity === '0');
+		}
+
+		if (hideImmediately) {
 			this.#hide();
 		} else {
 			this._state = 'hiding';
