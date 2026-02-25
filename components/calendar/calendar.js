@@ -455,11 +455,12 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 		this._monthNav = 'initial';
 		this._namespace = 'components.calendar';
 		this._tableInfoId = getUniqueId();
+		this._onBlur = this._onBlur.bind(this);
+		this._onLocalizeResourcesChange = this._onLocalizeResourcesChange.bind(this);
 		getCalendarData();
 	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
+	connectedCallback() {
+		super.connectedCallback();
 
 		if (this.minValue && this.maxValue && (getDateFromISODate(this.minValue).getTime() > getDateFromISODate(this.maxValue).getTime())) {
 			throw new RangeError('d2l-calendar component expects min-value to be before max-value');
@@ -471,17 +472,18 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 		);
 		if (dropdownContent) this._dialog = true;
 
-		this.addEventListener('blur', () => this._isInitialFocusDate = true);
-
-		this.addEventListener('d2l-localize-resources-change', () => {
-			getCalendarData();
-			this.requestUpdate();
-		});
+		this.addEventListener('blur', this._onBlur);
+		this.addEventListener('d2l-localize-resources-change', this._onLocalizeResourcesChange);
 
 		this._today = getDateFromDateObj(getToday());
 		if (this.selectedValue) this._getInitialFocusDate();
 		else this.reset();
+	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.removeEventListener('blur', this._onBlur);
+		this.removeEventListener('d2l-localize-resources-change', this._onLocalizeResourcesChange);
 	}
 
 	render() {
@@ -686,6 +688,10 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 		this._shownMonth = getNextMonth(this._shownMonth);
 	}
 
+	_onBlur() {
+		this._isInitialFocusDate = true;
+	}
+
 	async _onDateSelected(e) {
 		let selectedDate = e.composedPath()[0];
 		if (selectedDate.tagName === 'BUTTON') selectedDate = selectedDate.parentNode;
@@ -864,6 +870,11 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 		}
 		else this._focusDate = possibleFocusDate;
 		await this._showFocusDateMonth(oldFocusDate, Math.abs(numDaysChange) !== 1);
+	}
+
+	_onLocalizeResourcesChange() {
+		getCalendarData();
+		this.requestUpdate();
 	}
 
 	async _onNextMonthButtonClick() {
