@@ -86,7 +86,6 @@ class ExpandCollapseContent extends LitElement {
 		super();
 		this.expanded = false;
 		this._height = '0';
-		this._isFirstUpdate = true;
 		this._state = states.COLLAPSED;
 		this._reduceMotion = reduceMotion;
 	}
@@ -94,7 +93,7 @@ class ExpandCollapseContent extends LitElement {
 	render() {
 		const styles = { height: this._height };
 		return html`
-			<div class="d2l-expand-collapse-content-container" data-state="${this._state}" @transitionend=${this._onTransitionEnd} style=${styleMap(styles)}>
+			<div class="d2l-expand-collapse-content-container" data-state="${this._state}" @transitionend=${this.#resolveTransition} style=${styleMap(styles)}>
 				<div class="d2l-expand-collapse-content-inner">
 					<slot></slot>
 				</div>
@@ -102,75 +101,52 @@ class ExpandCollapseContent extends LitElement {
 		`;
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
 		if (changedProperties.has('expanded')) {
-			this._expandedChanged(this.expanded, this._isFirstUpdate);
-			this._isFirstUpdate = false;
+			if (!this.hasUpdated) this.#resolveTransition();
+			else this._expandedChanged();
 		}
 	}
 
-	async _expandedChanged(val, firstUpdate) {
+	async _expandedChanged() {
 		const eventPromise = new Promise(resolve => this._eventPromiseResolve = resolve);
-		if (val) {
-			if (!firstUpdate) {
-				this.dispatchEvent(new CustomEvent(
-					'd2l-expand-collapse-content-expand',
-					{ bubbles: true, detail: { expandComplete: eventPromise } }
-				));
-			}
-			if (this._reduceMotion || firstUpdate) {
-				this._setExpanded();
-			} else {
-				this._state = states.PREEXPANDING;
-				await this.updateComplete;
-				await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-				if (this._state === states.PREEXPANDING) {
-					this._state = states.EXPANDING;
-					const content = this.shadowRoot?.querySelector('.d2l-expand-collapse-content-inner');
-					const contentHeight = content?.scrollHeight;
-					if (contentHeight) this._height = `${contentHeight}px`;
-					if (contentHeight === 0) this._setExpanded();
-				}
+		this.dispatchEvent(new CustomEvent(
+			this.expanded ? 'd2l-expand-collapse-content-expand' : 'd2l-expand-collapse-content-collapse',
+			{ bubbles: true, detail: { [this.expanded ? 'expandComplete' : 'collapseComplete']: eventPromise } }
+		));
+		if (this._reduceMotion) {
+			this.#resolveTransition();
+		} else if (this.expanded) {
+			this._state = states.PREEXPANDING;
+			await this.updateComplete;
+			await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+			if (this._state === states.PREEXPANDING) {
+				this._state = states.EXPANDING;
+				const contentHeight = this.#getContentHeight();
+				if (contentHeight) this._height = `${contentHeight}px`;
+				if (contentHeight === 0) this.#resolveTransition();
 			}
 		} else {
-			if (!firstUpdate) {
-				this.dispatchEvent(new CustomEvent(
-					'd2l-expand-collapse-content-collapse',
-					{ bubbles: true, detail: { collapseComplete: eventPromise } }
-				));
-			}
-			if (this._reduceMotion || firstUpdate) {
-				this._state = states.COLLAPSED;
+			this._state = states.PRECOLLAPSING;
+			this._height = `${this.#getContentHeight()}px`;
+			await this.updateComplete;
+			await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+			if (this._state === states.PRECOLLAPSING) {
+				this._state = states.COLLAPSING;
 				this._height = '0';
-				this._eventPromiseResolve();
-			} else {
-				this._state = states.PRECOLLAPSING;
-				const content = this.shadowRoot && this.shadowRoot.querySelector('.d2l-expand-collapse-content-inner');
-				if (content) this._height = `${content.scrollHeight}px`;
-				await this.updateComplete;
-				await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-				if (this._state === states.PRECOLLAPSING) {
-					this._state = states.COLLAPSING;
-					this._height = '0';
-				}
 			}
 		}
 	}
 
-	_onTransitionEnd() {
-		if (this._state === states.EXPANDING) {
-			this._setExpanded();
-		} else if (this._state === states.COLLAPSING) {
-			this._state = states.COLLAPSED;
-			this._eventPromiseResolve();
-		}
+	#getContentHeight() {
+		return this.shadowRoot?.querySelector('.d2l-expand-collapse-content-inner')?.scrollHeight ?? 0;
 	}
 
-	_setExpanded() {
-		this._state = states.EXPANDED;
-		this._height = 'auto';
-		this._eventPromiseResolve();
+	#resolveTransition() {
+		this._state = this.expanded ? states.EXPANDED : states.COLLAPSED;
+		this._height = this.expanded ? 'auto' : '0';
+		this._eventPromiseResolve && this._eventPromiseResolve();
 	}
 }
 customElements.define('d2l-expand-collapse-content', ExpandCollapseContent);
