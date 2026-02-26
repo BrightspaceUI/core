@@ -547,8 +547,8 @@ class MobileTouchResizer extends Resizer {
  * @slot footer - Page footer content
  * @slot primary - Main page content
  * @slot secondary - Supplementary page content
- * @fires d2l-template-primary-secondary-resize-start - Dispatched when a user begins moving the divider.
- * @fires d2l-template-primary-secondary-resize-end - Dispatched when a user finishes moving the divider.
+ * @fires d2l-iframe-pointer-events-disable - Dispatched when a user begins moving the divider to instruct iframe owners to disable pointer events.
+ * @fires d2l-iframe-pointer-events-enable - Dispatched when a user finishes moving the divider to instruct iframe owners to re-enable pointer events.
  * @fires d2l-template-primary-secondary-form-invalid Dispatched when the form fails validation. The error map can be obtained from the detail's errors property.
  * @fires d2l-template-primary-secondary-form-dirty Dispatched whenever any form element fires an input or change event. Can be used to track whether the form is dirty or not.
  * @fires d2l-template-primary-secondary-form-submit Dispatched when the form is submitted. The form data can be obtained from the detail's formData property.
@@ -1262,11 +1262,11 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 	}
 
 	_onPanelResizeEnd() {
-		this.dispatchEvent(new CustomEvent('d2l-template-primary-secondary-resize-end', { bubbles: true, composed: true }));
+		this.dispatchEvent(new CustomEvent('d2l-iframe-pointer-events-enable', { bubbles: true, composed: true }));
 	}
 
 	_onPanelResizeStart() {
-		this.dispatchEvent(new CustomEvent('d2l-template-primary-secondary-resize-start', { bubbles: true, composed: true }));
+		this.dispatchEvent(new CustomEvent('d2l-iframe-pointer-events-disable', { bubbles: true, composed: true }));
 	}
 
 	_onTransitionEnd() {
