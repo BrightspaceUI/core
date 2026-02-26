@@ -12,7 +12,7 @@ export const invalidIcon = svgToCSS(`<svg width="18" height="18" xmlns="http://w
 
 export const inputStyles = css`
 	.d2l-input {
-		background-color: var(--d2l-input-background-color, var(--d2l-sem-background-color-sunken));
+		background-color: var(--d2l-input-background-color, var(--d2l-sem-background-color-base));
 		border-radius: var(--d2l-input-border-radius, 0.3rem);
 		border-style: solid;
 		box-shadow: var(--d2l-sem-shadow-inset);
