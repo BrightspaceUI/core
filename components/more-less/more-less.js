@@ -1,11 +1,10 @@
 import '../button/button-subtle.js';
-import { css, html, LitElement, nothing } from 'lit';
-import { getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
+import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
-import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { isComposedAncestor } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { overflowHiddenDeclarations } from '../../helpers/overflow.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
@@ -94,17 +93,13 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 		this.__transitionAdded = false;
 		this.__maxHeight = this.height;
-
 		this.__baseHeight = 0;
 		this.__contentId = getUniqueId();
-		this.__contentSlot = null;
 		this.__content = null;
 		this.__autoExpanded = false;
 		this.__shift = false;
 		this.__bound_transitionEvents = null;
 
-		this._observeContentOnly = getFlag('GAUD-8725-more-less-refactor-resizing', true);
-		if (!this._observeContentOnly) this._mutationObserver = new MutationObserver(this.__reactToMutationChanges.bind(this));
 		this._resizeObserver = new ResizeObserver(this.__reactToChanges.bind(this));
 	}
 
@@ -112,7 +107,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		super.disconnectedCallback();
 
 		this._resizeObserver.disconnect();
-		if (!this._observeContentOnly) this._mutationObserver.disconnect();
 
 		this.shadowRoot.removeEventListener('transitionstart', this.__bound_transitionEvents);
 		this.shadowRoot.removeEventListener('transitionend', this.__bound_transitionEvents);
@@ -124,13 +118,8 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		super.firstUpdated();
 
 		this.__content = this.shadowRoot.querySelector('.d2l-more-less-content');
-		if (this._observeContentOnly) {
-			this.__reactToChanges();
-			this._resizeObserver.observe(this.__content);
-		} else {
-			this.__contentSlot = this.shadowRoot.querySelector('.d2l-more-less-content slot');
-			this.__startObserving();
-		}
+		this.__reactToChanges();
+		this._resizeObserver.observe(this.__content);
 
 		this.__bound_transitionEvents = this.__transitionEvents.bind(this);
 		this.shadowRoot.addEventListener('transitionstart', this.__bound_transitionEvents);
@@ -146,17 +135,15 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		};
 
 		// The .force-margin-scroll div is used to force content bottom margin to be included in scrollHeight calculations.
-		// The load and slotchange events can be removed when GAUD-8725-more-less-refactor-resizing is removed
 		return html`
 			<div
 				id="${this.__contentId}"
 				class=${classMap(contentClasses)}
 				style=${styleMap({ maxHeight: `${this.__maxHeight}` })}
 				@focusin="${this.__focusIn}"
-				@focusout="${this.__focusOut}"
-				@load=${this._observeContentOnly ? undefined : this.__reactToChanges}>
-				<slot @slotchange=${this._observeContentOnly ? undefined : this.#handleSlotChange}></slot>
-				${this._observeContentOnly ? html`<div class="force-margin-scroll"></div>` : nothing}
+				@focusout="${this.__focusOut}">
+				<slot></slot>
+				<div class="force-margin-scroll"></div>
 			</div>
 			<d2l-button-subtle
 				class="d2l-more-less-toggle"
@@ -284,27 +271,9 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		});
 	}
 
-	// Remove when GAUD-8725-more-less-refactor-resizing is removed
-	__isOwnMutation(mutation) {
-		return mutation.target === this.__content
-			&& (mutation.type === 'style' || mutation.type === 'attributes');
-	}
-
 	__reactToChanges() {
 		this.__transitionAdded = true;
 		this.__adjustToContent();
-	}
-
-	// Remove when GAUD-8725-more-less-refactor-resizing is removed
-	__reactToMutationChanges(mutations) {
-		if (mutations
-			&& Array.isArray(mutations)
-			&& mutations.every(this.__isOwnMutation.bind(this))
-		) {
-			return;
-		}
-
-		this.__reactToChanges();
 	}
 
 	__shrink() {
@@ -312,32 +281,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 		this.__maxHeight = this.height;
 		this.expanded = false;
 		this.__content.scrollTo({ top: 0, behavior: 'instant' });
-	}
-
-	// Remove when GAUD-8725-more-less-refactor-resizing is removed
-	__startObserving() {
-		this._resizeObserver.disconnect();
-		this._mutationObserver.disconnect();
-
-		if (this.__contentSlot) {
-			const children = getComposedChildren(this.__contentSlot);
-			for (let i = 0; i < children.length; ++i) {
-				this._resizeObserver.observe(children[i]);
-				this._mutationObserver.observe(children[i], {
-					childList: true,
-					subtree: true,
-					characterData: true,
-					attributes: true
-				});
-			}
-		}
-		this._resizeObserver.observe(this.__content);
-		this._mutationObserver.observe(this.__content, {
-			childList: true,
-			subtree: true,
-			characterData: true,
-			attributes: true
-		});
 	}
 
 	__toggleOnClick() {
@@ -352,12 +295,6 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 
 	__transitionEvents(e) {
 		this.dispatchEvent(new CustomEvent(e.type, { bubbles: true, composed: true, detail: e.detail }));
-	}
-
-	// Remove when GAUD-8725-more-less-refactor-resizing is removed
-	#handleSlotChange() {
-		this.__reactToChanges();
-		this.__startObserving();
 	}
 }
 

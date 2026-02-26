@@ -1,19 +1,16 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
+import '../backdrop/backdrop-loading.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { cssSizes } from '../inputs/input-checkbox.js';
 import { getComposedParent } from '../../helpers/dom.js';
-import { getFlag } from '../../helpers/flags.js';
 import { isPopoverSupported } from '../popover/popover-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
-import { usePopoverMixin as useDropdownPopover } from '../dropdown/dropdown-popover-mixin.js';
 import { usePopoverMixin as useTooltipPopover } from '../tooltip/tooltip.js';
 
-export const isUsingNativePopover = isPopoverSupported && useDropdownPopover && useTooltipPopover;
-
-const colSyncFix = getFlag('GAUD-8228-8186-improved-table-col-sync', true);
+export const isUsingNativePopover = isPopoverSupported && useTooltipPopover;
 
 export const tableStyles = css`
 	.d2l-table {
@@ -227,22 +224,17 @@ export const tableStyles = css`
 	}
 
 	/* sticky + scroll-wrapper */
-	${colSyncFix ? css`
-		d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper]:not([_no-scroll-width]) .d2l-table {
-			display: flex;
-			flex-direction: column;
-		}
+	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper]:not([_no-scroll-width]) .d2l-table {
+		display: flex;
+		flex-direction: column;
+	}
 
-		d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > thead {
-			display: table-header-group;
-		}
+	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > thead {
+		display: table-header-group;
+	}
 
-		d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > tbody {
-			display: table-row-group;
-		}` : css`
-		d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table {
-			display: block;
-		}`
+	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > tbody {
+		display: table-row-group;
 	}
 
 	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table > thead {
@@ -259,6 +251,7 @@ export const tableStyles = css`
 	[data-popover-count] {
 		z-index: 6 !important; /* if opened above, we want to stack on top of sticky table-controls */
 	}
+
 `;
 
 const SELECTORS = {
@@ -317,6 +310,14 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				attribute: '_no-scroll-width',
 				reflect: true,
 				type: Boolean,
+			},
+			/**
+			 * Whether or not to display a loading backdrop. Set this property when the content in the table is being refreshed.
+			 * @type {boolean}
+			 */
+			loading: {
+				reflect: true,
+				type: Boolean
 			},
 		};
 	}
@@ -382,11 +383,12 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._controlsMutationObserver = null;
 		this._controlsScrolled = false;
 		this._controlsScrolledMutationObserver = null;
-		this._noScrollWidth = colSyncFix;
+		this._noScrollWidth = true;
 		this._table = null;
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
+		this.loading = false;
 	}
 
 	connectedCallback() {
@@ -415,7 +417,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	render() {
-		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
+		const slot = html`
+			<slot @slotchange="${this._handleSlotChange}"></slot>
+			<d2l-backdrop-loading ?shown=${this.loading}></d2l-backdrop-loading>
+		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
@@ -584,7 +589,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 		if (!this._tableResizeObserver) this._tableResizeObserver = new ResizeObserver(entries => this._syncColumnWidths(entries));
 		this._tableResizeObserver.observe(this._table);
-		colSyncFix && this.querySelectorAll('tr:first-child *').forEach(el => this._tableResizeObserver.observe(el));
+		this.querySelectorAll('tr:first-child *').forEach(el => this._tableResizeObserver.observe(el));
 
 		this._handleTableChange();
 	}
@@ -619,7 +624,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 		if (updates.count) this._updateItemShowingCount();
 		if (updates.classNames) this._applyClassNames();
-		colSyncFix && await Promise.all([...updateList, ...this.querySelectorAll('d2l-table-col-sort-button')].map(n => n.updateComplete));
+		await Promise.all([...updateList, ...this.querySelectorAll('d2l-table-col-sort-button')].map(n => n.updateComplete));
 		if (updates.syncWidths) this._syncColumnWidths();
 		if (updates.sticky) this._updateStickyTops();
 	}
@@ -638,12 +643,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		const head = this._table.querySelector('thead');
 		const body = this._table.querySelector('tbody');
 
-		if (colSyncFix) {
-			const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
-			setTimeout(() => {
-				this._noScrollWidth = this.clientWidth === maxScrollWidth;
-			});
-		}
+		const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
+		setTimeout(() => {
+			this._noScrollWidth = this.clientWidth === maxScrollWidth;
+		});
 		if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
 
 		const candidateRowHeadCells = [];
