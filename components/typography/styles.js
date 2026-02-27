@@ -67,7 +67,7 @@ export const _generateResetStyles = (selector) => {
 	selector = unsafeCSS(selector);
 	return css`
 		${selector} {
-			color: var(--d2l-color-ferrite);
+			color: var(--d2l-sem-text-color-static-standard);
 			font-size: 0.95rem;
 			font-weight: 400;
 			line-height: 1.4rem;
@@ -149,7 +149,7 @@ export const _generateBodySmallStyles = (selector, includeSkeleton = true) => {
 		}` : unsafeCSS('');
 	return css`
 		${selector} {
-			color: var(--d2l-color-tungsten);
+			color: var(--d2l-sem-text-color-static-subtle);
 			font-size: 0.7rem;
 			font-weight: 400;
 			line-height: 0.9rem;
@@ -189,7 +189,7 @@ export const _generateHeading1Styles = (selector, includeFocus = false) => {
 				font-size: 1.5rem;
 				line-height: 1.8rem;
 			}
-			
+
 		}
 	`;
 };
@@ -236,7 +236,7 @@ export const _generateHeading2Styles = (selector, includeFocus = false) => {
 				font-weight: 700;
 				line-height: 1.5rem;
 			}
-			
+
 		}
 	`;
 };
@@ -282,7 +282,7 @@ export const _generateHeading3Styles = (selector, includeFocus = false) => {
 				font-size: 0.8rem;
 				line-height: 1.2rem;
 			}
-			
+
 		}
 	`;
 };
@@ -523,7 +523,7 @@ export const baseTypographyStyles = css`
 	}
 
 	.d2l-typography {
-		color: var(--d2l-color-ferrite);
+		color: var(--d2l-sem-text-color-static-standard);
 		display: block;
 		font-family: "Lato", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 		letter-spacing: 0.01rem;

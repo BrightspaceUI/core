@@ -12,12 +12,12 @@ export const invalidIcon = svgToCSS(`<svg width="18" height="18" xmlns="http://w
 
 export const inputStyles = css`
 	.d2l-input {
-		background-color: var(--d2l-input-background-color, #ffffff);
+		background-color: var(--d2l-input-background-color, var(--d2l-sem-background-color-base));
 		border-radius: var(--d2l-input-border-radius, 0.3rem);
 		border-style: solid;
-		box-shadow: inset 0 2px 0 0 rgba(177, 185, 190, 0.2); /* corundum */
+		box-shadow: var(--d2l-sem-shadow-inset);
 		box-sizing: border-box;
-		color: var(--d2l-color-ferrite);
+		color: var(--d2l-sem-text-color-static-standard);
 		display: inline-block;
 		font-family: inherit;
 		font-size: 0.8rem;
@@ -37,34 +37,34 @@ export const inputStyles = css`
 	.d2l-input:hover:disabled,
 	.d2l-input:${focusClass}:disabled,
 	[aria-invalid="true"].d2l-input:disabled {
-		border-color: var(--d2l-input-border-color, var(--d2l-color-galena));
+		border-color: var(--d2l-input-border-color, var(--d2l-sem-border-color-emphasized));
 		border-width: 1px;
 		padding: var(--d2l-input-padding, 0.4rem 0.75rem);
 	}
 	.d2l-input::placeholder {
-		color: var(--d2l-color-galena);
+		color: var(--d2l-sem-text-color-static-faint);
 		font-size: 0.8rem;
 		font-weight: 400;
 		opacity: 1; /* Firefox has non-1 default */
 	}
 	.d2l-input::-ms-input-placeholder {
-		color: var(--d2l-color-galena);
+		color: var(--d2l-sem-text-color-static-faint);
 		font-size: 0.8rem;
 		font-weight: 400;
 	}
 	.d2l-input:hover,
 	.d2l-input:${focusClass},
 	.d2l-input-focus {
-		border-color: var(--d2l-color-celestine);
+		border-color: var(--d2l-sem-border-color-focus);
 		border-width: 2px;
 		outline: none;
 		padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
 	}
 	[aria-invalid="true"].d2l-input {
-		border-color: var(--d2l-color-cinnabar);
+		border-color: var(--d2l-sem-status-color-error);
 	}
 	.d2l-input:disabled {
-		opacity: 0.5;
+		opacity: var(--d2l-sem-opacity-disabled-control);
 	}
 	.d2l-input::-webkit-search-cancel-button,
 	.d2l-input::-webkit-search-decoration {
@@ -109,7 +109,7 @@ export const inputStyles = css`
 	@media (prefers-contrast: more) {
 		[aria-invalid="true"].d2l-input {
 			background-color: Field;
-			border-color: var(--d2l-color-cinnabar);
+			border-color: var(--d2l-sem-status-color-error);
 			box-shadow: none;
 			color: FieldText;
 			forced-color-adjust: none;

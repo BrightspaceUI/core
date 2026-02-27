@@ -79,7 +79,7 @@ export function getFocusRingStyles(selector, { extraStyles = null } = {}) {
 	const stylesDelegate = selector => css`
 		${selector} {
 			${extraStyles ?? css``}
-			outline: 2px solid var(--d2l-focus-ring-color, var(--d2l-color-celestine));
+			outline: 2px solid var(--d2l-focus-ring-color, var(--d2l-sem-border-color-focus));
 			outline-offset: var(--d2l-focus-ring-offset, 2px);
 		}
 		@media (prefers-contrast: more) {
