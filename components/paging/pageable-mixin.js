@@ -21,8 +21,8 @@ export const PageableMixin = superclass => class extends CollectionMixin(supercl
 		});
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
+	firstUpdated() {
+		super.firstUpdated();
 		this._updateItemShowingCount();
 	}
 
