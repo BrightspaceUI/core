@@ -1,5 +1,10 @@
+export const colorModes = ['light', 'dark', 'os'];
+export const defaultColorMode = 'light';
+
 const urlParams = new URLSearchParams(window.location.search);
-const colorMode = urlParams.get('color-mode') || localStorage.getItem('color-mode');
+const requestedColorMode = urlParams.get('color-mode');
+
+const colorMode = colorModes.includes(requestedColorMode) ? requestedColorMode : localStorage.getItem('color-mode');
 if (colorMode) {
 	document.documentElement.dataset.colorMode = colorMode;
 } else {

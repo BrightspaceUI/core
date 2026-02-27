@@ -1,5 +1,4 @@
 import './demo-flags.js';
-import './demo-color-mode.js';
 import '../button/button.js';
 import '../inputs/input-checkbox-group.js';
 import '../inputs/input-checkbox.js';
@@ -7,6 +6,7 @@ import '../inputs/input-fieldset.js';
 import '../inputs/input-group.js';
 import '../collapsible-panel/collapsible-panel.js';
 import '../collapsible-panel/collapsible-panel-summary-item.js';
+import { colorModes, defaultColorMode } from './demo-color-mode.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getDocumentLocaleSettings, supportedLocalesDetails } from '@brightspace-ui/intl/lib/common.js';
 import { getFlagOverrides, getKnownFlags } from '../../helpers/flags.js';
@@ -14,7 +14,6 @@ import { inputLabelStyles } from '../inputs/input-label-styles.js';
 import { selectStyles } from '../inputs/input-select-styles.js';
 
 const localeSettings = getDocumentLocaleSettings();
-const defaultColorMode = 'light';
 
 class DemoPageSettings extends LitElement {
 
@@ -91,7 +90,7 @@ class DemoPageSettings extends LitElement {
 			languageItem = html`<d2l-collapsible-panel-summary-item slot="summary" text="Language: ${selectedLanguageCode}"></d2l-collapsible-panel-summary-item>`;
 		}
 
-		const colorModeOptions = ['light', 'dark', 'os'].map(colorMode => html`<option value="${colorMode}" ?selected="${this._colorMode === colorMode}">${colorMode}</option>`);
+		const colorModeOptions = colorModes.map(colorMode => html`<option value="${colorMode}" ?selected="${this._colorMode === colorMode}">${colorMode}</option>`);
 
 		const knownFlags = this.#getKnownFlagsSorted();
 		const knownFlagCheckboxes = [];
