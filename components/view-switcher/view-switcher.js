@@ -91,7 +91,13 @@ class ViewSwitcher extends LocalizeCoreElement(LitElement) {
 		const items = this.items;
 		this._count = items.length;
 		if (items.length === 0) return;
-		if (!items.find(i => i.selected)) items[0].selected = true;
+		const selectedItems = items.filter(i => i.selected);
+		if (selectedItems.length === 0) items[0].selected = true;
+		if (selectedItems.length > 1) { // unselect all but the first selected item
+			for (let i = 1; i < selectedItems.length; i++) {
+				selectedItems[i].selected = false;
+			}
+		}
 	}
 
 }
