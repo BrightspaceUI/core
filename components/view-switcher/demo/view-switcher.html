@@ -8,22 +8,99 @@
 			import '../../demo/demo-page.js';
 			import '../view-switcher.js';
 			import '../view-switcher-button.js';
+			import '../../list/list-item-content.js';
+			import '../../list/list-item.js';
+			import { css, html, LitElement } from 'lit';
+			import { listLayouts } from '../../list/list.js';
+			import { tableStyles } from '../../table/table-wrapper.js';
+			window.listLayouts = listLayouts;
+
+			class TableView extends LitElement {
+				static get styles() {
+					return [tableStyles, css`
+						:host([hidden]) {
+							display: none;
+						}
+					`];
+				}
+
+				render() {
+					return html`
+						<d2l-table-wrapper>
+							<table class="d2l-table">
+								<thead>
+								<tr>
+									<th>Name</th>
+									<th>Section</th>
+									<th>Info</th>
+								</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th>Jane Doe</th>
+										<td>Section 1</td>
+										<td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc viverra felis sit amet magna eleifend lacinia. Duis faucibus commodo tellus.</td>
+									</tr>
+									<tr>
+										<th>John Smith</th>
+										<td>Section 2</td>
+										<td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc viverra felis sit amet magna eleifend lacinia. Duis faucibus commodo tellus.</td>
+									</tr>
+								</tbody>
+							</table>
+						</d2l-table-wrapper>
+					`;
+				}
+			}
+			customElements.define('d2l-demo-table-view', TableView);
 		</script>
 	</head>
 	<body unresolved>
 
 		<d2l-demo-page page-title="d2l-view-switcher">
 
-			<h2>Segmented Button</h2>
+			<h2>View Switcher</h2>
 
 			<d2l-demo-snippet>
-				<template>
-					<d2l-view-switcher label="Save Options">
-						<d2l-view-switcher-button selected key="saveAsDraft" text="Save as Draft"></d2l-view-switcher-button>
-						<d2l-view-switcher-button key="saveAndClose" text="Save and Close"></d2l-view-switcher-button>
-						<d2l-view-switcher-button key="saveAndNew" text="Save and New"></d2l-view-switcher-button>
-					</d2l-view-switcher>
-				</template>
+				<d2l-view-switcher label="Layout Options">
+					<d2l-view-switcher-button key="list" text="List"></d2l-view-switcher-button>
+					<d2l-view-switcher-button selected key="tiles" text="Tiles"></d2l-view-switcher-button>
+					<d2l-view-switcher-button key="table" text="Table"></d2l-view-switcher-button>
+				</d2l-view-switcher>
+				<br><br>
+
+				<d2l-list layout="tiles">
+					<d2l-list-item label="item 1">
+						<d2l-list-item-content>
+							<div>Jane Doe</div>
+							<div slot="secondary">Section 1</div>
+							<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc viverra felis sit amet magna eleifend lacinia. Duis faucibus commodo tellus.</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+					<d2l-list-item label="item 2">
+						<d2l-list-item-content>
+							<div>John Smith</div>
+							<div slot="secondary">Section 2</div>
+							<div slot="supporting-info">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc viverra felis sit amet magna eleifend lacinia. Duis faucibus commodo tellus.</div>
+						</d2l-list-item-content>
+					</d2l-list-item>
+				</d2l-list>
+				<d2l-demo-table-view hidden></d2l-demo-table-view>
+
+				<script data-demo-hide>
+					document.querySelector('d2l-view-switcher').addEventListener('d2l-view-switcher-select', e => {
+						const list = document.querySelector('d2l-list');
+						const table = document.querySelector('d2l-demo-table-view');
+						if (e.detail.key === 'table') {
+							table.removeAttribute('hidden');
+							list.setAttribute('hidden', '');
+						} else {
+							table.setAttribute('hidden', '');
+							list.removeAttribute('hidden');
+							list.layout = (e.detail.key === 'tiles' ? window.listLayouts.tiles : window.listLayouts.list);
+						}
+					});
+				</script>
 			</d2l-demo-snippet>
 
 
