@@ -10,9 +10,9 @@
 			import '../view-switcher-button.js';
 			import '../../list/list-item-content.js';
 			import '../../list/list-item.js';
-			import { tableStyles } from '../../table/table-wrapper.js';
-			import { html, LitElement, css } from 'lit';
+			import { css, html, LitElement } from 'lit';
 			import { listLayouts } from '../../list/list.js';
+			import { tableStyles } from '../../table/table-wrapper.js';
 			window.listLayouts = listLayouts;
 
 			class TableView extends LitElement {
@@ -97,7 +97,7 @@
 						} else {
 							table.setAttribute('hidden', '');
 							list.removeAttribute('hidden');
-							list.layout = (e.detail.key === 'tiles' ? listLayouts.tiles : listLayouts.list);
+							list.layout = (e.detail.key === 'tiles' ? window.listLayouts.tiles : window.listLayouts.list);
 						}
 					});
 				</script>
