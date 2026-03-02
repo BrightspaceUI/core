@@ -12,19 +12,19 @@ describe('d2l-view-switcher', () => {
 
 	});
 
-	let elem, items;
-	beforeEach(async() => {
-		elem = await fixture(html`
-			<d2l-view-switcher>
-				<d2l-view-switcher-button key="saveAsDraft" text="Save as Draft"></d2l-view-switcher-button>
-				<d2l-view-switcher-button key="saveAndClose" text="Save and Close"></d2l-view-switcher-button>
-				<d2l-view-switcher-button key="saveAndNew" text="Save and New"></d2l-view-switcher-button>
-			</d2l-view-switcher>
-		`);
-		items = elem.items;
-	});
-
 	describe('selection', () => {
+		let elem, items;
+		beforeEach(async() => {
+			elem = await fixture(html`
+				<d2l-view-switcher>
+					<d2l-view-switcher-button key="saveAsDraft" text="Save as Draft"></d2l-view-switcher-button>
+					<d2l-view-switcher-button key="saveAndClose" text="Save and Close"></d2l-view-switcher-button>
+					<d2l-view-switcher-button key="saveAndNew" text="Save and New"></d2l-view-switcher-button>
+				</d2l-view-switcher>
+			`);
+			items = elem.items;
+		});
+
 		it('should have first item selected by default', () => {
 			expect(items[0].selected).to.be.true;
 			expect(items[1].selected).to.be.false;
@@ -47,4 +47,16 @@ describe('d2l-view-switcher', () => {
 		});
 	});
 
+	it('should unselect all but first selected items', async() => {
+		const multipleSelected = await fixture(html`
+			<d2l-view-switcher>
+				<d2l-view-switcher-button key="saveAsDraft" text="Save as Draft"></d2l-view-switcher-button>
+				<d2l-view-switcher-button selected key="saveAndClose" text="Save and Close"></d2l-view-switcher-button>
+				<d2l-view-switcher-button selected key="saveAndNew" text="Save and New"></d2l-view-switcher-button>
+			</d2l-view-switcher>
+		`);
+		expect(multipleSelected.items[0].selected).to.be.false;
+		expect(multipleSelected.items[1].selected).to.be.true;
+		expect(multipleSelected.items[2].selected).to.be.false;
+	});
 });
