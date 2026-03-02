@@ -9,6 +9,7 @@ const FADE_DURATION_MS = 500;
 const SPINNER_DELAY_MS = FADE_DURATION_MS;
 
 const LOADING_SPINNER_MINIMUM_BUFFER = 100;
+const LOADING_SPINNER_SIZE = 50;
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -89,7 +90,7 @@ class LoadingBackdrop extends LitElement {
 	render() {
 		if (this._state === 'hidden') return nothing;
 		return html`
-			<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#hide}"></div>
+			<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#hide}" size="${LOADING_SPINNER_SIZE}"></div>
 			<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })}></d2l-loading-spinner>
 		`;
 	}
@@ -134,8 +135,11 @@ class LoadingBackdrop extends LitElement {
 
 		// Calculate if an offset is required to move to the top of the viewport before centering
 		const topOffset = Math.max(0, -boundingRect.top); // measures the distance below the top of the viewport, which is negative if the element starts above the viewport
-		const newPosition = centeringOffset + topOffset;
 
+		// Adjust for the size of the spinner
+		const spinnerSizeOffset = LOADING_SPINNER_SIZE / 2;
+
+		const newPosition = centeringOffset + topOffset - spinnerSizeOffset;
 		this._spinnerTop = Math.max(LOADING_SPINNER_MINIMUM_BUFFER, newPosition);
 	}
 
