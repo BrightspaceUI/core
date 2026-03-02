@@ -26,7 +26,7 @@ class LoadingBackdrop extends LitElement {
 			 */
 			shown: { type: Boolean },
 			_state: { type: String, reflect: true },
-			_spinnerTop: { type: Number, reflect: true }
+			_spinnerTop: { type: Number }
 		};
 	}
 
