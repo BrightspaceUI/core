@@ -102,9 +102,10 @@ class LoadingBackdrop extends LitElement {
 			}
 		}
 
-		if (this.#mustRepositionSpinner) {
+		if (changedProperties.has('shown') && (
+			(reduceMotion && this._state === 'shown') || (!reduceMotion && this._state === 'showing')
+		)) {
 			this.#centerLoadingSpinner();
-			this.#mustRepositionSpinner = false;
 		}
 	}
 	willUpdate(changedProperties) {
@@ -116,7 +117,6 @@ class LoadingBackdrop extends LitElement {
 			}
 		}
 	}
-	#mustRepositionSpinner;
 
 	#centerLoadingSpinner() {
 		if (this._state === 'hidden') { return; }
@@ -165,8 +165,6 @@ class LoadingBackdrop extends LitElement {
 		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
 	}
 	#show() {
-		this.#mustRepositionSpinner = true;
-
 		this._state = reduceMotion ? 'shown' : 'showing';
 
 		const containingBlock = getOffsetParent(this);
