@@ -192,8 +192,8 @@ class DemoListItemCustom extends ListItemMixin(LitElement) {
 		return this._renderListItem(itemTemplates);
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
 		if (changedProperties.has('key')) {
 			this.label = `Label for ${this.key}`;
 		}
