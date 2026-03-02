@@ -15,12 +15,12 @@ class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
-			 * REQUIRED: Key of the action
+			 * REQUIRED: Key for the button
 			 * @type {string}
 			 */
 			key: { type: String, required: true },
 			/**
-			 * REQUIRED: Button text
+			 * REQUIRED: Text for the button
 			 * @type {string}
 			 */
 			text: { type: String, required: true },
