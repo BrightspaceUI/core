@@ -24,8 +24,8 @@ class DemoSnippet extends LitElement {
 	static get styles() {
 		return css`
 			:host {
-				background-color: var(--d2l-color-background-default);
-				border: 1px solid var(--d2l-color-border-medium);
+				background-color: var(--d2l-sem-background-color-base);
+				border: 1px solid var(--d2l-sem-border-color-standard);
 				border-radius: 6px;
 				box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 				display: block;
@@ -41,7 +41,7 @@ class DemoSnippet extends LitElement {
 				display: flex;
 			}
 			.d2l-demo-snippet-demo-wrapper.fullscreen {
-				background-color: var(--d2l-color-background-default);
+				background-color: var(--d2l-sem-background-color-base);
 				height: 100vh;
 				inset: 0;
 				overflow: auto;
@@ -67,7 +67,7 @@ class DemoSnippet extends LitElement {
 				padding: 0;
 			}
 			.d2l-demo-snippet-settings {
-				border-inline-start: 1px solid var(--d2l-color-border-medium);
+				border-inline-start: 1px solid var(--d2l-sem-border-color-standard);
 				flex: 0 0 auto;
 				padding: 6px;
 			}
@@ -76,7 +76,7 @@ class DemoSnippet extends LitElement {
 				top: 0;
 			}
 			d2l-dropdown.settings-dropdown {
-				background-color: var(--d2l-color-background-default);
+				background-color: var(--d2l-sem-background-color-base);
 				border-radius: 6px;
 				outline: 1px solid var(--d2l-color-celestine-minus-1);
 				position: fixed;
