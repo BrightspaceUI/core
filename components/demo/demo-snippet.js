@@ -5,6 +5,14 @@ import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import { css, html, LitElement } from 'lit';
 
+function setIndent(text, indent = 0, skipFirstLine = false) {
+	const lines = text.split('\n');
+	const indentedLines = lines.filter((l, i) => l.trim() !== '' && !(skipFirstLine && i === 0));
+	const minIndent = Math.min(...indentedLines.map(l => l.match(/^\s*/)[0].length));
+
+	return lines.map((l, i) => `${' '.repeat(indent)}${skipFirstLine && i === 0 ? l : l.substring(minIndent)}`).join('\n');
+}
+
 class DemoSnippet extends LitElement {
 
 	static get properties() {
@@ -106,7 +114,7 @@ class DemoSnippet extends LitElement {
 			:host([code-view-hidden]) d2l-code-view {
 				display: none;
 			}
-`;
+		`;
 	}
 
 	constructor() {
@@ -152,73 +160,46 @@ class DemoSnippet extends LitElement {
 		});
 	}
 
-	_applyAttr(name, value, applyToShadowRoot) {
-		const query = this._isTemplate ? 'slot[name="_demo"]' : 'slot:not([name="_demo"])';
-		if (!this.shadowRoot) return;
-		const nodes = this.shadowRoot.querySelector(query).assignedNodes();
-		if (nodes.length === 0) return;
-		const doApply = (nodes, isRoot) => {
-			for (let i = 0; i < nodes.length; i++) {
-				if (nodes[i].nodeType === Node.ELEMENT_NODE) {
-					if (isRoot || nodes[i].tagName.indexOf('-') !== -1) {
-						if (typeof(value) === 'boolean') {
-							if (value) {
-								nodes[i].setAttribute(name, name);
-							} else {
-								nodes[i].removeAttribute(name);
-							}
-						} else {
-							nodes[i].setAttribute(name, value);
-						}
-					}
-					if (applyToShadowRoot && nodes[i].shadowRoot) {
-						doApply(nodes[i].shadowRoot.children, false);
-					}
-					doApply(nodes[i].children, false);
-				}
-			}
-		};
-		doApply(nodes, true);
-	}
-
 	_formatCode(text) {
 
 		if (!text) return text;
 
 		// remove the leading and trailing template tags
-		text = text.replace(/^[\t]*\n/, '').replace(/\n[\t]*$/, '');
-		const templateMatch = text.match(/^[\t]*<template>[\n]*/);
-		this._isTemplate = templateMatch && templateMatch.length > 0;
+		text = text.replace(/^(\t*\n)*/, '').replace(/(\n\t*)*$/, '');
+		this._isTemplate = /^\s*<template>/.test(text);
 		text = text.replace(/^[\t]*<template>[\n]*/, '').replace(/[\n]*[\t]*<\/template>$/, '');
 
-		// fix script whitespace (for some reason brower keeps <script> indent but not the rest)
-		let lines = text
-			.replace(/\t/g, '  ')
+		// fix script whitespace
+		text = setIndent(text.replace(/\t/g, '  '))
 			.replace(/<\/script>/g, '\n</script>')
 			.replace(/<script>/g, '<script>\n')
 			.replace(/<script type="module">/g, '<script type="module">\n')
-			.replace(/<script data-demo-hide(.+?)<\/script>/gis, '')
-			.split('\n');
-		let scriptIndent = 0;
-		lines = lines.map((l) => {
-			if (l.indexOf('<script') > -1) {
-				scriptIndent = l.match(/^(\s*)/)[0].length;
-				return l;
-			} else if (l.indexOf('</script>') > -1) {
-				const nl = this._repeat(' ', scriptIndent) + l ;
-				scriptIndent = 0;
-				return nl;
-			} else if (scriptIndent && !this._isTemplate) {
-				return this._repeat(' ', scriptIndent + 2) + l;
-			} else {
-				return l;
-			}
-		});
+			.replace(/<script data-demo-hide(.+?)<\/script>/gis, '');
 
-		return lines.join('\n')
-			.replace(/ class=""/g, '') // replace empty class attributes (class="")
-			.replace(/\s+_[^\s/>"'=]*(=(?<q>['"]).*?(?<!\\)\k<q>)?/g, '') // replace private reflected properties (_attr, _attr="value", but not target="_blank")
-			.replace(/=""/g, ''); // replace empty strings for boolean attributes (="")
+		const startTags = new Set([...text.matchAll(/<[^/](.*?)>/g)].map(m => m[0]));
+		for (const tag of startTags) {
+			const formattedTag = tag
+				.replace(/ class=""/g, '') // replace empty class attributes (class="")
+				.replace(/\s+_[^\s/>"'=]*(=(?<q>['"]).*?(?<!\\)\k<q>)?/g, '') // replace private reflected properties (_attr, _attr="value", but not target="_blank")
+				.replace(/=""/g, ''); // replace empty strings for boolean attributes (="")
+			text = text.replace(tag, formattedTag);
+		}
+
+		return text;
+
+	}
+
+	_getDemoNodes() {
+		const query = this._isTemplate ? 'slot[name="_demo"]' : 'slot:not([name="_demo"])';
+		if (!this.shadowRoot) return;
+		const rootElements = this.shadowRoot.querySelector(query).assignedElements();
+		const elements = rootElements.reduce((acc, el) => {
+			acc.push(el);
+			acc.push(...el.querySelectorAll('*'));
+			return acc;
+		}, []);
+
+		return elements;
 	}
 
 	async _handleFullscreenChange(e) {
@@ -233,7 +214,16 @@ class DemoSnippet extends LitElement {
 
 	_handleSkeletonChange(e) {
 		this._skeletonOn = e.target.on;
-		this._applyAttr('skeleton', this._skeletonOn, false);
+		const nodes = this._getDemoNodes();
+		for (const node of nodes) {
+			if (node.nodeType !== Node.ELEMENT_NODE) continue;
+			if (node.tagName.indexOf('-') === -1) continue;
+			if (this._skeletonOn) {
+				node.setAttribute('skeleton', '');
+			} else {
+				node.removeAttribute('skeleton');
+			}
+		}
 	}
 
 	_handleSlotChange(e) {
@@ -243,15 +233,9 @@ class DemoSnippet extends LitElement {
 	_removeImportedDemo() {
 		if (!this.shadowRoot) return;
 		const nodes = this.shadowRoot.querySelector('slot[name="_demo"]').assignedNodes();
-		for (let i = nodes.length - 1; i === 0; i--) {
+		for (let i = nodes.length - 1; i >= 0; i--) {
 			nodes[i].parentNode.removeChild(nodes[i]);
 		}
-	}
-
-	_repeat(value, times) {
-		if (!value || !times) return '';
-		if (!''.repeat) return Array(times).join(value); // for IE11
-		return value.repeat(times);
 	}
 
 	_updateCode(slot) {
@@ -282,10 +266,7 @@ class DemoSnippet extends LitElement {
 	}
 
 	_updateHasSkeleton() {
-
-		const query = this._isTemplate ? 'slot[name="_demo"]' : 'slot:not([name="_demo"])';
-		if (!this.shadowRoot) return;
-		const nodes = this.shadowRoot.querySelector(query).assignedNodes();
+		const nodes = this._getDemoNodes();
 
 		const doApply = (nodes) => {
 			for (let i = 0; i < nodes.length; i++) {
