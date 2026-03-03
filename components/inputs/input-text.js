@@ -141,9 +141,9 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			size: { type: Number },
 			/**
 			 * ADVANCED: For number inputs, sets the step size
-			 * @type {string}
+			 * @type {number}
 			 */
-			step: { type: String },
+			step: { type: Number },
 			/**
 			 * @ignore
 			 */
@@ -227,6 +227,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 				}
 				.d2l-input {
 					-webkit-appearance: textfield;
+					appearance: textfield;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
@@ -487,7 +488,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 						size="${ifDefined(this.size)}"
 						step="${ifDefined(this.step)}"
 						style="${styleMap(inputStyles)}"
-						tabindex="${ifDefined(this.tabindex)}"
+						tabindex="${ifDefined(this.tabIndex)}"
 						title="${ifDefined(this.title)}"
 						type="${this._getType()}">
 					<div class="d2l-input-inside-before" @keypress="${this._suppressEvent}">${this.dir === 'rtl' ? unit : ''}<slot name="${firstSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>

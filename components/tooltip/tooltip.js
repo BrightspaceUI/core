@@ -1050,11 +1050,12 @@ if (usePopoverMixin) {
 
 		async getUpdateComplete() {
 			const fontsPromise = document.fonts ? document.fonts.ready : Promise.resolve();
-			await super.getUpdateComplete();
+			const ret = await super.getUpdateComplete();
 			/* wait for the fonts to load because browsers have a font block period
 			where they will render an invisible fallback font face that may result in
 			improper width calculations before the real font is loaded */
 			await fontsPromise;
+			return ret;
 		}
 
 		render() {
