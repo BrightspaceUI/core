@@ -1,7 +1,7 @@
+import '../demo-snippet.js';
+import { defineCE, expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
 import { SkeletonMixin } from '../../skeleton/skeleton-mixin.js';
-import { defineCE, expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
-import '../demo-snippet.js';
 
 const skeletonTag = defineCE(class extends SkeletonMixin(LitElement) {});
 const scriptTestExpected = `<div>
@@ -25,8 +25,7 @@ const tagTestExpected = `<div foo data-keep="ok"></div>
 
   function _privateFunction() {console.log('Private function name is not removed');}
 
-</script>`
-
+</script>`;
 
 describe('d2l-demo-snippet', () => {
 
@@ -93,6 +92,5 @@ describe('d2l-demo-snippet', () => {
 		});
 
 	});
-
 
 });
