@@ -25,7 +25,7 @@ const normalizeHeadingLevel = (number) => {
 	return number;
 };
 
-const defaultHeading = '3';
+const defaultHeading = 3;
 
 let tabPressed = false;
 let tabListenerAdded = false;
