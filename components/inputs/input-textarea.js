@@ -182,10 +182,9 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 	/** @ignore */
 	set selectionStart(value) {
 		const textarea = this.shadowRoot?.querySelector('textarea');
-		if (textarea === null) {
-			return;
+		if (textarea !== null) {
+			textarea.selectionStart = value;
 		}
-		textarea.selectionStart = value;
 	}
 
 	/** @ignore */
