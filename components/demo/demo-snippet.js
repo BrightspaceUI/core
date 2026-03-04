@@ -171,10 +171,10 @@ class DemoSnippet extends LitElement {
 
 		// fix script whitespace
 		text = setIndent(text.replace(/\t/g, '  '))
-			.replace(/<\/script>/g, '\n</script>')
-			.replace(/<script>/g, '<script>\n')
-			.replace(/<script type="module">/g, '<script type="module">\n')
-			.replace(/<script data-demo-hide(.+?)<\/script>/gis, '');
+			.replace(/( *)<script( type="module")?>([^\n]+?)<\/script>/g, '$1<script$2>\n$1  $3\n$1</script>') // convert single line scripts to multi-line
+			.replace(/( *)<\/script>/g, '\n$1</script>')
+			.replace(/<script( type="module")?>/g, '<script$1>\n')
+			.replace(/(\n *)?<script data-demo-hide(.+?)<\/script>/gis, '');
 
 		const startTags = new Set([...text.matchAll(/<[^/](.*?)>/g)].map(m => m[0]));
 		for (const tag of startTags) {
