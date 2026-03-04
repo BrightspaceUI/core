@@ -53,7 +53,7 @@ class EmptyStateActionButton extends FocusMixin(PropertyRequiredMixin(LitElement
 				detail: {}
 			});
 			this.dispatchEvent(e);
-			this._illustrated = e.detail.illustrated | false;
+			this._illustrated = e.detail.illustrated || false;
 		});
 	}
 

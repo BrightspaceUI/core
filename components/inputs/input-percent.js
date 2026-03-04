@@ -100,7 +100,6 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 		return html`
 			<d2l-input-number
 				?autofocus="${this.autofocus}"
-				@blur="${this._handleBlur}"
 				@change="${this._handleChange}"
 				class="vdiff-target"
 				?disabled="${this.disabled}"

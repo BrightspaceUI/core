@@ -1,4 +1,5 @@
 import '../inputs/input-checkbox.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
