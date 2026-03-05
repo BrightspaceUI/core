@@ -105,6 +105,7 @@ describe('card', () => {
 		{ name: 'align-center', template: createCardTemplate({ content: simpleContentWithFooter, alignCenter: true }) },
 		{ name: 'badge', template: createCardTemplate({ content: html`${simpleContent}${badgeSlotContent}` }) },
 		{ name: 'badge-align-center', template: createCardTemplate({ content: html`${simpleContent}${badgeSlotContent}`, alignCenter: true }) },
+		{ name: 'badge-rtl', rtl: true, template: createCardTemplate({ content: html`${simpleContent}${badgeSlotContent}` }) },
 		{ name: 'actions', template: createCardTemplate({ content: actionContent }) },
 		{ name: 'actions-rtl', rtl: true, template: createCardTemplate({ content: actionContent }) },
 		{ name: 'actions-focus', template: createCardTemplate({ content: actionContent }), action: elem => focusElem(elem.querySelector('d2l-button-icon')) },
