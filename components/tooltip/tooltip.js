@@ -9,7 +9,6 @@ import { classMap } from 'lit/directives/class-map.js';
 import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { PopoverMixin } from '../popover/popover-mixin.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 

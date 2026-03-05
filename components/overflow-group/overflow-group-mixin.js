@@ -1,6 +1,5 @@
 import { css, html, nothing } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 export const OVERFLOW_CLASS = 'd2l-overflow-container';
