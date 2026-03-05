@@ -95,7 +95,8 @@ describe('d2l-demo-snippet', () => {
 				return fixture(`<d2l-demo-snippet>${useTemplate ? addTemplate(inner) : inner}</d2l-demo-snippet>`, { awaitLoadingComplete: false });
 			}
 
-			it(`sets _hasSkeleton when a slotted element exposes skeleton property${useTemplate ? ' - template' : ''}`, async() => {
+			it.only(`sets _hasSkeleton when a slotted element exposes skeleton property${useTemplate ? ' - template' : ''}`, async() => {
+				console.log(new Date().getTime(), 'test');
 				const elem = await snippetFixture(`<${skeletonTag}></${skeletonTag}>`);
 				expect(elem._hasSkeleton).to.be.true;
 			});
