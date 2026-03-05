@@ -268,17 +268,7 @@ class DemoSnippet extends LitElement {
 	_updateHasSkeleton() {
 		const nodes = this._getDemoNodes();
 
-		const doApply = (nodes) => {
-			for (let i = 0; i < nodes.length; i++) {
-				if (nodes[i].nodeType === Node.ELEMENT_NODE) {
-					if (nodes[i].skeleton !== undefined) {
-						this._hasSkeleton = true;
-					}
-					doApply(nodes[i].children);
-				}
-			}
-		};
-		doApply(nodes);
+		this._hasSkeleton = nodes.some(n => n.nodeType === Node.ELEMENT_NODE && n.tagName.indexOf('-') !== -1 && n.skeleton !== undefined);
 
 	}
 

@@ -87,8 +87,12 @@ describe('d2l-demo-snippet', () => {
 
 		it('sets _hasSkeleton when a slotted element exposes skeleton property', async() => {
 			const elem = await fixture(`<d2l-demo-snippet><${skeletonTag}></${skeletonTag}></d2l-demo-snippet>`);
-			elem._updateHasSkeleton();
 			expect(elem._hasSkeleton).to.be.true;
+		});
+
+		it('does not set _hasSkeleton when a slotted element does not expose skeleton property', async() => {
+			const elem = await fixture(`<d2l-demo-snippet><div></div></d2l-demo-snippet>`);
+			expect(elem._hasSkeleton).to.be.false;
 		});
 
 	});
