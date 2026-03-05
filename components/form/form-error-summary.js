@@ -1,4 +1,5 @@
 import '../alert/alert.js';
+import '../button/button-icon.js';
 import '../expand-collapse/expand-collapse-content.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { linkStyles } from '../link/link.js';

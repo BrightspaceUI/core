@@ -14,6 +14,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 			/**
 			 * @ignore
 			 */
+			// eslint-disable-next-line lit/no-native-attributes
 			hidden: { type: Boolean, reflect: true },
 			/**
 			 * Use to select the tab. Only one tab can be selected at a time.
