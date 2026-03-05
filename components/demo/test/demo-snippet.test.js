@@ -90,6 +90,11 @@ describe('d2l-demo-snippet', () => {
 			expect(elem._hasSkeleton).to.be.true;
 		});
 
+		it('sets _hasSkeleton when a nested slotted element exposes skeleton property', async() => {
+			const elem = await fixture(`<d2l-demo-snippet><div><${skeletonTag}></${skeletonTag}></div></d2l-demo-snippet>`);
+			expect(elem._hasSkeleton).to.be.true;
+		});
+
 		it('does not set _hasSkeleton when a slotted element does not expose skeleton property', async() => {
 			const elem = await fixture(`<d2l-demo-snippet><div></div></d2l-demo-snippet>`);
 			expect(elem._hasSkeleton).to.be.false;
