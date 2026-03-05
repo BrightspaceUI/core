@@ -7,7 +7,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { overflowHiddenDeclarations } from '../../helpers/overflow.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const transitionDur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 400;
