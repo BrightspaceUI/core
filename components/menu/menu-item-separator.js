@@ -17,8 +17,8 @@ class MenuItemSeparator extends LitElement {
 		`;
 	}
 
-	firstUpdated() {
-		super.firstUpdated();
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
 
 		this.setAttribute('role', 'separator');
 	}
