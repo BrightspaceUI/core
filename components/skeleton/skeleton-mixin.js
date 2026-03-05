@@ -15,10 +15,10 @@ export const skeletonStyles = css`
 		75% { background-color: var(--d2l-color-sylvite); }
 		100% { background-color: var(--d2l-color-sylvite); }
 	}
-	:host([skeleton]) {
+	:host([skeleton]), .d2l-force-skeletize {
 		isolation: isolate;
 	}
-	:host([skeleton]) .d2l-skeletize::before {
+	:host([skeleton]) .d2l-skeletize::before, .d2l-force-skeletize::before {
 		animation: ${animation};
 		background-color: var(--d2l-color-sylvite);
 		border-radius: 0.2rem;
@@ -36,7 +36,8 @@ export const skeletonStyles = css`
 		}
 	}
 	:host([skeleton]) .d2l-skeletize,
-	:host([skeleton]) .d2l-skeletize-container {
+	:host([skeleton]) .d2l-skeletize-container,
+	.d2l-force-skeletize {
 		background-color: transparent;
 		border-color: var(--d2l-color-sylvite);
 		box-shadow: none;

@@ -416,6 +416,13 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._tableResizeObserver?.disconnect();
 	}
 
+	async getUpdateComplete() {
+		const result = await super.getUpdateComplete();
+		const wrapper = this.shadowRoot.querySelector('d2l-scroll-wrapper');
+		if (wrapper) await wrapper.updateComplete;
+		return result;
+	}
+
 	render() {
 		const slot = html`
 			<slot @slotchange="${this._handleSlotChange}"></slot>
