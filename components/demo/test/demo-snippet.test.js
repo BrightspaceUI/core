@@ -91,9 +91,11 @@ describe('d2l-demo-snippet', () => {
 	describe('skeleton detection', () => {
 		[true, false].forEach(useTemplate => {
 
-			it(`sets _hasSkeleton when a slotted element exposes skeleton property${useTemplate ? ' - template' : ''}`, async() => {
+			it.only(`sets _hasSkeleton when a slotted element exposes skeleton property${useTemplate ? ' - template' : ''}`, async() => {
+				const now = new Date().getTime();
 				const inner = `<${skeletonTag}></${skeletonTag}>`;
 				const elem = await fixture(`<d2l-demo-snippet>${useTemplate ? addTemplate(inner) : inner}</d2l-demo-snippet>`);
+				console.log(new Date().getTime() - now);
 				expect(elem._hasSkeleton).to.be.true;
 			});
 

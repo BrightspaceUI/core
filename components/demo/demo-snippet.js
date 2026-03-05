@@ -190,8 +190,11 @@ class DemoSnippet extends LitElement {
 	}
 
 	_getDemoNodes() {
+		const now = new Date().getTime();
 		const query = this._isTemplate ? '[slot="_demo"], [slot="_demo"] *' : '*';
-		return Array.from(this.querySelectorAll(query));
+		const elements = Array.from(this.querySelectorAll(query));
+		console.log('_getDemoNodes', new Date().getTime() - now);
+		return elements;
 	}
 
 	async _handleFullscreenChange(e) {
@@ -220,6 +223,7 @@ class DemoSnippet extends LitElement {
 
 	_handleSlotChange(e) {
 		this._updateCode(e.target);
+		this._updateHasSkeleton();
 	}
 
 	_removeImportedDemo() {
@@ -231,6 +235,7 @@ class DemoSnippet extends LitElement {
 	}
 
 	_updateCode(slot) {
+		const now = new Date().getTime();
 		this._removeImportedDemo();
 		const nodes = slot.assignedNodes();
 		if (nodes.length === 0) {
@@ -253,14 +258,15 @@ class DemoSnippet extends LitElement {
 		}
 		const textNode = document.createTextNode(this._formatCode(tempContainer.innerHTML));
 		this._code = textNode.textContent;
-
-		this._updateHasSkeleton();
+		console.log('_updateCode', new Date().getTime() - now);
 	}
 
 	_updateHasSkeleton() {
 		const nodes = this._getDemoNodes();
 
+		const now = new Date().getTime();
 		this._hasSkeleton = nodes.some(n => n.nodeType === Node.ELEMENT_NODE && n.tagName.indexOf('-') !== -1 && n.skeleton !== undefined);
+		console.log('_hasSkeleton', new Date().getTime() - now);
 
 	}
 
