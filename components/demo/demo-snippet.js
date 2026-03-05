@@ -190,16 +190,8 @@ class DemoSnippet extends LitElement {
 	}
 
 	_getDemoNodes() {
-		const query = this._isTemplate ? 'slot[name="_demo"]' : 'slot:not([name="_demo"])';
-		if (!this.shadowRoot) return;
-		const rootElements = this.shadowRoot.querySelector(query).assignedElements();
-		const elements = rootElements.reduce((acc, el) => {
-			acc.push(el);
-			acc.push(...el.querySelectorAll('*'));
-			return acc;
-		}, []);
-
-		return elements;
+		const query = this._isTemplate ? '[slot="_demo"], [slot="_demo"] *' : '*';
+		return Array.from(this.querySelectorAll(query));
 	}
 
 	async _handleFullscreenChange(e) {

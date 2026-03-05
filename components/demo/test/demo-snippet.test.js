@@ -3,7 +3,11 @@ import { defineCE, expect, fixture, html, runConstructor } from '@brightspace-ui
 import { LitElement } from 'lit';
 import { SkeletonMixin } from '../../skeleton/skeleton-mixin.js';
 
-const skeletonTag = defineCE(class extends SkeletonMixin(LitElement) {});
+const skeletonTag = defineCE(class extends SkeletonMixin(LitElement) {
+	render() {
+		return html`<div>Skeleton element</div>`;
+	}
+});
 const scriptTestExpected = `<div>
   <script>
 
@@ -27,6 +31,10 @@ const tagTestExpected = `<div foo data-keep="ok"></div>
 
 </script>`;
 
+function addTemplate(inner) {
+	return `<template>${inner}</template>`;
+}
+
 describe('d2l-demo-snippet', () => {
 
 	describe('constructor', () => {
@@ -37,9 +45,6 @@ describe('d2l-demo-snippet', () => {
 
 	describe('code formatting', () => {
 		let elem;
-		function addTemplate(inner) {
-			return `<template>${inner}</template>`;
-		}
 
 		beforeEach(async() => {
 			elem = await fixture(html`<d2l-demo-snippet></d2l-demo-snippet>`);
@@ -84,22 +89,26 @@ describe('d2l-demo-snippet', () => {
 	});
 
 	describe('skeleton detection', () => {
+		[true, false].forEach(useTemplate => {
 
-		it('sets _hasSkeleton when a slotted element exposes skeleton property', async() => {
-			const elem = await fixture(`<d2l-demo-snippet><${skeletonTag}></${skeletonTag}></d2l-demo-snippet>`);
-			expect(elem._hasSkeleton).to.be.true;
+			it(`sets _hasSkeleton when a slotted element exposes skeleton property${useTemplate ? ' - template' : ''}`, async() => {
+				const inner = `<${skeletonTag}></${skeletonTag}>`;
+				const elem = await fixture(`<d2l-demo-snippet>${useTemplate ? addTemplate(inner) : inner}</d2l-demo-snippet>`);
+				expect(elem._hasSkeleton).to.be.true;
+			});
+
+			it(`sets _hasSkeleton when a nested slotted element exposes skeleton property${useTemplate ? ' - template' : ''}`, async() => {
+				const inner = `<div><${skeletonTag}></${skeletonTag}></div>`;
+				const elem = await fixture(`<d2l-demo-snippet>${useTemplate ? addTemplate(inner) : inner}</d2l-demo-snippet>`);
+				expect(elem._hasSkeleton).to.be.true;
+			});
+
+			it(`does not set _hasSkeleton when a slotted element does not expose skeleton property${useTemplate ? ' - template' : ''}`, async() => {
+				const inner = '<div></div>';
+				const elem = await fixture(`<d2l-demo-snippet>${useTemplate ? addTemplate(inner) : inner}</d2l-demo-snippet>`);
+				expect(elem._hasSkeleton).to.be.false;
+			});
 		});
-
-		it('sets _hasSkeleton when a nested slotted element exposes skeleton property', async() => {
-			const elem = await fixture(`<d2l-demo-snippet><div><${skeletonTag}></${skeletonTag}></div></d2l-demo-snippet>`);
-			expect(elem._hasSkeleton).to.be.true;
-		});
-
-		it('does not set _hasSkeleton when a slotted element does not expose skeleton property', async() => {
-			const elem = await fixture(`<d2l-demo-snippet><div></div></d2l-demo-snippet>`);
-			expect(elem._hasSkeleton).to.be.false;
-		});
-
 	});
 
 });
