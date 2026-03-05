@@ -91,23 +91,22 @@ describe('d2l-demo-snippet', () => {
 	describe('skeleton detection', () => {
 		[true, false].forEach(useTemplate => {
 
-			it.only(`sets _hasSkeleton when a slotted element exposes skeleton property${useTemplate ? ' - template' : ''}`, async() => {
-				const now = new Date().getTime();
-				const inner = `<${skeletonTag}></${skeletonTag}>`;
-				const elem = await fixture(`<d2l-demo-snippet>${useTemplate ? addTemplate(inner) : inner}</d2l-demo-snippet>`);
-				console.log(new Date().getTime() - now);
+			function snippetFixture(inner) {
+				return fixture(`<d2l-demo-snippet>${useTemplate ? addTemplate(inner) : inner}</d2l-demo-snippet>`, { awaitLoadingComplete: false });
+			}
+
+			it(`sets _hasSkeleton when a slotted element exposes skeleton property${useTemplate ? ' - template' : ''}`, async() => {
+				const elem = await snippetFixture(`<${skeletonTag}></${skeletonTag}>`);
 				expect(elem._hasSkeleton).to.be.true;
 			});
 
 			it(`sets _hasSkeleton when a nested slotted element exposes skeleton property${useTemplate ? ' - template' : ''}`, async() => {
-				const inner = `<div><${skeletonTag}></${skeletonTag}></div>`;
-				const elem = await fixture(`<d2l-demo-snippet>${useTemplate ? addTemplate(inner) : inner}</d2l-demo-snippet>`);
+				const elem = await snippetFixture(`<div><${skeletonTag}></${skeletonTag}></div>`);
 				expect(elem._hasSkeleton).to.be.true;
 			});
 
 			it(`does not set _hasSkeleton when a slotted element does not expose skeleton property${useTemplate ? ' - template' : ''}`, async() => {
-				const inner = '<div></div>';
-				const elem = await fixture(`<d2l-demo-snippet>${useTemplate ? addTemplate(inner) : inner}</d2l-demo-snippet>`);
+				const elem = await snippetFixture('<div></div>');
 				expect(elem._hasSkeleton).to.be.false;
 			});
 		});
