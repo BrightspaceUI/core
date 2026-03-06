@@ -46,15 +46,20 @@ async function waitForElem(elem, awaitLoadingComplete = true, indent = 0) {
 		const update = elem.updateComplete;
 		if (typeof update === 'object' && Promise.resolve(update) === update) {
 			await update;
+			if (indent === 0) console.log(new Date().getTime(), 'updateComplete');
 			await nextFrame();
+			if (indent === 0) console.log(new Date().getTime(), 'nextFrame');
 		}
 
 		if (awaitLoadingComplete && typeof elem.getLoadingComplete === 'function') {
 			await elem.getLoadingComplete();
+			if (indent === 0) console.log(new Date().getTime(), 'getLoadingComplete');
 			await nextFrame();
+			if (indent === 0) console.log(new Date().getTime(), 'nextFrame');
 		}
 
 		const children = getComposedChildren(elem);
+		if (indent === 0) console.log(new Date().getTime(), 'getComposedChildren');
 		childTimes = await Promise.all(children.map(e => waitForElem(e, awaitLoadingComplete, indent + 1)));
 
 	};
@@ -105,9 +110,8 @@ export async function fixture(element, opts = {}) {
 
 	const elem = await wcFixture(element, { parentNode });
 	console.log(new Date().getTime(), 'wcFixture');
-	const times = await waitForElem(elem, opts.awaitLoadingComplete);
+	await waitForElem(elem, opts.awaitLoadingComplete);
 	console.log(new Date().getTime(), 'waitForElem');
-	console.log(times);
 
 	await pause();
 	return elem;
