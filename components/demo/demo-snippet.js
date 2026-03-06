@@ -220,7 +220,7 @@ class DemoSnippet extends LitElement {
 	}
 
 	_handleSlotChange(e) {
-		this._updateCode(e.target);
+		// this._updateCode(e.target);
 		this._updateHasSkeleton();
 	}
 
