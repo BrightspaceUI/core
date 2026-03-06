@@ -136,6 +136,11 @@ class Card extends LitElement {
 				text-align: center;
 			}
 
+			:host([align-center]) .d2l-card-badge {
+				display: flex;
+				justify-content: center;
+			}
+
 			.d2l-card-footer-hidden .d2l-card-content {
 				padding-bottom: 1.2rem;
 			}

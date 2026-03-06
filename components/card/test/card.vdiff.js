@@ -92,16 +92,20 @@ const footerTooltipContent = html`
 	<div slot="footer">${tooltipContent}</div>
 `;
 
+const badgeSlotContent = html`
+	<div slot="badge">
+		<div style="background-color: white; border: 1px solid black; border-radius: 6px; display: inline-block; line-height: 1rem; padding: 0.3rem; width: 60px;">Badge</div>
+	</div>
+`;
+
 describe('card', () => {
 	[
 		{ name: 'header-content', template: createCardTemplate({ content: simpleContent }) },
 		{ name: 'footer', template: createCardTemplate({ content: simpleContentWithFooter }) },
 		{ name: 'align-center', template: createCardTemplate({ content: simpleContentWithFooter, alignCenter: true }) },
-		{ name: 'badge', template: createCardTemplate({ content: html`${simpleContent}
-			<div slot="badge">
-				<div style="background-color: white; border: 1px solid black; border-radius: 6px; display: inline-block; line-height: 1rem; padding: 0.3rem; width: 60px;">Badge</div>
-			</div>`
-		}) },
+		{ name: 'badge', template: createCardTemplate({ content: html`${simpleContent}${badgeSlotContent}` }) },
+		{ name: 'badge-align-center', template: createCardTemplate({ content: html`${simpleContent}${badgeSlotContent}`, alignCenter: true }) },
+		{ name: 'badge-rtl', rtl: true, template: createCardTemplate({ content: html`${simpleContent}${badgeSlotContent}` }) },
 		{ name: 'actions', template: createCardTemplate({ content: actionContent }) },
 		{ name: 'actions-rtl', rtl: true, template: createCardTemplate({ content: actionContent }) },
 		{ name: 'actions-focus', template: createCardTemplate({ content: actionContent }), action: elem => focusElem(elem.querySelector('d2l-button-icon')) },
