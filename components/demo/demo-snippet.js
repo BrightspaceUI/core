@@ -158,7 +158,6 @@ class DemoSnippet extends LitElement {
 				if (this.shadowRoot) this.shadowRoot.querySelector('d2l-code-view').forceUpdate();
 			}
 		});
-		console.log(new Date().getTime(), 'updated');
 	}
 
 	_formatCode(text) {
