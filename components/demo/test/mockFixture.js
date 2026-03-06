@@ -36,9 +36,10 @@ function getComposedChildren(node) {
  * @param {*} elem
  * @param {boolean} awaitLoadingComplete
  */
-async function waitForElem(elem, awaitLoadingComplete = true) {
-
+async function waitForElem(elem, awaitLoadingComplete = true, indent = 0) {
+	const now = new Date().getTime();
 	if (!elem) return;
+	let childTimes = [];
 
 	const doWait = async() => {
 
@@ -54,7 +55,7 @@ async function waitForElem(elem, awaitLoadingComplete = true) {
 		}
 
 		const children = getComposedChildren(elem);
-		await Promise.all(children.map(e => waitForElem(e, awaitLoadingComplete)));
+		childTimes = await Promise.all(children.map(e => waitForElem(e, awaitLoadingComplete, indent + 1)));
 
 	};
 
@@ -75,6 +76,10 @@ async function waitForElem(elem, awaitLoadingComplete = true) {
 			.then(() => observer.disconnect())
 			.then(resolve);
 	});
+	const time = new Date().getTime() - now;
+	if (time === 0) return '';
+	childTimes = childTimes.filter(t => t);
+	return `${'| '.repeat(indent)}${elem.tagName} (${time}ms):${childTimes.length ? '\n' : ''}${childTimes.join('\n')}`;
 
 }
 
@@ -100,8 +105,9 @@ export async function fixture(element, opts = {}) {
 
 	const elem = await wcFixture(element, { parentNode });
 	console.log(new Date().getTime(), 'wcFixture');
-	await waitForElem(elem, opts.awaitLoadingComplete);
+	const times = await waitForElem(elem, opts.awaitLoadingComplete);
 	console.log(new Date().getTime(), 'waitForElem');
+	console.log(times);
 
 	await pause();
 	return elem;
