@@ -1,6 +1,5 @@
 import '../demo-snippet.js';
-import { defineCE, expect, html, nextFrame, runConstructor } from '@brightspace-ui/testing';
-import { fixture } from './mockFixture.js';
+import { defineCE, expect, fixture, html, nextFrame, runConstructor } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
 import { SkeletonMixin } from '../../skeleton/skeleton-mixin.js';
 
@@ -97,10 +96,7 @@ describe('d2l-demo-snippet', () => {
 			}
 
 			it(`sets _hasSkeleton when a slotted element exposes skeleton property${useTemplate ? ' - template' : ''}`, async() => {
-				console.log('--------------------------------');
-				console.log(new Date().getTime(), 'test');
 				await nextFrame();
-				console.log(new Date().getTime(), 'first nextFrame');
 				const elem = await snippetFixture(`<${skeletonTag}></${skeletonTag}>`);
 				expect(elem._hasSkeleton).to.be.true;
 			});
