@@ -35,6 +35,7 @@ class DemoSnippet extends LitElement {
 				background-color: var(--d2l-sem-background-color-base);
 				border: 1px solid var(--d2l-sem-border-color-standard);
 				border-radius: 6px;
+				box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.85);
 				display: block;
 				max-width: 900px;
 			}
@@ -107,6 +108,7 @@ class DemoSnippet extends LitElement {
 				border: none;
 				border-top-left-radius: 0;
 				border-top-right-radius: 0;
+				box-shadow: none;
 				margin: 0;
 				max-width: 100%;
 			}
