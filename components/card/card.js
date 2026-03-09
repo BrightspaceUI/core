@@ -9,6 +9,15 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 const GAUD_8697_FEATURE_FLAG = getFlag('GAUD-8697-card-badge-center-flag', true);
 
+// TODO: move this css statement to where this function is being called, when the FF is removed
+const getCenterCardBadgeCSS = () => {
+	return css`
+	:host([align-center]) .d2l-card-badge {
+		display: flex;
+		justify-content: center;
+	}`;
+};
+
 /**
  * A container element that provides specific layout using several slots.
  * @slot content - Slot for primary content such as title and supplementary info (no actionable elements)
@@ -139,13 +148,7 @@ class Card extends LitElement {
 				text-align: center;
 			}
 
-			${
-				GAUD_8697_FEATURE_FLAG ? css`:host([align-center]) .d2l-card-badge {
-					display: flex;
-					justify-content: center;
-				}` : css``
-			}
-
+			${GAUD_8697_FEATURE_FLAG ? getCenterCardBadgeCSS() : css``}
 			.d2l-card-footer-hidden .d2l-card-content {
 				padding-bottom: 1.2rem;
 			}
