@@ -1,10 +1,13 @@
 import '../colors/colors.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { styleMap } from 'lit/directives/style-map.js';
+
+const GAUD_8697_FEATURE_FLAG = getFlag('GAUD-8697-card-badge-center-flag', true);
 
 /**
  * A container element that provides specific layout using several slots.
@@ -136,9 +139,11 @@ class Card extends LitElement {
 				text-align: center;
 			}
 
-			:host([align-center]) .d2l-card-badge {
-				display: flex;
-				justify-content: center;
+			${
+				GAUD_8697_FEATURE_FLAG ? css`:host([align-center]) .d2l-card-badge {
+					display: flex;
+					justify-content: center;
+				}` : css``
 			}
 
 			.d2l-card-footer-hidden .d2l-card-content {
