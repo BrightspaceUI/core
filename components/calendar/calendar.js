@@ -455,8 +455,6 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 		this._monthNav = 'initial';
 		this._namespace = 'components.calendar';
 		this._tableInfoId = getUniqueId();
-		this._onBlur = this._onBlur.bind(this);
-		this._onLocalizeResourcesChange = this._onLocalizeResourcesChange.bind(this);
 		getCalendarData();
 	}
 	connectedCallback() {
@@ -471,19 +469,15 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 			(node) => { return (node.tagName === 'D2L-DROPDOWN-CONTENT'); }
 		);
 		if (dropdownContent) this._dialog = true;
-
-		this.addEventListener('blur', this._onBlur);
-		this.addEventListener('d2l-localize-resources-change', this._onLocalizeResourcesChange);
-
 		this._today = getDateFromDateObj(getToday());
 		if (this.selectedValue) this._getInitialFocusDate();
 		else this.reset();
 	}
 
-	disconnectedCallback() {
-		super.disconnectedCallback();
-		this.removeEventListener('blur', this._onBlur);
-		this.removeEventListener('d2l-localize-resources-change', this._onLocalizeResourcesChange);
+	firstUpdated() {
+		super.firstUpdated();
+		this.removeEventListener('blur', this._onBlur.bind(this));
+		this.removeEventListener('d2l-localize-resources-change', this._onLocalizeResourcesChange.bind(this));
 	}
 
 	render() {
