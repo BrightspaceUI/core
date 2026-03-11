@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+
+			import '../progress.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="Accessibility Tests">
+
+			<h2>List</h2>
+			<ul role="list">
+				<li role="listitem">Item 1</li>
+				<li role="listitem">Item 2</li>
+				<li role="listitem">Item 3</li>
+			</ul>
+
+			<h2>Table</h2>
+			<table aria-label="Example table">
+				<thead>
+					<tr>
+						<th scope="col">Header 1</th>
+						<th scope="col">Header 2</th>
+						<th scope="col">Header 3</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Data 1</td>
+						<td>Data 2</td>
+						<td>Data 3</td>
+					</tr>
+					<tr>
+						<td>Data 4</td>
+						<td>Data 5</td>
+						<td>Data 6</td>
+					</tr>
+				</tbody>
+			</table>
+		</d2l-demo-page>
+	</body>
+</html>
