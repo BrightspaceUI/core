@@ -8,7 +8,7 @@
 			import '../../../demo/demo-page.js';
 			import '../../../button/button.js';
 			import '../../dialog-fullscreen.js';
-			
+
 			window.OpenFullscreenDialog = function() {
 				const dialog = window.document.querySelector('#dialogFullscreen');
 				dialog.opened = true;
@@ -17,7 +17,7 @@
 	</head>
 	<body unresolved>
 		<!-- <button></button> Uncomment and it will be fixed -->
-		<iframe src="opener-frame.html" style="border: none; display: block; height: 400px; width: 100%;"></iframe>
+		<iframe style="border: none; display: block; height: 400px; width: 100%;"></iframe>
 		<d2l-dialog-fullscreen id="dialogFullscreen" title-text="Fullscreen Title">
 			<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
 			<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
@@ -29,5 +29,9 @@
 			<d2l-button slot="footer" primary data-dialog-action="save">Save</d2l-button>
 			<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
 		</d2l-dialog-fullscreen>
+		<script type="module">
+			import { getFlag } from '../../../../helpers/flags.js';
+			document.querySelector('iframe').src = 'opener-frame.html?demo-flag-tabIndexSolution=' + getFlag('tabIndexSolution');
+		</script>
 	</body>
 </html>

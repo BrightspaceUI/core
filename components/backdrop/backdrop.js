@@ -2,9 +2,13 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { cssEscape, getComposedChildren, getComposedParent, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
+import { getFlag } from '../../helpers/flags.js';
+
+const tabIndexSolution = getFlag('tabIndexSolution');
 
 const BACKDROP_HIDDEN = 'data-d2l-backdrop-hidden';
 const BACKDROP_ARIA_HIDDEN = 'data-d2l-backdrop-aria-hidden';
+const BACKDROP_TABINDEX = 'data-d2l-backdrop-tabindex';
 const TRANSITION_DURATION = 200;
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -173,6 +177,13 @@ function hideAccessible(target) {
 				child.setAttribute(BACKDROP_ARIA_HIDDEN, child.getAttribute('aria-hidden'));
 			}
 			child.setAttribute('aria-hidden', 'true');
+			if (tabIndexSolution) {
+				if (child.hasAttribute('tabindex')) {
+					child.setAttribute(BACKDROP_TABINDEX, child.getAttribute('tabindex'));
+				}
+				child.setAttribute('tabindex', '-1');
+			}
+
 
 			child.setAttribute(BACKDROP_HIDDEN, BACKDROP_HIDDEN);
 			hiddenElements.push(child);
@@ -200,6 +211,14 @@ function showAccessible(elems) {
 			elem.removeAttribute(BACKDROP_ARIA_HIDDEN);
 		} else {
 			elem.removeAttribute('aria-hidden');
+		}
+		if (tabIndexSolution) {
+			if (elem.hasAttribute(BACKDROP_TABINDEX)) {
+				elem.setAttribute('tabindex', elem.getAttribute(BACKDROP_TABINDEX));
+				elem.removeAttribute(BACKDROP_TABINDEX);
+			} else {
+				elem.removeAttribute('tabindex');
+			}
 		}
 		elem.removeAttribute(BACKDROP_HIDDEN);
 	}

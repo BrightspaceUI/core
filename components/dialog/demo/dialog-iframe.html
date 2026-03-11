@@ -16,8 +16,12 @@
 
 			<d2l-demo-snippet full-width>
 				<template>
-					<iframe src="./iframes/outer-frame.html" style="border: none; display: block; height: 400px; width: 100%;"></iframe>
+					<iframe style="border: none; display: block; height: 400px; width: 100%;"></iframe>
 				</template>
+				<script type="module">
+					import { getFlag } from '../../../helpers/flags.js';
+					document.querySelector('iframe').src = './iframes/outer-frame.html?demo-flag-tabIndexSolution=' + getFlag('tabIndexSolution');
+				</script>
 			</d2l-demo-snippet>
 
 
