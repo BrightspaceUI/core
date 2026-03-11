@@ -724,26 +724,25 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 		if (candidateRowHeadCells.length !== candidateRowBodyLength) return;
 
-		this._stickyWidth = 0;
+		let stickyWidth = 0;
 		for (let i = 0; i < candidateRowHeadCells.length; i++) {
 			const headCell = candidateRowHeadCells[i];
 			const headStyle = getComputedStyle(headCell);
 
 			const bodyCell = candidateRowBody.cells[i];
 			const bodyStyle = getComputedStyle(bodyCell);
-
-			let cellWidth = bodyCell.clientWidth;
+			let cellWidth = headCell.clientWidth + parseFloat(headStyle.borderLeft) + parseFloat(headStyle.borderRight);
 			if (headCell.clientWidth > bodyCell.clientWidth) {
 				const headOverallWidth = parseFloat(headStyle.width) + parseFloat(headStyle.paddingLeft) + parseFloat(headStyle.paddingRight);
-				cellWidth = headOverallWidth - parseFloat(bodyStyle.paddingLeft) - parseFloat(bodyStyle.paddingRight);
-				bodyCell.style.minWidth = `${cellWidth}px`;
+				bodyCell.style.minWidth = `${headOverallWidth - parseFloat(bodyStyle.paddingLeft) - parseFloat(bodyStyle.paddingRight)}px`;
 			} else if (headCell.clientWidth < bodyCell.clientWidth) {
 				const bodyOverallWidth = parseFloat(bodyStyle.width) + parseFloat(bodyStyle.paddingLeft) + parseFloat(bodyStyle.paddingRight);
-				cellWidth = bodyOverallWidth - parseFloat(headStyle.paddingLeft) - parseFloat(headStyle.paddingRight);
-				headCell.style.minWidth = `${cellWidth}px`;
+				headCell.style.minWidth = `${bodyOverallWidth - parseFloat(headStyle.paddingLeft) - parseFloat(headStyle.paddingRight)}px`;
+				cellWidth = bodyCell.clientWidth + parseFloat(bodyStyle.borderLeft) + parseFloat(bodyStyle.borderRight);
 			}
-			if (headCell.hasAttribute('sticky')) this._stickyWidth += cellWidth;
+			if (headCell.hasAttribute('sticky')) stickyWidth += cellWidth;
 		}
+		this._stickyWidth = stickyWidth;
 	}
 
 	_updateStickyAncestor(node, popoverOpened) {

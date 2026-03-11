@@ -172,6 +172,66 @@ describe('d2l-table-wrapper', () => {
 
 		}));
 	});
+	describe('scrolling with large sticky column', () => {
+
+		const tagName = defineCE(
+			class extends LitElement {
+				static get styles() {
+					return [tableStyles, css`
+						:host {
+							display: block;
+							width: 400px;
+						}
+						.large-sticky {
+							min-width: 300px;
+						}
+						:host([td-size="larger"]) th.large-sticky,
+						:host([td-size="smaller"]) td.large-sticky {
+							min-width: 200px;
+						}
+					`];
+				}
+				render() {
+					return html`
+						<d2l-table-wrapper sticky-headers sticky-headers-scroll-wrapper>
+							<table class="d2l-table">
+								<thead>
+									<tr>
+										<th sticky class="large-sticky">
+											I'm a large header
+										</th>
+										<th>Other header 1</th>
+										<th>Other header 2</th>
+										<th>Other header 3</th>
+										<th>Other header 4</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td sticky class="large-sticky">I'm a large cell</td>
+										<td>Other cell 1</td>
+										<td>Other cell 2</td>
+										<td>Other cell 3</td>
+										<td>Other cell 4</td>
+									</tr>
+								</tbody>
+							</table>
+						</d2l-table-wrapper>
+					`;
+				}
+			}
+		);
+
+		['smaller', 'same', 'larger'].forEach(size => it(`sets scroll offset (sticky body cell is ${size})`, async() => {
+
+			const el = await fixture(`<${tagName} td-size="${size}"></${tagName}>`);
+			const scrollWrapper = el.shadowRoot.querySelector('d2l-table-wrapper').shadowRoot.querySelector('d2l-scroll-wrapper');
+			const expectedWidth = el.shadowRoot.querySelector(`${size === 'larger' ? 'td' : 'th'}.large-sticky`).clientWidth;
+
+			expect(scrollWrapper.scrollAreaOffset).to.equal(expectedWidth + 2); // width + 1px border
+
+		}));
+	});
 
 	describe('sticky headers with shadow DOM', () => {
 		let element, wrapper;
