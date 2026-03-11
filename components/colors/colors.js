@@ -13,7 +13,7 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-theme-background-color-interactive-primary-hover: var(--d2l-theme-brand-color-primary-hover);
 		--d2l-theme-background-color-interactive-secondary-default: var(--d2l-color-gypsum);
 		--d2l-theme-background-color-interactive-secondary-hover: var(--d2l-color-mica);
-		--d2l-theme-background-color-interactive-tertiary-default: #ffffff;
+		--d2l-theme-background-color-interactive-tertiary-default: transparent;
 		--d2l-theme-background-color-interactive-tertiary-hover: var(--d2l-theme-background-color-interactive-secondary-default);
 		--d2l-theme-background-color-interactive-translucent-default: #00000080;
 		--d2l-theme-background-color-interactive-translucent-hover: var(--d2l-theme-brand-color-primary-default);
@@ -63,7 +63,7 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-theme-background-color-interactive-primary-hover: var(--d2l-theme-brand-color-primary-hover);
 		--d2l-theme-background-color-interactive-secondary-default: #303335;
 		--d2l-theme-background-color-interactive-secondary-hover: var(--d2l-color-ferrite);
-		--d2l-theme-background-color-interactive-tertiary-default: #000000;
+		--d2l-theme-background-color-interactive-tertiary-default: transparent;
 		--d2l-theme-background-color-interactive-tertiary-hover: var(--d2l-theme-background-color-interactive-secondary-default);
 		--d2l-theme-background-color-interactive-translucent-default: #00000080;
 		--d2l-theme-background-color-interactive-translucent-hover: var(--d2l-theme-brand-color-primary-default);
