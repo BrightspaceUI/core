@@ -3,25 +3,29 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="UTF-8">
-		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<link rel="stylesheet" href="./demo/styles.css" type="text/css">
 		<script type="module">
-			import '../../demo/demo-page.js';
+			import './demo/demo-page.js';
 
-			import '../progress.js';
+			import './progress/progress.js';
 		</script>
 	</head>
 	<body unresolved>
 		<d2l-demo-page page-title="Accessibility Tests">
 
+			<h2>Progress</h2>
+			<d2l-progress label="Course completion" value="2" max="5"></d2l-progress>
+
 			<h2>List</h2>
-			<ul role="list">
-				<li role="listitem">Item 1</li>
-				<li role="listitem">Item 2</li>
-				<li role="listitem">Item 3</li>
+			<ul>
+				<li>Item 1</li>
+				<li>Item 2</li>
+				<li>Item 3</li>
 			</ul>
 
 			<h2>Table</h2>
-			<table aria-label="Example table">
+			<table>
+				<caption>Example table</caption>
 				<thead>
 					<tr>
 						<th scope="col">Header 1</th>
