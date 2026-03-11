@@ -4,6 +4,8 @@ import '../backdrop/backdrop-loading.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { cssSizes } from '../inputs/input-checkbox.js';
 import { getComposedParent } from '../../helpers/dom.js';
+import { getFlag } from '../../helpers/flags.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { isPopoverSupported } from '../popover/popover-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
@@ -390,6 +392,8 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
 		this.loading = false;
+
+		this._excludeStickyColumnsFromScrollCalculations = getFlag('GAUD-9530-exclude-sticky-columns-from-scroll-calculations', false);
 	}
 
 	connectedCallback() {
@@ -426,7 +430,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
 			${this.stickyHeaders && this._controlsScrolled ? html`<div class="d2l-sticky-headers-backdrop"></div>` : nothing}
-			${useScrollWrapper ? html`<d2l-scroll-wrapper scroll-area-offset=${this._stickyWidth} .customScrollers="${this._tableScrollers}">${slot}</d2l-scroll-wrapper>` : slot}
+			${useScrollWrapper ? html`<d2l-scroll-wrapper scroll-area-offset=${ifDefined(this._excludeStickyColumnsFromScrollCalculations ? this._stickyWidth : undefined)} .customScrollers="${this._tableScrollers}">${slot}</d2l-scroll-wrapper>` : slot}
 			${this._renderPagerContainer()}
 		`;
 	}
@@ -742,7 +746,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			}
 			if (headCell.hasAttribute('sticky')) stickyWidth += cellWidth;
 		}
-		this._stickyWidth = stickyWidth;
+		if (this._excludeStickyColumnsFromScrollCalculations) this._stickyWidth = stickyWidth;
 	}
 
 	_updateStickyAncestor(node, popoverOpened) {

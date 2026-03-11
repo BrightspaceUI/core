@@ -4,6 +4,7 @@ import '../table-controls.js';
 import { css, LitElement } from 'lit';
 import { defineCE, expect, fixture, html, nextFrame, runConstructor } from '@brightspace-ui/testing';
 import { isUsingNativePopover, tableStyles } from '../table-wrapper.js';
+import { mockFlag } from '../../../helpers/flags.js';
 
 describe('d2l-table-wrapper', () => {
 
@@ -223,7 +224,7 @@ describe('d2l-table-wrapper', () => {
 		);
 
 		['smaller', 'same', 'larger'].forEach(size => it(`sets scroll offset (sticky body cell is ${size})`, async() => {
-
+			mockFlag('GAUD-9530-exclude-sticky-columns-from-scroll-calculations', true);
 			const el = await fixture(`<${tagName} td-size="${size}"></${tagName}>`);
 			const scrollWrapper = el.shadowRoot.querySelector('d2l-table-wrapper').shadowRoot.querySelector('d2l-scroll-wrapper');
 			const expectedWidth = el.shadowRoot.querySelector(`${size === 'larger' ? 'td' : 'th'}.large-sticky`).clientWidth;
