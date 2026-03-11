@@ -57,6 +57,14 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 				attribute: 'hide-actions',
 				type: Boolean
 			},
+			/**
+			 * The area in pixels to offset scroll width calculations
+			 * @type {number}
+			 */
+			scrollAreaOffset: {
+				attribute: 'scroll-area-offset',
+				type: Number
+			},
 			_hScrollbar: {
 				attribute: 'h-scrollbar',
 				reflect: true,
@@ -156,6 +164,7 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 		super();
 		this.customScrollers = {};
 		this.hideActions = false;
+		this.scrollAreaOffset = 0;
 		this._allScrollers = [];
 		this._baseContainer = null;
 		this._container = null;
@@ -258,16 +267,19 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 			});
 		}
 	}
+	_getScrollDistance() {
+		return Math.max((this._container.clientWidth - this.scrollAreaOffset) * SCROLL_AMOUNT, 1);
+	}
 
 	_scrollLeft() {
 		if (!this._container) return;
-		const scrollDistance = this._container.clientWidth * SCROLL_AMOUNT * -1;
+		const scrollDistance = this._getScrollDistance() * -1;
 		this.scrollDistance(scrollDistance, true);
 	}
 
 	_scrollRight() {
 		if (!this._container) return;
-		const scrollDistance = this._container.clientWidth * SCROLL_AMOUNT;
+		const scrollDistance = this._getScrollDistance();
 		this.scrollDistance(scrollDistance, true);
 	}
 

@@ -296,6 +296,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				reflect: true,
 				type: Boolean
 			},
+			_stickyWidth: { state: true },
 			/**
 			 * Type of table style to apply. The "light" style has fewer borders and tighter padding.
 			 * @type {'default'|'light'}
@@ -376,6 +377,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this.noColumnBorder = false;
 		this.stickyHeaders = false;
 		this.stickyHeadersScrollWrapper = false;
+		this._stickyWidth = 0;
 		this.type = 'default';
 
 		this._controls = null;
@@ -424,7 +426,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
 			${this.stickyHeaders && this._controlsScrolled ? html`<div class="d2l-sticky-headers-backdrop"></div>` : nothing}
-			${useScrollWrapper ? html`<d2l-scroll-wrapper .customScrollers="${this._tableScrollers}">${slot}</d2l-scroll-wrapper>` : slot}
+			${useScrollWrapper ? html`<d2l-scroll-wrapper scroll-area-offset=${this._stickyWidth} .customScrollers="${this._tableScrollers}">${slot}</d2l-scroll-wrapper>` : slot}
 			${this._renderPagerContainer()}
 		`;
 	}
@@ -722,6 +724,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 		if (candidateRowHeadCells.length !== candidateRowBodyLength) return;
 
+		this._stickyWidth = 0;
 		for (let i = 0; i < candidateRowHeadCells.length; i++) {
 			const headCell = candidateRowHeadCells[i];
 			const headStyle = getComputedStyle(headCell);
@@ -729,13 +732,17 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			const bodyCell = candidateRowBody.cells[i];
 			const bodyStyle = getComputedStyle(bodyCell);
 
+			let cellWidth = bodyCell.clientWidth;
 			if (headCell.clientWidth > bodyCell.clientWidth) {
 				const headOverallWidth = parseFloat(headStyle.width) + parseFloat(headStyle.paddingLeft) + parseFloat(headStyle.paddingRight);
-				bodyCell.style.minWidth = `${headOverallWidth - parseFloat(bodyStyle.paddingLeft) - parseFloat(bodyStyle.paddingRight)}px`;
+				cellWidth = headOverallWidth - parseFloat(bodyStyle.paddingLeft) - parseFloat(bodyStyle.paddingRight);
+				bodyCell.style.minWidth = `${cellWidth}px`;
 			} else if (headCell.clientWidth < bodyCell.clientWidth) {
 				const bodyOverallWidth = parseFloat(bodyStyle.width) + parseFloat(bodyStyle.paddingLeft) + parseFloat(bodyStyle.paddingRight);
-				headCell.style.minWidth = `${bodyOverallWidth - parseFloat(headStyle.paddingLeft) - parseFloat(headStyle.paddingRight)}px`;
+				cellWidth = bodyOverallWidth - parseFloat(headStyle.paddingLeft) - parseFloat(headStyle.paddingRight);
+				headCell.style.minWidth = `${cellWidth}px`;
 			}
+			if (headCell.hasAttribute('sticky')) this._stickyWidth += cellWidth;
 		}
 	}
 
