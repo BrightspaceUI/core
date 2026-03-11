@@ -1,13 +1,13 @@
 import '../alert/alert-toast.js';
 import './button-icon.js';
 import { css, html, LitElement } from 'lit';
-import { CopyMixin } from './copy-mixin.js';
+import { ButtonCopyMixin } from './button-copy-mixin.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 
 /**
  * A button component that copies to the clipboard.
  */
-class ButtonCopy extends CopyMixin(FocusMixin(LitElement)) {
+class ButtonCopy extends ButtonCopyMixin(FocusMixin(LitElement)) {
 
 	static get properties() {
 		return {
@@ -43,7 +43,7 @@ class ButtonCopy extends CopyMixin(FocusMixin(LitElement)) {
 		return html`
 			<d2l-button-icon
 				?disabled="${this.disabled}"
-				icon="${this._iconCheckTimeoutId ? 'tier1:check' : 'tier1:copy'}"
+				icon="${this._recentCopySuccessful ? 'tier1:check' : 'tier1:copy'}"
 				text="${this.text ?? this.localize('intl-common:actions:copy')}"
 				@click="${this._handleClick}">
 			</d2l-button-icon>

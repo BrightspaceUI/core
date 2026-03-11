@@ -1,8 +1,8 @@
 import './button-subtle.js';
 import { html, LitElement } from 'lit';
-import { CopyMixin } from './copy-mixin.js';
+import { ButtonCopyMixin } from './button-copy-mixin.js';
 
-class ButtonSubtleCopy extends CopyMixin(LitElement) {
+class ButtonSubtleCopy extends ButtonCopyMixin(LitElement) {
 	static get properties() {
 		return {
 			/**
@@ -28,7 +28,7 @@ class ButtonSubtleCopy extends CopyMixin(LitElement) {
 			<d2l-button-subtle
 				?slim="${this.slim}"
 				?disabled="${this.disabled}"
-				icon="${this._iconCheckTimeoutId ? 'tier1:check' : 'tier1:copy'}"
+				icon="${this._recentCopySuccessful ? 'tier1:check' : 'tier1:copy'}"
 				text="${this.text}"
 				description="${this.description}"
 				@click="${this._handleClick}">
