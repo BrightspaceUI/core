@@ -268,7 +268,7 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 		}
 	}
 	_getScrollDistance() {
-		return Math.max((this._container.clientWidth - this.scrollAreaOffset) * SCROLL_AMOUNT, 1);
+		return Math.max((this._container.clientWidth - this.scrollAreaOffset) * SCROLL_AMOUNT, 1); // guard against offset being larger than content
 	}
 
 	_scrollLeft() {
