@@ -4,6 +4,7 @@ import '../table-controls.js';
 import { css, LitElement } from 'lit';
 import { defineCE, expect, fixture, html, nextFrame, runConstructor } from '@brightspace-ui/testing';
 import { isUsingNativePopover, tableStyles } from '../table-wrapper.js';
+import { mockFlag } from '../../../helpers/flags.js';
 
 describe('d2l-table-wrapper', () => {
 
@@ -169,6 +170,66 @@ describe('d2l-table-wrapper', () => {
 			}
 			expect(slowEl.parentElement.getBoundingClientRect().width).to.equal(row1_1.getBoundingClientRect().width);
 			expect(el.shadowRoot.querySelector('d2l-table-wrapper')._noScrollWidth).to.be[`${width < 20}`];
+
+		}));
+	});
+	describe('scrolling with large sticky column', () => {
+
+		const tagName = defineCE(
+			class extends LitElement {
+				static get styles() {
+					return [tableStyles, css`
+						:host {
+							display: block;
+							width: 400px;
+						}
+						.large-sticky {
+							min-width: 300px;
+						}
+						:host([td-size="larger"]) th.large-sticky,
+						:host([td-size="smaller"]) td.large-sticky {
+							min-width: 200px;
+						}
+					`];
+				}
+				render() {
+					return html`
+						<d2l-table-wrapper sticky-headers sticky-headers-scroll-wrapper>
+							<table class="d2l-table">
+								<thead>
+									<tr>
+										<th sticky class="large-sticky">
+											I'm a large header
+										</th>
+										<th>Other header 1</th>
+										<th>Other header 2</th>
+										<th>Other header 3</th>
+										<th>Other header 4</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td sticky class="large-sticky">I'm a large cell</td>
+										<td>Other cell 1</td>
+										<td>Other cell 2</td>
+										<td>Other cell 3</td>
+										<td>Other cell 4</td>
+									</tr>
+								</tbody>
+							</table>
+						</d2l-table-wrapper>
+					`;
+				}
+			}
+		);
+
+		['smaller', 'same', 'larger'].forEach(size => it(`sets scroll offset (sticky body cell is ${size})`, async() => {
+			mockFlag('GAUD-9530-exclude-sticky-columns-from-scroll-calculations', true);
+			const el = await fixture(`<${tagName} td-size="${size}"></${tagName}>`);
+			const scrollWrapper = el.shadowRoot.querySelector('d2l-table-wrapper').shadowRoot.querySelector('d2l-scroll-wrapper');
+			const expectedWidth = el.shadowRoot.querySelector(`${size === 'larger' ? 'td' : 'th'}.large-sticky`).clientWidth;
+
+			expect(scrollWrapper.scrollAreaOffset).to.equal(expectedWidth + 2); // width + 1px border
 
 		}));
 	});
