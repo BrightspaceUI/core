@@ -10,6 +10,7 @@ const BACKDROP_INERT = 'data-d2l-backdrop-inert';
 const TRANSITION_DURATION = 200;
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const inertBackdropFlag = getFlag('inert-backdrop', false);
 
 const modals = new Set();
 let scrollOverflow = null;
@@ -181,10 +182,12 @@ function hideAccessible(target) {
 			}
 			child.setAttribute('tabindex', '-1');
 
-			if (child.hasAttribute('inert')) {
-				child.setAttribute(BACKDROP_INERT, '');
+			if (inertBackdropFlag) {
+				if (child.hasAttribute('inert')) {
+					child.setAttribute(BACKDROP_INERT, '');
+				}
+				child.setAttribute('inert', '');
 			}
-			child.setAttribute('inert', '');
 
 			child.setAttribute(BACKDROP_HIDDEN, BACKDROP_HIDDEN);
 			hiddenElements.push(child);
@@ -219,10 +222,12 @@ function showAccessible(elems) {
 		} else {
 			elem.removeAttribute('tabindex');
 		}
-		if (elem.hasAttribute(BACKDROP_INERT)) {
-			elem.removeAttribute(BACKDROP_INERT);
-		} else {
-			elem.removeAttribute('inert');
+		if (inertBackdropFlag) {
+			if (elem.hasAttribute(BACKDROP_INERT)) {
+				elem.removeAttribute(BACKDROP_INERT);
+			} else {
+				elem.removeAttribute('inert');
+			}
 		}
 		elem.removeAttribute(BACKDROP_HIDDEN);
 	}
