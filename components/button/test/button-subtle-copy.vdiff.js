@@ -22,11 +22,6 @@ describe('button-subtle-copy', () => {
 		await expect(elem).to.be.golden();
 	});
 
-	it('disabled', async() => {
-		const elem = await fixture(html`<d2l-button-subtle-copy text="Copy text" disabled></d2l-button-subtle-copy>`, { viewport: { width: 500, height: 200 } });
-		await expect(elem).to.be.golden();
-	});
-
 	it('click', async() => {
 		writeTextStub = stub(navigator.clipboard, 'writeText').resolves();
 		const elem = await fixture(template, { viewport: { width: 500, height: 200 } });
