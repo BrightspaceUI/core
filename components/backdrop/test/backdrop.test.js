@@ -1,14 +1,15 @@
 import '../backdrop.js';
 import { aTimeout, expect, fixture, focusElem, html, runConstructor } from '@brightspace-ui/testing';
+import { mockFlag } from '../../../helpers/flags.js';
 
 const backdropFixture = html`
 	<div>
 		<div>
 			<div id="target"><button>toggle backdrop</button></div>
-			<div id="targetSibling"></div>
-			<div aria-hidden="true"></div>
+			<div id="targetSibling" inert></div>
+			<div class="presetAriaHidden" aria-hidden="true"></div>
 			<a></a>
-			<a aria-hidden="false"></a>
+			<a class="presetAriaHidden" aria-hidden="false"></a>
 			<form></form>
 			<script></script>
 			<style></style>
@@ -46,32 +47,55 @@ describe('d2l-backdrop', () => {
 	describe('updates for accessibility', () => {
 
 		it('should hide accessible elements', async() => {
+			mockFlag('GAUD-9398-make-backdrop-inert', true);
 			const elem = await fixture(backdropFixture);
 			const backdrop = elem.querySelector('d2l-backdrop');
 			await focusElem(elem.querySelector('#target button'));
 			backdrop.shown = true;
 			await backdrop.updateComplete;
 
+			expect(backdrop.hasAttribute('inert')).to.be.true;
 			expect(backdrop.getAttribute('aria-hidden')).to.equal('true');
+
+			expect(elem.querySelector('#target').getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('#target').hasAttribute('inert')).to.be.false;
+			expect(elem.querySelector('#target').parentNode.getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('#target').parentNode.hasAttribute('inert')).to.be.false;
+			expect(elem.querySelector('script').getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('script').parentNode.hasAttribute('inert')).to.be.false;
+			expect(elem.querySelector('style').getAttribute('aria-hidden')).to.equal(null);
+			expect(elem.querySelector('style').parentNode.hasAttribute('inert')).to.be.false;
+
+			for (const selector of ['#targetSibling', '#targetParentSibling', 'a', 'form', 'a.presetAriaHidden', 'div.presetAriaHidden']) {
+				const el = elem.querySelector(selector);
+				expect(el.hasAttribute('inert')).to.be.true;
+				expect(el.getAttribute('aria-hidden')).to.equal('true');
+			}
+			expect(elem.querySelector('#targetSibling').hasAttribute('data-d2l-backdrop-inert')).to.be.true;
+		});
+
+		// Remove alongside GAUD-9398-make-backdrop-inert
+		it.only('should hide accessible elements(inert disabled)', async() => {
+			mockFlag('GAUD-9398-make-backdrop-inert', false);
+			const elem = await fixture(backdropFixture);
+			const backdrop = elem.querySelector('d2l-backdrop');
+			await focusElem(elem.querySelector('#target button'));
+			backdrop.shown = true;
+			await backdrop.updateComplete;
+
+			expect(backdrop.hasAttribute('inert')).to.be.false;
+			expect(backdrop.getAttribute('aria-hidden')).to.equal('true');
+
 			expect(elem.querySelector('#target').getAttribute('aria-hidden')).to.equal(null);
 			expect(elem.querySelector('#target').parentNode.getAttribute('aria-hidden')).to.equal(null);
 			expect(elem.querySelector('script').getAttribute('aria-hidden')).to.equal(null);
 			expect(elem.querySelector('style').getAttribute('aria-hidden')).to.equal(null);
 
-			expect(elem.querySelector('#targetSibling').getAttribute('aria-hidden')).to.equal('true');
-			expect(elem.querySelector('#targetParentSibling').getAttribute('aria-hidden')).to.equal('true');
-
-			const link = elem.querySelector('a');
-			expect(link.getAttribute('aria-hidden')).to.equal('true');
-
-			const form = elem.querySelector('form');
-			expect(form.getAttribute('aria-hidden')).to.equal('true');
-
-			const divAriaHidden = elem.querySelector('div[aria-hidden]');
-			expect(divAriaHidden.getAttribute('aria-hidden')).to.equal('true');
-
-			const linkAriaHidden = elem.querySelector('a[aria-hidden]');
-			expect(linkAriaHidden.getAttribute('aria-hidden')).to.equal('true');
+			for (const selector of ['#targetSibling', '#targetParentSibling', 'a', 'form', 'a.presetAriaHidden', 'div.presetAriaHidden']) {
+				const el = elem.querySelector(selector);
+				if (selector !== '#targetSibling') expect(el.hasAttribute('inert')).to.be.false;
+				expect(el.getAttribute('aria-hidden')).to.equal('true');
+			}
 		});
 
 		it('should not hide accessible elements until focus is inside target', async() => {
