@@ -74,7 +74,7 @@
 			<h2>Subtle Button Copy</h2>
 			<d2l-demo-snippet>
 				<template>
-					<span>Donuts are subtle yummmmmy!</span>
+					<span>Donuts are yummmmmy!</span>
 					<d2l-button-subtle-copy text="Copy text"></d2l-button-subtle-copy>
 					<script>
 						(demo => {
@@ -89,8 +89,23 @@
 			<h2>Subtle Button Copy Slim</h2>
 			<d2l-demo-snippet>
 				<template>
-					<span>Donuts are slim and subtle yummmmmy!</span>
+					<span>Donuts are yummmmmy!</span>
 					<d2l-button-subtle-copy text="Copy text" slim></d2l-button-subtle-copy>
+					<script>
+						(demo => {
+							demo.querySelector('d2l-button-subtle-copy').addEventListener('click', async(e) => {
+								console.log('Copied', await e.detail.writeTextToClipboard(demo.querySelector('span').textContent));
+							});
+						})(document.currentScript.parentNode);
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Subtle Button Copy Disabled</h2>
+			<d2l-demo-snippet>
+				<template>
+					<span>Donuts are yummmmmy!</span>
+					<d2l-button-subtle-copy text="Copy text" disabled></d2l-button-subtle-copy>
 					<script>
 						(demo => {
 							demo.querySelector('d2l-button-subtle-copy').addEventListener('click', async(e) => {

@@ -1,3 +1,4 @@
+import '../alert/alert-toast.js';
 import { html } from 'lit';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 

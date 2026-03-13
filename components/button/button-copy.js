@@ -1,4 +1,3 @@
-import '../alert/alert-toast.js';
 import './button-icon.js';
 import { css, html, LitElement } from 'lit';
 import { ButtonCopyMixin } from './button-copy-mixin.js';
