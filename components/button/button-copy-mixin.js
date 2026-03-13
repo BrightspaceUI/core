@@ -60,6 +60,8 @@ export const ButtonCopyMixin = (superclass) => class extends LocalizeCoreElement
 	}
 
 	_handleToastClick(e) {
+		// swallow other click events because we are exposing our own special click event,
+		// and consumers need to be able to rely on writeTextToClipboard existing.
 		e.stopPropagation();
 	}
 

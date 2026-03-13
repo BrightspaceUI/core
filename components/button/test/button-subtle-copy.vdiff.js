@@ -56,7 +56,7 @@ describe('button-subtle-copy', () => {
 			const elem = await fixture(template, { viewport: { width: 500, height: 200 } });
 			await clickAction(elem);
 
-			clock.tick(2000);
+			clock.tick(4000);
 			await elem.updateComplete;
 
 			await expect(elem).to.be.golden();
