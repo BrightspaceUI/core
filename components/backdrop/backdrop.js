@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { cssEscape, getComposedChildren, getComposedParent, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
+import { getFlag } from '../../helpers/flags.js';
 
 const BACKDROP_HIDDEN = 'data-d2l-backdrop-hidden';
 const BACKDROP_ARIA_HIDDEN = 'data-d2l-backdrop-aria-hidden';
