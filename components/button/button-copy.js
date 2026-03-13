@@ -6,7 +6,7 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 /**
  * A button component that copies to the clipboard.
  */
-class ButtonCopy extends ButtonCopyMixin(FocusMixin(LitElement)) {
+class ButtonCopy extends FocusMixin(ButtonCopyMixin(LitElement)) {
 
 	static get properties() {
 		return {
