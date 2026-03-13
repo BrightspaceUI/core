@@ -1,8 +1,9 @@
 import './button-subtle.js';
 import { html, LitElement } from 'lit';
 import { ButtonCopyMixin } from './button-copy-mixin.js';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 
-class ButtonSubtleCopy extends ButtonCopyMixin(LitElement) {
+class ButtonSubtleCopy extends FocusMixin(ButtonCopyMixin(LitElement)) {
 	static get properties() {
 		return {
 			/**
@@ -21,6 +22,10 @@ class ButtonSubtleCopy extends ButtonCopyMixin(LitElement) {
 			 */
 			slim: { type: Boolean, reflect: true },
 		};
+	}
+
+	static get focusElementSelector() {
+		return 'd2l-button-subtle';
 	}
 
 	render() {
