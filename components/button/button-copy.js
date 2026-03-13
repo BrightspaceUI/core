@@ -29,11 +29,6 @@ class ButtonCopy extends FocusMixin(ButtonCopyMixin(LitElement)) {
 		`;
 	}
 
-	constructor() {
-		super();
-		this.disabled = false;
-	}
-
 	static get focusElementSelector() {
 		return 'd2l-button-icon';
 	}
