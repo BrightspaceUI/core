@@ -3,8 +3,8 @@ import '../table-col-sort-button-item.js';
 import '../table-controls.js';
 import { css, LitElement } from 'lit';
 import { defineCE, expect, fixture, html, nextFrame, runConstructor } from '@brightspace-ui/testing';
-import { tableStyles } from '../table-wrapper.js';
 import { mockFlag } from '../../../helpers/flags.js';
+import { tableStyles } from '../table-wrapper.js';
 
 describe('d2l-table-wrapper', () => {
 
