@@ -114,6 +114,11 @@ class ListItemGenericLayout extends LitElement {
 				grid-row: 2 / 3;
 			}
 
+			:host([layout="tile"]) ::slotted([slot="outside-control-action"]) {
+				grid-row: start / end;
+				grid-column: start / end;
+			}
+
 			::slotted([slot="outside-control"]) {
 				grid-column: outside-control-start / outside-control-end;
 			}
@@ -258,16 +263,7 @@ class ListItemGenericLayout extends LitElement {
 				grid-row: content-start / content-end;
 			}
 
-			:host(:not([layout="tile"])) slot[name="header"],
-			:host([layout="tile"]) slot[name="add-top"],
-			:host([layout="tile"]) slot[name="control-container"],
-			:host([layout="tile"]) slot[name="before-content"],
-			:host([layout="tile"]) slot[name="outside-control"],
-			:host([layout="tile"]) slot[name="outside-control-action"],
-			:host([layout="tile"]) slot[name="expand-collapse"],
-			:host([layout="tile"]) slot[name="drop-target"],
-			:host([layout="tile"]) slot[name="nested"],
-			:host([layout="tile"]) slot[name="add"] {
+			:host(:not([layout="tile"])) slot[name="header"] {
 				display: none;
 			}
 		`;

@@ -61,6 +61,7 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			 * @type {string}
 			 */
 			text: { type: String },
+			layout: { type: String },
 			_displayKeyboardTooltip: { type: Boolean },
 			_keyboardActive: { type: Boolean }
 		};
@@ -74,6 +75,9 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			}
 			:host([hidden]) {
 				display: none;
+			}
+			:host([layout='tile']) {
+				transform: rotate(-90deg);
 			}
 			.d2l-list-item-drag-handle-dragger-button {
 				background-color: unset;
@@ -181,15 +185,16 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 	async _onMoveButtonAction(e) {
 
 		const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+		const isTile = this.layout === 'tile';
 
 		let action = null;
 		switch (e.detail.action) {
-			case moveActions.up:
+			case (isTile ? moveActions.left : moveActions.up):
 				this._movingElement = true;
 				action = dragActions.up;
 				this.updateComplete.then(() => this.blur()); // tell screenreaders to refocus
 				break;
-			case moveActions.down:
+			case (isTile ? moveActions.right : moveActions.down):
 				this._movingElement = true;
 				action = dragActions.down;
 				break;

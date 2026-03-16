@@ -317,6 +317,19 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			.d2l-list-item-drag-top-marker {
 				top: -6px;
 			}
+			:host([layout='tile']) .d2l-list-item-drag-top-marker {
+				transform: rotate(-90deg);
+				aspect-ratio: 1 / 1;
+				width: auto;
+				top: 0px;
+			}
+			:host([layout='tile']) .d2l-list-item-drag-bottom-marker {
+				transform: rotate(90deg);
+				aspect-ratio: 1 / 1;
+				width: auto;
+				height: 100%;
+				top: 0px;
+			}
 			.d2l-list-item-drag-area {
 				cursor: move;
 				height: 100%;
@@ -325,6 +338,14 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				display: grid;
 				grid-template-columns: 100%;
 				grid-template-rows: 1rem 1fr 1fr 1rem;
+			}
+			:host([layout='tile']) .d2l-list-item-drag-drop-grid {
+				display: grid;
+				grid-template-rows: 100%;
+				grid-template-columns: 1rem 1fr 1fr 1rem;
+			}
+			.d2l-list-item-drag-drop-grid > div{
+				border: solid 1px red;
 			}
 			:host([_drop-location="7"]) {
 				z-index: 1; /* drop target border must render on top of next adjacent border */
@@ -854,6 +875,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		return this.draggable ? templateMethod(html`
 			<d2l-list-item-drag-handle
 				id="${this._itemDragId}"
+				layout="${this.layout}"
 				class="${classMap(classes)}"
 				?disabled="${this.keyboardDragDisabled}"
 				text="${ifDefined(this.dragHandleText)}"
