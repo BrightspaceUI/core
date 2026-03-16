@@ -75,7 +75,7 @@ describe('d2l-backdrop', () => {
 		});
 
 		// Remove alongside GAUD-9398-make-backdrop-inert
-		it.only('should hide accessible elements(inert disabled)', async() => {
+		it('should hide accessible elements(inert disabled)', async() => {
 			mockFlag('GAUD-9398-make-backdrop-inert', false);
 			const elem = await fixture(backdropFixture);
 			const backdrop = elem.querySelector('d2l-backdrop');
