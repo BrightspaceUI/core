@@ -351,11 +351,11 @@ describe('d2l-input-checkbox', () => {
 				</d2l-input-checkbox>
 			`);
 			const supportingElem = elem.querySelector('#supporting-id');
-			expect(supportingElem.offsetParent).to.be.null;
+			expect(supportingElem.offsetParent).not.exist;
 
 			clickElem(getInput(elem));
 			await oneEvent(elem, 'change');
-			expect(supportingElem.offsetParent).to.not.be.null;
+			expect(supportingElem.offsetParent).exist;
 		});
 
 	});
