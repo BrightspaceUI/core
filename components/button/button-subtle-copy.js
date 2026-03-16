@@ -3,6 +3,9 @@ import { html, LitElement } from 'lit';
 import { ButtonCopyMixin } from './button-copy-mixin.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 
+/**
+ * A button component that copies to the clipboard, using the "subtle" button style.
+ */
 class ButtonSubtleCopy extends FocusMixin(ButtonCopyMixin(LitElement)) {
 	static get properties() {
 		return {
