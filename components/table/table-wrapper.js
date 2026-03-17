@@ -9,9 +9,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { isPopoverSupported } from '../popover/popover-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
-import { usePopoverMixin as useTooltipPopover } from '../tooltip/tooltip.js';
-
-export const isUsingNativePopover = isPopoverSupported && useTooltipPopover;
 
 export const tableStyles = css`
 	.d2l-table {
@@ -750,7 +747,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	_updateStickyAncestor(node, popoverOpened) {
-		if (!this.stickyHeaders || isUsingNativePopover) return;
+		if (!this.stickyHeaders || isPopoverSupported) return;
 
 		node = getComposedParent(node);
 		while (node) {
