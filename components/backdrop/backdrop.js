@@ -2,10 +2,12 @@ import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { cssEscape, getComposedChildren, getComposedParent, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
+import { getFlag } from '../../helpers/flags.js';
 
 const BACKDROP_HIDDEN = 'data-d2l-backdrop-hidden';
 const BACKDROP_ARIA_HIDDEN = 'data-d2l-backdrop-aria-hidden';
 const BACKDROP_TABINDEX = 'data-d2l-backdrop-tabindex';
+const BACKDROP_INERT = 'data-d2l-backdrop-inert';
 const TRANSITION_DURATION = 200;
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -180,6 +182,13 @@ function hideAccessible(target) {
 			}
 			child.setAttribute('tabindex', '-1');
 
+			if (getFlag('GAUD-9398-make-backdrop-inert', false)) {
+				if (child.hasAttribute('inert')) {
+					child.setAttribute(BACKDROP_INERT, '');
+				}
+				child.setAttribute('inert', '');
+			}
+
 			child.setAttribute(BACKDROP_HIDDEN, BACKDROP_HIDDEN);
 			hiddenElements.push(child);
 		}
@@ -212,6 +221,13 @@ function showAccessible(elems) {
 			elem.removeAttribute(BACKDROP_TABINDEX);
 		} else {
 			elem.removeAttribute('tabindex');
+		}
+		if (getFlag('GAUD-9398-make-backdrop-inert', false)) {
+			if (elem.hasAttribute(BACKDROP_INERT)) {
+				elem.removeAttribute(BACKDROP_INERT);
+			} else {
+				elem.removeAttribute('inert');
+			}
 		}
 		elem.removeAttribute(BACKDROP_HIDDEN);
 	}
