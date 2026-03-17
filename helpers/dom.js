@@ -263,3 +263,39 @@ export function querySelectorComposed(node, selector) {
 
 	return null;
 }
+
+const resizeNoopEventListener = [];
+const resizeNoopRect = {};
+
+if (globalThis.addEventListener !== undefined) {
+	globalThis.addEventListener('resize', e => {
+		if (resizeNoopEventListener.length === 0) return;
+
+		const frameElement = e.target.frameElement;
+		if (frameElement?.classList.contains('d2l-iframe-fit-user-content')) {
+			// ignore if the iframe is spamming no-op resize events
+			if (resizeNoopRect.height === frameElement.scrollHeight && resizeNoopRect.width === frameElement.scrollWidth) {
+				return;
+			}
+			resizeNoopRect.height = frameElement.scrollHeight;
+			resizeNoopRect.width = frameElement.scrollWidth;
+		}
+
+		resizeNoopEventListener.forEach(listener => {
+			listener(e);
+		});
+	});
+}
+
+export function addResizeNoopEventListener(listener) {
+	if (resizeNoopEventListener.find(registeredListener => registeredListener === listener)) return;
+	resizeNoopEventListener.push(listener);
+	resizeNoopRect.height = null;
+	resizeNoopRect.width = null;
+}
+
+export function removeResizeNoopEventListener(listener) {
+	const index = resizeNoopEventListener.indexOf(listener);
+	if (index < 0) return;
+	resizeNoopEventListener.splice(index, 1);
+}
