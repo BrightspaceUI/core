@@ -296,3 +296,8 @@ export function addResizeNoopEventListener(listener) {
 export function removeResizeNoopEventListener(listener) {
 	resizeNoopEventListener.delete(listener);
 }
+
+// testing only
+export function clearResizeNoopEventListeners() {
+	resizeNoopEventListener.clear();
+}
