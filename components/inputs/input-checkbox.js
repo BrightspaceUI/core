@@ -1,6 +1,6 @@
 import '../colors/colors.js';
-import '../tooltip/tooltip.js';
 import '../expand-collapse/expand-collapse-content.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
@@ -268,7 +268,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 
 	render() {
 		const tabindex = this.notTabbable ? -1 : undefined;
-		const visibleSupportingContent = this._hasSupporting && (this.checked || !this.supportingHiddenWhenUnchecked);
+		const supportingContentVisible = this._hasSupporting && (this.checked || !this.supportingHiddenWhenUnchecked);
 		const textClasses = {
 			'd2l-input-checkbox-text': true,
 			'd2l-skeletize': true,
@@ -305,7 +305,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 			${this._renderInlineHelp(this.#inlineHelpId)}
 			${offscreenContainer}
 			${disabledTooltip}
-			<d2l-expand-collapse-content ?expanded="${visibleSupportingContent}">
+			<d2l-expand-collapse-content ?expanded="${supportingContentVisible}">
 				<div class="d2l-input-checkbox-supporting" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
 			</d2l-expand-collapse-content>
 		`;

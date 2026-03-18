@@ -344,7 +344,7 @@ describe('d2l-input-checkbox', () => {
 
 	describe('supporting slot', () => {
 
-		it.only('should display existing supporting content when checked and has the supporting-hidden-when-unchecked attribute', async() => {
+		it('should display existing supporting content when checked and has the supporting-hidden-when-unchecked attribute', async() => {
 			const elem = await fixture(html`
 				<d2l-input-checkbox label="check 1" supporting-hidden-when-unchecked>
 					<div slot="supporting" id="supporting-id">Supporting content</div>
