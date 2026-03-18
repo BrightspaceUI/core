@@ -360,7 +360,7 @@ Use the Copy button to enable users to copy a text value to the clipboard. The `
 |--|--|--|
 | `disabled` | Boolean | Disables the button |
 | `description` | String | A description to be added to the button for accessibility when text on button does not provide enough context |
-| `silm` | Boolean | Makes the button slimmer |
+| `slim` | Boolean | Makes the button slimmer |
 | `text` | String | Label text for the button |
 <!-- docs: end hidden content -->
 
