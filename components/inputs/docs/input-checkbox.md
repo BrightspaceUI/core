@@ -88,7 +88,7 @@ When provided with a `name`, the checkbox will participate in forms if it is `ch
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
 | `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `not-tabbable` | Boolean | Sets `tabindex="-1"` on the checkbox. Note that an alternative method of focusing is necessary to implement if using this property. |
-| `supporting-hidden-when-unchecked` | Boolean | Hiddes the supporting slot when unchecked. |
+| `supporting-hidden-when-unchecked` | Boolean | Hides the supporting slot when unchecked. |
 | `value` | String | Value of the input |
 
 ### Events
