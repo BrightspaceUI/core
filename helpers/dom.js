@@ -264,12 +264,12 @@ export function querySelectorComposed(node, selector) {
 	return null;
 }
 
-const resizeNoopEventListener = [];
+const resizeNoopEventListener = new Set();
 const resizeNoopRect = {};
 
-if (globalThis.addEventListener !== undefined) {
+if (globalThis.addEventListener) {
 	globalThis.addEventListener('resize', e => {
-		if (resizeNoopEventListener.length === 0) return;
+		if (resizeNoopEventListener.size === 0) return;
 
 		const frameElement = e.target.frameElement;
 		if (frameElement?.classList.contains('d2l-iframe-fit-user-content')) {
@@ -288,14 +288,11 @@ if (globalThis.addEventListener !== undefined) {
 }
 
 export function addResizeNoopEventListener(listener) {
-	if (resizeNoopEventListener.find(registeredListener => registeredListener === listener)) return;
-	resizeNoopEventListener.push(listener);
+	resizeNoopEventListener.add(listener);
 	resizeNoopRect.height = null;
 	resizeNoopRect.width = null;
 }
 
 export function removeResizeNoopEventListener(listener) {
-	const index = resizeNoopEventListener.indexOf(listener);
-	if (index < 0) return;
-	resizeNoopEventListener.splice(index, 1);
+	resizeNoopEventListener.delete(listener);
 }
