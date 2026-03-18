@@ -344,18 +344,19 @@ describe('d2l-input-checkbox', () => {
 
 	describe('supporting slot', () => {
 
-		it('should display existing supporting content when checked and has the supporting-hidden-when-unchecked attribute', async() => {
+		it.only('should display existing supporting content when checked and has the supporting-hidden-when-unchecked attribute', async() => {
 			const elem = await fixture(html`
-				<d2l-input-checkbox label="check 1" supporting-hidden-when-unchecked	>
+				<d2l-input-checkbox label="check 1" supporting-hidden-when-unchecked>
 					<div slot="supporting" id="supporting-id">Supporting content</div>
 				</d2l-input-checkbox>
 			`);
-			const supportingElem = elem.querySelector('#supporting-id');
-			expect(supportingElem.offsetParent).not.exist;
+
+			const supportingElem = elem.shadowRoot.querySelector('d2l-expand-collapse-content');
+			expect(supportingElem.expanded).to.be.false;
 
 			clickElem(getInput(elem));
 			await oneEvent(elem, 'change');
-			expect(supportingElem.offsetParent).exist;
+			expect(supportingElem.expanded).to.be.true;
 		});
 
 	});
