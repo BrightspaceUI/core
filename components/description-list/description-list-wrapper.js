@@ -1,7 +1,6 @@
 import { _generateBodyCompactStyles, _generateLabelStyles } from '../typography/styles.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 export const descriptionListStyles = [
 	_generateLabelStyles('d2l-dl-wrapper > dl > dt'),

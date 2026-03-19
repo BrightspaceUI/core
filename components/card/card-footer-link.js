@@ -46,9 +46,9 @@ class CardFooterLink extends FocusMixin(LitElement) {
 			secondaryCount: { type: Number, attribute: 'secondary-count', reflect: true },
 			/**
 			 * Maximum digits to display in the secondary count. Defaults to no limit
-			 * @type {string}
+			 * @type {number}
 			 */
-			secondaryCountMaxDigits: { type: String, attribute: 'secondary-count-max-digits' },
+			secondaryCountMaxDigits: { type: Number, attribute: 'secondary-count-max-digits' },
 			/**
 			 * Controls the style of the secondary count bubble
 			 * @type {'count'|'notification'}

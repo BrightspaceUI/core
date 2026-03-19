@@ -90,8 +90,8 @@ class LoadingBackdrop extends LitElement {
 	render() {
 		if (this._state === 'hidden') return nothing;
 		return html`
-			<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#hide}" size="${LOADING_SPINNER_SIZE}"></div>
-			<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })}></d2l-loading-spinner>
+			<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#hide}"></div>
+			<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
 		`;
 	}
 	updated(changedProperties) {
