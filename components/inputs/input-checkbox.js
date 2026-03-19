@@ -177,6 +177,11 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 			 */
 			notTabbable: { type: Boolean, attribute: 'not-tabbable' },
 			/**
+			 * Hides the supporting slot when unchecked
+			 * @type {boolean}
+			 */
+			supportingHiddenWhenUnchecked: { type: Boolean, attribute: 'supporting-hidden-when-unchecked', reflect: true },
+			/**
 			 * Value of the input
 			 * @type {string}
 			 */
@@ -254,6 +259,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 		this.labelHidden = false;
 		this.name = '';
 		this.notTabbable = false;
+		this.supportingHiddenWhenUnchecked = false;
 		this.value = 'on';
 		this._hasSupporting = false;
 		this._isHovered = false;
@@ -267,7 +273,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 		const tabindex = this.notTabbable ? -1 : undefined;
 		const supportingClasses = {
 			'd2l-input-checkbox-supporting': true,
-			'd2l-input-checkbox-supporting-visible': this._hasSupporting
+			'd2l-input-checkbox-supporting-visible': this._hasSupporting && (this.checked || !this.supportingHiddenWhenUnchecked)
 		};
 		const textClasses = {
 			'd2l-input-checkbox-text': true,

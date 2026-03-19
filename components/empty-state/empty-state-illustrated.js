@@ -5,7 +5,6 @@ import { classMap } from 'lit/directives/class-map.js';
 import { EmptyStateMixin } from './empty-state-mixin.js';
 import { LoadingCompleteMixin } from '../../mixins/loading-complete/loading-complete-mixin.js';
 import { loadSvg } from '../../generated/empty-state/presetIllustrationLoader.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { runAsync } from '../../directives/run-async/run-async.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';

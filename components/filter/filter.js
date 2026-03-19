@@ -10,6 +10,7 @@ import '../empty-state/empty-state-action-link.js';
 import '../empty-state/empty-state-simple.js';
 import '../expand-collapse/expand-collapse-content.js';
 import '../hierarchical-view/hierarchical-view.js';
+import '../icons/icon.js';
 import '../inputs/input-search.js';
 import '../list/list.js';
 import '../list/list-item.js';

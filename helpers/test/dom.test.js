@@ -1,5 +1,6 @@
-import { css, html, LitElement } from 'lit';
 import {
+	addResizeNoopEventListener,
+	clearResizeNoopEventListeners,
 	cssEscape,
 	elemIdListAdd,
 	elemIdListRemove,
@@ -12,9 +13,12 @@ import {
 	getOffsetParent,
 	isComposedAncestor,
 	isVisible,
-	querySelectorComposed
+	querySelectorComposed,
+	removeResizeNoopEventListener
 } from '../dom.js';
+import { css, html, LitElement } from 'lit';
 import { defineCE, expect, fixture } from '@brightspace-ui/testing';
+import sinon from 'sinon';
 
 const testElemTag = defineCE(
 	class extends LitElement {
@@ -857,6 +861,77 @@ describe('dom', () => {
 			await fixture(`<${nestedElement}></${nestedElement}>`);
 			const result = querySelectorComposed(document, '.nested');
 			expect(result.tagName).to.equal('DIV');
+		});
+
+	});
+
+	describe('resizeNoopEventListener', () => {
+
+		let calledCount;
+		const listener = () => calledCount += 1;
+
+		beforeEach(() => {
+			calledCount = 0;
+		});
+
+		afterEach(() => {
+			clearResizeNoopEventListeners();
+			sinon.restore();
+		});
+
+		it('should call listener when not within frame', async() => {
+			addResizeNoopEventListener(listener);
+
+			window.dispatchEvent(new CustomEvent('resize'));
+			window.dispatchEvent(new CustomEvent('resize'));
+
+			expect(calledCount).to.equal(2);
+		});
+
+		it('should call listener when within frame without d2l-iframe-fit-user-content', async() => {
+			const fakeFrame = await fixture(html`<div style="height: 100px; width: 200px;"></div>`);
+			addResizeNoopEventListener(listener);
+
+			sinon.stub(window, 'frameElement').get(() => fakeFrame);
+
+			window.dispatchEvent(new CustomEvent('resize'));
+			window.dispatchEvent(new CustomEvent('resize'));
+
+			expect(calledCount).to.equal(2);
+		});
+
+		it('should call listener when within frame with d2l-iframe-fit-user-content if dimensions are different', async() => {
+			const fakeFrame = await fixture(html`<div class="d2l-iframe-fit-user-content" style="height: 100px; width: 200px;"></div>`);
+			addResizeNoopEventListener(listener);
+
+			sinon.stub(window, 'frameElement').get(() => fakeFrame);
+
+			window.dispatchEvent(new CustomEvent('resize'));
+			fakeFrame.style.height = '150px';
+			window.dispatchEvent(new CustomEvent('resize'));
+
+			expect(calledCount).to.equal(2);
+		});
+
+		it('should not call listener when within frame with d2l-iframe-fit-user-content if dimensions are the same', async() => {
+			const fakeFrame = await fixture(html`<div class="d2l-iframe-fit-user-content" style="height: 100px; width: 200px;"></div>`);
+			addResizeNoopEventListener(listener);
+
+			sinon.stub(window, 'frameElement').get(() => fakeFrame);
+
+			window.dispatchEvent(new CustomEvent('resize'));
+			window.dispatchEvent(new CustomEvent('resize'));
+
+			expect(calledCount).to.equal(1);
+		});
+
+		it('should not call listener removed with removeResizeNoopEventListener', async() => {
+			addResizeNoopEventListener(listener);
+			removeResizeNoopEventListener(listener);
+
+			window.dispatchEvent(new CustomEvent('resize'));
+
+			expect(calledCount).to.equal(0);
 		});
 
 	});
