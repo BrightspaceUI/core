@@ -66,6 +66,19 @@ describe('d2l-input-radio', () => {
 			expectActive('whole-wheat', true);
 		});
 
+		it('should display supporting content when checked if supporting-hidden-when-unchecked is set', async() => {
+			const elem = await fixture(radioFixtures.supporting);
+			const otherRadio = elem.querySelector('d2l-input-radio[supporting-hidden-when-unchecked]');
+			const supportingContent = otherRadio.shadowRoot.querySelector('d2l-expand-collapse-content');
+
+			expect(otherRadio.checked).to.be.false;
+			expect(supportingContent.expanded).to.be.false;
+
+			await clickElem(otherRadio);
+			expect(otherRadio.checked).to.be.true;
+			expect(supportingContent.expanded).to.be.true;
+		});
+
 	});
 
 	describe('events', () => {
