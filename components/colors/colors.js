@@ -99,9 +99,9 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-theme-opacity-disabled-link: 0.74;
 		--d2l-theme-opacity-disabled-linkicon: 0.64;
 
-		--d2l-theme-shadow-attached: 0 2px 4px 0 rgba(0, 0, 0, 0.03);
-		--d2l-theme-shadow-attached-block-start: 0 2px 4px 0 rgba(0, 0, 0, 0.03);
-		--d2l-theme-shadow-attached-block-end: 0 -2px 4px 0 rgba(0, 0, 0, 0.03);
+		--d2l-theme-shadow-attached: 0 2px 4px 0 rgba(0, 0, 0, 0.85);
+		--d2l-theme-shadow-attached-block-start: 0 2px 4px 0 rgba(0, 0, 0, 0.85);
+		--d2l-theme-shadow-attached-block-end: 0 -2px 4px 0 rgba(0, 0, 0, 0.85);
 		--d2l-theme-shadow-floating: 0 2px 12px 0 rgba(0, 0, 0, 0.85);
 		--d2l-theme-shadow-inset: inset 0 2px 0 0 rgba(177, 185, 190, 0.2); /* corundum */
 	`;
