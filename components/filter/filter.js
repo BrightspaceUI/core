@@ -842,6 +842,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 				if (dimension.searchValue || dimension.searchType === 'manual') shouldSearch = true;
 				shouldRecount = true;
 				this._activeFiltersSubscribers.updateSubscribers();
+				newValue.forEach((field) => this._minWidth = field.minWidth ? field.minWidth : this._minWidth);
 			} else if (prop === 'text') {
 				this._activeFiltersSubscribers.updateSubscribers();
 			}
