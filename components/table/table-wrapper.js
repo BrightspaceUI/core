@@ -4,13 +4,11 @@ import '../backdrop/backdrop-loading.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { cssSizes } from '../inputs/input-checkbox.js';
 import { getComposedParent } from '../../helpers/dom.js';
+import { getFlag } from '../../helpers/flags.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { isPopoverSupported } from '../popover/popover-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
-import { usePopoverMixin as useTooltipPopover } from '../tooltip/tooltip.js';
-
-export const isUsingNativePopover = isPopoverSupported && useTooltipPopover;
 
 export const tableStyles = css`
 	.d2l-table {
@@ -297,6 +295,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				reflect: true,
 				type: Boolean
 			},
+			_stickyWidth: { state: true },
 			/**
 			 * Type of table style to apply. The "light" style has fewer borders and tighter padding.
 			 * @type {'default'|'light'}
@@ -377,6 +376,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this.noColumnBorder = false;
 		this.stickyHeaders = false;
 		this.stickyHeadersScrollWrapper = false;
+		this._stickyWidth = 0;
 		this.type = 'default';
 
 		this._controls = null;
@@ -389,6 +389,8 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
 		this.loading = false;
+
+		this._excludeStickyColumnsFromScrollCalculations = getFlag('GAUD-9530-exclude-sticky-columns-from-scroll-calculations', false);
 	}
 
 	connectedCallback() {
@@ -425,7 +427,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
 			${this.stickyHeaders && this._controlsScrolled ? html`<div class="d2l-sticky-headers-backdrop"></div>` : nothing}
-			${useScrollWrapper ? html`<d2l-scroll-wrapper .customScrollers="${this._tableScrollers}">${slot}</d2l-scroll-wrapper>` : slot}
+			${useScrollWrapper ? html`<d2l-scroll-wrapper scroll-area-offset=${ifDefined(this._excludeStickyColumnsFromScrollCalculations ? this._stickyWidth : undefined)} .customScrollers="${this._tableScrollers}">${slot}</d2l-scroll-wrapper>` : slot}
 			${this._renderPagerContainer()}
 		`;
 	}
@@ -723,25 +725,29 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 		if (candidateRowHeadCells.length !== candidateRowBodyLength) return;
 
+		let stickyWidth = 0;
 		for (let i = 0; i < candidateRowHeadCells.length; i++) {
 			const headCell = candidateRowHeadCells[i];
 			const headStyle = getComputedStyle(headCell);
 
 			const bodyCell = candidateRowBody.cells[i];
 			const bodyStyle = getComputedStyle(bodyCell);
-
+			let cellWidth = headCell.clientWidth + parseFloat(headStyle.borderLeft) + parseFloat(headStyle.borderRight);
 			if (headCell.clientWidth > bodyCell.clientWidth) {
 				const headOverallWidth = parseFloat(headStyle.width) + parseFloat(headStyle.paddingLeft) + parseFloat(headStyle.paddingRight);
 				bodyCell.style.minWidth = `${headOverallWidth - parseFloat(bodyStyle.paddingLeft) - parseFloat(bodyStyle.paddingRight)}px`;
 			} else if (headCell.clientWidth < bodyCell.clientWidth) {
 				const bodyOverallWidth = parseFloat(bodyStyle.width) + parseFloat(bodyStyle.paddingLeft) + parseFloat(bodyStyle.paddingRight);
 				headCell.style.minWidth = `${bodyOverallWidth - parseFloat(headStyle.paddingLeft) - parseFloat(headStyle.paddingRight)}px`;
+				cellWidth = bodyCell.clientWidth + parseFloat(bodyStyle.borderLeft) + parseFloat(bodyStyle.borderRight);
 			}
+			if (headCell.hasAttribute('sticky')) stickyWidth += cellWidth;
 		}
+		if (this._excludeStickyColumnsFromScrollCalculations) this._stickyWidth = stickyWidth;
 	}
 
 	_updateStickyAncestor(node, popoverOpened) {
-		if (!this.stickyHeaders || isUsingNativePopover) return;
+		if (!this.stickyHeaders || isPopoverSupported) return;
 
 		node = getComposedParent(node);
 		while (node) {

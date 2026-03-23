@@ -4,7 +4,6 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 
 const RTL_MULTIPLIER = navigator.userAgent.indexOf('Edge/') > 0 ? 1 : -1; /* legacy-Edge doesn't reverse scrolling in RTL */
 const SCROLL_AMOUNT = 0.8;
@@ -57,6 +56,14 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 			hideActions: {
 				attribute: 'hide-actions',
 				type: Boolean
+			},
+			/**
+			 * The area in pixels to offset scroll width calculations
+			 * @type {number}
+			 */
+			scrollAreaOffset: {
+				attribute: 'scroll-area-offset',
+				type: Number
 			},
 			_hScrollbar: {
 				attribute: 'h-scrollbar',
@@ -157,6 +164,7 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 		super();
 		this.customScrollers = {};
 		this.hideActions = false;
+		this.scrollAreaOffset = 0;
 		this._allScrollers = [];
 		this._baseContainer = null;
 		this._container = null;
@@ -259,16 +267,19 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 			});
 		}
 	}
+	_getScrollDistance() {
+		return Math.max((this._container.clientWidth - this.scrollAreaOffset) * SCROLL_AMOUNT, 1); // guard against offset being larger than content
+	}
 
 	_scrollLeft() {
 		if (!this._container) return;
-		const scrollDistance = this._container.clientWidth * SCROLL_AMOUNT * -1;
+		const scrollDistance = this._getScrollDistance() * -1;
 		this.scrollDistance(scrollDistance, true);
 	}
 
 	_scrollRight() {
 		if (!this._container) return;
-		const scrollDistance = this._container.clientWidth * SCROLL_AMOUNT;
+		const scrollDistance = this._getScrollDistance();
 		this.scrollDistance(scrollDistance, true);
 	}
 

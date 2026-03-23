@@ -1,4 +1,5 @@
 import '../colors/colors.js';
+import '../expand-collapse/expand-collapse-content.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -177,6 +178,11 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 			 */
 			notTabbable: { type: Boolean, attribute: 'not-tabbable' },
 			/**
+			 * Hides the supporting slot when unchecked
+			 * @type {boolean}
+			 */
+			supportingHiddenWhenUnchecked: { type: Boolean, attribute: 'supporting-hidden-when-unchecked', reflect: true },
+			/**
 			 * Value of the input
 			 * @type {string}
 			 */
@@ -235,11 +241,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 					vertical-align: top;
 				}
 				.d2l-input-checkbox-supporting {
-					display: none;
 					margin-block-start: 0.6rem;
-				}
-				.d2l-input-checkbox-supporting-visible {
-					display: block;
 				}
 			`
 		];
@@ -254,6 +256,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 		this.labelHidden = false;
 		this.name = '';
 		this.notTabbable = false;
+		this.supportingHiddenWhenUnchecked = false;
 		this.value = 'on';
 		this._hasSupporting = false;
 		this._isHovered = false;
@@ -265,10 +268,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 
 	render() {
 		const tabindex = this.notTabbable ? -1 : undefined;
-		const supportingClasses = {
-			'd2l-input-checkbox-supporting': true,
-			'd2l-input-checkbox-supporting-visible': this._hasSupporting
-		};
+		const supportingContentVisible = this._hasSupporting && (this.checked || !this.supportingHiddenWhenUnchecked);
 		const textClasses = {
 			'd2l-input-checkbox-text': true,
 			'd2l-skeletize': true,
@@ -305,7 +305,9 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 			${this._renderInlineHelp(this.#inlineHelpId)}
 			${offscreenContainer}
 			${disabledTooltip}
-			<div class="${classMap(supportingClasses)}" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
+			<d2l-expand-collapse-content ?expanded="${supportingContentVisible}">
+				<div class="d2l-input-checkbox-supporting" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
+			</d2l-expand-collapse-content>
 		`;
 	}
 
