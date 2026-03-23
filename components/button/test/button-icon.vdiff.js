@@ -14,9 +14,40 @@ const customIconTemplate = html`
 `;
 
 describe('button-icon', () => {
+
 	[
 		{ category: 'normal', template: html`<d2l-button-icon icon="tier1:gear" text="Icon Button"></d2l-button-icon>` },
-		{ category: 'translucent', template: html`<div style="height: 80px; width: 200px; background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #465298 10px, #465298 20px);"><d2l-button-icon style="margin: 12px;" icon="tier1:gear" text="Icon Button" translucent></d2l-button-icon></div>` },
+		{ category: 'translucent', template: html`<div style="height: 80px; width: 200px; background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #465298 10px, #465298 20px);"><d2l-button-icon style="margin: 12px;" icon="tier1:gear" text="Icon Button" translucent></d2l-button-icon></div>` }
+	].forEach(({ category, template }) => {
+
+		describe(category, () => {
+			[
+				{ name: 'normal' },
+				{ name: 'normal-dark', colorMode: 'dark' },
+				{ name: 'hover', action: hoverElem },
+				{ name: 'hover-dark', colorMode: 'dark', action: hoverElem },
+				{ name: 'focus', action: focusElem },
+				{ name: 'focus-dark', colorMode: 'dark', action: focusElem },
+				{ name: 'click', action: clickElem },
+				{ name: 'active', action: elem => elem.setAttribute('active', '') },
+				{ name: 'disabled', action: elem => elem.disabled = true },
+				{ name: 'disabled-dark', colorMode: 'dark', action: elem => elem.disabled = true },
+				{ name: 'disabled hover', action: elem => {
+					elem.disabled = true;
+					return hoverElem(elem);
+				} }
+			].forEach(({ action, colorMode, name }) => {
+				it(name, async() => {
+					let elem = await fixture(template, { colorMode });
+					if (elem.tagName !== 'D2L-BUTTON-ICON') elem = elem.querySelector('d2l-button-icon');
+					if (action) await action(elem);
+					await expect(elem).to.be.golden();
+				});
+			});
+		});
+	});
+
+	[
 		{ category: 'dark', template: html`<div style="height: 80px; width: 200px; background: black;"><d2l-button-icon style="margin: 12px;" icon="tier1:gear" text="Icon Button" theme="dark"></d2l-button-icon></div>` },
 		{ category: 'custom', template: html`<d2l-button-icon icon="tier1:gear" text="Icon Button" style="--d2l-button-icon-min-height: 1.5rem; --d2l-button-icon-min-width: 1.5rem; --d2l-button-icon-border-radius: 4px; --d2l-focus-ring-color: #006fbf; --d2l-focus-ring-offset: 1px; --d2l-button-icon-fill-color: var(--d2l-color-celestine); --d2l-button-icon-fill-color-hover: var(--d2l-color-celestine-minus-1);"></d2l-button-icon>` },
 		{ category: 'custom icon', template: customIconTemplate }
@@ -43,6 +74,7 @@ describe('button-icon', () => {
 				});
 			});
 		});
+
 	});
 
 	describe('disabled-tooltip', () => {
