@@ -2,6 +2,7 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 	const style = globalThis.document.createElement('style');
 	style.id = 'd2l-colors';
 
+	// Note: do not use these semantic variables outside of core yet - they are subject to change
 	const lightPalette = `
 		--d2l-theme-background-color-base: #ffffff;
 		--d2l-theme-background-color-elevated: var(--d2l-theme-background-color-base);
@@ -54,6 +55,8 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-theme-shadow-inset: inset 0 2px 0 0 rgba(177, 185, 190, 0.2); /* corundum */
 
 	`;
+
+	// Note: do not use these semantic variables outside of core yet - they are subject to change
 	const darkPalette = `
 		--d2l-theme-background-color-base: #161718;
 		--d2l-theme-background-color-elevated: var(--d2l-color-ferrite);
