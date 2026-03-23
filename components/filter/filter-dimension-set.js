@@ -151,7 +151,7 @@ class FilterDimensionSet extends LitElement {
 		const values = valueNodes.map(value => {
 			if (value._noSearchSupport) noSearchSupport = true;
 			if (value._enforceSingleSelection) enforceSingleSelection = true;
-			if (value._minWidth) minWidth = minWidth ? Math.min(value._minWidth, minWidth) : value._minWidth;
+			if (value._minWidth) minWidth = minWidth ? Math.max(value._minWidth, minWidth) : value._minWidth;
 
 			return value.getValueDetails();
 		});
