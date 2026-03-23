@@ -69,6 +69,20 @@ describe('count-badge-icon', () => {
 		});
 	});
 
+	describe('dark', () => {
+		[
+			{ name: 'count', template: html`<d2l-count-badge-icon icon="tier3:gear" size="small" type="count" number="1" text="1 item"></d2l-count-badge-icon>` },
+			{ name: 'notification', template: html`<d2l-count-badge-icon icon="tier3:gear" size="small" type="notification" number="1" text="1 notification"></d2l-count-badge-icon>` },
+			{ name: 'focused', template: html`<d2l-count-badge-icon tab-stop icon="tier3:gear" size="small" type="notification" number="1" text="1 notification"></d2l-count-badge-icon>`, action: elem => focusElem(elem) }
+		].forEach(({ name, template, action }) => {
+			it(name, async() => {
+				const elem = await fixture(template, { colorMode: 'dark' });
+				if (action) await action(elem);
+				await expect(elem).to.be.golden();
+			});
+		});
+	});
+
 	describe('rtl', () => {
 		[
 			{ name: 'small-notification', template: html`<d2l-count-badge-icon icon="tier3:gear" size="small" type="notification" number="1" text="1 notification"></d2l-count-badge-icon>` },

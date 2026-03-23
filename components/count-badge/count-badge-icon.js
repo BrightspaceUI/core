@@ -66,7 +66,7 @@ class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 
 	render() {
 		let numberStyles = {
-			border: '2px solid white',
+			border: '2px solid var(--d2l-theme-background-color-base)',
 			position: 'absolute',
 			visibility: this.skeleton ? 'hidden' : undefined,
 		};
