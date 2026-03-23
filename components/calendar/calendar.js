@@ -476,8 +476,8 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 
 	firstUpdated() {
 		super.firstUpdated();
-		this.removeEventListener('blur', this._onBlur.bind(this));
-		this.removeEventListener('d2l-localize-resources-change', this._onLocalizeResourcesChange.bind(this));
+		this.addEventListener('blur', this._onBlur.bind(this));
+		this.addEventListener('d2l-localize-resources-change', this._onLocalizeResourcesChange.bind(this));
 	}
 
 	render() {
