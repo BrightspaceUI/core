@@ -115,13 +115,13 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 			}
 
 			:host([type="notification"]) .d2l-count-badge-number {
-				background-color: var(--d2l-color-carnelian-minus-1);
-				color: white;
+				background-color: var(--d2l-theme-notification-background-color);
+				color: var(--d2l-theme-notification-text-color);
 			}
 
 			:host([type="count"]) .d2l-count-badge-number {
-				background-color: var(--d2l-count-badge-background-color, var(--d2l-color-gypsum));
-				color: var(--d2l-count-badge-foreground-color, var(--d2l-color-ferrite));
+				background-color: var(--d2l-count-badge-background-color, var(--d2l-theme-badge-background-color));
+				color: var(--d2l-count-badge-foreground-color, var(--d2l-theme-badge-text-color));
 			}
 
 			:host([size="small"]) .d2l-count-badge-number {
