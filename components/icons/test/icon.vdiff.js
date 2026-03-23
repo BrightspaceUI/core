@@ -14,6 +14,10 @@ describe('d2l-icon', () => {
 			const elem = await fixture(template, { rtl: true });
 			await expect(elem).to.be.golden();
 		});
+		it(`dark-${tier}`, async() => {
+			const elem = await fixture(template, { colorMode: 'dark' });
+			await expect(elem).to.be.golden();
+		});
 	});
 
 	[
@@ -26,7 +30,17 @@ describe('d2l-icon', () => {
 			template: html`<d2l-icon icon="tier2:evaluate-all"></d2l-icon>`
 		},
 		{
+			name: 'dark-fill-none',
+			colorMode: 'dark',
+			template: html`<d2l-icon icon="tier2:evaluate-all"></d2l-icon>`
+		},
+		{
 			name: 'fill-circle',
+			template: html`<d2l-icon icon="tier2:divider-big"></d2l-icon>`
+		},
+		{
+			name: 'dark-fill-circle',
+			colorMode: 'dark',
 			template: html`<d2l-icon icon="tier2:divider-big"></d2l-icon>`
 		},
 		{
@@ -34,16 +48,26 @@ describe('d2l-icon', () => {
 			template: html`<d2l-icon icon="tier2:check-box" style="color: var(--d2l-color-celestine-minus-1)"></d2l-icon>`
 		},
 		{
+			name: 'dark-fill-mixed',
+			colorMode: 'dark',
+			template: html`<d2l-icon icon="tier2:check-box" style="color: var(--d2l-color-celestine-minus-1)"></d2l-icon>`
+		},
+		{
 			name: 'color-override',
+			template: html`<d2l-icon icon="tier3:assignments" style="color: var(--d2l-color-celestine-minus-1)"></d2l-icon>`
+		},
+		{
+			name: 'dark-color-override',
+			colorMode: 'dark',
 			template: html`<d2l-icon icon="tier3:assignments" style="color: var(--d2l-color-celestine-minus-1)"></d2l-icon>`
 		},
 		{
 			name: 'size-override',
 			template: html`<d2l-icon icon="tier3:assignments" style="height: 100px; width: 100px;"></d2l-icon>`
 		}
-	].forEach(({ name, template }) => {
+	].forEach(({ name, colorMode, template }) => {
 		it(name, async() => {
-			const elem = await fixture(template);
+			const elem = await fixture(template, { colorMode });
 			await expect(elem).to.be.golden();
 		});
 	});
