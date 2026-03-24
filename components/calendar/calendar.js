@@ -457,9 +457,8 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 		this._tableInfoId = getUniqueId();
 		getCalendarData();
 	}
-
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
+	connectedCallback() {
+		super.connectedCallback();
 
 		if (this.minValue && this.maxValue && (getDateFromISODate(this.minValue).getTime() > getDateFromISODate(this.maxValue).getTime())) {
 			throw new RangeError('d2l-calendar component expects min-value to be before max-value');
@@ -470,18 +469,15 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 			(node) => { return (node.tagName === 'D2L-DROPDOWN-CONTENT'); }
 		);
 		if (dropdownContent) this._dialog = true;
-
-		this.addEventListener('blur', () => this._isInitialFocusDate = true);
-
-		this.addEventListener('d2l-localize-resources-change', () => {
-			getCalendarData();
-			this.requestUpdate();
-		});
-
 		this._today = getDateFromDateObj(getToday());
 		if (this.selectedValue) this._getInitialFocusDate();
 		else this.reset();
+	}
 
+	firstUpdated() {
+		super.firstUpdated();
+		this.addEventListener('blur', this._onBlur.bind(this));
+		this.addEventListener('d2l-localize-resources-change', this._onLocalizeResourcesChange.bind(this));
 	}
 
 	render() {
@@ -686,6 +682,10 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 		this._shownMonth = getNextMonth(this._shownMonth);
 	}
 
+	_onBlur() {
+		this._isInitialFocusDate = true;
+	}
+
 	async _onDateSelected(e) {
 		let selectedDate = e.composedPath()[0];
 		if (selectedDate.tagName === 'BUTTON') selectedDate = selectedDate.parentNode;
@@ -864,6 +864,11 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 		}
 		else this._focusDate = possibleFocusDate;
 		await this._showFocusDateMonth(oldFocusDate, Math.abs(numDaysChange) !== 1);
+	}
+
+	_onLocalizeResourcesChange() {
+		getCalendarData();
+		this.requestUpdate();
 	}
 
 	async _onNextMonthButtonClick() {
