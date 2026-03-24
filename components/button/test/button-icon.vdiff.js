@@ -24,18 +24,16 @@ describe('button-icon', () => {
 	].forEach(({ category, testColorMode, template }) => {
 
 		const testsToRun = [
-			...[
-				{ name: 'normal' },
-				{ name: 'hover', action: hoverElem },
-				{ name: 'focus', action: focusElem },
-				{ name: 'click', action: clickElem },
-				{ name: 'active', action: elem => elem.setAttribute('active', '') },
-				{ name: 'disabled', action: elem => elem.disabled = true },
-				{ name: 'disabled hover', action: elem => {
-					elem.disabled = true;
-					return hoverElem(elem);
-				} }
-			],
+			{ name: 'normal' },
+			{ name: 'hover', action: hoverElem },
+			{ name: 'focus', action: focusElem },
+			{ name: 'click', action: clickElem },
+			{ name: 'active', action: elem => elem.setAttribute('active', '') },
+			{ name: 'disabled', action: elem => elem.disabled = true },
+			{ name: 'disabled hover', action: elem => {
+				elem.disabled = true;
+				return hoverElem(elem);
+			} },
 			...(testColorMode ? [
 				{ name: 'normal-dark', colorMode: 'dark' },
 				{ name: 'hover-dark', colorMode: 'dark', action: hoverElem },
