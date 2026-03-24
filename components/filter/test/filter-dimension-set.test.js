@@ -1,5 +1,6 @@
 import '../filter-dimension-set.js';
 import '../filter-dimension-set-value.js';
+import '../filter-dimension-set-date-time-range-value.js';
 import '../filter-dimension-set-empty-state.js';
 import { expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { spy } from 'sinon';
@@ -52,6 +53,17 @@ describe('d2l-filter-dimension-set', () => {
 			expect(e.detail.changes.get('searchEmptyState').actionText).to.equal('Click me');
 			expect(e.detail.changes.get('searchEmptyState').description).to.equal('Description');
 			expect(eventSpy).to.be.calledOnce;
+		});
+
+		it('handles slot change with minWidth set', async() => {
+			const elem = await fixture(dimensionfixture);
+
+			const minWidthDimension = document.createElement('d2l-filter-dimension-set-date-time-range-value');
+			minWidthDimension.slot = '';
+			setTimeout(() => elem.appendChild(minWidthDimension));
+			await oneEvent(elem, 'd2l-filter-dimension-data-change');
+
+			expect(elem.minWidth).to.equal(410);
 		});
 
 		it('handles set-empty-state slot change', async() => {

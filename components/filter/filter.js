@@ -574,7 +574,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			`;
 		}
 
-		if (dimension.minWidth) this._minWidth = dimension.minWidth;
+		if (dimension.minWidth) this._minWidth = Math.max(dimension.minWidth, this._minWidth);
 		if (this._isDimensionEmpty(dimension)) {
 			const emptyState = dimension.setEmptyState
 				? this._createEmptyState(dimension.setEmptyState, dimension.key)
@@ -842,6 +842,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 				if (dimension.searchValue || dimension.searchType === 'manual') shouldSearch = true;
 				shouldRecount = true;
 				this._activeFiltersSubscribers.updateSubscribers();
+				newValue.forEach((field) => this._minWidth = field.minWidth ? Math.max(field.minWidth, this._minWidth) : this._minWidth);
 			} else if (prop === 'text') {
 				this._activeFiltersSubscribers.updateSubscribers();
 			}
