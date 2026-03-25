@@ -54,8 +54,8 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 		return [super.styles, labelStyles, buttonStyles,
 			css`
 				:host {
-					--d2l-count-badge-background-color: var(--d2l-color-celestine);
-					--d2l-count-badge-foreground-color: #ffffff;
+					--d2l-count-badge-background-color: var(--d2l-theme-background-color-interactive-primary-default);
+					--d2l-count-badge-foreground-color: var(--d2l-theme-text-color-static-inverted);
 					display: inline-block;
 				}
 
@@ -67,7 +67,7 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 					--d2l-button-subtle-padding-inline-start: 0.6rem;
 					--d2l-button-subtle-padding-inline-end: 0.6rem;
 					align-items: center;
-					background-color: transparent;
+					background-color: var(--d2l-theme-background-color-interactive-tertiary-default);
 					border-color: transparent;
 					column-gap: 0.3rem;
 					display: inline-flex;
@@ -110,34 +110,34 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 				button[disabled]:hover,
 				button[disabled]:focus,
 				:host([active]) button[disabled] {
-					background-color: transparent;
+					background-color: var(--d2l-theme-background-color-interactive-tertiary-default);
 				}
 
 				button:hover,
 				button:focus,
 				:host([active]) button {
-					background-color: var(--d2l-color-gypsum);
+					background-color: var(--d2l-theme-background-color-interactive-tertiary-hover);
 				}
 
 				.d2l-button-subtle-content {
-					color: var(--d2l-color-celestine);
+					color: var(--d2l-theme-text-color-interactive-default);
 				}
 
 				button:hover:not([disabled]) .d2l-button-subtle-content,
 				button:focus:not([disabled]) .d2l-button-subtle-content,
 				:host([active]:not([disabled])) button .d2l-button-subtle-content {
-					color: var(--d2l-color-celestine-minus-1);
+					color: var(--d2l-theme-text-color-interactive-hover);
 				}
 
 				button:hover:not([disabled]),
 				button:focus:not([disabled]),
 				:host([active]:not([disabled])) {
-					--d2l-count-badge-background-color: var(--d2l-color-celestine-minus-1);
+					--d2l-count-badge-background-color: var(--d2l-theme-text-color-interactive-hover);
 				}
 
 				.property-icon,
 				slot[name="icon"]::slotted(d2l-icon-custom) {
-					color: var(--d2l-color-celestine);
+					color: var(--d2l-theme-text-color-interactive-default);
 				}
 
 				button:hover:not([disabled]) .property-icon,
@@ -146,7 +146,7 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 				button:hover:not([disabled]) slot[name="icon"]::slotted(d2l-icon-custom),
 				button:focus:not([disabled]) slot[name="icon"]::slotted(d2l-icon-custom),
 				:host([active]:not([disabled])) slot[name="icon"]::slotted(d2l-icon-custom) {
-					color: var(--d2l-color-celestine-minus-1);
+					color: var(--d2l-theme-text-color-interactive-hover);
 				}
 
 				:host([icon-right]) .property-icon,
@@ -154,9 +154,13 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 					order: 1;
 				}
 
+				.d2l-button-subtle-content-wrapper slot {
+					color: var(--d2l-theme-text-color-static-standard);
+				}
+
 				:host([disabled]) button {
 					cursor: default;
-					opacity: 0.5;
+					opacity: var(--d2l-theme-opacity-disabled-control);
 				}
 			`
 		];
