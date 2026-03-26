@@ -1,5 +1,5 @@
 import '../calendar.js';
-import { clickElem, expect, fixture, focusElem, html, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import sinon from 'sinon';
 
 const newToday = new Date('2018-02-12T12:00Z');
@@ -14,9 +14,13 @@ describe('calendar', () => {
 	async function setupFixture(template, opts) {
 		elem = await fixture(template, { viewport: { width: 400 }, ...opts });
 	}
+	function getDateElement(date, getButton = false) {
+		return elem.shadowRoot.querySelector(`td[data-date="${date}"]${getButton ? ' button' : ''}`);
+	}
 
 	[
 		{ name: 'dec-2019', template: html`<d2l-calendar selected-value="2019-12-01"></d2l-calendar>` }, // first row only current month days last row contains next month days
+		{ name: 'hover', template: simpleTemplate, action: () => hoverElem(getDateElement('20')), testDarkMode: true },
 		{ name: 'initial-value', template: html`<d2l-calendar initial-value="2024-07-01"></d2l-calendar>` },
 		{ name: 'initial-value-selected-value', template: html`<d2l-calendar initial-value="2024-07-01" selected-value="2024-10-01"></d2l-calendar>` },
 		{ name: 'max', template: html`<d2l-calendar max-value="2017-02-27"></d2l-calendar>` },
@@ -26,9 +30,15 @@ describe('calendar', () => {
 		{ name: 'no-selected', template: html`<d2l-calendar></d2l-calendar>` },
 		{ name: 'today-selected', template: html`<d2l-calendar selected-value="2018-02-12"></d2l-calendar>` },
 		{ name: 'day-infos', template: eventsTemplate },
-		{ name: 'day-infos-focus', template: eventsTemplate, action: () => focusElem(elem.shadowRoot.querySelector('td[data-date="29"]')) },
-		{ name: 'day-infos-today-focus', template: eventsTemplate, action: () => focusElem(elem.shadowRoot.querySelector('td[data-date="12"]')) },
-		{ name: 'day-infos-selected-focus', template: eventsTemplate, action: () => focusElem(elem.shadowRoot.querySelector('td[data-date="14"]')) },
+		{ name: 'day-infos-focus', template: eventsTemplate, action: () => focusElem(getDateElement('29')) },
+		{ name: 'day-infos-today-focus', template: eventsTemplate, action: () => focusElem(getDateElement('12')) },
+		{ name: 'day-infos-selected-focus', template: eventsTemplate, action: () => focusElem(getDateElement('14')) },
+		{ name: 'selected-disabled', template: html`<d2l-calendar selected-value="2018-02-14" min-value="2018-02-28"></d2l-calendar>` },
+		{ name: 'selected-disabled-focus', template: html`<d2l-calendar selected-value="2018-02-14" min-value="2018-02-28"></d2l-calendar>`, action: async() => {
+			elem.reset(true); //allowDisabled;
+			await elem.updateComplete;
+			elem._focusDateAddFocus();
+		} },
 		{ name: 'with-slot', template: html`<d2l-calendar selected-value="2018-02-14"><div style="padding: 10px; text-align: center;">Slot Content</div></d2l-calendar>` },
 		{ name: 'all-attributes', template: html`<d2l-calendar selected-value="2018-02-14" label="Event Calendar" summary="Select a date" min-value="2018-02-01" max-value="2018-02-28" day-infos="[{&quot;date&quot;:&quot;2018-02-12&quot;},{&quot;date&quot;:&quot;2018-02-14&quot;}]"></d2l-calendar>` }
 	].forEach(({ name, template, action }) => {
@@ -109,38 +119,38 @@ describe('calendar', () => {
 
 		describe('date', () => {
 			it('hover on non-selected-value', async() => {
-				const date = elem.shadowRoot.querySelector('td[data-date="20"] button');
+				const date = getDateElement('20', true);
 				date.classList.add('d2l-calendar-date-hover');
 				await expect(elem).to.be.golden();
 			});
 
 			it('hover on selected-value', async() => {
-				const date = elem.shadowRoot.querySelector('td[data-date="14"] button');
+				const date = getDateElement('14', true);
 				date.classList.add('d2l-calendar-date-hover');
 				await expect(elem).to.be.golden();
 			});
 
 			it('focus on non-selected-value', async() => {
-				await focusElem(elem.shadowRoot.querySelector('td[data-date="20"]'));
+				await focusElem(getDateElement('20'));
 				await expect(elem).to.be.golden();
 			});
 
 			it('focus on selected-value', async() => {
-				await focusElem(elem.shadowRoot.querySelector('td[data-date="14"]'));
+				await focusElem(getDateElement('14'));
 				await expect(elem).to.be.golden();
 			});
 
 			it('hover and focus on non-selected-value', async() => {
-				const date = elem.shadowRoot.querySelector('td[data-date="20"] button');
+				const date = getDateElement('20', true);
 				date.classList.add('d2l-calendar-date-hover');
-				await focusElem(elem.shadowRoot.querySelector('td[data-date="20"]'));
+				await focusElem(getDateElement('20'));
 				await expect(elem).to.be.golden();
 			});
 
 			it('hover and focus on selected-value', async() => {
-				const date = elem.shadowRoot.querySelector('td[data-date="14"] button');
+				const date = getDateElement('14', true);
 				date.classList.add('d2l-calendar-date-hover');
-				await focusElem(elem.shadowRoot.querySelector('td[data-date="14"]'));
+				await focusElem(getDateElement('14'));
 				await expect(elem).to.be.golden();
 			});
 		});
