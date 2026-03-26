@@ -130,7 +130,7 @@ class ListItemGenericLayout extends LitElement {
 			::slotted([slot="control"]) {
 				grid-column: control-start / control-end;
 				pointer-events: none;
-				width: 2.2rem;
+				width: 2.1rem;
 			}
 
 			::slotted([slot="content"]) {

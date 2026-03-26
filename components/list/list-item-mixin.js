@@ -282,7 +282,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 
 			[slot="control"] ~ [slot="control-action"] [slot="content"] {
-				padding-inline-start: 2.2rem; /* width of "control" slot set in generic-layout */
+				padding-inline-start: 2.1rem; /* width of "control" slot set in generic-layout */
 			}
 
 			[slot="content"] ::slotted([slot="illustration"]),
