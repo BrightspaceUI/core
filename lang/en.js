@@ -27,7 +27,7 @@ export default {
 		`{number, plural,
 			=0 {No filters applied.}
 			one {{number} filter applied.}
-			other {{number} filters applied.}
+			other {{number} filters applied.
 		}`,
 	"components.filter.filters": "Filters",
 	"components.filter.loading": "Loading filters",
