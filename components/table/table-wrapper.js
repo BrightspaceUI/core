@@ -365,6 +365,9 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				top: calc(-7px - var(--d2l-table-border-radius)); /* 6px for the d2l-table-controls margin-bottom, 1px overlap to fix zoom issues */
 				width: 100%;
 			}
+			#backdrop-inert-wrapper {
+				position: relative;
+			}
 			slot[name="pager"]::slotted(*) {
 				margin-top: 12px;
 			}
@@ -420,8 +423,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 	render() {
 		const slot = html`
-			<slot @slotchange="${this._handleSlotChange}"></slot>
-			<d2l-backdrop-loading ?shown=${this.loading}></d2l-backdrop-loading>
+			<div id="backdrop-inert-wrapper">
+				<slot @slotchange="${this._handleSlotChange}"></slot>
+				<d2l-backdrop-loading ?shown=${this.loading}></d2l-backdrop-loading>
+			</div>
 		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
 		return html`
