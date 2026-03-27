@@ -1,6 +1,9 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import '../backdrop/backdrop-loading.js';
+import '../empty-state/empty-state-action-button.js';
+import '../empty-state/empty-state-simple.js';
+import '../button/button.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { cssSizes } from '../inputs/input-checkbox.js';
 import { getComposedParent } from '../../helpers/dom.js';
@@ -318,6 +321,19 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				reflect: true,
 				type: Boolean
 			},
+
+			/**
+			 * Whether or not to display a loading backdrop. Set this property when the content in the table is being refreshed.
+			 * @type {boolean}
+			 */
+			dirty: {
+				reflect: true,
+				type: Boolean
+			},
+
+			onRefresh: {
+				attribute: false
+			}
 		};
 	}
 
@@ -365,11 +381,34 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				top: calc(-7px - var(--d2l-table-border-radius)); /* 6px for the d2l-table-controls margin-bottom, 1px overlap to fix zoom issues */
 				width: 100%;
 			}
-			#backdrop-inert-wrapper {
-				position: relative;
-			}
 			slot[name="pager"]::slotted(*) {
 				margin-top: 12px;
+			}
+
+			#overlay-layer, #backdrop-inert-wrapper {
+				position: relative;
+			}
+
+			#backdrop-inert-wrapper {
+				z-index: 2;
+			}
+
+			#dirty-overlay {
+				top: 0;
+				opacity: 1;
+				background-color: var(--d2l-table-controls-background-color, white);
+				display: none;
+				position: absolute;
+				z-index: 3;
+				transition: opacity 800ms ease-in;
+			}
+
+			:host([dirty]) #dirty-overlay {
+				display: flex;
+			}
+
+			:host([loading]) #dirty-overlay {
+				opacity: 0;
 			}
 		`;
 	}
@@ -392,6 +431,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
 		this.loading = false;
+		this.onRefresh = null;
 
 		this._excludeStickyColumnsFromScrollCalculations = getFlag('GAUD-9530-exclude-sticky-columns-from-scroll-calculations', false);
 	}
@@ -423,10 +463,15 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 	render() {
 		const slot = html`
-			<div id="backdrop-inert-wrapper">
-				<slot @slotchange="${this._handleSlotChange}"></slot>
-				<d2l-backdrop-loading ?shown=${this.loading}></d2l-backdrop-loading>
-			</div>
+			<div id="overlay-layer">
+				<div id="backdrop-inert-wrapper">
+					<slot @slotchange="${this._handleSlotChange}"></slot>
+					<d2l-backdrop-loading ?loading=${this.loading} ?shown=${this.loading || this.dirty}></d2l-backdrop-loading>
+				</div>
+				<d2l-empty-state-simple description="Filters have been changed." id="dirty-overlay">
+					<d2l-empty-state-action-button @d2l-empty-state-action=${this.onRefresh} text="Apply Filters"></d2l-empty-state-action-button>
+				</div>
+			<div>
 		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
 		return html`

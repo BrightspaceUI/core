@@ -85,7 +85,7 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 
 	render() {
 		return html`
-			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}">
+			<d2l-table-wrapper .onRefresh=${this._mockLoad} item-count="${ifDefined(this.paging ? 500 : undefined)}">
 				<d2l-table-controls slot="controls" ?no-sticky="${!this.stickyControls}" select-all-pages-allowed>
 					<d2l-selection-action
 						text="Sticky controls"
@@ -101,6 +101,11 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 						text="Loading"
 						icon="tier1:${this.loading ? 'check' : 'close-default'}"
 						@d2l-selection-action-click="${this._toggleLoading}"
+					></d2l-selection-action>
+					<d2l-selection-action
+						text="Dirty"
+						icon="tier1:${this.dirty ? 'check' : 'close-default'}"
+						@d2l-selection-action-click="${this._toggleDirty}"
 					></d2l-selection-action>
 				</d2l-table-controls>
 
@@ -205,6 +210,10 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 		});
 	}
 
+	_mockLoad() {
+		this.loading = true;
+		setTimeout(() => { this.loading = false; this.dirty = false; }, 2000);
+	}
 	_renderDoubleSortButton(item1, item2) {
 		return html`
 			<th rowspan="${this.multiLine ? 2 : 1}" scope="col">
@@ -256,9 +265,14 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 		this.requestUpdate();
 	}
 
+	_toggleDirty() {
+		this.dirty = !this.dirty;
+	}
+
 	_toggleLoading() {
 		this.loading = !this.loading;
 	}
+
 	_toggleStickyControls() {
 		this.stickyControls = !this.stickyControls;
 	}
