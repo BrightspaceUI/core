@@ -384,32 +384,6 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			slot[name="pager"]::slotted(*) {
 				margin-top: 12px;
 			}
-
-			#overlay-layer, #backdrop-inert-wrapper {
-				position: relative;
-			}
-
-			#backdrop-inert-wrapper {
-				z-index: 2;
-			}
-
-			#dirty-overlay {
-				top: 0;
-				opacity: 1;
-				background-color: var(--d2l-table-controls-background-color, white);
-				display: none;
-				position: absolute;
-				z-index: 3;
-				transition: opacity 800ms ease-in;
-			}
-
-			:host([dirty]) #dirty-overlay {
-				display: flex;
-			}
-
-			:host([loading]) #dirty-overlay {
-				opacity: 0;
-			}
 		`;
 	}
 
@@ -463,15 +437,9 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 	render() {
 		const slot = html`
-			<div id="overlay-layer">
-				<div id="backdrop-inert-wrapper">
-					<slot @slotchange="${this._handleSlotChange}"></slot>
-					<d2l-backdrop-loading ?loading=${this.loading} ?shown=${this.loading || this.dirty}></d2l-backdrop-loading>
-				</div>
-				<d2l-empty-state-simple description="Filters have been changed." id="dirty-overlay">
-					<d2l-empty-state-action-button @d2l-empty-state-action=${this.onRefresh} text="Apply Filters"></d2l-empty-state-action-button>
-				</div>
-			<div>
+			<d2l-backdrop-loading ?loading=${this.loading} ?shown=${this.dirty} @d2l-dirty-refresh-click=${this.onRefresh}>
+				<slot @slotchange="${this._handleSlotChange}"></slot>
+			</d2l-backdrop-loading>
 		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
 		return html`

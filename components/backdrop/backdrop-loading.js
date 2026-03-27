@@ -1,13 +1,13 @@
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
 import '../button/button.js';
+import '../empty-state/empty-state-action-button.js';
+import '../empty-state/empty-state-simple.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { getOffsetParent } from '../../helpers/dom.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const BACKDROP_DELAY_MS = 800;
 const FADE_DURATION_MS = 500;
-const SPINNER_DELAY_MS = FADE_DURATION_MS;
 
 const LOADING_SPINNER_MINIMUM_BUFFER = 100;
 const LOADING_SPINNER_SIZE = 50;
@@ -28,13 +28,14 @@ class LoadingBackdrop extends LitElement {
 			shown: { type: Boolean },
 			loading: { type: Boolean },
 			_state: { type: String, reflect: true },
-			_spinnerTop: { state: true }
+			_spinnerTop: { state: true },
+			onRefresh: { attribute: false }
 		};
 	}
 
 	static get styles() {
 		return css`
-			:host {
+			#backdrop-styling-wrapper {
 				display: none;
 				height: 100%;
 				justify-content: center;
@@ -43,10 +44,43 @@ class LoadingBackdrop extends LitElement {
 				width: 100%;
 				z-index: 999;
 			}
-			:host([_state="showing"]),
-			:host([_state="shown"]),
-			:host([_state="hiding"]) {
+
+			#dirty-overlay {
+				top: 0;
+				opacity: 0;
+				width: 100%;
+				height: 100%;
+				justify-content: center;
+				display: none;
+				position: absolute;
+				z-index: 1000;
+				transition: opacity ${FADE_DURATION_MS}ms ease-in;
+			}
+
+			d2l-empty-state-simple {
+				position: relative;
+				height: fit-content;
+				background-color: var(--d2l-table-controls-background-color, white);
+			}
+
+			:host([_state="showing"]) #backdrop-styling-wrapper,
+			:host([_state="shown"]) #backdrop-styling-wrapper,
+			:host([_state="hiding"]) #backdrop-styling-wrapper,
+			:host([_state="showing"]) #dirty-overlay,
+			:host([_state="shown"]) #dirty-overlay,
+			:host([_state="hiding"]) #dirty-overlay {
 				display: flex;
+			}
+
+			:host([_state="shown"]) #dirty-overlay {
+				opacity: 1;
+			}
+			:host([_state="hiding"]) #dirty-overlay {
+				opacity: 0;
+				transition: opacity ${FADE_DURATION_MS}ms ease-out;
+			}
+			:host([loading]) #dirty-overlay {
+				opacity: 0;
 			}
 
 			.backdrop {
@@ -65,13 +99,13 @@ class LoadingBackdrop extends LitElement {
 			d2l-loading-spinner {
 				opacity: 0;
 				position: absolute;
-				transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
+				transition: opacity ${FADE_DURATION_MS}ms ease-in;
 			}
 			:host([_state="shown"][loading]) d2l-loading-spinner {
 				opacity: 1;
 			}
 
-			:host([_state="hiding"]) .d2l-backdrop,
+			:host([_state="hiding"]) .backdrop,
 			:host([_state="hiding"]) d2l-loading-spinner {
 				transition: opacity ${FADE_DURATION_MS}ms ease-out;
 			}
@@ -79,6 +113,11 @@ class LoadingBackdrop extends LitElement {
 			@media (prefers-reduced-motion: reduce) {
 				* { transition: none; }
 			}
+
+			#overlay-layer, #backdrop-inert-wrapper {
+				position: relative;
+			}
+
 		`;
 	}
 
@@ -91,10 +130,14 @@ class LoadingBackdrop extends LitElement {
 	}
 
 	render() {
-		if (this._state === 'hidden') return nothing;
 		return html`
-			<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#hide}"></div>
-			<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
+			<div id="overlay-layer">
+				<div id="backdrop-inert-wrapper">
+					${this.renderBackdrop()}
+					<slot></slot>
+				</div>
+				${this.renderDirtyDialog()}
+			<div>
 		`;
 	}
 
@@ -123,6 +166,29 @@ class LoadingBackdrop extends LitElement {
 		}
 	}
 
+	renderBackdrop() {
+		if (this._state === 'hidden') return nothing;
+
+		return html`
+			<div id="backdrop-styling-wrapper">
+				<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#hide}"></div>
+				<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
+			</div>
+		`;
+	}
+
+	renderDirtyDialog() {
+		if (this._state === 'hidden') return nothing;
+
+		return html`
+			<div id="dirty-overlay">
+				<d2l-empty-state-simple style=${styleMap({ top: `${this._spinnerTop - 10}px` })} description="Filters have been changed.">
+					<d2l-empty-state-action-button @d2l-empty-state-action=${this.#handleApplyButton} text="Apply Filters"></d2l-empty-state-action-button>
+				</div>
+			</div>
+		`;
+	}
+
 	#centerLoadingSpinner() {
 		if (this._state === 'hidden') { return; }
 
@@ -146,7 +212,6 @@ class LoadingBackdrop extends LitElement {
 		const newPosition = centeringOffset + topOffset - spinnerSizeOffset;
 		this._spinnerTop = Math.max(LOADING_SPINNER_MINIMUM_BUFFER, newPosition);
 	}
-
 	#fade() {
 		let hideImmediately = reduceMotion || this._state === 'showing';
 		if (this._state === 'shown') {
@@ -161,6 +226,10 @@ class LoadingBackdrop extends LitElement {
 		}
 	}
 
+	#handleApplyButton() {
+		this.dispatchEvent(new CustomEvent('d2l-dirty-refresh-click'));
+	}
+
 	#handleTransitionEnd() {
 		if (this._state === 'hiding') {
 			this.#hide();
@@ -170,7 +239,7 @@ class LoadingBackdrop extends LitElement {
 	#hide() {
 		this._state = 'hidden';
 
-		const containingBlock = getOffsetParent(this);
+		const containingBlock = this.shadowRoot.querySelector('#backdrop-inert-wrapper');
 
 		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
 	}
@@ -178,7 +247,7 @@ class LoadingBackdrop extends LitElement {
 	#show() {
 		this._state = reduceMotion ? 'shown' : 'showing';
 
-		const containingBlock = getOffsetParent(this);
+		const containingBlock = this.shadowRoot.querySelector('#backdrop-inert-wrapper');
 
 		if (containingBlock.getAttribute('inert') !== null) containingBlock.dataset.initiallyInert = '1';
 
