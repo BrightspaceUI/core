@@ -13,19 +13,23 @@ function createAlertWithCloseButton(opts) {
 
 describe('alert', () => {
 
+	[ 'default', 'success', 'critical', 'warning', 'error', 'call-to-action'].forEach(type => {
+
+		const template = html`<d2l-alert type="${type}">${`A${type === 'error' ? 'n' : ''} ${type === 'call-to-action' ? 'call to action.' : `${type} message.`}`}</d2l-alert>`;
+
+		it(`type-${type}`, async() => {
+			const elem = await fixture(template);
+			await expect(elem).to.be.golden();
+		});
+
+		it(`type-${type}-dark`, async() => {
+			const elem = await fixture(template, { colorMode: 'dark' });
+			await expect(elem).to.be.golden();
+		});
+
+	});
+
 	[
-		{ name: 'type-default', template: html`<d2l-alert type="default">A default message.</d2l-alert>` },
-		{ name: 'type-default-dark', colorMode: 'dark', template: html`<d2l-alert type="default">A default message.</d2l-alert>` },
-		{ name: 'type-success', template: html`<d2l-alert type="success">A success message.</d2l-alert>` },
-		{ name: 'type-success-dark', colorMode: 'dark', template: html`<d2l-alert type="success">A success message.</d2l-alert>` },
-		{ name: 'type-critical', template: html`<d2l-alert type="critical">A critical message.</d2l-alert>` },
-		{ name: 'type-critical-dark', colorMode: 'dark', template: html`<d2l-alert type="critical">A critical message.</d2l-alert>` },
-		{ name: 'type-warning', template: html`<d2l-alert type="warning">A warning message.</d2l-alert>` },
-		{ name: 'type-warning-dark', colorMode: 'dark', template: html`<d2l-alert type="warning">A warning message.</d2l-alert>` },
-		{ name: 'type-error', template: html`<d2l-alert type="error">An error message.</d2l-alert>` },
-		{ name: 'type-error-dark', colorMode: 'dark', template: html`<d2l-alert type="error">An error message.</d2l-alert>` },
-		{ name: 'type-call-to-action', template: html`<d2l-alert type="call-to-action">A call to action.</d2l-alert>` },
-		{ name: 'type-call-to-action-dark', colorMode: 'dark', template: html`<d2l-alert type="call-to-action">A call to action.</d2l-alert>` },
 		{ name: 'close', template: html`<d2l-alert type="default" has-close-button>A message.</d2l-alert>` },
 		{ name: 'button', template: html`<d2l-alert type="default" button-text="Do it!">A message.</d2l-alert>` },
 		{ name: 'button-close', template: createAlertWithCloseButton() },
