@@ -37,9 +37,9 @@ describe('alert', () => {
 		{ name: 'hidden', rtl: true, template: html`<div style="height: 10px; width: 10px;"><d2l-alert type="default" hidden>A hidden message.</d2l-alert></div>` },
 		{ name: 'no-padding', template: createAlertWithCloseButton({ noPadding: true }) },
 		{ name: 'no-padding-rtl', rtl: true, template: createAlertWithCloseButton({ noPadding: true }) }
-	].forEach(({ name, colorMode, rtl, template }) => {
+	].forEach(({ name, rtl, template }) => {
 		it(name, async() => {
-			const elem = await fixture(template, { colorMode, rtl });
+			const elem = await fixture(template, { rtl });
 			await expect(elem).to.be.golden();
 		});
 	});
