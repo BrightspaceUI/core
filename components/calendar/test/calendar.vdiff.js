@@ -33,20 +33,28 @@ describe('calendar', () => {
 		{ name: 'day-infos-focus', template: eventsTemplate, action: () => focusElem(getDateElement('29')) },
 		{ name: 'day-infos-today-focus', template: eventsTemplate, action: () => focusElem(getDateElement('12')) },
 		{ name: 'day-infos-selected-focus', template: eventsTemplate, action: () => focusElem(getDateElement('14')) },
-		{ name: 'selected-disabled', template: html`<d2l-calendar selected-value="2018-02-14" min-value="2018-02-28"></d2l-calendar>` },
+		{ name: 'selected-disabled', template: html`<d2l-calendar selected-value="2018-02-14" min-value="2018-02-28"></d2l-calendar>`, testDarkMode: true },
 		{ name: 'selected-disabled-focus', template: html`<d2l-calendar selected-value="2018-02-14" min-value="2018-02-28"></d2l-calendar>`, action: async() => {
 			elem.reset(true); //allowDisabled;
 			await elem.updateComplete;
 			elem._focusDateAddFocus();
-		} },
+		}, testDarkMode: true },
 		{ name: 'with-slot', template: html`<d2l-calendar selected-value="2018-02-14"><div style="padding: 10px; text-align: center;">Slot Content</div></d2l-calendar>` },
-		{ name: 'all-attributes', template: html`<d2l-calendar selected-value="2018-02-14" label="Event Calendar" summary="Select a date" min-value="2018-02-01" max-value="2018-02-28" day-infos="[{&quot;date&quot;:&quot;2018-02-12&quot;},{&quot;date&quot;:&quot;2018-02-14&quot;}]"></d2l-calendar>` }
-	].forEach(({ name, template, action }) => {
+		{ name: 'all-attributes', template: html`<d2l-calendar selected-value="2018-02-14" label="Event Calendar" summary="Select a date" min-value="2018-02-01" max-value="2018-02-28" day-infos="[{&quot;date&quot;:&quot;2018-02-12&quot;},{&quot;date&quot;:&quot;2018-02-14&quot;}]"></d2l-calendar>`, testDarkMode: true }
+	].forEach(({ name, template, action, testDarkMode }) => {
 		it(name, async() => {
 			await setupFixture(template);
 			if (action) await action();
 			await expect(elem).to.be.golden();
 		});
+		if (testDarkMode) {
+			it(`${name}-dark`, async() => {
+				await setupFixture(template, { colorMode: 'dark' });
+				if (action) await action();
+				await expect(elem).to.be.golden();
+			});
+		}
+
 	});
 
 	describe('localization', () => {
