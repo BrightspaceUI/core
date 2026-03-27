@@ -436,8 +436,11 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	render() {
+		const dataState = this.dirty ?
+			this.loading ? 'loading' : 'dirty'
+			: 'clean';
 		const slot = html`
-			<d2l-backdrop-loading ?loading=${this.loading} ?shown=${this.dirty} @d2l-dirty-refresh-click=${this.onRefresh}>
+			<d2l-backdrop-loading data-state=${dataState} @d2l-dirty-refresh-click=${this.onRefresh}>
 				<slot @slotchange="${this._handleSlotChange}"></slot>
 			</d2l-backdrop-loading>
 		`;

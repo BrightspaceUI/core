@@ -25,8 +25,7 @@ class LoadingBackdrop extends LitElement {
 			 * Used to control whether the loading backdrop is shown
 			 * @type {boolean}
 			 */
-			shown: { type: Boolean },
-			loading: { type: Boolean },
+			dataState: { type: String, attribute: 'data-state', reflect: true },
 			_state: { type: String, reflect: true },
 			_spinnerTop: { state: true },
 			onRefresh: { attribute: false }
@@ -79,7 +78,7 @@ class LoadingBackdrop extends LitElement {
 				opacity: 0;
 				transition: opacity ${FADE_DURATION_MS}ms ease-out;
 			}
-			:host([loading]) #dirty-overlay {
+			:host([data-state="loading"]) #dirty-overlay {
 				opacity: 0;
 			}
 
@@ -101,7 +100,7 @@ class LoadingBackdrop extends LitElement {
 				position: absolute;
 				transition: opacity ${FADE_DURATION_MS}ms ease-in;
 			}
-			:host([_state="shown"][loading]) d2l-loading-spinner {
+			:host([_state="shown"][data-state="loading"]) d2l-loading-spinner {
 				opacity: 1;
 			}
 
@@ -124,6 +123,7 @@ class LoadingBackdrop extends LitElement {
 	constructor() {
 		super();
 		this.shown = false;
+		this.dataState = 'clean';
 		this.loading = false;
 		this._state = 'hidden';
 		this._spinnerTop = LOADING_SPINNER_MINIMUM_BUFFER;
@@ -150,17 +150,22 @@ class LoadingBackdrop extends LitElement {
 			}
 		}
 
-		if (changedProperties.has('shown') && (
+		if (changedProperties.has('dataState') && (
 			(reduceMotion && this._state === 'shown') || (!reduceMotion && this._state === 'showing')
 		)) {
 			this.#centerLoadingSpinner();
 		}
 	}
 	willUpdate(changedProperties) {
-		if (changedProperties.has('shown')) {
-			if (this.shown) {
+		if (changedProperties.has('dataState')) {
+			const oldDataState = changedProperties.get('dataState');
+			const newState = this.dataState;
+
+			if (oldDataState === 'clean' && newState === 'dirty') {
 				this.#show();
-			} else if (changedProperties.get('shown') !== undefined) {
+			} else if (oldDataState === 'clean' && newState === 'loading') {
+				throw new Error('unsupported transition');
+			} else if ((oldDataState === 'dirty' || oldDataState === 'loading') && newState === 'clean') {
 				this.#fade();
 			}
 		}
