@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
+import '../button/button.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getOffsetParent } from '../../helpers/dom.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -25,6 +26,7 @@ class LoadingBackdrop extends LitElement {
 			 * @type {boolean}
 			 */
 			shown: { type: Boolean },
+			loading: { type: Boolean },
 			_state: { type: String, reflect: true },
 			_spinnerTop: { state: true }
 		};
@@ -65,7 +67,7 @@ class LoadingBackdrop extends LitElement {
 				position: absolute;
 				transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
 			}
-			:host([_state="shown"]) d2l-loading-spinner {
+			:host([_state="shown"][loading]) d2l-loading-spinner {
 				opacity: 1;
 			}
 
@@ -83,6 +85,7 @@ class LoadingBackdrop extends LitElement {
 	constructor() {
 		super();
 		this.shown = false;
+		this.loading = false;
 		this._state = 'hidden';
 		this._spinnerTop = LOADING_SPINNER_MINIMUM_BUFFER;
 	}
@@ -94,6 +97,7 @@ class LoadingBackdrop extends LitElement {
 			<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
 		`;
 	}
+
 	updated(changedProperties) {
 		if (changedProperties.has('_state')) {
 			if (this._state === 'showing') {
@@ -156,11 +160,13 @@ class LoadingBackdrop extends LitElement {
 			this._state = 'hiding';
 		}
 	}
+
 	#handleTransitionEnd() {
 		if (this._state === 'hiding') {
 			this.#hide();
 		}
 	}
+
 	#hide() {
 		this._state = 'hidden';
 
@@ -168,6 +174,7 @@ class LoadingBackdrop extends LitElement {
 
 		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
 	}
+
 	#show() {
 		this._state = reduceMotion ? 'shown' : 'showing';
 
