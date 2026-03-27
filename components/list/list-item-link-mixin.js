@@ -1,11 +1,14 @@
 import '../colors/colors.js';
-import { css, html, nothing } from 'lit';
+import { css, html } from 'lit';
 import { isInteractiveInListItemComposedPath, ListItemMixin } from './list-item-mixin.js';
+import { _generateLinkStyles } from '../link/link-styles.js';
 import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
+import { LinkMixin } from '../link/link-mixin.js';
 
-export const ListItemLinkMixin = superclass => class extends ListItemMixin(superclass) {
+export const linkStyles = _generateLinkStyles('.d2l-list-item-link', true);
+
+export const ListItemLinkMixin = superclass => class extends LinkMixin(ListItemMixin(superclass)) {
 
 	static get properties() {
 		return {
@@ -20,7 +23,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 
 	static get styles() {
 
-		const styles = [ css`
+		const styles = [linkStyles, css`
 			:host([action-href]:not([action-href=""])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
@@ -35,6 +38,16 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 			:host([action-href]:not([action-href=""])) [slot="control-action"],
 			:host([action-href]:not([action-href=""])) [slot="outside-control-action"] {
 				grid-column-end: control-end;
+			}
+			:host([action-href]:not([action-href=""])[target="_blank"]) [slot="content"] {
+				padding-inline: 0;
+			}
+			a[target="_blank"].d2l-list-item-link {
+				display: flex;
+				align-items: baseline;
+			}
+			.d2l-list-item-link:hover {
+				color: var(--d2l-color-celestine);
 			}
 		` ];
 
@@ -96,13 +109,8 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 
 	_renderPrimaryAction(labelledBy, content) {
 		if (!this.actionHref) return;
-		return html`<a aria-labelledby="${labelledBy}"
-			aria-current="${ifDefined(this._ariaCurrent)}"
-			@click="${this._handleLinkClick}"
-			@focusin="${this._handleLinkFocus}"
-			href="${this.actionHref}"
-			id="${this._primaryActionId}"
-			@keydown="${this._handleLinkKeyDown}">${content || nothing}</a>`;
+		const innerWithIcon = html`${content}${this._renderNewWindowIcon()}`;
+		return this._render(innerWithIcon, { ariaLabelledBy: labelledBy, linkClasses: { 'd2l-list-item-link': true } });
 	}
 
 };
