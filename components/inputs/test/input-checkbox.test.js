@@ -360,7 +360,19 @@ describe('d2l-input-checkbox', () => {
 
 		describe('aria-expanded', () => {
 
-			it('should have the aria-expanded attribute when supporting-hidden-when-unchecked is set and uses the supporting slot', async() => {
+			it('should not have the aria-expanded attribute when supporting-hidden-when-unchecked is not set', async() => {
+				const elem = await fixture(checkboxFixtures.supporting);
+				const input = getInput(elem);
+				expect(input.hasAttribute('aria-expanded')).to.be.false;
+			});
+
+			it('should have the aria-expanded attribute when supporting-hidden-when-unchecked is set with a supporing slot', async() => {
+				const elem = await fixture(checkboxFixtures.supportingHiddenWhenUnchecked);
+				const input = getInput(elem);
+				expect(input.hasAttribute('aria-expanded')).to.be.true;
+			});
+
+			it('should update the aria-expanded attribute value to represent the expanded state of the supporting content', async() => {
 				const elem = await fixture(checkboxFixtures.supportingHiddenWhenUnchecked);
 				const input = getInput(elem);
 				expect(input.getAttribute('aria-expanded')).to.equal('false');
