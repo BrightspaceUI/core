@@ -56,13 +56,14 @@ export const LinkMixin = superclass => class extends LocalizeCoreElement(supercl
 		return label && this.target === '_blank' ? this.localize('components.link.open-in-new-window') : undefined;
 	}
 
-	_render(inner, { ariaLabel = undefined, ariaLabelledBy = undefined, rel = undefined, linkClasses = {}, tabindex = undefined } = {}) {
+	_render(inner, { ariaLabel = undefined, ariaLabelledBy = undefined, ariaCurrent = undefined, rel = undefined, linkClasses = {}, tabindex = undefined } = {}) {
 		/*
 		* NOTICE:
 		* All html template whitespace within this component is critical to proper rendering and wrapping.
 		* Do not modify for readability!
 		*/
 		return html`<a
+			aria-current="${ifDefined(ariaCurrent)}"
 			aria-label="${ifDefined(ariaLabel)}"
 			aria-description="${ifDefined(this.getNewWindowDescription(ariaLabel || ariaLabelledBy))}"
 			aria-labelledby="${ifDefined(ariaLabelledBy)}"

@@ -110,7 +110,7 @@ export const ListItemLinkMixin = superclass => class extends LinkMixin(ListItemM
 	_renderPrimaryAction(labelledBy, content) {
 		if (!this.actionHref) return;
 		const innerWithIcon = html`${content || nothing}${this._renderNewWindowIcon()}`;
-		return this._render(innerWithIcon, { ariaLabelledBy: labelledBy, linkClasses: { 'd2l-list-item-link': true } });
+		return this._render(innerWithIcon, { ariaLabelledBy: labelledBy, ariaCurrent: this._ariaCurrent, linkClasses: { 'd2l-list-item-link': true } });
 	}
 
 };
