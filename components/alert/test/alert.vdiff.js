@@ -14,12 +14,19 @@ function createAlertWithCloseButton(opts) {
 describe('alert', () => {
 
 	[ 'default', 'success', 'critical', 'warning', 'error', 'call-to-action'].forEach(type => {
+
+		const template = html`<d2l-alert type="${type}">${`A${type === 'error' ? 'n' : ''} ${type === 'call-to-action' ? 'call to action.' : `${type} message.`}`}</d2l-alert>`;
+
 		it(`type-${type}`, async() => {
-			const elem = await fixture(html`
-				<d2l-alert type="${type}">${`A${type === 'error' ? 'n' : ''} ${type === 'call-to-action' ? 'call to action.' : `${type} message.`}`}</d2l-alert>
-			`);
+			const elem = await fixture(template);
 			await expect(elem).to.be.golden();
 		});
+
+		it(`type-${type}-dark`, async() => {
+			const elem = await fixture(template, { colorMode: 'dark' });
+			await expect(elem).to.be.golden();
+		});
+
 	});
 
 	[
@@ -30,7 +37,7 @@ describe('alert', () => {
 		{ name: 'hidden', rtl: true, template: html`<div style="height: 10px; width: 10px;"><d2l-alert type="default" hidden>A hidden message.</d2l-alert></div>` },
 		{ name: 'no-padding', template: createAlertWithCloseButton({ noPadding: true }) },
 		{ name: 'no-padding-rtl', rtl: true, template: createAlertWithCloseButton({ noPadding: true }) }
-	].forEach(({ name, template, rtl }) => {
+	].forEach(({ name, rtl, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { rtl });
 			await expect(elem).to.be.golden();
