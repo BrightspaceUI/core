@@ -311,13 +311,22 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				type: Boolean,
 			},
 			/**
-			 * Whether or not to display a loading backdrop. Set this property when the content in the table is being refreshed.
+			 * Whether or not the loading backdrop should be currently displayed, if enabled.
 			 * @type {boolean}
 			 */
 			loading: {
 				reflect: true,
 				type: Boolean
 			},
+
+			/**
+			 * Whether or not to render a loading backdrop. Set this property when the content in the table is being refreshed.
+			 * @type {boolean}
+			 */
+			backdrop: {
+				reflect: true,
+				type: Boolean
+			}
 		};
 	}
 
@@ -419,15 +428,13 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	render() {
-		const slot = html`
-			<slot @slotchange="${this._handleSlotChange}"></slot>
-			<d2l-backdrop-loading ?shown=${this.loading}></d2l-backdrop-loading>
-		`;
+		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
+		const slotWithBackdrop = this.backdrop ? html`<d2l-backdrop-loading ?shown=${this.loading}>${slot}</d2l-backdrop-loading>` : slot;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
 			${this.stickyHeaders && this._controlsScrolled ? html`<div class="d2l-sticky-headers-backdrop"></div>` : nothing}
-			${useScrollWrapper ? html`<d2l-scroll-wrapper scroll-area-offset=${ifDefined(this._excludeStickyColumnsFromScrollCalculations ? this._stickyWidth : undefined)} .customScrollers="${this._tableScrollers}">${slot}</d2l-scroll-wrapper>` : slot}
+			${useScrollWrapper ? html`<d2l-scroll-wrapper scroll-area-offset=${ifDefined(this._excludeStickyColumnsFromScrollCalculations ? this._stickyWidth : undefined)} .customScrollers="${this._tableScrollers}">${slotWithBackdrop}</d2l-scroll-wrapper>` : slotWithBackdrop}
 			${this._renderPagerContainer()}
 		`;
 	}

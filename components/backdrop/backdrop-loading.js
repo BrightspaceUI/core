@@ -1,7 +1,6 @@
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { getOffsetParent } from '../../helpers/dom.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const BACKDROP_DELAY_MS = 800;
@@ -33,6 +32,10 @@ class LoadingBackdrop extends LitElement {
 	static get styles() {
 		return css`
 			:host {
+				position: relative;
+			}
+
+			#backdrop-styling-wrapper {
 				display: none;
 				height: 100%;
 				justify-content: center;
@@ -41,9 +44,9 @@ class LoadingBackdrop extends LitElement {
 				width: 100%;
 				z-index: 999;
 			}
-			:host([_state="showing"]),
-			:host([_state="shown"]),
-			:host([_state="hiding"]) {
+			:host([_state="showing"]) #backdrop-styling-wrapper,
+			:host([_state="shown"]) #backdrop-styling-wrapper,
+			:host([_state="hiding"]) #backdrop-styling-wrapper {
 				display: flex;
 			}
 
@@ -88,10 +91,17 @@ class LoadingBackdrop extends LitElement {
 	}
 
 	render() {
-		if (this._state === 'hidden') return nothing;
+		const backdrop = this._state === 'hidden' ? nothing :
+			html`
+				<div id="backdrop-styling-wrapper">
+					<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#hide}"></div>
+					<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
+				</div>
+		`;
+
 		return html`
-			<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#hide}"></div>
-			<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
+			${backdrop}
+			<slot></slot>
 		`;
 	}
 	updated(changedProperties) {
@@ -164,18 +174,13 @@ class LoadingBackdrop extends LitElement {
 	#hide() {
 		this._state = 'hidden';
 
-		const containingBlock = getOffsetParent(this);
+		this.inert = false;
 
-		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
 	}
 	#show() {
 		this._state = reduceMotion ? 'shown' : 'showing';
 
-		const containingBlock = getOffsetParent(this);
-
-		if (containingBlock.getAttribute('inert') !== null) containingBlock.dataset.initiallyInert = '1';
-
-		containingBlock.setAttribute('inert', 'inert');
+		this.inert = true;
 	}
 
 }
