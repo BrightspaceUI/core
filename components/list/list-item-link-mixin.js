@@ -1,5 +1,5 @@
 import '../colors/colors.js';
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { isInteractiveInListItemComposedPath, ListItemMixin } from './list-item-mixin.js';
 import { _generateLinkStyles } from '../link/link-styles.js';
 import { getFlag } from '../../helpers/flags.js';
@@ -109,7 +109,7 @@ export const ListItemLinkMixin = superclass => class extends LinkMixin(ListItemM
 
 	_renderPrimaryAction(labelledBy, content) {
 		if (!this.actionHref) return;
-		const innerWithIcon = html`${content}${this._renderNewWindowIcon()}`;
+		const innerWithIcon = html`${content || nothing}${this._renderNewWindowIcon()}`;
 		return this._render(innerWithIcon, { ariaLabelledBy: labelledBy, linkClasses: { 'd2l-list-item-link': true } });
 	}
 
