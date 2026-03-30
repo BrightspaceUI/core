@@ -43,8 +43,8 @@ export const ListItemLinkMixin = superclass => class extends LinkMixin(ListItemM
 				padding-inline: 0;
 			}
 			a[target="_blank"].d2l-list-item-link {
-				display: flex;
 				align-items: baseline;
+				display: flex;
 			}
 			.d2l-list-item-link:hover {
 				color: var(--d2l-color-celestine);
