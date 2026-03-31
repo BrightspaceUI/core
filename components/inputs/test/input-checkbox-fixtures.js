@@ -26,5 +26,10 @@ export const checkboxFixtures = {
 			</div>
 		</d2l-input-checkbox>
 	`,
+	supportingHiddenWhenUnchecked: html`
+	<d2l-input-checkbox label="check 1" supporting-hidden-when-unchecked>
+		<div slot="supporting" id="supporting-id">Supporting content</div>
+	</d2l-input-checkbox>
+	`,
 
 };
