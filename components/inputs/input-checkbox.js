@@ -275,6 +275,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 			'd2l-input-checkbox-text-disabled': this.disabled
 		};
 		const ariaChecked = this.indeterminate ? 'mixed' : undefined;
+		const ariaExpanded = this._hasSupporting && this.supportingHiddenWhenUnchecked ? (supportingContentVisible ? 'true' : 'false') : undefined;
 		const ariaLabel = (this.label && this.labelHidden) ? this.label : undefined;
 		const label = (this.label && !this.labelHidden) ? this.label : nothing;
 		const disabled = this.disabled || this.skeleton;
@@ -289,6 +290,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 					aria-checked="${ifDefined(ariaChecked)}"
 					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
 					aria-disabled="${ifDefined(disabled && this.disabledTooltip ? 'true' : undefined)}"
+					aria-expanded="${ifDefined(ariaExpanded)}"
 					aria-label="${ifDefined(ariaLabel)}"
 					@change="${this.#handleChange}"
 					class="d2l-input-checkbox"
