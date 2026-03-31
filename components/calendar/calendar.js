@@ -371,7 +371,7 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 
 			@keyframes initial-focus {
 				from {
-					outline: 0 solid var(--d2l-color-celestine);
+					outline: 0 solid var(--d2l-theme-border-color-focus);
 					padding: 0;
 				}
 			}
@@ -394,7 +394,7 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 
 			.d2l-calendar-date.d2l-calendar-date-selected:disabled {
 				background-color: var(--d2l-theme-background-color-base);
-				color: var(--d2l-theme-text-color-static-opaque);
+				color: var(--d2l-theme-text-color-static-translucent);
 				opacity: 1;
 				outline: none;
 			}
