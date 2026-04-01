@@ -213,10 +213,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 
 			:host(:not([layout="tile"]):not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] {
-				width: 3rem;
+				width: 2.9rem;
 			}
 			:host(:not([layout="tile"]):not([_render-expand-collapse-slot])) .d2l-list-item-content-extend-separators > [slot="control"] ~ [slot="control-action"] [slot="content"] {
-				padding-inline-start: 3rem;
+				padding-inline-start: 2.9rem;
 			}
 			:host(:not([_has-color-slot])) .d2l-list-item-content-extend-separators [slot="content"] {
 				padding-inline: 0.9rem;
@@ -282,7 +282,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 
 			[slot="control"] ~ [slot="control-action"] [slot="content"] {
-				padding-inline-start: 2.2rem; /* width of "control" slot set in generic-layout */
+				padding-inline-start: 2.1rem; /* width of "control" slot set in generic-layout */
 			}
 
 			[slot="content"] ::slotted([slot="illustration"]),
