@@ -4,7 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { isComposedAncestor } from '../../helpers/dom.js';
+import { isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { overflowHiddenDeclarations } from '../../helpers/overflow.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -271,6 +271,7 @@ class MoreLess extends LocalizeCoreElement(LitElement) {
 	}
 
 	__reactToChanges() {
+		if (!isVisible(this) && this.__baseHeight > 0) return;
 		this.__transitionAdded = true;
 		this.__adjustToContent();
 	}
