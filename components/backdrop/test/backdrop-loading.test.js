@@ -3,33 +3,45 @@ import { expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
 
 const backdropLoadingFixture = html`
 	<div>
-		<div>
-			<div id="containing-block-parent">
-				<div id="containing-block" style="position:relative">
-					<div id="skipped-static-position-div">
-						<d2l-backdrop-loading></d2l-backdrop-loading>
-					</div>
-				</div>
-				<div id="containing-block-sibling"></div>
-			</div>
+		<div id="parent">
+			<div id="expected-inert"></div>
+			<div id="unrelated-div"></div>
+			<d2l-backdrop-loading for="expected-inert"></d2l-backdrop-loading>
+		</div>
+	</div>
+`;
+const backdropLoadingMismatchedForFixture = html`
+	<div>
+		<div id="parent">
+			<div id="expected-inert"></div>
+			<div id="unrelated-div"></div>
+			<d2l-backdrop-loading for="does-not-exist"></d2l-backdrop-loading>
+		</div>
+	</div>
+`;
+const backdropLoadingNoForFixture = html`
+	<div>
+		<div id="parent">
+			<div id="expected-inert"></div>
+			<div id="unrelated-div"></div>
+			<d2l-backdrop-loading></d2l-backdrop-loading>
 		</div>
 	</div>
 `;
 
 describe('d2l-backdrop-loading', () => {
+	let elem, backdropLoading, composedParent, targetedSibling, otherSibling;
 
-	let elem, backdropLoading, containingBlock, containingBlockSibling, containingBlockParent;
-	beforeEach(async() => {
-		elem = await fixture(backdropLoadingFixture);
+	async function loadWithFixture(fixtureName) {
+		elem = await fixture(fixtureName);
 
 		backdropLoading = elem.querySelector('d2l-backdrop-loading');
-		containingBlock = elem.querySelector('#containing-block');
-		containingBlockSibling = elem.querySelector('#containing-block-sibling');
-		containingBlockParent = elem.querySelector('#containing-block-parent');
-	});
+		composedParent = elem.querySelector('#parent');
+		targetedSibling = elem.querySelector('#expected-inert');
+		otherSibling = elem.querySelector('#unrelated-div');
+	}
 
 	describe('constructor', () => {
-
 		it('should construct', () => {
 			runConstructor('d2l-backdrop-loading');
 		});
@@ -38,32 +50,67 @@ describe('d2l-backdrop-loading', () => {
 
 	describe('show and hide', () => {
 
-		it('toggles inert property on containing block', async() => {
+		it('toggles inert property on sibling with for ID', async() => {
+			await loadWithFixture(backdropLoadingFixture);
+
 			backdropLoading.shown = true;
 			await backdropLoading.updateComplete;
 
-			expect(containingBlock.hasAttribute('inert')).to.be.true;
-			expect(containingBlockSibling.hasAttribute('inert')).to.be.false;
-			expect(containingBlockParent.hasAttribute('inert')).to.be.false;
+			expect(backdropLoading.hasAttribute('inert')).to.be.false;
+			expect(composedParent.hasAttribute('inert')).to.be.false;
+			expect(otherSibling.hasAttribute('inert')).to.be.false;
+			expect(targetedSibling.hasAttribute('inert')).to.be.true;
 
 			backdropLoading.shown = false;
 			await backdropLoading.updateComplete;
 
-			expect(containingBlock.hasAttribute('inert')).to.be.false;
+			expect(targetedSibling.hasAttribute('inert')).to.be.false;
 		});
 
-		it('Maintains inertness property of containing block after fading if it started inert', async() => {
-			containingBlock.setAttribute('inert', 'inert');
+		it('maintains inertness property on for target', async() => {
+			await loadWithFixture(backdropLoadingFixture);
+
+			targetedSibling.setAttribute('inert', 'inert');
 
 			backdropLoading.shown = true;
 			await backdropLoading.updateComplete;
 
-			expect(containingBlock.hasAttribute('inert')).to.be.true;
+			expect(targetedSibling.hasAttribute('inert')).to.be.true;
 
 			backdropLoading.shown = false;
 			await backdropLoading.updateComplete;
 
-			expect(containingBlock.hasAttribute('inert')).to.be.true;
+			expect(targetedSibling.hasAttribute('inert')).to.be.true;
+		});
+
+		it('makes composed parent inert when for does not match any sibling', async() => {
+			await loadWithFixture(backdropLoadingMismatchedForFixture);
+
+			elem = await fixture(backdropLoadingFixture);
+
+			backdropLoading.shown = true;
+			await backdropLoading.updateComplete;
+
+			expect(composedParent.hasAttribute('inert')).to.be.true;
+
+			backdropLoading.shown = false;
+			await backdropLoading.updateComplete;
+
+			expect(composedParent.hasAttribute('inert')).to.be.false;
+		});
+
+		it('makes composed parent inert when for is not passed', async() => {
+			await loadWithFixture(backdropLoadingNoForFixture);
+
+			backdropLoading.shown = true;
+			await backdropLoading.updateComplete;
+
+			expect(composedParent.hasAttribute('inert')).to.be.true;
+
+			backdropLoading.shown = false;
+			await backdropLoading.updateComplete;
+
+			expect(composedParent.hasAttribute('inert')).to.be.false;
 		});
 	});
 });
