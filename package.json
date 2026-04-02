@@ -40,6 +40,9 @@
     "!demo",
     "!test",
     "/components/demo",
+    "/components/description-list/demo",
+    "/components/selection/demo",
+    "/components/table/demo",
     "!/components/demo/demo"
   ],
   "author": "D2L Corporation",
