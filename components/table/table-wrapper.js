@@ -314,7 +314,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			 * Whether or not to display a loading backdrop. Set this property when the content in the table is being refreshed.
 			 * @type {boolean}
 			 */
-			loading: {
+			dirty: {
 				reflect: true,
 				type: Boolean
 			},
@@ -388,7 +388,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
-		this.loading = false;
+		this.dirty = false;
 
 		this._excludeStickyColumnsFromScrollCalculations = getFlag('GAUD-9530-exclude-sticky-columns-from-scroll-calculations', false);
 	}
@@ -422,7 +422,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		const slot = html`
 			<div style="position:relative">
 				<slot id="table-slot" @slotchange="${this._handleSlotChange}"></slot>
-				<d2l-backdrop-loading for="table-slot" ?shown=${this.loading}></d2l-backdrop-loading>
+				<d2l-backdrop-loading for="table-slot" ?dirty=${this.dirty}></d2l-backdrop-loading>
 			</div>
 		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;

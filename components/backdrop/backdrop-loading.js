@@ -1,12 +1,14 @@
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
+import '../empty-state/empty-state-action-button.js';
+import '../empty-state/empty-state-simple.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const BACKDROP_DELAY_MS = 800;
 const FADE_DURATION_MS = 500;
-const SPINNER_DELAY_MS = FADE_DURATION_MS;
+const SPINNER_DELAY_MS = 0;
 
 const LOADING_SPINNER_MINIMUM_BUFFER = 100;
 const LOADING_SPINNER_SIZE = 50;
@@ -21,10 +23,10 @@ class LoadingBackdrop extends LitElement {
 	static get properties() {
 		return {
 			/**
-			 * Used to control whether the loading backdrop is shown
+			 * Used to control whether the loading backdrop is dirty
 			 * @type {boolean}
 			 */
-			shown: { type: Boolean },
+			dirty: { type: Boolean },
 			/**
 			 * Used to identify content that the backdrop should make inert
 			 * @type {boolean}
@@ -48,6 +50,7 @@ class LoadingBackdrop extends LitElement {
 			}
 			:host([_state="showing"]),
 			:host([_state="shown"]),
+			:host([_state="loading"]),
 			:host([_state="hiding"]) {
 				display: flex;
 			}
@@ -61,7 +64,7 @@ class LoadingBackdrop extends LitElement {
 				transition: opacity ${FADE_DURATION_MS}ms ease-in;
 				width: 100%;
 			}
-			:host([_state="shown"]) .backdrop {
+			:host([_state="shown"]) .backdrop, :host([_state="loading"]) .backdrop {
 				opacity: 0.7;
 			}
 
@@ -70,13 +73,30 @@ class LoadingBackdrop extends LitElement {
 				position: absolute;
 				transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
 			}
-			:host([_state="shown"]) d2l-loading-spinner {
+			:host([_state="loading"]) d2l-loading-spinner {
 				opacity: 1;
 			}
 
 			:host([_state="hiding"]) .d2l-backdrop,
+			:host([_state="hiding"]) d2l-empty-state-simple,
+			:host([_state="loading"]) d2l-empty-state-simple,
 			:host([_state="hiding"]) d2l-loading-spinner {
 				transition: opacity ${FADE_DURATION_MS}ms ease-out;
+			}
+
+			d2l-empty-state-simple {
+				background-color: var(--d2l-table-controls-background-color, white);
+				top: 0;
+				opacity: 0;
+				height: fit-content;
+				justify-content: center;
+				position: relative;
+				z-index: 1000;
+				transition: opacity ${FADE_DURATION_MS}ms ease-in;
+			}
+
+			:host([_state="shown"]) d2l-empty-state-simple {
+				opacity: 1;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
@@ -87,7 +107,7 @@ class LoadingBackdrop extends LitElement {
 
 	constructor() {
 		super();
-		this.shown = false;
+		this.dirty = false;
 		this._state = 'hidden';
 		this._spinnerTop = LOADING_SPINNER_MINIMUM_BUFFER;
 	}
@@ -97,6 +117,9 @@ class LoadingBackdrop extends LitElement {
 		return html`
 			<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#hide}"></div>
 			<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
+			<d2l-empty-state-simple style=${styleMap({ top: `${this._spinnerTop - 10}px` })} description="Filters have been changed.">
+				<d2l-empty-state-action-button @d2l-empty-state-action=${this.#handleApplyButton} text="Apply Filters"></d2l-empty-state-action-button>
+			</div>
 		`;
 	}
 	updated(changedProperties) {
@@ -108,17 +131,17 @@ class LoadingBackdrop extends LitElement {
 			}
 		}
 
-		if (changedProperties.has('shown') && (
+		if (changedProperties.has('dirty') && (
 			(reduceMotion && this._state === 'shown') || (!reduceMotion && this._state === 'showing')
 		)) {
 			this.#centerLoadingSpinner();
 		}
 	}
 	willUpdate(changedProperties) {
-		if (changedProperties.has('shown')) {
-			if (this.shown) {
+		if (changedProperties.has('dirty')) {
+			if (this.dirty) {
 				this.#show();
-			} else if (changedProperties.get('shown') !== undefined) {
+			} else if (changedProperties.get('dirty') !== undefined) {
 				this.#fade();
 			}
 		}
@@ -173,6 +196,10 @@ class LoadingBackdrop extends LitElement {
 		);
 
 		return targetedChildren.length === 0 ? parent : targetedChildren[0];
+	}
+	#handleApplyButton() {
+		this._state = 'loading';
+		this.dispatchEvent(new CustomEvent('d2l-dirty-refresh-click'));
 	}
 	#handleTransitionEnd() {
 		if (this._state === 'hiding') {
