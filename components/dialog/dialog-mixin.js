@@ -19,7 +19,7 @@ window.D2L.DialogMixin = window.D2L.DialogMixin || {};
 // https://bugs.webkit.org/show_bug.cgi?id=233320
 // starting in Chrome 102, all elements inside <dialog>s that are inside shadow roots have null offsetParent
 // https://bugs.chromium.org/p/chromium/issues/detail?id=1331803
-window.D2L.DialogMixin.hasNative = false;
+window.D2L.DialogMixin.hasNative = (window.HTMLDialogElement !== undefined)
 if (window.D2L.DialogMixin.preferNative === undefined) {
 	window.D2L.DialogMixin.preferNative = true;
 }
@@ -438,7 +438,8 @@ export const DialogMixin = superclass => class extends superclass {
 			// edge case: no children were focused, try again after one redraw
 			const activeElement = getComposedActiveElement();
 			if (!activeElement
-			|| !isComposedAncestor(dialog, activeElement)) {
+			|| !isComposedAncestor(dialog, activeElement)
+			|| this._useNative) {
 				// wait till the dialog is visible for Safari
 				requestAnimationFrame(() => this._focusInitial());
 			}
