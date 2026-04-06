@@ -16,10 +16,10 @@ const confirmDialog = html`
 
 describe('dialog-confirm', () => {
 
-	[/*'native',*/ 'custom'].forEach((type) => {
+	['native', 'custom'].forEach((type) => {
 
 		describe(type, () => {
-			before(() => window.D2L.DialogMixin.preferNative = type === 'native');
+			// before(() => window.D2L.DialogMixin.preferNative = type === 'native');
 
 			[
 				{ screen: 'wide', viewport: { width: 800, height: 500 } },
