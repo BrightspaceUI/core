@@ -111,7 +111,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(LitElement)) {
 	static get styles() {
 		return [super.styles, heading1Styles, heading2Styles, heading3Styles, heading4Styles, css`
 			:host {
-				--d2l-collapsible-panel-focus-outline: solid 2px var(--d2l-color-celestine);
+				--d2l-collapsible-panel-focus-outline: solid 2px var(--d2l-theme-border-color-focus);
 				--d2l-collapsible-panel-spacing-inline: 0.9rem;
 				--d2l-collapsible-panel-header-spacing: 0.6rem;
 				--d2l-collapsible-panel-transition-time: 0.2s;
@@ -125,16 +125,16 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(LitElement)) {
 				--d2l-collapsible-panel-spacing-inline: 2rem;
 			}
 			.d2l-collapsible-panel {
-				border: 1px solid var(--d2l-color-mica);
+				border: 1px solid var(--d2l-theme-border-color-standard);
 				border-radius: 0.4rem;
 			}
 			:host(:not([expanded]):not([skeleton])) .d2l-collapsible-panel {
 				cursor: pointer;
 			}
 			:host([type="subtle"]) .d2l-collapsible-panel {
-				background-color: white;
+				background-color: var(--d2l-theme-background-color-base);
 				border: none;
-				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.03);
+				box-shadow: var(--d2l-theme-shadow-attached);
 			}
 			:host([type="inline"]) .d2l-collapsible-panel {
 				border-left: none;
@@ -174,7 +174,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(LitElement)) {
 				outline-offset: -2px;
 			}
 			.d2l-collapsible-panel.scrolled .d2l-collapsible-panel-header {
-				background-color: white;
+				background-color: var(--d2l-theme-background-color-base);
 				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
 				position: sticky;
 				top: 0;
@@ -234,7 +234,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(LitElement)) {
 				gap: 0.3rem;
 			}
 			.d2l-collapsible-panel-header-actions::after {
-				border-inline-end: 1px solid var(--d2l-color-mica);
+				border-inline-end: 1px solid var(--d2l-theme-border-color-standard);
 				content: "";
 				display: flex;
 				margin: 0.3rem;
@@ -300,7 +300,7 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(LitElement)) {
 				/* stylelint-enable */
 			}
 			.d2l-collapsible-panel-divider {
-				border-bottom: 1px solid var(--d2l-color-mica);
+				border-bottom: 1px solid var(--d2l-theme-border-color-standard);
 				margin-inline: var(--d2l-collapsible-panel-spacing-inline);
 				opacity: 1;
 			}
