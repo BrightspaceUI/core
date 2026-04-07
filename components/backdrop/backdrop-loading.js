@@ -21,10 +21,13 @@ class LoadingBackdrop extends LitElement {
 	static get properties() {
 		return {
 			/**
-			 * Used to control whether the loading backdrop is shown
-			 * @type {boolean}
+			 * The state of data in the element being overlaid. Set to 'clean' when the data represents the user's latest selections, 'dirty' when the data does not represent the user's latest selections, and 'loading' if the data is being actively refreshed
+			 * @type {'clean'|'dirty'|'loading'}
 			 */
-			shown: { type: Boolean },
+			dataState: {
+				reflect: true,
+				type: String
+			},
 			/**
 			 * Used to identify content that the backdrop should make inert
 			 * @type {boolean}
@@ -87,7 +90,7 @@ class LoadingBackdrop extends LitElement {
 
 	constructor() {
 		super();
-		this.shown = false;
+		this.dataState = 'clean';
 		this._state = 'hidden';
 		this._spinnerTop = LOADING_SPINNER_MINIMUM_BUFFER;
 	}
@@ -108,17 +111,13 @@ class LoadingBackdrop extends LitElement {
 			}
 		}
 
-		if (changedProperties.has('shown') && (
-			(reduceMotion && this._state === 'shown') || (!reduceMotion && this._state === 'showing')
-		)) {
-			this.#centerLoadingSpinner();
-		}
 	}
 	willUpdate(changedProperties) {
-		if (changedProperties.has('shown')) {
-			if (this.shown) {
+		if (changedProperties.has('dataState') && changedProperties.get('dataState') !== undefined) {
+			if (changedProperties.get('dataState') === 'clean' && this.dataState !== 'clean') {
 				this.#show();
-			} else if (changedProperties.get('shown') !== undefined) {
+
+			} else if (changedProperties.get('dataState') !== 'clean' && this.dataState === 'clean') {
 				this.#fade();
 			}
 		}
