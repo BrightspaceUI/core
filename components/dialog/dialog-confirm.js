@@ -7,7 +7,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
-window.D2L.DialogMixin.preferNative = getFlag('GAUD-9644-prefer-native-confirm-dialogs', true);
+window.D2L.DialogMixin.preferNative = getFlag('GAUD-9644-prefer-native-confirm-dialogs', false);
 
 /**
  * A simple confirmation dialog for prompting the user. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the confirm dialog with the action value.
