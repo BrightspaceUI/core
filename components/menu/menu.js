@@ -45,13 +45,13 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 	static get styles() {
 		return [ super.styles, css`
 			:host {
-				--d2l-menu-background-color: #ffffff;
-				--d2l-menu-background-color-hover: var(--d2l-color-celestine-plus-2);
-				--d2l-menu-border-color: var(--d2l-color-gypsum);
-				--d2l-menu-border-color-hover: var(--d2l-color-celestine);
-				--d2l-menu-foreground-color: var(--d2l-color-ferrite);
-				--d2l-menu-foreground-color-hover: var(--d2l-color-celestine-minus-1);
-				--d2l-menu-separator-color: var(--d2l-color-corundum);
+				--d2l-menu-background-color: var(--d2l-theme-background-color-base);
+				--d2l-menu-background-color-hover: var(--d2l-theme-brand-color-highlight);
+				--d2l-menu-border-color: var(--d2l-theme-border-color-subtle);
+				--d2l-menu-border-color-hover: var(--d2l-theme-border-color-focus);
+				--d2l-menu-foreground-color: var(--d2l-theme-text-color-static-standard);
+				--d2l-menu-foreground-color-hover: var(--d2l-theme-brand-color-primary-hover);
+				--d2l-menu-separator-color: var(--d2l-theme-border-color-emphasized);
 				box-sizing: border-box;
 				display: block;
 				min-width: 180px;
