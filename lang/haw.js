@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Pani i ka makaʻala",
+	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
+	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.breadcrumbs.breadcrumb": "Palapalapala",
 	"components.button-add.addItem": "Pākuʻi Mea",
 	"components.button-copy.copied": "Kope ʻia!",

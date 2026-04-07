@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Stängningsvarning",
+	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
+	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.breadcrumbs.breadcrumb": "Sökväg",
 	"components.button-add.addItem": "Lägg till objekt",
 	"components.button-copy.copied": "Kopierat!",

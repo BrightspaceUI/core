@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Cau Hysbysiad",
+	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
+	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.breadcrumbs.breadcrumb": "Briwsionyn Bara",
 	"components.button-add.addItem": "Ychwanegu Eitem",
 	"components.button-copy.copied": "Wedi’i gopïo!",

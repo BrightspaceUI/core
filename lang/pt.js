@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Fechar alerta",
+	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
+	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.breadcrumbs.breadcrumb": "Auxiliar de navegação",
 	"components.button-add.addItem": "Adicionar item",
 	"components.button-copy.copied": "Copiado!",

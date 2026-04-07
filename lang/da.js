@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Luk besked",
+	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
+	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.breadcrumbs.breadcrumb": "Brødkrumme",
 	"components.button-add.addItem": "Tilføj element",
 	"components.button-copy.copied": "Kopieret!",

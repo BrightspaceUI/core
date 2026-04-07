@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "アラートを閉じる",
+	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
+	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.breadcrumbs.breadcrumb": "階層",
 	"components.button-add.addItem": "項目の追加",
 	"components.button-copy.copied": "コピーできました。",

@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "अलर्ट बंद करें",
+	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
+	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.breadcrumbs.breadcrumb": "ब्रेडक्रंब",
 	"components.button-add.addItem": "आइटम जोड़ें",
 	"components.button-copy.copied": "कॉपी किया गया!",

@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Waarschuwing sluiten",
+	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
+	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.breadcrumbs.breadcrumb": "Kruimelpad",
 	"components.button-add.addItem": "Item toevoegen",
 	"components.button-copy.copied": "Gekopieerd!",

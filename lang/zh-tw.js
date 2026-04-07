@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "關閉警示",
+	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
+	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.breadcrumbs.breadcrumb": "導覽路徑",
 	"components.button-add.addItem": "新增項目",
 	"components.button-copy.copied": "複製成功！",

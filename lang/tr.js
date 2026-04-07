@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Kapatma Uyarısı",
+	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
+	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.breadcrumbs.breadcrumb": "İçerik Haritası",
 	"components.button-add.addItem": "Öğe Ekle",
 	"components.button-copy.copied": "Kopyalandı!",

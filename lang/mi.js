@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Kati Matohi",
+	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
+	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.breadcrumbs.breadcrumb": "Pānui",
 	"components.button-add.addItem": "Tāpiri Tūemi",
 	"components.button-copy.copied": "Kua tāruatia!",

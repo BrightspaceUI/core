@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "경보 닫기",
+	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
+	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.breadcrumbs.breadcrumb": "이동 경로",
 	"components.button-add.addItem": "항목 추가",
 	"components.button-copy.copied": "복사 완료!",

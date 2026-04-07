@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Đóng Cảnh Báo",
+	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
+	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.breadcrumbs.breadcrumb": "Đường dẫn",
 	"components.button-add.addItem": "Thêm mục",
 	"components.button-copy.copied": "Đã sao chép!",

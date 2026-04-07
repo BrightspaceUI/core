@@ -4,6 +4,7 @@ import '../empty-state/empty-state-action-button.js';
 import '../empty-state/empty-state-simple.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const FADE_DURATION_MS = 500;
@@ -16,7 +17,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /**
  * A component for displaying a semi-transparent backdrop and a loading spinner over the containing element
  */
-class LoadingBackdrop extends LitElement {
+class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
