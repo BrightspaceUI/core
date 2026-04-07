@@ -438,8 +438,7 @@ export const DialogMixin = superclass => class extends superclass {
 			// edge case: no children were focused, try again after one redraw
 			const activeElement = getComposedActiveElement();
 			if (!activeElement
-			|| !isComposedAncestor(dialog, activeElement)
-			|| this._useNative) {
+			|| !isComposedAncestor(dialog, activeElement)) {
 				// wait till the dialog is visible for Safari
 				requestAnimationFrame(() => this._focusInitial());
 			}
@@ -500,6 +499,7 @@ export const DialogMixin = superclass => class extends superclass {
 			html`<dialog
 				aria-describedby="${ifDefined(info.descId)}"
 				aria-labelledby="${info.labelId}"
+				autofocus
 				class="${classMap(dialogOuterClasses)}"
 				@click="${this._handleClick}"
 				@close="${this._handleClose}"
