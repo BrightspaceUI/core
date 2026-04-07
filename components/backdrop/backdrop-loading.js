@@ -51,6 +51,7 @@ class LoadingBackdrop extends LitElement {
 			}
 			:host([_state="showing"]),
 			:host([_state="shown"]),
+			:host([_state="loading"]),
 			:host([_state="hiding"]) {
 				display: flex;
 			}
@@ -64,16 +65,16 @@ class LoadingBackdrop extends LitElement {
 				transition: opacity ${FADE_DURATION_MS}ms ease-in;
 				width: 100%;
 			}
-			:host([_state="shown"]) .backdrop {
+			:host([_state="shown"]) .backdrop, :host([_state="loading"]) .backdrop {
 				opacity: 0.7;
 			}
 
 			d2l-loading-spinner {
 				opacity: 0;
 				position: absolute;
-				transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
+				transition: opacity ${FADE_DURATION_MS}ms ease-in;
 			}
-			:host([_state="shown"]) d2l-loading-spinner {
+			:host([_state="loading"]) d2l-loading-spinner {
 				opacity: 1;
 			}
 
@@ -120,6 +121,10 @@ class LoadingBackdrop extends LitElement {
 			} else if (changedProperties.get('dataState') !== 'clean' && this.dataState === 'clean') {
 				this.#fade();
 			}
+
+			if (this.dataState === 'loading') {
+				this.#showLoadingSpinner();
+			}
 		}
 	}
 
@@ -149,7 +154,7 @@ class LoadingBackdrop extends LitElement {
 
 	#fade() {
 		let hideImmediately = reduceMotion || this._state === 'showing';
-		if (this._state === 'shown') {
+		if (this._state === 'shown' || this._state === 'loading') {
 			const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('.backdrop')).opacity;
 			hideImmediately ||= (currentOpacity === '0');
 		}
@@ -193,6 +198,9 @@ class LoadingBackdrop extends LitElement {
 		if (containingBlock.getAttribute('inert') !== null) containingBlock.dataset.initiallyInert = '1';
 
 		containingBlock.setAttribute('inert', 'inert');
+	}
+	#showLoadingSpinner() {
+		this._state = 'loading';
 	}
 
 }
