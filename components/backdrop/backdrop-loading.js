@@ -146,6 +146,8 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 
 			} else if (changedProperties.get('dataState') !== 'clean' && this.dataState === 'clean') {
 				this.#fade();
+			} else if (changedProperties.get('dataState') === 'loading' && this.dataState === 'dirty') {
+				this._state = 'shown';
 			}
 
 			if (this.dataState === 'loading') {
