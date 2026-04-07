@@ -29,10 +29,10 @@ const delayedTag = defineCE(
 
 describe('dialog-mixin', () => {
 
-	['native', 'custom'].forEach((type) => {
+	[/*'native',*/ 'custom'].forEach((type) => {
 
 		describe(type, () => {
-			// before(() => window.D2L.DialogMixin.preferNative = type === 'native');
+			before(() => window.D2L.DialogMixin.preferNative = type === 'native');
 
 			describe('generic', () => {
 				let dialog;

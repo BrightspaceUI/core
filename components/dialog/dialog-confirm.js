@@ -7,7 +7,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
-window.D2L.DialogMixin.preferNative = getFlag('GAUD-9644-prefer-native-confirm-dialogs', false);
+window.D2L.DialogMixin.preferNative = getFlag('GAUD-9644-prefer-native-confirm-dialogs', true);
 
 /**
  * A simple confirmation dialog for prompting the user. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the confirm dialog with the action value.
@@ -97,7 +97,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 					<div>${this.text ? this.text.split('\n').map(line => html`<p>${line}</p>`) : null}</div>
 				</div>
 				<div class="d2l-dialog-footer">
-					<slot name="footer" class="d2l-dialog-footer-slot"></slot>
+					<slot name="footer" class="d2l-dialog-footer-slot" @slotchange="${this._handleFooterSlotChange}"></slot>
 				</div>
 			</div>`;
 
@@ -132,6 +132,30 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 
 	_getWidth() {
 		/* override default width measurement and just use max-width */
+	}
+
+	_handleFooterSlotChange(e) {
+		if (!this._useNative) return;
+
+		const nodes = e.target.assignedElements({ flatten: true });
+		let autoFocusElement = null;
+
+		for (let i = 0; i < nodes.length; i++) {
+			const node = nodes[i];
+			if (node.nodeType !== Node.ELEMENT_NODE) continue;
+			if (!node.hasAttribute('primary')) {
+				autoFocusElement = node;
+				break;
+			}
+		}
+
+		for (const node of nodes) {
+			if (node === autoFocusElement) {
+				node.setAttribute('autofocus', '');
+			} else {
+				node.removeAttribute('autofocus');
+			}
+		}
 	}
 
 }
