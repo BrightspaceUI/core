@@ -49,18 +49,6 @@ describe('more-less', () => {
 		await expect(elem).to.be.golden();
 	});
 
-	it('auto-expands on focus-in when scrolled', async() => {
-		const elem = await fixture(html`<d2l-more-less>${content({ withLinks: true })}</d2l-more-less>`, { viewport });
-		await focusElem(elem.querySelectorAll('a')[1]);
-		await expect(elem).to.be.golden();
-	});
-
-	it('does not auto-expand on focus-in when not scrolled', async() => {
-		const elem = await fixture(html`<d2l-more-less>${content({ withLinks: true })}</d2l-more-less>`, { viewport });
-		await focusElem(elem.querySelector('a'));
-		await expect(elem).to.be.golden();
-	});
-
 	it('auto-collapses on focus-out', async() => {
 		const elem = await fixture(html`<d2l-more-less>${content({ withLinks: true })}</d2l-more-less>`, { viewport });
 		await focusElem(elem.querySelectorAll('a')[1]);
@@ -87,6 +75,18 @@ describe('more-less', () => {
 				<d2l-more-less>${content()}</d2l-more-less>
 			</div>
 		`, { viewport });
+		await expect(elem).to.be.golden();
+	});
+
+	it('auto-expands on focus-in when scrolled', async() => {
+		const elem = await fixture(html`<d2l-more-less>${content({ withLinks: true })}</d2l-more-less>`, { viewport });
+		await focusElem(elem.querySelectorAll('a')[1]);
+		await expect(elem).to.be.golden();
+	});
+
+	it('does not auto-expand on focus-in when not scrolled', async() => {
+		const elem = await fixture(html`<d2l-more-less>${content({ withLinks: true })}</d2l-more-less>`, { viewport });
+		await focusElem(elem.querySelector('a'));
 		await expect(elem).to.be.golden();
 	});
 });
