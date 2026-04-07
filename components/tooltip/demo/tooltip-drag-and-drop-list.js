@@ -1,9 +1,11 @@
-import './tooltip.js';
-import '../list/list.js';
-import '../list/list-item.js';
-import '../list/list-item-content.js';
+import '../tooltip.js';
+import '../../list/list.js';
+import '../../list/list-item.js';
+import '../../list/list-item-content.js';
 import { html, LitElement } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
+
+const BEFORE_ELEMENT = 1;
 
 class DemoTooltipDragAndDropList extends LitElement {
 
@@ -34,19 +36,16 @@ class DemoTooltipDragAndDropList extends LitElement {
 	#onPositionChange(e) {
 		if (!(e instanceof CustomEvent)) return;
 		const { item: targetItem, location } = e.detail.target;
-		const targetIndex = this.listItems.findIndex(item => item.id === targetItem.id);
-		if (targetIndex === -1) return;
 		const sourceItem = e.detail.sourceItems[0];
-		const sourceIndex = this.listItems.findIndex(item => item.id === sourceItem.id);
 
-		const [movedItem] = this.listItems.splice(sourceIndex, 1);
-		if (location === 1) {
-			// move before the element
-			this.listItems.splice(targetIndex, 0, movedItem);
-		} else if (location === 2) {
-			// move after the element
-			this.listItems.splice(targetIndex + 1, 0, movedItem);
-		}
+		const [movedListItem] = this.listItems.filter(li => li.id === sourceItem.id);
+		const reorderedListItems = this.listItems = this.listItems.filter(li => li.id !== sourceItem.id);
+
+		const targetIndex = reorderedListItems.findIndex(item => item.id === targetItem.id);
+		const insertIndex = location === BEFORE_ELEMENT ? targetIndex : targetIndex + 1;
+
+		reorderedListItems.splice(insertIndex, 0, movedListItem);
+		this.listItems = [...reorderedListItems];
 		this.requestUpdate();
 	}
 
