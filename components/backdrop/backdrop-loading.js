@@ -6,9 +6,7 @@ import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-const BACKDROP_DELAY_MS = 800;
 const FADE_DURATION_MS = 500;
-const SPINNER_DELAY_MS = FADE_DURATION_MS;
 
 const LOADING_SPINNER_MINIMUM_BUFFER = 100;
 const LOADING_SPINNER_SIZE = 50;
@@ -113,12 +111,13 @@ class LoadingBackdrop extends LitElement {
 		this.dataState = 'clean';
 		this._state = 'hidden';
 		this._spinnerTop = LOADING_SPINNER_MINIMUM_BUFFER;
+		this._dirtyDialogTop = LOADING_SPINNER_MINIMUM_BUFFER;
 	}
 
 	render() {
 		if (this._state === 'hidden') return nothing;
 		return html`
-			<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#hide}"></div>
+			<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#handleTransitionEnd}"></div>
 			<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
 			<d2l-empty-state-simple style=${styleMap({ top: `${this._dirtyDialogTop}px` })} description="${this.localize('components.backdrop-loading.dirtyDialogDescription')}">
 				<d2l-empty-state-action-button @d2l-empty-state-action=${this.#handleApplyButton} text="${this.localize('components.backdrop-loading.dirtyDialogAction')}"></d2l-empty-state-action-button>
@@ -126,11 +125,15 @@ class LoadingBackdrop extends LitElement {
 		`;
 	}
 	updated(changedProperties) {
+		if (changedProperties.has('dataState') && (
+			(reduceMotion && this._state === 'shown') || (!reduceMotion && this._state === 'showing') || (!reduceMotion && this._state === 'loading')
+		)) {
+			this.#centerLoadingSpinner();
+		}
+
 		if (changedProperties.has('_state')) {
 			if (this._state === 'showing') {
-				setTimeout(() => {
-					if (this._state === 'showing') this._state = 'shown';
-				}, BACKDROP_DELAY_MS);
+				this._state = 'shown';
 			}
 		}
 
@@ -170,8 +173,11 @@ class LoadingBackdrop extends LitElement {
 		// Adjust for the size of the spinner
 		const spinnerSizeOffset = LOADING_SPINNER_SIZE / 2;
 
-		const newPosition = centeringOffset + topOffset - spinnerSizeOffset;
-		this._spinnerTop = Math.max(LOADING_SPINNER_MINIMUM_BUFFER, newPosition);
+		// Adjust for the size of the dirty dialog
+		const dirtyDialogSizeOffset = this.shadowRoot.querySelector('d2l-empty-state-simple').getBoundingClientRect().height / 2;
+
+		this._spinnerTop = Math.max(LOADING_SPINNER_MINIMUM_BUFFER, centeringOffset + topOffset - spinnerSizeOffset);
+		this._dirtyDialogTop = Math.max(LOADING_SPINNER_MINIMUM_BUFFER, centeringOffset + topOffset - dirtyDialogSizeOffset);
 	}
 
 	#fade() {
