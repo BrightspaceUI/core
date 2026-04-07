@@ -29,7 +29,7 @@ class CollapsiblePanelSummaryItem extends SkeletonMixin(LitElement) {
 	static get styles() {
 		return [super.styles, bodySmallStyles, css`
 			:host {
-				color: var(--d2l-color-galena);
+				color: var(--d2l-theme-text-color-static-faint);
 				display: block;
 			}
 			:host([hidden]) {
