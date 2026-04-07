@@ -420,8 +420,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 	render() {
 		const slot = html`
-			<slot @slotchange="${this._handleSlotChange}"></slot>
-			<d2l-backdrop-loading ?shown=${this.loading}></d2l-backdrop-loading>
+			<div style="position:relative">
+				<slot id="table-slot" @slotchange="${this._handleSlotChange}"></slot>
+				<d2l-backdrop-loading for="table-slot" ?shown=${this.loading}></d2l-backdrop-loading>
+			</div>
 		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
 		return html`

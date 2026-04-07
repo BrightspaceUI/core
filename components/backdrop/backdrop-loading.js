@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { getOffsetParent } from '../../helpers/dom.js';
+import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const BACKDROP_DELAY_MS = 800;
@@ -25,6 +25,11 @@ class LoadingBackdrop extends LitElement {
 			 * @type {boolean}
 			 */
 			shown: { type: Boolean },
+			/**
+			 * Used to identify content that the backdrop should make inert
+			 * @type {boolean}
+			 */
+			for: { type: String },
 			_state: { type: String, reflect: true },
 			_spinnerTop: { state: true }
 		};
@@ -156,6 +161,19 @@ class LoadingBackdrop extends LitElement {
 			this._state = 'hiding';
 		}
 	}
+	#getBackdropTarget() {
+		const parent = getComposedParent(this);
+
+		if (!this.for) { return parent; }
+
+		const targetedChildren = getComposedChildren(
+			parent,
+			(elem) => elem.id === this.for,
+			false
+		);
+
+		return targetedChildren.length === 0 ? parent : targetedChildren[0];
+	}
 	#handleTransitionEnd() {
 		if (this._state === 'hiding') {
 			this.#hide();
@@ -164,14 +182,14 @@ class LoadingBackdrop extends LitElement {
 	#hide() {
 		this._state = 'hidden';
 
-		const containingBlock = getOffsetParent(this);
+		const containingBlock = this.#getBackdropTarget();
 
 		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
 	}
 	#show() {
 		this._state = reduceMotion ? 'shown' : 'showing';
 
-		const containingBlock = getOffsetParent(this);
+		const containingBlock = this.#getBackdropTarget();
 
 		if (containingBlock.getAttribute('inert') !== null) containingBlock.dataset.initiallyInert = '1';
 
