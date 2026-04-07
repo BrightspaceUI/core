@@ -45,7 +45,7 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-theme-text-color-interactive-hover: var(--d2l-theme-brand-color-primary-hover);
 		--d2l-theme-text-color-static-faint: var(--d2l-color-galena);
 		--d2l-theme-text-color-static-inverted: #ffffff;
-		--d2l-theme-text-color-static-translucent: #20212280; /* --d2l-theme-text-color-static-standard at 50% opacity, remove once color-mix is widely supported */
+		--d2l-theme-text-color-static-disabled: #20212280; /* --d2l-theme-text-color-static-standard at 50% opacity, remove once color-mix is widely supported */
 		--d2l-theme-text-color-static-standard: var(--d2l-color-ferrite);
 		--d2l-theme-text-color-static-subtle: var(--d2l-color-tungsten);
 
@@ -104,7 +104,7 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-theme-text-color-interactive-hover: var(--d2l-theme-brand-color-primary-hover);
 		--d2l-theme-text-color-static-faint: var(--d2l-color-galena);
 		--d2l-theme-text-color-static-inverted: #161718;
-		--d2l-theme-text-color-static-translucent: #cdd5dc80; /* --d2l-theme-text-color-static-standard at 50% opacity, remove once color-mix is widely supported */
+		--d2l-theme-text-color-static-disabled: #cdd5dc80; /* --d2l-theme-text-color-static-standard at 50% opacity, remove once color-mix is widely supported */
 		--d2l-theme-text-color-static-standard: var(--d2l-color-mica);
 		--d2l-theme-text-color-static-subtle: var(--d2l-color-chromite);
 
@@ -223,7 +223,7 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		}
 
 		@supports (color: color-mix(in srgb, black 50%, transparent)) {
-			--d2l-theme-text-color-static-translucent: color-mix(in srgb, var(--d2l-theme-text-color-static-standard) 50%, transparent);
+			--d2l-theme-text-color-static-disabled: color-mix(in srgb, var(--d2l-theme-text-color-static-standard) 50%, transparent);
 		}
 	`;
 	globalThis.document.head.appendChild(style);
