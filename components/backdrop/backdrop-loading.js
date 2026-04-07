@@ -1,5 +1,7 @@
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
+import '../empty-state/empty-state-action-button.js';
+import '../empty-state/empty-state-simple.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -79,8 +81,25 @@ class LoadingBackdrop extends LitElement {
 			}
 
 			:host([_state="hiding"]) .d2l-backdrop,
+			:host([_state="hiding"]) d2l-empty-state-simple,
+			:host([_state="loading"]) d2l-empty-state-simple,
 			:host([_state="hiding"]) d2l-loading-spinner {
 				transition: opacity ${FADE_DURATION_MS}ms ease-out;
+			}
+
+			d2l-empty-state-simple {
+				background-color: var(--d2l-table-controls-background-color, white);
+				top: 0;
+				opacity: 0;
+				height: fit-content;
+				justify-content: center;
+				position: relative;
+				z-index: 1000;
+				transition: opacity ${FADE_DURATION_MS}ms ease-in;
+			}
+
+			:host([_state="shown"]) d2l-empty-state-simple {
+				opacity: 1;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
@@ -101,6 +120,9 @@ class LoadingBackdrop extends LitElement {
 		return html`
 			<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#hide}"></div>
 			<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
+			<d2l-empty-state-simple style=${styleMap({ top: `${this._dirtyDialogTop}px` })} description="${this.localize('components.backdrop-loading.dirtyDialogDescription')}">
+				<d2l-empty-state-action-button @d2l-empty-state-action=${this.#handleApplyButton} text="${this.localize('components.backdrop-loading.dirtyDialogAction')}"></d2l-empty-state-action-button>
+			</div>
 		`;
 	}
 	updated(changedProperties) {
@@ -177,6 +199,9 @@ class LoadingBackdrop extends LitElement {
 		);
 
 		return targetedChildren.length === 0 ? parent : targetedChildren[0];
+	}
+	#handleApplyButton() {
+		this.dispatchEvent(new CustomEvent('d2l-apply-button-click', { bubbles: true, composed: true }));
 	}
 	#handleTransitionEnd() {
 		if (this._state === 'hiding') {
