@@ -412,6 +412,7 @@ export const DialogMixin = superclass => class extends superclass {
 
 		if (this._useNative) {
 			dialog.showModal();
+			dialog.focus();
 		}
 
 		this._parentDialog = findComposedAncestor(this, (node) => {
@@ -499,7 +500,6 @@ export const DialogMixin = superclass => class extends superclass {
 			html`<dialog
 				aria-describedby="${ifDefined(info.descId)}"
 				aria-labelledby="${info.labelId}"
-				autofocus
 				class="${classMap(dialogOuterClasses)}"
 				@click="${this._handleClick}"
 				@close="${this._handleClose}"

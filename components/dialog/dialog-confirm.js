@@ -97,7 +97,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 					<div>${this.text ? this.text.split('\n').map(line => html`<p>${line}</p>`) : null}</div>
 				</div>
 				<div class="d2l-dialog-footer">
-					<slot name="footer" class="d2l-dialog-footer-slot" @slotchange="${this._handleFooterSlotChange}"></slot>
+					<slot name="footer" class="d2l-dialog-footer-slot"></slot>
 				</div>
 			</div>`;
 
@@ -132,30 +132,6 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 
 	_getWidth() {
 		/* override default width measurement and just use max-width */
-	}
-
-	_handleFooterSlotChange(e) {
-		if (!this._useNative) return;
-
-		const nodes = e.target.assignedElements({ flatten: true });
-		let autoFocusElement = null;
-
-		for (let i = 0; i < nodes.length; i++) {
-			const node = nodes[i];
-			if (node.nodeType !== Node.ELEMENT_NODE) continue;
-			if (!node.hasAttribute('primary')) {
-				autoFocusElement = node;
-				break;
-			}
-		}
-
-		for (const node of nodes) {
-			if (node === autoFocusElement) {
-				node.setAttribute('autofocus', '');
-			} else {
-				node.removeAttribute('autofocus');
-			}
-		}
 	}
 
 }
