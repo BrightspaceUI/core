@@ -21,8 +21,6 @@ export const dialogStyles = css`
 		visibility: visible;
 	}
 
-	${getFocusRingStyles('dialog')}
-
 	.d2l-dialog-outer {
 		animation: d2l-dialog-close 200ms ease-in;
 		background-color: white;
@@ -67,6 +65,7 @@ export const dialogStyles = css`
 		z-index: 1000;
 	}
 
+	${getFocusRingStyles('dialog')}
 	dialog.d2l-dialog-outer {
 		color: var(--d2l-color-ferrite);
 		margin-bottom: 0; /* required to override Chrome native positioning */
