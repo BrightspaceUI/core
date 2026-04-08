@@ -126,9 +126,14 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 		`;
 	}
 	updated(changedProperties) {
-		if (changedProperties.has('dataState') && (
-			(reduceMotion && this._state === 'shown') || (!reduceMotion && this._state === 'showing') || (!reduceMotion && this._state === 'loading')
-		)) {
+		if (changedProperties.has('dataState') &&
+			changedProperties.get('dataState') === 'clean' &&
+			(
+				(reduceMotion && this._state === 'shown') ||
+					(!reduceMotion && this._state === 'showing') ||
+					(!reduceMotion && this._state === 'loading')
+			)
+		) {
 			this.#centerLoadingSpinner();
 		}
 
