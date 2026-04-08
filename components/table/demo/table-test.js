@@ -100,7 +100,7 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 						icon="tier1:${this.stickyHeaders ? 'check' : 'close-default'}"
 						@d2l-selection-action-click="${this._toggleStickyHeaders}"
 					></d2l-selection-action>
-					<d2l-input-radio-group label="dataState" name="Data State" @change=${this._handleDataStateChange}>
+					<d2l-input-radio-group style="align-content:center" label="Date State" horizontal label-hidden name="dataState" @change=${this._handleDataStateChange}>
 						<d2l-input-radio label="Clean" value="clean" ?checked=${this.dataState === 'clean'}></d2l-input-radio>
 						<d2l-input-radio label="Dirty" value="dirty" ?checked=${this.dataState === 'dirty'}></d2l-input-radio>
 						<d2l-input-radio label="Loading" value="loading" ?checked=${this.dataState === 'loading'}></d2l-input-radio>
