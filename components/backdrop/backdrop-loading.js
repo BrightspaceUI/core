@@ -9,7 +9,6 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 const FADE_DURATION_MS = 500;
 
-const LOADING_SPINNER_MINIMUM_BUFFER = 100;
 const LOADING_SPINNER_SIZE = 50;
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -111,8 +110,8 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 		super();
 		this.dataState = 'clean';
 		this._state = 'hidden';
-		this._spinnerTop = LOADING_SPINNER_MINIMUM_BUFFER;
-		this._dirtyDialogTop = LOADING_SPINNER_MINIMUM_BUFFER;
+		this._spinnerTop = 0;
+		this._dirtyDialogTop = 0;
 	}
 
 	render() {
@@ -161,7 +160,7 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 		}
 	}
 
-	#centerLoadingSpinner() {
+	async #centerLoadingSpinner() {
 		if (this._state === 'hidden') { return; }
 
 		const loadingSpinner = this.shadowRoot.querySelector('d2l-loading-spinner');
@@ -173,7 +172,7 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 		const upperVisibleBound = Math.max(0, boundingRect.top);
 		const lowerVisibleBound = Math.min(window.innerHeight, boundingRect.bottom);
 		const visibleHeight = lowerVisibleBound - upperVisibleBound;
-		const centeringOffset = visibleHeight / 2;
+		const centeringOffset = (visibleHeight / 4);
 
 		// Calculate if an offset is required to move to the top of the viewport before centering
 		const topOffset = Math.max(0, -boundingRect.top); // measures the distance below the top of the viewport, which is negative if the element starts above the viewport
@@ -182,10 +181,12 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 		const spinnerSizeOffset = LOADING_SPINNER_SIZE / 2;
 
 		// Adjust for the size of the dirty dialog
+		await this.shadowRoot.querySelector('d2l-empty-state-simple').getUpdateComplete();
+		await this.shadowRoot.querySelector('d2l-empty-state-action-button').getUpdateComplete();
 		const dirtyDialogSizeOffset = this.shadowRoot.querySelector('d2l-empty-state-simple').getBoundingClientRect().height / 2;
 
-		this._spinnerTop = Math.max(LOADING_SPINNER_MINIMUM_BUFFER, centeringOffset + topOffset - spinnerSizeOffset);
-		this._dirtyDialogTop = Math.max(LOADING_SPINNER_MINIMUM_BUFFER, centeringOffset + topOffset - dirtyDialogSizeOffset);
+		this._spinnerTop = centeringOffset + topOffset - spinnerSizeOffset;
+		this._dirtyDialogTop = centeringOffset + topOffset - dirtyDialogSizeOffset;
 	}
 
 	#fade() {
