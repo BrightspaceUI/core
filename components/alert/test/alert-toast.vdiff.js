@@ -192,11 +192,14 @@ describe('alert-toast', () => {
 
 			it('open quickly then wait', async() => {
 				disableReducedMotionForTesting();
-				const elem = await fixture(multipleAlertsAutoClose, { viewport });
-				await openAlerts(elem);
-				clock.tick(4100);
-				await expect(document).to.be.golden();
-				restoreReducedMotionForTesting();
+				try {
+					const elem = await fixture(multipleAlertsAutoClose, { viewport });
+					await openAlerts(elem);
+					clock.tick(4100);
+					await expect(document).to.be.golden();
+				} finally {
+					restoreReducedMotionForTesting();
+				}
 			});
 
 		});
