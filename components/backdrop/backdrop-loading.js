@@ -130,7 +130,7 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 			(
 				(reduceMotion && this._state === 'shown') ||
 					(!reduceMotion && this._state === 'showing') ||
-					(!reduceMotion && this._state === 'loading')
+					(this._state === 'loading')
 			)
 		) {
 			this.#centerLoadingSpinner();
