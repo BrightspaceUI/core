@@ -21,6 +21,8 @@ export const dialogStyles = css`
 		visibility: visible;
 	}
 
+	${getFocusRingStyles('dialog')}
+
 	.d2l-dialog-outer {
 		animation: d2l-dialog-close 200ms ease-in;
 		background-color: white;
