@@ -207,6 +207,7 @@ class Tooltip extends PopoverMixin(LitElement) {
 	connectedCallback() {
 		super.connectedCallback();
 		this.showing = false;
+		this.#addListeners();
 		window.addEventListener('resize', this.#handleTargetResizeBound);
 
 		requestAnimationFrame(() => this.#updateTarget());

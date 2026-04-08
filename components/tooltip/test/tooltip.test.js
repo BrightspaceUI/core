@@ -252,6 +252,24 @@ describe('d2l-tooltip', () => {
 			expect(dynamicTooltip.showing).to.be.false;
 		});
 
+		it('should show after the tooltip is disconnected and reconnected', async() => {
+			const target = tooltipFixture.querySelector('#explicit-target');
+			const parentElement = target.parentElement;
+
+			// remove the tooltip from the dom
+			tooltip.remove();
+			expect(parentElement.querySelector('d2l-tooltip')).to.not.exist;
+
+			// re-add the tooltip to the dom
+			parentElement.appendChild(tooltip);
+			expect(parentElement.querySelector('d2l-tooltip')).to.exist;
+
+			// show the tooltip
+			await focusElem(target);
+			await aTimeout(100);
+			expect(tooltip.showing).to.be.true;
+		});
+
 	});
 
 	describe('delay', () => {
