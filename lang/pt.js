@@ -1,10 +1,10 @@
 export default {
 	"components.alert.close": "Fechar alerta",
+	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to Apply Filters.",
 	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
 	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.backdrop-loading.loadingAnnouncement": "Loading.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
-	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to Apply Filters.",
 	"components.breadcrumbs.breadcrumb": "Auxiliar de navegação",
 	"components.button-add.addItem": "Adicionar item",
 	"components.button-copy.copied": "Copiado!",
