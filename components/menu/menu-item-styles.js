@@ -54,6 +54,7 @@ export const menuItemStyles = css`
 	.d2l-menu-item-text {
 		flex: auto;
 		line-height: 1rem;
+		white-space: normal;
 		${getOverflowDeclarations({ lines: 'var(--d2l-menu-item-lines, 2)' })}
 	}
 
