@@ -55,7 +55,6 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 			}
 			:host([_state="showing"]) #visible,
 			:host([_state="shown"]) #visible,
-			:host([_state="loading"]) #visible,
 			:host([_state="hiding"]) #visible {
 				display: flex;
 			}
@@ -69,7 +68,7 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 				transition: opacity ${FADE_DURATION_MS}ms ease-in;
 				width: 100%;
 			}
-			:host([_state="shown"]) .backdrop, :host([_state="loading"]) .backdrop {
+			:host([_state="shown"]) .backdrop {
 				opacity: 0.7;
 			}
 
@@ -78,13 +77,13 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 				position: absolute;
 				transition: opacity ${FADE_DURATION_MS}ms ease-in;
 			}
-			:host([_state="loading"]) d2l-loading-spinner {
+			:host([_state="shown"][dataState="loading"]) d2l-loading-spinner {
 				opacity: 1;
 			}
 
 			:host([_state="hiding"]) .d2l-backdrop,
 			:host([_state="hiding"]) d2l-empty-state-simple,
-			:host([_state="loading"]) d2l-empty-state-simple,
+			:host([dataState="loading"]) d2l-empty-state-simple,
 			:host([_state="hiding"]) d2l-loading-spinner {
 				transition: opacity ${FADE_DURATION_MS}ms ease-out;
 			}
@@ -100,7 +99,7 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 				transition: opacity ${FADE_DURATION_MS}ms ease-in;
 			}
 
-			:host([_state="shown"]) d2l-empty-state-simple {
+			:host([_state="shown"][dataState="dirty"]) d2l-empty-state-simple {
 				opacity: 1;
 			}
 
@@ -139,7 +138,7 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 			(
 				(reduceMotion && this._state === 'shown') ||
 					(!reduceMotion && this._state === 'showing') ||
-					(this._state === 'loading')
+					(this.dataState === 'loading')
 			)
 		) {
 			this.#centerLoadingSpinner();
@@ -175,9 +174,6 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 			} else if (oldState === 'loading' && newState === 'dirty') {
 				this._state = 'shown';
 			}
-
-			// Update loading spinner
-			if (newState === 'loading') this._state = 'loading';
 		}
 	}
 
