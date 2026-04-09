@@ -1,10 +1,10 @@
 export default {
 	"components.alert.close": "Stängningsvarning",
+	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to Apply Filters.",
 	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
 	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.backdrop-loading.loadingAnnouncement": "Loading.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
-	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to Apply Filters.",
 	"components.breadcrumbs.breadcrumb": "Sökväg",
 	"components.button-add.addItem": "Lägg till objekt",
 	"components.button-copy.copied": "Kopierat!",

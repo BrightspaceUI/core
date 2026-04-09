@@ -1,10 +1,10 @@
 export default {
 	"components.alert.close": "アラートを閉じる",
+	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to Apply Filters.",
 	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
 	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.backdrop-loading.loadingAnnouncement": "Loading.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
-	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to Apply Filters.",
 	"components.breadcrumbs.breadcrumb": "階層",
 	"components.button-add.addItem": "項目の追加",
 	"components.button-copy.copied": "コピーできました。",
