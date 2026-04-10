@@ -82,6 +82,7 @@ export const skeletonStyles = css`
 		animation: ${animation};
 	}
 	:host([skeleton]) .d2l-skeletize-paragraph-2::after {
+		-webkit-mask-image: ${p2Mask};
 		mask-image: ${p2Mask};
 	}
 	:host([skeleton]) .d2l-skeletize-paragraph-2::before {
@@ -89,6 +90,7 @@ export const skeletonStyles = css`
 		white-space: pre;
 	}
 	:host([skeleton]) .d2l-skeletize-paragraph-3::after {
+		-webkit-mask-image: ${p3Mask};
 		mask-image: ${p3Mask};
 	}
 	:host([skeleton]) .d2l-skeletize-paragraph-3::before {
@@ -96,6 +98,7 @@ export const skeletonStyles = css`
 		white-space: pre;
 	}
 	:host([skeleton]) .d2l-skeletize-paragraph-5::after {
+		-webkit-mask-image: ${p5Mask};
 		mask-image: ${p5Mask};
 	}
 	:host([skeleton]) .d2l-skeletize-paragraph-5::before {
