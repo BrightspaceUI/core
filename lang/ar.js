@@ -225,8 +225,8 @@ export default {
 	"components.tag-list.role-description":
 		`{count, plural,
 			=0 {قائمة  علامات لا تضم أي عناصر}
-			one {قائمة  علامات تضم {count} عنصرًا واحدًا}
-			other {قائمة  علامات تضم {count} من العناصر}
+			one {قائمة علامات تضم {count} عنصرًا واحدًا}
+			other {قائمة علامات تضم {count} من العناصر}
 		}`,
 	"components.tag-list.show-less": "إظهار أقل",
 	"components.tag-list.show-more-description": "حدد لإظهار عناصر قائمة العلامات المخفية",
