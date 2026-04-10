@@ -1,6 +1,6 @@
 export default {
 	"components.alert.close": "إغلاق التنبيه",
-	"components.breadcrumbs.breadcrumb": "شريط التنقل",
+	"components.breadcrumbs.breadcrumb": "مسار التنقل",
 	"components.button-add.addItem": "إضافة عنصر",
 	"components.button-copy.copied": "تم النسخ!",
 	"components.button-copy.error": "فشل النسخ. حاول مرة أخرى، أو حاول النسخ يدويًا.",
@@ -14,7 +14,7 @@ export default {
 	"components.dialog.critical": "مهم!",
 	"components.dropdown.close": "إغلاق",
 	"components.filter.activeFilters": "عوامل تصفية نشطة:",
-	"components.filter.additionalContentTooltip": "استخدم <b>مفاتيح السهم لليمين/اليسار</b> لنقل التركيز داخل عنصر القائمة هذا",
+	"components.filter.additionalContentTooltip": "استخدم <b>مفتاحَي الأسهم لليسار/اليمين</b> لنقل التركيز داخل عنصر القائمة هذا",
 	"components.filter.clear": "مسح",
 	"components.filter.clearAll": "مسح الكل",
 	"components.filter.clearAllAnnounce": "جارٍ مسح كل عوامل التصفية",
@@ -25,8 +25,8 @@ export default {
 	"components.filter.clearDescription": "مسح عوامل التصفية لـ: {filterName}",
 	"components.filter.filterCountDescription":
 		`{number, plural,
-			=0 {لم يتم تطبيق عوامل تصفية.}
-			one {تم تطبيق {number} عامل تصفية}
+			=0 {لم يتم تطبيق أي عوامل تصفية.}
+			one {تم تطبيق {number} عامل تصفية.}
 			other {تم تطبيق {number} من عوامل التصفية.}
 		}`,
 	"components.filter.filters": "عوامل التصفية",
@@ -34,7 +34,7 @@ export default {
 	"components.filter.noFilters": "ما من عوامل تصفية متوفرة",
 	"components.filter.searchResults":
 		`{number, plural,
-			=0 {ما من نتائج بحث}
+			=0 {لا توجد نتائج بحث}
 			one {{number} نتيجة بحث}
 			other {{number} من نتائج البحث}
 		}`,
@@ -42,7 +42,7 @@ export default {
 	"components.filter.singleDimensionDescription": "التصفية حسب: {filterName}",
 	"components.filter-dimension-set-date-text-value.textDays":
 		`{num, plural,
-			=0 {يوم}
+			=0 {اليوم}
 			one {آخر {num} يوم}
 			other {آخر {num} من الأيام}
 		}`,
@@ -98,11 +98,11 @@ export default {
 	"components.input-date.errorMinDateOnly": "يجب أن يكون التاريخ في {minDate} أو بعده",
 	"components.input-date.errorOutsideRange": "يجب أن يكون التاريخ بين {minDate} و{maxDate}",
 	"components.input-date.now": "الآن",
-	"components.input-date.openInstructions": "استخدم تنسيق التاريخ {format}. انتقل إلى الأسفل أو اضغط على Enter للوصول إلى التقويم المصغّر.",
+	"components.input-date.openInstructions": "استخدم تنسيق التاريخ {format}. اضغط على السهم للأسفل أو اضغط على إدخال/enter للوصول إلى التقويم المصغر.",
 	"components.input-date.revert": "تمت إعادة {label} إلى القيمة السابقة.",
 	"components.input-date.today": "اليوم",
 	"components.input-date.useDateFormat": "استخدم تنسيق التاريخ {format}.",
-	"components.input-date-range.endDate": "تاريخ الانتهاء",
+	"components.input-date-range.endDate": "تاريخ النهاية",
 	"components.input-date-range.errorBadInput": "يجب أن يكون تاريخ {startLabel} قبل {endLabel}",
 	"components.input-date-range.interactive-label": "إدخال نطاق التاريخ",
 	"components.input-date-range.startDate": "تاريخ البدء",
@@ -111,37 +111,37 @@ export default {
 	"components.input-date-time.errorMinDateOnly": "يجب أن يكون التاريخ في {minDate} أو بعده",
 	"components.input-date-time.errorOutsideRange": "يجب أن يكون التاريخ بين {minDate} و{maxDate}",
 	"components.input-date-time.time": "الوقت",
-	"components.input-date-time-range.endDate": "تاريخ الانتهاء",
+	"components.input-date-time-range.endDate": "تاريخ النهاية",
 	"components.input-date-time-range.errorBadInput": "يجب أن يكون تاريخ {startLabel} قبل {endLabel}",
 	"components.input-date-time-range.interactive-label": "إدخال نطاق التاريخ والوقت",
 	"components.input-date-time-range.startDate": "تاريخ البدء",
 	"components.input-date-time-range-to.to": "إلى",
-	"components.input-number.hintDecimalDuplicate": "يوجد بالفعل عدد عشري في هذا الرقم",
+	"components.input-number.hintDecimalDuplicate": "يوجد عدد عشري بالفعل في هذا الرقم",
 	"components.input-number.hintDecimalIncorrectComma": "لإضافة عدد عشري، استخدم حرف الفاصلة ”,“",
-	"components.input-number.hintDecimalIncorrectPeriod": "لإضافة عدد عشري، استخدم حرف النقطة ”.“",
+	"components.input-number.hintDecimalIncorrectPeriod": "لإضافة علامة عشرية استخدم النقطة ”.“",
 	"components.input-number.hintInteger": "يقبل هذا الحقل قيم الأعداد الصحيحة فقط (بدون أعداد عشرية)",
 	"components.input-search.clear": "مسح البحث",
-	"components.input-search.defaultPlaceholder": "البحث...",
-	"components.input-search.search": "بحث",
-	"components.input-time-range.endTime": "وقت النهاية",
+	"components.input-search.defaultPlaceholder": "بحث...",
+	"components.input-search.search": "البحث",
+	"components.input-time-range.endTime": "وقت الانتهاء",
 	"components.input-time-range.errorBadInput": "يجب أن يكون تاريخ {startLabel} قبل {endLabel}",
 	"components.input-time-range.startTime": "وقت البدء",
 	"components.interactive.instructions": "اضغط على Enter للتفاعل، وEscape للخروج",
 	"components.link.open-in-new-window": "يفتح في نافذة جديدة.",
-	"components.list.keyboard": "استخدم <b>مفاتيح الأسهم</b> لنقل التركيز داخل هذه القائمة، أو <b>صفحة إلى الأعلى/الأسفل</b> للتحرك إلى الأعلى أو الأسفل بمقدار 5",
+	"components.list.keyboard": "استخدم <b>مفاتيح الأسهم</b> لنقل التركيز داخل هذه القائمة، أو <b>مفاتيح الصفحة لأعلى/لأسفل</b> لتحريك لأعلى أو لأسفل بمقدار 5",
 	"components.list-controls.label": "إجراءات القائمة",
 	"components.list-item.addItem": "إضافة عنصر",
 	"components.list-item-drag-handle.default": "إعادة ترتيب إجراء المادة لـ {name}",
-	"components.list-item-drag-handle.keyboard": "إعادة ترتيب المواد، الموضع الحالي {currentPosition} من أصل {size}. لنقل هذه المادة، اضغط على السهم المتجه إلى أعلى أو السهم المتجه إلى أسفل.",
+	"components.list-item-drag-handle.keyboard": "قم بإعادة ترتيب العنصر، الموضع الحالي {currentPosition} من {size}. لنقل هذا العنصر، اضغط على سهما لأعلى أو لأسفل.",
 	"components.list-item-drag-handle-tooltip.enter-desc": "تبديل وضع إعادة ترتيب لوحة المفاتيح.",
 	"components.list-item-drag-handle-tooltip.enter-key": "إدخال",
-	"components.list-item-drag-handle-tooltip.left-right-desc": "غيِّر مستوى التداخل.",
+	"components.list-item-drag-handle-tooltip.left-right-desc": "غيِّر مستوى التداخل.",
 	"components.list-item-drag-handle-tooltip.left-right-key": "يسار/يمين",
 	"components.list-item-drag-handle-tooltip.title": "عناصر التحكم بلوحة المفاتيح لإعادة الترتيب:",
 	"components.list-item-drag-handle-tooltip.up-down-desc": "نقل المادة إلى الأعلى أو الأسفل في القائمة.",
 	"components.list-item-drag-handle-tooltip.up-down-key": "أعلى/أسفل",
 	"components.menu-item-return.return": "العودة إلى القائمة السابقة.",
-	"components.menu-item-return.returnCurrentlyShowing": "العودة إلى القائمة السابقة. يتم عرض {menuTitle}.",
+	"components.menu-item-return.returnCurrentlyShowing": "العودة إلى القائمة السابقة. أنت تعرض {menuTitle}.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}، ‏{term2}",
 	"components.meter-mixin.fraction": "{x}∕{y}",
 	"components.meter-mixin.fractionAria": "{x} من {y}",
@@ -186,7 +186,7 @@ export default {
 	"components.selection.selected-plus": "تم تحديد {count}+‎",
 	"components.selection-controls.label": "إجراءات التحديد",
 	"components.sort.label": "فرز",
-	"components.sort.text": "فرز: {selectedItemText}",
+	"components.sort.text": "الفرز: {selectedItemText}",
 	"components.switch.conditions": "يجب استيفاء الشروط",
 	"components.switch.hidden": "مخفي",
 	"components.switch.visible": "مرئي",
@@ -207,7 +207,7 @@ export default {
 				desc {الفرز من ي إلى أ}
 				other {الفرز من أ إلى ي}
 			}}
-			value {الفرز {selectedMenuItemText}}
+			value {تم فرز {selectedMenuItemText}}
 			other {{direction, select,
 				desc {الفرز تنازليًا}
 				other {الفرز تصاعديًا}
@@ -216,7 +216,7 @@ export default {
 	"components.table-controls.label": "إجراءات للجدول",
 	"components.tabs.next": "التمرير إلى الأمام",
 	"components.tabs.previous": "التمرير إلى الخلف",
-	"components.tag-list.clear": "انقر فوق، أو اضغط على مسافة للخلف، أو اضغط على مفتاح حذف لإزالة العنصر {value}",
+	"components.tag-list.clear": "انقر، أو اضغط على مسافة للخلف، أو اضغط على مفتاح الحذف لإزالة العنصر {value}",
 	"components.tag-list.clear-all": "مسح الكل",
 	"components.tag-list.cleared-all": "تمت إزالة كل عناصر قائمة العلامات",
 	"components.tag-list.cleared-item": "تمت إزالة عنصر قائمة العلامات {value}",
@@ -224,9 +224,9 @@ export default {
 	"components.tag-list.num-hidden": "زيادة {count} إضافي",
 	"components.tag-list.role-description":
 		`{count, plural,
-			=0 {قائمة العلامات بها 0 عناصر}
-			one {قائمة العلامات بها {count} عنصر}
-			other {قائمة العلامات بها {count} من العناصر}
+			=0 {قائمة  علامات لا تضم أي عناصر}
+			one {قائمة علامات تضم {count} عنصرًا واحدًا}
+			other {قائمة علامات تضم {count} من العناصر}
 		}`,
 	"components.tag-list.show-less": "إظهار أقل",
 	"components.tag-list.show-more-description": "حدد لإظهار عناصر قائمة العلامات المخفية",
