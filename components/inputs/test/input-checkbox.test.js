@@ -1,6 +1,7 @@
 import '../../form/form.js';
 import '../input-checkbox.js';
 import { clickElem, expect, fixture, focusElem, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { restore, stub } from 'sinon';
 import { checkboxFixtures } from './input-checkbox-fixtures.js';
 
 function getInput(elem) {
@@ -222,6 +223,14 @@ describe('d2l-input-checkbox', () => {
 
 	describe('labels', () => {
 
+		let consoleErrorStub;
+
+		beforeEach(() => {
+			consoleErrorStub = stub(console, 'error');
+		});
+
+		afterEach(() => restore());
+
 		it('should set aria-label when label-hidden', async() => {
 			const elem = await fixture(checkboxFixtures.labelHidden);
 			expect(getInput(elem).getAttribute('aria-label')).to.equal('label hidden');
@@ -234,6 +243,7 @@ describe('d2l-input-checkbox', () => {
 			expect(elem.labelHidden).to.be.true;
 			expect(getInput(elem).getAttribute('aria-label')).to.equal('label aria');
 			expect(getText(elem)).to.equal('');
+			expect(consoleErrorStub).to.be.calledWith('d2l-input-checkbox: the ariaLabel property is no longer supported. Use the label property with label-hidden instead.');
 		});
 
 		it('should use visible label when not label-hidden', async() => {

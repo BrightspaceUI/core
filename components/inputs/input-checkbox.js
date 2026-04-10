@@ -323,6 +323,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 		if (changedProperties.has('ariaLabel') && this.ariaLabel !== undefined) {
+			console.error('d2l-input-checkbox: the ariaLabel property is no longer supported. Use the label property with label-hidden instead.');
 			this.label = this.ariaLabel;
 			this.labelHidden = true;
 		}
