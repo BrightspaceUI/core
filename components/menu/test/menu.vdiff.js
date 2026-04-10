@@ -4,6 +4,7 @@ import '../menu-item-link.js';
 import '../menu-item-separator.js';
 import './custom-view.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
+import { ifDefined } from 'lit/directives/if-defined.js';
 
 const supportingTemplate = html`
 	<d2l-menu label="label">
@@ -25,15 +26,22 @@ const supportingTemplate = html`
 	</d2l-menu>
 `;
 
+const separatorTemplate = html`
+	<d2l-menu label="label">
+		<d2l-menu-item text="a"></d2l-menu-item>
+		<d2l-menu-item-separator></d2l-menu-item-separator>
+		<d2l-menu-item text="b"></d2l-menu-item>
+	</d2l-menu>
+`;
+
+function createMenuItemLink({ text = 'c', target } = {}) {
+	return html`<d2l-menu-item-link text="${text}" href="https://en.wikipedia.org/wiki/Universe" target="${ifDefined(target)}"></d2l-menu-item-link>`;
+}
+
 describe('menu', () => {
 	[
-		{ name: 'separator', template: html`
-			<d2l-menu label="label">
-				<d2l-menu-item text="a"></d2l-menu-item>
-				<d2l-menu-item-separator></d2l-menu-item-separator>
-				<d2l-menu-item text="b"></d2l-menu-item>
-			</d2l-menu>
-		` },
+		{ name: 'separator', template: separatorTemplate },
+		{ name: 'separator-dark', colorMode: 'dark', template: separatorTemplate },
 		{ name: 'long', template: html`
 			<d2l-menu label="label">
 				<d2l-menu-item text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."></d2l-menu-item>
@@ -43,6 +51,13 @@ describe('menu', () => {
 			<d2l-menu label="label">
 				<d2l-menu-item text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"></d2l-menu-item>
 			</d2l-menu>
+		` },
+		{ name: 'long-nowrap-parent', template: html`
+			<div style="white-space: nowrap;">
+				<d2l-menu label="label">
+					<d2l-menu-item text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."></d2l-menu-item>
+				</d2l-menu>
+			</div>
 		` },
 		{ name: 'lines', template: html`
 			<d2l-menu label="label">
@@ -55,31 +70,19 @@ describe('menu', () => {
 				<d2l-menu-item text="b"></d2l-menu-item>
 			</d2l-menu>
 		` },
-		{ name: 'link', template: html`
-			<d2l-menu label="label">
-				<d2l-menu-item-link text="c" href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
-			</d2l-menu>
-		` },
-		{ name: 'link-new-window', template: html`
-			<d2l-menu label="label">
-				<d2l-menu-item-link text="c" href="https://en.wikipedia.org/wiki/Universe" target="_blank"></d2l-menu-item-link>
-			</d2l-menu>
-		` },
-		{ name: 'link-long', template: html`
-			<d2l-menu label="label">
-				<d2l-menu-item-link text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." href="https://en.wikipedia.org/wiki/Universe"></d2l-menu-item-link>
-			</d2l-menu>
-		` },
-		{ name: 'link-new-window-long', template: html`
-			<d2l-menu label="label">
-				<d2l-menu-item-link text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." href="https://en.wikipedia.org/wiki/Universe" target="_blank"></d2l-menu-item-link>
-			</d2l-menu>
-		` },
+		{ name: 'link', template: html`<d2l-menu label="label">${createMenuItemLink()}</d2l-menu>` },
+		{ name: 'link-dark', colorMode: 'dark', template: html`<d2l-menu label="label">${createMenuItemLink()}</d2l-menu>` },
+		{ name: 'link-new-window', template: html`<d2l-menu label="label">${createMenuItemLink({ target: '_blank' })}</d2l-menu>` },
+		{ name: 'link-new-window-dark', colorMode: 'dark', template: html`<d2l-menu label="label">${createMenuItemLink({ target: '_blank' })}</d2l-menu>` },
+		{ name: 'link-long', template: html`<d2l-menu label="label">${createMenuItemLink({ text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' })}</d2l-menu>` },
+		{ name: 'link-new-window-long', template: html`<d2l-menu label="label">${createMenuItemLink({ text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', target: '_blank' })}</d2l-menu>` },
 		{ name: 'supporting', template: supportingTemplate },
+		{ name: 'supporting-dark', colorMode: 'dark', template: supportingTemplate },
 		{ name: 'supporting-rtl', rtl: true, template: supportingTemplate }
-	].forEach(({ name, rtl, template }) => {
+	].forEach(({ name, colorMode, rtl, template }) => {
 		it(name, async() => {
-			const elem = await fixture(template, { rtl });
+			const elem = await fixture(template, { colorMode, rtl });
+			await nextFrame();
 			await nextFrame();
 			await expect(elem).to.be.golden();
 		});
@@ -88,13 +91,16 @@ describe('menu', () => {
 	describe('normal', () => {
 		[
 			{ name: 'simple' },
+			{ name: 'simple-dark', colorMode: 'dark' },
 			{ name: 'hover', action: elem => hoverElem(elem.querySelector('d2l-menu-item[text="b"]')) },
+			{ name: 'hover-dark', action: elem => hoverElem(elem.querySelector('d2l-menu-item[text="b"]')), colorMode: 'dark' },
 			{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-menu-item[text="b"]')) },
+			{ name: 'focus-dark', action: elem => focusElem(elem.querySelector('d2l-menu-item[text="b"]')), colorMode: 'dark' },
 			{ name: 'first item hover', action: elem => hoverElem(elem.querySelector('d2l-menu-item[text="a"]')) },
 			{ name: 'first item focus', action: elem => focusElem(elem.querySelector('d2l-menu-item[text="a"]')) },
 			{ name: 'last item hover', action: elem => hoverElem(elem.querySelector('d2l-menu-item[text="c"]')) },
 			{ name: 'last item focus', action: elem => focusElem(elem.querySelector('d2l-menu-item[text="c"]')) }
-		].forEach(({ name, action }) => {
+		].forEach(({ name, action, colorMode }) => {
 			it(name, async() => {
 				const elem = await fixture(html`
 					<d2l-menu label="label">
@@ -102,7 +108,7 @@ describe('menu', () => {
 						<d2l-menu-item text="b"></d2l-menu-item>
 						<d2l-menu-item text="c"></d2l-menu-item>
 					</d2l-menu>
-				`);
+				`, { colorMode });
 				if (action) await action(elem);
 				await expect(elem).to.be.golden();
 			});
@@ -122,15 +128,18 @@ describe('menu', () => {
 	describe('disabled', () => {
 		[
 			{ name: 'simple' },
+			{ name: 'simple-dark', colorMode: 'dark' },
 			{ name: 'hover', action: elem => hoverElem(elem.querySelector('d2l-menu-item')) },
-			{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-menu-item')) }
-		].forEach(({ name, action }) => {
+			{ name: 'hover-dark', action: elem => hoverElem(elem.querySelector('d2l-menu-item')), colorMode: 'dark' },
+			{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-menu-item')) },
+			{ name: 'focus-dark', action: elem => focusElem(elem.querySelector('d2l-menu-item')), colorMode: 'dark' }
+		].forEach(({ name, action, colorMode }) => {
 			it(name, async() => {
 				const elem = await fixture(html`
 					<d2l-menu label="label">
 						<d2l-menu-item text="a" disabled></d2l-menu-item>
 					</d2l-menu>
-				`);
+				`, { colorMode });
 				if (action) await action(elem);
 				await expect(elem).to.be.golden();
 			});

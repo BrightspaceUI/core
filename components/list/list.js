@@ -134,17 +134,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				margin-right: 0.9rem;
 			}
 			:host([_breakpoint="1"]) {
-				--d2l-list-item-illustration-margin-inline-end: 1rem;
 				--d2l-list-item-illustration-max-height: 3.55rem;
 				--d2l-list-item-illustration-max-width: 6rem;
 			}
 			:host([_breakpoint="2"]) {
-				--d2l-list-item-illustration-margin-inline-end: 1rem;
 				--d2l-list-item-illustration-max-height: 5.1rem;
 				--d2l-list-item-illustration-max-width: 9rem;
 			}
 			:host([_breakpoint="3"]) {
-				--d2l-list-item-illustration-margin-inline-end: 1rem;
 				--d2l-list-item-illustration-max-height: 6rem;
 				--d2l-list-item-illustration-max-width: 10.8rem;
 			}
