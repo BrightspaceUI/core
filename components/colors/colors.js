@@ -19,8 +19,6 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-theme-background-color-interactive-translucent-default: #00000080;
 		--d2l-theme-background-color-interactive-translucent-hover: var(--d2l-theme-brand-color-primary-default);
 		--d2l-theme-background-color-sunken: #f6f7f8;
-		--d2l-theme-badge-background-color: var(--d2l-color-gypsum);
-		--d2l-theme-badge-text-color: var(--d2l-theme-text-color-static-standard);
 		--d2l-theme-border-color-emphasized: var(--d2l-color-galena);
 		--d2l-theme-border-color-focus: var(--d2l-color-celestine);
 		--d2l-theme-border-color-standard: var(--d2l-color-mica);
@@ -31,8 +29,6 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-theme-icon-color-faint: var(--d2l-theme-border-color-standard);
 		--d2l-theme-icon-color-inverted: #ffffff;
 		--d2l-theme-icon-color-standard: var(--d2l-color-tungsten);
-		--d2l-theme-notification-background-color: var(--d2l-color-carnelian-minus-1);
-		--d2l-theme-notification-text-color: #ffffff;
 		--d2l-theme-shadow-attached-color: #00000008;
 		--d2l-theme-shadow-floating-color: #00000026;
 		--d2l-theme-status-color-default: var(--d2l-color-celestine);
@@ -45,9 +41,14 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-theme-text-color-interactive-hover: var(--d2l-theme-brand-color-primary-hover);
 		--d2l-theme-text-color-static-faint: var(--d2l-color-galena);
 		--d2l-theme-text-color-static-inverted: #ffffff;
-		--d2l-theme-text-color-static-disabled: #20212280; /* --d2l-theme-text-color-static-standard at 50% opacity, remove once color-mix is widely supported */
 		--d2l-theme-text-color-static-standard: var(--d2l-color-ferrite);
 		--d2l-theme-text-color-static-subtle: var(--d2l-color-tungsten);
+
+		--d2l-theme-badge-background-color: var(--d2l-color-gypsum);
+		--d2l-theme-badge-text-color: var(--d2l-theme-text-color-static-standard);
+		--d2l-theme-notification-background-color: var(--d2l-color-carnelian-minus-1);
+		--d2l-theme-notification-text-color: #ffffff;
+		--d2l-theme-text-color-static-disabled: #20212280; /* --d2l-theme-text-color-static-standard at 50% opacity, remove once color-mix is widely supported */
 
 		--d2l-theme-opacity-disabled-control: 0.5;
 		--d2l-theme-opacity-disabled-link: 0.74;
@@ -58,7 +59,6 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-theme-shadow-attached-block-end: 0 -2px 4px 0 rgba(0, 0, 0, 0.03);
 		--d2l-theme-shadow-floating: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
 		--d2l-theme-shadow-inset: inset 0 2px 0 0 rgba(177, 185, 190, 0.2); /* corundum */
-
 	`;
 
 	// Note: do not use these semantic variables outside of core yet - they are subject to change
@@ -78,8 +78,6 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-theme-background-color-interactive-translucent-default: #00000080;
 		--d2l-theme-background-color-interactive-translucent-hover: var(--d2l-theme-brand-color-primary-default);
 		--d2l-theme-background-color-sunken: #000000;
-		--d2l-theme-badge-background-color: #303335;
-		--d2l-theme-badge-text-color: var(--d2l-theme-text-color-static-standard);
 		--d2l-theme-border-color-emphasized: var(--d2l-color-galena);
 		--d2l-theme-border-color-focus: var(--d2l-color-celestine-plus-1);
 		--d2l-theme-border-color-standard: var(--d2l-color-tungsten);
@@ -90,8 +88,6 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-theme-icon-color-faint: var(--d2l-theme-border-color-standard);
 		--d2l-theme-icon-color-inverted: #ffffff;
 		--d2l-theme-icon-color-standard: var(--d2l-color-corundum);
-		--d2l-theme-notification-background-color: var(--d2l-color-carnelian-minus-1);
-		--d2l-theme-notification-text-color: #ffffff;
 		--d2l-theme-shadow-attached-color: #000000d9;
 		--d2l-theme-shadow-floating-color: #000000d9;
 		--d2l-theme-status-color-default: var(--d2l-theme-brand-color-primary-default);
@@ -104,9 +100,14 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		--d2l-theme-text-color-interactive-hover: var(--d2l-theme-brand-color-primary-hover);
 		--d2l-theme-text-color-static-faint: var(--d2l-color-galena);
 		--d2l-theme-text-color-static-inverted: #161718;
-		--d2l-theme-text-color-static-disabled: #cdd5dc80; /* --d2l-theme-text-color-static-standard at 50% opacity, remove once color-mix is widely supported */
 		--d2l-theme-text-color-static-standard: var(--d2l-color-mica);
 		--d2l-theme-text-color-static-subtle: var(--d2l-color-chromite);
+
+		--d2l-theme-badge-background-color: #303335;
+		--d2l-theme-badge-text-color: var(--d2l-theme-text-color-static-standard);
+		--d2l-theme-notification-background-color: var(--d2l-color-carnelian-minus-1);
+		--d2l-theme-notification-text-color: #ffffff;
+		--d2l-theme-text-color-static-disabled: #cdd5dc80; /* --d2l-theme-text-color-static-standard at 50% opacity, remove once color-mix is widely supported */
 
 		--d2l-theme-opacity-disabled-control: 0.5;
 		--d2l-theme-opacity-disabled-link: 0.74;
