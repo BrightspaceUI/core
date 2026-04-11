@@ -101,7 +101,7 @@ const badgeSlotContent = html`
 
 const subtleLinkCardTemplate = html`<div style="background-color: #f6f7f8; padding: 20px; width: 300px">
 	${createLinkCardTemplate({ content: simpleContent, subtle: true })}
-</div>`
+</div>`;
 
 describe('card', () => {
 	[
