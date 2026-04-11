@@ -4,6 +4,7 @@ import '../../dropdown/dropdown-more.js';
 import '../../dropdown/dropdown-content.js';
 import '../../tooltip/tooltip.js';
 import '../card.js';
+import '../card-loading-shimmer.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 
 function createCardTemplate(opts) {
@@ -16,7 +17,7 @@ function createCardTemplate(opts) {
 }
 function createLinkCardTemplate(opts) {
 	return html`
-		<d2l-card style="height: 260px; width: 210px;" text="Link Text" href="javascript:void(0);">
+		<d2l-card style="height: 260px; width: 210px;" text="Link Text" href="javascript:void(0);" ?subtle="${opts.subtle}">
 			${opts.content}
 		</d2l-card>
 	`;
@@ -98,9 +99,15 @@ const badgeSlotContent = html`
 	</div>
 `;
 
+const subtleLinkCardTemplate = html`<div style="background-color: #f6f7f8; padding: 20px; width: 300px">
+	${createLinkCardTemplate({ content: simpleContent, subtle: true })}
+</div>`
+
 describe('card', () => {
 	[
 		{ name: 'header-content', template: createCardTemplate({ content: simpleContent }) },
+		{ name: 'hover', template: createLinkCardTemplate({ content: simpleContent }), action: elem => hoverElem(elem) },
+		{ name: 'focus', template: createLinkCardTemplate({ content: simpleContent }), action: elem => focusElem(elem) },
 		{ name: 'footer', template: createCardTemplate({ content: simpleContentWithFooter }) },
 		{ name: 'align-center', template: createCardTemplate({ content: simpleContentWithFooter, alignCenter: true }) },
 		{ name: 'badge', template: createCardTemplate({ content: html`${simpleContent}${badgeSlotContent}` }) },
@@ -125,20 +132,18 @@ describe('card', () => {
 			focusElem(elem.querySelector('#shiny-button'));
 			await oneEvent(elem, 'd2l-tooltip-show');
 		} },
-	].forEach(({ name, template, action, rtl }) => {
+		{ name: 'loading', template: createCardTemplate({ content: html`<d2l-card-loading-shimmer slot="header" loading style="display: block; height: 103.5px; width: 100%;"></d2l-card-loading-shimmer>` }) },
+		{ name: 'subtle', template: html`<div style="background-color: #f6f7f8; padding: 20px; width: 300px">
+			${createCardTemplate({ content: simpleContent, subtle: true })}
+		</div>`, cardOnly: true },
+		{ name: 'subtle-hover', template: subtleLinkCardTemplate, action: elem => hoverElem(elem), cardOnly: true },
+		{ name: 'subtle-focus', template: subtleLinkCardTemplate, action: elem => focusElem(elem), cardOnly: true },
+	].forEach(({ name, template, action, rtl, cardOnly }) => {
 		it(name, async() => {
-			const elem = await fixture(template, { rtl });
+			let elem = await fixture(template, { rtl });
+			if (cardOnly) elem = elem.querySelector('d2l-card');
 			if (action) await action(elem);
 			await expect(elem).to.be.golden();
 		});
-	});
-
-	it('subtle', async() => {
-		const elem = await fixture(html`
-			<div style="background-color: #f6f7f8; padding: 20px; width: 300px">
-				${createCardTemplate({ content: simpleContent, subtle: true })}
-			</div>
-		`);
-		await expect(elem.querySelector('d2l-card')).to.be.golden();
 	});
 });
