@@ -57,20 +57,23 @@ class LoadingBackdrop extends LitElement {
 				opacity: 0;
 				position: absolute;
 				top: 0;
-				transition: opacity ${FADE_DURATION_MS}ms ease-in;
 				width: 100%;
 			}
 			:host([_state="shown"]) .backdrop {
 				opacity: 0.7;
+				transition: opacity ${FADE_DURATION_MS}ms ease-in;
+			}
+			:host([_state="hiding"]) .backdrop {
+				transition: opacity ${FADE_DURATION_MS}ms ease-out;
 			}
 
 			d2l-loading-spinner {
 				opacity: 0;
 				position: absolute;
-				transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
 			}
 			:host([_state="shown"]) d2l-loading-spinner {
 				opacity: 1;
+				transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
 			}
 
 			:host([_state="hiding"]) .d2l-backdrop,
