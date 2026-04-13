@@ -1,12 +1,17 @@
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
+import '../empty-state/empty-state-action-button.js';
+import '../empty-state/empty-state-simple.js';
+import '../offscreen/offscreen.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const BACKDROP_DELAY_MS = 800;
 const FADE_DURATION_MS = 500;
 const SPINNER_DELAY_MS = FADE_DURATION_MS;
+const LOADING_ANNOUNCEMENT_DELAY = 1000;
 
 const LOADING_SPINNER_SIZE = 50;
 
@@ -15,7 +20,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /**
  * A component for displaying a semi-transparent backdrop and a loading spinner over the containing element
  */
-class LoadingBackdrop extends LitElement {
+class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 
 	static get properties() {
 		return {
@@ -30,13 +35,14 @@ class LoadingBackdrop extends LitElement {
 			 */
 			for: { type: String },
 			_state: { type: String, reflect: true },
-			_spinnerTop: { state: true }
+			_spinnerTop: { state: true },
+			_ariaContent: { state: true }
 		};
 	}
 
 	static get styles() {
 		return css`
-			:host {
+			#visible {
 				display: none;
 				height: 100%;
 				justify-content: center;
@@ -45,9 +51,9 @@ class LoadingBackdrop extends LitElement {
 				width: 100%;
 				z-index: 999;
 			}
-			:host([_state="showing"]),
-			:host([_state="shown"]),
-			:host([_state="hiding"]) {
+			:host([_state="showing"]) #visible,
+			:host([_state="shown"]) #visible,
+			:host([_state="hiding"]) #visible {
 				display: flex;
 			}
 
@@ -89,13 +95,18 @@ class LoadingBackdrop extends LitElement {
 		this.shown = false;
 		this._state = 'hidden';
 		this._spinnerTop = 0;
+		this._ariaContent = '';
 	}
 
 	render() {
-		if (this._state === 'hidden') return nothing;
 		return html`
-			<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#hide}"></div>
-			<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
+			${this._state === 'hidden' ? nothing :
+					html`<div id="visible">
+						<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#handleTransitionEnd}"></div>
+						<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
+					</div>`
+			}
+			<d2l-offscreen aria-live="polite">${this._ariaContent}</d2l-offscreen>
 		`;
 	}
 	updated(changedProperties) {
@@ -115,9 +126,12 @@ class LoadingBackdrop extends LitElement {
 	}
 	willUpdate(changedProperties) {
 		if (changedProperties.has('shown')) {
+			this.#clearLiveArea();
 			if (this.shown) {
+				this.#setLiveArea(this.localize('components.backdrop-loading.loadingAnnouncement'), { delay: LOADING_ANNOUNCEMENT_DELAY });
 				this.#show();
 			} else if (changedProperties.get('shown') !== undefined) {
+				this.#setLiveArea(this.localize('components.backdrop-loading.loadingCompleteAnnouncement'));
 				this.#fade();
 			}
 		}
@@ -129,7 +143,7 @@ class LoadingBackdrop extends LitElement {
 		const loadingSpinner = this.shadowRoot.querySelector('d2l-loading-spinner');
 		if (!loadingSpinner) { return; }
 
-		const boundingRect = this.getBoundingClientRect();
+		const boundingRect = this.shadowRoot.querySelector('#visible').getBoundingClientRect();
 
 		// Calculate the centerpoint of the visible portion of the element
 		const upperVisibleBound = Math.max(0, boundingRect.top);
@@ -144,6 +158,16 @@ class LoadingBackdrop extends LitElement {
 		const spinnerSizeOffset = LOADING_SPINNER_SIZE / 2;
 
 		this._spinnerTop = centeringOffset + topOffset - spinnerSizeOffset;
+	}
+
+	#clearLiveArea() {
+		this._ariaContent = '';
+
+		if (this.announcementTimeout) {
+			clearTimeout(this.announcementTimeout);
+		}
+
+		this.announcementTimeout = null;
 	}
 
 	#fade() {
@@ -183,6 +207,9 @@ class LoadingBackdrop extends LitElement {
 		const containingBlock = this.#getBackdropTarget();
 
 		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
+	}
+	#setLiveArea(content, { delay } = {}) {
+		this.announcementTimeout = setTimeout(() => this._ariaContent = content, delay || 0);
 	}
 	#show() {
 		this._state = reduceMotion ? 'shown' : 'showing';
