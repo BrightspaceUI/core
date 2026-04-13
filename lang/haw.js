@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Pani i ka makaʻala",
+	"components.backdrop-loading.loadingAnnouncement": "Loading.",
+	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
 	"components.breadcrumbs.breadcrumb": "Palapalapala",
 	"components.button-add.addItem": "Pākuʻi Mea",
 	"components.button-copy.copied": "Kope ʻia!",

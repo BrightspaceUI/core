@@ -1,6 +1,8 @@
 export default {
 	"components.alert.close": "إغلاق التنبيه",
 	"components.breadcrumbs.breadcrumb": "مسار التنقل",
+	"components.backdrop-loading.loadingAnnouncement": "Loading.",
+	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
 	"components.button-add.addItem": "إضافة عنصر",
 	"components.button-copy.copied": "تم النسخ!",
 	"components.button-copy.error": "فشل النسخ. حاول مرة أخرى، أو حاول النسخ يدويًا.",

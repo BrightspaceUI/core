@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Cerrar alerta",
+	"components.backdrop-loading.loadingAnnouncement": "Loading.",
+	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
 	"components.breadcrumbs.breadcrumb": "Ruta de navegación",
 	"components.button-add.addItem": "Agregar elemento",
 	"components.button-copy.copied": "¡Copiado!",
