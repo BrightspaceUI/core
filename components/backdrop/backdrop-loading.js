@@ -25,10 +25,13 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 	static get properties() {
 		return {
 			/**
-			 * Used to control whether the loading backdrop is shown
-			 * @type {boolean}
+			 * The state of data in the element being overlaid. Set to 'clean' when the data represents the user's latest selections, 'dirty' when the data does not represent the user's latest selections, and 'loading' if the data is being actively refreshed
+			 * @type {'clean'|'dirty'|'loading'}
 			 */
-			shown: { type: Boolean },
+			dataState: {
+				reflect: true,
+				type: String
+			},
 			/**
 			 * Used to identify content that the backdrop should make inert
 			 * @type {boolean}
@@ -101,7 +104,7 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 
 	constructor() {
 		super();
-		this.shown = false;
+		this.dataState = 'clean';
 		this._state = 'hidden';
 		this._spinnerTop = 0;
 		this._ariaContent = '';
@@ -119,28 +122,46 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 		`;
 	}
 	updated(changedProperties) {
-		if (changedProperties.has('_state')) {
-			if (this._state === 'showing') {
-				setTimeout(() => {
-					if (this._state === 'showing') this._state = 'shown';
-				}, BACKDROP_DELAY_MS);
-			}
+		if (changedProperties.has('dataState') &&
+			changedProperties.get('dataState') === 'clean' &&
+			(
+				(reduceMotion && this._state === 'shown') ||
+					(!reduceMotion && this._state === 'showing') ||
+					(this.dataState === 'loading')
+			)
+		) {
+			this.#centerLoadingSpinner();
 		}
 
-		if (changedProperties.has('shown') && (
-			(reduceMotion && this._state === 'shown') || (!reduceMotion && this._state === 'showing')
-		)) {
-			this.#centerLoadingSpinner();
+		if (changedProperties.has('_state')) {
+			if (this._state === 'showing') {
+				if (this.dataState === 'loading') {
+					setTimeout(() => {
+						if (this._state === 'showing') this._state = 'shown';
+					}, BACKDROP_DELAY_MS);
+				} else {
+					this._state = 'shown';
+				}
+			}
 		}
 	}
 	willUpdate(changedProperties) {
-		if (changedProperties.has('shown')) {
+		if (changedProperties.has('dataState') && changedProperties.get('dataState') !== undefined) {
 			this.#clearLiveArea();
-			if (this.shown) {
+
+			const oldState = changedProperties.get('dataState');
+			const newState = this.dataState;
+
+			// Calculate announcements
+			if (newState === 'loading') {
 				this.#setLiveArea(this.localize('components.backdrop-loading.loadingAnnouncement'), { delay: LOADING_ANNOUNCEMENT_DELAY });
-				this.#show();
-			} else if (changedProperties.get('shown') !== undefined) {
+			} else if (oldState === 'loading' && newState === 'clean') {
 				this.#setLiveArea(this.localize('components.backdrop-loading.loadingCompleteAnnouncement'));
+			}
+			// Update backdrop
+			if (oldState === 'clean') {
+				this.#show();
+			} else if (newState === 'clean') {
 				this.#fade();
 			}
 		}
@@ -181,9 +202,9 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 
 	#fade() {
 		let hideImmediately = reduceMotion || this._state === 'showing';
-		if (this._state === 'shown') {
-			const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('.backdrop')).opacity;
-			hideImmediately ||= (currentOpacity === '0');
+		if (this._state === 'shown' || this._state === 'loading') {
+			const backdrop = this.shadowRoot.querySelector('.backdrop');
+			hideImmediately ||= backdrop && getComputedStyle(backdrop).opacity === '0';
 		}
 
 		if (hideImmediately) {

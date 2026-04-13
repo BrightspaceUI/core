@@ -11,14 +11,20 @@ const template = html`
 `;
 
 describe('backdrop-loading', () => {
-	it('not shown', async() => {
+	it('clean', async() => {
 		const elem = await fixture(template);
 		await expect(elem).to.be.golden();
 	});
 
-	it('shown', async() => {
+	it('dirty', async() => {
 		const elem = await fixture(template);
-		elem.querySelector('d2l-backdrop-loading').shown = true;
+		elem.querySelector('d2l-backdrop-loading').dataState = 'dirty';
+		await expect(elem).to.be.golden();
+	});
+
+	it('loading', async() => {
+		const elem = await fixture(template);
+		elem.querySelector('d2l-backdrop-loading').dataState = 'loading';
 		await expect(elem).to.be.golden();
 	});
 });
