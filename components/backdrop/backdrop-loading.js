@@ -12,6 +12,7 @@ const BACKDROP_DELAY_MS = 800;
 const FADE_DURATION_MS = 500;
 const SPINNER_DELAY_MS = FADE_DURATION_MS;
 const LOADING_ANNOUNCEMENT_DELAY = 1000;
+const DIRTY_ANNOUNCEMENT_DELAY = 1000;
 
 const LOADING_SPINNER_SIZE = 50;
 
@@ -87,12 +88,28 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 				opacity: 1;
 				transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
 			}
-
-			:host([_state="hiding"]) .d2l-backdrop,
+			:host([_state="shown"][dataState="dirty"]) d2l-loading-spinner,
 			:host([_state="hiding"]) d2l-loading-spinner {
 				opacity: 0;
 				transition: opacity ${FADE_DURATION_MS}ms ease-out;
 			}
+
+			d2l-empty-state-simple {
+				background-color: var(--d2l-table-controls-background-color, white);
+				top: 0;
+				opacity: 0;
+				height: fit-content;
+				justify-content: center;
+				position: relative;
+				z-index: 1000;
+			}
+			:host([_state="shown"]) d2l-empty-state-simple {
+				opacity: 1;
+				transition: opacity ${FADE_DURATION_MS}ms ease-in;
+			}
+			:host([_state="shown"][dataState="loading"]) d2l-empty-state-simple,
+			:host([_state="hiding"]) d2l-empty-state-simple {
+				opacity: 0;
 				transition: opacity ${FADE_DURATION_MS}ms ease-out;
 			}
 
@@ -107,6 +124,7 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 		this.dataState = 'clean';
 		this._state = 'hidden';
 		this._spinnerTop = 0;
+		this._dirtyDialogTop = 0;
 		this._ariaContent = '';
 	}
 
@@ -116,6 +134,9 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 					html`<div id="visible">
 						<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#handleTransitionEnd}"></div>
 						<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
+						<d2l-empty-state-simple style=${styleMap({ top: `${this._dirtyDialogTop}px` })} description="${this.localize('components.backdrop-loading.dirtyDialogDescription')}">
+							<d2l-empty-state-action-button @d2l-empty-state-action=${this.#handleApplyButton} text="${this.localize('components.backdrop-loading.dirtyDialogAction')}"></d2l-empty-state-action-button>
+						</d2l-empty-state-simple>
 					</div>`
 			}
 			<d2l-offscreen aria-live="polite">${this._ariaContent}</d2l-offscreen>
@@ -157,17 +178,24 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 				this.#setLiveArea(this.localize('components.backdrop-loading.loadingAnnouncement'), { delay: LOADING_ANNOUNCEMENT_DELAY });
 			} else if (oldState === 'loading' && newState === 'clean') {
 				this.#setLiveArea(this.localize('components.backdrop-loading.loadingCompleteAnnouncement'));
+			} else if (newState === 'dirty') {
+				this.#setLiveArea(this.localize('components.backdrop-loading.dirtyAnnouncement'), { delay: DIRTY_ANNOUNCEMENT_DELAY });
 			}
+
 			// Update backdrop
 			if (oldState === 'clean') {
 				this.#show();
 			} else if (newState === 'clean') {
 				this.#fade();
+			} else if (oldState === 'loading' && newState === 'dirty') {
+				setTimeout(() => {
+					if (this._state === 'showing') this._state = 'shown';
+				}, BACKDROP_DELAY_MS);
 			}
 		}
 	}
 
-	#centerLoadingSpinner() {
+	async #centerLoadingSpinner() {
 		if (this._state === 'hidden') { return; }
 
 		const loadingSpinner = this.shadowRoot.querySelector('d2l-loading-spinner');
@@ -187,7 +215,13 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 		// Adjust for the size of the spinner
 		const spinnerSizeOffset = LOADING_SPINNER_SIZE / 2;
 
+		// Adjust for the size of the dirty dialog
+		await this.shadowRoot.querySelector('d2l-empty-state-simple').getUpdateComplete();
+		await this.shadowRoot.querySelector('d2l-empty-state-action-button')?.getUpdateComplete();
+		const dirtyDialogSizeOffset = this.shadowRoot.querySelector('d2l-empty-state-simple').getBoundingClientRect().height / 2;
+
 		this._spinnerTop = centeringOffset + topOffset - spinnerSizeOffset;
+		this._dirtyDialogTop = centeringOffset + topOffset - dirtyDialogSizeOffset;
 	}
 
 	#clearLiveArea() {
@@ -213,6 +247,7 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 			this._state = 'hiding';
 		}
 	}
+
 	#getBackdropTarget() {
 		const parent = getComposedParent(this);
 
@@ -226,11 +261,17 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 
 		return targetedChildren.length === 0 ? parent : targetedChildren[0];
 	}
+
+	#handleApplyButton() {
+		this.dispatchEvent(new CustomEvent('d2l-apply-button-click', { bubbles: true, composed: true }));
+	}
+
 	#handleTransitionEnd() {
 		if (this._state === 'hiding') {
 			this.#hide();
 		}
 	}
+
 	#hide() {
 		this._state = 'hidden';
 
@@ -238,9 +279,11 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 
 		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
 	}
+
 	#setLiveArea(content, { delay } = {}) {
 		this.announcementTimeout = setTimeout(() => this._ariaContent = content, delay || 0);
 	}
+
 	#show() {
 		this._state = reduceMotion ? 'shown' : 'showing';
 
@@ -250,7 +293,6 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 
 		containingBlock.setAttribute('inert', 'inert');
 	}
-
 }
 
 customElements.define('d2l-backdrop-loading', LoadingBackdrop);
