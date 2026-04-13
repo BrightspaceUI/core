@@ -14,6 +14,8 @@ import '../../selection/selection-action.js';
 import '../../selection/selection-action-dropdown.js';
 import '../../selection/selection-action-menu-item.js';
 import '../../selection/selection-input.js';
+import '../../inputs/input-radio.js';
+import '../../inputs/input-radio-group.js';
 
 import { css, html, nothing } from 'lit';
 import { tableStyles, TableWrapper } from '../table-wrapper.js';
@@ -81,6 +83,7 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 		this._data = data();
 		this._sortField = undefined;
 		this._sortDesc = false;
+		this.dataState = 'clean';
 	}
 
 	render() {
@@ -97,11 +100,11 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 						icon="tier1:${this.stickyHeaders ? 'check' : 'close-default'}"
 						@d2l-selection-action-click="${this._toggleStickyHeaders}"
 					></d2l-selection-action>
-					<d2l-selection-action
-						text="Loading"
-						icon="tier1:${this.loading ? 'check' : 'close-default'}"
-						@d2l-selection-action-click="${this._toggleLoading}"
-					></d2l-selection-action>
+					<d2l-input-radio-group style="align-content:center" label="Date State" horizontal label-hidden name="dataState" @change=${this._handleDataStateChange}>
+						<d2l-input-radio label="Clean" value="clean" ?checked=${this.dataState === 'clean'}></d2l-input-radio>
+						<d2l-input-radio label="Dirty" value="dirty" ?checked=${this.dataState === 'dirty'}></d2l-input-radio>
+						<d2l-input-radio label="Loading" value="loading" ?checked=${this.dataState === 'loading'}></d2l-input-radio>
+					</d2l-input-radio-group>
 				</d2l-table-controls>
 
 				<table class="d2l-table">
@@ -165,6 +168,10 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 				></d2l-pager-load-more>` : nothing}
 			</d2l-table-wrapper>
 		`;
+	}
+
+	_handleDataStateChange(e) {
+		this.dataState = e.detail.value;
 	}
 
 	async _handlePagerLoadMore(e) {
@@ -256,9 +263,6 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 		this.requestUpdate();
 	}
 
-	_toggleLoading() {
-		this.loading = !this.loading;
-	}
 	_toggleStickyControls() {
 		this.stickyControls = !this.stickyControls;
 	}
