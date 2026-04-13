@@ -28,9 +28,9 @@ describe('colors', () => {
 
 			expect(style.sheet.cssRules.length).to.equal(ruleCount + 3);
 
-			const mediaRule = style.sheet.cssRules[0].cssText;
+			const lightRule = style.sheet.cssRules[0].cssText;
 			const darkRule = style.sheet.cssRules[1].cssText;
-			const lightRule = style.sheet.cssRules[2].cssText;
+			const mediaRule = style.sheet.cssRules[2].cssText;
 
 			const expectedLightValue = svgToCSS('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="#202122" d="M0 0h10v10H0z"/><path fill="#006fbf" d="M0 0h10v10H0z"/></svg>').cssText;
 			const expectedDarkValue = svgToCSS('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><path fill="#cdd5dc" d="M0 0h10v10H0z"/><path fill="#29a6ff" d="M0 0h10v10H0z"/></svg>').cssText;

@@ -264,8 +264,8 @@ export function registerSemanticVariableForSvgImageUrl(name, value) {
 	style.sheet.insertRule(`html { ${ name }: ${ replacedLightValue } }`, 0);
 
 	const replacedDarkValue = svgToCSS(replaceSemanticVariables(value, darkVariables));
-	style.sheet.insertRule(`html[data-color-mode="dark"] { ${ name }: ${ replacedDarkValue } }`, 0);
+	style.sheet.insertRule(`html[data-color-mode="dark"] { ${ name }: ${ replacedDarkValue } }`, 1);
 	style.sheet.insertRule(`@media (prefers-color-scheme: dark) {
 		html[data-color-mode="os"] { ${ name }: ${ replacedDarkValue } }
-	}`, 0);
+	}`, 2);
 };
