@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "Cerrar alerta",
 	"components.backdrop-loading.loadingAnnouncement": "Loading.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
+	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.breadcrumbs.breadcrumb": "Ruta de navegación",
 	"components.button-add.addItem": "Agregar elemento",
 	"components.button-copy.copied": "Copiado.",

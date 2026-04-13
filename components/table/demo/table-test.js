@@ -88,7 +88,7 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 
 	render() {
 		return html`
-			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}">
+			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}" dirty-text="This text indicates we're in the dirty state" dirty-button-text="Refresh">
 				<d2l-table-controls slot="controls" ?no-sticky="${!this.stickyControls}" select-all-pages-allowed>
 					<d2l-selection-action
 						text="Sticky controls"

@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "अलर्ट बंद करें",
 	"components.backdrop-loading.loadingAnnouncement": "Loading.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
+	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.breadcrumbs.breadcrumb": "ब्रेडक्रंब",
 	"components.button-add.addItem": "आइटम जोड़ें",
 	"components.button-copy.copied": "कॉपी किया गया!",

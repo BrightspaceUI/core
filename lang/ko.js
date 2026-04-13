@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "경보 닫기",
 	"components.backdrop-loading.loadingAnnouncement": "Loading.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
+	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.breadcrumbs.breadcrumb": "이동 경로",
 	"components.button-add.addItem": "항목 추가",
 	"components.button-copy.copied": "복사 완료!",
