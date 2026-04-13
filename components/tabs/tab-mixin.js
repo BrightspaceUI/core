@@ -54,7 +54,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				margin-inline-start: 0;
 			}
 			.d2l-tab-selected-indicator {
-				border-top: 4px solid var(--d2l-color-celestine);
+				border-top: 4px solid var(--d2l-theme-brand-color-primary-default);
 				border-top-left-radius: 4px;
 				border-top-right-radius: 4px;
 				bottom: 0;
@@ -72,11 +72,11 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				text-decoration: none;
 			}
 			:host(:hover) {
-				color: var(--d2l-color-celestine);
+				color: var(--d2l-theme-text-color-interactive-default);
 				cursor: pointer;
 			}
 			:host([_clicked]) {
-				color: var(--d2l-color-celestine);
+				color: var(--d2l-theme-text-color-interactive-default);
 			}
 			:host([selected]:hover) {
 				color: inherit;

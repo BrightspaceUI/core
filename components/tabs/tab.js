@@ -6,7 +6,7 @@ import { TabMixin } from './tab-mixin.js';
 
 const focusRingStyles = getFocusRingStyles(
 	pseudoClass => `:host(:${pseudoClass}) .d2l-tab-text-inner-content`,
-	{ extraStyles: css`border-radius: 0.3rem; color: var(--d2l-color-celestine);` }
+	{ extraStyles: css`border-radius: 0.3rem; color: var(--d2l-theme-text-color-interactive-default);` }
 );
 
 /**
@@ -37,7 +37,7 @@ class Tab extends TabMixin(LitElement) {
 			}
 			${focusRingStyles}
 			:host(:${unsafeCSS(getFocusPseudoClass())}) ::slotted(d2l-icon) {
-				color: var(--d2l-color-celestine);
+				color: var(--d2l-theme-text-color-interactive-default);
 			}
 			slot {
 				align-items: center;
@@ -50,7 +50,7 @@ class Tab extends TabMixin(LitElement) {
 				padding-inline-start: 0.3rem;
 			}
 			:host(:not([selected]):hover) ::slotted(d2l-icon) {
-				color: var(--d2l-color-celestine);
+				color: var(--d2l-theme-text-color-interactive-default);
 			}
 			span {
 				${overflowEllipsisDeclarations}

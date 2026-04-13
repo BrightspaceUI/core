@@ -227,6 +227,11 @@ describe('d2l-tabs', () => {
 			await expect(elem).to.be.golden();
 		});
 
+		it('panel selected-dark', async() => {
+			const elem = await fixture(panelSelectedFixture[useFixture], { viewport, colorMode: 'dark' });
+			await expect(elem).to.be.golden();
+		});
+
 		it('one tab', async() => {
 			const elem = await fixture(oneTabFixture[useFixture], { viewport });
 			await expect(elem).to.be.golden();
@@ -253,8 +258,20 @@ describe('d2l-tabs', () => {
 			await expect(elem).to.be.golden();
 		});
 
+		it('non-selected tab focus-dark', async() => {
+			const elem = await fixture(noPanelSelectedFixture[useFixture], { viewport, colorMode: 'dark' });
+			await sendKeysElem(elem, 'press', 'ArrowRight');
+			await expect(elem).to.be.golden();
+		});
+
 		it('selected tab focus', async() => {
 			const elem = await fixture(panelSelectedFixture[useFixture], { viewport });
+			await focusElem(elem);
+			await expect(elem).to.be.golden();
+		});
+
+		it('selected tab focus-dark', async() => {
+			const elem = await fixture(panelSelectedFixture[useFixture], { viewport, colorMode: 'dark' });
 			await focusElem(elem);
 			await expect(elem).to.be.golden();
 		});
@@ -382,6 +399,17 @@ describe('d2l-tabs', () => {
 				</d2l-tabs>
 			`
 		};
+
+		it('scroll next-dark', async() => {
+			const elem = await fixture(nextFixture[useFixture], { viewport, colorMode: 'dark' });
+			await expect(elem).to.be.golden();
+		});
+
+		it('focus next-dark', async() => {
+			const elem = await fixture(nextFixture[useFixture], { viewport, colorMode: 'dark' });
+			await focusElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button'));
+			await expect(elem).to.be.golden();
+		});
 
 		['ltr', 'rtl'].forEach((dir) => {
 
