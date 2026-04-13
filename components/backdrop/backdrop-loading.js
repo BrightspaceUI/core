@@ -8,7 +8,6 @@ const BACKDROP_DELAY_MS = 800;
 const FADE_DURATION_MS = 500;
 const SPINNER_DELAY_MS = FADE_DURATION_MS;
 
-const LOADING_SPINNER_MINIMUM_BUFFER = 100;
 const LOADING_SPINNER_SIZE = 50;
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -89,7 +88,7 @@ class LoadingBackdrop extends LitElement {
 		super();
 		this.shown = false;
 		this._state = 'hidden';
-		this._spinnerTop = LOADING_SPINNER_MINIMUM_BUFFER;
+		this._spinnerTop = 0;
 	}
 
 	render() {
@@ -136,7 +135,7 @@ class LoadingBackdrop extends LitElement {
 		const upperVisibleBound = Math.max(0, boundingRect.top);
 		const lowerVisibleBound = Math.min(window.innerHeight, boundingRect.bottom);
 		const visibleHeight = lowerVisibleBound - upperVisibleBound;
-		const centeringOffset = visibleHeight / 2;
+		const centeringOffset = (visibleHeight / 4);
 
 		// Calculate if an offset is required to move to the top of the viewport before centering
 		const topOffset = Math.max(0, -boundingRect.top); // measures the distance below the top of the viewport, which is negative if the element starts above the viewport
@@ -144,8 +143,7 @@ class LoadingBackdrop extends LitElement {
 		// Adjust for the size of the spinner
 		const spinnerSizeOffset = LOADING_SPINNER_SIZE / 2;
 
-		const newPosition = centeringOffset + topOffset - spinnerSizeOffset;
-		this._spinnerTop = Math.max(LOADING_SPINNER_MINIMUM_BUFFER, newPosition);
+		this._spinnerTop = centeringOffset + topOffset - spinnerSizeOffset;
 	}
 
 	#fade() {
