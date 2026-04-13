@@ -88,7 +88,7 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 
 	render() {
 		return html`
-			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}">
+			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}" dirty-text="This text indicates we're in the dirty state" dirty-button-text="Refresh">
 				<d2l-table-controls slot="controls" ?no-sticky="${!this.stickyControls}" select-all-pages-allowed>
 					<d2l-selection-action
 						text="Sticky controls"
@@ -100,7 +100,7 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 						icon="tier1:${this.stickyHeaders ? 'check' : 'close-default'}"
 						@d2l-selection-action-click="${this._toggleStickyHeaders}"
 					></d2l-selection-action>
-					<d2l-input-radio-group style="align-content:center" label="Date State" horizontal label-hidden name="dataState" @change=${this._handleDataStateChange}>
+					<d2l-input-radio-group style="align-content:center;max-height:42px" label="Date State" horizontal label-hidden name="dataState" @change=${this._handleDataStateChange}>
 						<d2l-input-radio label="Clean" value="clean" ?checked=${this.dataState === 'clean'}></d2l-input-radio>
 						<d2l-input-radio label="Dirty" value="dirty" ?checked=${this.dataState === 'dirty'}></d2l-input-radio>
 						<d2l-input-radio label="Loading" value="loading" ?checked=${this.dataState === 'loading'}></d2l-input-radio>

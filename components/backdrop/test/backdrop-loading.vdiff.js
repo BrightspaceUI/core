@@ -6,7 +6,7 @@ const template = html`
 		<div id="target" style="background-color: orange; height: 200px; padding: 1rem;">
 			Stuff in here
 		</div>
-		<d2l-backdrop-loading for="target"></d2l-backdrop-loading>
+		<d2l-backdrop-loading for="target" dirty-text="some text" dirty-button-text="action"></d2l-backdrop-loading>
 	</div>
 `;
 

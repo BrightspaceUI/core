@@ -318,6 +318,24 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				reflect: true,
 				type: String
 			},
+			/**
+			 * The text displayed on the dirty state overlay when the 'dirty' dataState is set.
+			 * @type {string}
+			 */
+			dirtyText: {
+				reflect: true,
+				attribute: 'dirty-text',
+				type: String
+			},
+			/**
+			 * The text displayed on the button dirty state overlay when the 'dirty' dataState is set.
+			 * @type {string}
+			 */
+			dirtyButtonText: {
+				reflect: true,
+				attribute: 'dirty-button-text',
+				type: String
+			}
 		};
 	}
 
@@ -390,6 +408,9 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._tableScrollers = {};
 		this.dataState = 'clean';
 
+		this.dirtyText = null;
+		this.dirtyButtonText = null;
+
 		this._excludeStickyColumnsFromScrollCalculations = getFlag('GAUD-9530-exclude-sticky-columns-from-scroll-calculations', false);
 	}
 
@@ -422,7 +443,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		const slot = html`
 			<div style="position:relative">
 				<slot id="table-slot" @slotchange="${this._handleSlotChange}"></slot>
-				<d2l-backdrop-loading for="table-slot" dataState=${this.dataState}></d2l-backdrop-loading>
+				<d2l-backdrop-loading @d2l-backdrop-dirty-overlay-action=${this._handleDirtyButton} for="table-slot" dataState=${this.dataState} dirty-text="${this.dirtyText}" dirty-button-text="${this.dirtyButtonText}"></d2l-backdrop-loading>
 			</div>
 		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
@@ -444,6 +465,12 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			if (this.stickyHeaders) {
 				document.body.classList.add('d2l-table-sticky-headers');
 			}
+		}
+	}
+
+	willUpdate() {
+		if (this.dataState === 'dirty' && (this.dirtyText === null || this.dirtyButtonText === null)) {
+			throw new Error('dirty-text and dirty-button-message properties must be set to use the dirty data-state');
 		}
 	}
 
@@ -543,6 +570,11 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		});
 
 		this._handleControlsChange();
+	}
+
+	_handleDirtyButton() {
+		/** Dispatched when the action button on the dirty overlay is clicked */
+		this.dispatchEvent(new CustomEvent('d2l-table-dirty-button-clicked'));
 	}
 
 	_handlePopoverClose(e) {
