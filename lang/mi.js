@@ -1,10 +1,10 @@
 export default {
 	"components.alert.close": "Kati Matohi",
+	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
+	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
+	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
 	"components.backdrop-loading.loadingAnnouncement": "Loading.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
-	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
-	"components.backdrop-loading.dirtyDialogDescription": "Filters have been changed.",
-	"components.backdrop-loading.dirtyDialogAction": "Apply Filters.",
 	"components.breadcrumbs.breadcrumb": "Pānui",
 	"components.button-add.addItem": "Tāpiri Tūemi",
 	"components.button-copy.copied": "Kua tāruatia!",
