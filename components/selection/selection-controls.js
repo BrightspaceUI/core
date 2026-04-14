@@ -39,6 +39,11 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 			 * @type {boolean}
 			 */
 			selectAllPagesAllowed: { type: Boolean, attribute: 'select-all-pages-allowed' },
+			/**
+			 * Whether to disable and visually grey out the select all items checkbox
+			 * @type {boolean}
+			 */
+			selectAllPagesDisabled: { type: Boolean, attribute: 'select-all-pages-disabled' },
 			_hasActions: { state: true },
 			_noSelectionText: { state: true },
 			_scrolled: { type: Boolean, reflect: true }
@@ -118,6 +123,7 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 	constructor() {
 		super();
 		this.noSelection = false;
+		this.selectAllPagesDisabled = false;
 		this.noSticky = false;
 		this.selectAllPagesAllowed = false;
 		this._scrolled = false;
@@ -183,7 +189,7 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 
 	_renderSelection() {
 		return html`
-			${this._provider && !this._noSelectAll ? html`<d2l-selection-select-all></d2l-selection-select-all>` : nothing}
+			${this._provider && !this._noSelectAll ? html`<d2l-selection-select-all ?disabled=${this.selectAllPagesDisabled} ></d2l-selection-select-all>` : nothing}
 			<d2l-selection-summary no-selection-text="${ifDefined(this._noSelectionText)}"></d2l-selection-summary>
 			${this.selectAllPagesAllowed ? html`<d2l-selection-select-all-pages></d2l-selection-select-all-pages>` : nothing}
 		`;

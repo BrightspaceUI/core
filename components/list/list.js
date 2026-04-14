@@ -1,3 +1,4 @@
+import '../backdrop/backdrop-loading.js';
 import { css, html, LitElement } from 'lit';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
@@ -95,12 +96,47 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 */
 			separators: { type: String, reflect: true },
 			/**
+			 * The state of data in the table. Set to 'clean' when the data represents the user's latest selections, 'dirty' when the data does not represent the user's latest selections, and 'loading' if the data is being actively refreshed
+			 * @type {'clean'|'dirty'|'loading'}
+			 */
+			dataState: {
+				reflect: true,
+				type: String
+			},
+			/**
+			 * The text displayed on the dirty state overlay when the 'dirty' dataState is set.
+			 * @type {string}
+			 */
+			dirtyText: {
+				reflect: true,
+				attribute: 'dirty-text',
+				required: {
+					dependentProps: ['dataState'],
+					validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
+				},
+				type: String
+			},
+			/**
+			 * The text displayed on the button dirty state overlay when the 'dirty' dataState is set.
+			 * @type {string}
+			 */
+			dirtyButtonText: {
+				reflect: true,
+				attribute: 'dirty-button-text',
+				required: {
+					dependentProps: ['dataState'],
+					validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
+				},
+				type: String
+			},
+			/**
 			 * Show selection only on hover, focus or if at least one item is selected. Exclusive for the tile layout
 			 * @type {boolean}
 			 */
 			selectionWhenInteracted: { type: Boolean, attribute: 'selection-when-interacted', reflect: true },
 			_breakpoint: { type: Number, reflect: true },
-			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' }
+			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' },
+			_backdropTriggered: { type: Boolean, reflect: true }
 		};
 	}
 
@@ -161,6 +197,19 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				flex-basis: 100%;
 				height: 0;
 			}
+
+			:host([_backdropTriggered]) {
+				position: relative;
+			}
+			:host([_backdropTriggered]) slot {
+				z-index: 2;
+			}
+			:host([_backdropTriggered]) d2l-backdrop-loading {
+				z-index: 1;
+			}
+			:host([_backdropTriggered]) #list-slot {
+				z-index: 0;
+			}
 		`;
 	}
 
@@ -175,10 +224,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._listItemChanges = [];
 		this._childHasColor = false;
 		this._childHasExpandCollapseToggle = false;
+		this.dataState = 'clean';
 
 		this._breakpoint = 0;
 		this._slimColor = false;
 		this._width = 0;
+
+		this.dirtyText = null;
+		this.dirtyButtonText = null;
 
 		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(this, 'list-child-status', {
 			onSubscribe: this._updateActiveSubscriber.bind(this),
@@ -250,12 +303,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return html`
 			<slot name="controls"></slot>
 			<slot name="header"></slot>
-			<div role="${role}" aria-label="${ifDefined(ariaLabel)}" class="d2l-list-content">
+			<div id="list-slot" role="${role}" class="d2l-list-content"  aria-label="${ifDefined(ariaLabel)}">
 				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
 			</div>
+			<d2l-backdrop-loading @d2l-backdrop-dirty-overlay-action=${this._handleDirtyButton} for="list-slot" .dataState='${this.dataState}' dirty-text="${this.dirtyText}" dirty-button-text="${this.dirtyButtonText}"></d2l-backdrop-loading>
 			${this._renderPagerContainer()}
 		`;
 	}
+
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 		if (changedProperties.has('breakpoints') && changedProperties.get('breakpoints') !== undefined) {
@@ -275,6 +330,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		}
 		if (changedProperties.has('dragHandleShowAlways')) {
 			this._updateItemDragHandleShowAlways();
+		}
+		if (changedProperties.has('dataState') && this.dataState !== undefined) {
+			this._backdropTriggered = true;
 		}
 	}
 
@@ -379,6 +437,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	_getLazyLoadItems() {
 		const items = this.getItems();
 		return items.length > 0 ? items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
+	}
+
+	_handleDirtyButton() {
+		/** Dispatched when the action button on the dirty overlay is clicked */
+		this.dispatchEvent(new CustomEvent('d2l-list-dirty-button-clicked'));
 	}
 
 	_handleKeyDown(e) {
