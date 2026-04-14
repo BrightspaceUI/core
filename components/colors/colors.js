@@ -257,7 +257,7 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 
 export function registerSemanticVariableForSvgImageUrl(name, value) {
 	if (!name || typeof value !== 'string') {
-		throw new Error('registerSemanticVariableForSvgImageUrl requires both a name and value');
+		throw new TypeError('registerSemanticVariableForSvgImageUrl requires both a name and value');
 	}
 
 	const replacedLightValue = svgToCSS(replaceSemanticVariables(value, lightVariables));
