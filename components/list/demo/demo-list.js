@@ -13,6 +13,8 @@ import '../list-controls.js';
 import '../list-item-content.js';
 import '../list-item.js';
 import '../list.js';
+import '../../inputs/input-radio.js';
+import '../../inputs/input-radio-group.js';
 import { css, html, LitElement } from 'lit';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -144,6 +146,7 @@ class DemoList extends LitElement {
 		this.items = JSON.parse(JSON.stringify(items));
 		this._lastItemLoadedIndex = 2;
 		this._pageSize = 2;
+		this.dataState = 'clean';
 	}
 
 	render() {
@@ -158,6 +161,11 @@ class DemoList extends LitElement {
 				?add-button="${this.addButton}"
 				add-button-text="${ifDefined(addButtonText)}">
 				<d2l-list-controls slot="controls" select-all-pages-allowed>
+					<d2l-input-radio-group style="align-content:center;min-width:260px;" label="Date State" horizontal label-hidden name="dataState" @change=${this._handleDataStateChange}>
+						<d2l-input-radio label="Clean" value="clean" ?checked=${this.dataState === 'clean'}></d2l-input-radio>
+						<d2l-input-radio label="Dirty" value="dirty" ?checked=${this.dataState === 'dirty'}></d2l-input-radio>
+						<d2l-input-radio label="Loading" value="loading" ?checked=${this.dataState === 'loading'}></d2l-input-radio>
+					</d2l-input-radio-group>
 					<d2l-selection-action icon="tier1:plus-default" text="Add" @d2l-selection-action-click="${this._handleAddItem}"></d2l-selection-action>
 					<d2l-selection-action-dropdown text="Move To" requires-selection>
 						<d2l-dropdown-menu>
@@ -226,6 +234,11 @@ class DemoList extends LitElement {
 			items: []
 		});
 		this.requestUpdate();
+	}
+
+	_handleDataStateChange(e) {
+		this.shadowRoot.querySelector('d2l-list').dataState = e.detail.value;
+		this.dataState = e.detail.value;
 	}
 
 	_handlePagerLoadMore(e) {
