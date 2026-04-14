@@ -1,3 +1,4 @@
+import '../backdrop/backdrop-loading.js';
 import { css, html, LitElement } from 'lit';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
@@ -98,6 +99,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 * Show selection only on hover, focus or if at least one item is selected. Exclusive for the tile layout
 			 * @type {boolean}
 			 */
+			/**
+			 * The state of data in the table. Set to 'clean' when the data represents the user's latest selections, 'dirty' when the data does not represent the user's latest selections, and 'loading' if the data is being actively refreshed
+			 * @type {'clean'|'dirty'|'loading'}
+			 */
+			dataState: {
+				reflect: true,
+				type: String
+			},
 			selectionWhenInteracted: { type: Boolean, attribute: 'selection-when-interacted', reflect: true },
 			_breakpoint: { type: Number, reflect: true },
 			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' }
@@ -175,6 +184,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._listItemChanges = [];
 		this._childHasColor = false;
 		this._childHasExpandCollapseToggle = false;
+		this.dataState = 'clean';
 
 		this._breakpoint = 0;
 		this._slimColor = false;
@@ -247,11 +257,15 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	render() {
 		const role = !this.grid ? 'list' : 'application'; // not using grid role due to Safari+VO: https://bugs.webkit.org/show_bug.cgi?id=291591
 		const ariaLabel = this.slot !== 'nested' ? this.label : undefined;
+		console.log(this.dataState);
 		return html`
 			<slot name="controls"></slot>
 			<slot name="header"></slot>
 			<div role="${role}" aria-label="${ifDefined(ariaLabel)}" class="d2l-list-content">
-				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
+				<div style="position:relative">
+					<slot id="list-slot" @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
+					<d2l-backdrop-loading for="list-slot" dataState='${this.dataState}'></d2l-backdrop-loading>
+				</div>
 			</div>
 			${this._renderPagerContainer()}
 		`;
