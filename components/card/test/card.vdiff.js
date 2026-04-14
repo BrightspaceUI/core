@@ -136,8 +136,9 @@ describe('card', () => {
 		{ name: 'subtle', template: html`<div style="background-color: #f6f7f8; padding: 20px; width: 300px">
 			${createCardTemplate({ content: simpleContent, subtle: true })}
 		</div>`, cardOnly: true },
-		{ name: 'subtle-hover', template: subtleLinkCardTemplate, action: elem => hoverElem(elem), cardOnly: true },
-		{ name: 'subtle-focus', template: subtleLinkCardTemplate, action: elem => focusElem(elem), cardOnly: true },
+		{ name: 'subtle-link', template: subtleLinkCardTemplate, cardOnly: true },
+		{ name: 'subtle-link-hover', template: subtleLinkCardTemplate, action: elem => hoverElem(elem), cardOnly: true },
+		{ name: 'subtle-link-focus', template: subtleLinkCardTemplate, action: elem => focusElem(elem), cardOnly: true },
 	].forEach(({ name, template, action, rtl, cardOnly }) => {
 		it(name, async() => {
 			let elem = await fixture(template, { rtl });
