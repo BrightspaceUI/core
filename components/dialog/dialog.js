@@ -103,10 +103,10 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		this.critical = false;
 		this.describeContent = false;
 		this.fullHeight = false;
-		this.preferNative = false;
 		this.width = 600;
 		this._criticalLabelId = getUniqueId();
 		this._handleResize = this._handleResize.bind(this);
+		this._preferNative = false;
 		this._titleId = getUniqueId();
 		this._textId = getUniqueId();
 	}
