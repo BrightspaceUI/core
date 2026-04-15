@@ -368,6 +368,9 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			slot[name="pager"]::slotted(*) {
 				margin-top: 12px;
 			}
+			.d2l-under-controls {
+				z-index: 1
+			}
 		`;
 	}
 
@@ -420,17 +423,19 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 	render() {
 		const slot = html`
-			<div style="position:relative">
+			<div class="d2l-under-controls" style="position:relative">
 				<slot id="table-slot" @slotchange="${this._handleSlotChange}"></slot>
 				<d2l-backdrop-loading for="table-slot" dataState=${this.dataState}></d2l-backdrop-loading>
 			</div>
 		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
 		return html`
-			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
-			${this.stickyHeaders && this._controlsScrolled ? html`<div class="d2l-sticky-headers-backdrop"></div>` : nothing}
-			${useScrollWrapper ? html`<d2l-scroll-wrapper scroll-area-offset=${ifDefined(this._excludeStickyColumnsFromScrollCalculations ? this._stickyWidth : undefined)} .customScrollers="${this._tableScrollers}">${slot}</d2l-scroll-wrapper>` : slot}
-			${this._renderPagerContainer()}
+			<div style="position:relative">
+				<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
+				${this.stickyHeaders && this._controlsScrolled ? html`<div class="d2l-sticky-headers-backdrop"></div>` : nothing}
+				${useScrollWrapper ? html`<d2l-scroll-wrapper class="d2l-under-controls" scroll-area-offset=${ifDefined(this._excludeStickyColumnsFromScrollCalculations ? this._stickyWidth : undefined)} .customScrollers="${this._tableScrollers}">${slot}</d2l-scroll-wrapper>` : slot}
+				${this._renderPagerContainer()}
+			</div>
 		`;
 	}
 
