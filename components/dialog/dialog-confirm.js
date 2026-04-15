@@ -7,8 +7,6 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
-window.D2L.DialogMixin.preferNative = getFlag('GAUD-9644-prefer-native-confirm-dialogs', false);
-
 /**
  * A simple confirmation dialog for prompting the user. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the confirm dialog with the action value.
  * @fires d2l-dialog-before-close - Dispatched with the action value before the dialog is closed for any reason, providing an opportunity to prevent the dialog from closing
@@ -79,6 +77,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 	constructor() {
 		super();
 		this.critical = false;
+		this.preferNative = getFlag('GAUD-9644-prefer-native-confirm-dialogs', false);
 		this._criticalLabelId = getUniqueId();
 		this._textId = getUniqueId();
 		this._titleId = getUniqueId();

@@ -20,9 +20,6 @@ window.D2L.DialogMixin = window.D2L.DialogMixin || {};
 // starting in Chrome 102, all elements inside <dialog>s that are inside shadow roots have null offsetParent
 // https://bugs.chromium.org/p/chromium/issues/detail?id=1331803
 window.D2L.DialogMixin.hasNative = (window.HTMLDialogElement !== undefined);
-if (window.D2L.DialogMixin.preferNative === undefined) {
-	window.D2L.DialogMixin.preferNative = true;
-}
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
@@ -44,6 +41,10 @@ export const DialogMixin = superclass => class extends superclass {
 			 * ADVANCED: Opt out of dialog content scrolling
 			 */
 			noContentScroll: { type: Boolean, attribute: 'no-content-scroll', reflect: true },
+			/**
+			 * @ignore
+			 */
+			preferNative: { type: Boolean, attribute: 'prefer-native', reflect: true },
 			/**
 			 * The optional title for the dialog
 			 */
@@ -72,6 +73,7 @@ export const DialogMixin = superclass => class extends superclass {
 		this.focusableContentElemPresent = false;
 		this.noContentScroll = false;
 		this.opened = false;
+		this.preferNative = false;
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
 		this._fullscreenWithin = 0;
@@ -91,7 +93,7 @@ export const DialogMixin = superclass => class extends superclass {
 		this._top = 0;
 		this._updateOverflow = this._updateOverflow.bind(this);
 		this._updateSize = this._updateSize.bind(this);
-		this._useNative = (window.D2L.DialogMixin.hasNative && window.D2L.DialogMixin.preferNative);
+		this._useNative = (window.D2L.DialogMixin.hasNative && this.preferNative);
 		this._width = 0;
 	}
 
@@ -109,6 +111,11 @@ export const DialogMixin = superclass => class extends superclass {
 
 	async updated(changedProperties) {
 		super.updated(changedProperties);
+
+		if (changedProperties.has('preferNative')) {
+			this._useNative = (window.D2L.DialogMixin.hasNative && this.preferNative);
+		}
+
 		if (!changedProperties.has('opened')) return;
 
 		const ifrauDialogService = await tryGetIfrauBackdropService();

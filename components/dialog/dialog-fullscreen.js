@@ -13,7 +13,6 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
 import { styleMap } from 'lit/directives/style-map.js';
 
 const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px) and (max-width: 900px)');
-window.D2L.DialogMixin.preferNative = false;
 
 /**
  * A generic fullscreen dialog that provides a slot for arbitrary content and a "footer" slot for workflow buttons. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the dialog with the action value.
@@ -194,6 +193,7 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 		super();
 		this.async = false;
 		this.noPadding = false;
+		this.preferNative = false;
 		this._autoSize = false;
 		this._hasFooterContent = false;
 		this._icon = 'tier1:close-large-thick';
