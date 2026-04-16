@@ -17,12 +17,17 @@ describe('d2l-input-select', () => {
 
 	[
 		{ name: 'default', template: defaultFixture },
+		{ name: 'default-dark', colorMode: 'dark', template: defaultFixture },
 		{ name: 'default-focus', template: defaultFixture, focus: true },
+		{ name: 'default-focus-dark', colorMode: 'dark', template: defaultFixture, focus: true },
 		{ name: 'overflow', template: overflowFixture },
 		{ name: 'overflow-focus', template: overflowFixture, focus: true },
 		{ name: 'disabled', template: html`<d2l-test-input-select disabled></d2l-test-input-select>` },
+		{ name: 'disabled-dark', colorMode: 'dark', template: html`<d2l-test-input-select disabled></d2l-test-input-select>` },
 		{ name: 'invalid', template: invalidFixture },
+		{ name: 'invalid-dark', colorMode: 'dark', template: invalidFixture },
 		{ name: 'invalid-focus', template: invalidFixture, focus: true },
+		{ name: 'invalid-focus-dark', colorMode: 'dark', template: invalidFixture, focus: true },
 		{ name: 'rtl', template: defaultFixture, rtl: true },
 		{ name: 'rtl-focus', template: defaultFixture, rtl: true, focus: true },
 		{ name: 'rtl-overflow', template: overflowFixture, rtl: true },
@@ -30,6 +35,7 @@ describe('d2l-input-select', () => {
 		{ name: 'rtl-invalid', template: invalidFixture, rtl: true },
 		{ name: 'rtl-invalid-focus', template: invalidFixture, rtl: true, focus: true },
 		{ name: 'skeleton', template: html`<d2l-test-input-select skeleton></d2l-test-input-select>` },
+		{ name: 'skeleton-dark', colorMode: 'dark', template: html`<d2l-test-input-select skeleton></d2l-test-input-select>` },
 		{ name: 'sass-default', template: sassDefaultFixture },
 		{ name: 'sass-default-focus', template: sassDefaultFixture, focus: true },
 		{ name: 'sass-overflow', template: sassOverflowFixture },
@@ -43,9 +49,9 @@ describe('d2l-input-select', () => {
 		{ name: 'sass-rtl-overflow-focus', template: sassOverflowFixture, rtl: true, focus: true },
 		{ name: 'sass-rtl-invalid', template: sassInvalidFixture, rtl: true },
 		{ name: 'sass-rtl-invalid-focus', template: sassInvalidFixture, rtl: true, focus: true },
-	].forEach(({ name, template, rtl, focus }) => {
+	].forEach(({ name, template, colorMode, rtl, focus }) => {
 		it(name, async() => {
-			const elem = await fixture(template, { rtl });
+			const elem = await fixture(template, { colorMode, rtl });
 			if (focus) await focusElem(elem);
 			await expect(elem).to.be.golden();
 		});

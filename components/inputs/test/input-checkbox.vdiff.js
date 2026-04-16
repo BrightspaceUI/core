@@ -36,50 +36,54 @@ describe('d2l-input-checkbox', () => {
 						?skeleton="${skeleton}"></d2l-input-checkbox>
 				`;
 
-				it(name, async() => {
-					const elem = await fixture(checkboxFixture);
-					await expect(elem).to.be.golden();
-				});
+				[undefined, 'dark'].forEach(colorMode => {
 
-				if (!disabled) {
-					it(`${name}-focus`, async() => {
-						const elem = await fixture(checkboxFixture);
-						await focusElem(elem);
+					const colorModeSuffix = (colorMode === 'dark' ? '-dark' : '');
+
+					it(`${name}${colorModeSuffix}`, async() => {
+						const elem = await fixture(checkboxFixture, { colorMode });
 						await expect(elem).to.be.golden();
 					});
-				}
+
+					if (!disabled) {
+						it(`${name}-focus${colorModeSuffix}`, async() => {
+							const elem = await fixture(checkboxFixture, { colorMode });
+							await focusElem(elem);
+							await expect(elem).to.be.golden();
+						});
+					}
+
+				});
 
 			});
 		});
 	});
 
 	[
-		{
-			name: 'inline-help',
-			template: new inlineHelpFixtures().checkbox()
-		},
-		{
-			name: 'inline-help-multiline',
-			template: new inlineHelpFixtures({ multiline: true }).checkbox()
-		},
-		{
-			name: 'inline-help-skeleton',
-			template: new inlineHelpFixtures({ skeleton: true }).checkbox()
-		},
-		{
-			name: 'inline-help-skeleton-multiline',
-			template: new inlineHelpFixtures({ multiline: true, skeleton: true }).checkbox()
-		},
-		{
-			name: 'inline-help-disabled',
-			template: new inlineHelpFixtures({ disabled: true }).checkbox()
-		}
-	].forEach(({ name, template }) => {
-		[false, true].forEach(rtl => {
-			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
-				const elem = await fixture(template, { rtl });
-				await expect(elem).to.be.golden();
-			});
+		{ name: 'inline-help', template: new inlineHelpFixtures().checkbox() },
+		{ name: 'inline-help-dark', colorMode: 'dark', template: new inlineHelpFixtures().checkbox() },
+		{ name: 'inline-help-rtl', rtl: true, template: new inlineHelpFixtures().checkbox() },
+		{ name: 'inline-help-multiline', template: new inlineHelpFixtures({ multiline: true }).checkbox() },
+		{ name: 'inline-help-multiline-rtl', rtl: true, template: new inlineHelpFixtures({ multiline: true }).checkbox() },
+		{ name: 'inline-help-skeleton', template: new inlineHelpFixtures({ skeleton: true }).checkbox() },
+		{ name: 'inline-help-skeleton-rtl', rtl: true, template: new inlineHelpFixtures({ skeleton: true }).checkbox() },
+		{ name: 'inline-help-skeleton-dark', colorMode: 'dark', template: new inlineHelpFixtures({ skeleton: true }).checkbox() },
+		{ name: 'inline-help-skeleton-multiline', template: new inlineHelpFixtures({ multiline: true, skeleton: true }).checkbox() },
+		{ name: 'inline-help-disabled', template: new inlineHelpFixtures({ disabled: true }).checkbox() },
+		{ name: 'inline-help-disabled-dark', colorMode: 'dark', template: new inlineHelpFixtures({ disabled: true }).checkbox() },
+		{ name: 'multiline', template: checkboxFixtures.labelMultiline },
+		{ name: 'multiline-rtl', rtl: true, template: checkboxFixtures.labelMultiline },
+		{ name: 'multiline-unbreakable', template: checkboxFixtures.labelMultilineUnbreakable },
+		{ name: 'multiline-unbreakable-rtl', rtl: true, template: checkboxFixtures.labelMultilineUnbreakable },
+		{ name: 'aria-label', template: checkboxFixtures.labelAria },
+		{ name: 'hidden-label', template: checkboxFixtures.labelHidden },
+		{ name: 'supporting', template: checkboxFixtures.supporting },
+		{ name: 'supporting-dark', colorMode: 'dark', template: checkboxFixtures.supporting },
+		{ name: 'supporting-rtl', rtl: true, template: checkboxFixtures.supporting }
+	].forEach(({ name, colorMode, rtl, template }) => {
+		it(name, async() => {
+			const elem = await fixture(template, { colorMode, rtl });
+			await expect(elem).to.be.golden();
 		});
 	});
 
@@ -123,36 +127,6 @@ describe('d2l-input-checkbox', () => {
 					});
 				}
 
-			});
-		});
-	});
-
-	[
-		{
-			name: 'multiline',
-			template: checkboxFixtures.labelMultiline
-		},
-		{
-			name: 'multiline-unbreakable',
-			template: checkboxFixtures.labelMultilineUnbreakable
-		},
-		{
-			name: 'aria-label',
-			template: checkboxFixtures.labelAria
-		},
-		{
-			name: 'hidden-label',
-			template: checkboxFixtures.labelHidden
-		},
-		{
-			name: 'supporting',
-			template: checkboxFixtures.supporting
-		}
-	].forEach(({ name, template }) => {
-		[false, true].forEach(rtl => {
-			it(`${name}${rtl ? '-rtl' : ''}`, async() => {
-				const elem = await fixture(template, { rtl });
-				await expect(elem).to.be.golden();
 			});
 		});
 	});
