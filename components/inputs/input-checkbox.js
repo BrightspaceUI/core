@@ -78,7 +78,7 @@ export const checkboxStyles = css`
 		border-width: 1px;
 	}
 	input[type="checkbox"].d2l-input-checkbox:hover:disabled {
-		border-color: var(--d2l-color-corundum);
+		border-color: var(--d2l-theme-border-color-disabled);
 	}
 	input[type="checkbox"].d2l-input-checkbox:hover,
 	input[type="checkbox"].d2l-input-checkbox:focus,
@@ -91,7 +91,7 @@ export const checkboxStyles = css`
 	input[type="checkbox"].d2l-input-checkbox:disabled,
 	input[type="checkbox"].d2l-input-checkbox:where([aria-disabled="true"]) {
 		background-image: var(--d2l-input-checkbox-background-image-disabled);
-		border-color: var(--d2l-color-corundum);
+		border-color: var(--d2l-theme-border-color-disabled);
 	}
 	@media (forced-colors: active) {
 		input[type="checkbox"].d2l-input-checkbox:checked,

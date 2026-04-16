@@ -114,6 +114,7 @@ const lightVariables = new Map([
 	['--d2l-theme-background-color-interactive-faint-disabled', '#f9fbff80'], /* --d2l-theme-background-color-interactive-faint-default at 50% opacity, remove once color-mix is widely supported */
 	['--d2l-theme-badge-background-color', '--d2l-color-gypsum'],
 	['--d2l-theme-badge-text-color', '--d2l-theme-text-color-static-standard'],
+	['--d2l-theme-border-color-disabled', '--d2l-color-corundum'],
 	['--d2l-theme-notification-background-color', '--d2l-color-carnelian-minus-1'],
 	['--d2l-theme-notification-text-color', '#ffffff'],
 	['--d2l-theme-text-color-static-disabled', '#20212280'], /* --d2l-theme-text-color-static-standard at 50% opacity, remove once color-mix is widely supported */
@@ -185,6 +186,7 @@ const darkVariables = new Map([
 	['--d2l-theme-background-color-interactive-faint-disabled', '#20212280'], /* --d2l-theme-background-color-interactive-faint-default at 50% opacity, remove once color-mix is widely supported */
 	['--d2l-theme-badge-background-color', '#303335'],
 	['--d2l-theme-badge-text-color', '--d2l-theme-text-color-static-standard'],
+	['--d2l-theme-border-color-disabled', '#303233'], /* --d2l-theme-border-color-standard (tungsten) at 50% opacity */
 	['--d2l-theme-notification-background-color', '--d2l-color-carnelian-minus-1'],
 	['--d2l-theme-notification-text-color', '#ffffff'],
 	['--d2l-theme-text-color-static-disabled', '#cdd5dc80'], /* --d2l-theme-text-color-static-standard at 50% opacity, remove once color-mix is widely supported */
