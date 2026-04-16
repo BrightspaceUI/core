@@ -18,8 +18,8 @@
 			import '../card-content-meta.js';
 			import '../card-content-title.js';
 			import '../card-footer-link.js';
-			import { registerCustomSemanticVariableValue } from '../../colors/colors.js';
-			registerCustomSemanticVariableValue('--d2l-subtle-cards-background', 'var(--d2l-theme-background-color-sunken)', 'var(--d2l-color-ferrite)');
+			import { _registerCustomSemanticVariableValue } from '../../helpers/internal/css.js';
+			_registerCustomSemanticVariableValue('--d2l-subtle-cards-background', 'var(--d2l-theme-background-color-sunken)', 'var(--d2l-color-ferrite)'); // Remove once an off-base background color is clearly defined
 		</script>
 		<style>
 			.cards {

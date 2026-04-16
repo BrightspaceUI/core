@@ -1,3 +1,4 @@
+import { _registerCustomSemanticVariableValue } from '../../helpers/internal/css.js';
 import { svgToCSS } from '../../helpers/svg-to-css.js';
 
 const primitiveVariables = new Map([
@@ -262,18 +263,6 @@ export function registerSemanticVariableForSvgImageUrl(name, value) {
 
 	const replacedLightValue = svgToCSS(replaceSemanticVariables(value, lightVariables));
 	const replacedDarkValue = svgToCSS(replaceSemanticVariables(value, darkVariables));
-	registerCustomSemanticVariableValue(name, replacedLightValue, replacedDarkValue);
+	_registerCustomSemanticVariableValue(name, replacedLightValue, replacedDarkValue);
 
-}
-
-export function registerCustomSemanticVariableValue(name, lightValue, darkValue) {
-	if (!name || typeof lightValue !== 'string' || typeof darkValue !== 'string') {
-		throw new TypeError('registerCustomSemanticVariableValue requires a name, lightValue, and darkValue');
-	}
-
-	style.sheet.insertRule(`html { ${ name }: ${ lightValue } }`, 0);
-	style.sheet.insertRule(`html[data-color-mode="dark"] { ${ name }: ${ darkValue } }`, 1);
-	style.sheet.insertRule(`@media (prefers-color-scheme: dark) {
-		html[data-color-mode="os"] { ${ name }: ${ darkValue } }
-	}`, 2);
 }

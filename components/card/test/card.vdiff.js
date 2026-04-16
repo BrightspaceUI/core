@@ -6,9 +6,9 @@ import '../../tooltip/tooltip.js';
 import '../card.js';
 import '../card-loading-shimmer.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
-import { registerCustomSemanticVariableValue } from '../../colors/colors.js';
-registerCustomSemanticVariableValue('--d2l-subtle-cards-background', 'var(--d2l-theme-background-color-subtle)', 'var(--d2l-color-ferrite)');
-registerCustomSemanticVariableValue('--d2l-subtle-cards-header-background', 'orange', 'darkblue');
+import { _registerCustomSemanticVariableValue } from '../../../helpers/internal/css.js';
+_registerCustomSemanticVariableValue('--d2l-subtle-cards-background', 'var(--d2l-theme-background-color-subtle)', 'var(--d2l-color-ferrite)'); // Remove once an off-base background color is clearly defined
+_registerCustomSemanticVariableValue('--d2l-subtle-cards-header-background', 'orange', 'darkblue');
 function createCardTemplate(opts) {
 	const { alignCenter, content, subtle } = { alignCenter: false, subtle: false, ...opts };
 	return html`
