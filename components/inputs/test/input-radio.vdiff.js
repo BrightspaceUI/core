@@ -36,14 +36,17 @@ describe('d2l-input-radio', () => {
 	before(loadSass);
 	after(unloadSass);
 
-	it('label', async() => {
-		const elem = await fixture(labelFixture);
-		await expect(elem).to.be.golden();
-	});
+	[
+		{ name: 'label', template: labelFixture },
+		{ name: 'label-dark', colorMode: 'dark', template: labelFixture },
+		{ name: 'label-rtl', rtl: true, template: labelFixture }
+	].forEach(({ name, colorMode, rtl, template }) => {
 
-	it('label-rtl', async() => {
-		const elem = await fixture(labelFixture, { rtl: true });
-		await expect(elem).to.be.golden();
+		it(name, async() => {
+			const elem = await fixture(template, { colorMode, rtl });
+			await expect(elem).to.be.golden();
+		});
+
 	});
 
 	['solo', 'sass'].forEach(type => {
@@ -53,18 +56,25 @@ describe('d2l-input-radio', () => {
 				const name = `${type}-${state}-${checked}`;
 				const radioFixture = createFixture(type, state, checked);
 
-				it(name, async() => {
-					const elem = await fixture(radioFixture);
-					await expect(elem).to.be.golden();
-				});
+				const colorModes = (type === 'solo' ? [undefined, 'dark'] : [undefined]);
+				colorModes.forEach(colorMode => {
 
-				if (state !== 'disabled') {
-					it(`${name}-focus`, async() => {
-						const elem = await fixture(radioFixture);
-						await focusElem(elem);
+					const colorModeSuffix = (colorMode === 'dark' ? '-dark' : '');
+
+					it(`${name}${colorModeSuffix}`, async() => {
+						const elem = await fixture(radioFixture, { colorMode });
 						await expect(elem).to.be.golden();
 					});
-				}
+
+					if (state !== 'disabled') {
+						it(`${name}-focus${colorModeSuffix}`, async() => {
+							const elem = await fixture(radioFixture, { colorMode });
+							await focusElem(elem);
+							await expect(elem).to.be.golden();
+						});
+					}
+
+				});
 
 			});
 		});

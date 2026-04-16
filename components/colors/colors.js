@@ -111,8 +111,10 @@ const lightVariables = new Map([
 	['--d2l-theme-text-color-static-standard', '--d2l-color-ferrite'],
 	['--d2l-theme-text-color-static-subtle', '--d2l-color-tungsten'],
 	// figma - undefined
+	['--d2l-theme-background-color-interactive-faint-disabled', '#f9fbff80'], /* --d2l-theme-background-color-interactive-faint-default at 50% opacity, remove once color-mix is widely supported */
 	['--d2l-theme-badge-background-color', '--d2l-color-gypsum'],
 	['--d2l-theme-badge-text-color', '--d2l-theme-text-color-static-standard'],
+	['--d2l-theme-border-color-disabled', '--d2l-color-corundum'],
 	['--d2l-theme-notification-background-color', '--d2l-color-carnelian-minus-1'],
 	['--d2l-theme-notification-text-color', '#ffffff'],
 	['--d2l-theme-text-color-static-disabled', '#20212280'], /* --d2l-theme-text-color-static-standard at 50% opacity, remove once color-mix is widely supported */
@@ -125,7 +127,12 @@ const lightVariables = new Map([
 	['--d2l-theme-shadow-attached-block-start', '0 2px 4px 0 rgba(0, 0, 0, 0.03)'],
 	['--d2l-theme-shadow-attached-block-end', '0 -2px 4px 0 rgba(0, 0, 0, 0.03)'],
 	['--d2l-theme-shadow-floating', '0 2px 12px 0 rgba(0, 0, 0, 0.15)'],
-	['--d2l-theme-shadow-inset', 'inset 0 2px 0 0 rgba(177, 185, 190, 0.2)'], /* corundum */
+	['--d2l-theme-shadow-inset-offset-x', '0'],
+	['--d2l-theme-shadow-inset-offset-y', '2px'],
+	['--d2l-theme-shadow-inset-blur-radius', '0'],
+	['--d2l-theme-shadow-inset-spread-radius', '0'],
+	['--d2l-theme-shadow-inset-color', 'rgba(177, 185, 190, 0.2)'],
+	['--d2l-theme-shadow-inset', 'inset var(--d2l-theme-shadow-inset-offset-x) var(--d2l-theme-shadow-inset-offset-y) var(--d2l-theme-shadow-inset-blur-radius) var(--d2l-theme-shadow-inset-spread-radius) var(--d2l-theme-shadow-inset-color)'], /* corundum */
 	// feedback (old semantic names)
 	['--d2l-color-feedback-error', '--d2l-theme-status-color-error'],
 	['--d2l-color-feedback-warning', '--d2l-theme-status-color-warning'],
@@ -176,8 +183,10 @@ const darkVariables = new Map([
 	['--d2l-theme-text-color-static-standard', '--d2l-color-mica'],
 	['--d2l-theme-text-color-static-subtle', '--d2l-color-chromite'],
 	// figma - undefined
+	['--d2l-theme-background-color-interactive-faint-disabled', '#20212280'], /* --d2l-theme-background-color-interactive-faint-default at 50% opacity, remove once color-mix is widely supported */
 	['--d2l-theme-badge-background-color', '#303335'],
 	['--d2l-theme-badge-text-color', '--d2l-theme-text-color-static-standard'],
+	['--d2l-theme-border-color-disabled', '#303233'], /* --d2l-theme-border-color-standard (tungsten) at 50% opacity */
 	['--d2l-theme-notification-background-color', '--d2l-color-carnelian-minus-1'],
 	['--d2l-theme-notification-text-color', '#ffffff'],
 	['--d2l-theme-text-color-static-disabled', '#cdd5dc80'], /* --d2l-theme-text-color-static-standard at 50% opacity, remove once color-mix is widely supported */
@@ -190,7 +199,12 @@ const darkVariables = new Map([
 	['--d2l-theme-shadow-attached-block-start', '0 2px 4px 0 rgba(0, 0, 0, 0.85)'],
 	['--d2l-theme-shadow-attached-block-end', '0 -2px 4px 0 rgba(0, 0, 0, 0.85)'],
 	['--d2l-theme-shadow-floating', '0 2px 12px 0 rgba(0, 0, 0, 0.85)'],
-	['--d2l-theme-shadow-inset', 'inset 0 2px 0 0 rgba(177, 185, 190, 0.2)'], /* corundum */
+	['--d2l-theme-shadow-inset-offset-x', '0'],
+	['--d2l-theme-shadow-inset-offset-y', '2px'],
+	['--d2l-theme-shadow-inset-blur-radius', '0'],
+	['--d2l-theme-shadow-inset-spread-radius', '0'],
+	['--d2l-theme-shadow-inset-color', 'rgba(177, 185, 190, 0.2)'],
+	['--d2l-theme-shadow-inset', 'inset var(--d2l-theme-shadow-inset-offset-x) var(--d2l-theme-shadow-inset-offset-y) var(--d2l-theme-shadow-inset-blur-radius) var(--d2l-theme-shadow-inset-spread-radius) var(--d2l-theme-shadow-inset-color)'], /* corundum */
 	// feedback (old semantic names)
 	['--d2l-color-feedback-error', '--d2l-theme-status-color-error'],
 	['--d2l-color-feedback-warning', '--d2l-theme-status-color-warning'],
@@ -249,6 +263,7 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		}
 
 		@supports (color: color-mix(in srgb, black 50%, transparent)) {
+			--d2l-theme-background-color-interactive-faint-disabled: color-mix(in srgb, var(--d2l-theme-background-color-interactive-faint-default) 50%, transparent);
 			--d2l-theme-text-color-static-disabled: color-mix(in srgb, var(--d2l-theme-text-color-static-standard) 50%, transparent);
 		}
 	`;
