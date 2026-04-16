@@ -6,6 +6,7 @@ import '../offscreen/offscreen.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const BACKDROP_DELAY_MS = 800;
@@ -20,7 +21,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /**
  * A component for displaying a semi-transparent backdrop and a loading spinner over the containing element
  */
-class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
+class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitElement)) {
 
 	static get properties() {
 		return {
@@ -33,7 +34,7 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 			 * Used to identify content that the backdrop should make inert
 			 * @type {boolean}
 			 */
-			for: { type: String },
+			for: { type: String, required: true },
 			_state: { type: String, reflect: true },
 			_spinnerTop: { state: true },
 			_ariaContent: { state: true }
@@ -189,15 +190,15 @@ class LoadingBackdrop extends LocalizeCoreElement(LitElement) {
 	#getBackdropTarget() {
 		const parent = getComposedParent(this);
 
-		if (!this.for) { return parent; }
-
 		const targetedChildren = getComposedChildren(
 			parent,
 			(elem) => elem.id === this.for,
 			false
 		);
 
-		return targetedChildren.length === 0 ? parent : targetedChildren[0];
+		if (targetedChildren.length === 0) { throw new Error(`Backdrop cannot find sibling identified by 'for' property with value ${this.for}`);}
+
+		return targetedChildren[0];
 	}
 	#handleTransitionEnd() {
 		if (this._state === 'hiding') {
