@@ -40,14 +40,6 @@ export const checkboxStyles = css`
 				var(--d2l-theme-background-color-interactive-faint-disabled)
 			),
 			var(--d2l-input-checkbox-background-image);
-		@supports (color: color-mix(in srgb, black 50%, transparent)) {
-			--d2l-input-checkbox-background-image-disabled:
-				linear-gradient(
-					color-mix(in srgb, var(--d2l-input-checkbox-background-color) 50%, transparent),
-					color-mix(in srgb, var(--d2l-input-checkbox-background-color) 50%, transparent)
-				),
-				var(--d2l-input-checkbox-background-image);
-		}
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
