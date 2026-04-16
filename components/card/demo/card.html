@@ -18,6 +18,8 @@
 			import '../card-content-meta.js';
 			import '../card-content-title.js';
 			import '../card-footer-link.js';
+			import { registerCustomSemanticVariableValue } from '../../colors/colors.js';
+			registerCustomSemanticVariableValue('--d2l-subtle-cards-background', 'var(--d2l-theme-background-color-sunken)', 'var(--d2l-color-ferrite)');
 		</script>
 		<style>
 			.cards {
@@ -26,7 +28,7 @@
 				gap: 0.6rem;
 			}
 			.cards-subtle {
-				background-color: #f6f7f8;
+				background-color: var(--d2l-subtle-cards-background);
 				padding: 20px;
 			}
 			d2l-card {

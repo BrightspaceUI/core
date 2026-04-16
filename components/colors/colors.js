@@ -261,11 +261,19 @@ export function registerSemanticVariableForSvgImageUrl(name, value) {
 	}
 
 	const replacedLightValue = svgToCSS(replaceSemanticVariables(value, lightVariables));
-	style.sheet.insertRule(`html { ${ name }: ${ replacedLightValue } }`, 0);
-
 	const replacedDarkValue = svgToCSS(replaceSemanticVariables(value, darkVariables));
-	style.sheet.insertRule(`html[data-color-mode="dark"] { ${ name }: ${ replacedDarkValue } }`, 1);
+	registerCustomSemanticVariableValue(name, replacedLightValue, replacedDarkValue);
+
+}
+
+export function registerCustomSemanticVariableValue(name, lightValue, darkValue) {
+	if (!name || typeof lightValue !== 'string' || typeof darkValue !== 'string') {
+		throw new TypeError('registerCustomSemanticVariableValue requires a name, lightValue, and darkValue');
+	}
+
+	style.sheet.insertRule(`html { ${ name }: ${ lightValue } }`, 0);
+	style.sheet.insertRule(`html[data-color-mode="dark"] { ${ name }: ${ darkValue } }`, 1);
 	style.sheet.insertRule(`@media (prefers-color-scheme: dark) {
-		html[data-color-mode="os"] { ${ name }: ${ replacedDarkValue } }
+		html[data-color-mode="os"] { ${ name }: ${ darkValue } }
 	}`, 2);
-};
+}

@@ -3,17 +3,19 @@ import '../card-content-title.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
 
 describe('card-content-meta', () => {
-	it('default', async() => {
-		const elem = await fixture(html`
-			<d2l-card-content-meta>
-				Card Meta
-				<ul>
-					<li>meta-data 1</li>
-					<li>meta-data 2</li>
-				</ul>
-			</d2l-card-content-meta>
-		`);
-		await expect(elem).to.be.golden();
+	['light', 'dark'].forEach(colorMode => {
+		it(`default-${colorMode}`, async() => {
+			const elem = await fixture(html`
+				<d2l-card-content-meta>
+					Card Meta
+					<ul>
+						<li>meta-data 1</li>
+						<li>meta-data 2</li>
+					</ul>
+				</d2l-card-content-meta>
+			`, { colorMode });
+			await expect(elem).to.be.golden();
+		});
 	});
 });
 

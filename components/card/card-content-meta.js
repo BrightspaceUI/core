@@ -11,7 +11,7 @@ class CardContentMeta extends LitElement {
 		return css`
 			:host {
 				box-sizing: border-box;
-				color: var(--d2l-color-tungsten);
+				color: var(--d2l-theme-text-color-static-subtle);
 				display: inline-block;
 				font-size: 0.7rem;
 				font-weight: 400;
