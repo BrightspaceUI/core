@@ -3,10 +3,10 @@ import { expect, fixture, html } from '@brightspace-ui/testing';
 
 const template = html`
 	<div style="position:relative">
-		<div style="background-color: orange; height: 200px; padding: 1rem;">
+		<div id="target" style="background-color: orange; height: 200px; padding: 1rem;">
 			Stuff in here
 		</div>
-		<d2l-backdrop-loading></d2l-backdrop-loading>
+		<d2l-backdrop-loading for="target"></d2l-backdrop-loading>
 	</div>
 `;
 
