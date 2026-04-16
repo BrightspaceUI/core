@@ -31,8 +31,8 @@ class CardLoadingShimmer extends SkeletonMixin(LitElement) {
 			}
 
 			:host([skeleton]) .d2l-skeletize::before {
-				box-shadow: inset 0 -1px 0 0 var(--d2l-color-gypsum);
 				border-radius: 0;
+				box-shadow: inset 0 -1px 0 0 var(--d2l-color-gypsum);
 			}
 			:host([skeleton]) slot {
 				display: none;
