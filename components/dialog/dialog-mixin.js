@@ -42,6 +42,11 @@ export const DialogMixin = superclass => class extends superclass {
 			 */
 			noContentScroll: { type: Boolean, attribute: 'no-content-scroll', reflect: true },
 			/**
+			 * @ignore
+			 * Do NOT use this
+			 */
+			preferNative: { type: Boolean, attribute: 'prefer-native' },
+			/**
 			 * The optional title for the dialog
 			 */
 			titleText: { type: String, attribute: 'title-text' },
@@ -56,7 +61,6 @@ export const DialogMixin = superclass => class extends superclass {
 			_overflowBottom: { state: true },
 			_overflowTop: { state: true },
 			_parentDialog: { state: true },
-			_preferNative: { state: true },
 			_scroll: { state: true },
 			_state: { type: String, reflect: true },
 			_top: { state: true },
@@ -70,6 +74,7 @@ export const DialogMixin = superclass => class extends superclass {
 		this.focusableContentElemPresent = false;
 		this.noContentScroll = false;
 		this.opened = false;
+		this.preferNative = false;
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
 		this._fullscreenWithin = 0;
@@ -84,7 +89,6 @@ export const DialogMixin = superclass => class extends superclass {
 		this._overflowBottom = false;
 		this._overflowTop = false;
 		this._parentDialog = null;
-		this._preferNative = false;
 		this._scroll = false;
 		this._state = null;
 		this._top = 0;
@@ -107,7 +111,7 @@ export const DialogMixin = superclass => class extends superclass {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		this._useNative = (window.D2L.DialogMixin.hasNative && this._preferNative);
+		this._useNative = (window.D2L.DialogMixin.hasNative && this.preferNative);
 	}
 
 	async updated(changedProperties) {

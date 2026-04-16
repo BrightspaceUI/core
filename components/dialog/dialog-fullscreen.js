@@ -193,6 +193,7 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 		super();
 		this.async = false;
 		this.noPadding = false;
+		this.preferNative = false;
 		this._autoSize = false;
 		this._hasFooterContent = false;
 		this._icon = 'tier1:close-large-thick';
@@ -200,7 +201,6 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 		this._handleResize = this._handleResize.bind(this);
 		this._handleResize();
 		this.width = 1170;
-		this._preferNative = false;
 		this._titleId = getUniqueId();
 	}
 
