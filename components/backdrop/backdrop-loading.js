@@ -1,7 +1,5 @@
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
-import '../empty-state/empty-state-action-button.js';
-import '../empty-state/empty-state-simple.js';
 import '../offscreen/offscreen.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
