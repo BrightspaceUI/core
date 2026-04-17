@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Stängningsvarning",
+	"components.backdrop-loading.loadingAnnouncement": "Loading.",
+	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
 	"components.breadcrumbs.breadcrumb": "Sökväg",
 	"components.button-add.addItem": "Lägg till objekt",
 	"components.button-copy.copied": "Kopierat!",
