@@ -236,7 +236,7 @@ function replaceSemanticVariables(value, semanticVariables) {
 	});
 }
 
-let style;
+let style, lightRule, darkRule, osRule;
 if (globalThis.document !== undefined && !globalThis.document.head.querySelector('#d2l-colors')) {
 	style = globalThis.document.createElement('style');
 	style.id = 'd2l-colors';
@@ -270,11 +270,11 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		}
 	`;
 	globalThis.document.head.appendChild(style);
-}
 
-const lightRule = style.sheet.cssRules[0];
-const darkRule = style.sheet.cssRules[1];
-const osRule = style.sheet.cssRules[2].cssRules[0];
+	lightRule = style.sheet.cssRules[0];
+	darkRule = style.sheet.cssRules[1];
+	osRule = style.sheet.cssRules[2].cssRules[0];
+}
 
 export function registerSemanticVariableForSvgImageUrl(name, value) {
 	if (!name || typeof value !== 'string') {
