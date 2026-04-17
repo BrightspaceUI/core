@@ -1,4 +1,4 @@
-import '../colors/colors.js';
+import '../expand-collapse/expand-collapse-content.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -8,15 +8,22 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { InputInlineHelpMixin } from './input-inline-help.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
+import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
-import { svgToCSS } from '../../helpers/svg-to-css.js';
 
-export const inputCheck = svgToCSS(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-	<path fill="#494C4E" d="M8.4 16.6c.6.6 1.5.6 2.1 0l8-8c.6-.6.6-1.5 0-2.1-.6-.6-1.5-.6-2.1 0l-6.9 7-1.9-1.9c-.6-.6-1.5-.6-2.1 0-.6.6-.6 1.5 0 2.1l2.9 2.9z"/>\
-</svg>`);
-export const inputCheckIndeterminate = svgToCSS(`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-	<path fill="#494C4E" d="M7.5,11h9c0.8,0,1.5,0.7,1.5,1.5l0,0c0,0.8-0.7,1.5-1.5,1.5h-9C6.7,14,6,13.3,6,12.5l0,0C6,11.7,6.7,11,7.5,11z"/>
-</svg>`);
+registerSemanticVariableForSvgImageUrl(
+	'--d2l-input-checkbox-check-image',
+	`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+		<path fill="var(--d2l-theme-icon-color-standard)" d="M8.4 16.6c.6.6 1.5.6 2.1 0l8-8c.6-.6.6-1.5 0-2.1-.6-.6-1.5-.6-2.1 0l-6.9 7-1.9-1.9c-.6-.6-1.5-.6-2.1 0-.6.6-.6 1.5 0 2.1l2.9 2.9z"/>\
+	</svg>`
+);
+
+registerSemanticVariableForSvgImageUrl(
+	'--d2l-input-checkbox-indeterminate-image',
+	`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+		<path fill="var(--d2l-theme-icon-color-standard)" d="M7.5,11h9c0.8,0,1.5,0.7,1.5,1.5l0,0c0,0.8-0.7,1.5-1.5,1.5h-9C6.7,14,6,13.3,6,12.5l0,0C6,11.7,6.7,11,7.5,11z"/>
+	</svg>`
+);
 
 export const cssSizes = {
 	inputBoxSize: 1.2,
@@ -26,23 +33,13 @@ export const cssSizes = {
 export const checkboxStyles = css`
 	input[type="checkbox"].d2l-input-checkbox {
 		--d2l-input-checkbox-background-image: none;
-		--d2l-input-checkbox-background-color: var(--d2l-color-regolith);
+		--d2l-input-checkbox-background-color: var(--d2l-theme-background-color-interactive-faint-default);
 		--d2l-input-checkbox-background-image-disabled:
 			linear-gradient(
-				/* regolith at 50% */
-				rgba(249, 251, 255, 0.5),
-				rgba(249, 251, 255, 0.5)
+				var(--d2l-theme-background-color-interactive-faint-disabled),
+				var(--d2l-theme-background-color-interactive-faint-disabled)
 			),
 			var(--d2l-input-checkbox-background-image);
-
-		@supports (color: color-mix(in srgb, black 50%, transparent)) {
-			--d2l-input-checkbox-background-image-disabled:
-				linear-gradient(
-					color-mix(in srgb, var(--d2l-input-checkbox-background-color) 50%, transparent),
-					color-mix(in srgb, var(--d2l-input-checkbox-background-color) 50%, transparent)
-				),
-				var(--d2l-input-checkbox-background-image);
-		}
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
@@ -61,32 +58,32 @@ export const checkboxStyles = css`
 		width: ${cssSizes.inputBoxSize}rem;
 	}
 	input[type="checkbox"].d2l-input-checkbox:checked {
-		--d2l-input-checkbox-background-image: ${inputCheck};
+		--d2l-input-checkbox-background-image: var(--d2l-input-checkbox-check-image);
 	}
 	input[type="checkbox"].d2l-input-checkbox:indeterminate {
-		--d2l-input-checkbox-background-image: ${inputCheckIndeterminate};
+		--d2l-input-checkbox-background-image: var(--d2l-input-checkbox-indeterminate-image);
 	}
 	input[type="checkbox"].d2l-input-checkbox,
 	input[type="checkbox"].d2l-input-checkbox:hover:disabled {
 		background-color: var(--d2l-input-checkbox-background-color);
-		border-color: var(--d2l-color-galena);
+		border-color: var(--d2l-theme-border-color-emphasized);
 		border-width: 1px;
 	}
 	input[type="checkbox"].d2l-input-checkbox:hover:disabled {
-		border-color: var(--d2l-color-corundum);
+		border-color: var(--d2l-theme-border-color-disabled);
 	}
 	input[type="checkbox"].d2l-input-checkbox:hover,
 	input[type="checkbox"].d2l-input-checkbox:focus,
 	input[type="checkbox"].d2l-input-checkbox.d2l-input-checkbox-focus,
 	:host(.d2l-hovering) input[type="checkbox"]:not(:disabled).d2l-input-checkbox {
-		border-color: var(--d2l-input-checkbox-border-color-hover-focus, var(--d2l-color-celestine));
+		border-color: var(--d2l-input-checkbox-border-color-hover-focus, var(--d2l-theme-border-color-focus));
 		border-width: 2px;
 		outline: none;
 	}
 	input[type="checkbox"].d2l-input-checkbox:disabled,
 	input[type="checkbox"].d2l-input-checkbox:where([aria-disabled="true"]) {
 		background-image: var(--d2l-input-checkbox-background-image-disabled);
-		border-color: var(--d2l-color-corundum);
+		border-color: var(--d2l-theme-border-color-disabled);
 	}
 	@media (forced-colors: active) {
 		input[type="checkbox"].d2l-input-checkbox:checked,
@@ -109,15 +106,15 @@ export const checkboxStyles = css`
 
 		input[type="checkbox"].d2l-input-checkbox:disabled,
 		input[type="checkbox"].d2l-input-checkbox:where([aria-disabled="true"]) {
-			opacity: 0.5;
+			opacity: var(--d2l-theme-opacity-disabled-control);
 		}
 
 		input[type="checkbox"].d2l-input-checkbox:checked::after {
-			mask-image: ${inputCheck};
+			mask-image: var(--d2l-input-checkbox-check-image);
 		}
 
 		input[type="checkbox"].d2l-input-checkbox:indeterminate::after {
-			mask-image: ${inputCheckIndeterminate};
+			mask-image: var(--d2l-input-checkbox-indeterminate-image);
 		}
 	}
 `;
@@ -177,6 +174,11 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 			 */
 			notTabbable: { type: Boolean, attribute: 'not-tabbable' },
 			/**
+			 * Hides the supporting slot when unchecked
+			 * @type {boolean}
+			 */
+			supportingHiddenWhenUnchecked: { type: Boolean, attribute: 'supporting-hidden-when-unchecked', reflect: true },
+			/**
 			 * Value of the input
 			 * @type {string}
 			 */
@@ -209,7 +211,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 					display: inline-block;
 				}
 				.d2l-input-checkbox-text {
-					color: var(--d2l-color-ferrite);
+					color: var(--d2l-theme-text-color-static-standard);
 					display: inline-block;
 					font-size: 0.8rem;
 					font-weight: 400;
@@ -235,11 +237,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 					vertical-align: top;
 				}
 				.d2l-input-checkbox-supporting {
-					display: none;
 					margin-block-start: 0.6rem;
-				}
-				.d2l-input-checkbox-supporting-visible {
-					display: block;
 				}
 			`
 		];
@@ -254,6 +252,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 		this.labelHidden = false;
 		this.name = '';
 		this.notTabbable = false;
+		this.supportingHiddenWhenUnchecked = false;
 		this.value = 'on';
 		this._hasSupporting = false;
 		this._isHovered = false;
@@ -265,16 +264,14 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 
 	render() {
 		const tabindex = this.notTabbable ? -1 : undefined;
-		const supportingClasses = {
-			'd2l-input-checkbox-supporting': true,
-			'd2l-input-checkbox-supporting-visible': this._hasSupporting
-		};
+		const supportingContentVisible = this._hasSupporting && (this.checked || !this.supportingHiddenWhenUnchecked);
 		const textClasses = {
 			'd2l-input-checkbox-text': true,
 			'd2l-skeletize': true,
 			'd2l-input-checkbox-text-disabled': this.disabled
 		};
 		const ariaChecked = this.indeterminate ? 'mixed' : undefined;
+		const ariaExpanded = this._hasSupporting && this.supportingHiddenWhenUnchecked ? (supportingContentVisible ? 'true' : 'false') : undefined;
 		const ariaLabel = (this.label && this.labelHidden) ? this.label : undefined;
 		const label = (this.label && !this.labelHidden) ? this.label : nothing;
 		const disabled = this.disabled || this.skeleton;
@@ -289,6 +286,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 					aria-checked="${ifDefined(ariaChecked)}"
 					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
 					aria-disabled="${ifDefined(disabled && this.disabledTooltip ? 'true' : undefined)}"
+					aria-expanded="${ifDefined(ariaExpanded)}"
 					aria-label="${ifDefined(ariaLabel)}"
 					@change="${this.#handleChange}"
 					class="d2l-input-checkbox"
@@ -305,7 +303,9 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 			${this._renderInlineHelp(this.#inlineHelpId)}
 			${offscreenContainer}
 			${disabledTooltip}
-			<div class="${classMap(supportingClasses)}" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
+			<d2l-expand-collapse-content ?expanded="${supportingContentVisible}">
+				<div class="d2l-input-checkbox-supporting" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
+			</d2l-expand-collapse-content>
 		`;
 	}
 

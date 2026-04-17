@@ -1,14 +1,14 @@
 import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
+import '../backdrop/backdrop-loading.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { cssSizes } from '../inputs/input-checkbox.js';
 import { getComposedParent } from '../../helpers/dom.js';
 import { getFlag } from '../../helpers/flags.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { isPopoverSupported } from '../popover/popover-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
-
-const colSyncFix = getFlag('GAUD-8228-8186-improved-table-col-sync', true);
 
 export const tableStyles = css`
 	.d2l-table {
@@ -222,22 +222,17 @@ export const tableStyles = css`
 	}
 
 	/* sticky + scroll-wrapper */
-	${colSyncFix ? css`
-		d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper]:not([_no-scroll-width]) .d2l-table {
-			display: flex;
-			flex-direction: column;
-		}
+	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper]:not([_no-scroll-width]) .d2l-table {
+		display: flex;
+		flex-direction: column;
+	}
 
-		d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > thead {
-			display: table-header-group;
-		}
+	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > thead {
+		display: table-header-group;
+	}
 
-		d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > tbody {
-			display: table-row-group;
-		}` : css`
-		d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table {
-			display: block;
-		}`
+	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper][_no-scroll-width] .d2l-table > tbody {
+		display: table-row-group;
 	}
 
 	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table > thead {
@@ -254,6 +249,7 @@ export const tableStyles = css`
 	[data-popover-count] {
 		z-index: 6 !important; /* if opened above, we want to stack on top of sticky table-controls */
 	}
+
 `;
 
 const SELECTORS = {
@@ -299,6 +295,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				reflect: true,
 				type: Boolean
 			},
+			_stickyWidth: { state: true },
 			/**
 			 * Type of table style to apply. The "light" style has fewer borders and tighter padding.
 			 * @type {'default'|'light'}
@@ -312,6 +309,14 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				attribute: '_no-scroll-width',
 				reflect: true,
 				type: Boolean,
+			},
+			/**
+			 * Whether or not to display a loading backdrop. Set this property when the content in the table is being refreshed.
+			 * @type {boolean}
+			 */
+			loading: {
+				reflect: true,
+				type: Boolean
 			},
 		};
 	}
@@ -371,17 +376,21 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this.noColumnBorder = false;
 		this.stickyHeaders = false;
 		this.stickyHeadersScrollWrapper = false;
+		this._stickyWidth = 0;
 		this.type = 'default';
 
 		this._controls = null;
 		this._controlsMutationObserver = null;
 		this._controlsScrolled = false;
 		this._controlsScrolledMutationObserver = null;
-		this._noScrollWidth = colSyncFix;
+		this._noScrollWidth = true;
 		this._table = null;
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
+		this.loading = false;
+
+		this._excludeStickyColumnsFromScrollCalculations = getFlag('GAUD-9530-exclude-sticky-columns-from-scroll-calculations', false);
 	}
 
 	connectedCallback() {
@@ -410,12 +419,17 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	render() {
-		const slot = html`<slot @slotchange="${this._handleSlotChange}"></slot>`;
+		const slot = html`
+			<div style="position:relative">
+				<slot id="table-slot" @slotchange="${this._handleSlotChange}"></slot>
+				<d2l-backdrop-loading for="table-slot" ?shown=${this.loading}></d2l-backdrop-loading>
+			</div>
+		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
 			${this.stickyHeaders && this._controlsScrolled ? html`<div class="d2l-sticky-headers-backdrop"></div>` : nothing}
-			${useScrollWrapper ? html`<d2l-scroll-wrapper .customScrollers="${this._tableScrollers}">${slot}</d2l-scroll-wrapper>` : slot}
+			${useScrollWrapper ? html`<d2l-scroll-wrapper scroll-area-offset=${ifDefined(this._excludeStickyColumnsFromScrollCalculations ? this._stickyWidth : undefined)} .customScrollers="${this._tableScrollers}">${slot}</d2l-scroll-wrapper>` : slot}
 			${this._renderPagerContainer()}
 		`;
 	}
@@ -579,7 +593,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 		if (!this._tableResizeObserver) this._tableResizeObserver = new ResizeObserver(entries => this._syncColumnWidths(entries));
 		this._tableResizeObserver.observe(this._table);
-		colSyncFix && this.querySelectorAll('tr:first-child *').forEach(el => this._tableResizeObserver.observe(el));
+		this.querySelectorAll('tr:first-child *').forEach(el => this._tableResizeObserver.observe(el));
 
 		this._handleTableChange();
 	}
@@ -614,7 +628,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 		if (updates.count) this._updateItemShowingCount();
 		if (updates.classNames) this._applyClassNames();
-		colSyncFix && await Promise.all([...updateList, ...this.querySelectorAll('d2l-table-col-sort-button')].map(n => n.updateComplete));
+		await Promise.all([...updateList, ...this.querySelectorAll('d2l-table-col-sort-button')].map(n => n.updateComplete));
 		if (updates.syncWidths) this._syncColumnWidths();
 		if (updates.sticky) this._updateStickyTops();
 	}
@@ -633,12 +647,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		const head = this._table.querySelector('thead');
 		const body = this._table.querySelector('tbody');
 
-		if (colSyncFix) {
-			const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
-			setTimeout(() => {
-				this._noScrollWidth = this.clientWidth === maxScrollWidth;
-			});
-		}
+		const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
+		setTimeout(() => {
+			this._noScrollWidth = this.clientWidth === maxScrollWidth;
+		});
 		if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
 
 		const candidateRowHeadCells = [];
@@ -715,25 +727,29 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 
 		if (candidateRowHeadCells.length !== candidateRowBodyLength) return;
 
+		let stickyWidth = 0;
 		for (let i = 0; i < candidateRowHeadCells.length; i++) {
 			const headCell = candidateRowHeadCells[i];
 			const headStyle = getComputedStyle(headCell);
 
 			const bodyCell = candidateRowBody.cells[i];
 			const bodyStyle = getComputedStyle(bodyCell);
-
+			let cellWidth = headCell.clientWidth + parseFloat(headStyle.borderLeft) + parseFloat(headStyle.borderRight);
 			if (headCell.clientWidth > bodyCell.clientWidth) {
 				const headOverallWidth = parseFloat(headStyle.width) + parseFloat(headStyle.paddingLeft) + parseFloat(headStyle.paddingRight);
 				bodyCell.style.minWidth = `${headOverallWidth - parseFloat(bodyStyle.paddingLeft) - parseFloat(bodyStyle.paddingRight)}px`;
 			} else if (headCell.clientWidth < bodyCell.clientWidth) {
 				const bodyOverallWidth = parseFloat(bodyStyle.width) + parseFloat(bodyStyle.paddingLeft) + parseFloat(bodyStyle.paddingRight);
 				headCell.style.minWidth = `${bodyOverallWidth - parseFloat(headStyle.paddingLeft) - parseFloat(headStyle.paddingRight)}px`;
+				cellWidth = bodyCell.clientWidth + parseFloat(bodyStyle.borderLeft) + parseFloat(bodyStyle.borderRight);
 			}
+			if (headCell.hasAttribute('sticky')) stickyWidth += cellWidth;
 		}
+		if (this._excludeStickyColumnsFromScrollCalculations) this._stickyWidth = stickyWidth;
 	}
 
 	_updateStickyAncestor(node, popoverOpened) {
-		if (!this.stickyHeaders) return;
+		if (!this.stickyHeaders || isPopoverSupported) return;
 
 		node = getComposedParent(node);
 		while (node) {

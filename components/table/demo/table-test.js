@@ -97,6 +97,11 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 						icon="tier1:${this.stickyHeaders ? 'check' : 'close-default'}"
 						@d2l-selection-action-click="${this._toggleStickyHeaders}"
 					></d2l-selection-action>
+					<d2l-selection-action
+						text="Loading"
+						icon="tier1:${this.loading ? 'check' : 'close-default'}"
+						@d2l-selection-action-click="${this._toggleLoading}"
+					></d2l-selection-action>
 				</d2l-table-controls>
 
 				<table class="d2l-table">
@@ -251,6 +256,9 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 		this.requestUpdate();
 	}
 
+	_toggleLoading() {
+		this.loading = !this.loading;
+	}
 	_toggleStickyControls() {
 		this.stickyControls = !this.stickyControls;
 	}

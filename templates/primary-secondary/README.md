@@ -47,7 +47,7 @@ Note: this template automatically includes `<header>`, `<main>`, `<aside>` and `
 
 ### IFrames
 
-If either of the panels contain an `iframe`, resizing may not work properly. This occurs because `iframe`s prevent the page template from receiving mouse events. To handle situations like these, setting `pointer-events: none` for the `iframe` is recommended during resizing. This can be done by listening for `d2l-template-primary-secondary-resize-start` and `d2l-template-primary-secondary-resize-end` events.
+If either of the panels contain an `iframe`, resizing may not work properly. This occurs because `iframe`s prevent the page template from receiving mouse events. To handle situations like these, setting `pointer-events: none` for the `iframe` is recommended during resizing. This can be done by listening for `d2l-iframe-pointer-events-disable` and `d2l-iframe-pointer-events-enable` events.
 
 <!-- docs: start hidden content -->
 ### Properties
@@ -63,8 +63,8 @@ If either of the panels contain an `iframe`, resizing may not work properly. Thi
 | `width-type` | String, default: `'fullscreen'` | Whether content fills the screen or not. When set to `normal`, the width of the template is constrained to `1230px`. Can be one of `'fullscreen'`, `'normal'`. |
 
 ### Events
-* `d2l-template-primary-secondary-resize-start`: dispatched when a user begins moving the divider
-* `d2l-template-primary-secondary-resize-end`: dispatched when a user finishes moving the divider
+* `d2l-iframe-pointer-events-disable`: dispatched when a user begins moving the divider to instruct iframe owners to disable pointer events
+* `d2l-iframe-pointer-events-enable`: dispatched when a user finishes moving the divider to instruct iframe owners to re-enable pointer events.
 
 ### Slots
 * `header`: page header content

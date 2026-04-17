@@ -89,7 +89,8 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 		}
 	}
 
-	updated(changedProperties) {
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
 		if (changedProperties.has('_siblingHasNestedItems') || changedProperties.has('expandable')) {
 			this._renderExpandCollapseSlot = this.expandable || this._siblingHasNestedItems;
 		}

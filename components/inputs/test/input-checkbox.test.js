@@ -32,7 +32,7 @@ describe('d2l-input-checkbox', () => {
 			elem = await fixture(checkboxFixtures.unchecked);
 		});
 
-		['checked', 'disabled', 'indeterminate', 'notTabbable'].forEach((name) => {
+		['checked', 'disabled', 'indeterminate', 'notTabbable', 'supportingHiddenWhenUnchecked'].forEach((name) => {
 			it(`should default "${name}" property to "false"`, () => {
 				expect(elem[name]).to.be.false;
 			});
@@ -338,6 +338,51 @@ describe('d2l-input-checkbox', () => {
 			setTimeout(() => elem.submit());
 			const evt = await oneEvent(elem, 'd2l-form-submit');
 			expect(evt.detail.formData).to.deep.equal({});
+		});
+
+	});
+
+	describe('supporting slot', () => {
+
+		it('should display existing supporting content when checked and has the supporting-hidden-when-unchecked attribute', async() => {
+			const elem = await fixture(checkboxFixtures.supportingHiddenWhenUnchecked);
+			const supportingElem = elem.shadowRoot.querySelector('d2l-expand-collapse-content');
+			expect(supportingElem.expanded).to.be.false;
+
+			clickElem(getInput(elem));
+			await oneEvent(elem, 'change');
+			expect(supportingElem.expanded).to.be.true;
+		});
+
+	});
+
+	describe('accessibility', () => {
+
+		describe('aria-expanded', () => {
+
+			it('should not have the aria-expanded attribute when supporting-hidden-when-unchecked is not set', async() => {
+				const elem = await fixture(checkboxFixtures.supporting);
+				const input = getInput(elem);
+				expect(input.hasAttribute('aria-expanded')).to.be.false;
+			});
+
+			it('should have the aria-expanded attribute when supporting-hidden-when-unchecked is set with a supporing slot', async() => {
+				const elem = await fixture(checkboxFixtures.supportingHiddenWhenUnchecked);
+				const input = getInput(elem);
+				expect(input.hasAttribute('aria-expanded')).to.be.true;
+			});
+
+			it('should update the aria-expanded attribute value to represent the expanded state of the supporting content', async() => {
+				const elem = await fixture(checkboxFixtures.supportingHiddenWhenUnchecked);
+				const input = getInput(elem);
+				expect(input.getAttribute('aria-expanded')).to.equal('false');
+
+				clickElem(input);
+				await oneEvent(elem, 'change');
+
+				expect(input.getAttribute('aria-expanded')).to.equal('true');
+			});
+
 		});
 
 	});

@@ -1,4 +1,5 @@
 import './input-text.js';
+import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
 import { formatNumber, getNumberDescriptor, parseNumber } from '@brightspace-ui/intl/lib/number.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';

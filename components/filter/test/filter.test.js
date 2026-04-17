@@ -1274,10 +1274,11 @@ describe('d2l-filter', () => {
 	});
 
 	describe('slot change', () => {
-		async function addDimensionSet(elem) {
+		async function addDimensionSet(elem, minWidth = 1000) {
 			const newDim = document.createElement('d2l-filter-dimension-set');
 			newDim.key = 'newDim';
 			newDim.text = 'New Dim';
+			newDim.minWidth = minWidth;
 			const newValue = document.createElement('d2l-filter-dimension-set-value');
 			newValue.key = 'newValue';
 			newValue.text = 'New Value';
@@ -1298,6 +1299,23 @@ describe('d2l-filter', () => {
 			expect(elem._dimensions[0].key).to.equal('dim');
 			expect(elem._dimensions[1].key).to.equal('newDim');
 			expect(elem._totalAppliedCount).to.equal(2);
+			expect(elem._minWidth).to.equal(1000);
+		});
+
+		it('does not use smaller minWidth values from new dimensions', async() => {
+			const elem = await fixture(singleSetDimensionFixture);
+			expect(elem._dimensions.length).to.equal(1);
+			expect(elem._totalAppliedCount).to.equal(1);
+			const initialMinWidth = elem._minWidth;
+			expect(elem._minWidth).to.not.equal(undefined);
+
+			await addDimensionSet(elem, 10);
+
+			expect(elem._dimensions.length).to.equal(2);
+			expect(elem._dimensions[0].key).to.equal('dim');
+			expect(elem._dimensions[1].key).to.equal('newDim');
+			expect(elem._totalAppliedCount).to.equal(2);
+			expect(elem._minWidth).to.equal(initialMinWidth);
 		});
 
 		it('slot chnages are ignored if _ignoreSlotChanges is true', async() => {
@@ -1315,6 +1333,15 @@ describe('d2l-filter', () => {
 
 			expect(elem._dimensions.length).to.equal(1);
 			expect(elem._totalAppliedCount).to.equal(1);
+		});
+	});
+
+	describe('create set dimension', () => {
+		it('sets minWidth to match maximum dimension minWidth value', async() => {
+			const elem = await fixture(singleSetDimensionDateTimeRangeDateFixture);
+			const timeDimension = elem._dimensions[0];
+
+			expect(elem._minWidth).to.equal(timeDimension.minWidth);
 		});
 	});
 

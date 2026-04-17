@@ -3,6 +3,7 @@ import '../table-col-sort-button-item.js';
 import '../table-controls.js';
 import { css, LitElement } from 'lit';
 import { defineCE, expect, fixture, html, nextFrame, runConstructor } from '@brightspace-ui/testing';
+import { mockFlag } from '../../../helpers/flags.js';
 import { tableStyles } from '../table-wrapper.js';
 
 describe('d2l-table-wrapper', () => {
@@ -27,77 +28,6 @@ describe('d2l-table-wrapper', () => {
 		it('should not add class to body when not sticky', async() => {
 			await fixture(html`<d2l-table-wrapper></d2l-table-wrapper>`);
 			expect(document.body.classList.contains('d2l-table-sticky-headers')).to.be.false;
-		});
-
-	});
-
-	describe('popover', () => {
-
-		const tagName = defineCE(
-			class extends LitElement {
-				static get properties() {
-					return {
-						stickyHeaders: { type: Boolean, reflect: true, attribute: 'sticky-headers' }
-					};
-				}
-				static get styles() {
-					return tableStyles;
-				}
-				render() {
-					return html`
-						<d2l-table-wrapper ?sticky-headers="${this.stickyHeaders}">
-							<table class="d2l-table">
-								<thead>
-									<tr>
-										<th><span id="some-popover"></span></th>
-									</tr>
-								</thead>
-							</table>
-						</d2l-table-wrapper>
-					`;
-				}
-			}
-		);
-
-		it('should not set data-popover-count attribute when not sticky and popover opens', async() => {
-			const el = await fixture(`<${tagName}></${tagName}>`);
-			const popoverElement = el.shadowRoot.querySelector('#some-popover');
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
-			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.be.null;
-		});
-
-		it('should not set data-popover-count attribute when not sticky and popover closes', async() => {
-			const el = await fixture(`<${tagName}></${tagName}>`);
-			const popoverElement = el.shadowRoot.querySelector('#some-popover');
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
-			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.be.null;
-		});
-
-		it('should increment data-popover-count attribute when sticky and popover opens', async() => {
-			const el = await fixture(`<${tagName} sticky-headers></${tagName}>`);
-			const popoverElement = el.shadowRoot.querySelector('#some-popover');
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
-			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.equal('2');
-		});
-
-		it('should decrement data-popover-count attribute when sticky and popover closes', async() => {
-			const el = await fixture(`<${tagName} sticky-headers></${tagName}>`);
-			const popoverElement = el.shadowRoot.querySelector('#some-popover');
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
-			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.equal('2');
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
-			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.equal('1');
-		});
-
-		it('should remove data-popover-count attribute when sticky and all popovers are closed', async() => {
-			const el = await fixture(`<${tagName} sticky-headers></${tagName}>`);
-			const popoverElement = el.shadowRoot.querySelector('#some-popover');
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
-			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.equal('1');
-			popoverElement.dispatchEvent(new CustomEvent('d2l-dropdown-close', { bubbles: true, composed: true }));
-			expect(el.shadowRoot.querySelector('th').getAttribute('data-popover-count')).to.be.null;
 		});
 
 	});
@@ -164,6 +94,66 @@ describe('d2l-table-wrapper', () => {
 			}
 			expect(slowEl.parentElement.getBoundingClientRect().width).to.equal(row1_1.getBoundingClientRect().width);
 			expect(el.shadowRoot.querySelector('d2l-table-wrapper')._noScrollWidth).to.be[`${width < 20}`];
+
+		}));
+	});
+	describe('scrolling with large sticky column', () => {
+
+		const tagName = defineCE(
+			class extends LitElement {
+				static get styles() {
+					return [tableStyles, css`
+						:host {
+							display: block;
+							width: 400px;
+						}
+						.large-sticky {
+							min-width: 300px;
+						}
+						:host([td-size="larger"]) th.large-sticky,
+						:host([td-size="smaller"]) td.large-sticky {
+							min-width: 200px;
+						}
+					`];
+				}
+				render() {
+					return html`
+						<d2l-table-wrapper sticky-headers sticky-headers-scroll-wrapper>
+							<table class="d2l-table">
+								<thead>
+									<tr>
+										<th sticky class="large-sticky">
+											I'm a large header
+										</th>
+										<th>Other header 1</th>
+										<th>Other header 2</th>
+										<th>Other header 3</th>
+										<th>Other header 4</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td sticky class="large-sticky">I'm a large cell</td>
+										<td>Other cell 1</td>
+										<td>Other cell 2</td>
+										<td>Other cell 3</td>
+										<td>Other cell 4</td>
+									</tr>
+								</tbody>
+							</table>
+						</d2l-table-wrapper>
+					`;
+				}
+			}
+		);
+
+		['smaller', 'same', 'larger'].forEach(size => it(`sets scroll offset (sticky body cell is ${size})`, async() => {
+			mockFlag('GAUD-9530-exclude-sticky-columns-from-scroll-calculations', true);
+			const el = await fixture(`<${tagName} td-size="${size}"></${tagName}>`);
+			const scrollWrapper = el.shadowRoot.querySelector('d2l-table-wrapper').shadowRoot.querySelector('d2l-scroll-wrapper');
+			const expectedWidth = el.shadowRoot.querySelector(`${size === 'larger' ? 'td' : 'th'}.large-sticky`).clientWidth;
+
+			expect(scrollWrapper.scrollAreaOffset).to.equal(expectedWidth + 2); // width + 1px border
 
 		}));
 	});

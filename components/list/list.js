@@ -3,7 +3,6 @@ import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
-import ResizeObserver from 'resize-observer-polyfill';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
 
 const keyCodes = {
@@ -135,17 +134,14 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				margin-right: 0.9rem;
 			}
 			:host([_breakpoint="1"]) {
-				--d2l-list-item-illustration-margin-inline-end: 1rem;
 				--d2l-list-item-illustration-max-height: 3.55rem;
 				--d2l-list-item-illustration-max-width: 6rem;
 			}
 			:host([_breakpoint="2"]) {
-				--d2l-list-item-illustration-margin-inline-end: 1rem;
 				--d2l-list-item-illustration-max-height: 5.1rem;
 				--d2l-list-item-illustration-max-width: 9rem;
 			}
 			:host([_breakpoint="3"]) {
-				--d2l-list-item-illustration-margin-inline-end: 1rem;
 				--d2l-list-item-illustration-max-height: 6rem;
 				--d2l-list-item-illustration-max-width: 10.8rem;
 			}
@@ -260,9 +256,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			${this._renderPagerContainer()}
 		`;
 	}
-
-	updated(changedProperties) {
-		super.updated(changedProperties);
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
 		if (changedProperties.has('breakpoints') && changedProperties.get('breakpoints') !== undefined) {
 			this.resizedCallback(this.offsetWidth, true);
 		}

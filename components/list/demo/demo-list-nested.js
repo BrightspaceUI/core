@@ -69,8 +69,8 @@ class ListDemoNested extends LitElement {
 		`;
 	}
 
-	updated(changedProperties) {
-		super.updated(changedProperties);
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
 		if (changedProperties.has('demoItemKey')) {
 			this._items = listDemos[this.demoItemKey] ?? [];
 			this._loadedItems = this._items;

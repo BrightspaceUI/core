@@ -263,3 +263,41 @@ export function querySelectorComposed(node, selector) {
 
 	return null;
 }
+
+const resizeNoopEventListener = new Set();
+const resizeNoopRect = {};
+
+if (globalThis.addEventListener) {
+	globalThis.addEventListener('resize', e => {
+		if (resizeNoopEventListener.size === 0) return;
+
+		const frameElement = e.target.frameElement;
+		if (frameElement?.classList.contains('d2l-iframe-fit-user-content')) {
+			// ignore if the iframe is spamming no-op resize events
+			if (resizeNoopRect.height === frameElement.scrollHeight && resizeNoopRect.width === frameElement.scrollWidth) {
+				return;
+			}
+			resizeNoopRect.height = frameElement.scrollHeight;
+			resizeNoopRect.width = frameElement.scrollWidth;
+		}
+
+		resizeNoopEventListener.forEach(listener => {
+			listener(e);
+		});
+	});
+}
+
+export function addResizeNoopEventListener(listener) {
+	resizeNoopEventListener.add(listener);
+	resizeNoopRect.height = null;
+	resizeNoopRect.width = null;
+}
+
+export function removeResizeNoopEventListener(listener) {
+	resizeNoopEventListener.delete(listener);
+}
+
+// testing only
+export function clearResizeNoopEventListeners() {
+	resizeNoopEventListener.clear();
+}

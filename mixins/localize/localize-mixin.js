@@ -25,13 +25,14 @@ export const _LocalizeMixinBase = dedupeMixin(superclass => class LocalizeMixinB
 	}
 
 	async getUpdateComplete() {
-		await super.getUpdateComplete();
+		const ret = await super.getUpdateComplete();
 		const hasResources = this._hasResources();
 		const resourcesLoaded = this.localize.resources !== undefined && !this.pristine;
 		if (!hasResources || resourcesLoaded) {
-			return;
+			return ret;
 		}
 		await this.__resourcesLoadedPromise;
+		return ret;
 	}
 
 	shouldUpdate(changedProperties) {

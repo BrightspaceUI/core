@@ -1,3 +1,4 @@
+import '../expand-collapse/expand-collapse-content.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -80,11 +81,7 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 				margin-inline-start: 1.7rem;
 			}
 			.d2l-input-radio-supporting {
-				display: none;
 				margin-block-start: 0.6rem;
-			}
-			.d2l-input-radio-supporting-visible {
-				display: block;
 			}
 		`];
 	}
@@ -129,6 +126,7 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 
 	render() {
 		const allowFocus = !this.focusDisabled && this._focusable;
+		const supportingContentVisible = this._hasSupporting && (!this.supportingHiddenWhenUnchecked || this._checked);
 		const labelStyles = {
 			alignItems: this._horizontal ? 'flex-start' : undefined
 		};
@@ -142,10 +140,6 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 			'd2l-disabled': this.focusDisabled && !this.skeleton,
 			'd2l-hovering': this._isHovered && !this.focusDisabled,
 			'd2l-skeletize': true
-		};
-		const supportingClasses = {
-			'd2l-input-radio-supporting': true,
-			'd2l-input-radio-supporting-visible': this._hasSupporting && (!this.supportingHiddenWhenUnchecked || this._checked),
 		};
 		const description = this.description ? html`<div id="${this.#descriptionId}" hidden>${this.description}</div>` : nothing;
 		const ariaDescribedByIds = `${this.description ? this.#descriptionId : ''} ${this._hasInlineHelp ? this.#inlineHelpId : ''}`.trim();
@@ -169,7 +163,9 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 			${this._renderInlineHelp(this.#inlineHelpId)}
 			${description}
 			${disabledTooltip}
-			<div class="${classMap(supportingClasses)}" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
+			<d2l-expand-collapse-content ?expanded="${supportingContentVisible}">
+				<div class="d2l-input-radio-supporting" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
+			</d2l-expand-collapse-content>
 		`;
 	}
 

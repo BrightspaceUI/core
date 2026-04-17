@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "3.211.0",
+  "version": "3.234.0",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -40,6 +40,9 @@
     "!demo",
     "!test",
     "/components/demo",
+    "/components/description-list/demo",
+    "/components/selection/demo",
+    "/components/table/demo",
     "!/components/demo/demo"
   ],
   "author": "D2L Corporation",
@@ -54,7 +57,7 @@
     "chalk": "^5",
     "eslint": "^9",
     "eslint-config-brightspace": "^2.0.0",
-    "eslint-plugin-unicorn": "^62",
+    "eslint-plugin-unicorn": "^64",
     "glob-all": "^3",
     "messageformat-validator": "^3.0.0-beta",
     "rollup": "^4",
@@ -71,7 +74,6 @@
     "@open-wc/dedupe-mixin": "^2",
     "ifrau": "^0.41",
     "lit": "^3",
-    "prismjs": "^1",
-    "resize-observer-polyfill": "^1"
+    "prismjs": "^1"
   }
 }

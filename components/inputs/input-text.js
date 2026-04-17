@@ -1,7 +1,6 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { inputStyles, invalidIcon } from './input-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
@@ -10,6 +9,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { InputInlineHelpMixin } from './input-inline-help.js';
 import { inputLabelStyles } from './input-label-styles.js';
+import { inputStyles } from './input-styles.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { PerfMonitor } from '../../helpers/perfMonitor.js';
@@ -141,9 +141,9 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			size: { type: Number },
 			/**
 			 * ADVANCED: For number inputs, sets the step size
-			 * @type {string}
+			 * @type {number}
 			 */
-			step: { type: String },
+			step: { type: Number },
 			/**
 			 * @ignore
 			 */
@@ -227,6 +227,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 				}
 				.d2l-input {
 					-webkit-appearance: textfield;
+					appearance: textfield;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					white-space: nowrap;
@@ -249,7 +250,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 					right: 0;
 				}
 				.d2l-input-unit {
-					color: var(--d2l-color-galena);
+					color: var(--d2l-theme-text-color-static-faint);
 					font-size: 0.7rem;
 					margin-top: 0.05rem;
 				}
@@ -263,10 +264,10 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 					margin-right: 12px;
 				}
 				:host([disabled]) .d2l-input-unit {
-					opacity: 0.5;
+					opacity: var(--d2l-theme-opacity-disabled-control);
 				}
 				.d2l-input-text-invalid-icon {
-					background-image: ${invalidIcon};
+					background-image: var(--d2l-input-invalid-image);
 					background-position: center center;
 					background-repeat: no-repeat;
 					background-size: 0.8rem 0.8rem;
@@ -487,7 +488,6 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 						size="${ifDefined(this.size)}"
 						step="${ifDefined(this.step)}"
 						style="${styleMap(inputStyles)}"
-						tabindex="${ifDefined(this.tabindex)}"
 						title="${ifDefined(this.title)}"
 						type="${this._getType()}">
 					<div class="d2l-input-inside-before" @keypress="${this._suppressEvent}">${this.dir === 'rtl' ? unit : ''}<slot name="${firstSlotName}" @slotchange="${this._handleSlotChange}"></slot></div>

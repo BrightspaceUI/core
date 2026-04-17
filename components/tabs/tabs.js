@@ -1,6 +1,5 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
-import '../../helpers/queueMicrotask.js';
 import './tab-internal.js';
 import { css, html, LitElement, unsafeCSS } from 'lit';
 import { cssEscape, findComposedAncestor, getOffsetParent, isVisible } from '../../helpers/dom.js';
@@ -12,7 +11,6 @@ import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { repeat } from 'lit/directives/repeat.js';
-import ResizeObserver from 'resize-observer-polyfill/dist/ResizeObserver.es.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -60,13 +58,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	static get styles() {
 		return [super.styles, bodyCompactStyles, css`
 			:host {
-				--d2l-tabs-background-color: white;
+				--d2l-tabs-background-color: var(--d2l-theme-background-color-base);
 				box-sizing: border-box;
 				display: block;
 				margin-bottom: 1.2rem;
 			}
 			.d2l-tabs-layout {
-				border-bottom: 1px solid var(--d2l-color-gypsum);
+				border-bottom: 1px solid var(--d2l-theme-border-color-subtle);
 				display: none;
 				max-height: 0;
 				opacity: 0;
@@ -157,7 +155,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			}
 			.d2l-tabs-scroll-button:hover,
 			.d2l-tabs-scroll-button:${unsafeCSS(getFocusPseudoClass())} {
-				background-color: var(--d2l-color-gypsum);
+				background-color: var(--d2l-theme-background-color-interactive-tertiary-hover);
 			}
 			${getFocusRingStyles('.d2l-tabs-scroll-button')}
 			:host([skeleton]) .d2l-tabs-scroll-button {
@@ -214,11 +212,11 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 					padding-inline: 4px;
 				}
 				.d2l-tabs-scroll-next-container {
-					border-inline-start: 1px solid var(--d2l-color-gypsum);
+					border-inline-start: 1px solid var(--d2l-theme-border-color-subtle);
 					padding-inline-start: 11px;
 				}
 				.d2l-tabs-scroll-previous-container {
-					border-inline-end: 1px solid var(--d2l-color-gypsum);
+					border-inline-end: 1px solid var(--d2l-theme-border-color-subtle);
 					padding-inline-end: 11px;
 				}
 			}

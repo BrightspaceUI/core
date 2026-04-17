@@ -1,14 +1,17 @@
 import '../backdrop/backdrop.js';
 import '../colors/colors.js';
 import '../focus-trap/focus-trap.js';
+import { addResizeNoopEventListener, getComposedParent, isComposedAncestor, removeResizeNoopEventListener } from '../../helpers/dom.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, nothing } from 'lit';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
-import { getComposedParent, isComposedAncestor } from '../../helpers/dom.js';
 import { _offscreenStyleDeclarations } from '../offscreen/offscreen.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getFlag } from '../../helpers/flags.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
+
+const ignoreNoopResizeEventsFlag = getFlag('GAUD-9520-ignore-no-op-resize-events', true);
 
 export const positionLocations = Object.freeze({
 	blockEnd: 'block-end',
@@ -34,7 +37,8 @@ const minBackdropWidthMobile = 30;
 const minOpenerSizeNoShift = 52;
 const pointerLength = 16;
 const pointerRotatedLength = Math.SQRT2 * parseFloat(pointerLength);
-const isSupported = ('popover' in HTMLElement.prototype);
+
+export const isPopoverSupported = ('popover' in HTMLElement.prototype);
 
 const getScrollbarWidth = () => {
 	const width = window.innerWidth - document.documentElement.clientWidth;
@@ -258,7 +262,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		this.configure();
 		this._mobile = false;
 		this._showBackdrop = false;
-		this._useNativePopover = isSupported ? 'manual' : undefined;
+		this._useNativePopover = isPopoverSupported ? 'manual' : undefined;
 		this.#handleAncestorMutationBound = this.#handleAncestorMutation.bind(this);
 		this.#handleAutoCloseClickBound = this.#handleAutoCloseClick.bind(this);
 		this.#handleAutoCloseFocusBound = this.#handleAutoCloseFocus.bind(this);
@@ -611,7 +615,11 @@ export const PopoverMixin = superclass => class extends superclass {
 		this.#removeRepositionHandlers();
 		this.#ancestorMutations = new Map();
 
-		window.addEventListener('resize', this.#handleResizeBound);
+		if (ignoreNoopResizeEventsFlag) {
+			addResizeNoopEventListener(this.#handleResizeBound);
+		} else {
+			window.addEventListener('resize', this.#handleResizeBound);
+		}
 
 		this._ancestorMutationObserver ??= new MutationObserver(this.#handleAncestorMutationBound);
 		const mutationConfig = { attributes: true, childList: true, subtree: true };
@@ -1185,7 +1193,11 @@ export const PopoverMixin = superclass => class extends superclass {
 		});
 		this._scrollablesObserved = null;
 		this._ancestorMutationObserver?.disconnect();
-		window.removeEventListener('resize', this.#handleResizeBound);
+		if (ignoreNoopResizeEventsFlag) {
+			removeResizeNoopEventListener(this.#handleResizeBound);
+		} else {
+			window.removeEventListener('resize', this.#handleResizeBound);
+		}
 	}
 
 	#reposition() {

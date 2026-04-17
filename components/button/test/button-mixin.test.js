@@ -101,27 +101,14 @@ describe('ButtonMixin', () => {
 
 	describe('disabled button events', () => {
 
-		let documentClickHandler;
-
-		beforeEach(() => {
-			documentClickHandler = () => {
-				throw new Error('click event propagated to document');
-			};
-			document.addEventListener('click', documentClickHandler, { once: true });
-		});
-
-		afterEach(() => {
-			document.removeEventListener('click', documentClickHandler, { once: true });
-		});
-
 		it('should stop propagation of click events if button is disabled', async() => {
-			const el = await fixture(`<${tagName} disabled></${tagName}>`);
-			expect(() => clickElem(el)).to.not.throw();
-		});
+			const el = await fixture(`<div><${tagName} disabled></${tagName}></div>`);
+			let dispatched = false;
+			el.addEventListener('click', () => dispatched = true);
 
-		it('should stop propagation of click events if button is disabled with disabled-tooltip', async() => {
-			const el = await fixture(`<${tagName} disabled disabled-tooltip="tooltip text"></${tagName}>`);
-			expect(() => clickElem(el)).to.not.throw();
+			await clickElem(el.querySelector(tagName));
+
+			expect(dispatched).to.be.false;
 		});
 
 	});

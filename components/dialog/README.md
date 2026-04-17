@@ -32,15 +32,15 @@ The `d2l-dialog` element is a generic dialog that provides a slot for arbitrary 
 * Label primary actions with clear and predictable language. Use verbs like, “Add” or “Save” that indicate the outcome of a dialog rather than, “OK” or “Close”
 * Keep dialog titles concise
 * Maintain a language relationship between the action that triggered the dialog, dialog title, and dialog primary button.
-* When it is necessary to stack multiple dialogs, ensure the stacked dialog is nested within the DOM of the dialog containing the opener
+* When it is necessary to nest multiple dialogs, ensure the nested dialog is within the DOM of the dialog containing the opener
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
 * Don’t use a dialog when you could reasonably use an alternative that preserves user context, like expanding options inline
 * Don’t use a dialog to show error, success, or warning messages. Use an inline or toast alert instead.
-* Avoid creating large, complex dialogs
-* Avoid opening a dialog from within other dialogs (stacking dialogs)
-* Avoid a title length that could easily wrap to two lines
+* Avoid opening a dialog from another dialog (nesting) since this can increase cognitive load and disorient users
+  * Exception: confirmation dialogs that protect users from losing unsaved work
+* Avoid titles that are long enough to wrap onto multiple lines
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 

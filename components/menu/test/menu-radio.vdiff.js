@@ -16,6 +16,7 @@ describe('menu-radio', () => {
 	[
 		{ name: 'normal', template: createMenu() },
 		{ name: 'selected', template: createMenu({ selected: true }) },
+		{ name: 'selected-dark', colorMode: 'dark', template: createMenu({ selected: true }) },
 		{ name: 'rtl', rtl: true, template: createMenu({ selected: true }) },
 		{ name: 'disabled', template: createMenu({ disabled: true }) },
 		{ name: 'supporting', template: html`
@@ -43,9 +44,9 @@ describe('menu-radio', () => {
 				</d2l-menu-item-radio>
 			</d2l-menu>
 		` }
-	].forEach(({ name, rtl, template }) => {
+	].forEach(({ name, colorMode, rtl, template }) => {
 		it(name, async() => {
-			const elem = await fixture(template, { rtl });
+			const elem = await fixture(template, { colorMode, rtl });
 			await expect(elem).to.be.golden();
 		});
 	});

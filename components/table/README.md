@@ -366,19 +366,26 @@ When a single column is responsible for sorting in multiple facets (e.g., first 
 
 ## Selection
 
-If your table supports row selection, apply the `selected` attribute to `<tr>` row elements which are actively selected.
+Table rows can support both single- and multi-select by leveraging [Selection](../../components/selection/) components.
+
+To enable selection, add `d2l-selection-input` components in the selection column, and a `d2l-selection-select-all` component in the the column's header cell. Apply the `selected` attribute to `<tr>` row elements which are actively selected.
+
+**Important:** Single selection tables won't need the Select All component in the header, so be sure to add an `aria-label` for screen reader users.
 
 <!-- docs: demo -->
 ```html
 <script type="module">
+  import '@brightspace-ui/core/components/selection/selection-input.js';
+  import '@brightspace-ui/core/components/selection/selection-select-all.js';
   import { html, LitElement } from 'lit';
   import { tableStyles } from '@brightspace-ui/core/components/table/table-wrapper.js';
 
-  class MySelectableTableElem extends LitElement {
+  class SampleTableWithSelectionInputs extends LitElement {
 
     static get properties() {
       return {
-        _checked: { type: Boolean }
+        selectionSingle: { type: Boolean, attribute: 'selection-single' },
+        _data: { state: true }
       }
     }
 
@@ -388,45 +395,83 @@ If your table supports row selection, apply the `selected` attribute to `<tr>` r
 
     constructor() {
       super();
-      this._checked = true;
+      this.selectionSingle = false;
+      this._data = [{ name: 'John Smith', checked: true }, { name: 'Emily Jones', checked: false }];
     }
 
     render() {
       return html`
-        <d2l-table-wrapper>
+        <d2l-table-wrapper ?selection-single="${this.selectionSingle}">
           <table class="d2l-table">
             <thead>
               <tr>
-                <th>Column A</th>
-                <th>Column B</th>
+                ${!this.selectionSingle ? html`<th><d2l-selection-select-all></d2l-selection-select-all></th>` : html`<th aria-label="Selection column"></th>`}
+                <th>Learner</th>
               </tr>
             </thead>
             <tbody>
-              <tr ?selected="${this._checked}">
-                <td><input type="checkbox" ?checked="${this._checked}" @click="${this._selectRow}"></td>
-                <td>this row is ${!this._checked ? 'not' : ''} selected</td>
-              </tr>
+              ${this._data.map((rowData, i) => html`
+                <tr ?selected="${rowData.checked}">
+                  <td>
+                    <d2l-selection-input key="${i}" label="${rowData.name}" ?selected="${rowData.checked}" @d2l-selection-change="${this._selectRow}"></d2l-selection-input>
+                  </td>
+                  <td>${rowData.name}</td>
+                </tr>
+              `)}
             </tbody>
           </table>
         </d2l-table-wrapper>
       `;
     }
 
-    _selectRow() {
-      this._checked = !this._checked;
+    _selectRow(e) {
+      const key = e.target.key;
+      this._data[key].checked = e.target.selected;
+      this.requestUpdate();
     }
 
   }
-  customElements.define('d2l-my-selectable-table-elem', MySelectableTableElem);
+  customElements.define('d2l-sample-table-with-selection-inputs', SampleTableWithSelectionInputs);
 </script>
-<d2l-my-selectable-table-elem></d2l-my-selectable-table-elem>
+<d2l-sample-table-with-selection-inputs></d2l-sample-table-with-selection-inputs>
+<d2l-sample-table-with-selection-inputs selection-single></d2l-sample-table-with-selection-inputs>
 ```
 
 ```html
-<tr selected>
-  <td><input type="checkbox" checked></td>
-  <td>this row is selected</td>
-</tr>
+<d2l-table-wrapper>
+  <table class="d2l-table">
+    <thead>
+      <tr>
+        <th><d2l-selection-select-all></d2l-selection-select-all></th>
+        <th>Learner</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr selected>
+          <td><d2l-selection-input key="1" label="John Smith" selected></d2l-selection-input></td>
+          <td>John Smith</td>
+        </tr>
+        <tr>
+          <td><d2l-selection-input key="2" label="Emily Jones"></d2l-selection-input></td>
+          <td>Emily Jones</td>
+        </tr>
+    </tbody>
+  </table>
+</d2l-table-wrapper>
+```
+
+```html
+<d2l-table-wrapper selection-single>
+  <table class="d2l-table">
+    <thead>
+      <tr>
+        <th aria-label="Selection column"></th>
+        <th>Learner</th>
+      </tr>
+    </thead>
+    ...
+  </table>
+</d2l-table-wrapper>  
 ```
 
 ## Pageable Tables
@@ -462,8 +507,8 @@ The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `c
     constructor() {
       super();
       this._data = {
-        a: { checked: true },
-        b: { checked: false },
+        a: { checked: false, notes: 'Scroll down to see sticky header behaviour.'  },
+        b: { checked: false, notes: 'Reduce the width to see the control actions chomp.' },
       };
     }
 
@@ -471,23 +516,25 @@ The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `c
       return html`
         <d2l-table-wrapper>
           <d2l-table-controls slot="controls">
+            <d2l-selection-action icon="tier1:edit" text="Edit" requires-selection></d2l-selection-action>
             <d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
             <d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+            <d2l-selection-action icon="tier1:help" text="Help"></d2l-selection-action>
           </d2l-table-controls>
           <table class="d2l-table">
             <thead>
               <tr>
-                <th><d2l-selection-select-all></d2l-selection-select-all></th>
-                <th>Column B</th>
+                <th style="width: 1px;"><d2l-selection-select-all></d2l-selection-select-all></th>
+                <th>Notes</th>
               </tr>
             </thead>
             <tbody>
               ${Object.keys(this._data).map((key, i) => html`
-                <tr>
+                <tr ?selected="${this._data[key].checked}">
                   <td>
                     <d2l-selection-input key="${key}" label="${key}" ?selected="${this._data[key].checked}" @d2l-selection-change="${this._selectRow}"></d2l-selection-input>
                   </td>
-                  <td>this row is ${!this._data[key].checked ? 'not' : ''} selected</td>
+                  <td>${this._data[key].notes}</td>
                 </tr>
               `)}
             </tbody>

@@ -10,10 +10,14 @@ describe('button', () => {
 		describe(category, () => {
 			[
 				{ name: 'normal' },
+				{ name: 'normal-dark', colorMode: 'dark' },
 				{ name: 'hover', action: hoverElem },
+				{ name: 'hover-dark', colorMode: 'dark', action: hoverElem },
 				{ name: 'focus', action: focusElem },
+				{ name: 'focus-dark', colorMode: 'dark', action: focusElem },
 				{ name: 'click', action: clickElem },
 				{ name: 'disabled', action: elem => elem.disabled = true },
+				{ name: 'disabled-dark', colorMode: 'dark', action: elem => elem.disabled = true },
 				{ name: 'active', action: elem => elem.setAttribute('active', '') },
 				{ name: 'active-disabled', action: elem => { elem.setAttribute('active', ''); elem.disabled = true; } },
 				{ name: 'disabled-slotted content', action: async elem => { // Test opacity with slotted content
@@ -24,9 +28,9 @@ describe('button', () => {
 					elem.disabled = true;
 					await elem.updateComplete;
 				} },
-			].forEach(({ action, name }) => {
+			].forEach(({ action, colorMode, name }) => {
 				it(name, async() => {
-					const elem = await fixture(template);
+					const elem = await fixture(template, { colorMode });
 					if (action) await action(elem);
 					await expect(elem).to.be.golden();
 				});

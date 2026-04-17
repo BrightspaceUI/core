@@ -31,7 +31,7 @@ class DemoPage extends LitElement {
 	static get styles() {
 		return [ css`
 			:host {
-				background-color: var(--d2l-color-background-base);
+				background-color: var(--d2l-theme-background-color-sunken);
 				display: block;
 				padding: 30px;
 			}
@@ -46,6 +46,7 @@ class DemoPage extends LitElement {
 			}
 			.d2l-demo-page-content > ::slotted(h2),
 			.d2l-demo-page-content > ::slotted(h3) {
+				color: var(--d2l-theme-text-color-static-standard);
 				font-size: 0.8rem;
 				font-weight: 700;
 				line-height: 1.2rem;

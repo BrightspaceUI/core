@@ -37,7 +37,7 @@ Alerts communicate critical information relating to the state of the system and 
 	Inline Alerts can be placed anywhere in the page content
 </d2l-alert>
 <d2l-alert-toast id="alert-toast" type="success" open no-auto-close>
-	Toast Alerts appear at the botttom of the viewport
+	Toast Alerts appear at the bottom of the viewport
 </d2l-alert-toast>
 ```
 

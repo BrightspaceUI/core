@@ -170,6 +170,18 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 		this._textareaId = getUniqueId();
 	}
 
+	/** @ignore */
+	get selectionStart() {
+		return this.textarea?.selectionStart || 0;
+	}
+
+	/** @ignore */
+	set selectionStart(value) {
+		if (this.textarea !== null) {
+			this.textarea.selectionStart = value;
+		}
+	}
+
 	static get focusElementSelector() {
 		return 'textarea';
 	}
@@ -177,7 +189,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 	/** @ignore */
 	get textarea() {
 		// temporary until consumers are updated
-		return this.shadowRoot && this.shadowRoot.querySelector('textarea');
+		return this.shadowRoot?.querySelector('textarea');
 	}
 
 	/** @ignore */

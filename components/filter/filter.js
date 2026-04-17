@@ -10,6 +10,7 @@ import '../empty-state/empty-state-action-link.js';
 import '../empty-state/empty-state-simple.js';
 import '../expand-collapse/expand-collapse-content.js';
 import '../hierarchical-view/hierarchical-view.js';
+import '../icons/icon.js';
 import '../inputs/input-search.js';
 import '../list/list.js';
 import '../list/list-item.js';
@@ -573,7 +574,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			`;
 		}
 
-		if (dimension.minWidth) this._minWidth = dimension.minWidth;
+		if (dimension.minWidth) this._minWidth = Math.max(dimension.minWidth, this._minWidth);
 		if (this._isDimensionEmpty(dimension)) {
 			const emptyState = dimension.setEmptyState
 				? this._createEmptyState(dimension.setEmptyState, dimension.key)
@@ -821,8 +822,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 		let shouldUpdate = false,
 			shouldSearch = false,
-			shouldRecount = false,
-			shouldResizeDropdown = false;
+			shouldRecount = false;
 		changes.forEach((newValue, prop) => {
 			if (toUpdate[prop] === newValue) return;
 
@@ -841,10 +841,8 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			} else if (prop === 'values') {
 				if (dimension.searchValue || dimension.searchType === 'manual') shouldSearch = true;
 				shouldRecount = true;
-				shouldResizeDropdown = true;
 				this._activeFiltersSubscribers.updateSubscribers();
-			} else if (prop === 'loading') {
-				shouldResizeDropdown = true;
+				newValue.forEach((field) => this._minWidth = field.minWidth ? Math.max(field.minWidth, this._minWidth) : this._minWidth);
 			} else if (prop === 'text') {
 				this._activeFiltersSubscribers.updateSubscribers();
 			}
@@ -853,10 +851,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		if (shouldSearch) this._performDimensionSearch(dimension);
 		if (shouldRecount) this._setFilterCounts(dimension);
 		if (shouldUpdate) this.requestUpdate();
-		if (shouldResizeDropdown) {
-			// todo: remove this when removing GAUD-7472-dropdown-popover flag (this request is no longer needed)
-			this._requestDropdownResize();
-		}
 		if (e.detail.dispatchChangeEvent) this._dispatchChangeEventValueDataChange(dimension, value, e.detail.valueKey);
 	}
 
@@ -1070,18 +1064,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 				break;
 		}
 
-		// todo: remove this when removing GAUD-7472-dropdown-popover flag (this request is no longer needed)
-		this._requestDropdownResize();
 		this.requestUpdate();
-	}
-
-	// todo: remove this method when removing GAUD-7472-dropdown-popover flag (d2l-filter calls requestRepositionNextResize)
-	_requestDropdownResize() {
-		const singleDimension = this._dimensions.length === 1;
-		if (singleDimension && this.opened) {
-			const dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
-			dropdown.requestRepositionNextResize(this.shadowRoot.querySelector('.d2l-filter-container'));
-		}
 	}
 
 	_search(dimension) {

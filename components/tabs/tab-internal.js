@@ -46,7 +46,7 @@ class Tab extends SkeletonMixin(LitElement) {
 				margin-inline-start: 0;
 			}
 			.d2l-tab-selected-indicator {
-				border-top: 4px solid var(--d2l-color-celestine);
+				border-top: 4px solid var(--d2l-theme-brand-color-primary-default);
 				border-top-left-radius: 4px;
 				border-top-right-radius: 4px;
 				bottom: 0;
@@ -67,12 +67,12 @@ class Tab extends SkeletonMixin(LitElement) {
 				margin-inline-start: 0;
 				width: calc(100% - 0.6rem);
 			}
-			${getFocusRingStyles(pseudoClass => `:host(:${pseudoClass}) > .d2l-tab-text`, { extraStyles: css`border-radius: 0.3rem; color: var(--d2l-color-celestine);` })}
+			${getFocusRingStyles(pseudoClass => `:host(:${pseudoClass}) > .d2l-tab-text`, { extraStyles: css`border-radius: 0.3rem; color: var(--d2l-theme-text-color-interactive-default);` })}
 			:host([aria-selected="true"]:focus) {
 				text-decoration: none;
 			}
 			:host(:hover) {
-				color: var(--d2l-color-celestine);
+				color: var(--d2l-theme-text-color-interactive-default);
 				cursor: pointer;
 			}
 			:host([aria-selected="true"]:hover) {

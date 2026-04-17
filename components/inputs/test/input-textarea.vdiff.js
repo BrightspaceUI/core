@@ -14,14 +14,18 @@ describe('d2l-input-textarea', () => {
 	const customWidthFixture = html`<d2l-input-textarea label="Custom Width Longer Than Input" input-width="80px"></d2l-input-textarea>`;
 	[
 		{ name: 'default', template: defaultFixture },
+		{ name: 'default-dark', colorMode: 'dark', template: defaultFixture },
 		{ name: 'default-focus', template: defaultFixture, action: async(elem) => await focusElem(elem) },
+		{ name: 'default-focus-dark', colorMode: 'dark', template: defaultFixture, action: async(elem) => await focusElem(elem) },
 		{ name: 'disabled', template: html`<d2l-input-textarea label="Label" value="text disabled" disabled></d2l-input-textarea>` },
+		{ name: 'disabled-dark', colorMode: 'dark', template: html`<d2l-input-textarea label="Label" value="text disabled" disabled></d2l-input-textarea>` },
 		{ name: 'custom-width-hover-label', template: customWidthFixture, action: async(elem) => await hoverElem(elem.shadowRoot.querySelector('label')) },
 		{ name: 'custom-width-hover-input', template: customWidthFixture, action: async(elem) => await hoverElem(elem.shadowRoot.querySelector('textarea')) },
 		{ name: 'custom-width-hover-empty', template: customWidthFixture, action: async(elem) => await hoverElemAt(elem, 100, 50) },
 		{ name: 'label-hidden', template: html`<d2l-input-textarea label="Label" label-hidden value="text"></d2l-input-textarea>` },
 		{ name: 'wrapping', template: html`<d2l-input-textarea label="Label" value="Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker." min-height="none"></d2l-input-textarea>` },
 		{ name: 'placeholder', template: placeholderFixture },
+		{ name: 'placeholder-dark', colorMode: 'dark', template: placeholderFixture },
 		{ name: 'placeholder-focus', template: placeholderFixture, action: async(elem) => focusElem(elem) },
 		{ name: 'placeholder-disabled', template: html`<d2l-input-textarea label="Label" placeholder="placeholder disabled" disabled></d2l-input-textarea>` },
 		{ name: 'rows', template: html`<d2l-input-textarea label="Label" value="text" rows="2"></d2l-input-textarea>` },
@@ -35,18 +39,19 @@ describe('d2l-input-textarea', () => {
 		},
 		{ name: 'required', template: html`<d2l-input-textarea label="Label" value="text" required></d2l-input-textarea>` },
 		{ name: 'invalid', template: invalidFixture },
+		{ name: 'invalid-dark', colorMode: 'dark', template: invalidFixture },
 		{ name: 'invalid-focus', template: invalidFixture, action: async(elem) => focusElem(elem) },
+		{ name: 'invalid-focus-dark', colorMode: 'dark', template: invalidFixture, action: async(elem) => focusElem(elem) },
 		{ name: 'invalid-disabled', template: html`<d2l-input-textarea label="Label" value="invalid disabled" aria-invalid="true" disabled></d2l-input-textarea>` },
 		{ name: 'invalid-rtl', template: invalidFixture, rtl: true },
 		{ name: 'skeleton', template: html`<d2l-input-textarea label="Label" value="text" skeleton></d2l-input-textarea>` },
+		{ name: 'skeleton-dark', colorMode: 'dark', template: html`<d2l-input-textarea label="Label" value="text" skeleton></d2l-input-textarea>` },
 		{ name: 'no-border-padding', template: noBorderPaddingFixture },
 		{ name: 'no-border-padding-focus', template: noBorderPaddingFixture, action: async(elem) => focusElem(elem) },
 		{ name: 'custom-width', template: html`<d2l-input-textarea label="Label" value="text" input-width="100px"></d2l-input-textarea>` },
 		{ name: 'custom-width-skeleton', template: html`<d2l-input-textarea label="Label" value="text" input-width="100px" skeleton></d2l-input-textarea>` },
-		{
-			name: 'inline-help',
-			template: new inlineHelpFixtures().textArea()
-		},
+		{ name: 'inline-help', template: new inlineHelpFixtures().textArea() },
+		{ name: 'inline-help-dark', colorMode: 'dark', template: new inlineHelpFixtures().textArea() },
 		{
 			name: 'inline-help-rtl',
 			template: new inlineHelpFixtures().textArea(),
@@ -68,10 +73,10 @@ describe('d2l-input-textarea', () => {
 			name: 'inline-help-disabled',
 			template: new inlineHelpFixtures({ disabled: true }).textArea()
 		}
-	].forEach(({ name, template, action, rtl }) => {
+	].forEach(({ name, template, action, colorMode, rtl }) => {
 
 		it(name, async() => {
-			const elem = await fixture(template, { rtl, viewport });
+			const elem = await fixture(template, { colorMode, rtl, viewport });
 			if (action) await action(elem);
 			await expect(elem).to.be.golden();
 		});

@@ -166,7 +166,7 @@ class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(Lit
 
 	render() {
 		const text = this.text || this.localize('components.button-add.addItem');
-		const id = !this.mode !== MODE.icon_and_text ? this._buttonId : undefined;
+		const id = this.mode !== MODE.icon_and_text ? this._buttonId : undefined;
 
 		const content = this.mode !== MODE.icon_and_text
 			? html`<d2l-button-add-icon-text ?visible-on-ancestor="${this.mode === MODE.icon_when_interacted}" animation-type="opacity"></d2l-button-add-icon-text>`

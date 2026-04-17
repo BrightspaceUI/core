@@ -49,8 +49,8 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 		return [super.styles, buttonStyles, visibleOnAncestorStyles,
 			css`
 				:host {
-					--d2l-button-icon-background-color-default: transparent;
-					--d2l-button-icon-background-color-hover-default: var(--d2l-color-gypsum);
+					--d2l-button-icon-background-color-default: var(--d2l-theme-background-color-interactive-tertiary-default);
+					--d2l-button-icon-background-color-hover-default: var(--d2l-theme-background-color-interactive-tertiary-hover);
 					--d2l-button-icon-border-radius-default: 0.3rem;
 					--d2l-button-icon-min-height-default: calc(2rem + 2px);
 					--d2l-button-icon-min-width-default: calc(2rem + 2px);
@@ -62,12 +62,12 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 					display: none;
 				}
 				:host([translucent]) {
-					--d2l-button-icon-background-color-default: rgba(0, 0, 0, 0.5);
-					--d2l-button-icon-background-color-hover-default: var(--d2l-color-celestine);
-					--d2l-focus-ring-color: white;
+					--d2l-button-icon-background-color-default: var(--d2l-theme-background-color-interactive-translucent-default);
+					--d2l-button-icon-background-color-hover-default: var(--d2l-theme-background-color-interactive-translucent-hover);
+					--d2l-focus-ring-color: var(--d2l-theme-icon-color-inverted);
 					--d2l-focus-ring-offset: -4px;
-					--d2l-button-icon-fill-color: white;
-					--d2l-button-icon-fill-color-hover: white;
+					--d2l-button-icon-fill-color: var(--d2l-theme-icon-color-inverted);
+					--d2l-button-icon-fill-color-hover: var(--d2l-theme-icon-color-inverted);
 				}
 				:host([theme="dark"]) {
 					--d2l-button-icon-background-color-default: transparent;
@@ -103,13 +103,13 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 				button:hover:not([disabled]),
 				button:focus:not([disabled]),
 				:host([active]) button:not([disabled]) {
-					--d2l-button-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-color-tungsten));
+					--d2l-button-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-theme-icon-color-standard));
 					background-color: var(--d2l-button-icon-background-color-hover, var(--d2l-button-icon-background-color-hover-default));
 				}
 
 				d2l-icon,
 				slot[name="icon"]::slotted(d2l-icon-custom) {
-					color: var(--d2l-button-icon-fill-color, var(--d2l-color-tungsten));
+					color: var(--d2l-button-icon-fill-color, var(--d2l-theme-icon-color-standard));
 				}
 
 				:host([translucent]) button {
@@ -122,7 +122,7 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 
 				:host([disabled]) button {
 					cursor: default;
-					opacity: 0.5;
+					opacity: var(--d2l-theme-opacity-disabled-control);
 				}
 
 				@media (prefers-reduced-motion: reduce) {

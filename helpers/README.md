@@ -253,17 +253,6 @@ const plugins = getPlugins('foo-plugins');
 const plugin = tryGetPluginByKey('foo-plugins', 'key-1');
 ```
 
-## queueMicrotask
-
-A polyfill for [queueMicrotask](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/queueMicrotask). For more information on microtasks, read [this article from Mozilla](https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide).
-
-```js
-import '@brightspace-ui/core/helpers/queueMicrotask.js';
-queueMicrotask(() => {
-    // do some work
-});
-```
-
 ## requestIdleCallback
 
 A simple shim for [requestIdleCallback](https://www.w3.org/TR/requestidlecallback/#the-requestidlecallback-method) and [cancelIdleCallback](https://www.w3.org/TR/requestidlecallback/#the-cancelidlecallback-method) that transparently falls back to `setTimeout` if it's not natively supported.
@@ -305,19 +294,5 @@ import '@brightspace-ui/core/helpers/viewport-size.js';
 .full-screen-elem {
     min-height: calc(var(--d2l-vh, 1vh) * 100);
     min-width: calc(var(--d2l-vw, 1vw) * 100);
-}
-```
-
-## Visual Ready
-
-A helper for determining that the page is visually "ready" (i.e., necessary pieces are loaded) and calculations can be done. Currently it handles waiting for fonts to be ready, but going forward it can have other pieces added as needed. This is useful in places like the tooltip, where the fonts being loaded has an impact on the tooltip position calculation.
-
-Example usage within a component:
-```javascript
-import { visualReady } from '../../helpers/visualReady.js';
-
-async getUpdateComplete() {
-    await super.getUpdateComplete();
-    await visualReady;
 }
 ```

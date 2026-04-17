@@ -313,7 +313,7 @@ Use the Add button when users need to quickly insert new items at specific locat
 | `mode` | String | Display mode of the component. Defaults to "icon" (plus icon is always visible). Other options are "icon-and-text" (plus icon and text are always visible), and "icon-when-interacted" (plus icon is only visible when hover or focus). |
 <!-- docs: end hidden content -->
 
-## Copy Button [d2l-button-copy]
+## Copy Icon Button [d2l-button-copy]
 
 Use the Copy button to enable users to copy a text value to the clipboard. The `d2l-button-copy`'s `click` event provides the `writeTextToClipboard` method for writing the text to the clipboard.
 
@@ -335,6 +335,33 @@ Use the Copy button to enable users to copy a text value to the clipboard. The `
 | Property | Type | Description |
 |--|--|--|
 | `disabled` | Boolean | Disables the button |
+<!-- docs: end hidden content -->
+
+## Copy Subtle Button [d2l-button-subtle-copy]
+
+Use the Copy button to enable users to copy a text value to the clipboard. The `d2l-button-subtle-copy`'s `click` event provides the `writeTextToClipboard` method for writing the text to the clipboard.
+
+<!-- docs: demo code properties name:d2l-button-subtle-copy sandboxTitle:'Subtle Copy Button' display:block autoSize:false size:xsmall -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/button-subtle-copy.js';
+  document.querySelector('d2l-button-subtle-copy').addEventListener('click', e => {
+    e.detail.writeTextToClipboard(document.querySelector('#to-copy').textContent);
+  });
+</script>
+<span id="to-copy">Lorem ipsum dolor sit amet, consectetur adipiscing elit</span>
+<d2l-button-subtle-copy text="Copy text"></d2l-button-subtle-copy>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `disabled` | Boolean | Disables the button |
+| `description` | String | A description to be added to the button for accessibility when text on button does not provide enough context |
+| `slim` | Boolean | Makes the button slimmer |
+| `text` | String | Label text for the button |
 <!-- docs: end hidden content -->
 
 ## Floating Buttons [d2l-floating-buttons]
