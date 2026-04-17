@@ -26,7 +26,7 @@ describe('colors', () => {
 
 			registerSemanticVariableForSvgImageUrl(variableName, image);
 
-			expect(style.sheet.cssRules.length).to.equal(ruleCount + 3);
+			expect(style.sheet.cssRules.length).to.equal(ruleCount);
 
 			const mediaRule = style.sheet.cssRules[2].cssText;
 			expect(mediaRule).to.contain('@media (prefers-color-scheme: dark)');

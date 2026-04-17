@@ -217,6 +217,10 @@ function formatCSSVariable([key, value]) {
 	else return `${key}: ${value};`;
 }
 
+function isCustomPropertyDefined(rule, name) {
+	return rule.style.getPropertyValue(name).trim() !== '';
+}
+
 function resolvePrimitive(variableName, variables) {
 	const value = variables.get(variableName);
 	if (!value) return;
@@ -248,9 +252,7 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 			/* primary accent */
 			--d2l-color-primary-accent-action: var(--d2l-color-celestine);
 			--d2l-color-primary-accent-indicator: var(--d2l-color-carnelian);
-		}
 
-		html {
 			${lightCSS}
 		}
 		html[data-color-mode="dark"] {
@@ -270,17 +272,22 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 	globalThis.document.head.appendChild(style);
 }
 
+const lightRule = style.sheet.cssRules[0];
+const darkRule = style.sheet.cssRules[1];
+const osRule = style.sheet.cssRules[2].cssRules[0];
+
 export function registerSemanticVariableForSvgImageUrl(name, value) {
 	if (!name || typeof value !== 'string') {
 		throw new TypeError('registerSemanticVariableForSvgImageUrl requires both a name and value');
 	}
+	if (isCustomPropertyDefined(lightRule, name)) {
+		console.warn(`registerSemanticVariableForSvgImageUrl called for ${name} but a custom property is already defined with this name`);
+	}
 
 	const replacedLightValue = svgToCSS(replaceSemanticVariables(value, lightVariables));
-	style.sheet.insertRule(`html { ${ name }: ${ replacedLightValue } }`, 0);
+	lightRule.style.setProperty(name, replacedLightValue);
 
 	const replacedDarkValue = svgToCSS(replaceSemanticVariables(value, darkVariables));
-	style.sheet.insertRule(`html[data-color-mode="dark"] { ${ name }: ${ replacedDarkValue } }`, 1);
-	style.sheet.insertRule(`@media (prefers-color-scheme: dark) {
-		html[data-color-mode="os"] { ${ name }: ${ replacedDarkValue } }
-	}`, 2);
+	darkRule.style.setProperty(name, replacedDarkValue);
+	osRule.style.setProperty(name, replacedDarkValue);
 };
