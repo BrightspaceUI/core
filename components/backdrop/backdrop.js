@@ -14,6 +14,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const modals = new Set();
 let scrollOverflow = null;
+getFlag('GAUD-9398-make-backdrop-inert', false)
 
 /**
  * A component for displaying a semi-transparent backdrop behind a specified sibling element. It also hides elements other than the target from assistive technologies by applying 'aria-hidden="true"'.
