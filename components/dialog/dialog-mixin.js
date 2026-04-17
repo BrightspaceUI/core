@@ -109,11 +109,6 @@ export const DialogMixin = superclass => class extends superclass {
 		window.removeEventListener('d2l-mvc-dialog-open', this._handleMvcDialogOpen);
 	}
 
-	firstUpdated(changedProperties) {
-		super.firstUpdated(changedProperties);
-		this._useNative = (window.D2L.DialogMixin.hasNative && this.preferNative);
-	}
-
 	async updated(changedProperties) {
 		super.updated(changedProperties);
 		if (!changedProperties.has('opened')) return;
@@ -132,6 +127,13 @@ export const DialogMixin = superclass => class extends superclass {
 			}
 			this._close();
 		}
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (this.#useNativeInitialized) return;
+		this._useNative = (window.D2L.DialogMixin.hasNative && this.preferNative);
+		this.#useNativeInitialized = true;
 	}
 
 	open() {
@@ -161,6 +163,8 @@ export const DialogMixin = superclass => class extends superclass {
 		const composedChildren = getComposedChildren(this, predicate);
 		await Promise.all(composedChildren.map(child => waitForElem(child, predicate)));
 	}
+
+	#useNativeInitialized = false;
 
 	_addHandlers() {
 		window.addEventListener('resize', this._updateSize);
