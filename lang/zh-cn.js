@@ -1,8 +1,8 @@
 export default {
 	"components.alert.close": "关闭提醒",
+	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.backdrop-loading.loadingAnnouncement": "Loading.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
-	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.breadcrumbs.breadcrumb": "痕迹导航",
 	"components.button-add.addItem": "添加项目",
 	"components.button-copy.copied": "已复制！",

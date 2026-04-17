@@ -1,8 +1,8 @@
 export default {
 	"components.alert.close": "Luk besked",
+	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.backdrop-loading.loadingAnnouncement": "Loading.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
-	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.breadcrumbs.breadcrumb": "Brødkrumme",
 	"components.button-add.addItem": "Tilføj element",
 	"components.button-copy.copied": "Kopieret!",

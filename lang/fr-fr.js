@@ -1,8 +1,8 @@
 export default {
 	"components.alert.close": "Fermer l’alerte",
+	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.backdrop-loading.loadingAnnouncement": "Loading.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
-	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.breadcrumbs.breadcrumb": "Chemin de navigation",
 	"components.button-add.addItem": "Ajouter un élément",
 	"components.button-copy.copied": "Copie effectuée !",

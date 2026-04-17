@@ -1,8 +1,8 @@
 export default {
 	"components.alert.close": "Pani i ka makaʻala",
+	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.backdrop-loading.loadingAnnouncement": "Loading.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
-	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.breadcrumbs.breadcrumb": "Palapalapala",
 	"components.button-add.addItem": "Pākuʻi Mea",
 	"components.button-copy.copied": "Kope ʻia!",

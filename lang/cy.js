@@ -1,8 +1,8 @@
 export default {
 	"components.alert.close": "Cau Hysbysiad",
+	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.backdrop-loading.loadingAnnouncement": "Loading.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
-	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.breadcrumbs.breadcrumb": "Briwsionyn Bara",
 	"components.button-add.addItem": "Ychwanegu Eitem",
 	"components.button-copy.copied": "Wedi’i gopïo!",

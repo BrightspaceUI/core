@@ -1,8 +1,8 @@
 export default {
 	"components.alert.close": "إغلاق التنبيه",
+	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.backdrop-loading.loadingAnnouncement": "Loading.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
-	"components.backdrop-loading.dirtyAnnouncement": "Filters have been changed. Click to apply filters",
 	"components.breadcrumbs.breadcrumb": "مسار التنقل",
 	"components.button-add.addItem": "إضافة عنصر",
 	"components.button-copy.copied": "تم النسخ!",
