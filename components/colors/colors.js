@@ -217,6 +217,10 @@ function formatCSSVariable([key, value]) {
 	else return `${key}: ${value};`;
 }
 
+function isCustomPropertyDefined(rule, name) {
+	return rule.style.getPropertyValue(name).trim() !== '';
+}
+
 function resolvePrimitive(variableName, variables) {
 	const value = variables.get(variableName);
 	if (!value) return;
@@ -275,6 +279,9 @@ const osRule = style.sheet.cssRules[2].cssRules[0];
 export function registerSemanticVariableForSvgImageUrl(name, value) {
 	if (!name || typeof value !== 'string') {
 		throw new TypeError('registerSemanticVariableForSvgImageUrl requires both a name and value');
+	}
+	if (isCustomPropertyDefined(lightRule, name)) {
+		console.warn(`registerSemanticVariableForSvgImageUrl called for ${name} but a custom property is already defined with this name`);
 	}
 
 	const replacedLightValue = svgToCSS(replaceSemanticVariables(value, lightVariables));
