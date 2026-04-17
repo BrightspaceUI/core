@@ -1,10 +1,12 @@
-import '../colors/colors.js';
 import { css } from 'lit';
-import { svgToCSS } from '../../helpers/svg-to-css.js';
+import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
 
-const radioCheck = svgToCSS(`<svg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
-	<circle cx="5" cy="5" r="5" fill="#494c4e"></circle>
-</svg>`);
+registerSemanticVariableForSvgImageUrl(
+	'--d2l-input-radio-check-image',
+	`<svg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+		<circle cx="5" cy="5" r="5" fill="var(--d2l-theme-icon-color-standard)"></circle>
+	</svg>`
+);
 
 export const radioStyles = css`
 	.d2l-input-radio,
@@ -28,15 +30,15 @@ export const radioStyles = css`
 	.d2l-input-radio[aria-checked="true"],
 	.d2l-input-radio:checked,
 	.d2l-input-radio-label > input[type="radio"]:checked {
-		background-image: ${radioCheck};
+		background-image: var(--d2l-input-radio-check-image);
 	}
 	.d2l-input-radio,
 	.d2l-input-radio:hover:disabled,
 	.d2l-input-radio:hover.d2l-disabled,
 	.d2l-input-radio-label > input[type="radio"],
 	.d2l-input-radio-label > input[type="radio"]:hover:disabled {
-		background-color: var(--d2l-color-regolith);
-		border-color: var(--d2l-color-galena);
+		background-color: var(--d2l-theme-background-color-interactive-faint-default);
+		border-color: var(--d2l-theme-border-color-emphasized);
 		border-width: 1px;
 	}
 	.d2l-input-radio.d2l-hovering,
@@ -44,22 +46,22 @@ export const radioStyles = css`
 	.d2l-input-radio:focus,
 	.d2l-input-radio-label > input[type="radio"]:hover,
 	.d2l-input-radio-label > input[type="radio"]:focus {
-		border-color: var(--d2l-input-radio-border-color-hover-focus, var(--d2l-color-celestine));
+		border-color: var(--d2l-input-radio-border-color-hover-focus, var(--d2l-theme-border-color-focus));
 		border-width: 2px;
 		outline: none;
 	}
 	.d2l-input-radio[aria-invalid="true"],
 	.d2l-input-radio-label > input[type="radio"][aria-invalid="true"] {
-		border-color: var(--d2l-color-cinnabar);
+		border-color: var(--d2l-theme-status-color-error);
 	}
 	.d2l-input-radio:disabled,
 	.d2l-input-radio.d2l-disabled,
 	.d2l-input-radio-label > input[type="radio"]:disabled {
-		opacity: 0.5;
+		opacity: var(--d2l-theme-opacity-disabled-control);
 	}
 	.d2l-input-radio-label {
 		align-items: center;
-		color: var(--d2l-color-ferrite);
+		color: var(--d2l-theme-text-color-static-standard);
 		display: flex;
 		font-size: 0.8rem;
 		font-weight: 400;
@@ -72,7 +74,7 @@ export const radioStyles = css`
 	}
 	.d2l-input-radio-label-disabled:not(.d2l-input-radio-label-disabled-tooltip),
 	.d2l-input-radio-label-disabled-tooltip > * {
-		opacity: 0.5;
+		opacity: var(--d2l-theme-opacity-disabled-control);
 	}
 	.d2l-input-radio-label-disabled:not(.d2l-input-radio-label-disabled-tooltip) > .d2l-input-radio,
 	.d2l-input-radio-label-disabled:not(.d2l-input-radio-label-disabled-tooltip) > input[type="radio"] {
@@ -87,8 +89,8 @@ export const radioStyles = css`
 	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio-label > input[type="radio"]:hover,
 	.d2l-input-radio-label-disabled-tooltip .d2l-input-radio-label > input[type="radio"]:focus {
 		background-blend-mode: lighten;
-		background-color: color-mix(in srgb, var(--d2l-color-regolith) 50%, transparent); /* mock background opacity */
-		border-color: var(--d2l-input-radio-border-color-hover-focus, var(--d2l-color-celestine));
+		background-color: var(--d2l-theme-background-color-interactive-faint-disabled);
+		border-color: var(--d2l-input-radio-border-color-hover-focus, var(--d2l-theme-border-color-focus));
 		border-width: 2px;
 		opacity: 1;
 		outline: none;
@@ -119,7 +121,7 @@ export const radioStyles = css`
 			display: block;
 			height: 1.2rem;
 			left: 50%;
-			mask-image: ${radioCheck};
+			mask-image: var(--d2l-input-radio-check-image);
 			mask-position: center center;
 			mask-repeat: no-repeat;
 			mask-size: 0.5rem 0.5rem;

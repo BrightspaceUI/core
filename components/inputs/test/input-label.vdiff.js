@@ -62,6 +62,7 @@ describe('d2l-input-label', () => {
 	[
 		{ name: 'ref', template: `<${refTag}></${refTag}>` },
 		{ name: 'ref-required', template: `<${refTag} required></${refTag}>` },
+		{ name: 'ref-required-dark', colorMode: 'dark', template: `<${refTag} required></${refTag}>` },
 		{ name: 'wrap', template: `<${wrapTag}></${wrapTag}>` },
 		{ name: 'wrap-required', template: `<${wrapTag} required></${wrapTag}>` },
 		{
@@ -104,9 +105,9 @@ describe('d2l-input-label', () => {
 				</div>
 			`
 		}
-	].forEach(({ name, template }) => {
+	].forEach(({ name, colorMode, template }) => {
 		it(name, async() => {
-			const elem = await fixture(template, { viewport });
+			const elem = await fixture(template, { colorMode, viewport });
 			await expect(elem).to.be.golden();
 		});
 	});
