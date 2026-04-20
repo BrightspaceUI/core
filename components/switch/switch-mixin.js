@@ -69,8 +69,8 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				outline: none;
 			}
 			.d2l-switch-inner {
-				background-color: var(--d2l-color-regolith);
-				border: 1px solid var(--d2l-color-ferrite);
+				background-color: var(--d2l-theme-background-color-interactive-faint-default);
+				border: 1px solid var(--d2l-theme-text-color-static-standard);
 				border-radius: 0.8rem;
 				box-sizing: border-box;
 				padding: 0.3rem;
@@ -78,7 +78,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				width: 3rem;
 			}
 			:host([on]) .d2l-switch-inner {
-				background-color: var(--d2l-color-celestine-plus-2);
+				background-color: var(--d2l-theme-brand-color-highlight);
 			}
 			.d2l-switch-toggle {
 				position: relative;
@@ -86,7 +86,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			}
 			.d2l-switch-toggle > div {
 				background-color: #ffffff;
-				border: 1px solid var(--d2l-color-ferrite);
+				border: 1px solid var(--d2l-theme-text-color-static-standard);
 				border-radius: 0.6rem;
 				box-sizing: border-box;
 				display: inline-block;
@@ -131,13 +131,13 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			}
 			:host([on]) .d2l-switch-icon-on > d2l-icon,
 			:host([on]) .d2l-switch-icon-on > d2l-icon-custom {
-				color: var(--d2l-color-celestine);
+				color: var(--d2l-theme-brand-color-primary-default);
 			}
 			:host([on]) .d2l-switch-icon-off {
 				transform: scale(0.35);
 			}
 			:host(:not([on])) .d2l-switch-icon-on {
-				color: var(--d2l-color-celestine);
+				color: var(--d2l-theme-brand-color-primary-default);
 				transform: scale(0.35);
 			}
 			.d2l-switch-text {
@@ -149,7 +149,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				display: none;
 			}
 			.d2l-switch-inner:hover, .switch-hover {
-				outline: 2px solid var(--d2l-color-celestine);
+				outline: 2px solid var(--d2l-theme-border-color-focus);
 				outline-offset: -2px;
 			}
 			@media (prefers-reduced-motion: reduce) {
