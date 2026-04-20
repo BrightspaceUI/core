@@ -57,7 +57,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 			}
 
 			.backdrop {
-				background-color: var(--d2l-color-regolith);
+				background-color: var(--d2l-theme-backdrop-background-color);
 				height: 100%;
 				opacity: 0;
 				position: absolute;
@@ -65,7 +65,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 				width: 100%;
 			}
 			:host([_state="shown"]) .backdrop {
-				opacity: 0.7;
+				opacity: var(--d2l-theme-backdrop-opacity);
 				transition: opacity ${FADE_DURATION_MS}ms ease-in;
 			}
 			:host([_state="hiding"]) .backdrop {

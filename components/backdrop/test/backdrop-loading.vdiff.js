@@ -11,14 +11,21 @@ const template = html`
 `;
 
 describe('backdrop-loading', () => {
+
 	it('not shown', async() => {
 		const elem = await fixture(template);
 		await expect(elem).to.be.golden();
 	});
 
-	it('shown', async() => {
-		const elem = await fixture(template);
-		elem.querySelector('d2l-backdrop-loading').shown = true;
-		await expect(elem).to.be.golden();
+	[
+		{ name: 'shown' },
+		{ name: 'shown-dark', colorMode: 'dark' }
+	].forEach(({ name, colorMode }) => {
+		it(name, async() => {
+			const elem = await fixture(template, { colorMode });
+			elem.querySelector('d2l-backdrop-loading').shown = true;
+			await expect(elem).to.be.golden();
+		});
 	});
+
 });
