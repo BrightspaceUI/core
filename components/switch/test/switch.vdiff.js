@@ -1,7 +1,7 @@
 import '../switch.js';
 import { expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
 
-const offFixture = html`<d2l-switch text="Test Text"></d2l-switch>`;
+const offFixture = html`<d2l-switch text="Test Text made longer so it resizes"></d2l-switch>`;
 const onFixture = html`<d2l-switch text="Test Text" on></d2l-switch>`;
 
 describe('d2l-switch', () => {
