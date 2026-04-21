@@ -63,11 +63,7 @@ class DemoPageSettings extends LitElement {
 
 		this._colorMode = document.documentElement.dataset.colorMode || defaultColorMode;
 
-		const colorSchemeElem = document.createElement('meta');
-		colorSchemeElem.name = 'color-scheme';
-		document.head.insertBefore(colorSchemeElem, document.head.firstChild);
 		this.#updateColorSchemeMeta();
-
 	}
 
 	connectedCallback() {
@@ -218,7 +214,12 @@ class DemoPageSettings extends LitElement {
 	}
 
 	#updateColorSchemeMeta() {
-		const elem = document.querySelector('meta[name="color-scheme"]');
+		let elem = document.querySelector('meta[name="color-scheme"]');
+		if (!elem) {
+			elem = document.createElement('meta');
+			elem.name = 'color-scheme';
+			document.head.insertBefore(elem, document.head.firstChild);
+		}
 		if (document.documentElement.dataset.colorMode === 'dark') elem.content = 'dark';
 		else if (document.documentElement.dataset.colorMode === 'os') elem.content = 'light dark';
 		else elem.content = 'light';
