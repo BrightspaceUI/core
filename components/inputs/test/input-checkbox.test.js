@@ -1,6 +1,7 @@
 import '../../form/form.js';
 import '../input-checkbox.js';
 import { clickElem, expect, fixture, focusElem, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { restore, stub } from 'sinon';
 import { checkboxFixtures } from './input-checkbox-fixtures.js';
 
 function getInput(elem) {
@@ -32,7 +33,7 @@ describe('d2l-input-checkbox', () => {
 			elem = await fixture(checkboxFixtures.unchecked);
 		});
 
-		['checked', 'disabled', 'indeterminate', 'notTabbable', 'supportingHiddenWhenUnchecked'].forEach((name) => {
+		['checked', 'disabled', 'indeterminate', 'supportingHiddenWhenUnchecked'].forEach((name) => {
 			it(`should default "${name}" property to "false"`, () => {
 				expect(elem[name]).to.be.false;
 			});
@@ -138,20 +139,6 @@ describe('d2l-input-checkbox', () => {
 
 	});
 
-	describe('not tabbable', () => {
-
-		it('should not put a tabindex on the checkbox by default', async() => {
-			const elem = await fixture(checkboxFixtures.unchecked);
-			expect(getInput(elem).hasAttribute('tabindex')).to.be.false;
-		});
-
-		it('should apply -1 tabindex when set', async() => {
-			const elem = await fixture(html`<d2l-input-checkbox not-tabbable label="not-tabbable"></d2l-input-checkbox>`);
-			expect(getInput(elem).getAttribute('tabindex')).to.equal('-1');
-		});
-
-	});
-
 	describe('property binding', () => {
 
 		let elem;
@@ -222,6 +209,14 @@ describe('d2l-input-checkbox', () => {
 
 	describe('labels', () => {
 
+		let consoleErrorStub;
+
+		beforeEach(() => {
+			consoleErrorStub = stub(console, 'error');
+		});
+
+		afterEach(() => restore());
+
 		it('should set aria-label when label-hidden', async() => {
 			const elem = await fixture(checkboxFixtures.labelHidden);
 			expect(getInput(elem).getAttribute('aria-label')).to.equal('label hidden');
@@ -234,6 +229,7 @@ describe('d2l-input-checkbox', () => {
 			expect(elem.labelHidden).to.be.true;
 			expect(getInput(elem).getAttribute('aria-label')).to.equal('label aria');
 			expect(getText(elem)).to.equal('');
+			expect(consoleErrorStub).to.be.calledWith('d2l-input-checkbox: the ariaLabel property is no longer supported. Use the label property with label-hidden instead.');
 		});
 
 		it('should use visible label when not label-hidden', async() => {

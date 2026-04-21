@@ -254,7 +254,6 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 				@d2l-dropdown-focus-enter="${this._handleFocusTrapEnter}"
 				max-width="335"
 				min-height="415"
-				?no-auto-fit="${!mediaQueryList.matches}"
 				trap-focus
 				no-auto-focus
 				mobile-tray="bottom"
@@ -362,10 +361,10 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			: this.validationError;
 
 		return html`
-			<d2l-tooltip 
-				align="start" 
-				announced 
-				class="vdiff-target" 
+			<d2l-tooltip
+				align="start"
+				announced
+				class="vdiff-target"
 				for="${this._inputId}"
 				?force-show="${this._showRevertTooltip}"
 				state="error">
@@ -383,10 +382,10 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			: this.localize('components.input-date.useDateFormat', { format: shortDateFormat });
 
 		return html`
-			<d2l-tooltip 
-				align="start" 
-				announced 
-				class="vdiff-target" 
+			<d2l-tooltip
+				align="start"
+				announced
+				class="vdiff-target"
 				for="${this._inputId}"
 				?force-show="${this._showRevertTooltip}">
 				<div>${revertMessage}</div>

@@ -358,10 +358,6 @@ class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMi
 			'd2l-input-time-time-zone-custom': customTimezone
 		};
 
-		console.log('labelHidden', this.labelHidden);
-		console.log(this.label && !this.labelHidden && !this.labelledBy ? 'd2l-input-label d2l-skeletize' : 'd2l-offscreen');
-		console.log(this.label);
-
 		return html`
 			<div aria-hidden="true" class="d2l-input-time-hidden-content">
 				<div>${formattedWideTimeAM}</div>

@@ -5,7 +5,6 @@ import '../list-item-button.js';
 import '../list-item-content.js';
 import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 import { listSelectionStates } from '../list.js';
-import { mockFlag } from '../../../helpers/flags.js';
 
 const clickItemInput = async item => {
 	const selectionInput = item.shadowRoot.querySelector('d2l-selection-input');
@@ -612,7 +611,6 @@ describe('d2l-list-item', () => {
 		});
 
 		it('dispatches click event with correct target when clicked', async() => {
-			mockFlag('GAUD-8733-list-item-propagate-link-click-event', true);
 			const el = await fixture(html`
 				<d2l-list-item action-href="javascript:void(0)" label="item">
 					<div>Item 1</div>
@@ -622,20 +620,6 @@ describe('d2l-list-item', () => {
 			clickElem(div);
 			const e = await oneEvent(el, 'click');
 			expect(e.target).to.equal(div);
-		});
-
-		// Remove when 'GAUD-8733-list-item-propagate-link-click-event' feature flag is removed
-		it('dispatches click event with correct target when clicked(stop propagation)', async() => {
-			mockFlag('GAUD-8733-list-item-propagate-link-click-event', false);
-			const el = await fixture(html`
-				<d2l-list-item action-href="javascript:void(0)" label="item">
-					<div>Item 1</div>
-					<div><d2l-button>Button</d2l-button></div>
-				</d2l-list-item>`);
-			const div = el.querySelector('div');
-			clickElem(div);
-			const e = await oneEvent(el, 'click');
-			expect(e.target).to.equal(el);
 		});
 
 		it('dispatches click event with correct target when interactive content clicked', async() => {
