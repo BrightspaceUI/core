@@ -60,7 +60,14 @@ class DemoPageSettings extends LitElement {
 		} else {
 			this._language = getDocumentLocaleSettings().language;
 		}
+
 		this._colorMode = document.documentElement.dataset.colorMode || defaultColorMode;
+
+		const colorSchemeElem = document.createElement('meta');
+		colorSchemeElem.name = 'color-scheme';
+		document.head.insertBefore(colorSchemeElem, document.head.firstChild);
+		this.#updateColorSchemeMeta();
+
 	}
 
 	connectedCallback() {
@@ -176,6 +183,8 @@ class DemoPageSettings extends LitElement {
 			this.#updateDefaultColorMode(newColorMode);
 		}
 
+		this.#updateColorSchemeMeta();
+
 		url.searchParams.set('color-mode', newColorMode);
 		window.history.replaceState({}, '', url.toString());
 	}
@@ -206,6 +215,13 @@ class DemoPageSettings extends LitElement {
 		if (useAsDefault) {
 			this.#updateDefaultColorMode(this.shadowRoot.querySelector('#colorMode').value);
 		}
+	}
+
+	#updateColorSchemeMeta() {
+		const elem = document.querySelector('meta[name="color-scheme"]');
+		if (document.documentElement.dataset.colorMode === 'dark') elem.content = 'dark';
+		else if (document.documentElement.dataset.colorMode === 'os') elem.content = 'light dark';
+		else elem.content = 'light';
 	}
 
 	#updateDefaultColorMode(colorMode) {
