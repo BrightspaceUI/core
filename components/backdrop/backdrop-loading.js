@@ -3,9 +3,12 @@ import '../loading-spinner/loading-spinner.js';
 import '../offscreen/offscreen.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
+import { getFlag } from '../../helpers/flags.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
+
+const OffSCREEN_SIZELESS = getFlag('d2l-offscreen-sizeless', true);
 
 const BACKDROP_DELAY_MS = 800;
 const FADE_DURATION_MS = 500;
@@ -101,6 +104,8 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 	}
 
 	render() {
+		const forcedOffscreenSizelessStyles = OffSCREEN_SIZELESS ? {} : { height: '0px', width: '0px' };
+
 		return html`
 			${this._state === 'hidden' ? nothing :
 					html`<div id="visible">
@@ -108,7 +113,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 						<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
 					</div>`
 			}
-			<d2l-offscreen aria-live="polite">${this._ariaContent}</d2l-offscreen>
+			<d2l-offscreen style=${styleMap(forcedOffscreenSizelessStyles)} aria-live="polite">${this._ariaContent}</d2l-offscreen>
 		`;
 	}
 	updated(changedProperties) {
