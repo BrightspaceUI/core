@@ -169,11 +169,6 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 			 */
 			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
 			/**
-			 * ACCESSIBILITY: ADVANCED: Sets "tabindex="-1"" on the checkbox. Note that an alternative method of focusing is necessary to implement if using this property.
-			 * @type {boolean}
-			 */
-			notTabbable: { type: Boolean, attribute: 'not-tabbable' },
-			/**
 			 * Hides the supporting slot when unchecked
 			 * @type {boolean}
 			 */
@@ -251,7 +246,6 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 		this.label = '';
 		this.labelHidden = false;
 		this.name = '';
-		this.notTabbable = false;
 		this.supportingHiddenWhenUnchecked = false;
 		this.value = 'on';
 		this._hasSupporting = false;
@@ -263,7 +257,6 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 	}
 
 	render() {
-		const tabindex = this.notTabbable ? -1 : undefined;
 		const supportingContentVisible = this._hasSupporting && (this.checked || !this.supportingHiddenWhenUnchecked);
 		const textClasses = {
 			'd2l-input-checkbox-text': true,
@@ -296,7 +289,6 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 					id="${this.#inputId}"
 					.indeterminate="${this.indeterminate}"
 					name="${ifDefined(this.name)}"
-					tabindex="${ifDefined(tabindex)}"
 					type="checkbox"
 					.value="${this.value}"></span><span class="${classMap(textClasses)}">${label}<slot></slot></span>
 			</label>

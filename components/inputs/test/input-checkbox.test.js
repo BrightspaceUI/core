@@ -32,7 +32,7 @@ describe('d2l-input-checkbox', () => {
 			elem = await fixture(checkboxFixtures.unchecked);
 		});
 
-		['checked', 'disabled', 'indeterminate', 'notTabbable', 'supportingHiddenWhenUnchecked'].forEach((name) => {
+		['checked', 'disabled', 'indeterminate', 'supportingHiddenWhenUnchecked'].forEach((name) => {
 			it(`should default "${name}" property to "false"`, () => {
 				expect(elem[name]).to.be.false;
 			});
@@ -134,20 +134,6 @@ describe('d2l-input-checkbox', () => {
 			expect(elem.checked).to.be.true;
 			expect(elem.indeterminate).to.be.false;
 			expect(getInput(elem).hasAttribute('aria-checked')).to.be.false;
-		});
-
-	});
-
-	describe('not tabbable', () => {
-
-		it('should not put a tabindex on the checkbox by default', async() => {
-			const elem = await fixture(checkboxFixtures.unchecked);
-			expect(getInput(elem).hasAttribute('tabindex')).to.be.false;
-		});
-
-		it('should apply -1 tabindex when set', async() => {
-			const elem = await fixture(html`<d2l-input-checkbox not-tabbable label="not-tabbable"></d2l-input-checkbox>`);
-			expect(getInput(elem).getAttribute('tabindex')).to.equal('-1');
 		});
 
 	});
