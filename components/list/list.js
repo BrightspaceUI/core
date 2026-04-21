@@ -5,6 +5,8 @@ import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
+import { querySelectorComposed } from '../../helpers/dom.js';
+import { query } from 'lit/decorators.js';
 
 const keyCodes = {
 	TAB: 9
@@ -257,7 +259,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	render() {
 		const role = !this.grid ? 'list' : 'application'; // not using grid role due to Safari+VO: https://bugs.webkit.org/show_bug.cgi?id=291591
 		const ariaLabel = this.slot !== 'nested' ? this.label : undefined;
-		console.log(this.dataState);
 		return html`
 			<slot name="controls"></slot>
 			<slot name="header"></slot>
@@ -394,6 +395,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	_getLazyLoadItems() {
 		const items = this.getItems();
 		return items.length > 0 ? items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
+	}
+
+	_getLazyLoadItemsFoo() {
 	}
 
 	_handleKeyDown(e) {
