@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dropdown Jitter</title>
+<style>
+html, body {
+	height: 100%;
+	margin: 0;
+}
+
+body {
+	font-family: sans-serif;
+	background: #f7f7f7;
+}
+
+.frame-shell {
+	box-sizing: border-box;
+	margin: 0 auto;
+	max-width: 960px;
+	padding: 0 24px 16px;
+	width: 100%;
+}
+
+iframe {
+	border: 0;
+	display: block;
+	width: 100%;
+	background: #fff;
+}
+</style>
+</head>
+<body>
+<div class="frame-shell">
+	<iframe id="f" class="d2l-iframe-fit-user-content"></iframe>
+</div>
+
+<template id="child-doc">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+	html, body {
+		margin: 0;
+		min-height: 100%;
+	}
+
+	body {
+		background: #fff;
+	}
+
+	.shell {
+		box-sizing: border-box;
+		display: flex;
+		justify-content: center;
+		min-height: 100vh;
+		padding-top: 20px;
+	}
+</style>
+<script type="module">
+	import './components/typography/typography.js';
+	import './components/dropdown/dropdown.js';
+	import './components/dropdown/dropdown-menu.js';
+	import './components/menu/menu.js';
+	import './components/menu/menu-item.js';
+	import './components/button/button-icon.js';
+</script>
+</head>
+<body class="d2l-typography" dir="ltr">
+	<div class="shell">
+		<div class="options-dropdown">
+			<d2l-dropdown>
+				<d2l-button-icon class="d2l-dropdown-opener" icon="tier1:more" text="Options"></d2l-button-icon>
+				<d2l-dropdown-menu align="end" vertical-offset="5px">
+					<d2l-menu label="Options">
+						<d2l-menu-item text="Edit Topic"></d2l-menu-item>
+						<d2l-menu-item text="View Conditions"></d2l-menu-item>
+						<d2l-menu-item text="Move To"></d2l-menu-item>
+						<d2l-menu-item text="Copy To Another Course"></d2l-menu-item>
+						<d2l-menu-item text="Reorder"></d2l-menu-item>
+						<d2l-menu-item text="Delete Topic"></d2l-menu-item>
+						<d2l-menu-item text="Enable Or Disable Download"></d2l-menu-item>
+						<d2l-menu-item text="Set Optional Or Required"></d2l-menu-item>
+					</d2l-menu>
+				</d2l-dropdown-menu>
+			</d2l-dropdown>
+		</div>
+	</div>
+</body>
+</html>
+</template>
+
+<script>
+const frame = document.getElementById('f');
+const childDocTemplate = document.getElementById('child-doc');
+
+function getViewportFillHeight() {
+	return Math.max(Math.ceil(window.innerHeight - frame.getBoundingClientRect().top), 0);
+}
+
+function applyFrameHeight() {
+	frame.style.height = `${getViewportFillHeight()}px`;
+}
+
+window.addEventListener('resize', () => {
+	applyFrameHeight();
+});
+
+frame.addEventListener('load', () => {
+	applyFrameHeight();
+});
+
+frame.srcdoc = childDocTemplate.innerHTML;
+</script>
+</body>
+</html>
