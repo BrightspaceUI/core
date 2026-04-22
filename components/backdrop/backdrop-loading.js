@@ -38,7 +38,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 			},
 			/**
 			 * Used to identify content that the backdrop should make inert
-			 * @type {boolean}
+			 * @type {string}
 			 */
 			for: { type: String, required: true },
 			/**

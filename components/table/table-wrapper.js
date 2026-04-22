@@ -325,6 +325,9 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			dirtyText: {
 				reflect: true,
 				attribute: 'dirty-text',
+				required: {
+					validator: (_value, elem, hasValue) => {hasValue || elem.dataState !== 'dirty';}
+				},
 				type: String
 			},
 			/**
@@ -334,6 +337,9 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			dirtyButtonText: {
 				reflect: true,
 				attribute: 'dirty-button-text',
+				required: {
+					validator: (_value, elem, hasValue) => {hasValue || elem.dataState !== 'dirty';}
+				},
 				type: String
 			}
 		};
@@ -465,12 +471,6 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			if (this.stickyHeaders) {
 				document.body.classList.add('d2l-table-sticky-headers');
 			}
-		}
-	}
-
-	willUpdate() {
-		if (this.dataState === 'dirty' && (this.dirtyText === null || this.dirtyButtonText === null)) {
-			throw new Error('dirty-text and dirty-button-message properties must be set to use the dirty data-state');
 		}
 	}
 
