@@ -59,13 +59,13 @@ class BackdropDirtyOverlay extends LitElement {
 			<p class="d2l-body-compact d2l-backdrop-dirty-overlay" tabindex="-1">${this.description}</p>
 			<d2l-button-subtle
 				class="d2l-backdrop-dirty-overlay-action"
-				@click=${this._handleActionClick}
+				@click=${this.#handleActionClick}
 				h-align="text"
 				text=${this.action}>
 			</d2l-button-subtle>
 		`;
 	}
-	_handleActionClick(e) {
+	#handleActionClick(e) {
 		e.stopPropagation();
 
 		/** Dispatched when the action button on the overlay is clicked */

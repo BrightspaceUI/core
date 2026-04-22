@@ -113,7 +113,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 			}
 
 			d2l-backdrop-dirty-overlay {
-				background-color: var(--d2l-table-controls-background-color, white);
+				background-color: var(--d2l-theme-backdrop-dialog-color);
 				height: fit-content;
 				justify-content: center;
 				opacity: 0;
@@ -163,7 +163,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 	updated(changedProperties) {
 		if (changedProperties.get('_state') && changedProperties.get('_state') === 'hidden')
 		{
-			this.#centerLoadingSpinner();
+			this.#centerLoadingSpinnerAndDialog();
 		}
 
 		if (changedProperties.has('_state')) {
@@ -207,7 +207,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 		}
 	}
 
-	async #centerLoadingSpinner() {
+	async #centerLoadingSpinnerAndDialog() {
 		if (this._state === 'hidden') { return; }
 
 		const loadingSpinner = this.shadowRoot.querySelector('d2l-loading-spinner');

@@ -113,6 +113,7 @@ const lightVariables = new Map([
 	// figma - undefined
 	['--d2l-theme-backdrop-background-color', '--d2l-color-regolith'],
 	['--d2l-theme-backdrop-opacity', '0.7'],
+	['--d2l-theme-backdrop-dialog-color', '#ffffff'],
 	['--d2l-theme-background-color-interactive-faint-disabled', '#f9fbff80'], /* --d2l-theme-background-color-interactive-faint-default at 50% opacity, remove once color-mix is widely supported */
 	['--d2l-theme-badge-background-color', '--d2l-color-gypsum'],
 	['--d2l-theme-badge-text-color', '--d2l-theme-text-color-static-standard'],
@@ -187,6 +188,7 @@ const darkVariables = new Map([
 	// figma - undefined
 	['--d2l-theme-backdrop-background-color', '--d2l-color-ferrite'],
 	['--d2l-theme-backdrop-opacity', '0.7'],
+	['--d2l-theme-backdrop-dialog-color', '#ffffff'],
 	['--d2l-theme-background-color-interactive-faint-disabled', '#20212280'], /* --d2l-theme-background-color-interactive-faint-default at 50% opacity, remove once color-mix is widely supported */
 	['--d2l-theme-badge-background-color', '#303335'],
 	['--d2l-theme-badge-text-color', '--d2l-theme-text-color-static-standard'],
