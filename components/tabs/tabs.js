@@ -60,9 +60,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			:host {
 				--d2l-tabs-background-color: var(--d2l-theme-background-color-base);
 				box-sizing: border-box;
+				container: tab-container / inline-size;
 				display: block;
 				margin-bottom: 1.2rem;
-				container: tab-container / inline-size;
 			}
 			.d2l-tabs-layout {
 				border-bottom: 1px solid var(--d2l-theme-border-color-subtle);
