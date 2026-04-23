@@ -71,20 +71,6 @@ class Tab extends TabMixin(LitElement) {
 			::slotted([slot="after"]:not(:last-child)) {
 				display: none;
 			}
-
-
-			/* implementing progressive enhancement */
-			@supports (container-name: tab-container) and (container-type: inline-size) {
-				:host {
-					max-width: 20rem;
-				}
-
-				@container tab-container (width < 615px) {
-					:host {
-						max-width: 10rem;
-					}
-				}
-			}
 		`];
 
 		super.styles && styles.unshift(super.styles);
