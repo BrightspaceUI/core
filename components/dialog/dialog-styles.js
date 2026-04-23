@@ -72,7 +72,7 @@ export const dialogStyles = css`
 	}
 
 	dialog::backdrop {
-		background-color: var(--d2l-theme-backdrop-background-color);
+		background-color: var(--d2l-theme-backdrop-background-color, #f9fbff);
 		opacity: 0;
 		transition: opacity 200ms ease-in;
 	}
