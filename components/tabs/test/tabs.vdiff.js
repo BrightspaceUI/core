@@ -705,6 +705,11 @@ describe('d2l-tabs', () => {
 			const elem = await fixture(slotsMultipleFixture);
 			await expect(elem).to.be.golden();
 		});
+
+		it('shrinks if tabs container\'s width is less than 615px', async() => {
+			const elem = await fixture(slotsFixture, { viewport: { width: 514 } });
+			await expect(elem).to.be.golden();
+		});
 	});
 
 	describe('deprecated structure', () => {
