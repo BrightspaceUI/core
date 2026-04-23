@@ -284,6 +284,9 @@ export function registerSemanticVariableForSvgImageUrl(name, value) {
 	if (!name || typeof value !== 'string') {
 		throw new TypeError('registerSemanticVariableForSvgImageUrl requires both a name and value');
 	}
+
+	if (!style) return;
+
 	if (isCustomPropertyDefined(lightRule, name)) {
 		console.warn(`registerSemanticVariableForSvgImageUrl called for ${name} but a custom property is already defined with this name`);
 	}
