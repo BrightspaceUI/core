@@ -48,7 +48,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 
 			.d2l-switch-container {
 				--d2l-focus-ring-offset: 0;
-				background-color: var(--d2l-switch-container-background-color, #ffffff);
+				background-color: var(--d2l-switch-container-background-color, var(--d2l-theme-background-color-base));
 				border-radius: 1rem;
 				box-sizing: border-box;
 				cursor: default;
@@ -62,15 +62,16 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			${getFocusRingStyles('.d2l-switch-container', { extraStyles: css`position: relative;` })}
 			:host([disabled]) .d2l-switch-container {
 				cursor: default;
-				opacity: 0.5;
+				opacity: var(--d2l-theme-opacity-disabled-control);
 			}
 			:host([disabled]) .d2l-switch-container:hover > .d2l-switch-inner,
-			:host([disabled]) .d2l-switch-inner:hover {
+			:host([disabled]) .d2l-switch-inner:hover,
+			:host([disabled]) .switch-hover {
 				outline: none;
 			}
 			.d2l-switch-inner {
 				background-color: var(--d2l-theme-background-color-interactive-faint-default);
-				border: 1px solid var(--d2l-theme-text-color-static-standard);
+				border: 1px solid var(--d2l-theme-border-color-interactive);
 				border-radius: 0.8rem;
 				box-sizing: border-box;
 				padding: 0.3rem;
@@ -78,15 +79,15 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				width: 3rem;
 			}
 			:host([on]) .d2l-switch-inner {
-				background-color: var(--d2l-theme-brand-color-highlight);
+				background-color: var(--d2l-theme-background-color-interactive-highlighted);
 			}
 			.d2l-switch-toggle {
 				position: relative;
 				transition: transform 150ms ease-out;
 			}
 			.d2l-switch-toggle > div {
-				background-color: #ffffff;
-				border: 1px solid var(--d2l-theme-text-color-static-standard);
+				background-color: var(--d2l-theme-background-color-base);
+				border: 1px solid var(--d2l-theme-border-color-interactive);
 				border-radius: 0.6rem;
 				box-sizing: border-box;
 				display: inline-block;

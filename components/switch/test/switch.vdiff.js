@@ -1,7 +1,7 @@
 import '../switch.js';
 import { expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
 
-const offFixture = html`<d2l-switch text="Test Text made longer so it resizes"></d2l-switch>`;
+const offFixture = html`<d2l-switch text="Test Text"></d2l-switch>`;
 const onFixture = html`<d2l-switch text="Test Text" on></d2l-switch>`;
 
 describe('d2l-switch', () => {
@@ -9,10 +9,10 @@ describe('d2l-switch', () => {
 	describe('basic', () => {
 		[
 			{ name: 'off', template: offFixture, allColorModes: true },
-			{ name: 'off-focus', template: offFixture, action: async(elem) => await focusElem(elem) },
-			{ name: 'off-disabled', template: html`<d2l-switch text="Test Text" disabled></d2l-switch>` },
-			{ name: 'off-hover', template: offFixture, action: async(elem) => await hoverElem(elem.shadowRoot.querySelector('.d2l-switch-inner')) },
-			{ name: 'on', template: onFixture },
+			{ name: 'off-focus', template: offFixture, action: async(elem) => await focusElem(elem), allColorModes: true },
+			{ name: 'off-disabled', template: html`<d2l-switch text="Test Text" disabled></d2l-switch>`, allColorModes: true },
+			{ name: 'off-hover', template: offFixture, action: async(elem) => await hoverElem(elem.shadowRoot.querySelector('.d2l-switch-inner')), allColorModes: true },
+			{ name: 'on', template: onFixture, allColorModes: true },
 			{ name: 'on-focus', template: onFixture, action: async(elem) => await focusElem(elem) },
 			{ name: 'on-hover', template: onFixture, action: async(elem) => await hoverElem(elem.shadowRoot.querySelector('.d2l-switch-inner')) },
 			{ name: 'on-disabled', template: html`<d2l-switch text="Test Text" on disabled></d2l-switch>` },
