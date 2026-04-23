@@ -72,6 +72,7 @@ export const dialogStyles = css`
 	}
 
 	dialog::backdrop {
+		/* fallback is for old browsers (see https://caniuse.com/mdn-css_selectors_backdrop_inherit_from_originating_element) */
 		background-color: var(--d2l-theme-backdrop-background-color, #f9fbff);
 		opacity: 0;
 		transition: opacity 200ms ease-in;
