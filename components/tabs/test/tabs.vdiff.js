@@ -210,6 +210,34 @@ const maxToShowFixture = {
 	`
 };
 
+const getMaxWidthFixture = (firstTabText) => {
+	return html`
+			<d2l-tabs>
+				<d2l-tab id="beforelong" text="${firstTabText}" slot="tabs">
+					<d2l-icon icon="tier1:gear" slot="before"></d2l-icon>
+				</d2l-tab>
+				<d2l-tab id="beforeafter" text="All" slot="tabs">
+					<d2l-count-badge number="5" size="small" text="100 new notifications" type="notification" slot="before"></d2l-count-badge>
+					<d2l-count-badge number="10" size="small" text="100 new notifications" type="notification" slot="after"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab id="afterlong" text="Long Panel Text That Will Also Have Slot Content" slot="tabs">
+					<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="after"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab id="beforeshort" text="All" slot="tabs">
+					<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="before"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab id="aftershort" text="All" slot="tabs">
+					<d2l-count-badge number="100" size="small" text="100 new notifications" type="notification" slot="after"></d2l-count-badge>
+				</d2l-tab>
+				<d2l-tab-panel labelled-by="beforelong" slot="panels">Tab content for All</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="afterlong" slot="panels">Tab content for Biology</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="beforeshort" slot="panels">Tab content for Chemistry</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="aftershort" slot="panels">Tab content for Physics</d2l-tab-panel>
+				<d2l-tab-panel labelled-by="beforeafter" slot="panels">Tab content for Trig</d2l-tab-panel>
+			</d2l-tabs>
+		`;
+};
+
 const viewport = { width: 376 };
 const useFixture = 'paired';
 
@@ -349,6 +377,16 @@ describe('d2l-tabs', () => {
 			});
 			await clickElem(elem.querySelector('d2l-tab'));
 			await hoverElem(elem.querySelectorAll('d2l-tab')[1]); // to avoid hover on clicked elem interfering with the styles we want to test
+			await expect(elem).to.be.golden();
+		});
+
+		it.only('shrinks if tabs container\'s width is less than 615px', async() => {
+			const elem = await fixture(getMaxWidthFixture('Long Panel Text That Will Also Have Slot Content'), { viewport: { width: 514 } });
+			await expect(elem).to.be.golden();
+		});
+
+		it.only('shows the ellipsis if the tab text and slot content exceed the max width', async() => {
+			const elem = await fixture(getMaxWidthFixture('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'));
 			await expect(elem).to.be.golden();
 		});
 	});
@@ -703,11 +741,6 @@ describe('d2l-tabs', () => {
 
 		it('handles multiples correctly', async() => {
 			const elem = await fixture(slotsMultipleFixture);
-			await expect(elem).to.be.golden();
-		});
-
-		it('shrinks if tabs container\'s width is less than 615px', async() => {
-			const elem = await fixture(slotsFixture, { viewport: { width: 514 } });
 			await expect(elem).to.be.golden();
 		});
 	});
