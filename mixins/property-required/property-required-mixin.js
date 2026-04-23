@@ -79,6 +79,7 @@ export const PropertyRequiredMixin = dedupeMixin(superclass => class extends sup
 		if (!this._requiredProperties.has(name) || !this.isConnected) return;
 
 		const info = this._requiredProperties.get(name);
+		if (!info.timeout) return;
 		clearTimeout(info.timeout);
 		info.timeout = null;
 
