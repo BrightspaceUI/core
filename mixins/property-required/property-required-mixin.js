@@ -40,7 +40,7 @@ export const PropertyRequiredMixin = dedupeMixin(superclass => class extends sup
 	updated(changedProperties) {
 		super.updated(changedProperties);
 		this._requiredProperties.forEach((value, name) => {
-			const doValidate = changedProperties.has(name) || value.dependentProps.includes(name);
+			const doValidate = changedProperties.has(name) || value.dependentProps.find((prop) => changedProperties.has(prop));
 			if (doValidate) this._validateRequiredProperty(name);
 		});
 	}
