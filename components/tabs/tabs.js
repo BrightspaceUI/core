@@ -62,6 +62,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				box-sizing: border-box;
 				display: block;
 				margin-bottom: 1.2rem;
+				container: tab-container / inline-size;
 			}
 			.d2l-tabs-layout {
 				border-bottom: 1px solid var(--d2l-theme-border-color-subtle);
