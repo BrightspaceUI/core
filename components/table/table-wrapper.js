@@ -8,6 +8,7 @@ import { getFlag } from '../../helpers/flags.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { isPopoverSupported } from '../popover/popover-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
 
 export const tableStyles = css`
@@ -264,7 +265,7 @@ const SELECTORS = {
  * @slot controls - Slot for `d2l-table-controls` to be rendered above the table
  * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the table
  */
-export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
+export class TableWrapper extends PropertyRequiredMixin(PageableMixin(SelectionMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -326,7 +327,8 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				reflect: true,
 				attribute: 'dirty-text',
 				required: {
-					validator: (_value, elem, hasValue) => {hasValue || elem.dataState !== 'dirty';}
+					dependentProps: ['dataState'],
+					validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
 				},
 				type: String
 			},
@@ -338,7 +340,8 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				reflect: true,
 				attribute: 'dirty-button-text',
 				required: {
-					validator: (_value, elem, hasValue) => {hasValue || elem.dataState !== 'dirty';}
+					dependentProps: ['dataState'],
+					validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
 				},
 				type: String
 			}
