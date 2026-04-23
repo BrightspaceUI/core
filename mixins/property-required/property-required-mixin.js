@@ -45,6 +45,12 @@ export const PropertyRequiredMixin = dedupeMixin(superclass => class extends sup
 		});
 	}
 
+	willUpdate() {
+		for (const info of this._requiredProperties.values()) {
+			clearTimeout(info.timeout);
+		}
+	}
+
 	flushRequiredPropertyErrors() {
 		for (const name of this._requiredProperties.keys()) {
 			this._flushRequiredPropertyError(name);
@@ -79,6 +85,7 @@ export const PropertyRequiredMixin = dedupeMixin(superclass => class extends sup
 		if (!this._requiredProperties.has(name) || !this.isConnected) return;
 
 		const info = this._requiredProperties.get(name);
+		if (!info.timeout) return;
 		clearTimeout(info.timeout);
 		info.timeout = null;
 
