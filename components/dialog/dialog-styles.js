@@ -111,7 +111,7 @@ export const dialogStyles = css`
 	}
 
 	.d2l-dialog-outer.d2l-dialog-outer-overflow-top .d2l-dialog-header {
-		box-shadow: var(--d2l-theme-shadow-attached-block-start);
+		box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.05);
 	}
 
 	.d2l-dialog-header > div {
@@ -152,7 +152,7 @@ export const dialogStyles = css`
 	}
 
 	.d2l-dialog-outer.d2l-dialog-outer-overflow-bottom .d2l-dialog-footer {
-		box-shadow: var(--d2l-theme-shadow-attached-block-end);
+		box-shadow: 0 -3px 3px 0 rgba(0, 0, 0, 0.05);
 	}
 
 	.d2l-dialog-footer ::slotted(*) {
