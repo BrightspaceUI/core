@@ -541,6 +541,8 @@ export const DialogMixin = superclass => class extends superclass {
 		const elementToFocus = this._findAutofocusElement(content) ?? getNextFocusable(content);
 		if (isComposedAncestor(content, elementToFocus)) {
 			this.focusableContentElemPresent = true;
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent('d2l-dialog-focusable-elem-present', { bubbles: false, composed: false }));
 		}
 		return elementToFocus;
 	}
