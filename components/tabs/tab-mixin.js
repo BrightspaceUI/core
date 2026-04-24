@@ -44,7 +44,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				position: relative;
 				vertical-align: middle;
 			}
-			@container tab-container (width >= 615px) {
+			@container tabs-container (width >= 615px) {
 				:host {
 					max-width: 20rem;
 				}
