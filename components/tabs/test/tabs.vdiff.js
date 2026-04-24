@@ -389,6 +389,11 @@ describe('d2l-tabs', () => {
 			const elem = await fixture(getMaxWidthFixture('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'));
 			await expect(elem).to.be.golden();
 		});
+
+		it('does not expand the tab width beyond 20rem when reached', async() => {
+			const elem = await fixture(getMaxWidthFixture('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'), { viewport: { width: 1100 } });
+			await expect(elem).to.be.golden();
+		});
 	});
 
 	describe('overflow', () => {
