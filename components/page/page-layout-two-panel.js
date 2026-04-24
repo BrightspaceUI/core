@@ -1,14 +1,15 @@
-import '../../components/colors/colors.js';
-import '../../components/form/form.js';
-import '../../components/form/form-error-summary.js';
-import '../../components/icons/icon-custom.js';
-import '../../components/icons/icon.js';
-import '../../components/offscreen/offscreen.js';
+import '@brightspace-ui/core/components/colors/colors.js';
+import '@brightspace-ui/core/components/form/form.js';
+import '@brightspace-ui/core/components/form/form-error-summary.js';
+import '@brightspace-ui/core/components/icons/icon-custom.js';
+import '@brightspace-ui/core/components/icons/icon.js';
+import '@brightspace-ui/core/components/offscreen/offscreen.js';
 import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
-import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js';
+import { getFocusPseudoClass, getFocusRingStyles } from '@brightspace-ui/core/helpers/focus.js';
+import { isWindows, pageScrollStyles } from './styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { formatPercent } from '@brightspace-ui/intl';
-import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { LocalizeMixin } from '../../../../localize-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -35,8 +36,6 @@ function isRtl() {
 function isMobile() {
 	return matchMedia('only screen and (max-width: 767px)').matches;
 }
-
-const isWindows = window.navigator.userAgent.indexOf('Windows') > -1;
 
 function clamp(val, min, max) {
 	return Math.max(min, Math.min(val, max));
@@ -541,9 +540,7 @@ class MobileTouchResizer extends Resizer {
 }
 
 /**
- * A two panel (primary and secondary) page template with header and optional footer
- * @slot header - Page header content
- * @slot footer - Page footer content
+ * A two panel (primary and secondary) page template
  * @slot primary - Main page content
  * @slot secondary - Supplementary page content
  * @fires d2l-iframe-pointer-events-disable - Dispatched when a user begins moving the divider to instruct iframe owners to disable pointer events.
@@ -552,7 +549,7 @@ class MobileTouchResizer extends Resizer {
  * @fires d2l-template-primary-secondary-form-dirty Dispatched whenever any form element fires an input or change event. Can be used to track whether the form is dirty or not.
  * @fires d2l-template-primary-secondary-form-submit Dispatched when the form is submitted. The form data can be obtained from the detail's formData property.
  */
-class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
+class PageLayoutTwoPanel extends LocalizeMixin(LitElement) {
 
 	static get properties() {
 		return {
@@ -587,17 +584,12 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			 */
 			storageKey: { type: String, attribute: 'storage-key' },
 			/**
-			 * Whether content fills the screen or not
-			 * @type {'fullscreen'|'normal'}
-			 */
-			widthType: { type: String, attribute: 'width-type', reflect: true },
-			/**
 			 * Whether to render an encompassing form over all panels
 			 * @type {boolean}
 			 */
 			hasForm: { type: Boolean, attribute: 'has-form' },
 			_formErrorSummary: { type: Array },
-			_hasFooter: { type: Boolean, attribute: false },
+
 			_isCollapsed: { type: Boolean, attribute: false },
 			_isExpanded: { type: Boolean, attribute: false },
 			_isMobile: { type: Boolean, attribute: false },
@@ -607,35 +599,27 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 	}
 
 	static get styles() {
-		return css`
+		return [pageScrollStyles, css`
 			:host,
 			:host > d2l-form {
-				bottom: 0;
-				left: 0;
-				overflow: hidden;
-				position: absolute;
-				right: 0;
-				top: 0;
+				display: block;
+				height: 100%;
+				width: 100%;
 			}
 
 			:host([hidden]) {
 				display: none;
 			}
-			:host([width-type="normal"]) .d2l-template-primary-secondary-content,
-			:host([width-type="normal"]) .d2l-template-primary-secondary-footer {
-				margin: 0 auto;
-				max-width: 1230px;
-				width: 100%;
-			}
+
 			.d2l-template-primary-secondary-container {
-				display: flex;
-				flex-direction: column;
 				height: 100%;
 				width: 100%;
 			}
 			.d2l-template-primary-secondary-content {
 				display: flex;
 				height: 100%;
+				margin: 0 auto;
+				max-width: var(--d2l-page-content-max-width, 100%);
 				overflow: hidden;
 			}
 
@@ -653,6 +637,9 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			}
 			:host([primary-overflow="hidden"]) main {
 				overflow: hidden;
+			}
+			.d2l-template-primary-secondary-primary-container {
+				margin-inline: var(--d2l-page-margin-inline, 0);
 			}
 			.d2l-template-primary-secondary-secondary-container {
 				flex: 1 0 0;
@@ -774,16 +761,6 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 				display: none;
 			}
 
-			footer {
-				background-color: white;
-				box-shadow: 0 -2px 4px rgba(32, 33, 34, 0.2); /* ferrite */
-				padding: 0.75rem 1rem;
-				z-index: 1; /* ensures the footer box-shadow is over main areas with background colours set */
-			}
-			header {
-				z-index: 14; /* ensures the header box-shadow is over main areas with background colours set, and opt-in on top of sticky header */
-			}
-
 			:host([resizable]) .d2l-template-primary-secondary-divider:focus,
 			:host([resizable]) .d2l-template-primary-secondary-divider:hover {
 				background-color: var(--d2l-color-mica);
@@ -814,29 +791,6 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::before,
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::after {
 				transition-delay: 100ms;
-			}
-
-			.d2l-template-scroll::-webkit-scrollbar {
-				width: 8px;
-			}
-
-			.d2l-template-scroll::-webkit-scrollbar-track {
-				background: rgba(255, 255, 255, 0.4);
-			}
-
-			.d2l-template-scroll::-webkit-scrollbar-thumb {
-				background: var(--d2l-color-galena);
-				border-radius: 4px;
-			}
-
-			.d2l-template-scroll::-webkit-scrollbar-thumb:hover {
-				background: var(--d2l-color-tungsten);
-			}
-
-			/* For Firefox */
-			.d2l-template-scroll {
-				scrollbar-color: var(--d2l-color-galena) rgba(255, 255, 255, 0.4);
-				scrollbar-width: thin;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
@@ -967,17 +921,12 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 					display: none;
 				}
 
-				.d2l-template-primary-secondary-container > footer {
-					box-shadow: none;
-					padding: 0;
-				}
-
 				.d2l-template-primary-secondary-container,
 				.d2l-template-primary-secondary-content {
 					height: auto;
 				}
 			}
-		`;
+		`];
 	}
 
 	constructor() {
@@ -1010,7 +959,6 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 		this.backgroundShading = 'none';
 		this.resizable = false;
 		this.secondaryFirst = false;
-		this.widthType = 'fullscreen';
 
 		this._animateResize = false;
 		this._isCollapsed = false;
@@ -1051,12 +999,16 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			secondaryPanelStyles[dimension] = `${size}px`;
 		}
 		const scrollClasses = {
-			'd2l-template-scroll': isWindows
+			'd2l-page-scroll': isWindows
 		};
-		const primarySection = html`<main class="${classMap(scrollClasses)}">
-			${this.hasForm ? html`<d2l-form-error-summary _has-top-margin id="form-error-summary"></d2l-form-error-summary>` : nothing}
-			<slot name="primary"></slot>
-		</main>`;
+		const primarySection = html`
+			<main class="${classMap(scrollClasses)}">
+				<div class="d2l-template-primary-secondary-primary-container">
+					${this.hasForm ? html`<d2l-form-error-summary _has-top-margin id="form-error-summary"></d2l-form-error-summary>` : nothing}	
+					<slot name="primary"></slot>
+				</div>	
+			</main>
+		`;
 		const secondarySection = html`
 			<div style=${styleMap(secondaryPanelStyles)} class="d2l-template-primary-secondary-secondary-container" @transitionend=${this._onTransitionEnd}>
 				<div class="d2l-template-primary-secondary-divider-shadow"></div>
@@ -1066,15 +1018,11 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			</div>`;
 		const content = html`
 			<div class="d2l-template-primary-secondary-container">
-				<header><slot name="header"></slot></header>
 				<div class="d2l-template-primary-secondary-content" data-background-shading="${this.backgroundShading}" ?data-animate-resize=${this._animateResize} ?data-is-collapsed=${this._isCollapsed} ?data-is-expanded=${this._isExpanded}>
 					${this.secondaryFirst && !this._isMobile ? secondarySection : primarySection}
 					${this._renderDivider()}
 					${this.secondaryFirst && !this._isMobile ? primarySection : secondarySection}
 				</div>
-				<footer ?hidden="${!this._hasFooter}">
-					<div class="d2l-template-primary-secondary-footer"><slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot></div>
-				</footer>
 			</div>
 		`;
 
@@ -1165,11 +1113,6 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 		};
 	}
 
-	_handleFooterSlotChange(e) {
-		const nodes = e.target.assignedNodes();
-		this._hasFooter = (nodes.length !== 0);
-	}
-
 	_isResizable() {
 		return this.resizable || this._isMobile;
 	}
@@ -1223,7 +1166,6 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 	}
 
 	_onHandleTap() {
-		console.log('here');
 		if (!this._isMobile || !this._isHandleTap) {
 			return;
 		}
@@ -1333,4 +1275,4 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 	}
 }
 
-customElements.define('d2l-template-primary-secondary', TemplatePrimarySecondary);
+customElements.define('d2l-page-layout-two-panel', PageLayoutTwoPanel);
