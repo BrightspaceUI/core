@@ -50,11 +50,11 @@ const slimCustomIconSlotContentTemplate = html`
 
 describe('button-subtle', () => {
 	[
-		{ category: 'default-normal', testColorMode: true, template: html`<d2l-button-subtle text="Subtle Button"></d2l-button-subtle>` },
-		{ category: 'default-icon', testColorMode: true, template: html`<d2l-button-subtle icon="tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>` },
+		{ category: 'default-normal', allColorModes: true, template: html`<d2l-button-subtle text="Subtle Button"></d2l-button-subtle>` },
+		{ category: 'default-icon', allColorModes: true, template: html`<d2l-button-subtle icon="tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>` },
 		{ category: 'default-icon-right', template: html`<d2l-button-subtle icon="tier1:chevron-down" text="Subtle Button" icon-right></d2l-button-subtle>` },
-		{ category: 'default-slot-content', testColorMode: true, template: html`<d2l-button-subtle icon="tier1:chevron-down" text="Subtle Button">Slot content</d2l-button-subtle>` },
-		{ category: 'default-custom-icon', testColorMode: true, template: defaultCustomIconTemplate },
+		{ category: 'default-slot-content', allColorModes: true, template: html`<d2l-button-subtle icon="tier1:chevron-down" text="Subtle Button">Slot content</d2l-button-subtle>` },
+		{ category: 'default-custom-icon', allColorModes: true, template: defaultCustomIconTemplate },
 		{ category: 'default-custom-icon-slot-content', template: defaultCustomIconSlotContentTemplate },
 		{ category: 'slim-normal', template: html`<d2l-button-subtle slim text="Subtle Button"></d2l-button-subtle>` },
 		{ category: 'slim-icon', template: html`<d2l-button-subtle slim icon="tier1:bookmark-hollow" text="Subtle Button"></d2l-button-subtle>` },
@@ -62,32 +62,24 @@ describe('button-subtle', () => {
 		{ category: 'slim-slot-content', template: html`<d2l-button-subtle slim icon="tier1:chevron-down" text="Subtle Button">Slot content</d2l-button-subtle>` },
 		{ category: 'slim-custom-icon', template: slimCustomIconTemplate },
 		{ category: 'slim-custom-icon-slot-content', template: slimCustomIconSlotContentTemplate }
-	].forEach(({ category, testColorMode, template }) => {
-
-		const testsToRun = [
-			{ name: 'normal' },
-			{ name: 'rtl', rtl: true },
-			{ name: 'hover', action: hoverElem },
-			{ name: 'focus', action: focusElem },
-			{ name: 'click', action: clickElem },
-			{ name: 'active', action: elem => elem.setAttribute('active', '') },
-			{ name: 'active-disabled', action: elem => { elem.setAttribute('active', ''); elem.disabled = true; } },
-			{ name: 'disabled', action: elem => elem.disabled = true },
-			...(testColorMode ? [
-				{ name: 'normal-dark', colorMode: 'dark' },
-				{ name: 'hover-dark', colorMode: 'dark', action: hoverElem },
-				{ name: 'focus-dark', colorMode: 'dark', action: focusElem },
-				{ name: 'disabled-dark', colorMode: 'dark', action: elem => elem.disabled = true },
-			] : [])
-		];
+	].forEach(({ category, allColorModes, template }) => {
 
 		describe(category, () => {
 
-			testsToRun.forEach(({ action, colorMode, name, rtl }) => {
+			[
+				{ name: 'normal', allColorModes },
+				{ name: 'rtl', rtl: true },
+				{ name: 'hover', action: hoverElem, allColorModes },
+				{ name: 'focus', action: focusElem, allColorModes },
+				{ name: 'click', action: clickElem },
+				{ name: 'active', action: elem => elem.setAttribute('active', '') },
+				{ name: 'active-disabled', action: elem => { elem.setAttribute('active', ''); elem.disabled = true; } },
+				{ name: 'disabled', action: elem => elem.disabled = true, allColorModes },
+			].forEach(({ action, allColorModes, name, rtl }) => {
 				it(name, async() => {
-					const elem = await fixture(template, { colorMode, rtl });
+					const elem = await fixture(template, { rtl });
 					if (action) await action(elem);
-					await expect(elem).to.be.golden();
+					await expect(elem).to.be.golden({ allColorModes});
 				});
 			});
 		});
