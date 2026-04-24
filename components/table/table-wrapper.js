@@ -10,6 +10,8 @@ import { isPopoverSupported } from '../popover/popover-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
 
+const enableStickyScrollyFix = getFlag('table-sticky-scrolly-fix', true);
+
 export const tableStyles = css`
 	.d2l-table {
 		border-collapse: separate; /* needed to override reset stylesheets */
@@ -447,6 +449,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		}
 	}
 
+	#hasIntersected = false;
+
+	#noScrollWidthTimeout = null;
+
 	_applyClassNames() {
 		if (!this._table) return;
 
@@ -581,6 +587,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				this._tableIntersectionObserver = new IntersectionObserver((entries) => {
 					entries.forEach((entry) => {
 						if (entry.isIntersecting) {
+							this.#hasIntersected = true;
 							this._handleTableChange();
 						}
 					});
@@ -647,11 +654,20 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		const head = this._table.querySelector('thead');
 		const body = this._table.querySelector('tbody');
 
-		const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
-		setTimeout(() => {
-			this._noScrollWidth = this.clientWidth === maxScrollWidth;
-		});
-		if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
+		if (enableStickyScrollyFix) {
+			clearTimeout(this.#noScrollWidthTimeout);
+			this.#noScrollWidthTimeout = setTimeout(() => {
+				const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
+				this._noScrollWidth = (maxScrollWidth <= this.clientWidth);
+			});
+			if (!head || !body || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth || !this.#hasIntersected) return;
+		} else {
+			const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
+			setTimeout(() => {
+				this._noScrollWidth = this.clientWidth === maxScrollWidth;
+			});
+			if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
+		}
 
 		const candidateRowHeadCells = [];
 
