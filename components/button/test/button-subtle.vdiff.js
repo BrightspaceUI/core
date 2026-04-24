@@ -79,7 +79,7 @@ describe('button-subtle', () => {
 				it(name, async() => {
 					const elem = await fixture(template, { rtl });
 					if (action) await action(elem);
-					await expect(elem).to.be.golden({ allColorModes});
+					await expect(elem).to.be.golden({ allColorModes });
 				});
 			});
 		});
