@@ -16,39 +16,31 @@ const customIconTemplate = html`
 describe('button-icon', () => {
 
 	[
-		{ category: 'normal', testColorMode: true, template: html`<d2l-button-icon icon="tier1:gear" text="Icon Button"></d2l-button-icon>` },
-		{ category: 'translucent', testColorMode: true, template: html`<div style="height: 80px; width: 200px; background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #465298 10px, #465298 20px);"><d2l-button-icon style="margin: 12px;" icon="tier1:gear" text="Icon Button" translucent></d2l-button-icon></div>` },
+		{ category: 'normal', allColorModes: true, template: html`<d2l-button-icon icon="tier1:gear" text="Icon Button"></d2l-button-icon>` },
+		{ category: 'translucent', allColorModes: true, template: html`<div style="height: 80px; width: 200px; background: repeating-linear-gradient(45deg, #606dbc, #606dbc 10px, #465298 10px, #465298 20px);"><d2l-button-icon style="margin: 12px;" icon="tier1:gear" text="Icon Button" translucent></d2l-button-icon></div>` },
 		{ category: 'dark', template: html`<div style="height: 80px; width: 200px; background: black;"><d2l-button-icon style="margin: 12px;" icon="tier1:gear" text="Icon Button" theme="dark"></d2l-button-icon></div>` },
 		{ category: 'custom', template: html`<d2l-button-icon icon="tier1:gear" text="Icon Button" style="--d2l-button-icon-min-height: 1.5rem; --d2l-button-icon-min-width: 1.5rem; --d2l-button-icon-border-radius: 4px; --d2l-focus-ring-color: #006fbf; --d2l-focus-ring-offset: 1px; --d2l-button-icon-fill-color: var(--d2l-color-celestine); --d2l-button-icon-fill-color-hover: var(--d2l-color-celestine-minus-1);"></d2l-button-icon>` },
 		{ category: 'custom icon', template: customIconTemplate }
-	].forEach(({ category, testColorMode, template }) => {
-
-		const testsToRun = [
-			{ name: 'normal' },
-			{ name: 'hover', action: hoverElem },
-			{ name: 'focus', action: focusElem },
-			{ name: 'click', action: clickElem },
-			{ name: 'active', action: elem => elem.setAttribute('active', '') },
-			{ name: 'disabled', action: elem => elem.disabled = true },
-			{ name: 'disabled hover', action: elem => {
-				elem.disabled = true;
-				return hoverElem(elem);
-			} },
-			...(testColorMode ? [
-				{ name: 'normal-dark', colorMode: 'dark' },
-				{ name: 'hover-dark', colorMode: 'dark', action: hoverElem },
-				{ name: 'focus-dark', colorMode: 'dark', action: focusElem },
-				{ name: 'disabled-dark', colorMode: 'dark', action: elem => elem.disabled = true }
-			] : [])
-		];
+	].forEach(({ category, allColorModes, template }) => {
 
 		describe(category, () => {
-			testsToRun.forEach(({ action, colorMode, name }) => {
+			[
+				{ name: 'normal', allColorModes },
+				{ name: 'hover', action: hoverElem, allColorModes },
+				{ name: 'focus', action: focusElem, allColorModes },
+				{ name: 'click', action: clickElem },
+				{ name: 'active', action: elem => elem.setAttribute('active', '') },
+				{ name: 'disabled', action: elem => elem.disabled = true, allColorModes },
+				{ name: 'disabled hover', action: elem => {
+					elem.disabled = true;
+					return hoverElem(elem);
+				} }
+			].forEach(({ action, allColorModes, name }) => {
 				it(name, async() => {
-					let elem = await fixture(template, { colorMode });
+					let elem = await fixture(template);
 					if (elem.tagName !== 'D2L-BUTTON-ICON') elem = elem.querySelector('d2l-button-icon');
 					if (action) await action(elem);
-					await expect(elem).to.be.golden();
+					await expect(elem).to.be.golden({ allColorModes });
 				});
 			});
 		});
