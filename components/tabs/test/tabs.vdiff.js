@@ -380,12 +380,12 @@ describe('d2l-tabs', () => {
 			await expect(elem).to.be.golden();
 		});
 
-		it.only('shrinks if tabs container\'s width is less than 615px', async() => {
+		it('shrinks if tabs container\'s width is less than 615px', async() => {
 			const elem = await fixture(getMaxWidthFixture('Long Panel Text That Will Also Have Slot Content'), { viewport: { width: 514 } });
 			await expect(elem).to.be.golden();
 		});
 
-		it.only('shows the ellipsis if the tab text and slot content exceed the max width', async() => {
+		it('shows the ellipsis if the tab text and slot content exceed the max width', async() => {
 			const elem = await fixture(getMaxWidthFixture('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'));
 			await expect(elem).to.be.golden();
 		});
