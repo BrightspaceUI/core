@@ -1,4 +1,3 @@
-/* eslint-disable mocha/no-exports */
 import { expect } from '@brightspace-ui/testing';
 
 export function runButtonPropertyTests(getFixture) {
