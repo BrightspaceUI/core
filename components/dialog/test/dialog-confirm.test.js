@@ -14,6 +14,7 @@ describe('d2l-dialog-confirm', () => {
 
 	});
 
+	// eslint-disable-next-line mocha/no-pending-tests
 	describe.skip('focus management', () => {
 
 		it('should focus on first non-primary button', async() => {

@@ -1,5 +1,6 @@
 import { expect } from '@brightspace-ui/testing';
 
+// eslint-disable-next-line mocha/no-exports
 export function runButtonPropertyTests(getFixture) {
 
 	describe('form attributes', () => {
