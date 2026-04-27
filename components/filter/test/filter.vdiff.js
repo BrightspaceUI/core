@@ -274,7 +274,6 @@ describe('filter', () => {
 			await expect(document).to.be.golden();
 		});
 
-		// eslint-disable-next-line mocha/no-pending-tests
 		it.skip('dates-ignore-enforce-selection-single', async() => {
 			const template = html`
 				<d2l-filter opened>
@@ -289,7 +288,6 @@ describe('filter', () => {
 			await expect(elem).to.be.golden();
 		});
 
-		// eslint-disable-next-line mocha/no-pending-tests
 		it.skip('dates-selection-single-ignore-enforce-selection-single', async() => {
 			const template = html`
 				<d2l-filter opened>
