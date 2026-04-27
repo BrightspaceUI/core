@@ -1223,7 +1223,6 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 	}
 
 	_onHandleTap() {
-		console.log('here');
 		if (!this._isMobile || !this._isHandleTap) {
 			return;
 		}
