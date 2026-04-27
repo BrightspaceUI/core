@@ -37,10 +37,13 @@ export const panelStyles = css`
 	}
 
 	.panel-header {
+		background-color: white;
 		border-bottom: 1px solid var(--d2l-color-mica);
 		flex: none;
 		height: 70px;
 		overflow: hidden;
+		position: sticky;
+    	top: 0;
 	}
 
 	.panel-scroll {
