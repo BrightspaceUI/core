@@ -70,8 +70,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				outline: none;
 			}
 			.d2l-switch-inner {
-				background-color: var(--d2l-theme-background-color-interactive-faint-default);
-				border: 1px solid var(--d2l-theme-border-color-interactive);
+				border: 1px solid var(--d2l-theme-border-color-emphasized);
 				border-radius: 0.8rem;
 				box-sizing: border-box;
 				padding: 0.3rem;
@@ -87,7 +86,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			}
 			.d2l-switch-toggle > div {
 				background-color: var(--d2l-theme-background-color-base);
-				border: 1px solid var(--d2l-theme-border-color-interactive);
+				border: 1px solid var(--d2l-theme-border-color-emphasized);
 				border-radius: 0.6rem;
 				box-sizing: border-box;
 				display: inline-block;
