@@ -30,7 +30,7 @@ describe('color', () => {
 		{ numChars: 'notHex', canHaveAlpha: true, shouldThrow: true, errorMsg: '3, 4, 6, or 8' },
 	].forEach((testCase) => {
 
-		it.only(`should behave as expected with ${testCase.numChars} character hex code and canHaveAlpha is ${testCase.canHaveAlpha}`, async() => {
+		it(`should behave as expected with ${testCase.numChars} character hex code and canHaveAlpha is ${testCase.canHaveAlpha}`, async() => {
 			const testVal = hexVals[testCase.numChars];
 			if (testCase.shouldThrow) {
 				expect(() => getValidHexColor(testVal, testCase.canHaveAlpha)).to.throw(`Invalid HEX color value "${testVal}". Expecting a ${testCase.errorMsg} character HEX color.`);
