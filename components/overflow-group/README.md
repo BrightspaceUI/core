@@ -78,7 +78,6 @@ Items added to this container element will no longer wrap onto a second line whe
 
 | Property | Type | Description |
 |--|--|--|
-| `auto-show` | Boolean | Automatically determine the min and maximum number of items to show based on which elements have classes `d2l-button-group-show` and `d2l-button-group-no-show`. Please consult the design team when using this attribute. |
 | `min-to-show` | Number | The minimum number of elements to always show. Please consult the design team when using this attribute. |
 | `max-to-show` | Number | The maximum number of elements to show |
 | `opener-style` | String | Set the style of the overflow menu `default` renders a `d2l-button` while `subtle` will render a `d2l-button-subtle`|

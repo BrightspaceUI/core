@@ -5,9 +5,6 @@ import { styleMap } from 'lit/directives/style-map.js';
 export const OVERFLOW_CLASS = 'd2l-overflow-container';
 export const OVERFLOW_MINI_CLASS = 'd2l-overflow-container-mini';
 
-const AUTO_SHOW_CLASS = 'd2l-button-group-show';
-const AUTO_NO_SHOW_CLASS = 'd2l-button-group-no-show';
-
 const OPENER_TYPE = {
 	DEFAULT: 'default',
 	ICON: 'icon'
@@ -26,13 +23,6 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 	static get properties() {
 		return {
-			/**
-			 * @ignore
-			 */
-			autoShow: {
-				type: Boolean,
-				attribute: 'auto-show',
-			},
 			/**
 			 * minimum amount of slotted items to show
 			 * @type {number}
@@ -100,7 +90,6 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		this._slotItems = [];
 		this._wrapping = false;
 
-		this.autoShow = false;
 		this.maxToShow = -1;
 		this.minToShow = 1;
 		this.openerType = OPENER_TYPE.DEFAULT;
@@ -136,8 +125,8 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		const containerStyles = {
 			columnGap: this._itemGap > 0 ? `${this._itemGap}px` : undefined,
 			flexWrap: this._wrapping ? 'wrap' : 'nowrap',
-			minHeight: this.autoShow ? 'auto' : (this._itemHeight ? `${this._itemHeight}px` : 'auto'),
-			maxHeight: this.autoShow ? 'none' : (this._itemHeight ? `${this._itemHeight}px` : 'auto')
+			minHeight: this._itemHeight ? `${this._itemHeight}px` : 'auto',
+			maxHeight: this._itemHeight ? `${this._itemHeight}px` : 'auto'
 		};
 
 		return html`
@@ -155,10 +144,6 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		if (!this._isObservingResize) {
 			this._isObservingResize = true;
 			this._resizeObserver.observe(this.shadowRoot.querySelector('.d2l-overflow-group-container'));
-		}
-
-		if (changedProperties.has('autoShow') && this.autoShow) {
-			this._autoDetectBoundaries(this._slotItems);
 		}
 
 		if (changedProperties.has('minToShow')
@@ -185,29 +170,6 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 
 	getOverflowContainer() {
 		throw new Error('OverflowGroupMixin.getOverflowContainer must be overridden');
-	}
-
-	_autoDetectBoundaries(items) {
-		if (!items) return;
-
-		let minToShow, maxToShow;
-		for (let i = 0; i < items.length; i++) {
-			if (!items[i].classList) continue;
-
-			if (items[i].classList.contains(AUTO_SHOW_CLASS)) {
-				minToShow = i + 1;
-			}
-			if (maxToShow === undefined && items[i].classList.contains(AUTO_NO_SHOW_CLASS)) {
-				maxToShow = i;
-			}
-		}
-
-		if (minToShow !== undefined) {
-			this.minToShow = minToShow;
-		}
-		if (maxToShow !== undefined) {
-			this.maxToShow = maxToShow;
-		}
 	}
 
 	_chomp() {
@@ -392,10 +354,6 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 					subtree: true
 				});
 			});
-
-			if (this.autoShow) {
-				this._autoDetectBoundaries(this._slotItems);
-			}
 
 			this._chomp();
 			this.requestUpdate();
