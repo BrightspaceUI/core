@@ -329,11 +329,8 @@ describe('d2l-list', () => {
 
 		it('getSelectedListItems returns array excluding indeterminate items', async() => {
 			clickItemInput(elem.querySelector('[key="L2-1"]'));
-			await oneEvent(elem, 'd2l-list-selection-change');
 			clickItemInput(elem.querySelector('[key="L2-2"]'));
-			await oneEvent(elem, 'd2l-list-selection-change');
-			clickItemInput(elem.querySelector('[key="L2-3"]'));
-			await oneEvent(elem, 'd2l-list-selection-changes');
+			await clickItemInput(elem.querySelector('[key="L2-3"]'));
 			expect(elem.getSelectedListItems(true).length).to.equal(2);
 		});
 
