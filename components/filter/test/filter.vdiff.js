@@ -274,7 +274,7 @@ describe('filter', () => {
 			await expect(document).to.be.golden();
 		});
 
-		it.skip('dates-ignore-enforce-selection-single', async() => {
+		it('dates-ignore-enforce-selection-single', async() => {
 			const template = html`
 				<d2l-filter opened>
 					<d2l-filter-dimension-set key="dates" text="Dates" ignore-enforce-selection-single>
@@ -288,7 +288,7 @@ describe('filter', () => {
 			await expect(elem).to.be.golden();
 		});
 
-		it.skip('dates-selection-single-ignore-enforce-selection-single', async() => {
+		it('dates-selection-single-ignore-enforce-selection-single', async() => {
 			const template = html`
 				<d2l-filter opened>
 					<d2l-filter-dimension-set key="dates" text="Dates" ignore-enforce-selection-single selection-single>
