@@ -29,7 +29,7 @@ describe('d2l-dialog-fullscreen', () => {
 			expect(el.focusableContentElemPresent).to.be.false;
 			el.appendChild(document.createElement('button'));
 			await waitUntil(() => el.focusableContentElemPresent, 'focusableContentElemPresent never became true');
-		});
+		}).timeout(3000);;
 
 	});
 

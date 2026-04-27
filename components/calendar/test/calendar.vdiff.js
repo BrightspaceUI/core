@@ -118,7 +118,9 @@ describe('calendar', () => {
 	});
 
 	describe('style', () => {
-		beforeEach(async() => await setupFixture(simpleTemplate));
+		beforeEach(async() => {
+			await setupFixture(simpleTemplate);
+		});
 
 		it('focus', async() => {
 			await focusElem(elem);
@@ -226,7 +228,9 @@ describe('calendar', () => {
 
 		describe('keys', () => {
 			describe('arrow', () => {
-				beforeEach(async() => await setupFixture(simpleTemplate));
+				beforeEach(async() => {
+					await setupFixture(simpleTemplate);
+				});
 
 				it('up to prev month', async() => {
 					await tabToDates(elem);
@@ -262,7 +266,9 @@ describe('calendar', () => {
 			});
 
 			describe('other', () => {
-				beforeEach(async() => await setupFixture(simpleTemplate));
+				beforeEach(async() => {
+					await setupFixture(simpleTemplate);
+				});
 
 				it('end', async() => {
 					await tabToDates(elem);
@@ -296,7 +302,9 @@ describe('calendar', () => {
 			});
 
 			describe('other-min-max', () => {
-				beforeEach(async() => await setupFixture(minMaxTemplate));
+				beforeEach(async() => {
+					await setupFixture(minMaxTemplate);
+				});
 
 				it('home min value', async() => {
 					await clickElem(elem.shadowRoot.querySelector('td[data-date="2"][data-month="1"] button'));

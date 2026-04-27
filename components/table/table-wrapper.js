@@ -8,7 +8,10 @@ import { getFlag } from '../../helpers/flags.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { isPopoverSupported } from '../popover/popover-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
+
+const enableStickyScrollyFix = getFlag('table-sticky-scrolly-fix', true);
 
 export const tableStyles = css`
 	.d2l-table {
@@ -264,7 +267,7 @@ const SELECTORS = {
  * @slot controls - Slot for `d2l-table-controls` to be rendered above the table
  * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the table
  */
-export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
+export class TableWrapper extends PropertyRequiredMixin(PageableMixin(SelectionMixin(LitElement))) {
 
 	static get properties() {
 		return {
@@ -311,13 +314,39 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				type: Boolean,
 			},
 			/**
-			 * Whether or not to display a loading backdrop. Set this property when the content in the table is being refreshed.
-			 * @type {boolean}
+			 * The state of data in the table. Set to 'clean' when the data represents the user's latest selections, 'dirty' when the data does not represent the user's latest selections, and 'loading' if the data is being actively refreshed
+			 * @type {'clean'|'dirty'|'loading'}
 			 */
-			loading: {
+			dataState: {
 				reflect: true,
-				type: Boolean
+				type: String
 			},
+			/**
+			 * The text displayed on the dirty state overlay when the 'dirty' dataState is set.
+			 * @type {string}
+			 */
+			dirtyText: {
+				reflect: true,
+				attribute: 'dirty-text',
+				required: {
+					dependentProps: ['dataState'],
+					validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
+				},
+				type: String
+			},
+			/**
+			 * The text displayed on the button dirty state overlay when the 'dirty' dataState is set.
+			 * @type {string}
+			 */
+			dirtyButtonText: {
+				reflect: true,
+				attribute: 'dirty-button-text',
+				required: {
+					dependentProps: ['dataState'],
+					validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
+				},
+				type: String
+			}
 		};
 	}
 
@@ -388,7 +417,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
-		this.loading = false;
+		this.dataState = 'clean';
+
+		this.dirtyText = null;
+		this.dirtyButtonText = null;
 
 		this._excludeStickyColumnsFromScrollCalculations = getFlag('GAUD-9530-exclude-sticky-columns-from-scroll-calculations', false);
 	}
@@ -422,7 +454,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		const slot = html`
 			<div style="position:relative">
 				<slot id="table-slot" @slotchange="${this._handleSlotChange}"></slot>
-				<d2l-backdrop-loading for="table-slot" ?shown=${this.loading}></d2l-backdrop-loading>
+				<d2l-backdrop-loading @d2l-backdrop-dirty-overlay-action=${this._handleDirtyButton} for="table-slot" dataState=${this.dataState} dirty-text="${this.dirtyText}" dirty-button-text="${this.dirtyButtonText}"></d2l-backdrop-loading>
 			</div>
 		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
@@ -446,6 +478,10 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 			}
 		}
 	}
+
+	#hasIntersected = false;
+
+	#noScrollWidthTimeout = null;
 
 	_applyClassNames() {
 		if (!this._table) return;
@@ -545,6 +581,11 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		this._handleControlsChange();
 	}
 
+	_handleDirtyButton() {
+		/** Dispatched when the action button on the dirty overlay is clicked */
+		this.dispatchEvent(new CustomEvent('d2l-table-dirty-button-clicked'));
+	}
+
 	_handlePopoverClose(e) {
 		this._updateStickyAncestor(e.target, false);
 	}
@@ -581,6 +622,7 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 				this._tableIntersectionObserver = new IntersectionObserver((entries) => {
 					entries.forEach((entry) => {
 						if (entry.isIntersecting) {
+							this.#hasIntersected = true;
 							this._handleTableChange();
 						}
 					});
@@ -647,11 +689,20 @@ export class TableWrapper extends PageableMixin(SelectionMixin(LitElement)) {
 		const head = this._table.querySelector('thead');
 		const body = this._table.querySelector('tbody');
 
-		const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
-		setTimeout(() => {
-			this._noScrollWidth = this.clientWidth === maxScrollWidth;
-		});
-		if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
+		if (enableStickyScrollyFix) {
+			clearTimeout(this.#noScrollWidthTimeout);
+			this.#noScrollWidthTimeout = setTimeout(() => {
+				const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
+				this._noScrollWidth = (maxScrollWidth <= this.clientWidth);
+			});
+			if (!head || !body || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth || !this.#hasIntersected) return;
+		} else {
+			const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
+			setTimeout(() => {
+				this._noScrollWidth = this.clientWidth === maxScrollWidth;
+			});
+			if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
+		}
 
 		const candidateRowHeadCells = [];
 
