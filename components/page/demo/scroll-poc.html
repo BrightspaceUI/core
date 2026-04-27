@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<script type="module">
+			import '../../switch/switch.js';
+		</script>
+		<style>
+			* { margin: 0; padding: 0; box-sizing: border-box; }
+
+			body {
+				font-family: sans-serif;
+				/* body is always the scroll container — center panel drives this */
+				padding-bottom: 48px; /* reserve space for fixed footer */
+			}
+
+			/* --- Header --- */
+			.header {
+				background: #006fbf;
+				color: #fff;
+				padding: 16px 24px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				z-index: 10;
+				min-height: 60px;
+			}
+			.header.sticky {
+				position: sticky;
+				top: 0;
+			}
+			.header h1 { font-size: 18px; font-weight: 600; }
+
+			/* --- Three-panel layout --- */
+			.panels {
+				display: flex;
+			}
+
+			.panel-left,
+			.panel-right {
+				width: 260px;
+				flex-shrink: 0;
+				overflow-y: auto;
+				background: #f5f5f5;
+				border-right: 1px solid #ccc;
+				padding: 16px;
+				position: sticky;
+				top: 60px; /* below sticky header */
+				height: calc(100vh - 60px - 48px); /* viewport - header - footer */
+				align-self: flex-start;
+			}
+			.panel-right {
+				border-right: none;
+				border-left: 1px solid #ccc;
+			}
+
+			/* When header scrolls away, side panels pin to top of viewport */
+			body.scroll-header .panel-left,
+			body.scroll-header .panel-right {
+				top: 0;
+				height: calc(100vh - 48px); /* viewport - footer only */
+			}
+
+			.panel-center {
+				flex: 1;
+				padding: 24px;
+				/* no overflow — participates in body scroll */
+			}
+
+			/* --- Footer --- */
+			.footer {
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				background: #333;
+				color: #fff;
+				padding: 12px 24px;
+				text-align: center;
+				z-index: 10;
+				height: 48px;
+			}
+
+			.filler p {
+				margin-bottom: 12px;
+				line-height: 1.5;
+			}
+		</style>
+	</head>
+	<body>
+
+		<header class="header sticky" id="header">
+			<h1>Scroll POC — Header</h1>
+			<d2l-switch id="sticky-toggle" text="Sticky Header" on></d2l-switch>
+		</header>
+
+		<div class="panels" id="panels">
+			<!-- Left panel — scrolls independently, sticky -->
+			<nav class="panel-left">
+				<h2>Left Panel</h2>
+				<div class="filler">
+					<p>Nav item 1</p><p>Nav item 2</p><p>Nav item 3</p><p>Nav item 4</p>
+					<p>Nav item 5</p><p>Nav item 6</p><p>Nav item 7</p><p>Nav item 8</p>
+					<p>Nav item 9</p><p>Nav item 10</p><p>Nav item 11</p><p>Nav item 12</p>
+					<p>Nav item 13</p><p>Nav item 14</p><p>Nav item 15</p><p>Nav item 16</p>
+					<p>Nav item 17</p><p>Nav item 18</p><p>Nav item 19</p><p>Nav item 20</p>
+					<p>Nav item 21</p><p>Nav item 22</p><p>Nav item 23</p><p>Nav item 24</p>
+					<p>Nav item 25</p><p>Nav item 26</p><p>Nav item 27</p><p>Nav item 28</p>
+					<p>Nav item 29</p><p>Nav item 30</p><p>Nav item 31</p><p>Nav item 32</p>
+					<p>Nav item 33</p><p>Nav item 34</p><p>Nav item 35</p><p>Nav item 36</p>
+					<p>Nav item 37</p><p>Nav item 38</p><p>Nav item 39</p><p>Nav item 40</p>
+				</div>
+			</nav>
+
+			<!-- Center panel — scrolls with main page -->
+			<main class="panel-center">
+				<h2>Center Panel (main content)</h2>
+				<div class="filler">
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tincidunt, velit quis vulputate condimentum, erat nibh accumsan augue, sed rutrum nibh elit et augue.</p>
+					<p>Pellentesque eu efficitur ante. Cras non diam vitae nibh condimentum egestas. Proin malesuada dapibus dapibus. Vestibulum aliquet metus vitae viverra posuere.</p>
+					<p>Vivamus interdum pretium libero dictum eleifend. Donec eros tortor, facilisis eget maximus in, malesuada a magna. Nulla ac felis turpis.</p>
+					<p>Maecenas nunc nulla, viverra ut ornare id, luctus eu nulla. Pellentesque massa turpis, porta ut tincidunt ut, ullamcorper vitae urna.</p>
+					<p>Curabitur at semper augue. Integer id ex id metus euismod laoreet. Nunc viverra leo arcu, at dapibus neque efficitur sit amet.</p>
+					<p>Sed nec ullamcorper tortor. Donec ullamcorper ligula id iaculis volutpat. Integer venenatis, arcu vitae luctus facilisis, est libero hendrerit ipsum.</p>
+					<p>Praesent placerat, velit eget finibus posuere, sem mauris sodales mauris, sed feugiat orci felis sit amet risus.</p>
+					<p>Phasellus consequat leo et placerat ultricies. Aliquam a lorem ut lectus faucibus interdum. Pellentesque habitant morbi tristique senectus.</p>
+					<p>Integer dictum, nibh eget congue pretium, risus dolor sagittis odio, a tempor urna justo sit amet erat. Suspendisse potenti.</p>
+					<p>Duis mattis, arcu nec posuere consequat, lacus augue vulputate arcu, sed pulvinar lorem lacus sit amet felis.</p>
+					<p>Etiam convallis urna non purus lacinia, in cursus metus pretium. Morbi bibendum nisl sit amet posuere ullamcorper.</p>
+					<p>Nam nec velit sed nisl finibus posuere. Sed justo ipsum, viverra ut nunc quis, blandit euismod nunc.</p>
+					<p>Fusce at orci justo. Sed dapibus ornare purus, ut cursus velit. Nulla facilisi. Vivamus volutpat accumsan laoreet.</p>
+					<p>Cras sed purus sit amet tellus gravida cursus eget ac nulla. Sed volutpat volutpat sodales. Proin non neque nec nibh vestibulum placerat.</p>
+					<p>Donec pellentesque est in rhoncus tempus. Integer ac tristique risus. Donec ut erat vitae tellus facilisis posuere.</p>
+					<p>Quisque ut sagittis libero, ut maximus arcu. Nulla ac felis turpis. Donec pellentesque est in rhoncus tempus.</p>
+					<p>More filler content to ensure scrolling. Vivamus interdum pretium libero dictum eleifend. Curabitur at semper augue.</p>
+					<p>Pellentesque eu efficitur ante. Cras non diam vitae nibh condimentum egestas. Proin malesuada dapibus dapibus.</p>
+					<p>Sed nec ullamcorper tortor. Donec ullamcorper ligula id iaculis volutpat. Integer venenatis arcu vitae luctus facilisis.</p>
+					<p>Praesent placerat velit eget finibus posuere. Sem mauris sodales mauris, sed feugiat orci felis sit amet risus.</p>
+				</div>
+			</main>
+
+			<!-- Right panel — scrolls independently, sticky -->
+			<aside class="panel-right">
+				<h2>Right Panel</h2>
+				<div class="filler">
+					<p>Widget A</p><p>Widget B</p><p>Widget C</p><p>Widget D</p>
+					<p>Widget E</p><p>Widget F</p><p>Widget G</p><p>Widget H</p>
+					<p>Widget I</p><p>Widget J</p><p>Widget K</p><p>Widget L</p>
+					<p>Widget M</p><p>Widget N</p><p>Widget O</p><p>Widget P</p>
+					<p>Widget Q</p><p>Widget R</p><p>Widget S</p><p>Widget T</p>
+					<p>Widget U</p><p>Widget V</p><p>Widget W</p><p>Widget X</p>
+					<p>Widget Y</p><p>Widget Z</p><p>Widget AA</p><p>Widget BB</p>
+					<p>Widget CC</p><p>Widget DD</p><p>Widget EE</p><p>Widget FF</p>
+					<p>Widget GG</p><p>Widget HH</p><p>Widget II</p><p>Widget JJ</p>
+					<p>Widget KK</p><p>Widget LL</p><p>Widget MM</p><p>Widget NN</p>
+				</div>
+			</aside>
+		</div>
+
+		<footer class="footer" id="footer">
+			Footer — always visible at the bottom
+		</footer>
+
+		<script>
+			const toggle = document.getElementById('sticky-toggle');
+			const header = document.getElementById('header');
+			const body = document.body;
+
+			toggle.addEventListener('change', () => {
+				if (toggle.on) {
+					header.classList.add('sticky');
+					body.classList.remove('scroll-header');
+				} else {
+					header.classList.remove('sticky');
+					body.classList.add('scroll-header');
+				}
+			});
+		</script>
+
+	</body>
+</html>
