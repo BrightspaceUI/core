@@ -45,8 +45,8 @@ describe('dialog-confirm', () => {
 			describe('internal', () => {
 
 				[
-					{ name: 'short', template: confirmDialog },
-					{ name: 'critical', template: html`<d2l-dialog-confirm title-text="Title" text="Are you sure?" opened critical>${buttons}</d2l-dialog-confirm>` },
+					{ name: 'short', allColorModes: true, template: confirmDialog },
+					{ name: 'critical', allColorModes: true, template: html`<d2l-dialog-confirm title-text="Title" text="Are you sure?" opened critical>${buttons}</d2l-dialog-confirm>` },
 					{ name: 'long-title', template: html`
 						<d2l-dialog-confirm title-text="A title that is really long and should wrap onto a second line." text="Are you sure?" opened>
 							${buttons}
@@ -69,10 +69,10 @@ describe('dialog-confirm', () => {
 							${buttons}
 						</d2l-dialog-confirm>
 					` }
-				].forEach(({ name, template }) => {
+				].forEach(({ name, allColorModes, template }) => {
 					it(name, async() => {
 						const elem = await fixture(template, { viewport: { width: 800, height: 500 } });
-						await expect(elem).to.be.golden();
+						await expect(elem).to.be.golden({ allColorModes });
 					});
 				});
 			});

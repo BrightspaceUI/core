@@ -23,10 +23,10 @@ export const dialogStyles = css`
 
 	.d2l-dialog-outer {
 		animation: d2l-dialog-close 200ms ease-in;
-		background-color: white;
-		border: 1px solid var(--d2l-color-mica);
+		background-color: var(--d2l-theme-background-color-base);
+		border: 1px solid var(--d2l-theme-border-color-standard);
 		border-radius: 8px;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		box-shadow: var(--d2l-theme-shadow-floating);
 		box-sizing: border-box;
 		position: fixed; /* also required for native to override position: absolute */
 		top: 75px;
@@ -53,7 +53,6 @@ export const dialogStyles = css`
 	}
 
 	.d2l-dialog-outer.d2l-dialog-outer-nested-showing {
-		border-color: rgba(205, 213, 220, 0.35);
 		box-shadow: none;
 	}
 
@@ -67,21 +66,21 @@ export const dialogStyles = css`
 
 	${getFocusRingStyles('dialog')}
 	dialog.d2l-dialog-outer {
-		color: var(--d2l-color-ferrite);
+		color: var(--d2l-theme-text-color-static-standard);
 		margin-bottom: 0; /* required to override Chrome native positioning */
 		margin-top: 0; /* required to override Chrome native positioning */
 		padding: 0;
 	}
 
 	dialog::backdrop {
-		/* cannot use variables inside of ::backdrop : https://github.com/whatwg/fullscreen/issues/124 */
-		background-color: #f9fbff;
+		/* fallback is for old browsers (see https://caniuse.com/mdn-css_selectors_backdrop_inherit_from_originating_element) */
+		background-color: var(--d2l-theme-backdrop-background-color, #f9fbff);
 		opacity: 0;
 		transition: opacity 200ms ease-in;
 	}
 
 	:host([_state="showing"]) dialog::backdrop {
-		opacity: 0.7;
+		opacity: var(--d2l-theme-backdrop-opacity);
 		transition-timing-function: ease-out;
 	}
 
@@ -97,7 +96,7 @@ export const dialogStyles = css`
 	}
 
 	:host([critical]) .d2l-dialog-header {
-		border-block-start: 0.4rem solid var(--d2l-color-cinnabar);
+		border-block-start: 0.4rem solid var(--d2l-theme-status-color-error);
 		border-start-end-radius: 0.4rem;
 		border-start-start-radius: 0.4rem;
 		margin-block: -1px 0;

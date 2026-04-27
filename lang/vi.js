@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Đóng Cảnh Báo",
+	"components.backdrop-loading.loadingAnnouncement": "Loading.",
+	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
 	"components.breadcrumbs.breadcrumb": "Đường dẫn",
 	"components.button-add.addItem": "Thêm mục",
 	"components.button-copy.copied": "Đã sao chép!",

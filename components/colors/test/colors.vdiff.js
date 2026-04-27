@@ -1,8 +1,9 @@
-import '../colors.js';
 import '../demo/color-swatch.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
+import { registerSemanticVariableForSvgImageUrl } from '../colors.js';
 
 describe('colors', () => {
+
 	it('palette', async() => {
 		const elem = await fixture(html`
 			<div style="display: inline-block;">
@@ -69,4 +70,41 @@ describe('colors', () => {
 		`, { viewport: { height: 3000 } });
 		await expect(elem).to.be.golden();
 	});
+
+	describe('registerSemanticVariableForSvgImageUrl', () => {
+
+		let cssVariableIndex = 0;
+
+		const svgWithNonSemanticVariables = `<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+			<path fill="var(--d2l-color-cinnabar)" d="M17.79 15.11l-7-14a2 2 0 0 0-3.58 0l-7 14a1.975 1.975 0 0 0 .09 1.94A2 2 0 0 0 2 18h14a1.994 1.994 0 0 0 1.7-.95 1.967 1.967 0 0 0 .09-1.94zM9 16a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 9 16zm.98-4.806a1 1 0 0 1-1.96 0l-.99-5A1 1 0 0 1 8.01 5h1.983a1 1 0 0 1 .98 1.194z"/>
+			<path fill="#FFFFFF" d="M9 16a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 9 16zm.98-4.806a1 1 0 0 1-1.96 0l-.99-5A1 1 0 0 1 8.01 5h1.983a1 1 0 0 1 .98 1.194z"/>
+		</svg>`;
+
+		const svgWithSemanticVariables = `<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+			<path fill="var(--d2l-theme-status-color-error)" d="M17.79 15.11l-7-14a2 2 0 0 0-3.58 0l-7 14a1.975 1.975 0 0 0 .09 1.94A2 2 0 0 0 2 18h14a1.994 1.994 0 0 0 1.7-.95 1.967 1.967 0 0 0 .09-1.94zM9 16a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 9 16zm.98-4.806a1 1 0 0 1-1.96 0l-.99-5A1 1 0 0 1 8.01 5h1.983a1 1 0 0 1 .98 1.194z"/>
+			<path fill="var(--d2l-theme-background-color-base)" d="M9 16a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 9 16zm.98-4.806a1 1 0 0 1-1.96 0l-.99-5A1 1 0 0 1 8.01 5h1.983a1 1 0 0 1 .98 1.194z"/>
+		</svg>`;
+
+		[
+			{ name: 'resolves-colors', svg: svgWithSemanticVariables },
+			{ name: 'resolves-colors-dark', colorMode: 'dark', svg: svgWithSemanticVariables },
+			{ name: 'does-not-resolves-colors', svg: svgWithNonSemanticVariables },
+			{ name: 'does-not-resolves-colors-dark', colorMode: 'dark', svg: svgWithNonSemanticVariables }
+		].forEach(({ name, colorMode, svg }) => {
+
+			it(name, async() => {
+				const cssVariableName = `--d2l-test-icon${++cssVariableIndex}`;
+				registerSemanticVariableForSvgImageUrl(cssVariableName, svg);
+
+				const elem = await fixture(html`
+					<div style="background-image: var(${cssVariableName}); background-repeat: no-repeat; display: inline-block; height: 18px; width: 18px;"></div>
+				`, { colorMode });
+
+				await expect(elem).to.be.golden();
+			});
+
+		});
+
+	});
+
 });

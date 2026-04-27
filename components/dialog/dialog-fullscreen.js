@@ -72,7 +72,7 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 			@media (min-width: 616px) {
 
 				.d2l-dialog-header {
-					border-bottom: 1px solid var(--d2l-color-gypsum);
+					border-bottom: 1px solid var(--d2l-theme-border-color-subtle);
 					padding-bottom: 0.9rem;
 					padding-top: 1rem;
 				}
@@ -147,7 +147,7 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 				}
 
 				.d2l-dialog-footer {
-					border-top: 1px solid var(--d2l-color-gypsum);
+					border-top: 1px solid var(--d2l-theme-border-color-subtle);
 					padding-bottom: 0; /* 0.9rem padding included on button */
 					padding-top: 0.9rem;
 				}

@@ -1,6 +1,6 @@
 import '../more-less.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
-import { waitForHeight } from './more-less.test.js';
+import { waitForHeight } from './more-less-test-helpers.js';
 
 describe('d2l-more-less', () => {
 
