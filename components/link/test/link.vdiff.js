@@ -8,10 +8,10 @@ describe('d2l-link', () => {
 	after(unloadSass);
 
 	[
-		{ name: 'wc-standard', template: html`<d2l-link href="https://www.d2l.com">Standard Link</d2l-link>` },
+		{ name: 'wc-standard', allColorModes: true, template: html`<d2l-link href="https://www.d2l.com">Standard Link</d2l-link>` },
 		{ name: 'wc-main', template: html`<d2l-link href="https://www.d2l.com" main>Main Link</d2l-link>` },
 		{ name: 'wc-small', template: html`<d2l-link href="https://www.d2l.com" small>Small Link</d2l-link>` },
-		{ name: 'wc-standard-new-window', template: html`<d2l-link target="_blank" href="https://www.d2l.com">Standard New Window Link</d2l-link>` },
+		{ name: 'wc-standard-new-window', allColorModes: true, template: html`<d2l-link target="_blank" href="https://www.d2l.com">Standard New Window Link</d2l-link>` },
 		{ name: 'wc-small-new-window', template: html`<d2l-link target="_blank" small href="https://www.d2l.com">Small New Window Link</d2l-link>` },
 		{ name: 'wc-standard-new-window-overflow', template: html`<div style="width: 240px"><d2l-link target="_blank" href="https://www.d2l.com">Standard New Window Link</d2l-link></div>` },
 		{ name: 'wc-standard-new-window-truncated', template: html`<div style="width: 240px"><d2l-link lines="2" target="_blank" href="https://www.d2l.com">Standard New Window Link That is Much Longer Than the Container</d2l-link></div>` },
@@ -25,19 +25,19 @@ describe('d2l-link', () => {
 		{ name: 'wc-clamp-unbreakable-one-line', template: html`<div style="width: 400px;"><d2l-link href="https://www.d2l.com" lines="1">Areallyreallylongunbreakablelinkthatwilloverflowitscontainer.</d2l-link></div>` },
 		{ name: 'wc-clamp-two-lines', template: html`<div style="width: 400px;"><d2l-link href="https://www.d2l.com" lines="2">A really really long link that wraps in its container and then truncates after two lines of text like this.</d2l-link></div>` },
 		{ name: 'wc-clamp-unbreakable-two-lines', template: html`<div style="width: 400px;"><d2l-link href="https://www.d2l.com" lines="2">Areallyreallyreallylongunbreakablelinkthatwrapsinitscontainerandthentruncatesaftertwolinesoftextlikethis.</d2l-link></div>` },
-		{ name: 'wc-disabled', template: html`<d2l-link href="https://www.d2l.com" disabled target="_blank">Disabled Link</d2l-link>` },
+		{ name: 'wc-disabled', allColorModes: true, template: html`<d2l-link href="https://www.d2l.com" disabled target="_blank">Disabled Link</d2l-link>` },
 		{ name: 'wc-disabled-tooltip', template: html`<d2l-link href="https://www.d2l.com" disabled disabled-tooltip="This link is disabled" target="_blank">Disabled Link with Tooltip</d2l-link>` },
 		{ name: 'wc-disabled-tooltip-not-disabled', template: html`<d2l-link href="https://www.d2l.com" disabled-tooltip="This link is disabled">Disabled Link with Tooltip</d2l-link>` },
 		{ name: 'sass-standard', template: html`<a href="https://www.d2l.com" class="d2l-test-link">Standard Link</a>` },
 		{ name: 'sass-main', template: html`<a href="https://www.d2l.com" class="d2l-test-link" main>Main Link</a>` },
 		{ name: 'sass-small', template: html`<a href="https://www.d2l.com" class="d2l-test-link" small>Small Link</a>` }
-	].forEach(({ name, template }) => {
+	].forEach(({ name, allColorModes, template }) => {
 
 		describe('screen', () => {
 
 			it(`${name}`, async() => {
 				const elem = await fixture(template);
-				await expect(elem).to.be.golden();
+				await expect(elem).to.be.golden({ allColorModes });
 			});
 
 			it(`${name} focused`, async() => {
@@ -49,7 +49,7 @@ describe('d2l-link', () => {
 				} else {
 					await focusElem(elemToFocus);
 				}
-				await expect(elem).to.be.golden();
+				await expect(elem).to.be.golden({ allColorModes });
 			});
 
 			it(`${name} hovered`, async() => {
@@ -61,7 +61,7 @@ describe('d2l-link', () => {
 				} else {
 					await hoverElem(elemToFocus);
 				}
-				await expect(elem).to.be.golden();
+				await expect(elem).to.be.golden({ allColorModes });
 			});
 
 		});

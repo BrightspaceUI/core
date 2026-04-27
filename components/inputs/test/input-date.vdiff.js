@@ -188,7 +188,9 @@ describe('d2l-input-date', () => {
 				}
 
 				describe('behavior', () => {
-					beforeEach(async() => await setValueBlur(elem, '10/12/2017'));
+					beforeEach(async() => {
+						await setValueBlur(elem, '10/12/2017');
+					});
 
 					it('focus', async() => {
 						focusElem(elem);

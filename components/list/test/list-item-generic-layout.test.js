@@ -367,7 +367,7 @@ describe('d2l-list-item-generic-layout', () => {
 
 			for (const test of tests) {
 				it(`${test.desc} when ${test.key.name} pressed`, async() => {
-					return runFocusTest(el, test);
+					await runFocusTest(el, test);
 				});
 			}
 
@@ -593,7 +593,7 @@ describe('d2l-list-item-generic-layout', () => {
 
 			for (const test of tests) {
 				it(`${test.desc} when ${test.key.name} pressed`, async() => {
-					return runFocusTest(el, test);
+					await runFocusTest(el, test);
 				});
 			}
 
@@ -742,7 +742,7 @@ describe('d2l-list-item-generic-layout', () => {
 
 			for (const test of tests) {
 				it(`${test.desc} when ${test.key.name} pressed`, async() => {
-					return runFocusTest(el, test);
+					await runFocusTest(el, test);
 				});
 			}
 

@@ -1,16 +1,21 @@
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
+import './backdrop-dirty-overlay.js';
 import '../offscreen/offscreen.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
+import { getFlag } from '../../helpers/flags.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
+
+const OffSCREEN_SIZELESS = getFlag('d2l-offscreen-sizeless', true);
 
 const BACKDROP_DELAY_MS = 800;
 const FADE_DURATION_MS = 500;
 const SPINNER_DELAY_MS = FADE_DURATION_MS;
 const LOADING_ANNOUNCEMENT_DELAY = 1000;
+const DIRTY_ANNOUNCEMENT_DELAY = 1000;
 
 const LOADING_SPINNER_SIZE = 50;
 
@@ -24,15 +29,36 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 	static get properties() {
 		return {
 			/**
-			 * Used to control whether the loading backdrop is shown
-			 * @type {boolean}
+			 * The state of data in the element being overlaid. Set to 'clean' when the data represents the user's latest selections, 'dirty' when the data does not represent the user's latest selections, and 'loading' if the data is being actively refreshed
+			 * @type {'clean'|'dirty'|'loading'}
 			 */
-			shown: { type: Boolean },
+			dataState: {
+				reflect: true,
+				type: String
+			},
 			/**
 			 * Used to identify content that the backdrop should make inert
-			 * @type {boolean}
+			 * @type {string}
 			 */
 			for: { type: String, required: true },
+			/**
+			 * The text displayed on the dirty state overlay when the 'dirty' dataState is set.
+			 * @type {string}
+			 */
+			dirtyText: {
+				reflect: true,
+				attribute: 'dirty-text',
+				type: String
+			},
+			/**
+			 * The text displayed on the button of the dirty state overlay when the 'dirty' dataState is set.
+			 * @type {string}
+			 */
+			dirtyButtonText: {
+				reflect: true,
+				attribute: 'dirty-button-text',
+				type: String
+			},
 			_state: { type: String, reflect: true },
 			_spinnerTop: { state: true },
 			_ariaContent: { state: true }
@@ -80,9 +106,28 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 				opacity: 1;
 				transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
 			}
-
-			:host([_state="hiding"]) .d2l-backdrop,
+			:host([_state="shown"][dataState="dirty"]) d2l-loading-spinner,
 			:host([_state="hiding"]) d2l-loading-spinner {
+				opacity: 0;
+				transition: opacity ${FADE_DURATION_MS}ms ease-out;
+			}
+
+			d2l-backdrop-dirty-overlay {
+				background-color: var(--d2l-theme-backdrop-dialog-color);
+				height: fit-content;
+				justify-content: center;
+				opacity: 0;
+				position: relative;
+				top: 0;
+				z-index: 1000;
+			}
+			:host([_state="shown"]) d2l-backdrop-dirty-overlay {
+				opacity: 1;
+				transition: opacity ${FADE_DURATION_MS}ms ease-in;
+			}
+			:host([_state="shown"][dataState="loading"]) d2l-backdrop-dirty-overlay,
+			:host([_state="hiding"]) d2l-backdrop-dirty-overlay {
+				opacity: 0;
 				transition: opacity ${FADE_DURATION_MS}ms ease-out;
 			}
 
@@ -94,52 +139,75 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 
 	constructor() {
 		super();
-		this.shown = false;
+		this.dataState = 'clean';
 		this._state = 'hidden';
 		this._spinnerTop = 0;
+		this._dirtyDialogTop = 0;
 		this._ariaContent = '';
 	}
 
 	render() {
+		const forcedOffscreenSizelessStyles = OffSCREEN_SIZELESS ? {} : { height: '0px', width: '0px' };
+
 		return html`
 			${this._state === 'hidden' ? nothing :
 					html`<div id="visible">
 						<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#handleTransitionEnd}"></div>
 						<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
+						${this.#renderDirtyOverlay()}
 					</div>`
 			}
-			<d2l-offscreen aria-live="polite">${this._ariaContent}</d2l-offscreen>
+			<d2l-offscreen style=${styleMap(forcedOffscreenSizelessStyles)} aria-live="polite">${this._ariaContent}</d2l-offscreen>
 		`;
 	}
 	updated(changedProperties) {
+		if (changedProperties.get('_state') && changedProperties.get('_state') === 'hidden')
+		{
+			this.#centerLoadingSpinnerAndDialog();
+		}
+
 		if (changedProperties.has('_state')) {
 			if (this._state === 'showing') {
+				if (this.dataState === 'loading') {
+					setTimeout(() => {
+						if (this._state === 'showing') this._state = 'shown';
+					}, BACKDROP_DELAY_MS);
+				} else {
+					this._state = 'shown';
+				}
+			}
+		}
+	}
+	willUpdate(changedProperties) {
+		if (changedProperties.has('dataState') && changedProperties.get('dataState') !== undefined) {
+			this.#clearLiveArea();
+
+			const oldState = changedProperties.get('dataState');
+			const newState = this.dataState;
+
+			// Calculate announcements
+			if (newState === 'loading') {
+				this.#setLiveArea(this.localize('components.backdrop-loading.loadingAnnouncement'), { delay: LOADING_ANNOUNCEMENT_DELAY });
+			} else if (oldState === 'loading' && newState === 'clean') {
+				this.#setLiveArea(this.localize('components.backdrop-loading.loadingCompleteAnnouncement'));
+			} else if (newState === 'dirty') {
+				this.#setLiveArea(this.#renderDirtyOverlay(), { delay: DIRTY_ANNOUNCEMENT_DELAY });
+			}
+
+			// Update backdrop
+			if (oldState === 'clean') {
+				this.#show();
+			} else if (newState === 'clean') {
+				this.#fade();
+			} else if (oldState === 'loading' && newState === 'dirty') {
 				setTimeout(() => {
 					if (this._state === 'showing') this._state = 'shown';
 				}, BACKDROP_DELAY_MS);
 			}
 		}
-
-		if (changedProperties.has('shown') && (
-			(reduceMotion && this._state === 'shown') || (!reduceMotion && this._state === 'showing')
-		)) {
-			this.#centerLoadingSpinner();
-		}
-	}
-	willUpdate(changedProperties) {
-		if (changedProperties.has('shown')) {
-			this.#clearLiveArea();
-			if (this.shown) {
-				this.#setLiveArea(this.localize('components.backdrop-loading.loadingAnnouncement'), { delay: LOADING_ANNOUNCEMENT_DELAY });
-				this.#show();
-			} else if (changedProperties.get('shown') !== undefined) {
-				this.#setLiveArea(this.localize('components.backdrop-loading.loadingCompleteAnnouncement'));
-				this.#fade();
-			}
-		}
 	}
 
-	#centerLoadingSpinner() {
+	async #centerLoadingSpinnerAndDialog() {
 		if (this._state === 'hidden') { return; }
 
 		const loadingSpinner = this.shadowRoot.querySelector('d2l-loading-spinner');
@@ -159,7 +227,13 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 		// Adjust for the size of the spinner
 		const spinnerSizeOffset = LOADING_SPINNER_SIZE / 2;
 
+		// Adjust for the size of the dirty dialog
+		await this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay').getUpdateComplete();
+		await this.shadowRoot.querySelector('d2l-empty-state-action-button')?.getUpdateComplete();
+		const dirtyDialogSizeOffset = this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay').getBoundingClientRect().height / 2;
+
 		this._spinnerTop = centeringOffset + topOffset - spinnerSizeOffset;
+		this._dirtyDialogTop = centeringOffset + topOffset - dirtyDialogSizeOffset;
 	}
 
 	#clearLiveArea() {
@@ -185,6 +259,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 			this._state = 'hiding';
 		}
 	}
+
 	#getBackdropTarget() {
 		const parent = getComposedParent(this);
 
@@ -198,11 +273,13 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 
 		return targetedChildren[0];
 	}
+
 	#handleTransitionEnd() {
 		if (this._state === 'hiding') {
 			this.#hide();
 		}
 	}
+
 	#hide() {
 		this._state = 'hidden';
 
@@ -210,9 +287,19 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 
 		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
 	}
+
+	#renderDirtyOverlay() {
+		return html`<d2l-backdrop-dirty-overlay
+			style=${styleMap({ top: `${this._dirtyDialogTop}px` })}
+			description="${this.dirtyText}"
+			action="${this.dirtyButtonText}"
+		></d2l-backdrop-dirty-overlay>`;
+	}
+
 	#setLiveArea(content, { delay } = {}) {
 		this.announcementTimeout = setTimeout(() => this._ariaContent = content, delay || 0);
 	}
+
 	#show() {
 		this._state = reduceMotion ? 'shown' : 'showing';
 

@@ -1,7 +1,6 @@
 import '../button-subtle.js';
 import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { html as staticHtml, unsafeStatic } from 'lit/static-html.js';
-import { createMessage } from '../../../mixins/property-required/property-required-mixin.js';
 import { runButtonPropertyTests } from './button-shared-tests.js';
 
 describe('d2l-button-subtle', () => {
@@ -21,17 +20,6 @@ describe('d2l-button-subtle', () => {
 
 		it('should construct', () => {
 			runConstructor('d2l-button-subtle');
-		});
-
-	});
-
-	describe('errors', () => {
-
-		// enable when PropertyRequiredMixin is used
-		it.skip('throws error when no text', async() => {
-			const el = await fixture(html`<d2l-button-subtle></d2l-button-subtle>`);
-			expect(() => el.flushRequiredPropertyErrors())
-				.to.throw(TypeError, createMessage(el, 'text'));
 		});
 
 	});

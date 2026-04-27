@@ -45,12 +45,11 @@ describe('alert-toast', () => {
 		{ name: 'subtext-button-close', template: alertWithSubtextAndCloseButton },
 		{ name: 'subtext-no-close', template: html`<d2l-alert-toast no-auto-close type="critical" hide-close-button subtext="More detail explaining the critical issue." open>Critical message.</d2l-alert-toast>` },
 		{ name: 'long-button-text', template: html`<d2l-alert-toast no-auto-close type="warning" button-text="Perform Lengthy Operation Now" open>A message.</d2l-alert-toast>` },
-		{ name: 'long-button-text-subtext', template: html`<d2l-alert-toast no-auto-close type="warning" button-text="Perform Lengthy Operation Now" open subtext="More detail explaining the critical issue.">A message.</d2l-alert-toast>` },
-		{ name: 'long-button-text-subtext-dark', colorMode: 'dark', template: html`<d2l-alert-toast no-auto-close type="warning" button-text="Perform Lengthy Operation Now" open subtext="More detail explaining the critical issue.">A message.</d2l-alert-toast>` }
-	].forEach(({ name, colorMode, template }) => {
+		{ name: 'long-button-text-subtext', allColorModes: true, template: html`<d2l-alert-toast no-auto-close type="warning" button-text="Perform Lengthy Operation Now" open subtext="More detail explaining the critical issue.">A message.</d2l-alert-toast>` }
+	].forEach(({ name, allColorModes, template }) => {
 		it(name, async() => {
-			await fixture(template, { colorMode, viewport: { width: 700, height: 200 } });
-			await expect(document).to.be.golden();
+			await fixture(template, { viewport: { width: 700, height: 200 } });
+			await expect(document).to.be.golden({ allColorModes });
 		});
 	});
 
