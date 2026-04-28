@@ -1,7 +1,7 @@
 export default {
 	"components.alert.close": "Cau Hysbysiad",
-	"components.backdrop-loading.loadingAnnouncement": "Loading.",
-	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
+	"components.backdrop-loading.loadingAnnouncement": "Wrthi’n llwytho.",
+	"components.backdrop-loading.loadingCompleteAnnouncement": "Llwytho wedi Gorffen.",
 	"components.breadcrumbs.breadcrumb": "Briwsionyn Bara",
 	"components.button-add.addItem": "Ychwanegu Eitem",
 	"components.button-copy.copied": "Wedi’i gopïo!",
