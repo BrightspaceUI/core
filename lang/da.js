@@ -1,7 +1,7 @@
 export default {
 	"components.alert.close": "Luk besked",
-	"components.backdrop-loading.loadingAnnouncement": "Loading.",
-	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
+	"components.backdrop-loading.loadingAnnouncement": "Indlæser.",
+	"components.backdrop-loading.loadingCompleteAnnouncement": "Indlæsning fuldført.",
 	"components.breadcrumbs.breadcrumb": "Brødkrumme",
 	"components.button-add.addItem": "Tilføj element",
 	"components.button-copy.copied": "Kopieret!",
