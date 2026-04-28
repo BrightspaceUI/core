@@ -215,7 +215,7 @@ export function isVisible(node, { checkAncestors = true } = {}) {
 
 	if (!node.host) {
 		if (node.style === undefined) return true;
-		if (node.style.display === 'none') 	return false;
+		if (node.style.display === 'none') return false;
 		if (node.style.visibility === 'hidden') return false;
 
 		const computedStyle = window.getComputedStyle(node, null);
