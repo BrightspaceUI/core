@@ -1,7 +1,7 @@
 export default {
 	"components.alert.close": "アラートを閉じる",
-	"components.backdrop-loading.loadingAnnouncement": "Loading.",
-	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
+	"components.backdrop-loading.loadingAnnouncement": "読み込み中。",
+	"components.backdrop-loading.loadingCompleteAnnouncement": "読み込みが完了しました。",
 	"components.breadcrumbs.breadcrumb": "階層",
 	"components.button-add.addItem": "項目の追加",
 	"components.button-copy.copied": "コピーできました。",
