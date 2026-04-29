@@ -37,7 +37,10 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 				max-width: 420px;
 			}
 
-			${getFocusRingStyles(pseudoClass => `.d2l-dialog-content:${pseudoClass} > div`, { extraStyles: css`--d2l-focus-ring-offset: -1px; border-radius: 6px;` })}
+			${getFocusRingStyles(pseudoClass => `.d2l-dialog-content:${pseudoClass} > div`, { extraStyles: css`
+
+				--d2l-focus-ring-offset: -1px; border-radius: 6px;`
+			})}
 			.d2l-dialog-content:focus,
 			.d2l-dialog-content:focus-visible {
 				outline: none;
