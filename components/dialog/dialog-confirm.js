@@ -37,6 +37,15 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 				max-width: 420px;
 			}
 
+			.d2l-dialog-header > h2 {
+				margin: 0;
+				width: fit-content;
+			}
+			${getFocusRingStyles('.d2l-dialog-header > h2', { extraStyles: css`
+
+				--d2l-focus-ring-offset: 2px; border-radius: 6px;`
+			})}
+
 			${getFocusRingStyles(pseudoClass => `.d2l-dialog-content:${pseudoClass} > div`, { extraStyles: css`
 
 				--d2l-focus-ring-offset: -1px; border-radius: 6px;`
@@ -119,7 +128,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 			<div class="d2l-dialog-inner">
 				${this.titleText ? html`
 					<div class="d2l-dialog-header">
-						<div><h2 id="${this._titleId}" class="d2l-heading-3" tabindex="${ifDefined(titleTabIndex)}" ?autofocus="${titleAutofocus}">${this.titleText}</h2></div>
+						<h2 id="${this._titleId}" class="d2l-heading-3" tabindex="${ifDefined(titleTabIndex)}" ?autofocus="${titleAutofocus}">${this.titleText}</h2>
 					</div>` : null}
 				<div id="${this._textId}" class="d2l-dialog-content" tabindex="${ifDefined(contentTabIndex)}" ?autofocus="${contentAutofocus}">
 					<div>${this.text ? this.text.split('\n').map(line => html`<p>${line}</p>`) : null}</div>

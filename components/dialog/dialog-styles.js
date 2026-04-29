@@ -117,14 +117,11 @@ export const dialogStyles = css`
 
 	.d2l-dialog-header > div {
 		display: flex;
-		gap: 15px;
-		justify-content: space-between;
 	}
 
 	.d2l-dialog-header > div > h2 {
-		flex: 0 1 auto;
+		flex: 1 0 0;
 		margin: 0;
-		min-width: 0;
 	}
 
 	.d2l-dialog-content {
