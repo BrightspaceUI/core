@@ -64,7 +64,6 @@ export const dialogStyles = css`
 		z-index: 1000;
 	}
 
-	${getFocusRingStyles('dialog')}
 	dialog.d2l-dialog-outer {
 		color: var(--d2l-theme-text-color-static-standard);
 		margin-bottom: 0; /* required to override Chrome native positioning */
@@ -118,11 +117,14 @@ export const dialogStyles = css`
 
 	.d2l-dialog-header > div {
 		display: flex;
+		gap: 15px;
+		justify-content: space-between;
 	}
 
 	.d2l-dialog-header > div > h2 {
-		flex: 1 0 0;
+		flex: 0 1 auto;
 		margin: 0;
+		min-width: 0;
 	}
 
 	.d2l-dialog-content {

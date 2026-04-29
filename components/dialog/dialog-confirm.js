@@ -3,6 +3,7 @@ import { css, html, LitElement, nothing } from 'lit';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
 import { getFlag } from '../../helpers/flags.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -36,11 +37,12 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 				max-width: 420px;
 			}
 
-			.d2l-dialog-content > div {
+			${getFocusRingStyles('.d2l-dialog-content > div', { extraStyles: css`--d2l-focus-ring-offset: -1px; border-radius: 6px;` })}
+			.d2l-dialog-content {
 				padding-top: 30px;
 			}
 
-			.d2l-dialog-header + .d2l-dialog-content > div {
+			.d2l-dialog-header + .d2l-dialog-content {
 				padding-top: 0;
 			}
 
@@ -65,8 +67,12 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 					top: 0;
 				}
 
-				.d2l-dialog-content > div {
+				.d2l-dialog-content {
 					padding-top: 20px;
+				}
+
+				.d2l-dialog-header + .d2l-dialog-content {
+					padding-top: 0;
 				}
 
 			}
@@ -84,16 +90,27 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 	}
 
 	render() {
-		const contentTabIndex = !this.focusableContentElemPresent ? '0' : undefined;
+		let contentTabIndex = undefined;
+		let titleTabIndex = undefined;
+		if (this._useNative) {
+			if (this.titleText) {
+				titleTabIndex = '0';
+			} else {
+				contentTabIndex = '0';
+			}
+		} else {
+			contentTabIndex = !this.focusableContentElemPresent ? '0' : undefined;
+		}
+
 		const inner = html`
 			${this.critical ? html`<div id="${this._criticalLabelId}" hidden>${this.localize('components.dialog.critical')}</div>` : nothing}
 			<div class="d2l-dialog-inner">
 				${this.titleText ? html`
 					<div class="d2l-dialog-header">
-						<div><h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2></div>
+						<div><h2 id="${this._titleId}" class="d2l-heading-3" tabindex="${ifDefined(titleTabIndex)}">${this.titleText}</h2></div>
 					</div>` : null}
-				<div id="${this._textId}" class="d2l-dialog-content" tabindex="${ifDefined(contentTabIndex)}">
-					<div>${this.text ? this.text.split('\n').map(line => html`<p>${line}</p>`) : null}</div>
+				<div class="d2l-dialog-content">
+					<div id="${this._textId}" tabindex="${ifDefined(contentTabIndex)}">${this.text ? this.text.split('\n').map(line => html`<p>${line}</p>`) : null}</div>
 				</div>
 				<div class="d2l-dialog-footer">
 					<slot name="footer" class="d2l-dialog-footer-slot"></slot>

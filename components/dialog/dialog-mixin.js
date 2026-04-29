@@ -423,7 +423,6 @@ export const DialogMixin = superclass => class extends superclass {
 
 		if (this._useNative) {
 			dialog.showModal();
-			dialog.focus();
 		}
 
 		this._parentDialog = findComposedAncestor(this, (node) => {
