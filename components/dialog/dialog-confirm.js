@@ -41,10 +41,6 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 				margin: 0;
 				width: fit-content;
 			}
-			${getFocusRingStyles('.d2l-dialog-header > h2', { extraStyles: css`
-
-				--d2l-focus-ring-offset: 2px; border-radius: 6px;`
-			})}
 
 			${getFocusRingStyles(pseudoClass => `.d2l-dialog-content:${pseudoClass} > div`, { extraStyles: css`
 
@@ -86,10 +82,6 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 
 				.d2l-dialog-content {
 					padding-top: 20px;
-				}
-
-				.d2l-dialog-header + .d2l-dialog-content {
-					padding-top: 0;
 				}
 
 			}
