@@ -37,7 +37,12 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 				max-width: 420px;
 			}
 
-			${getFocusRingStyles('.d2l-dialog-content > div', { extraStyles: css`--d2l-focus-ring-offset: -1px; border-radius: 6px;` })}
+			${getFocusRingStyles(pseudoClass => `.d2l-dialog-content:${pseudoClass} > div`, { extraStyles: css`--d2l-focus-ring-offset: -1px; border-radius: 6px;` })}
+			.d2l-dialog-content:focus,
+			.d2l-dialog-content:focus-visible {
+				outline: none;
+			}
+
 			.d2l-dialog-content {
 				padding-top: 30px;
 			}
@@ -92,11 +97,15 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 	render() {
 		let contentTabIndex = undefined;
 		let titleTabIndex = undefined;
+		let contentAutofocus = false;
+		let titleAutofocus = false;
 		if (this._useNative) {
 			if (this.titleText) {
 				titleTabIndex = '-1';
+				titleAutofocus = true;
 			} else {
 				contentTabIndex = '-1';
+				contentAutofocus = true;
 			}
 		} else {
 			contentTabIndex = !this.focusableContentElemPresent ? '0' : undefined;
@@ -107,10 +116,10 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 			<div class="d2l-dialog-inner">
 				${this.titleText ? html`
 					<div class="d2l-dialog-header">
-						<div><h2 id="${this._titleId}" class="d2l-heading-3" tabindex="${ifDefined(titleTabIndex)}">${this.titleText}</h2></div>
+						<div><h2 id="${this._titleId}" class="d2l-heading-3" tabindex="${ifDefined(titleTabIndex)}" ?autofocus="${titleAutofocus}">${this.titleText}</h2></div>
 					</div>` : null}
-				<div class="d2l-dialog-content">
-					<div id="${this._textId}" tabindex="${ifDefined(contentTabIndex)}">${this.text ? this.text.split('\n').map(line => html`<p>${line}</p>`) : null}</div>
+				<div id="${this._textId}" class="d2l-dialog-content" tabindex="${ifDefined(contentTabIndex)}" ?autofocus="${contentAutofocus}">
+					<div>${this.text ? this.text.split('\n').map(line => html`<p>${line}</p>`) : null}</div>
 				</div>
 				<div class="d2l-dialog-footer">
 					<slot name="footer" class="d2l-dialog-footer-slot"></slot>
@@ -132,7 +141,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 	}
 
 	_focusInitial() {
-		if (!this.shadowRoot) return;
+		if (!this.shadowRoot || this._useNative) return;
 		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer-slot');
 		const nodes = footer.assignedNodes();
 		for (let i = 0; i < nodes.length; i++) {

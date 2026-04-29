@@ -398,7 +398,7 @@ export const DialogMixin = superclass => class extends superclass {
 		return abortEvent.defaultPrevented;
 	}
 
-	_open() {
+	async _open() {
 		if (!this.opened) return;
 
 		this._opener = getComposedActiveElement();
@@ -422,6 +422,8 @@ export const DialogMixin = superclass => class extends superclass {
 		});
 
 		if (this._useNative) {
+			this._state = 'showing';
+			await this.updateComplete;
 			dialog.showModal();
 		}
 
@@ -443,7 +445,7 @@ export const DialogMixin = superclass => class extends superclass {
 			}, 0);
 
 			await this._updateSize();
-			this._state = 'showing';
+			if (!this._useNative) this._state = 'showing';
 			await this.updateComplete;
 
 			// edge case: no children were focused, try again after one redraw
