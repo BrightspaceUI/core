@@ -1,11 +1,13 @@
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
 import './backdrop-dirty-overlay.js';
-import '../offscreen/offscreen.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { getFlag } from '../../helpers/flags.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
+
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -15,7 +17,6 @@ const BACKDROP_DELAY_MS = 800;
 const FADE_DURATION_MS = 500;
 const SPINNER_DELAY_MS = FADE_DURATION_MS;
 const LOADING_ANNOUNCEMENT_DELAY = 1000;
-const DIRTY_ANNOUNCEMENT_DELAY = 1000;
 
 const LOADING_SPINNER_SIZE = 50;
 
@@ -66,20 +67,24 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 	}
 
 	static get styles() {
-		return css`
+		return [css`
 			#visible {
 				display: none;
+			}
+
+			:host([_state="showing"]),
+			:host([_state="shown"]),
+			:host([_state="hiding"]),
+			:host([_state="showing"]) #visible,
+			:host([_state="shown"]) #visible,
+			:host([_state="hiding"]) #visible {
+				display: flex;
 				height: 100%;
 				justify-content: center;
 				position: absolute;
 				top: 0;
 				width: 100%;
 				z-index: 999;
-			}
-			:host([_state="showing"]) #visible,
-			:host([_state="shown"]) #visible,
-			:host([_state="hiding"]) #visible {
-				display: flex;
 			}
 
 			.backdrop {
@@ -134,7 +139,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 			@media (prefers-reduced-motion: reduce) {
 				* { transition: none; }
 			}
-		`;
+		`, offscreenStyles];
 	}
 
 	constructor() {
@@ -154,9 +159,9 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 					html`<div id="visible">
 						<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#handleTransitionEnd}"></div>
 						<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
-						${this.#renderDirtyOverlay()}
 					</div>`
 			}
+			${this.#renderDirtyOverlay({ offscreen: this._state === 'hidden' })}
 			<d2l-offscreen style=${styleMap(forcedOffscreenSizelessStyles)} aria-live="polite">${this._ariaContent}</d2l-offscreen>
 		`;
 	}
@@ -190,8 +195,6 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 				this.#setLiveArea(this.localize('components.backdrop-loading.loadingAnnouncement'), { delay: LOADING_ANNOUNCEMENT_DELAY });
 			} else if (oldState === 'loading' && newState === 'clean') {
 				this.#setLiveArea(this.localize('components.backdrop-loading.loadingCompleteAnnouncement'));
-			} else if (newState === 'dirty') {
-				this.#setLiveArea(this.#renderDirtyOverlay(), { delay: DIRTY_ANNOUNCEMENT_DELAY });
 			}
 
 			// Update backdrop
@@ -288,11 +291,14 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
 	}
 
-	#renderDirtyOverlay() {
+	#renderDirtyOverlay({ offscreen } = { offscreen: false }) {
 		return html`<d2l-backdrop-dirty-overlay
+			aria-live="polite"
 			style=${styleMap({ top: `${this._dirtyDialogTop}px` })}
-			description="${this.dirtyText}"
-			action="${this.dirtyButtonText}"
+			class=${classMap({ 'd2l-offscreen': offscreen })}
+			description="${offscreen ? '' : this.dirtyText}"
+			action="${offscreen ? '' : this.dirtyButtonText}"
+			?disabled=${offscreen}
 		></d2l-backdrop-dirty-overlay>`;
 	}
 

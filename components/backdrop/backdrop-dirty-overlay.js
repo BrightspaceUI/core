@@ -46,7 +46,13 @@ class BackdropDirtyOverlay extends LitElement {
 			 * The text displayed on the button of the dirty state overlay when the 'dirty' dataState is set.
 			 * @type {string}
 			 */
-			action: { type: String, required: true }
+			action: { type: String, required: true },
+
+			/**
+			 * Whether or not to disable the overlay action.
+			 * @type {string}
+			 */
+			disabled: { type: Boolean }
 		};
 	}
 
@@ -56,12 +62,13 @@ class BackdropDirtyOverlay extends LitElement {
 
 	render() {
 		return html`
-			<p class="d2l-body-compact d2l-backdrop-dirty-overlay" tabindex="-1">${this.description}</p>
+			<p class="d2l-body-compact d2l-backdrop-dirty-overlay">${this.description}</p>
 			<d2l-button-subtle
 				class="d2l-backdrop-dirty-overlay-action"
 				@click=${this.#handleActionClick}
 				h-align="text"
-				text=${this.action}>
+				text=${this.action}
+				?disabled=${this.disabled}>
 			</d2l-button-subtle>
 		`;
 	}
