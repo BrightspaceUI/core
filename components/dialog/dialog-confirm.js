@@ -94,9 +94,9 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 		let titleTabIndex = undefined;
 		if (this._useNative) {
 			if (this.titleText) {
-				titleTabIndex = '0';
+				titleTabIndex = '-1';
 			} else {
-				contentTabIndex = '0';
+				contentTabIndex = '-1';
 			}
 		} else {
 			contentTabIndex = !this.focusableContentElemPresent ? '0' : undefined;
