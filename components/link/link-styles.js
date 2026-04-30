@@ -23,13 +23,13 @@ export const _generateLinkStyles = (selector, includeSkeleton = true) => {
 	return css`
 		${selectorCSS}, ${selectorCSS}:visited, ${selectorCSS}:active, ${selectorCSS}:link {
 			--d2l-focus-ring-offset: 1px;
-			color: var(--d2l-color-celestine);
+			color: var(--d2l-theme-text-color-interactive-default);
 			cursor: pointer;
 			outline-style: none;
 			text-decoration: none;
 		}
 		${selectorCSS}:hover {
-			color: var(--d2l-color-celestine-minus-1);
+			color: var(--d2l-theme-text-color-interactive-hover);
 			text-decoration: underline;
 		}
 		${getFocusRingStyles(selector, { extraStyles: css`border-radius: 2px; text-decoration: underline;` })}
@@ -43,7 +43,7 @@ export const _generateLinkStyles = (selector, includeSkeleton = true) => {
 		}
 		@media print {
 			${selectorCSS}, ${selectorCSS}:visited, ${selectorCSS}:active, ${selectorCSS}:link {
-				color: var(--d2l-color-ferrite);
+				color: var(--d2l-theme-text-color-static-standard);
 			}
 		}
 		${skeletonStyles}

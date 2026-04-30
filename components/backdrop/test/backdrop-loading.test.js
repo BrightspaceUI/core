@@ -48,12 +48,12 @@ describe('d2l-backdrop-loading', () => {
 
 	});
 
-	describe('show and hide', () => {
+	describe('inerting target', () => {
 
 		it('toggles inert property on sibling with for ID', async() => {
 			await loadWithFixture(backdropLoadingFixture);
 
-			backdropLoading.shown = true;
+			backdropLoading.dataState = 'loading';
 			await backdropLoading.updateComplete;
 
 			expect(backdropLoading.hasAttribute('inert')).to.be.false;
@@ -61,7 +61,7 @@ describe('d2l-backdrop-loading', () => {
 			expect(otherSibling.hasAttribute('inert')).to.be.false;
 			expect(targetedSibling.hasAttribute('inert')).to.be.true;
 
-			backdropLoading.shown = false;
+			backdropLoading.dataState = 'clean';
 			await backdropLoading.updateComplete;
 
 			expect(targetedSibling.hasAttribute('inert')).to.be.false;
@@ -72,45 +72,37 @@ describe('d2l-backdrop-loading', () => {
 
 			targetedSibling.setAttribute('inert', 'inert');
 
-			backdropLoading.shown = true;
+			backdropLoading.dataState = 'loading';
 			await backdropLoading.updateComplete;
 
 			expect(targetedSibling.hasAttribute('inert')).to.be.true;
 
-			backdropLoading.shown = false;
+			backdropLoading.dataState = 'clean';
 			await backdropLoading.updateComplete;
 
 			expect(targetedSibling.hasAttribute('inert')).to.be.true;
 		});
 
-		it('makes composed parent inert when for does not match any sibling', async() => {
+		it('throws an error when for does not match any sibling', async() => {
 			await loadWithFixture(backdropLoadingMismatchedForFixture);
 
-			elem = await fixture(backdropLoadingFixture);
-
-			backdropLoading.shown = true;
-			await backdropLoading.updateComplete;
-
-			expect(composedParent.hasAttribute('inert')).to.be.true;
-
-			backdropLoading.shown = false;
-			await backdropLoading.updateComplete;
-
-			expect(composedParent.hasAttribute('inert')).to.be.false;
+			try {
+				backdropLoading.dataState = 'loading';
+				await backdropLoading.updateComplete;
+			} catch (e) {
+				expect(e.message).to.equal('Backdrop cannot find sibling identified by \'for\' property with value does-not-exist');
+			}
 		});
 
-		it('makes composed parent inert when for is not passed', async() => {
+		it('throws an error when for is not passed', async() => {
 			await loadWithFixture(backdropLoadingNoForFixture);
 
-			backdropLoading.shown = true;
-			await backdropLoading.updateComplete;
-
-			expect(composedParent.hasAttribute('inert')).to.be.true;
-
-			backdropLoading.shown = false;
-			await backdropLoading.updateComplete;
-
-			expect(composedParent.hasAttribute('inert')).to.be.false;
+			try {
+				backdropLoading.dataState = 'loading';
+				await backdropLoading.updateComplete;
+			} catch (e) {
+				expect(e.message).to.equal('Backdrop cannot find sibling identified by \'for\' property with value undefined');
+			}
 		});
 	});
 });

@@ -63,7 +63,7 @@ describe('LinkMixin', () => {
 	describe('new-window', () => {
 		it('should add offscreen text', async() => {
 			const elem = await fixture(newWindowFixture);
-			expect(elem.shadowRoot.querySelector('.d2l-offscreen').innerText).to.equal('Opens in a new window.');
+			expect(elem.shadowRoot.querySelector('.d2l-offscreen').textContent).to.equal('Opens in a new window.');
 		});
 
 		it('should add description if label is added', async() => {

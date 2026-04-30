@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "إغلاق التنبيه",
+	"components.backdrop-loading.loadingAnnouncement": "جارٍ التحميل",
+	"components.backdrop-loading.loadingCompleteAnnouncement": "اكتمل التحميل.",
 	"components.breadcrumbs.breadcrumb": "مسار التنقل",
 	"components.button-add.addItem": "إضافة عنصر",
 	"components.button-copy.copied": "تم النسخ!",
@@ -135,7 +137,7 @@ export default {
 	"components.list-item-drag-handle.keyboard": "قم بإعادة ترتيب العنصر، الموضع الحالي {currentPosition} من {size}. لنقل هذا العنصر، اضغط على سهما لأعلى أو لأسفل.",
 	"components.list-item-drag-handle-tooltip.enter-desc": "تبديل وضع إعادة ترتيب لوحة المفاتيح.",
 	"components.list-item-drag-handle-tooltip.enter-key": "إدخال",
-	"components.list-item-drag-handle-tooltip.left-right-desc": "غيِّر مستوى التداخل.",
+	"components.list-item-drag-handle-tooltip.left-right-desc": "غيِّر مستوى التداخل.",
 	"components.list-item-drag-handle-tooltip.left-right-key": "يسار/يمين",
 	"components.list-item-drag-handle-tooltip.title": "عناصر التحكم بلوحة المفاتيح لإعادة الترتيب:",
 	"components.list-item-drag-handle-tooltip.up-down-desc": "نقل المادة إلى الأعلى أو الأسفل في القائمة.",

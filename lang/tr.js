@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Kapatma Uyarısı",
+	"components.backdrop-loading.loadingAnnouncement": "Yükleniyor.",
+	"components.backdrop-loading.loadingCompleteAnnouncement": "Yükleme Tamamlandı.",
 	"components.breadcrumbs.breadcrumb": "İçerik Haritası",
 	"components.button-add.addItem": "Öğe Ekle",
 	"components.button-copy.copied": "Kopyalandı!",

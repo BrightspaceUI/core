@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "ปิดการแจ้งเตือน",
+	"components.backdrop-loading.loadingAnnouncement": "กำลังโหลด",
+	"components.backdrop-loading.loadingCompleteAnnouncement": "การโหลดเสร็จสิ้น",
 	"components.breadcrumbs.breadcrumb": "แถบนำทาง",
 	"components.button-add.addItem": "เพิ่มรายการ",
 	"components.button-copy.copied": "คัดลอกแล้ว!",

@@ -112,8 +112,13 @@ const lightVariables = new Map([
 	['--d2l-theme-text-color-static-standard', '--d2l-color-ferrite'],
 	['--d2l-theme-text-color-static-subtle', '--d2l-color-tungsten'],
 	// figma - undefined
+	['--d2l-theme-backdrop-background-color', '--d2l-color-regolith'],
+	['--d2l-theme-backdrop-opacity', '0.7'],
+	['--d2l-theme-backdrop-dialog-color', '#ffffff'],
+	['--d2l-theme-background-color-interactive-faint-disabled', '#f9fbff80'], /* --d2l-theme-background-color-interactive-faint-default at 50% opacity, remove once color-mix is widely supported */
 	['--d2l-theme-badge-background-color', '--d2l-color-gypsum'],
 	['--d2l-theme-badge-text-color', '--d2l-theme-text-color-static-standard'],
+	['--d2l-theme-border-color-disabled', '--d2l-color-corundum'],
 	['--d2l-theme-notification-background-color', '--d2l-color-carnelian-minus-1'],
 	['--d2l-theme-notification-text-color', '#ffffff'],
 	['--d2l-theme-text-color-static-disabled', '#20212280'], /* --d2l-theme-text-color-static-standard at 50% opacity, remove once color-mix is widely supported */
@@ -125,8 +130,18 @@ const lightVariables = new Map([
 	['--d2l-theme-shadow-attached', '0 2px 4px 0 rgba(0, 0, 0, 0.03)'],
 	['--d2l-theme-shadow-attached-block-start', '0 2px 4px 0 rgba(0, 0, 0, 0.03)'],
 	['--d2l-theme-shadow-attached-block-end', '0 -2px 4px 0 rgba(0, 0, 0, 0.03)'],
-	['--d2l-theme-shadow-floating', '0 2px 12px 0 rgba(0, 0, 0, 0.15)'],
-	['--d2l-theme-shadow-inset', 'inset 0 2px 0 0 rgba(177, 185, 190, 0.2)'], /* corundum */
+	['--d2l-theme-shadow-floating-offset-x', '0'],
+	['--d2l-theme-shadow-floating-offset-y', '2px'],
+	['--d2l-theme-shadow-floating-blur-radius', '12px'],
+	['--d2l-theme-shadow-floating-spread-radius', '0'],
+	['--d2l-theme-shadow-floating-color', 'rgba(0, 0, 0, 0.15)'],
+	['--d2l-theme-shadow-floating', 'var(--d2l-theme-shadow-floating-offset-x) var(--d2l-theme-shadow-floating-offset-y) var(--d2l-theme-shadow-floating-blur-radius) var(--d2l-theme-shadow-floating-spread-radius) var(--d2l-theme-shadow-floating-color)'],
+	['--d2l-theme-shadow-inset-offset-x', '0'],
+	['--d2l-theme-shadow-inset-offset-y', '2px'],
+	['--d2l-theme-shadow-inset-blur-radius', '0'],
+	['--d2l-theme-shadow-inset-spread-radius', '0'],
+	['--d2l-theme-shadow-inset-color', 'rgba(177, 185, 190, 0.2)'],
+	['--d2l-theme-shadow-inset', 'inset var(--d2l-theme-shadow-inset-offset-x) var(--d2l-theme-shadow-inset-offset-y) var(--d2l-theme-shadow-inset-blur-radius) var(--d2l-theme-shadow-inset-spread-radius) var(--d2l-theme-shadow-inset-color)'], /* corundum */
 	// feedback (old semantic names)
 	['--d2l-color-feedback-error', '--d2l-theme-status-color-error'],
 	['--d2l-color-feedback-warning', '--d2l-theme-status-color-warning'],
@@ -177,8 +192,13 @@ const darkVariables = new Map([
 	['--d2l-theme-text-color-static-standard', '--d2l-color-mica'],
 	['--d2l-theme-text-color-static-subtle', '--d2l-color-chromite'],
 	// figma - undefined
+	['--d2l-theme-backdrop-background-color', '--d2l-color-ferrite'],
+	['--d2l-theme-backdrop-opacity', '0.7'],
+	['--d2l-theme-backdrop-dialog-color', '#ffffff'],
+	['--d2l-theme-background-color-interactive-faint-disabled', '#20212280'], /* --d2l-theme-background-color-interactive-faint-default at 50% opacity, remove once color-mix is widely supported */
 	['--d2l-theme-badge-background-color', '#303335'],
 	['--d2l-theme-badge-text-color', '--d2l-theme-text-color-static-standard'],
+	['--d2l-theme-border-color-disabled', '#303233'], /* --d2l-theme-border-color-standard (tungsten) at 50% opacity */
 	['--d2l-theme-notification-background-color', '--d2l-color-carnelian-minus-1'],
 	['--d2l-theme-notification-text-color', '#ffffff'],
 	['--d2l-theme-text-color-static-disabled', '#cdd5dc80'], /* --d2l-theme-text-color-static-standard at 50% opacity, remove once color-mix is widely supported */
@@ -190,8 +210,18 @@ const darkVariables = new Map([
 	['--d2l-theme-shadow-attached', '0 2px 4px 0 rgba(0, 0, 0, 0.85)'],
 	['--d2l-theme-shadow-attached-block-start', '0 2px 4px 0 rgba(0, 0, 0, 0.85)'],
 	['--d2l-theme-shadow-attached-block-end', '0 -2px 4px 0 rgba(0, 0, 0, 0.85)'],
-	['--d2l-theme-shadow-floating', '0 2px 12px 0 rgba(0, 0, 0, 0.85)'],
-	['--d2l-theme-shadow-inset', 'inset 0 2px 0 0 rgba(177, 185, 190, 0.2)'], /* corundum */
+	['--d2l-theme-shadow-floating-offset-x', '0'],
+	['--d2l-theme-shadow-floating-offset-y', '2px'],
+	['--d2l-theme-shadow-floating-blur-radius', '12px'],
+	['--d2l-theme-shadow-floating-spread-radius', '0'],
+	['--d2l-theme-shadow-floating-color', 'rgba(0, 0, 0, 0.85)'],
+	['--d2l-theme-shadow-floating', 'var(--d2l-theme-shadow-floating-offset-x) var(--d2l-theme-shadow-floating-offset-y) var(--d2l-theme-shadow-floating-blur-radius) var(--d2l-theme-shadow-floating-spread-radius) var(--d2l-theme-shadow-floating-color)'],
+	['--d2l-theme-shadow-inset-offset-x', '0'],
+	['--d2l-theme-shadow-inset-offset-y', '2px'],
+	['--d2l-theme-shadow-inset-blur-radius', '0'],
+	['--d2l-theme-shadow-inset-spread-radius', '0'],
+	['--d2l-theme-shadow-inset-color', 'rgba(177, 185, 190, 0.2)'],
+	['--d2l-theme-shadow-inset', 'inset var(--d2l-theme-shadow-inset-offset-x) var(--d2l-theme-shadow-inset-offset-y) var(--d2l-theme-shadow-inset-blur-radius) var(--d2l-theme-shadow-inset-spread-radius) var(--d2l-theme-shadow-inset-color)'], /* corundum */
 	// feedback (old semantic names)
 	['--d2l-color-feedback-error', '--d2l-theme-status-color-error'],
 	['--d2l-color-feedback-warning', '--d2l-theme-status-color-warning'],
@@ -202,6 +232,10 @@ const darkVariables = new Map([
 function formatCSSVariable([key, value]) {
 	if (value.startsWith('--')) return `${key}: var(${value});`;
 	else return `${key}: ${value};`;
+}
+
+function isCustomPropertyDefined(rule, name) {
+	return rule.style.getPropertyValue(name).trim() !== '';
 }
 
 function resolvePrimitive(variableName, variables) {
@@ -219,7 +253,7 @@ function replaceSemanticVariables(value, semanticVariables) {
 	});
 }
 
-let style;
+let style, lightRule, darkRule, osRule;
 if (globalThis.document !== undefined && !globalThis.document.head.querySelector('#d2l-colors')) {
 	style = globalThis.document.createElement('style');
 	style.id = 'd2l-colors';
@@ -235,9 +269,7 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 			/* primary accent */
 			--d2l-color-primary-accent-action: var(--d2l-color-celestine);
 			--d2l-color-primary-accent-indicator: var(--d2l-color-carnelian);
-		}
 
-		html {
 			${lightCSS}
 		}
 		html[data-color-mode="dark"] {
@@ -250,10 +282,15 @@ if (globalThis.document !== undefined && !globalThis.document.head.querySelector
 		}
 
 		@supports (color: color-mix(in srgb, black 50%, transparent)) {
+			--d2l-theme-background-color-interactive-faint-disabled: color-mix(in srgb, var(--d2l-theme-background-color-interactive-faint-default) 50%, transparent);
 			--d2l-theme-text-color-static-disabled: color-mix(in srgb, var(--d2l-theme-text-color-static-standard) 50%, transparent);
 		}
 	`;
 	globalThis.document.head.appendChild(style);
+
+	lightRule = style.sheet.cssRules[0];
+	darkRule = style.sheet.cssRules[1];
+	osRule = style.sheet.cssRules[2].cssRules[0];
 }
 
 export function registerSemanticVariableForSvgImageUrl(name, value) {
@@ -261,8 +298,16 @@ export function registerSemanticVariableForSvgImageUrl(name, value) {
 		throw new TypeError('registerSemanticVariableForSvgImageUrl requires both a name and value');
 	}
 
-	const replacedLightValue = svgToCSS(replaceSemanticVariables(value, lightVariables));
-	const replacedDarkValue = svgToCSS(replaceSemanticVariables(value, darkVariables));
-	_registerCustomSemanticVariableValue(name, replacedLightValue, replacedDarkValue);
+	if (!style) return;
 
-}
+	if (isCustomPropertyDefined(lightRule, name)) {
+		console.warn(`registerSemanticVariableForSvgImageUrl called for ${name} but a custom property is already defined with this name`);
+	}
+
+	const replacedLightValue = svgToCSS(replaceSemanticVariables(value, lightVariables));
+	lightRule.style.setProperty(name, replacedLightValue);
+
+	const replacedDarkValue = svgToCSS(replaceSemanticVariables(value, darkVariables));
+	darkRule.style.setProperty(name, replacedDarkValue);
+	osRule.style.setProperty(name, replacedDarkValue);
+};

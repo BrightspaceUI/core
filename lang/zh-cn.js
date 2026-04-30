@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "关闭提醒",
+	"components.backdrop-loading.loadingAnnouncement": "正在加载。",
+	"components.backdrop-loading.loadingCompleteAnnouncement": "加载完成。",
 	"components.breadcrumbs.breadcrumb": "痕迹导航",
 	"components.button-add.addItem": "添加项目",
 	"components.button-copy.copied": "已复制！",

@@ -1,16 +1,19 @@
 import { css, html, LitElement } from 'lit';
+import { getFlag } from '../../helpers/flags.js';
+
+const OffSCREEN_SIZELESS = getFlag('d2l-offscreen-sizeless', true);
 
 /**
  * A private helper declarations that should not be used by general consumers
  */
 export const _offscreenStyleDeclarations = css`
 		direction: var(--d2l-document-direction, ${document.dir === 'rtl' ? css`rtl` : css`ltr`}); /* stylelint-disable-line @stylistic/string-quotes */
-		height: 1px;
+		height: ${OffSCREEN_SIZELESS ? 0 : 1}px;
 		inset-inline-start: -10000px;
 		overflow: hidden;
 		position: absolute !important;
 		white-space: nowrap;
-		width: 1px;
+		width: ${OffSCREEN_SIZELESS ? 0 : 1}px;
 		${document.dir === 'rtl' ? css`right` : css`left`}: -10000px;
 `;
 

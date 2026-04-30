@@ -46,7 +46,7 @@ class Backdrop extends LitElement {
 	static get styles() {
 		return [ css`
 			:host {
-				background-color: var(--d2l-color-regolith);
+				background-color: var(--d2l-theme-backdrop-background-color);
 				height: 0;
 				left: 0;
 				opacity: 0;
@@ -60,7 +60,7 @@ class Backdrop extends LitElement {
 				transition: opacity 1200ms ease-in;
 			}
 			:host([_state="showing"]) {
-				opacity: 0.7;
+				opacity: var(--d2l-theme-backdrop-opacity);
 			}
 			:host([_state="showing"]),
 			:host([_state="hiding"]) {

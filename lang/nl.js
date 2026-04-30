@@ -1,5 +1,7 @@
 export default {
 	"components.alert.close": "Waarschuwing sluiten",
+	"components.backdrop-loading.loadingAnnouncement": "Laden.",
+	"components.backdrop-loading.loadingCompleteAnnouncement": "Laden voltooid.",
 	"components.breadcrumbs.breadcrumb": "Kruimelpad",
 	"components.button-add.addItem": "Item toevoegen",
 	"components.button-copy.copied": "Gekopieerd!",
