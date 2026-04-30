@@ -7,7 +7,6 @@ import '../card.js';
 import '../card-loading-shimmer.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 import { _registerCustomSemanticVariableValue } from '../../../helpers/internal/css.js';
-_registerCustomSemanticVariableValue('--d2l-subtle-cards-background', 'var(--d2l-theme-background-color-subtle)', 'var(--d2l-color-ferrite)'); // Remove once an off-base background color is clearly defined
 _registerCustomSemanticVariableValue('--d2l-subtle-cards-header-background', 'orange', 'darkblue');
 function createCardTemplate(opts) {
 	const { alignCenter, content, subtle } = { alignCenter: false, subtle: false, ...opts };
@@ -101,15 +100,15 @@ const badgeSlotContent = html`
 	</div>
 `;
 
-const subtleLinkCardTemplate = html`<div style="background-color: var(--d2l-subtle-cards-background); padding: 20px; width: 300px">
+const subtleLinkCardTemplate = html`<div style="background-color: var(--d2l-theme-background-color-face); padding: 20px; width: 300px">
 	${createLinkCardTemplate({ content: simpleContent, subtle: true })}
 </div>`;
 
 describe('card', () => {
 	[
 		{ name: 'header-content', template: createCardTemplate({ content: simpleContent }) },
-		{ name: 'hover', template: createLinkCardTemplate({ content: simpleContent }), action: elem => hoverElem(elem), testDarkMode: true },
-		{ name: 'focus', template: createLinkCardTemplate({ content: simpleContent }), action: elem => focusElem(elem), testDarkMode: true },
+		{ name: 'hover', template: createLinkCardTemplate({ content: simpleContent }), action: elem => hoverElem(elem), allColorModes: true },
+		{ name: 'focus', template: createLinkCardTemplate({ content: simpleContent }), action: elem => focusElem(elem), allColorModes: true },
 		{ name: 'footer', template: createCardTemplate({ content: simpleContentWithFooter }) },
 		{ name: 'align-center', template: createCardTemplate({ content: simpleContentWithFooter, alignCenter: true }) },
 		{ name: 'badge', template: createCardTemplate({ content: html`${simpleContent}${badgeSlotContent}` }) },
@@ -135,27 +134,18 @@ describe('card', () => {
 			await oneEvent(elem, 'd2l-tooltip-show');
 		} },
 		{ name: 'loading', template: createCardTemplate({ content: html`<d2l-card-loading-shimmer slot="header" loading style="display: block; height: 103.5px; width: 100%;"></d2l-card-loading-shimmer>` }) },
-		{ name: 'subtle', template: html`<div style="background-color: var(--d2l-subtle-cards-background); padding: 20px; width: 300px">
+		{ name: 'subtle', template: html`<div style="background-color: var(--d2l-theme-background-color-face); padding: 20px; width: 300px">
 			${createCardTemplate({ content: simpleContent, subtle: true })}
-		</div>`, cardOnly: true, testDarkMode: true },
-		{ name: 'subtle-link', template: subtleLinkCardTemplate, cardOnly: true, testDarkMode: true },
-		{ name: 'subtle-link-hover', template: subtleLinkCardTemplate, action: elem => hoverElem(elem), cardOnly: true, testDarkMode: true },
-		{ name: 'subtle-link-focus', template: subtleLinkCardTemplate, action: elem => focusElem(elem), cardOnly: true, testDarkMode: true },
-	].forEach(({ name, template, action, rtl, cardOnly, testDarkMode }) => {
+		</div>`, cardOnly: true, allColorModes: true },
+		{ name: 'subtle-link', template: subtleLinkCardTemplate, cardOnly: true, allColorModes: true },
+		{ name: 'subtle-link-hover', template: subtleLinkCardTemplate, action: elem => hoverElem(elem), cardOnly: true, allColorModes: true },
+		{ name: 'subtle-link-focus', template: subtleLinkCardTemplate, action: elem => focusElem(elem), cardOnly: true, allColorModes: true },
+	].forEach(({ name, template, action, rtl, cardOnly, allColorModes }) => {
 		it(name, async() => {
 			let elem = await fixture(template, { rtl });
 			if (cardOnly) elem = elem.querySelector('d2l-card');
 			if (action) await action(elem);
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ allColorModes });
 		});
-
-		if (testDarkMode) {
-			it(`${name}-dark`, async() => {
-				let elem = await fixture(template, { rtl, colorMode: 'dark' });
-				if (cardOnly) elem = elem.querySelector('d2l-card');
-				if (action) await action(elem);
-				await expect(elem).to.be.golden();
-			});
-		}
 	});
 });

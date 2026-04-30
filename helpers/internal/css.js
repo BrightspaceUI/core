@@ -21,12 +21,13 @@ export function _registerCustomSemanticVariableValue(name, lightValue, darkValue
 	if (!name || !_isValidCssValue(lightValue) || !_isValidCssValue(darkValue)) {
 		throw new TypeError('_registerCustomSemanticVariableValue requires a name, lightValue, and darkValue');
 	}
+	const lightRule = style.sheet.cssRules[0];
+	const darkRule = style.sheet.cssRules[1];
+	const osRule = style.sheet.cssRules[2].cssRules[0];
 
-	style.sheet.insertRule(`html { ${ name }: ${ lightValue } }`, 0);
-	style.sheet.insertRule(`html[data-color-mode="dark"] { ${ name }: ${ darkValue } }`, 1);
-	style.sheet.insertRule(`@media (prefers-color-scheme: dark) {
-		html[data-color-mode="os"] { ${ name }: ${ darkValue } }
-	}`, 2);
+	lightRule.style.setProperty(name, lightValue);
+	darkRule.style.setProperty(name, darkValue);
+	osRule.style.setProperty(name, darkValue);
 }
 
 function _isValidCssValue(value) {
