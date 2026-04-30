@@ -2,9 +2,12 @@ import { _generateResetStyles, heading3Styles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+
+const newlineFix = getFlag('confirm-dialog-newline-fix', true);
 
 /**
  * A simple confirmation dialog for prompting the user. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the confirm dialog with the action value.
@@ -91,7 +94,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 						<div><h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2></div>
 					</div>` : null}
 				<div id="${this._textId}" class="d2l-dialog-content" tabindex="${ifDefined(contentTabIndex)}">
-					<div>${this.text ? this.text.split('\n').map(line => html`<p>${line}</p>`) : null}</div>
+					<div>${this.#renderText()}</div>
 				</div>
 				<div class="d2l-dialog-footer">
 					<slot name="footer" class="d2l-dialog-footer-slot"></slot>
@@ -129,6 +132,14 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 
 	_getWidth() {
 		/* override default width measurement and just use max-width */
+	}
+
+	#renderText() {
+		if (!this.text) return nothing;
+		const lines = newlineFix ?
+			this.text.split(/\\n|\n/gi) :
+			this.text.split('\n');
+		return lines.map(line => html`<p>${line}</p>`);
 	}
 
 }
