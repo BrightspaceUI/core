@@ -131,13 +131,13 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			}
 			:host([on]) .d2l-switch-icon-on > d2l-icon,
 			:host([on]) .d2l-switch-icon-on > d2l-icon-custom {
-				color: var(--d2l-theme-brand-color-primary-default);
+				color: var(--d2l-theme-icon-color-active);
 			}
 			:host([on]) .d2l-switch-icon-off {
 				transform: scale(0.35);
 			}
 			:host(:not([on])) .d2l-switch-icon-on {
-				color: var(--d2l-theme-brand-color-primary-default);
+				color: var(--d2l-theme-icon-color-active);
 				transform: scale(0.35);
 			}
 			.d2l-switch-text {
