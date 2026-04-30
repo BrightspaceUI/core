@@ -62,17 +62,17 @@ describe('dropdown-content', () => {
 		{ name: 'min-height', dropdownStyles: { left: '50%', top: '50%' }, content: html`<d2l-dropdown-content min-height="1000" no-auto-fit opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'max-height', content: html`<d2l-dropdown-content max-height="100" opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'wide-opener', dropdownStyles: { left: '30px', right: '30px', top: '75px' }, openerStyles: { borderRadius: '5px', width: '100%' }, content: html`<d2l-dropdown-content opened>${basicText}</d2l-dropdown-content>` },
-		{ name: 'with-header-footer', content: html`<d2l-dropdown-content opened>${withHeaderFooter}</d2l-dropdown-content>` },
+		{ name: 'with-header-footer', allColorModes: true, content: html`<d2l-dropdown-content opened>${withHeaderFooter}</d2l-dropdown-content>` },
 		{ name: 'no-padding-no-pointer', content: html`<d2l-dropdown-content no-padding no-pointer opened>${basicText}</d2l-dropdown-content>` },
-		{ name: 'scroll-bottom-shadow', content: html`<d2l-dropdown-content opened>${scroll}</d2l-dropdown-content>` },
+		{ name: 'scroll-bottom-shadow', allColorModes: true, content: html`<d2l-dropdown-content opened>${scroll}</d2l-dropdown-content>` },
 		{ name: 'vertical-offset', dropdownStyles: { left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="100" opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'vertical-offset-above', dropdownStyles: { bottom: '30px', left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="100" opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'vertical-offset-edge', dropdownStyles: { left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="100" opened>${longerText}</d2l-dropdown-content>` },
 		{ name: 'vertical-offset-negative', dropdownStyles: { left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="-25" opened>${blockText}</d2l-dropdown-content>` }
-	].forEach(({ name, content, dropdownStyles = {}, openerStyles = {} }) => {
+	].forEach(({ name, allColorModes, content, dropdownStyles = {}, openerStyles = {} }) => {
 		it(name, async() => {
 			await fixture(createDropdown(content, dropdownStyles, openerStyles), { viewport: { height: 400 }, pagePadding: false });
-			await expect(document).to.be.golden();
+			await expect(document).to.be.golden({ allColorModes });
 		});
 	});
 
@@ -102,7 +102,7 @@ describe('dropdown-content', () => {
 	[
 		{ name: 'mobile-right-tray', content: html`<d2l-dropdown-content mobile-tray="right" opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'mobile-left-tray', content: html`<d2l-dropdown-content mobile-tray="left" opened>${basicText}</d2l-dropdown-content>` },
-		{ name: 'mobile-bottom-tray', content: html`<d2l-dropdown-content mobile-tray="bottom" opened>${repeatedText}</d2l-dropdown-content>` },
+		{ name: 'mobile-bottom-tray', allColorModes: true, content: html`<d2l-dropdown-content mobile-tray="bottom" opened>${repeatedText}</d2l-dropdown-content>` },
 		{ name: 'mobile-no-tray', content: html`<d2l-dropdown-content opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'mobile-right-tray-no-close', content: html`<d2l-dropdown-content mobile-tray="right" no-mobile-close-button opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'mobile-left-tray-no-close', content: html`<d2l-dropdown-content mobile-tray="left" no-mobile-close-button opened>${basicText}</d2l-dropdown-content>` },
@@ -110,10 +110,10 @@ describe('dropdown-content', () => {
 		{ name: 'mobile-right-tray-max-width', content: html`<d2l-dropdown-content mobile-tray="right" max-width="300" opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'mobile-left-tray-max-width', content: html`<d2l-dropdown-content mobile-tray="left" max-width="300" opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'mobile-bottom-tray-max-height', content: html`<d2l-dropdown-content mobile-tray="bottom" max-height="200" opened>${repeatedText}</d2l-dropdown-content>` }
-	].forEach(({ name, content }) => {
+	].forEach(({ name, allColorModes, content }) => {
 		it(name, async() => {
 			await fixture(createDropdown(content), { viewport: { width: 600, height: 500 }, pagePadding: false });
-			await expect(document).to.be.golden();
+			await expect(document).to.be.golden({ allColorModes });
 		});
 	});
 
@@ -131,6 +131,6 @@ describe('dropdown-content', () => {
 		const elem = await fixture(createDropdown(html`<d2l-dropdown-content opened>${scroll}</d2l-dropdown-content>`), { viewport: { height: 400 }, pagePadding: false });
 		const content = elem.querySelector('d2l-dropdown-content');
 		content.scrollTo(1000);
-		await expect(document).to.be.golden();
+		await expect(document).to.be.golden({ allColorModes: true });
 	});
 });
