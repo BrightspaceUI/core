@@ -19,14 +19,8 @@ describe('alert', () => {
 
 		it(`type-${type}`, async() => {
 			const elem = await fixture(template);
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ allColorModes: true });
 		});
-
-		it(`type-${type}-dark`, async() => {
-			const elem = await fixture(template, { colorMode: 'dark' });
-			await expect(elem).to.be.golden();
-		});
-
 	});
 
 	[

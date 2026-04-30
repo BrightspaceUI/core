@@ -48,12 +48,12 @@ describe('d2l-backdrop-loading', () => {
 
 	});
 
-	describe('show and hide', () => {
+	describe('inerting target', () => {
 
 		it('toggles inert property on sibling with for ID', async() => {
 			await loadWithFixture(backdropLoadingFixture);
 
-			backdropLoading.shown = true;
+			backdropLoading.dataState = 'loading';
 			await backdropLoading.updateComplete;
 
 			expect(backdropLoading.hasAttribute('inert')).to.be.false;
@@ -61,7 +61,7 @@ describe('d2l-backdrop-loading', () => {
 			expect(otherSibling.hasAttribute('inert')).to.be.false;
 			expect(targetedSibling.hasAttribute('inert')).to.be.true;
 
-			backdropLoading.shown = false;
+			backdropLoading.dataState = 'clean';
 			await backdropLoading.updateComplete;
 
 			expect(targetedSibling.hasAttribute('inert')).to.be.false;
@@ -72,12 +72,12 @@ describe('d2l-backdrop-loading', () => {
 
 			targetedSibling.setAttribute('inert', 'inert');
 
-			backdropLoading.shown = true;
+			backdropLoading.dataState = 'loading';
 			await backdropLoading.updateComplete;
 
 			expect(targetedSibling.hasAttribute('inert')).to.be.true;
 
-			backdropLoading.shown = false;
+			backdropLoading.dataState = 'clean';
 			await backdropLoading.updateComplete;
 
 			expect(targetedSibling.hasAttribute('inert')).to.be.true;
@@ -87,7 +87,7 @@ describe('d2l-backdrop-loading', () => {
 			await loadWithFixture(backdropLoadingMismatchedForFixture);
 
 			try {
-				backdropLoading.shown = true;
+				backdropLoading.dataState = 'loading';
 				await backdropLoading.updateComplete;
 			} catch (e) {
 				expect(e.message).to.equal('Backdrop cannot find sibling identified by \'for\' property with value does-not-exist');
@@ -98,7 +98,7 @@ describe('d2l-backdrop-loading', () => {
 			await loadWithFixture(backdropLoadingNoForFixture);
 
 			try {
-				backdropLoading.shown = true;
+				backdropLoading.dataState = 'loading';
 				await backdropLoading.updateComplete;
 			} catch (e) {
 				expect(e.message).to.equal('Backdrop cannot find sibling identified by \'for\' property with value undefined');

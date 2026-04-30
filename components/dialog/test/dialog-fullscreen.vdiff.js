@@ -55,8 +55,8 @@ describe('dialog-fullscreen', () => {
 					{ name: 'no-footer-content', template: createDialog({ content: long }) },
 					{ name: 'no-padding', template: createDialog({ content: html`<div style="background-color: var(--d2l-color-citrine); height: 100%; width: 100%;">No padding!</div>${footer}`, noPadding: true }) },
 					{ name: 'horizontal-overflow', template: createDialog({ content: html`${tabs}${general}` }) },
-					{ name: 'scroll-bottom-shadow', template: createDialog({ content: html`${long}${footer}` }) },
-					{ name: 'scroll-top-shadow', template: createDialog({ content: html`${long}${footer}` }), action: elem => elem.querySelector('#bottom').scrollIntoView() },
+					{ name: 'scroll-bottom-shadow', allColorModes: true, template: createDialog({ content: html`${long}${footer}` }) },
+					{ name: 'scroll-top-shadow', allColorModes: true, template: createDialog({ content: html`${long}${footer}` }), action: elem => elem.querySelector('#bottom').scrollIntoView() },
 					{ name: 'fullscreen-within-on', template: createDialog(), action: elem => dispatchFullscreenWithinEvent(elem.querySelector('#top'), true) },
 					{ name: 'fullscreen-within-off', template: createDialog(), action:
 						async(elem) => {
@@ -65,11 +65,11 @@ describe('dialog-fullscreen', () => {
 							dispatchFullscreenWithinEvent(elem.querySelector('#top'), false);
 						}
 					}
-				].forEach(({ name, template, action }) => {
+				].forEach(({ name, template, action, allColorModes }) => {
 					it(name, async() => {
 						const elem = await fixture(template, { viewport: { width: 800, height: 500 } });
 						if (action) await action(elem);
-						await expect(document).to.be.golden();
+						await expect(document).to.be.golden({ allColorModes });
 					});
 				});
 			});

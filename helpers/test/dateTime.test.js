@@ -23,22 +23,27 @@ describe('date-time', () => {
 	documentLocaleSettings.timezone.identifier = 'America/Toronto';
 
 	describe('formatDateInISO', () => {
-		it('should return the correct date', () => {
-			const date = {
-				year: 2020,
-				month: 3,
-				date: 1
-			};
-			expect(formatDateInISO(date)).to.equal('2020-03-01');
-		});
-
-		it('should return the correct date', () => {
-			const date = {
-				year: 2020,
-				month: 12,
-				date: 20
-			};
-			expect(formatDateInISO(date)).to.equal('2020-12-20');
+		[
+			{
+				date: {
+					year: 2020,
+					month: 3,
+					date: 1
+				},
+				expected: '2020-03-01'
+			},
+			{
+				date: {
+					year: 2020,
+					month: 12,
+					date: 20
+				},
+				expected: '2020-12-20'
+			}
+		].forEach(({ date, expected }) => {
+			it('should return the correct date', () => {
+				expect(formatDateInISO(date)).to.equal(expected);
+			});
 		});
 
 		it('should throw when incorrect input', () => {
@@ -67,28 +72,33 @@ describe('date-time', () => {
 	});
 
 	describe('formatDateTimeInISO', () => {
-		it('should return the correct date-time', () => {
-			const date = {
-				year: 2020,
-				month: 3,
-				date: 1,
-				hours: 12,
-				minutes: 24,
-				seconds: 36
-			};
-			expect(formatDateTimeInISO(date)).to.equal('2020-03-01T12:24:36.000Z');
-		});
-
-		it('should return the correct date', () => {
-			const date = {
-				year: 2020,
-				month: 12,
-				date: 20,
-				hours: 1,
-				minutes: 2,
-				seconds: 3
-			};
-			expect(formatDateTimeInISO(date)).to.equal('2020-12-20T01:02:03.000Z');
+		[
+			{
+				date: {
+					year: 2020,
+					month: 3,
+					date: 1,
+					hours: 12,
+					minutes: 24,
+					seconds: 36
+				},
+				expected: '2020-03-01T12:24:36.000Z'
+			},
+			{
+				date: {
+					year: 2020,
+					month: 12,
+					date: 20,
+					hours: 1,
+					minutes: 2,
+					seconds: 3
+				},
+				expected: '2020-12-20T01:02:03.000Z'
+			}
+		].forEach(({ date, expected }) => {
+			it('should return the correct date-time', () => {
+				expect(formatDateTimeInISO(date)).to.equal(expected);
+			});
 		});
 
 		it('should throw when no input', () => {
@@ -348,12 +358,19 @@ describe('date-time', () => {
 	});
 
 	describe('getLocalDateTimeFromUTCDateTime', () => {
-		it('should return the correct date and time', () => {
-			expect(getLocalDateTimeFromUTCDateTime('2019-01-30T12:05:10.000Z')).to.equal('2019-01-30T07:05:10.000');
-		});
-
-		it('should return the correct date and time', () => {
-			expect(getLocalDateTimeFromUTCDateTime('2019-11-02T03:00:00.000Z')).to.equal('2019-11-01T23:00:00.000');
+		[
+			{
+				date: '2019-01-30T12:05:10.000Z',
+				expected: '2019-01-30T07:05:10.000'
+			},
+			{
+				date: '2019-11-02T03:00:00.000Z',
+				expected: '2019-11-01T23:00:00.000'
+			}
+		].forEach(({ date, expected }) => {
+			it('should return the correct date and time', () => {
+				expect(getLocalDateTimeFromUTCDateTime(date)).to.equal(expected);
+			});
 		});
 	});
 
@@ -380,16 +397,21 @@ describe('date-time', () => {
 	});
 
 	describe('getUTCDateTimeFromLocalDateTime', () => {
-		it('should return the correct result', () => {
-			const date = '2019-02-10';
-			const time = '14:20:30';
-			expect(getUTCDateTimeFromLocalDateTime(date, time)).to.equal('2019-02-10T19:20:30.000Z');
-		});
-
-		it('should return the correct result', () => {
-			const date = '2030-01-20';
-			const time = '2:3:4';
-			expect(getUTCDateTimeFromLocalDateTime(date, time)).to.equal('2030-01-20T07:03:04.000Z');
+		[
+			{
+				date: '2019-02-10',
+				time: '14:20:30',
+				expected: '2019-02-10T19:20:30.000Z'
+			},
+			{
+				date: '2030-01-20',
+				time: '2:3:4',
+				expected: '2030-01-20T07:03:04.000Z'
+			}
+		].forEach(({ date, time, expected }) => {
+			it('should return the correct result', () => {
+				expect(getUTCDateTimeFromLocalDateTime(date, time)).to.equal(expected);
+			});
 		});
 
 		it('should return the correct result when date contains time', () => {

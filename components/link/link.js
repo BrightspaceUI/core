@@ -105,7 +105,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 					white-space: nowrap;
 				}
 				d2l-icon {
-					color: var(--d2l-color-celestine);
+					color: var(--d2l-theme-text-color-interactive-default);
 					height: calc(1em - 1px);
 					margin-inline-start: 0.315em;
 					transform: translateY(0.1em);
@@ -114,25 +114,25 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				}
 
 				a:hover d2l-icon {
-					--d2l-icon-fill-color: var(--d2l-color-celestine-minus-1);
+					--d2l-icon-fill-color: var(--d2l-theme-text-color-interactive-hover);
 				}
 
 				:host([disabled]:not([disabled-tooltip])) a:hover {
-					color: var(--d2l-color-celestine);
+					color: var(--d2l-theme-text-color-interactive-default);
 					text-decoration: none;
 				}
 				:host([disabled]:not([disabled-tooltip])) a:hover d2l-icon {
-					--d2l-icon-fill-color: var(--d2l-color-celestine);
+					--d2l-icon-fill-color: var(--d2l-theme-text-color-interactive-default);
 				}
 				a[aria-disabled="true"],
 				a[aria-disabled="true"]:active {
 					cursor: default;
 				}
 				a[aria-disabled="true"] .d2l-link-content {
-					opacity: 0.74;
+					opacity: var(--d2l-theme-opacity-disabled-link);
 				}
 				a[aria-disabled="true"] d2l-icon {
-					opacity: 0.64;
+					opacity: var(--d2l-theme-opacity-disabled-linkicon);
 				}
 
 				@media print {

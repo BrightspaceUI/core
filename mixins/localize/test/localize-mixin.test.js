@@ -394,7 +394,7 @@ describe('LocalizeMixin', () => {
 
 	});
 
-	describe('localizeHTML', async() => {
+	describe('localizeHTML', () => {
 
 		let consoleErrorStub, elem;
 		beforeEach(async() => {

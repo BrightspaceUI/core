@@ -111,6 +111,9 @@ const lightVariables = new Map([
 	['--d2l-theme-text-color-static-standard', '--d2l-color-ferrite'],
 	['--d2l-theme-text-color-static-subtle', '--d2l-color-tungsten'],
 	// figma - undefined
+	['--d2l-theme-backdrop-background-color', '--d2l-color-regolith'],
+	['--d2l-theme-backdrop-opacity', '0.7'],
+	['--d2l-theme-backdrop-dialog-color', '#ffffff'],
 	['--d2l-theme-background-color-interactive-faint-disabled', '#f9fbff80'], /* --d2l-theme-background-color-interactive-faint-default at 50% opacity, remove once color-mix is widely supported */
 	['--d2l-theme-badge-background-color', '--d2l-color-gypsum'],
 	['--d2l-theme-badge-text-color', '--d2l-theme-text-color-static-standard'],
@@ -127,7 +130,12 @@ const lightVariables = new Map([
 	['--d2l-theme-shadow-attached', '0 2px 4px 0 rgba(0, 0, 0, 0.03)'],
 	['--d2l-theme-shadow-attached-block-start', '0 2px 4px 0 rgba(0, 0, 0, 0.03)'],
 	['--d2l-theme-shadow-attached-block-end', '0 -2px 4px 0 rgba(0, 0, 0, 0.03)'],
-	['--d2l-theme-shadow-floating', '0 2px 12px 0 rgba(0, 0, 0, 0.15)'],
+	['--d2l-theme-shadow-floating-offset-x', '0'],
+	['--d2l-theme-shadow-floating-offset-y', '2px'],
+	['--d2l-theme-shadow-floating-blur-radius', '12px'],
+	['--d2l-theme-shadow-floating-spread-radius', '0'],
+	['--d2l-theme-shadow-floating-color', 'rgba(0, 0, 0, 0.15)'],
+	['--d2l-theme-shadow-floating', 'var(--d2l-theme-shadow-floating-offset-x) var(--d2l-theme-shadow-floating-offset-y) var(--d2l-theme-shadow-floating-blur-radius) var(--d2l-theme-shadow-floating-spread-radius) var(--d2l-theme-shadow-floating-color)'],
 	['--d2l-theme-shadow-inset-offset-x', '0'],
 	['--d2l-theme-shadow-inset-offset-y', '2px'],
 	['--d2l-theme-shadow-inset-blur-radius', '0'],
@@ -184,6 +192,9 @@ const darkVariables = new Map([
 	['--d2l-theme-text-color-static-standard', '--d2l-color-mica'],
 	['--d2l-theme-text-color-static-subtle', '--d2l-color-chromite'],
 	// figma - undefined
+	['--d2l-theme-backdrop-background-color', '--d2l-color-ferrite'],
+	['--d2l-theme-backdrop-opacity', '0.7'],
+	['--d2l-theme-backdrop-dialog-color', '#ffffff'],
 	['--d2l-theme-background-color-interactive-faint-disabled', '#20212280'], /* --d2l-theme-background-color-interactive-faint-default at 50% opacity, remove once color-mix is widely supported */
 	['--d2l-theme-badge-background-color', '#303335'],
 	['--d2l-theme-badge-text-color', '--d2l-theme-text-color-static-standard'],
@@ -200,7 +211,12 @@ const darkVariables = new Map([
 	['--d2l-theme-shadow-attached', '0 2px 4px 0 rgba(0, 0, 0, 0.85)'],
 	['--d2l-theme-shadow-attached-block-start', '0 2px 4px 0 rgba(0, 0, 0, 0.85)'],
 	['--d2l-theme-shadow-attached-block-end', '0 -2px 4px 0 rgba(0, 0, 0, 0.85)'],
-	['--d2l-theme-shadow-floating', '0 2px 12px 0 rgba(0, 0, 0, 0.85)'],
+	['--d2l-theme-shadow-floating-offset-x', '0'],
+	['--d2l-theme-shadow-floating-offset-y', '2px'],
+	['--d2l-theme-shadow-floating-blur-radius', '12px'],
+	['--d2l-theme-shadow-floating-spread-radius', '0'],
+	['--d2l-theme-shadow-floating-color', 'rgba(0, 0, 0, 0.85)'],
+	['--d2l-theme-shadow-floating', 'var(--d2l-theme-shadow-floating-offset-x) var(--d2l-theme-shadow-floating-offset-y) var(--d2l-theme-shadow-floating-blur-radius) var(--d2l-theme-shadow-floating-spread-radius) var(--d2l-theme-shadow-floating-color)'],
 	['--d2l-theme-shadow-inset-offset-x', '0'],
 	['--d2l-theme-shadow-inset-offset-y', '2px'],
 	['--d2l-theme-shadow-inset-blur-radius', '0'],
@@ -282,6 +298,9 @@ export function registerSemanticVariableForSvgImageUrl(name, value) {
 	if (!name || typeof value !== 'string') {
 		throw new TypeError('registerSemanticVariableForSvgImageUrl requires both a name and value');
 	}
+
+	if (!style) return;
+
 	if (isCustomPropertyDefined(lightRule, name)) {
 		console.warn(`registerSemanticVariableForSvgImageUrl called for ${name} but a custom property is already defined with this name`);
 	}

@@ -39,6 +39,7 @@ const wrappedDropdown = defineCE(
 );
 
 describe('dropdown-openers', () => {
+
 	// test for https://github.com/BrightspaceUI/core/issues/1398
 	it('autoclose', async() => {
 		const elem = await fixture(`<${wrappedDropdown}></${wrappedDropdown}>`);
@@ -51,13 +52,13 @@ describe('dropdown-openers', () => {
 	});
 
 	[
-		{ name: 'button-primary', template: html`<d2l-dropdown-button text="Open!" primary><d2l-dropdown-content></d2l-dropdown-content></d2l-dropdown-button>` },
+		{ name: 'button-primary', allColorModes: true, template: html`<d2l-dropdown-button text="Open!" primary><d2l-dropdown-content></d2l-dropdown-content></d2l-dropdown-button>` },
 		{ name: 'button-full-width', template: html`<d2l-dropdown-button text="Open!" style="width: 100%;"><d2l-dropdown-content></d2l-dropdown-content></d2l-dropdown-button>` },
 		{ name: 'button-rtl', rtl: true, template: html`<d2l-dropdown-button text="Open!"><d2l-dropdown-content></d2l-dropdown-content></d2l-dropdown-button>` }
-	].forEach(({ name, template, rtl }) => {
+	].forEach(({ name, allColorModes, template, rtl }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { viewport: { width: 300 }, rtl });
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ allColorModes });
 		});
 	});
 
@@ -74,4 +75,5 @@ describe('dropdown-openers', () => {
 			await expect(elem).to.be.golden();
 		});
 	});
+
 });

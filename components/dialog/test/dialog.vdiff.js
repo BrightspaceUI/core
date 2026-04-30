@@ -73,9 +73,9 @@ describe('dialog', () => {
 
 				[
 					{ name: 'no-footer-content', template: createDialog({ content: long }) },
-					{ name: 'critical', template: createDialog({ content: long, critical: true }) },
-					{ name: 'scroll-bottom-shadow', template: createDialog({ content: html`${long}${footer}` }) },
-					{ name: 'scroll-top-shadow', template: createDialog({ content: html`${long}${footer}` }), action: elem => elem.querySelector('#bottom').scrollIntoView() },
+					{ name: 'critical', allColorModes: true, template: createDialog({ content: long, critical: true }) },
+					{ name: 'scroll-bottom-shadow', allColorModes: true, template: createDialog({ content: html`${long}${footer}` }) },
+					{ name: 'scroll-top-shadow', allColorModes: true, template: createDialog({ content: html`${long}${footer}` }), action: elem => elem.querySelector('#bottom').scrollIntoView() },
 					{ name: 'fullscreen-within-on', template: createDialog(), action: elem => dispatchFullscreenWithinEvent(elem.querySelector('#top'), true) },
 					{ name: 'fullscreen-within-off', template: createDialog(), action:
 						async(elem) => {
@@ -86,11 +86,11 @@ describe('dialog', () => {
 					},
 					{ name: 'full-height', template: createDialog({ content: html`<div style="background-color: orange; border: 1px solid black; box-sizing: border-box; height: 100%;"></div>${footer}`, fullHeight: true }) },
 					{ name: 'full-height-narrow', template: createDialog({ content: html`<div>Top</div><div>Line 1</div><div>Bottom</div>`, fullHeight: true, width: 150 }) },
-				].forEach(({ name, template, action }) => {
+				].forEach(({ name, template, action, allColorModes }) => {
 					it(name, async() => {
 						const elem = await fixture(template, { viewport: { width: 800, height: 500 } });
 						if (action) await action(elem);
-						await expect(document).to.be.golden();
+						await expect(document).to.be.golden({ allColorModes });
 					});
 				});
 			});
