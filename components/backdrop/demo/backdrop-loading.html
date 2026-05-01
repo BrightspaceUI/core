@@ -150,17 +150,17 @@
 						const demo = document.currentScript.parentNode;
 						const loadingBackdrop = demo.querySelector('d2l-backdrop-loading');
 						demo.querySelector('#target > d2l-button').addEventListener('click', () => {
-							loadingBackdrop.dataState = "dirty";
+							loadingBackdrop.dataState = 'dirty';
 						});
 						loadingBackdrop.addEventListener('d2l-backdrop-dirty-overlay-action', () => {
-							loadingBackdrop.dataState = "loading";
+							loadingBackdrop.dataState = 'loading';
 							setTimeout(() => {
 								demo.querySelectorAll('.grade').forEach((grade) => {
 									grade.innerHTML = `${Math.round(Math.random() * 100).toString()}%`;
 								});
-								loadingBackdrop.dataState = "clean";
+								loadingBackdrop.dataState = 'clean';
 							}, 5000);
-						})
+						});
 					</script>
 				</template>
 			</d2l-demo-snippet>
