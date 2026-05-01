@@ -232,13 +232,16 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 		// Adjust for the size of the spinner
 		const spinnerSizeOffset = LOADING_SPINNER_SIZE / 2;
 
-		// Adjust for the size of the dirty dialog
-		await this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay').getUpdateComplete();
-		await this.shadowRoot.querySelector('d2l-empty-state-action-button')?.getUpdateComplete();
-		const dirtyDialogSizeOffset = this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay').getBoundingClientRect().height / 2;
-
 		this._spinnerTop = centeringOffset + topOffset - spinnerSizeOffset;
-		this._dirtyDialogTop = centeringOffset + topOffset - dirtyDialogSizeOffset;
+
+		// Adjust for the size of the dirty dialog
+		const dirtyOverlay = this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay');
+		if (dirtyOverlay) {
+			await this.shadowRoot.querySelector('d2l-empty-state-action-button')?.getUpdateComplete();
+			const dirtyDialogSizeOffset = this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay').getBoundingClientRect().height / 2;
+
+			this._dirtyDialogTop = centeringOffset + topOffset - dirtyDialogSizeOffset;
+		}
 	}
 
 	#clearLiveArea() {

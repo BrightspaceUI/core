@@ -145,19 +145,22 @@
 							</tr>
 						</table>
 					</div>
-					<d2l-backdrop-loading for="grade-container"></d2l-backdrop-loading>
+					<d2l-backdrop-loading for="grade-container" dirty-text="Click to reload" dirty-button-text="Reload"></d2l-backdrop-loading>
 					<script data-demo-hide>
 						const demo = document.currentScript.parentNode;
 						const loadingBackdrop = demo.querySelector('d2l-backdrop-loading');
 						demo.querySelector('#target > d2l-button').addEventListener('click', () => {
-							loadingBackdrop.shown = !loadingBackdrop.shown;
+							loadingBackdrop.dataState = "dirty";
+						});
+						loadingBackdrop.addEventListener('d2l-backdrop-dirty-overlay-action', () => {
+							loadingBackdrop.dataState = "loading";
 							setTimeout(() => {
 								demo.querySelectorAll('.grade').forEach((grade) => {
 									grade.innerHTML = `${Math.round(Math.random() * 100).toString()}%`;
 								});
-								loadingBackdrop.shown = !loadingBackdrop.shown;
+								loadingBackdrop.dataState = "clean";
 							}, 5000);
-						});
+						})
 					</script>
 				</template>
 			</d2l-demo-snippet>

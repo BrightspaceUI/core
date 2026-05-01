@@ -13,15 +13,18 @@ const template = html`
 describe('backdrop-loading', () => {
 	[
 		{ dataState: 'clean' },
-		{ dataState: 'clean-dark', colorMode: 'dark' },
+		{ dataState: 'clean', colorMode: 'dark' },
 		{ dataState: 'dirty' },
-		{ dataState: 'dirty-dark', colorMode: 'dark' },
+		{ dataState: 'dirty', colorMode: 'dark' },
 		{ dataState: 'loading' },
-		{ dataState: 'loading-dark', colorMode: 'dark' }
+		{ dataState: 'loading', colorMode: 'dark' }
 	].forEach(({ dataState, colorMode }) => {
-		it(dataState, async() => {
+		it(`${dataState}-${colorMode || 'light'}`, async() => {
 			const elem = await fixture(template, { colorMode });
-			elem.querySelector('d2l-backdrop-loading').dataState = dataState;
+			const backdrop = elem.querySelector('d2l-backdrop-loading');
+			backdrop.dataState = dataState;
+			await backdrop.updateComplete;
+
 			await expect(elem).to.be.golden();
 		});
 	});
