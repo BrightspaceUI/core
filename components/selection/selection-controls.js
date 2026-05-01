@@ -61,7 +61,7 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 				}
 			}
 			:host([_scrolled]) .d2l-selection-controls-shadow {
-				background-color: var(--d2l-selection-controls-background-color, white);
+				background-color: var(--d2l-selection-controls-background-color, var(--d2l-theme-background-color-base));
 				bottom: -4px;
 				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
 				clip: rect(30px, auto, 200px, auto);
@@ -78,7 +78,7 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 			}
 			.d2l-selection-controls-container {
 				align-items: center;
-				background-color: var(--d2l-selection-controls-background-color, white);
+				background-color: var(--d2l-selection-controls-background-color, var(--d2l-theme-background-color-base));
 				display: flex;
 				margin: 6px calc(-1*var(--d2l-selection-controls-padding, 0px));
 				min-height: 54px;
