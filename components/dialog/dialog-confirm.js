@@ -165,7 +165,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 
 	#renderText() {
 		if (!this.text) return nothing;
-		const lines = this.text.split(/\r\n|\n/gi);
+		const lines = this.text.split(/\r?\n/g);
 		return lines.map(line => html`<p>${line}</p>`);
 	}
 
