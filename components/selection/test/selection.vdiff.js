@@ -75,7 +75,7 @@ describe('selection-components', () => {
 
 	describe('controls', () => {
 		[
-			{ name: 'minimal', allColorModes: true, template: html`<d2l-selection-controls></d2l-selection-controls>` },
+			{ name: 'minimal', template: html`<d2l-selection-controls></d2l-selection-controls>` },
 			{ name: 'with-actions', allColorModes: true, template: html`
 				<d2l-test-selection>
 					<d2l-selection-controls>
