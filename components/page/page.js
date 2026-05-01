@@ -56,7 +56,7 @@ class Page extends LocalizeCoreElement(LitElement) {
 			display: flex;
 			margin-inline: var(--d2l-page-margin-inline, 0);
 			max-width: var(--d2l-page-content-max-width, 100%);
-			padding-bottom: var(--d2l-page-footer-height, 0px); /* Reserve space for fixed footer */
+			padding-bottom: var(--d2l-page-footer-height, 0); /* Reserve space for fixed footer */
 		}
 
 		main {
@@ -66,15 +66,15 @@ class Page extends LocalizeCoreElement(LitElement) {
 
 		.side-nav-panel,
 		.supporting-panel {
+			height: calc(100vh - var(--d2l-page-footer-height, 0));
 			overflow-y: auto;
 			position: sticky;
 			top: 0;
-			height: calc(100vh - var(--d2l-page-footer-height, 0px));
 		}
 		.page.header-sticky .side-nav-panel,
 		.page.header-sticky .supporting-panel {
-			top: var(--d2l-page-header-height, 0px);
-			height: calc(100vh - var(--d2l-page-header-height, 0px) - var(--d2l-page-footer-height, 0px));
+			height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
+			top: var(--d2l-page-header-height, 0);
 		}
 
 		.divider {
