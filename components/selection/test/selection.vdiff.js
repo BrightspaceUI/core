@@ -75,8 +75,8 @@ describe('selection-components', () => {
 
 	describe('controls', () => {
 		[
-			{ name: 'minimal', template: html`<d2l-selection-controls></d2l-selection-controls>` },
-			{ name: 'with-actions', template: html`
+			{ name: 'minimal', allColorModes: true, template: html`<d2l-selection-controls></d2l-selection-controls>` },
+			{ name: 'with-actions', allColorModes: true, template: html`
 				<d2l-test-selection>
 					<d2l-selection-controls>
 						<d2l-selection-action text="Bookmark" icon="tier1:bookmark-hollow" requires-selection></d2l-selection-action>
@@ -109,10 +109,10 @@ describe('selection-components', () => {
 					${createInputList(1)}
 				</d2l-test-selection-pageable>
 			` },
-		].forEach(({ name, template }) => {
+		].forEach(({ name, allColorModes, template }) => {
 			it(name, async() => {
 				const elem = await fixture(template, { viewport });
-				await expect(elem).to.be.golden();
+				await expect(elem).to.be.golden({ allColorModes });
 			});
 		});
 	});
