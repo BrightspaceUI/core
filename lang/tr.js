@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "daha fazla",
 	"components.object-property-list.item-placeholder-text": "Yer Tutucu Öğesi",
 	"components.overflow-group.moreActions": "Daha Fazla Eylem",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} öğe}

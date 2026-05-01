@@ -147,6 +147,8 @@ export default {
 	"components.more-less.more": "更多",
 	"components.object-property-list.item-placeholder-text": "占位符项目",
 	"components.overflow-group.moreActions": "更多操作",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} 项}

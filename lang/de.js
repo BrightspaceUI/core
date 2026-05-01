@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "mehr",
 	"components.object-property-list.item-placeholder-text": "Platzhalterelement",
 	"components.overflow-group.moreActions": "Weitere Aktionen",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} Element}

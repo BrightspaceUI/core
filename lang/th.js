@@ -148,6 +148,8 @@ export default {
 	"components.more-less.more": "เพิ่มเติม",
 	"components.object-property-list.item-placeholder-text": "รายการตัวแทน",
 	"components.overflow-group.moreActions": "การดำเนินการเพิ่มเติม",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} รายการ}
