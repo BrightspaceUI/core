@@ -38,7 +38,7 @@ describe('object-property-list', () => {
 				<d2l-object-property-list-item text="Example item"></d2l-object-property-list-item>
 			</d2l-object-property-list>
 		` },
-		{ name: 'all-types', template: createObjectPropertyList({ statusIndicator: true }) },
+		{ name: 'all-types', allColorModes: true, template: createObjectPropertyList({ statusIndicator: true }) },
 		{ name: 'word-wrap', template: html`
 			<d2l-object-property-list>
 				<d2l-object-property-list-item icon="tier1:grade" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat cum totam! Enim, sunt."></d2l-object-property-list-item>
@@ -48,7 +48,7 @@ describe('object-property-list', () => {
 		{ name: 'focus', template: createObjectPropertyList({ statusIndicator: true }), action: elem => focusElem(elem.querySelector('d2l-object-property-list-item-link')) },
 		{ name: 'rtl', rtl: true, template: createObjectPropertyList({ statusIndicator: true }) },
 		{ name: 'list-skeleton', template: html`<d2l-object-property-list skeleton skeleton-count="3"></d2l-object-property-list>` },
-		{ name: 'item-skeleton', template: createObjectPropertyList({ skeleton: true }) },
+		{ name: 'item-skeleton', allColorModes: true, template: createObjectPropertyList({ skeleton: true }) },
 		{ name: 'hidden-items', template: html`
 			<d2l-object-property-list>
 				<d2l-object-property-list-item text="Item 1"></d2l-object-property-list-item>
@@ -57,11 +57,11 @@ describe('object-property-list', () => {
 				<d2l-object-property-list-item text="Item 4 (Hidden)" hidden></d2l-object-property-list-item>
 			</d2l-object-property-list>
 		` }
-	].forEach(({ name, rtl, template, action }) => {
+	].forEach(({ name, allColorModes, rtl, template, action }) => {
 		it(name, async() => {
 			const elem = await fixture(html`<div style="width: 300px;">${template}</div>`, { rtl });
 			if (action) await action(elem);
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ allColorModes });
 		});
 	});
 });

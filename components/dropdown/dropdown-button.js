@@ -40,7 +40,7 @@ class DropdownButton extends DropdownOpenerMixin(LitElement) {
 				width: 0.8rem;
 			}
 			:host([primary]) d2l-icon {
-				color: white;
+				color: var(--d2l-theme-text-color-static-inverted);
 			}
 			d2l-button {
 				width: 100%;

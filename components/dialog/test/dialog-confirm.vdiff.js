@@ -1,12 +1,15 @@
 import '../../button/button.js';
 import '../dialog-confirm.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
+import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 import { interferingStyleWrapper } from '../../typography/test/typography-shared-contents.js';
 
 const buttons = html`
 	<d2l-button slot="footer" primary>Yes</d2l-button>
 	<d2l-button slot="footer" id="cancel">No</d2l-button>
 `;
+
+const preferNativeConfirmDialogsFlag = 'GAUD-9644-prefer-native-confirm-dialogs';
 
 const confirmDialog = html`
 	<d2l-dialog-confirm id="confirm" title-text="Title" text="Are you sure?" opened>
@@ -16,10 +19,11 @@ const confirmDialog = html`
 
 describe('dialog-confirm', () => {
 
-	[/*'native',*/ 'custom'].forEach((type) => {
+	['native', 'custom'].forEach((type) => {
 
 		describe(type, () => {
-			before(() => window.D2L.DialogMixin.preferNative = type === 'native');
+			before(() => mockFlag(preferNativeConfirmDialogsFlag, type === 'native'));
+			after(() => resetFlag(preferNativeConfirmDialogsFlag));
 
 			[
 				{ screen: 'wide', viewport: { width: 800, height: 500 } },

@@ -47,14 +47,14 @@ export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
 				margin: 0 -0.05rem; /* 10px desired margin, subtract 5px arbitrary whitespace and 6px whitespace inside bullet icon. */
 			}
 			.separator d2l-icon {
-				color: var(--d2l-color-galena);
+				color: var(--d2l-theme-text-color-static-faint);
 			}
 			.item-icon {
 				margin-inline-end: 0.05rem; /* 6px desired margin, subtract 5px arbitrary whitespace. */
 				margin-top: -0.1rem;
 			}
 			:host([skeleton]) d2l-icon {
-				color: var(--d2l-color-sylvite);
+				color: var(--d2l-theme-background-color-interactive-faint-hover);
 			}
 			:host([skeleton]) .d2l-skeletize {
 				display: inline-block;
