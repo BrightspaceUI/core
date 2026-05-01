@@ -2,6 +2,8 @@ import { _generateResetStyles, heading3Styles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
+import { getFlag } from '../../helpers/flags.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -35,11 +37,25 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 				max-width: 420px;
 			}
 
-			.d2l-dialog-content > div {
+			.d2l-dialog-header > h2 {
+				margin: 0;
+				width: fit-content;
+			}
+
+			${getFocusRingStyles(pseudoClass => `.d2l-dialog-content:${pseudoClass} > div`, { extraStyles: css`
+
+				--d2l-focus-ring-offset: -1px; border-radius: 6px;`
+			})}
+			.d2l-dialog-content:focus,
+			.d2l-dialog-content:focus-visible {
+				outline: none;
+			}
+
+			.d2l-dialog-content {
 				padding-top: 30px;
 			}
 
-			.d2l-dialog-header + .d2l-dialog-content > div {
+			.d2l-dialog-header + .d2l-dialog-content {
 				padding-top: 0;
 			}
 
@@ -64,7 +80,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 					top: 0;
 				}
 
-				.d2l-dialog-content > div {
+				.d2l-dialog-content {
 					padding-top: 20px;
 				}
 
@@ -76,21 +92,37 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 	constructor() {
 		super();
 		this.critical = false;
+		this.preferNative = getFlag('GAUD-9644-prefer-native-confirm-dialogs', false);
 		this._criticalLabelId = getUniqueId();
 		this._textId = getUniqueId();
 		this._titleId = getUniqueId();
 	}
 
 	render() {
-		const contentTabIndex = !this.focusableContentElemPresent ? '0' : undefined;
+		let contentTabIndex = undefined;
+		let titleTabIndex = undefined;
+		let contentAutofocus = false;
+		let titleAutofocus = false;
+		if (this._useNative) {
+			if (this.titleText) {
+				titleTabIndex = '-1';
+				titleAutofocus = true;
+			} else {
+				contentTabIndex = '-1';
+				contentAutofocus = true;
+			}
+		} else {
+			contentTabIndex = !this.focusableContentElemPresent ? '0' : undefined;
+		}
+
 		const inner = html`
 			${this.critical ? html`<div id="${this._criticalLabelId}" hidden>${this.localize('components.dialog.critical')}</div>` : nothing}
 			<div class="d2l-dialog-inner">
 				${this.titleText ? html`
 					<div class="d2l-dialog-header">
-						<div><h2 id="${this._titleId}" class="d2l-heading-3">${this.titleText}</h2></div>
+						<h2 id="${this._titleId}" class="d2l-heading-3" tabindex="${ifDefined(titleTabIndex)}" ?autofocus="${titleAutofocus}">${this.titleText}</h2>
 					</div>` : null}
-				<div id="${this._textId}" class="d2l-dialog-content" tabindex="${ifDefined(contentTabIndex)}">
+				<div id="${this._textId}" class="d2l-dialog-content" tabindex="${ifDefined(contentTabIndex)}" ?autofocus="${contentAutofocus}">
 					<div>${this.text ? this.text.split('\n').map(line => html`<p>${line}</p>`) : null}</div>
 				</div>
 				<div class="d2l-dialog-footer">
@@ -113,7 +145,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 	}
 
 	_focusInitial() {
-		if (!this.shadowRoot) return;
+		if (!this.shadowRoot || this._useNative) return;
 		const footer = this.shadowRoot.querySelector('.d2l-dialog-footer-slot');
 		const nodes = footer.assignedNodes();
 		for (let i = 0; i < nodes.length; i++) {

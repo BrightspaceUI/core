@@ -39,10 +39,15 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 			:host {
 				box-sizing: border-box;
 				display: inline-block;
-				max-width: 200px;
+				max-width: 10rem;
 				outline: none;
 				position: relative;
 				vertical-align: middle;
+			}
+			@container tabs-container (width >= 615px) {
+				:host {
+					max-width: min(20rem, 40%);
+				}
 			}
 			:host([hidden]) {
 				display: none;
