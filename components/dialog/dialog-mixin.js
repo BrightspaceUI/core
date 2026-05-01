@@ -19,10 +19,7 @@ window.D2L.DialogMixin = window.D2L.DialogMixin || {};
 // https://bugs.webkit.org/show_bug.cgi?id=233320
 // starting in Chrome 102, all elements inside <dialog>s that are inside shadow roots have null offsetParent
 // https://bugs.chromium.org/p/chromium/issues/detail?id=1331803
-window.D2L.DialogMixin.hasNative = false;
-if (window.D2L.DialogMixin.preferNative === undefined) {
-	window.D2L.DialogMixin.preferNative = true;
-}
+window.D2L.DialogMixin.hasNative = (window.HTMLDialogElement !== undefined);
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
@@ -44,6 +41,11 @@ export const DialogMixin = superclass => class extends superclass {
 			 * ADVANCED: Opt out of dialog content scrolling
 			 */
 			noContentScroll: { type: Boolean, attribute: 'no-content-scroll', reflect: true },
+			/**
+			 * @ignore
+			 * Do NOT use this
+			 */
+			preferNative: { type: Boolean, attribute: 'prefer-native' },
 			/**
 			 * The optional title for the dialog
 			 */
@@ -72,6 +74,7 @@ export const DialogMixin = superclass => class extends superclass {
 		this.focusableContentElemPresent = false;
 		this.noContentScroll = false;
 		this.opened = false;
+		this.preferNative = false;
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
 		this._fullscreenWithin = 0;
@@ -91,7 +94,6 @@ export const DialogMixin = superclass => class extends superclass {
 		this._top = 0;
 		this._updateOverflow = this._updateOverflow.bind(this);
 		this._updateSize = this._updateSize.bind(this);
-		this._useNative = (window.D2L.DialogMixin.hasNative && window.D2L.DialogMixin.preferNative);
 		this._width = 0;
 	}
 
@@ -127,6 +129,13 @@ export const DialogMixin = superclass => class extends superclass {
 		}
 	}
 
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (this.#useNativeInitialized) return;
+		this._useNative = (window.D2L.DialogMixin.hasNative && this.preferNative);
+		this.#useNativeInitialized = true;
+	}
+
 	open() {
 		if (this.opened) return;
 		this.opened = true;
@@ -154,6 +163,8 @@ export const DialogMixin = superclass => class extends superclass {
 		const composedChildren = getComposedChildren(this, predicate);
 		await Promise.all(composedChildren.map(child => waitForElem(child, predicate)));
 	}
+
+	#useNativeInitialized = false;
 
 	_addHandlers() {
 		window.addEventListener('resize', this._updateSize);
@@ -387,7 +398,7 @@ export const DialogMixin = superclass => class extends superclass {
 		return abortEvent.defaultPrevented;
 	}
 
-	_open() {
+	async _open() {
 		if (!this.opened) return;
 
 		this._opener = getComposedActiveElement();
@@ -411,6 +422,8 @@ export const DialogMixin = superclass => class extends superclass {
 		});
 
 		if (this._useNative) {
+			this._state = 'showing';
+			await this.updateComplete;
 			dialog.showModal();
 		}
 
@@ -432,7 +445,7 @@ export const DialogMixin = superclass => class extends superclass {
 			}, 0);
 
 			await this._updateSize();
-			this._state = 'showing';
+			if (!this._useNative) this._state = 'showing';
 			await this.updateComplete;
 
 			// edge case: no children were focused, try again after one redraw

@@ -193,6 +193,7 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 		super();
 		this.async = false;
 		this.noPadding = false;
+		this.preferNative = false;
 		this._autoSize = false;
 		this._hasFooterContent = false;
 		this._icon = 'tier1:close-large-thick';
