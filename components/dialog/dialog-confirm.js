@@ -123,7 +123,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 						<h2 id="${this._titleId}" class="d2l-heading-3" tabindex="${ifDefined(titleTabIndex)}" ?autofocus="${titleAutofocus}">${this.titleText}</h2>
 					</div>` : null}
 				<div id="${this._textId}" class="d2l-dialog-content" tabindex="${ifDefined(contentTabIndex)}" ?autofocus="${contentAutofocus}">
-					<div>${this.text ? this.text.split('\n').map(line => html`<p>${line}</p>`) : null}</div>
+					<div>${this.#renderText()}</div>
 				</div>
 				<div class="d2l-dialog-footer">
 					<slot name="footer" class="d2l-dialog-footer-slot"></slot>
@@ -161,6 +161,12 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 
 	_getWidth() {
 		/* override default width measurement and just use max-width */
+	}
+
+	#renderText() {
+		if (!this.text) return nothing;
+		const lines = this.text.split(/\r\n|\n/gi);
+		return lines.map(line => html`<p>${line}</p>`);
 	}
 
 }
