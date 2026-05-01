@@ -66,7 +66,7 @@ describe('dialog-confirm', () => {
 						</d2l-dialog-confirm>
 					` },
 					{ name: 'multiple-paragraphs-2', template: html`
-						<d2l-dialog-confirm title-text="Title" .text="${'Paragraph 1\\nParagraph 2'}" opened>
+						<d2l-dialog-confirm title-text="Title" .text="${'Paragraph 1\r\nParagraph 2'}" opened>
 							${buttons}
 						</d2l-dialog-confirm>
 					` }

@@ -2,12 +2,9 @@ import { _generateResetStyles, heading3Styles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
-import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-
-const newlineFix = getFlag('confirm-dialog-newline-fix', true);
 
 /**
  * A simple confirmation dialog for prompting the user. Apply the "data-dialog-action" attribute to workflow buttons to automatically close the confirm dialog with the action value.
@@ -136,9 +133,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 
 	#renderText() {
 		if (!this.text) return nothing;
-		const lines = newlineFix ?
-			this.text.split(/\\n|\n/gi) :
-			this.text.split('\n');
+		const lines = this.text.split(/\r\n|\n/gi);
 		return lines.map(line => html`<p>${line}</p>`);
 	}
 
