@@ -153,6 +153,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 
 	render() {
 		const forcedOffscreenSizelessStyles = OffSCREEN_SIZELESS ? {} : { height: '0px', width: '0px' };
+		const dirtyStateVisible = this._state !== 'hidden' && this.dataState === 'dirty';
 
 		return html`
 			${this._state === 'hidden' ? nothing :
@@ -161,8 +162,9 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 						<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
 					</div>`
 			}
-			${this.#renderDirtyOverlay({ offscreen: this._state === 'hidden' })}
-			<d2l-offscreen style=${styleMap(forcedOffscreenSizelessStyles)} aria-live="polite">${this._ariaContent}</d2l-offscreen>
+			<div aria-live="polite" class="${classMap({ 'd2l-offscreen': !dirtyStateVisible })}" style="${styleMap(dirtyStateVisible ? {} : forcedOffscreenSizelessStyles)}">
+				${this.dataState === 'dirty' ? this.#renderDirtyOverlay() : this._ariaContent}
+			</div>
 		`;
 	}
 	updated(changedProperties) {
@@ -291,14 +293,11 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
 	}
 
-	#renderDirtyOverlay({ offscreen } = { offscreen: false }) {
+	#renderDirtyOverlay() {
 		return html`<d2l-backdrop-dirty-overlay
-			aria-live="polite"
 			style=${styleMap({ top: `${this._dirtyDialogTop}px` })}
-			class=${classMap({ 'd2l-offscreen': offscreen })}
-			description="${offscreen ? '' : this.dirtyText}"
-			action="${offscreen ? '' : this.dirtyButtonText}"
-			?disabled=${offscreen}
+			description="${this.dirtyText}"
+			action="${this.dirtyButtonText}"
 		></d2l-backdrop-dirty-overlay>`;
 	}
 
