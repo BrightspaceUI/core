@@ -11,21 +11,14 @@ const template = html`
 `;
 
 describe('backdrop-loading', () => {
-	[
-		{ dataState: 'clean' },
-		{ dataState: 'clean', colorMode: 'dark' },
-		{ dataState: 'dirty' },
-		{ dataState: 'dirty', colorMode: 'dark' },
-		{ dataState: 'loading' },
-		{ dataState: 'loading', colorMode: 'dark' }
-	].forEach(({ dataState, colorMode }) => {
-		it(`${dataState}-${colorMode || 'light'}`, async() => {
-			const elem = await fixture(template, { colorMode });
+	['clean', 'dirty', 'loading'].forEach((dataState) => {
+		it(dataState, async() => {
+			const elem = await fixture(template);
 			const backdrop = elem.querySelector('d2l-backdrop-loading');
 			backdrop.dataState = dataState;
 			await backdrop.updateComplete;
 
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ allColorModes: true });
 		});
 	});
 });

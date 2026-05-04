@@ -238,7 +238,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 		const dirtyOverlay = this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay');
 		if (dirtyOverlay) {
 			await this.shadowRoot.querySelector('d2l-empty-state-action-button')?.getUpdateComplete();
-			const dirtyDialogSizeOffset = this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay').getBoundingClientRect().height / 2;
+			const dirtyDialogSizeOffset = dirtyOverlay.getBoundingClientRect().height / 2;
 
 			this._dirtyDialogTop = centeringOffset + topOffset - dirtyDialogSizeOffset;
 		}
