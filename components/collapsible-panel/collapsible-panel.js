@@ -173,15 +173,17 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(LitElement)) {
 				border-radius: 0;
 				outline-offset: -2px;
 			}
-			.d2l-collapsible-panel.scrolled .d2l-collapsible-panel-header {
+			.d2l-collapsible-panel .d2l-collapsible-panel-header {
 				background-color: var(--d2l-theme-background-color-base);
-				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
 				position: sticky;
-				top: 0;
+				top: var(--d2l-sticky-offset, 0px);
 				z-index: 11; /* must be greater greater than list-items with open dropdowns or tooltips */
 			}
+			.d2l-collapsible-panel.scrolled .d2l-collapsible-panel-header {
+				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
+			}
 			.d2l-collapsible-panel.focused.scrolled .d2l-collapsible-panel-header {
-				top: 2px;
+				top: calc(var(--d2l-sticky-offset, 0px) + 2px);
 			}
 			.d2l-collapsible-panel-title {
 				flex: 1;

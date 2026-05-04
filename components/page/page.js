@@ -66,6 +66,9 @@ class Page extends LocalizeCoreElement(LitElement) {
 			position: relative;
 			z-index: 0;
 		}
+		.page.header-sticky main {
+			--d2l-sticky-offset: var(--d2l-page-header-height, 0px);
+		}
 
 		.side-nav-panel,
 		.supporting-panel {
