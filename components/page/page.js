@@ -62,14 +62,18 @@ class Page extends LocalizeCoreElement(LitElement) {
 		main {
 			flex: 1;
 			min-width: 400px; /* TBD */
+			overflow: clip;
+			position: relative;
+			z-index: 0;
 		}
 
 		.side-nav-panel,
 		.supporting-panel {
 			height: calc(100vh - var(--d2l-page-footer-height, 0));
-			overflow-y: auto;
+			overflow: clip auto;
 			position: sticky;
 			top: 0;
+			z-index: 0;
 		}
 		.page.header-sticky .side-nav-panel,
 		.page.header-sticky .supporting-panel {
@@ -94,7 +98,7 @@ class Page extends LocalizeCoreElement(LitElement) {
 			inset: auto 0 0;
 			padding: 0.75rem 0;
 			position: fixed;
-			z-index: 1; /* To be over divider and main contents */
+			z-index: 1; /* To be over divider */
 		}
 		.floating-footer {
 			padding-block-end: 0.75rem;
