@@ -56,7 +56,7 @@ class BackdropDirtyOverlay extends LitElement {
 
 	render() {
 		return html`
-			<p class="d2l-body-compact d2l-backdrop-dirty-overlay" tabindex="-1">${this.description}</p>
+			<p class="d2l-body-compact d2l-backdrop-dirty-overlay">${this.description}</p>
 			<d2l-button-subtle
 				class="d2l-backdrop-dirty-overlay-action"
 				@click=${this.#handleActionClick}
