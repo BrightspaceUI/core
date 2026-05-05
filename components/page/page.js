@@ -59,7 +59,6 @@ class Page extends LocalizeCoreElement(LitElement) {
 		main {
 			flex: 1;
 			min-width: 400px; /* TBD */
-			overflow: clip;
 		}
 
 		.side-nav-panel,
