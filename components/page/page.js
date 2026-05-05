@@ -194,7 +194,6 @@ class Page extends LocalizeCoreElement(LitElement) {
 		const key = e.target.name;
 		const nodes = e.target.assignedNodes();
 		this._slotVisibility = { ...this._slotVisibility, [key]: nodes.length !== 0 };
-		this.requestUpdate();
 	}
 
 	#renderFloatingButtons(footerContents) {
