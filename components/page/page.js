@@ -86,9 +86,6 @@ class Page extends LocalizeCoreElement(LitElement) {
 			padding: 0.75rem 0;
 			position: fixed;
 		}
-		.floating-footer {
-			padding-block-end: 0.75rem;
-		}
 		.footer-contents {
 			margin-inline: var(--d2l-page-margin-inline, 0);
 			max-width: var(--d2l-page-footer-max-width, 100%);
@@ -168,7 +165,7 @@ class Page extends LocalizeCoreElement(LitElement) {
 		return html`
 			<div class="floating-buttons-container">
 				<d2l-floating-buttons>
-					<div class="floating-footer">${footerContents}</div>
+					${footerContents}
 				</d2l-floating-buttons>
 			</div>
 		`;
