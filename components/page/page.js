@@ -63,14 +63,9 @@ class Page extends LocalizeCoreElement(LitElement) {
 
 		.side-nav-panel,
 		.supporting-panel {
-			height: calc(100vh - var(--d2l-page-footer-height, 0));
+			height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
 			overflow: clip auto;
 			position: sticky;
-			top: 0;
-		}
-		.page.header-sticky .side-nav-panel,
-		.page.header-sticky .supporting-panel {
-			height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
 			top: var(--d2l-page-header-height, 0);
 		}
 
@@ -109,7 +104,7 @@ class Page extends LocalizeCoreElement(LitElement) {
 		this.#resizeObserver = new ResizeObserver(entries => {
 			for (const entry of entries) {
 				if (entry.target.classList.contains('header')) {
-					const height = entry.target.offsetHeight;
+					const height = this._headerIsSticky ? entry.target.offsetHeight : 0;
 					this.style.setProperty('--d2l-page-header-height', `${height}px`);
 				} else if (entry.target.classList.contains('footer')) {
 					const height = entry.target.classList.contains('fixed-footer') ? entry.target.offsetHeight : 0;
