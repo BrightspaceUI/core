@@ -623,10 +623,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				outline: none;
 				position: static;
 			}
-			:host([layout="tile"][draggable]) [slot="control"] {
-				position: static;
-				margin: 0.4rem 0;
-			}
 
 			:host([layout="tile"]) [slot="actions"] {
 				--d2l-button-icon-min-height: 1.5rem;
@@ -983,6 +979,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				data-separators="${ifDefined(this._separators)}"
 				indentation="${ifDefined(this.indentation)}"
 				?grid-active="${this.role === 'row'}"
+				?selectable="${this.selectable}"
 				layout="${this.layout}"
 				?no-primary-action="${this.noPrimaryAction}">
 				${this._showAddButton && this.first ? html`

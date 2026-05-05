@@ -65,7 +65,11 @@ class ListItemGenericLayout extends LitElement {
 			/**
 			 * @ignore
 			 */
-			layout: { type: String, reflect: true }
+			layout: { type: String, reflect: true },
+			/**
+			 * @ignore
+			 */
+			selectable: { type: Boolean, reflect: true },
 
 		};
 	}
@@ -225,6 +229,14 @@ class ListItemGenericLayout extends LitElement {
 					[header-end content-start] auto
 					[content-end end];
 				height: 100%;
+			}
+
+			:host([layout="tile"]:not([selectable])) {
+				grid-template-columns:
+					[start outside-control-start] minmax(0, min-content)
+					[outside-control-end control-start] minmax(0, min-content)
+					[control-end actions-start] minmax(0, auto)
+					[actions-end end];
 			}
 
 			:host([layout="tile"]) ::slotted([slot="header"]) {
