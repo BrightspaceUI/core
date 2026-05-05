@@ -587,6 +587,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			:host([layout="tile"]) d2l-selection-input {
 				margin: 0;
 			}
+
+			:host([layout="tile"][draggable]) d2l-selection-input {
+				margin: auto;
+			}
 			:host([layout="tile"]:not([tile-header])) d2l-selection-input {
 				--d2l-input-checkbox-border-color-hover-focus: var(--d2l-color-celestine-minus-1);
 				--d2l-input-radio-border-color-hover-focus: var(--d2l-color-celestine-minus-1);
@@ -605,9 +609,6 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				outline: 2px solid transparent;
 				position: absolute;
 			}
-			:host([layout="tile"][draggable]) [slot="control"] {
-				position: static;
-			}
 			:host([layout="tile"][_focusing]:not([tile-header])) [slot="control"] {
 				background-color: var(--d2l-color-celestine);
 				outline-color: var(--d2l-color-celestine-minus-1);
@@ -621,6 +622,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				margin: 0.4rem var(--d2l-list-item-padding);
 				outline: none;
 				position: static;
+			}
+			:host([layout="tile"][draggable]) [slot="control"] {
+				position: static;
+				margin: 0.4rem 0;
 			}
 
 			:host([layout="tile"]) [slot="actions"] {
