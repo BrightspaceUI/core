@@ -43,12 +43,10 @@ class Page extends LocalizeCoreElement(LitElement) {
 			--d2l-page-footer-max-width: 100%;
 		}
 
-		.header {
-			z-index: 2; /* To be over divider and main contents */
-		}
 		.page.header-sticky .header {
 			position: sticky;
 			top: 0;
+			z-index: 15; /* To be over sticky content of our core components */
 		}
 
 		.content {
@@ -62,8 +60,6 @@ class Page extends LocalizeCoreElement(LitElement) {
 			flex: 1;
 			min-width: 400px; /* TBD */
 			overflow: clip;
-			position: relative;
-			z-index: 0;
 		}
 
 		.side-nav-panel,
@@ -72,7 +68,6 @@ class Page extends LocalizeCoreElement(LitElement) {
 			overflow: clip auto;
 			position: sticky;
 			top: 0;
-			z-index: 0;
 		}
 		.page.header-sticky .side-nav-panel,
 		.page.header-sticky .supporting-panel {
@@ -84,7 +79,6 @@ class Page extends LocalizeCoreElement(LitElement) {
 			background-color: var(--d2l-color-gypsum);
 			flex: none;
 			width: 4px;
-			z-index: 1;
 		}
 
 		.footer:not([hidden]),
@@ -97,7 +91,6 @@ class Page extends LocalizeCoreElement(LitElement) {
 			inset: auto 0 0;
 			padding: 0.75rem 0;
 			position: fixed;
-			z-index: 1; /* To be over divider */
 		}
 		.floating-footer {
 			padding-block-end: 0.75rem;
