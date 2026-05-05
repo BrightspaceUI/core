@@ -134,48 +134,15 @@ class Page extends LocalizeCoreElement(LitElement) {
 			'header-sticky': this._headerIsSticky
 		};
 
-		const header = html`
-			<header class="header">
-				<nav aria-label="${this.localize('components.page.header-nav-label')}">
-					<slot name="header" @slotchange="${this.#handleHeaderSlotChange}"></slot>
-				</nav>
-			</header>`;
-
-		const mainContent = html`
-			<main>
-				<slot></slot>
-			</main>`;
-
-		const sideNavPanel = html`
-			<nav class="side-nav-panel" ?hidden="${!this._slotVisibility['side-nav']}" aria-label="${this.localize('components.page.side-nav-label')}">
-				<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
-			</nav>
-			${this._slotVisibility['side-nav'] ? html`<div class="divider"></div>` : nothing}
-			`;
-
-		const supportingPanel = html`
-			${this._slotVisibility['supporting'] ? html`<div class="divider"></div>` : nothing}
-			<aside class="supporting-panel" ?hidden="${!this._slotVisibility['supporting']}">
-				<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
-			</aside>`;
-
-		const fixedFooter = this._slotVisibility['side-nav'] || this._slotVisibility['supporting'];
-		const footerContainerClasses = { 'footer': true, 'fixed-footer': fixedFooter };
-		const footerContents = html`<div class="footer-contents"><slot name="footer" @slotchange="${this.#handleSlotVisibilityChange}"></slot></div>`;
-		const footer = html`
-			<div class="${classMap(footerContainerClasses)}" ?hidden="${!this._slotVisibility['footer']}">
-				${fixedFooter ? footerContents : this.#renderFloatingButtons(footerContents)}	
-			</div>`;
-
 		return html`
 			<div class="${classMap(pageClasses)}">
-				${header}
+				${this.#renderHeader()}
 				<div class="content">
-					${sideNavPanel}
-					${mainContent}
-					${supportingPanel}
+					${this.#renderSideNavPanel()}
+					<main><slot></slot></main>
+					${this.#renderSupportingPanel()}
 				</div>
-				${footer}
+				${this.#renderFooter()}
 			</div>
 		`;
 	}
@@ -202,6 +169,45 @@ class Page extends LocalizeCoreElement(LitElement) {
 					<div class="floating-footer">${footerContents}</div>
 				</d2l-floating-buttons>
 			</div>
+		`;
+	}
+
+	#renderFooter() {
+		const fixedFooter = this._slotVisibility['side-nav'] || this._slotVisibility['supporting'];
+		const footerContainerClasses = { 'footer': true, 'fixed-footer': fixedFooter };
+		const footerContents = html`<div class="footer-contents"><slot name="footer" @slotchange="${this.#handleSlotVisibilityChange}"></slot></div>`;
+		return html`
+			<div class="${classMap(footerContainerClasses)}" ?hidden="${!this._slotVisibility['footer']}">
+				${fixedFooter ? footerContents : this.#renderFloatingButtons(footerContents)}	
+			</div>
+		`;
+	}
+
+	#renderHeader() {
+		return html`
+			<header class="header">
+				<nav aria-label="${this.localize('components.page.header-nav-label')}">
+					<slot name="header" @slotchange="${this.#handleHeaderSlotChange}"></slot>
+				</nav>
+			</header>
+		`;
+	}
+
+	#renderSideNavPanel() {
+		return html`
+			<nav class="side-nav-panel" ?hidden="${!this._slotVisibility['side-nav']}" aria-label="${this.localize('components.page.side-nav-label')}">
+				<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+			</nav>
+			${this._slotVisibility['side-nav'] ? html`<div class="divider"></div>` : nothing}
+		`;
+	}
+
+	#renderSupportingPanel() {
+		return html`
+			${this._slotVisibility['supporting'] ? html`<div class="divider"></div>` : nothing}
+			<aside class="supporting-panel" ?hidden="${!this._slotVisibility['supporting']}">
+				<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+			</aside>
 		`;
 	}
 
