@@ -4,7 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
- * Page template with header, optional footer and optional navigation panel or supporting panel
+ * Component for laying out a page, with header, optional footer and optional navigation or supporting panels
  * @slot - The main content of the page (expecting d2l-page-main)
  * @slot header - The header content of the page (expecting d2l-page-header-*)
  * @slot side-nav - The side navigation content of the page (expecting d2l-page-side-nav)
