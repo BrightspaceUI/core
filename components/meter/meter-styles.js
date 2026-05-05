@@ -13,20 +13,20 @@ export const meterStyles = css`
 		stroke-linecap: round;
 	}
 	.d2l-meter-full-bar {
-		stroke: var(--d2l-color-gypsum);
+		stroke: var(--d2l-theme-border-color-subtle);
 	}
 	:host([foreground-light]) .d2l-meter-full-bar {
 		stroke: rgba(255, 255, 255, 0.5);
 	}
 	.d2l-meter-progress-bar {
-		stroke: var(--d2l-color-celestine);
+		stroke: var(--d2l-theme-brand-color-primary-default);
 	}
 	:host([foreground-light]) .d2l-meter-progress-bar {
 		stroke: white;
 	}
 	.d2l-meter-text {
-		color: var(--d2l-color-ferrite);
-		fill: var(--d2l-color-ferrite);
+		color: var(--d2l-theme-text-color-static-standard);
+		fill: var(--d2l-theme-text-color-static-standard);
 		line-height: 0.8rem;
 		text-align: center;
 	}

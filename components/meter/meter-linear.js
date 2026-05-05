@@ -48,7 +48,7 @@ class MeterLinear extends MeterMixin(LitElement) {
 			}
 
 			.d2l-meter-linear-full-bar {
-				background-color: var(--d2l-color-gypsum);
+				background-color: var(--d2l-theme-background-color-interactive-secondary-default);
 				position: relative;
 			}
 
@@ -57,7 +57,7 @@ class MeterLinear extends MeterMixin(LitElement) {
 			}
 
 			.d2l-meter-linear-inner-bar {
-				background-color: var(--d2l-color-celestine);
+				background-color: var(--d2l-theme-brand-color-primary-default);
 				inset-inline-start: 0;
 				max-width: 100%;
 				position: absolute;
@@ -68,7 +68,7 @@ class MeterLinear extends MeterMixin(LitElement) {
 			}
 
 			.d2l-meter-linear-text {
-				color: var(--d2l-color-ferrite);
+				color: var(--d2l-theme-text-color-static-standard);
 				display: flex;
 				flex-direction: row;
 				gap: 0.45rem;
