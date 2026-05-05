@@ -116,18 +116,16 @@ class Page extends LocalizeCoreElement(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
+
+		const header = this.shadowRoot.querySelector('.header');
+		const footer = this.shadowRoot.querySelector('.footer');
+		if (header) this.#resizeObserver.observe(header);
+		if (footer) this.#resizeObserver.observe(footer);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.#resizeObserver.disconnect();
-	}
-
-	firstUpdated() {
-		const header = this.shadowRoot.querySelector('.header');
-		const footer = this.shadowRoot.querySelector('.footer');
-		if (header) this.#resizeObserver.observe(header);
-		if (footer) this.#resizeObserver.observe(footer);
 	}
 
 	render() {
