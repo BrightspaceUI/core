@@ -44,7 +44,6 @@ class Page extends LocalizeCoreElement(LitElement) {
 		}
 
 		.header {
-			background-color: white;
 			z-index: 2; /* To be over divider and main contents */
 		}
 		.page.header-sticky .header {

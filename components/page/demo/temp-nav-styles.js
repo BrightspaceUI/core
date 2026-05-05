@@ -45,6 +45,7 @@ export const navStyles = css`
 
 	/* Full Nav Styles */
 	.full-nav-wrapper {
+		background-color: white;
 		position: relative;
 	}
 	.full-nav-header {
