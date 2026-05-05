@@ -32,7 +32,8 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 				width: 100%;
 			}
 			:host([action-href]:not([action-href=""])) [slot="control-action"],
-			:host([action-href]:not([action-href=""])) [slot="outside-control-action"] {
+			:host([action-href]:not([action-href=""])) [slot="outside-control-action"]
+			:host(:not([layout="tile"])) {
 				grid-column-end: control-end;
 			}
 		` ];

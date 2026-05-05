@@ -14,7 +14,9 @@ class ListDemoDragAndDropPosition extends LitElement {
 			// below are for demonstration only
 			grid: { type: Boolean },
 			hrefs: { type: Boolean },
-			selectable: { type: Boolean }
+			selectable: { type: Boolean },
+			tiles: { type: Boolean },
+			tileHeader: { type: Boolean, attribute: 'tile-header' }
 		};
 	}
 
@@ -73,11 +75,13 @@ class ListDemoDragAndDropPosition extends LitElement {
 				?grid="${this.grid}"
 				@d2l-list-item-position-change="${this._moveItems}"
 				?add-button="${this.addButton}"
-				add-button-text="${ifDefined(addButtonText)}">
+				add-button-text="${ifDefined(addButtonText)}"
+				layout="${this.tiles ? 'tiles' : 'list'}">
 				${repeat(this.list, (item) => item.key, (item) => html`
 					<d2l-list-item
 						key="${ifDefined(item.key)}"
 						draggable
+						?tile-header="${this.tileHeader}"
 						?selectable="${this.selectable}"
 						drag-handle-text="${item.name}"
 						href="${ifDefined(this.hrefs ? item.href : undefined)}"
