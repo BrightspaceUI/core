@@ -58,7 +58,7 @@ class Page extends LocalizeCoreElement(LitElement) {
 
 		main {
 			flex: 1;
-			min-width: 400px; /* TBD */
+			min-width: min(400px, 100%); /* Actual min width TBD */
 		}
 
 		.side-nav-panel,
