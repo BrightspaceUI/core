@@ -54,7 +54,6 @@ class PageDemo extends LitElement {
 	#handleAllowThreePanelsChange(e) {
 		this._allowThreePanels = e.target.on;
 		if (!this._allowThreePanels && this.hasSideNavPanel && this.hasSupportingPanel) {
-			this.shadowRoot.querySelector('#switch-supporting-panel').on = false;
 			this.hasSupportingPanel = false;
 		}
 	}
@@ -69,16 +68,33 @@ class PageDemo extends LitElement {
 
 		if (this._allowThreePanels) return;
 		if (e.target.on && key === 'hasSideNavPanel' && this.hasSupportingPanel) {
-			this.shadowRoot.querySelector('#switch-supporting-panel').on = false;
 			this.hasSupportingPanel = false;
 		} else if (e.target.on && key === 'hasSupportingPanel' && this.hasSideNavPanel) {
-			this.shadowRoot.querySelector('#switch-side-nav-panel').on = false;
 			this.hasSideNavPanel = false;
 		}
 	}
 
 	#handleWidthTypeChange(e) {
 		this.widthType = e.target.value;
+	}
+
+	#renderDemoMainControls() {
+		return this.demoMode ? html`
+			<d2l-collapsible-panel panel-title="Demo Controls" expanded>
+				<div class="demo-controls">
+					<select class="d2l-input-select" name="width-type" aria-label="Width type" @change="${this.#handleWidthTypeChange}">
+						<option value="normal" ?selected="${this.widthType === 'normal'}">Normal Width</option>
+						<option value="wide" ?selected="${this.widthType === 'wide'}">Wide Width</option>
+						<option value="fullscreen" ?selected="${this.widthType === 'fullscreen'}">Fullscreen</option>
+					</select>
+					<d2l-switch id="switch-nav-type" text="Immersive Nav" @change="${this.#handleNavTypeChange}"></d2l-switch>
+					<d2l-switch id="switch-side-nav-panel" text="Side Nav Panel" data-key="hasSideNavPanel" @change="${this.#handleVisibilityChange}" ?on="${this.hasSideNavPanel}"></d2l-switch>
+					<d2l-switch id="switch-supporting-panel" text="Supporting Panel" data-key="hasSupportingPanel" @change="${this.#handleVisibilityChange}" ?on="${this.hasSupportingPanel}"></d2l-switch>
+					<d2l-switch id="switch-footer" text="Footer" data-key="hasFooter" @change="${this.#handleVisibilityChange}"></d2l-switch>
+					<d2l-switch id="switch-allow-three-panels" text="Allow Three Panels" @change="${this.#handleAllowThreePanelsChange}"></d2l-switch>
+				</div>
+			</d2l-collapsible-panel>
+		` : nothing;
 	}
 
 	#renderFooter() {
@@ -149,22 +165,7 @@ class PageDemo extends LitElement {
 	#renderMainPanel() {
 		return html`
 			<div style="height: 1000px;">
-				${this.demoMode ? html`
-					<d2l-collapsible-panel panel-title="Demo Controls" expanded>
-						<div class="demo-controls">
-							<select class="d2l-input-select" name="width-type" aria-label="Width type" @change="${this.#handleWidthTypeChange}">
-								<option value="normal" ?selected="${this.widthType === 'normal'}">Normal Width</option>
-								<option value="wide" ?selected="${this.widthType === 'wide'}">Wide Width</option>
-								<option value="fullscreen" ?selected="${this.widthType === 'fullscreen'}">Fullscreen</option>
-							</select>
-							<d2l-switch id="switch-nav-type" text="Immersive Nav" @change="${this.#handleNavTypeChange}"></d2l-switch>
-							<d2l-switch id="switch-side-nav-panel" text="Side Nav Panel" data-key="hasSideNavPanel" @change="${this.#handleVisibilityChange}"></d2l-switch>
-							<d2l-switch id="switch-supporting-panel" text="Supporting Panel" data-key="hasSupportingPanel" @change="${this.#handleVisibilityChange}"></d2l-switch>
-							<d2l-switch id="switch-footer" text="Footer" data-key="hasFooter" @change="${this.#handleVisibilityChange}"></d2l-switch>
-							<d2l-switch id="switch-allow-three-panels" text="Allow Three Panels" @change="${this.#handleAllowThreePanelsChange}"></d2l-switch>
-						</div>
-					</d2l-collapsible-panel>
-				` : nothing}
+				${this.#renderDemoMainControls()}
 				<p>I'm in the <b>default</b> slot of the <b>d2l-page</b> component!</p>
 			</div>
 			<div>End of Content</div>
