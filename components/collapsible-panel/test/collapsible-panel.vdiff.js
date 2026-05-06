@@ -105,34 +105,28 @@ describe('collapsible-panel', () => {
 		{ category: 'inline', type: 'inline' },
 	].forEach(({ category, type }) => {
 		[
-			{ name: 'collapsed' },
+			{ name: 'collapsed', allColorModes: true },
 			{ name: 'collapsed-rtl', rtl: true },
-			{ name: 'collapsed-dark', colorMode: 'dark' },
-			{ name: 'focus', action: focusPanel },
+			{ name: 'focus', action: focusPanel, allColorModes: true },
 			{ name: 'focus-rtl', rtl: true, action: focusPanel },
-			{ name: 'focus-dark', action: focusPanel, colorMode: 'dark' },
-			{ name: 'expanded', opts: { expanded: true } },
+			{ name: 'expanded', opts: { expanded: true }, allColorModes: true },
 			{ name: 'expanded-rtl', rtl: true, opts: { expanded: true } },
-			{ name: 'expanded-dark', opts: { expanded: true }, colorMode: 'dark' },
-			{ name: 'expanded-focus', opts: { expanded: true }, action: focusPanel },
-			{ name: 'expanded-focus-dark', opts: { expanded: true }, action: focusPanel, colorMode: 'dark' },
+			{ name: 'expanded-focus', opts: { expanded: true }, action: focusPanel, allColorModes: true },
 			{ name: 'expanded-sticky-top', opts: { expanded: true, noSticky: false }, action: elem => scrollTo(elem, 0) },
-			{ name: 'expanded-sticky-scrolled', opts: { expanded: true, noSticky: false }, action: elem => scrollTo(elem, 35) },
-			{ name: 'expanded-sticky-scrolled-dark', opts: { expanded: true, noSticky: false }, action: elem => scrollTo(elem, 35), colorMode: 'dark' },
-			{ name: 'summary', opts: { content: createSummary() } },
+			{ name: 'expanded-sticky-scrolled', opts: { expanded: true, noSticky: false }, action: elem => scrollTo(elem, 35), allColorModes: true },
+			{ name: 'summary', opts: { content: createSummary() }, allColorModes: true },
 			{ name: 'summary-rtl', rtl: true, opts: { content: createSummary() } },
-			{ name: 'summary-dark', opts: { content: createSummary() }, colorMode: 'dark' },
 			{ name: 'summary-expanded', opts: { content: createSummary(), expanded: true } },
 			{ name: 'summary-focus', opts: { content: createSummary() }, action: focusPanel },
 			{ name: 'large-padding', opts: { paddingType: 'large' } },
 			{ name: 'large-padding-summary', opts: { paddingType: 'large', content: createSummary() } },
 			{ name: 'large-padding-expanded', opts: { paddingType: 'large', expanded: true } },
 			{ name: 'long', opts: { content: createButton(), panelTitle: unbreakableTitle } },
-		].forEach(({ name, opts, action, colorMode, rtl }) => {
+		].forEach(({ name, opts, action, allColorModes, rtl }) => {
 			it(`${category}-${name}`, async() => {
-				const elem = await fixture(createCollapsiblePanel({ type, ...opts }), { colorMode, rtl });
+				const elem = await fixture(createCollapsiblePanel({ type, ...opts }), { rtl });
 				if (action) await action(elem);
-				await expect(elem).to.be.golden();
+				await expect(elem).to.be.golden({ allColorModes });
 			});
 		});
 	});
@@ -157,15 +151,14 @@ describe('collapsible-panel', () => {
 		{ name: 'custom-before-rtl', rtl: true, opts: { content: createCustom({ beforeIcon: true }) } },
 		{ name: 'custom-expanded', opts: { expanded: true, content: createCustom() } },
 		{ name: 'custom-expanded-rtl', rtl: true, opts: { expanded: true, content: createCustom() } },
-		{ name: 'custom-summary', opts: { content: createCustomWithSummary(), panelTitle: 'Submission 1' } },
-		{ name: 'custom-summary-dark', opts: { content: createCustomWithSummary(), panelTitle: 'Submission 1' }, colorMode: 'dark' },
+		{ name: 'custom-summary', opts: { content: createCustomWithSummary(), panelTitle: 'Submission 1' }, allColorModes: true },
 		{ name: 'custom-summary-rtl', rtl: true, opts: { content: createCustomWithSummary(), panelTitle: 'Submission 1' } },
 		{ name: 'custom-summary-expanded', opts: { expanded: true, content: createCustomWithSummary(), panelTitle: 'Submission 1' } },
-	].forEach(({ name, opts, action, colorMode, rtl }) => {
+	].forEach(({ name, opts, action, allColorModes, rtl }) => {
 		it(name, async() => {
-			const elem = await fixture(createCollapsiblePanel(opts), { colorMode, rtl });
+			const elem = await fixture(createCollapsiblePanel(opts), { rtl });
 			if (action) await action(elem);
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ allColorModes });
 		});
 	});
 });
