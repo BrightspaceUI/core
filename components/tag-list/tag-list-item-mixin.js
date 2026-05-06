@@ -88,7 +88,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				align-items: center;
 				background-color: var(--d2l-theme-background-color-interactive-faint-default);
 				border-radius: 6px;
-				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+				box-shadow: var(--d2l-theme-shadow-attached);
 				box-sizing: border-box;
 				color: var(--d2l-theme-text-color-static-standard);
 				cursor: pointer;
