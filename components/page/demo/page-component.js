@@ -164,11 +164,11 @@ class PageDemo extends LitElement {
 
 	#renderMainPanel() {
 		return html`
-			<div style="height: 1000px;">
-				${this.#renderDemoMainControls()}
+			<div>
 				<p>I'm in the <b>default</b> slot of the <b>d2l-page</b> component!</p>
+				${this.#renderDemoMainControls()}
+				<div style="align-items: end; display: flex; height: 500px;">End of Content</div>
 			</div>
-			<div>End of Content</div>
 		`;
 	}
 
