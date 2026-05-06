@@ -11,18 +11,14 @@ const template = html`
 `;
 
 describe('backdrop-loading', () => {
-	[
-		{ dataState: 'clean' },
-		{ dataState: 'clean-dark', colorMode: 'dark' },
-		{ dataState: 'dirty' },
-		{ dataState: 'dirty-dark', colorMode: 'dark' },
-		{ dataState: 'loading' },
-		{ dataState: 'loading-dark', colorMode: 'dark' }
-	].forEach(({ dataState, colorMode }) => {
+	['clean', 'dirty', 'loading'].forEach((dataState) => {
 		it(dataState, async() => {
-			const elem = await fixture(template, { colorMode });
-			elem.querySelector('d2l-backdrop-loading').dataState = dataState;
-			await expect(elem).to.be.golden();
+			const elem = await fixture(template);
+			const backdrop = elem.querySelector('d2l-backdrop-loading');
+			backdrop.dataState = dataState;
+			await backdrop.updateComplete;
+
+			await expect(elem).to.be.golden({ allColorModes: true });
 		});
 	});
 });

@@ -1,3 +1,4 @@
+import '../colors/colors.js';
 import '../button/floating-buttons.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -114,10 +115,6 @@ class Page extends LocalizeCoreElement(LitElement) {
 				}
 			}
 		});
-	}
-
-	connectedCallback() {
-		super.connectedCallback();
 	}
 
 	disconnectedCallback() {

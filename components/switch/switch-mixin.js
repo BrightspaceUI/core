@@ -48,7 +48,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 
 			.d2l-switch-container {
 				--d2l-focus-ring-offset: 0;
-				background-color: var(--d2l-switch-container-background-color, #ffffff);
+				background-color: var(--d2l-switch-container-background-color, var(--d2l-theme-background-color-base));
 				border-radius: 1rem;
 				box-sizing: border-box;
 				cursor: default;
@@ -62,15 +62,15 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			${getFocusRingStyles('.d2l-switch-container', { extraStyles: css`position: relative;` })}
 			:host([disabled]) .d2l-switch-container {
 				cursor: default;
-				opacity: 0.5;
+				opacity: var(--d2l-theme-opacity-disabled-control);
 			}
 			:host([disabled]) .d2l-switch-container:hover > .d2l-switch-inner,
-			:host([disabled]) .d2l-switch-inner:hover {
+			:host([disabled]) .d2l-switch-inner:hover,
+			:host([disabled]) .switch-hover {
 				outline: none;
 			}
 			.d2l-switch-inner {
-				background-color: var(--d2l-color-regolith);
-				border: 1px solid var(--d2l-color-ferrite);
+				border: 1px solid var(--d2l-theme-border-color-emphasized);
 				border-radius: 0.8rem;
 				box-sizing: border-box;
 				padding: 0.3rem;
@@ -78,15 +78,15 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				width: 3rem;
 			}
 			:host([on]) .d2l-switch-inner {
-				background-color: var(--d2l-color-celestine-plus-2);
+				background-color: var(--d2l-theme-background-color-interactive-highlighted);
 			}
 			.d2l-switch-toggle {
 				position: relative;
 				transition: transform 150ms ease-out;
 			}
 			.d2l-switch-toggle > div {
-				background-color: #ffffff;
-				border: 1px solid var(--d2l-color-ferrite);
+				background-color: var(--d2l-theme-background-color-base);
+				border: 1px solid var(--d2l-theme-border-color-emphasized);
 				border-radius: 0.6rem;
 				box-sizing: border-box;
 				display: inline-block;
@@ -131,13 +131,13 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			}
 			:host([on]) .d2l-switch-icon-on > d2l-icon,
 			:host([on]) .d2l-switch-icon-on > d2l-icon-custom {
-				color: var(--d2l-color-celestine);
+				color: var(--d2l-theme-icon-color-active);
 			}
 			:host([on]) .d2l-switch-icon-off {
 				transform: scale(0.35);
 			}
 			:host(:not([on])) .d2l-switch-icon-on {
-				color: var(--d2l-color-celestine);
+				color: var(--d2l-theme-icon-color-active);
 				transform: scale(0.35);
 			}
 			.d2l-switch-text {
@@ -149,7 +149,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 				display: none;
 			}
 			.d2l-switch-inner:hover, .switch-hover {
-				outline: 2px solid var(--d2l-color-celestine);
+				outline: 2px solid var(--d2l-theme-border-color-focus);
 				outline-offset: -2px;
 			}
 			@media (prefers-reduced-motion: reduce) {
