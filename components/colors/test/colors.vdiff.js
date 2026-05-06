@@ -87,10 +87,10 @@ describe('colors', () => {
 
 		[
 			{ name: 'resolves-colors', svg: svgWithSemanticVariables },
-			{ name: 'resolves-colors-dark', colorMode: 'dark', svg: svgWithSemanticVariables },
+			{ name: 'resolves-colors-dark', allColorModes: true, svg: svgWithSemanticVariables },
 			{ name: 'does-not-resolves-colors', svg: svgWithNonSemanticVariables },
-			{ name: 'does-not-resolves-colors-dark', colorMode: 'dark', svg: svgWithNonSemanticVariables }
-		].forEach(({ name, colorMode, svg }) => {
+			{ name: 'does-not-resolves-colors-dark', allColorModes: true, svg: svgWithNonSemanticVariables }
+		].forEach(({ name, allColorModes, svg }) => {
 
 			it(name, async() => {
 				const cssVariableName = `--d2l-test-icon${++cssVariableIndex}`;
@@ -98,9 +98,9 @@ describe('colors', () => {
 
 				const elem = await fixture(html`
 					<div style="background-image: var(${cssVariableName}); background-repeat: no-repeat; display: inline-block; height: 18px; width: 18px;"></div>
-				`, { colorMode });
+				`);
 
-				await expect(elem).to.be.golden();
+				await expect(elem).to.be.golden({ allColorModes });
 			});
 
 		});
