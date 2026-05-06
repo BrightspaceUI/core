@@ -182,8 +182,8 @@ class PageDemo extends LitElement {
 	#renderMainPanel() {
 		return html`
 			<div>
-				<p>I'm in the <b>default</b> slot of the <b>d2l-page</b> component!</p>
 				${this.#renderDemoMainControls()}
+				<p>I'm in the <b>default</b> slot of the <b>d2l-page</b> component!</p>
 
 				<h3>List with Sticky Controls (extend-separators)</h3>
 				<d2l-list extend-separators>
