@@ -1,10 +1,8 @@
-import '../../button/button.js';
 import '../../button/button-subtle.js';
 import '../../collapsible-panel/collapsible-panel.js';
 import '../../collapsible-panel/collapsible-panel-group.js';
 import '../../collapsible-panel/collapsible-panel-summary-item.js';
 import '../../demo/demo-page-settings.js';
-import '../../dialog/dialog.js';
 import '../../inputs/input-checkbox.js';
 import '../../inputs/input-date.js';
 import '../../inputs/input-number.js';
@@ -74,15 +72,6 @@ class PageDemo extends LitElement {
 		if (!this._allowThreePanels && this.hasSideNavPanel && this.hasSupportingPanel) {
 			this.hasSupportingPanel = false;
 		}
-	}
-
-	// TO DO: Don't commit this! Fix the dialog and add this in the main header
-	#handleDialogBrokenClick() {
-		this.shadowRoot.querySelector('#broken-dialog').opened = true;
-	}
-
-	#handleDialogNativeClick() {
-		this.shadowRoot.querySelector('#native-dialog').opened = true;
 	}
 
 	#handleNavTypeChange(e) {
@@ -198,8 +187,6 @@ class PageDemo extends LitElement {
 				<h3>List with Sticky Controls (extend-separators)</h3>
 				<d2l-list extend-separators>
 					<d2l-list-controls slot="controls">
-						<d2l-selection-action icon="tier1:alert" text="Broken Dialog" @d2l-selection-action-click="${this.#handleDialogBrokenClick}"></d2l-selection-action>
-						<d2l-selection-action icon="tier1:fullscreen" text="Native Dialog" @d2l-selection-action-click="${this.#handleDialogNativeClick}"></d2l-selection-action>
 						<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
 						<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
 					</d2l-list-controls>
@@ -344,27 +331,6 @@ class PageDemo extends LitElement {
 						</tbody>
 					</table>
 				</d2l-table-wrapper>
-				<d2l-dialog id="broken-dialog" title-text="Broken Dialog">
-					<div style="display: flex; flex-direction: column; gap: 0.75rem;">
-						<d2l-input-text label="Assignment Name" required></d2l-input-text>
-						<d2l-input-number label="Weight (%)" min="0" max="100"></d2l-input-number>
-						<d2l-input-date label="Due Date"></d2l-input-date>
-						<d2l-input-checkbox>Allow late submissions</d2l-input-checkbox>
-					</div>
-					<d2l-button slot="footer" primary data-dialog-action="add">Add</d2l-button>
-					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
-				</d2l-dialog>
-				<d2l-dialog id="native-dialog" title-text="Native Dialog" prefer-native>
-					<div style="display: flex; flex-direction: column; gap: 0.75rem;">
-						<d2l-input-text label="Assignment Name" required></d2l-input-text>
-						<d2l-input-number label="Weight (%)" min="0" max="100"></d2l-input-number>
-						<d2l-input-date label="Due Date"></d2l-input-date>
-						<d2l-input-checkbox>Allow late submissions</d2l-input-checkbox>
-					</div>
-					<d2l-button slot="footer" primary data-dialog-action="add">Add</d2l-button>
-					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
-				</d2l-dialog>
-				<div style="align-items: end; display: flex; height: 500px;">End of Content</div>
 			</div>
 		`;
 	}
