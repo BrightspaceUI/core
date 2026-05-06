@@ -86,17 +86,17 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			.tag-list-item-container {
 				--d2l-focus-ring-offset: -2px;
 				align-items: center;
-				background-color: var(--d2l-color-regolith);
+				background-color: var(--d2l-theme-background-color-interactive-faint-default);
 				border-radius: 6px;
-				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+				box-shadow: var(--d2l-theme-shadow-attached);
 				box-sizing: border-box;
-				color: var(--d2l-color-ferrite);
+				color: var(--d2l-theme-text-color-static-standard);
 				cursor: pointer;
 				display: flex;
 				line-height: 1rem;
 				max-width: 320px;
 				min-width: 0;
-				outline: 1px solid var(--d2l-color-gypsum);
+				outline: 1px solid var(--d2l-theme-border-color-subtle);
 				outline-offset: -1px;
 				transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
 				white-space: nowrap;
@@ -113,10 +113,10 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 			${getFocusRingStyles(() => focusSelector)}
 			:host(:hover) .tag-list-item-container,
 			${unsafeCSS(focusSelector)} {
-				background-color: var(--d2l-color-sylvite);
+				background-color: var(--d2l-theme-background-color-interactive-faint-hover);
 			}
 			:host(:hover) .tag-list-item-container:not(${unsafeCSS(focusSelector)}) {
-				outline-color: var(--d2l-color-mica);
+				outline-color: var(--d2l-theme-border-color-standard);
 			}
 
 			@media (prefers-reduced-motion: reduce) {
@@ -133,7 +133,7 @@ export const TagListItemMixin = superclass => class extends LocalizeCoreElement(
 				--d2l-button-icon-min-width: 1.2rem;
 			}
 			d2l-button-icon:hover {
-				--d2l-button-icon-fill-color: var(--d2l-color-tungsten);
+				--d2l-button-icon-fill-color: var(--d2l-theme-icon-color-standard);
 			}
 			d2l-tooltip ul {
 				list-style: none;
