@@ -45,8 +45,8 @@ class Page extends LocalizeCoreElement(LitElement) {
 		}
 
 		.header {
-			z-index: 15; /* To be over sticky content of our core components */
 			position: relative;
+			z-index: 15; /* To be over sticky content of our core components */
 		}
 
 		.page.header-sticky .header {
