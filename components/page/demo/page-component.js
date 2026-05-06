@@ -165,7 +165,7 @@ class PageDemo extends LitElement {
 				<d2l-button primary>Save and Close</d2l-button>
 				<d2l-button>Save</d2l-button>
 				<d2l-switch-visibility></d2l-switch-visibility>
-				I'm in the <b>footer</b> slot of the <b>d2l-page</b> component!
+				<div>I'm in the <b>footer</b> slot of the <b>d2l-page</b> component!</div>
 				<d2l-button slot="end">Clear</d2l-button>
 				<d2l-button-icon slot="end" icon="d2l-tier1:chevron-right" text="Next"></d2l-button-icon>
 			</d2l-page-footer>
