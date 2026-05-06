@@ -174,6 +174,7 @@ export default {
 	"components.selection.selected": "{count} mục được chọn",
 	"components.selection.selected-plus": "{count}+ mục được chọn",
 	"components.selection-controls.label": "Các thao tác để chọn",
+	"components.skip-nav.skipToMainContent": "chuyển sang đến nội dung chính",
 	"components.sort.label": "Sắp xếp",
 	"components.sort.text": "Sắp xếp: {selectedItemText}",
 	"components.switch.conditions": "Các điều kiện phải được đáp ứng",
