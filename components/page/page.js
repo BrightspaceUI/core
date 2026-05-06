@@ -43,10 +43,14 @@ class Page extends LocalizeCoreElement(LitElement) {
 			--d2l-page-footer-max-width: 100%;
 		}
 
+		.header {
+			z-index: 15; /* To be over sticky content of our core components */
+			position: relative;
+		}
+
 		.page.header-sticky .header {
 			position: sticky;
 			top: 0;
-			z-index: 15; /* To be over sticky content of our core components */
 		}
 
 		.content {
