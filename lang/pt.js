@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "mais",
 	"components.object-property-list.item-placeholder-text": "Item de espaço reservado",
 	"components.overflow-group.moreActions": "Mais ações",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} item}

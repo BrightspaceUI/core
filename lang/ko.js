@@ -147,6 +147,8 @@ export default {
 	"components.more-less.more": "더 보기",
 	"components.object-property-list.item-placeholder-text": "자리표시자 항목",
 	"components.overflow-group.moreActions": "추가 작업",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			other {해당 항목 수 {countFormatted}개}

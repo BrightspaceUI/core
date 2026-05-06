@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "mer",
 	"components.object-property-list.item-placeholder-text": "Platshållarobjekt",
 	"components.overflow-group.moreActions": "Fler åtgärder",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} objekt}

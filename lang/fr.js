@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "plus",
 	"components.object-property-list.item-placeholder-text": "Élément de paramètre fictif",
 	"components.overflow-group.moreActions": "Plus d’actions",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} élément}

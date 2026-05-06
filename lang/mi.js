@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "ētahi atu",
 	"components.object-property-list.item-placeholder-text": "Tūemi Puriwāhi",
 	"components.overflow-group.moreActions": "Ētahi atu Hohenga",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} Tūemi}

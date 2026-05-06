@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "hou aku",
 	"components.object-property-list.item-placeholder-text": "Mea Paʻa Wahi",
 	"components.overflow-group.moreActions": "Nā Hana Hou",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} mea}
