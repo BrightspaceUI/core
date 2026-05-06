@@ -25,6 +25,7 @@ import '../../switch/switch.js';
 import '../../table/table-controls.js';
 import '../page.js';
 import '../page-footer.js';
+import '../page-header-custom.js';
 import '../page-main.js';
 import '../page-side-nav.js';
 import '../page-supporting.js';
@@ -172,11 +173,9 @@ class PageDemo extends LitElement {
 	}
 
 	#renderFullNav() {
-		// Update with navigation components once available
 		return html`
-			<div slot="header" class="full-nav-wrapper">
-				<div class="nav-band"></div>
-				<div class="full-nav-header">
+			<d2l-page-header-custom has-skip-nav slot="header">
+				<div class="full-nav-header" slot="top">
 					<div class="full-nav-header-left">
 						<span class="full-nav-logo">Logo</span>
 						<div class="full-nav-separator"></div>
@@ -189,7 +188,7 @@ class PageDemo extends LitElement {
 						<button class="nav-icon-btn" title="Profile">👤</button>
 					</div>
 				</div>
-				<div class="full-nav-footer">
+				<div class="full-nav-footer" slot="bottom">
 					<div class="full-nav-footer-inner">
 						<a class="full-nav-footer-link" href="javascript:void(0)">Content</a>
 						<a class="full-nav-footer-link" href="javascript:void(0)">Assignments</a>
@@ -198,17 +197,14 @@ class PageDemo extends LitElement {
 						<a class="full-nav-footer-link" href="javascript:void(0)">Classlist</a>
 					</div>
 				</div>
-				<div class="nav-shadow"></div>
-			</div>
+			</d2l-page-header-custom>
 		`;
 	}
 
 	#renderImmersiveNav() {
-		// Update with navigation components once available
 		return html`
-			<div id="immersive-nav" slot="header" class="immersive-wrapper">
-				<div class="nav-band"></div>
-				<div class="immersive-container">
+			<d2l-page-header-custom id="immersive-nav" slot="header">
+				<div class="immersive-container" slot="top">
 					<div class="immersive-left">
 						<a class="immersive-back-link" href="javascript:void(0)">
 							<span class="immersive-back-icon">‹</span>
@@ -223,8 +219,7 @@ class PageDemo extends LitElement {
 						<button class="nav-icon-btn">Next ›</button>
 					</div>
 				</div>
-				<div class="nav-shadow"></div>
-			</div>
+			</d2l-page-header-custom>
 		`;
 	}
 
