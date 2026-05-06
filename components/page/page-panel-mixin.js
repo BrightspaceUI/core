@@ -27,12 +27,7 @@ export const pagePanelStyles = css`
 	}
 
 	.panel {
-		--d2l-page-panel-header-height: 0px;
 		padding: 30px;
-	}
-
-	.panel.header-sticky {
-		--d2l-page-panel-header-height: 70px;
 	}
 `;
 
