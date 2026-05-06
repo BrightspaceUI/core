@@ -3,6 +3,7 @@ import '../../collapsible-panel/collapsible-panel.js';
 import '../../collapsible-panel/collapsible-panel-group.js';
 import '../../collapsible-panel/collapsible-panel-summary-item.js';
 import '../../demo/demo-page-settings.js';
+import '../../icons/icon.js';
 import '../../inputs/input-checkbox.js';
 import '../../inputs/input-date.js';
 import '../../inputs/input-number.js';
@@ -340,92 +341,92 @@ class PageDemo extends LitElement {
 		return this.hasSideNavPanel ? html`
 			<div slot="side-nav">
 				<p>I'm in the <b>side-nav</b> slot of the <b>d2l-page</b> component!</p>
-				<d2l-list grid style="width: 100%;">
-					<d2l-list-item-nav key="nav-1" label="Course Overview" action-href="javascript:void(0)" prevent-navigation>
+				<d2l-list grid drag-multiple style="width: 100%;">
+					<d2l-list-item-nav key="nav-1" label="Course Overview" color="#006fbf" draggable drag-handle-text="Course Overview" drop-nested action-href="javascript:void(0)" prevent-navigation>
 						<d2l-list-item-content>
-							<div>Course Overview</div>
+							<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:content"></d2l-icon>Course Overview</div>
 						</d2l-list-item-content>
 					</d2l-list-item-nav>
-					<d2l-list-item-nav key="nav-2" label="Unit 1: Foundations" expandable expanded action-href="javascript:void(0)" prevent-navigation>
+					<d2l-list-item-nav key="nav-2" label="Unit 1: Foundations" color="#29a6ff" expandable expanded draggable drag-handle-text="Unit 1: Foundations" drop-nested action-href="javascript:void(0)" prevent-navigation>
 						<d2l-list-item-content>
 							<div>Unit 1: Foundations</div>
 							<div slot="secondary">3 items</div>
 						</d2l-list-item-content>
 						<d2l-list slot="nested" grid>
-							<d2l-list-item-nav key="nav-2-1" label="Reading: Core Concepts" action-href="javascript:void(0)" prevent-navigation>
+							<d2l-list-item-nav key="nav-2-1" label="Reading: Core Concepts" draggable drag-handle-text="Reading: Core Concepts" drop-nested action-href="javascript:void(0)" prevent-navigation>
 								<d2l-list-item-content>
-									<div>Reading: Core Concepts</div>
+									<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Reading: Core Concepts</div>
 								</d2l-list-item-content>
 							</d2l-list-item-nav>
-							<d2l-list-item-nav key="nav-2-2" label="Discussion: Key Takeaways" action-href="javascript:void(0)" prevent-navigation>
+							<d2l-list-item-nav key="nav-2-2" label="Discussion: Key Takeaways" draggable drag-handle-text="Discussion: Key Takeaways" drop-nested action-href="javascript:void(0)" prevent-navigation>
 								<d2l-list-item-content>
-									<div>Discussion: Key Takeaways</div>
+									<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:discuss"></d2l-icon>Discussion: Key Takeaways</div>
 								</d2l-list-item-content>
 							</d2l-list-item-nav>
-							<d2l-list-item-nav key="nav-2-3" label="Quiz: Chapter 1" action-href="javascript:void(0)" prevent-navigation>
+							<d2l-list-item-nav key="nav-2-3" label="Quiz: Chapter 1" draggable drag-handle-text="Quiz: Chapter 1" drop-nested action-href="javascript:void(0)" prevent-navigation>
 								<d2l-list-item-content>
-									<div>Quiz: Chapter 1</div>
+									<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:quiz"></d2l-icon>Quiz: Chapter 1</div>
 								</d2l-list-item-content>
 							</d2l-list-item-nav>
 						</d2l-list>
 					</d2l-list-item-nav>
-					<d2l-list-item-nav key="nav-3" label="Unit 2: Applications" expandable action-href="javascript:void(0)" prevent-navigation>
+					<d2l-list-item-nav key="nav-3" label="Unit 2: Applications" color="#990006" expandable draggable drag-handle-text="Unit 2: Applications" drop-nested action-href="javascript:void(0)" prevent-navigation>
 						<d2l-list-item-content>
 							<div>Unit 2: Applications</div>
 							<div slot="secondary">4 items</div>
 						</d2l-list-item-content>
 						<d2l-list slot="nested" grid>
-							<d2l-list-item-nav key="nav-3-1" label="Case Study Analysis" action-href="javascript:void(0)" prevent-navigation>
+							<d2l-list-item-nav key="nav-3-1" label="Case Study Analysis" draggable drag-handle-text="Case Study Analysis" drop-nested action-href="javascript:void(0)" prevent-navigation>
 								<d2l-list-item-content>
-									<div>Case Study Analysis</div>
+									<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Case Study Analysis</div>
 								</d2l-list-item-content>
 							</d2l-list-item-nav>
-							<d2l-list-item-nav key="nav-3-2" label="Group Project" action-href="javascript:void(0)" prevent-navigation>
+							<d2l-list-item-nav key="nav-3-2" label="Group Project" draggable drag-handle-text="Group Project" drop-nested action-href="javascript:void(0)" prevent-navigation>
 								<d2l-list-item-content>
-									<div>Group Project</div>
+									<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:group"></d2l-icon>Group Project</div>
 								</d2l-list-item-content>
 							</d2l-list-item-nav>
-							<d2l-list-item-nav key="nav-3-3" label="Lab: Data Collection" action-href="javascript:void(0)" prevent-navigation>
+							<d2l-list-item-nav key="nav-3-3" label="Lab: Data Collection" draggable drag-handle-text="Lab: Data Collection" drop-nested action-href="javascript:void(0)" prevent-navigation>
 								<d2l-list-item-content>
-									<div>Lab: Data Collection</div>
+									<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Lab: Data Collection</div>
 								</d2l-list-item-content>
 							</d2l-list-item-nav>
-							<d2l-list-item-nav key="nav-3-4" label="Reflection Journal" action-href="javascript:void(0)" prevent-navigation>
+							<d2l-list-item-nav key="nav-3-4" label="Reflection Journal" draggable drag-handle-text="Reflection Journal" drop-nested action-href="javascript:void(0)" prevent-navigation>
 								<d2l-list-item-content>
-									<div>Reflection Journal</div>
+									<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:notebook"></d2l-icon>Reflection Journal</div>
 								</d2l-list-item-content>
 							</d2l-list-item-nav>
 						</d2l-list>
 					</d2l-list-item-nav>
-					<d2l-list-item-nav key="nav-4" label="Unit 3: Research Methods" expandable action-href="javascript:void(0)" prevent-navigation>
+					<d2l-list-item-nav key="nav-4" label="Unit 3: Research Methods" color="#168622" expandable draggable drag-handle-text="Unit 3: Research Methods" drop-nested action-href="javascript:void(0)" prevent-navigation>
 						<d2l-list-item-content>
 							<div>Unit 3: Research Methods</div>
 							<div slot="secondary">5 items</div>
 						</d2l-list-item-content>
 						<d2l-list slot="nested" grid>
-							<d2l-list-item-nav key="nav-4-1" label="Introduction to Research Design" action-href="javascript:void(0)" prevent-navigation>
+							<d2l-list-item-nav key="nav-4-1" label="Introduction to Research Design" draggable drag-handle-text="Introduction to Research Design" drop-nested action-href="javascript:void(0)" prevent-navigation>
 								<d2l-list-item-content>
-									<div>Introduction to Research Design</div>
+									<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Introduction to Research Design</div>
 								</d2l-list-item-content>
 							</d2l-list-item-nav>
-							<d2l-list-item-nav key="nav-4-2" label="Qualitative vs Quantitative" action-href="javascript:void(0)" prevent-navigation>
+							<d2l-list-item-nav key="nav-4-2" label="Qualitative vs Quantitative" draggable drag-handle-text="Qualitative vs Quantitative" drop-nested action-href="javascript:void(0)" prevent-navigation>
 								<d2l-list-item-content>
-									<div>Qualitative vs Quantitative</div>
+									<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Qualitative vs Quantitative</div>
 								</d2l-list-item-content>
 							</d2l-list-item-nav>
-							<d2l-list-item-nav key="nav-4-3" label="Survey Design Workshop" action-href="javascript:void(0)" prevent-navigation>
+							<d2l-list-item-nav key="nav-4-3" label="Survey Design Workshop" draggable drag-handle-text="Survey Design Workshop" drop-nested action-href="javascript:void(0)" prevent-navigation>
 								<d2l-list-item-content>
-									<div>Survey Design Workshop</div>
+									<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Survey Design Workshop</div>
 								</d2l-list-item-content>
 							</d2l-list-item-nav>
-							<d2l-list-item-nav key="nav-4-4" label="Ethics in Research" action-href="javascript:void(0)" prevent-navigation>
+							<d2l-list-item-nav key="nav-4-4" label="Ethics in Research" draggable drag-handle-text="Ethics in Research" drop-nested action-href="javascript:void(0)" prevent-navigation>
 								<d2l-list-item-content>
-									<div>Ethics in Research</div>
+									<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:file-document"></d2l-icon>Ethics in Research</div>
 								</d2l-list-item-content>
 							</d2l-list-item-nav>
-							<d2l-list-item-nav key="nav-4-5" label="Quiz: Research Methods" action-href="javascript:void(0)" prevent-navigation>
+							<d2l-list-item-nav key="nav-4-5" label="Quiz: Research Methods" draggable drag-handle-text="Quiz: Research Methods" drop-nested action-href="javascript:void(0)" prevent-navigation>
 								<d2l-list-item-content>
-									<div>Quiz: Research Methods</div>
+									<div><d2l-icon style="margin-right: 0.7rem;" icon="tier2:quiz"></d2l-icon>Quiz: Research Methods</div>
 								</d2l-list-item-content>
 							</d2l-list-item-nav>
 						</d2l-list>
