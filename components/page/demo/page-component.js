@@ -47,7 +47,8 @@ class PageDemo extends LitElement {
 		hasSupportingPanel: { type: Boolean, attribute: 'has-supporting-panel' },
 		navType: { type: String, attribute: 'nav-type' },
 		widthType: { type: String, attribute: 'width-type' },
-		_allowThreePanels: { state: true }
+		_allowThreePanels: { state: true },
+		_demoDialogOpened: { state: true }
 	};
 
 	static styles = [navStyles, selectStyles, tableStyles, css`
@@ -74,6 +75,7 @@ class PageDemo extends LitElement {
 		this.navType = 'full';
 		/** @type {'normal'|'wide'|'fullscreen'} */
 		this.widthType = 'normal';
+		this._demoDialogOpened = false;
 	}
 
 	render() {
@@ -95,8 +97,12 @@ class PageDemo extends LitElement {
 		}
 	}
 
+	#handleDialogClose() {
+		this._demoDialogOpened = false;
+	}
+
 	#handleDialogOpen() {
-		this.shadowRoot.querySelector('#demo-dialog').opened = true;
+		this._demoDialogOpened = true;
 	}
 
 	#handleNavTypeChange(e) {
@@ -384,7 +390,7 @@ class PageDemo extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 				<div style="align-items: end; display: flex; height: 500px;">End of Content</div>
-				<d2l-dialog id="demo-dialog" title-text="New Assignment">
+				<d2l-dialog id="demo-dialog" title-text="New Assignment" ?opened="${this._demoDialogOpened}" @d2l-dialog-close="${this.#handleDialogClose}">
 					<div style="display: flex; flex-direction: column; gap: 0.75rem;">
 						<d2l-input-text label="Assignment Name" value=""></d2l-input-text>
 						<d2l-input-number label="Points" value="100"></d2l-input-number>
