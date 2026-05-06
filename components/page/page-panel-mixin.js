@@ -44,14 +44,6 @@ export const PagePanelMixin = superclass => class extends superclass {
 		this._slotVisibility = {};
 	}
 
-	_handleSlotVisibilityChange(e) {
-		const key = e.target.name;
-		const nodes = e.target.assignedNodes();
-		this._slotVisibility = { ...this._slotVisibility, [key]: nodes.length !== 0 };
-
-		this._hasHeader = this._slotVisibility['header-start'] || this._slotVisibility['header-end'];
-	}
-
 	_renderPanel(content) {
 		const panelClasses = {
 			'panel': true,
@@ -59,8 +51,8 @@ export const PagePanelMixin = superclass => class extends superclass {
 		};
 		const header = html`
 			<div ?hidden="${!this._hasHeader}" class="panel-header">
-				<div class="header-start"><slot name="header-start" @slotchange="${this._handleSlotVisibilityChange}"></slot></div>
-				<div class="header-end"><slot name="header-end" @slotchange="${this._handleSlotVisibilityChange}"></slot></div>
+				<div class="header-start"><slot name="header-start" @slotchange="${this.#handleSlotVisibilityChange}"></slot></div>
+				<div class="header-end"><slot name="header-end" @slotchange="${this.#handleSlotVisibilityChange}"></slot></div>
 			</div>`;
 
 		return html`
@@ -69,6 +61,14 @@ export const PagePanelMixin = superclass => class extends superclass {
 				<div class="${classMap(panelClasses)}">${content}</div>
 			</div>
 		`;
+	}
+
+	#handleSlotVisibilityChange(e) {
+		const key = e.target.name;
+		const nodes = e.target.assignedNodes();
+		this._slotVisibility = { ...this._slotVisibility, [key]: nodes.length !== 0 };
+
+		this._hasHeader = this._slotVisibility['header-start'] || this._slotVisibility['header-end'];
 	}
 
 };
