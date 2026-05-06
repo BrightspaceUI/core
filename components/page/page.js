@@ -4,7 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
- * Page template with header, optional footer and optional navigation panel or supporting panel
+ * Component for laying out a page, with header, optional footer and optional navigation or supporting panels
  * @slot - The main content of the page (expecting d2l-page-main)
  * @slot header - The header content of the page (expecting d2l-page-header-*)
  * @slot side-nav - The side navigation content of the page (expecting d2l-page-side-nav)
@@ -43,13 +43,10 @@ class Page extends LocalizeCoreElement(LitElement) {
 			--d2l-page-footer-max-width: 100%;
 		}
 
-		.header {
-			background-color: white;
-			z-index: 2; /* To be over divider and main contents */
-		}
 		.page.header-sticky .header {
 			position: sticky;
 			top: 0;
+			z-index: 15; /* To be over sticky content of our core components */
 		}
 
 		.content {
@@ -61,23 +58,14 @@ class Page extends LocalizeCoreElement(LitElement) {
 
 		main {
 			flex: 1;
-			min-width: 400px; /* TBD */
-			overflow: clip;
-			position: relative;
-			z-index: 0;
+			min-width: min(400px, 100%); /* Actual min width TBD */
 		}
 
 		.side-nav-panel,
 		.supporting-panel {
-			height: calc(100vh - var(--d2l-page-footer-height, 0));
+			height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
 			overflow: clip auto;
 			position: sticky;
-			top: 0;
-			z-index: 0;
-		}
-		.page.header-sticky .side-nav-panel,
-		.page.header-sticky .supporting-panel {
-			height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
 			top: var(--d2l-page-header-height, 0);
 		}
 
@@ -85,7 +73,6 @@ class Page extends LocalizeCoreElement(LitElement) {
 			background-color: var(--d2l-color-gypsum);
 			flex: none;
 			width: 4px;
-			z-index: 1;
 		}
 
 		.footer:not([hidden]),
@@ -98,10 +85,6 @@ class Page extends LocalizeCoreElement(LitElement) {
 			inset: auto 0 0;
 			padding: 0.75rem 0;
 			position: fixed;
-			z-index: 1; /* To be over divider */
-		}
-		.floating-footer {
-			padding-block-end: 0.75rem;
 		}
 		.footer-contents {
 			margin-inline: var(--d2l-page-margin-inline, 0);
@@ -118,7 +101,7 @@ class Page extends LocalizeCoreElement(LitElement) {
 		this.#resizeObserver = new ResizeObserver(entries => {
 			for (const entry of entries) {
 				if (entry.target.classList.contains('header')) {
-					const height = entry.target.offsetHeight;
+					const height = this._headerIsSticky ? entry.target.offsetHeight : 0;
 					this.style.setProperty('--d2l-page-header-height', `${height}px`);
 				} else if (entry.target.classList.contains('footer')) {
 					const height = entry.target.classList.contains('fixed-footer') ? entry.target.offsetHeight : 0;
@@ -150,48 +133,15 @@ class Page extends LocalizeCoreElement(LitElement) {
 			'header-sticky': this._headerIsSticky
 		};
 
-		const header = html`
-			<header class="header">
-				<nav aria-label="${this.localize('components.page.header-nav-label')}">
-					<slot name="header" @slotchange="${this.#handleHeaderSlotChange}"></slot>
-				</nav>
-			</header>`;
-
-		const mainContent = html`
-			<main>
-				<slot></slot>
-			</main>`;
-
-		const sideNavPanel = html`
-			<nav class="side-nav-panel" ?hidden="${!this._slotVisibility['side-nav']}" aria-label="${this.localize('components.page.side-nav-label')}">
-				<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
-			</nav>
-			${this._slotVisibility['side-nav'] ? html`<div class="divider"></div>` : nothing}
-			`;
-
-		const supportingPanel = html`
-			${this._slotVisibility['supporting'] ? html`<div class="divider"></div>` : nothing}
-			<aside class="supporting-panel" ?hidden="${!this._slotVisibility['supporting']}">
-				<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
-			</aside>`;
-
-		const fixedFooter = this._slotVisibility['side-nav'] || this._slotVisibility['supporting'];
-		const footerContainerClasses = { 'footer': true, 'fixed-footer': fixedFooter };
-		const footerContents = html`<div class="footer-contents"><slot name="footer" @slotchange="${this.#handleSlotVisibilityChange}"></slot></div>`;
-		const footer = html`
-			<div class="${classMap(footerContainerClasses)}" ?hidden="${!this._slotVisibility['footer']}">
-				${fixedFooter ? footerContents : this.#renderFloatingButtons(footerContents)}	
-			</div>`;
-
 		return html`
 			<div class="${classMap(pageClasses)}">
-				${header}
+				${this.#renderHeader()}
 				<div class="content">
-					${sideNavPanel}
-					${mainContent}
-					${supportingPanel}
+					${this.#renderSideNavPanel()}
+					<main><slot></slot></main>
+					${this.#renderSupportingPanel()}
 				</div>
-				${footer}
+				${this.#renderFooter()}
 			</div>
 		`;
 	}
@@ -208,7 +158,6 @@ class Page extends LocalizeCoreElement(LitElement) {
 		const key = e.target.name;
 		const nodes = e.target.assignedNodes();
 		this._slotVisibility = { ...this._slotVisibility, [key]: nodes.length !== 0 };
-		this.requestUpdate();
 	}
 
 	#renderFloatingButtons(footerContents) {
@@ -216,9 +165,48 @@ class Page extends LocalizeCoreElement(LitElement) {
 		return html`
 			<div class="floating-buttons-container">
 				<d2l-floating-buttons>
-					<div class="floating-footer">${footerContents}</div>
+					${footerContents}
 				</d2l-floating-buttons>
 			</div>
+		`;
+	}
+
+	#renderFooter() {
+		const fixedFooter = this._slotVisibility['side-nav'] || this._slotVisibility['supporting'];
+		const footerContainerClasses = { 'footer': true, 'fixed-footer': fixedFooter };
+		const footerContents = html`<div class="footer-contents"><slot name="footer" @slotchange="${this.#handleSlotVisibilityChange}"></slot></div>`;
+		return html`
+			<div class="${classMap(footerContainerClasses)}" ?hidden="${!this._slotVisibility['footer']}">
+				${fixedFooter ? footerContents : this.#renderFloatingButtons(footerContents)}	
+			</div>
+		`;
+	}
+
+	#renderHeader() {
+		return html`
+			<header class="header">
+				<nav aria-label="${this.localize('components.page.header-nav-label')}">
+					<slot name="header" @slotchange="${this.#handleHeaderSlotChange}"></slot>
+				</nav>
+			</header>
+		`;
+	}
+
+	#renderSideNavPanel() {
+		return html`
+			<nav class="side-nav-panel" ?hidden="${!this._slotVisibility['side-nav']}" aria-label="${this.localize('components.page.side-nav-label')}">
+				<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+			</nav>
+			${this._slotVisibility['side-nav'] ? html`<div class="divider"></div>` : nothing}
+		`;
+	}
+
+	#renderSupportingPanel() {
+		return html`
+			${this._slotVisibility['supporting'] ? html`<div class="divider"></div>` : nothing}
+			<aside class="supporting-panel" ?hidden="${!this._slotVisibility['supporting']}">
+				<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+			</aside>
 		`;
 	}
 

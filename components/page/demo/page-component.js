@@ -72,7 +72,6 @@ class PageDemo extends LitElement {
 	#handleAllowThreePanelsChange(e) {
 		this._allowThreePanels = e.target.on;
 		if (!this._allowThreePanels && this.hasSideNavPanel && this.hasSupportingPanel) {
-			this.shadowRoot.querySelector('#switch-supporting-panel').on = false;
 			this.hasSupportingPanel = false;
 		}
 	}
@@ -96,16 +95,33 @@ class PageDemo extends LitElement {
 
 		if (this._allowThreePanels) return;
 		if (e.target.on && key === 'hasSideNavPanel' && this.hasSupportingPanel) {
-			this.shadowRoot.querySelector('#switch-supporting-panel').on = false;
 			this.hasSupportingPanel = false;
 		} else if (e.target.on && key === 'hasSupportingPanel' && this.hasSideNavPanel) {
-			this.shadowRoot.querySelector('#switch-side-nav-panel').on = false;
 			this.hasSideNavPanel = false;
 		}
 	}
 
 	#handleWidthTypeChange(e) {
 		this.widthType = e.target.value;
+	}
+
+	#renderDemoMainControls() {
+		return this.demoMode ? html`
+			<d2l-collapsible-panel panel-title="Demo Controls" expanded>
+				<div class="demo-controls">
+					<select class="d2l-input-select" name="width-type" aria-label="Width type" @change="${this.#handleWidthTypeChange}">
+						<option value="normal" ?selected="${this.widthType === 'normal'}">Normal Width</option>
+						<option value="wide" ?selected="${this.widthType === 'wide'}">Wide Width</option>
+						<option value="fullscreen" ?selected="${this.widthType === 'fullscreen'}">Fullscreen</option>
+					</select>
+					<d2l-switch id="switch-nav-type" text="Immersive Nav" @change="${this.#handleNavTypeChange}"></d2l-switch>
+					<d2l-switch id="switch-side-nav-panel" text="Side Nav Panel" data-key="hasSideNavPanel" @change="${this.#handleVisibilityChange}" ?on="${this.hasSideNavPanel}"></d2l-switch>
+					<d2l-switch id="switch-supporting-panel" text="Supporting Panel" data-key="hasSupportingPanel" @change="${this.#handleVisibilityChange}" ?on="${this.hasSupportingPanel}"></d2l-switch>
+					<d2l-switch id="switch-footer" text="Footer" data-key="hasFooter" @change="${this.#handleVisibilityChange}"></d2l-switch>
+					<d2l-switch id="switch-allow-three-panels" text="Allow Three Panels" @change="${this.#handleAllowThreePanelsChange}"></d2l-switch>
+				</div>
+			</d2l-collapsible-panel>
+		` : nothing;
 	}
 
 	#renderFooter() {
@@ -177,22 +193,7 @@ class PageDemo extends LitElement {
 		return html`
 			<div>
 				<p>I'm in the <b>default</b> slot of the <b>d2l-page</b> component!</p>
-				${this.demoMode ? html`
-					<d2l-collapsible-panel panel-title="Demo Controls" expanded>
-						<div class="demo-controls">
-							<select class="d2l-input-select" name="width-type" aria-label="Width type" @change="${this.#handleWidthTypeChange}">
-								<option value="normal" ?selected="${this.widthType === 'normal'}">Normal Width</option>
-								<option value="wide" ?selected="${this.widthType === 'wide'}">Wide Width</option>
-								<option value="fullscreen" ?selected="${this.widthType === 'fullscreen'}">Fullscreen</option>
-							</select>
-							<d2l-switch id="switch-nav-type" text="Immersive Nav" @change="${this.#handleNavTypeChange}"></d2l-switch>
-							<d2l-switch id="switch-side-nav-panel" text="Side Nav Panel" data-key="hasSideNavPanel" @change="${this.#handleVisibilityChange}"></d2l-switch>
-							<d2l-switch id="switch-supporting-panel" text="Supporting Panel" data-key="hasSupportingPanel" @change="${this.#handleVisibilityChange}"></d2l-switch>
-							<d2l-switch id="switch-footer" text="Footer" data-key="hasFooter" @change="${this.#handleVisibilityChange}"></d2l-switch>
-							<d2l-switch id="switch-allow-three-panels" text="Allow Three Panels" @change="${this.#handleAllowThreePanelsChange}"></d2l-switch>
-						</div>
-					</d2l-collapsible-panel>
-				` : nothing}
+				${this.#renderDemoMainControls()}
 
 				<h3>List with Sticky Controls (extend-separators)</h3>
 				<d2l-list extend-separators>
@@ -363,8 +364,8 @@ class PageDemo extends LitElement {
 					<d2l-button slot="footer" primary data-dialog-action="add">Add</d2l-button>
 					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
 				</d2l-dialog>
+				<div style="align-items: end; display: flex; height: 500px;">End of Content</div>
 			</div>
-			<div style="align-items: end; display: flex; height: 500px;">End of Content</div>
 		`;
 	}
 

@@ -45,6 +45,7 @@ export const navStyles = css`
 
 	/* Full Nav Styles */
 	.full-nav-wrapper {
+		background-color: white;
 		position: relative;
 	}
 	.full-nav-header {
@@ -109,6 +110,7 @@ export const navStyles = css`
 	.full-nav-footer-inner {
 		align-items: center;
 		display: flex;
+		flex-wrap: wrap;
 		gap: 4px;
 		margin-inline: var(--d2l-page-margin-inline);
 		max-width: var(--d2l-page-header-max-width);
