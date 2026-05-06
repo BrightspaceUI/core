@@ -241,7 +241,7 @@ export const tableStyles = css`
 	d2l-table-wrapper[sticky-headers][sticky-headers-scroll-wrapper] .d2l-table > thead {
 		display: block;
 		position: sticky;
-		top: calc(var(--d2l-table-sticky-top, 0px) + var(--d2l-table-border-radius-sticky-offset, 0px));
+		top: calc(var(--d2l-page-sticky-top, 0px) + var(--d2l-table-sticky-top, 0px) + var(--d2l-table-border-radius-sticky-offset, 0px));
 		z-index: 2;
 	}
 
@@ -382,7 +382,7 @@ export class TableWrapper extends PropertyRequiredMixin(PageableMixin(SelectionM
 			}
 			.d2l-sticky-headers-backdrop {
 				position: sticky;
-				top: calc(var(--d2l-table-sticky-top, 0px) + var(--d2l-table-border-radius));
+				top: calc(var(--d2l-page-sticky-top, 0px) + var(--d2l-table-sticky-top, 0px) + var(--d2l-table-border-radius));
 				width: 100%;
 				z-index: 2; /* Must sit under d2l-table sticky-headers but over sticky columns and regular cells */
 			}
@@ -832,7 +832,8 @@ export class TableWrapper extends PropertyRequiredMixin(PageableMixin(SelectionM
 
 		const stickyRows = Array.from(this._table.querySelectorAll(SELECTORS.headers));
 		stickyRows.forEach(r => {
-			const thTop = hasStickyControls ? `${rowTop}px` : `calc(${rowTop}px + var(--d2l-table-border-radius-sticky-offset, 0px))`;
+			const borderRadiusOffset = hasStickyControls ? '' : ' + var(--d2l-table-border-radius-sticky-offset, 0px)';
+			const thTop = `calc(${rowTop}px + var(--d2l-page-sticky-top, 0px)${borderRadiusOffset})`;
 			const ths = Array.from(r.querySelectorAll('th,td'));
 			ths.forEach(th => th.style.top = thTop);
 

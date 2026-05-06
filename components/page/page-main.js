@@ -13,6 +13,13 @@ class PageMain extends PagePanelMixin(LitElement) {
 		.panel-header {
 			top: var(--d2l-page-header-height, 0);
 		}
+		.panel {
+			/* stylelint-disable-next-line length-zero-no-unit -- used in calc() by consumers */
+			--d2l-page-sticky-top: var(--d2l-page-header-height, 0px);
+		}
+		.panel.header-sticky {
+			--d2l-page-sticky-top: calc(var(--d2l-page-header-height, 0px) + var(--d2l-page-panel-header-height, 0px));
+		}
 	`];
 
 	render() {
