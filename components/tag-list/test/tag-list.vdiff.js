@@ -52,7 +52,7 @@ describe('tag-list', () => {
 			const elem = await fixture(createTagList(), { viewport });
 			sendKeys('press', 'Tab');
 			await oneEvent(elem, 'd2l-tooltip-show');
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ allColorModes: true });
 		});
 
 		it('focus twice', async() => {
@@ -67,7 +67,7 @@ describe('tag-list', () => {
 		it('hover', async() => {
 			const elem = await fixture(createTagList(), { viewport });
 			await hoverElem(elem.querySelector('d2l-tag-list-item'));
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ allColorModes: true });
 		});
 
 		it('focus and hover', async() => {
