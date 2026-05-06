@@ -85,6 +85,7 @@ class Page extends LocalizeCoreElement(LitElement) {
 			inset: auto 0 0;
 			padding: 0.75rem 0;
 			position: fixed;
+			z-index: 10; /* To be over sticky content of our core components */
 		}
 		.footer-contents {
 			margin-inline: var(--d2l-page-margin-inline, 0);
