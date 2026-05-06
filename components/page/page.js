@@ -88,7 +88,7 @@ class Page extends LocalizeCoreElement(LitElement) {
 			background-color: white;
 			box-shadow: 0 -2px 4px rgba(32, 33, 34, 0.2); /* ferrite */
 			inset: auto 0 0;
-			padding: 0.75rem 0;
+			padding-block-start: 0.75rem;
 			position: fixed;
 			z-index: 10; /* To be over sticky content of our core components */
 		}
