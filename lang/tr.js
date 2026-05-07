@@ -185,6 +185,7 @@ export default {
 	"components.selection.selected": "{count} öğe seçildi",
 	"components.selection.selected-plus": "{count}+ öğe seçildi",
 	"components.selection-controls.label": "Seçim için eylemler",
+	"components.skip-nav.skipToMainContent": "ana içeriğe atla",
 	"components.sort.label": "Sırala",
 	"components.sort.text": "Sırala: {selectedItemText}",
 	"components.switch.conditions": "Koşullar karşılanmalıdır",

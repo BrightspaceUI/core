@@ -185,6 +185,7 @@ export default {
 	"components.selection.selected": "{count} valda",
 	"components.selection.selected-plus": "Över {count} valda",
 	"components.selection-controls.label": "Åtgärder för val",
+	"components.skip-nav.skipToMainContent": "fortsätt till huvudinnehåll",
 	"components.sort.label": "Sortera",
 	"components.sort.text": "Sortera: {selectedItemText}",
 	"components.switch.conditions": "Villkoren måste uppfyllas",

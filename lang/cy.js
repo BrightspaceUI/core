@@ -185,6 +185,7 @@ export default {
 	"components.selection.selected": "{count} wedi’u dewis.",
 	"components.selection.selected-plus": "{count}+ wedi’u dewis",
 	"components.selection-controls.label": "Camau gweithredu ar gyfer detholiad",
+	"components.skip-nav.skipToMainContent": "neidio i’r prif gynnwys",
 	"components.sort.label": "Trefnu",
 	"components.sort.text": "Trefnu: {selectedItemText}",
 	"components.switch.conditions": "Rhaid bodloni’r amodau",

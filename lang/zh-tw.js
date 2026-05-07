@@ -177,6 +177,7 @@ export default {
 	"components.selection.selected": "已選取 {count} 個",
 	"components.selection.selected-plus": "已選取 {count}+ 個",
 	"components.selection-controls.label": "選擇的動作",
+	"components.skip-nav.skipToMainContent": "跳至主要內容",
 	"components.sort.label": "排序",
 	"components.sort.text": "排序：{selectedItemText}",
 	"components.switch.conditions": "必須符合條件",

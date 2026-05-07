@@ -185,6 +185,7 @@ export default {
 	"components.selection.selected": "{count} kua tīpakohia",
 	"components.selection.selected-plus": "{count}+ kua tīpakohia",
 	"components.selection-controls.label": "Ngā mahinga mō te tīpakonga",
+	"components.skip-nav.skipToMainContent": "whakarereke ki te ihirangi matua",
 	"components.sort.label": "Kōmaka",
 	"components.sort.text": "Kōmaka: {selectedItemText}",
 	"components.switch.conditions": "Me tutuki ngā here",
