@@ -1,10 +1,7 @@
 import { css, unsafeCSS } from 'lit';
-import { getFlag } from './flags.js';
 import { svgToCSS } from './svg-to-css.js';
 
-const prismLocation = getFlag('shield-14201-update-prismjs-1-30', false)
-	? 'https://s.brightspace.com/lib/prismjs/1.30.0'
-	: 'https://s.brightspace.com/lib/prismjs/1.28.0';
+const prismLocation = 'https://s.brightspace.com/lib/prismjs/1.30.0';
 //const prismLocation = '/node_modules/prismjs'; // for local debugging
 
 // If adding a language, check its Prism dependencies and modify languageDependencies below if necessary
@@ -359,7 +356,7 @@ const languagesLoaded = {
 	plain: Promise.resolve()
 };
 
-const loadLanguage = async(key, location) => {
+const loadLanguage = async key => {
 	if (languagesLoaded[key]) return languagesLoaded[key];
 
 	// Prism languages can extend other anguages and must be loaded in order
@@ -373,7 +370,7 @@ const loadLanguage = async(key, location) => {
 		const script = document.createElement('script');
 		script.async = 'async';
 		script.onload = resolve;
-		script.src = `${location}/components/prism-${key}.min.js`;
+		script.src = `${prismLocation}/components/prism-${key}.min.js`;
 		document.head.appendChild(script);
 	});
 
@@ -382,14 +379,14 @@ const loadLanguage = async(key, location) => {
 
 const pluginsLoaded = {};
 
-const loadPlugin = async(plugin, location) => {
+const loadPlugin = async plugin => {
 	if (pluginsLoaded[plugin]) return pluginsLoaded[plugin];
 
 	pluginsLoaded[plugin] = new Promise(resolve => {
 		const script = document.createElement('script');
 		script.async = 'async';
 		script.onload = resolve;
-		script.src = `${location}/plugins/${plugin}/prism-${plugin}.min.js`;
+		script.src = `${prismLocation}/plugins/${plugin}/prism-${plugin}.min.js`;
 		document.head.appendChild(script);
 	});
 
@@ -400,17 +397,17 @@ const languageAddons = {
 	css: [{ key: 'css-extras', type: 'lang' }, { key: 'inline-color', type: 'plugin' }]
 };
 
-const loadLanguageAddons = async(key, location) => {
+const loadLanguageAddons = async key => {
 	if (!languageAddons[key]) return;
 	return Promise.all(languageAddons[key].map(addon => {
-		if (addon.type === 'lang') return loadLanguage(addon.key, location);
+		if (addon.type === 'lang') return loadLanguage(addon.key);
 		else return loadPlugin(addon.key, location);
 	}));
 };
 
 let prismLoaded;
 
-const loadPrism = (location) => {
+const loadPrism = () => {
 	if (prismLoaded) return prismLoaded;
 
 	// Set Prism to manual mode before loading to make sure
@@ -424,7 +421,7 @@ const loadPrism = (location) => {
 			const script = document.createElement('script');
 			script.async = 'async';
 			script.onload = resolve;
-			script.src = `${location}/prism.js`;
+			script.src = `${prismLocation}/prism.js`;
 			document.head.appendChild(script);
 		}),
 		new Promise(resolve => {
@@ -445,7 +442,7 @@ const getCodeElement = elem => {
 	return elem.querySelector('code');
 };
 
-export async function formatCodeElement(elem, forceVersionBump) {
+export async function formatCodeElement(elem) {
 	const code = getCodeElement(elem);
 
 	if (code.className.indexOf('language-') === -1) return;
@@ -453,14 +450,11 @@ export async function formatCodeElement(elem, forceVersionBump) {
 	const languageInfo = getLanguageInfo(code);
 	const lineNumbers = elem.classList.contains('line-numbers') || code.classList.contains('line-numbers');
 
-	// Remove when shield-14201-update-prismjs-1-30 is removed (remove pass-throughs and use prismLocation directly in loadLanguage, loadPrism, and loadPlugin)
-	const location = forceVersionBump ? 'https://s.brightspace.com/lib/prismjs/1.30.0' : prismLocation;
-
-	await loadPrism(location); // must be loaded before loading plugins or languages
+	await loadPrism(); // must be loaded before loading plugins or languages
 	await Promise.all([
-		loadLanguage(languageInfo.key, location),
-		loadLanguageAddons(languageInfo.key, location),
-		lineNumbers ? loadPlugin('line-numbers', location) : null
+		loadLanguage(languageInfo.key),
+		loadLanguageAddons(languageInfo.key),
+		lineNumbers ? loadPlugin('line-numbers') : null
 	]);
 
 	if (!elem.dataset.language && languageInfo.key !== 'plain') elem.dataset.language = languageInfo.desc;
