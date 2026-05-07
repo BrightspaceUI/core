@@ -177,6 +177,7 @@ export default {
 	"components.selection.selected": "{count} ที่เลือกแล้ว",
 	"components.selection.selected-plus": "{count}+ ที่เลือกแล้ว",
 	"components.selection-controls.label": "การดำเนินการสำหรับการเลือก",
+	"components.skip-nav.skipToMainContent": "ข้ามไปยังเนื้อหาหลัก",
 	"components.sort.label": "เรียงลำดับ",
 	"components.sort.text": "เรียงลำดับ: {selectedItemText}",
 	"components.switch.conditions": "ต้องตรงตามเงื่อนไข",

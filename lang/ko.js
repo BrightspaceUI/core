@@ -176,6 +176,7 @@ export default {
 	"components.selection.selected": "{count}개 선택됨",
 	"components.selection.selected-plus": "{count}+개 선택됨",
 	"components.selection-controls.label": "선택 작업",
+	"components.skip-nav.skipToMainContent": "기본 콘텐츠로 건너뛰기",
 	"components.sort.label": "정렬",
 	"components.sort.text": "정렬: {selectedItemText}",
 	"components.switch.conditions": "조건을 충족해야 합니다",

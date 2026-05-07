@@ -185,6 +185,7 @@ export default {
 	"components.selection.selected": "{count} ausgewählt",
 	"components.selection.selected-plus": "{count}+ ausgewählt",
 	"components.selection-controls.label": "Aktionen für Auswahl",
+	"components.skip-nav.skipToMainContent": "zum Hauptinhalt springen",
 	"components.sort.label": "Sortieren",
 	"components.sort.text": "Sortieren: {selectedItemText}",
 	"components.switch.conditions": "Bedingungen müssen erfüllt sein",

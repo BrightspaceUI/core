@@ -176,6 +176,7 @@ export default {
 	"components.selection.selected": "{count} 個を選択済み",
 	"components.selection.selected-plus": "{count} 個以上を選択済み",
 	"components.selection-controls.label": "選択のアクション",
+	"components.skip-nav.skipToMainContent": "メインコンテンツへスキップ",
 	"components.sort.label": "並べ替え",
 	"components.sort.text": "並べ替え: {selectedItemText}",
 	"components.switch.conditions": "条件が一致する必要があります",

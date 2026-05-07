@@ -189,6 +189,7 @@ export default {
 	"components.selection.selected": "تم تحديد {count}",
 	"components.selection.selected-plus": "تم تحديد {count}+‎",
 	"components.selection-controls.label": "إجراءات التحديد",
+	"components.skip-nav.skipToMainContent": "تجاوز إلى المحتوى الرئيسي",
 	"components.sort.label": "فرز",
 	"components.sort.text": "الفرز: {selectedItemText}",
 	"components.switch.conditions": "يجب استيفاء الشروط",

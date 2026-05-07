@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../skip-nav-custom.js';
+			import '../skip-nav-main.js';
+		</script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<d2l-demo-page page-title="d2l-skip-nav">
+			<h2>Custom</h2>
+			<d2l-demo-snippet>
+				<d2l-skip-nav-custom text="Skip to custom place"></d2l-skip-nav-custom>
+				<button id="custom-target">Skip to here</button>
+				<script>
+					document.querySelector('d2l-skip-nav-custom').addEventListener('click', () => {
+						document.querySelector('#custom-target').focus();
+					});
+				</script>
+			</d2l-demo-snippet>
+
+			<h2>Main</h2>
+			<d2l-demo-snippet>
+				<d2l-skip-nav-main></d2l-skip-nav-main>
+			</d2l-demo-snippet>
+		</d2l-demo-page>
+	</body>
+</html>
