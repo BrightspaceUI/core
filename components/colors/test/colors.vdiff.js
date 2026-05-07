@@ -86,10 +86,9 @@ describe('colors', () => {
 		</svg>`;
 
 		[
-			{ name: 'resolves-colors', allColorModes: true, svg: svgWithSemanticVariables },
-			{ name: 'does-not-resolves-colors', svg: svgWithNonSemanticVariables },
-			{ name: 'does-not-resolves-colors-dark', allColorModes: true, svg: svgWithNonSemanticVariables }
-		].forEach(({ name, allColorModes, svg }) => {
+			{ name: 'resolves-colors', svg: svgWithSemanticVariables },
+			{ name: 'does-not-resolves-colors', svg: svgWithNonSemanticVariables }
+		].forEach(({ name, svg }) => {
 
 			it(name, async() => {
 				const cssVariableName = `--d2l-test-icon${++cssVariableIndex}`;
@@ -99,7 +98,7 @@ describe('colors', () => {
 					<div style="background-image: var(${cssVariableName}); background-repeat: no-repeat; display: inline-block; height: 18px; width: 18px;"></div>
 				`);
 
-				await expect(elem).to.be.golden({ allColorModes });
+				await expect(elem).to.be.golden({ allColorModes: true });
 			});
 
 		});
