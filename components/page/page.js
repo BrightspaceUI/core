@@ -30,6 +30,7 @@ class Page extends LocalizeCoreElement(LitElement) {
 			--d2l-page-content-max-width: 1230px;
 			--d2l-page-footer-max-width: 1230px;
 			--d2l-page-margin-inline: auto;
+			--d2l-page-padding: 30px;
 		}
 
 		:host([width-type="wide"]) {
@@ -42,6 +43,17 @@ class Page extends LocalizeCoreElement(LitElement) {
 			--d2l-page-header-max-width: 100%;
 			--d2l-page-content-max-width: 100%;
 			--d2l-page-footer-max-width: 100%;
+		}
+
+		@media (max-width: 929px) {
+			:host {
+				--d2l-page-padding: 24px;
+			}
+		}
+		@media (max-width: 767px) {
+			:host {
+				--d2l-page-padding: 18px;
+			}
 		}
 
 		.header {
@@ -88,7 +100,7 @@ class Page extends LocalizeCoreElement(LitElement) {
 			background-color: white;
 			box-shadow: 0 -2px 4px rgba(32, 33, 34, 0.2); /* ferrite */
 			inset: auto 0 0;
-			padding: 0.75rem 0;
+			padding-block-start: 0.75rem;
 			position: fixed;
 			z-index: 10; /* To be over sticky content of our core components */
 		}

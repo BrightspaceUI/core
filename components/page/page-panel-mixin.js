@@ -7,6 +7,7 @@ export const pagePanelStyles = css`
 		align-items: center;
 		display: flex;
 		flex-direction: row;
+		gap: 6px;
 		justify-content: space-between;
 	}
 	.panel-header {
@@ -14,7 +15,7 @@ export const pagePanelStyles = css`
 		border-bottom: 1px solid var(--d2l-color-mica);
 		height: 70px;
 		overflow: hidden;
-		padding: 0 30px;
+		padding: 0 var(--d2l-page-padding, 30px);
 		position: sticky;
 		top: 0;
 		z-index: 14; /* To be over sticky content of our core components, but not over the header shadow */
@@ -27,7 +28,7 @@ export const pagePanelStyles = css`
 	}
 
 	.panel {
-		padding: 30px;
+		padding: var(--d2l-page-padding, 30px);
 	}
 `;
 
@@ -49,17 +50,13 @@ export const PagePanelMixin = superclass => class extends superclass {
 			'panel': true,
 			'header-sticky': this._hasHeader
 		};
-		const header = html`
+
+		return html`
 			<div ?hidden="${!this._hasHeader}" class="panel-header">
 				<div class="header-start"><slot name="header-start" @slotchange="${this.#handleSlotVisibilityChange}"></slot></div>
 				<div class="header-end"><slot name="header-end" @slotchange="${this.#handleSlotVisibilityChange}"></slot></div>
-			</div>`;
-
-		return html`
-			<div>
-				${header}
-				<div class="${classMap(panelClasses)}">${content}</div>
 			</div>
+			<div class="${classMap(panelClasses)}">${content}</div>
 		`;
 	}
 

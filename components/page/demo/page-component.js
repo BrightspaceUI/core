@@ -24,6 +24,7 @@ import '../../switch/switch-visibility.js';
 import '../../switch/switch.js';
 import '../../table/table-controls.js';
 import '../page.js';
+import '../page-footer.js';
 import '../page-main.js';
 import '../page-side-nav.js';
 import '../page-supporting.js';
@@ -160,9 +161,13 @@ class PageDemo extends LitElement {
 
 	#renderFooter() {
 		return this.hasFooter ? html`
-			<div slot="footer">
-				I'm in the <b>footer</b> slot of the <b>d2l-page</b> component!
-			</div>
+			<d2l-page-footer slot="footer">
+				<d2l-button primary>Save and Close</d2l-button>
+				<d2l-button>Save</d2l-button>
+				<d2l-switch-visibility></d2l-switch-visibility>
+				<d2l-button slot="end">Clear</d2l-button>
+				<d2l-button-icon slot="end" icon="d2l-tier1:chevron-right" text="Next"></d2l-button-icon>
+			</d2l-page-footer>
 		` : nothing;
 	}
 
