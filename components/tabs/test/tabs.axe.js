@@ -4,7 +4,7 @@ import '../tab-panel.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
 import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 
-const newTabsStructureFlag = 'GAUD-tabs-new-panel-structure';
+const newTabsStructureFlag = 'GAUD-8299-core-tabs-use-new-structure';
 
 describe('d2l-tabs', () => {
 
@@ -73,7 +73,7 @@ describe('d2l-tabs', () => {
 		});
 	});
 
-	describe('legacy structure (GAUD-tabs-new-panel-structure flag false)', () => {
+	describe('legacy structure (GAUD-8299-core-tabs-use-new-structure flag false)', () => {
 
 		before(() => mockFlag(newTabsStructureFlag, false));
 		after(() => resetFlag(newTabsStructureFlag));

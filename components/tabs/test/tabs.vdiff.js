@@ -7,7 +7,7 @@ import '../tab-panel.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, sendKeysElem } from '@brightspace-ui/testing';
 import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 
-const newTabsStructureFlag = 'GAUD-tabs-new-panel-structure';
+const newTabsStructureFlag = 'GAUD-8299-core-tabs-use-new-structure';
 
 const noPanelSelectedFixture = {
 	deprecated: html`
@@ -756,7 +756,7 @@ describe('d2l-tabs', () => {
 		});
 	});
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	describe('basic (flag off)', () => {
 
 		before(() => mockFlag(newTabsStructureFlag, false));
@@ -773,7 +773,7 @@ describe('d2l-tabs', () => {
 		});
 	});
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	describe('deprecated structure', () => {
 
 		before(() => mockFlag(newTabsStructureFlag, false));

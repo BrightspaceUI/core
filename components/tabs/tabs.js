@@ -232,7 +232,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._allowScrollPrevious = false;
 
 		/*
-		* Remove this._defaultSlotBehavior and related code with GAUD-tabs-new-panel-structure flag clean up
+		* Remove this._defaultSlotBehavior and related code with GAUD-8299-core-tabs-use-new-structure flag clean up
 		* NOTE: remove the TRUE case of _defaultSlotBehavior
 		*/
 		this._defaultSlotBehavior = !this.#newTabsPanelStructure;
@@ -273,7 +273,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		this.arrowKeysOnBeforeFocus = async(tab) => {
 			if (this._defaultSlotBehavior) {
-				// remove this section with GAUD-tabs-new-panel-structure flag clean up
+				// remove this section with GAUD-8299-core-tabs-use-new-structure flag clean up
 				const tabInfo = this._getTabInfo(tab.controlsPanel);
 				this._setFocusableDefaultSlotBehavior(tabInfo);
 
@@ -427,7 +427,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	#checkTabPanelMatchRequested;
-	#newTabsPanelStructure = getFlag('GAUD-tabs-new-panel-structure', false);
+	#newTabsPanelStructure = getFlag('GAUD-8299-core-tabs-use-new-structure', false);
 	#panels;
 	#updateAriaControlsRequested;
 
@@ -452,7 +452,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		});
 	}
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	_animateTabAdditionDefaultSlotBehavior(tabInfo) {
 		const tab = this.shadowRoot
 			&& this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
@@ -484,7 +484,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		});
 	}
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	_animateTabRemovalDefaultSlotBehavior(tabInfo) {
 		const tab = this.shadowRoot &&
 			this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
@@ -508,7 +508,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return this.#calculateScrollPositionLogic(tabs, selectedTabIndex, measures);
 	}
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	_calculateScrollPositionDefaultSlotBehavior(selectedTabInfo, measures) {
 		const selectedTabIndex = this._tabInfos.indexOf(selectedTabInfo);
 		return this.#calculateScrollPositionLogic(this._tabInfos, selectedTabIndex, measures);
@@ -528,7 +528,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		selectedTab.focus();
 	}
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	async _focusSelectedDefaultSlotBehavior() {
 		const selectedTab = this.shadowRoot && this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]');
 		if (!selectedTab) return;
@@ -565,7 +565,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return this.#panels.find(panel => panel.labelledBy === id);
 	}
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	_getPanelDefaultSlotBehavior(id) {
 		if (!this.shadowRoot) return;
 		// use simple selector for slot (Edge)
@@ -578,18 +578,18 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		}
 	}
 
-	// rremove with GAUD-tabs-new-panel-structure flag clean up
+	// rremove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	_getPanelsDefaultSlotBehavior(slot) {
 		if (!slot) return;
 		return slot.assignedElements({ flatten: true }).filter((node) => node.role === 'tabpanel');
 	}
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	_getTabInfo(id) {
 		return this._tabInfos.find((t) => t.id === id);
 	}
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	async _handleDefaultSlotChange(e) {
 		if (!this._defaultSlotBehavior) return;
 
@@ -678,7 +678,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._resetFocusables();
 	}
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	_handlePanelSelected(e) {
 		if (!this._defaultSlotBehavior) return;
 
@@ -699,7 +699,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this.#setAriaControls();
 	}
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	async _handlePanelTextChange(e) {
 		const tabInfo = this._getTabInfo(e.target.id);
 		// event could be from nested tabs
@@ -812,7 +812,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._updateScrollPosition(selectedTab);
 	}
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	async _handleTabSelectedDefaultSlotBehavior(e) {
 		e.stopPropagation();
 
@@ -949,7 +949,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		tab.tabIndex = 0;
 	}
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	_setFocusableDefaultSlotBehavior(tabInfo) {
 		const currentFocusable = this._tabInfos.find(ti => ti.activeFocusable);
 		if (currentFocusable) currentFocusable.activeFocusable = false;
@@ -1032,7 +1032,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return this.#updateScrollPositionLogic(measures, newTranslationValue);
 	}
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	_updateScrollPositionDefaultSlotBehavior(selectedTabInfo) {
 		const measures = this._getMeasures();
 		const newTranslationValue = this._calculateScrollPositionDefaultSlotBehavior(selectedTabInfo, measures);
@@ -1060,7 +1060,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_updateTabListVisibility(tabs) {
-		// remove with GAUD-tabs-new-panel-structure flag clean up
+		// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 		if (!this.#newTabsPanelStructure) {
 			if (this._state === 'shown' && tabs.length < 2) {
 				this.#hideTabsList();
@@ -1091,7 +1091,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return this.#updateTabsContainerWidthLogic();
 	}
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	_updateTabsContainerWidthDefaultSlotBehavior(selectedTabInfo) {
 		if (!this.maxToShow || this.maxToShow <= 0 || this.maxToShow >= this._tabInfos.length) return;
 		if (this._tabInfos.indexOf(selectedTabInfo) > this.maxToShow - 1) return;
@@ -1200,7 +1200,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		const panel = this._getPanel(e.target.id);
 		if (panel) {
 			if (this.#newTabsPanelStructure) panel._selected = false;
-			else panel.selected = false; // remove with GAUD-tabs-new-panel-structure flag clean up
+			else panel.selected = false; // remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 		}
 	}
 
@@ -1291,7 +1291,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		const selectedPanel = this._getPanel(selectedTab.id);
 		if (selectedPanel) {
 			if (this.#newTabsPanelStructure) selectedPanel._selected = true;
-			else selectedPanel.selected = true; // remove with GAUD-tabs-new-panel-structure flag clean up
+			else selectedPanel.selected = true; // remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 		}
 		this._tabs.forEach((tab) => {
 			if (tab.id !== selectedTab.id) {
@@ -1301,7 +1301,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 					// panel may not exist if it's being removed
 					if (panel) {
 						if (this.#newTabsPanelStructure) panel._selected = false;
-						else panel.selected = false; // remove with GAUD-tabs-new-panel-structure flag clean up
+						else panel.selected = false; // remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 					}
 				}
 				if (tab.tabIndex === 0) tab.tabIndex = -1;

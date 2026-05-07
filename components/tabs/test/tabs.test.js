@@ -6,7 +6,7 @@ import { clickElem, expect, fixture, html, nextFrame, oneEvent, runConstructor }
 import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 import { spy } from 'sinon';
 
-const newTabsStructureFlag = 'GAUD-tabs-new-panel-structure';
+const newTabsStructureFlag = 'GAUD-8299-core-tabs-use-new-structure';
 
 const normalFixture = html`
 <div>
@@ -332,8 +332,8 @@ describe('d2l-tabs', () => {
 
 	});
 
-	// remove with GAUD-tabs-new-panel-structure flag clean up
-	describe('legacy structure (GAUD-tabs-new-panel-structure flag false)', () => {
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
+	describe('legacy structure (GAUD-8299-core-tabs-use-new-structure flag false)', () => {
 
 		before(() => mockFlag(newTabsStructureFlag, false));
 		after(() => resetFlag(newTabsStructureFlag));
