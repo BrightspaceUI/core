@@ -86,8 +86,7 @@ describe('colors', () => {
 		</svg>`;
 
 		[
-			{ name: 'resolves-colors', svg: svgWithSemanticVariables },
-			{ name: 'resolves-colors-dark', allColorModes: true, svg: svgWithSemanticVariables },
+			{ name: 'resolves-colors', allColorModes: true, svg: svgWithSemanticVariables },
 			{ name: 'does-not-resolves-colors', svg: svgWithNonSemanticVariables },
 			{ name: 'does-not-resolves-colors-dark', allColorModes: true, svg: svgWithNonSemanticVariables }
 		].forEach(({ name, allColorModes, svg }) => {
