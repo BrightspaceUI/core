@@ -3,17 +3,10 @@ import '../tabs.js';
 import '../tab-panel.js';
 import '../demo/tabs-array.js';
 import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 import { spy } from 'sinon';
 
-const defaultFixture = html`
-	<div>
-		<d2l-tabs>
-			<d2l-tab-panel text="All">Tab content for All</d2l-tab-panel>
-			<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
-			<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
-		</d2l-tabs>
-	</div>
-`;
+const newTabsStructureFlag = 'GAUD-tabs-new-panel-structure';
 
 const normalFixture = html`
 <div>
@@ -29,6 +22,9 @@ const normalFixture = html`
 `;
 
 describe('d2l-tabs', () => {
+
+	before(() => mockFlag(newTabsStructureFlag, true));
+	after(() => resetFlag(newTabsStructureFlag));
 
 	describe('constructor', () => {
 
@@ -47,22 +43,6 @@ describe('d2l-tabs', () => {
 	});
 
 	describe('events', () => {
-
-		// remove after d2l-tab/d2l-tab-panel backport
-		it('dispatches d2l-tab-panel-selected', async() => {
-			const el = await fixture(defaultFixture);
-			const panel = el.querySelectorAll('d2l-tab-panel')[1];
-			setTimeout(() => panel.selected = true);
-			await oneEvent(panel, 'd2l-tab-panel-selected');
-		});
-
-		// remove after d2l-tab/d2l-tab-panel backport
-		it('dispatches d2l-tab-panel-text-changed', async() => {
-			const el = await fixture(defaultFixture);
-			const panel = el.querySelector('d2l-tab-panel');
-			setTimeout(() => panel.setAttribute('text', 'new text'));
-			await oneEvent(panel, 'd2l-tab-panel-text-changed');
-		});
 
 		it('dispatches d2l-tab-selected', async() => {
 			const el = await fixture(normalFixture);
@@ -303,5 +283,37 @@ describe('d2l-tabs', () => {
 			checkIfSelected(tabs[0], false, el.shadowRoot.querySelectorAll('d2l-tab-panel')[0]);
 			checkIfSelected(tabs[2], true, el.shadowRoot.querySelectorAll('d2l-tab-panel')[2]);
 		});
+	});
+
+	// remove with GAUD-tabs-new-panel-structure flag clean up
+	describe('legacy structure (GAUD-tabs-new-panel-structure flag false)', () => {
+
+		before(() => mockFlag(newTabsStructureFlag, false));
+		after(() => resetFlag(newTabsStructureFlag));
+
+		const defaultFixture = html`
+			<div>
+				<d2l-tabs>
+					<d2l-tab-panel text="All">Tab content for All</d2l-tab-panel>
+					<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
+					<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
+				</d2l-tabs>
+			</div>
+		`;
+
+		it('dispatches d2l-tab-panel-selected', async() => {
+			const el = await fixture(defaultFixture);
+			const panel = el.querySelectorAll('d2l-tab-panel')[1];
+			setTimeout(() => panel.selected = true);
+			await oneEvent(panel, 'd2l-tab-panel-selected');
+		});
+
+		it('dispatches d2l-tab-panel-text-changed', async() => {
+			const el = await fixture(defaultFixture);
+			const panel = el.querySelector('d2l-tab-panel');
+			setTimeout(() => panel.setAttribute('text', 'new text'));
+			await oneEvent(panel, 'd2l-tab-panel-text-changed');
+		});
+
 	});
 });
