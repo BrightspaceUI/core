@@ -139,150 +139,161 @@ describe('d2l-tabs', () => {
 
 	});
 
-	describe('behavior', () => {
+	[true, false].forEach((flagEnabled) => {
 
-		function checkIfSelected(tab, isSelected, panel) {
-			expect(tab.selected).to.equal(isSelected);
-			expect(tab.tabIndex).to.equal(isSelected ? 0 : -1);
-			expect(tab.ariaSelected).to.equal(isSelected.toString());
+		describe(`behavior (flag ${flagEnabled ? 'enabled' : 'disabled'})`, () => {
 
-			if (panel) {
-				expect(panel.selected).to.equal(isSelected);
+			before(() => mockFlag(newTabsStructureFlag, flagEnabled));
+			after(() => resetFlag(newTabsStructureFlag));
+
+			function checkIfSelected(tab, isSelected, panel) {
+				expect(tab.selected).to.equal(isSelected);
+				expect(tab.tabIndex).to.equal(isSelected ? 0 : -1);
+				expect(tab.ariaSelected).to.equal(isSelected.toString());
+
+				if (panel) {
+					if (flagEnabled) {
+						expect(panel._selected).to.equal(isSelected);
+					} else {
+						expect(panel.selected).to.equal(isSelected);
+					}
+				}
 			}
-		}
 
-		it('should only have one panel selected at a time even if multiple have selected attribute', async() => {
-			const el = await fixture(html`
-				<div>
-					<d2l-tabs>
-						<d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
-						<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
-						<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
-						<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
-						<d2l-tab id="chemistry" text="Chemistry" slot="tabs" selected></d2l-tab>
-						<d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
-					</d2l-tabs>
-				</div>
-			`);
-			const tabs = el.querySelectorAll('d2l-tab');
-			checkIfSelected(tabs[0], true);
-			checkIfSelected(tabs[2], false);
+			it('should only have one panel selected at a time even if multiple have selected attribute', async() => {
+				const el = await fixture(html`
+					<div>
+						<d2l-tabs>
+							<d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
+							<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
+							<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
+							<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
+							<d2l-tab id="chemistry" text="Chemistry" slot="tabs" selected></d2l-tab>
+							<d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
+						</d2l-tabs>
+					</div>
+				`);
+				const tabs = el.querySelectorAll('d2l-tab');
+				checkIfSelected(tabs[0], true);
+				checkIfSelected(tabs[2], false);
+			});
+
+			it('should update selection properties on new selection', async() => {
+				const el = await fixture(html`
+					<div>
+						<d2l-tabs>
+							<d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
+							<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
+							<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
+							<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
+							<d2l-tab id="chemistry" text="Chemistry" slot="tabs"></d2l-tab>
+							<d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
+						</d2l-tabs>
+					</div>
+				`);
+				const tabs = el.querySelectorAll('d2l-tab');
+				await clickElem(tabs[2]);
+				checkIfSelected(tabs[0], false);
+				checkIfSelected(tabs[2], true);
+			});
+
+			it('should set selected tab to first tab if no tab is selected', async() => {
+				const el = await fixture(html`
+					<div>
+						<d2l-tabs>
+							<d2l-tab id="all" text="All" slot="tabs"></d2l-tab>
+							<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
+							<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
+							<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
+							<d2l-tab id="chemistry" text="Chemistry" slot="tabs"></d2l-tab>
+							<d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
+						</d2l-tabs>
+					</div>
+				`);
+				const tabs = el.querySelectorAll('d2l-tab');
+				checkIfSelected(tabs[0], true);
+			});
+
+			it('should set selected tab to second tab if no tab is selected and first tab is being removed', async() => {
+				const el = await fixture(html`
+					<div>
+						<d2l-tabs>
+							<d2l-tab id="all" text="All" slot="tabs" data-state="removing"></d2l-tab>
+							<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
+							<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
+							<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
+							<d2l-tab id="chemistry" text="Chemistry" slot="tabs"></d2l-tab>
+							<d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
+						</d2l-tabs>
+					</div>
+				`);
+				const tabs = el.querySelectorAll('d2l-tab');
+				checkIfSelected(tabs[0], false);
+				checkIfSelected(tabs[1], true);
+			});
+
+			it('should warn if number of tabs does not equal number of panels', async() => {
+				const consoleSpy = spy(console, 'warn');
+				await fixture(html`
+					<div>
+						<d2l-tabs>
+							<d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
+							<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
+							<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
+							<d2l-tab id="chemistry" text="Chemistry" slot="tabs"></d2l-tab>
+							<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
+						</d2l-tabs>
+					</div>
+				`);
+				expect(consoleSpy.called).to.be.true;
+				consoleSpy.restore();
+			});
+
+			it('should warn if tab does not have corresponding panel due to missing labelled-by', async() => {
+				const consoleSpy = spy(console, 'warn');
+				await fixture(html`
+					<div>
+						<d2l-tabs>
+							<d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
+							<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
+							<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
+							<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
+							<d2l-tab id="chemistry" text="Chemistry" slot="tabs"></d2l-tab>
+							<d2l-tab-panel slot="panels">Tab content for Chemistry</d2l-tab-panel>
+						</d2l-tabs>
+					</div>
+				`);
+				expect(consoleSpy.called).to.be.true;
+				consoleSpy.restore();
+			});
+
+			it('should warn if tab does not have corresponding panel due to missing id', async() => {
+				const consoleSpy = spy(console, 'warn');
+				await fixture(html`
+					<div>
+						<d2l-tabs>
+							<d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
+							<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
+							<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
+							<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
+							<d2l-tab text="Chemistry" slot="tabs"></d2l-tab>
+							<d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
+						</d2l-tabs>
+					</div>
+				`);
+				expect(consoleSpy.called).to.be.true;
+				consoleSpy.restore();
+			});
+
+			it('should only have one panel selected at a time when tabs selected in an array', async() => {
+				const el = await fixture(html`<d2l-tabs-array></d2l-tabs-array>`);
+				const tabs = el.shadowRoot.querySelectorAll('d2l-tab');
+				await clickElem(tabs[2]);
+				checkIfSelected(tabs[0], false, el.shadowRoot.querySelectorAll('d2l-tab-panel')[0]);
+				checkIfSelected(tabs[2], true, el.shadowRoot.querySelectorAll('d2l-tab-panel')[2]);
+			});
 		});
 
-		it('should update selection properties on new selection', async() => {
-			const el = await fixture(html`
-				<div>
-					<d2l-tabs>
-						<d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
-						<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
-						<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
-						<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
-						<d2l-tab id="chemistry" text="Chemistry" slot="tabs"></d2l-tab>
-						<d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
-					</d2l-tabs>
-				</div>
-			`);
-			const tabs = el.querySelectorAll('d2l-tab');
-			await clickElem(tabs[2]);
-			checkIfSelected(tabs[0], false);
-			checkIfSelected(tabs[2], true);
-		});
-
-		it('should set selected tab to first tab if no tab is selected', async() => {
-			const el = await fixture(html`
-				<div>
-					<d2l-tabs>
-						<d2l-tab id="all" text="All" slot="tabs"></d2l-tab>
-						<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
-						<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
-						<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
-						<d2l-tab id="chemistry" text="Chemistry" slot="tabs"></d2l-tab>
-						<d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
-					</d2l-tabs>
-				</div>
-			`);
-			const tabs = el.querySelectorAll('d2l-tab');
-			checkIfSelected(tabs[0], true);
-		});
-
-		it('should set selected tab to second tab if no tab is selected and first tab is being removed', async() => {
-			const el = await fixture(html`
-				<div>
-					<d2l-tabs>
-						<d2l-tab id="all" text="All" slot="tabs" data-state="removing"></d2l-tab>
-						<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
-						<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
-						<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
-						<d2l-tab id="chemistry" text="Chemistry" slot="tabs"></d2l-tab>
-						<d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
-					</d2l-tabs>
-				</div>
-			`);
-			const tabs = el.querySelectorAll('d2l-tab');
-			checkIfSelected(tabs[0], false);
-			checkIfSelected(tabs[1], true);
-		});
-
-		it('should warn if number of tabs does not equal number of panels', async() => {
-			const consoleSpy = spy(console, 'warn');
-			await fixture(html`
-				<div>
-					<d2l-tabs>
-						<d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
-						<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
-						<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
-						<d2l-tab id="chemistry" text="Chemistry" slot="tabs"></d2l-tab>
-						<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
-					</d2l-tabs>
-				</div>
-			`);
-			expect(consoleSpy.called).to.be.true;
-			consoleSpy.restore();
-		});
-
-		it('should warn if tab does not have corresponding panel due to missing labelled-by', async() => {
-			const consoleSpy = spy(console, 'warn');
-			await fixture(html`
-				<div>
-					<d2l-tabs>
-						<d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
-						<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
-						<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
-						<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
-						<d2l-tab id="chemistry" text="Chemistry" slot="tabs"></d2l-tab>
-						<d2l-tab-panel slot="panels">Tab content for Chemistry</d2l-tab-panel>
-					</d2l-tabs>
-				</div>
-			`);
-			expect(consoleSpy.called).to.be.true;
-			consoleSpy.restore();
-		});
-
-		it('should warn if tab does not have corresponding panel due to missing id', async() => {
-			const consoleSpy = spy(console, 'warn');
-			await fixture(html`
-				<div>
-					<d2l-tabs>
-						<d2l-tab id="all" text="All" slot="tabs" selected></d2l-tab>
-						<d2l-tab-panel labelled-by="all" slot="panels">Tab content for All</d2l-tab-panel>
-						<d2l-tab id="biology" text="Biology" slot="tabs"></d2l-tab>
-						<d2l-tab-panel labelled-by="biology" slot="panels">Tab content for Biology</d2l-tab-panel>
-						<d2l-tab text="Chemistry" slot="tabs"></d2l-tab>
-						<d2l-tab-panel labelled-by="chemistry" slot="panels">Tab content for Chemistry</d2l-tab-panel>
-					</d2l-tabs>
-				</div>
-			`);
-			expect(consoleSpy.called).to.be.true;
-			consoleSpy.restore();
-		});
-
-		it('should only have one panel selected at a time when tabs selected in an array', async() => {
-			const el = await fixture(html`<d2l-tabs-array></d2l-tabs-array>`);
-			const tabs = el.shadowRoot.querySelectorAll('d2l-tab');
-			await clickElem(tabs[2]);
-			checkIfSelected(tabs[0], false, el.shadowRoot.querySelectorAll('d2l-tab-panel')[0]);
-			checkIfSelected(tabs[2], true, el.shadowRoot.querySelectorAll('d2l-tab-panel')[2]);
-		});
 	});
 
 	// remove with GAUD-tabs-new-panel-structure flag clean up

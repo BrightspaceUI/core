@@ -2,8 +2,6 @@ import { css } from 'lit';
 import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 
-const newTabsStructure = getFlag('GAUD-tabs-new-panel-structure', false);
-
 export const TabPanelMixin = superclass => class extends superclass {
 
 	static get properties() {
@@ -24,18 +22,18 @@ export const TabPanelMixin = superclass => class extends superclass {
 			// eslint-disable-next-line lit/no-native-attributes
 			role: { type: String, reflect: true },
 			_selected: { type: Boolean, attribute: '_selected', reflect: true },
-			...(!newTabsStructure ? {
-				/**
-				 * DEPRECATED: Use to select the tab. Do NOT set if using the d2l-tab/d2l-tab-panel implementation.
-				 * @type {boolean}
-				 */
-				selected: { type: Boolean, reflect: true },
-				/**
-				 * DEPRECATED: The text used for the tab, as well as labelling the panel. Required if not using d2l-tab/d2l-tab-panel implementation.
-				 * @type {string}
-				 */
-				text: { type: String }
-			} : {})
+			/**
+			 * DEPRECATED: Use to select the tab. Do NOT set if using the d2l-tab/d2l-tab-panel implementation.
+			 * Remove with GAUD-tabs-new-panel-structure flag clean up.
+			 * @type {boolean}
+			 */
+			selected: { type: Boolean, reflect: true },
+			/**
+			 * DEPRECATED: The text used for the tab, as well as labelling the panel. Required if not using d2l-tab/d2l-tab-panel implementation.
+			 * Remove with GAUD-tabs-new-panel-structure flag clean up.
+			 * @type {string}
+			 */
+			text: { type: String }
 		};
 	}
 
@@ -65,7 +63,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 		/** @ignore */
 		this.role = 'tabpanel';
 		this._selected = false;
-		if (!newTabsStructure) this.selected = false; // clean up with GAUD-tabs-new-panel-structure flag clean up
+		if (!this.#useTabsNewStructure) this.selected = false; // clean up with GAUD-tabs-new-panel-structure flag clean up
 	}
 
 	connectedCallback() {
@@ -82,7 +80,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 			}
 
 			// clean up below with GAUD-tabs-new-panel-structure flag clean up
-			if (newTabsStructure) return;
+			if (this.#useTabsNewStructure) return;
 
 			if (prop === 'selected') {
 				if (this.selected) {
@@ -102,5 +100,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 			}
 		});
 	}
+
+	#useTabsNewStructure = getFlag('GAUD-tabs-new-panel-structure', false);
 
 };

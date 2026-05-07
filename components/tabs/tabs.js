@@ -235,7 +235,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		* Remove this._defaultSlotBehavior and related code with GAUD-tabs-new-panel-structure flag clean up
 		* NOTE: remove the TRUE case of _defaultSlotBehavior
 		*/
-		this._defaultSlotBehavior = !getFlag('GAUD-tabs-new-panel-structure', false);
+		this._defaultSlotBehavior = !this.#newTabsPanelStructure;
 
 		this._loadingCompleteResolve = undefined;
 		this._loadingCompletePromise = new Promise(resolve => this._loadingCompleteResolve = resolve);
@@ -377,7 +377,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 							aria-label="${ifDefined(this.text)}"
 							role="tablist"
 							style="${styleMap(tabsContainerListStyles)}">
-							${this._defaultSlotBehavior ? repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
+							${!this.#newTabsPanelStructure ? repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
 								<d2l-tab-internal aria-selected="${tabInfo.selected ? 'true' : 'false'}"
 									.controlsPanel="${tabInfo.id}"
 									data-state="${tabInfo.state}"
@@ -400,9 +400,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				<div class="d2l-tabs-container-ext"><slot name="ext"></slot></div>
 			</div>
 			<div class="${classMap(panelContainerClasses)}"
-				@d2l-tab-panel-selected="${ifDefined(this._defaultSlotBehavior ? this._handlePanelSelected : undefined)}"
-				@d2l-tab-panel-text-changed="${ifDefined(this._defaultSlotBehavior ? this._handlePanelTextChange : undefined)}">
-				${this._defaultSlotBehavior ? html`<slot @slotchange="${this._handleDefaultSlotChange}"></slot>` : nothing}
+				@d2l-tab-panel-selected="${ifDefined(!this.#newTabsPanelStructure ? this._handlePanelSelected : undefined)}"
+				@d2l-tab-panel-text-changed="${ifDefined(!this.#newTabsPanelStructure ? this._handlePanelTextChange : undefined)}">
+				${!this.#newTabsPanelStructure ? html`<slot @slotchange="${this._handleDefaultSlotChange}"></slot>` : nothing}
 				<slot name="panels" @slotchange="${this._handlePanelsSlotChange}"></slot>
 			</div>
 		`;
@@ -427,6 +427,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	#checkTabPanelMatchRequested;
+	#newTabsPanelStructure = getFlag('GAUD-tabs-new-panel-structure', false);
 	#panels;
 	#updateAriaControlsRequested;
 
@@ -1058,14 +1059,26 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return this.updateComplete;
 	}
 
-	// what does this mean
-	// Legacy structure clean up: if possible base this on visible tabs going forward
-	_updateTabListVisibility(panels) {
-		if (this._state === 'shown' && panels.length < 2) {
+	_updateTabListVisibility(tabs) {
+		// remove with GAUD-tabs-new-panel-structure flag clean up
+		if (!this.#newTabsPanelStructure) {
+			if (this._state === 'shown' && tabs.length < 2) {
+				this.#hideTabsList();
+			} else if (this._state === 'hidden' && tabs.length > 1) {
+				this.#showTabsList();
+			} else if (this._state === 'shown' && tabs.length > 1) {
+				// check if there are hidden tabs and tab list container should actually be hidden
+				this.#handleTabHiddenChange();
+			}
+			return;
+		}
+
+		const visibleCount = tabs.filter(tab => !tab.hidden).length;
+		if (this._state === 'shown' && visibleCount < 2) {
 			this.#hideTabsList();
-		} else if (this._state === 'hidden' && panels.length > 1) {
+		} else if (this._state === 'hidden' && visibleCount > 1) {
 			this.#showTabsList();
-		} else if (this._state === 'shown' && panels.length > 1) {
+		} else if (this._state === 'shown' && visibleCount > 1) {
 			// check if there are hidden tabs and tab list container should actually be hidden
 			this.#handleTabHiddenChange();
 		}
@@ -1185,7 +1198,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	#handleTabDeselected(e) {
 		const panel = this._getPanel(e.target.id);
-		if (panel) panel._selected = false;
+		if (panel) {
+			if (this.#newTabsPanelStructure) panel._selected = false;
+			else panel.selected = false; // remove with GAUD-tabs-new-panel-structure flag clean up
+		}
 	}
 
 	#handleTabHiddenChange() {
@@ -1273,14 +1289,20 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		selectedTab.tabIndex = 0;
 
 		const selectedPanel = this._getPanel(selectedTab.id);
-		if (selectedPanel) selectedPanel._selected = true;
+		if (selectedPanel) {
+			if (this.#newTabsPanelStructure) selectedPanel._selected = true;
+			else selectedPanel.selected = true; // remove with GAUD-tabs-new-panel-structure flag clean up
+		}
 		this._tabs.forEach((tab) => {
 			if (tab.id !== selectedTab.id) {
 				if (tab.selected) {
 					tab.selected = false;
 					const panel = this._getPanel(tab.id);
 					// panel may not exist if it's being removed
-					if (panel) panel._selected = false;
+					if (panel) {
+						if (this.#newTabsPanelStructure) panel._selected = false;
+						else panel.selected = false; // remove with GAUD-tabs-new-panel-structure flag clean up
+					}
 				}
 				if (tab.tabIndex === 0) tab.tabIndex = -1;
 			}
