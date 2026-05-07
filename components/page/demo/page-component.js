@@ -19,6 +19,7 @@ import '../../list/list-controls.js';
 import '../../list/list-item.js';
 import '../../list/list-item-content.js';
 import '../../list/list-item-nav.js';
+import '../../more-less/more-less.js';
 import '../../selection/selection-action.js';
 import '../../switch/switch-visibility.js';
 import '../../switch/switch.js';
@@ -242,153 +243,7 @@ class PageDemo extends LitElement {
 				${this.#renderDemoMainControls()}
 				<p>I'm in the <b>default</b> slot of the <b>d2l-page</b> component!</p>
 
-				<h3>List with Sticky Controls (extend-separators)</h3>
-				<d2l-list extend-separators>
-					<d2l-list-controls slot="controls">
-						<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
-						<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
-					</d2l-list-controls>
-					<d2l-list-item key="item-1" label="Introduction to Economics" selectable>
-						<d2l-list-item-content>
-							<div>Introduction to Economics</div>
-							<div slot="secondary">Chapter 1 — Fundamentals</div>
-							<div slot="supporting-info">Due: May 15, 2026</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-					<d2l-list-item key="item-2" label="Supply and Demand" selectable>
-						<d2l-list-item-content>
-							<div>Supply and Demand</div>
-							<div slot="secondary">Chapter 2 — Market Forces</div>
-							<div slot="supporting-info">Due: May 22, 2026</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-					<d2l-list-item key="item-3" label="Market Equilibrium" selectable>
-						<d2l-list-item-content>
-							<div>Market Equilibrium</div>
-							<div slot="secondary">Chapter 3 — Price Discovery</div>
-							<div slot="supporting-info">Due: May 29, 2026</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-				</d2l-list>
-
-				<h3>List with Sticky Controls (no extend-separators)</h3>
-				<d2l-list>
-					<d2l-list-controls slot="controls">
-						<d2l-selection-action icon="tier1:plus-default" text="Add"></d2l-selection-action>
-						<d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
-					</d2l-list-controls>
-					<d2l-list-item key="assign-1" label="Assignment 1" selectable>
-						<d2l-list-item-content>
-							<div>Assignment 1: Research Proposal</div>
-							<div slot="secondary">Weight: 20%</div>
-							<div slot="supporting-info">Submissions: 14/30</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-					<d2l-list-item key="assign-2" label="Assignment 2" selectable>
-						<d2l-list-item-content>
-							<div>Assignment 2: Literature Review</div>
-							<div slot="secondary">Weight: 30%</div>
-							<div slot="supporting-info">Submissions: 8/30</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-					<d2l-list-item key="assign-3" label="Assignment 3" selectable>
-						<d2l-list-item-content>
-							<div>Assignment 3: Final Paper</div>
-							<div slot="secondary">Weight: 50%</div>
-							<div slot="supporting-info">Submissions: 0/30</div>
-						</d2l-list-item-content>
-					</d2l-list-item>
-				</d2l-list>
-
-				<h3>Table with Sticky Controls</h3>
-				<d2l-table-wrapper>
-					<d2l-table-controls slot="controls">
-						<d2l-selection-action icon="tier1:download" text="Export"></d2l-selection-action>
-						<d2l-selection-action icon="tier1:email" text="Email" requires-selection></d2l-selection-action>
-					</d2l-table-controls>
-					<table class="d2l-table">
-						<thead>
-							<tr>
-								<th>Course</th>
-								<th>Enrolled</th>
-								<th>Completion Rate</th>
-								<th>Avg Grade</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="row">Introduction to Biology</th>
-								<td>145</td>
-								<td>87%</td>
-								<td>B+</td>
-							</tr>
-							<tr>
-								<th scope="row">Advanced Chemistry</th>
-								<td>62</td>
-								<td>79%</td>
-								<td>B</td>
-							</tr>
-							<tr>
-								<th scope="row">World History</th>
-								<td>98</td>
-								<td>92%</td>
-								<td>A-</td>
-							</tr>
-						</tbody>
-					</table>
-				</d2l-table-wrapper>
-
-				<h3>Sticky Table</h3>
-				<d2l-table-wrapper sticky-headers sticky-headers-scroll-wrapper>
-					<table class="d2l-table">
-						<thead>
-							<tr>
-								<th>Student</th>
-								<th>Assignment 1</th>
-								<th>Assignment 2</th>
-								<th>Final Exam</th>
-								<th>Total</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th scope="row">Alice Johnson</th>
-								<td>92</td>
-								<td>88</td>
-								<td>95</td>
-								<td>91.7</td>
-							</tr>
-							<tr>
-								<th scope="row">Bob Smith</th>
-								<td>85</td>
-								<td>79</td>
-								<td>82</td>
-								<td>82.0</td>
-							</tr>
-							<tr>
-								<th scope="row">Carol Davis</th>
-								<td>78</td>
-								<td>91</td>
-								<td>87</td>
-								<td>85.3</td>
-							</tr>
-							<tr>
-								<th scope="row">David Lee</th>
-								<td>95</td>
-								<td>93</td>
-								<td>90</td>
-								<td>92.7</td>
-							</tr>
-							<tr>
-								<th scope="row">Emily Chen</th>
-								<td>88</td>
-								<td>84</td>
-								<td>91</td>
-								<td>87.7</td>
-							</tr>
-						</tbody>
-					</table>
-				</d2l-table-wrapper>
+				${this.#renderTableAndListStickyExamples()}
 				<div style="align-items: end; display: flex; height: 500px;">End of Content</div>
 				<d2l-dialog id="demo-dialog" title-text="New Assignment" ?opened="${this._demoDialogOpened}" @d2l-dialog-close="${this.#handleDialogClose}">
 					<div style="display: flex; flex-direction: column; gap: 0.75rem;">
@@ -566,9 +421,226 @@ class PageDemo extends LitElement {
 						</div>
 					</d2l-collapsible-panel>
 				</d2l-collapsible-panel-group>
+				<d2l-more-less>
+					${this.#renderTableAndListStickyExamples()}
+				</d2l-more-less>
 				<div style="align-items: end; display: flex; height: 150px;">End of Content</div>
 			</d2l-page-supporting>
 		` : nothing;
+	}
+
+	#renderTableAndListStickyExamples() {
+		return html`
+			<h3>List with Sticky Controls (extend-separators)</h3>
+			<d2l-list extend-separators>
+				<d2l-list-controls slot="controls">
+					<d2l-selection-action icon="tier1:bookmark-hollow" text="Bookmark" requires-selection></d2l-selection-action>
+					<d2l-selection-action icon="tier1:gear" text="Settings"></d2l-selection-action>
+				</d2l-list-controls>
+				<d2l-list-item key="item-1" label="Introduction to Economics" selectable>
+					<d2l-list-item-content>
+						<div>Introduction to Economics</div>
+						<div slot="secondary">Chapter 1 — Fundamentals</div>
+						<div slot="supporting-info">Due: May 15, 2026</div>
+					</d2l-list-item-content>
+				</d2l-list-item>
+				<d2l-list-item key="item-2" label="Supply and Demand" selectable>
+					<d2l-list-item-content>
+						<div>Supply and Demand</div>
+						<div slot="secondary">Chapter 2 — Market Forces</div>
+						<div slot="supporting-info">Due: May 22, 2026</div>
+					</d2l-list-item-content>
+				</d2l-list-item>
+				<d2l-list-item key="item-3" label="Market Equilibrium" selectable>
+					<d2l-list-item-content>
+						<div>Market Equilibrium</div>
+						<div slot="secondary">Chapter 3 — Price Discovery</div>
+						<div slot="supporting-info">Due: May 29, 2026</div>
+					</d2l-list-item-content>
+				</d2l-list-item>
+			</d2l-list>
+
+			<h3>List with Sticky Controls (no extend-separators)</h3>
+			<d2l-list>
+				<d2l-list-controls slot="controls">
+					<d2l-selection-action icon="tier1:plus-default" text="Add"></d2l-selection-action>
+					<d2l-selection-action icon="tier1:delete" text="Delete" requires-selection></d2l-selection-action>
+				</d2l-list-controls>
+				<d2l-list-item key="assign-1" label="Assignment 1" selectable>
+					<d2l-list-item-content>
+						<div>Assignment 1: Research Proposal</div>
+						<div slot="secondary">Weight: 20%</div>
+						<div slot="supporting-info">Submissions: 14/30</div>
+					</d2l-list-item-content>
+				</d2l-list-item>
+				<d2l-list-item key="assign-2" label="Assignment 2" selectable>
+					<d2l-list-item-content>
+						<div>Assignment 2: Literature Review</div>
+						<div slot="secondary">Weight: 30%</div>
+						<div slot="supporting-info">Submissions: 8/30</div>
+					</d2l-list-item-content>
+				</d2l-list-item>
+				<d2l-list-item key="assign-3" label="Assignment 3" selectable>
+					<d2l-list-item-content>
+						<div>Assignment 3: Final Paper</div>
+						<div slot="secondary">Weight: 50%</div>
+						<div slot="supporting-info">Submissions: 0/30</div>
+					</d2l-list-item-content>
+				</d2l-list-item>
+			</d2l-list>
+
+			<h3>Table with Sticky Controls</h3>
+			<d2l-table-wrapper>
+				<d2l-table-controls slot="controls">
+					<d2l-selection-action icon="tier1:download" text="Export"></d2l-selection-action>
+					<d2l-selection-action icon="tier1:email" text="Email" requires-selection></d2l-selection-action>
+				</d2l-table-controls>
+				<table class="d2l-table">
+					<thead>
+						<tr>
+							<th>Course</th>
+							<th>Enrolled</th>
+							<th>Completion Rate</th>
+							<th>Avg Grade</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row">Introduction to Biology</th>
+							<td>145</td>
+							<td>87%</td>
+							<td>B+</td>
+						</tr>
+						<tr>
+							<th scope="row">Advanced Chemistry</th>
+							<td>62</td>
+							<td>79%</td>
+							<td>B</td>
+						</tr>
+						<tr>
+							<th scope="row">World History</th>
+							<td>98</td>
+							<td>92%</td>
+							<td>A-</td>
+						</tr>
+					</tbody>
+				</table>
+			</d2l-table-wrapper>
+
+			<h3>Sticky Table</h3>
+			<d2l-table-wrapper sticky-headers sticky-headers-scroll-wrapper>
+				<table class="d2l-table">
+					<thead>
+						<tr>
+							<th>Student</th>
+							<th>Assignment 1</th>
+							<th>Assignment 2</th>
+							<th>Final Exam</th>
+							<th>Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row">Alice Johnson</th>
+							<td>92</td>
+							<td>88</td>
+							<td>95</td>
+							<td>91.7</td>
+						</tr>
+						<tr>
+							<th scope="row">Bob Smith</th>
+							<td>85</td>
+							<td>79</td>
+							<td>82</td>
+							<td>82.0</td>
+						</tr>
+						<tr>
+							<th scope="row">Carol Davis</th>
+							<td>78</td>
+							<td>91</td>
+							<td>87</td>
+							<td>85.3</td>
+						</tr>
+						<tr>
+							<th scope="row">David Lee</th>
+							<td>95</td>
+							<td>93</td>
+							<td>90</td>
+							<td>92.7</td>
+						</tr>
+						<tr>
+							<th scope="row">Emily Chen</th>
+							<td>88</td>
+							<td>84</td>
+							<td>91</td>
+							<td>87.7</td>
+						</tr>
+					</tbody>
+				</table>
+			</d2l-table-wrapper>
+
+			<h3>Sticky Table with Sticky Controls</h3>
+			<d2l-table-wrapper sticky-headers sticky-headers-scroll-wrapper>
+				<d2l-table-controls slot="controls">
+					<d2l-selection-action icon="tier1:download" text="Export"></d2l-selection-action>
+					<d2l-selection-action icon="tier1:print" text="Print" requires-selection></d2l-selection-action>
+				</d2l-table-controls>
+				<table class="d2l-table">
+					<thead>
+						<tr>
+							<th>Department</th>
+							<th>Q1 Revenue</th>
+							<th>Q2 Revenue</th>
+							<th>Q3 Revenue</th>
+							<th>Q4 Revenue</th>
+							<th>Annual Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row">Engineering</th>
+							<td>$1.2M</td>
+							<td>$1.4M</td>
+							<td>$1.3M</td>
+							<td>$1.5M</td>
+							<td>$5.4M</td>
+						</tr>
+						<tr>
+							<th scope="row">Marketing</th>
+							<td>$800K</td>
+							<td>$920K</td>
+							<td>$870K</td>
+							<td>$950K</td>
+							<td>$3.5M</td>
+						</tr>
+						<tr>
+							<th scope="row">Sales</th>
+							<td>$2.1M</td>
+							<td>$2.3M</td>
+							<td>$2.0M</td>
+							<td>$2.5M</td>
+							<td>$8.9M</td>
+						</tr>
+						<tr>
+							<th scope="row">Support</th>
+							<td>$450K</td>
+							<td>$480K</td>
+							<td>$460K</td>
+							<td>$500K</td>
+							<td>$1.9M</td>
+						</tr>
+						<tr>
+							<th scope="row">Research</th>
+							<td>$680K</td>
+							<td>$710K</td>
+							<td>$730K</td>
+							<td>$760K</td>
+							<td>$2.9M</td>
+						</tr>
+					</tbody>
+				</table>
+			</d2l-table-wrapper>
+		`;
 	}
 }
 

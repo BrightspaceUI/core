@@ -50,7 +50,7 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 			:host {
 				display: block;
 				position: sticky;
-				top: 0;
+				top: var(--d2l-page-sticky-top, 0);
 			}
 			:host([no-sticky]) {
 				position: static;

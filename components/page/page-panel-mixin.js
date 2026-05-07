@@ -27,7 +27,14 @@ export const pagePanelStyles = css`
 	}
 
 	.panel {
+		/* stylelint-disable-next-line length-zero-no-unit -- used in calc() by consumers */
+		--d2l-page-sticky-top: 0px;
 		padding: 30px;
+	}
+
+	.panel.header-sticky {
+		--d2l-page-panel-header-height: 70px;
+		--d2l-page-sticky-top: 70px;
 	}
 `;
 
