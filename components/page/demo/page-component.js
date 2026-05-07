@@ -1,8 +1,14 @@
+import '../../button/button-icon.js';
 import '../../button/button-subtle.js';
+import '../../button/button.js';
 import '../../collapsible-panel/collapsible-panel.js';
 import '../../collapsible-panel/collapsible-panel-group.js';
 import '../../collapsible-panel/collapsible-panel-summary-item.js';
 import '../../demo/demo-page-settings.js';
+import '../../dialog/dialog.js';
+import '../../filter/filter.js';
+import '../../filter/filter-dimension-set.js';
+import '../../filter/filter-dimension-set-value.js';
 import '../../icons/icon.js';
 import '../../inputs/input-checkbox.js';
 import '../../inputs/input-date.js';
@@ -14,8 +20,13 @@ import '../../list/list-item.js';
 import '../../list/list-item-content.js';
 import '../../list/list-item-nav.js';
 import '../../selection/selection-action.js';
+import '../../switch/switch-visibility.js';
+import '../../switch/switch.js';
 import '../../table/table-controls.js';
 import '../page.js';
+import '../page-main.js';
+import '../page-side-nav.js';
+import '../page-supporting.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { navStyles } from './temp-nav-styles.js';
 import { selectStyles } from '../../inputs/input-select-styles.js';
@@ -29,11 +40,15 @@ class PageDemo extends LitElement {
 	static properties = {
 		demoMode: { type: Boolean, attribute: 'demo-mode' },
 		hasFooter: { type: Boolean, attribute: 'has-footer' },
+		hasMainHeader: { type: Boolean, attribute: 'has-main-header' },
+		hasSideNavHeader: { type: Boolean, attribute: 'has-side-nav-header' },
 		hasSideNavPanel: { type: Boolean, attribute: 'has-side-nav-panel' },
+		hasSupportingHeader: { type: Boolean, attribute: 'has-supporting-header' },
 		hasSupportingPanel: { type: Boolean, attribute: 'has-supporting-panel' },
 		navType: { type: String, attribute: 'nav-type' },
 		widthType: { type: String, attribute: 'width-type' },
-		_allowThreePanels: { state: true }
+		_allowThreePanels: { state: true },
+		_demoDialogOpened: { state: true }
 	};
 
 	static styles = [navStyles, selectStyles, tableStyles, css`
@@ -42,6 +57,9 @@ class PageDemo extends LitElement {
 			flex-wrap: wrap;
 			gap: 0.75rem;
 		}
+		d2l-demo-page-settings {
+			margin-block: 0.6rem;
+		}
 	`];
 
 	constructor() {
@@ -49,11 +67,15 @@ class PageDemo extends LitElement {
 		this._allowThreePanels = false; // Temp for dev/testing
 		this.demoMode = false;
 		this.hasFooter = false;
+		this.hasMainHeader = false;
+		this.hasSideNavHeader = false;
 		this.hasSideNavPanel = false;
+		this.hasSupportingHeader = false;
 		this.hasSupportingPanel = false;
 		this.navType = 'full';
 		/** @type {'normal'|'wide'|'fullscreen'} */
 		this.widthType = 'normal';
+		this._demoDialogOpened = false;
 	}
 
 	render() {
@@ -73,6 +95,14 @@ class PageDemo extends LitElement {
 		if (!this._allowThreePanels && this.hasSideNavPanel && this.hasSupportingPanel) {
 			this.hasSupportingPanel = false;
 		}
+	}
+
+	#handleDialogClose() {
+		this._demoDialogOpened = false;
+	}
+
+	#handleDialogOpen() {
+		this._demoDialogOpened = true;
 	}
 
 	#handleNavTypeChange(e) {
@@ -107,10 +137,24 @@ class PageDemo extends LitElement {
 					<d2l-switch id="switch-nav-type" text="Immersive Nav" @change="${this.#handleNavTypeChange}"></d2l-switch>
 					<d2l-switch id="switch-side-nav-panel" text="Side Nav Panel" data-key="hasSideNavPanel" @change="${this.#handleVisibilityChange}" ?on="${this.hasSideNavPanel}"></d2l-switch>
 					<d2l-switch id="switch-supporting-panel" text="Supporting Panel" data-key="hasSupportingPanel" @change="${this.#handleVisibilityChange}" ?on="${this.hasSupportingPanel}"></d2l-switch>
+					<d2l-switch id="switch-main-header" text="Main Header" data-key="hasMainHeader" @change="${this.#handleVisibilityChange}" ?on="${this.hasMainHeader}"></d2l-switch>
 					<d2l-switch id="switch-footer" text="Footer" data-key="hasFooter" @change="${this.#handleVisibilityChange}"></d2l-switch>
 					<d2l-switch id="switch-allow-three-panels" text="Allow Three Panels" @change="${this.#handleAllowThreePanelsChange}"></d2l-switch>
 				</div>
 			</d2l-collapsible-panel>
+		` : nothing;
+	}
+
+	#renderDemoSideNavControls() {
+		return this.demoMode ? html`
+			<d2l-switch id="switch-side-nav-header" text="Side Nav Header" data-key="hasSideNavHeader" @change="${this.#handleVisibilityChange}" ?on="${this.hasSideNavHeader}"></d2l-switch>
+		` : nothing;
+	}
+
+	#renderDemoSupportingControls() {
+		return this.demoMode ? html`
+			<d2l-switch id="switch-supporting-header" text="Supporting Header" data-key="hasSupportingHeader" @change="${this.#handleVisibilityChange}" ?on="${this.hasSupportingHeader}"></d2l-switch>
+			<d2l-demo-page-settings panel-title="d2l-page"></d2l-demo-page-settings>
 		` : nothing;
 	}
 
@@ -181,7 +225,20 @@ class PageDemo extends LitElement {
 
 	#renderMainPanel() {
 		return html`
-			<div>
+			<d2l-page-main>
+				${this.hasMainHeader ? html`
+					<d2l-switch-visibility slot="header-start"></d2l-switch-visibility>
+					<d2l-filter slot="header-end">
+						<d2l-filter-dimension-set key="type" text="Activity Type" select-all>
+							<d2l-filter-dimension-set-value key="assignments" text="Assignments" selected></d2l-filter-dimension-set-value>
+							<d2l-filter-dimension-set-value key="quizzes" text="Quizzes" selected></d2l-filter-dimension-set-value>
+							<d2l-filter-dimension-set-value key="discussions" text="Discussions"></d2l-filter-dimension-set-value>
+							<d2l-filter-dimension-set-value key="content" text="Content Topics"></d2l-filter-dimension-set-value>
+						</d2l-filter-dimension-set>
+					</d2l-filter>
+					<d2l-button slot="header-end" primary @click="${this.#handleDialogOpen}">New Assignment</d2l-button>
+				` : nothing	}
+				
 				${this.#renderDemoMainControls()}
 				<p>I'm in the <b>default</b> slot of the <b>d2l-page</b> component!</p>
 
@@ -333,13 +390,29 @@ class PageDemo extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 				<div style="align-items: end; display: flex; height: 500px;">End of Content</div>
-			</div>
+				<d2l-dialog id="demo-dialog" title-text="New Assignment" ?opened="${this._demoDialogOpened}" @d2l-dialog-close="${this.#handleDialogClose}">
+					<div style="display: flex; flex-direction: column; gap: 0.75rem;">
+						<d2l-input-text label="Assignment Name" value=""></d2l-input-text>
+						<d2l-input-number label="Points" value="100"></d2l-input-number>
+						<d2l-input-date label="Due Date"></d2l-input-date>
+						<d2l-input-checkbox>Allow late submissions</d2l-input-checkbox>
+					</div>
+					<d2l-button slot="footer" primary data-dialog-action="create">Create</d2l-button>
+					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+				</d2l-dialog>
+			</d2l-page-main>
 		`;
 	}
 
 	#renderSideNavPanel() {
 		return this.hasSideNavPanel ? html`
-			<div slot="side-nav">
+			<d2l-page-side-nav slot="side-nav">
+				${this.hasSideNavHeader ? html`
+					<d2l-button-subtle slot="header-start" text="Add Topic" icon="tier1:plus-default"></d2l-button-subtle>
+					<d2l-button-icon slot="header-end" text="Collapse All" icon="tier1:arrow-collapse"></d2l-button-icon>
+					<d2l-button-icon slot="header-end" text="Reorder" icon="tier1:dragger"></d2l-button-icon>
+				` : nothing}
+				${this.#renderDemoSideNavControls()}
 				<p>I'm in the <b>side-nav</b> slot of the <b>d2l-page</b> component!</p>
 				<d2l-list grid drag-multiple style="width: 100%;">
 					<d2l-list-item-nav key="nav-1" label="Course Overview" color="#006fbf" draggable drag-handle-text="Course Overview" drop-nested action-href="javascript:void(0)" prevent-navigation>
@@ -433,14 +506,19 @@ class PageDemo extends LitElement {
 					</d2l-list-item-nav>
 				</d2l-list>
 				<div style="align-items: end; display: flex; height: 150px;">End of Content</div>
-			</div>
+			</d2l-page-side-nav>
 		` : nothing;
 	}
 
 	#renderSupportingPanel() {
 		return this.hasSupportingPanel ? html`
-			<div slot="supporting">
-				<d2l-demo-page-settings panel-title="d2l-page"></d2l-demo-page-settings>
+			<d2l-page-supporting slot="supporting">
+				${this.hasSupportingHeader ? html`
+					<d2l-button-subtle slot="header-start" text="Preview" icon="tier1:preview"></d2l-button-subtle>
+					<d2l-button-icon slot="header-end" text="Full Screen" icon="tier1:fullscreen"></d2l-button-icon>
+					<d2l-button-icon slot="header-end" text="Dismiss" icon="tier1:close-small"></d2l-button-icon>
+				` : nothing}
+				${this.#renderDemoSupportingControls()}
 				<p>I'm in the <b>supporting</b> slot of the <b>d2l-page</b> component!</p>
 				<d2l-collapsible-panel-group>
 					<d2l-collapsible-panel panel-title="Availability Dates and Conditions" expanded>
@@ -489,7 +567,7 @@ class PageDemo extends LitElement {
 					</d2l-collapsible-panel>
 				</d2l-collapsible-panel-group>
 				<div style="align-items: end; display: flex; height: 150px;">End of Content</div>
-			</div>
+			</d2l-page-supporting>
 		` : nothing;
 	}
 }

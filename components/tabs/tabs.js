@@ -853,15 +853,15 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		let selectedTab = null;
 		const newTabIds = {};
 		this._tabs?.forEach((tab) => {
-			if (this._initialized && !reduceMotion && this._tabs.length !== Object.keys(this._tabIds).length) {
+			const isNew = this._initialized && !this._tabIds[tab.id];
+			if (isNew && !reduceMotion && this._tabs.length !== Object.keys(this._tabIds).length) {
 				// if it's a new tab, update state to animate addition
-				if (!this._tabIds[tab.id]) {
-					this._tabIds[tab.id] = true;
-					tab.setAttribute('data-state', 'adding');
-				}
+				this._tabIds[tab.id] = true;
+				tab.setAttribute('data-state', 'adding');
 			}
-			if (!selectedTab && tab.selected && tab.getAttribute('data-state') !== 'removing') {
-				selectedTab = tab;
+			if (tab.selected && tab.getAttribute('data-state') !== 'removing') {
+				// Newly added tabs with selected=true take priority over existing selected tabs
+				if (!selectedTab || isNew) selectedTab = tab;
 			}
 			newTabIds[tab.id] = true;
 		});
