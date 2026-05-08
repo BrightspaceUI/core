@@ -12,12 +12,12 @@ class PageFooter extends LitElement {
 			display: flex;
 			flex-wrap: nowrap;
 			justify-content: space-between;
-			padding: 0 var(--d2l-page-padding, 30px) 0.75rem; /* TODO: Padding needs to be figured out */
+			padding: 0 var(--d2l-page-padding, 30px) 0.75rem;
 		}
 		.start, .end {
 			align-items: center;
 			display: flex;
-			gap: 0.6rem; /* TODO: Padding needs to be figured out */
+			gap: 0.6rem;
 		}
 	`;
 
