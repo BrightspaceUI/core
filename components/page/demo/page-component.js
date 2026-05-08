@@ -25,6 +25,7 @@ import '../../switch/switch.js';
 import '../../table/table-controls.js';
 import '../page.js';
 import '../page-footer.js';
+import '../page-header-button.js';
 import '../page-header-custom.js';
 import '../page-header-separator.js';
 import '../page-main.js';
@@ -180,13 +181,15 @@ class PageDemo extends LitElement {
 					<div class="full-nav-header-left">
 						<span class="full-nav-logo">Logo</span>
 						<d2l-page-header-separator></d2l-page-header-separator>
-						<button class="nav-icon-btn">📚 Courses</button>
+						Course
 					</div>
 					<div class="full-nav-header-spacer"></div>
 					<div class="full-nav-header-right">
-						<button class="nav-icon-btn" title="Alerts">🔔</button>
-						<button class="nav-icon-btn" title="Settings">⚙️</button>
-						<button class="nav-icon-btn" title="Profile">👤</button>
+						<d2l-page-header-button icon="tier3:classes" text="Select a course..." text-hidden></d2l-page-header-button>
+						<d2l-page-header-separator></d2l-page-header-separator>
+						<d2l-page-header-button icon="tier3:email" text="Message alerts" text-hidden></d2l-page-header-button>
+						<d2l-page-header-button icon="tier3:discussions" text="Subscription alerts" text-hidden></d2l-page-header-button>
+						<d2l-page-header-button icon="tier3:notification-bell" text="Update alerts" text-hidden></d2l-page-header-button>
 					</div>
 				</div>
 				<div class="full-nav-footer" slot="bottom">
@@ -216,8 +219,9 @@ class PageDemo extends LitElement {
 						Assignment 1 - Introduction to Economics
 					</div>
 					<div class="immersive-right">
-						<button class="nav-icon-btn">‹ Prev</button>
-						<button class="nav-icon-btn">Next ›</button>
+						<d2l-page-header-button icon="tier3:chevron-left-circle" text="Previous" text-hidden></d2l-page-header-button>
+						<d2l-page-header-separator></d2l-page-header-separator>
+						<d2l-page-header-button icon="tier3:chevron-right-circle" text="Next" text-hidden></d2l-page-header-button>
 					</div>
 				</div>
 			</d2l-page-header-custom>
