@@ -8,20 +8,6 @@ import { css } from 'lit';
 export const navStyles = css`
 
 	/* Shared Styles */
-	.nav-shadow {
-		background-color: rgba(0, 0, 0, 0.02);
-		bottom: -4px;
-		display: block;
-		height: 4px;
-		pointer-events: none;
-		position: absolute;
-		width: 100%;
-		z-index: 1;
-	}
-	.nav-band {
-		background: linear-gradient(180deg, var(--d2l-color-celestine) 1.5rem, #ffffff 0%);
-		min-height: 4px;
-	}
 	.nav-icon-btn {
 		align-items: center;
 		background: none;
@@ -44,27 +30,10 @@ export const navStyles = css`
 	}
 
 	/* Full Nav Styles */
-	.full-nav-wrapper {
-		background-color: white;
-		position: relative;
-	}
 	.full-nav-header {
 		align-items: center;
 		display: flex;
 		height: 90px;
-		margin-inline: var(--d2l-page-margin-inline);
-		max-width: var(--d2l-page-header-max-width);
-		padding: 0 30px;
-	}
-	@media (max-width: 767px) {
-		.full-nav-header {
-			height: 72px;
-		}
-	}
-	@media (max-width: 615px) {
-		.full-nav-header {
-			padding: 0 15px;
-		}
 	}
 	.full-nav-header-left {
 		align-items: center;
@@ -76,11 +45,6 @@ export const navStyles = css`
 	.full-nav-header-spacer {
 		flex: 1 1 auto;
 		min-width: 30px;
-	}
-	@media (max-width: 615px) {
-		.full-nav-header-spacer {
-			min-width: 15px;
-		}
 	}
 	.full-nav-header-right {
 		align-items: center;
@@ -103,30 +67,17 @@ export const navStyles = css`
 		margin: 0 6px;
 		width: 1px;
 	}
-	.full-nav-footer {
-		border-bottom: 1px solid rgba(124, 134, 149, 0.18);
-		border-top: 1px solid rgba(124, 134, 149, 0.18);
-	}
 	.full-nav-footer-inner {
 		align-items: center;
 		display: flex;
 		flex-wrap: wrap;
-		gap: 4px;
-		margin-inline: var(--d2l-page-margin-inline);
-		max-width: var(--d2l-page-header-max-width);
-		padding: 0 30px;
-	}
-	@media (max-width: 615px) {
-		.full-nav-footer-inner {
-			padding: 0 15px;
-		}
+		gap: 20px;
 	}
 	.full-nav-footer-link {
 		border-bottom: 4px solid transparent;
 		color: var(--d2l-color-ferrite);
 		display: inline-block;
-		font-size: 0.7rem;
-		padding: 8px 12px;
+		padding: 8px 0;
 		text-decoration: none;
 	}
 	.full-nav-footer-link:hover,
@@ -136,11 +87,6 @@ export const navStyles = css`
 	}
 
 	/* Immersive Nav Styles */
-	.immersive-wrapper {
-		background-color: white;
-		border-bottom: 1px solid var(--d2l-color-mica);
-		position: relative;
-	}
 	.immersive-container {
 		align-items: center;
 		display: flex;
@@ -149,22 +95,6 @@ export const navStyles = css`
 		margin-inline: var(--d2l-page-margin-inline);
 		max-width: var(--d2l-page-header-max-width);
 		overflow: hidden;
-		padding: 0 30px;
-	}
-	@media (max-width: 929px) {
-		.immersive-container {
-			padding: 0 24px;
-		}
-	}
-	@media (max-width: 767px) {
-		.immersive-container {
-			padding: 0 18px;
-		}
-	}
-	@media (max-width: 615px) {
-		.immersive-container {
-			height: 2.8rem;
-		}
 	}
 	.immersive-left {
 		align-items: center;
@@ -200,12 +130,6 @@ export const navStyles = css`
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		width: 100%;
-	}
-	@media (max-width: 615px) {
-		.immersive-middle {
-			margin: 0 18px;
-			padding: 0 18px;
-		}
 	}
 	.immersive-right {
 		align-items: center;
