@@ -61,12 +61,6 @@ export const navStyles = css`
 		font-weight: 700;
 		padding: 8px 14px;
 	}
-	.full-nav-separator {
-		background-color: var(--d2l-color-mica);
-		height: 26px;
-		margin: 0 6px;
-		width: 1px;
-	}
 	.full-nav-footer-inner {
 		align-items: center;
 		display: flex;
