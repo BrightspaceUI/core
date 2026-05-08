@@ -26,6 +26,7 @@ import '../../table/table-controls.js';
 import '../page.js';
 import '../page-footer.js';
 import '../page-header-custom.js';
+import '../page-header-separator.js';
 import '../page-main.js';
 import '../page-side-nav.js';
 import '../page-supporting.js';
@@ -178,7 +179,7 @@ class PageDemo extends LitElement {
 				<div class="full-nav-header" slot="top">
 					<div class="full-nav-header-left">
 						<span class="full-nav-logo">Logo</span>
-						<div class="full-nav-separator"></div>
+						<d2l-page-header-separator></d2l-page-header-separator>
 						<button class="nav-icon-btn">📚 Courses</button>
 					</div>
 					<div class="full-nav-header-spacer"></div>
