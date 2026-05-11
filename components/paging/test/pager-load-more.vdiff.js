@@ -30,6 +30,7 @@ function createPagerTemplate(opts) {
 }
 
 describe('pager-load-more', () => {
+
 	it('load-more', async() => {
 		const elem = await fixture(createPagerTemplate({ itemCount: 15, pageSize: 3 }), { viewport });
 		const pager = elem.querySelector('d2l-pager-load-more');
@@ -50,19 +51,20 @@ describe('pager-load-more', () => {
 	describe('states', () => {
 		[
 			{ name: 'no-more', template: createPagerTemplate({ hasMore: false, itemCount: 15, pageSize: 3 }) },
-			{ name: 'item-count', template: createPagerTemplate({ itemCount: 15, pageSize: 3 }) },
+			{ name: 'item-count', allColorModes: true, template: createPagerTemplate({ itemCount: 15, pageSize: 3 }) },
 			{ name: 'no-item-count', template: createPagerTemplate({ pageSize: 3 }) },
-			{ name: 'hover', template: createPagerTemplate({ itemCount: 15, pageSize: 3 }), action: hoverElem },
-			{ name: 'focus', template: createPagerTemplate({ itemCount: 15, pageSize: 3 }), action: focusElem },
+			{ name: 'hover', allColorModes: true, template: createPagerTemplate({ itemCount: 15, pageSize: 3 }), action: hoverElem },
+			{ name: 'focus', allColorModes: true, template: createPagerTemplate({ itemCount: 15, pageSize: 3 }), action: focusElem },
 			{ name: 'no-page-size', template: createPagerTemplate({ itemCount: 15 }) },
 			{ name: 'no-item-count-or-page-size', template: createPagerTemplate() }
-		].forEach(({ name, template, action }) => {
+		].forEach(({ name, template, action, allColorModes }) => {
 			it(name, async() => {
 				const elem = await fixture(template, { viewport });
 				const pager = elem.querySelector('d2l-pager-load-more');
 				if (action) await action(pager);
-				await expect(elem).to.be.golden();
+				await expect(elem).to.be.golden({ allColorModes });
 			});
 		});
 	});
+
 });

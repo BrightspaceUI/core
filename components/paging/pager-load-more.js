@@ -47,8 +47,8 @@ class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(Li
 			}
 			button {
 				align-items: center;
-				background-color: var(--d2l-color-regolith);
-				border: 1px solid var(--d2l-color-sylvite);
+				background-color: var(--d2l-theme-background-color-interactive-faint-default);
+				border: 1px solid var(--d2l-theme-border-color-subtle);
 				display: flex;
 				font-family: inherit;
 				gap: 0.5rem;
@@ -56,18 +56,17 @@ class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(Li
 				width: 100%;
 			}
 			button:hover {
-				background-color: var(--d2l-color-sylvite);
-				border-color: var(--d2l-color-gypsum);
+				background-color: var(--d2l-theme-background-color-interactive-faint-hover);
 			}
 			.action {
-				color: var(--d2l-color-celestine);
+				color: var(--d2l-theme-text-color-interactive-default);
 			}
 			.separator {
-				border-right: 1px solid var(--d2l-color-mica);
+				border-right: 1px solid var(--d2l-theme-border-color-standard);
 				height: 0.8rem;
 			}
 			.info {
-				color: var(--d2l-color-galena);
+				color: var(--d2l-theme-text-color-static-faint);
 				font-weight: 400;
 			}
 		`];
