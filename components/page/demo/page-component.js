@@ -27,6 +27,7 @@ import '../page.js';
 import '../page-footer.js';
 import '../page-header-button.js';
 import '../page-header-custom.js';
+import '../page-header-link.js';
 import '../page-header-separator.js';
 import '../page-main.js';
 import '../page-side-nav.js';
@@ -209,12 +210,7 @@ class PageDemo extends LitElement {
 		return html`
 			<d2l-page-header-custom id="immersive-nav" slot="header">
 				<div class="immersive-container" slot="top">
-					<div class="immersive-left">
-						<a class="immersive-back-link" href="javascript:void(0)">
-							<span class="immersive-back-icon">‹</span>
-							Back to Course
-						</a>
-					</div>
+					<d2l-page-header-link href="javascript:void(0)" icon="tier1:chevron-left" text="Back to Course"></d2l-page-header-link>
 					<div class="immersive-middle">
 						Assignment 1 - Introduction to Economics
 					</div>
