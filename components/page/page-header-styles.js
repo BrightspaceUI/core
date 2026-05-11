@@ -8,7 +8,7 @@ export const highlightBorderStyles = css`
 		border-bottom-right-radius: 4px;
 		display: block;
 		height: 4px;
-		left: -7px;
+		inset-inline: -7px;
 		position: absolute;
 		top: 0;
 		width: calc(100% + 14px);
