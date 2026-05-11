@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+		</script>
+	</head>
+	<body unresolved>
+		<d2l-demo-page page-title="d2l-dialog">
+
+			<h2>Fullscreen Demo (iframe)</h2>
+			<p> After opening the dialog, click here and then start tabbing.</p>
+
+			<d2l-demo-snippet full-width>
+				<template>
+					<iframe style="border: none; display: block; height: 400px; width: 100%;"></iframe>
+				</template>
+				<script type="module">
+					import { getFlag } from '../../../helpers/flags.js';
+					document.querySelector('iframe').src = './iframes/outer-frame.html?demo-flag-GAUD-9398-make-backdrop-inert=' + getFlag('GAUD-9398-make-backdrop-inert');
+				</script>
+			</d2l-demo-snippet>
+
+
+		</d2l-demo-page>
+	</body>
+</html>
