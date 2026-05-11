@@ -70,28 +70,6 @@ export const navStyles = css`
 		max-width: var(--d2l-page-header-max-width);
 		overflow: hidden;
 	}
-	.immersive-left {
-		align-items: center;
-		color: var(--d2l-color-tungsten);
-		display: flex;
-		flex: 0 0 auto;
-		font-size: 0.8rem;
-		letter-spacing: 0.2px;
-	}
-	.immersive-back-link {
-		align-items: center;
-		color: var(--d2l-color-tungsten);
-		display: inline-flex;
-		gap: 4px;
-		text-decoration: none;
-	}
-	.immersive-back-link:hover,
-	.immersive-back-link:focus-visible {
-		color: var(--d2l-color-celestine);
-	}
-	.immersive-back-icon {
-		font-size: 1rem;
-	}
 	.immersive-middle {
 		border-inline-end: 1px solid var(--d2l-color-gypsum);
 		border-inline-start: 1px solid var(--d2l-color-gypsum);
