@@ -10,6 +10,7 @@ const keyCodes = {
 	SPACE: 32
 };
 
+// remove file with GAUD-8299-core-tabs-use-new-structure flag clean up
 class Tab extends SkeletonMixin(LitElement) {
 
 	static get properties() {

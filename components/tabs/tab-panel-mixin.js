@@ -1,4 +1,5 @@
 import { css } from 'lit';
+import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 
 export const TabPanelMixin = superclass => class extends superclass {
@@ -22,14 +23,17 @@ export const TabPanelMixin = superclass => class extends superclass {
 			role: { type: String, reflect: true },
 			/**
 			 * DEPRECATED: Use to select the tab. Do NOT set if using the d2l-tab/d2l-tab-panel implementation.
+			 * Remove with GAUD-8299-core-tabs-use-new-structure flag clean up.
 			 * @type {boolean}
 			 */
 			selected: { type: Boolean, reflect: true },
 			/**
 			 * DEPRECATED: The text used for the tab, as well as labelling the panel. Required if not using d2l-tab/d2l-tab-panel implementation.
+			 * Remove with GAUD-8299-core-tabs-use-new-structure flag clean up.
 			 * @type {string}
 			 */
-			text: { type: String }
+			text: { type: String },
+			_selected: { type: Boolean, attribute: '_selected', reflect: true }
 		};
 	}
 
@@ -43,7 +47,11 @@ export const TabPanelMixin = superclass => class extends superclass {
 			:host([no-padding]) {
 				margin: 0;
 			}
+			/* clean up with GAUD-8299-core-tabs-use-new-structure flag clean up */
 			:host([selected]) {
+				display: block;
+			}
+			:host([_selected]) {
 				display: block;
 			}
 		`;
@@ -54,7 +62,8 @@ export const TabPanelMixin = superclass => class extends superclass {
 		this.noPadding = false;
 		/** @ignore */
 		this.role = 'tabpanel';
-		this.selected = false;
+		this._selected = false;
+		if (!this.#useTabsNewStructure) this.selected = false; // clean up with GAUD-8299-core-tabs-use-new-structure flag clean up
 	}
 
 	connectedCallback() {
@@ -68,7 +77,12 @@ export const TabPanelMixin = superclass => class extends superclass {
 		changedProperties.forEach((oldVal, prop) => {
 			if (prop === 'labelledBy') {
 				this.setAttribute('aria-labelledby', this.labelledBy);
-			} else if (prop === 'selected') {
+			}
+
+			// clean up below with GAUD-8299-core-tabs-use-new-structure flag clean up
+			if (this.#useTabsNewStructure) return;
+
+			if (prop === 'selected') {
 				if (this.selected) {
 					requestAnimationFrame(() => {
 						/** DEPRECATED: Dispatched when a tab is selected */
@@ -86,5 +100,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 			}
 		});
 	}
+
+	#useTabsNewStructure = getFlag('GAUD-8299-core-tabs-use-new-structure', false);
 
 };
