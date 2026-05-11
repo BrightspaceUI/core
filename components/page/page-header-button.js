@@ -49,11 +49,6 @@ class PageHeaderButton extends FocusMixin(LitElement) {
 			 * @type {Number}
 			 */
 			tooltipOffset: { attribute: 'tooltip-offset', type: Number },
-			/**
-			 * Position of the tooltip
-			 * @type {'top'|'bottom'|'left'|'right'}
-			 */
-			tooltipPosition: { attribute: 'tooltip-position', type: String }
 		};
 	}
 
@@ -105,7 +100,7 @@ class PageHeaderButton extends FocusMixin(LitElement) {
 				ariaLabel: this.text,
 				id: this.#buttonId,
 				text: nothing,
-				tooltip: html`<d2l-tooltip close-on-click for="${this.#buttonId}" for-type="label" position="${this.tooltipPosition}" offset="${ifDefined(this.tooltipOffset)}" class="vdiff-target">${this.text}</d2l-tooltip>`
+				tooltip: html`<d2l-tooltip close-on-click for="${this.#buttonId}" for-type="label" offset="${ifDefined(this.tooltipOffset)}" class="vdiff-target">${this.text}</d2l-tooltip>`
 			};
 		}
 		return {
