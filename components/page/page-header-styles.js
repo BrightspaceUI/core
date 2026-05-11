@@ -11,7 +11,6 @@ export const highlightBorderStyles = css`
 		inset-inline: -7px;
 		position: absolute;
 		top: 0;
-		width: calc(100% + 14px);
 	}
 	*:focus > .d2l-labs-navigation-highlight-border,
 	*:hover > .d2l-labs-navigation-highlight-border,
