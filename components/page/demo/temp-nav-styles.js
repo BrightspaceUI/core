@@ -7,28 +7,6 @@ import { css } from 'lit';
 
 export const navStyles = css`
 
-	/* Shared Styles */
-	.nav-icon-btn {
-		align-items: center;
-		background: none;
-		border: none;
-		border-radius: 4px;
-		color: var(--d2l-color-ferrite);
-		cursor: pointer;
-		display: inline-flex;
-		font-size: 0.8rem;
-		gap: 4px;
-		justify-content: center;
-		min-height: 42px;
-		min-width: 42px;
-		padding: 6px;
-	}
-	.nav-icon-btn:hover,
-	.nav-icon-btn:focus-visible {
-		background-color: var(--d2l-color-gypsum);
-		color: var(--d2l-color-celestine);
-	}
-
 	/* Full Nav Styles */
 	.full-nav-header {
 		align-items: center;
@@ -39,7 +17,7 @@ export const navStyles = css`
 		align-items: center;
 		display: flex;
 		flex: 0 1 auto;
-		gap: 12px;
+		gap: 5px;
 		height: 100%;
 	}
 	.full-nav-header-spacer {
@@ -50,8 +28,10 @@ export const navStyles = css`
 		align-items: center;
 		display: flex;
 		flex: 0 0 auto;
-		gap: 6px;
 		height: 100%;
+	}
+	.full-nav-header-right d2l-page-header-button {
+		margin-inline: 15px;
 	}
 	.full-nav-logo {
 		background-color: var(--d2l-color-celestine);
@@ -129,9 +109,6 @@ export const navStyles = css`
 		align-items: center;
 		display: flex;
 		flex: 0 0 auto;
-		gap: 8px;
-	}
-	.immersive-right .nav-icon-btn {
-		font-size: 0.7rem;
+		height: 100%;
 	}
 `;
