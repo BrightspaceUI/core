@@ -5,8 +5,6 @@ import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
-import { querySelectorComposed } from '../../helpers/dom.js';
-import { query } from 'lit/decorators.js';
 
 const keyCodes = {
 	TAB: 9
@@ -109,6 +107,32 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				reflect: true,
 				type: String
 			},
+			/**
+			 * The text displayed on the dirty state overlay when the 'dirty' dataState is set.
+			 * @type {string}
+			 */
+			dirtyText: {
+				reflect: true,
+				attribute: 'dirty-text',
+				required: {
+					dependentProps: ['dataState'],
+					validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
+				},
+				type: String
+			},
+			/**
+			 * The text displayed on the button dirty state overlay when the 'dirty' dataState is set.
+			 * @type {string}
+			 */
+			dirtyButtonText: {
+				reflect: true,
+				attribute: 'dirty-button-text',
+				required: {
+					dependentProps: ['dataState'],
+					validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
+				},
+				type: String
+			},
 			selectionWhenInteracted: { type: Boolean, attribute: 'selection-when-interacted', reflect: true },
 			_breakpoint: { type: Number, reflect: true },
 			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' }
@@ -192,6 +216,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		this._slimColor = false;
 		this._width = 0;
 
+		this.dirtyText = null;
+		this.dirtyButtonText = null;
+
 		this._listChildrenUpdatedSubscribers = new SubscriberRegistryController(this, 'list-child-status', {
 			onSubscribe: this._updateActiveSubscriber.bind(this),
 			updateSubscribers: this._updateActiveSubscribers.bind(this)
@@ -265,7 +292,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			<div role="${role}" aria-label="${ifDefined(ariaLabel)}" class="d2l-list-content">
 				<div style="position:relative">
 					<slot id="list-slot" @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
-					<d2l-backdrop-loading for="list-slot" dataState='${this.dataState}'></d2l-backdrop-loading>
+					<d2l-backdrop-loading @d2l-backdrop-dirty-overlay-action=${this._handleDirtyButton} for="list-slot" .dataState='${this.dataState}' dirty-text="${this.dirtyText}" dirty-button-text="${this.dirtyButtonText}"></d2l-backdrop-loading>
 				</div>
 			</div>
 			${this._renderPagerContainer()}
@@ -398,6 +425,11 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	}
 
 	_getLazyLoadItemsFoo() {
+	}
+
+	_handleDirtyButton() {
+		/** Dispatched when the action button on the dirty overlay is clicked */
+		this.dispatchEvent(new CustomEvent('d2l-list-dirty-button-clicked'));
 	}
 
 	_handleKeyDown(e) {
