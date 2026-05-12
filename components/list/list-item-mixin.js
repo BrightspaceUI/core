@@ -474,6 +474,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				transform: translateY(-10px);
 				transition: opacity 200ms ease-out, transform 0ms ease-out 300ms;
 			}
+
 			:host([layout="tile"][_selection-when-interacted]) [slot="control"]:hover,
 			:host([layout="tile"][_selection-when-interacted][_focusing]) [slot="control"],
 			:host([layout="tile"][_selection-when-interacted][_force-show-selection]) [slot="control"],
@@ -482,6 +483,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				opacity: 1;
 				transform: none;
 				transition: opacity 200ms ease-out, transform 200ms ease-out;
+			}
+
+			:host([layout="tile"][draggable][tile-header]) [slot="control"] {
+				margin: 0.25rem 0;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
@@ -980,6 +985,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				indentation="${ifDefined(this.indentation)}"
 				?grid-active="${this.role === 'row'}"
 				?selectable="${this.selectable}"
+				?is-draggable="${this.draggable}"
 				layout="${this.layout}"
 				?no-primary-action="${this.noPrimaryAction}">
 				${this._showAddButton && this.first ? html`
@@ -1043,10 +1049,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			</d2l-list-item-generic-layout>
 		`;
 
+		const isDraggableTile = this.draggable && this.layout === 'tile';
+
 		return html`
-			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
+			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker ?verticle="${isDraggableTile}"></d2l-list-item-placement-marker>`)}
 			${this.draggable ? html`<div class="d2l-list-item-drag-image">${innerView}</div>` : innerView}
-			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
+			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker ?verticle="${isDraggableTile}"></d2l-list-item-placement-marker>`)}
 			${this._displayKeyboardTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this.localizeHTML('components.list.keyboard')}</d2l-tooltip>` : ''}
 			${this.draggable ? this._renderDragMultipleImage() : nothing}
 		`;

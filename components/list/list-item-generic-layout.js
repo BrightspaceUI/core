@@ -70,6 +70,10 @@ class ListItemGenericLayout extends LitElement {
 			 * @ignore
 			 */
 			selectable: { type: Boolean, reflect: true },
+			/**
+			 * @ignore
+			 */
+			isDraggable: { type: Boolean, reflect: true, attribute: 'is-draggable' },
 
 		};
 	}
@@ -220,9 +224,9 @@ class ListItemGenericLayout extends LitElement {
 
 			:host([layout="tile"]) {
 				grid-template-columns:
-					[start control-start] minmax(0, min-content)
-					[control-end outside-control-start] minmax(0, min-content)
-					[outside-control-end actions-start] minmax(0, auto)
+					[start outside-control-start] minmax(0, 30px)
+					[outside-control-end control-start] minmax(0, min-content)
+					[control-end actions-start] minmax(0, auto)
 					[actions-end end];
 				grid-template-rows:
 					[start header-start] minmax(0, min-content)
@@ -231,12 +235,17 @@ class ListItemGenericLayout extends LitElement {
 				height: 100%;
 			}
 
-			:host([layout="tile"]:not([selectable])) {
+			:host([layout="tile"]:not([is-draggable])) {
 				grid-template-columns:
-					[start outside-control-start] minmax(0, min-content)
+					[start outside-control-start] 0
 					[outside-control-end control-start] minmax(0, min-content)
 					[control-end actions-start] minmax(0, auto)
 					[actions-end end];
+				grid-template-rows:
+					[start header-start] minmax(0, min-content)
+					[header-end content-start] auto
+					[content-end end];
+				height: 100%;
 			}
 
 			:host([layout="tile"]) ::slotted([slot="header"]) {
@@ -274,6 +283,7 @@ class ListItemGenericLayout extends LitElement {
 			:host([layout="tile"]) ::slotted([slot="outside-control"]) {
 				grid-column: outside-control-start / outside-control-end;
 				grid-row: start / start;
+				width: min-content;
 			}
 
 			:host([layout="tile"]) ::slotted([slot="outside-control-action"]) {
@@ -286,7 +296,6 @@ class ListItemGenericLayout extends LitElement {
 			:host([layout="tile"]) slot[name="control-container"],
 			:host([layout="tile"]) slot[name="before-content"],
 			:host([layout="tile"]) slot[name="expand-collapse"],
-			:host([layout="tile"]) slot[name="drop-target"],
 			:host([layout="tile"]) slot[name="nested"],
 			:host([layout="tile"]) slot[name="add"] {
 				display: none;
