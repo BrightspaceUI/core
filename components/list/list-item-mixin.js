@@ -733,6 +733,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			this._hasListItemContent = !!this.shadowRoot.querySelector('slot:not([name])').assignedElements({ flatten: true })
 				.find(elem => elem.tagName === 'D2L-LIST-ITEM-CONTENT');
 		}
+		if (this.draggable && this.tileHeader === false) {
+			this.tileHeader = true;
+		}
 	}
 
 	focus() {

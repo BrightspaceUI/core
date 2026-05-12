@@ -66,15 +66,6 @@ class ListItemGenericLayout extends LitElement {
 			 * @ignore
 			 */
 			layout: { type: String, reflect: true },
-			/**
-			 * @ignore
-			 */
-			selectable: { type: Boolean, reflect: true },
-			/**
-			 * @ignore
-			 */
-			isDraggable: { type: Boolean, reflect: true, attribute: 'is-draggable' },
-
 		};
 	}
 
