@@ -25,21 +25,15 @@ import '../../switch/switch.js';
 import '../../table/table-controls.js';
 import '../page.js';
 import '../page-footer.js';
-import '../page-header-button.js';
-import '../page-header-custom.js';
-import '../page-header-separator.js';
 import '../page-main.js';
 import '../page-side-nav.js';
 import '../page-supporting.js';
 import './page-header-full.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { navStyles } from './temp-nav-styles.js';
+import { pageHeaderImmersiveDemo } from '../test/page-header-immersive-fixtures.js';
 import { selectStyles } from '../../inputs/input-select-styles.js';
 import { tableStyles } from '../../table/table-wrapper.js';
 
-/**
- * Component for d2l-page demos and tests
- */
 class PageDemo extends LitElement {
 
 	static properties = {
@@ -56,7 +50,7 @@ class PageDemo extends LitElement {
 		_demoDialogOpened: { state: true }
 	};
 
-	static styles = [navStyles, selectStyles, tableStyles, css`
+	static styles = [selectStyles, tableStyles, css`
 		.demo-controls {
 			display: flex;
 			flex-wrap: wrap;
@@ -86,7 +80,7 @@ class PageDemo extends LitElement {
 	render() {
 		return html`
 			<d2l-page width-type="${this.widthType}">
-				${this.navType === 'full' ? this.#renderHeaderFull() : this.#renderHeaderImmersive()}
+				${this.navType === 'full' ? html`<d2l-page-header-full-demo slot="header"></d2l-page-header-full-demo>` : pageHeaderImmersiveDemo}
 				${this.#renderSideNavPanel()}
 				${this.#renderMainPanel()}
 				${this.#renderSupportingPanel()}
@@ -173,28 +167,6 @@ class PageDemo extends LitElement {
 				<d2l-button-icon slot="end" icon="d2l-tier1:chevron-right" text="Next"></d2l-button-icon>
 			</d2l-page-footer>
 		` : nothing;
-	}
-
-	#renderHeaderFull() {
-		return html`<d2l-page-header-full-demo slot="header"></d2l-page-header-full-demo>`;
-	}
-
-	#renderHeaderImmersive() {
-		return html`
-			<d2l-page-header-custom id="immersive-nav" slot="header">
-				<div class="immersive-container" slot="top">
-					<a href="javascript:void(0);">&lt; Back to Course</a>
-					<div class="immersive-middle">
-						Assignment 1 - Introduction to Economics
-					</div>
-					<div class="immersive-right">
-						<d2l-page-header-button icon="tier3:chevron-left-circle" text="Previous" text-hidden></d2l-page-header-button>
-						<d2l-page-header-separator></d2l-page-header-separator>
-						<d2l-page-header-button icon="tier3:chevron-right-circle" text="Next" text-hidden></d2l-page-header-button>
-					</div>
-				</div>
-			</d2l-page-header-custom>
-		`;
 	}
 
 	#renderMainPanel() {

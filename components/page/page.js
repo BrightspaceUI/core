@@ -3,6 +3,7 @@ import '../button/floating-buttons.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { ProviderMixin } from '../../mixins/provider/provider-mixin.js';
 
 /**
  * Component for laying out a page, with header, optional footer and optional navigation or supporting panels
@@ -12,7 +13,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
  * @slot supporting - The supporting content of the page (expecting d2l-page-supporting)
  * @slot footer - The footer content of the page (expecting d2l-page-footer)
  */
-class Page extends LocalizeCoreElement(LitElement) {
+class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	static properties = {
 		/**
@@ -127,6 +128,9 @@ class Page extends LocalizeCoreElement(LitElement) {
 				}
 			}
 		});
+		this.provideInstance('d2l-page-header-options', (options) => {
+			this._headerIsSticky = options.sticky;
+		});
 	}
 
 	disconnectedCallback() {
@@ -162,12 +166,6 @@ class Page extends LocalizeCoreElement(LitElement) {
 
 	#resizeObserver;
 
-	#handleHeaderSlotChange(e) {
-		const nodes = e.target.assignedNodes();
-		//this._headerIsSticky = nodes.some(node => node.tagName.toLowerCase() === 'd2l-page-header-immersive');
-		this._headerIsSticky = nodes.some(node => node.id === 'immersive-nav'); // temp until the official component exists
-	}
-
 	#handleSlotVisibilityChange(e) {
 		const key = e.target.name;
 		const nodes = e.target.assignedNodes();
@@ -200,7 +198,7 @@ class Page extends LocalizeCoreElement(LitElement) {
 		return html`
 			<header class="header">
 				<nav aria-label="${this.localize('components.page.header-nav-label')}">
-					<slot name="header" @slotchange="${this.#handleHeaderSlotChange}"></slot>
+					<slot name="header"></slot>
 				</nav>
 			</header>
 		`;
