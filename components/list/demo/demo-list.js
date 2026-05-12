@@ -160,7 +160,11 @@ class DemoList extends LitElement {
 				?grid="${this.grid}"
 				item-count="${this.items.length}"
 				?extend-separators="${this.extendSeparators}"
+				.dataState="${this.dataState}"
 				?add-button="${this.addButton}"
+				dirty-text="Your filters have changed"
+				dirty-button-text="Apply"
+				@d2l-list-dirty-button-clicked=${this._handleReload}
 				add-button-text="${ifDefined(addButtonText)}">
 				<d2l-list-controls slot="controls" select-all-pages-allowed ?disabled=${this._selectAllDisabled}>
 					<d2l-input-radio-group style="align-content:center;min-width:260px;" label="Date State" horizontal label-hidden name="dataState" @change=${this._handleDataStateChange}>
@@ -265,6 +269,11 @@ class DemoList extends LitElement {
 			e.detail.complete();
 		}, 2000);
 
+	}
+
+	_handleReload() {
+		this.dataState = 'loading';
+		setTimeout(() => { this.dataState = 'clean'; }, 2000);
 	}
 
 }
