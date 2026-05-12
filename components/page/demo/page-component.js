@@ -32,6 +32,7 @@ import '../page-header-separator.js';
 import '../page-main.js';
 import '../page-side-nav.js';
 import '../page-supporting.js';
+import './page-header-full.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { navStyles } from './temp-nav-styles.js';
 import { selectStyles } from '../../inputs/input-select-styles.js';
@@ -86,7 +87,7 @@ class PageDemo extends LitElement {
 	render() {
 		return html`
 			<d2l-page width-type="${this.widthType}">
-				${this.navType === 'full' ? this.#renderFullNav() : this.#renderImmersiveNav()}
+				${this.navType === 'full' ? this.#renderHeaderFull() : this.#renderHeaderImmersive()}
 				${this.#renderSideNavPanel()}
 				${this.#renderMainPanel()}
 				${this.#renderSupportingPanel()}
@@ -175,38 +176,11 @@ class PageDemo extends LitElement {
 		` : nothing;
 	}
 
-	#renderFullNav() {
-		return html`
-			<d2l-page-header-custom has-skip-nav slot="header">
-				<div class="full-nav-header" slot="top">
-					<div class="full-nav-header-left">
-						<span class="full-nav-logo">Logo</span>
-						<d2l-page-header-separator></d2l-page-header-separator>
-						Course
-					</div>
-					<div class="full-nav-header-spacer"></div>
-					<div class="full-nav-header-right">
-						<d2l-page-header-button icon="tier3:classes" text="Select a course..." text-hidden></d2l-page-header-button>
-						<d2l-page-header-separator></d2l-page-header-separator>
-						<d2l-page-header-button icon="tier3:email" text="Message alerts" text-hidden></d2l-page-header-button>
-						<d2l-page-header-button icon="tier3:discussions" text="Subscription alerts" text-hidden></d2l-page-header-button>
-						<d2l-page-header-button icon="tier3:notification-bell" text="Update alerts" text-hidden></d2l-page-header-button>
-					</div>
-				</div>
-				<div class="full-nav-footer" slot="bottom">
-					<div class="full-nav-footer-inner">
-						<a class="full-nav-footer-link" href="javascript:void(0)">Content</a>
-						<a class="full-nav-footer-link" href="javascript:void(0)">Assignments</a>
-						<a class="full-nav-footer-link" href="javascript:void(0)">Quizzes</a>
-						<a class="full-nav-footer-link" href="javascript:void(0)">Grades</a>
-						<a class="full-nav-footer-link" href="javascript:void(0)">Classlist</a>
-					</div>
-				</div>
-			</d2l-page-header-custom>
-		`;
+	#renderHeaderFull() {
+		return html`<d2l-page-header-full-demo slot="header"></d2l-page-header-full-demo>`;
 	}
 
-	#renderImmersiveNav() {
+	#renderHeaderImmersive() {
 		return html`
 			<d2l-page-header-custom id="immersive-nav" slot="header">
 				<div class="immersive-container" slot="top">

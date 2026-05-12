@@ -20,7 +20,7 @@ export const highlightBorderStyles = css`
 `;
 
 export const highlightButtonStyles = css`
-	button {
+	button.d2l-page-header-highlight-button {
 		align-items: center;
 		background: transparent;
 		border: none;
@@ -41,17 +41,17 @@ export const highlightButtonStyles = css`
 		white-space: nowrap;
 	}
 	/* Firefox includes a hidden border which messes up button dimensions */
-	button::-moz-focus-inner {
+	button.d2l-page-header-highlight-button::-moz-focus-inner {
 		border: 0;
 	}
-	button:not([disabled]):hover,
-	button:not([disabled]):focus,
-	button[active] {
+	button.d2l-page-header-highlight-button:not([disabled]):hover,
+	button.d2l-page-header-highlight-button:not([disabled]):focus,
+	button.d2l-page-header-highlight-button[active] {
 		--d2l-icon-fill-color: var(--d2l-color-celestine);
 		color: var(--d2l-color-celestine);
 		outline: none;
 	}
-	button[disabled] {
+	button.d2l-page-header-highlight-button[disabled] {
 		cursor: default;
 		opacity: 0.5;
 	}

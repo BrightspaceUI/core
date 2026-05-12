@@ -6,60 +6,6 @@
 import { css } from 'lit';
 
 export const navStyles = css`
-
-	/* Full Nav Styles */
-	.full-nav-header {
-		align-items: center;
-		display: flex;
-		height: 90px;
-	}
-	.full-nav-header-left {
-		align-items: center;
-		display: flex;
-		flex: 0 1 auto;
-		gap: 5px;
-		height: 100%;
-	}
-	.full-nav-header-spacer {
-		flex: 1 1 auto;
-		min-width: 30px;
-	}
-	.full-nav-header-right {
-		align-items: center;
-		display: flex;
-		flex: 0 0 auto;
-		height: 100%;
-	}
-	.full-nav-header-right d2l-page-header-button {
-		margin-inline: 15px;
-	}
-	.full-nav-logo {
-		background-color: var(--d2l-color-celestine);
-		border-radius: 4px;
-		color: white;
-		font-size: 0.8rem;
-		font-weight: 700;
-		padding: 8px 14px;
-	}
-	.full-nav-footer-inner {
-		align-items: center;
-		display: flex;
-		flex-wrap: wrap;
-		gap: 20px;
-	}
-	.full-nav-footer-link {
-		border-bottom: 4px solid transparent;
-		color: var(--d2l-color-ferrite);
-		display: inline-block;
-		padding: 8px 0;
-		text-decoration: none;
-	}
-	.full-nav-footer-link:hover,
-	.full-nav-footer-link:focus-visible {
-		border-bottom-color: var(--d2l-color-celestine);
-		color: var(--d2l-color-celestine);
-	}
-
 	/* Immersive Nav Styles */
 	.immersive-container {
 		align-items: center;
