@@ -4,13 +4,13 @@ import '../dropdown.js';
 import '../../tabs/tabs.js';
 import '../../tabs/tab.js';
 import '../../tabs/tab-panel.js';
-import { expect, fixture } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { html } from 'lit';
 
 const dropdownTabs = html`
 	<d2l-dropdown>
 		<button>Open it!</button>
-		<d2l-dropdown-tabs>
+		<d2l-dropdown-tabs class="vdiff-include">
 			<d2l-tabs text="Tabs">
 				<d2l-tab id="first" text="First" slot="tabs"></d2l-tab>
 				<d2l-tab-panel labelled-by="first" slot="panels">first content</d2l-tab-panel>
@@ -31,11 +31,19 @@ const dropdownTabs = html`
 
 describe('d2l-dropdown-tabs', () => {
 	describe('rendering', () => {
+		it('should open', async() => {
+			const el = await fixture(dropdownTabs);
+			el.toggleOpen();
+			await oneEvent(el, 'd2l-dropdown-open');
+			await expect(el).to.be.golden();
+		});
+
 		it('should resize for large content', async() => {
 			const el = await fixture(dropdownTabs);
-			el.querySelector('d2l-dropdown-tabs').open(el.querySelector('button'));
-			el.querySelector('d2l-tab#second').click();
-			await expect(document).to.be.golden();
+			el.toggleOpen();
+			await oneEvent(el, 'd2l-dropdown-open');
+			await clickElem(el.querySelector('d2l-tab#second'));
+			await expect(el).to.be.golden();
 		});
 	});
 });
