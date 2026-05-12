@@ -153,17 +153,26 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 
 	render() {
 		const forcedOffscreenSizelessStyles = OffSCREEN_SIZELESS ? {} : { height: '0px', width: '0px' };
-		const dirtyStateVisible = this._state !== 'hidden' && this.dataState === 'dirty';
+		const backdropVisible = this._state !== 'hidden';
 
 		return html`
-			${this._state === 'hidden' ? nothing :
+			${backdropVisible ?
 					html`<div id="visible">
 						<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#handleTransitionEnd}"></div>
 						<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
-					</div>`
+					</div>` : nothing
 			}
-			<div aria-live="polite" class="${classMap({ 'd2l-offscreen': !dirtyStateVisible })}" style="${styleMap(dirtyStateVisible ? {} : forcedOffscreenSizelessStyles)}">
-				${this.dataState === 'dirty' ? this.#renderDirtyOverlay() : this._ariaContent}
+			<div aria-live="polite" class="${classMap({ 'd2l-offscreen': !backdropVisible })}" style="${styleMap(backdropVisible ? {} : forcedOffscreenSizelessStyles)}">
+				${backdropVisible ?
+					html`<d2l-backdrop-dirty-overlay
+						style=${styleMap({ top: `${this._dirtyDialogTop}px` })}
+						description="${this.dirtyText}"
+						action="${this.dirtyButtonText}"
+						?inert=${this.dataState !== 'dirty'}
+					></d2l-backdrop-dirty-overlay>` : nothing };
+			</div>
+			<div aria-live="polite" class="${classMap({ 'd2l-offscreen': true })}" style="${styleMap(forcedOffscreenSizelessStyles)}">
+				${this._ariaContent}
 			</div>
 		`;
 	}
@@ -257,7 +266,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 	#fade() {
 		let hideImmediately = reduceMotion || this._state === 'showing';
 		if (this._state === 'shown') {
-			const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('.backdrop')).opacity;
+			const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay')).opacity;
 			hideImmediately ||= (currentOpacity === '0');
 		}
 
@@ -294,14 +303,6 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 		const containingBlock = this.#getBackdropTarget();
 
 		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
-	}
-
-	#renderDirtyOverlay() {
-		return html`<d2l-backdrop-dirty-overlay
-			style=${styleMap({ top: `${this._dirtyDialogTop}px` })}
-			description="${this.dirtyText}"
-			action="${this.dirtyButtonText}"
-		></d2l-backdrop-dirty-overlay>`;
 	}
 
 	#setLiveArea(content, { delay } = {}) {
