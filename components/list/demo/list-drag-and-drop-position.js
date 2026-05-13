@@ -1,7 +1,7 @@
 import '../list-item-content.js';
 import '../list-item.js';
 import '../list.js';
-import { html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 
@@ -16,9 +16,18 @@ class ListDemoDragAndDropPosition extends LitElement {
 			hrefs: { type: Boolean },
 			selectable: { type: Boolean },
 			tiles: { type: Boolean },
-			tileHeader: { type: Boolean, attribute: 'tile-header' }
+			tileHeader: { type: Boolean, attribute: 'tile-header' },
+			actions: { type: Boolean, attribute: 'actions' }
 		};
 	}
+
+	static styles = css`
+		.actions-containter {
+			align-items: center;
+			display: flex;
+			height: 100%;
+		}
+	`;
 
 	constructor() {
 		super();
@@ -91,6 +100,9 @@ class ListDemoDragAndDropPosition extends LitElement {
 							<div>${item.name}</div>
 							<div slot="secondary">${item.secondary}</div>
 						</d2l-list-item-content>
+						${ this.actions ? html`
+							<div class="actions-containter" slot="actions"><d2l-button-icon text="More" icon="tier1:gear"></d2l-button-icon></div>
+						` : nothing}
 					</d2l-list-item>
 				`)}
 			</d2l-list>

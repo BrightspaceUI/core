@@ -321,16 +321,16 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 			:host([layout="tile"]) .d2l-list-item-drag-bottom-marker,
 			:host([layout="tile"]) .d2l-list-item-drag-top-marker {
+				height: 100%;
 				pointer-events: none;
 				position: absolute;
-				height: 100%;
 				width: auto;
 				z-index: 1;
 			}
 
 			:host([layout="tile"]) .d2l-list-item-drag-bottom-marker {
-				right: calc(-0.9rem + 3px);
 				bottom: 0;
+				right: calc(-0.9rem + 3px);
 			}
 			:host([layout="tile"]) .d2l-list-item-drag-top-marker {
 				left: calc(-0.9rem + 3px);
@@ -349,8 +349,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			}
 			:host([layout="tile"]) .d2l-list-item-drag-drop-grid {
 				display: grid;
-				grid-template-rows: 100%;
 				grid-template-columns: 1rem 1fr 1fr 1rem;
+				grid-template-rows: 100%;
 			}
 			:host([_drop-location="7"]) {
 				z-index: 1; /* drop target border must render on top of next adjacent border */

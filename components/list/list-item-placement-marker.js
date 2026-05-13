@@ -23,8 +23,8 @@ class ListItemPlacementMarker extends LitElement {
 
 			:host([verticle]) .d2l-list-drag-marker-line {
 				height: 100%;
-				width: 12px;
 				margin: -1px 0;
+				width: 12px;
 			}
 
 			.d2l-list-drag-marker-line {
@@ -38,8 +38,8 @@ class ListItemPlacementMarker extends LitElement {
 
 			:host([verticle]) .d2l-list-drag-marker-linecap {
 				height: 4px;
+				margin-inline: 0 -2px;
 				width: 12px;
-				margin-inline: 0px -2px;
 			}
 
 			.d2l-list-drag-marker-linecap {
@@ -51,7 +51,7 @@ class ListItemPlacementMarker extends LitElement {
 			}
 
 			:host([verticle]) .d2l-list-drag-marker-circle {
-				margin-inline: 0px 0px;
+				margin-inline: 0 0;
 			}
 
 
