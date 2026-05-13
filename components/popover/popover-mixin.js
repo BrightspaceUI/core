@@ -137,6 +137,7 @@ export const PopoverMixin = superclass => class extends superclass {
 				border: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
 				border-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
 				box-shadow: var(--d2l-theme-shadow-floating-offset-x) var(--d2l-theme-shadow-floating-offset-y) var(--d2l-theme-shadow-floating-blur-radius) var(--d2l-theme-shadow-floating-spread-radius) var(--d2l-popover-shadow-color, var(--d2l-popover-default-shadow-color));
+				box-sizing: border-box;
 				display: flex;
 				max-width: 370px;
 				min-width: 70px;
@@ -1090,7 +1091,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		const widthStyle = {
 			maxWidth: this._maxWidth ? `${this._maxWidth}px` : undefined,
 			minWidth: this._minWidth ? `${this._minWidth}px` : undefined,
-			width: this._width ? `${this._width}px` : undefined
+			width: this._width ? `${this._width + 1}px` : undefined
 		};
 
 		const contentStyle = {
