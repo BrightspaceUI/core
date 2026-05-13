@@ -1,5 +1,25 @@
 import { css, unsafeCSS } from 'lit';
 import { _isValidCssSelector } from '../../helpers/internal/css.js';
+import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
+
+registerSemanticVariableForSvgImageUrl(
+	'--d2l-input-checkbox-check-image',
+	`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+		<path fill="var(--d2l-theme-icon-color-standard)" d="M8.4 16.6c.6.6 1.5.6 2.1 0l8-8c.6-.6.6-1.5 0-2.1-.6-.6-1.5-.6-2.1 0l-6.9 7-1.9-1.9c-.6-.6-1.5-.6-2.1 0-.6.6-.6 1.5 0 2.1l2.9 2.9z"/>\
+	</svg>`
+);
+
+registerSemanticVariableForSvgImageUrl(
+	'--d2l-input-checkbox-indeterminate-image',
+	`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+		<path fill="var(--d2l-theme-icon-color-standard)" d="M7.5,11h9c0.8,0,1.5,0.7,1.5,1.5l0,0c0,0.8-0.7,1.5-1.5,1.5h-9C6.7,14,6,13.3,6,12.5l0,0C6,11.7,6.7,11,7.5,11z"/>
+	</svg>`
+);
+
+export const cssSizes = {
+	inputBoxSize: 1.2,
+	checkboxMargin: 0.5,
+};
 
 /**
  * A private helper method that should not be used by general consumers
@@ -10,39 +30,90 @@ export const _generateInputCheckboxStyles = (selector) => {
 	const selectorCSS = unsafeCSS(selector);
 	return css`
 		${selectorCSS} {
+			--d2l-input-checkbox-background-image: none;
+			--d2l-input-checkbox-background-color: var(--d2l-theme-background-color-interactive-faint-default);
+			--d2l-input-checkbox-background-image-disabled:
+				linear-gradient(
+					var(--d2l-theme-background-color-interactive-faint-disabled),
+					var(--d2l-theme-background-color-interactive-faint-disabled)
+				),
+				var(--d2l-input-checkbox-background-image);
 			-webkit-appearance: none;
 			-moz-appearance: none;
 			appearance: none;
+			background-image: var(--d2l-input-checkbox-background-image);
 			background-position: center center;
 			background-repeat: no-repeat;
-			background-size: 1.2rem 1.2rem;
+			background-size: ${cssSizes.inputBoxSize}rem ${cssSizes.inputBoxSize}rem;
 			border-radius: 0.3rem;
 			border-style: solid;
 			box-sizing: border-box;
 			display: inline-block;
-			height: 1.2rem;
+			height: ${cssSizes.inputBoxSize}rem;
 			margin: 0;
 			padding: 0;
 			vertical-align: middle;
-			width: 1.2rem;
-		}
-		${selectorCSS},
-		${selectorCSS}:disabled {
-			background-color: #f9fbff; /* TODO: update this to the proper value */
-			border-color: #6e7477; /* TODO: update this to the proper value */
-			border-width: 1px;
+			width: ${cssSizes.inputBoxSize}rem;
 		}
 		${selectorCSS}:checked {
-			background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23494C4E%22%20d%3D%22M8.4%2016.6c.6.6%201.5.6%202.1%200l8-8c.6-.6.6-1.5%200-2.1-.6-.6-1.5-.6-2.1%200l-6.9%207-1.9-1.9c-.6-.6-1.5-.6-2.1%200-.6.6-.6%201.5%200%202.1l2.9%202.9z%22/%3E%3C/svg%3E%0A");
+			--d2l-input-checkbox-background-image: var(--d2l-input-checkbox-check-image);
+		}
+		${selectorCSS}:indeterminate {
+			--d2l-input-checkbox-background-image: var(--d2l-input-checkbox-indeterminate-image);
+		}
+		${selectorCSS},
+		${selectorCSS}:hover:disabled {
+			background-color: var(--d2l-input-checkbox-background-color);
+			border-color: var(--d2l-theme-border-color-emphasized);
+			border-width: 1px;
+		}
+		${selectorCSS}:hover:disabled {
+			border-color: var(--d2l-theme-border-color-disabled);
 		}
 		${selectorCSS}:hover,
-		${selectorCSS}:focus {
-			border-color: #006fbf; /* TODO: update this to the proper value */
+		${selectorCSS}:focus,
+		${selectorCSS}.d2l-input-checkbox-focus,
+		:host(.d2l-hovering) input[type="checkbox"]:not(:disabled).d2l-input-checkbox {
+			border-color: var(--d2l-input-checkbox-border-color-hover-focus, var(--d2l-theme-border-color-focus));
 			border-width: 2px;
 			outline: none;
 		}
-		${selectorCSS}:disabled {
-			opacity: 0.5;
+		${selectorCSS}:disabled,
+		${selectorCSS}:where([aria-disabled="true"]) {
+			background-image: var(--d2l-input-checkbox-background-image-disabled);
+			border-color: var(--d2l-theme-border-color-disabled);
+		}
+		@media (forced-colors: active) {
+			${selectorCSS}:checked,
+			${selectorCSS}:indeterminate {
+				background-image: none;
+				position: relative;
+			}
+			${selectorCSS}:checked::after,
+			${selectorCSS}:indeterminate::after {
+				background-color: FieldText;
+				content: "";
+				display: block;
+				height: ${cssSizes.inputBoxSize}rem;
+				left: 50%;
+				position: absolute;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				width: ${cssSizes.inputBoxSize}rem;
+			}
+
+			${selectorCSS}:disabled,
+			${selectorCSS}:where([aria-disabled="true"]) {
+				opacity: var(--d2l-theme-opacity-disabled-control);
+			}
+
+			${selectorCSS}:checked::after {
+				mask-image: var(--d2l-input-checkbox-check-image);
+			}
+
+			${selectorCSS}:indeterminate::after {
+				mask-image: var(--d2l-input-checkbox-indeterminate-image);
+			}
 		}
 	`;
 };
