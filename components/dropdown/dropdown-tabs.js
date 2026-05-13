@@ -23,7 +23,7 @@ class DropdownTabs extends DropdownPopoverMixin(LitElement) {
 
 		this.addEventListener('d2l-dropdown-open', this.#handleOpen);
 		this.addEventListener('d2l-menu-resize', this.#handleMenuResize);
-		this.addEventListener('d2l-tab-panel-selected', this.#handleTabSelected);
+		this.addEventListener('d2l-tab-selected', this.#handleTabSelected);
 	}
 
 	#initializingHeight;

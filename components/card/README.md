@@ -14,7 +14,7 @@ Used to surface pertinent information, cards make it easy for users to browse in
   import '@brightspace-ui/core/components/tooltip/tooltip.js';
 </script>
 
-<d2l-card align-center text="Biology" align-center style="width: 245px;">
+<d2l-card align-center text="Biology" style="width: 245px;">
   <img slot="header" alt="" style="display: block; width: 100%;" src="https://s.brightspace.com/course-images/images/7905e442-f009-46f6-8586-2c273a7c0158/banner-narrow-low-density-max-size.jpg">
   <div slot="content">
     <div>Biology</div>

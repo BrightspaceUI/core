@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "más",
 	"components.object-property-list.item-placeholder-text": "Elemento de marcador de posición",
 	"components.overflow-group.moreActions": "Más acciones",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} elemento}
@@ -183,6 +185,7 @@ export default {
 	"components.selection.selected": "{count} seleccionados",
 	"components.selection.selected-plus": "{count}+ seleccionados",
 	"components.selection-controls.label": "Acciones para la selección",
+	"components.skip-nav.skipToMainContent": "pasar al contenido principal",
 	"components.sort.label": "Ordenar",
 	"components.sort.text": "Ordenar: {selectedItemText}",
 	"components.switch.conditions": "Deben cumplirse las condiciones",

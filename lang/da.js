@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "flere",
 	"components.object-property-list.item-placeholder-text": "Pladsholder-element",
 	"components.overflow-group.moreActions": "Flere handlinger",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} element}
@@ -183,6 +185,7 @@ export default {
 	"components.selection.selected": "{count} valgt",
 	"components.selection.selected-plus": "{count}+ valgt",
 	"components.selection-controls.label": "Handlinger for valg",
+	"components.skip-nav.skipToMainContent": "spring videre til hovedindhold",
 	"components.sort.label": "Sortér",
 	"components.sort.text": "Sortér: {selectedItemText}",
 	"components.switch.conditions": "Betingelserne skal være opfyldt",

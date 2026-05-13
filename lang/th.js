@@ -148,6 +148,8 @@ export default {
 	"components.more-less.more": "เพิ่มเติม",
 	"components.object-property-list.item-placeholder-text": "รายการตัวแทน",
 	"components.overflow-group.moreActions": "การดำเนินการเพิ่มเติม",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} รายการ}
@@ -175,6 +177,7 @@ export default {
 	"components.selection.selected": "{count} ที่เลือกแล้ว",
 	"components.selection.selected-plus": "{count}+ ที่เลือกแล้ว",
 	"components.selection-controls.label": "การดำเนินการสำหรับการเลือก",
+	"components.skip-nav.skipToMainContent": "ข้ามไปยังเนื้อหาหลัก",
 	"components.sort.label": "เรียงลำดับ",
 	"components.sort.text": "เรียงลำดับ: {selectedItemText}",
 	"components.switch.conditions": "ต้องตรงตามเงื่อนไข",

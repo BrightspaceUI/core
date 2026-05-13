@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "mer",
 	"components.object-property-list.item-placeholder-text": "Platshållarobjekt",
 	"components.overflow-group.moreActions": "Fler åtgärder",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} objekt}
@@ -183,6 +185,7 @@ export default {
 	"components.selection.selected": "{count} valda",
 	"components.selection.selected-plus": "Över {count} valda",
 	"components.selection-controls.label": "Åtgärder för val",
+	"components.skip-nav.skipToMainContent": "fortsätt till huvudinnehåll",
 	"components.sort.label": "Sortera",
 	"components.sort.text": "Sortera: {selectedItemText}",
 	"components.switch.conditions": "Villkoren måste uppfyllas",

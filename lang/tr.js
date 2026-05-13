@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "daha fazla",
 	"components.object-property-list.item-placeholder-text": "Yer Tutucu Öğesi",
 	"components.overflow-group.moreActions": "Daha Fazla Eylem",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} öğe}
@@ -183,6 +185,7 @@ export default {
 	"components.selection.selected": "{count} öğe seçildi",
 	"components.selection.selected-plus": "{count}+ öğe seçildi",
 	"components.selection-controls.label": "Seçim için eylemler",
+	"components.skip-nav.skipToMainContent": "ana içeriğe atla",
 	"components.sort.label": "Sırala",
 	"components.sort.text": "Sırala: {selectedItemText}",
 	"components.switch.conditions": "Koşullar karşılanmalıdır",

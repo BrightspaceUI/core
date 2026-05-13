@@ -146,6 +146,8 @@ export default {
 	"components.more-less.more": "thêm",
 	"components.object-property-list.item-placeholder-text": "Mục giữ chỗ",
 	"components.overflow-group.moreActions": "Thêm các Tác vụ",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} mục}
@@ -172,6 +174,7 @@ export default {
 	"components.selection.selected": "{count} mục được chọn",
 	"components.selection.selected-plus": "{count}+ mục được chọn",
 	"components.selection-controls.label": "Các thao tác để chọn",
+	"components.skip-nav.skipToMainContent": "chuyển sang đến nội dung chính",
 	"components.sort.label": "Sắp xếp",
 	"components.sort.text": "Sắp xếp: {selectedItemText}",
 	"components.switch.conditions": "Các điều kiện phải được đáp ứng",

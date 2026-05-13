@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "अधिक",
 	"components.object-property-list.item-placeholder-text": "प्लेसहोल्डर आइटम",
 	"components.overflow-group.moreActions": "अधिक क्रियाएँ",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} आइटम}
@@ -183,6 +185,7 @@ export default {
 	"components.selection.selected": "{count} चयनित",
 	"components.selection.selected-plus": "{count} से अधिक चयनित",
 	"components.selection-controls.label": "चयन के लिए क्रियाएँ",
+	"components.skip-nav.skipToMainContent": "मुख्य सामग्री में जाएँ",
 	"components.sort.label": "सॉर्ट करें",
 	"components.sort.text": "सॉर्ट करें: {selectedItemText}",
 	"components.switch.conditions": "शर्तें पूरी होनी चाहिए",

@@ -5,6 +5,9 @@ import '../tab.js';
 import '../tabs.js';
 import '../tab-panel.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, sendKeysElem } from '@brightspace-ui/testing';
+import { mockFlag, resetFlag } from '../../../helpers/flags.js';
+
+const newTabsStructureFlag = 'GAUD-8299-core-tabs-use-new-structure';
 
 const noPanelSelectedFixture = {
 	deprecated: html`
@@ -242,6 +245,9 @@ const viewport = { width: 376 };
 const useFixture = 'paired';
 
 describe('d2l-tabs', () => {
+
+	before(() => mockFlag(newTabsStructureFlag, true));
+	after(() => resetFlag(newTabsStructureFlag));
 
 	describe('basic', () => {
 
@@ -750,7 +756,28 @@ describe('d2l-tabs', () => {
 		});
 	});
 
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
+	describe('basic (flag off)', () => {
+
+		before(() => mockFlag(newTabsStructureFlag, false));
+		after(() => resetFlag(newTabsStructureFlag));
+
+		it('no panel selected', async() => {
+			const elem = await fixture(noPanelSelectedFixture[useFixture], { viewport });
+			await expect(elem).to.be.golden();
+		});
+
+		it('panel selected', async() => {
+			const elem = await fixture(panelSelectedFixture[useFixture], { viewport });
+			await expect(elem).to.be.golden();
+		});
+	});
+
+	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	describe('deprecated structure', () => {
+
+		before(() => mockFlag(newTabsStructureFlag, false));
+		after(() => resetFlag(newTabsStructureFlag));
 
 		describe('basic', () => {
 			it('no panel selected', async() => {

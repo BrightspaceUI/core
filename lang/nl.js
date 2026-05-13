@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "meer",
 	"components.object-property-list.item-placeholder-text": "Item tijdelijke aanduiding",
 	"components.overflow-group.moreActions": "Meer acties",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} item}
@@ -183,6 +185,7 @@ export default {
 	"components.selection.selected": "{count} geselecteerd",
 	"components.selection.selected-plus": "Meer dan {count} geselecteerd",
 	"components.selection-controls.label": "Acties voor selectie",
+	"components.skip-nav.skipToMainContent": "meteen naar hoofdinhoud gaan",
 	"components.sort.label": "Sorteren",
 	"components.sort.text": "Sorteren: {selectedItemText}",
 	"components.switch.conditions": "Er moet aan de voorwaarden worden voldaan",

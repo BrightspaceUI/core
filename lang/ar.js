@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "المزيد",
 	"components.object-property-list.item-placeholder-text": "عنصر نائب",
 	"components.overflow-group.moreActions": "مزيد من الإجراءات",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} مادة واحد}
@@ -187,6 +189,7 @@ export default {
 	"components.selection.selected": "تم تحديد {count}",
 	"components.selection.selected-plus": "تم تحديد {count}+‎",
 	"components.selection-controls.label": "إجراءات التحديد",
+	"components.skip-nav.skipToMainContent": "تجاوز إلى المحتوى الرئيسي",
 	"components.sort.label": "فرز",
 	"components.sort.text": "الفرز: {selectedItemText}",
 	"components.switch.conditions": "يجب استيفاء الشروط",

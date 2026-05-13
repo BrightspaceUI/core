@@ -152,6 +152,8 @@ export default {
 	"components.more-less.more": "ētahi atu",
 	"components.object-property-list.item-placeholder-text": "Tūemi Puriwāhi",
 	"components.overflow-group.moreActions": "Ētahi atu Hohenga",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} Tūemi}
@@ -183,6 +185,7 @@ export default {
 	"components.selection.selected": "{count} kua tīpakohia",
 	"components.selection.selected-plus": "{count}+ kua tīpakohia",
 	"components.selection-controls.label": "Ngā mahinga mō te tīpakonga",
+	"components.skip-nav.skipToMainContent": "whakarereke ki te ihirangi matua",
 	"components.sort.label": "Kōmaka",
 	"components.sort.text": "Kōmaka: {selectedItemText}",
 	"components.switch.conditions": "Me tutuki ngā here",

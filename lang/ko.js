@@ -147,6 +147,8 @@ export default {
 	"components.more-less.more": "더 보기",
 	"components.object-property-list.item-placeholder-text": "자리표시자 항목",
 	"components.overflow-group.moreActions": "추가 작업",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			other {해당 항목 수 {countFormatted}개}
@@ -174,6 +176,7 @@ export default {
 	"components.selection.selected": "{count}개 선택됨",
 	"components.selection.selected-plus": "{count}+개 선택됨",
 	"components.selection-controls.label": "선택 작업",
+	"components.skip-nav.skipToMainContent": "기본 콘텐츠로 건너뛰기",
 	"components.sort.label": "정렬",
 	"components.sort.text": "정렬: {selectedItemText}",
 	"components.switch.conditions": "조건을 충족해야 합니다",

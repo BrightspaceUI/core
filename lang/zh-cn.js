@@ -147,6 +147,8 @@ export default {
 	"components.more-less.more": "更多",
 	"components.object-property-list.item-placeholder-text": "占位符项目",
 	"components.overflow-group.moreActions": "更多操作",
+	"components.page.header-nav-label": "Main",
+	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} 项}
@@ -174,6 +176,7 @@ export default {
 	"components.selection.selected": "已选 {count}",
 	"components.selection.selected-plus": "已选 + {count}",
 	"components.selection-controls.label": "针对所选内容的操作",
+	"components.skip-nav.skipToMainContent": "跳到主目录",
 	"components.sort.label": "排序",
 	"components.sort.text": "排序：{selectedItemText}",
 	"components.switch.conditions": "必须符合条件",
