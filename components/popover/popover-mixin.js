@@ -502,7 +502,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		};
 
-		const scrollWidth = content.scrollWidth;
+		const scrollWidth = Math.max(content.scrollWidth, Math.ceil(content.getBoundingClientRect().width));
 		const availableWidth = window.innerWidth - 40;
 
 		this._width = (availableWidth > scrollWidth ? scrollWidth : availableWidth);
@@ -1091,7 +1091,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		const widthStyle = {
 			maxWidth: this._maxWidth ? `${this._maxWidth}px` : undefined,
 			minWidth: this._minWidth ? `${this._minWidth}px` : undefined,
-			width: this._width ? `${this._width + 1}px` : undefined
+			width: this._width ? `${this._width + 2}px` : undefined
 		};
 
 		const contentStyle = {
