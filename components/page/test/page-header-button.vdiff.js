@@ -6,7 +6,6 @@ describe('d2l-page-header-button', () => {
 	[
 		{ name: 'icon-text', template: pageHeaderButtonFixtures.iconText },
 		{ name: 'disabled', template: pageHeaderButtonFixtures.disabled },
-		{ name: 'no-highlight-border', template: pageHeaderButtonFixtures.noHighlightBorder },
 		{ name: 'flip', template: pageHeaderButtonFixtures.flipIcon },
 		{ name: 'text-hidden', template: pageHeaderButtonFixtures.textHidden, tooltip: true },
 		{ name: 'text-hidden-disabled', template: pageHeaderButtonFixtures.textHiddenDisabled },

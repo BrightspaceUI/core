@@ -30,11 +30,6 @@ class PageHeaderButton extends FocusMixin(LitElement) {
 			 */
 			iconPosition: { attribute: 'icon-position', type: String },
 			/**
-			 * Visually hides the highlight border when hovered/focused
-			 * @type {boolean}
-			 */
-			noHighlightBorder: { attribute: 'no-highlight-border', type: Boolean },
-			/**
 			 * REQUIRED: Text for the button
 			 * @type {string}
 			 */
@@ -68,7 +63,6 @@ class PageHeaderButton extends FocusMixin(LitElement) {
 		super();
 		this.disabled = false;
 		this.iconPosition = 'start';
-		this.noHighlightBorder = false;
 		this.textHidden = false;
 		this.tooltipPosition = 'bottom';
 	}
@@ -79,7 +73,7 @@ class PageHeaderButton extends FocusMixin(LitElement) {
 
 	render() {
 		const { ariaLabel, id, text, tooltip } = this.#getRenderSettings();
-		const highlightBorder = (!this.disabled && !this.noHighlightBorder) ? html`<span class="d2l-labs-navigation-highlight-border"></span>` : nothing;
+		const highlightBorder = !this.disabled ? html`<span class="d2l-page-header-highlight-border"></span>` : nothing;
 		const icon = html`<d2l-icon icon="${this.icon}"></d2l-icon>`;
 		return html`
 			<button id="${ifDefined(id)}" ?disabled="${this.disabled}" aria-label="${ifDefined(ariaLabel)}" type="button">
