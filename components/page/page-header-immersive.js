@@ -131,7 +131,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 	}
 
 	#renderBack() {
-		const href = this.backHref ? this.backHref : 'javascript:void(0);';
+		const href = this.backHref || 'javascript:void(0);';
 		const commonText = this.localizeCommon('navigation:back:title');
 		const longText = this.backCustomText || commonText;
 		return html`
