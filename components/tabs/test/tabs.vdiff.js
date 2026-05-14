@@ -8,6 +8,7 @@ import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, send
 import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 
 const newTabsStructureFlag = 'GAUD-8299-core-tabs-use-new-structure';
+const GAUD_9963_FLAG = 'GAUD-9963-dropdown-tabs-not-resizing';
 
 const noPanelSelectedFixture = {
 	deprecated: html`
@@ -246,8 +247,14 @@ const useFixture = 'paired';
 
 describe('d2l-tabs', () => {
 
-	before(() => mockFlag(newTabsStructureFlag, true));
-	after(() => resetFlag(newTabsStructureFlag));
+	before(() => {
+		mockFlag(newTabsStructureFlag, true);
+		mockFlag(GAUD_9963_FLAG, true);
+	});
+	after(() => {
+		resetFlag(newTabsStructureFlag);
+		resetFlag(GAUD_9963_FLAG);
+	});
 
 	describe('basic', () => {
 

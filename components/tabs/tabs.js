@@ -15,6 +15,8 @@ import { repeat } from 'lit/directives/repeat.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+export const GAUD_9963_FLAG = getFlag('GAUD-9963-dropdown-tabs-not-resizing', false);
+
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const scrollButtonWidth = 56;
@@ -895,7 +897,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		if (selectedTab) {
 			Promise.all(animPromises).then(async() => {
-				await new Promise(resolve => requestAnimationFrame(resolve));
+				if (GAUD_9963_FLAG) await new Promise(resolve => requestAnimationFrame(resolve)); /* TODO: when removing the GAUD-9963 flag, keep the Promise */
 				this._updateMeasures();
 				this._updateScrollPosition(selectedTab);
 			});

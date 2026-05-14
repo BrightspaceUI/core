@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import { css, html } from 'lit';
+import { GAUD_9963_FLAG } from './tabs.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const keyCodes = {
@@ -39,7 +40,8 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 			:host {
 				box-sizing: border-box;
 				display: inline-block;
-				max-width: min(20rem, max(33%, 10rem)); /* range is 10-20rem with bp of 615px, 33% translates to a breakpoint of 615px */
+				/* TODO: When removing the GAUD-9963 flag, Keep the min max combination code */
+				max-width: ${GAUD_9963_FLAG ? 'min(20rem, max(33%, 10rem))' : '200px'}; /* range is 10-20rem with bp of 615px, 33% translates to a breakpoint of 615px */
 				outline: none;
 				position: relative;
 				vertical-align: middle;
