@@ -153,9 +153,9 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 	}
 
 	#renderTitle() {
-		const title = this.titleText ? html`<div class="title-text d2l-heading-3">${this.titleText}</div>` : nothing;
-		const subtitle = this.subtitleText ? html`<div class="title-text d2l-label-text">${this.subtitleText}</div>` : nothing;
-		const heading = (this.titleText || this.subtitleText) ? html`<h1>${title}${subtitle}</h1>` : nothing;
+		const title = this.titleText ? html`<div class="title-text d2l-heading-3">${this.titleText}</div>` : '';
+		const subtitle = this.subtitleText ? html`<div class="title-text d2l-label-text">${this.subtitleText}</div>` : '';
+		const heading = (title || subtitle) && html`<h1>${title}${subtitle}</h1>`;
 		return html`
 			<div class="title">
 				<slot name="title">${heading}</slot>
