@@ -49,7 +49,7 @@ const SCROLLBAR_WIDTH = (() => {
 	const width = div.offsetWidth - div.clientWidth;
 	document.documentElement.removeChild(div);
 	return width && width + 1;
-})();
+})(); // ~16 when present, but can be 0 even if invisible (e.g. macOS depending on settings)
 
 export const PopoverMixin = superclass => class extends superclass {
 
