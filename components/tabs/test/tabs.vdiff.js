@@ -403,7 +403,7 @@ describe('d2l-tabs', () => {
 			await expect(elem).to.be.golden();
 		});
 
-		it('does not expand the tab width beyond 20rem when reached', async() => {
+		it('does not expand the tab width beyond 20rem when reached on a viewport with enough space to expand all over', async() => {
 			const elem = await fixture(getMaxWidthFixture('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'), { viewport: { width: 1300 } });
 			await expect(elem).to.be.golden();
 		});
