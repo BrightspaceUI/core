@@ -17,22 +17,20 @@ export function getBackLink(page) {
 		.shadowRoot.querySelector('.back > a.d2l-page-header-highlight-link');
 }
 
-export const pageHeaderImmersiveDemo = html`
-	<d2l-page-header-immersive slot="header" title-text="Assignment 1" subtitle-text="Introduction to Economics">
-		<d2l-switch-visibility slot="actions"></d2l-switch-visibility>
-		<d2l-dropdown-more slot="actions" text="More options">
-			<d2l-dropdown-content>Actions go here</d2l-dropdown-content>
-		</d2l-dropdown-more>
-		<div slot="actions" style="height: 100%">
-			<d2l-page-header-button icon="tier3:chevron-left-circle" text="Previous" text-hidden></d2l-page-header-button>
-			<d2l-page-header-separator style="margin: 0;"></d2l-page-header-separator>
-			<d2l-page-header-button icon="tier3:chevron-right-circle" text="Next" text-hidden></d2l-page-header-button>
-		</div>
-	</d2l-page-header-immersive>
+export const pageHeaderImmersiveActionsDemo = html`
+	<d2l-switch-visibility slot="actions"></d2l-switch-visibility>
+	<d2l-dropdown-more slot="actions" text="More options">
+		<d2l-dropdown-content>Actions go here</d2l-dropdown-content>
+	</d2l-dropdown-more>
+	<div slot="actions" style="height: 100%">
+		<d2l-page-header-button icon="tier3:chevron-left-circle" text="Previous" text-hidden></d2l-page-header-button>
+		<d2l-page-header-separator style="margin: 0;"></d2l-page-header-separator>
+		<d2l-page-header-button icon="tier3:chevron-right-circle" text="Next" text-hidden></d2l-page-header-button>
+	</div>
 `;
 
 export const pageHeaderImmersiveFixtures = {
-	actions: wrap(pageHeaderImmersiveDemo),
+	actions: wrap(html`<d2l-page-header-immersive slot="header" title-text="Assignment 1" subtitle-text="Introduction to Economics">${pageHeaderImmersiveActionsDemo}</d2l-page-header-immersive>`),
 	backCustomText: wrap(html`<d2l-page-header-immersive slot="header" back-custom-text="Back to Course"></d2l-page-header-immersive>`),
 	backHref: wrap(html`<d2l-page-header-immersive slot="header" back-href="/go/back"></d2l-page-header-immersive>`),
 	backOnly: wrap(html`<d2l-page-header-immersive slot="header"></d2l-page-header-immersive>`),
