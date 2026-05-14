@@ -5,7 +5,6 @@ import './page-header-custom.js';
 import { bodyCompactStyles, heading3Styles, labelStyles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { highlightBorderStyles, highlightLinkStyles } from './page-header-styles.js';
-import { classMap } from 'lit/directives/class-map.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { RequesterMixin } from '../../mixins/provider/provider-mixin.js';
@@ -28,7 +27,8 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 			:host {
 				display: block;
 			}
-			:host([hidden]) {
+			:host([hidden]),
+			.actions[hidden] {
 				display: none;
 			}
 			.container {
@@ -62,9 +62,6 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 				align-items: center;
 				display: flex;
 				gap: 0.6rem;
-			}
-			.actions.hidden {
-				display: none;
 			}
 			.title h1 .d2l-heading-3 {
 				margin: 0;
@@ -107,16 +104,12 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 
 	render() {
 		if (this._error) return this.#renderError();
-		const actionsClasses = {
-			'actions': true,
-			'hidden': !this._hasActions
-		};
 		return html`
 			<d2l-page-header-custom>
 				<div class="container" slot="top">
 					${this.#renderBack()}
 					${this.#renderTitle()}
-					<div class="${classMap(actionsClasses)}">
+					<div class="actions" ?hidden="${!this._hasActions}">
 						<slot name="actions" @slotchange="${this.#handleActionsSlotChange}"></slot>
 					</div>
 				</div>
