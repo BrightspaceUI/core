@@ -502,7 +502,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		};
 
-		const scrollWidth = Math.max(content.scrollWidth, Math.ceil(content.getBoundingClientRect().width));
+		const scrollWidth = Math.ceil(content.getBoundingClientRect().width);
 		const availableWidth = window.innerWidth - 40;
 
 		this._width = (availableWidth > scrollWidth ? scrollWidth : availableWidth);
