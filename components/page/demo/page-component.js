@@ -224,6 +224,7 @@ class PageDemo extends LitElement {
 		`;
 	}
 
+
 	#renderMainPanel() {
 		return html`
 			<d2l-page-main>
