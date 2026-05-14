@@ -42,6 +42,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 				display: inline-block;
 				/* TODO: When removing the GAUD-9963 flag, Keep the min max code */
 				max-width: var(--d2l-gaud-9963-tab-max-width, 200px);
+				outline: none;
 				position: relative;
 				vertical-align: middle;
 			}
