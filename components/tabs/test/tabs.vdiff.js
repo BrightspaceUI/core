@@ -881,4 +881,20 @@ describe('d2l-tabs', () => {
 			});
 		});
 	});
+
+	// remove with GAUD-9963-dropdown-tabs-not-resizing flag clean up
+	describe('max-width (flag off)', () => {
+		before(() => mockFlag(GAUD_9963_FLAG, false));
+		after(() => resetFlag(GAUD_9963_FLAG));
+
+		it('does not expand the tab width beyond 200px when reached on a viewport with enough space to expand all over', async() => {
+			const elem = await fixture(getMaxWidthFixture('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'), { viewport: { width: 1300 } });
+			await expect(elem).to.be.golden();
+		});
+
+		it('does not collapse the tab when the viewport is very small', async() => {
+			const elem = await fixture(getMaxWidthFixture('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'), { viewport: { width: 300 } });
+			await expect(elem).to.be.golden();
+		});
+	});
 });
