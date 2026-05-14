@@ -19,9 +19,36 @@ jobs:
         run: npm run lint:eslint
       - name: Lint (CSS)
         run: npm run lint:style
-  playwright:
-    name: Accessibility and Unit Tests
-    timeout-minutes: 15
+  axe:
+    name: Accessibility Tests
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Brightspace/third-party-actions@actions/checkout
+      - uses: Brightspace/setup-node@main
+        with:
+          node-version-file: .nvmrc
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Accessibility Tests
+        id: at
+        run: npm run test:axe
+      - name: Upload test report
+        if: >
+          always() &&
+          github.triggering_actor != 'dependabot[bot]' &&
+          (steps.at.outcome == 'failure' || steps.at.outcome == 'success')
+        uses: Brightspace/test-reporting-action@main
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+  unit:
+    name: Unit Tests
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
@@ -39,19 +66,6 @@ jobs:
         run: npm run test:wca
       - name: Node Import Tests
         run: npm run test:node-imports
-      - name: Accessibility Tests
-        id: at
-        run: npm run test:axe
-      - name: Upload test report
-        if: >
-          always() &&
-          github.triggering_actor != 'dependabot[bot]' &&
-          (steps.at.outcome == 'failure' || steps.at.outcome == 'success')
-        uses: Brightspace/test-reporting-action@main
-        with:
-          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
-          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-          aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
       - name: Unit Tests
         id: ut
         run: npm run test:unit
