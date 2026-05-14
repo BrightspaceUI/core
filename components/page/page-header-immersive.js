@@ -3,7 +3,7 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import './page-header-custom.js';
 import { bodyCompactStyles, heading3Styles, labelStyles } from '../typography/styles.js';
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { highlightBorderStyles, highlightLinkStyles } from './page-header-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
@@ -94,9 +94,9 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 
 	connectedCallback() {
 		super.connectedCallback();
-		const pageHeaderOptions = this.requestInstance('d2l-page-header-options');
-		if (pageHeaderOptions) {
-			pageHeaderOptions({ sticky: true });
+		const configurePageHeader = this.requestInstance('d2l-page-header-configure');
+		if (configurePageHeader) {
+			configurePageHeader({ sticky: true });
 		} else {
 			this._error = true;
 		}

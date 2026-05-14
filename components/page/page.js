@@ -128,7 +128,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 				}
 			}
 		});
-		this.provideInstance('d2l-page-header-options', (options) => {
+		this.provideInstance('d2l-page-header-configure', (options) => {
 			this._headerIsSticky = options.sticky;
 		});
 	}

@@ -63,9 +63,9 @@ class PageHeaderFullDemo extends RequesterMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		const pageHeaderOptions = this.requestInstance('d2l-page-header-options');
-		if (pageHeaderOptions) {
-			pageHeaderOptions({ sticky: false });
+		const configurePageHeader = this.requestInstance('d2l-page-header-configure');
+		if (configurePageHeader) {
+			configurePageHeader({ sticky: false });
 		}
 	}
 
