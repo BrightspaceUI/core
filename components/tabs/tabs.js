@@ -894,7 +894,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		}
 
 		if (selectedTab) {
-			Promise.all(animPromises).then(() => {
+			Promise.all(animPromises).then(async() => {
+				await new Promise(resolve => requestAnimationFrame(resolve));
 				this._updateMeasures();
 				this._updateScrollPosition(selectedTab);
 			});
