@@ -76,7 +76,7 @@ class PageHeaderButton extends FocusMixin(LitElement) {
 		const highlightBorder = !this.disabled ? html`<span class="d2l-page-header-highlight-border"></span>` : nothing;
 		const icon = html`<d2l-icon icon="${this.icon}"></d2l-icon>`;
 		return html`
-			<button id="${ifDefined(id)}" ?disabled="${this.disabled}" aria-label="${ifDefined(ariaLabel)}" type="button">
+			<button class="d2l-page-header-highlight-button" id="${ifDefined(id)}" ?disabled="${this.disabled}" aria-label="${ifDefined(ariaLabel)}" type="button">
 				${highlightBorder}
 				${this.iconPosition === 'start' ? icon : nothing}
 				${text}

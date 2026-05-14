@@ -61,7 +61,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			:host {
 				--d2l-tabs-background-color: var(--d2l-theme-background-color-base);
 				box-sizing: border-box;
-				container: tabs-container / inline-size;
 				display: block;
 				margin-bottom: 1.2rem;
 			}
@@ -426,6 +425,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return (Object.keys(this._tabIds).length > 1 && !reduceMotion) ? this._animateTabRemoval(tab) : Promise.resolve();
 	}
 
+	#GAUD_9963_FLAG = getFlag('GAUD-9963-dropdown-tabs-not-resizing', false);
 	#checkTabPanelMatchRequested;
 	#newTabsPanelStructure = getFlag('GAUD-8299-core-tabs-use-new-structure', false);
 	#panels;
@@ -895,7 +895,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		}
 
 		if (selectedTab) {
-			Promise.all(animPromises).then(() => {
+			Promise.all(animPromises).then(async() => {
+				if (this.#GAUD_9963_FLAG) await new Promise(resolve => requestAnimationFrame(resolve)); /* TODO: when removing the GAUD-9963-dropdown-tabs-not-resizing flag, keep the Promise */
 				this._updateMeasures();
 				this._updateScrollPosition(selectedTab);
 			});
