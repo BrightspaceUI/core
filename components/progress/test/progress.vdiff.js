@@ -12,7 +12,7 @@ describe('d2l-progress', () => {
 					<d2l-progress label="Complete" value="10" max="10" size="${size}"></d2l-progress>
 				</div>`, { rtl });
 
-				await expect(ele).to.be.golden();
+				await expect(ele).to.be.golden({ allColorModes: !rtl && size === 'medium' });
 			});
 		});
 
@@ -27,5 +27,10 @@ describe('d2l-progress', () => {
 
 			await expect(ele).to.be.golden();
 		});
+	});
+
+	it('indeterminate', async() => {
+		const ele = await fixture(html`<d2l-progress label="Indeterminate Progress"></d2l-progress>`);
+		await expect(ele).to.be.golden({ allColorModes: true });
 	});
 });

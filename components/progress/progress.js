@@ -69,12 +69,12 @@ class Progress extends LocalizeCoreElement(LitElement) {
 				}
 
 				progress {
-					--d2l-progress-color: var(--d2l-color-celestine);
+					--d2l-progress-color: var(--d2l-theme-brand-color-primary-default);
 					-moz-appearance: none;
 					-webkit-appearance: none;
 					appearance: none;
-					background-color: var(--d2l-color-gypsum);
-					box-shadow: inset 0 2px var(--d2l-color-mica);
+					background-color: var(--d2l-theme-background-color-interactive-secondary-default);
+					box-shadow: var(--d2l-theme-shadow-inset);
 					width: 100%;
 				}
 				.bar {
@@ -114,7 +114,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 				}
 
 				progress.complete {
-					--d2l-progress-color: var(--d2l-color-olivine);
+					--d2l-progress-color: var(--d2l-theme-status-color-success);
 				}
 				/* this is necessary to avoid white bleed over rounded corners in chrome and safari */
 				progress::-webkit-progress-bar {
@@ -137,7 +137,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 				.indeterminate-bar {
 					--d2l-progress-indeterminate-width: calc(100% / 3);
 					animation: 1450ms 50ms ease-in-out indeterminateState alternate infinite;
-					background-color: var(--d2l-color-celestine);
+					background-color: var(--d2l-theme-brand-color-primary-default);
 					height: 100%;
 					margin-inline-start: calc(var(--d2l-progress-indeterminate-width) * -0.75);
 					width: var(--d2l-progress-indeterminate-width);
