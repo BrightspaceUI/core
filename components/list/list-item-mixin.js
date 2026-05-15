@@ -474,6 +474,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				transform: translateY(-10px);
 				transition: opacity 200ms ease-out, transform 0ms ease-out 300ms;
 			}
+
 			:host([layout="tile"][_selection-when-interacted]) [slot="control"]:hover,
 			:host([layout="tile"][_selection-when-interacted][_focusing]) [slot="control"],
 			:host([layout="tile"][_selection-when-interacted][_force-show-selection]) [slot="control"],
@@ -482,6 +483,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				opacity: 1;
 				transform: none;
 				transition: opacity 200ms ease-out, transform 200ms ease-out;
+			}
+
+			:host([layout="tile"][draggable][tile-header]) [slot="control"] {
+				margin: 0.25rem 0;
 			}
 
 			@media (prefers-reduced-motion: reduce) {
@@ -586,6 +591,10 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 			:host([layout="tile"]) d2l-selection-input {
 				margin: 0;
+			}
+
+			:host([layout="tile"][draggable]) d2l-selection-input {
+				margin: auto;
 			}
 			:host([layout="tile"]:not([tile-header])) d2l-selection-input {
 				--d2l-input-checkbox-border-color-hover-focus: var(--d2l-color-celestine-minus-1);
@@ -723,6 +732,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		if (this._focusingPrimaryAction && changedProperties.has('_focusingPrimaryAction')) {
 			this._hasListItemContent = !!this.shadowRoot.querySelector('slot:not([name])').assignedElements({ flatten: true })
 				.find(elem => elem.tagName === 'D2L-LIST-ITEM-CONTENT');
+		}
+		if (this.draggable && this.layout === 'tile' && this.tileHeader === false) {
+			this.tileHeader = true;
 		}
 	}
 
@@ -975,6 +987,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				data-separators="${ifDefined(this._separators)}"
 				indentation="${ifDefined(this.indentation)}"
 				?grid-active="${this.role === 'row'}"
+				?selectable="${this.selectable}"
+				?is-draggable="${this.draggable}"
 				layout="${this.layout}"
 				?no-primary-action="${this.noPrimaryAction}">
 				${this._showAddButton && this.first ? html`
@@ -1038,10 +1052,12 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			</d2l-list-item-generic-layout>
 		`;
 
+		const isDraggableTile = this.draggable && this.layout === 'tile';
+
 		return html`
-			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
+			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker ?verticle="${isDraggableTile}"></d2l-list-item-placement-marker>`)}
 			${this.draggable ? html`<div class="d2l-list-item-drag-image">${innerView}</div>` : innerView}
-			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker></d2l-list-item-placement-marker>`)}
+			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker ?verticle="${isDraggableTile}"></d2l-list-item-placement-marker>`)}
 			${this._displayKeyboardTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this.localizeHTML('components.list.keyboard')}</d2l-tooltip>` : ''}
 			${this.draggable ? this._renderDragMultipleImage() : nothing}
 		`;

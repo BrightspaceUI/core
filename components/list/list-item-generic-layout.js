@@ -65,8 +65,7 @@ class ListItemGenericLayout extends LitElement {
 			/**
 			 * @ignore
 			 */
-			layout: { type: String, reflect: true }
-
+			layout: { type: String, reflect: true },
 		};
 	}
 
@@ -216,7 +215,21 @@ class ListItemGenericLayout extends LitElement {
 
 			:host([layout="tile"]) {
 				grid-template-columns:
-					[start control-start] minmax(0, min-content)
+					[start outside-control-start] minmax(0, 30px)
+					[outside-control-end control-start] minmax(0, min-content)
+					[control-end actions-start] minmax(0, auto)
+					[actions-end end];
+				grid-template-rows:
+					[start header-start] minmax(0, min-content)
+					[header-end content-start] auto
+					[content-end end];
+				height: 100%;
+			}
+
+			:host([layout="tile"]:not([is-draggable])) {
+				grid-template-columns:
+					[start outside-control-start] 0
+					[outside-control-end control-start] minmax(0, min-content)
 					[control-end actions-start] minmax(0, auto)
 					[actions-end end];
 				grid-template-rows:
@@ -258,14 +271,22 @@ class ListItemGenericLayout extends LitElement {
 				grid-row: content-start / content-end;
 			}
 
+			:host([layout="tile"]) ::slotted([slot="outside-control"]) {
+				grid-column: outside-control-start / outside-control-end;
+				grid-row: start / start;
+				width: min-content;
+			}
+
+			:host([layout="tile"]) ::slotted([slot="outside-control-action"]) {
+				grid-column: start / end;
+				grid-row: start / start;
+			}
+
 			:host(:not([layout="tile"])) slot[name="header"],
 			:host([layout="tile"]) slot[name="add-top"],
 			:host([layout="tile"]) slot[name="control-container"],
 			:host([layout="tile"]) slot[name="before-content"],
-			:host([layout="tile"]) slot[name="outside-control"],
-			:host([layout="tile"]) slot[name="outside-control-action"],
 			:host([layout="tile"]) slot[name="expand-collapse"],
-			:host([layout="tile"]) slot[name="drop-target"],
 			:host([layout="tile"]) slot[name="nested"],
 			:host([layout="tile"]) slot[name="add"] {
 				display: none;
