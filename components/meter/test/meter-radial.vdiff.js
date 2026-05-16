@@ -5,13 +5,13 @@ import { expect, fixture, html } from '@brightspace-ui/testing';
 describe('meter-radial', () => {
 	[true, false].forEach(rtl => {
 		[
-			{ name: 'progress', template: html`<d2l-meter-radial value="16" max="47"></d2l-meter-radial>` },
+			{ name: 'progress', template: html`<d2l-meter-radial value="16" max="47"></d2l-meter-radial>`, allColorModes: true },
 			{ name: 'percent', template: html`<d2l-meter-radial value="16" max="47" percent></d2l-meter-radial>` },
-			{ name: 'text', template: html`<d2l-meter-radial value="10" max="10" percent text="Completed"></d2l-meter-radial>` },
-		].forEach(({ name, template }) => {
+			{ name: 'text', template: html`<d2l-meter-radial value="10" max="10" percent text="Completed"></d2l-meter-radial>`, allColorModes: true },
+		].forEach(({ name, template, allColorModes }) => {
 			it(`${name}${ rtl ? '-rtl' : ''}`, async() => {
 				const elem = await fixture(template, { rtl });
-				await expect(elem).to.be.golden();
+				await expect(elem).to.be.golden({ allColorModes: allColorModes && !rtl });
 			});
 		});
 	});
