@@ -87,8 +87,8 @@ class Card extends LitElement {
 	static get styles() {
 		return [offscreenStyles, css`
 			:host {
-				background-color: #ffffff;
-				border: 1px solid var(--d2l-color-gypsum);
+				background-color: var(--d2l-theme-background-color-base);
+				border: 1px solid var(--d2l-theme-border-color-subtle);
 				border-radius: 6px;
 				box-sizing: border-box;
 				display: inline-block;
@@ -191,20 +191,18 @@ class Card extends LitElement {
 				border: none;
 			}
 			:host([subtle][href]) {
-				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.03);
+				box-shadow: var(--d2l-theme-shadow-attached);
 			}
-			:host([href]:not([_active]):hover) {
-				box-shadow: 0 2px 14px 1px rgba(0, 0, 0, 0.06);
-			}
+			:host([href]:not([_active]):hover),
 			:host([subtle][href]:not([_active]):hover) {
-				box-shadow: 0 4px 18px 2px rgba(0, 0, 0, 0.06);
+				box-shadow: var(--d2l-theme-shadow-floating);
 			}
 			${getFocusRingStyles(() => ':host([_active])', { 'extraStyles': css`border-color: transparent;` })}
 			/* .d2l-card-link-container-hover is used to only color/underline when
 			hovering the anchor; these styles are not applied when hovering actions */
 			:host([href]) .d2l-card-link-container-hover,
 			:host([href][_active]) .d2l-card-content {
-				color: var(--d2l-color-celestine);
+				color: var(--d2l-theme-text-color-interactive-default);
 				text-decoration: underline;
 			}
 			/* this is needed to ensure tooltip is not be clipped by adjacent cards */
@@ -222,7 +220,7 @@ class Card extends LitElement {
 			}
 			@media (prefers-contrast: more) {
 				:host([subtle]) {
-					border: 1px solid var(--d2l-color-gypsum);
+					border: 1px solid var(--d2l-theme-border-color-subtle);
 				}
 			}
 		`];
