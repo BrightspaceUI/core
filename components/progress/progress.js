@@ -75,6 +75,7 @@ class Progress extends LocalizeCoreElement(LitElement) {
 					appearance: none;
 					background-color: var(--d2l-color-gypsum);
 					box-shadow: inset 0 2px var(--d2l-color-mica);
+					overflow: hidden;
 					width: 100%;
 				}
 				.bar {
