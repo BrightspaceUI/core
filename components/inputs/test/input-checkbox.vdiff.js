@@ -1,14 +1,9 @@
 import '../input-checkbox.js';
 import { expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
-import { loadSass, unloadSass } from '../../../test/load-sass.js';
 import { checkboxFixtures } from './input-checkbox-fixtures.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-checkbox', () => {
-
-	before(loadSass);
-	after(unloadSass);
-
 	[false, true].forEach(skeleton => {
 		[false, true].forEach(disabled => {
 			const checkedStates = ['checked', 'unchecked'];
