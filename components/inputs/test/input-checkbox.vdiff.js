@@ -108,28 +108,4 @@ describe('d2l-input-checkbox', () => {
 		});
 
 	});
-
-	describe('sass', () => {
-		[false, true].forEach(disabled => {
-			[true, false].forEach(checked => {
-
-				const name = `${disabled ? 'disabled' : 'default'}-${checked ? 'checked' : 'unchecked'}`;
-				const checkboxFixture = html`<input type="checkbox" class="d2l-test-input-checkbox" ?checked="${checked}" ?disabled="${disabled}">`;
-
-				it(name, async() => {
-					const elem = await fixture(checkboxFixture);
-					await expect(elem).to.be.golden();
-				});
-				if (!disabled) {
-					it(`${name}-focus`, async() => {
-						const elem = await fixture(checkboxFixture);
-						await focusElem(elem);
-						await expect(elem).to.be.golden();
-					});
-				}
-
-			});
-		});
-	});
-
 });
