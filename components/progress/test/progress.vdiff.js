@@ -8,6 +8,7 @@ describe('d2l-progress', () => {
 			it(`${size}${rtl ? '-rtl' : ''}`, async() => {
 				const ele = await fixture(html`<div>
 					<d2l-progress label="No Progress" value="0" max="10" size="${size}"></d2l-progress>
+					<d2l-progress label="Barely Any Progress" value="1" max="1000" size="${size}"></d2l-progress>
 					<d2l-progress label="Progress" value="8" max="10" size="${size}"></d2l-progress>
 					<d2l-progress label="Complete" value="10" max="10" size="${size}"></d2l-progress>
 				</div>`, { rtl });
