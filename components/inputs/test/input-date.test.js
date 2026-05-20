@@ -101,6 +101,14 @@ describe('d2l-input-date', () => {
 		});
 	});
 
+	describe('properties', () => {
+		it('should have autocomplete off', async() => {
+			const elem = await fixture(basicFixture);
+			const inputElem = getChildElem(elem, 'd2l-input-text');
+			expect(inputElem['autocomplete']).to.equal('off');
+		});
+	});
+
 	describe('utility functions', () => {
 		describe('formatISODateInUserCalDescriptor', () => {
 			it('should return correct date when input is valid', () => {
