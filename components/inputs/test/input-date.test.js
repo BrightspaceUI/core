@@ -105,7 +105,7 @@ describe('d2l-input-date', () => {
 		it('should have autocomplete off', async() => {
 			const elem = await fixture(basicFixture);
 			const inputElem = getChildElem(elem, 'd2l-input-text');
-			expect(inputElem['autocomplete']).to.equal('off');
+			expect(inputElem.getAttribute('autocomplete')).to.equal('off');
 		});
 	});
 
