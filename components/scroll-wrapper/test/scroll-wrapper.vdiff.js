@@ -47,9 +47,9 @@ describe('scroll-wrapper', () => {
 
 	[
 		{ name: 'show-actions', allColorModes: true },
-		{ name: 'show-actions-focus', allColorModes: true, action: elem => { return focusElem(elem.querySelector('d2l-test-scroll-wrapper')) } },
+		{ name: 'show-actions-focus', allColorModes: true, action: elem => { return focusElem(elem.querySelector('d2l-test-scroll-wrapper')); } },
 		{ name: 'split-scrollers', splitScrollers: true },
-		{ name: 'split-scrollers-focus', splitScrollers: true, action: elem => { return focusElem(elem.querySelector('d2l-test-scroll-wrapper')) } },
+		{ name: 'split-scrollers-focus', splitScrollers: true, action: elem => { return focusElem(elem.querySelector('d2l-test-scroll-wrapper')); } },
 	].forEach(({ action, allColorModes, name, splitScrollers }) => {
 
 		it(name, async() => {
