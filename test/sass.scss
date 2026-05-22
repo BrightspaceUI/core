@@ -1,5 +1,4 @@
 @use "../components/colors/colors.scss";
-@use "../components/inputs/sass/checkbox.scss";
 @use "../components/inputs/sass/label.scss";
 @use "../components/inputs/sass/radio.scss";
 @use "../components/inputs/sass/select.scss";
@@ -34,9 +33,6 @@
 }
 .d2l-test-heading-4 {
 	@include typography.d2l-heading-4();
-}
-.d2l-test-input-checkbox {
-	@include checkbox.d2l-input-checkbox();
 }
 .d2l-test-input-label {
 	@include label.d2l-input-label();
