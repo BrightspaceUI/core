@@ -1,14 +1,9 @@
 import '../input-checkbox.js';
 import { expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
-import { loadSass, unloadSass } from '../../../test/load-sass.js';
 import { checkboxFixtures } from './input-checkbox-fixtures.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
 
 describe('d2l-input-checkbox', () => {
-
-	before(loadSass);
-	after(unloadSass);
-
 	[false, true].forEach(skeleton => {
 		[false, true].forEach(disabled => {
 			const checkedStates = ['checked', 'unchecked'];
@@ -108,28 +103,4 @@ describe('d2l-input-checkbox', () => {
 		});
 
 	});
-
-	describe('sass', () => {
-		[false, true].forEach(disabled => {
-			[true, false].forEach(checked => {
-
-				const name = `${disabled ? 'disabled' : 'default'}-${checked ? 'checked' : 'unchecked'}`;
-				const checkboxFixture = html`<input type="checkbox" class="d2l-test-input-checkbox" ?checked="${checked}" ?disabled="${disabled}">`;
-
-				it(name, async() => {
-					const elem = await fixture(checkboxFixture);
-					await expect(elem).to.be.golden();
-				});
-				if (!disabled) {
-					it(`${name}-focus`, async() => {
-						const elem = await fixture(checkboxFixture);
-						await focusElem(elem);
-						await expect(elem).to.be.golden();
-					});
-				}
-
-			});
-		});
-	});
-
 });

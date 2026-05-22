@@ -73,6 +73,16 @@ describe('dialog-confirm', () => {
 						<d2l-dialog-confirm title-text="Title" .text="${'Paragraph 1\r\nParagraph 2'}" opened>
 							${buttons}
 						</d2l-dialog-confirm>
+					` },
+					{ name: 'slighty-larger-critical', template: html`
+						<d2l-dialog-confirm title-text="Title" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore." opened critical>
+							<d2l-button slot="footer" primary>OK</d2l-button>
+						</d2l-dialog-confirm>
+					` },
+					{ name: 'overflow', template: html`
+						<d2l-dialog-confirm title-text="Title" .text="${'Lorem ipsum dolor sit amet, consectetur adipiscing.\nSed do eiusmod tempor incididunt ut labore et dolore.\nUt enim ad minim veniam, quis nostrud exercitation.\nDuis aute irure dolor in reprehenderit voluptate.\nExcepteur sint occaecat cupidatat non proident sunt.\nSunt in culpa qui officia deserunt mollit anim id est.\nNam libero tempore cum soluta nobis eligendi optio.\nItaque earum rerum hic tenetur a sapiente delectus.'}" opened>
+							${buttons}
+						</d2l-dialog-confirm>
 					` }
 				].forEach(({ name, allColorModes, template }) => {
 					it(name, async() => {
