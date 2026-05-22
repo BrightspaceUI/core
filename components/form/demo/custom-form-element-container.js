@@ -11,33 +11,33 @@ class CustomFormElementContainer extends FormElementContainerMixin(LitElement) {
 			}
 			label {
 				display: block;
-				padding-block-end: 0.4rem;
 				font-size: 0.7rem;
 				font-weight: 700;
 				line-height: 0.9rem;
+				padding-block-end: 0.4rem;
 			}
 			label[required]::after {
 				content: " *";
 			}
 			input {
-				width: 100%;
-				box-sizing: border-box;
 				border-radius: 0.3rem;
-				border-width: 1px;
 				border-style: solid;
-				min-height: calc(2rem + 2px);
-				min-width: calc(2rem + 1em);
-				margin-block-end: 0.5rem;
-				padding: 0.4rem 0.75rem;
+				border-width: 1px;
+				box-sizing: border-box;
 				font-family: inherit;
 				font-size: 0.8rem;
-				line-height: 1.2rem;
 				letter-spacing: 0.02em;
+				line-height: 1.2rem;
+				margin-block-end: 0.5rem;
+				min-height: calc(2rem + 2px);
+				min-width: calc(2rem + 1em);
+				padding: 0.4rem 0.75rem;
+				width: 100%;
 			}
 			input:focus,
 			input:hover {
-				border-width: 2px;
 				border-color: var(--d2l-theme-border-color-focus);
+				border-width: 2px;
 				outline: none;
 				padding: calc(0.4rem - 1px) calc(0.75rem - 1px);
 			}
