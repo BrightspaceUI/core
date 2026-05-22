@@ -88,8 +88,8 @@ class OverflowGroup extends OverflowGroupMixin(LitElement) {
 	static get styles() {
 		return [super.styles, css`
 			:host([opener-style="subtle"]) {
-				--d2l-button-icon-fill-color: var(--d2l-color-celestine);
-				--d2l-button-icon-fill-color-hover: var(--d2l-color-celestine-minus-1);
+				--d2l-button-icon-fill-color: var(--d2l-theme-text-color-interactive-default);
+				--d2l-button-icon-fill-color-hover: var(--d2l-theme-text-color-interactive-hover);
 			}
 
 			::slotted(d2l-button),
