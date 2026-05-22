@@ -29,6 +29,10 @@ class CustomFormElementContainer extends FormElementContainerMixin(LitElement) {
 				min-width: calc(2rem + 1em);
 				margin-block-end: 0.5rem;
 				padding: 0.4rem 0.75rem;
+				font-family: inherit;
+				font-size: 0.8rem;
+				line-height: 1.2rem;
+				letter-spacing: 0.02em;
 			}
 			input:focus,
 			input:hover {
@@ -37,7 +41,7 @@ class CustomFormElementContainer extends FormElementContainerMixin(LitElement) {
 				outline: none;
 				padding: calc(0.4rem - 1px) calc(0.75rem - 1px);
 			}
-			input:user-invalid {
+			input[aria-invalid="true"] {
 				border-color: var(--d2l-theme-status-color-error);
 			}
 		`;
@@ -52,6 +56,8 @@ class CustomFormElementContainer extends FormElementContainerMixin(LitElement) {
 				minlength="4"
 				maxlength="15"
 				required
+				@blur="${this._handleBlur}"
+				@input="${this._handleInput}"
 			>
 			<d2l-input-text
 				label="Telephone Number"
@@ -61,6 +67,22 @@ class CustomFormElementContainer extends FormElementContainerMixin(LitElement) {
 				required
 			></d2l-input-text>
 		`;
+	}
+
+	_handleBlur(e) {
+		e.preventDefault();
+		const nativeInput = this.shadowRoot.querySelector('#native-input');
+		if (!nativeInput.validity.valid) {
+			nativeInput.setAttribute('aria-invalid', 'true');
+		}
+	}
+
+	_handleInput(e) {
+		e.preventDefault();
+		const nativeInput = this.shadowRoot.querySelector('#native-input');
+		if (nativeInput.validity.valid) {
+			nativeInput.removeAttribute('aria-invalid');
+		}
 	}
 }
 
