@@ -73,8 +73,7 @@ export const dialogStyles = css`
 	}
 
 	dialog.d2l-dialog-outer.d2l-dialog-outer-full-height {
-		height: auto;
-		max-height: initial;
+		height: auto; /* override UA dialog height: fix-content */
 	}
 
 	dialog::backdrop {
