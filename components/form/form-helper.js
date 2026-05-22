@@ -17,6 +17,8 @@ export const isCustomElement = (node) => isElement(node) && node.nodeName.indexO
 
 export const isCustomFormElement = (node) => isCustomElement(node) && !!node.formAssociated;
 
+const isCustomFormElementContainer = (node) => isCustomElement(node) && !!node.customFormElementContainer;
+
 export const isNativeFormElement = (node) => {
 	if (!isElement(node)) {
 		return false;
@@ -25,12 +27,22 @@ export const isNativeFormElement = (node) => {
 	return !!formElements[nodeName];
 };
 
+const getElementChildren = (ele) => {
+	let children;
+	if (isCustomFormElementContainer(ele)) {
+		children = ele.shadowRoot.children;
+	} else {
+		children = ele.tagName === 'SLOT' && ['primary', 'secondary'].includes(ele.name) ? ele.assignedNodes() : ele.children;
+	}
+	return children;
+};
+
 const _findFormElementsHelper = (ele, eles, isFormElementPredicate, visitChildrenPredicate) => {
 	if (isNativeFormElement(ele) || isCustomFormElement(ele) || isFormElementPredicate(ele)) {
 		eles.push(ele);
 	}
 	if (visitChildrenPredicate(ele)) {
-		const children = ele.tagName === 'SLOT' && ['primary', 'secondary'].includes(ele.name) ? ele.assignedNodes() : ele.children;
+		const children = getElementChildren(ele);
 		for (const child of children) {
 			_findFormElementsHelper(child, eles, isFormElementPredicate, visitChildrenPredicate);
 		}

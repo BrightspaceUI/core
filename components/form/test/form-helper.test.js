@@ -1,3 +1,4 @@
+import './custom-test-form-element-container.js';
 import './form-element.js';
 import '../../status-indicator/status-indicator.js';
 import '../../tooltip/tooltip.js';
@@ -299,6 +300,7 @@ describe('form-helper', () => {
 				<button id="ele-14" type="submit" name="action">Update</button>
 				<button id="ele-15" type="reset" name="action">Delete</button>
 				<button id="ele-16" name="other" value="other">Other</button>
+				<d2l-test-custom-form-element-container></d2l-test-custom-form-element-container>
 			</div>
 		`;
 
@@ -334,6 +336,16 @@ describe('form-helper', () => {
 			const formElements = findFormElements(root, ele => ele === fakeFormElement);
 
 			expect(formElements).to.include.members([fakeFormElement]);
+		});
+
+		it('should find elements nested in the custom form element container\'s shadow DOM', () => {
+			const customContainer = root.querySelector('d2l-test-custom-form-element-container');
+
+			const nestedNativeInput = customContainer.shadowRoot.querySelector('#nested-native-input');
+			const nestedCustomInput = customContainer.shadowRoot.querySelector('#nested-telephone-input');
+			const formElements = findFormElements(customContainer);
+
+			expect(formElements).to.include.members([nestedNativeInput, nestedCustomInput]);
 		});
 
 	});
