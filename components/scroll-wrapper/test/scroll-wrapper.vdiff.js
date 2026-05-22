@@ -45,20 +45,19 @@ describe('scroll-wrapper', () => {
 		});
 	});
 
-	describe('focus', () => {
-		it('show-actions', async() => {
-			const elem = await fixture(wrapScrollWrapper(html`<d2l-test-scroll-wrapper width="400" class="vdiff-include"></d2l-test-scroll-wrapper>`));
-			await focusElem(elem.querySelector('d2l-test-scroll-wrapper'));
+	[
+		{ name: 'show-actions', allColorModes: true },
+		{ name: 'show-actions-focus', allColorModes: true, action: elem => { return focusElem(elem.querySelector('d2l-test-scroll-wrapper')); } },
+		{ name: 'split-scrollers', splitScrollers: true },
+		{ name: 'split-scrollers-focus', splitScrollers: true, action: elem => { return focusElem(elem.querySelector('d2l-test-scroll-wrapper')); } },
+	].forEach(({ action, allColorModes, name, splitScrollers }) => {
 
-			await expect(elem).to.be.golden();
+		it(name, async() => {
+			const elem = await fixture(wrapScrollWrapper(html`<d2l-test-scroll-wrapper width="400" ?split-scrollers="${splitScrollers}" class="vdiff-include"></d2l-test-scroll-wrapper>`));
+			if (action) await action(elem);
+			await expect(elem).to.be.golden({ allColorModes });
 		});
 
-		it('split-scrollers', async() => {
-			const elem = await fixture(wrapScrollWrapper(html`<d2l-test-scroll-wrapper width="400" split-scrollers class="vdiff-include"></d2l-test-scroll-wrapper>`));
-			await focusElem(elem.querySelector('d2l-test-scroll-wrapper'));
-
-			await expect(elem).to.be.golden();
-		});
 	});
 
 	describe('print', () => {

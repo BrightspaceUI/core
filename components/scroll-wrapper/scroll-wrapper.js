@@ -12,10 +12,7 @@ let focusStyleSheet;
 function getFocusStyleSheet() {
 	if (!focusStyleSheet) {
 		focusStyleSheet = new CSSStyleSheet();
-		focusStyleSheet.replaceSync(getFocusRingStyles(
-			'.d2l-scroll-wrapper-focus',
-			{ extraStyles: css`box-shadow: 0 0 0 2px #ffffff, 0 2px 12px 0 rgba(0, 0, 0, 0.15);` }
-		));
+		focusStyleSheet.replaceSync(getFocusRingStyles('.d2l-scroll-wrapper-focus'));
 	}
 	return focusStyleSheet;
 }
@@ -97,7 +94,7 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 				overflow-y: var(--d2l-scroll-wrapper-overflow-y, visible);
 			}
 			:host([h-scrollbar]) .d2l-scroll-wrapper-container {
-				border-inline: 1px dashed var(--d2l-color-mica);
+				border-inline: 1px dashed var(--d2l-theme-border-color-standard);
 			}
 			:host([h-scrollbar][hide-actions]) .d2l-scroll-wrapper-container {
 				border-inline: none;
@@ -124,10 +121,10 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 			}
 
 			.d2l-scroll-wrapper-button {
-				background-color: var(--d2l-color-regolith);
-				border: 1px solid var(--d2l-color-mica);
+				background-color: var(--d2l-theme-background-color-interactive-faint-default);
+				border: 1px solid var(--d2l-theme-border-color-standard);
 				border-radius: 50%;
-				box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.15);
+				box-shadow: var(--d2l-theme-shadow-floating);
 				cursor: pointer;
 				display: inline-block;
 				height: 18px;
@@ -138,7 +135,7 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 				width: 18px;
 			}
 			.d2l-scroll-wrapper-button:hover {
-				background-color: var(--d2l-color-sylvite);
+				background-color: var(--d2l-theme-background-color-interactive-faint-hover);
 			}
 			:host([scrollbar-right]) .d2l-scroll-wrapper-button-right {
 				display: none;
