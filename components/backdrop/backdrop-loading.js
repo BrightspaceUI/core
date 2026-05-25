@@ -3,7 +3,6 @@ import '../loading-spinner/loading-spinner.js';
 import './backdrop-dirty-overlay.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
-import { classMap } from 'lit/directives/class-map.js';
 import { getFlag } from '../../helpers/flags.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -162,17 +161,17 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 						<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
 					</div>` : nothing
 			}
-			<div aria-live="polite" class="${classMap({ 'd2l-offscreen': !backdropVisible })}" style="${styleMap(backdropVisible ? {} : forcedOffscreenSizelessStyles)}">
+			<div aria-live="polite" id="d2l-live-region">
 				${backdropVisible ?
 					html`<d2l-backdrop-dirty-overlay
-						style=${styleMap({ top: `${this._dirtyDialogTop}px` })}
+						style=${styleMap({ top: `${this._dirtyDialogTop}px`, display: backdropVisible ? undefined : 'none' })}
 						description="${this.dirtyText}"
 						action="${this.dirtyButtonText}"
 						?inert=${this.dataState !== 'dirty'}
 					></d2l-backdrop-dirty-overlay>` : nothing }
-			</div>
-			<div aria-live="polite" class="${classMap({ 'd2l-offscreen': true })}" style="${styleMap(forcedOffscreenSizelessStyles)}">
-				${this._ariaContent}
+				<d2l-offscreen style="${styleMap(forcedOffscreenSizelessStyles)}">
+					${this._ariaContent}
+				</div>
 			</div>
 		`;
 	}
@@ -266,7 +265,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 	#fade() {
 		let hideImmediately = reduceMotion || this._state === 'showing';
 		if (this._state === 'shown') {
-			const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay')).opacity;
+			const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('#d2l-live-region')).opacity;
 			hideImmediately ||= (currentOpacity === '0');
 		}
 
