@@ -1,9 +1,9 @@
-import './custom-test-form-element-container.js';
+import './custom-form-element-container.js';
 import './form-element.js';
 import '../../status-indicator/status-indicator.js';
 import '../../tooltip/tooltip.js';
 import { defineCE, expect, fixture } from '@brightspace-ui/testing';
-import { findFormElements, flattenMap, getFormElementData, isCustomElement, isCustomFormElement, isElement, isNativeFormElement, tryGetLabelText } from '../form-helper.js';
+import { findFormElements, flattenMap, getFormElementData, isCustomElement, isCustomFormElement, isCustomFormElementContainer, isElement, isNativeFormElement, tryGetLabelText } from '../form-helper.js';
 import { html, LitElement } from 'lit';
 
 const buttonFixture = html`<button type="button">Add to favorites</button>`;
@@ -70,24 +70,27 @@ const h1Fixture = html`<h1>Beetles</h1>`;
 
 const formElementFixture = html`<d2l-test-form-element></d2l-test-form-element>`;
 
+const nestedCustomFormElementContainerFixture = html`<d2l-test-custom-form-element-container></d2l-test-custom-form-element-container>`;
+
 describe('form-helper', () => {
 
 	describe('elements', () => {
 
 		[
-			{ tag: 'button', fixture: buttonFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false } },
-			{ tag: 'fieldset', fixture: fieldsetFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false } },
-			{ tag: 'input', fixture: inputFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false } },
-			{ tag: 'object', fixture: objectFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false } },
-			{ tag: 'output', fixture: outputFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false } },
-			{ tag: 'select', fixture: selectFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false } },
-			{ tag: 'textarea', fixture: textareaFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false } },
-			{ tag: 'div', fixture: divFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: false, isCustomFormElement: false } },
-			{ tag: 'label', fixture: labelFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: false, isCustomFormElement: false } },
-			{ tag: 'form', fixture: formFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: false, isCustomFormElement: false } },
-			{ tag: 'h1', fixture: h1Fixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: false, isCustomFormElement: false } },
-			{ tag: 'd2l-status-indicator', fixture: d2lStatusIndicatorFixture, expected: { isElement: true, isCustomElement: true, isNativeFormElement: false, isCustomFormElement: false } },
-			{ tag: 'd2l-test-form-element', fixture: formElementFixture, expected: { isElement: true, isCustomElement: true, isNativeFormElement: false, isCustomFormElement: true } }
+			{ tag: 'button', fixture: buttonFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false, isCustomFormElementContainer: false } },
+			{ tag: 'fieldset', fixture: fieldsetFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false, isCustomFormElementContainer: false } },
+			{ tag: 'input', fixture: inputFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false, isCustomFormElementContainer: false } },
+			{ tag: 'object', fixture: objectFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false, isCustomFormElementContainer: false } },
+			{ tag: 'output', fixture: outputFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false, isCustomFormElementContainer: false } },
+			{ tag: 'select', fixture: selectFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false, isCustomFormElementContainer: false } },
+			{ tag: 'textarea', fixture: textareaFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: true, isCustomFormElement: false, isCustomFormElementContainer: false } },
+			{ tag: 'div', fixture: divFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: false, isCustomFormElement: false, isCustomFormElementContainer: false } },
+			{ tag: 'label', fixture: labelFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: false, isCustomFormElement: false, isCustomFormElementContainer: false } },
+			{ tag: 'form', fixture: formFixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: false, isCustomFormElement: false, isCustomFormElementContainer: false } },
+			{ tag: 'h1', fixture: h1Fixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: false, isCustomFormElement: false, isCustomFormElementContainer: false } },
+			{ tag: 'd2l-status-indicator', fixture: d2lStatusIndicatorFixture, expected: { isElement: true, isCustomElement: true, isNativeFormElement: false, isCustomFormElement: false, isCustomFormElementContainer: false } },
+			{ tag: 'd2l-test-form-element', fixture: formElementFixture, expected: { isElement: true, isCustomElement: true, isNativeFormElement: false, isCustomFormElement: true, isCustomFormElementContainer: false } },
+			{ tag: 'd2l-test-custom-form-element-container', fixture: nestedCustomFormElementContainerFixture, expected: { isElement: true, isCustomElement: true, isNativeFormElement: false, isCustomFormElement: false, isCustomFormElementContainer: true } }
 		].forEach(({ tag, fixture: eleFixture, expected }) => {
 
 			describe(tag, () => {
@@ -112,6 +115,10 @@ describe('form-helper', () => {
 
 				it(`${tag} should ${expected.isCustomFormElement ? '' : 'not '}be a custom form element`, () => {
 					expect(isCustomFormElement(ele)).to.equal(expected.isCustomFormElement);
+				});
+
+				it(`${tag} should ${expected.isCustomFormElementContainer ? '' : 'not '}be a custom form element container`, () => {
+					expect(isCustomFormElementContainer(ele)).to.equal(expected.isCustomFormElementContainer);
 				});
 
 			});
@@ -300,7 +307,6 @@ describe('form-helper', () => {
 				<button id="ele-14" type="submit" name="action">Update</button>
 				<button id="ele-15" type="reset" name="action">Delete</button>
 				<button id="ele-16" name="other" value="other">Other</button>
-				<d2l-test-custom-form-element-container></d2l-test-custom-form-element-container>
 			</div>
 		`;
 
@@ -338,12 +344,13 @@ describe('form-helper', () => {
 			expect(formElements).to.include.members([fakeFormElement]);
 		});
 
-		it('should find elements nested in the custom form element container\'s shadow DOM', () => {
+		it('should find elements nested in the custom form element container\'s shadow DOM', async() => {
+			root = await fixture(html`<div>${nestedCustomFormElementContainerFixture}</div>`);
 			const customContainer = root.querySelector('d2l-test-custom-form-element-container');
 
 			const nestedNativeInput = customContainer.shadowRoot.querySelector('#nested-native-input');
 			const nestedCustomInput = customContainer.shadowRoot.querySelector('#nested-telephone-input');
-			const formElements = findFormElements(customContainer);
+			const formElements = findFormElements(root);
 
 			expect(formElements).to.include.members([nestedNativeInput, nestedCustomInput]);
 		});
