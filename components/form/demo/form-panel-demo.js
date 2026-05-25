@@ -1,4 +1,5 @@
 
+import './custom-form-element-container.js';
 import '../../button/button-icon.js';
 import '../../colors/colors.js';
 import '../../expand-collapse/expand-collapse-content.js';
@@ -52,18 +53,7 @@ class FormPanelDemo extends LitElement {
 				@d2l-collapsible-panel-expand=${this._onExpand}
 				@d2l-collapsible-panel-collapse=${this._onCollapse}>
 				<d2l-form @d2l-form-invalid=${this._onInvalid} @d2l-form-submit=${this._onSubmit}>
-					<div class="d2l-form-panel-demo-container">
-						<d2l-input-text label="First Name" name="first-name" required minlength="4" maxlength="15"></d2l-input-text>
-					</div>
-					<div class="d2l-form-panel-demo-container">
-						<d2l-input-text label="Middle Name" name="middle-name" minlength="4" maxlength="8"></d2l-input-text>
-					</div>
-					<div class="d2l-form-panel-demo-container">
-						<d2l-input-text label="Last Name" name="last-name" required minlength="4" maxlength="15"></d2l-input-text>
-					</div>
-					<div class="d2l-form-panel-demo-container">
-						<d2l-input-number label="Age" name="age" required min="18" max="23"></d2l-input-number>
-					</div>
+					<d2l-custom-form-element-container></d2l-custom-form-element-container>
 				</d2l-form>
 			</d2l-collapsible-panel>
 		`;

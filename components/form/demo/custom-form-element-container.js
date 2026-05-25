@@ -1,71 +1,35 @@
-import { css, html, LitElement } from 'lit';
+import { html, LitElement } from 'lit';
 import { FormElementContainerMixin } from '../form-element-container-mixin.js';
+import { inputLabelStyles } from '../../inputs/input-label-styles.js';
+import { inputStyles } from '../../inputs/input-styles.js';
 
 class CustomFormElementContainer extends FormElementContainerMixin(LitElement) {
 
-	static get styles() {
-		return css`
-			:host {
-				display: block;
-				width: 100%;
-			}
-			label {
-				display: block;
-				font-size: 0.7rem;
-				font-weight: 700;
-				line-height: 0.9rem;
-				padding-block-end: 0.4rem;
-			}
-			label[required]::after {
-				content: " *";
-			}
-			input {
-				border-radius: 0.3rem;
-				border-style: solid;
-				border-width: 1px;
-				box-sizing: border-box;
-				font-family: inherit;
-				font-size: 0.8rem;
-				letter-spacing: 0.02em;
-				line-height: 1.2rem;
-				margin-block-end: 0.5rem;
-				min-height: calc(2rem + 2px);
-				min-width: calc(2rem + 1em);
-				padding: 0.4rem 0.75rem;
-				width: 100%;
-			}
-			input:focus,
-			input:hover {
-				border-color: var(--d2l-theme-border-color-focus);
-				border-width: 2px;
-				outline: none;
-				padding: calc(0.4rem - 1px) calc(0.75rem - 1px);
-			}
-			input[aria-invalid="true"] {
-				border-color: var(--d2l-theme-status-color-error);
-			}
-		`;
-	}
+	static styles = [inputStyles, inputLabelStyles];
 
 	render() {
 		return html`
-			<label for="native-input" required>Name</label>
+			<label for="native-input" class="d2l-input-label d2l-input-label-required" required>First Name</label>
 			<input id="native-input"
 				type="text"
-				name="name"
+				name="first-name"
 				minlength="4"
 				maxlength="15"
 				required
+				class="d2l-input"
 				@blur="${this._handleBlur}"
 				@input="${this._handleInput}"
 			>
+			<d2l-input-text label="Middle Name" name="middle-name" minlength="4" maxlength="8"></d2l-input-text>
+			<d2l-input-text label="Last Name" name="last-name" required minlength="4" maxlength="15"></d2l-input-text>
 			<d2l-input-text
 				label="Telephone Number"
 				type="tel"
-				name="phone"
+				name="phone-number"
 				pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
 				required
 			></d2l-input-text>
+			<d2l-input-number label="Age" name="age" required min="18" max="23"></d2l-input-number>
 		`;
 	}
 

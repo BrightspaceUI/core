@@ -39,7 +39,6 @@ class FormNestedDemo extends LitElement {
 			<d2l-form id="root" @d2l-form-submit=${this._onRootSubmit}>
 				<div class="d2l-form-demo-split-container">
 					<d2l-form class="d2l-form-demo-main" @d2l-form-submit=${this._onMainSubmit}>
-						<d2l-custom-form-element-container class="d2l-form-demo-container"></d2l-custom-form-element-container>
 						<div class="d2l-form-demo-container">
 							<d2l-input-text label="Email" name="email" type="email"></d2l-input-text>
 						</div>
