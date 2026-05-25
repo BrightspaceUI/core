@@ -17,7 +17,7 @@ export const isCustomElement = (node) => isElement(node) && node.nodeName.indexO
 
 export const isCustomFormElement = (node) => isCustomElement(node) && !!node.formAssociated;
 
-export const isCustomFormElementContainer = (node) => isCustomElement(node) && !!node.customFormElementContainer;
+export const isCustomFormElementContainer = (node) => isCustomElement(node) && !!node.isCustomFormElementContainer;
 
 export const isNativeFormElement = (node) => {
 	if (!isElement(node)) {
