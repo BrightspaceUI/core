@@ -4,7 +4,7 @@ import { css, html, LitElement } from 'lit';
 class ListItemPlacementMarker extends LitElement {
 
 	static properties = {
-		verticle: { type: Boolean, reflect: true }
+		vertical: { type: Boolean, reflect: true }
 	};
 
 	static get styles() {
@@ -13,7 +13,7 @@ class ListItemPlacementMarker extends LitElement {
 				display: block;
 			}
 
-			:host([verticle]) {
+			:host([vertical]) {
 				height: 100%;
 			}
 
@@ -21,7 +21,7 @@ class ListItemPlacementMarker extends LitElement {
 				display: none;
 			}
 
-			:host([verticle]) .d2l-list-drag-marker-line {
+			:host([vertical]) .d2l-list-drag-marker-line {
 				height: 100%;
 				margin: -1px 0;
 				width: 12px;
@@ -29,14 +29,13 @@ class ListItemPlacementMarker extends LitElement {
 
 			.d2l-list-drag-marker-line {
 				height: 12px;
-				margin-left: -1px;
-				margin-right: -1px;
+				margin-inline: -1px;
 				stroke: var(--d2l-color-celestine);
 				stroke-width: 3px;
 				width: 100%;
 			}
 
-			:host([verticle]) .d2l-list-drag-marker-linecap {
+			:host([vertical]) .d2l-list-drag-marker-linecap {
 				height: 4px;
 				margin-inline: 0 -2px;
 				width: 12px;
@@ -50,7 +49,7 @@ class ListItemPlacementMarker extends LitElement {
 				width: 4px;
 			}
 
-			:host([verticle]) .d2l-list-drag-marker-circle {
+			:host([vertical]) .d2l-list-drag-marker-circle {
 				margin-inline: 0 0;
 			}
 
@@ -69,7 +68,7 @@ class ListItemPlacementMarker extends LitElement {
 				flex-wrap: nowrap;
 			}
 
-			:host([verticle]) .d2l-list-drag-marker {
+			:host([vertical]) .d2l-list-drag-marker {
 				flex-direction: column;
 				height: 100%;
 			}
@@ -78,12 +77,12 @@ class ListItemPlacementMarker extends LitElement {
 
 	constructor() {
 		super();
-		this.verticle = false;
+		this.vertical = false;
 	}
 
 	render() {
 
-		if (this.verticle) {
+		if (this.vertical) {
 			return html`
 			<div class="d2l-list-drag-marker">
 				<svg class="d2l-list-drag-marker-circle">

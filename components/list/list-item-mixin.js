@@ -738,7 +738,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			this._hasListItemContent = !!this.shadowRoot.querySelector('slot:not([name])').assignedElements({ flatten: true })
 				.find(elem => elem.tagName === 'D2L-LIST-ITEM-CONTENT');
 		}
-		if (this.draggable && this.layout === 'tile' && this.tileHeader === false) {
+		if (this.draggable) {
 			this.tileHeader = true;
 		}
 	}
@@ -1060,9 +1060,9 @@ export const ListItemMixin = superclass => class extends composeMixins(
 		const isDraggableTile = this.draggable && this.layout === 'tile';
 
 		return html`
-			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker ?verticle="${isDraggableTile}"></d2l-list-item-placement-marker>`)}
+			${this._renderTopPlacementMarker(html`<d2l-list-item-placement-marker ?vertical="${isDraggableTile}"></d2l-list-item-placement-marker>`)}
 			${this.draggable ? html`<div class="d2l-list-item-drag-image">${innerView}</div>` : innerView}
-			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker ?verticle="${isDraggableTile}"></d2l-list-item-placement-marker>`)}
+			${this._renderBottomPlacementMarker(html`<d2l-list-item-placement-marker ?vertical="${isDraggableTile}"></d2l-list-item-placement-marker>`)}
 			${this._displayKeyboardTooltip && tooltipForId ? html`<d2l-tooltip align="start" announced for="${tooltipForId}" for-type="descriptor">${this.localizeHTML('components.list.keyboard')}</d2l-tooltip>` : ''}
 			${this.draggable ? this._renderDragMultipleImage() : nothing}
 		`;

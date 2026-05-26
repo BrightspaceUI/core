@@ -326,10 +326,12 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			}
 
 			:host([layout="tile"]) .d2l-list-item-drag-bottom-marker {
+				/* The gap between the cards plus half the width of the marker  */
 				inset-inline-end: calc(-0.9rem + 3px);
 				bottom: 0;
 			}
 			:host([layout="tile"]) .d2l-list-item-drag-top-marker {
+				/* The gap between the cards plus half the width of the marker  */
 				inset-inline-start: calc(-0.9rem + 3px);
 				top: 0;
 			}
