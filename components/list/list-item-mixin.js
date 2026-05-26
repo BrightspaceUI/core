@@ -163,6 +163,11 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				background: white;
 			}
 
+			:host([dragging][layout="tile"]) d2l-list-item-generic-layout {
+				filter: grayscale(75%);
+				opacity: 0.4;
+			}
+
 			[slot="control-container"] {
 				pointer-events: none;
 				position: relative;

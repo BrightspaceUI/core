@@ -322,18 +322,15 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			:host([layout="tile"]) .d2l-list-item-drag-bottom-marker,
 			:host([layout="tile"]) .d2l-list-item-drag-top-marker {
 				height: 100%;
-				pointer-events: none;
-				position: absolute;
 				width: auto;
-				z-index: 1;
 			}
 
 			:host([layout="tile"]) .d2l-list-item-drag-bottom-marker {
 				bottom: 0;
-				right: calc(-0.9rem + 3px);
+				inset-inline-end: calc(-0.9rem + 3px);
 			}
 			:host([layout="tile"]) .d2l-list-item-drag-top-marker {
-				left: calc(-0.9rem + 3px);
+				inset-inline-start: calc(-0.9rem + 3px);
 				top: 0;
 			}
 
