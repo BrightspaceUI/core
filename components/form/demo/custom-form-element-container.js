@@ -34,22 +34,6 @@ class CustomFormElementContainer extends FormElementContainerMixin(LitElement) {
 			</d2l-input-group>
 		`;
 	}
-
-	/*_handleBlur(e) {
-		e.preventDefault();
-		const nativeInput = this.shadowRoot.querySelector('#native-input');
-		if (!nativeInput.validity.valid) {
-			nativeInput.setAttribute('aria-invalid', 'true');
-		}
-	}
-
-	_handleInput(e) {
-		e.preventDefault();
-		const nativeInput = this.shadowRoot.querySelector('#native-input');
-		if (nativeInput.validity.valid) {
-			nativeInput.removeAttribute('aria-invalid');
-		}
-	}*/
 }
 
 customElements.define('d2l-custom-form-element-container', CustomFormElementContainer);

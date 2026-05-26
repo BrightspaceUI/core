@@ -7,7 +7,6 @@ import '../../inputs/input-text.js';
 import '../../inputs/input-textarea.js';
 import '../../validation/validation-custom.js';
 import '../form.js';
-import './custom-form-element-container.js';
 import './form-panel-demo.js';
 import { css, html, LitElement } from 'lit';
 import { inputStyles } from '../../inputs/input-styles.js';
