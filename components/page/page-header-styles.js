@@ -58,7 +58,7 @@ export const highlightButtonStyles = css`
 `;
 
 export const highlightLinkStyles = css`
-	a {
+	a.d2l-page-header-highlight-link {
 		align-items: center;
 		color: var(--d2l-color-ferrite);
 		display: inline-flex;
@@ -70,8 +70,8 @@ export const highlightLinkStyles = css`
 		vertical-align: middle;
 		white-space: nowrap;
 	}
-	a:hover,
-	a:focus {
+	a.d2l-page-header-highlight-link:hover,
+	a.d2l-page-header-highlight-link:focus {
 		--d2l-icon-fill-color: var(--d2l-color-celestine);
 		color: var(--d2l-color-celestine);
 		outline: none;

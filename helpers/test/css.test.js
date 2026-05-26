@@ -1,4 +1,4 @@
-import { _isValidCssSelector } from '../../../helpers/internal/css.js';
+import { _isValidCssSelector } from '../internal/css.js';
 import { expect } from '@brightspace-ui/testing';
 
 describe('_isValidCssSelector', () => {
@@ -33,6 +33,7 @@ describe('_isValidCssSelector', () => {
 		expect(_isValidCssSelector('dl #id')).to.be.true;
 		expect(_isValidCssSelector('dl > dt')).to.be.true;
 		expect(_isValidCssSelector('dl > dt > dd')).to.be.true;
+		expect(_isValidCssSelector('input[type="checkbox"].d2l-input-checkbox')).to.be.true;
 	});
 
 	it('should support simple :host selector', () => {

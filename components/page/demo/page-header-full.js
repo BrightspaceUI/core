@@ -3,8 +3,9 @@ import '../page-header-button.js';
 import '../page-header-custom.js';
 import '../page-header-separator.js';
 import { css, html, LitElement } from 'lit';
+import { RequesterMixin } from '../../../mixins/provider/provider-mixin.js';
 
-class PageHeaderFullDemo extends LitElement {
+class PageHeaderFullDemo extends RequesterMixin(LitElement) {
 
 	static styles = css`
 		.full-nav-header {
@@ -59,6 +60,14 @@ class PageHeaderFullDemo extends LitElement {
 			color: var(--d2l-color-celestine);
 		}
 	`;
+
+	connectedCallback() {
+		super.connectedCallback();
+		const configurePageHeader = this.requestInstance('d2l-page-header-configure');
+		if (configurePageHeader) {
+			configurePageHeader({ sticky: false });
+		}
+	}
 
 	render() {
 		return html`
