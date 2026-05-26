@@ -1,10 +1,11 @@
-import './custom-form-element-container.js';
 import './form-element.js';
+import '../../inputs/input-text.js';
 import '../../status-indicator/status-indicator.js';
 import '../../tooltip/tooltip.js';
 import { defineCE, expect, fixture } from '@brightspace-ui/testing';
 import { findFormElements, flattenMap, getFormElementData, isCustomElement, isCustomFormElement, isCustomFormElementContainer, isElement, isNativeFormElement, tryGetLabelText } from '../form-helper.js';
 import { html, LitElement } from 'lit';
+import { FormElementContainerMixin } from '../form-element-container-mixin.js';
 
 const buttonFixture = html`<button type="button">Add to favorites</button>`;
 
@@ -70,7 +71,30 @@ const h1Fixture = html`<h1>Beetles</h1>`;
 
 const formElementFixture = html`<d2l-test-form-element></d2l-test-form-element>`;
 
-const nestedCustomFormElementContainerFixture = html`<d2l-test-custom-form-element-container></d2l-test-custom-form-element-container>`;
+const nestedCustomFormElementContainerTag = defineCE(class extends FormElementContainerMixin(LitElement) {
+	render() {
+		return html`
+			<label for="nested-native-input">Name</label>
+			<input id="nested-native-input"
+				type="text"
+				name="name"
+				minlength="4"
+				maxlength="15"
+				required
+			>
+			<d2l-input-text
+				id="nested-telephone-input"
+				label="Telephone Number"
+				type="tel"
+				name="phone"
+				pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+				required
+			></d2l-input-text>
+		`;
+	}
+});
+
+const nestedCustomFormElementContainerFixture = `<${nestedCustomFormElementContainerTag}></${nestedCustomFormElementContainerTag}>`;
 
 describe('form-helper', () => {
 
@@ -90,7 +114,7 @@ describe('form-helper', () => {
 			{ tag: 'h1', fixture: h1Fixture, expected: { isElement: true, isCustomElement: false, isNativeFormElement: false, isCustomFormElement: false, isCustomFormElementContainer: false } },
 			{ tag: 'd2l-status-indicator', fixture: d2lStatusIndicatorFixture, expected: { isElement: true, isCustomElement: true, isNativeFormElement: false, isCustomFormElement: false, isCustomFormElementContainer: false } },
 			{ tag: 'd2l-test-form-element', fixture: formElementFixture, expected: { isElement: true, isCustomElement: true, isNativeFormElement: false, isCustomFormElement: true, isCustomFormElementContainer: false } },
-			{ tag: 'd2l-test-custom-form-element-container', fixture: nestedCustomFormElementContainerFixture, expected: { isElement: true, isCustomElement: true, isNativeFormElement: false, isCustomFormElement: false, isCustomFormElementContainer: true } }
+			{ tag: nestedCustomFormElementContainerTag, fixture: nestedCustomFormElementContainerFixture, expected: { isElement: true, isCustomElement: true, isNativeFormElement: false, isCustomFormElement: false, isCustomFormElementContainer: true } }
 		].forEach(({ tag, fixture: eleFixture, expected }) => {
 
 			describe(tag, () => {
@@ -345,11 +369,9 @@ describe('form-helper', () => {
 		});
 
 		it('should find elements nested in the custom form element container\'s shadow DOM', async() => {
-			root = await fixture(html`<div>${nestedCustomFormElementContainerFixture}</div>`);
-			const customContainer = root.querySelector('d2l-test-custom-form-element-container');
-
-			const nestedNativeInput = customContainer.shadowRoot.querySelector('#nested-native-input');
-			const nestedCustomInput = customContainer.shadowRoot.querySelector('#nested-telephone-input');
+			root = await fixture(nestedCustomFormElementContainerFixture);
+			const nestedNativeInput = root.shadowRoot.querySelector('#nested-native-input');
+			const nestedCustomInput = root.shadowRoot.querySelector('#nested-telephone-input');
 			const formElements = findFormElements(root);
 
 			expect(formElements).to.include.members([nestedNativeInput, nestedCustomInput]);
