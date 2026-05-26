@@ -2,7 +2,7 @@ import '../colors/colors.js';
 import '../scroll-wrapper/scroll-wrapper.js';
 import '../backdrop/backdrop-loading.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { cssSizes } from '../inputs/input-checkbox.js';
+import { cssSizes } from '../inputs/input-checkbox-styles.js';
 import { getComposedParent } from '../../helpers/dom.js';
 import { getFlag } from '../../helpers/flags.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
