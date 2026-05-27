@@ -152,8 +152,8 @@ export default {
 	"components.more-less.more": "més",
 	"components.object-property-list.item-placeholder-text": "Element de marcador de posició",
 	"components.overflow-group.moreActions": "Més accions",
-	"components.page.header-nav-label": "Main",
-	"components.page.side-nav-label": "Side",
+	"components.page.header-nav-label": "Principal",
+	"components.page.side-nav-label": "Lateral",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} element}
@@ -185,7 +185,7 @@ export default {
 	"components.selection.selected": "{count} seleccionats",
 	"components.selection.selected-plus": "{count}+ seleccionats",
 	"components.selection-controls.label": "Accions per a la selecció",
-	"components.skip-nav.skipToMainContent": "skip to main content",
+	"components.skip-nav.skipToMainContent": "saltar al contingut principal",
 	"components.sort.label": "Ordena",
 	"components.sort.text": "Ordena: {selectedItemText}",
 	"components.switch.conditions": "Cal complir les condicions",
