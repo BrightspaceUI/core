@@ -75,7 +75,8 @@ const nestedCustomFormElementContainerTag = defineCE(class extends FormElementCo
 	render() {
 		return html`
 			<label for="nested-native-input">Name</label>
-			<input id="nested-native-input"
+			<input
+				id="nested-native-input"
 				type="text"
 				name="name"
 				minlength="4"

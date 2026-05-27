@@ -3,8 +3,6 @@ import './custom-form-element-container.js';
 import '../../button/button-icon.js';
 import '../../colors/colors.js';
 import '../../expand-collapse/expand-collapse-content.js';
-import '../../inputs/input-number.js';
-import '../../inputs/input-text.js';
 import '../form.js';
 import '../../collapsible-panel/collapsible-panel.js';
 import { css, html, LitElement } from 'lit';

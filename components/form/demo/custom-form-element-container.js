@@ -1,4 +1,6 @@
 import '../../inputs/input-group.js';
+import '../../inputs/input-number.js';
+import '../../inputs/input-text.js';
 import { html, LitElement } from 'lit';
 import { FormElementContainerMixin } from '../form-element-container-mixin.js';
 import { inputLabelStyles } from '../../inputs/input-label-styles.js';
