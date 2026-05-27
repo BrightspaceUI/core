@@ -84,7 +84,6 @@ const nestedCustomFormElementContainerTag = defineCE(class extends FormElementCo
 				required
 			>
 			<d2l-input-text
-				id="nested-telephone-input"
 				label="Telephone Number"
 				type="tel"
 				name="phone"
@@ -372,7 +371,7 @@ describe('form-helper', () => {
 		it('should find elements nested in the custom form element container\'s shadow DOM', async() => {
 			root = await fixture(nestedCustomFormElementContainerFixture);
 			const nestedNativeInput = root.shadowRoot.querySelector('#nested-native-input');
-			const nestedCustomInput = root.shadowRoot.querySelector('#nested-telephone-input');
+			const nestedCustomInput = root.shadowRoot.querySelector('d2l-input-text[name="phone"]');
 			const formElements = findFormElements(root);
 
 			expect(formElements).to.include.members([nestedNativeInput, nestedCustomInput]);
