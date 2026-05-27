@@ -148,8 +148,8 @@ export default {
 	"components.more-less.more": "較多",
 	"components.object-property-list.item-placeholder-text": "預留位置項目",
 	"components.overflow-group.moreActions": "其他動作",
-	"components.page.header-nav-label": "Main",
-	"components.page.side-nav-label": "Side",
+	"components.page.header-nav-label": "主要",
+	"components.page.side-nav-label": "側邊",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} 個項目}

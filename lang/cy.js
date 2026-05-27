@@ -152,8 +152,8 @@ export default {
 	"components.more-less.more": "mwy",
 	"components.object-property-list.item-placeholder-text": "Eitem Dalfan",
 	"components.overflow-group.moreActions": "Rhagor o Gamau Gweithredu",
-	"components.page.header-nav-label": "Main",
-	"components.page.side-nav-label": "Side",
+	"components.page.header-nav-label": "Prif",
+	"components.page.side-nav-label": "Ochr",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} eitem}
