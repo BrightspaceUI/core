@@ -15,7 +15,8 @@ class CustomFormElementContainer extends FormElementContainerMixin(LitElement) {
 			<d2l-input-group>
 				<div>
 					<label for="native-input" class="d2l-input-label d2l-input-label-required">First Name</label>
-					<input id="native-input"
+					<input
+						id="native-input"
 						type="text"
 						name="first-name"
 						minlength="4"
