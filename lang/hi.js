@@ -152,8 +152,8 @@ export default {
 	"components.more-less.more": "अधिक",
 	"components.object-property-list.item-placeholder-text": "प्लेसहोल्डर आइटम",
 	"components.overflow-group.moreActions": "अधिक क्रियाएँ",
-	"components.page.header-nav-label": "Main",
-	"components.page.side-nav-label": "Side",
+	"components.page.header-nav-label": "मुख्य",
+	"components.page.side-nav-label": "साइड",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} आइटम}

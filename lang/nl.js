@@ -152,8 +152,8 @@ export default {
 	"components.more-less.more": "meer",
 	"components.object-property-list.item-placeholder-text": "Item tijdelijke aanduiding",
 	"components.overflow-group.moreActions": "Meer acties",
-	"components.page.header-nav-label": "Main",
-	"components.page.side-nav-label": "Side",
+	"components.page.header-nav-label": "Hoofdgedeelte",
+	"components.page.side-nav-label": "Zij",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} item}

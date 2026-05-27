@@ -152,7 +152,7 @@ export default {
 	"components.more-less.more": "flere",
 	"components.object-property-list.item-placeholder-text": "Pladsholder-element",
 	"components.overflow-group.moreActions": "Flere handlinger",
-	"components.page.header-nav-label": "Main",
+	"components.page.header-nav-label": "Hoved",
 	"components.page.side-nav-label": "Side",
 	"components.pageable.info":
 		`{count, plural,

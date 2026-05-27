@@ -152,8 +152,8 @@ export default {
 	"components.more-less.more": "más",
 	"components.object-property-list.item-placeholder-text": "Elemento de marcador de posición",
 	"components.overflow-group.moreActions": "Más acciones",
-	"components.page.header-nav-label": "Main",
-	"components.page.side-nav-label": "Side",
+	"components.page.header-nav-label": "Principal",
+	"components.page.side-nav-label": "Lateral",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} elemento}
