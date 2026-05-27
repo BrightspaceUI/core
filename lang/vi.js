@@ -146,8 +146,8 @@ export default {
 	"components.more-less.more": "thêm",
 	"components.object-property-list.item-placeholder-text": "Mục giữ chỗ",
 	"components.overflow-group.moreActions": "Thêm các Tác vụ",
-	"components.page.header-nav-label": "Main",
-	"components.page.side-nav-label": "Side",
+	"components.page.header-nav-label": "Chính",
+	"components.page.side-nav-label": "Bên",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} mục}

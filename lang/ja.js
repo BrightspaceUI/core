@@ -147,8 +147,8 @@ export default {
 	"components.more-less.more": "増やす",
 	"components.object-property-list.item-placeholder-text": "プレースホルダの項目",
 	"components.overflow-group.moreActions": "その他のアクション",
-	"components.page.header-nav-label": "Main",
-	"components.page.side-nav-label": "Side",
+	"components.page.header-nav-label": "メイン",
+	"components.page.side-nav-label": "サイド",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} 個の項目}

@@ -65,7 +65,7 @@ describe('overflow-group', () => {
 		{ name: 'opener-type-mini-menu', template: createOverflowGroup(3, { openerType: 'icon' }) },
 		{ name: 'opener-type-overflow-open-menu', template: createOverflowGroup(3, { openerType: 'icon', maxToShow: 2 }), action: elem => clickOverflowMenu(elem, '.d2l-overflow-dropdown-mini') },
 		{ name: 'opener-type-subtle-overflow-menu', template: createOverflowGroup(3, { openerStyle: 'subtle', maxToShow: 2 }) },
-		{ name: 'opener-type-subtle-icon', template: createOverflowGroup(3, { openerType: 'icon', openerStyle: 'subtle', maxToShow: 2 }) },
+		{ name: 'opener-type-subtle-icon', allColorModes: true, template: createOverflowGroup(3, { openerType: 'icon', openerStyle: 'subtle', maxToShow: 2 }) },
 		{ name: 'all-item-types', action: elem => clickOverflowMenu(elem, '.d2l-overflow-dropdown'), template: html`
 			<d2l-overflow-group style="padding-left: 40px;" min-to-show="0" max-to-show="0">
 				<d2l-button>Button 1</d2l-button>
@@ -112,11 +112,11 @@ describe('overflow-group', () => {
 				<d2l-link text="link" href="https://d2l.com">Link</d2l-link>
 			</d2l-overflow-group>
 		` }
-	].forEach(({ name, template, action }) => {
+	].forEach(({ name, allColorModes, template, action }) => {
 		it(name, async() => {
 			const elem = await fixture(template);
 			if (action) await action(elem);
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ allColorModes });
 		});
 	});
 });
