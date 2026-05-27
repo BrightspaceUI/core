@@ -35,14 +35,14 @@ const getElementChildren = (elem) => {
 	return elem.tagName === 'SLOT' && ['primary', 'secondary'].includes(elem.name) ? elem.assignedNodes() : elem.children;
 };
 
-const _findFormElementsHelper = (ele, eles, isFormElementPredicate, visitChildrenPredicate) => {
-	if (isNativeFormElement(ele) || isCustomFormElement(ele) || isFormElementPredicate(ele)) {
-		eles.push(ele);
+const _findFormElementsHelper = (elem, elems, isFormElementPredicate, visitChildrenPredicate) => {
+	if (isNativeFormElement(elem) || isCustomFormElement(elem) || isFormElementPredicate(elem)) {
+		elems.push(elem);
 	}
-	if (visitChildrenPredicate(ele)) {
-		const children = getElementChildren(ele);
+	if (visitChildrenPredicate(elem)) {
+		const children = getElementChildren(elem);
 		for (const child of children) {
-			_findFormElementsHelper(child, eles, isFormElementPredicate, visitChildrenPredicate);
+			_findFormElementsHelper(child, elems, isFormElementPredicate, visitChildrenPredicate);
 		}
 	}
 };
