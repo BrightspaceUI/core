@@ -5,7 +5,6 @@ import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
 import { getFlag } from '../../helpers/flags.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { offscreenStyles } from '../offscreen/offscreen.js';
 
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -138,7 +137,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 			@media (prefers-reduced-motion: reduce) {
 				* { transition: none; }
 			}
-		`, offscreenStyles];
+		`];
 	}
 
 	constructor() {
@@ -151,7 +150,6 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 	}
 
 	render() {
-		const forcedOffscreenSizelessStyles = OffSCREEN_SIZELESS ? {} : { height: '0px', width: '0px' };
 		const backdropVisible = this._state !== 'hidden';
 
 		return html`
@@ -164,14 +162,14 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 			<div aria-live="polite" id="d2l-live-region">
 				${backdropVisible ?
 					html`<d2l-backdrop-dirty-overlay
-						style=${styleMap({ top: `${this._dirtyDialogTop}px`, display: backdropVisible ? undefined : 'none' })}
+						style=${styleMap({ top: `${this._dirtyDialogTop}px` })}
 						description="${this.dirtyText}"
 						action="${this.dirtyButtonText}"
 						?inert=${this.dataState !== 'dirty'}
 					></d2l-backdrop-dirty-overlay>` : nothing }
-				<d2l-offscreen style="${styleMap(forcedOffscreenSizelessStyles)}">
+				<d2l-offscreen>
 					${this._ariaContent}
-				</div>
+				</d2l-offscreen>
 			</div>
 		`;
 	}
