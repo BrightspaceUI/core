@@ -3,13 +3,10 @@ import '../loading-spinner/loading-spinner.js';
 import './backdrop-dirty-overlay.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
-import { getFlag } from '../../helpers/flags.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
-
-const OffSCREEN_SIZELESS = getFlag('d2l-offscreen-sizeless', true);
 
 const BACKDROP_DELAY_MS = 800;
 const FADE_DURATION_MS = 500;
