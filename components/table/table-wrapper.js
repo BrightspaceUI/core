@@ -5,7 +5,6 @@ import { css, html, LitElement, nothing } from 'lit';
 import { cssSizes } from '../inputs/input-checkbox-styles.js';
 import { getComposedParent } from '../../helpers/dom.js';
 import { getFlag } from '../../helpers/flags.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { isPopoverSupported } from '../popover/popover-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
