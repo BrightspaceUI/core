@@ -148,7 +148,6 @@ describe('d2l-table-wrapper', () => {
 		);
 
 		['smaller', 'same', 'larger'].forEach(size => it(`sets scroll offset (sticky body cell is ${size})`, async() => {
-			mockFlag('GAUD-9530-exclude-sticky-columns-from-scroll-calculations', true);
 			const el = await fixture(`<${tagName} td-size="${size}"></${tagName}>`);
 			const scrollWrapper = el.shadowRoot.querySelector('d2l-table-wrapper').shadowRoot.querySelector('d2l-scroll-wrapper');
 			const expectedWidth = el.shadowRoot.querySelector(`${size === 'larger' ? 'td' : 'th'}.large-sticky`).clientWidth;
