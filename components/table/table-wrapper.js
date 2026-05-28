@@ -421,8 +421,6 @@ export class TableWrapper extends PropertyRequiredMixin(PageableMixin(SelectionM
 
 		this.dirtyText = null;
 		this.dirtyButtonText = null;
-
-		this._excludeStickyColumnsFromScrollCalculations = getFlag('GAUD-9530-exclude-sticky-columns-from-scroll-calculations', false);
 	}
 
 	connectedCallback() {
@@ -461,7 +459,7 @@ export class TableWrapper extends PropertyRequiredMixin(PageableMixin(SelectionM
 		return html`
 			<slot name="controls" @slotchange="${this._handleControlsSlotChange}"></slot>
 			${this.stickyHeaders && this._controlsScrolled ? html`<div class="d2l-sticky-headers-backdrop"></div>` : nothing}
-			${useScrollWrapper ? html`<d2l-scroll-wrapper scroll-area-offset=${ifDefined(this._excludeStickyColumnsFromScrollCalculations ? this._stickyWidth : undefined)} .customScrollers="${this._tableScrollers}">${slot}</d2l-scroll-wrapper>` : slot}
+			${useScrollWrapper ? html`<d2l-scroll-wrapper scroll-area-offset=${this._stickyWidth} .customScrollers="${this._tableScrollers}">${slot}</d2l-scroll-wrapper>` : slot}
 			${this._renderPagerContainer()}
 		`;
 	}
@@ -796,7 +794,7 @@ export class TableWrapper extends PropertyRequiredMixin(PageableMixin(SelectionM
 			}
 			if (headCell.hasAttribute('sticky')) stickyWidth += cellWidth;
 		}
-		if (this._excludeStickyColumnsFromScrollCalculations) this._stickyWidth = stickyWidth;
+		this._stickyWidth = stickyWidth;
 	}
 
 	_updateStickyAncestor(node, popoverOpened) {
