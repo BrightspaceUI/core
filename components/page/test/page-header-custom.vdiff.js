@@ -1,5 +1,6 @@
+import '../../button/button-icon.js';
 import { createTabs, pageHeaderCustomFixtures } from './page-header-custom-fixtures.js';
-import { expect, fixture, focusElem, html, nextFrame } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, hoverElem, html, nextFrame } from '@brightspace-ui/testing';
 
 describe('d2l-page-header-custom', () => {
 
@@ -88,6 +89,19 @@ describe('d2l-page-header-custom', () => {
 				<div slot="bottom" style="color: white;">Bottom</div>
 			</d2l-page-header-custom>`
 		);
+		await expect(elem).to.be.golden();
+	});
+
+	it('bottom-visible-on-ancestor-target', async() => {
+		const elem = await fixture(html`
+			<d2l-page-header-custom bottom-is-visible-on-ancestor-target>
+				<div slot="bottom" style="min-height: 50px;">
+					<d2l-button-icon icon="tier1:more" text="More" visible-on-ancestor></d2l-button-icon>
+				</div>
+			</d2l-page-header-custom>`
+		);
+		const bottom = elem.shadowRoot.querySelector('.bottom');
+		await hoverElem(bottom);
 		await expect(elem).to.be.golden();
 	});
 
