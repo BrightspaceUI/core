@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../skip-nav/skip-nav-main.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { getNextFocusable } from '../../helpers/focus.js';
 
 export const isWindows = window.navigator.userAgent.indexOf('Windows') > -1;
@@ -17,6 +18,11 @@ class PageHeaderCustom extends LitElement {
 
 	static get properties() {
 		return {
+			/**
+			 * When set, the bottom slot will be a "d2l-visible-on-ancestor-target"
+			 * @type {boolean}
+			 */
+			bottomIsVisibleOnAncestorTarget: { type: Boolean, attribute: 'bottom-is-visible-on-ancestor-target' },
 			/**
 			 * Whether to render a skip nav link
 			 * @type {boolean}
@@ -132,6 +138,7 @@ class PageHeaderCustom extends LitElement {
 
 	constructor() {
 		super();
+		this.bottomIsVisibleOnAncestorTarget = false;
 		this.hasSkipNav = false;
 		this._hasBottom = false;
 	}
@@ -187,8 +194,12 @@ class PageHeaderCustom extends LitElement {
 	}
 
 	#renderBottom() {
+		const bottomClasses = {
+			bottom: true,
+			'd2l-visible-on-ancestor-target': this.bottomIsVisibleOnAncestorTarget
+		};
 		return html`
-			<div class="bottom" ?hidden="${!this._hasBottom}">
+			<div class="${classMap(bottomClasses)}" ?hidden="${!this._hasBottom}">
 				<div class="max-width">
 					<div class="padding">
 						<slot name="bottom" @slotchange="${this.#handleBottomSlotChange}"></slot>
