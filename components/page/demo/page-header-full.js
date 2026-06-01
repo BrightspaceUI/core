@@ -1,3 +1,4 @@
+import '../../button/button-icon.js';
 import '../../colors/colors.js';
 import '../page-header-button.js';
 import '../page-header-custom.js';
@@ -71,7 +72,7 @@ class PageHeaderFullDemo extends RequesterMixin(LitElement) {
 
 	render() {
 		return html`
-			<d2l-page-header-custom has-skip-nav>
+			<d2l-page-header-custom bottom-is-visible-on-ancestor-target has-skip-nav>
 				<div class="full-nav-header" slot="top">
 					<div class="full-nav-header-left">
 						<span class="full-nav-logo">Logo</span>
@@ -94,6 +95,7 @@ class PageHeaderFullDemo extends RequesterMixin(LitElement) {
 						<a class="full-nav-footer-link" href="javascript:void(0)">Quizzes</a>
 						<a class="full-nav-footer-link" href="javascript:void(0)">Grades</a>
 						<a class="full-nav-footer-link" href="javascript:void(0)">Classlist</a>
+						<d2l-button-icon icon="tier1:more" text="More" visible-on-ancestor></d2l-button-icon>
 					</div>
 				</div>
 			</d2l-page-header-custom>

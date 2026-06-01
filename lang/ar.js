@@ -152,8 +152,8 @@ export default {
 	"components.more-less.more": "المزيد",
 	"components.object-property-list.item-placeholder-text": "عنصر نائب",
 	"components.overflow-group.moreActions": "مزيد من الإجراءات",
-	"components.page.header-nav-label": "Main",
-	"components.page.side-nav-label": "Side",
+	"components.page.header-nav-label": "الرئيسية",
+	"components.page.side-nav-label": "جانبية",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} مادة واحد}

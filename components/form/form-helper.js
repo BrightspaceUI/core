@@ -15,24 +15,34 @@ export const isElement = (node) => node && node.nodeType === Node.ELEMENT_NODE;
 
 export const isCustomElement = (node) => isElement(node) && node.nodeName.indexOf('-') !== -1;
 
-export const isCustomFormElement = (node) => isCustomElement(node) && !!node.formAssociated;
+export const isCustomFormElement = (node) => isCustomElement(node) && Boolean(node.formAssociated);
+
+export const isCustomFormElementContainer = (node) => isCustomElement(node) && Boolean(node.isCustomFormElementContainer);
 
 export const isNativeFormElement = (node) => {
 	if (!isElement(node)) {
 		return false;
 	}
 	const nodeName = node.nodeName.toLowerCase();
-	return !!formElements[nodeName];
+	return Boolean(formElements[nodeName]);
 };
 
-const _findFormElementsHelper = (ele, eles, isFormElementPredicate, visitChildrenPredicate) => {
-	if (isNativeFormElement(ele) || isCustomFormElement(ele) || isFormElementPredicate(ele)) {
-		eles.push(ele);
+const getElementChildren = (elem) => {
+	if (isCustomFormElementContainer(elem)) {
+		return elem.shadowRoot.children;
 	}
-	if (visitChildrenPredicate(ele)) {
-		const children = ele.tagName === 'SLOT' && ['primary', 'secondary'].includes(ele.name) ? ele.assignedNodes() : ele.children;
+
+	return elem.tagName === 'SLOT' && ['primary', 'secondary'].includes(elem.name) ? elem.assignedNodes() : elem.children;
+};
+
+const _findFormElementsHelper = (elem, elems, isFormElementPredicate, visitChildrenPredicate) => {
+	if (isNativeFormElement(elem) || isCustomFormElement(elem) || isFormElementPredicate(elem)) {
+		elems.push(elem);
+	}
+	if (visitChildrenPredicate(elem)) {
+		const children = getElementChildren(elem);
 		for (const child of children) {
-			_findFormElementsHelper(child, eles, isFormElementPredicate, visitChildrenPredicate);
+			_findFormElementsHelper(child, elems, isFormElementPredicate, visitChildrenPredicate);
 		}
 	}
 };

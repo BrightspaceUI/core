@@ -3,15 +3,10 @@ import '../loading-spinner/loading-spinner.js';
 import './backdrop-dirty-overlay.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
-import { classMap } from 'lit/directives/class-map.js';
-import { getFlag } from '../../helpers/flags.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { offscreenStyles } from '../offscreen/offscreen.js';
 
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
-
-const OffSCREEN_SIZELESS = getFlag('d2l-offscreen-sizeless', true);
 
 const BACKDROP_DELAY_MS = 800;
 const FADE_DURATION_MS = 500;
@@ -139,7 +134,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 			@media (prefers-reduced-motion: reduce) {
 				* { transition: none; }
 			}
-		`, offscreenStyles];
+		`];
 	}
 
 	constructor() {
@@ -152,18 +147,26 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 	}
 
 	render() {
-		const forcedOffscreenSizelessStyles = OffSCREEN_SIZELESS ? {} : { height: '0px', width: '0px' };
-		const dirtyStateVisible = this._state !== 'hidden' && this.dataState === 'dirty';
+		const backdropVisible = this._state !== 'hidden';
 
 		return html`
-			${this._state === 'hidden' ? nothing :
+			${backdropVisible ?
 					html`<div id="visible">
 						<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#handleTransitionEnd}"></div>
 						<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
-					</div>`
+					</div>` : nothing
 			}
-			<div aria-live="polite" class="${classMap({ 'd2l-offscreen': !dirtyStateVisible })}" style="${styleMap(dirtyStateVisible ? {} : forcedOffscreenSizelessStyles)}">
-				${this.dataState === 'dirty' ? this.#renderDirtyOverlay() : this._ariaContent}
+			<div aria-live="polite" id="d2l-live-region">
+				${backdropVisible ?
+					html`<d2l-backdrop-dirty-overlay
+						style=${styleMap({ top: `${this._dirtyDialogTop}px` })}
+						description="${this.dirtyText}"
+						action="${this.dirtyButtonText}"
+						?inert=${this.dataState !== 'dirty'}
+					></d2l-backdrop-dirty-overlay>` : nothing }
+				<d2l-offscreen>
+					${this._ariaContent}
+				</d2l-offscreen>
 			</div>
 		`;
 	}
@@ -257,7 +260,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 	#fade() {
 		let hideImmediately = reduceMotion || this._state === 'showing';
 		if (this._state === 'shown') {
-			const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('.backdrop')).opacity;
+			const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('#d2l-live-region')).opacity;
 			hideImmediately ||= (currentOpacity === '0');
 		}
 
@@ -294,14 +297,6 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 		const containingBlock = this.#getBackdropTarget();
 
 		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
-	}
-
-	#renderDirtyOverlay() {
-		return html`<d2l-backdrop-dirty-overlay
-			style=${styleMap({ top: `${this._dirtyDialogTop}px` })}
-			description="${this.dirtyText}"
-			action="${this.dirtyButtonText}"
-		></d2l-backdrop-dirty-overlay>`;
 	}
 
 	#setLiveArea(content, { delay } = {}) {
