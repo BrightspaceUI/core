@@ -67,3 +67,18 @@ function createMessageNode(message) {
 	div.innerText = message;
 	return div;
 }
+
+export function clearAnnounce(messageIndex) {
+	if (messages === null) return;
+	if (!container) return;
+
+	container.setAttribute('aria-live', 'off');
+
+	const childNode = [...container.childNodes].find((node) => node.id === `${messageIndex}`);
+	if (childNode) {
+		childNode.parentNode.removeChild(childNode);
+		delete messages[messageIndex];
+	}
+
+	container.setAttribute('aria-live', 'polite');
+}
