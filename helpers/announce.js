@@ -1,12 +1,13 @@
+import { getUniqueId } from './uniqueId.js';
+
 let timeoutId = null;
 let container = null;
 let messages = null;
-let messageIndex = 0;
 
 export function announce(message) {
 	if (!message) return;
-	if (messages === null) messages = {};
-	if (!messages[message]) messages[message] = ++messageIndex;
+	if (messages === null) messages = new Map();
+	const msgId = getUniqueId();
 
 	/* Reuse the existing aria-live container if possible, since multiple live regions
 	announcing at the same time will cause one or more messages to be ignored, regardless
@@ -34,51 +35,48 @@ export function announce(message) {
 	const elem = [...container.childNodes].find((c) => c.textContent === message);
 	if (elem) {
 		elem.parentNode.removeChild(elem);
-		const newMessage = message.concat('\u00A0');
-		messages[newMessage] = messages[message];
-		delete messages[message];
-		message = newMessage;
+		message = message.concat('\u00A0');
 	}
 	setTimeout(() => {
-		container.appendChild(createMessageNode(message));
+		container.appendChild(createMessageNode(message, msgId));
 	}, 200);
 
 	/* Need to purge old messages so that they are not discovered by screen readers
 	using virtual cursor, but we need to give the browser ample time to hand off
 	the change to the AT before removing it. ex. otherwise sometimes VO will not announce. */
-	timeoutId = setTimeout(() => {
-		container.parentNode.removeChild(container);
-		container = null;
-		timeoutId = null;
-		messages = null;
-		messageIndex = 0;
-	}, 10000);
+	timeoutId = setTimeout(() => reset(), 10000);
 
-	return messages[message];
+	return msgId;
 }
 
-function createMessageNode(message) {
-	const div = document.createElement('div');
-	div.id = messages[message];
-	div.style.display = 'inline-block';
-	div.style.position = 'fixed';
-	div.style.height = '0';
-	div.style.clip = 'rect(0px,0px,0px,0px)';
-	div.innerText = message;
-	return div;
+function createMessageNode(message, msgId) {
+	const txtNode = document.createTextNode(message);
+	messages.set(msgId, txtNode);
+	return txtNode;
 }
 
-export function clearAnnounce(messageIndex) {
+export function clearAnnounce(msgId) {
 	if (messages === null) return;
 	if (!container) return;
 
-	container.setAttribute('aria-live', 'off');
-
-	const childNode = [...container.childNodes].find((node) => node.id === `${messageIndex}`);
-	if (childNode) {
-		childNode.parentNode.removeChild(childNode);
-		delete messages[messageIndex];
+	const txtNode = messages.get(msgId);
+	if (txtNode) {
+		txtNode.parentNode.removeChild(txtNode);
+		messages.delete(msgId);
 	}
-
-	container.setAttribute('aria-live', 'polite');
 }
+
+function reset() {
+	container.parentNode.removeChild(container);
+	container = null;
+	timeoutId = null;
+	messages = null;
+}
+
+function clearAllAnnounce() {
+	if (container === null) return;
+	if (timeoutId !== null) clearTimeout(timeoutId);
+	reset();
+}
+
+document.addEventListener('d2l-navigation', () => clearAllAnnounce());
