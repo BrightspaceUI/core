@@ -2,11 +2,10 @@ import { getUniqueId } from './uniqueId.js';
 
 let timeoutId = null;
 let container = null;
-let messages = null;
+const messages = new Map();
 
 export function announce(message) {
 	if (!message) return;
-	if (messages === null) messages = new Map();
 	const msgId = getUniqueId();
 
 	/* Reuse the existing aria-live container if possible, since multiple live regions
@@ -52,7 +51,7 @@ export function announce(message) {
 }
 
 export function clearAnnounce(msgId) {
-	if (!msgId || messages === null || !container) return;
+	if (!msgId || !messages.has(msgId) || container == null) return;
 
 	const txtNode = messages.get(msgId);
 	if (txtNode) {
@@ -63,10 +62,9 @@ export function clearAnnounce(msgId) {
 
 function reset() {
 	container.parentNode.removeChild(container);
+	messages.clear();
 	container = null;
 	timeoutId = null;
-	messages.clear();
-	messages = null;
 }
 
 function clearAllAnnounce() {
