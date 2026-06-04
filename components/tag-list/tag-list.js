@@ -374,7 +374,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		}
 		this._contentReady = true;
 		await this.updateComplete;
-		refocus.focus?.();
+		refocus?.focus?.();
 	}
 
 	async _handleSlotChange() {
@@ -407,7 +407,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			this._refocus = this.shadowRoot.querySelector('.d2l-tag-list-button');
 		}
 		await this._refocus?.updateComplete;
-		(this._refocus || refocus).focus?.();
+		(this._refocus || refocus)?.focus?.();
 		this._refocus = null;
 	}
 
