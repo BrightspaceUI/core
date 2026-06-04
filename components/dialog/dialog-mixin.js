@@ -107,6 +107,12 @@ export const DialogMixin = superclass => class extends superclass {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		window.removeEventListener('d2l-mvc-dialog-open', this._handleMvcDialogOpen);
+
+		// remove handlers, reset state and allow body scrolling if dialog is removed from the DOM before fully closing
+		this._removeHandlers();
+		this._state = null;
+		this.opened = false;
+		if (this._useNative) allowBodyScroll(this);
 	}
 
 	async updated(changedProperties) {
