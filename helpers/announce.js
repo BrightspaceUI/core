@@ -38,26 +38,21 @@ export function announce(message) {
 		message = message.concat('\u00A0');
 	}
 	setTimeout(() => {
-		container.appendChild(createMessageNode(message, msgId));
+		const txtNode = document.createTextNode(message);
+		messages.set(msgId, txtNode);
+		container.appendChild(txtNode);
 	}, 200);
 
 	/* Need to purge old messages so that they are not discovered by screen readers
 	using virtual cursor, but we need to give the browser ample time to hand off
 	the change to the AT before removing it. ex. otherwise sometimes VO will not announce. */
-	timeoutId = setTimeout(() => reset(), 10000);
+	timeoutId = setTimeout(reset, 10000);
 
 	return msgId;
 }
 
-function createMessageNode(message, msgId) {
-	const txtNode = document.createTextNode(message);
-	messages.set(msgId, txtNode);
-	return txtNode;
-}
-
 export function clearAnnounce(msgId) {
-	if (messages === null) return;
-	if (!container) return;
+	if (!msgId || messages === null || !container) return;
 
 	const txtNode = messages.get(msgId);
 	if (txtNode) {
@@ -70,6 +65,7 @@ function reset() {
 	container.parentNode.removeChild(container);
 	container = null;
 	timeoutId = null;
+	messages.clear();
 	messages = null;
 }
 
@@ -79,4 +75,4 @@ function clearAllAnnounce() {
 	reset();
 }
 
-document.addEventListener('d2l-navigation', () => clearAllAnnounce());
+document.addEventListener('d2l-navigation', clearAllAnnounce);
