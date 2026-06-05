@@ -1,6 +1,5 @@
 {
-  "tool": "Daylight Components",
-  "experience": "Software Services",
+  "tool": "UI Platform & Components",
   "overrides": [
     {
       "pattern": "**/test/*.test.js",
