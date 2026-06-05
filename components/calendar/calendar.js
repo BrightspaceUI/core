@@ -740,9 +740,10 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 				let numDaysChange;
 				const dayOfTheWeek = this._focusDate.getDay();
 				if (isRtl) {
-					numDaysChange = 6 - dayOfTheWeek + calendarData.firstDayOfWeek;
-					if (numDaysChange > 6) {
-						numDaysChange -= daysInWeek;
+					numDaysChange = 0;
+					if (dayOfTheWeek !== calendarData.firstDayOfWeek) {
+						const daysOffset = calendarData.firstDayOfWeek - dayOfTheWeek;
+						numDaysChange = (daysOffset > 0) ? daysOffset - daysInWeek : daysOffset;
 					}
 				} else {
 					numDaysChange = dayOfTheWeek - calendarData.firstDayOfWeek;
@@ -764,11 +765,12 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 				let numDaysChange;
 				const dayOfTheWeek = this._focusDate.getDay();
 				if (isRtl) {
-					numDaysChange = dayOfTheWeek - calendarData.firstDayOfWeek;
-					if (numDaysChange < 0) {
-						numDaysChange += daysInWeek;
+					numDaysChange = 0;
+					const lastDayOfWeek = calendarData.firstDayOfWeek > 0 ? calendarData.firstDayOfWeek - 1 : 6;
+					if (dayOfTheWeek !== lastDayOfWeek) {
+						const daysOffset = lastDayOfWeek - dayOfTheWeek;
+						numDaysChange = (daysOffset < 0) ? daysOffset + daysInWeek : daysOffset;
 					}
-					numDaysChange *= -1;
 				} else {
 					numDaysChange = 6 - dayOfTheWeek + calendarData.firstDayOfWeek;
 					if (numDaysChange > 6) {
