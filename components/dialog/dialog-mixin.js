@@ -5,7 +5,6 @@ import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getFirstFocusableRelative, getNextFocusable, isFocusable } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -25,8 +24,6 @@ window.D2L.DialogMixin.hasNative = (window.HTMLDialogElement !== undefined);
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
 const defaultMargin = { top: 75, right: 30, bottom: 30, left: 30 };
-
-const closeDialogWhenDisconnectedFlag = getFlag('GAUD-10113-close-dialog-when-disconnected', true);
 
 export const DialogMixin = superclass => class extends superclass {
 
@@ -110,11 +107,6 @@ export const DialogMixin = superclass => class extends superclass {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		window.removeEventListener('d2l-mvc-dialog-open', this._handleMvcDialogOpen);
-
-		// If the dialog is disconnected before the close animation finishes
-		if (this.opened && closeDialogWhenDisconnectedFlag) {
-			this._handleClose();
-		}
 	}
 
 	async updated(changedProperties) {
