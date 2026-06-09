@@ -51,11 +51,8 @@ export const _generateHtmlBlockRootStyles = (selector) => {
  * A private helper method that should not be used by general consumers
  */
 export const _generateHtmlBlockContentStyles = (selector) => {
-	if (selector && !_isValidCssSelector(selector)) {
-		return;
-	} else if (!selector) {
-		selector = '';
-	}
+	if (!selector) selector = '';
+	else if (!_isValidCssSelector(selector)) return;
 
 	selector = unsafeCSS(selector);
 	return css`
