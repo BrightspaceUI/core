@@ -289,11 +289,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return html`
 			<slot name="controls"></slot>
 			<slot name="header"></slot>
-			<div role="${role}" aria-label="${ifDefined(ariaLabel)}" class="d2l-list-content">
-				<div style="position:relative">
-					<slot id="list-slot" @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
-					<d2l-backdrop-loading @d2l-backdrop-dirty-overlay-action=${this._handleDirtyButton} for="list-slot" .dataState='${this.dataState}' dirty-text="${this.dirtyText}" dirty-button-text="${this.dirtyButtonText}"></d2l-backdrop-loading>
-				</div>
+			<div role="${role}" style="position:relative" aria-label="${ifDefined(ariaLabel)}" class="d2l-list-content">
+				<slot id="list-slot" @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
+				<d2l-backdrop-loading @d2l-backdrop-dirty-overlay-action=${this._handleDirtyButton} for="list-slot" .dataState='${this.dataState}' dirty-text="${this.dirtyText}" dirty-button-text="${this.dirtyButtonText}"></d2l-backdrop-loading>
 			</div>
 			${this._renderPagerContainer()}
 		`;
