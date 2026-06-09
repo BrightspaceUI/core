@@ -191,4 +191,19 @@ describe('d2l-backdrop', () => {
 
 	});
 
+	describe('on disconnect', () => {
+		it('should re-enable body scrolling when disconnected', async() => {
+			const elem = await fixture(backdropFixture);
+			const backdrop = elem.querySelector('d2l-backdrop');
+
+			backdrop.shown = true;
+			await backdrop.updateComplete;
+
+			expect(document.body.style.overflow).to.equal('hidden');
+
+			backdrop.remove();
+			expect(document.body.style.overflow).to.equal('');
+		});
+	});
+
 });
