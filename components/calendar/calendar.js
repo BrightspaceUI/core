@@ -737,21 +737,10 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 				break;
 			case keyCodes.HOME: {
 				preventDefault = true;
-				let numDaysChange;
 				const dayOfTheWeek = this._focusDate.getDay();
-				if (isRtl) {
-					numDaysChange = 0;
-					if (dayOfTheWeek !== calendarData.firstDayOfWeek) {
-						const daysOffset = calendarData.firstDayOfWeek - dayOfTheWeek;
-						numDaysChange = (daysOffset > 0) ? daysOffset - daysInWeek : daysOffset;
-					}
-				} else {
-					numDaysChange = dayOfTheWeek - calendarData.firstDayOfWeek;
-					if (numDaysChange < 0) {
-						numDaysChange += daysInWeek;
-					}
-					numDaysChange *= -1;
-				}
+				let numDaysChange = dayOfTheWeek - calendarData.firstDayOfWeek;
+				if (numDaysChange < 0) numDaysChange += daysInWeek;
+				numDaysChange *= -1;
 				const possibleFocusDate = new Date(
 					this._focusDate.getFullYear(),
 					this._focusDate.getMonth(),
@@ -762,21 +751,9 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 				break;
 			} case keyCodes.END: {
 				preventDefault = true;
-				let numDaysChange;
 				const dayOfTheWeek = this._focusDate.getDay();
-				if (isRtl) {
-					numDaysChange = 0;
-					const lastDayOfWeek = calendarData.firstDayOfWeek > 0 ? calendarData.firstDayOfWeek - 1 : 6;
-					if (dayOfTheWeek !== lastDayOfWeek) {
-						const daysOffset = lastDayOfWeek - dayOfTheWeek;
-						numDaysChange = (daysOffset < 0) ? daysOffset + daysInWeek : daysOffset;
-					}
-				} else {
-					numDaysChange = 6 - dayOfTheWeek + calendarData.firstDayOfWeek;
-					if (numDaysChange > 6) {
-						numDaysChange -= daysInWeek;
-					}
-				}
+				let numDaysChange = 6 - dayOfTheWeek + calendarData.firstDayOfWeek;
+				if (numDaysChange > 6) numDaysChange -= daysInWeek;
 				const possibleFocusDate = new Date(
 					this._focusDate.getFullYear(),
 					this._focusDate.getMonth(),
