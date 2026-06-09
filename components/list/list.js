@@ -96,10 +96,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 */
 			separators: { type: String, reflect: true },
 			/**
-			 * Show selection only on hover, focus or if at least one item is selected. Exclusive for the tile layout
-			 * @type {boolean}
-			 */
-			/**
 			 * The state of data in the table. Set to 'clean' when the data represents the user's latest selections, 'dirty' when the data does not represent the user's latest selections, and 'loading' if the data is being actively refreshed
 			 * @type {'clean'|'dirty'|'loading'}
 			 */
@@ -133,6 +129,10 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				},
 				type: String
 			},
+			/**
+			 * Show selection only on hover, focus or if at least one item is selected. Exclusive for the tile layout
+			 * @type {boolean}
+			 */
 			selectionWhenInteracted: { type: Boolean, attribute: 'selection-when-interacted', reflect: true },
 			_breakpoint: { type: Number, reflect: true },
 			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' }
