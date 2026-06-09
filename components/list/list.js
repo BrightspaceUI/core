@@ -422,9 +422,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return items.length > 0 ? items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
 	}
 
-	_getLazyLoadItemsFoo() {
-	}
-
 	_handleDirtyButton() {
 		/** Dispatched when the action button on the dirty overlay is clicked */
 		this.dispatchEvent(new CustomEvent('d2l-list-dirty-button-clicked'));
