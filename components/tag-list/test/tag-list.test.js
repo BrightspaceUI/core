@@ -1,8 +1,9 @@
 import './tag-list-item-mixin-consumer.js';
 import '../tag-list.js';
 import '../tag-list-item.js';
-import { clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, html, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 import { getComposedActiveElement, getPreviousFocusable } from '../../../helpers/focus.js';
+import { spy } from 'sinon';
 
 const basicFixture = html`
 	<d2l-tag-list description="Testing Tags">
@@ -72,6 +73,33 @@ describe('d2l-tag-list', () => {
 			clickElem(button);
 
 			await oneEvent(elem, 'd2l-tag-list-clear');
+		});
+	});
+
+	describe('focus management', () => {
+		// Resizing logic removes focus from items, so we test proper focus management here
+
+		it('should keep focus on resize', async() => {
+			const elem = await fixture(basicFixture);
+			const item = elem._items[0];
+			const itemContent = item.shadowRoot.querySelector('.tag-list-item-content');
+			await focusElem(itemContent);
+			expect(getComposedActiveElement()).to.equal(itemContent);
+			await elem._handleResize();
+			expect(getComposedActiveElement()).to.equal(itemContent);
+		});
+
+		it('should not re-focus external elements on resize', async() => {
+			const elem = await fixture(html`<div>
+				${basicFixture}
+				<button id="external-button">External Button</button>
+			</div>`);
+			const button = elem.querySelector('#external-button');
+			await focusElem(button);
+			spy(button, 'focus');
+			await elem.querySelector('d2l-tag-list')._handleResize();
+			expect(getComposedActiveElement()).to.equal(button);
+			expect(button.focus.called).to.be.false;
 		});
 	});
 });
