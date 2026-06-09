@@ -34,13 +34,9 @@ jobs:
       - name: Build
         run: npm run build
       - name: Accessibility Tests
-        id: at
         run: npm run test:axe
       - name: Upload test report
-        if: >
-          always() &&
-          github.triggering_actor != 'dependabot[bot]' &&
-          (steps.at.outcome == 'failure' || steps.at.outcome == 'success')
+        if: (!cancelled()) && github.actor != 'dependabot[bot]'
         uses: Brightspace/test-reporting-action@main
         with:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
@@ -67,13 +63,9 @@ jobs:
       - name: Node Import Tests
         run: npm run test:node-imports
       - name: Unit Tests
-        id: ut
         run: npm run test:unit
       - name: Upload test report
-        if: >
-          always() &&
-          github.triggering_actor != 'dependabot[bot]' &&
-          (steps.ut.outcome == 'failure' || steps.ut.outcome == 'success')
+        if: (!cancelled()) && github.actor != 'dependabot[bot]'
         uses: Brightspace/test-reporting-action@main
         with:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
