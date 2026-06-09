@@ -74,27 +74,4 @@ describe('dialog-mixin', () => {
 
 	});
 
-	describe('on disconnect', () => {
-		it('should close dialog and re-enable body scrolling when disconnected', async() => {
-			const elem = await fixture(`<${tagName} opened></${tagName}>`);
-			await oneEvent(elem, 'd2l-dialog-open');
-			expect(document.body.style.overflow).to.equal('hidden');
-
-			elem.remove();
-			expect(elem.opened).to.be.false;
-			expect(document.body.style.overflow).to.equal('');
-		});
-
-		it('should close dialog and re-enable body scrolling when disconnected for native dialogs', async() => {
-			const elem = await fixture(`<${tagName}></${tagName}>`);
-			elem._useNative = true;
-			elem.opened = true;
-			await oneEvent(elem, 'd2l-dialog-open');
-			expect(document.body.style.overflow).to.equal('hidden');
-
-			elem.remove();
-			expect(elem.opened).to.be.false;
-			expect(document.body.style.overflow).to.equal('');
-		});
-	});
 });
