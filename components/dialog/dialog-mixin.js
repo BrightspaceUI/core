@@ -485,7 +485,7 @@ export const DialogMixin = superclass => class extends superclass {
 	_removeHandlers() {
 		window.removeEventListener('resize', this._updateSize);
 		this.removeEventListener('touchstart', this._handleTouchStart);
-		if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-dialog-content').removeEventListener('scroll', this._updateOverflow);
+		this.shadowRoot?.querySelector('.d2l-dialog-content')?.removeEventListener('scroll', this._updateOverflow);
 	}
 
 	_render(inner, info, iframeTopOverride) {
