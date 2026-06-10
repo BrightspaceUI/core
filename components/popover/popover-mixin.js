@@ -1,6 +1,7 @@
 import '../backdrop/backdrop.js';
 import '../colors/colors.js';
 import '../focus-trap/focus-trap.js';
+import '../../helpers/viewport-size.js';
 import { addResizeNoopEventListener, getComposedParent, isComposedAncestor, removeResizeNoopEventListener } from '../../helpers/dom.js';
 import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { css, html, nothing } from 'lit';
@@ -242,6 +243,7 @@ export const PopoverMixin = superclass => class extends superclass {
 			:host([_mobile][_mobile-tray-location="inline-start"][opened]) .content-container,
 			:host([_mobile][_mobile-tray-location="inline-end"][opened]) .content-container {
 				height: 100vh;
+				height: calc(var(--d2l-vh, 1vh) * 100);
 			}
 
 			:host([_mobile][_mobile-tray-location]) > .pointer {
