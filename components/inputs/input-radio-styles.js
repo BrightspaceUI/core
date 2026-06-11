@@ -130,8 +130,6 @@ function generateRadioStyles(selector, isInputContainer) {
 			}
 			${selector}.d2l-input-radio-label-disabled > * {
 				color: var(--d2l-theme-text-color-static-standard);
-			}
-			${selector}.d2l-input-radio-label-disabled > * {
 				opacity: var(--d2l-theme-opacity-disabled-control);
 			}
 
