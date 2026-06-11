@@ -4,7 +4,8 @@ import { clickElem, expect, fixture, focusElem, hoverElem, html } from '@brights
 describe('button-move', () => {
 	[
 		{ category: 'normal', template: theme => html`<d2l-button-move text="Reorder Item" theme="${theme}"></d2l-button-move>` },
-		{ category: 'dark', template: theme => html`<div style="padding: 20px; background: black;"><d2l-button-move text="Reorder Item" theme="${theme}"></d2l-button-move></div>` }
+		{ category: 'dark', template: theme => html`<div style="padding: 20px; background: black;"><d2l-button-move text="Reorder Item" theme="${theme}"></d2l-button-move></div>` },
+		{ category: 'side-to-side', template: () => html`<d2l-button-move text="Reorder Item" theme="normal" side-to-side></d2l-button-move>` }
 	].forEach(({ category, template }) => {
 
 		describe(category, () => {
