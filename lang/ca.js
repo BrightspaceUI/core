@@ -120,7 +120,7 @@ export default {
 	"components.input-date-time-range-to.to": "Fins a",
 	"components.input-number.hintDecimalDuplicate": "Ja hi ha un decimal en aquest nombre",
 	"components.input-number.hintDecimalIncorrectComma": "Per afegir un decimal, feu servir el caràcter coma “,”",
-	"components.input-number.hintDecimalIncorrectPeriod": "Per afegir un decimal, utilitzeu el caràcter punt \".\"",
+	"components.input-number.hintDecimalIncorrectPeriod": "Per afegir un decimal, utilitzeu el caràcter punt «.»",
 	"components.input-number.hintInteger": "Aquest camp només accepta valors enters (sense decimals)",
 	"components.input-search.clear": "Esborrar cerca",
 	"components.input-search.defaultPlaceholder": "Cercar...",
