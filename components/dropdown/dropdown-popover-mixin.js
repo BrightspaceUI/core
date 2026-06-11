@@ -1,4 +1,5 @@
 import '../button/button.js';
+import '../../helpers/viewport-size.js';
 import '../../helpers/visualReady.js';
 import { css, html } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
@@ -164,7 +165,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 
 			:host([_mobile][_mobile-tray-location="inline-start"][opened]) .dropdown-content-layout,
 			:host([_mobile][_mobile-tray-location="inline-end"][opened]) .dropdown-content-layout {
-				height: 100vh;
+				height: calc(var(--d2l-vh, 1vh) * 100);
 			}
 		`];
 	}
