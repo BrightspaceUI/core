@@ -80,8 +80,12 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 			 * ACCESSIBILITY: REQUIRED: Accessible text for the button
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true }
-
+			text: { type: String, reflect: true },
+			/**
+			 * Renders the buttons in a side by side orientation
+			 * @type {boolean}
+			 */
+			sideToSide: { type: Boolean, attribute: 'side-to-side', reflect: true }
 		};
 	}
 
@@ -164,6 +168,13 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 				:host([disabled-up]) .up-layer,
 				:host([disabled-down]) .down-layer {
 					cursor: default;
+				}
+				:host([side-to-side]:not(:dir(rtl))) {
+					transform: rotate(-90deg);
+				}
+
+				:host([side-to-side]:dir(rtl)) {
+					transform: rotate(90deg);
 				}
 			`
 		];

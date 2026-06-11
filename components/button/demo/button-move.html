@@ -34,5 +34,18 @@
 				</template>
 			</d2l-demo-snippet>
 
+			<h2>Move Button Side to Side</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-button-move id="sts-move-button" text="Reorder Item" side-to-side></d2l-button-move>
+					<script>
+						document.querySelector('#sts-move-button').addEventListener('d2l-button-move-action', e => {
+							console.log('d2l-button-move-action side-to-side', e.target, e.detail);
+						});
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
 	</body>
 </html>
