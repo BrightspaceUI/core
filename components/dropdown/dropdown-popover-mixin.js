@@ -165,6 +165,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 			:host([_mobile][_mobile-tray-location="inline-start"][opened]) .dropdown-content-layout,
 			:host([_mobile][_mobile-tray-location="inline-end"][opened]) .dropdown-content-layout {
 				height: 100vh;
+				height: calc(var(--d2l-vh, 1vh) * 100);
 			}
 		`];
 	}
