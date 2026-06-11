@@ -49,8 +49,8 @@ function generateRadioStyles(selector, isInputContainer) {
 			border: 2px solid var(--d2l-input-radio-border-color-hover-focus, var(--d2l-theme-border-color-focus));
 		}
 		${inputSelector}[aria-invalid="true"] {
-			border-color: var(--d2l-theme-status-color-error);
 			--d2l-input-radio-border-color-hover-focus: var(--d2l-theme-status-color-error);
+			border-color: var(--d2l-theme-status-color-error);
 		}
 		${inputSelector}:disabled,
 		${inputSelector}.d2l-disabled {
@@ -67,9 +67,9 @@ function generateRadioStyles(selector, isInputContainer) {
 
 		@media (prefers-contrast: more) {
 			${inputSelector} {
-				forced-color-adjust: none;
-				background-color: Background;
+				background-color: Canvas;
 				border-color: ButtonText;
+				forced-color-adjust: none;
 			}
 			${inputSelector}[aria-checked="true"],
 			${inputSelector}:checked {
@@ -94,15 +94,15 @@ function generateRadioStyles(selector, isInputContainer) {
 			}
 
 			${inputSelector}[aria-invalid="true"] {
-				border-color: var(--d2l-theme-status-color-error);
 				--d2l-input-radio-border-color-hover-focus: var(--d2l-theme-status-color-error);
+				border-color: var(--d2l-theme-status-color-error);
 			}
 
 			${inputSelector}.d2l-input-radio-disabled-tooltip.d2l-hovering,
 			${inputSelector}.d2l-input-radio-disabled-tooltip:hover,
 			${inputSelector}.d2l-input-radio-disabled-tooltip:focus {
 				background-blend-mode: initial;
-				background-color: Background;
+				background-color: Canvas;
 			}
 		}
 
