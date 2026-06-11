@@ -43,6 +43,9 @@ describe('object-property-list', () => {
 			<d2l-object-property-list>
 				<d2l-object-property-list-item icon="tier1:grade" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat cum totam! Enim, sunt."></d2l-object-property-list-item>
 				<d2l-object-property-list-item icon="tier1:alert" text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci repellat cum totam! Enim, sunt."></d2l-object-property-list-item>
+				<d2l-object-property-list-item text="Accounting_Financial_Management_Mathematics_Physics_Antidisestablishmentarianism"></d2l-object-property-list-item>
+				<d2l-object-property-list-item-link text="Accounting_Financial_Management_Mathematics_Physics_Antidisestablishmentarianism"></d2l-object-property-list-item-link>
+				<d2l-object-property-list-item-tooltip-help text="Accounting_Financial_Management_Mathematics_Physics_Antidisestablishmentarianism"></d2l-object-property-list-item-tooltip-help>
 			</d2l-object-property-list>
 		` },
 		{ name: 'focus', template: createObjectPropertyList({ statusIndicator: true }), action: elem => focusElem(elem.querySelector('d2l-object-property-list-item-link')) },
