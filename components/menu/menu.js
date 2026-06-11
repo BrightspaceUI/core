@@ -287,6 +287,7 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 
 	_onHideComplete() {
 		this.resetFocusables();
+		this.focusLast();
 		this.active = this.isActive();
 	}
 
