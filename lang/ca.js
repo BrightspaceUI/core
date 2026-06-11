@@ -69,8 +69,8 @@ export default {
 				other {El número ha de ser superior a {min} i inferior o igual a {max}.}
 			}}
 			other {{maxExclusive, select,
-				true {Number must be greater than or equal to {min} and less than {max}.}
-				other {Number must be greater than or equal to {min} and less than or equal to {max}.}
+				true {El número ha de ser igual o superior a {min} i inferior a {max}.}
+				other {El número ha de ser igual o superior a {min} i igual o inferior a {max}.}
 			}}
 		}`,
 	"components.form-element.input.number.rangeOverflow":
