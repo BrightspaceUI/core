@@ -19,9 +19,11 @@
 				<template>
 					<d2l-button-move id="move-button" text="Reorder Item"></d2l-button-move>
 					<script>
-						document.querySelector('#move-button').addEventListener('d2l-button-move-action', e => {
-							console.log('d2l-button-move-action', e.target, e.detail);
-						});
+						(demo => {
+							demo.querySelector('d2l-button-move').addEventListener('d2l-button-move-action', e => {
+								console.log('d2l-button-move-action', e.target, e.detail);
+							});
+						})(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
@@ -38,11 +40,13 @@
 
 			<d2l-demo-snippet>
 				<template>
-					<d2l-button-move id="sts-move-button" text="Reorder Item" side-to-side></d2l-button-move>
+					<d2l-button-move text="Reorder Item" side-to-side></d2l-button-move>
 					<script>
-						document.querySelector('#sts-move-button').addEventListener('d2l-button-move-action', e => {
-							console.log('d2l-button-move-action side-to-side', e.target, e.detail);
-						});
+						(demo => {
+							demo.querySelector('d2l-button-move').addEventListener('d2l-button-move-action', e => {
+								console.log('d2l-button-move-action side-to-side', e.target, e.detail);
+							});
+						})(document.currentScript.parentNode);
 					</script>
 				</template>
 			</d2l-demo-snippet>
