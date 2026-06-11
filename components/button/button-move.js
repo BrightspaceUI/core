@@ -169,12 +169,8 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 				:host([disabled-down]) .down-layer {
 					cursor: default;
 				}
-				:host([side-to-side]:not(:dir(rtl))) {
-					transform: rotate(-90deg);
-				}
-
-				:host([side-to-side]:dir(rtl)) {
-					transform: rotate(90deg);
+				:host([side-to-side]) {
+					transform: rotate(calc(-90deg * var(--d2l-length-factor)));
 				}
 			`
 		];
