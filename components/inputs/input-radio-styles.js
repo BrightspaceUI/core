@@ -12,13 +12,54 @@ registerSemanticVariableForSvgImageUrl(
 	</svg>`
 );
 
-function generateRadioStyles(selector, isInputContainer) {
-	if (!_isValidCssSelector(selector)) return '';
-	const inputSelector = unsafeCSS(isInputContainer ? `${selector} > input[type="radio"]` : selector);
-	selector = unsafeCSS(selector);
+function _getRadioStyleSelectors(inputSelectors) {
+	const parseAndJoin = selectors => unsafeCSS(selectors.map(s => s.trim()).join(',\n'));
+	return {
+		simple: parseAndJoin(inputSelectors),
+		checked: parseAndJoin(inputSelectors.map(s => `
+			${s}[aria-checked="true"],
+			${s}:checked
+		`)),
+		checkedAfter: parseAndJoin(inputSelectors.map(s => `
+			${s}[aria-checked="true"]::after,
+			${s}:checked::after
+		`)),
+		hoverFocus: parseAndJoin(inputSelectors.map(s => `
+			${s}.d2l-hovering,
+			${s}:not(.d2l-input-radio-disabled-tooltip):not(:disabled):not(.d2l-disabled):hover,
+			${s}:not(.d2l-input-radio-disabled-tooltip):not(:disabled):not(.d2l-disabled):focus,
+			${s}.d2l-input-radio-disabled-tooltip:hover,
+			${s}.d2l-input-radio-disabled-tooltip:focus
+		`)),
+		invalid: parseAndJoin(inputSelectors.map(s => `
+			${s}[aria-invalid="true"]
+		`)),
+		disabled: parseAndJoin(inputSelectors.map(s => `
+			${s}:disabled,
+			${s}.d2l-disabled
+		`)),
+		disabledTooltip: parseAndJoin(inputSelectors.map(s => `
+			${s}.d2l-input-radio-disabled-tooltip.d2l-hovering,
+			${s}.d2l-input-radio-disabled-tooltip:hover,
+			${s}.d2l-input-radio-disabled-tooltip:focus
+		`))
+	}
+}
+
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export function _generateRadioStyles(selector, containerSelector) {
+	if (!_isValidCssSelector(selector) || !_isValidCssSelector(containerSelector)) return '';
+	const inputSelectors = [selector];
+	if (containerSelector) {
+		inputSelectors.push(`${containerSelector} > input[type="radio"]`);
+		containerSelector = unsafeCSS(containerSelector);
+	}
+	const selectors = _getRadioStyleSelectors(inputSelectors);
 
 	return css`
-		${inputSelector} {
+		${selectors.simple} {
 			-webkit-appearance: none;
 			-moz-appearance: none;
 			appearance: none;
@@ -37,47 +78,37 @@ function generateRadioStyles(selector, isInputContainer) {
 			vertical-align: middle;
 			width: 1.2rem;
 		}
-		${inputSelector}[aria-checked="true"],
-		${inputSelector}:checked {
+		${selectors.checked} {
 			background-image: var(--d2l-input-radio-check-image);
 		}
-		${inputSelector}.d2l-hovering,
-		${inputSelector}:not(.d2l-input-radio-disabled-tooltip):not(:disabled):not(.d2l-disabled):hover,
-		${inputSelector}.d2l-input-radio-disabled-tooltip:hover,
-		${inputSelector}:not(.d2l-input-radio-disabled-tooltip):not(:disabled):not(.d2l-disabled):focus,
-		${inputSelector}.d2l-input-radio-disabled-tooltip:focus {
+		${selectors.hoverFocus} {
 			border: 2px solid var(--d2l-input-radio-border-color-hover-focus, var(--d2l-theme-border-color-focus));
 		}
-		${inputSelector}[aria-invalid="true"] {
+		${selectors.invalid} {
 			--d2l-input-radio-border-color-hover-focus: var(--d2l-theme-status-color-error);
 			border-color: var(--d2l-theme-status-color-error);
 		}
-		${inputSelector}:disabled,
-		${inputSelector}.d2l-disabled {
+		${selectors.disabled} {
 			opacity: var(--d2l-theme-opacity-disabled-control);
 		}
 
-		${inputSelector}.d2l-input-radio-disabled-tooltip.d2l-hovering,
-		${inputSelector}.d2l-input-radio-disabled-tooltip:hover,
-		${inputSelector}.d2l-input-radio-disabled-tooltip:focus {
+		${selectors.disabledTooltip} {
 			background-blend-mode: lighten;
 			background-color: var(--d2l-theme-background-color-interactive-faint-disabled);
 			opacity: 1;
 		}
 
 		@media (prefers-contrast: more) {
-			${inputSelector} {
+			${selectors.simple} {
 				background-color: Canvas;
 				border-color: ButtonText;
 				forced-color-adjust: none;
 			}
-			${inputSelector}[aria-checked="true"],
-			${inputSelector}:checked {
+			${selectors.checked} {
 				background-image: none;
 				position: relative;
 			}
-			${inputSelector}[aria-checked="true"]::after,
-			${inputSelector}:checked::after {
+			${selectors.checkedAfter}{
 				background-color: FieldText;
 				content: "";
 				display: block;
@@ -93,22 +124,19 @@ function generateRadioStyles(selector, isInputContainer) {
 				width: 1.2rem;
 			}
 
-			${inputSelector}[aria-invalid="true"] {
+			${selectors.invalid} {
 				--d2l-input-radio-border-color-hover-focus: var(--d2l-theme-status-color-error);
 				border-color: var(--d2l-theme-status-color-error);
 			}
 
-			${inputSelector}.d2l-input-radio-disabled-tooltip.d2l-hovering,
-			${inputSelector}.d2l-input-radio-disabled-tooltip:hover,
-			${inputSelector}.d2l-input-radio-disabled-tooltip:focus {
+			${selectors.disabledTooltip} {
 				background-blend-mode: initial;
 				background-color: Canvas;
 			}
 		}
 
-
-		${isInputContainer ? css`
-			${selector} {
+		${containerSelector ? css`
+			${containerSelector} {
 				align-items: center;
 				color: var(--d2l-theme-text-color-static-standard);
 				display: flex;
@@ -121,20 +149,20 @@ function generateRadioStyles(selector, isInputContainer) {
 				padding-inline-start: 1.7rem;
 				vertical-align: middle;
 			}
-			${selector}:last-of-type {
+			${containerSelector}:last-of-type {
 				margin-bottom: 0;
 			}
 
-			${selector}.d2l-input-radio-label-disabled {
+			${containerSelector}.d2l-input-radio-label-disabled {
 				color: var(--d2l-theme-text-color-static-disabled);
 			}
-			${selector}.d2l-input-radio-label-disabled > * {
+			${containerSelector}.d2l-input-radio-label-disabled > * {
 				color: var(--d2l-theme-text-color-static-standard);
 				opacity: var(--d2l-theme-opacity-disabled-control);
 			}
 
-			${selector} > .d2l-input-radio,
-			${selector} > input[type="radio"] {
+			${containerSelector} > .d2l-input-radio,
+			${containerSelector} > input[type="radio"] {
 				flex: 0 0 auto;
 				margin-inline-end: 0.5rem;
 				margin-inline-start: -1.7rem;
@@ -145,8 +173,7 @@ function generateRadioStyles(selector, isInputContainer) {
 }
 
 export const radioStyles = useGeneratedStyles ? css`
-	${generateRadioStyles('.d2l-input-radio', false)}
-	${generateRadioStyles('.d2l-input-radio-label', true)}
+	${_generateRadioStyles('.d2l-input-radio', '.d2l-input-radio-label')}
 ` : css`
 	.d2l-input-radio,
 	.d2l-input-radio-label > input[type="radio"] {
