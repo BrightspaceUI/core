@@ -108,7 +108,7 @@ export function _generateRadioStyles(selector, containerSelector) {
 				background-image: none;
 				position: relative;
 			}
-			${selectors.checkedAfter}{
+			${selectors.checkedAfter} {
 				background-color: FieldText;
 				content: "";
 				display: block;
