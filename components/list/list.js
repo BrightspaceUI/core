@@ -148,6 +148,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				--d2l-list-item-illustration-max-height: 2.6rem;
 				--d2l-list-item-illustration-max-width: 4.5rem;
 				display: block;
+				position: relative;
 			}
 			:host([layout="tiles"]) > .d2l-list-content {
 				display: flex;
@@ -195,6 +196,18 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				display: block;
 				flex-basis: 100%;
 				height: 0;
+			}
+
+			d2l-backdrop-loading {
+				z-index: 1;
+			}
+
+			slot {
+				z-index: 2;
+			}
+
+			#list-slot {
+				z-index: 0
 			}
 		`;
 	}
@@ -289,10 +302,10 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return html`
 			<slot name="controls"></slot>
 			<slot name="header"></slot>
-			<div style="position:relative" role="${role}"  aria-label="${ifDefined(ariaLabel)}" class="d2l-list-content">
-				<slot id="list-slot" @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
-				<d2l-backdrop-loading @d2l-backdrop-dirty-overlay-action=${this._handleDirtyButton} for="list-slot" .dataState='${this.dataState}' dirty-text="${this.dirtyText}" dirty-button-text="${this.dirtyButtonText}"></d2l-backdrop-loading>
+			<div id="list-slot" role="${role}" class="d2l-list-content"  aria-label="${ifDefined(ariaLabel)}">
+				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
 			</div>
+			<d2l-backdrop-loading @d2l-backdrop-dirty-overlay-action=${this._handleDirtyButton} for="list-slot" .dataState='${this.dataState}' dirty-text="${this.dirtyText}" dirty-button-text="${this.dirtyButtonText}"></d2l-backdrop-loading>
 			${this._renderPagerContainer()}
 		`;
 	}
