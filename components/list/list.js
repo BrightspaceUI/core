@@ -207,7 +207,7 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			}
 
 			#list-slot {
-				z-index: 0
+				z-index: 0;
 			}
 		`;
 	}
