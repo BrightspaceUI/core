@@ -458,7 +458,7 @@ describe('filter', () => {
 				{ name: 'nested-dates', template: multipleDimsDate, dim: 2 },
 				{ name: 'nested-dates-custom', template: multipleDimsDate, dim: 3 },
 				{ name: 'selected', template: multipleDims },
-				...[{ dim: 1, height: 439 }, { dim: 2, height: 151 }, { dim: 3, height: 79 }].map(({ dim, height }) =>
+				...[{ dim: 1, height: 440 }, { dim: 2, height: 152 }, { dim: 3, height: 80 }].map(({ dim, height }) =>
 					({ name: `nested-dim-${dim}`, dim, height, template: multipleDims })
 				),
 			].forEach(({ name, template, dim, height }) => {
