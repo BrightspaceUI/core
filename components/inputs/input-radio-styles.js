@@ -43,7 +43,7 @@ function _getRadioStyleSelectors(inputSelectors) {
 			${s}.d2l-input-radio-disabled-tooltip:hover,
 			${s}.d2l-input-radio-disabled-tooltip:focus
 		`))
-	}
+	};
 }
 
 /**
