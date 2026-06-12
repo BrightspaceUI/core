@@ -139,19 +139,20 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 					border-bottom-left-radius: 0.3rem;
 					border-bottom-right-radius: 0.3rem;
 				}
-
+				.layer {
+					position: absolute;
+					display: flex;
+					flex-direction: column;
+					height: calc(1.2rem * 2);
+					width: 1.3rem;
+					top: -0.35rem;
+					inset-inline-start: -0.2rem;
+				}
 				.up-layer,
 				.down-layer {
-					height: 1.2rem;
-					inset-inline-start: -0.2rem;
-					position: absolute;
+					position: relative;
 					width: 1.3rem;
-				}
-				.up-layer {
-					top: -0.35rem;
-				}
-				.down-layer {
-					bottom: -0.35rem;
+					height: 1.2rem;
 				}
 
 				/* Firefox includes a hidden border which messes up button dimensions */
@@ -169,7 +170,21 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 				:host([disabled-down]) .down-layer {
 					cursor: default;
 				}
-				:host([side-to-side]) {
+
+				:host([side-to-side]) button {
+					flex-direction: row;
+					width: calc(0.9rem * 2);
+				}
+
+				:host([side-to-side]) .layer {
+					height: 1.2rem;
+					width: calc(1.3rem * 2);
+					flex-direction: row;
+					top: -0.2rem;
+					inset-inline-start: -0.35rem;
+				}
+
+				:host([side-to-side]) d2l-icon {
 					transform: rotate(calc(-90deg * var(--d2l-length-factor)));
 				}
 			`
@@ -204,8 +219,10 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 					type="button">
 					<d2l-icon icon="tier1:arrow-toggle-up" class="up-icon"></d2l-icon>
 					<d2l-icon icon="tier1:arrow-toggle-down" class="down-icon"></d2l-icon>
-					<div class="up-layer" @click="${this._handleUpClick}"></div>
-					<div class="down-layer" @click="${this._handleDownClick}"></div>
+					<div class="layer">
+						<div class="up-layer" @click="${this._handleUpClick}"></div>
+						<div class="down-layer" @click="${this._handleDownClick}"></div>
+					</div>
 			</button>
 			${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
 		</div>`;
