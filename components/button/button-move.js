@@ -150,9 +150,9 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 				}
 				.up-layer,
 				.down-layer {
+					height: 1.2rem;
 					position: relative;
 					width: 1.3rem;
-					height: 1.2rem;
 				}
 
 				/* Firefox includes a hidden border which messes up button dimensions */
@@ -185,6 +185,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 				}
 
 				:host([side-to-side]) d2l-icon {
+					/* Arrows need to be rotated in opposite direction for RTL */
 					transform: rotate(calc(-90deg * var(--d2l-length-factor)));
 				}
 			`
