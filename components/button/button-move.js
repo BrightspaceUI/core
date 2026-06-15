@@ -173,13 +173,14 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 
 				:host([side-to-side]) button {
 					flex-direction: row;
-					width: calc(0.9rem * 2);
+					justify-content: center;
+					width: calc(01.3rem * 2);
 				}
 
 				:host([side-to-side]) .layer {
 					flex-direction: row;
 					height: 1.2rem;
-					inset-inline-start: -0.35rem;
+					inset-inline-start: 0;
 					top: -0.2rem;
 					width: calc(1.3rem * 2);
 				}
