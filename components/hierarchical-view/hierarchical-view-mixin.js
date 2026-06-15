@@ -1,7 +1,6 @@
 import { addResizeNoopEventListener, findComposedAncestor, getComposedParent, isComposedAncestor, removeResizeNoopEventListener } from '../../helpers/dom.js';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { css } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const __nativeFocus = document.createElement('div').focus;
