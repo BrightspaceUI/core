@@ -12,8 +12,6 @@ import { getFlag } from '../../helpers/flags.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 
-const ignoreNoopResizeEventsFlag = getFlag('GAUD-9520-ignore-no-op-resize-events', true);
-
 export const positionLocations = Object.freeze({
 	blockEnd: 'block-end',
 	blockStart: 'block-start',
@@ -625,12 +623,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		this.#removeRepositionHandlers();
 		this.#ancestorMutations = new Map();
-
-		if (ignoreNoopResizeEventsFlag) {
-			addResizeNoopEventListener(this.#handleResizeBound);
-		} else {
-			window.addEventListener('resize', this.#handleResizeBound);
-		}
+		addResizeNoopEventListener(this.#handleResizeBound);
 
 		this._ancestorMutationObserver ??= new MutationObserver(this.#handleAncestorMutationBound);
 		const mutationConfig = { attributes: true, childList: true, subtree: true };
@@ -1204,11 +1197,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		});
 		this._scrollablesObserved = null;
 		this._ancestorMutationObserver?.disconnect();
-		if (ignoreNoopResizeEventsFlag) {
-			removeResizeNoopEventListener(this.#handleResizeBound);
-		} else {
-			window.removeEventListener('resize', this.#handleResizeBound);
-		}
+		removeResizeNoopEventListener(this.#handleResizeBound);
 	}
 
 	#reposition() {
