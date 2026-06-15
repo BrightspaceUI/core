@@ -40,7 +40,9 @@
 
 			<d2l-demo-snippet>
 				<template>
+					<button>Before Interactable</button>
 					<d2l-button-move text="Reorder Item" side-to-side></d2l-button-move>
+					<button>After Interactable</button>
 					<script>
 						(demo => {
 							demo.querySelector('d2l-button-move').addEventListener('d2l-button-move-action', e => {
