@@ -27,48 +27,32 @@ describe('d2l-icon', () => {
 		},
 		{
 			name: 'fill-none',
-			template: html`<d2l-icon icon="tier2:evaluate-all"></d2l-icon>`
-		},
-		{
-			name: 'dark-fill-none',
-			colorMode: 'dark',
-			template: html`<d2l-icon icon="tier2:evaluate-all"></d2l-icon>`
+			template: html`<d2l-icon icon="tier2:evaluate-all"></d2l-icon>`,
+			allColorModes: true,
 		},
 		{
 			name: 'fill-circle',
-			template: html`<d2l-icon icon="tier2:divider-big"></d2l-icon>`
-		},
-		{
-			name: 'dark-fill-circle',
-			colorMode: 'dark',
-			template: html`<d2l-icon icon="tier2:divider-big"></d2l-icon>`
+			template: html`<d2l-icon icon="tier2:divider-big"></d2l-icon>`,
+			allColorModes: true
 		},
 		{
 			name: 'fill-mixed',
-			template: html`<d2l-icon icon="tier2:check-box" style="color: var(--d2l-color-celestine-minus-1)"></d2l-icon>`
-		},
-		{
-			name: 'dark-fill-mixed',
-			colorMode: 'dark',
-			template: html`<d2l-icon icon="tier2:check-box" style="color: var(--d2l-color-celestine-minus-1)"></d2l-icon>`
+			template: html`<d2l-icon icon="tier2:check-box" style="color: var(--d2l-color-celestine-minus-1)"></d2l-icon>`,
+			allColorModes: true
 		},
 		{
 			name: 'color-override',
-			template: html`<d2l-icon icon="tier3:assignments" style="color: var(--d2l-color-celestine-minus-1)"></d2l-icon>`
-		},
-		{
-			name: 'dark-color-override',
-			colorMode: 'dark',
-			template: html`<d2l-icon icon="tier3:assignments" style="color: var(--d2l-color-celestine-minus-1)"></d2l-icon>`
+			template: html`<d2l-icon icon="tier3:assignments" style="color: var(--d2l-color-celestine-minus-1)"></d2l-icon>`,
+			allColorModes: true
 		},
 		{
 			name: 'size-override',
 			template: html`<d2l-icon icon="tier3:assignments" style="height: 100px; width: 100px;"></d2l-icon>`
 		}
-	].forEach(({ name, colorMode, template }) => {
+	].forEach(({ name, allColorModes, template }) => {
 		it(name, async() => {
-			const elem = await fixture(template, { colorMode });
-			await expect(elem).to.be.golden();
+			const elem = await fixture(template);
+			await expect(elem).to.be.golden({ allColorModes });
 		});
 	});
 
