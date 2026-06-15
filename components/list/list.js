@@ -5,6 +5,7 @@ import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import { SubscriberRegistryController } from '../../controllers/subscriber/subscriberControllers.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 const keyCodes = {
 	TAB: 9
@@ -135,7 +136,8 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			 */
 			selectionWhenInteracted: { type: Boolean, attribute: 'selection-when-interacted', reflect: true },
 			_breakpoint: { type: Number, reflect: true },
-			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' }
+			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' },
+			_backdropTriggered: { type: Boolean, reflect: true }
 		};
 	}
 
@@ -196,18 +198,6 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 				display: block;
 				flex-basis: 100%;
 				height: 0;
-			}
-
-			d2l-backdrop-loading {
-				z-index: 1;
-			}
-
-			slot {
-				z-index: 2;
-			}
-
-			#list-slot {
-				z-index: 0;
 			}
 		`;
 	}
@@ -302,10 +292,12 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return html`
 			<slot name="controls"></slot>
 			<slot name="header"></slot>
-			<div id="list-slot" role="${role}" class="d2l-list-content"  aria-label="${ifDefined(ariaLabel)}">
-				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
+			<div style="${styleMap(this._backdropTriggered ? { 'position': 'relative' } : {})}">
+				<div id="list-slot" role="${role}" class="d2l-list-content"  aria-label="${ifDefined(ariaLabel)}">
+					<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
+				</div>
+				<d2l-backdrop-loading @d2l-backdrop-dirty-overlay-action=${this._handleDirtyButton} for="list-slot" .dataState='${this.dataState}' dirty-text="${this.dirtyText}" dirty-button-text="${this.dirtyButtonText}"></d2l-backdrop-loading>
 			</div>
-			<d2l-backdrop-loading @d2l-backdrop-dirty-overlay-action=${this._handleDirtyButton} for="list-slot" .dataState='${this.dataState}' dirty-text="${this.dirtyText}" dirty-button-text="${this.dirtyButtonText}"></d2l-backdrop-loading>
 			${this._renderPagerContainer()}
 		`;
 	}
@@ -329,6 +321,9 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		}
 		if (changedProperties.has('dragHandleShowAlways')) {
 			this._updateItemDragHandleShowAlways();
+		}
+		if (changedProperties.has('dataState') && this.dataState !== undefined) {
+			this._backdropTriggered = true;
 		}
 	}
 
