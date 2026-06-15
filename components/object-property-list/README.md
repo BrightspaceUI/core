@@ -2,7 +2,7 @@
 
 Object property lists are simple dot-separated lists of text, displayed sequentially on a single line. They are used to convey additional information or metadata about an object.
 
-<!-- docs: demo -->
+<!-- docs: demo autoSize:false size:xsmall -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
@@ -40,7 +40,7 @@ Object property lists are simple dot-separated lists of text, displayed sequenti
 
 An object property list can be defined using `d2l-object-property-list` and a combination of items (e.g., `d2l-object-property-list-item`, `d2l-object-property-list-item-link`).
 
-<!-- docs: demo code properties name:d2l-object-property-list sandboxTitle:'Object Property List' -->
+<!-- docs: demo code properties name:d2l-object-property-list sandboxTitle:'Object Property List' autoSize:false size:xsmall -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
@@ -142,7 +142,7 @@ The `d2l-object-property-list-item-link` component is a link item for the object
 
 The `d2l-object-property-list-item-tooltip-help` component is an item for the object property list which is used to also display additional information for users. It displays text as a help tooltip, with an optional leading icon.
 
-<!-- docs: demo code properties name:d2l-object-property-list-item-tooltip-help sandboxTitle:'Object Property List Help Tooltip Item' -->
+<!-- docs: demo code properties name:d2l-object-property-list-item-tooltip-help sandboxTitle:'Object Property List Help Tooltip Item' autoSize:false size:xsmall -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/object-property-list/object-property-list.js';
