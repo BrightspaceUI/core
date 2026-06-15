@@ -8,14 +8,10 @@ describe('d2l-icon', () => {
 		const template = html`<d2l-icon icon="${tier}:assignments"></d2l-icon>`;
 		it(tier, async() => {
 			const elem = await fixture(template);
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ allColorModes: true});
 		});
 		it(`rtl-${tier}`, async() => {
 			const elem = await fixture(template, { rtl: true });
-			await expect(elem).to.be.golden();
-		});
-		it(`dark-${tier}`, async() => {
-			const elem = await fixture(template, { colorMode: 'dark' });
 			await expect(elem).to.be.golden();
 		});
 	});
