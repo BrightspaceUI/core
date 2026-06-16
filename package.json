@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "3.256.0",
+  "version": "3.262.2",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -58,7 +58,7 @@
     "chalk": "^5",
     "eslint": "^9",
     "eslint-config-brightspace": "^3",
-    "eslint-plugin-unicorn": "^64",
+    "eslint-plugin-unicorn": "^65",
     "glob-all": "^3",
     "messageformat-validator": "^3.0.0-beta",
     "mocha": "^11",
@@ -74,7 +74,7 @@
     "@brightspace-ui/intl": "^3",
     "@brightspace-ui/lms-context-provider": "^1",
     "@open-wc/dedupe-mixin": "^2",
-    "ifrau": "^0.41",
+    "ifrau": "^0.42",
     "lit": "^3",
     "prismjs": "^1"
   }

@@ -1,9 +1,6 @@
 import { addResizeNoopEventListener, findComposedAncestor, getComposedParent, isComposedAncestor, removeResizeNoopEventListener } from '../../helpers/dom.js';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { css } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
-
-const ignoreNoopResizeEventsFlag = getFlag('GAUD-9520-ignore-no-op-resize-events', true);
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const __nativeFocus = document.createElement('div').focus;
@@ -144,11 +141,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 				this.addEventListener('focus', this.__focusCapture, true);
 				this.addEventListener('focusout', this.__focusOutCapture, true);
 				this.__onWindowResize = this.__onWindowResize.bind(this);
-				if (ignoreNoopResizeEventsFlag) {
-					addResizeNoopEventListener(this.__onWindowResize);
-				} else {
-					window.addEventListener('resize', this.__onWindowResize);
-				}
+				addResizeNoopEventListener(this.__onWindowResize);
 			}
 		});
 	}
@@ -158,11 +151,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 
 		this.removeEventListener('focus', this.__focusCapture);
 		this.removeEventListener('focusout', this.__focusOutCapture);
-		if (ignoreNoopResizeEventsFlag) {
-			removeResizeNoopEventListener(this.__onWindowResize);
-		} else {
-			window.removeEventListener('resize', this.__onWindowResize);
-		}
+		removeResizeNoopEventListener(this.__onWindowResize);
 
 		if (this.__intersectionObserver) {
 			this.__intersectionObserver.disconnect();

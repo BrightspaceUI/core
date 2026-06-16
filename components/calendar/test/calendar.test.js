@@ -517,6 +517,40 @@ describe('d2l-calendar', () => {
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 			expect(calendar._shownMonth).to.equal(8);
 		});
+
+		describe('RTL', () => {
+			beforeEach(() => {
+				document.documentElement.setAttribute('dir', 'rtl');
+			});
+
+			afterEach(() => {
+				document.documentElement.removeAttribute('dir');
+			});
+
+			it('has correct _focusDate when user presses HOME', async() => {
+				const calendar = await fixture(normalFixture);
+				const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+				setTimeout(() => dispatchKeyEvent(el, 36));
+				await oneEvent(el, 'keydown');
+				await calendar.updateComplete;
+
+				const expectedFocusDate = new Date(2015, 7, 30);
+				expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+				expect(calendar._shownMonth).to.equal(8);
+			});
+
+			it('has correct _focusDate when user presses END', async() => {
+				const calendar = await fixture(normalFixture);
+				const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+				setTimeout(() => dispatchKeyEvent(el, 35));
+				await oneEvent(el, 'keydown');
+				await calendar.updateComplete;
+
+				const expectedFocusDate = new Date(2015, 8, 5);
+				expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+				expect(calendar._shownMonth).to.equal(8);
+			});
+		});
 	});
 
 	describe('utility functions', () => {

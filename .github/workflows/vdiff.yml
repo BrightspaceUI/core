@@ -23,7 +23,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           test-timeout: 10000
       - name: Upload test report
-        if: github.triggering_actor != 'dependabot[bot]' && (failure() || success())
+        if: (!cancelled()) && github.actor != 'dependabot[bot]'
         uses: Brightspace/test-reporting-action@main
         with:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}

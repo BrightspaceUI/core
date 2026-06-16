@@ -1,13 +1,13 @@
 import '../expand-collapse/expand-collapse-content.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { radioStyles, useGeneratedStyles } from './input-radio-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { InputInlineHelpMixin } from './input-inline-help.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
-import { radioStyles } from './input-radio-styles.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -133,10 +133,11 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 		const labelClasses = {
 			'd2l-input-radio-label': true,
 			'd2l-input-radio-label-disabled': this.disabled && !this.skeleton,
-			'd2l-input-radio-label-disabled-tooltip': this.disabled && this.disabledTooltip
+			'd2l-input-radio-label-disabled-tooltip': !useGeneratedStyles && this.disabled && this.disabledTooltip
 		};
 		const radioClasses = {
 			'd2l-input-radio': true,
+			'd2l-input-radio-disabled-tooltip': useGeneratedStyles && this.disabled && this.disabledTooltip,
 			'd2l-disabled': this.focusDisabled && !this.skeleton,
 			'd2l-hovering': this._isHovered && !this.focusDisabled,
 			'd2l-skeletize': true

@@ -80,8 +80,12 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 			 * ACCESSIBILITY: REQUIRED: Accessible text for the button
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true }
-
+			text: { type: String, reflect: true },
+			/**
+			 * Renders the buttons in a side by side orientation
+			 * @type {boolean}
+			 */
+			sideToSide: { type: Boolean, attribute: 'side-to-side', reflect: true }
 		};
 	}
 
@@ -135,19 +139,20 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 					border-bottom-left-radius: 0.3rem;
 					border-bottom-right-radius: 0.3rem;
 				}
-
+				.layer {
+					display: flex;
+					flex-direction: column;
+					height: calc(1.2rem * 2);
+					inset-inline-start: -0.2rem;
+					position: absolute;
+					top: -0.35rem;
+					width: 1.3rem;
+				}
 				.up-layer,
 				.down-layer {
 					height: 1.2rem;
-					inset-inline-start: -0.2rem;
-					position: absolute;
+					position: relative;
 					width: 1.3rem;
-				}
-				.up-layer {
-					top: -0.35rem;
-				}
-				.down-layer {
-					bottom: -0.35rem;
 				}
 
 				/* Firefox includes a hidden border which messes up button dimensions */
@@ -164,6 +169,27 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 				:host([disabled-up]) .up-layer,
 				:host([disabled-down]) .down-layer {
 					cursor: default;
+				}
+
+				:host([side-to-side]) button {
+					align-items: center;
+					flex-direction: row;
+					height: 1.2rem;
+					justify-content: center;
+					width: calc(1.3rem * 2);
+				}
+
+				:host([side-to-side]) .layer {
+					flex-direction: row;
+					height: 1.2rem;
+					inset-inline-start: 0;
+					top: 0;
+					width: calc(1.3rem * 2);
+				}
+
+				:host([side-to-side]) d2l-icon {
+					/* Arrows need to be rotated in opposite direction for RTL */
+					transform: rotate(calc(-90deg * var(--d2l-length-factor)));
 				}
 			`
 		];
@@ -197,8 +223,10 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 					type="button">
 					<d2l-icon icon="tier1:arrow-toggle-up" class="up-icon"></d2l-icon>
 					<d2l-icon icon="tier1:arrow-toggle-down" class="down-icon"></d2l-icon>
-					<div class="up-layer" @click="${this._handleUpClick}"></div>
-					<div class="down-layer" @click="${this._handleDownClick}"></div>
+					<div class="layer">
+						<div class="up-layer" @click="${this._handleUpClick}"></div>
+						<div class="down-layer" @click="${this._handleDownClick}"></div>
+					</div>
 			</button>
 			${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
 		</div>`;

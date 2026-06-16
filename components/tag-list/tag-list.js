@@ -356,7 +356,8 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 	}
 
 	async _handleResize() {
-		const refocus = getComposedActiveElement();
+		let refocus = getComposedActiveElement();
+		if (!isComposedAncestor(this, refocus)) refocus = null;
 		this._contentReady = false;
 		this._chompIndex = 10000;
 		await this.updateComplete;
@@ -373,12 +374,13 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 		}
 		this._contentReady = true;
 		await this.updateComplete;
-		refocus.focus?.();
+		refocus?.focus?.();
 	}
 
 	async _handleSlotChange() {
 		if (!this._hasResized) return;
-		const refocus = getComposedActiveElement();
+		let refocus = getComposedActiveElement();
+		if (!isComposedAncestor(this, refocus)) refocus = null;
 		this._contentReady = false;
 		await this.updateComplete;
 
@@ -405,7 +407,7 @@ class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitEle
 			this._refocus = this.shadowRoot.querySelector('.d2l-tag-list-button');
 		}
 		await this._refocus?.updateComplete;
-		(this._refocus || refocus).focus?.();
+		(this._refocus || refocus)?.focus?.();
 		this._refocus = null;
 	}
 

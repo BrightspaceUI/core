@@ -25,6 +25,7 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 		return [super.styles, bodySmallStyles, css`
 			:host {
 				display: block;
+				overflow-wrap: anywhere;
 			}
 			:host([hidden]) {
 				display: none;
