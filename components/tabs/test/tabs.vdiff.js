@@ -265,7 +265,7 @@ describe('d2l-tabs', () => {
 
 		it('panel selected', async() => {
 			const elem = await fixture(panelSelectedFixture[useFixture], { viewport });
-			await expect(elem).to.be.golden({ allColorModes: true});
+			await expect(elem).to.be.golden({ allColorModes: true });
 		});
 
 		it('one tab', async() => {
