@@ -14,35 +14,34 @@ function createTypographyWrapper(content) {
 describe('typography', () => {
 
 	[
-		{ category: 'wide', viewport: { width: 800 } },
+		{ category: 'wide', viewport: { width: 800 }, allColorModes: true },
 		{ category: 'narrow', viewport: { width: 600 } },
-		{ category: 'dark', colorMode: 'dark', viewport: { width: 800 } },
-	].forEach(({ category, colorMode, viewport }) => {
+	].forEach(({ category, viewport, allColorModes }) => {
 
 		describe(category, () => {
 
 			[ '1', '2', '3', '4'].forEach(level => {
 
 				it(`heading-${level}`, async() => {
-					const elem = await fixture(createTypographyWrapper(html`<h1 class="d2l-heading-${level}">${`Heading ${level}`}</h1>`), { colorMode, viewport });
-					await expect(elem).to.be.golden({ margin: 0 });
+					const elem = await fixture(createTypographyWrapper(html`<h1 class="d2l-heading-${level}">${`Heading ${level}`}</h1>`), { viewport });
+					await expect(elem).to.be.golden({ margin: 0, allColorModes });
 				});
 
 				it(`heading-${level}-focus`, async() => {
 					const elem = await fixture(html`
 							<div class="d2l-typography" style="max-width: 320px;">
 								<h1 class="d2l-heading-${level}" tabindex="-1">${`Heading ${level}`}</h1>
-							</div>`, { colorMode, viewport });
+							</div>`, { viewport });
 					await focusElem(elem.firstElementChild);
-					await expect(elem).to.be.golden();
+					await expect(elem).to.be.golden({ allColorModes });
 				});
 
 			});
 
 			['body-standard', 'body-compact', 'body-small'].forEach(textClass => {
 				it(textClass, async() => {
-					const elem = await fixture(createTypographyWrapper(html`<div class="d2l-${textClass}">${longText}</div>`), { colorMode, viewport });
-					await expect(elem).to.be.golden({ margin: 0 });
+					const elem = await fixture(createTypographyWrapper(html`<div class="d2l-${textClass}">${longText}</div>`), { viewport });
+					await expect(elem).to.be.golden({ margin: 0, allColorModes });
 				});
 			});
 
@@ -69,8 +68,8 @@ describe('typography', () => {
 				` }
 			].forEach(({ name, template, rtl }) => {
 				it(name, async() => {
-					const elem = await fixture(createTypographyWrapper(template), { colorMode, viewport, rtl });
-					await expect(elem).to.be.golden({ margin: 0 });
+					const elem = await fixture(createTypographyWrapper(template), { viewport, rtl });
+					await expect(elem).to.be.golden({ margin: 0, allColorModes });
 				});
 			});
 		});
