@@ -15,7 +15,7 @@ import { repeat } from 'lit/directives/repeat.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-export const useNewTabsStructureFlag = getFlag('GAUD-8299-core-tabs-use-new-structure', true);
+export const useNewTabsStructureFlag = getFlag('GAUD-8299-core-tabs-use-new-structure', false);
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
