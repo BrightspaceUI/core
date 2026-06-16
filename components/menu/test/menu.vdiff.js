@@ -40,8 +40,7 @@ function createMenuItemLink({ text = 'c', target } = {}) {
 
 describe('menu', () => {
 	[
-		{ name: 'separator', template: separatorTemplate },
-		{ name: 'separator-dark', colorMode: 'dark', template: separatorTemplate },
+		{ name: 'separator', template: separatorTemplate, allColorModes: true },
 		{ name: 'long', template: html`
 			<d2l-menu label="label">
 				<d2l-menu-item text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."></d2l-menu-item>
@@ -70,37 +69,31 @@ describe('menu', () => {
 				<d2l-menu-item text="b"></d2l-menu-item>
 			</d2l-menu>
 		` },
-		{ name: 'link', template: html`<d2l-menu label="label">${createMenuItemLink()}</d2l-menu>` },
-		{ name: 'link-dark', colorMode: 'dark', template: html`<d2l-menu label="label">${createMenuItemLink()}</d2l-menu>` },
-		{ name: 'link-new-window', template: html`<d2l-menu label="label">${createMenuItemLink({ target: '_blank' })}</d2l-menu>` },
-		{ name: 'link-new-window-dark', colorMode: 'dark', template: html`<d2l-menu label="label">${createMenuItemLink({ target: '_blank' })}</d2l-menu>` },
+		{ name: 'link', template: html`<d2l-menu label="label">${createMenuItemLink()}</d2l-menu>`, allColorModes: true },
+		{ name: 'link-new-window', template: html`<d2l-menu label="label">${createMenuItemLink({ target: '_blank' })}</d2l-menu>`, allColorModes: true },
 		{ name: 'link-long', template: html`<d2l-menu label="label">${createMenuItemLink({ text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' })}</d2l-menu>` },
 		{ name: 'link-new-window-long', template: html`<d2l-menu label="label">${createMenuItemLink({ text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', target: '_blank' })}</d2l-menu>` },
-		{ name: 'supporting', template: supportingTemplate },
-		{ name: 'supporting-dark', colorMode: 'dark', template: supportingTemplate },
+		{ name: 'supporting', template: supportingTemplate, allColorModes: true },
 		{ name: 'supporting-rtl', rtl: true, template: supportingTemplate }
-	].forEach(({ name, colorMode, rtl, template }) => {
+	].forEach(({ name, allColorModes, rtl, template }) => {
 		it(name, async() => {
-			const elem = await fixture(template, { colorMode, rtl });
+			const elem = await fixture(template, { rtl });
 			await nextFrame();
 			await nextFrame();
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ allColorModes });
 		});
 	});
 
 	describe('normal', () => {
 		[
-			{ name: 'simple' },
-			{ name: 'simple-dark', colorMode: 'dark' },
-			{ name: 'hover', action: elem => hoverElem(elem.querySelector('d2l-menu-item[text="b"]')) },
-			{ name: 'hover-dark', action: elem => hoverElem(elem.querySelector('d2l-menu-item[text="b"]')), colorMode: 'dark' },
-			{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-menu-item[text="b"]')) },
-			{ name: 'focus-dark', action: elem => focusElem(elem.querySelector('d2l-menu-item[text="b"]')), colorMode: 'dark' },
+			{ name: 'simple', allColorModes: true },
+			{ name: 'hover', action: elem => hoverElem(elem.querySelector('d2l-menu-item[text="b"]')), allColorModes: true },
+			{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-menu-item[text="b"]')), allColorModes: true },
 			{ name: 'first item hover', action: elem => hoverElem(elem.querySelector('d2l-menu-item[text="a"]')) },
 			{ name: 'first item focus', action: elem => focusElem(elem.querySelector('d2l-menu-item[text="a"]')) },
 			{ name: 'last item hover', action: elem => hoverElem(elem.querySelector('d2l-menu-item[text="c"]')) },
 			{ name: 'last item focus', action: elem => focusElem(elem.querySelector('d2l-menu-item[text="c"]')) }
-		].forEach(({ name, action, colorMode }) => {
+		].forEach(({ name, action, allColorModes }) => {
 			it(name, async() => {
 				const elem = await fixture(html`
 					<d2l-menu label="label">
@@ -108,9 +101,9 @@ describe('menu', () => {
 						<d2l-menu-item text="b"></d2l-menu-item>
 						<d2l-menu-item text="c"></d2l-menu-item>
 					</d2l-menu>
-				`, { colorMode });
+				`);
 				if (action) await action(elem);
-				await expect(elem).to.be.golden();
+				await expect(elem).to.be.golden({ allColorModes });
 			});
 		});
 
@@ -128,20 +121,17 @@ describe('menu', () => {
 	describe('disabled', () => {
 		[
 			{ name: 'simple' },
-			{ name: 'simple-dark', colorMode: 'dark' },
 			{ name: 'hover', action: elem => hoverElem(elem.querySelector('d2l-menu-item')) },
-			{ name: 'hover-dark', action: elem => hoverElem(elem.querySelector('d2l-menu-item')), colorMode: 'dark' },
-			{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-menu-item')) },
-			{ name: 'focus-dark', action: elem => focusElem(elem.querySelector('d2l-menu-item')), colorMode: 'dark' }
-		].forEach(({ name, action, colorMode }) => {
+			{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-menu-item')) }
+		].forEach(({ name, action }) => {
 			it(name, async() => {
 				const elem = await fixture(html`
 					<d2l-menu label="label">
 						<d2l-menu-item text="a" disabled></d2l-menu-item>
 					</d2l-menu>
-				`, { colorMode });
+				`);
 				if (action) await action(elem);
-				await expect(elem).to.be.golden();
+				await expect(elem).to.be.golden({ allColorModes: true });
 			});
 		});
 	});

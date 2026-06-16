@@ -15,8 +15,7 @@ function createMenu(opts) {
 describe('menu-checkbox', () => {
 	[
 		{ name: 'normal', template: createMenu() },
-		{ name: 'selected', template: createMenu({ selected: true }) },
-		{ name: 'selected-dark', colorMode: 'dark', template: createMenu({ selected: true }) },
+		{ name: 'selected', template: createMenu({ selected: true }), allColorModes: true },
 		{ name: 'rtl', rtl: true, template: createMenu({ selected: true }) },
 		{ name: 'disabled', template: createMenu({ disabled: true }) },
 		{ name: 'supporting', template: html`
@@ -44,10 +43,10 @@ describe('menu-checkbox', () => {
 				</d2l-menu-item-checkbox>
 			</d2l-menu>
 		` }
-	].forEach(({ name, colorMode, rtl, template }) => {
+	].forEach(({ name, allColorModes, rtl, template }) => {
 		it(name, async() => {
-			const elem = await fixture(template, { colorMode, rtl });
-			await expect(elem).to.be.golden();
+			const elem = await fixture(template, { rtl });
+			await expect(elem).to.be.golden({ allColorModes });
 		});
 	});
 
