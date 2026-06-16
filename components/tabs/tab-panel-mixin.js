@@ -1,6 +1,6 @@
 import { css } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { getUseNewTabsStructureFlag } from './tabs.js';
 
 export const TabPanelMixin = superclass => class extends superclass {
 
@@ -101,6 +101,6 @@ export const TabPanelMixin = superclass => class extends superclass {
 		});
 	}
 
-	#useTabsNewStructure = getFlag('GAUD-8299-core-tabs-use-new-structure', false);
+	#useTabsNewStructure = getUseNewTabsStructureFlag();
 
 };
