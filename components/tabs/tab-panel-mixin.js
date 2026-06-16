@@ -1,6 +1,6 @@
 import { css } from 'lit';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { useNewTabsStructureFlag } from './tabs.js';
+import { getUseNewTabsStructureFlag } from './tabs.js';
 
 export const TabPanelMixin = superclass => class extends superclass {
 
@@ -101,6 +101,6 @@ export const TabPanelMixin = superclass => class extends superclass {
 		});
 	}
 
-	#useTabsNewStructure = useNewTabsStructureFlag;
+	#useTabsNewStructure = getUseNewTabsStructureFlag();
 
 };

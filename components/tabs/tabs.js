@@ -15,7 +15,9 @@ import { repeat } from 'lit/directives/repeat.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-export const useNewTabsStructureFlag = getFlag('GAUD-8299-core-tabs-use-new-structure', false);
+export function getUseNewTabsStructureFlag() {
+	return getFlag('GAUD-8299-core-tabs-use-new-structure', false);
+}
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -429,7 +431,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	#GAUD_9963_FLAG = getFlag('GAUD-9963-dropdown-tabs-not-resizing', false);
 	#checkTabPanelMatchRequested;
-	#newTabsPanelStructure = useNewTabsStructureFlag;
+	#newTabsPanelStructure = getUseNewTabsStructureFlag();
 	#panels;
 	#updateAriaControlsRequested;
 
