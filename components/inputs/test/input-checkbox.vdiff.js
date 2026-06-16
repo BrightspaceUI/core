@@ -31,24 +31,18 @@ describe('d2l-input-checkbox', () => {
 						?skeleton="${skeleton}"></d2l-input-checkbox>
 				`;
 
-				[undefined, 'dark'].forEach(colorMode => {
-
-					const colorModeSuffix = (colorMode === 'dark' ? '-dark' : '');
-
-					it(`${name}${colorModeSuffix}`, async() => {
-						const elem = await fixture(checkboxFixture, { colorMode });
-						await expect(elem).to.be.golden();
-					});
-
-					if (!disabled) {
-						it(`${name}-focus${colorModeSuffix}`, async() => {
-							const elem = await fixture(checkboxFixture, { colorMode });
-							await focusElem(elem);
-							await expect(elem).to.be.golden();
-						});
-					}
-
+				it(name, async() => {
+					const elem = await fixture(checkboxFixture);
+					await expect(elem).to.be.golden({ allColorModes: true });
 				});
+
+				if (!disabled) {
+					it(`${name}-focus`, async() => {
+						const elem = await fixture(checkboxFixture);
+						await focusElem(elem);
+						await expect(elem).to.be.golden({ allColorModes: true });
+					});
+				}
 
 			});
 		});

@@ -54,26 +54,18 @@ describe('d2l-input-radio', () => {
 
 				const name = `${type}-${state}-${checked}`;
 				const radioFixture = createFixture(type, state, checked);
-
-				const colorModes = (type === 'solo' ? [undefined, 'dark'] : [undefined]);
-				colorModes.forEach(colorMode => {
-
-					const colorModeSuffix = (colorMode === 'dark' ? '-dark' : '');
-
-					it(`${name}${colorModeSuffix}`, async() => {
-						const elem = await fixture(radioFixture, { colorMode });
-						await expect(elem).to.be.golden();
-					});
-
-					if (state !== 'disabled') {
-						it(`${name}-focus${colorModeSuffix}`, async() => {
-							const elem = await fixture(radioFixture, { colorMode });
-							await focusElem(elem);
-							await expect(elem).to.be.golden();
-						});
-					}
-
+				it(name, async() => {
+					const elem = await fixture(radioFixture);
+					await expect(elem).to.be.golden({ allColorModes: type === 'solo' });
 				});
+
+				if (state !== 'disabled') {
+					it(`${name}-focus`, async() => {
+						const elem = await fixture(radioFixture);
+						await focusElem(elem);
+						await expect(elem).to.be.golden({ allColorModes: type === 'solo' });
+					});
+				}
 
 			});
 		});
