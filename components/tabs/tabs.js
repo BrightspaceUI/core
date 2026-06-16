@@ -16,7 +16,7 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 export function getUseNewTabsStructureFlag() {
-	return getFlag('GAUD-8299-core-tabs-use-new-structure', false);
+	return getFlag('GAUD-8299-core-tabs-use-new-structure', true);
 }
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
