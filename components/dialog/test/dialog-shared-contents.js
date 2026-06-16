@@ -4,6 +4,7 @@ import '../../dropdown/dropdown-content.js';
 import '../../filter/filter.js';
 import '../../filter/filter-dimension-set.js';
 import '../../filter/filter-dimension-set-value.js';
+import '../../tabs/tab.js';
 import '../../tabs/tab-panel.js';
 import { getUseNewTabsStructureFlag } from '../../tabs/tabs.js';
 import { html } from '@brightspace-ui/testing';
