@@ -49,27 +49,18 @@ describe('d2l-input-text', () => {
 		{ name: 'search', template: html`<d2l-input-text label="Name" label-hidden type="search" value="search"></d2l-input-text>` },
 		{ name: 'tel', template: html`<d2l-input-text label="Name" label-hidden type="tel" value="123-456-7890"></d2l-input-text>` },
 		{ name: 'url', template: html`<d2l-input-text label="Name" label-hidden type="url" value="https://www.d2l.com"></d2l-input-text>` },
-		{ name: 'disabled', template: html`<d2l-input-text label="Name" label-hidden disabled value="text disabled"></d2l-input-text>` },
-		{ name: 'disabled-dark', colorMode: 'dark', template: html`<d2l-input-text label="Name" label-hidden disabled value="text disabled"></d2l-input-text>` },
-		{ name: 'placeholder', template: html`<d2l-input-text label="Name" label-hidden placeholder="placeholder"></d2l-input-text>` },
-		{ name: 'placeholder-dark', colorMode: 'dark', template: html`<d2l-input-text label="Name" label-hidden placeholder="placeholder"></d2l-input-text>` },
-		{ name: 'placeholder-disabled', template: html`<d2l-input-text label="Name" label-hidden disabled placeholder="placeholder disabled"></d2l-input-text>` },
-		{ name: 'placeholder-disabled-dark', colorMode: 'dark', template: html`<d2l-input-text label="Name" label-hidden disabled placeholder="placeholder disabled"></d2l-input-text>` },
+		{ name: 'disabled', allColorModes: true, template: html`<d2l-input-text label="Name" label-hidden disabled value="text disabled"></d2l-input-text>` },
+		{ name: 'placeholder', allColorModes: true, template: html`<d2l-input-text label="Name" label-hidden placeholder="placeholder"></d2l-input-text>` },
+		{ name: 'placeholder-disabled', allColorModes: true, template: html`<d2l-input-text label="Name" label-hidden disabled placeholder="placeholder disabled"></d2l-input-text>` },
 		{ name: 'invalid', template: invalidFixture },
 		{ name: 'invalid-disabled', template: html`<d2l-input-text label="Name" label-hidden disabled type="email" value="invalid-disabled@"></d2l-input-text>` },
 		{ name: 'invalid-focus', template: invalidFixture, focus: true },
-		{ name: 'aria-invalid', template: ariaInvalidFixture },
-		{ name: 'aria-invalid-dark', colorMode: 'dark', template: ariaInvalidFixture },
-		{ name: 'aria-invalid-disabled', template: html`<d2l-input-text label="Name" label-hidden disabled value="aria-invalid-disabled" aria-invalid="true"></d2l-input-text>` },
-		{ name: 'aria-invalid-disabled-dark', colorMode: 'dark', template: html`<d2l-input-text label="Name" label-hidden disabled value="aria-invalid-disabled" aria-invalid="true"></d2l-input-text>` },
-		{ name: 'aria-invalid-focus', template: ariaInvalidFixture, focus: true },
-		{ name: 'aria-invalid-focus-dark', colorMode: 'dark', template: ariaInvalidFixture, focus: true },
-		{ name: 'labelled', template: labelledFixture },
-		{ name: 'labelled-dark', colorMode: 'dark', template: labelledFixture },
-		{ name: 'labelled-focus', template: labelledFixture, focus: true },
-		{ name: 'labelled-focus-dark', colorMode: 'dark', template: labelledFixture, focus: true },
-		{ name: 'labelled-skeleton', template: html`<d2l-input-text label="Name" value="text" skeleton></d2l-input-text>` },
-		{ name: 'labelled-skeleton-dark', colorMode: 'dark', template: html`<d2l-input-text label="Name" value="text" skeleton></d2l-input-text>` },
+		{ name: 'aria-invalid', allColorModes: true, template: ariaInvalidFixture },
+		{ name: 'aria-invalid-disabled', allColorModes: true, template: html`<d2l-input-text label="Name" label-hidden disabled value="aria-invalid-disabled" aria-invalid="true"></d2l-input-text>` },
+		{ name: 'aria-invalid-focus', allColorModes: true, template: ariaInvalidFixture, focus: true },
+		{ name: 'labelled', allColorModes: true, template: labelledFixture },
+		{ name: 'labelled-focus', allColorModes: true, template: labelledFixture, focus: true },
+		{ name: 'labelled-skeleton', allColorModes: true, template: html`<d2l-input-text label="Name" value="text" skeleton></d2l-input-text>` },
 		{ name: 'label-hidden', template: labelHiddenFixture },
 		{ name: 'label-hidden-skeleton', template: html`<d2l-input-text label="Name" label-hidden value="text" skeleton></d2l-input-text>` },
 		{ name: 'required', template: html`<d2l-input-text label="Name" required value="text"></d2l-input-text>` },
@@ -79,15 +70,11 @@ describe('d2l-input-text', () => {
 		{ name: 'custom-width-hover-input', template: customWidthFixture, action: async(elem) => await hoverElem(elem.shadowRoot.querySelector('input')) },
 		{ name: 'custom-width-hover-empty', template: customWidthFixture, action: async(elem) => await hoverElemAt(elem, 100, 50) },
 		{ name: 'overflowing', template: html`<d2l-input-text label="Name" label-hidden value="overflowing value that renders ellipsis"></d2l-input-text>` },
-		{ name: 'unit', template: unitFixture },
-		{ name: 'unit-dark', colorMode: 'dark', template: unitFixture },
+		{ name: 'unit', allColorModes: true, template: unitFixture },
 		{ name: 'unit-rtl', template: unitFixture, rtl: true },
-		{ name: 'unit-disabled', template: html`<d2l-input-text label="unit" label-hidden value="value" unit="%" disabled></d2l-input-text>` },
-		{ name: 'unit-disabled-dark', colorMode: 'dark', template: html`<d2l-input-text label="unit" label-hidden value="value" unit="%" disabled></d2l-input-text>` },
-		{ name: 'unit-invalid', template: unitInvalidFixture },
-		{ name: 'unit-invalid-dark', colorMode: 'dark', template: unitInvalidFixture },
-		{ name: 'unit-invalid-focus', template: unitInvalidFixture, focus: true },
-		{ name: 'unit-invalid-focus-dark', colorMode: 'dark', template: unitInvalidFixture, focus: true },
+		{ name: 'unit-disabled', allColorModes: true, template: html`<d2l-input-text label="unit" label-hidden value="value" unit="%" disabled></d2l-input-text>` },
+		{ name: 'unit-invalid', allColorModes: true, template: unitInvalidFixture },
+		{ name: 'unit-invalid-focus', allColorModes: true, template: unitInvalidFixture, focus: true },
 		{ name: 'unit-invalid-rtl', template: unitInvalidFixture, rtl: true },
 		{ name: 'unit-invalid-rtl-focus', template: unitInvalidFixture, focus: true, rtl: true },
 		{
@@ -123,8 +110,7 @@ describe('d2l-input-text', () => {
 				</d2l-input-text>
 			`
 		},
-		{ name: 'icon-left-right', template: iconLeftRightFixture },
-		{ name: 'icon-left-right-dark', colorMode: 'dark', template: iconLeftRightFixture },
+		{ name: 'icon-left-right', allColorModes: true, template: iconLeftRightFixture },
 		{
 			name: 'button-icon-left',
 			template: html`
@@ -141,14 +127,11 @@ describe('d2l-input-text', () => {
 				</d2l-input-text>
 			`
 		},
-		{ name: 'icon-right-invalid', template: iconRightInvalidFixture },
-		{ name: 'icon-right-invalid-dark', colorMode: 'dark', template: iconRightInvalidFixture },
-		{ name: 'icon-right-invalid-focus', template: iconRightInvalidFixture, focus: true },
-		{ name: 'icon-right-invalid-focus-dark', colorMode: 'dark', template: iconRightInvalidFixture, focus: true },
+		{ name: 'icon-right-invalid', allColorModes: true, template: iconRightInvalidFixture },
+		{ name: 'icon-right-invalid-focus', allColorModes: true, template: iconRightInvalidFixture, focus: true },
 		{ name: 'icon-right-invalid-rtl', template: iconRightInvalidFixture, rtl: true },
 		{ name: 'icon-right-invalid-rtl-focus', template: iconRightInvalidFixture, focus: true, rtl: true },
-		{ name: 'inline-help', template: new inlineHelpFixtures().text() },
-		{ name: 'inline-help-dark', colorMode: 'dark', template: new inlineHelpFixtures().text() },
+		{ name: 'inline-help', allColorModes: true, template: new inlineHelpFixtures().text() },
 		{
 			name: 'inline-help-rtl',
 			template: new inlineHelpFixtures().text(),
@@ -170,13 +153,13 @@ describe('d2l-input-text', () => {
 			name: 'inline-help-disabled',
 			template: new inlineHelpFixtures({ disabled: true }).text()
 		}
-	].forEach(({ name, template, action, colorMode, focus, rtl }) => {
+	].forEach(({ name, template, action, allColorModes, focus, rtl }) => {
 
 		it(name, async() => {
-			const elem = await fixture(template, { colorMode, rtl, viewport });
+			const elem = await fixture(template, { rtl, viewport });
 			if (action) await action(elem);
 			if (focus) await focusElem(elem);
-			await expect(elem).to.be.golden();
+			await expect(elem).to.be.golden({ allColorModes });
 		});
 
 	});
