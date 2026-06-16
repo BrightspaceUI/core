@@ -123,7 +123,7 @@ describe('menu', () => {
 			{ name: 'simple' },
 			{ name: 'hover', action: elem => hoverElem(elem.querySelector('d2l-menu-item')) },
 			{ name: 'focus', action: elem => focusElem(elem.querySelector('d2l-menu-item')) }
-		].forEach(({ name, action, allColorModes }) => {
+		].forEach(({ name, action }) => {
 			it(name, async() => {
 				const elem = await fixture(html`
 					<d2l-menu label="label">
