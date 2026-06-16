@@ -1,5 +1,4 @@
 import { css } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { useNewTabsStructureFlag } from './tabs.js';
 
