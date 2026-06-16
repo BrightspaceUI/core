@@ -37,14 +37,13 @@ describe('d2l-input-radio', () => {
 	after(unloadSass);
 
 	[
-		{ name: 'label', template: labelFixture },
-		{ name: 'label-dark', colorMode: 'dark', template: labelFixture },
+		{ name: 'label', template: labelFixture, allColorModes: true },
 		{ name: 'label-rtl', rtl: true, template: labelFixture }
-	].forEach(({ name, colorMode, rtl, template }) => {
+	].forEach(({ name, allColorModes, rtl, template }) => {
 
 		it(name, async() => {
-			const elem = await fixture(template, { colorMode, rtl });
-			await expect(elem).to.be.golden();
+			const elem = await fixture(template, { rtl });
+			await expect(elem).to.be.golden({ allColorModes });
 		});
 
 	});
