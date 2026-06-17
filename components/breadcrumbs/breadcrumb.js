@@ -56,7 +56,7 @@ class Breadcrumb extends FocusMixin(LitElement) {
 				flex-direction: row-reverse;
 			}
 			.d2l-link:focus {
-				outline-offset: -2px;
+				outline-offset: 2px;
 			}
 			d2l-icon {
 				height: 8px;
