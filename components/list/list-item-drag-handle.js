@@ -334,7 +334,10 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 
 	_renderTooltipContent() {
 		const namespace = 'components.list-item-drag-handle-tooltip';
-		const controlNamespace = 'components.list-item-drag-handle-tooltip.side-to-side';
+		const controlNamespace = this.sideToSide
+			? `${namespace}.side-to-side`
+			: namespace;
+
 		return html`
 			<div>${this.localize(`${namespace}.title`)}</div>
 			<ul>
