@@ -123,9 +123,9 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			}
 
 			:host([side-to-side]) {
-				height: 36px;
-				display: flex;
 				align-items: center;
+				display: flex;
+				height: 36px;
 			}
 		`];
 	}
@@ -333,13 +333,14 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 	}
 
 	_renderTooltipContent() {
-		const langTermPrefix = (term) => (this.sideToSide ? `components.list-item-drag-handle-tooltip.side-to-side.${term}` : `components.list-item-drag-handle-tooltip.${term}`);
+		const namespace = 'components.list-item-drag-handle-tooltip';
+		const controlNamespace = 'components.list-item-drag-handle-tooltip.side-to-side';
 		return html`
-			<div>${this.localize(langTermPrefix('title'))}</div>
+			<div>${this.localize(`${namespace}.title`)}</div>
 			<ul>
-				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize(langTermPrefix('enter-key'))}</span> - ${this.localize(langTermPrefix('enter-desc'))}</li>
-				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize(langTermPrefix('up-down-key'))}</span> - ${this.localize(langTermPrefix('up-down-desc'))}</li>
-				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize(langTermPrefix('left-right-key'))}</span> - ${this.localize(langTermPrefix('left-right-desc'))}</li>
+				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize(`${namespace}.enter-key`)}</span> - ${this.localize(`${namespace}.enter-desc`)}</li>
+				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize(`${namespace}.up-down-key`)}</span> - ${this.localize(`${controlNamespace}.up-down-desc`)}</li>
+				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize(`${namespace}.left-right-key`)}</span> - ${this.localize(`${controlNamespace}.left-right-desc`)}</li>
 			</ul>
 		`;
 	}
