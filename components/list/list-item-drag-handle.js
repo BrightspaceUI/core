@@ -326,7 +326,7 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				@keydown="${this._onMoveButtonKeydown}"
 				@mousedown="${this._onMoveButtonMouseDown}"
 				text="${this._defaultLabel}"
-				side-to-side="${this.sideToSide}">
+				?side-to-side="${this.sideToSide}">
 			</d2l-button-move>
 			${this._displayKeyboardTooltip ? html`<d2l-tooltip class="vdiff-target" align="start" announced for="${this._buttonId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
 		`;
