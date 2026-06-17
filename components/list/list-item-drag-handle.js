@@ -61,6 +61,10 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			 * @type {string}
 			 */
 			text: { type: String },
+			/**
+			 * Switches the arrows from vertical to horizontal for tile layout
+			 */
+			sideToSide: { type: Boolean, attribute: 'side-to-side' },
 			_displayKeyboardTooltip: { type: Boolean },
 			_keyboardActive: { type: Boolean }
 		};
@@ -117,6 +121,12 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			d2l-button-move {
 				pointer-events: auto; /* required since ancestors may set point-events: none; (see generic layout) */
 			}
+
+			:host([side-to-side]) {
+				height: 36px;
+				display: flex;
+				align-items: center;
+			}
 		`];
 	}
 
@@ -152,7 +162,9 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 	get _defaultLabel() {
 		const namespace = 'components.list-item-drag-handle';
 		const defaultLabel = this.localize(`${namespace}.${'default'}`, 'name', this.text);
-		const keyboardTextLabel = this.localize(`${namespace}.${'keyboard'}`, 'currentPosition', this.keyboardTextInfo && this.keyboardTextInfo.currentPosition, 'size', this.keyboardTextInfo && this.keyboardTextInfo.count);
+		const keyboardTextLabel = !this.sideToSide
+			? this.localize(`${namespace}.${'keyboard'}`, 'currentPosition', this.keyboardTextInfo && this.keyboardTextInfo.currentPosition, 'size', this.keyboardTextInfo && this.keyboardTextInfo.count)
+			: this.localize(`${namespace}.${'side-to-side.keyboard'}`, 'currentPosition', this.keyboardTextInfo && this.keyboardTextInfo.currentPosition, 'size', this.keyboardTextInfo && this.keyboardTextInfo.count);
 		return this._keyboardActive ? keyboardTextLabel : defaultLabel;
 	}
 
@@ -181,6 +193,20 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 	async _onMoveButtonAction(e) {
 
 		const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+
+		if (!isRtl && this.sideToSide) {
+			if (e.detail.action === moveActions.right)
+				e.detail.action = moveActions.down;
+			if (e.detail.action === moveActions.left)
+				e.detail.action = moveActions.up;
+		}
+
+		if (isRtl && this.sideToSide) {
+			if (e.detail.action === moveActions.right)
+				e.detail.action = moveActions.up;
+			if (e.detail.action === moveActions.left)
+				e.detail.action = moveActions.down;
+		}
 
 		let action = null;
 		switch (e.detail.action) {
@@ -299,19 +325,21 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				id="${this._buttonId}"
 				@keydown="${this._onMoveButtonKeydown}"
 				@mousedown="${this._onMoveButtonMouseDown}"
-				text="${this._defaultLabel}">
+				text="${this._defaultLabel}"
+				side-to-side="${this.sideToSide}">
 			</d2l-button-move>
 			${this._displayKeyboardTooltip ? html`<d2l-tooltip class="vdiff-target" align="start" announced for="${this._buttonId}" for-type="descriptor">${this._renderTooltipContent()}</d2l-tooltip>` : ''}
 		`;
 	}
 
 	_renderTooltipContent() {
+		const langTermPrefix = (term) => (this.sideToSide ? `components.list-item-drag-handle-tooltip.side-to-side.${term}` : `components.list-item-drag-handle-tooltip.${term}`);
 		return html`
-			<div>${this.localize('components.list-item-drag-handle-tooltip.title')}</div>
+			<div>${this.localize(langTermPrefix('title'))}</div>
 			<ul>
-				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize('components.list-item-drag-handle-tooltip.enter-key')}</span> - ${this.localize('components.list-item-drag-handle-tooltip.enter-desc')}</li>
-				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize('components.list-item-drag-handle-tooltip.up-down-key')}</span> - ${this.localize('components.list-item-drag-handle-tooltip.up-down-desc')}</li>
-				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize('components.list-item-drag-handle-tooltip.left-right-key')}</span> - ${this.localize('components.list-item-drag-handle-tooltip.left-right-desc')}</li>
+				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize(langTermPrefix('enter-key'))}</span> - ${this.localize(langTermPrefix('enter-desc'))}</li>
+				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize(langTermPrefix('up-down-key'))}</span> - ${this.localize(langTermPrefix('up-down-desc'))}</li>
+				<li><span class="d2l-list-item-drag-handle-tooltip-key">${this.localize(langTermPrefix('left-right-key'))}</span> - ${this.localize(langTermPrefix('left-right-desc'))}</li>
 			</ul>
 		`;
 	}

@@ -1,5 +1,6 @@
 import '../selection/selection-input.js';
 import { css, html, nothing } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { isInteractiveInListItemComposedPath } from './list-item-mixin.js';
 import { SelectionInfo } from '../selection/selection-mixin.js';
@@ -56,6 +57,9 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			:host([selection-disabled]) [slot="control"],
 			:host([selection-disabled]) [slot="control-action"] [slot="content"] {
 				pointer-events: all;
+			}
+			.bump-inline {
+				margin-inline-start: 2rem !important;
 			}
 		` ];
 
@@ -164,6 +168,9 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	}
 
 	_renderCheckbox() {
+		const classes = {
+			'bump-inline': this._keyboardActive
+		};
 		return this.selectable ? html`
 			<d2l-selection-input
 				@d2l-selection-change="${this._onCheckboxChange}"
@@ -177,7 +184,8 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 				@mouseenter="${this._onMouseEnterSelection}"
 				@mouseleave="${this._onMouseLeaveSelection}"
 				?selected="${this.selected}"
-				?skeleton="${this.skeleton}">
+				?skeleton="${this.skeleton}"
+				class=${classMap(classes)}>
 			</d2l-selection-input>
 		` : nothing;
 	}
