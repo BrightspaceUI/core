@@ -13,7 +13,7 @@ describe('card-content-meta', () => {
 				</ul>
 			</d2l-card-content-meta>
 		`);
-		await expect(elem).to.be.golden();
+		await expect(elem).to.be.golden({ allColorModes: true });
 	});
 });
 
