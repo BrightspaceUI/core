@@ -26,9 +26,9 @@ class Breadcrumbs extends LocalizeCoreElement(LitElement) {
 				display: block;
 				font-size: 0.7rem;
 				line-height: 1.05rem;
-				position: relative;
 				${overflowEllipsisDeclarations}
 				overflow-y: clip;
+				position: relative;
 			}
 			:host([hidden]) {
 				display: none;
