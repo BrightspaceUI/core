@@ -58,7 +58,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			:host([selection-disabled]) [slot="control-action"] [slot="content"] {
 				pointer-events: all;
 			}
-			.bump-inline {
+			:host([layout="tile"]) .bump-inline {
 				margin-inline-start: 2rem !important;
 			}
 		` ];
