@@ -56,7 +56,7 @@ describe('breadcrumbs', () => {
 			</d2l-breadcrumbs>
 		`);
 		const breadcrumb = elem.querySelector('d2l-breadcrumb');
-		focusElem(breadcrumb);
+		await focusElem(breadcrumb);
 		await expect(elem).to.be.golden();
 	});
 });
