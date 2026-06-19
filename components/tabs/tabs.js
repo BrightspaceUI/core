@@ -246,6 +246,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._scrollCollapsed = false;
 		this._state = 'shown';
 		this._tabIds = {};
+		this._tabs = [];
 		if (this._defaultSlotBehavior) this._tabInfos = [];
 		this._translationValue = 0;
 	}
