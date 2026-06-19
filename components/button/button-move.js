@@ -175,7 +175,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 					align-items: center;
 					flex-direction: row;
 					height: 1.2rem;
-					width: calc(1.2rem * 2);
+					width: calc(calc(1.2rem + 1px) * 2);
 				}
 
 				:host([side-to-side]) .layer {
@@ -184,7 +184,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 					inset-inline-start: 0;
 					gap: 2px;
 					top: 0;
-					width: calc(1.2rem * 2);
+					width: calc(calc(1.2rem + 1px) * 2);
 				}
 
 				:host([side-to-side]) d2l-icon {
