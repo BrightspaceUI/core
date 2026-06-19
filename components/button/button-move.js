@@ -180,16 +180,16 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 
 				:host([side-to-side]) .layer {
 					flex-direction: row;
+					gap: 2px;
 					height: 1.2rem;
 					inset-inline-start: 0;
-					gap: 2px;
 					top: 0;
 					width: calc(calc(1.2rem + 1px) * 2);
 				}
 
 				:host([side-to-side]) d2l-icon {
-					/* Arrows need to be rotated in opposite direction for RTL */
 					height: 1.2rem;
+					/* Arrows need to be rotated in opposite direction for RTL */
 					transform: rotate(calc(-90deg * var(--d2l-length-factor)));
 					width: 1.2rem;
 				}
