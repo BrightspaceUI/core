@@ -175,7 +175,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 					align-items: center;
 					flex-direction: row;
 					height: 1.2rem;
-					width: calc(1.25rem * 2);
+					width: calc(1.2rem * 2);
 				}
 
 				:host([side-to-side]) .layer {
@@ -184,14 +184,14 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 					inset-inline-start: 0;
 					gap: 2px;
 					top: 0;
-					width: calc(1.25rem * 2);
+					width: calc(1.2rem * 2);
 				}
 
 				:host([side-to-side]) d2l-icon {
 					/* Arrows need to be rotated in opposite direction for RTL */
 					height: 1.2rem;
 					transform: rotate(calc(-90deg * var(--d2l-length-factor)));
-					width: 1.25rem;
+					width: 1.2rem;
 				}
 			`
 		];
