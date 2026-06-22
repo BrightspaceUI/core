@@ -1,4 +1,5 @@
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { _isValidCssSelector } from '../../helpers/internal/css.js';
 import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
 
 registerSemanticVariableForSvgImageUrl(
@@ -8,29 +9,54 @@ registerSemanticVariableForSvgImageUrl(
 	</svg>`
 );
 
+function _parseSelectors(selectors) {
+	return unsafeCSS(selectors.map(s => s.trim()).join(',\n'));
+}
+
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export function _generateInputLabelStyles(selectors) {
+	if (!selectors.every(_isValidCssSelector)) return;
+	const cssSelector = _parseSelectors(selectors);
+	return css`
+		${cssSelector} {
+			cursor: default;
+			display: block;
+			font-size: 0.7rem;
+			font-weight: 700;
+			letter-spacing: 0.2px;
+			line-height: 0.9rem;
+			margin-block: 0 0.4rem;
+			margin-inline: 0;
+			padding: 0;
+		}
+	`;
+}
+
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export function _generateInputLabelRequiredStyles(selectors) {
+	if (!selectors.every(_isValidCssSelector)) return;
+	const cssSelector = _parseSelectors(selectors);
+	return css`
+		${cssSelector} {
+			background-image: var(--d2l-input-label-required-image);
+			bottom: 0.25rem;
+			content: "";
+			display: inline-block;
+			height: 0.3rem;
+			inset-inline-start: 0.15rem;
+			position: relative;
+			width: 0.25rem;
+		}
+	`;
+}
+
 export const inputLabelStyles = css`
-	.d2l-input-label {
-		cursor: default;
-		display: block;
-		font-size: 0.7rem;
-		font-weight: 700;
-		letter-spacing: 0.2px;
-		line-height: 0.9rem;
-		margin-block: 0 0.4rem;
-		margin-inline: 0;
-		padding: 0;
-	}
-	:host([required]) .d2l-input-label::after,
-	.d2l-input-label-required::after {
-		background-image: var(--d2l-input-label-required-image);
-		bottom: 0.25rem;
-		content: "";
-		display: inline-block;
-		height: 0.3rem;
-		inset-inline-start: 0.15rem;
-		position: relative;
-		width: 0.25rem;
-	}
+	${_generateInputLabelStyles(['.d2l-input-label'])}
+	${_generateInputLabelRequiredStyles([':host([required]) .d2l-input-label::after', '.d2l-input-label-required::after'])}
 	:host([skeleton]) .d2l-input-label.d2l-skeletize::before {
 		bottom: 0.25rem;
 		top: 0.15rem;
