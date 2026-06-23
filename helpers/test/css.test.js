@@ -63,4 +63,22 @@ describe('_isValidCssSelector', () => {
 		expect(_isValidCssSelector('%')).to.be.false;
 		expect(_isValidCssSelector('.class-name{display:block}')).to.be.false;
 	});
+
+	it.only('should support valid :not selectors', () => {
+		expect(_isValidCssSelector(':not(.inside)')).to.be.true;
+		expect(_isValidCssSelector(':not(.inside).after')).to.be.true;
+		expect(_isValidCssSelector('.before:not(.inside)')).to.be.true;
+		expect(_isValidCssSelector('.before:not(.inside).after')).to.be.true;
+		expect(_isValidCssSelector('.spacebefore :not(.inside) .spaceafter')).to.be.true;
+		expect(_isValidCssSelector(':not(.class1):not(.class2)')).to.be.true;
+	});
+	it('should support valid :not selectors', () => {
+		expect(_isValidCssSelector(':not()')).to.be.false;
+		expect(_isValidCssSelector(':not(.$inside)')).to.be.false;
+		expect(_isValidCssSelector(':not(.inside).$after')).to.be.false;
+		expect(_isValidCssSelector('.$before:not(.inside)')).to.be.false;
+		expect(_isValidCssSelector('.$before:not(.inside).$after')).to.be.false;
+		expect(_isValidCssSelector(':not(.class1):not(.$class2)')).to.be.false;
+		expect(_isValidCssSelector(':not(.$class1):not(.class2)')).to.be.false;
+	});
 });
