@@ -339,7 +339,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 
 			:host([layout="tile"]) d2l-list-item-drag-handle {
-				margin: 0 0.3rem;
+				margin-inline: 0.3rem 0;
+				margin-block: 0rem;
 			}
 
 			[slot="outside-control-container"] {

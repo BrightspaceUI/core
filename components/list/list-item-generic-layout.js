@@ -215,7 +215,7 @@ class ListItemGenericLayout extends LitElement {
 
 			:host([layout="tile"]) {
 				grid-template-columns:
-					[start outside-control-start] minmax(0, 30px)
+					[start outside-control-start] minmax(0, 26px)
 					[outside-control-end control-start] minmax(0, min-content)
 					[control-end actions-start] minmax(0, auto)
 					[actions-end end];

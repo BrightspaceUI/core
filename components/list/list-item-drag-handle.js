@@ -125,7 +125,7 @@ class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			:host([layout="tile"]) {
 				align-items: center;
 				display: flex;
-				height: 36px;
+				height: 39px;
 			}
 		`];
 	}
