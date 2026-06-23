@@ -66,12 +66,15 @@ export function _generateInputLabelRequiredStyles(selectorConfigList) {
 	`;
 }
 
+const inputLabelSimpleStyles = _generateInputLabelStyles([{ selector: '.d2l-input-label' }]);
+const inputLabelRequiredStyles = _generateInputLabelRequiredStyles([
+	{ container: ':host([required])', selector: '.d2l-input-label', after: true },
+	{ selector: '.d2l-input-label-required', after: false }
+]);
+
 export const inputLabelStyles = css`
-	${_generateInputLabelStyles([{ selector: '.d2l-input-label' }])}
-	${_generateInputLabelRequiredStyles([
-		{ container: ':host([required])', selector: '.d2l-input-label', after: true },
-		{ selector: '.d2l-input-label-required', after: false }
-	])}
+	${inputLabelSimpleStyles}
+	${inputLabelRequiredStyles}
 	:host([skeleton]) .d2l-input-label.d2l-skeletize::before {
 		bottom: 0.25rem;
 		top: 0.15rem;
