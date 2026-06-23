@@ -50,7 +50,7 @@ function _getRadioStyleSelectors(inputSelectors) {
  * A private helper method that should not be used by general consumers
  */
 export function _generateRadioStyles(selector, containerSelector) {
-	if (!_isValidCssSelector(selector) || !_isValidCssSelector(containerSelector)) return '';
+	if (!_isValidCssSelector(selector) || (containerSelector && !_isValidCssSelector(containerSelector))) return '';
 	const inputSelectors = [selector];
 	if (containerSelector) {
 		inputSelectors.push(`${containerSelector} > input[type="radio"]`);

@@ -298,25 +298,32 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
   import '@brightspace-ui/core/components/dropdown/dropdown-tabs.js';
   import '@brightspace-ui/core/components/menu/menu.js';
   import '@brightspace-ui/core/components/menu/menu-item.js';
+  import '@brightspace-ui/core/components/tabs/tab.js';
   import '@brightspace-ui/core/components/tabs/tabs.js';
   import '@brightspace-ui/core/components/tabs/tab-panel.js';
 </script>
 <d2l-dropdown-button text="Open!" primary>
   <d2l-dropdown-tabs min-width="175" max-width="300">
-    <d2l-tabs>
-      <d2l-tab-panel text="first">first content</d2l-tab-panel>
-      <d2l-tab-panel text="second">
+    <d2l-tabs text="Example">
+      <d2l-tab id="first" text="first" slot="tabs"></d2l-tab>
+      <d2l-tab-panel labelled-by="first" slot="panels">first content</d2l-tab-panel>
+      <d2l-tab id="second" text="second" slot="tabs"></d2l-tab>
+      <d2l-tab-panel labelled-by="second" slot="panels">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
       </d2l-tab-panel>
-      <d2l-tab-panel text="third">
+      <d2l-tab id="third" text="third" slot="tabs"></d2l-tab>
+      <d2l-tab-panel labelled-by="third" slot="panels">
         <d2l-menu label="Astronomy">
           <d2l-menu-item text="Searching for the Heavens "></d2l-menu-item>
           <d2l-menu-item text="The Universe"></d2l-menu-item>
         </d2l-menu>
       </d2l-tab-panel>
-      <d2l-tab-panel text="fourth">fourth content</d2l-tab-panel>
-      <d2l-tab-panel text="fifth">fifth content</d2l-tab-panel>
-      <d2l-tab-panel text="sixth">sixth content</d2l-tab-panel>
+      <d2l-tab id="fourth" text="fourth" slot="tabs"></d2l-tab>
+      <d2l-tab-panel labelled-by="fourth" slot="panels">fourth content</d2l-tab-panel>
+      <d2l-tab id="fifth" text="fifth" slot="tabs"></d2l-tab>
+      <d2l-tab-panel labelled-by="fifth" slot="panels">fifth content</d2l-tab-panel>
+      <d2l-tab id="sixth" text="sixth" slot="tabs"></d2l-tab>
+      <d2l-tab-panel labelled-by="sixth" slot="panels">sixth content</d2l-tab-panel>
     </d2l-tabs>
   </d2l-dropdown-tabs>
 </d2l-dropdown>
