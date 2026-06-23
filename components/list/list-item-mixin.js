@@ -339,8 +339,8 @@ export const ListItemMixin = superclass => class extends composeMixins(
 			}
 
 			:host([layout="tile"]) d2l-list-item-drag-handle {
+				margin-block: 0;
 				margin-inline: 0.3rem 0;
-				margin-block: 0rem;
 			}
 
 			[slot="outside-control-container"] {
@@ -605,6 +605,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 			:host([layout="tile"][draggable]) d2l-selection-input {
 				margin: auto;
+				margin-inline-start: 0.3rem;
 			}
 			:host([layout="tile"]:not([tile-header])) d2l-selection-input {
 				--d2l-input-checkbox-border-color-hover-focus: var(--d2l-color-celestine-minus-1);
