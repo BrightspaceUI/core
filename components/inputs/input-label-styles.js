@@ -9,7 +9,9 @@ registerSemanticVariableForSvgImageUrl(
 	</svg>`
 );
 
-const _parseSelectors = (selectors) => unsafeCSS(selectors.map(s => s.trim()).join(',\n'));
+function _parseSelectors(selectors) {
+	return unsafeCSS(selectors.map(s => s.trim()).join(',\n'));
+}
 
 function _buildCssSelector({ container, selector, after }) {
 	let cssSelector = `${selector}`;
@@ -22,9 +24,9 @@ function _buildCssSelector({ container, selector, after }) {
 /**
  * A private helper method that should not be used by general consumers
  */
-export function _generateInputLabelStyles(selectors) {
-	if (!selectors.map(s => s.selector).every(_isValidCssSelector)) return;
-	const cssMappedSelectors = selectors.map(_buildCssSelector);
+export function _generateInputLabelStyles(selectorConfigList) {
+	if (!selectorConfigList.map(s => s.selector).every(_isValidCssSelector)) return;
+	const cssMappedSelectors = selectorConfigList.map(_buildCssSelector);
 	const cssSelector = _parseSelectors(cssMappedSelectors);
 
 	return css`
@@ -45,9 +47,9 @@ export function _generateInputLabelStyles(selectors) {
 /**
  * A private helper method that should not be used by general consumers
  */
-export function _generateInputLabelRequiredStyles(selectors) {
-	if (!selectors.map(s => s.selector).every(_isValidCssSelector)) return;
-	const cssMappedSelectors = selectors.map(_buildCssSelector);
+export function _generateInputLabelRequiredStyles(selectorConfigList) {
+	if (!selectorConfigList.map(s => s.selector).every(_isValidCssSelector)) return;
+	const cssMappedSelectors = selectorConfigList.map(_buildCssSelector);
 	const cssSelector = _parseSelectors(cssMappedSelectors);
 
 	return css`
