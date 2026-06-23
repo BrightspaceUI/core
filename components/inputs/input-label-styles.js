@@ -69,7 +69,7 @@ export function _generateInputLabelRequiredStyles(selectorConfigList) {
 const inputLabelSimpleStyles = _generateInputLabelStyles([{ selector: '.d2l-input-label' }]);
 const inputLabelRequiredStyles = _generateInputLabelRequiredStyles([
 	{ container: ':host([required])', selector: '.d2l-input-label', after: true },
-	{ selector: '.d2l-input-label-required', after: false }
+	{ selector: '.d2l-input-label-required', after: true }
 ]);
 
 export const inputLabelStyles = css`
