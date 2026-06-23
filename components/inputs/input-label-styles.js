@@ -9,16 +9,24 @@ registerSemanticVariableForSvgImageUrl(
 	</svg>`
 );
 
-function _parseSelectors(selectors) {
-	return unsafeCSS(selectors.map(s => s.trim()).join(',\n'));
+const _parseSelectors = (selectors) => unsafeCSS(selectors.map(s => s.trim()).join(',\n'));
+
+function _buildCssSelector({ container, selector, after }) {
+	let cssSelector = `${selector}`;
+	if (container) cssSelector = `${container} ${cssSelector}`;
+	if (after) cssSelector = `${cssSelector}::after`;
+
+	return cssSelector;
 }
 
 /**
  * A private helper method that should not be used by general consumers
  */
 export function _generateInputLabelStyles(selectors) {
-	if (!selectors.every(_isValidCssSelector)) return;
-	const cssSelector = _parseSelectors(selectors);
+	if (!selectors.map(s => s.selector).every(_isValidCssSelector)) return;
+	const cssMappedSelectors = selectors.map(_buildCssSelector);
+	const cssSelector = _parseSelectors(cssMappedSelectors);
+
 	return css`
 		${cssSelector} {
 			cursor: default;
@@ -38,8 +46,10 @@ export function _generateInputLabelStyles(selectors) {
  * A private helper method that should not be used by general consumers
  */
 export function _generateInputLabelRequiredStyles(selectors) {
-	if (!selectors.every(_isValidCssSelector)) return;
-	const cssSelector = _parseSelectors(selectors);
+	if (!selectors.map(s => s.selector).every(_isValidCssSelector)) return;
+	const cssMappedSelectors = selectors.map(_buildCssSelector);
+	const cssSelector = _parseSelectors(cssMappedSelectors);
+
 	return css`
 		${cssSelector} {
 			background-image: var(--d2l-input-label-required-image);
@@ -55,8 +65,11 @@ export function _generateInputLabelRequiredStyles(selectors) {
 }
 
 export const inputLabelStyles = css`
-	${_generateInputLabelStyles(['.d2l-input-label'])}
-	${_generateInputLabelRequiredStyles([':host([required]) .d2l-input-label::after', '.d2l-input-label-required::after'])}
+	${_generateInputLabelStyles([{ selector: '.d2l-input-label' }])}
+	${_generateInputLabelRequiredStyles([
+		{ container: ':host([required])', selector: '.d2l-input-label', after: true },
+		{ selector: '.d2l-input-label-required', after: false }
+	])}
 	:host([skeleton]) .d2l-input-label.d2l-skeletize::before {
 		bottom: 0.25rem;
 		top: 0.15rem;
