@@ -54,6 +54,12 @@ describe('_isValidCssSelector', () => {
 		expect(_isValidCssSelector(':host([dir="rtl"])')).to.be.true;
 	});
 
+	it('should not support complex :host selectors with pseudo-classes', () => {
+		expect(_isValidCssSelector(':host(:hover)')).to.be.false;
+		expect(_isValidCssSelector(':host(:focus)')).to.be.false;
+		expect(_isValidCssSelector(':host(:active)')).to.be.false;
+	});
+
 	it('should not support invalid selectors', () => {
 		expect(_isValidCssSelector('a[b[c]]')).to.be.false;
 		expect(_isValidCssSelector('abc$')).to.be.false;
