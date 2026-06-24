@@ -9,12 +9,13 @@ describe('list-item-drag-handle', () => {
 		{ title: 'dragger', fixture: async() => fixture(html`<div style="width: 50px;"><d2l-list-item-drag-handle class="vdiff-include"></d2l-list-item-drag-handle></div>`) },
 		{ title: 'dragger side-to-side', fixture: async() => fixture(html`<div style="width: 50px;"><d2l-list-item-drag-handle class="vdiff-include" side-to-side></d2l-list-item-drag-handle></div>`) }
 	].forEach(({ title, fixture }) => {
-		before(async() => {
-			elem = await fixture();
-			handle = elem.querySelector('d2l-list-item-drag-handle');
-		});
 
-		describe(title, () => {
+		describe(`list item ${title}`, () => {
+			beforeEach(async() => {
+				elem = await fixture();
+				handle = elem.querySelector('d2l-list-item-drag-handle');
+			});
+
 			it('simple', async() => {
 				await expect(elem).to.be.golden();
 			});
