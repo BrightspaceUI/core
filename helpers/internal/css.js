@@ -10,7 +10,7 @@ export function _isValidCssSelector(selector) {
 			].every((part, i) => (i !== 1 && part === '') || partIsValid(part));
 		}
 
-		const re = /([a-zA-Z0-9-_ >.#]+)(\[[a-zA-Z0-9-_="]+\])?([a-zA-Z0-9-_ >.#]+)?/g;
+		const re = /([:a-zA-Z0-9-_ >.#]+)(\(?\[[a-zA-Z0-9-_="]+\]\)?)?([a-zA-Z0-9-_ >.#]+)?/g;
 		if (part === ':host') return true;
 		const match = part.match(re);
 		const isValid = !!match && match.length === 1 && match[0].length === part.length;
