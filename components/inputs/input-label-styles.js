@@ -9,25 +9,13 @@ registerSemanticVariableForSvgImageUrl(
 	</svg>`
 );
 
-function _parseSelectors(selectors) {
-	return unsafeCSS(selectors.map(s => s.trim()).join(',\n'));
-}
-
-function _buildCssSelector({ container, selector, after }) {
-	let cssSelector = `${selector}`;
-	if (container) cssSelector = `${container} ${cssSelector}`;
-	if (after) cssSelector = `${cssSelector}::after`;
-
-	return cssSelector;
-}
-
 /**
  * A private helper method that should not be used by general consumers
  */
-export function _generateInputLabelStyles(selectorConfigList) {
-	if (!selectorConfigList.map(s => s.selector).every(_isValidCssSelector)) return;
-	const cssMappedSelectors = selectorConfigList.map(_buildCssSelector);
-	const cssSelector = _parseSelectors(cssMappedSelectors);
+export function _generateInputLabelStyles(selector) {
+	if (!selector || !_isValidCssSelector(selector.trim())) return;
+	const trimmedSelector = selector.trim().split(',').map(s => s.trim()).join(',\n');
+	const cssSelector = unsafeCSS(trimmedSelector);
 
 	return css`
 		${cssSelector} {
@@ -47,10 +35,11 @@ export function _generateInputLabelStyles(selectorConfigList) {
 /**
  * A private helper method that should not be used by general consumers
  */
-export function _generateInputLabelRequiredStyles(selectorConfigList) {
-	if (!selectorConfigList.map(s => s.selector).every(_isValidCssSelector)) return;
-	const cssMappedSelectors = selectorConfigList.map(_buildCssSelector);
-	const cssSelector = _parseSelectors(cssMappedSelectors);
+export function _generateInputLabelRequiredStyles(selector) {
+	if (!selector || !_isValidCssSelector(selector.trim())) return;
+	const selectorList = selector.trim().split(',');
+	const joinedSelector = selectorList.map(s => `${s.trim()}::after`).join(',\n');
+	const cssSelector = unsafeCSS(joinedSelector);
 
 	return css`
 		${cssSelector} {
@@ -66,15 +55,9 @@ export function _generateInputLabelRequiredStyles(selectorConfigList) {
 	`;
 }
 
-const inputLabelSimpleStyles = _generateInputLabelStyles([{ selector: '.d2l-input-label' }]);
-const inputLabelRequiredStyles = _generateInputLabelRequiredStyles([
-	{ container: ':host([required])', selector: '.d2l-input-label', after: true },
-	{ selector: '.d2l-input-label-required', after: true }
-]);
-
 export const inputLabelStyles = css`
-	${inputLabelSimpleStyles}
-	${inputLabelRequiredStyles}
+	${_generateInputLabelStyles('.d2l-input-label')}
+	${_generateInputLabelRequiredStyles(':host([required]) .d2l-input-label,.d2l-input-label-required')}
 	:host([skeleton]) .d2l-input-label.d2l-skeletize::before {
 		bottom: 0.25rem;
 		top: 0.15rem;
