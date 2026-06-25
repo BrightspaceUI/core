@@ -182,7 +182,7 @@ function hideAccessible(target) {
 			}
 			child.setAttribute('tabindex', '-1');
 
-			if (getFlag('GAUD-9398-make-backdrop-inert', false)) {
+			if (getFlag('GAUD-9398-make-backdrop-inert', true)) {
 				if (child.hasAttribute('inert')) {
 					child.setAttribute(BACKDROP_INERT, '');
 				}
@@ -222,7 +222,7 @@ function showAccessible(elems) {
 		} else {
 			elem.removeAttribute('tabindex');
 		}
-		if (getFlag('GAUD-9398-make-backdrop-inert', false)) {
+		if (getFlag('GAUD-9398-make-backdrop-inert', true)) {
 			if (elem.hasAttribute(BACKDROP_INERT)) {
 				elem.removeAttribute(BACKDROP_INERT);
 			} else {
