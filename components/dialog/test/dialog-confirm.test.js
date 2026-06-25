@@ -20,6 +20,11 @@ describe('d2l-dialog-confirm', () => {
 
 	describe('focus management', () => {
 
+		// delete these tests when GAUD-9644-prefer-native-confirm-dialogs is removed
+
+		before(() => mockFlag(preferNativeConfirmDialogsFlag, false));
+		after(() => resetFlag(preferNativeConfirmDialogsFlag));
+
 		it('should focus on first non-primary button', async() => {
 			const el = await fixture(html`
 				<d2l-dialog-confirm opened>
@@ -44,6 +49,8 @@ describe('d2l-dialog-confirm', () => {
 	});
 
 	describe('focus management (prefer-native)', () => {
+
+		// keep these tests when GAUD-9644-prefer-native-confirm-dialogs is removed
 
 		before(() => mockFlag(preferNativeConfirmDialogsFlag, true));
 		after(() => resetFlag(preferNativeConfirmDialogsFlag));
