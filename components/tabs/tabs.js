@@ -430,7 +430,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return (Object.keys(this._tabIds).length > 1 && !reduceMotion) ? this._animateTabRemoval(tab) : Promise.resolve();
 	}
 
-	#GAUD_9963_FLAG = getFlag('GAUD-9963-dropdown-tabs-not-resizing', false);
+	#GAUD_9963_FLAG = getFlag('GAUD-9963-dropdown-tabs-not-resizing', true);
 	#checkTabPanelMatchRequested;
 	#newTabsPanelStructure = getUseNewTabsStructureFlag();
 	#panels;
