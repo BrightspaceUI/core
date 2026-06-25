@@ -119,7 +119,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		 * TODO: remove this whole if when removing the GAUD-9963-dropdown-tabs-not-resizing flag
 		 * keep the min max code an place that into the styles above
 		 */
-		if (getFlag('GAUD-9963-dropdown-tabs-not-resizing', false)) {
+		if (getFlag('GAUD-9963-dropdown-tabs-not-resizing', true)) {
 			this.style.setProperty('--d2l-gaud-9963-tab-max-width', 'min(20rem, max(33%, 10rem))');
 		}
 	}
