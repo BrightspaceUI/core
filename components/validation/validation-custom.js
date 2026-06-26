@@ -1,8 +1,14 @@
 
-import { LitElement } from 'lit';
+import { css, LitElement } from 'lit';
 import { ValidationCustomMixin } from './validation-custom-mixin.js';
 
 class ValidationCustom extends ValidationCustomMixin(LitElement) {
+
+	static styles = css`
+		:host {
+			display: none;
+		}
+	`;
 
 	async validate() {
 		const validation = new Promise(resolve => {
