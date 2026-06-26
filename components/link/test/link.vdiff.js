@@ -1,11 +1,7 @@
 import '../link.js';
 import { expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
-import { loadSass, unloadSass } from '../../../test/load-sass.js';
 
 describe('d2l-link', () => {
-
-	before(loadSass);
-	after(unloadSass);
 
 	[
 		{ name: 'wc-standard', allColorModes: true, template: html`<d2l-link href="https://www.d2l.com">Standard Link</d2l-link>` },
@@ -27,10 +23,7 @@ describe('d2l-link', () => {
 		{ name: 'wc-clamp-unbreakable-two-lines', template: html`<div style="width: 400px;"><d2l-link href="https://www.d2l.com" lines="2">Areallyreallyreallylongunbreakablelinkthatwrapsinitscontainerandthentruncatesaftertwolinesoftextlikethis.</d2l-link></div>` },
 		{ name: 'wc-disabled', allColorModes: true, template: html`<d2l-link href="https://www.d2l.com" disabled target="_blank">Disabled Link</d2l-link>` },
 		{ name: 'wc-disabled-tooltip', template: html`<d2l-link href="https://www.d2l.com" disabled disabled-tooltip="This link is disabled" target="_blank">Disabled Link with Tooltip</d2l-link>` },
-		{ name: 'wc-disabled-tooltip-not-disabled', template: html`<d2l-link href="https://www.d2l.com" disabled-tooltip="This link is disabled">Disabled Link with Tooltip</d2l-link>` },
-		{ name: 'sass-standard', template: html`<a href="https://www.d2l.com" class="d2l-test-link">Standard Link</a>` },
-		{ name: 'sass-main', template: html`<a href="https://www.d2l.com" class="d2l-test-link" main>Main Link</a>` },
-		{ name: 'sass-small', template: html`<a href="https://www.d2l.com" class="d2l-test-link" small>Small Link</a>` }
+		{ name: 'wc-disabled-tooltip-not-disabled', template: html`<d2l-link href="https://www.d2l.com" disabled-tooltip="This link is disabled">Disabled Link with Tooltip</d2l-link>` }
 	].forEach(({ name, allColorModes, template }) => {
 
 		describe('screen', () => {
