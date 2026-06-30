@@ -13,6 +13,9 @@ registerSemanticVariableForSvgImageUrl(
 	</svg>`
 );
 
+/**
+ * A private helper method that should not be used by general consumers
+ */
 export function _generateSelectStyles(selector, includeMediaPreferContrastQuery = false) {
 	if (!_isValidCssSelector(selector)) return '';
 	const finalSelector = unsafeCSS(selector);
@@ -55,8 +58,7 @@ export function _generateSelectStyles(selector, includeMediaPreferContrastQuery 
 			${finalSelector}[aria-invalid="true"]:hover {
 				outline-color: var(--d2l-theme-status-color-error);
 			}
-		}
-	` : css``;
+		}` : unsafeCSS('');
 
 	return css`
 		${finalSelector} {
