@@ -110,6 +110,7 @@ class PageDivider extends LitElement {
 		e.preventDefault();
 
 		if (e.key === 'Enter' || e.key === ' ') {
+			/** @ignore */
 			this.dispatchEvent(new CustomEvent('d2l-page-divider-toggle'));
 			return;
 		}
@@ -142,6 +143,7 @@ class PageDivider extends LitElement {
 	#sendResizeEvent(requestedSize) {
 		// TO DO: Maybe we don't bother clamping here, since the panel state controller will clamp it anyway
 		const clampedRequestedSize = clampedSize(requestedSize, this.minSize, this.maxSize);
+		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-page-divider-resize', { detail: {
 			requestedSize: clampedRequestedSize
 		} }));
