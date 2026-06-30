@@ -15,11 +15,11 @@ registerSemanticVariableForSvgImageUrl(
 
 export function _generateSelectStyles(selector, includeMediaPreferContrastQuery = false) {
 	if (!_isValidCssSelector(selector)) return '';
-	const unsafeSelector = unsafeCSS(selector);
+	const finalSelector = unsafeCSS(selector);
 
 	const mediaPreferContrast = includeMediaPreferContrastQuery ? css`
 		@media (prefers-contrast: more) {
-			${unsafeSelector} {
+			${finalSelector} {
 				appearance: auto;
 				background-color: Field;
 				background-image: none;
@@ -33,33 +33,33 @@ export function _generateSelectStyles(selector, includeMediaPreferContrastQuery 
 				padding-inline: 0.6rem 16px;
 			}
 
-			${unsafeSelector}:not([disabled]):${focusClass},
-			${unsafeSelector}:not([disabled]):hover {
+			${finalSelector}:not([disabled]):${focusClass},
+			${finalSelector}:not([disabled]):hover {
 				box-shadow: none;
 				outline: 2px solid Highlight;
 			}
 
-			${unsafeSelector}:disabled {
+			${finalSelector}:disabled {
 				outline: 1px solid GrayText;
 			}
 
-			${unsafeSelector}[aria-invalid="true"] {
+			${finalSelector}[aria-invalid="true"] {
 				background-image: var(--d2l-input-invalid-image);
 				background-position: center var(--d2l-inline-end, right) calc(1px + 11px + 17px);
 				background-repeat: no-repeat;
 				background-size: 0.8rem 0.8rem;
 			}
 
-			${unsafeSelector}[aria-invalid="true"],
-			${unsafeSelector}[aria-invalid="true"]:${focusClass},
-			${unsafeSelector}[aria-invalid="true"]:hover {
+			${finalSelector}[aria-invalid="true"],
+			${finalSelector}[aria-invalid="true"]:${focusClass},
+			${finalSelector}[aria-invalid="true"]:hover {
 				outline-color: var(--d2l-theme-status-color-error);
 			}
 		}
 	` : css``;
 
 	return css`
-		${unsafeSelector} {
+		${finalSelector} {
 			-webkit-appearance: none;
 			-moz-appearance: none;
 			appearance: none;
@@ -89,24 +89,24 @@ export function _generateSelectStyles(selector, includeMediaPreferContrastQuery 
 			vertical-align: middle;
 		}
 
-		${unsafeSelector}:not([disabled]):hover,
-		${unsafeSelector}:not([disabled]):${focusClass} {
+		${finalSelector}:not([disabled]):hover,
+		${finalSelector}:not([disabled]):${focusClass} {
 			box-shadow: inset var(--d2l-theme-shadow-inset-offset-x) var(--d2l-theme-shadow-inset-offset-y) var(--d2l-theme-shadow-inset-blur-radius) 2px var(--d2l-theme-shadow-inset-color);
 			outline: 2px solid var(--d2l-theme-border-color-focus);
 			outline-offset: -2px;
 		}
-		${unsafeSelector}[aria-invalid="true"] {
+		${finalSelector}[aria-invalid="true"] {
 			background-image: var(--d2l-input-select-chevron-image), var(--d2l-input-invalid-image);
 			background-position: center var(--d2l-inline-end, right) 17px, center var(--d2l-inline-end, right) calc(1px + 11px + 17px);
 			background-repeat: no-repeat, no-repeat;
 			background-size: 11px 7px, 0.8rem 0.8rem;
 		}
-		${unsafeSelector}[aria-invalid="true"],
-		${unsafeSelector}[aria-invalid="true"]:${focusClass},
-		${unsafeSelector}[aria-invalid="true"]:hover {
+		${finalSelector}[aria-invalid="true"],
+		${finalSelector}[aria-invalid="true"]:${focusClass},
+		${finalSelector}[aria-invalid="true"]:hover {
 			outline-color: var(--d2l-theme-status-color-error);
 		}
-		${unsafeSelector}:disabled {
+		${finalSelector}:disabled {
 			opacity: var(--d2l-theme-opacity-disabled-control);
 		}
 
