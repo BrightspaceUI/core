@@ -162,7 +162,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			'supporting-mobile': { minSize: DRAWER_MIN_HEIGHT }
 		});
 		this._slotVisibility = {};
-		this._handleWindowResize = this._handleWindowResize.bind(this);
+		this.#handleWindowResizeBound = this.#handleWindowResize.bind(this);
 		this.#resizeObserver = new ResizeObserver(entries => {
 			for (const entry of entries) {
 				if (entry.target.classList.contains('header')) {
@@ -194,13 +194,13 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		window.addEventListener('resize', this._handleWindowResize);
+		window.addEventListener('resize', this.#handleWindowResizeBound);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.#resizeObserver.disconnect();
-		window.removeEventListener('resize', this._handleWindowResize);
+		window.removeEventListener('resize', this.#handleWindowResizeBound);
 	}
 
 	firstUpdated() {
@@ -238,11 +238,8 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		}
 	}
 
+	#handleWindowResizeBound;
 	#resizeObserver;
-
-	_handleWindowResize() {
-		this._panelState.updateMaxSize('supporting-mobile', this.#getMaxDrawerHeight());
-	};
 
 	#getMaxDrawerHeight() {
 		const reservedSpace = this._headerHeight + this._footerHeight + DIVIDER_WIDTH;
@@ -268,6 +265,10 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		const nodes = e.target.assignedNodes();
 		this._slotVisibility = { ...this._slotVisibility, [key]: nodes.length !== 0 };
 	}
+
+	#handleWindowResize() {
+		this._panelState.updateMaxSize('supporting-mobile', this.#getMaxDrawerHeight());
+	};
 
 	#initializePanelSizes() {
 		const defaultWidth = Math.floor(this._contentWidth / 3);
