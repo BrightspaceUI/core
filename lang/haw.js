@@ -153,7 +153,9 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Mea Paʻa Wahi",
 	"components.overflow-group.moreActions": "Nā Hana Hou",
 	"components.page.header-nav-label": "Nui",
+	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "ʻaoʻao",
+	"components.page.supporting-divider-label": "Supporting Panel Divider",
 	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,

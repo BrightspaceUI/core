@@ -1,9 +1,49 @@
-import '../colors/colors.js';
 import '../button/floating-buttons.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { DIVIDER_WIDTH } from './page-divider.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { ProviderMixin } from '../../mixins/provider/provider-mixin.js';
+import { styleMap } from 'lit/directives/style-map.js';
+
+const DRAWER_MIN_HEIGHT = 200; // TO DO: Confirm
+const MAIN_MIN_WIDTH = 600; // TO DO: Confirm
+const PANEL_MIN_WIDTH = 320;
+
+class PanelStateController {
+	constructor(host, panelConfigs) {
+		this.#host = host;
+		this.#panels = {};
+		for (const [key, config] of Object.entries(panelConfigs)) {
+			this.#panels[key] = { collapsed: false, size: 0, minSize: config.minSize, maxSize: config.minSize };
+		}
+		host.addController(this);
+	}
+
+	getMaxSize(key) { return this.#panels[key].maxSize; }
+	getMinSize(key) { return this.#panels[key].minSize; }
+	getSize(key) { return this.#panels[key].size; }
+
+	resize(key, requestedSize) {
+		const panel = this.#panels[key];
+		// Clamp requested size to min and max bounds
+		panel.size = Math.max(panel.minSize, Math.min(requestedSize, panel.maxSize));
+		this.#host.requestUpdate();
+	}
+
+	updateMaxSize(key, newMaxSize) {
+		const panel = this.#panels[key];
+		panel.maxSize = newMaxSize;
+
+		if (panel.size > newMaxSize) {
+			this.resize(key, panel.size);
+		}
+	}
+
+	#host;
+	#panels;
+}
 
 /**
  * Component for laying out a page, with header, optional footer and optional navigation or supporting panels
@@ -21,7 +61,10 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		 * @type {'normal'|'wide'|'fullscreen'}
 		 */
 		widthType: { type: String, attribute: 'width-type' },
+		_contentWidth: { state: true },
+		_headerHeight: { state: true },
 		_headerIsSticky: { state: true },
+		_footerHeight: { state: true },
 		_slotVisibility: { state: true }
 	};
 
@@ -76,7 +119,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 		main {
 			flex: 1;
-			min-width: min(400px, 100%); /* Actual min width TBD */
+			min-width: min(${MAIN_MIN_WIDTH}px, 100%);
 		}
 
 		.side-nav-panel,
@@ -85,12 +128,6 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			overflow: clip auto;
 			position: sticky;
 			top: var(--d2l-page-header-height, 0);
-		}
-
-		.divider {
-			background-color: var(--d2l-color-gypsum);
-			flex: none;
-			width: 4px;
 		}
 
 		.footer:not([hidden]),
@@ -115,16 +152,38 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		super();
 
 		this.widthType = 'normal';
+		this._contentWidth = 0;
+		this._headerHeight = 0;
 		this._headerIsSticky = false;
+		this._footerHeight = 0;
+		this._panelState = new PanelStateController(this, {
+			'side-nav': { minSize: PANEL_MIN_WIDTH },
+			'supporting': { minSize: PANEL_MIN_WIDTH },
+			'supporting-mobile': { minSize: DRAWER_MIN_HEIGHT }
+		});
 		this._slotVisibility = {};
+		this._handleWindowResize = this._handleWindowResize.bind(this);
 		this.#resizeObserver = new ResizeObserver(entries => {
 			for (const entry of entries) {
 				if (entry.target.classList.contains('header')) {
-					const height = this._headerIsSticky ? entry.target.offsetHeight : 0;
+					this._headerHeight = entry.target.offsetHeight;
+
+					const height = this._headerIsSticky ? this._headerHeight : 0;
 					this.style.setProperty('--d2l-page-header-height', `${height}px`);
+					this._panelState.updateMaxSize('supporting-mobile', this.#getMaxDrawerHeight());
 				} else if (entry.target.classList.contains('footer')) {
-					const height = entry.target.classList.contains('fixed-footer') ? entry.target.offsetHeight : 0;
-					this.style.setProperty('--d2l-page-footer-height', `${height}px`);
+					this._footerHeight = entry.target.classList.contains('fixed-footer') ? entry.target.offsetHeight : 0;
+
+					this.style.setProperty('--d2l-page-footer-height', `${this._footerHeight}px`);
+					this._panelState.updateMaxSize('supporting-mobile', this.#getMaxDrawerHeight());
+				} else if (entry.target.classList.contains('content')) {
+					this._contentWidth = entry.contentRect.width;
+
+					const newMaxWidth = this.#getMaxPanelWidth();
+					this._panelState.updateMaxSize('side-nav', newMaxWidth);
+					this._panelState.updateMaxSize('supporting', newMaxWidth);
+
+					// TO DO: Collapse panel if needed
 				}
 			}
 		});
@@ -133,16 +192,24 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		});
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		window.addEventListener('resize', this._handleWindowResize);
+	}
+
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.#resizeObserver.disconnect();
+		window.removeEventListener('resize', this._handleWindowResize);
 	}
 
 	firstUpdated() {
 		const header = this.shadowRoot.querySelector('.header');
 		const footer = this.shadowRoot.querySelector('.footer');
+		const content = this.shadowRoot.querySelector('.content');
 		if (header) this.#resizeObserver.observe(header);
 		if (footer) this.#resizeObserver.observe(footer);
+		if (content) this.#resizeObserver.observe(content);
 	}
 
 	render() {
@@ -164,12 +231,66 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		`;
 	}
 
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('_contentWidth') && changedProperties.get('_contentWidth') === 0 && this._contentWidth > 0) {
+			this.#initializePanelSizes();
+		}
+	}
+
 	#resizeObserver;
+
+	_handleWindowResize() {
+		this._panelState.updateMaxSize('supporting-mobile', this.#getMaxDrawerHeight());
+	};
+
+	#getMaxDrawerHeight() {
+		const reservedSpace = this._headerHeight + this._footerHeight + DIVIDER_WIDTH;
+		return Math.max(DRAWER_MIN_HEIGHT, window.innerHeight - reservedSpace);
+	}
+
+	#getMaxPanelWidth() {
+		const reservedSpace = MAIN_MIN_WIDTH + DIVIDER_WIDTH;
+		return Math.max(PANEL_MIN_WIDTH, this._contentWidth - reservedSpace);
+	}
+
+	#handleDividerResize(e) {
+		const panelKey = e.target.dataset.panelKey;
+		this._panelState.resize(panelKey, e.detail.requestedSize);
+	};
+
+	#handleDividerToggle() {
+		// TO DO
+	};
 
 	#handleSlotVisibilityChange(e) {
 		const key = e.target.name;
 		const nodes = e.target.assignedNodes();
 		this._slotVisibility = { ...this._slotVisibility, [key]: nodes.length !== 0 };
+	}
+
+	#initializePanelSizes() {
+		const defaultWidth = Math.floor(this._contentWidth / 3);
+		const defaultHeight = Math.floor(window.innerHeight / 2);
+
+		this._panelState.resize('side-nav', defaultWidth);
+		this._panelState.resize('supporting', defaultWidth);
+		this._panelState.resize('supporting-mobile', defaultHeight);
+	}
+
+	#renderDivider(panelKey, label, panelPosition) {
+		return html`
+			<d2l-page-divider
+				data-panel-key="${panelKey}"
+				label="${label}"
+				current-size="${this._panelState.getSize(panelKey)}"
+				max-size="${this._panelState.getMaxSize(panelKey)}"
+				min-size="${this._panelState.getMinSize(panelKey)}"
+				panel-position="${ifDefined(panelPosition)}"
+				@d2l-page-divider-resize="${this.#handleDividerResize}"
+				@d2l-page-divider-toggle="${this.#handleDividerToggle}"
+			></d2l-page-divider>
+		`;
 	}
 
 	#renderFloatingButtons(footerContents) {
@@ -208,21 +329,23 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		return html`
 			<nav
 				class="side-nav-panel"
+				style=${styleMap({ width: `${this._panelState.getSize('side-nav')}px` })}
 				?hidden="${!this._slotVisibility['side-nav']}"
 				aria-label="${this.localize('components.page.side-nav-label')}">
 				<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
 			</nav>
 			${!this._slotVisibility['side-nav'] ? nothing :
-				html`<div class="divider"></div>`}
+				this.#renderDivider('side-nav', this.localize('components.page.side-nav-divider-label'), 'start')}
 		`;
 	}
 
 	#renderSupportingPanel() {
 		return html`
 			${!this._slotVisibility['supporting'] ? nothing :
-				html`<div class="divider"></div>`}
+				this.#renderDivider('supporting', this.localize('components.page.supporting-divider-label'), 'end')}
 			<aside
 				class="supporting-panel"
+				style=${styleMap({ width: `${this._panelState.getSize('supporting')}px` })}
 				?hidden="${!this._slotVisibility['supporting']}"
 				aria-label="${this.localize('components.page.supporting-panel-label')}">
 				<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>

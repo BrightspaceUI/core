@@ -1,0 +1,152 @@
+import '../colors/colors.js';
+import { css, html, LitElement } from 'lit';
+import { formatPercent } from '@brightspace-ui/intl';
+
+export const DIVIDER_WIDTH = 4;
+const KEYBOARD_STEP = 20; // TO DO: Confirm
+const KEYBOARD_STEP_LARGE = 80; // TO DO: Confirm
+
+const clampedSize = (size, min, max) => Math.max(min, Math.min(size, max));
+
+/**
+ * Internal divider used by d2l-page to resize its side-nav and supporting panels.
+ */
+class PageDivider extends LitElement {
+
+	static properties = {
+		/**
+		 * Current size of the panel/drawer the divider controls
+		 * @type {number}
+		 */
+		currentSize: { type: Number, attribute: 'current-size' },
+		/**
+		 * REQUIRED: aria-label for the divider
+		 * @type {string}
+		 */
+		label: { type: String },
+		/**
+		 * Maximum size of the panel/drawer the divider controls
+		 * @type {number}
+		 */
+		maxSize: { type: Number, attribute: 'max-size' },
+		/**
+		 * Minimum size of the panel/drawer the divider controls
+		 * @type {number}
+		 */
+		minSize: { type: Number, attribute: 'min-size' },
+		/**
+		 * Inline position of the panel the divider controls
+		 * @type {'start'|'end'}
+		 */
+		panelPosition: { type: String, attribute: 'panel-position' },
+		/**
+		 * Whether the divider is controlling a left/right panel or a bottom drawer
+		 * @type {'panel'|'drawer'}
+		 */
+		panelType: { type: String, attribute: 'panel-type' }
+	};
+
+	static styles = css`
+		:host {
+			flex: none;
+		}
+		.divider {
+			background-color: var(--d2l-color-gypsum);
+			cursor: ew-resize;
+			height: 100%;
+			outline: none;
+			width: ${DIVIDER_WIDTH}px;
+		}
+		.divider:hover {
+			background-color: var(--d2l-color-mica);
+		}
+		.divider:focus {
+			background-color: var(--d2l-color-celestine);
+		}
+
+		:host([panel-type="drawer"]) .divider {
+			background-color: var(--d2l-color-celestine);
+			cursor: ns-resize;
+			height: ${DIVIDER_WIDTH}px;
+			width: 100%;
+		}
+
+		// TO DO: Lots more divider styling to come
+
+	`;
+
+	constructor() {
+		super();
+
+		this.label = '';
+		this.currentSize = 0;
+		this.maxSize = 0;
+		this.minSize = 0;
+		this.panelPosition = 'start';
+		this.panelType = 'panel';
+	}
+
+	render() {
+		const currentSizePercent = formatPercent(Math.round(this.currentSize / this.maxSize) || 0);
+
+		return html`
+			<div
+				class="divider"
+				role="slider"
+				tabindex="0"
+				aria-label="${this.label}"
+				aria-orientation="${this.panelType === 'panel' ? 'horizontal' : 'vertical'}"
+				aria-valuemax="${this.maxSize}"
+				aria-valuemin="0"
+				aria-valuenow="${this.currentSize}"
+				aria-valuetext="${currentSizePercent}"
+				@keydown="${this.#handleKeyDown}">
+			</div>
+		`;
+	}
+
+	#handleKeyDown(e) {
+		if (!['Enter', ' ', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown'].includes(e.key)) return;
+		e.preventDefault();
+
+		if (e.key === 'Enter' || e.key === ' ') {
+			this.dispatchEvent(new CustomEvent('d2l-page-divider-toggle'));
+			return;
+		}
+
+		if (e.key === 'Home' || e.key === 'End') {
+			this.#sendResizeEvent(e.key === 'Home' ? this.minSize : this.maxSize);
+			return;
+		}
+
+		if (e.key === 'PageUp' || e.key === 'PageDown') {
+			this.#sendResizeEvent(this.currentSize + (e.key === 'PageUp' ? 1 : -1) * KEYBOARD_STEP_LARGE);
+			return;
+		}
+
+		let positiveStepKey;
+		if (this.panelType === 'panel') {
+			if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+			const isRtl = (document.documentElement.getAttribute('dir') === 'rtl');
+			positiveStepKey = (this.panelPosition === 'start') !== isRtl ? 'ArrowRight' : 'ArrowLeft';
+		} else if (this.panelType === 'drawer') {
+			if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+			positiveStepKey = 'ArrowUp';
+		}
+
+		const step = (e.key === positiveStepKey ? 1 : -1) * KEYBOARD_STEP;
+		const requestedSize = this.currentSize + step;
+		this.#sendResizeEvent(requestedSize);
+	}
+
+	#sendResizeEvent(requestedSize) {
+		// TO DO: Maybe we don't bother clamping here, since the panel state controller will clamp it anyway
+		const clampedRequestedSize = clampedSize(requestedSize, this.minSize, this.maxSize);
+		this.dispatchEvent(new CustomEvent('d2l-page-divider-resize', { detail: {
+			requestedSize: clampedRequestedSize
+		} }));
+	}
+
+}
+
+customElements.define('d2l-page-divider', PageDivider);
