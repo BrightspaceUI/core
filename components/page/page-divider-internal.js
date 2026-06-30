@@ -149,4 +149,4 @@ class PageDivider extends LitElement {
 
 }
 
-customElements.define('d2l-page-divider', PageDivider);
+customElements.define('d2l-page-divider-internal', PageDivider);

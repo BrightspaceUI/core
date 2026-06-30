@@ -1,7 +1,7 @@
 import '../button/floating-buttons.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { DIVIDER_WIDTH } from './page-divider.js';
+import { DIVIDER_WIDTH } from './page-divider-internal.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { ProviderMixin } from '../../mixins/provider/provider-mixin.js';
@@ -280,7 +280,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	#renderDivider(panelKey, label, panelPosition) {
 		return html`
-			<d2l-page-divider
+			<d2l-page-divider-internal
 				data-panel-key="${panelKey}"
 				label="${label}"
 				current-size="${this._panelState.getSize(panelKey)}"
@@ -289,7 +289,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 				panel-position="${ifDefined(panelPosition)}"
 				@d2l-page-divider-resize="${this.#handleDividerResize}"
 				@d2l-page-divider-toggle="${this.#handleDividerToggle}"
-			></d2l-page-divider>
+			></d2l-page-divider-internal>
 		`;
 	}
 
