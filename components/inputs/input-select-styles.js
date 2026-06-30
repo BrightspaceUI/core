@@ -16,49 +16,9 @@ registerSemanticVariableForSvgImageUrl(
 /**
  * A private helper method that should not be used by general consumers
  */
-export function _generateSelectStyles(selector, includeMediaPreferContrastQuery = false) {
+export function _generateSelectStyles(selector) {
 	if (!_isValidCssSelector(selector)) return '';
 	const finalSelector = unsafeCSS(selector);
-
-	const mediaPreferContrast = includeMediaPreferContrastQuery ? css`
-		@media (prefers-contrast: more) {
-			${finalSelector} {
-				appearance: auto;
-				background-color: Field;
-				background-image: none;
-				border: none;
-				border-inline-end: 0.75rem solid transparent;
-				box-shadow: none;
-				color: FieldText;
-				forced-color-adjust: none;
-				height: 2rem;
-				outline: 1px solid ButtonBorder;
-				padding-inline: 0.6rem 16px;
-			}
-
-			${finalSelector}:not([disabled]):${focusClass},
-			${finalSelector}:not([disabled]):hover {
-				box-shadow: none;
-				outline: 2px solid Highlight;
-			}
-
-			${finalSelector}:disabled {
-				outline: 1px solid GrayText;
-			}
-
-			${finalSelector}[aria-invalid="true"] {
-				background-image: var(--d2l-input-invalid-image);
-				background-position: center var(--d2l-inline-end, right) calc(1px + 11px + 17px);
-				background-repeat: no-repeat;
-				background-size: 0.8rem 0.8rem;
-			}
-
-			${finalSelector}[aria-invalid="true"],
-			${finalSelector}[aria-invalid="true"]:${focusClass},
-			${finalSelector}[aria-invalid="true"]:hover {
-				outline-color: var(--d2l-theme-status-color-error);
-			}
-		}` : unsafeCSS('');
 
 	return css`
 		${finalSelector} {
@@ -112,8 +72,45 @@ export function _generateSelectStyles(selector, includeMediaPreferContrastQuery 
 			opacity: var(--d2l-theme-opacity-disabled-control);
 		}
 
-		${mediaPreferContrast}
-	`;
-}
+		@media (prefers-contrast: more) {
+			${finalSelector} {
+				appearance: auto;
+				background-color: Field;
+				background-image: none;
+				border: none;
+				border-inline-end: 0.75rem solid transparent;
+				box-shadow: none;
+				color: FieldText;
+				forced-color-adjust: none;
+				height: 2rem;
+				outline: 1px solid ButtonBorder;
+				padding-inline: 0.6rem 16px;
+			}
 
-export const selectStyles = _generateSelectStyles('.d2l-input-select', true);
+			${finalSelector}:not([disabled]):${focusClass},
+			${finalSelector}:not([disabled]):hover {
+				box-shadow: none;
+				outline: 2px solid Highlight;
+			}
+
+			${finalSelector}:disabled {
+				outline: 1px solid GrayText;
+			}
+
+			${finalSelector}[aria-invalid="true"] {
+				background-image: var(--d2l-input-invalid-image);
+				background-position: center var(--d2l-inline-end, right) calc(1px + 11px + 17px);
+				background-repeat: no-repeat;
+				background-size: 0.8rem 0.8rem;
+			}
+
+			${finalSelector}[aria-invalid="true"],
+			${finalSelector}[aria-invalid="true"]:${focusClass},
+			${finalSelector}[aria-invalid="true"]:hover {
+				outline-color: var(--d2l-theme-status-color-error);
+			}
+		}
+	`;
+};
+
+export const selectStyles = _generateSelectStyles('.d2l-input-select');
