@@ -78,8 +78,8 @@ class PageDivider extends LitElement {
 	constructor() {
 		super();
 
-		this.label = '';
 		this.currentSize = 0;
+		this.label = '';
 		this.maxSize = 0;
 		this.minSize = 0;
 		this.panelPosition = 'start';
