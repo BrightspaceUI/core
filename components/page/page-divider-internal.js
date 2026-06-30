@@ -71,7 +71,7 @@ class PageDivider extends LitElement {
 			width: 100%;
 		}
 
-		// TO DO: Lots more divider styling to come
+		/* TO DO: Lots more divider styling to come */
 
 	`;
 
