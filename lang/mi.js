@@ -154,6 +154,7 @@ export default {
 	"components.overflow-group.moreActions": "Ētahi atu Hohenga",
 	"components.page.header-nav-label": "Matua",
 	"components.page.side-nav-label": "Taha",
+	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} Tūemi}

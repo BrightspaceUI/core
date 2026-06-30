@@ -154,6 +154,7 @@ export default {
 	"components.overflow-group.moreActions": "More Actions",
 	"components.page.header-nav-label": "Main",
 	"components.page.side-nav-label": "Side",
+	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} item}

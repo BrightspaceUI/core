@@ -154,6 +154,7 @@ export default {
 	"components.overflow-group.moreActions": "Daha Fazla Eylem",
 	"components.page.header-nav-label": "Ana",
 	"components.page.side-nav-label": "Yan",
+	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} öğe}

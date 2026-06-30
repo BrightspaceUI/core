@@ -206,17 +206,25 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	#renderSideNavPanel() {
 		return html`
-			<nav class="side-nav-panel" ?hidden="${!this._slotVisibility['side-nav']}" aria-label="${this.localize('components.page.side-nav-label')}">
+			<nav
+				class="side-nav-panel"
+				?hidden="${!this._slotVisibility['side-nav']}"
+				aria-label="${this.localize('components.page.side-nav-label')}">
 				<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
 			</nav>
-			${this._slotVisibility['side-nav'] ? html`<div class="divider"></div>` : nothing}
+			${!this._slotVisibility['side-nav'] ? nothing :
+				html`<div class="divider"></div>`}
 		`;
 	}
 
 	#renderSupportingPanel() {
 		return html`
-			${this._slotVisibility['supporting'] ? html`<div class="divider"></div>` : nothing}
-			<aside class="supporting-panel" ?hidden="${!this._slotVisibility['supporting']}">
+			${!this._slotVisibility['supporting'] ? nothing :
+				html`<div class="divider"></div>`}
+			<aside
+				class="supporting-panel"
+				?hidden="${!this._slotVisibility['supporting']}"
+				aria-label="${this.localize('components.page.supporting-panel-label')}">
 				<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
 			</aside>
 		`;

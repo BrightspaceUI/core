@@ -148,6 +148,7 @@ export default {
 	"components.overflow-group.moreActions": "Thêm các Tác vụ",
 	"components.page.header-nav-label": "Chính",
 	"components.page.side-nav-label": "Bên",
+	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} mục}

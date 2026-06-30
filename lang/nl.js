@@ -154,6 +154,7 @@ export default {
 	"components.overflow-group.moreActions": "Meer acties",
 	"components.page.header-nav-label": "Hoofdgedeelte",
 	"components.page.side-nav-label": "Zij",
+	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} item}

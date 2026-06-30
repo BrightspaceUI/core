@@ -149,6 +149,7 @@ export default {
 	"components.overflow-group.moreActions": "その他のアクション",
 	"components.page.header-nav-label": "メイン",
 	"components.page.side-nav-label": "サイド",
+	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} 個の項目}

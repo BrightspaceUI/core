@@ -154,6 +154,7 @@ export default {
 	"components.overflow-group.moreActions": "अधिक क्रियाएँ",
 	"components.page.header-nav-label": "मुख्य",
 	"components.page.side-nav-label": "साइड",
+	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} आइटम}

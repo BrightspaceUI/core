@@ -149,6 +149,7 @@ export default {
 	"components.overflow-group.moreActions": "추가 작업",
 	"components.page.header-nav-label": "메인",
 	"components.page.side-nav-label": "사이드",
+	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
 			other {해당 항목 수 {countFormatted}개}
