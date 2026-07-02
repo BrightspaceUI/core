@@ -1,7 +1,7 @@
 import './input-styles.js';
 import { css, unsafeCSS } from 'lit';
+import { getFocusPseudoClass, getFocusVisibleStyles } from '../../helpers/focus.js';
 import { _isValidCssSelector } from '../../helpers/internal/css.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
 
 const focusClass = unsafeCSS(getFocusPseudoClass());
@@ -12,6 +12,26 @@ registerSemanticVariableForSvgImageUrl(
 		<path d="M1 2l4.5 4M10 2L5.5 6" stroke="var(--d2l-theme-icon-color-standard)" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round"/>
 	</svg>`
 );
+
+function _getSelectFocusStyles(selector) {
+	const notDisabledSelector = `${selector}:not([disabled])`;
+	const ariaInvalidSelector = `${selector}[aria-invalid="true"]`;
+
+	return {
+		notDisabled: getFocusVisibleStyles(notDisabledSelector, (selector) => css`${selector} {
+			box-shadow: inset var(--d2l-theme-shadow-inset-offset-x) var(--d2l-theme-shadow-inset-offset-y) var(--d2l-theme-shadow-inset-blur-radius) 2px var(--d2l-theme-shadow-inset-color);
+			outline: 2px solid var(--d2l-theme-border-color-focus);
+			outline-offset: -2px;
+		}`),
+		ariaInvalid: getFocusVisibleStyles(ariaInvalidSelector, (selector) => css`${selector} {
+			outline-color: var(--d2l-theme-status-color-error);
+		}`),
+		preferContrastNotDisabled: getFocusVisibleStyles(notDisabledSelector, (selector) => css`${selector} {
+			box-shadow: none;
+			outline: 2px solid Highlight;
+		}`),
+	};
+}
 
 /**
  * A private helper method that should not be used by general consumers
