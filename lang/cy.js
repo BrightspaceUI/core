@@ -156,7 +156,9 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Eitem Dalfan",
 	"components.overflow-group.moreActions": "Rhagor o Gamau Gweithredu",
 	"components.page.header-nav-label": "Prif",
+	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Ochr",
+	"components.page.supporting-divider-label": "Supporting Panel Divider",
 	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,

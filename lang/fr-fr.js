@@ -156,7 +156,9 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Élément d’espace réservé",
 	"components.overflow-group.moreActions": "Plus d’actions",
 	"components.page.header-nav-label": "Principale",
+	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Côté",
+	"components.page.supporting-divider-label": "Supporting Panel Divider",
 	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,

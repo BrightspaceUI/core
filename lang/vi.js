@@ -150,7 +150,9 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Mục giữ chỗ",
 	"components.overflow-group.moreActions": "Thêm các Tác vụ",
 	"components.page.header-nav-label": "Chính",
+	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Bên",
+	"components.page.supporting-divider-label": "Supporting Panel Divider",
 	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,

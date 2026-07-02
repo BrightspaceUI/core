@@ -156,7 +156,9 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Platzhalterelement",
 	"components.overflow-group.moreActions": "Weitere Aktionen",
 	"components.page.header-nav-label": "Haupt-",
+	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Seiten-",
+	"components.page.supporting-divider-label": "Supporting Panel Divider",
 	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
