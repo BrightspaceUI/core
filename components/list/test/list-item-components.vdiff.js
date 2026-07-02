@@ -5,11 +5,11 @@ import { resetDisplayedTooltip } from '../list-item-drag-handle.js';
 
 describe('list-item-drag-handle', () => {
 	let elem, handle;
-	describe('list item', () => {
-		[
-			{ title: 'dragger', fixture: async() => fixture(html`<div style="width: 50px;"><d2l-list-item-drag-handle class="vdiff-include"></d2l-list-item-drag-handle></div>`) },
-			{ title: 'dragger side-to-side', fixture: async() => fixture(html`<div style="width: 50px;"><d2l-list-item-drag-handle class="vdiff-include" side-to-side></d2l-list-item-drag-handle></div>`) }
-		].forEach(({ title, fixture }) => {
+	[
+		{ title: 'dragger', fixture: async() => fixture(html`<div style="width: 50px;"><d2l-list-item-drag-handle class="vdiff-include"></d2l-list-item-drag-handle></div>`) },
+		{ title: 'dragger side-to-side', fixture: async() => fixture(html`<div style="width: 50px;"><d2l-list-item-drag-handle class="vdiff-include" layout="tile"></d2l-list-item-drag-handle></div>`) }
+	].forEach(({ title, fixture }) => {
+		describe(`list item ${title}`, () => {
 
 			beforeEach(async() => {
 				elem = await fixture();
