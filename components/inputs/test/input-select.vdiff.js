@@ -1,8 +1,6 @@
 import '../demo/input-select-test.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
-import { _generateSelectStyles } from '../input-select-styles.js';
-
-const generatedSelectStyles = _generateSelectStyles('.d2l-test-input-select');
+import { loadSass, unloadSass } from '../../../test/load-sass.js';
 
 const defaultFixture = html`<d2l-test-input-select></d2l-test-input-select>`;
 const overflowFixture = html`<d2l-test-input-select overflow></d2l-test-input-select>`;
@@ -14,16 +12,8 @@ const sassInvalidFixture = html`<select class="d2l-test-input-select" aria-inval
 
 describe('d2l-input-select', () => {
 
-	before(() => {
-		/* append generated styles into document head */
-		const style = document.createElement('style');
-		style.id = 'generated-css';
-		style.textContent = generatedSelectStyles.cssText;
-		document.head.appendChild(style);
-	});
-	after(() => {
-		document.getElementById('generated-css').remove();
-	});
+	before(loadSass);
+	after(unloadSass);
 
 	[
 		{ name: 'default', template: defaultFixture, allColorModes: true },
