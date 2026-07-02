@@ -3,7 +3,6 @@
 @use "../components/inputs/sass/select.scss";
 @use "../components/inputs/sass/text.scss";
 @use "../components/inputs/sass/textarea.scss";
-@use "../components/link/link.scss";
 @use "../components/offscreen/offscreen.scss";
 @use "../components/typography/typography.scss";
 
@@ -44,9 +43,6 @@
 }
 .d2l-test-input-textarea {
 	@include textarea.d2l-input-textarea();
-}
-.d2l-test-link {
-	@include link.d2l-link();
 }
 .d2l-test-offscreen {
 	@include offscreen.d2l-offscreen();
