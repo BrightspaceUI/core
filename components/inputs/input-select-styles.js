@@ -1,10 +1,8 @@
 import './input-styles.js';
 import { css, unsafeCSS } from 'lit';
-import { getFocusPseudoClass, getFocusVisibleStyles } from '../../helpers/focus.js';
 import { _isValidCssSelector } from '../../helpers/internal/css.js';
+import { getFocusVisibleStyles } from '../../helpers/focus.js';
 import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
-
-const focusClass = unsafeCSS(getFocusPseudoClass());
 
 registerSemanticVariableForSvgImageUrl(
 	'--d2l-input-select-chevron-image',
@@ -39,6 +37,7 @@ function _getSelectFocusStyles(selector) {
 export function _generateSelectStyles(selector) {
 	if (!_isValidCssSelector(selector)) return '';
 	const finalSelector = unsafeCSS(selector);
+	const selectFocusStyles = _getSelectFocusStyles(finalSelector);
 
 	return css`
 		${finalSelector} {
@@ -71,12 +70,13 @@ export function _generateSelectStyles(selector) {
 			vertical-align: middle;
 		}
 
-		${finalSelector}:not([disabled]):hover,
-		${finalSelector}:not([disabled]):${focusClass} {
+		${finalSelector}:not([disabled]):hover {
 			box-shadow: inset var(--d2l-theme-shadow-inset-offset-x) var(--d2l-theme-shadow-inset-offset-y) var(--d2l-theme-shadow-inset-blur-radius) 2px var(--d2l-theme-shadow-inset-color);
 			outline: 2px solid var(--d2l-theme-border-color-focus);
 			outline-offset: -2px;
 		}
+		${selectFocusStyles.notDisabled}
+
 		${finalSelector}[aria-invalid="true"] {
 			background-image: var(--d2l-input-select-chevron-image), var(--d2l-input-invalid-image);
 			background-position: center var(--d2l-inline-end, right) 17px, center var(--d2l-inline-end, right) calc(1px + 11px + 17px);
@@ -84,10 +84,11 @@ export function _generateSelectStyles(selector) {
 			background-size: 11px 7px, 0.8rem 0.8rem;
 		}
 		${finalSelector}[aria-invalid="true"],
-		${finalSelector}[aria-invalid="true"]:${focusClass},
 		${finalSelector}[aria-invalid="true"]:hover {
 			outline-color: var(--d2l-theme-status-color-error);
 		}
+		${selectFocusStyles.ariaInvalid}
+
 		${finalSelector}:disabled {
 			opacity: var(--d2l-theme-opacity-disabled-control);
 		}
@@ -107,11 +108,11 @@ export function _generateSelectStyles(selector) {
 				padding-inline: 0.6rem 16px;
 			}
 
-			${finalSelector}:not([disabled]):${focusClass},
 			${finalSelector}:not([disabled]):hover {
 				box-shadow: none;
 				outline: 2px solid Highlight;
 			}
+			${selectFocusStyles.preferContrastNotDisabled}
 
 			${finalSelector}:disabled {
 				outline: 1px solid GrayText;
@@ -125,10 +126,10 @@ export function _generateSelectStyles(selector) {
 			}
 
 			${finalSelector}[aria-invalid="true"],
-			${finalSelector}[aria-invalid="true"]:${focusClass},
 			${finalSelector}[aria-invalid="true"]:hover {
 				outline-color: var(--d2l-theme-status-color-error);
 			}
+			${selectFocusStyles.ariaInvalid}
 		}
 	`;
 };
