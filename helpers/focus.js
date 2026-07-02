@@ -1,5 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { getComposedChildren, getComposedParent, getFirstVisibleAncestor, getNextAncestorSibling, getPreviousAncestorSibling, isVisible } from './dom.js';
+import { getFlag } from './flags.js';
 
 const focusableElements = {
 	a: true,
@@ -73,6 +74,10 @@ export function getFocusableDescendants(node, options) {
 }
 
 export function getFocusPseudoClass() {
+	if (getFlag('GAUD-8850-remove-select-scss-from-core', true)) return 'focus-visible';
+	// the line below is needed in order to generate styles in BSI (it is not a browser context)
+	// it should be evaluated if it should be removed or kept when the GAUD-8850-remove-select-scss-from-core flag is removed.
+	if (typeof window !== 'undefined' && typeof document !== 'undefined') return 'focus';
 	return isFocusVisibleSupported() ? 'focus-visible' : 'focus';
 }
 export function getFocusRingStyles(selector, { extraStyles = null } = {}) {
