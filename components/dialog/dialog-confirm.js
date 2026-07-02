@@ -92,7 +92,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 	constructor() {
 		super();
 		this.critical = false;
-		this.preferNative = getFlag('GAUD-9644-prefer-native-confirm-dialogs', false);
+		this.preferNative = getFlag('GAUD-9644-prefer-native-confirm-dialogs', true);
 		this._criticalLabelId = getUniqueId();
 		this._textId = getUniqueId();
 		this._titleId = getUniqueId();

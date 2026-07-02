@@ -26,13 +26,8 @@ class FormPanelDemo extends LitElement {
 				padding: 10px;
 				width: 100%;
 			}
-
 			:host([hidden]) {
 				display: none;
-			}
-
-			.d2l-form-panel-demo-container {
-				margin-bottom: 10px;
 			}
 		`];
 	}

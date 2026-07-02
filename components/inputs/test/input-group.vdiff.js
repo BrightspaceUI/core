@@ -32,4 +32,17 @@ describe('d2l-input-group', () => {
 		await expect(elem).to.be.golden();
 	});
 
+	it('validation-custom-gap', async() => {
+		const elem = await fixture(html`
+			<d2l-form>
+				<d2l-input-group>
+					<d2l-input-text id="name" label="Name"></d2l-input-text>
+					<d2l-validation-custom for="name" failure-text="Invalid name"></d2l-validation-custom>
+					<d2l-input-text label="Description"></d2l-input-text>
+				</d2l-input-group>
+			</d2l-form>
+		`);
+		await expect(elem).to.be.golden();
+	});
+
 });

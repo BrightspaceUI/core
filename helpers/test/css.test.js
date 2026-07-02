@@ -48,10 +48,16 @@ describe('_isValidCssSelector', () => {
 		expect(_isValidCssSelector('.valid, invalid$')).to.be.false;
 	});
 
-	it('should not support complex :host selectors', () => {
-		expect(_isValidCssSelector(':host p')).to.be.false;
-		expect(_isValidCssSelector(':host([hidden])')).to.be.false;
-		expect(_isValidCssSelector(':host([dir="rtl"])')).to.be.false;
+	it('should support complex :host selectors', () => {
+		expect(_isValidCssSelector(':host p')).to.be.true;
+		expect(_isValidCssSelector(':host([hidden])')).to.be.true;
+		expect(_isValidCssSelector(':host([dir="rtl"])')).to.be.true;
+	});
+
+	it('should not support complex :host selectors with pseudo-classes', () => {
+		expect(_isValidCssSelector(':host(:hover)')).to.be.false;
+		expect(_isValidCssSelector(':host(:focus)')).to.be.false;
+		expect(_isValidCssSelector(':host(:active)')).to.be.false;
 	});
 
 	it('should not support invalid selectors', () => {
@@ -62,5 +68,23 @@ describe('_isValidCssSelector', () => {
 		expect(_isValidCssSelector('@media')).to.be.false;
 		expect(_isValidCssSelector('%')).to.be.false;
 		expect(_isValidCssSelector('.class-name{display:block}')).to.be.false;
+	});
+
+	it('should support valid :not selectors', () => {
+		expect(_isValidCssSelector(':not(.inside)')).to.be.true;
+		expect(_isValidCssSelector(':not(.inside).after')).to.be.true;
+		expect(_isValidCssSelector('.before:not(.inside)')).to.be.true;
+		expect(_isValidCssSelector('.before:not(.inside).after')).to.be.true;
+		expect(_isValidCssSelector('.spacebefore :not(.inside) .spaceafter')).to.be.true;
+		expect(_isValidCssSelector(':not(.class1):not(.class2)')).to.be.true;
+	});
+	it('should not support invalid :not selectors', () => {
+		expect(_isValidCssSelector(':not()')).to.be.false;
+		expect(_isValidCssSelector(':not(.$inside)')).to.be.false;
+		expect(_isValidCssSelector(':not(.inside).$after')).to.be.false;
+		expect(_isValidCssSelector('.$before:not(.inside)')).to.be.false;
+		expect(_isValidCssSelector('.$before:not(.inside).$after')).to.be.false;
+		expect(_isValidCssSelector(':not(.class1):not(.$class2)')).to.be.false;
+		expect(_isValidCssSelector(':not(.$class1):not(.class2)')).to.be.false;
 	});
 });
