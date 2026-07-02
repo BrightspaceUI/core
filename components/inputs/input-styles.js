@@ -1,6 +1,8 @@
 import { css, unsafeCSS } from 'lit';
+import { getFlag } from '../../helpers/flags.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
 import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
+import { _isValidCssSelector } from '../../helpers/internal/css.js';
 
 const focusClass = unsafeCSS(getFocusPseudoClass());
 
@@ -12,7 +14,119 @@ registerSemanticVariableForSvgImageUrl(
 	</svg>`
 );
 
-export const inputStyles = css`
+export function _generateInputStyles(selector, focusSelector) {
+	if (!_isValidCssSelector(selector) || (focusSelector && !_isValidCssSelector(focusSelector))) return '';
+	let borderHighlight = css`
+		.d2l-input:hover:not(:disabled),
+		.d2l-input:${focusClass}:not(:disabled) {
+			border-color: var(--d2l-theme-border-color-focus);
+			border-width: 2px;
+			outline: none;
+			padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
+		}
+	`;
+	if (focusSelector) {
+		borderHighlight = css`
+			${unsafeCSS(focusSelector)},
+			${borderHighlight}
+		`;
+	}
+
+	selector = unsafeCSS(selector);
+	return css`
+		${selector} {
+			background-color: var(--d2l-input-background-color, var(--d2l-theme-background-color-base));
+			border: 1px solid var(--d2l-input-border-color, var(--d2l-theme-border-color-emphasized));
+			border-radius: var(--d2l-input-border-radius, 0.3rem);
+			box-shadow: var(--d2l-theme-shadow-inset);
+			box-sizing: border-box;
+			color: var(--d2l-theme-text-color-static-standard);
+			display: inline-block;
+			font-family: inherit;
+			font-size: 0.8rem;
+			font-weight: 400;
+			height: var(--d2l-input-height, auto);
+			letter-spacing: 0.02rem;
+			line-height: 1.2rem; /* using min-height AND line-height as IE11 doesn't support line-height on inputs */
+			margin: 0;
+			min-height: calc(2rem + 2px);
+			min-width: calc(2rem + 1em);
+			padding: var(--d2l-input-padding, 0.4rem 0.75rem);
+			position: var(--d2l-input-position, relative); /* overridden by sticky headers in grades */
+			text-align: var(--d2l-input-text-align, start);
+			vertical-align: middle;
+			width: 100%;
+		}
+		${borderHighlight}
+
+		${selector}::placeholder {
+			color: var(--d2l-theme-text-color-static-faint);
+			font-size: 0.8rem;
+			font-weight: 400;
+			opacity: 1; /* Firefox has non-1 default */
+		}
+		${selector}::-ms-input-placeholder {
+			color: var(--d2l-theme-text-color-static-faint);
+			font-size: 0.8rem;
+			font-weight: 400;
+		}
+
+		[aria-invalid="true"]${selector}:not(:disabled) {
+			border-color: var(--d2l-theme-status-color-error);
+		}
+		${selector}:disabled {
+			opacity: var(--d2l-theme-opacity-disabled-control);
+		}
+		${selector}::-webkit-search-cancel-button,
+		${selector}::-webkit-search-decoration {
+			display: none;
+		}
+		${selector}::-ms-clear {
+			display: none;
+			height: 0;
+			width: 0;
+		}
+		textarea${selector} {
+			line-height: normal;
+			padding-block: 0.5rem;
+		}
+		textarea${selector}:hover:not(:disabled),
+		textarea${selector}:${focusClass}:not(:disabled) {
+			padding-block: calc(0.5rem - 1px);
+		}
+		textarea${selector}[aria-invalid="true"] {
+			background-image: var(--d2l-input-invalid-image);
+			background-position: top 12px var(--d2l-inline-end, right) 18px;
+			background-repeat: no-repeat;
+			background-size: 0.8rem 0.8rem;
+			padding-inline-end: calc(18px + 0.8rem);
+		}
+		textarea${selector}-focus[aria-invalid="true"],
+		textarea${selector}[aria-invalid="true"]:hover,
+		textarea${selector}[aria-invalid="true"]:${focusClass} {
+			background-position: top calc(12px - 1px) var(--d2l-inline-end, right) calc(18px - 1px);
+			padding-inline-end: calc(18px + 0.8rem - 1px);
+		}
+		textarea[aria-invalid="true"]${selector}:disabled {
+			background-image: none;
+		}
+
+		@media (prefers-contrast: more) {
+			[aria-invalid="true"]${selector} {
+				background-color: Field;
+				border-color: var(--d2l-theme-status-color-error);
+				box-shadow: none;
+				color: FieldText;
+				forced-color-adjust: none;
+			}
+			${focusSelector ? css`${unsafeCSS(focusSelector)} {
+				border-color: Highlight;
+			}` : css``}
+		}
+	`;
+}
+
+export const inputStyles = getFlag('GAUD-8852-use-input-generated-styles', true) ? _generateInputStyles('.d2l-input', '.d2l-input-focus') : css`
 	.d2l-input {
 		background-color: var(--d2l-input-background-color, var(--d2l-theme-background-color-base));
 		border-radius: var(--d2l-input-border-radius, 0.3rem);
