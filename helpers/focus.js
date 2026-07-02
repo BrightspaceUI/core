@@ -1,6 +1,5 @@
 import { css, unsafeCSS } from 'lit';
 import { getComposedChildren, getComposedParent, getFirstVisibleAncestor, getNextAncestorSibling, getPreviousAncestorSibling, isVisible } from './dom.js';
-import { getFlag } from './flags.js';
 
 const focusableElements = {
 	a: true,
