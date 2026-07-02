@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { formatPercent } from '@brightspace-ui/intl';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 export const DIVIDER_WIDTH = 4;
 const KEYBOARD_STEP = 20; // TO DO: Confirm
@@ -11,7 +12,7 @@ const clampedSize = (size, min, max) => Math.max(min, Math.min(size, max));
 /**
  * Internal divider used by d2l-page to resize its side-nav and supporting panels.
  */
-class PageDivider extends LitElement {
+class PageDivider extends PropertyRequiredMixin(LitElement) {
 
 	static properties = {
 		/**
@@ -20,10 +21,10 @@ class PageDivider extends LitElement {
 		 */
 		currentSize: { type: Number, attribute: 'current-size' },
 		/**
-		 * REQUIRED: aria-label for the divider
+		 * REQUIRED: label for the divider
 		 * @type {string}
 		 */
-		label: { type: String },
+		label: { type: String, required: true },
 		/**
 		 * Maximum size of the panel/drawer the divider controls
 		 * @type {number}
@@ -141,7 +142,6 @@ class PageDivider extends LitElement {
 	}
 
 	#sendResizeEvent(requestedSize) {
-		// TO DO: Maybe we don't bother clamping here, since the panel state controller will clamp it anyway
 		const clampedRequestedSize = clampedSize(requestedSize, this.minSize, this.maxSize);
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-page-divider-resize', { detail: {
