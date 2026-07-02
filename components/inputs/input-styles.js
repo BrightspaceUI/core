@@ -1,8 +1,8 @@
 import { css, unsafeCSS } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
-import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
+import { getFocusPseudoClass, getFocusVisibleStyles } from '../../helpers/focus.js';
 import { _isValidCssSelector } from '../../helpers/internal/css.js';
+import { getFlag } from '../../helpers/flags.js';
+import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
 
 const focusClass = unsafeCSS(getFocusPseudoClass());
 
@@ -14,23 +14,53 @@ registerSemanticVariableForSvgImageUrl(
 	</svg>`
 );
 
+function getStyleDelegates(selector, focusSelector) {
+	return {
+		input: {
+			selector: focusClass => `
+				${focusSelector ? `${focusSelector},` : ''}
+				${selector}:${focusClass}:not(:disabled),
+				${selector}:hover:not(:disabled)
+			`,
+			style:  fullSelector => css`
+				${fullSelector} {
+					border-color: var(--d2l-theme-border-color-focus);
+					border-width: 2px;
+					outline: none;
+					padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
+				}
+			`
+		},
+		textarea: {
+			selector: focusClass => `
+				textarea${selector}:hover:not(:disabled),
+				textarea${selector}:${focusClass}:not(:disabled)
+			`,
+			style: fullSelector => css`
+				${fullSelector} {
+					padding-block: calc(0.5rem - 1px);
+				}
+			`
+		},
+		textareaInvalid: {
+			selector: focusClass => `
+				textarea${selector}-focus[aria-invalid="true"],
+				textarea${selector}[aria-invalid="true"]:hover,
+				textarea${selector}[aria-invalid="true"]:${focusClass}
+			`,
+			style: fullSelector => css`
+				${fullSelector} {
+					background-position: top calc(12px - 1px) var(--d2l-inline-end, right) calc(18px - 1px);
+					padding-inline-end: calc(18px + 0.8rem - 1px);
+				}
+			`
+		}
+	};
+}
+
 export function _generateInputStyles(selector, focusSelector) {
 	if (!_isValidCssSelector(selector) || (focusSelector && !_isValidCssSelector(focusSelector))) return '';
-	let borderHighlight = css`
-		.d2l-input:hover:not(:disabled),
-		.d2l-input:${focusClass}:not(:disabled) {
-			border-color: var(--d2l-theme-border-color-focus);
-			border-width: 2px;
-			outline: none;
-			padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
-		}
-	`;
-	if (focusSelector) {
-		borderHighlight = css`
-			${unsafeCSS(focusSelector)},
-			${borderHighlight}
-		`;
-	}
+	const delegates = getStyleDelegates(selector, focusSelector);
 
 	selector = unsafeCSS(selector);
 	return css`
@@ -57,7 +87,7 @@ export function _generateInputStyles(selector, focusSelector) {
 			vertical-align: middle;
 			width: 100%;
 		}
-		${borderHighlight}
+		${getFocusVisibleStyles(delegates.input.selector, delegates.input.style)}
 
 		${selector}::placeholder {
 			color: var(--d2l-theme-text-color-static-faint);
@@ -90,10 +120,7 @@ export function _generateInputStyles(selector, focusSelector) {
 			line-height: normal;
 			padding-block: 0.5rem;
 		}
-		textarea${selector}:hover:not(:disabled),
-		textarea${selector}:${focusClass}:not(:disabled) {
-			padding-block: calc(0.5rem - 1px);
-		}
+		${getFocusVisibleStyles(delegates.textarea.selector, delegates.textarea.style)}
 		textarea${selector}[aria-invalid="true"] {
 			background-image: var(--d2l-input-invalid-image);
 			background-position: top 12px var(--d2l-inline-end, right) 18px;
@@ -101,12 +128,7 @@ export function _generateInputStyles(selector, focusSelector) {
 			background-size: 0.8rem 0.8rem;
 			padding-inline-end: calc(18px + 0.8rem);
 		}
-		textarea${selector}-focus[aria-invalid="true"],
-		textarea${selector}[aria-invalid="true"]:hover,
-		textarea${selector}[aria-invalid="true"]:${focusClass} {
-			background-position: top calc(12px - 1px) var(--d2l-inline-end, right) calc(18px - 1px);
-			padding-inline-end: calc(18px + 0.8rem - 1px);
-		}
+		${getFocusVisibleStyles(delegates.textareaInvalid.selector, delegates.textareaInvalid.style)}
 		textarea[aria-invalid="true"]${selector}:disabled {
 			background-image: none;
 		}
