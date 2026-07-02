@@ -150,6 +150,7 @@ export default {
 	"components.overflow-group.moreActions": "การดำเนินการเพิ่มเติม",
 	"components.page.header-nav-label": "หลัก",
 	"components.page.side-nav-label": "ด้านข้าง",
+	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} รายการ}

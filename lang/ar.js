@@ -154,6 +154,7 @@ export default {
 	"components.overflow-group.moreActions": "مزيد من الإجراءات",
 	"components.page.header-nav-label": "الرئيسية",
 	"components.page.side-nav-label": "جانبية",
+	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} مادة واحد}

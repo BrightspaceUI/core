@@ -150,6 +150,7 @@ export default {
 	"components.overflow-group.moreActions": "其他動作",
 	"components.page.header-nav-label": "主要",
 	"components.page.side-nav-label": "側邊",
+	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} 個項目}

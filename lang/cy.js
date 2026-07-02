@@ -154,6 +154,7 @@ export default {
 	"components.overflow-group.moreActions": "Rhagor o Gamau Gweithredu",
 	"components.page.header-nav-label": "Prif",
 	"components.page.side-nav-label": "Ochr",
+	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} eitem}

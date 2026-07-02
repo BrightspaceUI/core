@@ -154,6 +154,7 @@ export default {
 	"components.overflow-group.moreActions": "Nā Hana Hou",
 	"components.page.header-nav-label": "Nui",
 	"components.page.side-nav-label": "ʻaoʻao",
+	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} mea}
