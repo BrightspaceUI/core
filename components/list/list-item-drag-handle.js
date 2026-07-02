@@ -38,6 +38,9 @@ export const dragActions = Object.freeze({
 });
 
 let hasDisplayedKeyboardTooltip = false;
+export const resetDisplayedTooltip = () => {
+	hasDisplayedKeyboardTooltip = false;
+};
 
 /**
  * @fires d2l-list-item-drag-handle-action - Dispatched when an action performed on the drag handle
