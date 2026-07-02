@@ -1,7 +1,7 @@
 import '../list-item-content.js';
 import '../list-item.js';
 import '../list.js';
-import { html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { repeat } from 'lit/directives/repeat.js';
 
@@ -14,9 +14,20 @@ class ListDemoDragAndDropPosition extends LitElement {
 			// below are for demonstration only
 			grid: { type: Boolean },
 			hrefs: { type: Boolean },
-			selectable: { type: Boolean }
+			selectable: { type: Boolean },
+			tiles: { type: Boolean },
+			tileHeader: { type: Boolean, attribute: 'tile-header' },
+			actions: { type: Boolean, attribute: 'actions' }
 		};
 	}
+
+	static styles = css`
+		.actions-containter {
+			align-items: center;
+			display: flex;
+			height: 100%;
+		}
+	`;
 
 	constructor() {
 		super();
@@ -73,11 +84,13 @@ class ListDemoDragAndDropPosition extends LitElement {
 				?grid="${this.grid}"
 				@d2l-list-item-position-change="${this._moveItems}"
 				?add-button="${this.addButton}"
-				add-button-text="${ifDefined(addButtonText)}">
+				add-button-text="${ifDefined(addButtonText)}"
+				layout="${this.tiles ? 'tiles' : 'list'}">
 				${repeat(this.list, (item) => item.key, (item) => html`
 					<d2l-list-item
 						key="${ifDefined(item.key)}"
 						draggable
+						?tile-header="${this.tileHeader}"
 						?selectable="${this.selectable}"
 						drag-handle-text="${item.name}"
 						href="${ifDefined(this.hrefs ? item.href : undefined)}"
@@ -87,6 +100,9 @@ class ListDemoDragAndDropPosition extends LitElement {
 							<div>${item.name}</div>
 							<div slot="secondary">${item.secondary}</div>
 						</d2l-list-item-content>
+						${ this.actions ? html`
+							<div class="actions-containter" slot="actions"><d2l-button-icon text="More" icon="tier1:gear"></d2l-button-icon></div>
+						` : nothing}
 					</d2l-list-item>
 				`)}
 			</d2l-list>
