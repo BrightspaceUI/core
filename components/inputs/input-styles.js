@@ -1,8 +1,10 @@
 import { css, unsafeCSS } from 'lit';
-import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { getFocusPseudoClass, getFocusVisibleStyles } from '../../helpers/focus.js';
+import { _isValidCssSelector } from '../../helpers/internal/css.js';
+import { getFlag } from '../../helpers/flags.js';
 import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
 
-const focusClass = unsafeCSS(getFocusPseudoClass());
+const focusClass = unsafeCSS(globalThis.document !== undefined ? getFocusPseudoClass() : 'focus-visible');
 
 registerSemanticVariableForSvgImageUrl(
 	'--d2l-input-invalid-image',
@@ -12,7 +14,142 @@ registerSemanticVariableForSvgImageUrl(
 	</svg>`
 );
 
-export const inputStyles = css`
+function getStyleDelegates(selector, focusSelector, textAreaSelector) {
+	return {
+		input: {
+			selector: focusClass => `
+				${focusSelector ? `${focusSelector},` : ''}
+				${selector}:${focusClass}:not(:disabled),
+				${selector}:hover:not(:disabled)
+			`,
+			style:  fullSelector => css`
+				${fullSelector} {
+					border-color: var(--d2l-theme-border-color-focus);
+					border-width: 2px;
+					outline: none;
+					padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
+				}
+			`
+		},
+		textarea: {
+			selector: focusClass => `
+				${textAreaSelector}:hover:not(:disabled),
+				${textAreaSelector}:${focusClass}:not(:disabled)
+			`,
+			style: fullSelector => css`
+				${fullSelector} {
+					padding-block: calc(0.5rem - 1px);
+				}
+			`
+		},
+		textareaInvalid: {
+			selector: focusClass => `
+				${textAreaSelector}-focus[aria-invalid="true"],
+				${textAreaSelector}[aria-invalid="true"]:hover,
+				${textAreaSelector}[aria-invalid="true"]:${focusClass}
+			`,
+			style: fullSelector => css`
+				${fullSelector} {
+					background-position: top calc(12px - 1px) var(--d2l-inline-end, right) calc(18px - 1px);
+					padding-inline-end: calc(18px + 0.8rem - 1px);
+				}
+			`
+		}
+	};
+}
+
+export function _generateInputStyles(selector, focusSelector) {
+	if (!_isValidCssSelector(selector) || (focusSelector && !_isValidCssSelector(focusSelector))) return '';
+	const lastSpaceIndex = selector.lastIndexOf(' ');
+	const textareaSelector = unsafeCSS(`${selector.substring(0, lastSpaceIndex + 1)}textarea${selector.substring(lastSpaceIndex + 1)}`);
+	const delegates = getStyleDelegates(selector, focusSelector, textareaSelector);
+
+	selector = unsafeCSS(selector);
+	return css`
+		${selector} {
+			background-color: var(--d2l-input-background-color, var(--d2l-theme-background-color-base));
+			border: 1px solid var(--d2l-input-border-color, var(--d2l-theme-border-color-emphasized));
+			border-radius: var(--d2l-input-border-radius, 0.3rem);
+			box-shadow: var(--d2l-theme-shadow-inset);
+			box-sizing: border-box;
+			color: var(--d2l-theme-text-color-static-standard);
+			display: inline-block;
+			font-family: inherit;
+			font-size: 0.8rem;
+			font-weight: 400;
+			height: var(--d2l-input-height, auto);
+			letter-spacing: 0.02rem;
+			line-height: 1.2rem;
+			margin: 0;
+			min-width: calc(2rem + 1em);
+			padding: var(--d2l-input-padding, 0.4rem 0.75rem);
+			position: var(--d2l-input-position, relative); /* overridden by sticky headers in grades */
+			text-align: var(--d2l-input-text-align, start);
+			vertical-align: middle;
+			width: 100%;
+		}
+		${getFocusVisibleStyles(delegates.input.selector, delegates.input.style)}
+
+		${selector}::placeholder {
+			color: var(--d2l-theme-text-color-static-faint);
+			font-size: 0.8rem;
+			font-weight: 400;
+			opacity: 1; /* Firefox has non-1 default */
+		}
+		${selector}::-ms-input-placeholder {
+			color: var(--d2l-theme-text-color-static-faint);
+			font-size: 0.8rem;
+			font-weight: 400;
+		}
+
+		[aria-invalid="true"]${selector}:not(:disabled) {
+			border-color: var(--d2l-theme-status-color-error);
+		}
+		${selector}:disabled {
+			opacity: var(--d2l-theme-opacity-disabled-control);
+		}
+		${selector}::-webkit-search-cancel-button,
+		${selector}::-webkit-search-decoration {
+			display: none;
+		}
+		${selector}::-ms-clear {
+			display: none;
+			height: 0;
+			width: 0;
+		}
+		${textareaSelector} {
+			line-height: normal;
+			padding-block: 0.5rem;
+		}
+		${getFocusVisibleStyles(delegates.textarea.selector, delegates.textarea.style)}
+		${textareaSelector}[aria-invalid="true"] {
+			background-image: var(--d2l-input-invalid-image);
+			background-position: top 12px var(--d2l-inline-end, right) 18px;
+			background-repeat: no-repeat;
+			background-size: 0.8rem 0.8rem;
+			padding-inline-end: calc(18px + 0.8rem);
+		}
+		${getFocusVisibleStyles(delegates.textareaInvalid.selector, delegates.textareaInvalid.style)}
+		${textareaSelector}[aria-invalid="true"]:disabled {
+			background-image: none;
+		}
+
+		@media (prefers-contrast: more) {
+			${selector}[aria-invalid="true"] {
+				background-color: Field;
+				border-color: var(--d2l-theme-status-color-error);
+				box-shadow: none;
+				color: FieldText;
+				forced-color-adjust: none;
+			}
+			${focusSelector ? css`${unsafeCSS(focusSelector)} {
+				border-color: Highlight;
+			}` : css``}
+		}
+	`;
+}
+
+export const inputStyles = getFlag('GAUD-8852-use-input-generated-styles', true) ? _generateInputStyles('.d2l-input', '.d2l-input-focus') : css`
 	.d2l-input {
 		background-color: var(--d2l-input-background-color, var(--d2l-theme-background-color-base));
 		border-radius: var(--d2l-input-border-radius, 0.3rem);
