@@ -4,7 +4,7 @@ import { _isValidCssSelector } from '../../helpers/internal/css.js';
 import { getFlag } from '../../helpers/flags.js';
 import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
 
-const focusClass = unsafeCSS(getFocusPseudoClass());
+const focusClass = unsafeCSS(globalThis.document !== undefined ? getFocusPseudoClass() : 'focus-visible');
 
 registerSemanticVariableForSvgImageUrl(
 	'--d2l-input-invalid-image',
@@ -14,7 +14,7 @@ registerSemanticVariableForSvgImageUrl(
 	</svg>`
 );
 
-function getStyleDelegates(selector, focusSelector) {
+function getStyleDelegates(selector, focusSelector, textAreaSelector) {
 	return {
 		input: {
 			selector: focusClass => `
@@ -33,8 +33,8 @@ function getStyleDelegates(selector, focusSelector) {
 		},
 		textarea: {
 			selector: focusClass => `
-				textarea${selector}:hover:not(:disabled),
-				textarea${selector}:${focusClass}:not(:disabled)
+				${textAreaSelector}:hover:not(:disabled),
+				${textAreaSelector}:${focusClass}:not(:disabled)
 			`,
 			style: fullSelector => css`
 				${fullSelector} {
@@ -44,9 +44,9 @@ function getStyleDelegates(selector, focusSelector) {
 		},
 		textareaInvalid: {
 			selector: focusClass => `
-				textarea${selector}-focus[aria-invalid="true"],
-				textarea${selector}[aria-invalid="true"]:hover,
-				textarea${selector}[aria-invalid="true"]:${focusClass}
+				${textAreaSelector}-focus[aria-invalid="true"],
+				${textAreaSelector}[aria-invalid="true"]:hover,
+				${textAreaSelector}[aria-invalid="true"]:${focusClass}
 			`,
 			style: fullSelector => css`
 				${fullSelector} {
@@ -60,7 +60,9 @@ function getStyleDelegates(selector, focusSelector) {
 
 export function _generateInputStyles(selector, focusSelector) {
 	if (!_isValidCssSelector(selector) || (focusSelector && !_isValidCssSelector(focusSelector))) return '';
-	const delegates = getStyleDelegates(selector, focusSelector);
+	const lastSpaceIndex = selector.lastIndexOf(' ');
+	const textareaSelector = unsafeCSS(`${selector.substring(0, lastSpaceIndex + 1)}textarea${selector.substring(lastSpaceIndex + 1)}`);
+	const delegates = getStyleDelegates(selector, focusSelector, textareaSelector);
 
 	selector = unsafeCSS(selector);
 	return css`
@@ -116,12 +118,12 @@ export function _generateInputStyles(selector, focusSelector) {
 			height: 0;
 			width: 0;
 		}
-		textarea${selector} {
+		${textareaSelector} {
 			line-height: normal;
 			padding-block: 0.5rem;
 		}
 		${getFocusVisibleStyles(delegates.textarea.selector, delegates.textarea.style)}
-		textarea${selector}[aria-invalid="true"] {
+		${textareaSelector}[aria-invalid="true"] {
 			background-image: var(--d2l-input-invalid-image);
 			background-position: top 12px var(--d2l-inline-end, right) 18px;
 			background-repeat: no-repeat;
@@ -129,12 +131,12 @@ export function _generateInputStyles(selector, focusSelector) {
 			padding-inline-end: calc(18px + 0.8rem);
 		}
 		${getFocusVisibleStyles(delegates.textareaInvalid.selector, delegates.textareaInvalid.style)}
-		textarea[aria-invalid="true"]${selector}:disabled {
+		${textareaSelector}[aria-invalid="true"]:disabled {
 			background-image: none;
 		}
 
 		@media (prefers-contrast: more) {
-			[aria-invalid="true"]${selector} {
+			${selector}[aria-invalid="true"] {
 				background-color: Field;
 				border-color: var(--d2l-theme-status-color-error);
 				box-shadow: none;
