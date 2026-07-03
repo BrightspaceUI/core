@@ -4,6 +4,7 @@ import {
 	_generateInputBaseStyles,
 	_generateInputDisabledBaseStyles,
 	_generateInputPlaceholderBaseStyles,
+	_getInputBaseStyleDelegates,
 } from './input-styles.js';
 import { css, unsafeCSS } from 'lit';
 import { _isValidCssSelector } from '../../helpers/internal/css.js';
@@ -26,18 +27,8 @@ function _generateInputTextDisabledStyles(selector) {
 }
 
 function _generateInputTextFocusStyles(selector) {
-	const focusSelectorsDelegate = (focusPseudoClass) => unsafeCSS(`
-		${selector}:hover,
-		${selector}:${focusPseudoClass}`
-	);
-
-	return getFocusVisibleStyles(focusSelectorsDelegate, (selector) => css`${selector} {
-			border-color: var(--d2l-theme-border-color-focus);
-			border-width: 2px;
-			outline: none;
-			padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
-		}`
-	);
+	const input = _getInputBaseStyleDelegates(selector);
+	return getFocusVisibleStyles(input.selector, input.style);
 }
 
 /**
