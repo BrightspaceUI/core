@@ -12,8 +12,8 @@ registerSemanticVariableForSvgImageUrl(
 );
 
 function _getSelectFocusStyles(selector) {
-	const notDisabledSelector = `${selector}:not([disabled])`;
-	const ariaInvalidSelector = `${selector}[aria-invalid="true"]`;
+	const notDisabledSelector = `${selector}:not([disabled]):hover, ${selector}:not([disabled])`;
+	const ariaInvalidSelector = `${selector}[aria-invalid="true"], ${selector}[aria-invalid="true"]:hover, ${selector}[aria-invalid="true"]`;
 
 	return {
 		notDisabled: getFocusVisibleStyles(notDisabledSelector, (selector) => css`${selector} {
@@ -70,11 +70,6 @@ export function _generateSelectStyles(selector) {
 			vertical-align: middle;
 		}
 
-		${finalSelector}:not([disabled]):hover {
-			box-shadow: inset var(--d2l-theme-shadow-inset-offset-x) var(--d2l-theme-shadow-inset-offset-y) var(--d2l-theme-shadow-inset-blur-radius) 2px var(--d2l-theme-shadow-inset-color);
-			outline: 2px solid var(--d2l-theme-border-color-focus);
-			outline-offset: -2px;
-		}
 		${selectFocusStyles.notDisabled}
 
 		${finalSelector}[aria-invalid="true"] {
@@ -82,10 +77,6 @@ export function _generateSelectStyles(selector) {
 			background-position: center var(--d2l-inline-end, right) 17px, center var(--d2l-inline-end, right) calc(1px + 11px + 17px);
 			background-repeat: no-repeat, no-repeat;
 			background-size: 11px 7px, 0.8rem 0.8rem;
-		}
-		${finalSelector}[aria-invalid="true"],
-		${finalSelector}[aria-invalid="true"]:hover {
-			outline-color: var(--d2l-theme-status-color-error);
 		}
 		${selectFocusStyles.ariaInvalid}
 
@@ -108,10 +99,6 @@ export function _generateSelectStyles(selector) {
 				padding-inline: 0.6rem 16px;
 			}
 
-			${finalSelector}:not([disabled]):hover {
-				box-shadow: none;
-				outline: 2px solid Highlight;
-			}
 			${selectFocusStyles.preferContrastNotDisabled}
 
 			${finalSelector}:disabled {
@@ -125,10 +112,6 @@ export function _generateSelectStyles(selector) {
 				background-size: 0.8rem 0.8rem;
 			}
 
-			${finalSelector}[aria-invalid="true"],
-			${finalSelector}[aria-invalid="true"]:hover {
-				outline-color: var(--d2l-theme-status-color-error);
-			}
 			${selectFocusStyles.ariaInvalid}
 		}
 	`;
