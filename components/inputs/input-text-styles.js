@@ -1,6 +1,37 @@
 
 import { css, unsafeCSS } from 'lit';
 import { _isValidCssSelector } from '../../helpers/internal/css.js';
+import { getFocusVisibleStyles } from '../../helpers/focus.js';
+
+function _generateInputTextDisabledStyles(selector) {
+	const focusSelectorDelegate = (focusPseudoClass) => `
+		${selector}:hover:disabled,
+		[aria-invalid="true"]${selector}:disabled,
+		${selector}:${focusPseudoClass}:disabled`;
+
+	return getFocusVisibleStyles(focusSelectorDelegate, (selector) => css`
+		${selector} {
+			border-color: var(--d2l-input-border-color, var(--d2l-theme-border-color-emphasized));
+			border-width: 1px;
+			padding: var(--d2l-input-padding, 0.4rem 0.75rem);
+		}`
+	);
+}
+
+function _generateInputTextFocusStyles(selector) {
+	const focusSelectorsDelegate = (focusPseudoClass) => unsafeCSS(`
+		${selector}:hover,
+		${selector}:${focusPseudoClass}`
+	);
+
+	return getFocusVisibleStyles(focusSelectorsDelegate, (selector) => css`${selector} {
+			border-color: var(--d2l-theme-border-color-focus);
+			border-width: 2px;
+			outline: none;
+			padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
+		}`
+	);
+}
 
 /**
  * A private helper method that should not be used by general consumers
@@ -40,26 +71,13 @@ export function _generateInputTextStyles(selector) {
 			opacity: 1; /* Firefox has non-1 default */
 		}
 
-		${finalSelector}:hover,
-		${finalSelector}:${focusClass} {
-			border-color: var(--d2l-theme-border-color-focus);
-			border-width: 2px;
-			outline: none;
-			padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
-		}
+		${ _generateInputTextFocusStyles(finalSelector) }
 
 		[aria-invalid="true"]${finalSelector}:not(:disabled) {
 			border-color: var(--d2l-theme-status-color-error);
 		}
 
-		${finalSelector},
-		${finalSelector}:hover:disabled,
-		${finalSelector}:${focusClass}:disabled,
-		[aria-invalid="true"]${finalSelector}:disabled {
-			border-color: var(--d2l-input-border-color, var(--d2l-theme-border-color-emphasized));
-			border-width: 1px;
-			padding: var(--d2l-input-padding, 0.4rem 0.75rem);
-		}
+		${ _generateInputTextDisabledStyles(finalSelector) }
 
 		${finalSelector}:disabled {
 			opacity: var(--d2l-theme-opacity-disabled-control);
