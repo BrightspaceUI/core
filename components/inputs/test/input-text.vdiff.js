@@ -2,7 +2,7 @@ import '../../button/button-icon.js';
 import '../../icons/icon.js';
 import '../input-text.js';
 import { expect, fixture, focusElem, hoverElem, hoverElemAt, html } from '@brightspace-ui/testing';
-import { loadSass, unloadSass } from '../../../test/load-sass.js';
+import { _generateInputTextStyles } from '../input-text-styles.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
 
 const createIcon = (icon, slot) => html`<d2l-icon icon="tier1:${icon}" slot="${slot}" style="margin-left: 0.55rem; margin-right: 0.55rem"></d2l-icon>`;
@@ -166,8 +166,15 @@ describe('d2l-input-text', () => {
 
 	describe('sass', () => {
 
-		before(loadSass);
-		after(unloadSass);
+		before(() => {
+			const style = document.createElement('style');
+			style.id = 'generated-styles';
+			style.textContent = _generateInputTextStyles('.d2l-test-input-text');
+			document.head.appendChild(style);
+		});
+		after(() => {
+			document.getElementById('generated-styles').remove();
+		});
 
 		const sassBasicFixture = html`<input class="d2l-test-input-text" type="text" value="text">`;
 		const sassInvalidFixture = html`<input class="d2l-test-input-text" type="email" value="invalid@">`;
