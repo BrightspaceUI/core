@@ -14,23 +14,28 @@ registerSemanticVariableForSvgImageUrl(
 	</svg>`
 );
 
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export function _getInputBaseStyleDelegates(selector, focusSelector) {
+	return {
+		selector: focusClass => `
+			${focusSelector ? `${focusSelector},` : ''}
+			${selector}:${focusClass}:not(:disabled),
+			${selector}:hover:not(:disabled)`,
+		style:  fullSelector => css`
+			${fullSelector} {
+				border-color: var(--d2l-theme-border-color-focus);
+				border-width: 2px;
+				outline: none;
+				padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
+			}`
+	};
+}
+
 function getStyleDelegates(selector, focusSelector, textAreaSelector) {
 	return {
-		input: {
-			selector: focusClass => `
-				${focusSelector ? `${focusSelector},` : ''}
-				${selector}:${focusClass}:not(:disabled),
-				${selector}:hover:not(:disabled)
-			`,
-			style:  fullSelector => css`
-				${fullSelector} {
-					border-color: var(--d2l-theme-border-color-focus);
-					border-width: 2px;
-					outline: none;
-					padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
-				}
-			`
-		},
+		input: _getInputBaseStyleDelegates(selector, focusSelector),
 		textarea: {
 			selector: focusClass => `
 				${textAreaSelector}:hover:not(:disabled),
