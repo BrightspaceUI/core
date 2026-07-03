@@ -79,9 +79,8 @@ export function _generateInputStyles(selector, focusSelector) {
 			font-weight: 400;
 			height: var(--d2l-input-height, auto);
 			letter-spacing: 0.02rem;
-			line-height: 1.2rem; /* using min-height AND line-height as IE11 doesn't support line-height on inputs */
+			line-height: 1.2rem;
 			margin: 0;
-			min-height: calc(2rem + 2px);
 			min-width: calc(2rem + 1em);
 			padding: var(--d2l-input-padding, 0.4rem 0.75rem);
 			position: var(--d2l-input-position, relative); /* overridden by sticky headers in grades */
