@@ -1,31 +1,37 @@
-import '../list-item-drag-handle.js';
 import '../list-item-drag-image.js';
 import '../list-item-placement-marker.js';
 import { expect, fixture, focusElem, html, oneEvent } from '@brightspace-ui/testing';
+import { resetDisplayedTooltip } from '../list-item-drag-handle.js';
 
 describe('list-item-drag-handle', () => {
 	let elem, handle;
-	beforeEach(async() => {
-		elem = await fixture(html`<div style="width: 50px;"><d2l-list-item-drag-handle class="vdiff-include"></d2l-list-item-drag-handle></div>`);
-		handle = elem.querySelector('d2l-list-item-drag-handle');
-	});
+	[
+		{ title: 'dragger', fixture: async() => fixture(html`<div style="width: 50px;"><d2l-list-item-drag-handle class="vdiff-include"></d2l-list-item-drag-handle></div>`) },
+		{ title: 'dragger side-to-side', fixture: async() => fixture(html`<div style="width: 50px;"><d2l-list-item-drag-handle class="vdiff-include" layout="tile"></d2l-list-item-drag-handle></div>`) }
+	].forEach(({ title, fixture }) => {
+		describe(`list item ${title}`, () => {
 
-	describe('dragger', () => {
-		it('simple', async() => {
-			await expect(elem).to.be.golden();
+			beforeEach(async() => {
+				elem = await fixture();
+				handle = elem.querySelector('d2l-list-item-drag-handle');
+				resetDisplayedTooltip();
+			});
+
+			it(`simple ${title}`, async() => {
+				await expect(elem).to.be.golden();
+			});
+
+			it(`focus ${title}`, async() => {
+				await focusElem(handle);
+				await expect(elem).to.be.golden();
+			});
+
+			it(`keyboard-mode ${title}`, async() => {
+				handle._keyboardActive = true;
+				await oneEvent(handle, 'd2l-tooltip-show');
+				await expect(elem).to.be.golden();
+			});
 		});
-
-		it('focus', async() => {
-			await focusElem(handle);
-			await expect(elem).to.be.golden();
-		});
-
-		it('keyboard-mode', async() => {
-			handle._keyboardActive = true;
-			await oneEvent(handle, 'd2l-tooltip-show');
-			await expect(elem).to.be.golden();
-		});
-
 	});
 });
 
