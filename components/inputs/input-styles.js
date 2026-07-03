@@ -58,13 +58,10 @@ function getStyleDelegates(selector, focusSelector, textAreaSelector) {
 	};
 }
 
-export function _generateInputStyles(selector, focusSelector) {
-	if (!_isValidCssSelector(selector) || (focusSelector && !_isValidCssSelector(focusSelector))) return '';
-	const lastSpaceIndex = selector.lastIndexOf(' ');
-	const textareaSelector = unsafeCSS(`${selector.substring(0, lastSpaceIndex + 1)}textarea${selector.substring(lastSpaceIndex + 1)}`);
-	const delegates = getStyleDelegates(selector, focusSelector, textareaSelector);
-
-	selector = unsafeCSS(selector);
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export function _generateInputBaseStyles(selector) {
 	return css`
 		${selector} {
 			background-color: var(--d2l-input-background-color, var(--d2l-theme-background-color-base));
@@ -88,26 +85,72 @@ export function _generateInputStyles(selector, focusSelector) {
 			vertical-align: middle;
 			width: 100%;
 		}
-		${getFocusVisibleStyles(delegates.input.selector, delegates.input.style)}
+	`;
+}
 
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export function _generateInputPlaceholderBaseStyles(selector) {
+	return css`
 		${selector}::placeholder {
 			color: var(--d2l-theme-text-color-static-faint);
 			font-size: 0.8rem;
 			font-weight: 400;
 			opacity: 1; /* Firefox has non-1 default */
 		}
+	`;
+}
+
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export function _generateInputAriaInvalidBaseStyles(selector) {
+	return css`
+		[aria-invalid="true"]${selector}:not(:disabled) {
+			border-color: var(--d2l-theme-status-color-error);
+		}
+	`;
+}
+
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export function _generateInputDisabledBaseStyles(selector) {
+	return css`
+		${selector}:disabled {
+			opacity: var(--d2l-theme-opacity-disabled-control);
+		}
+	`;
+}
+
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export function _generateInputStyles(selector, focusSelector) {
+	if (!_isValidCssSelector(selector) || (focusSelector && !_isValidCssSelector(focusSelector))) return '';
+	const lastSpaceIndex = selector.lastIndexOf(' ');
+	const textareaSelector = unsafeCSS(`${selector.substring(0, lastSpaceIndex + 1)}textarea${selector.substring(lastSpaceIndex + 1)}`);
+	const delegates = getStyleDelegates(selector, focusSelector, textareaSelector);
+
+	selector = unsafeCSS(selector);
+	return css`
+		${_generateInputBaseStyles(selector)}
+
+		${getFocusVisibleStyles(delegates.input.selector, delegates.input.style)}
+
+		${_generateInputPlaceholderBaseStyles(selector)}
+
 		${selector}::-ms-input-placeholder {
 			color: var(--d2l-theme-text-color-static-faint);
 			font-size: 0.8rem;
 			font-weight: 400;
 		}
 
-		[aria-invalid="true"]${selector}:not(:disabled) {
-			border-color: var(--d2l-theme-status-color-error);
-		}
-		${selector}:disabled {
-			opacity: var(--d2l-theme-opacity-disabled-control);
-		}
+		${_generateInputAriaInvalidBaseStyles(selector)}
+
+		${_generateInputDisabledBaseStyles(selector)}
+
 		${selector}::-webkit-search-cancel-button,
 		${selector}::-webkit-search-decoration {
 			display: none;
