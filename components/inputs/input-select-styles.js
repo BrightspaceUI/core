@@ -23,8 +23,9 @@ function _getSelectFocusStyles(selector) {
 	return {
 		notDisabled: getFocusRingStyles(notDisabledSelector, {
 			extraStyles: css`
-				--d2l-focus-ring-offset: -2px;
-				box-shadow: inset var(--d2l-theme-shadow-inset-offset-x) var(--d2l-theme-shadow-inset-offset-y) var(--d2l-theme-shadow-inset-blur-radius) 2px var(--d2l-theme-shadow-inset-color);`,
+				box-shadow: inset var(--d2l-theme-shadow-inset-offset-x) var(--d2l-theme-shadow-inset-offset-y) var(--d2l-theme-shadow-inset-blur-radius) 2px var(--d2l-theme-shadow-inset-color);
+
+				--d2l-focus-ring-offset: -2px;`,
 			extraPreferContrastMediaQueryStyles: css`box-shadow: none;`
 		}),
 		ariaInvalid: getFocusVisibleStyles(ariaInvalidSelector, (selector) => css`${selector} {
