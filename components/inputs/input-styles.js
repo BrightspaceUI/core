@@ -112,7 +112,7 @@ export function _generateInputPlaceholderBaseStyles(selector) {
  */
 export function _generateInputAriaInvalidBaseStyles(selector) {
 	return css`
-		[aria-invalid="true"]${selector}:not(:disabled) {
+		${selector}[aria-invalid="true"]:not(:disabled) {
 			border-color: var(--d2l-theme-status-color-error);
 		}
 	`;
