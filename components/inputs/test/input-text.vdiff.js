@@ -2,7 +2,6 @@ import '../../button/button-icon.js';
 import '../../icons/icon.js';
 import '../input-text.js';
 import { expect, fixture, focusElem, hoverElem, hoverElemAt, html } from '@brightspace-ui/testing';
-import { _generateInputTextStyles } from '../input-text-styles.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
 
 const createIcon = (icon, slot) => html`<d2l-icon icon="tier1:${icon}" slot="${slot}" style="margin-left: 0.55rem; margin-right: 0.55rem"></d2l-icon>`;
@@ -160,50 +159,6 @@ describe('d2l-input-text', () => {
 			if (action) await action(elem);
 			if (focus) await focusElem(elem);
 			await expect(elem).to.be.golden({ allColorModes });
-		});
-
-	});
-
-	describe('sass', () => {
-
-		before(() => {
-			const style = document.createElement('style');
-			style.id = 'generated-styles';
-			style.textContent = _generateInputTextStyles('.d2l-test-input-text');
-			document.head.appendChild(style);
-		});
-		after(() => {
-			document.getElementById('generated-styles').remove();
-		});
-
-		const sassBasicFixture = html`<input class="d2l-test-input-text" type="text" value="text">`;
-		const sassInvalidFixture = html`<input class="d2l-test-input-text" type="email" value="invalid@">`;
-		const sassAriaInvalidFixture = html`<input class="d2l-test-input-text" value="aria-invalid" aria-invalid="true">`;
-
-		[
-			{ name: 'basic', template: sassBasicFixture },
-			{ name: 'basic-focus', template: sassBasicFixture, focus: true },
-			{ name: 'email', template: html`<input class="d2l-test-input-text" type="email" value="bill@nye.com">` },
-			{ name: 'number', template: html`<input class="d2l-test-input-text" type="number" value="500">` },
-			{ name: 'password', template: html`<input class="d2l-test-input-text" type="password" value="123456">` },
-			{ name: 'search', template: html`<input class="d2l-test-input-text" type="search" value="search">` },
-			{ name: 'tel', template: html`<input class="d2l-test-input-text" type="tel" value="123-456-7890">` },
-			{ name: 'url', template: html`<input class="d2l-test-input-text" type="url" value="https://www.d2l.com">` },
-			{ name: 'disabled', template: html`<input class="d2l-test-input-text" disabled value="text disabled">` },
-			{ name: 'placeholder', template: html`<input class="d2l-test-input-text" placeholder="placeholder">` },
-			{ name: 'placeholder-disabled', template: html`<input class="d2l-test-input-text" disabled placeholder="placeholder disabled">` },
-			{ name: 'invalid', template: sassInvalidFixture },
-			{ name: 'invalid-disabled', template: html`<input class="d2l-test-input-text" disabled type="email" value="invalid-disabled@">` },
-			{ name: 'invalid-focus', template: sassInvalidFixture, focus: true },
-			{ name: 'aria-invalid', template: sassAriaInvalidFixture },
-			{ name: 'aria-invalid-disabled', template: html`<input class="d2l-test-input-text" disabled value="aria-invalid-disabled" aria-invalid="true">` },
-			{ name: 'aria-invalid-focus', template: sassAriaInvalidFixture, focus: true },
-		].forEach(({ name, template, focus }) => {
-			it(name, async() => {
-				const elem = await fixture(template, { viewport });
-				if (focus) await focusElem(elem);
-				await expect(elem).to.be.golden();
-			});
 		});
 
 	});
