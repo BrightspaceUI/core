@@ -1,7 +1,7 @@
 import './input-styles.js';
 import { css, unsafeCSS } from 'lit';
+import { getFocusRingStyles, getFocusVisibleStyles } from '../../helpers/focus.js';
 import { _isValidCssSelector } from '../../helpers/internal/css.js';
-import { getFocusVisibleStyles } from '../../helpers/focus.js';
 import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
 
 registerSemanticVariableForSvgImageUrl(
@@ -12,22 +12,24 @@ registerSemanticVariableForSvgImageUrl(
 );
 
 function _getSelectFocusStyles(selector) {
-	const notDisabledSelector = `${selector}:not([disabled]):hover, ${selector}:not([disabled])`;
-	const ariaInvalidSelector = `${selector}[aria-invalid="true"], ${selector}[aria-invalid="true"]:hover, ${selector}[aria-invalid="true"]`;
+	const notDisabledSelector = (focusSelector) => `
+		${selector}:not([disabled]):hover,
+		${selector}:not([disabled]):${focusSelector}`;
+	const ariaInvalidSelector = (focusSelector) => `
+		${selector}[aria-invalid="true"],
+		${selector}[aria-invalid="true"]:${focusSelector},
+		${selector}[aria-invalid="true"]:hover`;
 
 	return {
-		notDisabled: getFocusVisibleStyles(notDisabledSelector, (selector) => css`${selector} {
-			box-shadow: inset var(--d2l-theme-shadow-inset-offset-x) var(--d2l-theme-shadow-inset-offset-y) var(--d2l-theme-shadow-inset-blur-radius) 2px var(--d2l-theme-shadow-inset-color);
-			outline: 2px solid var(--d2l-theme-border-color-focus);
-			outline-offset: -2px;
-		}`),
+		notDisabled: getFocusRingStyles(notDisabledSelector, {
+			extraStyles: css`
+				--d2l-focus-ring-offset: -2px;
+				box-shadow: inset var(--d2l-theme-shadow-inset-offset-x) var(--d2l-theme-shadow-inset-offset-y) var(--d2l-theme-shadow-inset-blur-radius) 2px var(--d2l-theme-shadow-inset-color);`,
+			extraPreferContrastMediaQueryStyles: css`box-shadow: none;`
+		}),
 		ariaInvalid: getFocusVisibleStyles(ariaInvalidSelector, (selector) => css`${selector} {
 			outline-color: var(--d2l-theme-status-color-error);
-		}`),
-		preferContrastNotDisabled: getFocusVisibleStyles(notDisabledSelector, (selector) => css`${selector} {
-			box-shadow: none;
-			outline: 2px solid Highlight;
-		}`),
+		}`)
 	};
 }
 
@@ -98,8 +100,6 @@ export function _generateSelectStyles(selector) {
 				outline: 1px solid ButtonBorder;
 				padding-inline: 0.6rem 16px;
 			}
-
-			${selectFocusStyles.preferContrastNotDisabled}
 
 			${finalSelector}:disabled {
 				outline: 1px solid GrayText;
