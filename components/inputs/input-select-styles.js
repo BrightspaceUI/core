@@ -26,7 +26,7 @@ function _getSelectFocusStyles(selector) {
 				box-shadow: inset var(--d2l-theme-shadow-inset-offset-x) var(--d2l-theme-shadow-inset-offset-y) var(--d2l-theme-shadow-inset-blur-radius) 2px var(--d2l-theme-shadow-inset-color);
 
 				--d2l-focus-ring-offset: -2px;`,
-			extraPreferContrastMediaQueryStyles: css`box-shadow: none;`
+			preferContrastMediaQueryExtraStyles: css`box-shadow: none;`
 		}),
 		ariaInvalid: getFocusVisibleStyles(ariaInvalidSelector, (selector) => css`${selector} {
 			outline-color: var(--d2l-theme-status-color-error);
