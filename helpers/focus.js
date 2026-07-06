@@ -78,7 +78,7 @@ export function getFocusableDescendants(node, options) {
 export function getFocusPseudoClass() {
 	return isFocusVisibleSupported() ? 'focus-visible' : 'focus';
 }
-export function getFocusRingStyles(selector, { extraStyles = null } = {}) {
+export function getFocusRingStyles(selector, { extraStyles = null, extraPreferContrastMediaQueryStyles = null } = {}) {
 	const stylesDelegate = selector => css`
 		${selector} {
 			${extraStyles ?? css``}
@@ -87,6 +87,7 @@ export function getFocusRingStyles(selector, { extraStyles = null } = {}) {
 		}
 		@media (prefers-contrast: more) {
 			${selector} {
+				${extraPreferContrastMediaQueryStyles ?? css``}
 				outline-color: Highlight;
 			}
 		}
