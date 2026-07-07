@@ -9,24 +9,20 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
  */
 class EmptyStateActionLink extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * REQUIRED: The action text to be used in the subtle button
 			 * @type {string}
 			 */
-			text: { type: String, required: true },
-			/**
+		text: { type: String, required: true },
+		/**
 			 * REQUIRED: The action URL or URL fragment of the link
 			 * @type {string}
 			 */
-			href: { type: String, required: true },
-		};
-	}
+		href: { type: String, required: true },
+	};
 
-	static get styles() {
-		return [bodyCompactStyles, linkStyles];
-	}
+	static styles = [bodyCompactStyles, linkStyles];
 
 	static get focusElementSelector() {
 		return '.d2l-link';

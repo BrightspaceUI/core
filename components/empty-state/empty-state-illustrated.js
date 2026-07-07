@@ -18,31 +18,27 @@ const illustrationAspectRatio = 500 / 330;
  */
 class EmptyStateIllustrated extends LoadingCompleteMixin(EmptyStateMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * REQUIRED: A description giving details about the empty state
 			 * @type {string}
 			 */
-			description: { type: String, required: true },
-			/**
+		description: { type: String, required: true },
+		/**
 			 * The name of the preset image you would like to display in the component
 			 * @type {string}
 			 */
-			illustrationName: { type: String, attribute: 'illustration-name' },
-			/**
+		illustrationName: { type: String, attribute: 'illustration-name' },
+		/**
 			 * REQUIRED: A title for the empty state
 			 * @type {string}
 			 */
-			titleText: { type: String, attribute: 'title-text', required: true },
-			_contentHeight: { state: true },
-			_titleSmall: { state: true }
-		};
-	}
+		titleText: { type: String, attribute: 'title-text', required: true },
+		_contentHeight: { state: true },
+		_titleSmall: { state: true }
+	};
 
-	static get styles() {
-		return [bodyCompactStyles, emptyStateStyles, emptyStateIllustratedStyles];
-	}
+	static styles = [bodyCompactStyles, emptyStateStyles, emptyStateIllustratedStyles];
 
 	constructor() {
 		super();

@@ -268,136 +268,132 @@ const SELECTORS = {
  */
 export class TableWrapper extends PropertyRequiredMixin(PageableMixin(SelectionMixin(LitElement))) {
 
-	static get properties() {
-		return {
-			/**
-			 * Hides the column borders on "default" table type
-			 * @type {boolean}
-			 */
-			noColumnBorder: {
-				attribute: 'no-column-border',
-				reflect: true,
-				type: Boolean
+	static properties = {
+		/**
+		 * Hides the column borders on "default" table type
+		 * @type {boolean}
+		 */
+		noColumnBorder: {
+			attribute: 'no-column-border',
+			reflect: true,
+			type: Boolean
+		},
+		/**
+		 * Whether the header row is sticky. Useful for long tables to "stick" the header row in place as the user scrolls.
+		 * @type {boolean}
+		 */
+		stickyHeaders: {
+			attribute: 'sticky-headers',
+			reflect: true,
+			type: Boolean
+		},
+		/**
+		 * When used in combo with `sticky-headers`, whether to additionally wrap the table in a scroll-wrapper. Requires sticky headers to be in a separate thead.
+		 * @type {boolean}
+		 */
+		stickyHeadersScrollWrapper: {
+			attribute: 'sticky-headers-scroll-wrapper',
+			reflect: true,
+			type: Boolean
+		},
+		_stickyWidth: { state: true },
+		/**
+		 * Type of table style to apply. The "light" style has fewer borders and tighter padding.
+		 * @type {'default'|'light'}
+		 */
+		type: {
+			reflect: true,
+			type: String
+		},
+		_controlsScrolled: { state: true },
+		_noScrollWidth: {
+			attribute: '_no-scroll-width',
+			reflect: true,
+			type: Boolean,
+		},
+		/**
+		 * The state of data in the table. Set to 'clean' when the data represents the user's latest selections, 'dirty' when the data does not represent the user's latest selections, and 'loading' if the data is being actively refreshed
+		 * @type {'clean'|'dirty'|'loading'}
+		 */
+		dataState: {
+			reflect: true,
+			type: String
+		},
+		/**
+		 * The text displayed on the dirty state overlay when the 'dirty' dataState is set.
+		 * @type {string}
+		 */
+		dirtyText: {
+			reflect: true,
+			attribute: 'dirty-text',
+			required: {
+				dependentProps: ['dataState'],
+				validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
 			},
-			/**
-			 * Whether the header row is sticky. Useful for long tables to "stick" the header row in place as the user scrolls.
-			 * @type {boolean}
-			 */
-			stickyHeaders: {
-				attribute: 'sticky-headers',
-				reflect: true,
-				type: Boolean
+			type: String
+		},
+		/**
+		 * The text displayed on the button dirty state overlay when the 'dirty' dataState is set.
+		 * @type {string}
+		 */
+		dirtyButtonText: {
+			reflect: true,
+			attribute: 'dirty-button-text',
+			required: {
+				dependentProps: ['dataState'],
+				validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
 			},
-			/**
-			 * When used in combo with `sticky-headers`, whether to additionally wrap the table in a scroll-wrapper. Requires sticky headers to be in a separate thead.
-			 * @type {boolean}
-			 */
-			stickyHeadersScrollWrapper: {
-				attribute: 'sticky-headers-scroll-wrapper',
-				reflect: true,
-				type: Boolean
-			},
-			_stickyWidth: { state: true },
-			/**
-			 * Type of table style to apply. The "light" style has fewer borders and tighter padding.
-			 * @type {'default'|'light'}
-			 */
-			type: {
-				reflect: true,
-				type: String
-			},
-			_controlsScrolled: { state: true },
-			_noScrollWidth: {
-				attribute: '_no-scroll-width',
-				reflect: true,
-				type: Boolean,
-			},
-			/**
-			 * The state of data in the table. Set to 'clean' when the data represents the user's latest selections, 'dirty' when the data does not represent the user's latest selections, and 'loading' if the data is being actively refreshed
-			 * @type {'clean'|'dirty'|'loading'}
-			 */
-			dataState: {
-				reflect: true,
-				type: String
-			},
-			/**
-			 * The text displayed on the dirty state overlay when the 'dirty' dataState is set.
-			 * @type {string}
-			 */
-			dirtyText: {
-				reflect: true,
-				attribute: 'dirty-text',
-				required: {
-					dependentProps: ['dataState'],
-					validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
-				},
-				type: String
-			},
-			/**
-			 * The text displayed on the button dirty state overlay when the 'dirty' dataState is set.
-			 * @type {string}
-			 */
-			dirtyButtonText: {
-				reflect: true,
-				attribute: 'dirty-button-text',
-				required: {
-					dependentProps: ['dataState'],
-					validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
-				},
-				type: String
-			}
-		};
-	}
+			type: String
+		}
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				--d2l-table-border: 1px solid var(--d2l-table-border-color);
-				--d2l-table-border-color: var(--d2l-color-mica);
-				--d2l-table-border-radius: 0.3rem;
-				--d2l-table-border-radius-sticky-offset: calc(1px - var(--d2l-table-border-radius));
-				--d2l-table-cell-overall-height: 46px;
-				--d2l-table-cell-height: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-padding));
-				--d2l-table-cell-padding: 0.7rem;
-				--d2l-table-cell-padding-alt: calc(0.7rem - 1px) 0.7rem 0.7rem 0.7rem;
-				--d2l-table-cell-col-sort-button-size-offset: 4px;
-				--d2l-table-header-background-color: var(--d2l-color-regolith);
-				--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
-				--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
-				display: block;
-				width: 100%;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			:host([type="light"]) {
-				--d2l-table-border-radius: 0rem; /* stylelint-disable-line length-zero-no-unit */
-				--d2l-table-border-radius-sticky-offset: 0rem; /* stylelint-disable-line length-zero-no-unit */
-				--d2l-table-border-color: var(--d2l-color-gypsum);
-				--d2l-table-header-background-color: #ffffff;
-			}
-			:host([sticky-headers]) {
-				--d2l-table-controls-shadow-display: none;
-			}
-			.d2l-sticky-headers-backdrop {
-				position: sticky;
-				top: calc(var(--d2l-table-sticky-top, 0px) + var(--d2l-table-border-radius));
-				width: 100%;
-				z-index: 2; /* Must sit under d2l-table sticky-headers but over sticky columns and regular cells */
-			}
-			.d2l-sticky-headers-backdrop::after {
-				background-color: var(--d2l-table-controls-background-color, white);
-				bottom: 0;
-				content: "";
-				position: absolute;
-				top: calc(-7px - var(--d2l-table-border-radius)); /* 6px for the d2l-table-controls margin-bottom, 1px overlap to fix zoom issues */
-				width: 100%;
-			}
-			slot[name="pager"]::slotted(*) {
-				margin-top: 12px;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			--d2l-table-border: 1px solid var(--d2l-table-border-color);
+			--d2l-table-border-color: var(--d2l-color-mica);
+			--d2l-table-border-radius: 0.3rem;
+			--d2l-table-border-radius-sticky-offset: calc(1px - var(--d2l-table-border-radius));
+			--d2l-table-cell-overall-height: 46px;
+			--d2l-table-cell-height: calc(var(--d2l-table-cell-overall-height) - 2 * var(--d2l-table-cell-padding));
+			--d2l-table-cell-padding: 0.7rem;
+			--d2l-table-cell-padding-alt: calc(0.7rem - 1px) 0.7rem 0.7rem 0.7rem;
+			--d2l-table-cell-col-sort-button-size-offset: 4px;
+			--d2l-table-header-background-color: var(--d2l-color-regolith);
+			--d2l-table-row-border-color-selected: var(--d2l-color-celestine);
+			--d2l-table-row-background-color-selected: var(--d2l-color-celestine-plus-2);
+			display: block;
+			width: 100%;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		:host([type="light"]) {
+			--d2l-table-border-radius: 0rem; /* stylelint-disable-line length-zero-no-unit */
+			--d2l-table-border-radius-sticky-offset: 0rem; /* stylelint-disable-line length-zero-no-unit */
+			--d2l-table-border-color: var(--d2l-color-gypsum);
+			--d2l-table-header-background-color: #ffffff;
+		}
+		:host([sticky-headers]) {
+			--d2l-table-controls-shadow-display: none;
+		}
+		.d2l-sticky-headers-backdrop {
+			position: sticky;
+			top: calc(var(--d2l-table-sticky-top, 0px) + var(--d2l-table-border-radius));
+			width: 100%;
+			z-index: 2; /* Must sit under d2l-table sticky-headers but over sticky columns and regular cells */
+		}
+		.d2l-sticky-headers-backdrop::after {
+			background-color: var(--d2l-table-controls-background-color, white);
+			bottom: 0;
+			content: "";
+			position: absolute;
+			top: calc(-7px - var(--d2l-table-border-radius)); /* 6px for the d2l-table-controls margin-bottom, 1px overlap to fix zoom issues */
+			width: 100%;
+		}
+		slot[name="pager"]::slotted(*) {
+			margin-top: 12px;
+		}
+	`;
 
 	constructor() {
 		super();

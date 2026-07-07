@@ -9,45 +9,41 @@ import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
  */
 class Breadcrumbs extends LocalizeCoreElement(LitElement) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Renders in compact mode, displaying only the last item
 			 * @type {boolean}
 			 */
-			compact: { type: Boolean, reflect: true }
-		};
-	}
+		compact: { type: Boolean, reflect: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				clip-path: rect(-1em 100% calc(100% + 1em) -1em);
-				display: block;
-				font-size: 0.7rem;
-				line-height: 1.05rem;
-				${overflowEllipsisDeclarations}
-				overflow-y: clip;
-				position: relative;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			:host::after {
-				background: linear-gradient(to var(--d2l-inline-end, right), rgba(255, 255, 255, 0), rgb(251, 252, 252));
-				content: "";
-				inset-block: 0;
-				inset-inline-end: 0;
-				pointer-events: none;
-				position: absolute;
-				width: 10px;
-			}
-			:host([compact]) ::slotted(d2l-breadcrumb:not(:last-of-type)),
-			:host([compact]) ::slotted(d2l-breadcrumb-current-page) {
-				display: none;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			clip-path: rect(-1em 100% calc(100% + 1em) -1em);
+			display: block;
+			font-size: 0.7rem;
+			line-height: 1.05rem;
+			${overflowEllipsisDeclarations}
+			overflow-y: clip;
+			position: relative;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		:host::after {
+			background: linear-gradient(to var(--d2l-inline-end, right), rgba(255, 255, 255, 0), rgb(251, 252, 252));
+			content: "";
+			inset-block: 0;
+			inset-inline-end: 0;
+			pointer-events: none;
+			position: absolute;
+			width: 10px;
+		}
+		:host([compact]) ::slotted(d2l-breadcrumb:not(:last-of-type)),
+		:host([compact]) ::slotted(d2l-breadcrumb-current-page) {
+			display: none;
+		}
+	`;
 
 	constructor() {
 		super();

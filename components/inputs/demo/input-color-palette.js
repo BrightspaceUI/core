@@ -5,34 +5,30 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 class InputColorPalette extends LitElement {
 
-	static get properties() {
-		return {
-			value: { type: String }
-		};
-	}
+	static properties = {
+		value: { type: String }
+	};
 
-	static get styles() {
-		return [ css`
-			:host {
-				display: block;
-				padding: 12px;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			p {
-				margin-top: 0;
-			}
-			span {
-				margin: 0 0.2rem 0 0.55rem;
-			}
-			div {
-				align-items: flex-end;
-				display: flex;
-				gap: 6px;
-			}
-		`];
-	}
+	static styles = [ css`
+		:host {
+			display: block;
+			padding: 12px;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		p {
+			margin-top: 0;
+		}
+		span {
+			margin: 0 0.2rem 0 0.55rem;
+		}
+		div {
+			align-items: flex-end;
+			display: flex;
+			gap: 6px;
+		}
+	`];
 
 	render() {
 		return html`

@@ -6,16 +6,14 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const ListItemLinkMixin = superclass => class extends ListItemMixin(superclass) {
 
-	static get properties() {
-		return {
-			/**
-			 * Address of item link if navigable
-			 * @type {string}
-			 */
-			actionHref: { type: String, attribute: 'action-href', reflect: true },
-			_ariaCurrent: { type: String }
-		};
-	}
+	static properties = {
+		/**
+		 * Address of item link if navigable
+		 * @type {string}
+		 */
+		actionHref: { type: String, attribute: 'action-href', reflect: true },
+		_ariaCurrent: { type: String }
+	};
 
 	static get styles() {
 

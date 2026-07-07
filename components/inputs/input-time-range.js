@@ -41,111 +41,107 @@ function getValidISOTimeAtInterval(val, timeInterval) {
 
 class InputTimeRange extends FocusMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement)))) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * ADVANCED: Automatically shifts end time when start time changes to keep same range
 			 * @type {boolean}
 			 */
-			autoShiftTimes: { attribute: 'auto-shift-times', reflect: true, type: Boolean },
-			/**
+		autoShiftTimes: { attribute: 'auto-shift-times', reflect: true, type: Boolean },
+		/**
 			 * Hides the start and end labels visually. Hidden labels are still read by screen readers so make sure to set appropriate start and end labels.
 			 * @type {boolean}
 			 */
-			childLabelsHidden: { attribute: 'child-labels-hidden', reflect: true, type: Boolean },
-			/**
+		childLabelsHidden: { attribute: 'child-labels-hidden', reflect: true, type: Boolean },
+		/**
 			 * Disables the inputs
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
+		disabled: { type: Boolean, reflect: true },
+		/**
 			 * ACCESSIBILITY: Label for the end time input. Defaults to localized "End Time".
 			 * @type {string}
 			 * @default "End Time"
 			 */
-			endLabel: { attribute: 'end-label', reflect: true, type: String },
-			/**
+		endLabel: { attribute: 'end-label', reflect: true, type: String },
+		/**
 			 * ADVANCED: Indicates if the end dropdown is open
 			 * @type {boolean}
 			 */
-			endOpened: { attribute: 'end-opened', type: Boolean },
-			/**
+		endOpened: { attribute: 'end-opened', type: Boolean },
+		/**
 			 * Value of the end time input
 			 * @type {string}
 			 */
-			endValue: { attribute: 'end-value', reflect: true, type: String },
-			/**
+		endValue: { attribute: 'end-value', reflect: true, type: String },
+		/**
 			 * Rounds typed input up to nearest valid interval time (specified with "time-interval")
 			 * @type {boolean}
 			 */
-			enforceTimeIntervals: { attribute: 'enforce-time-intervals', reflect: true, type: Boolean },
-			/**
+		enforceTimeIntervals: { attribute: 'enforce-time-intervals', reflect: true, type: Boolean },
+		/**
 			 * Validates on inclusive range (i.e., it is valid for start and end times to be equal)
 			 * @type {boolean}
 			 */
-			inclusiveTimeRange: { attribute: 'inclusive-time-range', reflect: true, type: Boolean },
-			/**
+		inclusiveTimeRange: { attribute: 'inclusive-time-range', reflect: true, type: Boolean },
+		/**
 			 * ACCESSIBILITY: REQUIRED: Label for the input fieldset that wraps the time inputs
 			 * @type {string}
 			 */
-			label: { type: String, reflect: true },
-			/**
+		label: { type: String, reflect: true },
+		/**
 			 * Hides the fieldset label visually.  Hidden labels are still read by screen readers so make sure to set an appropriate label.
 			 * @type {boolean}
 			 */
-			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
-			/**
+		labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
+		/**
 			 * Indicates that values are required
 			 * @type {boolean}
 			 */
-			required: { type: Boolean, reflect: true },
-			/**
+		required: { type: Boolean, reflect: true },
+		/**
 			 * ACCESSIBILITY: Label for the start time input. Defaults to localized "Start Time".
 			 * @type {string}
 			 * @default "Start Time"
 			 */
-			startLabel: { attribute: 'start-label', reflect: true, type: String },
-			/**
+		startLabel: { attribute: 'start-label', reflect: true, type: String },
+		/**
 			 * ADVANCED: Indicates if the start dropdown is open
 			 * @type {boolean}
 			 */
-			startOpened: { attribute: 'start-opened', type: Boolean },
-			/**
+		startOpened: { attribute: 'start-opened', type: Boolean },
+		/**
 			 * Value of the start time input
 			 * @type {string}
 			 */
-			startValue: { attribute: 'start-value', reflect: true, type: String },
-			/**
+		startValue: { attribute: 'start-value', reflect: true, type: String },
+		/**
 			 * Number of minutes between times shown in dropdown menu
 			 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 			 */
-			timeInterval: { attribute: 'time-interval', reflect: true, type: String },
-			/**
+		timeInterval: { attribute: 'time-interval', reflect: true, type: String },
+		/**
 			 * Time zone identifier for the inputs to use.
 			 * @type {string}
 			 */
-			timeZoneId: { type: String },
-			/**
+		timeZoneId: { type: String },
+		/**
 			 * Hides the time zone inside the selection dropdowns. Should only be used when the input values are not related to any one time zone
 			 * @type {Boolean}
 			 */
-			timeZoneHidden: { type: Boolean, attribute: 'time-zone-hidden' },
-		};
-	}
+		timeZoneHidden: { type: Boolean, attribute: 'time-zone-hidden' },
+	};
 
-	static get styles() {
-		return [super.styles, css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			d2l-input-time {
-				display: block;
-			}
-		`];
-	}
+	static styles = [super.styles, css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		d2l-input-time {
+			display: block;
+		}
+	`];
 
 	constructor() {
 		super();

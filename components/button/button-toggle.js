@@ -6,35 +6,31 @@ import { css, html, LitElement } from 'lit';
  */
 class ButtonToggle extends LitElement {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Pressed state
 			 * @type {boolean}
 			 */
-			pressed: { type: Boolean, reflect: true }
-		};
-	}
+		pressed: { type: Boolean, reflect: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			::slotted(:not(d2l-button-icon, d2l-button-subtle)),
-			:host slot[name="pressed"],
-			:host([pressed]) slot[name="not-pressed"] {
-				display: none;
-			}
-			:host slot[name="not-pressed"],
-			:host([pressed]) slot[name="pressed"] {
-				display: contents;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		::slotted(:not(d2l-button-icon, d2l-button-subtle)),
+		:host slot[name="pressed"],
+		:host([pressed]) slot[name="not-pressed"] {
+			display: none;
+		}
+		:host slot[name="not-pressed"],
+		:host([pressed]) slot[name="pressed"] {
+			display: contents;
+		}
+	`;
 
 	constructor() {
 		super();

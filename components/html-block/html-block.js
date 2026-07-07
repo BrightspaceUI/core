@@ -198,53 +198,49 @@ const getRenderers = async() => {
  */
 class HtmlBlock extends LoadingCompleteMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Whether compact styles should be applied
 			 * @type {Boolean}
 			 */
-			compact: { type: Boolean },
-			/**
+		compact: { type: Boolean },
+		/**
 			 * The HTML to be rendered. Ignored if slotted content is provided.
 			 * @type {String}
 			 */
-			html: { type: String },
-			/**
+		html: { type: String },
+		/**
 			 * Whether to display the HTML in inline mode
 			 * @type {Boolean}
 			 */
-			inline: { type: Boolean },
-			/**
+		inline: { type: Boolean },
+		/**
 			 * Whether to disable deferred rendering of the user-authored HTML. Do *not* set this
 			 * unless your HTML relies on script executions that may break upon stamping.
 			 * @type {Boolean}
 			 */
-			noDeferredRendering: { type: Boolean, attribute: 'no-deferred-rendering' },
-			_context: { type: Object, state: true }
-		};
-	}
+		noDeferredRendering: { type: Boolean, attribute: 'no-deferred-rendering' },
+		_context: { type: Object, state: true }
+	};
 
-	static get styles() {
-		return [ htmlBlockContentStyles, css`
-			:host {
-				display: block;
-			}
-			${_generateHtmlBlockRootStyles(':host')}
-			:host([inline]),
-			:host([inline]) .d2l-html-block-rendered {
-				display: inline;
-			}
-			:host([hidden]),
-			:host([no-deferred-rendering]) .d2l-html-block-rendered,
-			slot {
-				display: none;
-			}
-			:host([no-deferred-rendering]) slot {
-				display: contents;
-			}
-		`];
-	}
+	static styles = [ htmlBlockContentStyles, css`
+		:host {
+			display: block;
+		}
+		${_generateHtmlBlockRootStyles(':host')}
+		:host([inline]),
+		:host([inline]) .d2l-html-block-rendered {
+			display: inline;
+		}
+		:host([hidden]),
+		:host([no-deferred-rendering]) .d2l-html-block-rendered,
+		slot {
+			display: none;
+		}
+		:host([no-deferred-rendering]) slot {
+			display: contents;
+		}
+	`];
 
 	constructor() {
 		super();

@@ -10,30 +10,28 @@ const keyCodes = {
 
 export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 
-	static get properties() {
-		return {
-			/**
-			 * @ignore
-			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			hidden: { type: Boolean, reflect: true },
-			/**
-			 * Use to select the tab. Only one tab can be selected at a time.
-			 * @type {boolean}
-			 */
-			selected: { type: Boolean, reflect: true },
-			/**
-			 * @ignore
-			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			role: { type: String, reflect: true },
-			/**
-			 * @ignore
-			 */
-			tabIndex: { type: Number, reflect: true, attribute: 'tabindex' },
-			_clicked: { type: Boolean, reflect: true },
-		};
-	}
+	static properties = {
+		/**
+		 * @ignore
+		 */
+		// eslint-disable-next-line lit/no-native-attributes
+		hidden: { type: Boolean, reflect: true },
+		/**
+		 * Use to select the tab. Only one tab can be selected at a time.
+		 * @type {boolean}
+		 */
+		selected: { type: Boolean, reflect: true },
+		/**
+		 * @ignore
+		 */
+		// eslint-disable-next-line lit/no-native-attributes
+		role: { type: String, reflect: true },
+		/**
+		 * @ignore
+		 */
+		tabIndex: { type: Number, reflect: true, attribute: 'tabindex' },
+		_clicked: { type: Boolean, reflect: true },
+	};
 
 	static get styles() {
 		const styles = [ css`

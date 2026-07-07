@@ -9,27 +9,23 @@ import { SubscriberRegistryController } from '../../controllers/subscriber/subsc
  */
 class CollapsiblePanelGroup extends SkeletonGroupMixin(LitElement) {
 
-	static get properties() {
-		return {
-			_spaced: { state: true }
-		};
-	}
+	static properties = {
+		_spaced: { state: true }
+	};
 
-	static get styles() {
-		return css`
-			:host ::slotted(*) {
-				display: none;
-			}
-			:host ::slotted(d2l-collapsible-panel) {
-				display: unset;
-			}
-			.spaced {
-				display: flex;
-				flex-direction: column;
-				row-gap: 0.5rem;
-			}
-		`;
-	}
+	static styles = css`
+		:host ::slotted(*) {
+			display: none;
+		}
+		:host ::slotted(d2l-collapsible-panel) {
+			display: unset;
+		}
+		.spaced {
+			display: flex;
+			flex-direction: column;
+			row-gap: 0.5rem;
+		}
+	`;
 
 	constructor() {
 		super();

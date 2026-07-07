@@ -36,38 +36,34 @@ export const descriptionListStyles = [
  * @slot - Content to wrap
  */
 class DescriptionListWrapper extends LitElement {
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Width for component to use a stacked layout
 			 * @type {number}
 			 */
-			breakpoint: { type: Number, reflect: true },
-			/**
+		breakpoint: { type: Number, reflect: true },
+		/**
 			 * Force the component to always use a stacked layout; will override breakpoint attribute
 			 * @type {boolean}
 			 */
-			forceStacked: { type: Boolean, reflect: true, attribute: 'force-stacked' },
-			_stacked: { state: true },
-		};
-	}
+		forceStacked: { type: Boolean, reflect: true, attribute: 'force-stacked' },
+		_stacked: { state: true },
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			.stacked {
-				--d2l-dl-wrapper-dl-display: block;
-				--d2l-dl-wrapper-dt-max-width: none;
-				--d2l-dl-wrapper-dt-margin: 0 0 0.3rem 0;
-				--d2l-dl-wrapper-dd-margin: 0 0 0.9rem 0;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.stacked {
+			--d2l-dl-wrapper-dl-display: block;
+			--d2l-dl-wrapper-dt-max-width: none;
+			--d2l-dl-wrapper-dt-margin: 0 0 0.3rem 0;
+			--d2l-dl-wrapper-dd-margin: 0 0 0.9rem 0;
+		}
+	`;
 
 	constructor() {
 		super();

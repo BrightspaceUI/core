@@ -30,47 +30,45 @@ const closeDialogWhenDisconnectedFlag = getFlag('GAUD-10113-close-dialog-when-di
 
 export const DialogMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			/**
-			 * @ignore
-			 */
-			focusableContentElemPresent: { state: true },
-			/**
-			 * Whether or not the dialog is open
-			 */
-			opened: { type: Boolean, reflect: true },
-			/**
-			 * ADVANCED: Opt out of dialog content scrolling
-			 */
-			noContentScroll: { type: Boolean, attribute: 'no-content-scroll', reflect: true },
-			/**
-			 * @ignore
-			 * Do NOT use this
-			 */
-			preferNative: { type: Boolean, attribute: 'prefer-native' },
-			/**
-			 * The optional title for the dialog
-			 */
-			titleText: { type: String, attribute: 'title-text' },
-			_autoSize: { state: true },
-			_fullscreenWithin: { state: true },
-			_height: { state: true },
-			_inIframe: { type: Boolean, attribute: 'in-iframe', reflect: true },
-			_isFullHeight: { state: true },
-			_left: { state: true },
-			_margin: { state: true },
-			_nestedShowing: { state: true },
-			_overflowBottom: { state: true },
-			_overflowTop: { state: true },
-			_parentDialog: { state: true },
-			_scroll: { state: true },
-			_state: { type: String, reflect: true },
-			_top: { state: true },
-			_width: { state: true },
-			_useNative: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * @ignore
+		 */
+		focusableContentElemPresent: { state: true },
+		/**
+		 * Whether or not the dialog is open
+		 */
+		opened: { type: Boolean, reflect: true },
+		/**
+		 * ADVANCED: Opt out of dialog content scrolling
+		 */
+		noContentScroll: { type: Boolean, attribute: 'no-content-scroll', reflect: true },
+		/**
+		 * @ignore
+		 * Do NOT use this
+		 */
+		preferNative: { type: Boolean, attribute: 'prefer-native' },
+		/**
+		 * The optional title for the dialog
+		 */
+		titleText: { type: String, attribute: 'title-text' },
+		_autoSize: { state: true },
+		_fullscreenWithin: { state: true },
+		_height: { state: true },
+		_inIframe: { type: Boolean, attribute: 'in-iframe', reflect: true },
+		_isFullHeight: { state: true },
+		_left: { state: true },
+		_margin: { state: true },
+		_nestedShowing: { state: true },
+		_overflowBottom: { state: true },
+		_overflowTop: { state: true },
+		_parentDialog: { state: true },
+		_scroll: { state: true },
+		_state: { type: String, reflect: true },
+		_top: { state: true },
+		_width: { state: true },
+		_useNative: { state: true }
+	};
 
 	constructor() {
 		super();

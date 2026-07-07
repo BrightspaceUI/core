@@ -4,13 +4,11 @@ import { SelectionMixin } from '../selection-mixin.js';
 import { SelectionObserverMixin } from '../selection-observer-mixin.js';
 
 class TestBase extends LitElement {
-	static get styles() {
-		return css`
+	static styles = css`
 			:host {
 				display: block;
 			}
 		`;
-	}
 	render() {
 		return html`
 			<slot></slot>

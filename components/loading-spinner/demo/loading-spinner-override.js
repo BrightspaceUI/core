@@ -4,26 +4,22 @@ import { css, html, LitElement } from 'lit';
 
 class LoadingSpinnerOverride extends LitElement {
 
-	static get properties() {
-		return {
-			overrideColor: { type: Boolean, attribute: 'override-color' },
-			overrideSize: { type: Boolean, attribute: 'override-size' }
-		};
-	}
+	static properties = {
+		overrideColor: { type: Boolean, attribute: 'override-color' },
+		overrideSize: { type: Boolean, attribute: 'override-size' }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-			}
-			:host([override-color]) {
-				--d2l-loading-spinner-color: var(--d2l-color-cinnabar);
-			}
-			:host([override-size]) {
-				--d2l-loading-spinner-size: 100px;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+		}
+		:host([override-color]) {
+			--d2l-loading-spinner-color: var(--d2l-color-cinnabar);
+		}
+		:host([override-size]) {
+			--d2l-loading-spinner-size: 100px;
+		}
+	`;
 
 	render() {
 		return html`<d2l-loading-spinner></d2l-loading-spinner>`;

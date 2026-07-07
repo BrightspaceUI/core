@@ -554,431 +554,427 @@ class MobileTouchResizer extends Resizer {
  */
 class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Controls whether the primary and secondary panels have shaded backgrounds
 			 * @type {'primary'|'secondary'|'none'}
 			 */
-			backgroundShading: { type: String, attribute: 'background-shading' },
-			/**
+		backgroundShading: { type: String, attribute: 'background-shading' },
+		/**
 			 * Controls how the primary panel's contents overflow
 			 * @type {'default'|'hidden'}
 			 */
-			primaryOverflow: { attribute: 'primary-overflow', reflect: true, type: String },
-			/**
+		primaryOverflow: { attribute: 'primary-overflow', reflect: true, type: String },
+		/**
 			 * Whether the panels are user resizable. This only applies to desktop users,
 			 * mobile users will always be able to resize.
 			 * @type {boolean}
 			 */
-			resizable: { type: Boolean, reflect: true },
-			/**
+		resizable: { type: Boolean, reflect: true },
+		/**
 			 * When set to true, the secondary panel will be displayed on the left (or the
 			 * right in RTL) in the desktop view. This attribute has no effect on the mobile view.
 			 * @type {boolean}
 			 */
-			secondaryFirst: { type: Boolean, attribute: 'secondary-first', reflect: true },
-			/**
+		secondaryFirst: { type: Boolean, attribute: 'secondary-first', reflect: true },
+		/**
 			 * The key used to persist the divider's position to local storage. This key
 			 * should not be shared between pages so that users can save different divider
 			 * positions on different pages. If no key is provided, the template will fall
 			 * back its default size.
 			 * @type {string}
 			 */
-			storageKey: { type: String, attribute: 'storage-key' },
-			/**
+		storageKey: { type: String, attribute: 'storage-key' },
+		/**
 			 * Whether content fills the screen or not
 			 * @type {'fullscreen'|'normal'}
 			 */
-			widthType: { type: String, attribute: 'width-type', reflect: true },
-			/**
+		widthType: { type: String, attribute: 'width-type', reflect: true },
+		/**
 			 * Whether to render an encompassing form over all panels
 			 * @type {boolean}
 			 */
-			hasForm: { type: Boolean, attribute: 'has-form' },
-			_formErrorSummary: { type: Array },
-			_hasFooter: { type: Boolean, attribute: false },
-			_isCollapsed: { type: Boolean, attribute: false },
-			_isExpanded: { type: Boolean, attribute: false },
-			_isMobile: { type: Boolean, attribute: false },
-			_size: { type: Number, attribute: false },
-			_sizeAsPercent: { state: true }
-		};
-	}
+		hasForm: { type: Boolean, attribute: 'has-form' },
+		_formErrorSummary: { type: Array },
+		_hasFooter: { type: Boolean, attribute: false },
+		_isCollapsed: { type: Boolean, attribute: false },
+		_isExpanded: { type: Boolean, attribute: false },
+		_isMobile: { type: Boolean, attribute: false },
+		_size: { type: Number, attribute: false },
+		_sizeAsPercent: { state: true }
+	};
 
-	static get styles() {
-		return css`
-			:host,
-			:host > d2l-form {
-				bottom: 0;
-				left: 0;
-				overflow: hidden;
-				position: absolute;
-				right: 0;
-				top: 0;
-			}
+	static styles = css`
+		:host,
+		:host > d2l-form {
+			bottom: 0;
+			left: 0;
+			overflow: hidden;
+			position: absolute;
+			right: 0;
+			top: 0;
+		}
 
-			:host([hidden]) {
-				display: none;
+		:host([hidden]) {
+			display: none;
+		}
+		:host([width-type="normal"]) .d2l-template-primary-secondary-content,
+		:host([width-type="normal"]) .d2l-template-primary-secondary-footer {
+			margin: 0 auto;
+			max-width: 1230px;
+			width: 100%;
+		}
+		.d2l-template-primary-secondary-container {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+			width: 100%;
+		}
+		.d2l-template-primary-secondary-content {
+			display: flex;
+			height: 100%;
+			overflow: hidden;
+		}
+
+		main {
+			flex: 2 0 0;
+			overflow-x: hidden;
+			transition: none;
+		}
+		main d2l-form-error-summary {
+			margin-inline: var(--d2l-template-primary-secondary-form-error-inline-margin, 20px);
+		}
+
+		:host([resizable]) main {
+			flex: 1 0 0;
+		}
+		:host([primary-overflow="hidden"]) main {
+			overflow: hidden;
+		}
+		.d2l-template-primary-secondary-secondary-container {
+			flex: 1 0 0;
+			min-width: ${desktopMinSize}px;
+			overflow: hidden;
+		}
+		:host([resizable]) .d2l-template-primary-secondary-secondary-container {
+			flex: none;
+			min-width: 0;
+		}
+		[data-animate-resize] .d2l-template-primary-secondary-secondary-container {
+			transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1), height 400ms cubic-bezier(0, 0.7, 0.5, 1);
+		}
+		.d2l-template-primary-secondary-divider-shadow {
+			display: none;
+		}
+		aside {
+			height: 100%;
+			min-width: ${desktopMinSize}px;
+			overflow-x: hidden;
+			overflow-y: scroll;
+			width: 100%;
+		}
+
+		/* prevent margin colapse on slotted children */
+		aside::before,
+		aside::after {
+			content: " ";
+			display: table;
+		}
+		[data-background-shading="primary"] > main,
+		[data-background-shading="secondary"] > .d2l-template-primary-secondary-secondary-container {
+			background-color: var(--d2l-color-gypsum);
+		}
+		:host([resizable]) [data-is-collapsed] aside {
+			visibility: hidden;
+		}
+		:host([resizable]:not([secondary-first])) aside {
+			float: inline-start;
+		}
+		.d2l-template-primary-secondary-divider,
+		.d2l-template-primary-secondary-divider-not-resizable {
+			background-color: var(--d2l-color-mica);
+			flex: none;
+			outline: none;
+			position: relative;
+			width: 1px;
+			z-index: 1;
+		}
+		.d2l-template-primary-secondary-divider-handle {
+			display: none;
+			position: absolute;
+			top: calc(50%);
+			width: 100%;
+		}
+		:host([resizable]) .d2l-template-primary-secondary-divider {
+			background-color: var(--d2l-color-gypsum);
+			cursor: ew-resize;
+			width: 0.45rem;
+		}
+		:host([resizable]) [data-is-expanded] .d2l-template-primary-secondary-divider {
+			cursor: var(--d2l-cursor-resize-inline-end, e-resize);
+		}
+		:host([resizable]) [data-is-collapsed] .d2l-template-primary-secondary-divider {
+			cursor: var(--d2l-cursor-resize-inline-start, w-resize);
+		}
+		:host([resizable]) .d2l-template-primary-secondary-divider-handle {
+			align-items: center;
+			display: flex;
+			justify-content: center;
+		}
+		:host([resizable]) [data-background-shading="secondary"] .d2l-template-primary-secondary-divider {
+			box-shadow: calc(1px * var(--d2l-length-factor, 1)) 0 0 0 rgba(0, 0, 0, 0.15);
+		}
+		:host([resizable]) [data-background-shading="primary"] .d2l-template-primary-secondary-divider {
+			box-shadow: calc(-1px * var(--d2l-length-factor, 1)) 0 0 0 rgba(0, 0, 0, 0.15);
+		}
+		.d2l-template-primary-secondary-divider-handle-desktop {
+			align-items: center;
+			display: flex;
+			justify-content: center;
+			position: absolute;
+		}
+		.d2l-template-primary-secondary-divider-handle-left,
+		.d2l-template-primary-secondary-divider-handle-right {
+			color: var(--d2l-color-celestine);
+			display: none;
+			position: absolute;
+		}
+		.d2l-template-primary-secondary-divider-handle-left {
+			inset-inline-start: -1rem;
+		}
+		.d2l-template-primary-secondary-divider-handle-right {
+			inset-inline-end: -1rem;
+		}
+		.d2l-template-primary-secondary-divider-handle-line {
+			display: flex;
+			height: 0.9rem;
+			justify-content: space-between;
+			width: 0.25rem;
+		}
+		.d2l-template-primary-secondary-divider-handle-line::before,
+		.d2l-template-primary-secondary-divider-handle-line::after {
+			background-color: var(--d2l-color-galena);
+			border-radius: 0.05rem;
+			content: "";
+			display: inline-block;
+			width: 0.1rem;
+		}
+		.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-right,
+		.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-left {
+			display: block;
+		}
+		:host(:not([secondary-first])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left,
+		:host([secondary-first]) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-right {
+			display: none;
+		}
+		d2l-icon {
+			display: none;
+		}
+
+		footer {
+			background-color: white;
+			box-shadow: 0 -2px 4px rgba(32, 33, 34, 0.2); /* ferrite */
+			padding: 0.75rem 1rem;
+			z-index: 1; /* ensures the footer box-shadow is over main areas with background colours set */
+		}
+		header {
+			z-index: 14; /* ensures the header box-shadow is over main areas with background colours set, and opt-in on top of sticky header */
+		}
+
+		:host([resizable]) .d2l-template-primary-secondary-divider:focus,
+		:host([resizable]) .d2l-template-primary-secondary-divider:hover {
+			background-color: var(--d2l-color-mica);
+			box-shadow: none;
+		}
+		:host([resizable]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} {
+			background-color: var(--d2l-color-celestine);
+		}
+		.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-line::before,
+		.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-line::after,
+		.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::before,
+		.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::after {
+			background-color: var(--d2l-color-ferrite);
+		}
+		.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-line::before,
+		.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-line::after {
+			background-color: white;
+		}
+
+		.d2l-template-primary-secondary-divider,
+		.d2l-template-primary-secondary-divider-handle-mobile,
+		.d2l-template-primary-secondary-divider-handle-line::before,
+		.d2l-template-primary-secondary-divider-handle-line::after {
+			transition: background-color 100ms, box-shadow 100ms;
+		}
+		.d2l-template-primary-secondary-divider:hover,
+		.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-mobile,
+		.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::before,
+		.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::after {
+			transition-delay: 100ms;
+		}
+
+		.d2l-template-scroll::-webkit-scrollbar {
+			width: 8px;
+		}
+
+		.d2l-template-scroll::-webkit-scrollbar-track {
+			background: rgba(255, 255, 255, 0.4);
+		}
+
+		.d2l-template-scroll::-webkit-scrollbar-thumb {
+			background: var(--d2l-color-galena);
+			border-radius: 4px;
+		}
+
+		.d2l-template-scroll::-webkit-scrollbar-thumb:hover {
+			background: var(--d2l-color-tungsten);
+		}
+
+		/* For Firefox */
+		.d2l-template-scroll {
+			scrollbar-color: var(--d2l-color-galena) rgba(255, 255, 255, 0.4);
+			scrollbar-width: thin;
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			.d2l-template-primary-secondary-divider,
+			.d2l-template-primary-secondary-divider-handle-line::before,
+			.d2l-template-primary-secondary-divider-handle-line::after,
+			.d2l-template-primary-secondary-divider-handle-mobile {
+				transition: none;
 			}
-			:host([width-type="normal"]) .d2l-template-primary-secondary-content,
-			:host([width-type="normal"]) .d2l-template-primary-secondary-footer {
-				margin: 0 auto;
-				max-width: 1230px;
-				width: 100%;
-			}
-			.d2l-template-primary-secondary-container {
-				display: flex;
-				flex-direction: column;
-				height: 100%;
-				width: 100%;
-			}
+		}
+		@media only screen and (max-width: 767px) {
+
 			.d2l-template-primary-secondary-content {
-				display: flex;
-				height: 100%;
-				overflow: hidden;
+				flex-direction: column;
 			}
 
 			main {
-				flex: 2 0 0;
-				overflow-x: hidden;
-				transition: none;
-			}
-			main d2l-form-error-summary {
-				margin-inline: var(--d2l-template-primary-secondary-form-error-inline-margin, 20px);
-			}
-
-			:host([resizable]) main {
 				flex: 1 0 0;
-			}
-			:host([primary-overflow="hidden"]) main {
-				overflow: hidden;
 			}
 			.d2l-template-primary-secondary-secondary-container {
-				flex: 1 0 0;
-				min-width: ${desktopMinSize}px;
-				overflow: hidden;
-			}
-			:host([resizable]) .d2l-template-primary-secondary-secondary-container {
 				flex: none;
-				min-width: 0;
 			}
-			[data-animate-resize] .d2l-template-primary-secondary-secondary-container {
-				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1), height 400ms cubic-bezier(0, 0.7, 0.5, 1);
+			aside,
+			.d2l-template-primary-secondary-secondary-container {
+				min-width: auto;
 			}
-			.d2l-template-primary-secondary-divider-shadow {
+			[data-is-collapsed] aside {
 				display: none;
 			}
-			aside {
-				height: 100%;
-				min-width: ${desktopMinSize}px;
-				overflow-x: hidden;
-				overflow-y: scroll;
+
+			.d2l-template-primary-secondary-divider-handle-desktop {
+				display: none;
+			}
+			/* Attribute selector is only used to increase specificity */
+			:host([resizable]) .d2l-template-primary-secondary-divider,
+			:host(:not([resizable])) .d2l-template-primary-secondary-divider {
+				background-color: var(--d2l-color-celestine);
+				cursor: ns-resize;
+				height: 0.1rem;
 				width: 100%;
 			}
+			:host([resizable]) [data-is-collapsed] .d2l-template-primary-secondary-divider,
+			:host(:not([resizable])) [data-is-collapsed] .d2l-template-primary-secondary-divider {
+				cursor: n-resize;
+			}
+			:host([resizable]) [data-is-expanded] .d2l-template-primary-secondary-divider,
+			:host(:not([resizable])) [data-is-expanded] .d2l-template-primary-secondary-divider {
+				cursor: s-resize;
+			}
 
-			/* prevent margin colapse on slotted children */
-			aside::before,
-			aside::after {
-				content: " ";
-				display: table;
-			}
-			[data-background-shading="primary"] > main,
-			[data-background-shading="secondary"] > .d2l-template-primary-secondary-secondary-container {
-				background-color: var(--d2l-color-gypsum);
-			}
-			:host([resizable]) [data-is-collapsed] aside {
-				visibility: hidden;
-			}
-			:host([resizable]:not([secondary-first])) aside {
-				float: inline-start;
-			}
-			.d2l-template-primary-secondary-divider,
-			.d2l-template-primary-secondary-divider-not-resizable {
-				background-color: var(--d2l-color-mica);
-				flex: none;
-				outline: none;
-				position: relative;
-				width: 1px;
-				z-index: 1;
+			/* Attribute selector is only used to increase specificity */
+			:host([resizable]) .d2l-template-primary-secondary-divider:hover,
+			:host(:not([resizable])) .d2l-template-primary-secondary-divider:hover,
+			:host([resizable]) .d2l-template-primary-secondary-divider:focus,
+			:host(:not([resizable])) .d2l-template-primary-secondary-divider:focus {
+				background-color: var(--d2l-color-celestine-minus-1);
 			}
 			.d2l-template-primary-secondary-divider-handle {
-				display: none;
-				position: absolute;
-				top: calc(50%);
-				width: 100%;
-			}
-			:host([resizable]) .d2l-template-primary-secondary-divider {
-				background-color: var(--d2l-color-gypsum);
-				cursor: ew-resize;
-				width: 0.45rem;
-			}
-			:host([resizable]) [data-is-expanded] .d2l-template-primary-secondary-divider {
-				cursor: var(--d2l-cursor-resize-inline-end, e-resize);
-			}
-			:host([resizable]) [data-is-collapsed] .d2l-template-primary-secondary-divider {
-				cursor: var(--d2l-cursor-resize-inline-start, w-resize);
-			}
-			:host([resizable]) .d2l-template-primary-secondary-divider-handle {
-				align-items: center;
-				display: flex;
-				justify-content: center;
-			}
-			:host([resizable]) [data-background-shading="secondary"] .d2l-template-primary-secondary-divider {
-				box-shadow: calc(1px * var(--d2l-length-factor, 1)) 0 0 0 rgba(0, 0, 0, 0.15);
-			}
-			:host([resizable]) [data-background-shading="primary"] .d2l-template-primary-secondary-divider {
-				box-shadow: calc(-1px * var(--d2l-length-factor, 1)) 0 0 0 rgba(0, 0, 0, 0.15);
-			}
-			.d2l-template-primary-secondary-divider-handle-desktop {
-				align-items: center;
-				display: flex;
-				justify-content: center;
-				position: absolute;
-			}
-			.d2l-template-primary-secondary-divider-handle-left,
-			.d2l-template-primary-secondary-divider-handle-right {
-				color: var(--d2l-color-celestine);
-				display: none;
-				position: absolute;
-			}
-			.d2l-template-primary-secondary-divider-handle-left {
-				inset-inline-start: -1rem;
-			}
-			.d2l-template-primary-secondary-divider-handle-right {
-				inset-inline-end: -1rem;
-			}
-			.d2l-template-primary-secondary-divider-handle-line {
-				display: flex;
-				height: 0.9rem;
-				justify-content: space-between;
-				width: 0.25rem;
-			}
-			.d2l-template-primary-secondary-divider-handle-line::before,
-			.d2l-template-primary-secondary-divider-handle-line::after {
-				background-color: var(--d2l-color-galena);
-				border-radius: 0.05rem;
-				content: "";
-				display: inline-block;
-				width: 0.1rem;
-			}
-			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-right,
-			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-left {
+				border-radius: 0;
+				bottom: 0.1rem;
 				display: block;
+				inset-inline-end: calc(17px + 0.2rem);
+				overflow: hidden;
+				top: auto;
 			}
-			:host(:not([secondary-first])) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-left,
-			:host([secondary-first]) [data-is-expanded] .d2l-template-primary-secondary-divider-handle-right {
-				display: none;
+			.d2l-template-primary-secondary-divider-handle-mobile {
+				align-items: center;
+				background-color: var(--d2l-color-celestine);
+				border-radius: 0.25rem 0.25rem 0 0;
+				bottom: 0;
+				display: flex;
+				justify-content: center;
+				position: absolute;
+				right: 0;
+			}
+			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-mobile,
+			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-mobile {
+				background-color: var(--d2l-color-celestine-minus-1);
+			}
+			.d2l-template-primary-secondary-divider-handle,
+			.d2l-template-primary-secondary-divider-handle-mobile {
+				height: 1rem;
+				width: 2.2rem;
+			}
+			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle {
+				box-shadow: none;
+				height: 1.2rem;
+				inset-inline-end: 17px;
+				width: 2.6rem;
 			}
 			d2l-icon {
+				color: white;
+				display: block;
+			}
+			${getFocusRingStyles(pseudoClass => `.d2l-template-primary-secondary-divider:${pseudoClass} .d2l-template-primary-secondary-divider-handle-mobile`, { extraStyles: css`right: 0.2rem; box-shadow: 0 0 0 2px #ffffff;` })}
+			.d2l-template-primary-secondary-divider-shadow {
+				box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.25);
+				display: block;
+				height: 100%;
+				position: absolute;
+				width: 100%;
+				z-index: -1;
+			}
+		}
+
+		@media print {
+			:host {
+				overflow: visible;
+				position: relative;
+			}
+
+			.d2l-template-primary-secondary-content {
+				flex-direction: column;
+			}
+
+			.d2l-template-primary-secondary-content,
+			.d2l-template-primary-secondary-content > main,
+			.d2l-template-primary-secondary-secondary-container {
+				overflow: visible;
+			}
+
+			.d2l-template-primary-secondary-content > main {
+				background: none;
+			}
+
+			.d2l-template-primary-secondary-divider-not-resizable,
+			.d2l-template-primary-secondary-divider {
 				display: none;
 			}
 
-			footer {
-				background-color: white;
-				box-shadow: 0 -2px 4px rgba(32, 33, 34, 0.2); /* ferrite */
-				padding: 0.75rem 1rem;
-				z-index: 1; /* ensures the footer box-shadow is over main areas with background colours set */
-			}
-			header {
-				z-index: 14; /* ensures the header box-shadow is over main areas with background colours set, and opt-in on top of sticky header */
-			}
-
-			:host([resizable]) .d2l-template-primary-secondary-divider:focus,
-			:host([resizable]) .d2l-template-primary-secondary-divider:hover {
-				background-color: var(--d2l-color-mica);
+			.d2l-template-primary-secondary-container > footer {
 				box-shadow: none;
-			}
-			:host([resizable]) .d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} {
-				background-color: var(--d2l-color-celestine);
-			}
-			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-line::before,
-			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-line::after,
-			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::before,
-			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::after {
-				background-color: var(--d2l-color-ferrite);
-			}
-			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-line::before,
-			.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle-line::after {
-				background-color: white;
+				padding: 0;
 			}
 
-			.d2l-template-primary-secondary-divider,
-			.d2l-template-primary-secondary-divider-handle-mobile,
-			.d2l-template-primary-secondary-divider-handle-line::before,
-			.d2l-template-primary-secondary-divider-handle-line::after {
-				transition: background-color 100ms, box-shadow 100ms;
+			.d2l-template-primary-secondary-container,
+			.d2l-template-primary-secondary-content {
+				height: auto;
 			}
-			.d2l-template-primary-secondary-divider:hover,
-			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-mobile,
-			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::before,
-			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-line::after {
-				transition-delay: 100ms;
-			}
-
-			.d2l-template-scroll::-webkit-scrollbar {
-				width: 8px;
-			}
-
-			.d2l-template-scroll::-webkit-scrollbar-track {
-				background: rgba(255, 255, 255, 0.4);
-			}
-
-			.d2l-template-scroll::-webkit-scrollbar-thumb {
-				background: var(--d2l-color-galena);
-				border-radius: 4px;
-			}
-
-			.d2l-template-scroll::-webkit-scrollbar-thumb:hover {
-				background: var(--d2l-color-tungsten);
-			}
-
-			/* For Firefox */
-			.d2l-template-scroll {
-				scrollbar-color: var(--d2l-color-galena) rgba(255, 255, 255, 0.4);
-				scrollbar-width: thin;
-			}
-
-			@media (prefers-reduced-motion: reduce) {
-				.d2l-template-primary-secondary-divider,
-				.d2l-template-primary-secondary-divider-handle-line::before,
-				.d2l-template-primary-secondary-divider-handle-line::after,
-				.d2l-template-primary-secondary-divider-handle-mobile {
-					transition: none;
-				}
-			}
-			@media only screen and (max-width: 767px) {
-
-				.d2l-template-primary-secondary-content {
-					flex-direction: column;
-				}
-
-				main {
-					flex: 1 0 0;
-				}
-				.d2l-template-primary-secondary-secondary-container {
-					flex: none;
-				}
-				aside,
-				.d2l-template-primary-secondary-secondary-container {
-					min-width: auto;
-				}
-				[data-is-collapsed] aside {
-					display: none;
-				}
-
-				.d2l-template-primary-secondary-divider-handle-desktop {
-					display: none;
-				}
-				/* Attribute selector is only used to increase specificity */
-				:host([resizable]) .d2l-template-primary-secondary-divider,
-				:host(:not([resizable])) .d2l-template-primary-secondary-divider {
-					background-color: var(--d2l-color-celestine);
-					cursor: ns-resize;
-					height: 0.1rem;
-					width: 100%;
-				}
-				:host([resizable]) [data-is-collapsed] .d2l-template-primary-secondary-divider,
-				:host(:not([resizable])) [data-is-collapsed] .d2l-template-primary-secondary-divider {
-					cursor: n-resize;
-				}
-				:host([resizable]) [data-is-expanded] .d2l-template-primary-secondary-divider,
-				:host(:not([resizable])) [data-is-expanded] .d2l-template-primary-secondary-divider {
-					cursor: s-resize;
-				}
-
-				/* Attribute selector is only used to increase specificity */
-				:host([resizable]) .d2l-template-primary-secondary-divider:hover,
-				:host(:not([resizable])) .d2l-template-primary-secondary-divider:hover,
-				:host([resizable]) .d2l-template-primary-secondary-divider:focus,
-				:host(:not([resizable])) .d2l-template-primary-secondary-divider:focus {
-					background-color: var(--d2l-color-celestine-minus-1);
-				}
-				.d2l-template-primary-secondary-divider-handle {
-					border-radius: 0;
-					bottom: 0.1rem;
-					display: block;
-					inset-inline-end: calc(17px + 0.2rem);
-					overflow: hidden;
-					top: auto;
-				}
-				.d2l-template-primary-secondary-divider-handle-mobile {
-					align-items: center;
-					background-color: var(--d2l-color-celestine);
-					border-radius: 0.25rem 0.25rem 0 0;
-					bottom: 0;
-					display: flex;
-					justify-content: center;
-					position: absolute;
-					right: 0;
-				}
-				.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-mobile,
-				.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-mobile {
-					background-color: var(--d2l-color-celestine-minus-1);
-				}
-				.d2l-template-primary-secondary-divider-handle,
-				.d2l-template-primary-secondary-divider-handle-mobile {
-					height: 1rem;
-					width: 2.2rem;
-				}
-				.d2l-template-primary-secondary-divider:${unsafeCSS(getFocusPseudoClass())} .d2l-template-primary-secondary-divider-handle {
-					box-shadow: none;
-					height: 1.2rem;
-					inset-inline-end: 17px;
-					width: 2.6rem;
-				}
-				d2l-icon {
-					color: white;
-					display: block;
-				}
-				${getFocusRingStyles(pseudoClass => `.d2l-template-primary-secondary-divider:${pseudoClass} .d2l-template-primary-secondary-divider-handle-mobile`, { extraStyles: css`right: 0.2rem; box-shadow: 0 0 0 2px #ffffff;` })}
-				.d2l-template-primary-secondary-divider-shadow {
-					box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.25);
-					display: block;
-					height: 100%;
-					position: absolute;
-					width: 100%;
-					z-index: -1;
-				}
-			}
-
-			@media print {
-				:host {
-					overflow: visible;
-					position: relative;
-				}
-
-				.d2l-template-primary-secondary-content {
-					flex-direction: column;
-				}
-
-				.d2l-template-primary-secondary-content,
-				.d2l-template-primary-secondary-content > main,
-				.d2l-template-primary-secondary-secondary-container {
-					overflow: visible;
-				}
-
-				.d2l-template-primary-secondary-content > main {
-					background: none;
-				}
-
-				.d2l-template-primary-secondary-divider-not-resizable,
-				.d2l-template-primary-secondary-divider {
-					display: none;
-				}
-
-				.d2l-template-primary-secondary-container > footer {
-					box-shadow: none;
-					padding: 0;
-				}
-
-				.d2l-template-primary-secondary-container,
-				.d2l-template-primary-secondary-content {
-					height: auto;
-				}
-			}
-		`;
-	}
+		}
+	`;
 
 	constructor() {
 		super();

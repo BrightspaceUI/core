@@ -29,258 +29,254 @@ import { styleMap } from 'lit/directives/style-map.js';
  */
 class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(RtlMixin(LitElement))))))) {
 
-	static get properties() {
-		return {
-			/**
-			 * ADVANCED: Indicates that the input has a popup menu
-			 * @type {string}
-			 */
-			ariaHaspopup: { type: String, attribute: 'aria-haspopup' },
-			/**
-			 * ADVANCED: Indicates that the input value is invalid
-			 * @type {string}
-			 */
-			ariaInvalid: { type: String, attribute: 'aria-invalid' },
-			/**
-			 * ADVANCED: Specifies which types of values can be autofilled by the browser
-			 * @type {string}
-			 */
-			autocomplete: { type: String },
-			/**
-			 * @ignore
-			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			autofocus: { type: Boolean },
-			/**
-			 * Additional information communicated in the aria-describedby on the input
-			 * @type {string}
-			 */
-			description: { type: String, reflect: true },
-			/**
-			 * Disables the input
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
-			 * ADVANCED: Hide the alert icon when input is invalid
-			 * @type {boolean}
-			 */
-			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
-			/**
-			 * ADVANCED: Hide the tooltip when input is invalid
-			 * @type {boolean}
-			 */
-			hideInvalidTooltip: { attribute: 'hide-invalid-tooltip', type: Boolean, reflect: true },
-			/**
-			 * Restricts the maximum width of the input box without restricting the width of the label.
-			 * @type {string}
-			 */
-			inputWidth: { attribute: 'input-width', type: String },
-			/**
-			 * ADVANCED: Additional information relating to how to use the component
-			 * @type {string}
-			 */
-			instructions: { type: String, attribute: 'instructions' },
-			/**
-			 * Hides the label visually (moves it to the input's "aria-label" attribute)
-			 * @type {boolean}
-			 */
-			labelHidden: { type: Boolean, attribute: 'label-hidden' },
-			/**
-			 * For number inputs, maximum value
-			 * @type {string}
-			 */
-			max: { type: String },
-			/**
-			 * Imposes an upper character limit
-			 * @type {number}
-			 */
-			maxlength: { type: Number },
-			/**
-			 * For number inputs, minimum value
-			 * @type {string}
-			 */
-			min: { type: String },
-			/**
-			 * Imposes a lower character limit
-			 * @type {number}
-			 */
-			minlength: { type: Number },
-			/**
-			 * ADVANCED: Regular expression pattern to validate the value
-			 * @type {string}
-			 */
-			pattern: { type: String },
-			/**
-			 * ADVANCED: Text to display when input fails validation against the pattern.  If a list of characters is included in the message, use `LocalizeMixin`'s `localizeCharacter`.
-			 */
-			patternFailureText: { type: String, attribute: 'pattern-failure-text' },
-			/**
-			 * @ignore
-			 */
-			placeholder: { type: String },
-			/**
-			 * Prevents pressing ENTER from submitting forms
-			 * @type {boolean}
-			 */
-			preventSubmit: { type: Boolean, attribute: 'prevent-submit' },
-			/**
-			 * ADVANCED: Makes the input read-only
-			 * @type {boolean}
-			 */
-			readonly: { type: Boolean },
-			/**
-			 * Indicates that a value is required
-			 * @type {boolean}
-			 */
-			required: { type: Boolean, reflect: true },
-			/**
-			 * Size of the input
-			 * @type {number}
-			 */
-			size: { type: Number },
-			/**
-			 * ADVANCED: For number inputs, sets the step size
-			 * @type {number}
-			 */
-			step: { type: Number },
-			/**
-			 * @ignore
-			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			title: { type: String },
-			/**
-			 * The type of the text input
-			 * @type {'text'|'email'|'number'|'password'|'search'|'tel'|'url'}
-			 */
-			type: { type: String },
-			/**
-			 * Unit associated with the input value, displayed next to input and announced as part of the label
-			 * @type {string}
-			 */
-			unit: { type: String },
-			/**
-			 * Accessible label for the unit which will not be visually rendered
-			 * @type {string}
-			 */
-			unitLabel: {
-				attribute: 'unit-label',
-				required: {
-					dependentProps: ['unit'],
-					message: (_value, elem) => `<d2l-input-text>: missing required attribute "unit-label" for unit "${elem.unit}"`,
-					validator: (_value, elem, hasValue) => {
-						const hasUnit = (typeof elem.unit === 'string') && elem.unit.length > 0;
-						return !(hasUnit && elem.unit !== '%' && !hasValue);
-					}
-				},
-				type: String
+	static properties = {
+		/**
+		 * ADVANCED: Indicates that the input has a popup menu
+		 * @type {string}
+		 */
+		ariaHaspopup: { type: String, attribute: 'aria-haspopup' },
+		/**
+		 * ADVANCED: Indicates that the input value is invalid
+		 * @type {string}
+		 */
+		ariaInvalid: { type: String, attribute: 'aria-invalid' },
+		/**
+		 * ADVANCED: Specifies which types of values can be autofilled by the browser
+		 * @type {string}
+		 */
+		autocomplete: { type: String },
+		/**
+		 * @ignore
+		 */
+		// eslint-disable-next-line lit/no-native-attributes
+		autofocus: { type: Boolean },
+		/**
+		 * Additional information communicated in the aria-describedby on the input
+		 * @type {string}
+		 */
+		description: { type: String, reflect: true },
+		/**
+		 * Disables the input
+		 * @type {boolean}
+		 */
+		disabled: { type: Boolean, reflect: true },
+		/**
+		 * ADVANCED: Hide the alert icon when input is invalid
+		 * @type {boolean}
+		 */
+		hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
+		/**
+		 * ADVANCED: Hide the tooltip when input is invalid
+		 * @type {boolean}
+		 */
+		hideInvalidTooltip: { attribute: 'hide-invalid-tooltip', type: Boolean, reflect: true },
+		/**
+		 * Restricts the maximum width of the input box without restricting the width of the label.
+		 * @type {string}
+		 */
+		inputWidth: { attribute: 'input-width', type: String },
+		/**
+		 * ADVANCED: Additional information relating to how to use the component
+		 * @type {string}
+		 */
+		instructions: { type: String, attribute: 'instructions' },
+		/**
+		 * Hides the label visually (moves it to the input's "aria-label" attribute)
+		 * @type {boolean}
+		 */
+		labelHidden: { type: Boolean, attribute: 'label-hidden' },
+		/**
+		 * For number inputs, maximum value
+		 * @type {string}
+		 */
+		max: { type: String },
+		/**
+		 * Imposes an upper character limit
+		 * @type {number}
+		 */
+		maxlength: { type: Number },
+		/**
+		 * For number inputs, minimum value
+		 * @type {string}
+		 */
+		min: { type: String },
+		/**
+		 * Imposes a lower character limit
+		 * @type {number}
+		 */
+		minlength: { type: Number },
+		/**
+		 * ADVANCED: Regular expression pattern to validate the value
+		 * @type {string}
+		 */
+		pattern: { type: String },
+		/**
+		 * ADVANCED: Text to display when input fails validation against the pattern.  If a list of characters is included in the message, use `LocalizeMixin`'s `localizeCharacter`.
+		 */
+		patternFailureText: { type: String, attribute: 'pattern-failure-text' },
+		/**
+		 * @ignore
+		 */
+		placeholder: { type: String },
+		/**
+		 * Prevents pressing ENTER from submitting forms
+		 * @type {boolean}
+		 */
+		preventSubmit: { type: Boolean, attribute: 'prevent-submit' },
+		/**
+		 * ADVANCED: Makes the input read-only
+		 * @type {boolean}
+		 */
+		readonly: { type: Boolean },
+		/**
+		 * Indicates that a value is required
+		 * @type {boolean}
+		 */
+		required: { type: Boolean, reflect: true },
+		/**
+		 * Size of the input
+		 * @type {number}
+		 */
+		size: { type: Number },
+		/**
+		 * ADVANCED: For number inputs, sets the step size
+		 * @type {number}
+		 */
+		step: { type: Number },
+		/**
+		 * @ignore
+		 */
+		// eslint-disable-next-line lit/no-native-attributes
+		title: { type: String },
+		/**
+		 * The type of the text input
+		 * @type {'text'|'email'|'number'|'password'|'search'|'tel'|'url'}
+		 */
+		type: { type: String },
+		/**
+		 * Unit associated with the input value, displayed next to input and announced as part of the label
+		 * @type {string}
+		 */
+		unit: { type: String },
+		/**
+		 * Accessible label for the unit which will not be visually rendered
+		 * @type {string}
+		 */
+		unitLabel: {
+			attribute: 'unit-label',
+			required: {
+				dependentProps: ['unit'],
+				message: (_value, elem) => `<d2l-input-text>: missing required attribute "unit-label" for unit "${elem.unit}"`,
+				validator: (_value, elem, hasValue) => {
+					const hasUnit = (typeof elem.unit === 'string') && elem.unit.length > 0;
+					return !(hasUnit && elem.unit !== '%' && !hasValue);
+				}
 			},
-			/**
-			 * Value of the input
-			 * @type {string}
-			 */
-			value: { type: String },
-			/**
-			 * ADVANCED: Alignment of the value text within the input
-			 * @type {'start'|'end'}
-			 */
-			valueAlign: { attribute: 'value-align', type: String },
-			_firstSlotWidth: { type: Number },
-			_hasAfterContent: { type: Boolean, attribute: false },
-			_focused: { type: Boolean },
-			_hovered: { type: Boolean },
-			_lastSlotWidth: { type: Number }
-		};
-	}
+			type: String
+		},
+		/**
+		 * Value of the input
+		 * @type {string}
+		 */
+		value: { type: String },
+		/**
+		 * ADVANCED: Alignment of the value text within the input
+		 * @type {'start'|'end'}
+		 */
+		valueAlign: { attribute: 'value-align', type: String },
+		_firstSlotWidth: { type: Number },
+		_hasAfterContent: { type: Boolean, attribute: false },
+		_focused: { type: Boolean },
+		_hovered: { type: Boolean },
+		_lastSlotWidth: { type: Number }
+	};
 
-	static get styles() {
-		return [ super.styles, inputStyles, inputLabelStyles, offscreenStyles,
-			css`
-				:host {
-					display: inline-block;
-					width: 100%;
-				}
-				:host([hidden]) {
-					display: none;
-				}
-				:host([value-align="end"]) {
-					--d2l-input-text-align: end;
-				}
-				.d2l-input-label {
-					display: inline-block;
-					vertical-align: bottom;
-				}
-				:host(:not([skeleton])) .d2l-input-label {
-					margin: 0;
-					padding-block: 0 0.4rem;
-					padding-inline: 0;
-				}
-				:host(:not([skeleton]):not([input-width])) .d2l-input-label {
-					width: 100%;
-				}
-				.d2l-input-container {
-					display: flex;
-				}
-				.d2l-input-text-container {
-					flex: 1 1 auto;
-					position: var(--d2l-input-position, relative); /* overridden by sticky headers in grades */
-				}
-				.d2l-input {
-					-webkit-appearance: textfield;
-					appearance: textfield;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-				}
-				#after-slot {
-					display: inline-block;
-					flex: 0 0 auto;
-				}
-				.d2l-input-inside-before, .d2l-input-inside-after {
-					align-items: center;
-					display: flex;
-					position: absolute;
-					top: 50%;
-					transform: translateY(-50%);
-				}
-				.d2l-input-inside-before {
-					left: 0;
-				}
-				.d2l-input-inside-after {
-					right: 0;
-				}
-				.d2l-input-unit {
-					color: var(--d2l-theme-text-color-static-faint);
-					font-size: 0.7rem;
-					margin-top: 0.05rem;
-				}
-				.d2l-input-inside-before .d2l-input-unit {
-					margin-left: 12px;
-					margin-right: 6px;
-				}
-				.d2l-input-inside-after .d2l-input-unit {
-					display: inline-block;
-					margin-left: 6px;
-					margin-right: 12px;
-				}
-				:host([disabled]) .d2l-input-unit {
-					opacity: var(--d2l-theme-opacity-disabled-control);
-				}
-				.d2l-input-text-invalid-icon {
-					background-image: var(--d2l-input-invalid-image);
-					background-position: center center;
-					background-repeat: no-repeat;
-					background-size: 0.8rem 0.8rem;
-					display: flex;
-					height: 22px;
-					position: absolute;
-					top: 50%;
-					transform: translateY(-50%);
-					width: 22px;
-				}
-			`
-		];
-	}
+	static styles = [ super.styles, inputStyles, inputLabelStyles, offscreenStyles,
+		css`
+			:host {
+				display: inline-block;
+				width: 100%;
+			}
+			:host([hidden]) {
+				display: none;
+			}
+			:host([value-align="end"]) {
+				--d2l-input-text-align: end;
+			}
+			.d2l-input-label {
+				display: inline-block;
+				vertical-align: bottom;
+			}
+			:host(:not([skeleton])) .d2l-input-label {
+				margin: 0;
+				padding-block: 0 0.4rem;
+				padding-inline: 0;
+			}
+			:host(:not([skeleton]):not([input-width])) .d2l-input-label {
+				width: 100%;
+			}
+			.d2l-input-container {
+				display: flex;
+			}
+			.d2l-input-text-container {
+				flex: 1 1 auto;
+				position: var(--d2l-input-position, relative); /* overridden by sticky headers in grades */
+			}
+			.d2l-input {
+				-webkit-appearance: textfield;
+				appearance: textfield;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			#after-slot {
+				display: inline-block;
+				flex: 0 0 auto;
+			}
+			.d2l-input-inside-before, .d2l-input-inside-after {
+				align-items: center;
+				display: flex;
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+			.d2l-input-inside-before {
+				left: 0;
+			}
+			.d2l-input-inside-after {
+				right: 0;
+			}
+			.d2l-input-unit {
+				color: var(--d2l-theme-text-color-static-faint);
+				font-size: 0.7rem;
+				margin-top: 0.05rem;
+			}
+			.d2l-input-inside-before .d2l-input-unit {
+				margin-left: 12px;
+				margin-right: 6px;
+			}
+			.d2l-input-inside-after .d2l-input-unit {
+				display: inline-block;
+				margin-left: 6px;
+				margin-right: 12px;
+			}
+			:host([disabled]) .d2l-input-unit {
+				opacity: var(--d2l-theme-opacity-disabled-control);
+			}
+			.d2l-input-text-invalid-icon {
+				background-image: var(--d2l-input-invalid-image);
+				background-position: center center;
+				background-repeat: no-repeat;
+				background-size: 0.8rem 0.8rem;
+				display: flex;
+				height: 22px;
+				position: absolute;
+				top: 50%;
+				transform: translateY(-50%);
+				width: 22px;
+			}
+		`
+	];
 
 	constructor() {
 		super();

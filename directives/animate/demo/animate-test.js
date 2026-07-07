@@ -7,15 +7,12 @@ import { hide, show } from '../animate.js';
 
 export class AnimateTest extends LitElement {
 
-	static get properties() {
-		return {
-			_listVisibility: { type: Boolean, reflect: false },
-			_renderCount: { type: Number, reflect: false }
-		};
-	}
+	static properties = {
+		_listVisibility: { type: Boolean, reflect: false },
+		_renderCount: { type: Number, reflect: false }
+	};
 
-	static get styles() {
-		return css`
+	static styles = css`
 			:host {
 				display: block;
 			}
@@ -24,7 +21,6 @@ export class AnimateTest extends LitElement {
 				max-width: 400px;
 			}
 		`;
-	}
 
 	constructor() {
 		super();

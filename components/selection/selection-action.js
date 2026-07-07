@@ -13,31 +13,27 @@ import { SelectionInfo } from './selection-mixin.js';
  */
 class Action extends FocusMixin(SelectionActionMixin(ButtonMixin(LitElement))) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Preset icon key (e.g. `tier1:gear`)
 			 * @type {string}
 			 */
-			icon: { type: String, reflect: true },
-			/**
+		icon: { type: String, reflect: true },
+		/**
 			 * REQUIRED: The text for the action
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true }
-		};
-	}
+		text: { type: String, reflect: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+	`;
 
 	static get focusElementSelector() {
 		return 'd2l-button-subtle';

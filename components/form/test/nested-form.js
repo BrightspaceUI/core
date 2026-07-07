@@ -5,11 +5,9 @@ import { html, LitElement } from 'lit';
 
 class NestedForm extends LitElement {
 
-	static get properties() {
-		return {
-			noNesting: { type: Boolean, attribute: 'no-nesting', reflect: true },
-		};
-	}
+	static properties = {
+		noNesting: { type: Boolean, attribute: 'no-nesting', reflect: true },
+	};
 
 	constructor() {
 		super();

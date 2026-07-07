@@ -11,26 +11,22 @@ import { inputStyles } from '../../inputs/input-styles.js';
 
 class FormPanelDemo extends LitElement {
 
-	static get properties() {
-		return {
-			_expanded: { type: Boolean, attribute: false }
-		};
-	}
+	static properties = {
+		_expanded: { type: Boolean, attribute: false }
+	};
 
-	static get styles() {
-		return [heading3Styles, inputStyles, css`
-			:host {
-				background-color: var(--d2l-color-gypsum);
-				display: block;
-				flex-basis: 35%;
-				padding: 10px;
-				width: 100%;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-		`];
-	}
+	static styles = [heading3Styles, inputStyles, css`
+		:host {
+			background-color: var(--d2l-color-gypsum);
+			display: block;
+			flex-basis: 35%;
+			padding: 10px;
+			width: 100%;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+	`];
 
 	constructor() {
 		super();

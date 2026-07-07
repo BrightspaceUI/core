@@ -5,30 +5,26 @@ import { css, html, LitElement } from 'lit';
  */
 class BreadcrumbCurrentPage extends LitElement {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * @ignore
 			 */
-			_role: { type: 'string', attribute: 'role', reflect: true },
-			/**
+		_role: { type: 'string', attribute: 'role', reflect: true },
+		/**
 			 * REQUIRED: The title of the current page
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true }
-		};
-	}
+		text: { type: String, reflect: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+	`;
 
 	constructor() {
 		super();

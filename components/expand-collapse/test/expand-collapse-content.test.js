@@ -4,13 +4,11 @@ import { states } from '../expand-collapse-content.js';
 
 const tagName = defineCE(
 	class extends LitElement {
-		static get properties() {
-			return {
-				transitions: { type: Boolean }, //test transition logic
-				empty: { type: Boolean },
-				expanded: { type: Boolean }
-			};
-		}
+		static properties = {
+			transitions: { type: Boolean }, //test transition logic
+			empty: { type: Boolean },
+			expanded: { type: Boolean }
+		};
 
 		constructor() {
 			super();

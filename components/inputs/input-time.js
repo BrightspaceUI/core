@@ -126,120 +126,116 @@ function initIntervals(size, enforceTimeIntervals) {
  */
 class InputTime extends InputInlineHelpMixin(FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LitElement))))) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Default value of input. Accepts times formatted as "hh:mm:ss", and the keywords "startOfDay" and "endOfDay".
 			 * @type {string}
 			 */
-			defaultValue: { type: String, attribute: 'default-value' },
-			/**
+		defaultValue: { type: String, attribute: 'default-value' },
+		/**
 			 * Disables the input
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean },
-			/**
+		disabled: { type: Boolean },
+		/**
 			 * Rounds typed input up to nearest valid interval time (specified with "time-interval")
 			 * @type {boolean}
 			 */
-			enforceTimeIntervals: { type: Boolean, attribute: 'enforce-time-intervals' },
-			/**
+		enforceTimeIntervals: { type: Boolean, attribute: 'enforce-time-intervals' },
+		/**
 			 * Hides the label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
 			 * @type {boolean}
 			 */
-			labelHidden: { type: Boolean, attribute: 'label-hidden' },
-			/**
+		labelHidden: { type: Boolean, attribute: 'label-hidden' },
+		/**
 			 * Overrides max-height of the time dropdown menu
 			 * @type {number}
 			 */
-			maxHeight: { type: Number, attribute: 'max-height' },
-			/**
+		maxHeight: { type: Number, attribute: 'max-height' },
+		/**
 			 * Indicates if the dropdown is open
 			 * @type {boolean}
 			 */
-			opened: { type: Boolean },
-			/**
+		opened: { type: Boolean },
+		/**
 			 * Indicates that a value is required
 			 * @type {boolean}
 			 */
-			required: { type: Boolean, reflect: true },
-			/**
+		required: { type: Boolean, reflect: true },
+		/**
 			 * Number of minutes between times shown in dropdown menu
 			 * @type {'five'|'ten'|'fifteen'|'twenty'|'thirty'|'sixty'}
 			 */
-			timeInterval: { type: String, attribute: 'time-interval' },
-			/**
+		timeInterval: { type: String, attribute: 'time-interval' },
+		/**
 			 * Time zone identifier for the input to use. e.g. America/Toronto. Defaults to the user's account or device time zone setting.
 			 * @type {string}
 			 */
-			timeZoneId: { type: String, attribute: 'time-zone-id' },
-			/**
+		timeZoneId: { type: String, attribute: 'time-zone-id' },
+		/**
 			 * Hides the time zone inside the selection dropdown. Should only be used when the input value is not related to any one time zone
 			 * @type {Boolean}
 			 */
-			timeZoneHidden: { type: Boolean, attribute: 'time-zone-hidden' },
-			/**
+		timeZoneHidden: { type: Boolean, attribute: 'time-zone-hidden' },
+		/**
 			 * Value of the input
 			 * @type {string}
 			 */
-			value: { type: String },
-			_dropdownFirstOpened: { type: Boolean },
-			_formattedValue: { type: String },
-			_hiddenContentWidth: { type: String },
-			_timeZone: { state: true },
-		};
-	}
+		value: { type: String },
+		_dropdownFirstOpened: { type: Boolean },
+		_formattedValue: { type: String },
+		_hiddenContentWidth: { type: String },
+		_timeZone: { state: true },
+	};
 
-	static get styles() {
-		return [
-			super.styles,
-			bodySmallStyles,
-			inputLabelStyles,
-			inputStyles,
-			offscreenStyles,
-			css`
-				:host {
-					display: inline-block;
-					max-width: 6rem;
-					width: 100%;
-				}
-				:host([hidden]) {
-					display: none;
-				}
-				d2l-dropdown-menu[data-mobile][mobile-tray] .d2l-input-time-menu {
-					text-align: center;
-				}
-				.d2l-input-label {
-					display: inline-block;
-					vertical-align: top;
-				}
-				.d2l-input-time-time-zone {
-					line-height: 1.8rem;
-					text-align: center;
-					vertical-align: middle;
-					width: auto;
-				}
-				.d2l-input-time-time-zone.d2l-input-time-time-zone-custom {
-					align-items: center;
-					column-gap: 0.3rem;
-					display: flex;
-					font-weight: 700;
-					justify-content: center;
-				}
+	static styles = [
+		super.styles,
+		bodySmallStyles,
+		inputLabelStyles,
+		inputStyles,
+		offscreenStyles,
+		css`
+			:host {
+				display: inline-block;
+				max-width: 6rem;
+				width: 100%;
+			}
+			:host([hidden]) {
+				display: none;
+			}
+			d2l-dropdown-menu[data-mobile][mobile-tray] .d2l-input-time-menu {
+				text-align: center;
+			}
+			.d2l-input-label {
+				display: inline-block;
+				vertical-align: top;
+			}
+			.d2l-input-time-time-zone {
+				line-height: 1.8rem;
+				text-align: center;
+				vertical-align: middle;
+				width: auto;
+			}
+			.d2l-input-time-time-zone.d2l-input-time-time-zone-custom {
+				align-items: center;
+				column-gap: 0.3rem;
+				display: flex;
+				font-weight: 700;
+				justify-content: center;
+			}
 
-				.d2l-input-time-hidden-content {
-					font-family: inherit;
-					font-size: 0.8rem;
-					font-weight: 400;
-					letter-spacing: 0.02rem;
-					line-height: 1.4rem;
-					position: absolute;
-					visibility: hidden;
-					width: auto;
-				}
-			`
-		];
-	}
+			.d2l-input-time-hidden-content {
+				font-family: inherit;
+				font-size: 0.8rem;
+				font-weight: 400;
+				letter-spacing: 0.02rem;
+				line-height: 1.4rem;
+				position: absolute;
+				visibility: hidden;
+				width: auto;
+			}
+		`
+	];
 
 	constructor() {
 		super();

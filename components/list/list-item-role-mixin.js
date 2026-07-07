@@ -2,17 +2,15 @@ import { findComposedAncestor } from '../../helpers/dom.js';
 
 export const ListItemRoleMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * @ignore
 			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			role: { type: String, reflect: true },
-			_nested: { type: Boolean, reflect: true },
-			_separators: { type: String, reflect: true }
-		};
-	}
+		// eslint-disable-next-line lit/no-native-attributes
+		role: { type: String, reflect: true },
+		_nested: { type: Boolean, reflect: true },
+		_separators: { type: String, reflect: true }
+	};
 
 	constructor() {
 		super();

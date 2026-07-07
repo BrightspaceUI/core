@@ -4,35 +4,31 @@ import { SkeletonMixin } from '../../../components/skeleton/skeleton-mixin.js';
 
 class TestInputSelect extends SkeletonMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Disables the input
 			 */
-			disabled: { type: Boolean },
-			/**
+		disabled: { type: Boolean },
+		/**
 			 * Marks the input as invalid, which is shown in style and also is reflected in `aria-invalid`
 			 */
-			invalid: { type: Boolean },
-			/**
+		invalid: { type: Boolean },
+		/**
 			 * Sets a max-width on the select element in order to show overflow styles
 			 */
-			overflow: { type: Boolean }
-		};
-	}
+		overflow: { type: Boolean }
+	};
 
-	static get styles() {
-		return [super.styles, selectStyles,
-			css`
-				:host {
-					display: inline-block;
-				}
-				:host([overflow]) select {
-					max-width: 130px;
-				}
-			`
-		];
-	}
+	static styles = [super.styles, selectStyles,
+		css`
+			:host {
+				display: inline-block;
+			}
+			:host([overflow]) select {
+				max-width: 130px;
+			}
+		`
+	];
 
 	render() {
 		const invalid = this.invalid ? 'true' : 'false';

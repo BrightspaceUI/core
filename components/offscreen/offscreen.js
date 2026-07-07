@@ -28,13 +28,11 @@ export const offscreenStyles = css`
  * @slot - Default content placed inside of the component
  */
 class Offscreen extends LitElement {
-	static get styles() {
-		return css`
+	static styles = css`
 			:host {
 				${_offscreenStyleDeclarations}
 			}
 		`;
-	}
 	render() {
 		return html`<slot></slot>`;
 	}

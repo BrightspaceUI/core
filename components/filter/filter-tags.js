@@ -11,26 +11,22 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 const CLEAR_TIMEOUT = 310; /** Corresponds to timeout in _dispatchChangeEvent in filter + 10 ms */
 
 class FilterTags extends LocalizeCoreElement(LitElement) {
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * REQUIRED: Id(s) (space-delimited) of the filter component(s) to subscribe to
 			 * @type {string}
 			 */
-			filterIds: { type: String, attribute: 'filter-ids' }
-		};
-	}
+		filterIds: { type: String, attribute: 'filter-ids' }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+	`;
 
 	constructor() {
 		super();

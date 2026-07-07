@@ -19,138 +19,134 @@ const MODE = {
  * A component for quickly adding items to a specific locaiton.
  */
 class ButtonAdd extends PropertyRequiredMixin(FocusMixin(LocalizeCoreElement(LitElement))) {
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Display mode of the component. Defaults to `icon` (plus icon is always visible). Other options are `icon-and-text` (plus icon and text are always visible), and `icon-when-interacted` (plus icon is only visible when hover or focus).
 			 * @type {'icon'|'icon-and-text'|'icon-when-interacted'}
 			 */
-			mode: { type: String, reflect: true },
-			/**
+		mode: { type: String, reflect: true },
+		/**
 			 * ACCESSIBILITY: The text associated with the button. When mode is `icon-and-text` this text is displayed next to the icon, otherwise this text is in a tooltip.
 			 * @type {string}
 			 */
-			text: { type: String, required: true }
-		};
-	}
+		text: { type: String, required: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				--d2l-button-add-animation-delay: 0ms;
-				--d2l-button-add-animation-duration: 200ms;
-				--d2l-button-add-hover-focus-color: var(--d2l-color-celestine-minus-1);
-				--d2l-button-add-line-color: var(--d2l-color-mica);
-				--d2l-button-add-line-height: 1px;
-				--d2l-button-add-hover-focus-line-height: 2px;
-			}
-			:host([mode="icon-when-interacted"]) {
-				--d2l-button-add-animation-delay: 50ms;
-			}
-			button {
-				align-items: center;
-				background-color: transparent;
-				border: 0;
-				box-shadow: none;
-				cursor: pointer;
-				display: flex;
-				font-family: inherit;
-				height: 11px;
-				justify-content: center;
-				margin: 6.5px 0; /* (d2l-button-add-icon-text height - line height) / 2 */
-				outline: none;
-				padding: 0;
-				position: relative;
-				user-select: none;
-				white-space: nowrap;
-				width: 100%;
-				z-index: 1; /* needed for button-add to have expected hover behaviour in list (hover from below, tooltip position) */
-			}
-			:host([mode="icon-and-text"]) button {
-				margin: calc((1.5rem - 11px) / 2) 0; /* (d2l-button-add-icon-text height - line height) / 2 */
-			}
+	static styles = css`
+		:host {
+			--d2l-button-add-animation-delay: 0ms;
+			--d2l-button-add-animation-duration: 200ms;
+			--d2l-button-add-hover-focus-color: var(--d2l-color-celestine-minus-1);
+			--d2l-button-add-line-color: var(--d2l-color-mica);
+			--d2l-button-add-line-height: 1px;
+			--d2l-button-add-hover-focus-line-height: 2px;
+		}
+		:host([mode="icon-when-interacted"]) {
+			--d2l-button-add-animation-delay: 50ms;
+		}
+		button {
+			align-items: center;
+			background-color: transparent;
+			border: 0;
+			box-shadow: none;
+			cursor: pointer;
+			display: flex;
+			font-family: inherit;
+			height: 11px;
+			justify-content: center;
+			margin: 6.5px 0; /* (d2l-button-add-icon-text height - line height) / 2 */
+			outline: none;
+			padding: 0;
+			position: relative;
+			user-select: none;
+			white-space: nowrap;
+			width: 100%;
+			z-index: 1; /* needed for button-add to have expected hover behaviour in list (hover from below, tooltip position) */
+		}
+		:host([mode="icon-and-text"]) button {
+			margin: calc((1.5rem - 11px) / 2) 0; /* (d2l-button-add-icon-text height - line height) / 2 */
+		}
 
-			.line {
-				background: var(--d2l-button-add-line-color);
-				height: var(--d2l-button-add-line-height);
-				margin: 5px 0;
-				width: 100%;
-			}
+		.line {
+			background: var(--d2l-button-add-line-color);
+			height: var(--d2l-button-add-line-height);
+			margin: 5px 0;
+			width: 100%;
+		}
 
+		button:hover .line,
+		button:focus .line {
+			background: var(--d2l-button-add-hover-focus-color);
+			height: var(--d2l-button-add-hover-focus-line-height);
+		}
+		button:hover d2l-button-add-icon-text,
+		button:focus d2l-button-add-icon-text {
+			--d2l-button-add-icon-text-color: var(--d2l-button-add-hover-focus-color);
+		}
+		:host([mode="icon-when-interacted"]) button:hover .line {
+			transition-delay: var(--d2l-button-add-animation-delay);
+		}
+
+		:host([mode="icon-when-interacted"]) button:not(:focus):not(:hover) d2l-button-add-icon-text {
+			position: absolute;
+		}
+		:host([mode="icon-when-interacted"]) button:hover d2l-button-add-icon-text,
+		:host([mode="icon-when-interacted"]) button:focus d2l-button-add-icon-text {
+			animation: position-change-animation var(--d2l-button-add-animation-delay); /* add delay in changing position to avoid flash of missing icon space */
+		}
+		@keyframes position-change-animation {
+			0% { position: absolute; }
+			100% { position: static; }
+		}
+		${getFocusRingStyles(pseudoClass => `button:${pseudoClass} d2l-button-add-icon-text`, { extraStyles: css`background-color: white; border-radius: 0.3rem;` })}
+		:host([mode="icon-when-interacted"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text,
+		:host([mode="icon"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
+			border-radius: 0.2rem;
+			padding: 0.15rem;
+		}
+
+		@media (prefers-reduced-motion: no-preference) {
 			button:hover .line,
 			button:focus .line {
-				background: var(--d2l-button-add-hover-focus-color);
-				height: var(--d2l-button-add-hover-focus-line-height);
+				animation: line-start-animation var(--d2l-button-add-animation-duration) ease-in var(--d2l-button-add-animation-delay) 1 forwards;
+				transition: all var(--d2l-button-add-animation-duration) ease-in var(--d2l-button-add-animation-delay);
 			}
-			button:hover d2l-button-add-icon-text,
-			button:focus d2l-button-add-icon-text {
-				--d2l-button-add-icon-text-color: var(--d2l-button-add-hover-focus-color);
-			}
-			:host([mode="icon-when-interacted"]) button:hover .line {
-				transition-delay: var(--d2l-button-add-animation-delay);
+			button:hover .line-end,
+			button:focus .line-end {
+				animation-name: line-end-animation;
 			}
 
-			:host([mode="icon-when-interacted"]) button:not(:focus):not(:hover) d2l-button-add-icon-text {
-				position: absolute;
-			}
-			:host([mode="icon-when-interacted"]) button:hover d2l-button-add-icon-text,
-			:host([mode="icon-when-interacted"]) button:focus d2l-button-add-icon-text {
-				animation: position-change-animation var(--d2l-button-add-animation-delay); /* add delay in changing position to avoid flash of missing icon space */
-			}
-			@keyframes position-change-animation {
-				0% { position: absolute; }
-				100% { position: static; }
-			}
-			${getFocusRingStyles(pseudoClass => `button:${pseudoClass} d2l-button-add-icon-text`, { extraStyles: css`background-color: white; border-radius: 0.3rem;` })}
-			:host([mode="icon-when-interacted"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text,
-			:host([mode="icon"]) button:${unsafeCSS(getFocusPseudoClass())} d2l-button-add-icon-text {
-				border-radius: 0.2rem;
-				padding: 0.15rem;
-			}
-
-			@media (prefers-reduced-motion: no-preference) {
-				button:hover .line,
-				button:focus .line {
-					animation: line-start-animation var(--d2l-button-add-animation-duration) ease-in var(--d2l-button-add-animation-delay) 1 forwards;
-					transition: all var(--d2l-button-add-animation-duration) ease-in var(--d2l-button-add-animation-delay);
+			@keyframes line-start-animation {
+				0% {
+					background: linear-gradient(to var(--d2l-inline-end, right), var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) var(--d2l-inline-start, left) center / 113%;
+					opacity: 10%;
 				}
-				button:hover .line-end,
-				button:focus .line-end {
-					animation-name: line-end-animation;
-				}
-
-				@keyframes line-start-animation {
-					0% {
-						background: linear-gradient(to var(--d2l-inline-end, right), var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) var(--d2l-inline-start, left) center / 113%;
-						opacity: 10%;
-					}
-					100% {
-						background: linear-gradient(to var(--d2l-inline-end, right), var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) var(--d2l-inline-start, left) center / 113%; /* safari */
-						background-position: var(--d2l-inline-end, right);
-					}
-				}
-				@keyframes line-end-animation {
-					0% {
-						background: linear-gradient(to var(--d2l-inline-start, left), var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) var(--d2l-inline-end, right) center / 113%;
-						opacity: 10%;
-					}
-					100% {
-						background: linear-gradient(to var(--d2l-inline-start, left), var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) var(--d2l-inline-end, right) center / 113%; /* safari */
-						background-position: var(--d2l-inline-start, left);
-					}
+				100% {
+					background: linear-gradient(to var(--d2l-inline-end, right), var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) var(--d2l-inline-start, left) center / 113%; /* safari */
+					background-position: var(--d2l-inline-end, right);
 				}
 			}
-			@media (prefers-contrast: more) {
-				.line {
-					background-color: ButtonBorder;
+			@keyframes line-end-animation {
+				0% {
+					background: linear-gradient(to var(--d2l-inline-start, left), var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) var(--d2l-inline-end, right) center / 113%;
+					opacity: 10%;
 				}
-				button:hover .line,
-				button:focus .line {
-					background-color: Highlight !important;
+				100% {
+					background: linear-gradient(to var(--d2l-inline-start, left), var(--d2l-button-add-line-color) 0%, var(--d2l-button-add-line-color) 11%, var(--d2l-button-add-hover-focus-color) 11%) var(--d2l-inline-end, right) center / 113%; /* safari */
+					background-position: var(--d2l-inline-start, left);
 				}
 			}
-		`;
-	}
+		}
+		@media (prefers-contrast: more) {
+			.line {
+				background-color: ButtonBorder;
+			}
+			button:hover .line,
+			button:focus .line {
+				background-color: Highlight !important;
+			}
+		}
+	`;
 
 	constructor() {
 		super();
@@ -194,49 +190,45 @@ customElements.define('d2l-button-add', ButtonAdd);
  * @ignore
  */
 class ButtonAddIconText extends VisibleOnAncestorMixin(LitElement) {
-	static get properties() {
-		return {
-			text: { type: String }
-		};
-	}
+	static properties = {
+		text: { type: String }
+	};
 
-	static get styles() {
-		return [visibleOnAncestorStyles, css`
-			:host {
-				--d2l-focus-ring-offset: 0;
-				--d2l-focus-ring-color: var(--d2l-button-add-hover-focus-color);
-				--d2l-button-add-icon-text-color: var(--d2l-color-galena);
-				align-items: center;
-				display: flex;
-				stroke: var(--d2l-button-add-icon-text-color);
-				stroke-width: 2;
-			}
-			:host([visible-on-ancestor]),
-			:host([text]) {
-				--d2l-button-add-icon-text-color: var(--d2l-color-celestine);
-			}
-			:host([text]) {
-				color: var(--d2l-button-add-icon-text-color);
-				height: 1.5rem;
-				padding: 0 0.3rem;
-			}
+	static styles = [visibleOnAncestorStyles, css`
+		:host {
+			--d2l-focus-ring-offset: 0;
+			--d2l-focus-ring-color: var(--d2l-button-add-hover-focus-color);
+			--d2l-button-add-icon-text-color: var(--d2l-color-galena);
+			align-items: center;
+			display: flex;
+			stroke: var(--d2l-button-add-icon-text-color);
+			stroke-width: 2;
+		}
+		:host([visible-on-ancestor]),
+		:host([text]) {
+			--d2l-button-add-icon-text-color: var(--d2l-color-celestine);
+		}
+		:host([text]) {
+			color: var(--d2l-button-add-icon-text-color);
+			height: 1.5rem;
+			padding: 0 0.3rem;
+		}
 
-			:host([text]) svg {
-				padding-inline-end: 0.2rem;
-			}
-			:host(:not([text])) svg {
-				margin: -0.15rem; /** hover/click target */
-				padding: 0.15rem; /** hover/click target */
-			}
+		:host([text]) svg {
+			padding-inline-end: 0.2rem;
+		}
+		:host(:not([text])) svg {
+			margin: -0.15rem; /** hover/click target */
+			padding: 0.15rem; /** hover/click target */
+		}
 
-			span {
-				font-size: 0.7rem;
-				font-weight: 700;
-				letter-spacing: 0.2px;
-				line-height: 1rem;
-			}`
-		];
-	}
+		span {
+			font-size: 0.7rem;
+			font-weight: 700;
+			letter-spacing: 0.2px;
+			line-height: 1rem;
+		}`
+	];
 
 	render() {
 		return html`

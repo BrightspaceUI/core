@@ -6,19 +6,17 @@ import { css, html, LitElement } from 'lit';
  */
 class InputRadioSpacer extends LitElement {
 
-	static get styles() {
-		return css`
-				:host {
-					box-sizing: border-box;
-					display: block;
-					margin-bottom: 0.9rem;
-					padding-inline-start: 1.7rem;
-				}
-				:host(.d2l-input-inline-help) {
-					margin-bottom: 0.9rem !important;
-				}
-			`;
-	}
+	static styles = css`
+			:host {
+				box-sizing: border-box;
+				display: block;
+				margin-bottom: 0.9rem;
+				padding-inline-start: 1.7rem;
+			}
+			:host(.d2l-input-inline-help) {
+				margin-bottom: 0.9rem !important;
+			}
+		`;
 
 	render() {
 		return html`<slot></slot>`;

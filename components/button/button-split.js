@@ -16,80 +16,76 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
  */
 class ButtonSplit extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(LitElement))) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * ACCESSIBILITY: A description to be added to the main action button for accessibility when text does not provide enough context
 			 * @type {string}
 			 */
-			description: { type: String },
-			/**
+		description: { type: String },
+		/**
 			 * Disables the main action and dropdown opener buttons
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
+		disabled: { type: Boolean, reflect: true },
+		/**
 			 * Tooltip text when disabled
 			 * @type {string}
 			 */
-			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
-			/**
+		disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
+		/**
 			 * REQUIRED: Key of the main action
 			 * @type {string}
 			 */
-			key: { type: String, required: true },
-			/**
+		key: { type: String, required: true },
+		/**
 			 * Styles the buttons as a primary buttons
 			 * @type {boolean}
 			 */
-			primary: { type: Boolean, reflect: true },
-			/**
+		primary: { type: Boolean, reflect: true },
+		/**
 			 * ACCESSIBILITY: REQUIRED: Accessible text for the main action button
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true, required: true },
-			_focusVisibleElem: { state: true }
-		};
-	}
+		text: { type: String, reflect: true, required: true },
+		_focusVisibleElem: { state: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			.container {
-				display: flex;
-				gap: 2px;
-			}
-			.main-action {
-				--d2l-button-start-end-radius: 0;
-				--d2l-button-end-end-radius: 0;
-			}
-			.d2l-dropdown-opener {
-				--d2l-button-start-start-radius: 0;
-				--d2l-button-end-start-radius: 0;
-				--d2l-button-padding-inline-end: 0.6rem;
-				--d2l-button-padding-inline-start: 0.6rem;
-			}
-			.d2l-dropdown-opener[primary] > d2l-icon {
-				color: #ffffff;
-			}
-			::slotted(:not(d2l-button-split-item)) {
-				display: none;
-			}
-			.main-action-focus-visible .d2l-dropdown-opener {
-				--d2l-button-padding-inline-start: calc(0.6rem - 4px);
-				margin-inline-start: 4px;
-			}
-			.menu-opener-focus-visible .main-action {
-				--d2l-button-padding-inline-end: calc(1.5rem - 4px);
-				margin-inline-end: 4px;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.container {
+			display: flex;
+			gap: 2px;
+		}
+		.main-action {
+			--d2l-button-start-end-radius: 0;
+			--d2l-button-end-end-radius: 0;
+		}
+		.d2l-dropdown-opener {
+			--d2l-button-start-start-radius: 0;
+			--d2l-button-end-start-radius: 0;
+			--d2l-button-padding-inline-end: 0.6rem;
+			--d2l-button-padding-inline-start: 0.6rem;
+		}
+		.d2l-dropdown-opener[primary] > d2l-icon {
+			color: #ffffff;
+		}
+		::slotted(:not(d2l-button-split-item)) {
+			display: none;
+		}
+		.main-action-focus-visible .d2l-dropdown-opener {
+			--d2l-button-padding-inline-start: calc(0.6rem - 4px);
+			margin-inline-start: 4px;
+		}
+		.menu-opener-focus-visible .main-action {
+			--d2l-button-padding-inline-end: calc(1.5rem - 4px);
+			margin-inline-end: 4px;
+		}
+	`;
 
 	constructor() {
 		super();

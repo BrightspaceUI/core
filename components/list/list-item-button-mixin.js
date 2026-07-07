@@ -5,16 +5,14 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const ListItemButtonMixin = superclass => class extends ListItemMixin(superclass) {
-	static get properties() {
-		return {
-			/**
-			 * Disables the primary action button
-			 * @type {boolean}
-			 */
-			buttonDisabled : { type: Boolean, attribute: 'button-disabled', reflect: true },
-			_ariaCurrent: { type: String }
-		};
-	}
+	static properties = {
+		/**
+		 * Disables the primary action button
+		 * @type {boolean}
+		 */
+		buttonDisabled : { type: Boolean, attribute: 'button-disabled', reflect: true },
+		_ariaCurrent: { type: String }
+	};
 
 	static get styles() {
 

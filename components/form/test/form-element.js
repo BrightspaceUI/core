@@ -4,13 +4,11 @@ import { FormElementMixin } from '../form-element-mixin.js';
 
 class FormElement extends FormElementMixin(LitElement) {
 
-	static get properties() {
-		return {
-			isValidationCustomValid: { type: Boolean },
-			tooltipMessage: { type: String },
-			value: { type: String }
-		};
-	}
+	static properties = {
+		isValidationCustomValid: { type: Boolean },
+		tooltipMessage: { type: String },
+		value: { type: String }
+	};
 
 	constructor() {
 		super();

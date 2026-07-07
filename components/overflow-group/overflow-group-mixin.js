@@ -24,65 +24,61 @@ async function filterAsync(arr, callback) {
 
 export const OverflowGroupMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
-	static get properties() {
-		return {
-			/**
-			 * @ignore
-			 */
-			autoShow: {
-				type: Boolean,
-				attribute: 'auto-show',
-			},
-			/**
-			 * minimum amount of slotted items to show
-			 * @type {number}
-			 */
-			minToShow: {
-				type: Number,
-				reflect: true,
-				attribute: 'min-to-show',
-			},
-			/**
-			 * maximum amount of slotted items to show
-			 * @type {number}
-			 */
-			maxToShow: {
-				type: Number,
-				reflect: true,
-				attribute: 'max-to-show',
-			},
-			/**
-			 * @ignore
-			 */
-			openerType: {
-				type: String,
-				attribute: 'opener-type'
-			},
-			_chompIndex: { state: true },
-			_itemGap: { state: true },
-			_mini: { state: true },
-			_wrapping: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * @ignore
+		 */
+		autoShow: {
+			type: Boolean,
+			attribute: 'auto-show',
+		},
+		/**
+		 * minimum amount of slotted items to show
+		 * @type {number}
+		 */
+		minToShow: {
+			type: Number,
+			reflect: true,
+			attribute: 'min-to-show',
+		},
+		/**
+		 * maximum amount of slotted items to show
+		 * @type {number}
+		 */
+		maxToShow: {
+			type: Number,
+			reflect: true,
+			attribute: 'max-to-show',
+		},
+		/**
+		 * @ignore
+		 */
+		openerType: {
+			type: String,
+			attribute: 'opener-type'
+		},
+		_chompIndex: { state: true },
+		_itemGap: { state: true },
+		_mini: { state: true },
+		_wrapping: { state: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			.d2l-overflow-group-container {
-				align-items: var(--d2l-overflow-group-align-items, normal);
-				display: flex;
-				justify-content: var(--d2l-overflow-group-justify-content, normal);
-			}
-			.d2l-overflow-group-container ::slotted([data-is-chomped]) {
-				display: none !important;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.d2l-overflow-group-container {
+			align-items: var(--d2l-overflow-group-align-items, normal);
+			display: flex;
+			justify-content: var(--d2l-overflow-group-justify-content, normal);
+		}
+		.d2l-overflow-group-container ::slotted([data-is-chomped]) {
+			display: none !important;
+		}
+	`;
 
 	constructor() {
 		super();

@@ -10,13 +10,11 @@ import { HierarchicalViewMixin } from '../hierarchical-view/hierarchical-view-mi
  */
 class HierarchicalView extends HierarchicalViewMixin(LitElement) {
 
-	static get styles() {
-		return [ super.styles, css`
+	static styles = [ super.styles, css`
 			:host {
 				display: inline-block;
 			}
 		`];
-	}
 
 	render() {
 		return html`

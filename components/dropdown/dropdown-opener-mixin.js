@@ -3,52 +3,50 @@ import { isComposedAncestor } from '../../helpers/dom.js';
 
 export const DropdownOpenerMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Disables the dropdown opener
 			 * @type {boolean}
 			 */
-			disabled: {
-				type: Boolean,
-				reflect: true
-			},
+		disabled: {
+			type: Boolean,
+			reflect: true
+		},
 
-			/**
+		/**
 			 * @ignore
 			 */
-			dropdownOpened: { state: true },
+		dropdownOpened: { state: true },
 
-			/**
+		/**
 			 * @ignore
 			 */
-			dropdownOpener: {
-				type: Boolean
-			},
+		dropdownOpener: {
+			type: Boolean
+		},
 
-			/**
+		/**
 			 * Prevents the dropdown from opening automatically on or on key press
 			 * @type {boolean}
 			 */
-			noAutoOpen: {
-				type: Boolean,
-				reflect: true,
-				attribute: 'no-auto-open'
-			},
+		noAutoOpen: {
+			type: Boolean,
+			reflect: true,
+			attribute: 'no-auto-open'
+		},
 
-			/**
+		/**
 			 * Optionally open dropdown on click or hover action
 			 * @type {boolean}
 			 */
-			openOnHover: {
-				type: Boolean,
-				attribute: 'open-on-hover'
-			},
-			_isHovering: { type: Boolean },
-			_isOpenedViaClick: { type: Boolean },
-			_isFading: { type: Boolean }
-		};
-	}
+		openOnHover: {
+			type: Boolean,
+			attribute: 'open-on-hover'
+		},
+		_isHovering: { type: Boolean },
+		_isOpenedViaClick: { type: Boolean },
+		_isFading: { type: Boolean }
+	};
 
 	constructor() {
 		super();

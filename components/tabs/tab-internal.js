@@ -13,85 +13,81 @@ const keyCodes = {
 // remove file with GAUD-8299-core-tabs-use-new-structure flag clean up
 class Tab extends SkeletonMixin(LitElement) {
 
-	static get properties() {
-		return {
-			ariaSelected: { type: String, reflect: true, attribute: 'aria-selected' },
-			controlsPanel: { type: String, reflect: true, attribute: 'controls-panel' },
-			// eslint-disable-next-line lit/no-native-attributes
-			role: { type: String, reflect: true },
-			text: { type: String }
-		};
-	}
+	static properties = {
+		ariaSelected: { type: String, reflect: true, attribute: 'aria-selected' },
+		controlsPanel: { type: String, reflect: true, attribute: 'controls-panel' },
+		// eslint-disable-next-line lit/no-native-attributes
+		role: { type: String, reflect: true },
+		text: { type: String }
+	};
 
-	static get styles() {
-		return [super.styles, css`
-			:host {
-				box-sizing: border-box;
-				display: inline-block;
-				max-width: 200px;
-				outline: none;
-				position: relative;
-				vertical-align: middle;
-			}
-			.d2l-tab-text {
-				--d2l-focus-ring-offset: 0;
-				margin: 0.5rem;
-				padding: 0.1rem;
-				${overflowEllipsisDeclarations}
-			}
-			:host([skeleton]) .d2l-tab-text.d2l-skeletize::before {
-				bottom: 0.15rem;
-				top: 0.15rem;
-			}
-			:host(:first-child) .d2l-tab-text {
-				margin-inline-start: 0;
-			}
+	static styles = [super.styles, css`
+		:host {
+			box-sizing: border-box;
+			display: inline-block;
+			max-width: 200px;
+			outline: none;
+			position: relative;
+			vertical-align: middle;
+		}
+		.d2l-tab-text {
+			--d2l-focus-ring-offset: 0;
+			margin: 0.5rem;
+			padding: 0.1rem;
+			${overflowEllipsisDeclarations}
+		}
+		:host([skeleton]) .d2l-tab-text.d2l-skeletize::before {
+			bottom: 0.15rem;
+			top: 0.15rem;
+		}
+		:host(:first-child) .d2l-tab-text {
+			margin-inline-start: 0;
+		}
+		.d2l-tab-selected-indicator {
+			border-top: 4px solid var(--d2l-theme-brand-color-primary-default);
+			border-top-left-radius: 4px;
+			border-top-right-radius: 4px;
+			bottom: 0;
+			display: none;
+			margin: 1px 0.6rem 0 0.6rem;
+			position: absolute;
+			-webkit-transition: box-shadow 0.2s;
+			transition: box-shadow 0.2s;
+			width: calc(100% - 1.2rem);
+		}
+		:host([skeleton]) .d2l-tab-selected-indicator {
+			position: absolute; /* make sure skeleton styles do not override this */
+		}
+		.d2l-tab-text-skeletize-override {
+			min-width: 50px;
+		}
+		:host(:first-child) .d2l-tab-selected-indicator {
+			margin-inline-start: 0;
+			width: calc(100% - 0.6rem);
+		}
+		${getFocusRingStyles(pseudoClass => `:host(:${pseudoClass}) > .d2l-tab-text`, { extraStyles: css`border-radius: 0.3rem; color: var(--d2l-theme-text-color-interactive-default);` })}
+		:host([aria-selected="true"]:focus) {
+			text-decoration: none;
+		}
+		:host(:hover) {
+			color: var(--d2l-theme-text-color-interactive-default);
+			cursor: pointer;
+		}
+		:host([aria-selected="true"]:hover) {
+			color: inherit;
+			cursor: default;
+		}
+		:host([aria-selected="true"]) .d2l-tab-selected-indicator {
+			display: block;
+		}
+
+		@media (prefers-reduced-motion: reduce) {
 			.d2l-tab-selected-indicator {
-				border-top: 4px solid var(--d2l-theme-brand-color-primary-default);
-				border-top-left-radius: 4px;
-				border-top-right-radius: 4px;
-				bottom: 0;
-				display: none;
-				margin: 1px 0.6rem 0 0.6rem;
-				position: absolute;
-				-webkit-transition: box-shadow 0.2s;
-				transition: box-shadow 0.2s;
-				width: calc(100% - 1.2rem);
+				-webkit-transition: none;
+				transition: none;
 			}
-			:host([skeleton]) .d2l-tab-selected-indicator {
-				position: absolute; /* make sure skeleton styles do not override this */
-			}
-			.d2l-tab-text-skeletize-override {
-				min-width: 50px;
-			}
-			:host(:first-child) .d2l-tab-selected-indicator {
-				margin-inline-start: 0;
-				width: calc(100% - 0.6rem);
-			}
-			${getFocusRingStyles(pseudoClass => `:host(:${pseudoClass}) > .d2l-tab-text`, { extraStyles: css`border-radius: 0.3rem; color: var(--d2l-theme-text-color-interactive-default);` })}
-			:host([aria-selected="true"]:focus) {
-				text-decoration: none;
-			}
-			:host(:hover) {
-				color: var(--d2l-theme-text-color-interactive-default);
-				cursor: pointer;
-			}
-			:host([aria-selected="true"]:hover) {
-				color: inherit;
-				cursor: default;
-			}
-			:host([aria-selected="true"]) .d2l-tab-selected-indicator {
-				display: block;
-			}
-
-			@media (prefers-reduced-motion: reduce) {
-				.d2l-tab-selected-indicator {
-					-webkit-transition: none;
-					transition: none;
-				}
-			}
-		`];
-	}
+		}
+	`];
 
 	constructor() {
 		super();

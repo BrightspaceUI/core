@@ -23,9 +23,7 @@ import { FormElementMixin } from '@brightspace-ui/core/form/form-element-mixin.j
 // Use the FormElementMixin
 class MyWrappingFormElement extends FormElementMixin(LitElement) {
 
-	static get properties() {
-		return { value: { type: String } };
-	}
+	static properties = { value: { type: String } };
 
 	render() {
 		// Conditionally render our validation error message if there is one

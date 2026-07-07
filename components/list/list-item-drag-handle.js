@@ -47,91 +47,87 @@ export const resetDisplayedTooltip = () => {
  */
 class ListItemDragHandle extends LocalizeCoreElement(FocusMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Disables the handle
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
+		disabled: { type: Boolean, reflect: true },
+		/**
 			 * Additional context information for accessibility
 			 * @type {object}
 			 */
-			keyboardTextInfo: { type: Object, attribute: 'keyboard-text-info' },
-			/**
+		keyboardTextInfo: { type: Object, attribute: 'keyboard-text-info' },
+		/**
 			 * The drag-handle label for assistive technology
 			 * @type {string}
 			 */
-			text: { type: String },
-			/**
+		text: { type: String },
+		/**
 			 * When layout = tile, the drag handle become horizontal
 			 */
-			layout: { type: String },
-			_displayKeyboardTooltip: { type: Boolean },
-			_keyboardActive: { type: Boolean }
-		};
-	}
+		layout: { type: String },
+		_displayKeyboardTooltip: { type: Boolean },
+		_keyboardActive: { type: Boolean }
+	};
 
-	static get styles() {
-		return [ buttonStyles, css`
-			:host {
-				display: flex;
-				margin: 0.25rem;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			.d2l-list-item-drag-handle-dragger-button {
-				background-color: unset;
-				display: block;
-				margin: 0;
-				min-height: 1.8rem;
-				padding: 0;
-				width: 0.9rem;
-			}
-			/* Firefox includes a hidden border which messes up button dimensions */
-			button::-moz-focus-inner {
-				border: 0;
-			}
-			.d2l-button-dragger-icon {
-				height: 0.9rem;
-				width: 0.9rem;
-			}
-			button,
-			button[disabled]:hover,
-			button[disabled]:focus {
-				background-color: var(--d2l-color-gypsum);
-				color: var(--d2l-color-ferrite);
-			}
-			.d2l-list-item-drag-handle-dragger-button:hover,
-			.d2l-list-item-drag-handle-dragger-button:focus {
-				background-color: var(--d2l-color-mica);
-			}
-			button[disabled] {
-				cursor: default;
-				opacity: 0.5;
-			}
-			d2l-tooltip > div {
-				font-weight: 700;
-			}
-			d2l-tooltip > ul {
-				padding-inline-start: 1rem;
-			}
-			.d2l-list-item-drag-handle-tooltip-key {
-				font-weight: 700;
-			}
-			d2l-button-move {
-				pointer-events: auto; /* required since ancestors may set point-events: none; (see generic layout) */
-			}
+	static styles = [ buttonStyles, css`
+		:host {
+			display: flex;
+			margin: 0.25rem;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.d2l-list-item-drag-handle-dragger-button {
+			background-color: unset;
+			display: block;
+			margin: 0;
+			min-height: 1.8rem;
+			padding: 0;
+			width: 0.9rem;
+		}
+		/* Firefox includes a hidden border which messes up button dimensions */
+		button::-moz-focus-inner {
+			border: 0;
+		}
+		.d2l-button-dragger-icon {
+			height: 0.9rem;
+			width: 0.9rem;
+		}
+		button,
+		button[disabled]:hover,
+		button[disabled]:focus {
+			background-color: var(--d2l-color-gypsum);
+			color: var(--d2l-color-ferrite);
+		}
+		.d2l-list-item-drag-handle-dragger-button:hover,
+		.d2l-list-item-drag-handle-dragger-button:focus {
+			background-color: var(--d2l-color-mica);
+		}
+		button[disabled] {
+			cursor: default;
+			opacity: 0.5;
+		}
+		d2l-tooltip > div {
+			font-weight: 700;
+		}
+		d2l-tooltip > ul {
+			padding-inline-start: 1rem;
+		}
+		.d2l-list-item-drag-handle-tooltip-key {
+			font-weight: 700;
+		}
+		d2l-button-move {
+			pointer-events: auto; /* required since ancestors may set point-events: none; (see generic layout) */
+		}
 
-			:host([layout="tile"]) {
-				align-items: center;
-				display: flex;
-				height: 39px;
-			}
-		`];
-	}
+		:host([layout="tile"]) {
+			align-items: center;
+			display: flex;
+			height: 39px;
+		}
+	`];
 
 	constructor() {
 		super();

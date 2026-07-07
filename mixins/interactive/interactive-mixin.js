@@ -16,20 +16,16 @@ export function isInteractiveDescendant(node) {
 
 export const InteractiveMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
-	static get properties() {
-		return {
-			_focusingToggle: { state: true },
-			_hasInteractiveAncestor: { state: true },
-			_interactive: { state: true }
-		};
-	}
+	static properties = {
+		_focusingToggle: { state: true },
+		_hasInteractiveAncestor: { state: true },
+		_interactive: { state: true }
+	};
 
-	static get styles() {
-		return [offscreenStyles, getFocusRingStyles(
-			() => '.interactive-focusing-toggle',
-			{ extraStyles: css`border-radius: 6px;` }
-		)];
-	}
+	static styles = [offscreenStyles, getFocusRingStyles(
+		() => '.interactive-focusing-toggle',
+		{ extraStyles: css`border-radius: 6px;` }
+	)];
 
 	constructor() {
 		super();

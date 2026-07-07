@@ -35,12 +35,10 @@ import { FormElementMixin } from '@brightspace-ui/core/form/form-element-mixin.j
 // Use the FormElementMixin
 class MyNestingFormElement extends FormElementMixin(LitElement) {
 
-	static get properties() {
-		return {
-			_firstName: { type: String },
-			_lastName: { type: String }
-		};
-	}
+	static properties = {
+		_firstName: { type: String },
+		_lastName: { type: String }
+	};
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);

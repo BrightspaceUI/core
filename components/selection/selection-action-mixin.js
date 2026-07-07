@@ -5,21 +5,19 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
 
 export const SelectionActionMixin = superclass => class extends LocalizeCoreElement(SelectionObserverMixin(superclass)) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Disables bulk actions in the list or table controls once the selection limit is reached, but does not prevent further selection
 			 * @type {number}
 			 */
-			maxSelectionCount: { type: Number, attribute: 'max-selection-count' },
-			/**
+		maxSelectionCount: { type: Number, attribute: 'max-selection-count' },
+		/**
 			 * Whether the action requires one or more selected items
 			 * @type {boolean}
 			 */
-			requiresSelection: { type: Boolean, attribute: 'requires-selection', reflect: true },
-			_disabledTooltip: { state: true }
-		};
-	}
+		requiresSelection: { type: Boolean, attribute: 'requires-selection', reflect: true },
+		_disabledTooltip: { state: true }
+	};
 
 	constructor() {
 		super();

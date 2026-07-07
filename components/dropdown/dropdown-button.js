@@ -10,43 +10,39 @@ import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
  */
 class DropdownButton extends DropdownOpenerMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Optionally render button as primary button
 			 * @type {boolean}
 			 */
-			primary: {
-				type: Boolean,
-				reflect: true
-			},
+		primary: {
+			type: Boolean,
+			reflect: true
+		},
 
-			/**
+		/**
 			 * REQUIRED: Text for the button
 			 * @type {string}
 			 */
-			text: {
-				type: String
-			}
-		};
-	}
+		text: {
+			type: String
+		}
+	};
 
-	static get styles() {
-		return [dropdownOpenerStyles, css`
-			d2l-icon {
-				height: 0.8rem;
-				margin-inline-start: 0.6rem;
-				pointer-events: none;
-				width: 0.8rem;
-			}
-			:host([primary]) d2l-icon {
-				color: var(--d2l-theme-text-color-static-inverted);
-			}
-			d2l-button {
-				width: 100%;
-			}
-		`];
-	}
+	static styles = [dropdownOpenerStyles, css`
+		d2l-icon {
+			height: 0.8rem;
+			margin-inline-start: 0.6rem;
+			pointer-events: none;
+			width: 0.8rem;
+		}
+		:host([primary]) d2l-icon {
+			color: var(--d2l-theme-text-color-static-inverted);
+		}
+		d2l-button {
+			width: 100%;
+		}
+	`];
 
 	constructor() {
 		super();

@@ -8,92 +8,88 @@ const escapeKeyCode = 27;
 
 export const HierarchicalViewMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			/**
-			 * @ignore
-			 */
-			hierarchicalView: { type: Boolean },
-			/**
-			 * @ignore
-			 */
-			rootView: { type: Boolean, attribute: 'root-view' },
-			/**
-			 * @ignore
-			 */
-			shown: { type: Boolean, reflect: true },
-			_childView: { type: Boolean, reflect: true, attribute: 'child-view' },
-		};
-	}
+	static properties = {
+		/**
+		 * @ignore
+		 */
+		hierarchicalView: { type: Boolean },
+		/**
+		 * @ignore
+		 */
+		rootView: { type: Boolean, attribute: 'root-view' },
+		/**
+		 * @ignore
+		 */
+		shown: { type: Boolean, reflect: true },
+		_childView: { type: Boolean, reflect: true, attribute: 'child-view' },
+	};
 
-	static get styles() {
-		return css`
+	static styles = css`
+		:host {
+			--d2l-hierarchical-view-height-transition: height 300ms linear;
+			box-sizing: border-box;
+			display: none;
+			left: 0;
+			overflow: hidden;
+			position: relative;
+			-webkit-transition: var(--d2l-hierarchical-view-height-transition);
+			transition: var(--d2l-hierarchical-view-height-transition);
+			width: 100%;
+		}
+		:host([child-view]) {
+			display: none;
+			left: 100%;
+			position: absolute;
+			top: 0;
+		}
+		:host([shown]) {
+			display: inline-block;
+			vertical-align: top; /* DE37329: required to prevent extra spacing caused by inline-block */
+		}
+		.d2l-hierarchical-view-content {
+			position: relative;
+		}
+		.d2l-hierarchical-view-content.d2l-child-view-show {
+			-webkit-animation: show-child-view-animation forwards 300ms linear;
+			animation: show-child-view-animation 300ms forwards linear;
+		}
+		.d2l-hierarchical-view-content.d2l-child-view-hide {
+			-webkit-animation: hide-child-view-animation forwards 300ms linear;
+			animation: hide-child-view-animation 300ms forwards linear;
+		}
+		@media (prefers-reduced-motion: reduce) {
 			:host {
-				--d2l-hierarchical-view-height-transition: height 300ms linear;
-				box-sizing: border-box;
-				display: none;
-				left: 0;
-				overflow: hidden;
-				position: relative;
-				-webkit-transition: var(--d2l-hierarchical-view-height-transition);
-				transition: var(--d2l-hierarchical-view-height-transition);
-				width: 100%;
-			}
-			:host([child-view]) {
-				display: none;
-				left: 100%;
-				position: absolute;
-				top: 0;
-			}
-			:host([shown]) {
-				display: inline-block;
-				vertical-align: top; /* DE37329: required to prevent extra spacing caused by inline-block */
-			}
-			.d2l-hierarchical-view-content {
-				position: relative;
+				-webkit-transition: none;
+				transition: none;
 			}
 			.d2l-hierarchical-view-content.d2l-child-view-show {
-				-webkit-animation: show-child-view-animation forwards 300ms linear;
-				animation: show-child-view-animation 300ms forwards linear;
+				-webkit-animation: none;
+				animation: none;
+				left: -100%;
 			}
 			.d2l-hierarchical-view-content.d2l-child-view-hide {
-				-webkit-animation: hide-child-view-animation forwards 300ms linear;
-				animation: hide-child-view-animation 300ms forwards linear;
+				-webkit-animation: none;
+				animation: none;
+				left: 0;
 			}
-			@media (prefers-reduced-motion: reduce) {
-				:host {
-					-webkit-transition: none;
-					transition: none;
-				}
-				.d2l-hierarchical-view-content.d2l-child-view-show {
-					-webkit-animation: none;
-					animation: none;
-					left: -100%;
-				}
-				.d2l-hierarchical-view-content.d2l-child-view-hide {
-					-webkit-animation: none;
-					animation: none;
-					left: 0;
-				}
-			}
-			@keyframes show-child-view-animation {
-				0% { left: 0; }
-				100% { left: -100%; }
-			}
-			@-webkit-keyframes show-child-view-animation {
-				0% { left: 0; }
-				100% { left: -100%; }
-			}
-			@keyframes hide-child-view-animation {
-				0% { left: -100%; }
-				100% { left: 0; }
-			}
-			@-webkit-keyframes hide-child-view-animation {
-				0% { left: -100%; }
-				100% { left: 0; }
-			}
-		`;
-	}
+		}
+		@keyframes show-child-view-animation {
+			0% { left: 0; }
+			100% { left: -100%; }
+		}
+		@-webkit-keyframes show-child-view-animation {
+			0% { left: 0; }
+			100% { left: -100%; }
+		}
+		@keyframes hide-child-view-animation {
+			0% { left: -100%; }
+			100% { left: 0; }
+		}
+		@-webkit-keyframes hide-child-view-animation {
+			0% { left: -100%; }
+			100% { left: 0; }
+		}
+	`;
 
 	constructor() {
 		super();

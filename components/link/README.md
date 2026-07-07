@@ -70,7 +70,7 @@ Alternately, you can apply link styles to a native `<a>` element by importing th
 
   class MyLinkElem extends LitElement {
 
-    static get styles() { return [ linkStyles ] }
+    static styles = [ linkStyles ];
 
     render() {
       return html`

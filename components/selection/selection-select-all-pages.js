@@ -12,16 +12,14 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
  */
 class SelectAllPages extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(LitElement))) {
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+	`;
 
 	static get focusElementSelector() {
 		return 'd2l-button-subtle';

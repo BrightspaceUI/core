@@ -4,11 +4,9 @@ import { SubscriberRegistryController } from '../../controllers/subscriber/subsc
 
 export const SkeletonGroupMixin = dedupeMixin(superclass => class extends SkeletonMixin(superclass) {
 
-	static get properties() {
-		return {
-			_anySubscribersWithSkeletonActive : { state: true },
-		};
-	}
+	static properties = {
+		_anySubscribersWithSkeletonActive : { state: true },
+	};
 
 	constructor() {
 		super();

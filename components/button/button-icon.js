@@ -17,122 +17,118 @@ import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
  */
 class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(ButtonMixin(VisibleOnAncestorMixin(LitElement))))) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * ACCESSIBILITY: A description to be added to the button for accessibility when text on button does not provide enough context
 			 * @type {string}
 			 */
-			description: { type: String },
+		description: { type: String },
 
-			/**
+		/**
 			 * Aligns the leading edge of text if value is set to "text" for left-aligned layouts, the trailing edge of text if value is set to "text-end" for right-aligned layouts
 			 * @type {'text'|'text-end'|''}
 			 */
-			hAlign: { type: String, reflect: true, attribute: 'h-align' },
+		hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
-			/**
+		/**
 			 * ACCESSIBILITY: REQUIRED: Accessible text for the button
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true, required: true },
+		text: { type: String, reflect: true, required: true },
 
-			/**
+		/**
 			 * Indicates to display translucent (e.g., on rich backgrounds)
 			 * @type {boolean}
 			 */
-			translucent: { type: Boolean, reflect: true }
-		};
-	}
+		translucent: { type: Boolean, reflect: true }
+	};
 
-	static get styles() {
-		return [super.styles, buttonStyles, visibleOnAncestorStyles,
-			css`
-				:host {
-					--d2l-button-icon-background-color-default: var(--d2l-theme-background-color-interactive-tertiary-default);
-					--d2l-button-icon-background-color-hover-default: var(--d2l-theme-background-color-interactive-tertiary-hover);
-					--d2l-button-icon-border-radius-default: 0.3rem;
-					--d2l-button-icon-min-height-default: calc(2rem + 2px);
-					--d2l-button-icon-min-width-default: calc(2rem + 2px);
-					--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
-					display: inline-block;
-					line-height: 0;
-				}
-				:host([hidden]) {
-					display: none;
-				}
-				:host([translucent]) {
-					--d2l-button-icon-background-color-default: var(--d2l-theme-background-color-interactive-translucent-default);
-					--d2l-button-icon-background-color-hover-default: var(--d2l-theme-background-color-interactive-translucent-hover);
-					--d2l-focus-ring-color: var(--d2l-theme-icon-color-inverted);
-					--d2l-focus-ring-offset: -4px;
-					--d2l-button-icon-fill-color: var(--d2l-theme-icon-color-inverted);
-					--d2l-button-icon-fill-color-hover: var(--d2l-theme-icon-color-inverted);
-				}
-				:host([theme="dark"]) {
-					--d2l-button-icon-background-color-default: transparent;
-					--d2l-button-icon-background-color-hover-default: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
-					--d2l-button-icon-fill-color: var(--d2l-color-sylvite);
-					--d2l-button-icon-fill-color-hover: var(--d2l-color-sylvite);
-					--d2l-focus-ring-color: var(--d2l-color-celestine-plus-1);
-				}
+	static styles = [super.styles, buttonStyles, visibleOnAncestorStyles,
+		css`
+			:host {
+				--d2l-button-icon-background-color-default: var(--d2l-theme-background-color-interactive-tertiary-default);
+				--d2l-button-icon-background-color-hover-default: var(--d2l-theme-background-color-interactive-tertiary-hover);
+				--d2l-button-icon-border-radius-default: 0.3rem;
+				--d2l-button-icon-min-height-default: calc(2rem + 2px);
+				--d2l-button-icon-min-width-default: calc(2rem + 2px);
+				--d2l-button-icon-h-align: calc(((2rem + 2px - 0.9rem) / 2) * -1);
+				display: inline-block;
+				line-height: 0;
+			}
+			:host([hidden]) {
+				display: none;
+			}
+			:host([translucent]) {
+				--d2l-button-icon-background-color-default: var(--d2l-theme-background-color-interactive-translucent-default);
+				--d2l-button-icon-background-color-hover-default: var(--d2l-theme-background-color-interactive-translucent-hover);
+				--d2l-focus-ring-color: var(--d2l-theme-icon-color-inverted);
+				--d2l-focus-ring-offset: -4px;
+				--d2l-button-icon-fill-color: var(--d2l-theme-icon-color-inverted);
+				--d2l-button-icon-fill-color-hover: var(--d2l-theme-icon-color-inverted);
+			}
+			:host([theme="dark"]) {
+				--d2l-button-icon-background-color-default: transparent;
+				--d2l-button-icon-background-color-hover-default: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
+				--d2l-button-icon-fill-color: var(--d2l-color-sylvite);
+				--d2l-button-icon-fill-color-hover: var(--d2l-color-sylvite);
+				--d2l-focus-ring-color: var(--d2l-color-celestine-plus-1);
+			}
 
-				button {
-					background-color: var(--d2l-button-icon-background-color, var(--d2l-button-icon-background-color-default));
-					border-color: transparent;
-					border-radius: var(--d2l-button-icon-border-radius, var(--d2l-button-icon-border-radius-default));
-					font-family: inherit;
-					min-height: var(--d2l-button-icon-min-height, var(--d2l-button-icon-min-height-default));
-					min-width: var(--d2l-button-icon-min-width, var(--d2l-button-icon-min-width-default));
-					padding: 0;
-					position: relative;
-				}
+			button {
+				background-color: var(--d2l-button-icon-background-color, var(--d2l-button-icon-background-color-default));
+				border-color: transparent;
+				border-radius: var(--d2l-button-icon-border-radius, var(--d2l-button-icon-border-radius-default));
+				font-family: inherit;
+				min-height: var(--d2l-button-icon-min-height, var(--d2l-button-icon-min-height-default));
+				min-width: var(--d2l-button-icon-min-width, var(--d2l-button-icon-min-width-default));
+				padding: 0;
+				position: relative;
+			}
 
-				:host([h-align="text"]) button {
-					inset-inline-start: var(--d2l-button-icon-h-align);
-				}
-				:host([h-align="text-end"]) button {
-					inset-inline-end: var(--d2l-button-icon-h-align);
-				}
+			:host([h-align="text"]) button {
+				inset-inline-start: var(--d2l-button-icon-h-align);
+			}
+			:host([h-align="text-end"]) button {
+				inset-inline-end: var(--d2l-button-icon-h-align);
+			}
 
-				/* Firefox includes a hidden border which messes up button dimensions */
-				button::-moz-focus-inner {
-					border: 0;
-				}
+			/* Firefox includes a hidden border which messes up button dimensions */
+			button::-moz-focus-inner {
+				border: 0;
+			}
 
-				button:hover:not([disabled]),
-				button:focus:not([disabled]),
-				:host([active]) button:not([disabled]) {
-					--d2l-button-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-theme-icon-color-standard));
-					background-color: var(--d2l-button-icon-background-color-hover, var(--d2l-button-icon-background-color-hover-default));
-				}
+			button:hover:not([disabled]),
+			button:focus:not([disabled]),
+			:host([active]) button:not([disabled]) {
+				--d2l-button-icon-fill-color: var(--d2l-button-icon-fill-color-hover, var(--d2l-theme-icon-color-standard));
+				background-color: var(--d2l-button-icon-background-color-hover, var(--d2l-button-icon-background-color-hover-default));
+			}
 
-				d2l-icon,
-				slot[name="icon"]::slotted(d2l-icon-custom) {
-					color: var(--d2l-button-icon-fill-color, var(--d2l-theme-icon-color-standard));
-				}
+			d2l-icon,
+			slot[name="icon"]::slotted(d2l-icon-custom) {
+				color: var(--d2l-button-icon-fill-color, var(--d2l-theme-icon-color-standard));
+			}
 
+			:host([translucent]) button {
+				transition-duration: 0.2s, 0.2s;
+				transition-property: background-color, box-shadow;
+			}
+			:host([translucent][visible-on-ancestor]) button {
+				transition-duration: 0.4s, 0.4s;
+			}
+
+			:host([disabled]) button {
+				cursor: default;
+				opacity: var(--d2l-theme-opacity-disabled-control);
+			}
+
+			@media (prefers-reduced-motion: reduce) {
 				:host([translucent]) button {
-					transition-duration: 0.2s, 0.2s;
-					transition-property: background-color, box-shadow;
+					transition: none;
 				}
-				:host([translucent][visible-on-ancestor]) button {
-					transition-duration: 0.4s, 0.4s;
-				}
-
-				:host([disabled]) button {
-					cursor: default;
-					opacity: var(--d2l-theme-opacity-disabled-control);
-				}
-
-				@media (prefers-reduced-motion: reduce) {
-					:host([translucent]) button {
-						transition: none;
-					}
-				}
-			`
-		];
-	}
+			}
+		`
+	];
 
 	constructor() {
 		super();

@@ -9,42 +9,40 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
  */
 class FilterDimensionSetDateTextValue extends LocalizeCoreElement(LitElement) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Whether this value in the filter is disabled or not
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
+		disabled: { type: Boolean, reflect: true },
+		/**
 			 * @ignore
 			 */
-			endValue: { type: String },
-			/**
+		endValue: { type: String },
+		/**
 			 * REQUIRED: Unique key to represent this value in the dimension
 			 * @type {string}
 			 */
-			key: { type: String },
-			/**
+		key: { type: String },
+		/**
 			 * REQUIRED: The preset date/time range that the list item represents
 			 * @type {'today'|'lastHour'|'24hours'|'48hours'|'7days'|'14days'|'30days'|'6months'}
 			 */
-			range: { type: String },
-			/**
+		range: { type: String },
+		/**
 			 * Whether this value in the filter is selected or not
 			 * @type {boolean}
 			 */
-			selected: { type: Boolean, reflect: true },
-			/**
+		selected: { type: Boolean, reflect: true },
+		/**
 			 * @ignore
 			 */
-			startValue: { type: String },
-			/**
+		startValue: { type: String },
+		/**
 			 * @ignore
 			 */
-			text: { type: String, reflect: true }
-		};
-	}
+		text: { type: String, reflect: true }
+	};
 
 	constructor() {
 		super();

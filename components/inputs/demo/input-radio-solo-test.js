@@ -3,26 +3,22 @@ import { radioStyles } from '../input-radio-styles.js';
 
 class TestInputRadioSolo extends LitElement {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Selection state
 			 */
-			checked: { type: Boolean },
-			/**
+		checked: { type: Boolean },
+		/**
 			 * Disables the input
 			 */
-			disabled: { type: Boolean },
-			/**
+		disabled: { type: Boolean },
+		/**
 			 * Marks the input as invalid, which is shown in style and also is reflected in `aria-invalid`
 			 */
-			invalid: { type: Boolean }
-		};
-	}
+		invalid: { type: Boolean }
+	};
 
-	static get styles() {
-		return radioStyles;
-	}
+	static styles = radioStyles;
 
 	render() {
 		const invalid = this.invalid ? 'true' : 'false';

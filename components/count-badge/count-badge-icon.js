@@ -9,51 +9,47 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * REQUIRED: Preset icon key (e.g. "tier1:gear")
 			 * @type {string}
 			 */
-			icon: {
-				type: String,
-				reflect: true
-			}
-		};
+		icon: {
+			type: String,
+			reflect: true
+		}
+	};
+
+	static styles = [super.styles, css`
+	${getFocusRingStyles(pseudoClass => `:host([focus-ring]) d2l-icon, d2l-icon:${pseudoClass}`)}
+	:host {
+		display: inline-block;
+		/* symmetrical padding to prevent overflows for most numbers */
+		padding-left: 0.5rem;
+		padding-right: 0.5rem;
+		position: relative;
 	}
 
-	static get styles() {
-		return [super.styles, css`
-		${getFocusRingStyles(pseudoClass => `:host([focus-ring]) d2l-icon, d2l-icon:${pseudoClass}`)}
-		:host {
-			display: inline-block;
-			/* symmetrical padding to prevent overflows for most numbers */
-			padding-left: 0.5rem;
-			padding-right: 0.5rem;
-			position: relative;
-		}
-
-		:host([size="large"]) {
-			--d2l-count-badge-icon-padding-top: 0.7rem;
-			padding-top: var(--d2l-count-badge-icon-padding-top);
-		}
-
-		:host([size="small"]) {
-			--d2l-count-badge-icon-padding-top: 0.55rem;
-			padding-top: var(--d2l-count-badge-icon-padding-top);
-		}
-
-		d2l-tooltip[_open-dir="top"] {
-			margin-top: calc(0px - var(--d2l-count-badge-icon-padding-top));
-		}
-
-		d2l-icon {
-			--d2l-focus-ring-offset: 0;
-			border: 2px solid transparent;
-			border-radius: 6px;
-		}
-		`];
+	:host([size="large"]) {
+		--d2l-count-badge-icon-padding-top: 0.7rem;
+		padding-top: var(--d2l-count-badge-icon-padding-top);
 	}
+
+	:host([size="small"]) {
+		--d2l-count-badge-icon-padding-top: 0.55rem;
+		padding-top: var(--d2l-count-badge-icon-padding-top);
+	}
+
+	d2l-tooltip[_open-dir="top"] {
+		margin-top: calc(0px - var(--d2l-count-badge-icon-padding-top));
+	}
+
+	d2l-icon {
+		--d2l-focus-ring-offset: 0;
+		border: 2px solid transparent;
+		border-radius: 6px;
+	}
+	`];
 
 	constructor() {
 		super();

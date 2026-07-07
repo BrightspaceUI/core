@@ -16,79 +16,75 @@ import { SlottedIconMixin } from '../icons/slotted-icon-mixin.js';
  */
 class TooltipHelp extends SlottedIconMixin(SkeletonMixin(FocusMixin(LitElement))) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Allows this component to inherit certain font properties
 			 * @type {boolean}
 			 */
-			inheritFontStyle: { type: Boolean, attribute: 'inherit-font-style' },
-			/**
+		inheritFontStyle: { type: Boolean, attribute: 'inherit-font-style' },
+		/**
 			 * ADVANCED: Force the internal tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
 			 * @type {'top'|'bottom'|'left'|'right'}
 			 */
-			position: { type: String },
-			/**
+		position: { type: String },
+		/**
 			 * @ignore
 			 */
-			showing: { type: Boolean, reflect: true },
-			/**
+		showing: { type: Boolean, reflect: true },
+		/**
 			 * REQUIRED: Text that will render as the Help Tooltip opener
 			 * @type {string}
 			 */
-			text: { type: String }
-		};
-	}
+		text: { type: String }
+	};
 
-	static get styles() {
-		return [super.styles, bodySmallStyles, css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			#d2l-tooltip-help-text {
-				--d2l-focus-ring-offset: 0.05rem;
-				align-items: baseline;
-				background: none;
-				border: none;
-				column-gap: 0.3rem;
-				cursor: inherit;
-				display: inline-flex;
-				font-family: inherit;
-				padding: 0;
-				text-align: start;
-				text-decoration-line: underline;
-				text-decoration-style: dashed;
-				text-decoration-thickness: 1px;
-				text-underline-offset: 0.1rem;
-			}
-			d2l-icon,
-			slot[name="icon"]::slotted(d2l-icon-custom) {
-				align-self: center;
-			}
+	static styles = [super.styles, bodySmallStyles, css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		#d2l-tooltip-help-text {
+			--d2l-focus-ring-offset: 0.05rem;
+			align-items: baseline;
+			background: none;
+			border: none;
+			column-gap: 0.3rem;
+			cursor: inherit;
+			display: inline-flex;
+			font-family: inherit;
+			padding: 0;
+			text-align: start;
+			text-decoration-line: underline;
+			text-decoration-style: dashed;
+			text-decoration-thickness: 1px;
+			text-underline-offset: 0.1rem;
+		}
+		d2l-icon,
+		slot[name="icon"]::slotted(d2l-icon-custom) {
+			align-self: center;
+		}
 
-			${getFocusRingStyles('#d2l-tooltip-help-text', { extraStyles: css`border-radius: 0.05rem; text-underline-offset: 0.1rem;` })}
-			:host([inherit-font-style]) #d2l-tooltip-help-text {
-				color: inherit;
-				font-size: inherit;
-				font-weight: inherit;
-				letter-spacing: inherit;
-				line-height: inherit;
-				margin: inherit;
-			}
-			d2l-tooltip {
-				cursor: text;
-			}
-			:host([skeleton]) #d2l-tooltip-help-text.d2l-skeletize {
-				text-decoration: none;
-			}
-			:host([skeleton]) slot[name="icon"]::slotted(d2l-icon-custom) {
-				display: none;
-			}
-		`];
-	}
+		${getFocusRingStyles('#d2l-tooltip-help-text', { extraStyles: css`border-radius: 0.05rem; text-underline-offset: 0.1rem;` })}
+		:host([inherit-font-style]) #d2l-tooltip-help-text {
+			color: inherit;
+			font-size: inherit;
+			font-weight: inherit;
+			letter-spacing: inherit;
+			line-height: inherit;
+			margin: inherit;
+		}
+		d2l-tooltip {
+			cursor: text;
+		}
+		:host([skeleton]) #d2l-tooltip-help-text.d2l-skeletize {
+			text-decoration: none;
+		}
+		:host([skeleton]) slot[name="icon"]::slotted(d2l-icon-custom) {
+			display: none;
+		}
+	`];
 
 	constructor() {
 		super();

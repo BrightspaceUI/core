@@ -22,139 +22,135 @@ import { styleMap } from 'lit/directives/style-map.js';
  */
 class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormElementMixin(SkeletonMixin(LitElement))))) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * ADVANCED: Indicates that the input value is invalid
 			 * @type {string}
 			 */
-			ariaInvalid: { type: String, attribute: 'aria-invalid' },
-			/**
+		ariaInvalid: { type: String, attribute: 'aria-invalid' },
+		/**
 			 * Additional information communicated in the aria-describedby on the input
 			 * @type {string}
 			 */
-			description: { type: String, reflect: true },
-			/**
+		description: { type: String, reflect: true },
+		/**
 			 * Disables the input
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
+		disabled: { type: Boolean, reflect: true },
+		/**
 			 * Restricts the maximum width of the input box without restricting the width of the label.
 			 * @type {string}
 			 */
-			inputWidth: { attribute: 'input-width', type: String },
-			/**
+		inputWidth: { attribute: 'input-width', type: String },
+		/**
 			 * Hides the label visually (moves it to the input's "aria-label" attribute)
 			 * @type {boolean}
 			 */
-			labelHidden: { type: Boolean, attribute: 'label-hidden' },
-			/**
+		labelHidden: { type: Boolean, attribute: 'label-hidden' },
+		/**
 			 * Imposes an upper character limit
 			 * @type {number}
 			 */
-			maxlength: { type: Number },
-			/**
+		maxlength: { type: Number },
+		/**
 			 * Maximum number of rows before scrolling
 			 * @type {number}
 			 */
-			maxRows: { type: Number, attribute: 'max-rows' },
-			/**
+		maxRows: { type: Number, attribute: 'max-rows' },
+		/**
 			 * Imposes a lower character limit
 			 * @type {number}
 			 */
-			minlength: { type: Number },
-			/**
+		minlength: { type: Number },
+		/**
 			 * Hides the border
 			 * @type {boolean}
 			 */
-			noBorder: { type: Boolean, attribute: 'no-border' },
-			/**
+		noBorder: { type: Boolean, attribute: 'no-border' },
+		/**
 			 * Removes default left/right padding
 			 * @type {boolean}
 			 */
-			noPadding: { type: Boolean, attribute: 'no-padding' },
-			/**
+		noPadding: { type: Boolean, attribute: 'no-padding' },
+		/**
 			 * @ignore
 			 */
-			placeholder: { type: String },
-			/**
+		placeholder: { type: String },
+		/**
 			 * Indicates that a value is required
 			 * @type {boolean}
 			 */
-			required: { type: Boolean, reflect: true },
-			/**
+		required: { type: Boolean, reflect: true },
+		/**
 			 * Minimum number of rows
 			 * @type {number}
 			 */
-			rows: { type: Number },
-			/**
+		rows: { type: Number },
+		/**
 			 * Value of the input
 			 * @type {string}
 			 */
-			value: { type: String }
-		};
-	}
+		value: { type: String }
+	};
 
-	static get styles() {
-		return [ super.styles, inputStyles, inputLabelStyles, offscreenStyles, css`
-			:host {
-				display: block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			.d2l-input-label {
-				display: inline-block;
-				vertical-align: bottom;
-			}
-			:host(:not([skeleton])) .d2l-input-label {
-				margin: 0;
-				padding-block: 0 0.4rem;
-				padding-inline: 0;
-			}
-			:host(:not([skeleton]):not([input-width])) .d2l-input-label {
-				width: 100%;
-			}
-			.d2l-input-textarea-container {
-				height: 100%;
-				max-width: 100%;
-				position: relative;
-			}
-			textarea.d2l-input {
-				height: 100%;
-				left: 0;
-				line-height: 1rem;
-				position: absolute;
-				resize: none;
-				top: 0;
-			}
-			:host([no-border]) textarea.d2l-input {
-				border-color: transparent;
-				box-shadow: none;
-			}
-			/* mirror dimensions must match textarea - match border + padding */
-			.d2l-input-textarea-mirror {
-				line-height: 1rem;
-				overflow: hidden;
-				overflow-wrap: anywhere; /* prevent width from growing */
-				padding-bottom: 0.5rem;
-				padding-top: 0.5rem;
-				visibility: hidden;
-			}
-			:host([no-padding]) .d2l-input {
-				padding-inline: 0;
-			}
-			:host([no-border][no-padding]) textarea.d2l-input:hover,
-			:host([no-border][no-padding]) textarea.d2l-input:focus {
-				border-left-width: 1px;
-				border-right-width: 1px;
-			}
-			.d2l-input-textarea-mirror[aria-invalid="true"] {
-				padding-inline-end: calc(18px + 0.8rem);
-			}
-		`];
-	}
+	static styles = [ super.styles, inputStyles, inputLabelStyles, offscreenStyles, css`
+		:host {
+			display: block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.d2l-input-label {
+			display: inline-block;
+			vertical-align: bottom;
+		}
+		:host(:not([skeleton])) .d2l-input-label {
+			margin: 0;
+			padding-block: 0 0.4rem;
+			padding-inline: 0;
+		}
+		:host(:not([skeleton]):not([input-width])) .d2l-input-label {
+			width: 100%;
+		}
+		.d2l-input-textarea-container {
+			height: 100%;
+			max-width: 100%;
+			position: relative;
+		}
+		textarea.d2l-input {
+			height: 100%;
+			left: 0;
+			line-height: 1rem;
+			position: absolute;
+			resize: none;
+			top: 0;
+		}
+		:host([no-border]) textarea.d2l-input {
+			border-color: transparent;
+			box-shadow: none;
+		}
+		/* mirror dimensions must match textarea - match border + padding */
+		.d2l-input-textarea-mirror {
+			line-height: 1rem;
+			overflow: hidden;
+			overflow-wrap: anywhere; /* prevent width from growing */
+			padding-bottom: 0.5rem;
+			padding-top: 0.5rem;
+			visibility: hidden;
+		}
+		:host([no-padding]) .d2l-input {
+			padding-inline: 0;
+		}
+		:host([no-border][no-padding]) textarea.d2l-input:hover,
+		:host([no-border][no-padding]) textarea.d2l-input:focus {
+			border-left-width: 1px;
+			border-right-width: 1px;
+		}
+		.d2l-input-textarea-mirror[aria-invalid="true"] {
+			padding-inline-end: calc(18px + 0.8rem);
+		}
+	`];
 
 	constructor() {
 		super();

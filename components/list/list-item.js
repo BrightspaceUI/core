@@ -10,15 +10,13 @@ import { LitElement } from 'lit';
  */
 class ListItem extends ListItemLinkMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Address of item link if navigable
 			 * @type {string}
 			 */
-			href: { type: String }
-		};
-	}
+		href: { type: String }
+	};
 
 	get href() {
 		return this.actionHref;

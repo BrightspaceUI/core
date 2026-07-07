@@ -38,119 +38,115 @@ let ALERT_HAS_HOVER = false; // if this alert or sibling alert is hovered on
  */
 class AlertToast extends LitElement {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Text that is displayed within the alert's action button. If no text is provided the button is not displayed.
 			 * @type {string}
 			 */
-			buttonText: { type: String, attribute: 'button-text' },
+		buttonText: { type: String, attribute: 'button-text' },
 
-			/**
+		/**
 			 * Hide the close button to prevent users from manually closing the alert
 			 * @type {boolean}
 			 */
-			hideCloseButton: { type: Boolean, attribute: 'hide-close-button' },
+		hideCloseButton: { type: Boolean, attribute: 'hide-close-button' },
 
-			/**
+		/**
 			 * Prevents the alert from automatically closing 4 seconds after opening
 			 * @type {boolean}
 			 */
-			noAutoClose: { type: Boolean, attribute: 'no-auto-close' },
+		noAutoClose: { type: Boolean, attribute: 'no-auto-close' },
 
-			/**
+		/**
 			 * Open or close the toast alert
 			 * @type {boolean}
 			 */
-			open: { type: Boolean, reflect: true },
+		open: { type: Boolean, reflect: true },
 
-			/**
+		/**
 			 * The text that is displayed below the main alert message
 			 * @type {string}
 			 */
-			subtext: { type: String },
+		subtext: { type: String },
 
-			/**
+		/**
 			 * Type of the alert being displayed
 			 * @type {'default'|'critical'|'success'|'warning'}
 			 * @default "default"
 			 */
-			type: { type: String, reflect: true },
-			_closeClicked: { state: true },
-			_numAlertsBelow: { state: true },
-			_smallWidth: { state: true },
-			_state: { type: String },
-			_totalSiblingHeightBelow: { state: true }
-		};
-	}
+		type: { type: String, reflect: true },
+		_closeClicked: { state: true },
+		_numAlertsBelow: { state: true },
+		_smallWidth: { state: true },
+		_state: { type: String },
+		_totalSiblingHeightBelow: { state: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: block;
-			}
+	static styles = css`
+		:host {
+			display: block;
+		}
 
+		.d2l-alert-toast-container {
+			border-radius: 0.3rem;
+			box-shadow: 0 0.1rem 0.6rem 0 rgba(0, 0, 0, 0.1);
+			display: none;
+			left: 0;
+			margin: 0 auto 1.5rem;
+			max-width: 600px;
+			position: fixed;
+			right: 0;
+			width: 100%;
+			z-index: 10000;
+		}
+
+		.d2l-alert-toast-container:not([data-state="closed"]) {
+			display: block;
+		}
+
+		.d2l-alert-toast-container[data-state="opening"],
+		.d2l-alert-toast-container.d2l-alert-toast-container-lowest[data-state="closing"] {
+			transition-duration: 600ms;
+			transition-property: opacity, transform;
+			transition-timing-function: ease;
+		}
+		.d2l-alert-toast-container[data-state="closing"] {
+			transition: opacity 200ms ease;
+		}
+
+		.d2l-alert-toast-container.d2l-alert-toast-container-close-clicked[data-state="closing"] {
+			transition-duration: 200ms;
+		}
+
+		.d2l-alert-toast-container[data-state="preopening"],
+		.d2l-alert-toast-container[data-state="closing"] {
+			opacity: 0;
+		}
+		.d2l-alert-toast-container[data-state="preopening"],
+		.d2l-alert-toast-container.d2l-alert-toast-container-lowest[data-state="closing"] {
+			transform: translateY(calc(100% + 1.5rem));
+		}
+
+		.d2l-alert-toast-container[data-state="opening"] {
+			opacity: 1;
+			transform: translateY(0);
+		}
+
+		.d2l-alert-toast-container[data-state="sliding"] {
+			transition: bottom 600ms ease;
+		}
+
+		d2l-alert {
+			animation: none;
+		}
+
+		@media (max-width: 615px) {
 			.d2l-alert-toast-container {
-				border-radius: 0.3rem;
-				box-shadow: 0 0.1rem 0.6rem 0 rgba(0, 0, 0, 0.1);
-				display: none;
-				left: 0;
-				margin: 0 auto 1.5rem;
-				max-width: 600px;
-				position: fixed;
-				right: 0;
-				width: 100%;
-				z-index: 10000;
+				margin-bottom: 12px;
+				width: calc(100% - 16px);
 			}
-
-			.d2l-alert-toast-container:not([data-state="closed"]) {
-				display: block;
-			}
-
-			.d2l-alert-toast-container[data-state="opening"],
-			.d2l-alert-toast-container.d2l-alert-toast-container-lowest[data-state="closing"] {
-				transition-duration: 600ms;
-				transition-property: opacity, transform;
-				transition-timing-function: ease;
-			}
-			.d2l-alert-toast-container[data-state="closing"] {
-				transition: opacity 200ms ease;
-			}
-
-			.d2l-alert-toast-container.d2l-alert-toast-container-close-clicked[data-state="closing"] {
-				transition-duration: 200ms;
-			}
-
-			.d2l-alert-toast-container[data-state="preopening"],
-			.d2l-alert-toast-container[data-state="closing"] {
-				opacity: 0;
-			}
-			.d2l-alert-toast-container[data-state="preopening"],
-			.d2l-alert-toast-container.d2l-alert-toast-container-lowest[data-state="closing"] {
-				transform: translateY(calc(100% + 1.5rem));
-			}
-
-			.d2l-alert-toast-container[data-state="opening"] {
-				opacity: 1;
-				transform: translateY(0);
-			}
-
-			.d2l-alert-toast-container[data-state="sliding"] {
-				transition: bottom 600ms ease;
-			}
-
-			d2l-alert {
-				animation: none;
-			}
-
-			@media (max-width: 615px) {
-				.d2l-alert-toast-container {
-					margin-bottom: 12px;
-					width: calc(100% - 16px);
-				}
-			}
-		`;
-	}
+		}
+	`;
 
 	constructor() {
 		super();

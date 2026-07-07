@@ -7,23 +7,19 @@ const text = {
 };
 
 class MoreLessTest extends LitElement {
-	static get properties() {
-		return {
-			text: { type: String },
-			margin: { type: Boolean, reflect: true },
-			extraItems: { type: Number }
-		};
-	}
-	static get styles() {
-		return css`
-			button:last-of-type {
-				margin-bottom: 2em;
-			}
-			:host([margin]) .hidden-div {
-				margin-bottom: 500px;
-			}
-		`;
-	}
+	static properties = {
+		text: { type: String },
+		margin: { type: Boolean, reflect: true },
+		extraItems: { type: Number }
+	};
+	static styles = css`
+		button:last-of-type {
+			margin-bottom: 2em;
+		}
+		:host([margin]) .hidden-div {
+			margin-bottom: 500px;
+		}
+	`;
 
 	constructor() {
 		super();

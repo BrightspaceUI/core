@@ -30,111 +30,107 @@ export function formatISODateInUserCalDescriptor(val) {
  */
 class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Disables the input
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean },
-			/**
+		disabled: { type: Boolean },
+		/**
 			 * @ignore
 			 * Optionally add a 'Now' button to be used in date-time pickers only.
 			 */
-			hasNow: { attribute: 'has-now', type: Boolean },
-			/**
+		hasNow: { attribute: 'has-now', type: Boolean },
+		/**
 			 * Hides the label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
 			 * @type {boolean}
 			 */
-			labelHidden: { type: Boolean, attribute: 'label-hidden' },
-			/**
+		labelHidden: { type: Boolean, attribute: 'label-hidden' },
+		/**
 			 * Maximum valid date that could be selected by a user
 			 * @type {string}
 			 */
-			maxValue: { attribute: 'max-value', reflect: true, type: String },
-			/**
+		maxValue: { attribute: 'max-value', reflect: true, type: String },
+		/**
 			 * Minimum valid date that could be selected by a user
 			 * @type {string}
 			 */
-			minValue: { attribute: 'min-value', reflect: true, type: String },
-			/**
+		minValue: { attribute: 'min-value', reflect: true, type: String },
+		/**
 			 * @ignore
 			 * Disables validation of max and min value. The min and max value will still be enforced but the component will not be put into an error state or show an error tooltip.
 			 */
-			noValidateMinMax: { attribute: 'novalidateminmax', type: Boolean },
-			/**
+		noValidateMinMax: { attribute: 'novalidateminmax', type: Boolean },
+		/**
 			 * Indicates if the calendar dropdown is open
 			 * @type {boolean}
 			 */
-			opened: { type: Boolean, reflect: true },
-			/**
+		opened: { type: Boolean, reflect: true },
+		/**
 			 * Indicates that a value is required
 			 * @type {boolean}
 			 */
-			required: { type: Boolean, reflect: true },
-			/**
+		required: { type: Boolean, reflect: true },
+		/**
 			 * Value of the input
 			 * @type {string}
 			 */
-			value: { type: String },
-			_hiddenContentWidth: { type: String },
-			_dateTimeDescriptor: { type: Object },
-			_dropdownFirstOpened: { type: Boolean },
-			_formattedValue: { type: String },
-			_inputTextFocusShowTooltip: { type: Boolean },
-			_showInfoTooltip: { type: Boolean },
-			_shownValue: { type: String },
-			_showRevertInstructions: { state: true },
-			_showRevertTooltip: { state: true }
-		};
-	}
+		value: { type: String },
+		_hiddenContentWidth: { type: String },
+		_dateTimeDescriptor: { type: Object },
+		_dropdownFirstOpened: { type: Boolean },
+		_formattedValue: { type: String },
+		_inputTextFocusShowTooltip: { type: Boolean },
+		_showInfoTooltip: { type: Boolean },
+		_shownValue: { type: String },
+		_showRevertInstructions: { state: true },
+		_showRevertTooltip: { state: true }
+	};
 
-	static get styles() {
-		return [super.styles, css`
-			:host {
-				display: inline-block;
-				width: 100%;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			d2l-dropdown {
-				width: 100%;
-			}
-			d2l-icon {
-				--d2l-icon-height: 0.8rem;
-				--d2l-icon-width: 0.8rem;
-				margin-left: 0.6rem;
-				margin-right: 0.6rem;
-			}
-			:host([disabled]) d2l-icon {
-				opacity: 0.5;
-			}
-			.d2l-input-date-hidden-text {
-				font-family: inherit;
-				font-size: 0.8rem;
-				font-weight: 400;
-				letter-spacing: 0.02rem;
-				line-height: 1.4rem;
-				position: absolute;
-				visibility: hidden;
-				width: auto;
-			}
-			.d2l-input-date-hidden-text > div {
-				padding-left: 2rem; /* simulates space taken up by the icon */
-			}
-			d2l-calendar {
-				padding: 0.25rem 0.6rem;
-			}
-			.d2l-calendar-slot-buttons {
-				border-top: 1px solid var(--d2l-color-gypsum);
-				display: flex;
-				justify-content: center;
-				margin-top: 0.3rem;
-				padding-top: 0.3rem;
-			}
-		`];
-	}
+	static styles = [super.styles, css`
+		:host {
+			display: inline-block;
+			width: 100%;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		d2l-dropdown {
+			width: 100%;
+		}
+		d2l-icon {
+			--d2l-icon-height: 0.8rem;
+			--d2l-icon-width: 0.8rem;
+			margin-left: 0.6rem;
+			margin-right: 0.6rem;
+		}
+		:host([disabled]) d2l-icon {
+			opacity: 0.5;
+		}
+		.d2l-input-date-hidden-text {
+			font-family: inherit;
+			font-size: 0.8rem;
+			font-weight: 400;
+			letter-spacing: 0.02rem;
+			line-height: 1.4rem;
+			position: absolute;
+			visibility: hidden;
+			width: auto;
+		}
+		.d2l-input-date-hidden-text > div {
+			padding-left: 2rem; /* simulates space taken up by the icon */
+		}
+		d2l-calendar {
+			padding: 0.25rem 0.6rem;
+		}
+		.d2l-calendar-slot-buttons {
+			border-top: 1px solid var(--d2l-color-gypsum);
+			display: flex;
+			justify-content: center;
+			margin-top: 0.3rem;
+			padding-top: 0.3rem;
+		}
+	`];
 
 	constructor() {
 		super();

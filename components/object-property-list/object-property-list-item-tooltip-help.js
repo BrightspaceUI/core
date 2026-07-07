@@ -11,15 +11,13 @@ import { ObjectPropertyListItem } from './object-property-list-item.js';
  * @slot icon - Optional slot for a custom icon
  */
 class ObjectPropertyListItemTooltipHelp extends FocusMixin(ObjectPropertyListItem) {
-	static get properties() {
-		return {
-			/**
-			 * Preset icon key (e.g. "tier1:gear")
-			 * @type {string}
-			 */
-			icon: { type: String, reflect: true, },
-		};
-	}
+	static properties = {
+		/**
+		 * Preset icon key (e.g. "tier1:gear")
+		 * @type {string}
+		 */
+		icon: { type: String, reflect: true, },
+	};
 
 	static get focusElementSelector() {
 		return 'd2l-tooltip-help';

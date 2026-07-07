@@ -37,196 +37,192 @@ function getOffsetLeft(tab, tabRect) {
  */
 class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Limit the number of tabs to initially display
 			 * @type {number}
 			 */
-			maxToShow: { type: Number, attribute: 'max-to-show' },
-			/**
+		maxToShow: { type: Number, attribute: 'max-to-show' },
+		/**
 			 * REQUIRED: ACCESSIBILITY: Accessible text for the tablist
 			 * @type {string}
 			 */
-			text: { type: String },
-			_allowScrollNext: { type: Boolean },
-			_allowScrollPrevious: { type: Boolean },
-			_defaultSlotBehavior: { state: true },
-			_maxWidth: { type: Number },
-			_scrollCollapsed: { type: Boolean },
-			_state: { type: String },
-			_tabInfos: { type: Array },
-			_translationValue: {}
-		};
-	}
+		text: { type: String },
+		_allowScrollNext: { type: Boolean },
+		_allowScrollPrevious: { type: Boolean },
+		_defaultSlotBehavior: { state: true },
+		_maxWidth: { type: Number },
+		_scrollCollapsed: { type: Boolean },
+		_state: { type: String },
+		_tabInfos: { type: Array },
+		_translationValue: {}
+	};
 
-	static get styles() {
-		return [super.styles, bodyCompactStyles, css`
-			:host {
-				--d2l-tabs-background-color: var(--d2l-theme-background-color-base);
-				box-sizing: border-box;
-				display: block;
-				margin-bottom: 1.2rem;
-			}
+	static styles = [super.styles, bodyCompactStyles, css`
+		:host {
+			--d2l-tabs-background-color: var(--d2l-theme-background-color-base);
+			box-sizing: border-box;
+			display: block;
+			margin-bottom: 1.2rem;
+		}
+		.d2l-tabs-layout {
+			border-bottom: 1px solid var(--d2l-theme-border-color-subtle);
+			display: none;
+			max-height: 0;
+			opacity: 0;
+			transform: translateY(-10px);
+			-webkit-transition: max-height 200ms ease-out, transform 200ms ease-out, opacity 200ms ease-out;
+			transition: max-height 200ms ease-out, transform 200ms ease-out, opacity 200ms ease-out;
+			width: 100%;
+		}
+		.d2l-tabs-layout-anim {
+			display: flex;
+		}
+		.d2l-tabs-layout-shown {
+			display: flex;
+			max-height: 60px;
+			opacity: 1;
+			transform: none;
+		}
+		.d2l-tabs-container {
+			box-sizing: border-box;
+			flex: auto;
+			margin-left: -3px;
+			padding-left: 3px;
+			position: relative;
+			-webkit-transition: max-width 200ms ease-in;
+			transition: max-width 200ms ease-in;
+			${getOverflowDeclarations({ textOverflow: 'clip' })}
+		}
+		.d2l-tabs-container-ext {
+			flex: none;
+			padding-inline: 4px 0;
+		}
+		.d2l-tabs-container-list {
+			display: flex;
+			position: relative;
+			-webkit-transition: transform 200ms ease-out;
+			transition: transform 200ms ease-out;
+			white-space: nowrap;
+		}
+		.d2l-tabs-scroll-previous-container,
+		.d2l-tabs-scroll-next-container {
+			background-color: var(--d2l-tabs-background-color);
+			box-shadow: 0 0 12px 18px var(--d2l-tabs-background-color);
+			clip-path: rect(0% 200% 100% -100%);
+			display: none;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			z-index: 1;
+		}
+		.d2l-tabs-scroll-previous-container {
+			inset-inline-start: 0;
+			margin-inline: 4px 0;
+		}
+		.d2l-tabs-container[data-allow-scroll-previous] > .d2l-tabs-scroll-previous-container {
+			display: inline-block;
+		}
+		.d2l-tabs-scroll-next-container {
+			inset-inline-end: 0;
+			margin-inline: 0 4px;
+		}
+		.d2l-tabs-container[data-allow-scroll-next] > .d2l-tabs-scroll-next-container {
+			display: inline-block;
+		}
+		.d2l-tabs-scroll-button {
+			background-color: transparent;
+			border: 1px solid transparent;
+			border-radius: 15px;
+			box-sizing: border-box;
+			cursor: pointer;
+			display: inline-block;
+			height: 30px;
+			margin: 0;
+			outline: none;
+			padding: 0;
+			transform: translateY(10px);
+			width: 30px;
+		}
+		.d2l-tabs-scroll-button[disabled] {
+			cursor: default;
+			opacity: 0.5;
+		}
+		.d2l-tabs-scroll-button::-moz-focus-inner {
+			border: 0;
+		}
+		.d2l-tabs-scroll-button[disabled]:hover,
+		.d2l-tabs-scroll-button[disabled]:${unsafeCSS(getFocusPseudoClass())} {
+			background-color: transparent;
+		}
+		.d2l-tabs-scroll-button:hover,
+		.d2l-tabs-scroll-button:${unsafeCSS(getFocusPseudoClass())} {
+			background-color: var(--d2l-theme-background-color-interactive-tertiary-hover);
+		}
+		${getFocusRingStyles('.d2l-tabs-scroll-button')}
+		:host([skeleton]) .d2l-tabs-scroll-button {
+			visibility: hidden;
+		}
+		.d2l-panels-container-no-whitespace ::slotted(*) {
+			margin-top: 0;
+			-webkit-transition: margin-top 200ms ease-out;
+			transition: margin-top 200ms ease-out;
+		}
+
+		d2l-tab-internal, ::slotted([role="tab"]) {
+			-webkit-transition: max-width 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
+			transition: max-width 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
+		}
+		d2l-tab-internal[data-state="adding"],
+		d2l-tab-internal[data-state="removing"],
+		::slotted([role="tab"][data-state="adding"]),
+		::slotted([role="tab"][data-state="removing"]) {
+			max-width: 0;
+			opacity: 0;
+			transform: translateY(20px);
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+
 			.d2l-tabs-layout {
-				border-bottom: 1px solid var(--d2l-theme-border-color-subtle);
-				display: none;
-				max-height: 0;
-				opacity: 0;
-				transform: translateY(-10px);
-				-webkit-transition: max-height 200ms ease-out, transform 200ms ease-out, opacity 200ms ease-out;
-				transition: max-height 200ms ease-out, transform 200ms ease-out, opacity 200ms ease-out;
-				width: 100%;
-			}
-			.d2l-tabs-layout-anim {
-				display: flex;
-			}
-			.d2l-tabs-layout-shown {
-				display: flex;
-				max-height: 60px;
-				opacity: 1;
-				transform: none;
+				-webkit-transition: none;
+				transition: none;
 			}
 			.d2l-tabs-container {
-				box-sizing: border-box;
-				flex: auto;
-				margin-left: -3px;
-				padding-left: 3px;
-				position: relative;
-				-webkit-transition: max-width 200ms ease-in;
-				transition: max-width 200ms ease-in;
-				${getOverflowDeclarations({ textOverflow: 'clip' })}
-			}
-			.d2l-tabs-container-ext {
-				flex: none;
-				padding-inline: 4px 0;
+				-webkit-transition: none;
+				transition: none;
 			}
 			.d2l-tabs-container-list {
-				display: flex;
-				position: relative;
-				-webkit-transition: transform 200ms ease-out;
-				transition: transform 200ms ease-out;
-				white-space: nowrap;
-			}
-			.d2l-tabs-scroll-previous-container,
-			.d2l-tabs-scroll-next-container {
-				background-color: var(--d2l-tabs-background-color);
-				box-shadow: 0 0 12px 18px var(--d2l-tabs-background-color);
-				clip-path: rect(0% 200% 100% -100%);
-				display: none;
-				height: 100%;
-				position: absolute;
-				top: 0;
-				z-index: 1;
-			}
-			.d2l-tabs-scroll-previous-container {
-				inset-inline-start: 0;
-				margin-inline: 4px 0;
-			}
-			.d2l-tabs-container[data-allow-scroll-previous] > .d2l-tabs-scroll-previous-container {
-				display: inline-block;
-			}
-			.d2l-tabs-scroll-next-container {
-				inset-inline-end: 0;
-				margin-inline: 0 4px;
-			}
-			.d2l-tabs-container[data-allow-scroll-next] > .d2l-tabs-scroll-next-container {
-				display: inline-block;
-			}
-			.d2l-tabs-scroll-button {
-				background-color: transparent;
-				border: 1px solid transparent;
-				border-radius: 15px;
-				box-sizing: border-box;
-				cursor: pointer;
-				display: inline-block;
-				height: 30px;
-				margin: 0;
-				outline: none;
-				padding: 0;
-				transform: translateY(10px);
-				width: 30px;
-			}
-			.d2l-tabs-scroll-button[disabled] {
-				cursor: default;
-				opacity: 0.5;
-			}
-			.d2l-tabs-scroll-button::-moz-focus-inner {
-				border: 0;
-			}
-			.d2l-tabs-scroll-button[disabled]:hover,
-			.d2l-tabs-scroll-button[disabled]:${unsafeCSS(getFocusPseudoClass())} {
-				background-color: transparent;
-			}
-			.d2l-tabs-scroll-button:hover,
-			.d2l-tabs-scroll-button:${unsafeCSS(getFocusPseudoClass())} {
-				background-color: var(--d2l-theme-background-color-interactive-tertiary-hover);
-			}
-			${getFocusRingStyles('.d2l-tabs-scroll-button')}
-			:host([skeleton]) .d2l-tabs-scroll-button {
-				visibility: hidden;
+				-webkit-transition: none;
+				transition: none;
 			}
 			.d2l-panels-container-no-whitespace ::slotted(*) {
-				margin-top: 0;
-				-webkit-transition: margin-top 200ms ease-out;
-				transition: margin-top 200ms ease-out;
+				-webkit-transition: none;
+				transition: none;
 			}
-
 			d2l-tab-internal, ::slotted([role="tab"]) {
-				-webkit-transition: max-width 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
-				transition: max-width 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
-			}
-			d2l-tab-internal[data-state="adding"],
-			d2l-tab-internal[data-state="removing"],
-			::slotted([role="tab"][data-state="adding"]),
-			::slotted([role="tab"][data-state="removing"]) {
-				max-width: 0;
-				opacity: 0;
-				transform: translateY(20px);
+				-webkit-transition: none;
+				transition: none;
 			}
 
-			@media (prefers-reduced-motion: reduce) {
+		}
 
-				.d2l-tabs-layout {
-					-webkit-transition: none;
-					transition: none;
-				}
-				.d2l-tabs-container {
-					-webkit-transition: none;
-					transition: none;
-				}
-				.d2l-tabs-container-list {
-					-webkit-transition: none;
-					transition: none;
-				}
-				.d2l-panels-container-no-whitespace ::slotted(*) {
-					-webkit-transition: none;
-					transition: none;
-				}
-				d2l-tab-internal, ::slotted([role="tab"]) {
-					-webkit-transition: none;
-					transition: none;
-				}
-
+		@media (prefers-contrast: more) {
+			.d2l-tabs-scroll-previous-container,
+			.d2l-tabs-scroll-next-container {
+				margin-inline: 0;
+				padding-inline: 4px;
 			}
-
-			@media (prefers-contrast: more) {
-				.d2l-tabs-scroll-previous-container,
-				.d2l-tabs-scroll-next-container {
-					margin-inline: 0;
-					padding-inline: 4px;
-				}
-				.d2l-tabs-scroll-next-container {
-					border-inline-start: 1px solid var(--d2l-theme-border-color-subtle);
-					padding-inline-start: 11px;
-				}
-				.d2l-tabs-scroll-previous-container {
-					border-inline-end: 1px solid var(--d2l-theme-border-color-subtle);
-					padding-inline-end: 11px;
-				}
+			.d2l-tabs-scroll-next-container {
+				border-inline-start: 1px solid var(--d2l-theme-border-color-subtle);
+				padding-inline-start: 11px;
 			}
-		`];
-	}
+			.d2l-tabs-scroll-previous-container {
+				border-inline-end: 1px solid var(--d2l-theme-border-color-subtle);
+				padding-inline-end: 11px;
+			}
+		}
+	`];
 
 	constructor() {
 		super();

@@ -54,278 +54,274 @@ function addTabListener() {
  */
 class CollapsiblePanel extends SkeletonMixin(FocusMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * REQUIRED: The title of the panel
 			 * @type {string}
 			 */
-			panelTitle: { attribute: 'panel-title', type: String, reflect: true },
-			/**
+		panelTitle: { attribute: 'panel-title', type: String, reflect: true },
+		/**
 			 * The semantic heading level (h1-h6)
 			 * @type {'1'|'2'|'3'|'4'|'5'|'6'}
 			 * @default "3"
 			 */
-			headingLevel: { attribute: 'heading-level', type: String, reflect: true },
-			/**
+		headingLevel: { attribute: 'heading-level', type: String, reflect: true },
+		/**
 			 * The heading style to use
 			 * @type {'1'|'2'|'3'|'4'}
 			 * @default "3"
 			 */
-			headingStyle: { attribute: 'heading-style', type: String, reflect: true },
-			/**
+		headingStyle: { attribute: 'heading-style', type: String, reflect: true },
+		/**
 			 * Whether or not the panel is expanded
 			 * @type {boolean}
 			 */
-			expanded: { type: Boolean, reflect: true },
-			/**
+		expanded: { type: Boolean, reflect: true },
+		/**
 			 * ACCESSIBILITY: Label describing the contents of the header for screen reader users
 			 * @type {string}
 			 */
-			expandCollapseLabel: { attribute: 'expand-collapse-label', type: String, reflect: true },
-			/**
+		expandCollapseLabel: { attribute: 'expand-collapse-label', type: String, reflect: true },
+		/**
 			 * Type of collapsible panel
 			 * @type {'default'|'subtle'|'inline'}
 			 * @default "default"
 			 */
-			type: { type: String, reflect: true },
-			/**
+		type: { type: String, reflect: true },
+		/**
 			 * Horizontal padding of the panel
 			 * @type {'default'|'large'}
 			 * @default "default"
 			 */
-			paddingType: { attribute: 'padding-type', type: String, reflect: true },
-			/**
+		paddingType: { attribute: 'padding-type', type: String, reflect: true },
+		/**
 			 * Disables sticky positioning for the header
 			 * @type {boolean}
 			 */
-			noSticky: { attribute: 'no-sticky', type: Boolean },
-			_focused: { state: true },
-			_hasBefore: { state: true },
-			_hasSummary: { state: true },
-			_isLastPanelInGroup: { state: true },
-			_scrolled: { state: true },
-		};
-	}
+		noSticky: { attribute: 'no-sticky', type: Boolean },
+		_focused: { state: true },
+		_hasBefore: { state: true },
+		_hasSummary: { state: true },
+		_isLastPanelInGroup: { state: true },
+		_scrolled: { state: true },
+	};
 
-	static get styles() {
-		return [super.styles, heading1Styles, heading2Styles, heading3Styles, heading4Styles, css`
-			:host {
-				--d2l-collapsible-panel-focus-outline: solid 2px var(--d2l-theme-border-color-focus);
-				--d2l-collapsible-panel-spacing-inline: 0.9rem;
-				--d2l-collapsible-panel-header-spacing: 0.6rem;
-				--d2l-collapsible-panel-transition-time: 0.2s;
-				--d2l-collapsible-panel-arrow-time: 0.5s;
-				display: block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			:host([padding-type="large"][type="inline"]) {
-				--d2l-collapsible-panel-spacing-inline: 2rem;
-			}
-			.d2l-collapsible-panel {
-				border: 1px solid var(--d2l-theme-border-color-standard);
-				border-radius: 0.4rem;
-			}
-			:host(:not([expanded]):not([skeleton])) .d2l-collapsible-panel {
-				cursor: pointer;
-			}
-			:host([type="subtle"]) .d2l-collapsible-panel {
-				background-color: var(--d2l-theme-background-color-base);
-				border: none;
-				box-shadow: var(--d2l-theme-shadow-attached);
-			}
-			:host([type="inline"]) .d2l-collapsible-panel {
-				border-left: none;
-				border-radius: 0;
-				border-right: none;
-				outline-offset: -2px;
-			}
-			:host([type="inline"]) .d2l-collapsible-panel.no-bottom-border {
-				border-bottom: none;
-			}
-			:host([heading-style="1"]) {
-				--d2l-collapsible-panel-header-spacing: 1.2rem;
-			}
-			:host([heading-style="4"]) {
-				--d2l-collapsible-panel-header-spacing: 0.3rem;
-			}
-			.d2l-collapsible-panel-before {
-				grid-row: 1/-1;
-			}
-			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-before {
-				margin: 0.3rem 0;
-				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
-			}
-			.d2l-collapsible-panel-header {
-				border-radius: 0.4rem;
-				cursor: pointer;
-				display: grid;
-				grid-template-columns: auto 1fr;
-				grid-template-rows: auto auto;
-				padding: var(--d2l-collapsible-panel-header-spacing) 0;
-			}
-			:host(:not([skeleton])) .d2l-collapsible-panel-header {
-				cursor: pointer;
-			}
-			:host([type="inline"]) .d2l-collapsible-panel-header {
-				border-radius: 0;
-				outline-offset: -2px;
-			}
-			.d2l-collapsible-panel.scrolled .d2l-collapsible-panel-header {
-				background-color: var(--d2l-theme-background-color-base);
-				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
-				position: sticky;
-				top: 0;
-				z-index: 11; /* must be greater greater than list-items with open dropdowns or tooltips */
-			}
-			.d2l-collapsible-panel.focused.scrolled .d2l-collapsible-panel-header {
-				top: 2px;
-			}
-			.d2l-collapsible-panel-title {
-				flex: 1;
-				margin: 0.3rem;
-				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
-				overflow-wrap: anywhere;
-				user-select: none;
-			}
-			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-title {
-				margin-inline-start: 0.75rem;
-			}
+	static styles = [super.styles, heading1Styles, heading2Styles, heading3Styles, heading4Styles, css`
+		:host {
+			--d2l-collapsible-panel-focus-outline: solid 2px var(--d2l-theme-border-color-focus);
+			--d2l-collapsible-panel-spacing-inline: 0.9rem;
+			--d2l-collapsible-panel-header-spacing: 0.6rem;
+			--d2l-collapsible-panel-transition-time: 0.2s;
+			--d2l-collapsible-panel-arrow-time: 0.5s;
+			display: block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		:host([padding-type="large"][type="inline"]) {
+			--d2l-collapsible-panel-spacing-inline: 2rem;
+		}
+		.d2l-collapsible-panel {
+			border: 1px solid var(--d2l-theme-border-color-standard);
+			border-radius: 0.4rem;
+		}
+		:host(:not([expanded]):not([skeleton])) .d2l-collapsible-panel {
+			cursor: pointer;
+		}
+		:host([type="subtle"]) .d2l-collapsible-panel {
+			background-color: var(--d2l-theme-background-color-base);
+			border: none;
+			box-shadow: var(--d2l-theme-shadow-attached);
+		}
+		:host([type="inline"]) .d2l-collapsible-panel {
+			border-left: none;
+			border-radius: 0;
+			border-right: none;
+			outline-offset: -2px;
+		}
+		:host([type="inline"]) .d2l-collapsible-panel.no-bottom-border {
+			border-bottom: none;
+		}
+		:host([heading-style="1"]) {
+			--d2l-collapsible-panel-header-spacing: 1.2rem;
+		}
+		:host([heading-style="4"]) {
+			--d2l-collapsible-panel-header-spacing: 0.3rem;
+		}
+		.d2l-collapsible-panel-before {
+			grid-row: 1/-1;
+		}
+		.d2l-collapsible-panel.has-before .d2l-collapsible-panel-before {
+			margin: 0.3rem 0;
+			margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
+		}
+		.d2l-collapsible-panel-header {
+			border-radius: 0.4rem;
+			cursor: pointer;
+			display: grid;
+			grid-template-columns: auto 1fr;
+			grid-template-rows: auto auto;
+			padding: var(--d2l-collapsible-panel-header-spacing) 0;
+		}
+		:host(:not([skeleton])) .d2l-collapsible-panel-header {
+			cursor: pointer;
+		}
+		:host([type="inline"]) .d2l-collapsible-panel-header {
+			border-radius: 0;
+			outline-offset: -2px;
+		}
+		.d2l-collapsible-panel.scrolled .d2l-collapsible-panel-header {
+			background-color: var(--d2l-theme-background-color-base);
+			box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
+			position: sticky;
+			top: 0;
+			z-index: 11; /* must be greater greater than list-items with open dropdowns or tooltips */
+		}
+		.d2l-collapsible-panel.focused.scrolled .d2l-collapsible-panel-header {
+			top: 2px;
+		}
+		.d2l-collapsible-panel-title {
+			flex: 1;
+			margin: 0.3rem;
+			margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
+			overflow-wrap: anywhere;
+			user-select: none;
+		}
+		.d2l-collapsible-panel.has-before .d2l-collapsible-panel-title {
+			margin-inline-start: 0.75rem;
+		}
 
+		.d2l-collapsible-panel.focused,
+		:host([expanded]) .d2l-collapsible-panel.focused .d2l-collapsible-panel-header {
+			outline: var(--d2l-collapsible-panel-focus-outline);
+		}
+		@supports selector(:has(a, b)) {
 			.d2l-collapsible-panel.focused,
 			:host([expanded]) .d2l-collapsible-panel.focused .d2l-collapsible-panel-header {
+				outline: none;
+			}
+			.d2l-collapsible-panel.focused:has(:focus-visible),
+			:host([expanded]) .d2l-collapsible-panel.focused:has(:focus-visible) .d2l-collapsible-panel-header {
 				outline: var(--d2l-collapsible-panel-focus-outline);
 			}
-			@supports selector(:has(a, b)) {
-				.d2l-collapsible-panel.focused,
-				:host([expanded]) .d2l-collapsible-panel.focused .d2l-collapsible-panel-header {
-					outline: none;
-				}
-				.d2l-collapsible-panel.focused:has(:focus-visible),
-				:host([expanded]) .d2l-collapsible-panel.focused:has(:focus-visible) .d2l-collapsible-panel-header {
-					outline: var(--d2l-collapsible-panel-focus-outline);
-				}
-			}
-			:host([expanded]) .d2l-collapsible-panel {
-				outline: none;
-			}
+		}
+		:host([expanded]) .d2l-collapsible-panel {
+			outline: none;
+		}
 
-			.d2l-collapsible-panel-header-primary {
-				align-items: center;
-				display: flex;
-				justify-content: space-between;
-			}
-			.d2l-collapsible-panel-header-secondary {
-				display: flex;
-				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
-				margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
-			}
-			.d2l-collapsible-panel.has-before .d2l-collapsible-panel-header-secondary {
-				margin-inline-start: 0.75rem;
-			}
-			.d2l-collapsible-panel-header-secondary ::slotted(*) {
-				cursor: default;
-			}
-			.d2l-collapsible-panel-header-actions {
-				align-self: self-start;
-				display: flex;
-				gap: 0.3rem;
-			}
-			.d2l-collapsible-panel-header-actions::after {
-				border-inline-end: 1px solid var(--d2l-theme-border-color-standard);
-				content: "";
-				display: flex;
-				margin: 0.3rem;
-			}
-			.d2l-collapsible-panel-opener {
-				background-color: transparent;
-				border: none;
-				color: inherit;
-				cursor: pointer;
-				font-family: inherit;
-				font-size: inherit;
-				font-weight: inherit;
-				letter-spacing: inherit;
-				line-height: inherit;
-				outline: none;
-				padding-block: 0;
-				padding-inline: 0;
-				text-align: inherit;
-			}
-			d2l-icon-custom {
-				align-self: self-start;
-				height: 0.9rem;
-				margin: 0.6rem;
-				margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
-				position: relative;
-				transform: var(--d2l-mirror-transform, ${document.dir === 'rtl' ? css`scale(-1, 1)` : css`none`}); /* stylelint-disable-line @stylistic/string-quotes, @stylistic/function-whitespace-after */
-				transform-origin: center;
-				width: 0.9rem;
+		.d2l-collapsible-panel-header-primary {
+			align-items: center;
+			display: flex;
+			justify-content: space-between;
+		}
+		.d2l-collapsible-panel-header-secondary {
+			display: flex;
+			margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
+			margin-inline-start: var(--d2l-collapsible-panel-spacing-inline);
+		}
+		.d2l-collapsible-panel.has-before .d2l-collapsible-panel-header-secondary {
+			margin-inline-start: 0.75rem;
+		}
+		.d2l-collapsible-panel-header-secondary ::slotted(*) {
+			cursor: default;
+		}
+		.d2l-collapsible-panel-header-actions {
+			align-self: self-start;
+			display: flex;
+			gap: 0.3rem;
+		}
+		.d2l-collapsible-panel-header-actions::after {
+			border-inline-end: 1px solid var(--d2l-theme-border-color-standard);
+			content: "";
+			display: flex;
+			margin: 0.3rem;
+		}
+		.d2l-collapsible-panel-opener {
+			background-color: transparent;
+			border: none;
+			color: inherit;
+			cursor: pointer;
+			font-family: inherit;
+			font-size: inherit;
+			font-weight: inherit;
+			letter-spacing: inherit;
+			line-height: inherit;
+			outline: none;
+			padding-block: 0;
+			padding-inline: 0;
+			text-align: inherit;
+		}
+		d2l-icon-custom {
+			align-self: self-start;
+			height: 0.9rem;
+			margin: 0.6rem;
+			margin-inline-end: var(--d2l-collapsible-panel-spacing-inline);
+			position: relative;
+			transform: var(--d2l-mirror-transform, ${document.dir === 'rtl' ? css`scale(-1, 1)` : css`none`}); /* stylelint-disable-line @stylistic/string-quotes, @stylistic/function-whitespace-after */
+			transform-origin: center;
+			width: 0.9rem;
+		}
+		d2l-icon-custom svg {
+			position: absolute;
+			transform-origin: 0.4rem;
+		}
+		:host([expanded]) d2l-icon-custom svg {
+			fill: currentColor;
+			transform: rotate(90deg);
+		}
+		@media (prefers-reduced-motion: no-preference) {
+			.d2l-collapsible-panel-divider {
+				transition: opacity var(--d2l-collapsible-panel-transition-time) ease-in-out;
 			}
 			d2l-icon-custom svg {
-				position: absolute;
-				transform-origin: 0.4rem;
+				animation: d2l-collapsible-panel-opener-close var(--d2l-collapsible-panel-arrow-time) ease-in-out;
 			}
 			:host([expanded]) d2l-icon-custom svg {
-				fill: currentColor;
-				transform: rotate(90deg);
+				animation: d2l-collapsible-panel-opener-open var(--d2l-collapsible-panel-arrow-time) ease-in-out;
 			}
-			@media (prefers-reduced-motion: no-preference) {
-				.d2l-collapsible-panel-divider {
-					transition: opacity var(--d2l-collapsible-panel-transition-time) ease-in-out;
-				}
-				d2l-icon-custom svg {
-					animation: d2l-collapsible-panel-opener-close var(--d2l-collapsible-panel-arrow-time) ease-in-out;
-				}
-				:host([expanded]) d2l-icon-custom svg {
-					animation: d2l-collapsible-panel-opener-open var(--d2l-collapsible-panel-arrow-time) ease-in-out;
-				}
-				/* stylelint-disable order/properties-alphabetical-order */
-				@keyframes d2l-collapsible-panel-opener-open {
-					0% { transform: rotate(0deg); }
-					25% { transform: rotate(105deg); animation-timing-function: ease-in-out; }
-					50% { transform: rotate(82deg); animation-timing-function: ease-in-out; }
-					75% { transform: rotate(93deg); animation-timing-function: ease-in-out; }
-					100% { transform: rotate(90deg); animation-timing-function: ease-in-out; }
-				}
-				@keyframes d2l-collapsible-panel-opener-close {
-					0% { transform: rotate(90deg); }
-					25% { transform: rotate(-15deg); animation-timing-function: ease-in-out; }
-					50% { transform: rotate(8deg); animation-timing-function: ease-in-out; }
-					75% { transform: rotate(-3deg); animation-timing-function: ease-in-out; }
-					100% { transform: rotate(0deg); animation-timing-function: ease-in-out; }
-				}
-				/* stylelint-enable */
+			/* stylelint-disable order/properties-alphabetical-order */
+			@keyframes d2l-collapsible-panel-opener-open {
+				0% { transform: rotate(0deg); }
+				25% { transform: rotate(105deg); animation-timing-function: ease-in-out; }
+				50% { transform: rotate(82deg); animation-timing-function: ease-in-out; }
+				75% { transform: rotate(93deg); animation-timing-function: ease-in-out; }
+				100% { transform: rotate(90deg); animation-timing-function: ease-in-out; }
 			}
-			.d2l-collapsible-panel-divider {
-				border-bottom: 1px solid var(--d2l-theme-border-color-standard);
-				margin-inline: var(--d2l-collapsible-panel-spacing-inline);
-				opacity: 1;
+			@keyframes d2l-collapsible-panel-opener-close {
+				0% { transform: rotate(90deg); }
+				25% { transform: rotate(-15deg); animation-timing-function: ease-in-out; }
+				50% { transform: rotate(8deg); animation-timing-function: ease-in-out; }
+				75% { transform: rotate(-3deg); animation-timing-function: ease-in-out; }
+				100% { transform: rotate(0deg); animation-timing-function: ease-in-out; }
 			}
-			:host([type=inline]) .d2l-collapsible-panel-divider {
-				opacity: 0;
-			}
-			:host(:not([expanded])) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-divider {
-				opacity: 0;
-			}
-			.d2l-collapsible-panel-summary,
-			.d2l-collapsible-panel-content {
-				padding: 0.9rem var(--d2l-collapsible-panel-spacing-inline);
-			}
-			:host([type=inline]) .d2l-collapsible-panel-summary,
-			:host([type=inline]) .d2l-collapsible-panel-content {
-				padding-top: 0;
-			}
-			:host([type="inline"]) .d2l-collapsible-panel-summary {
-				margin-top: -0.3rem;
-			}
-			.d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-summary {
-				display: none;
-			}
-		`];
-	}
+			/* stylelint-enable */
+		}
+		.d2l-collapsible-panel-divider {
+			border-bottom: 1px solid var(--d2l-theme-border-color-standard);
+			margin-inline: var(--d2l-collapsible-panel-spacing-inline);
+			opacity: 1;
+		}
+		:host([type=inline]) .d2l-collapsible-panel-divider {
+			opacity: 0;
+		}
+		:host(:not([expanded])) .d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-divider {
+			opacity: 0;
+		}
+		.d2l-collapsible-panel-summary,
+		.d2l-collapsible-panel-content {
+			padding: 0.9rem var(--d2l-collapsible-panel-spacing-inline);
+		}
+		:host([type=inline]) .d2l-collapsible-panel-summary,
+		:host([type=inline]) .d2l-collapsible-panel-content {
+			padding-top: 0;
+		}
+		:host([type="inline"]) .d2l-collapsible-panel-summary {
+			margin-top: -0.3rem;
+		}
+		.d2l-collapsible-panel:not(.has-summary) .d2l-collapsible-panel-summary {
+			display: none;
+		}
+	`];
 
 	constructor() {
 		super();

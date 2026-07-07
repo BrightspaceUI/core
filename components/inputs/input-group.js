@@ -6,18 +6,16 @@ import { css, html, LitElement } from 'lit';
  */
 class InputGroup extends LitElement {
 
-	static get styles() {
-		return css`
-			:host {
-				display: flex;
-				flex-direction: column;
-				gap: 0.9rem;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: flex;
+			flex-direction: column;
+			gap: 0.9rem;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+	`;
 
 	render() {
 		return html`<slot></slot>`;

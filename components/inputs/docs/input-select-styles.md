@@ -10,9 +10,7 @@ A Select List allows the user to select a single option out of a relatively larg
 
   class MySelectElem extends LitElement {
 
-    static get styles() {
-      return selectStyles;
-    }
+    static styles = selectStyles;
     render() {
       return html`
         <select class="d2l-input-select" aria-label="Options">
@@ -61,9 +59,7 @@ When applying styles to the native element, we also recommend using the [`Skelet
   import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 
   class TestInputSelect extends SkeletonMixin(LitElement) {
-  static get styles() {
-    return [super.styles, selectStyles];
-  }
+  static styles = [super.styles, selectStyles];
 
   render() {
     return html`
@@ -100,9 +96,7 @@ For a visible label, import the label styles and include them in your component'
 
   class TestInputSelect extends LitElement {
 
-    static get styles() {
-      return [inputLabelStyles, selectStyles];
-    }
+    static styles = [inputLabelStyles, selectStyles];
 
     render() {
       return html`

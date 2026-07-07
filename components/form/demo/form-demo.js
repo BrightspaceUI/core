@@ -15,8 +15,7 @@ import { selectStyles } from '../../inputs/input-select-styles.js';
 
 class FormNestedDemo extends LitElement {
 
-	static get styles() {
-		return [inputStyles, selectStyles, css`
+	static styles = [inputStyles, selectStyles, css`
 
 			.d2l-form-demo-split-container {
 				display: flex;
@@ -28,7 +27,6 @@ class FormNestedDemo extends LitElement {
 				padding: 0 20px 20px 0;
 			}
 		`];
-	}
 
 	render() {
 		return html`

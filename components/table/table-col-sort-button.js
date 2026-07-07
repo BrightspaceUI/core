@@ -19,115 +19,111 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
  */
 export class TableColSortButton extends LocalizeCoreElement(FocusMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Whether sort direction is descending
 			 * @type {boolean}
 			 */
-			desc: {
-				reflect: true,
-				type: Boolean
-			},
-			/**
+		desc: {
+			reflect: true,
+			type: Boolean
+		},
+		/**
 			 * Column is not currently sorted. Hides the ascending/descending sort icon.
 			 * @type {boolean}
 			 */
-			nosort: {
-				reflect: true,
-				type: Boolean
-			},
-			/**
+		nosort: {
+			reflect: true,
+			type: Boolean
+		},
+		/**
 			 * Position of the button content
 			 * @type {'start'|'center'|'end'}
 			 */
-			position: {
-				reflect: true,
-				type: String
-			},
-			/**
+		position: {
+			reflect: true,
+			type: String
+		},
+		/**
 			 * ACCESSIBILITY: The type of data in the column (e.g., 'words'). Used to set the title.
 			 *  @type {'words'|'numbers'|'dates'|'unknown'}
 			 */
-			sourceType: {
-				attribute: 'source-type',
-				type: String
-			},
-			_hasDropdownItems: { state: true },
-			_selectedMenuItemText: { state: true },
-			_label: { state: true },
-		};
-	}
+		sourceType: {
+			attribute: 'source-type',
+			type: String
+		},
+		_hasDropdownItems: { state: true },
+		_selectedMenuItemText: { state: true },
+		_label: { state: true },
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				--d2l-table-col-sort-button-additional-padding-inline-end: 0px; /* stylelint-disable-line length-zero-no-unit */
-				--d2l-table-col-sort-button-additional-padding-inline-start: 0px; /* stylelint-disable-line length-zero-no-unit */
-				--d2l-table-col-sort-button-width: calc(100% - var(--d2l-table-cell-col-sort-button-size-offset, 4px));
-			}
-			:host([nosort]) {
-				--d2l-table-col-sort-button-additional-padding-inline-end: calc(0.6rem + 18px);
-			}
-			:host > :first-child {
-				width: var(--d2l-table-col-sort-button-width);
-			}
-			:host([nosort][position="center"]) {
-				--d2l-table-col-sort-button-additional-padding-inline-end: calc(0.5 * (0.6rem + 18px) + var(--d2l-table-cell-col-sort-button-size-offset, 4px));
-				--d2l-table-col-sort-button-additional-padding-inline-start: calc(0.5 * (0.6rem + 18px) - var(--d2l-table-cell-col-sort-button-size-offset, 4px));
-			}
-			:host([nosort][position="end"]) {
-				--d2l-table-col-sort-button-additional-padding-inline-end: 0px; /* stylelint-disable-line length-zero-no-unit */
-				--d2l-table-col-sort-button-additional-padding-inline-start: calc(0.6rem + 18px);
-			}
-			:host([position="center"]) button {
-				justify-content: center;
-			}
-			:host([position="end"]) button {
-				justify-content: end;
-			}
-			button {
-				align-items: center;
-				background-color: transparent;
-				border: none;
-				border-radius: 4px;
-				color: inherit;
-				cursor: pointer;
-				display: inline-flex;
-				font-family: inherit;
-				font-size: inherit;
-				letter-spacing: inherit;
-				line-height: 0.9rem;
-				margin-block: 0 var(--d2l-table-cell-col-sort-button-size-offset, 4px);
-				margin-inline: 0 var(--d2l-table-cell-col-sort-button-size-offset, 4px);
-				padding: calc(var(--d2l-table-cell-padding) - var(--d2l-table-cell-col-sort-button-size-offset, 4px));
-				padding-inline-end: calc(var(--d2l-table-cell-padding) - var(--d2l-table-cell-col-sort-button-size-offset, 4px) + var(--d2l-table-col-sort-button-additional-padding-inline-end));
-				padding-inline-start: calc(var(--d2l-table-cell-padding) - var(--d2l-table-cell-col-sort-button-size-offset, 4px) + var(--d2l-table-col-sort-button-additional-padding-inline-start));
-				text-align: start;
-				text-decoration: none;
-				width: 100%;
-			}
-			button::-moz-focus-inner {
-				border: 0;
-			}
-			button:disabled {
-				opacity: 0.5;
-			}
-			button:hover {
-				background-color: var(--d2l-color-gypsum);
-			}
-			${getFocusRingStyles('button', { extraStyles: css`box-shadow: 0 0 0 2px #ffffff;` })}
-			d2l-icon {
-				margin-inline-start: 0.6rem;
-			}
-			::slotted(*[slot="items"]) {
-				display: none;
-			}
-			::slotted(d2l-table-col-sort-button-item[slot="items"]) {
-				display: flex;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			--d2l-table-col-sort-button-additional-padding-inline-end: 0px; /* stylelint-disable-line length-zero-no-unit */
+			--d2l-table-col-sort-button-additional-padding-inline-start: 0px; /* stylelint-disable-line length-zero-no-unit */
+			--d2l-table-col-sort-button-width: calc(100% - var(--d2l-table-cell-col-sort-button-size-offset, 4px));
+		}
+		:host([nosort]) {
+			--d2l-table-col-sort-button-additional-padding-inline-end: calc(0.6rem + 18px);
+		}
+		:host > :first-child {
+			width: var(--d2l-table-col-sort-button-width);
+		}
+		:host([nosort][position="center"]) {
+			--d2l-table-col-sort-button-additional-padding-inline-end: calc(0.5 * (0.6rem + 18px) + var(--d2l-table-cell-col-sort-button-size-offset, 4px));
+			--d2l-table-col-sort-button-additional-padding-inline-start: calc(0.5 * (0.6rem + 18px) - var(--d2l-table-cell-col-sort-button-size-offset, 4px));
+		}
+		:host([nosort][position="end"]) {
+			--d2l-table-col-sort-button-additional-padding-inline-end: 0px; /* stylelint-disable-line length-zero-no-unit */
+			--d2l-table-col-sort-button-additional-padding-inline-start: calc(0.6rem + 18px);
+		}
+		:host([position="center"]) button {
+			justify-content: center;
+		}
+		:host([position="end"]) button {
+			justify-content: end;
+		}
+		button {
+			align-items: center;
+			background-color: transparent;
+			border: none;
+			border-radius: 4px;
+			color: inherit;
+			cursor: pointer;
+			display: inline-flex;
+			font-family: inherit;
+			font-size: inherit;
+			letter-spacing: inherit;
+			line-height: 0.9rem;
+			margin-block: 0 var(--d2l-table-cell-col-sort-button-size-offset, 4px);
+			margin-inline: 0 var(--d2l-table-cell-col-sort-button-size-offset, 4px);
+			padding: calc(var(--d2l-table-cell-padding) - var(--d2l-table-cell-col-sort-button-size-offset, 4px));
+			padding-inline-end: calc(var(--d2l-table-cell-padding) - var(--d2l-table-cell-col-sort-button-size-offset, 4px) + var(--d2l-table-col-sort-button-additional-padding-inline-end));
+			padding-inline-start: calc(var(--d2l-table-cell-padding) - var(--d2l-table-cell-col-sort-button-size-offset, 4px) + var(--d2l-table-col-sort-button-additional-padding-inline-start));
+			text-align: start;
+			text-decoration: none;
+			width: 100%;
+		}
+		button::-moz-focus-inner {
+			border: 0;
+		}
+		button:disabled {
+			opacity: 0.5;
+		}
+		button:hover {
+			background-color: var(--d2l-color-gypsum);
+		}
+		${getFocusRingStyles('button', { extraStyles: css`box-shadow: 0 0 0 2px #ffffff;` })}
+		d2l-icon {
+			margin-inline-start: 0.6rem;
+		}
+		::slotted(*[slot="items"]) {
+			display: none;
+		}
+		::slotted(d2l-table-col-sort-button-item[slot="items"]) {
+			display: flex;
+		}
+	`;
 
 	constructor() {
 		super();

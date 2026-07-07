@@ -4,46 +4,42 @@ import { descriptionListStyles } from '../description-list-wrapper.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 class TestDescriptionList extends LitElement {
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Width for component to use a stacked layout
 			 * @type {number}
 			 */
-			breakpoint: { type: Number, reflect: true },
-			/**
+		breakpoint: { type: Number, reflect: true },
+		/**
 			 * Force the component to always use a stacked layout; will override breakpoint attribute
 			 * @type {boolean}
 			 */
-			forceStacked: { type: Boolean, reflect: true, attribute: 'force-stacked' },
-			/**
+		forceStacked: { type: Boolean, reflect: true, attribute: 'force-stacked' },
+		/**
 			 * @ignore
 			 */
-			type: { type: String, reflect: true },
-		};
-	}
+		type: { type: String, reflect: true },
+	};
 
-	static get styles() {
-		return [descriptionListStyles, css`
-			.user {
-				align-items: center;
-				display: flex;
-				gap: 0.5rem;
-			}
-			.avatar {
-				align-items: center;
-				background-color: var(--d2l-color-cinnabar-minus-1);
-				border-radius: 0.25rem;
-				color: white;
-				display: flex;
-				font-size: 0.7rem;
-				font-weight: 700;
-				height: 1.5rem;
-				justify-content: center;
-				width: 1.5rem;
-			}
-		`];
-	}
+	static styles = [descriptionListStyles, css`
+		.user {
+			align-items: center;
+			display: flex;
+			gap: 0.5rem;
+		}
+		.avatar {
+			align-items: center;
+			background-color: var(--d2l-color-cinnabar-minus-1);
+			border-radius: 0.25rem;
+			color: white;
+			display: flex;
+			font-size: 0.7rem;
+			font-weight: 700;
+			height: 1.5rem;
+			justify-content: center;
+			width: 1.5rem;
+		}
+	`];
 
 	constructor() {
 		super();

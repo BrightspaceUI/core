@@ -278,11 +278,9 @@ Notes on this example:
 
   class DialogAsyncContentUntil extends LoadingCompleteMixin(LitElement) {
 
-    static get properties() {
-      return {
-        key: { type: String }
-      };
-    }
+    static properties = {
+      key: { type: String }
+    };
     
     constructor() {
       super();

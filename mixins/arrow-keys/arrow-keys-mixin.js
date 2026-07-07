@@ -11,18 +11,16 @@ const keyCodes = Object.freeze({
 
 export const ArrowKeysMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			/**
-			 * @ignore
-			 */
-			arrowKeysDirection: { type: String, attribute: 'arrow-keys-direction' },
-			/**
-			 * @ignore
-			 */
-			arrowKeysNoWrap: { type: Boolean, attribute: 'arrow-keys-no-wrap' }
-		};
-	}
+	static properties = {
+		/**
+		 * @ignore
+		 */
+		arrowKeysDirection: { type: String, attribute: 'arrow-keys-direction' },
+		/**
+		 * @ignore
+		 */
+		arrowKeysNoWrap: { type: Boolean, attribute: 'arrow-keys-no-wrap' }
+	};
 
 	constructor() {
 		super();

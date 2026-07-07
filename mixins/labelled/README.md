@@ -26,11 +26,9 @@ Optionally, to enable custom elements to act as labels, extend the `LabelMixin` 
 import { LabelMixin } from '@brightspace-ui/core/mixins/labelled/labelled-mixin.js';
 
 class CustomLabel extends LabelMixin(LitElement) {
-  static get properties() {
-    return {
-      text: { type: String }
-    };
-  }
+  static properties = {
+    text: { type: String }
+  };
   render() {
     return html`
       <span>${this.text}</span>

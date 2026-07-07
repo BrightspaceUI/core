@@ -6,35 +6,33 @@ import { LitElement } from 'lit';
  */
 class FilterDimensionSetValue extends LitElement {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Count for the value in the list. If no count is provided, no count will be displayed
 			 * @type {number}
 			 */
-			count: { type: Number },
-			/**
+		count: { type: Number },
+		/**
 			 * Whether this value in the filter is disabled or not
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
+		disabled: { type: Boolean, reflect: true },
+		/**
 			 * REQUIRED: Unique key to represent this value in the dimension
 			 * @type {string}
 			 */
-			key: { type: String },
-			/**
+		key: { type: String },
+		/**
 			 * Whether this value in the filter is selected or not
 			 * @type {boolean}
 			 */
-			selected: { type: Boolean, reflect: true },
-			/**
+		selected: { type: Boolean, reflect: true },
+		/**
 			 * REQUIRED: The text that is displayed for the value
 			 * @type {string}
 			 */
-			text: { type: String }
-		};
-	}
+		text: { type: String }
+	};
 
 	constructor() {
 		super();

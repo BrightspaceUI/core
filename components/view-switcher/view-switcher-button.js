@@ -12,57 +12,53 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
  */
 class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * REQUIRED: Key for the button
 			 * @type {string}
 			 */
-			key: { type: String, required: true },
-			/**
+		key: { type: String, required: true },
+		/**
 			 * REQUIRED: Text for the button
 			 * @type {string}
 			 */
-			text: { type: String, required: true },
-			/**
+		text: { type: String, required: true },
+		/**
 			 * Indicates if the item is selected
 			 * @type {boolean}
 			 */
-			selected: { type: Boolean, reflect: true },
-		};
-	}
+		selected: { type: Boolean, reflect: true },
+	};
 
-	static get styles() {
-		return [labelStyles, buttonStyles, css`
-			/* Firefox includes a hidden border which messes up button dimensions */
-			button::-moz-focus-inner {
-				border: 0;
-			}
+	static styles = [labelStyles, buttonStyles, css`
+		/* Firefox includes a hidden border which messes up button dimensions */
+		button::-moz-focus-inner {
+			border: 0;
+		}
 
-			button {
-				background-color: transparent;
-				border-radius: 0.2rem;
-				display: block;
-				font-family: inherit;
-				min-height: auto;
-				padding-block: 0.3rem;
-				padding-inline: 1rem;
-			}
+		button {
+			background-color: transparent;
+			border-radius: 0.2rem;
+			display: block;
+			font-family: inherit;
+			min-height: auto;
+			padding-block: 0.3rem;
+			padding-inline: 1rem;
+		}
 
-			button:hover {
-				background-color: var(--d2l-color-mica);
-			}
+		button:hover {
+			background-color: var(--d2l-color-mica);
+		}
 
-			button:${unsafeCSS(getFocusPseudoClass())} {
-				box-shadow: 0 0 0 2px #ffffff;
-			}
+		button:${unsafeCSS(getFocusPseudoClass())} {
+			box-shadow: 0 0 0 2px #ffffff;
+		}
 
-			:host([selected]) button {
-				background-color: var(--d2l-color-tungsten);
-				color: #ffffff;
-			}
-		`];
-	}
+		:host([selected]) button {
+			background-color: var(--d2l-color-tungsten);
+			color: #ffffff;
+		}
+	`];
 
 	constructor() {
 		super();

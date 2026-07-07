@@ -8,26 +8,22 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
  */
 class ButtonCopy extends FocusMixin(ButtonCopyMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Description of the content being copied to clipboard
 			 * @type {string}
 			 */
-			text: { type: String },
-		};
-	}
+		text: { type: String },
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+	`;
 
 	static get focusElementSelector() {
 		return 'd2l-button-icon';

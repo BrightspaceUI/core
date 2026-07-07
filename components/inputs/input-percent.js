@@ -15,65 +15,61 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
  */
 class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * @ignore
 			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			autofocus: { type: Boolean },
-			/**
+		// eslint-disable-next-line lit/no-native-attributes
+		autofocus: { type: Boolean },
+		/**
 			 * Disables the input
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean },
-			/**
+		disabled: { type: Boolean },
+		/**
 			 * Restricts the maximum width of the input box without restricting the width of the label.
 			 * @type {string}
 			 */
-			inputWidth: { attribute: 'input-width', type: String },
-			/**
+		inputWidth: { attribute: 'input-width', type: String },
+		/**
 			 * Hides the label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
 			 * @type {boolean}
 			 */
-			labelHidden: { type: Boolean, attribute: 'label-hidden' },
-			/**
+		labelHidden: { type: Boolean, attribute: 'label-hidden' },
+		/**
 			 * Maximum number of decimal values to show (rounds value up or down).
 			 * @type {number}
 			 */
-			maxFractionDigits: { type: Number, attribute: 'max-fraction-digits' },
-			/**
+		maxFractionDigits: { type: Number, attribute: 'max-fraction-digits' },
+		/**
 			 * Minimum number of decimal values to show.
 			 * @type {number}
 			 */
-			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
-			/**
+		minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
+		/**
 			 * Indicates that a value is required
 			 * @type {boolean}
 			 */
-			required: { type: Boolean },
-			/**
+		required: { type: Boolean },
+		/**
 			 * Value of the input
 			 * @type {number}
 			 */
-			value: { type: Number }
-		};
-	}
+		value: { type: Number }
+	};
 
-	static get styles() {
-		return [ super.styles,
-			css`
-				:host {
-					display: inline-block;
-					position: relative;
-					width: 100%;
-				}
-				:host([hidden]) {
-					display: none;
-				}
-			`
-		];
-	}
+	static styles = [ super.styles,
+		css`
+			:host {
+				display: inline-block;
+				position: relative;
+				width: 100%;
+			}
+			:host([hidden]) {
+				display: none;
+			}
+		`
+	];
 
 	constructor() {
 		super();

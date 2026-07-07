@@ -3,23 +3,21 @@ import { css, html, nothing } from 'lit';
 
 export const SlottedIconMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
+	static properties = {
 
-			/**
-			 * Preset icon key (e.g. "tier1:gear")
-			 * @type {string}
-			 */
-			icon: {
-				type: String,
-				reflect: true,
-				required: {
-					validator: (_value, elem, hasValue) => hasValue || elem._hasCustomIcon || !elem._iconRequired
-				}
-			},
-			_hasCustomIcon: { state: true }
-		};
-	}
+		/**
+		 * Preset icon key (e.g. "tier1:gear")
+		 * @type {string}
+		 */
+		icon: {
+			type: String,
+			reflect: true,
+			required: {
+				validator: (_value, elem, hasValue) => hasValue || elem._hasCustomIcon || !elem._iconRequired
+			}
+		},
+		_hasCustomIcon: { state: true }
+	};
 
 	static get styles() {
 		const styles = [ css`

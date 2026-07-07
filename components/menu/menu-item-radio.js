@@ -9,9 +9,7 @@ import { menuItemSelectableStyles } from './menu-item-selectable-styles.js';
  */
 export class MenuItemRadio extends MenuItemRadioMixin(LitElement) {
 
-	static get styles() {
-		return menuItemSelectableStyles;
-	}
+	static styles = menuItemSelectableStyles;
 
 	render() {
 		return html`

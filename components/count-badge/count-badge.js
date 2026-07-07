@@ -8,23 +8,21 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 class CountBadge extends FocusMixin(CountBadgeMixin(LitElement)) {
 
-	static get styles() {
-		return [super.styles, css`
-		${getFocusRingStyles(pseudoClass => `:host([focus-ring]) .d2l-count-badge-wrapper, .d2l-count-badge-wrapper:${pseudoClass}`)}
-		.d2l-count-badge-wrapper {
-			--d2l-focus-ring-offset: 0;
-			border: 2px solid transparent;
-		}
-
-		:host([size="small"]) .d2l-count-badge-wrapper {
-			border-radius: 0.65rem;
-		}
-
-		:host([size="large"]) .d2l-count-badge-wrapper {
-			border-radius: 0.8rem;
-		}
-		`];
+	static styles = [super.styles, css`
+	${getFocusRingStyles(pseudoClass => `:host([focus-ring]) .d2l-count-badge-wrapper, .d2l-count-badge-wrapper:${pseudoClass}`)}
+	.d2l-count-badge-wrapper {
+		--d2l-focus-ring-offset: 0;
+		border: 2px solid transparent;
 	}
+
+	:host([size="small"]) .d2l-count-badge-wrapper {
+		border-radius: 0.65rem;
+	}
+
+	:host([size="large"]) .d2l-count-badge-wrapper {
+		border-radius: 0.8rem;
+	}
+	`];
 
 	constructor() {
 		super();

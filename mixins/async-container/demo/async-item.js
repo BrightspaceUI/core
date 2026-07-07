@@ -4,32 +4,28 @@ import { InitialStateError, runAsync } from '../../../directives/run-async/run-a
 
 class AsyncItem extends LitElement {
 
-	static get properties() {
-		return {
-			delay: { type: Number },
-			key: { type: String },
-			manual: { type: Boolean },
-			throwError: { type: Boolean, attribute: 'throw-error' }
-		};
-	}
+	static properties = {
+		delay: { type: Number },
+		key: { type: String },
+		manual: { type: Boolean },
+		throwError: { type: Boolean, attribute: 'throw-error' }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-			}
-			div {
-				background-color: var(--d2l-color-celestine);
-				border: 1px solid var(--d2l-color-galena);
-				border-radius: 0.4rem;
-				color: white;
-				height: 100px;
-				padding: 0.3rem;
-				text-align: center;
-				width: 100px;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+		}
+		div {
+			background-color: var(--d2l-color-celestine);
+			border: 1px solid var(--d2l-color-galena);
+			border-radius: 0.4rem;
+			color: white;
+			height: 100px;
+			padding: 0.3rem;
+			text-align: center;
+			width: 100px;
+		}
+	`;
 
 	constructor() {
 		super();

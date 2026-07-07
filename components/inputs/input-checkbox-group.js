@@ -8,45 +8,41 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
  */
 class InputCheckboxGroup extends PropertyRequiredMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * REQUIRED: Label for the group of checkboxes
 			 * @type {string}
 			 */
-			label: { required: true, type: String },
-			/**
+		label: { required: true, type: String },
+		/**
 			 * Hides the label visually
 			 * @type {boolean}
 			 */
-			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean }
-		};
-	}
+		labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean }
+	};
 
-	static get styles() {
-		return [inputLabelStyles, css`
-			:host {
-				display: block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			.wrapper {
-				display: flex;
-				flex-direction: column;
-				gap: 0.6rem;
-			}
-			::slotted(d2l-input-checkbox) {
-				margin-bottom: 0;
-			}
-			.d2l-input-label {
-				margin-block-end: 0.6rem;
-			}
-			.d2l-input-label[hidden] {
-				display: none;
-			}
-		`];
-	}
+	static styles = [inputLabelStyles, css`
+		:host {
+			display: block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.wrapper {
+			display: flex;
+			flex-direction: column;
+			gap: 0.6rem;
+		}
+		::slotted(d2l-input-checkbox) {
+			margin-bottom: 0;
+		}
+		.d2l-input-label {
+			margin-block-end: 0.6rem;
+		}
+		.d2l-input-label[hidden] {
+			display: none;
+		}
+	`];
 
 	constructor() {
 		super();

@@ -13,57 +13,53 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
  */
 class InputRadioGroup extends PropertyRequiredMixin(SkeletonMixin(FormElementMixin(LitElement))) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Display the radio buttons horizontally
 			 * @type {boolean}
 			 */
-			horizontal: { type: Boolean, reflect: true },
-			/**
+		horizontal: { type: Boolean, reflect: true },
+		/**
 			 * REQUIRED: Label for the group of radio inputs
 			 * @type {string}
 			 */
-			label: { required: true, type: String },
-			/**
+		label: { required: true, type: String },
+		/**
 			 * Hides the label visually
 			 * @type {boolean}
 			 */
-			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
-			/**
+		labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
+		/**
 			 * Indicates that a value is required
 			 * @type {boolean}
 			 */
-			required: { type: Boolean, reflect: true }
-		};
-	}
+		required: { type: Boolean, reflect: true }
+	};
 
-	static get styles() {
-		return [super.styles, inputLabelStyles, css`
-			:host {
-				display: block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			div[role="radiogroup"] {
-				display: flex;
-				flex-direction: column;
-				gap: 0.6rem;
-			}
-			:host([horizontal]) div[role="radiogroup"] {
-				flex-direction: row;
-				flex-wrap: wrap;
-			}
+	static styles = [super.styles, inputLabelStyles, css`
+		:host {
+			display: block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		div[role="radiogroup"] {
+			display: flex;
+			flex-direction: column;
+			gap: 0.6rem;
+		}
+		:host([horizontal]) div[role="radiogroup"] {
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
 
-			.d2l-input-label[hidden] {
-				display: none;
-			}
-			::slotted(:not(d2l-input-radio)) {
-				display: none;
-			}
-		`];
-	}
+		.d2l-input-label[hidden] {
+			display: none;
+		}
+		::slotted(:not(d2l-input-radio)) {
+			display: none;
+		}
+	`];
 
 	constructor() {
 		super();

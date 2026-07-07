@@ -5,8 +5,7 @@ import { announce } from '../announce.js';
 
 class AnnounceTest extends LitElement {
 
-	static get styles() {
-		return css`
+	static styles = css`
 			:host {
 				display: block;
 				width: 400px;
@@ -15,7 +14,6 @@ class AnnounceTest extends LitElement {
 				margin-bottom: 10px;
 			}
 		`;
-	}
 
 	render() {
 		return html`

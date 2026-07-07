@@ -22,172 +22,168 @@ const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px
  */
 class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement)))) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
 			 * @type {boolean}
 			 */
-			async: { type: Boolean },
-			/**
+		async: { type: Boolean },
+		/**
 			 * Render with no content padding
 			 * @type {boolean}
 			 */
-			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
-			/**
+		noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
+		/**
 			 * REQUIRED: the title for the dialog
 			 */
-			titleText: { type: String, attribute: 'title-text', required: true },
-			/**
+		titleText: { type: String, attribute: 'title-text', required: true },
+		/**
 			 * The preferred width (unit-less) for the dialog. Minimum 1170 (anything smaller will have no effect).
 			 */
-			width: { type: Number },
-			_autoSize: { state: true }, /* DE52039 This is only redefined here to suppress a lit-analyzer linting issue */
-			_hasFooterContent: { state: true },
-			_icon: { state: true },
-			_headerStyle: { state: true },
-		};
-	}
+		width: { type: Number },
+		_autoSize: { state: true }, /* DE52039 This is only redefined here to suppress a lit-analyzer linting issue */
+		_hasFooterContent: { state: true },
+		_icon: { state: true },
+		_headerStyle: { state: true },
+	};
 
-	static get styles() {
-		return [ _generateResetStyles(':host'), dialogStyles, heading2Styles, heading3Styles, css`
+	static styles = [ _generateResetStyles(':host'), dialogStyles, heading2Styles, heading3Styles, css`
 
-			.d2l-dialog-footer.d2l-footer-no-content {
-				display: none;
+		.d2l-dialog-footer.d2l-footer-no-content {
+			display: none;
+		}
+
+		.d2l-dialog-content-loading {
+			text-align: center;
+		}
+
+		.d2l-dialog-outer {
+			max-width: calc(100% - 3rem);
+		}
+
+		:host([no-padding]) .d2l-dialog-content {
+			--d2l-list-controls-padding: 0px; /* stylelint-disable-line length-zero-no-unit */
+			padding: 0;
+		}
+
+		@media (min-width: 616px) {
+
+			.d2l-dialog-header {
+				border-bottom: 1px solid var(--d2l-theme-border-color-subtle);
+				padding-bottom: 0.9rem;
+				padding-top: 1rem;
 			}
 
-			.d2l-dialog-content-loading {
-				text-align: center;
+			.d2l-dialog-content > div {
+				/* required to properly calculate preferred height when there are bottom
+				margins at the end of the slotted content */
+				border-bottom: 1px solid transparent;
+				box-sizing: border-box;
+				height: calc(100% - 1rem);
+				padding-top: 1rem;
 			}
 
-			.d2l-dialog-outer {
-				max-width: calc(100% - 3rem);
+			:host([no-padding]) .d2l-dialog-content > div {
+				height: 100%;
+				padding-top: 0;
 			}
 
-			:host([no-padding]) .d2l-dialog-content {
-				--d2l-list-controls-padding: 0px; /* stylelint-disable-line length-zero-no-unit */
-				padding: 0;
+			.d2l-dialog-header > div > d2l-button-icon {
+				flex: none;
+				margin-block: -2px 0;
+				margin-inline: 0 -12px;
 			}
 
-			@media (min-width: 616px) {
+			dialog.d2l-dialog-outer,
+			div.d2l-dialog-outer {
+				animation: d2l-dialog-fullscreen-close 200ms ease-in;
+				border-radius: 8px;
+				margin: 1.5rem;
+				top: 0;
+				width: auto;
+			}
 
-				.d2l-dialog-header {
-					border-bottom: 1px solid var(--d2l-theme-border-color-subtle);
-					padding-bottom: 0.9rem;
-					padding-top: 1rem;
-				}
+			@keyframes d2l-dialog-fullscreen-close {
+				0% { opacity: 1; transform: translateY(0); }
+				100% { opacity: 0; transform: translateY(-50px) scale(0.97); }
+			}
 
-				.d2l-dialog-content > div {
-					/* required to properly calculate preferred height when there are bottom
-					margins at the end of the slotted content */
-					border-bottom: 1px solid transparent;
-					box-sizing: border-box;
-					height: calc(100% - 1rem);
-					padding-top: 1rem;
-				}
+			@keyframes d2l-dialog-fullscreen-open {
+				0% { opacity: 0; transform: translateY(-50px) scale(0.97); }
+				100% { opacity: 1; transform: translateY(0); }
+			}
 
-				:host([no-padding]) .d2l-dialog-content > div {
-					height: 100%;
-					padding-top: 0;
-				}
+			dialog.d2l-dialog-outer.d2l-dialog-fullscreen-within,
+			div.d2l-dialog-outer.d2l-dialog-fullscreen-within {
+				/* no margins when there is a fullscreen element within */
+				margin: 0;
+			}
 
-				.d2l-dialog-header > div > d2l-button-icon {
-					flex: none;
-					margin-block: -2px 0;
-					margin-inline: 0 -12px;
-				}
+			:host(:not([in-iframe])) dialog.d2l-dialog-outer,
+			:host(:not([in-iframe])) div.d2l-dialog-outer {
+				height: calc(100% - 3rem);
+			}
 
+			/* for screens wider than 1170px + 60px margins */
+			@media (min-width: 1230px) {
 				dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
-					animation: d2l-dialog-fullscreen-close 200ms ease-in;
-					border-radius: 8px;
-					margin: 1.5rem;
-					top: 0;
-					width: auto;
+					/* center the dialog */
+					margin-left: auto;
+					margin-right: auto;
 				}
+			}
 
-				@keyframes d2l-dialog-fullscreen-close {
-					0% { opacity: 1; transform: translateY(0); }
-					100% { opacity: 0; transform: translateY(-50px) scale(0.97); }
-				}
+			:host([_state="showing"]) dialog.d2l-dialog-outer,
+			:host([_state="showing"]) div.d2l-dialog-outer {
+				animation: d2l-dialog-fullscreen-open 400ms ease-out;
+			}
 
-				@keyframes d2l-dialog-fullscreen-open {
-					0% { opacity: 0; transform: translateY(-50px) scale(0.97); }
-					100% { opacity: 1; transform: translateY(0); }
-				}
+			:host([_state="showing"]) dialog::backdrop {
+				transition-duration: 400ms;
+			}
 
-				dialog.d2l-dialog-outer.d2l-dialog-fullscreen-within,
-				div.d2l-dialog-outer.d2l-dialog-fullscreen-within {
-					/* no margins when there is a fullscreen element within */
-					margin: 0;
-				}
+			.d2l-dialog-footer {
+				border-top: 1px solid var(--d2l-theme-border-color-subtle);
+				padding-bottom: 0; /* 0.9rem padding included on button */
+				padding-top: 0.9rem;
+			}
 
-				:host(:not([in-iframe])) dialog.d2l-dialog-outer,
-				:host(:not([in-iframe])) div.d2l-dialog-outer {
-					height: calc(100% - 3rem);
-				}
+			@media (prefers-reduced-motion: reduce) {
 
-				/* for screens wider than 1170px + 60px margins */
-				@media (min-width: 1230px) {
-					dialog.d2l-dialog-outer,
-					div.d2l-dialog-outer {
-						/* center the dialog */
-						margin-left: auto;
-						margin-right: auto;
-					}
-				}
-
+				dialog.d2l-dialog-outer,
+				div.d2l-dialog-outer,
 				:host([_state="showing"]) dialog.d2l-dialog-outer,
 				:host([_state="showing"]) div.d2l-dialog-outer {
-					animation: d2l-dialog-fullscreen-open 400ms ease-out;
+					animation: none;
 				}
 
-				:host([_state="showing"]) dialog::backdrop {
-					transition-duration: 400ms;
-				}
-
-				.d2l-dialog-footer {
-					border-top: 1px solid var(--d2l-theme-border-color-subtle);
-					padding-bottom: 0; /* 0.9rem padding included on button */
-					padding-top: 0.9rem;
-				}
-
-				@media (prefers-reduced-motion: reduce) {
-
-					dialog.d2l-dialog-outer,
-					div.d2l-dialog-outer,
-					:host([_state="showing"]) dialog.d2l-dialog-outer,
-					:host([_state="showing"]) div.d2l-dialog-outer {
-						animation: none;
-					}
-
-					dialog::backdrop {
-						transition: none;
-					}
+				dialog::backdrop {
+					transition: none;
 				}
 			}
+		}
 
-			@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
+		@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
 
-				.d2l-dialog-header {
-					padding-bottom: 15px;
-				}
-
-				.d2l-dialog-footer.d2l-footer-no-content {
-					padding: 0 0 5px 0;
-				}
-
-				.d2l-dialog-content > div {
-					/* required to properly calculate preferred height when there are bottom
-					margins at the end of the slotted content */
-					border-bottom: 1px solid transparent;
-					/* required to render full height in an i-Frame */
-					height: calc(100% - 1px);
-				}
-
+			.d2l-dialog-header {
+				padding-bottom: 15px;
 			}
-		`];
-	}
+
+			.d2l-dialog-footer.d2l-footer-no-content {
+				padding: 0 0 5px 0;
+			}
+
+			.d2l-dialog-content > div {
+				/* required to properly calculate preferred height when there are bottom
+				margins at the end of the slotted content */
+				border-bottom: 1px solid transparent;
+				/* required to render full height in an i-Frame */
+				height: calc(100% - 1px);
+			}
+
+		}
+	`];
 
 	constructor() {
 		super();

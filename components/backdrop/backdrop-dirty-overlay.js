@@ -34,25 +34,21 @@ const overlayStyles = css`
  */
 class BackdropDirtyOverlay extends LitElement {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * The text displayed on the dirty state overlay.
 			 * @type {string}
 			 */
-			description: { type: String, required: true },
+		description: { type: String, required: true },
 
-			/**
+		/**
 			 * The text displayed on the button of the dirty state overlay when the 'dirty' dataState is set.
 			 * @type {string}
 			 */
-			action: { type: String, required: true }
-		};
-	}
+		action: { type: String, required: true }
+	};
 
-	static get styles() {
-		return [bodyCompactStyles, overlayStyles, getFocusRingStyles('.d2l-backdrop-dirty-overlay')];
-	}
+	static styles = [bodyCompactStyles, overlayStyles, getFocusRingStyles('.d2l-backdrop-dirty-overlay')];
 
 	render() {
 		return html`

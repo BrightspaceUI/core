@@ -4,27 +4,23 @@ import { SkeletonMixin } from '../skeleton-mixin.js';
 
 export class SkeletonTestHeading extends SkeletonMixin(LitElement) {
 
-	static get properties() {
-		return {
-			level: { type: Number },
-			width: { type: Number }
-		};
-	}
+	static properties = {
+		level: { type: Number },
+		width: { type: Number }
+	};
 
-	static get styles() {
-		return [
-			super.styles,
-			heading1Styles,
-			heading2Styles,
-			heading3Styles,
-			heading4Styles,
-			css`
+	static styles = [
+		super.styles,
+		heading1Styles,
+		heading2Styles,
+		heading3Styles,
+		heading4Styles,
+		css`
 				:host {
 					display: block;
 				}
 			`
-		];
-	}
+	];
 
 	render() {
 		const width = this.width !== undefined ? ` d2l-skeletize-${this.width}` : '';

@@ -30,13 +30,11 @@ NB: due to its reliance on DOM events, `requestInstance()` needs to be called af
 import { RequesterMixin } from '@brightspace-ui/core/mixins/provider/provider-mixin.js'
 
 class InterestingFactUI extends RequesterMixin(LitElement) {
-	static get properties() {
-		return {
-			_factString: { type: String },
-			_factObjectString: { type: String },
-			_factFunctionString: { type: String }
-		};
-	}
+	static properties = {
+		_factString: { type: String },
+		_factObjectString: { type: String },
+		_factFunctionString: { type: String }
+	};
 
 	render() {
 		return html`

@@ -4,10 +4,9 @@ import { SkeletonMixin } from '../skeleton-mixin.js';
 
 export class SkeletonTestStack extends SkeletonMixin(LitElement) {
 
-	static get styles() {
-		return [
-			super.styles,
-			css`
+	static styles = [
+		super.styles,
+		css`
 				:host {
 					display: block;
 				}
@@ -24,8 +23,7 @@ export class SkeletonTestStack extends SkeletonMixin(LitElement) {
 					z-index: 500;
 				}
 			`
-		];
-	}
+	];
 
 	render() {
 		return html`

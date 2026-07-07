@@ -7,94 +7,90 @@ import { MeterMixin } from './meter-mixin.js';
  * A horizontal progress bar.
  */
 class MeterLinear extends MeterMixin(LitElement) {
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Keeps the meter to a single line
 			 * @type {boolean}
 			 */
-			textInline: { type: Boolean, attribute: 'text-inline', reflect: true },
-			/**
+		textInline: { type: Boolean, attribute: 'text-inline', reflect: true },
+		/**
 			 * Force text to be aligned to the end of the meter
 			 * @type {boolean}
 			 */
-			textAlignEnd: { type: Boolean, attribute: 'text-align-end', reflect: true }
-		};
-	}
-	static get styles() {
-		return [bodySmallStyles, css`
-			:host {
-				display: block;
-				position: relative;
-			}
+		textAlignEnd: { type: Boolean, attribute: 'text-align-end', reflect: true }
+	};
+	static styles = [bodySmallStyles, css`
+		:host {
+			display: block;
+			position: relative;
+		}
 
-			:host > div {
-				display: flex;
-				flex-direction: column;
-				gap: 0.45rem;
-			}
+		:host > div {
+			display: flex;
+			flex-direction: column;
+			gap: 0.45rem;
+		}
 
-			:host([text-inline]) > div {
-				align-items: center;
-				flex-direction: row;
-			}
+		:host([text-inline]) > div {
+			align-items: center;
+			flex-direction: row;
+		}
 
-			.d2l-meter-linear-full-bar,
-			.d2l-meter-linear-inner-bar {
-				border-radius: 0.225rem;
-				flex-grow: 1;
-				flex-shrink: 1;
-				height: 0.45rem;
-			}
+		.d2l-meter-linear-full-bar,
+		.d2l-meter-linear-inner-bar {
+			border-radius: 0.225rem;
+			flex-grow: 1;
+			flex-shrink: 1;
+			height: 0.45rem;
+		}
 
-			.d2l-meter-linear-full-bar {
-				background-color: var(--d2l-color-gypsum);
-				position: relative;
-			}
+		.d2l-meter-linear-full-bar {
+			background-color: var(--d2l-color-gypsum);
+			position: relative;
+		}
 
-			:host([foreground-light]) .d2l-meter-linear-full-bar {
-				background-color: rgba(255, 255, 255, 0.5);
-			}
+		:host([foreground-light]) .d2l-meter-linear-full-bar {
+			background-color: rgba(255, 255, 255, 0.5);
+		}
 
-			.d2l-meter-linear-inner-bar {
-				background-color: var(--d2l-color-celestine);
-				inset-inline-start: 0;
-				max-width: 100%;
-				position: absolute;
-				top: 0;
-			}
-			:host([foreground-light]) .d2l-meter-linear-inner-bar {
-				background-color: white;
-			}
+		.d2l-meter-linear-inner-bar {
+			background-color: var(--d2l-color-celestine);
+			inset-inline-start: 0;
+			max-width: 100%;
+			position: absolute;
+			top: 0;
+		}
+		:host([foreground-light]) .d2l-meter-linear-inner-bar {
+			background-color: white;
+		}
 
-			.d2l-meter-linear-text {
-				color: var(--d2l-color-ferrite);
-				display: flex;
-				flex-direction: row;
-				gap: 0.45rem;
-				line-height: 1em;
-				width: 100%;
-			}
-			:host([foreground-light]) .d2l-meter-linear-text {
-				color: white;
-			}
-			:host([text-inline]) .d2l-meter-linear-text {
-				width: auto;
-			}
+		.d2l-meter-linear-text {
+			color: var(--d2l-color-ferrite);
+			display: flex;
+			flex-direction: row;
+			gap: 0.45rem;
+			line-height: 1em;
+			width: 100%;
+		}
+		:host([foreground-light]) .d2l-meter-linear-text {
+			color: white;
+		}
+		:host([text-inline]) .d2l-meter-linear-text {
+			width: auto;
+		}
 
-			.d2l-meter-linear-text-space-between {
-				justify-content: space-between;
-			}
+		.d2l-meter-linear-text-space-between {
+			justify-content: space-between;
+		}
 
-			.d2l-meter-linear-secondary {
-				align-self: flex-end;
-			}
+		.d2l-meter-linear-secondary {
+			align-self: flex-end;
+		}
 
-			.d2l-meter-linear-primary-ltr {
-				direction: ltr;
-			}
-		`];
-	}
+		.d2l-meter-linear-primary-ltr {
+			direction: ltr;
+		}
+	`];
 
 	constructor() {
 		super();

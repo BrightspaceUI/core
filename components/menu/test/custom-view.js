@@ -4,32 +4,30 @@ import { HierarchicalViewMixin } from '../../hierarchical-view/hierarchical-view
 
 class CustomView extends HierarchicalViewMixin(LitElement) {
 
-	static get styles() {
-		return [ super.styles,
-			css`
-				:host {
-					background-color: orange;
-					border: 1px solid black;
-					border-radius: 0.3rem;
-					box-sizing: border-box;
-					color: white;
-					font-size: 1.5rem;
-				}
-				:host .d2l-hierarchical-view-content {
-					min-height: 100px;
-					padding: 1rem;
-				}
-				:host .d2l-custom-view-back-container {
-					margin-top: 1rem;
-				}
-				:host a {
-					color: var(--d2l-color-ferrite);
-					font-size: 0.7rem;
-					outline: none;
-				}
-			`
-		];
-	}
+	static styles = [ super.styles,
+		css`
+			:host {
+				background-color: orange;
+				border: 1px solid black;
+				border-radius: 0.3rem;
+				box-sizing: border-box;
+				color: white;
+				font-size: 1.5rem;
+			}
+			:host .d2l-hierarchical-view-content {
+				min-height: 100px;
+				padding: 1rem;
+			}
+			:host .d2l-custom-view-back-container {
+				margin-top: 1rem;
+			}
+			:host a {
+				color: var(--d2l-color-ferrite);
+				font-size: 0.7rem;
+				outline: none;
+			}
+		`
+	];
 
 	firstUpdated() {
 		super.firstUpdated();

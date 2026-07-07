@@ -7,9 +7,8 @@ import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 
 class MenuItemReturn extends LocalizeCoreElement(MenuItemMixin(LitElement)) {
 
-	static get styles() {
-		return [ menuItemStyles,
-			css`
+	static styles = [ menuItemStyles,
+		css`
 				:host {
 					display: flex;
 					padding: 0.75rem 1rem;
@@ -27,8 +26,7 @@ class MenuItemReturn extends LocalizeCoreElement(MenuItemMixin(LitElement)) {
 					margin-top: 0.1rem;
 				}
 			`
-		];
-	}
+	];
 
 	constructor() {
 		super();

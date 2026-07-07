@@ -32,64 +32,60 @@ async function filterAsync(arr, callback) {
 
 class TagList extends LocalizeCoreElement(InteractiveMixin(ArrowKeysMixin(LitElement))) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Enables the option to clear all inner tag list items. The `d2l-tag-list-item-clear` event will be dispatched for each list item when the user selects to Clear All. The consumer must handle the actual item deletion.
 			 * @type {boolean}
 			 */
-			clearable: { type: Boolean },
-			/**
+		clearable: { type: Boolean },
+		/**
 			 * ADVANCED: When an item is `clearable`, optionally add a timeout before the focus happens on clear. This is useful if the consumer has some operations that will reload the list items prior to wanting focus to occur.
 			 * @type {number}
 			 */
-			clearFocusTimeout: { type: Number, attribute: 'clear-focus-timeout' },
-			/**
+		clearFocusTimeout: { type: Number, attribute: 'clear-focus-timeout' },
+		/**
 			 * REQUIRED: A description of the tag list for additional accessibility context
 			 * @type {string}
 			 */
-			description: { type: String },
-			_chompIndex: { type: Number },
-			_contentReady: { type: Boolean },
-			_lines: { type: Number },
-			_showHiddenTags: { type: Boolean }
-		};
-	}
+		description: { type: String },
+		_chompIndex: { type: Number },
+		_contentReady: { type: Boolean },
+		_lines: { type: Number },
+		_showHiddenTags: { type: Boolean }
+	};
 
-	static get styles() {
-		return [...super.styles, css`
-			:host {
-				display: block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			.tag-list-container {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 6px;
-				padding: 0;
-			}
-			::slotted([data-is-chomped]) {
-				display: none !important;
-			}
-			.d2l-tag-list-hidden-button {
-				position: absolute;
-				visibility: hidden;
-			}
-			.d2l-tag-list-clear-button {
-				position: absolute;
-				visibility: hidden;
-			}
-			.d2l-tag-list-clear-button.d2l-tag-list-clear-button-visible {
-				position: static;
-				visibility: visible;
-			}
-			.tag-list-hidden {
-				visibility: hidden;
-			}
-		`];
-	}
+	static styles = [...super.styles, css`
+		:host {
+			display: block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.tag-list-container {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 6px;
+			padding: 0;
+		}
+		::slotted([data-is-chomped]) {
+			display: none !important;
+		}
+		.d2l-tag-list-hidden-button {
+			position: absolute;
+			visibility: hidden;
+		}
+		.d2l-tag-list-clear-button {
+			position: absolute;
+			visibility: hidden;
+		}
+		.d2l-tag-list-clear-button.d2l-tag-list-clear-button-visible {
+			position: static;
+			visibility: visible;
+		}
+		.tag-list-hidden {
+			visibility: hidden;
+		}
+	`];
 
 	constructor() {
 		super();

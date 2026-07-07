@@ -16,83 +16,79 @@ function debounce(func, delay) {
 
 class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Force block (stacked) range display if true
 			 * @type {boolean}
 			 */
-			blockDisplay: { attribute: 'block-display', type: Boolean },
-			/**
+		blockDisplay: { attribute: 'block-display', type: Boolean },
+		/**
 			 * Display localized "to" between the left and right slot contents
 			 * @type {boolean}
 			 */
-			displayTo: { attribute: 'display-to', type: Boolean },
-			/**
+		displayTo: { attribute: 'display-to', type: Boolean },
+		/**
 			 * Add margin-top for case where there would be a label above the range
 			 * @type {boolean}
 			 */
-			topMargin: { attribute: 'top-margin', type: Boolean },
-			_blockDisplay: { attribute: false, type: Boolean }
-		};
-	}
+		topMargin: { attribute: 'top-margin', type: Boolean },
+		_blockDisplay: { attribute: false, type: Boolean }
+	};
 
-	static get styles() {
-		return [ super.styles, bodySmallStyles, css`
-			:host {
-				display: block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			:host([top-margin]) {
-				margin-top: calc(0.9rem - 7px);
-			}
-			:host(:not([display-to])) .d2l-input-date-time-range-to-to {
-				display: none;
-			}
+	static styles = [ super.styles, bodySmallStyles, css`
+		:host {
+			display: block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		:host([top-margin]) {
+			margin-top: calc(0.9rem - 7px);
+		}
+		:host(:not([display-to])) .d2l-input-date-time-range-to-to {
+			display: none;
+		}
 
-			/* flex case (not wrapped) */
-			.d2l-input-date-time-range-to-container {
-				column-gap: 1.5rem;
-				display: flex;
-				flex-wrap: wrap;
-			}
-			:host([display-to]) div:not(.d2l-input-date-time-range-to-container-block).d2l-input-date-time-range-to-container,
-			:host([display-to]) div:not(.d2l-input-date-time-range-to-container-block).d2l-input-date-time-range-to-container .d2l-input-date-time-range-end-container {
-				column-gap: 0.9rem;
-			}
-			.d2l-input-date-time-range-end-container {
-				display: flex;
-			}
-			.d2l-input-date-time-range-end-container ::slotted(*) {
-				align-self: flex-end;
-			}
+		/* flex case (not wrapped) */
+		.d2l-input-date-time-range-to-container {
+			column-gap: 1.5rem;
+			display: flex;
+			flex-wrap: wrap;
+		}
+		:host([display-to]) div:not(.d2l-input-date-time-range-to-container-block).d2l-input-date-time-range-to-container,
+		:host([display-to]) div:not(.d2l-input-date-time-range-to-container-block).d2l-input-date-time-range-to-container .d2l-input-date-time-range-end-container {
+			column-gap: 0.9rem;
+		}
+		.d2l-input-date-time-range-end-container {
+			display: flex;
+		}
+		.d2l-input-date-time-range-end-container ::slotted(*) {
+			align-self: flex-end;
+		}
 
-			/* block case (wrapped) */
-			.d2l-input-date-time-range-to-container-block.d2l-input-date-time-range-to-container {
-				display: block;
-				margin-bottom: -1.2rem;
-			}
-			.d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-start-container {
-				margin-inline: 0;
-				margin-bottom: 1.2rem;
-			}
-			:host([display-to]) .d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-start-container {
-				margin-bottom: 0.6rem;
-			}
-			.d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-end-container {
-				display: block;
-				margin-bottom: 1.2rem;
-			}
-			.d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-to-to {
-				display: inline-block;
-				margin-bottom: 0.6rem;
-				margin-top: auto;
-				vertical-align: top;
-			}
-		`];
-	}
+		/* block case (wrapped) */
+		.d2l-input-date-time-range-to-container-block.d2l-input-date-time-range-to-container {
+			display: block;
+			margin-bottom: -1.2rem;
+		}
+		.d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-start-container {
+			margin-inline: 0;
+			margin-bottom: 1.2rem;
+		}
+		:host([display-to]) .d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-start-container {
+			margin-bottom: 0.6rem;
+		}
+		.d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-end-container {
+			display: block;
+			margin-bottom: 1.2rem;
+		}
+		.d2l-input-date-time-range-to-container-block .d2l-input-date-time-range-to-to {
+			display: inline-block;
+			margin-bottom: 0.6rem;
+			margin-top: auto;
+			vertical-align: top;
+		}
+	`];
 
 	constructor() {
 		super();

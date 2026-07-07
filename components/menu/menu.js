@@ -23,62 +23,58 @@ const keyCodes = {
  */
 class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitElement))) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * @ignore
 			 */
-			active: { type: Boolean, reflect: true },
-			/**
+		active: { type: Boolean, reflect: true },
+		/**
 			 * ACCESSIBILITY: Acts as the primary label for the menu (REQUIRED for root menu)
 			 * @type {string}
 			 */
-			label: { type: String, required: true },
-			/**
+		label: { type: String, required: true },
+		/**
 			 * @ignore
 			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			role: { type: String, attribute: 'role' }
-		};
-	}
+		// eslint-disable-next-line lit/no-native-attributes
+		role: { type: String, attribute: 'role' }
+	};
 
-	static get styles() {
-		return [ super.styles, css`
-			:host {
-				--d2l-menu-background-color: var(--d2l-theme-background-color-base);
-				--d2l-menu-background-color-hover: var(--d2l-theme-brand-color-highlight);
-				--d2l-menu-border-color: var(--d2l-theme-border-color-subtle);
-				--d2l-menu-border-color-hover: var(--d2l-theme-border-color-focus);
-				--d2l-menu-foreground-color: var(--d2l-theme-text-color-static-standard);
-				--d2l-menu-foreground-color-hover: var(--d2l-theme-brand-color-primary-hover);
-				--d2l-menu-separator-color: var(--d2l-theme-border-color-emphasized);
-				box-sizing: border-box;
-				display: block;
-				min-width: 180px;
-				padding-top: 1px;
-				width: 100%;
-			}
+	static styles = [ super.styles, css`
+		:host {
+			--d2l-menu-background-color: var(--d2l-theme-background-color-base);
+			--d2l-menu-background-color-hover: var(--d2l-theme-brand-color-highlight);
+			--d2l-menu-border-color: var(--d2l-theme-border-color-subtle);
+			--d2l-menu-border-color-hover: var(--d2l-theme-border-color-focus);
+			--d2l-menu-foreground-color: var(--d2l-theme-text-color-static-standard);
+			--d2l-menu-foreground-color-hover: var(--d2l-theme-brand-color-primary-hover);
+			--d2l-menu-separator-color: var(--d2l-theme-border-color-emphasized);
+			box-sizing: border-box;
+			display: block;
+			min-width: 180px;
+			padding-top: 1px;
+			width: 100%;
+		}
 
-			:host([active]) .d2l-menu-items d2l-menu-item-return[role="menuitem"],
-			:host([active]) .d2l-menu-items ::slotted([role="menuitem"]),
-			:host([active]) .d2l-menu-items ::slotted([role="menuitemcheckbox"]),
-			:host([active]) .d2l-menu-items ::slotted([role="menuitemradio"]) {
-				position: relative;
-			}
+		:host([active]) .d2l-menu-items d2l-menu-item-return[role="menuitem"],
+		:host([active]) .d2l-menu-items ::slotted([role="menuitem"]),
+		:host([active]) .d2l-menu-items ::slotted([role="menuitemcheckbox"]),
+		:host([active]) .d2l-menu-items ::slotted([role="menuitemradio"]) {
+			position: relative;
+		}
 
-			:host([theme="dark"]) {
-				--d2l-menu-background-color: #333536; /* tungsten @ 70% */
-				--d2l-menu-background-color-hover: #123559; /* celestine-1 @ 50% */
-				--d2l-menu-border-color: var(--d2l-color-tungsten);
-				--d2l-menu-border-color-hover: #ffffff;
-				--d2l-menu-foreground-color: var(--d2l-color-sylvite);
-				--d2l-menu-foreground-color-hover: #ffffff;
-				--d2l-menu-separator-color: var(--d2l-color-galena);
-				--d2l-icon-fill-color: var(--d2l-color-mica);
-				background-color: var(--d2l-menu-background-color); /* so that opacity on disabled items works */
-			}
-		`];
-	}
+		:host([theme="dark"]) {
+			--d2l-menu-background-color: #333536; /* tungsten @ 70% */
+			--d2l-menu-background-color-hover: #123559; /* celestine-1 @ 50% */
+			--d2l-menu-border-color: var(--d2l-color-tungsten);
+			--d2l-menu-border-color-hover: #ffffff;
+			--d2l-menu-foreground-color: var(--d2l-color-sylvite);
+			--d2l-menu-foreground-color-hover: #ffffff;
+			--d2l-menu-separator-color: var(--d2l-color-galena);
+			--d2l-icon-fill-color: var(--d2l-color-mica);
+			background-color: var(--d2l-menu-background-color); /* so that opacity on disabled items works */
+		}
+	`];
 
 	constructor() {
 		super();

@@ -16,209 +16,205 @@ import { styleMap } from 'lit/directives/style-map.js';
  */
 class Card extends LitElement {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Style the card's content and footer as centered horizontally
 			 * @type {boolean}
 			 */
-			alignCenter: { type: Boolean, attribute: 'align-center', reflect: true },
-			/**
+		alignCenter: { type: Boolean, attribute: 'align-center', reflect: true },
+		/**
 			 * Download a URL instead of navigating to it
 			 * @type {boolean}
 			 */
-			download: { type: Boolean, reflect: true },
-			/**
+		download: { type: Boolean, reflect: true },
+		/**
 			 * Location for the primary action/navigation
 			 * @type {string}
 			 */
-			href: { type: String, reflect: true },
-			/**
+		href: { type: String, reflect: true },
+		/**
 			 * Indicates the human language of the linked resource; purely advisory, with no built-in functionality
 			 * @type {string}
 			 */
-			hreflang: { type: String, reflect: true },
-			/**
+		hreflang: { type: String, reflect: true },
+		/**
 			 * Specifies the relationship of the target object to the link object
 			 * @type {string}
 			 */
-			rel: { type: String, reflect: true },
-			/**
+		rel: { type: String, reflect: true },
+		/**
 			 * Subtle aesthetic on non-white backgrounds
 			 * @type {boolean}
 			 */
-			subtle: { type: Boolean, reflect: true },
-			/**
+		subtle: { type: Boolean, reflect: true },
+		/**
 			 * Where to display the linked URL
 			 * @type {string}
 			 */
-			target: { type: String, reflect: true },
-			/**
+		target: { type: String, reflect: true },
+		/**
 			 * ACCESSIBILITY: Accessible text for the card; required if `href` is set
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true },
-			/**
+		text: { type: String, reflect: true },
+		/**
 			 * Specifies the media type in the form of a MIME type for the linked URL; purely advisory, with no built-in functionality
 			 * @type {string}
 			 */
-			type: { type: String, reflect: true },
-			_active: { type: Boolean, reflect: true },
-			_dropdownActionOpen: { type: Boolean, attribute: '_dropdown-action-open', reflect: true },
-			_hover: { type: Boolean },
-			_badgeMarginTop: { type: String },
-			_footerHidden: { type: Boolean },
-			_tooltipShowing: { type: Boolean, attribute: '_tooltip_showing', reflect: true }
-		};
-	}
+		type: { type: String, reflect: true },
+		_active: { type: Boolean, reflect: true },
+		_dropdownActionOpen: { type: Boolean, attribute: '_dropdown-action-open', reflect: true },
+		_hover: { type: Boolean },
+		_badgeMarginTop: { type: String },
+		_footerHidden: { type: Boolean },
+		_tooltipShowing: { type: Boolean, attribute: '_tooltip_showing', reflect: true }
+	};
 
-	static get styles() {
-		return [offscreenStyles, css`
+	static styles = [offscreenStyles, css`
+		:host {
+			background-color: #ffffff;
+			border: 1px solid var(--d2l-color-gypsum);
+			border-radius: 6px;
+			box-sizing: border-box;
+			display: inline-block;
+			position: relative;
+			z-index: 0;
+		}
+		.d2l-card-container {
+			align-items: flex-start; /* required so that footer will not stretch to 100% width */
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+			position: relative;
+		}
+		.d2l-card-link-container {
+			flex-basis: auto;
+			flex-grow: 1;
+			flex-shrink: 1;
+			width: 100%; /* required for Legacy-Edge and FF when align-items: flex-start is specified */
+		}
+		.d2l-card-link-text {
+			display: inline-block;
+		}
+		.d2l-card-header {
+			border-start-end-radius: 6px;
+			border-start-start-radius: 6px;
+			overflow: hidden;
+		}
+
+		a {
+			bottom: -1px;
+			display: block;
+			left: -1px;
+			outline: none;
+			position: absolute;
+			right: -1px;
+			top: -1px;
+			z-index: 1;
+		}
+		:host([subtle]) a {
+			bottom: 0;
+			left: 0;
+			right: 0;
+			top: 0;
+		}
+
+		:host(:hover) a {
+			bottom: -5px;
+		}
+		:host([subtle]:hover) a {
+			bottom: -4px;
+		}
+
+		.d2l-card-content {
+			padding: 1.2rem 0.8rem 0 0.8rem;
+		}
+		:host([align-center]) .d2l-card-content {
+			text-align: center;
+		}
+
+		:host([align-center]) .d2l-card-badge {
+			display: flex;
+			justify-content: center;
+		}
+
+		.d2l-card-footer-hidden .d2l-card-content {
+			padding-bottom: 1.2rem;
+		}
+		.d2l-card-actions {
+			inset-inline-end: 0.6rem;
+			position: absolute;
+			top: 0.6rem;
+			/* this must be higher than footer z-index so dropdowns will be on top */
+			z-index: 3;
+		}
+		.d2l-card-actions ::slotted(*) {
+			margin-inline-start: 0.3rem;
+		}
+		.d2l-card-badge {
+			line-height: 0;
+			padding: 0 0.8rem;
+		}
+		.d2l-card-footer {
+			box-sizing: border-box;
+			flex: none;
+			padding: 1.2rem 0.8rem 0.6rem 0.8rem;
+			pointer-events: none;
+			width: 100%;
+			z-index: 2;
+		}
+		:host([align-center]) .d2l-card-footer {
+			text-align: center;
+		}
+
+		.d2l-card-footer ::slotted([slot="footer"]) {
+			pointer-events: all;
+		}
+
+		.d2l-card-footer-hidden .d2l-card-footer {
+			box-sizing: content-box;
+			height: auto;
+		}
+
+		:host([subtle]) {
+			border: none;
+		}
+		:host([subtle][href]) {
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.03);
+		}
+		:host([href]:not([_active]):hover) {
+			box-shadow: 0 2px 14px 1px rgba(0, 0, 0, 0.06);
+		}
+		:host([subtle][href]:not([_active]):hover) {
+			box-shadow: 0 4px 18px 2px rgba(0, 0, 0, 0.06);
+		}
+		${getFocusRingStyles(() => ':host([_active])', { 'extraStyles': css`border-color: transparent;` })}
+		/* .d2l-card-link-container-hover is used to only color/underline when
+		hovering the anchor; these styles are not applied when hovering actions */
+		:host([href]) .d2l-card-link-container-hover,
+		:host([href][_active]) .d2l-card-content {
+			color: var(--d2l-color-celestine);
+			text-decoration: underline;
+		}
+		/* this is needed to ensure tooltip is not be clipped by adjacent cards */
+		:host([_tooltip_showing]) {
+			z-index: 1;
+		}
+		/* this is needed to ensure open menu will be ontop of adjacent cards */
+		:host([_dropdown-action-open]) {
+			z-index: 2;
+		}
+		@media (prefers-reduced-motion: no-preference) {
 			:host {
-				background-color: #ffffff;
-				border: 1px solid var(--d2l-color-gypsum);
-				border-radius: 6px;
-				box-sizing: border-box;
-				display: inline-block;
-				position: relative;
-				z-index: 0;
+				transition: box-shadow 0.2s;
 			}
-			.d2l-card-container {
-				align-items: flex-start; /* required so that footer will not stretch to 100% width */
-				display: flex;
-				flex-direction: column;
-				height: 100%;
-				position: relative;
-			}
-			.d2l-card-link-container {
-				flex-basis: auto;
-				flex-grow: 1;
-				flex-shrink: 1;
-				width: 100%; /* required for Legacy-Edge and FF when align-items: flex-start is specified */
-			}
-			.d2l-card-link-text {
-				display: inline-block;
-			}
-			.d2l-card-header {
-				border-start-end-radius: 6px;
-				border-start-start-radius: 6px;
-				overflow: hidden;
-			}
-
-			a {
-				bottom: -1px;
-				display: block;
-				left: -1px;
-				outline: none;
-				position: absolute;
-				right: -1px;
-				top: -1px;
-				z-index: 1;
-			}
-			:host([subtle]) a {
-				bottom: 0;
-				left: 0;
-				right: 0;
-				top: 0;
-			}
-
-			:host(:hover) a {
-				bottom: -5px;
-			}
-			:host([subtle]:hover) a {
-				bottom: -4px;
-			}
-
-			.d2l-card-content {
-				padding: 1.2rem 0.8rem 0 0.8rem;
-			}
-			:host([align-center]) .d2l-card-content {
-				text-align: center;
-			}
-
-			:host([align-center]) .d2l-card-badge {
-				display: flex;
-				justify-content: center;
-			}
-
-			.d2l-card-footer-hidden .d2l-card-content {
-				padding-bottom: 1.2rem;
-			}
-			.d2l-card-actions {
-				inset-inline-end: 0.6rem;
-				position: absolute;
-				top: 0.6rem;
-				/* this must be higher than footer z-index so dropdowns will be on top */
-				z-index: 3;
-			}
-			.d2l-card-actions ::slotted(*) {
-				margin-inline-start: 0.3rem;
-			}
-			.d2l-card-badge {
-				line-height: 0;
-				padding: 0 0.8rem;
-			}
-			.d2l-card-footer {
-				box-sizing: border-box;
-				flex: none;
-				padding: 1.2rem 0.8rem 0.6rem 0.8rem;
-				pointer-events: none;
-				width: 100%;
-				z-index: 2;
-			}
-			:host([align-center]) .d2l-card-footer {
-				text-align: center;
-			}
-
-			.d2l-card-footer ::slotted([slot="footer"]) {
-				pointer-events: all;
-			}
-
-			.d2l-card-footer-hidden .d2l-card-footer {
-				box-sizing: content-box;
-				height: auto;
-			}
-
+		}
+		@media (prefers-contrast: more) {
 			:host([subtle]) {
-				border: none;
+				border: 1px solid var(--d2l-color-gypsum);
 			}
-			:host([subtle][href]) {
-				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.03);
-			}
-			:host([href]:not([_active]):hover) {
-				box-shadow: 0 2px 14px 1px rgba(0, 0, 0, 0.06);
-			}
-			:host([subtle][href]:not([_active]):hover) {
-				box-shadow: 0 4px 18px 2px rgba(0, 0, 0, 0.06);
-			}
-			${getFocusRingStyles(() => ':host([_active])', { 'extraStyles': css`border-color: transparent;` })}
-			/* .d2l-card-link-container-hover is used to only color/underline when
-			hovering the anchor; these styles are not applied when hovering actions */
-			:host([href]) .d2l-card-link-container-hover,
-			:host([href][_active]) .d2l-card-content {
-				color: var(--d2l-color-celestine);
-				text-decoration: underline;
-			}
-			/* this is needed to ensure tooltip is not be clipped by adjacent cards */
-			:host([_tooltip_showing]) {
-				z-index: 1;
-			}
-			/* this is needed to ensure open menu will be ontop of adjacent cards */
-			:host([_dropdown-action-open]) {
-				z-index: 2;
-			}
-			@media (prefers-reduced-motion: no-preference) {
-				:host {
-					transition: box-shadow 0.2s;
-				}
-			}
-			@media (prefers-contrast: more) {
-				:host([subtle]) {
-					border: 1px solid var(--d2l-color-gypsum);
-				}
-			}
-		`];
-	}
+		}
+	`];
 
 	constructor() {
 		super();

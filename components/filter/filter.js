@@ -72,143 +72,139 @@ function addSpaceListener() {
  */
 class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Disables the dropdown opener for the filter
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
+		disabled: { type: Boolean, reflect: true },
+		/**
 			 * Indicates if the filter is open
 			 * @type {boolean}
 			 */
-			opened: { type: Boolean, reflect: true },
-			/**
+		opened: { type: Boolean, reflect: true },
+		/**
 			 * Optional override for the button text used for a multi-dimensional filter
 			 * @type {string}
 			 */
-			text: { type: String },
-			_activeDimensionKey: { type: String, attribute: false },
-			_dimensions: { type: Array, attribute: false },
-			_displayKeyboardTooltip: { state: true },
-			_ignoreSlotChanges: { type: Boolean },
-			_minWidth: { type: Number, attribute: false },
-			_totalAppliedCount: { type: Number, attribute: false }
-		};
-	}
+		text: { type: String },
+		_activeDimensionKey: { type: String, attribute: false },
+		_dimensions: { type: Array, attribute: false },
+		_displayKeyboardTooltip: { state: true },
+		_ignoreSlotChanges: { type: Boolean },
+		_minWidth: { type: Number, attribute: false },
+		_totalAppliedCount: { type: Number, attribute: false }
+	};
 
-	static get styles() {
-		return [bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles, offscreenStyles, css`
-			[slot="header"] {
-				padding: 0.9rem 0.3rem;
-			}
+	static styles = [bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles, offscreenStyles, css`
+		[slot="header"] {
+			padding: 0.9rem 0.3rem;
+		}
 
-			.d2l-filter-dimension-header {
-				padding-bottom: 0.9rem;
-			}
+		.d2l-filter-dimension-header {
+			padding-bottom: 0.9rem;
+		}
 
-			.d2l-filter-dimension-header.with-intro {
-				padding-bottom: 0.6rem;
-			}
+		.d2l-filter-dimension-header.with-intro {
+			padding-bottom: 0.6rem;
+		}
 
-			.d2l-filter-dimension-header,
-			.d2l-filter-dimension-header-actions {
-				align-items: center;
-				display: flex;
-			}
+		.d2l-filter-dimension-header,
+		.d2l-filter-dimension-header-actions {
+			align-items: center;
+			display: flex;
+		}
 
-			.d2l-filter-dimension-header-actions {
-				flex-flow: row wrap;
-			}
+		.d2l-filter-dimension-header-actions {
+			flex-flow: row wrap;
+		}
 
-			d2l-input-search {
-				flex: 1 0;
-				margin-inline: 0.3rem 0.6rem;
-			}
+		d2l-input-search {
+			flex: 1 0;
+			margin-inline: 0.3rem 0.6rem;
+		}
 
-			.d2l-filter-dimension-select-all {
-				flex-basis: 100%;
-				margin-top: 0.9rem;
-			}
+		.d2l-filter-dimension-select-all {
+			flex-basis: 100%;
+			margin-top: 0.9rem;
+		}
 
-			d2l-selection-select-all {
-				padding: 0 0.6rem;
-			}
+		d2l-selection-select-all {
+			padding: 0 0.6rem;
+		}
 
-			.d2l-filter-dimension-header-text {
-				flex-grow: 1;
-				padding-inline-end: calc(2rem + 2px);
-				text-align: center;
-				${overflowEllipsisDeclarations}
-			}
+		.d2l-filter-dimension-header-text {
+			flex-grow: 1;
+			padding-inline-end: calc(2rem + 2px);
+			text-align: center;
+			${overflowEllipsisDeclarations}
+		}
 
-			.d2l-filter-dimension-set-value {
-				align-items: center;
-				color: var(--d2l-color-ferrite);
-				display: flex;
-				gap: 0.45rem;
-				line-height: unset;
-			}
-			.d2l-filter-dimension-set-value d2l-icon {
-				flex-shrink: 0;
-			}
-			d2l-expand-collapse-content[expanded] {
-				margin-inline-start: -2.1rem;
-				padding-block: 0.8rem 0.4rem;
-			}
-			d2l-list-item.expanding-content {
-				overflow-y: hidden;
-			}
+		.d2l-filter-dimension-set-value {
+			align-items: center;
+			color: var(--d2l-color-ferrite);
+			display: flex;
+			gap: 0.45rem;
+			line-height: unset;
+		}
+		.d2l-filter-dimension-set-value d2l-icon {
+			flex-shrink: 0;
+		}
+		d2l-expand-collapse-content[expanded] {
+			margin-inline-start: -2.1rem;
+			padding-block: 0.8rem 0.4rem;
+		}
+		d2l-list-item.expanding-content {
+			overflow-y: hidden;
+		}
 
-			.d2l-filter-dimension-set-value-text {
-				hyphens: auto;
-				${getOverflowDeclarations({ lines: 2 })}
-			}
+		.d2l-filter-dimension-set-value-text {
+			hyphens: auto;
+			${getOverflowDeclarations({ lines: 2 })}
+		}
 
-			d2l-list-item[selection-disabled] .d2l-filter-dimension-set-value,
-			d2l-list-item[selection-disabled] .d2l-body-small {
-				color: var(--d2l-color-chromite);
-			}
+		d2l-list-item[selection-disabled] .d2l-filter-dimension-set-value,
+		d2l-list-item[selection-disabled] .d2l-body-small {
+			color: var(--d2l-color-chromite);
+		}
 
-			.d2l-filter-dimension-intro-text {
-				margin: 0;
-				padding: 0.6rem 1.5rem 1.5rem;
-				text-align: center;
-			}
+		.d2l-filter-dimension-intro-text {
+			margin: 0;
+			padding: 0.6rem 1.5rem 1.5rem;
+			text-align: center;
+		}
 
-			.d2l-filter-dimension-intro-text.multi-dimension {
-				padding: 0 1.5rem 1.5rem;
-			}
+		.d2l-filter-dimension-intro-text.multi-dimension {
+			padding: 0 1.5rem 1.5rem;
+		}
 
-			.d2l-empty-state-container {
-				padding: 0.9rem 0.9rem calc(0.9rem - 5px);
-			}
+		.d2l-empty-state-container {
+			padding: 0.9rem 0.9rem calc(0.9rem - 5px);
+		}
 
-			.list-header-text {
-				color: var(--d2l-color-ferrite);
-				margin: 0;
-				padding-bottom: 0.05rem;
-				padding-top: 0.65rem;
-			}
+		.list-header-text {
+			color: var(--d2l-color-ferrite);
+			margin: 0;
+			padding-bottom: 0.05rem;
+			padding-top: 0.65rem;
+		}
 
-			.d2l-filter-dimension-info-message {
-				color: var(--d2l-color-ferrite);
-				display: flex;
-				justify-content: center;
-			}
+		.d2l-filter-dimension-info-message {
+			color: var(--d2l-color-ferrite);
+			display: flex;
+			justify-content: center;
+		}
 
-			/* Needed to "undo" the menu-item style for multiple dimensions */
-			d2l-hierarchical-view {
-				cursor: auto;
-			}
+		/* Needed to "undo" the menu-item style for multiple dimensions */
+		d2l-hierarchical-view {
+			cursor: auto;
+		}
 
-			d2l-loading-spinner {
-				padding-top: 0.6rem;
-				width: 100%;
-			}
-		`];
-	}
+		d2l-loading-spinner {
+			padding-top: 0.6rem;
+			width: 100%;
+		}
+	`];
 
 	constructor() {
 		super();

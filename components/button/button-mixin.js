@@ -2,74 +2,72 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 
 export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * @ignore
 			 */
-			ariaExpanded: { type: String, reflect: true, attribute: 'aria-expanded' },
-			/**
+		ariaExpanded: { type: String, reflect: true, attribute: 'aria-expanded' },
+		/**
 			 * @ignore
 			 */
-			ariaHaspopup: { type: String, reflect: true, attribute: 'aria-haspopup' },
-			/**
+		ariaHaspopup: { type: String, reflect: true, attribute: 'aria-haspopup' },
+		/**
 			 * @ignore
 			 */
-			ariaLabel: { type: String, reflect: true, attribute: 'aria-label' },
-			/**
+		ariaLabel: { type: String, reflect: true, attribute: 'aria-label' },
+		/**
 			 * @ignore
 			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			autofocus: { type: Boolean, reflect: true },
-			/**
+		// eslint-disable-next-line lit/no-native-attributes
+		autofocus: { type: Boolean, reflect: true },
+		/**
 			 * Wether the controlled element is expanded. Replaces 'aria-expanded'
 			 * @type {'true' | 'false'}
 			 */
-			expanded: { type: String, reflect: true, attribute: 'expanded' },
-			/**
+		expanded: { type: String, reflect: true, attribute: 'expanded' },
+		/**
 			 * Disables the button
 			 * @type {boolean}
 			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
+		disabled: { type: Boolean, reflect: true },
+		/**
 			 * Tooltip text when disabled
 			 * @type {string}
 			 */
-			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
-			/**
+		disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
+		/**
 			 * @ignore
 			 */
-			form: { type: String, reflect: true },
-			/**
+		form: { type: String, reflect: true },
+		/**
 			 * @ignore
 			 */
-			formaction: { type: String, reflect: true },
-			/**
+		formaction: { type: String, reflect: true },
+		/**
 			 * @ignore
 			 */
-			formenctype: { type: String, reflect: true },
-			/**
+		formenctype: { type: String, reflect: true },
+		/**
 			 * @ignore
 			 */
-			formmethod: { type: String, reflect: true },
-			/**
+		formmethod: { type: String, reflect: true },
+		/**
 			 * @ignore
 			 */
-			formnovalidate: { type: String, reflect: true },
-			/**
+		formnovalidate: { type: String, reflect: true },
+		/**
 			 * @ignore
 			 */
-			formtarget: { type: String, reflect: true },
-			/**
+		formtarget: { type: String, reflect: true },
+		/**
 			 * @ignore
 			 */
-			name: { type: String, reflect: true },
-			/**
+		name: { type: String, reflect: true },
+		/**
 			 * @ignore
 			 */
-			type: { type: String, reflect: true }
-		};
-	}
+		type: { type: String, reflect: true }
+	};
 
 	constructor() {
 		super();

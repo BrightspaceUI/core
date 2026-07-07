@@ -6,17 +6,13 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 class CodeView extends LitElement {
 
-	static get properties() {
-		return {
-			hideLanguage: { type: Boolean, reflect: true, attribute: 'hide-language' },
-			language: { type: String, reflect: true },
-			_code: { type: String }
-		};
-	}
+	static properties = {
+		hideLanguage: { type: Boolean, reflect: true, attribute: 'hide-language' },
+		language: { type: String, reflect: true },
+		_code: { type: String }
+	};
 
-	static get styles() {
-		return [ themeStyles, styles ];
-	}
+	static styles = [ themeStyles, styles ];
 
 	constructor() {
 		super();

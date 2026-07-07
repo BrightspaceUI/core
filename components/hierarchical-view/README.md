@@ -21,61 +21,60 @@ The `d2l-hierarchical-view` component uses the `d2l-hierarchical-view-mixin` for
         this.showParentView = this.showParentView.bind(this);
     }
     // <!-- docs: start hidden content -->
-    static get styles() {
-      return [css`
-      #view1 {
+    static styles = [css`
+        #view1 {
         width: 100%;
-      }
-      .view {
+        }
+        .view {
         height:100%;
         min-height: 200px;
-      }
-      .layout > * {
+        }
+        .layout > * {
         margin: 0;
-      }
-      .buttons {
+        }
+        .buttons {
         height: 60px;
 
-      }
-      .buttons > .left {
+        }
+        .buttons > .left {
         float: left;
-      }
-      .buttons > .right {
+        }
+        .buttons > .right {
         float: right;
-      }
-      d2l-button {
+        }
+        d2l-button {
         margin: 5px;
-      }
-      h1 {
+        }
+        h1 {
         margin: 0;
-      }
-      .position-display {
+        }
+        .position-display {
         height: 150px;
         margin-top: 15px;
         display: flex;
         vertical-align: middle;
-      }
-      .col {
+        }
+        .col {
         height: 100px;
         justify-content: center;
         display: flex;
         flex-direction: column;
-      }
-      .block {
+        }
+        .block {
         height: 20px;
         width: 100px;
         padding: 10px;
         text-align: center;
         line-height: 20px;
-      }
-      .selected {
+        }
+        .selected {
         border: 1px solid grey;
-      }
-      .position-display {
+        }
+        .position-display {
         display: flex;
         justify-content: space-evenly;
-      }`];
-    }
+        }`
+    ];
 
     // <!-- docs: end hidden content -->
     showSubView(id) {
@@ -208,13 +207,11 @@ This mixin allows for nested views within components. To use, apply the mixin an
 ```js
 import { HierarchicalViewMixin } from '@brightspace-ui/core/components/hierarchical-view/hierarchical-view-mixin.js';
 class MyComponent extends HierarchicalViewMixin(LitElement) {
-  static get styles() {
-        return [ super.styles, css`
-            :host {
-                display: inline-block;
-            }
-        `];
-    }
+    static styles = [ super.styles, css`
+      :host {
+          display: inline-block;
+      }
+    `];
 
     render() {
         return html`

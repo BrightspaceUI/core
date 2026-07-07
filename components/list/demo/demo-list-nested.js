@@ -17,40 +17,36 @@ import { repeat } from 'lit/directives/repeat.js';
 
 class ListDemoNested extends LitElement {
 
-	static get properties() {
-		return {
-			addButton: { type: Boolean, attribute: 'add-button' },
-			demoItemKey: { type: String, attribute: 'demo-item-key' },
-			isDraggable: { attribute: 'is-draggable', type: Boolean },
-			selectable: { type: Boolean },
-			keyboardDragDisabled: { type: Boolean, attribute: 'keyboard-drag-disabled' },
-			disableExpandFeature: { type: Boolean, attribute: 'disable-expand-feature' },
-			dropNestedOnly: { type: Boolean, attribute: 'drop-nested-only' },
-			expanded: { type: Boolean },
-			includeSecondaryActions: { type: Boolean, attribute: 'include-secondary-actions' },
-			includeListControls: { type: Boolean, attribute: 'include-list-controls' },
-			includeActionHref: { type: Boolean, attribute: 'include-action-href' },
-			useButtonListItem: { type: Boolean, attribute: 'use-button-item' },
-			showLoadMore: { type: Boolean, attribute: 'show-load-more' },
-			noPrimaryAction: { type: Boolean, attribute: 'no-primary-action' },
-			disableListGrid: { type: Boolean, attribute: 'disable-list-grid' },
-			dragHandleShowAlways: { type: Boolean, attribute: 'drag-handle-show-always' },
-			_items: { state: true },
-			_loadedItems: { state: true },
-			_remainingItemCount: { state: true },
-			_lastItemLoadedIndex: { state: true }
-		};
-	}
+	static properties = {
+		addButton: { type: Boolean, attribute: 'add-button' },
+		demoItemKey: { type: String, attribute: 'demo-item-key' },
+		isDraggable: { attribute: 'is-draggable', type: Boolean },
+		selectable: { type: Boolean },
+		keyboardDragDisabled: { type: Boolean, attribute: 'keyboard-drag-disabled' },
+		disableExpandFeature: { type: Boolean, attribute: 'disable-expand-feature' },
+		dropNestedOnly: { type: Boolean, attribute: 'drop-nested-only' },
+		expanded: { type: Boolean },
+		includeSecondaryActions: { type: Boolean, attribute: 'include-secondary-actions' },
+		includeListControls: { type: Boolean, attribute: 'include-list-controls' },
+		includeActionHref: { type: Boolean, attribute: 'include-action-href' },
+		useButtonListItem: { type: Boolean, attribute: 'use-button-item' },
+		showLoadMore: { type: Boolean, attribute: 'show-load-more' },
+		noPrimaryAction: { type: Boolean, attribute: 'no-primary-action' },
+		disableListGrid: { type: Boolean, attribute: 'disable-list-grid' },
+		dragHandleShowAlways: { type: Boolean, attribute: 'drag-handle-show-always' },
+		_items: { state: true },
+		_loadedItems: { state: true },
+		_remainingItemCount: { state: true },
+		_lastItemLoadedIndex: { state: true }
+	};
 
-	static get styles() {
-		return [
-			css`
+	static styles = [
+		css`
 				.secondary-actions {
 					padding-right: 6px;
 				}
 			`
-		];
-	}
+	];
 
 	constructor() {
 		super();

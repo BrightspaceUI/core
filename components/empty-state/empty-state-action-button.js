@@ -12,29 +12,25 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
  */
 class EmptyStateActionButton extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * REQUIRED: The action text to be used in the button
 			 * @type {string}
 			 */
-			text: { type: String, required: true },
-			/**
+		text: { type: String, required: true },
+		/**
 			 * This will change the action button to use a primary button instead of the default subtle button. The primary attribute is only valid when `d2l-empty-state-action-button` is placed within `d2l-empty-state-illustrated` components
 			 * @type {boolean}
 			 */
-			primary: { type: Boolean },
-			_illustrated: { state: true }
-		};
-	}
+		primary: { type: Boolean },
+		_illustrated: { state: true }
+	};
 
-	static get styles() {
-		return css`
+	static styles = css`
 					.d2l-empty-state-action {
 						vertical-align: top;
 					}
 				`;
-	}
 
 	constructor() {
 		super();

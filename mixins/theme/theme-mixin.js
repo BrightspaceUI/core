@@ -7,13 +7,11 @@
  */
 export const ThemeMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * @ignore
 			 */
-			theme: { reflect: true, type: String }
-		};
-	}
+		theme: { reflect: true, type: String }
+	};
 
 };

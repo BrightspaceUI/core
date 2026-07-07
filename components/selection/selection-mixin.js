@@ -51,19 +51,17 @@ export class SelectionInfo {
 
 export const SelectionMixin = superclass => class extends CollectionMixin(superclass) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * @ignore
 			 */
-			selectionNoInputArrowKeyBehaviour: { type: Boolean, attribute: 'selection-no-input-arrow-key-behavior' },
-			/**
+		selectionNoInputArrowKeyBehaviour: { type: Boolean, attribute: 'selection-no-input-arrow-key-behavior' },
+		/**
 			 * Whether to render with single selection behaviour. If `selection-single` is specified, the nested `d2l-selection-input` elements will render radios instead of checkboxes, and the selection component will maintain a single selected item.
 			 * @type {boolean}
 			 */
-			selectionSingle: { type: Boolean, attribute: 'selection-single' }
-		};
-	}
+		selectionSingle: { type: Boolean, attribute: 'selection-single' }
+	};
 
 	constructor() {
 		super();

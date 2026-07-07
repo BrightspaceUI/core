@@ -11,34 +11,30 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
  * @slot status - Slot for a single `d2l-status-indicator` to be rendered before the list
  */
 class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) {
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Number of skeleton items to insert
 			 * @type {number}
 			 */
-			skeletonCount: { type: Number, attribute: 'skeleton-count' },
-		};
-	}
+		skeletonCount: { type: Number, attribute: 'skeleton-count' },
+	};
 
-	static get styles() {
-		return [super.styles, bodySmallStyles, css`
-			:host {
-				display: block;
-				overflow-wrap: anywhere;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			::slotted([slot="status"]) {
-				display: none;
-			}
-			::slotted(d2l-status-indicator[slot="status"]:first-of-type) {
-				display: inline-block;
-				margin-inline-end: 0.25rem; /* 10px desired margin, subtract 5px arbitrary whitespace. */
-			}
-		`];
-	}
+	static styles = [super.styles, bodySmallStyles, css`
+		:host {
+			display: block;
+			overflow-wrap: anywhere;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		::slotted([slot="status"]) {
+			display: none;
+		}
+		::slotted(d2l-status-indicator[slot="status"]:first-of-type) {
+			display: inline-block;
+			margin-inline-end: 0.25rem; /* 10px desired margin, subtract 5px arbitrary whitespace. */
+		}
+	`];
 
 	firstUpdated() {
 		this.addEventListener('d2l-object-property-list-item-visibility-change', () => this._onItemsChanged());

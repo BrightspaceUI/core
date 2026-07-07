@@ -12,14 +12,12 @@ import { selectStyles } from '../../inputs/input-select-styles.js';
 
 class FormDialogDemo extends LitElement {
 
-	static get styles() {
-		return [inputStyles, selectStyles, css`
+	static styles = [inputStyles, selectStyles, css`
 
 			.d2l-form-dialog-demo-container {
 				margin-bottom: 10px;
 			}
 		`];
-	}
 
 	render() {
 		return html`

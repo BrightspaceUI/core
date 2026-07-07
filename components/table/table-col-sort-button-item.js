@@ -11,9 +11,7 @@ import { menuItemSelectableStyles } from '../menu/menu-item-selectable-styles.js
  */
 class TableColSortButtonItem extends MenuItemRadioMixin(LitElement) {
 
-	static get styles() {
-		return menuItemSelectableStyles;
-	}
+	static styles = menuItemSelectableStyles;
 
 	firstUpdated() {
 		super.firstUpdated();

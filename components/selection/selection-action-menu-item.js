@@ -13,9 +13,8 @@ import { SelectionInfo } from './selection-mixin.js';
  */
 class ActionMenuItem extends SelectionActionMixin(MenuItemMixin(LitElement)) {
 
-	static get styles() {
-		return [ menuItemStyles,
-			css`
+	static styles = [ menuItemStyles,
+		css`
 				:host {
 					align-items: center;
 					display: flex;
@@ -26,8 +25,7 @@ class ActionMenuItem extends SelectionActionMixin(MenuItemMixin(LitElement)) {
 					margin-inline-start: 6px;
 				}
 			`
-		];
-	}
+	];
 
 	connectedCallback() {
 		super.connectedCallback();

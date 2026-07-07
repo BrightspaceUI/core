@@ -5,37 +5,33 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 class TestScrollWrapper extends LocalizeCoreElement(LitElement) {
 
-	static get properties() {
-		return {
-			hideActions: { attribute: 'hide-actions', type: Boolean },
-			scroll: { attribute: 'scroll', type: Number },
-			splitScrollers: { attribute: 'split-scrollers', type: Boolean },
-			width: { type: Number },
-			_customScrollers: { state: true }
-		};
-	}
+	static properties = {
+		hideActions: { attribute: 'hide-actions', type: Boolean },
+		scroll: { attribute: 'scroll', type: Number },
+		splitScrollers: { attribute: 'split-scrollers', type: Boolean },
+		width: { type: Number },
+		_customScrollers: { state: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: block;
-			}
-			.d2l-scroll-wrapper-gradient {
-				background: linear-gradient(to right, #e66465, #9198e5);
-				height: 100px;
-			}
-			.d2l-scroll-wrapper-gradient-secondary {
-				background: linear-gradient(to left, #e66465, #9198e5);
-				height: 40px;
-				position: relative;
-			}
-			.d2l-scroll-wrapper-gradient-secondary button {
-				inset-inline-end: 0;
-				position: absolute;
-				top: 0;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: block;
+		}
+		.d2l-scroll-wrapper-gradient {
+			background: linear-gradient(to right, #e66465, #9198e5);
+			height: 100px;
+		}
+		.d2l-scroll-wrapper-gradient-secondary {
+			background: linear-gradient(to left, #e66465, #9198e5);
+			height: 40px;
+			position: relative;
+		}
+		.d2l-scroll-wrapper-gradient-secondary button {
+			inset-inline-end: 0;
+			position: absolute;
+			top: 0;
+		}
+	`;
 
 	constructor() {
 		super();

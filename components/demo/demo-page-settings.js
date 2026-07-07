@@ -17,15 +17,12 @@ const localeSettings = getDocumentLocaleSettings();
 
 class DemoPageSettings extends LitElement {
 
-	static get properties() {
-		return {
-			panelTitle: { type: String, attribute: 'panel-title' },
-			_language: { state: true }
-		};
-	}
+	static properties = {
+		panelTitle: { type: String, attribute: 'panel-title' },
+		_language: { state: true }
+	};
 
-	static get styles() {
-		return [ inputLabelStyles, selectStyles, css`
+	static styles = [ inputLabelStyles, selectStyles, css`
 			:host {
 				display: block;
 			}
@@ -45,7 +42,6 @@ class DemoPageSettings extends LitElement {
 				margin-block-end: 0;
 			}
 		`];
-	}
 
 	constructor() {
 		super();

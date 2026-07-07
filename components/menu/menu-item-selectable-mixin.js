@@ -2,20 +2,18 @@ import { MenuItemMixin } from './menu-item-mixin.js';
 
 export const MenuItemSelectableMixin = superclass => class extends MenuItemMixin(superclass) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * This will set the item to be selected by default
 			 * @type {boolean}
 			 */
-			selected: { type: Boolean, reflect: true },
-			/**
+		selected: { type: Boolean, reflect: true },
+		/**
 			 * REQUIRED: The selectable item's value
 			 * @type {string}
 			 */
-			value: { type: String }
-		};
-	}
+		value: { type: String }
+	};
 
 	constructor() {
 		super();

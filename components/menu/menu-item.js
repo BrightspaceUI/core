@@ -10,9 +10,8 @@ import { menuItemStyles } from './menu-item-styles.js';
  */
 class MenuItem extends MenuItemMixin(LitElement) {
 
-	static get styles() {
-		return [ menuItemStyles,
-			css`
+	static styles = [ menuItemStyles,
+		css`
 				:host {
 					align-items: center;
 					display: flex;
@@ -23,8 +22,7 @@ class MenuItem extends MenuItemMixin(LitElement) {
 					margin-inline-start: 6px;
 				}
 			`
-		];
-	}
+	];
 
 	render() {
 		const icon = this.hasChildView ?

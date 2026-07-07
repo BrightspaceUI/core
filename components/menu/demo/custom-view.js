@@ -3,9 +3,8 @@ import { HierarchicalViewMixin } from '../../hierarchical-view/hierarchical-view
 
 class CustomView extends HierarchicalViewMixin(LitElement) {
 
-	static get styles() {
-		return [ super.styles,
-			css`
+	static styles = [ super.styles,
+		css`
 				:host {
 					background-color: black;
 					border: 1px solid black;
@@ -26,8 +25,7 @@ class CustomView extends HierarchicalViewMixin(LitElement) {
 					font-size: 0.7rem;
 				}
 			`
-		];
-	}
+	];
 
 	firstUpdated() {
 		super.firstUpdated();

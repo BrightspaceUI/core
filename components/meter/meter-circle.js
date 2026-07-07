@@ -9,24 +9,22 @@ import { meterStyles } from './meter-styles.js';
  * A circular progress indicator.
  */
 class MeterCircle extends MeterMixin(LitElement) {
-	static get styles() {
-		return [ bodySmallStyles, bodyStandardStyles, meterStyles, css`
-		:host {
-			display: inline-block;
-			width: 2.4rem;
-		}
-		.d2l-meter-full-bar,
-		.d2l-meter-progress-bar {
-			stroke-width: 6;
-		}
-		.d2l-meter-full-bar {
-			fill: var(--d2l-meter-circle-fill, none);
-		}
-		.d2l-meter-circle-text {
-			font-size: 0.55rem;
-		}
-	` ];
+	static styles = [ bodySmallStyles, bodyStandardStyles, meterStyles, css`
+	:host {
+		display: inline-block;
+		width: 2.4rem;
 	}
+	.d2l-meter-full-bar,
+	.d2l-meter-progress-bar {
+		stroke-width: 6;
+	}
+	.d2l-meter-full-bar {
+		fill: var(--d2l-meter-circle-fill, none);
+	}
+	.d2l-meter-circle-text {
+		font-size: 0.55rem;
+	}
+	` ];
 
 	render() {
 		const lengthOfLine = 21 * Math.PI * 2; // approximation perimeter of circle

@@ -11,17 +11,14 @@ import { repeat } from 'lit/directives/repeat.js';
 
 class ListDemoNav extends LitElement {
 
-	static get properties() {
-		return {
-			addButton: { type: Boolean, attribute: 'add-button' },
-			indentation: { type: Boolean },
-			_currentItem: { state: true }
-		};
-	}
+	static properties = {
+		addButton: { type: Boolean, attribute: 'add-button' },
+		indentation: { type: Boolean },
+		_currentItem: { state: true }
+	};
 
-	static get styles() {
-		return [
-			css`
+	static styles = [
+		css`
 				:host {
 					display: block;
 					max-width: 400px;
@@ -33,8 +30,7 @@ class ListDemoNav extends LitElement {
 					padding: 5px;
 				}
 			`
-		];
-	}
+	];
 
 	constructor() {
 		super();

@@ -2,12 +2,10 @@ import { isCustomFormElement } from '../form/form-helper.js';
 
 export const ValidationCustomMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			failureText: { type: String, attribute: 'failure-text' },
-			for: { type: String }
-		};
-	}
+	static properties = {
+		failureText: { type: String, attribute: 'failure-text' },
+		for: { type: String }
+	};
 
 	constructor() {
 		super();

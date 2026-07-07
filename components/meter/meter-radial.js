@@ -9,8 +9,7 @@ import { meterStyles } from './meter-styles.js';
  * A half-circle progress indicator.
  */
 class MeterRadial extends MeterMixin(LitElement) {
-	static get styles() {
-		return [ heading4Styles, bodySmallStyles, meterStyles, css`
+	static styles = [ heading4Styles, bodySmallStyles, meterStyles, css`
 		:host {
 			display: inline-block;
 			width: 4.2rem;
@@ -20,7 +19,6 @@ class MeterRadial extends MeterMixin(LitElement) {
 			stroke-width: 9;
 		}
 	` ];
-	}
 
 	render() {
 		const lengthOfLine = 115; // found by approximating half the perimeter of the ellipse with radii 38 and 35

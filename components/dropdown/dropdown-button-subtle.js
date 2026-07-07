@@ -10,31 +10,27 @@ import { ifDefined } from 'lit/directives/if-defined.js';
  */
 class DropdownButtonSubtle extends DropdownOpenerMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * A description to be added to the opener button for accessibility when text on button does not provide enough context
 			 * @type {string}
 			 */
-			description: { type: String },
+		description: { type: String },
 
-			/**
+		/**
 			* Aligns the leading edge of text if value is set to "text" for left-aligned layouts, the trailing edge of text if value is set to "text-end" for right-aligned layouts
 			* @type {'text'|'text-end'|''}
 			*/
-			hAlign: { type: String, reflect: true, attribute: 'h-align' },
+		hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
-			/**
+		/**
 			 * REQUIRED: Text for the button
 			 * @type {string}
 			 */
-			text: { type: String }
-		};
-	}
+		text: { type: String }
+	};
 
-	static get styles() {
-		return dropdownOpenerStyles;
-	}
+	static styles = dropdownOpenerStyles;
 
 	render() {
 		return html`

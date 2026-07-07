@@ -11,29 +11,25 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
  */
 class Summary extends LocalizeCoreElement(SelectionObserverMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Text to display if no items are selected
 			 * @type {string}
 			 */
-			noSelectionText: { type: String, attribute: 'no-selection-text' }
-		};
-	}
+		noSelectionText: { type: String, attribute: 'no-selection-text' }
+	};
 
-	static get styles() {
-		return [bodyCompactStyles, css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			p {
-				margin: 0;
-			}
-		`];
-	}
+	static styles = [bodyCompactStyles, css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		p {
+			margin: 0;
+		}
+	`];
 
 	render() {
 		if (!this._summary) {

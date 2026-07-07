@@ -35,264 +35,260 @@ function isRtl() {
  */
 class ListItemGenericLayout extends LitElement {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * How to align content in the nested slot
 			 * @type {'content'|'control'}
 			 */
-			alignNested: { type: String, reflect: true, attribute: 'align-nested' },
-			/**
+		alignNested: { type: String, reflect: true, attribute: 'align-nested' },
+		/**
 			 * Whether to constrain actions so they do not fill the item. Required if slotted content is interactive.
 			 * @type {boolean}
 			 */
-			noPrimaryAction: { type: Boolean, attribute: 'no-primary-action', reflect: true },
-			/**
+		noPrimaryAction: { type: Boolean, attribute: 'no-primary-action', reflect: true },
+		/**
 			 * @ignore
 			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			role: { type: String, reflect: true },
-			/**
+		// eslint-disable-next-line lit/no-native-attributes
+		role: { type: String, reflect: true },
+		/**
 			 * Specifies whether the grid is active or not
 			 * @type {boolean}
 			 */
-			gridActive: { type: Boolean, attribute: 'grid-active' },
-			/**
+		gridActive: { type: Boolean, attribute: 'grid-active' },
+		/**
 			 * Inline start padding (in px) to apply to list item(s) in the nested slot. When used, nested list items will not use the grid start calcuations and will only use this number to determine indentation.
 			 * @type {number}
 			 */
-			indentation: { type: Number, reflect: true },
-			/**
+		indentation: { type: Number, reflect: true },
+		/**
 			 * @ignore
 			 */
-			layout: { type: String, reflect: true },
-		};
-	}
+		layout: { type: String, reflect: true },
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: grid;
-				grid-template-columns:
-					[start outside-control-start] minmax(0, min-content)
-					[color-start outside-control-end] minmax(0, min-content)
-					[expand-collapse-start color-end] minmax(0, min-content)
-					[control-start expand-collapse-end] minmax(0, min-content)
-					[control-end content-start] minmax(0, auto)
-					[content-end actions-start] minmax(0, min-content)
-					[end actions-end];
-				grid-template-rows:
-					[start add-top-start] minmax(0, min-content)
-					[add-top-end main-start] minmax(0, min-content)
-					[main-end nested-start] minmax(0, min-content)
-					[nested-end add-start] minmax(0, min-content)
-					[add-end end];
-			}
+	static styles = css`
+		:host {
+			display: grid;
+			grid-template-columns:
+				[start outside-control-start] minmax(0, min-content)
+				[color-start outside-control-end] minmax(0, min-content)
+				[expand-collapse-start color-end] minmax(0, min-content)
+				[control-start expand-collapse-end] minmax(0, min-content)
+				[control-end content-start] minmax(0, auto)
+				[content-end actions-start] minmax(0, min-content)
+				[end actions-end];
+			grid-template-rows:
+				[start add-top-start] minmax(0, min-content)
+				[add-top-end main-start] minmax(0, min-content)
+				[main-end nested-start] minmax(0, min-content)
+				[nested-end add-start] minmax(0, min-content)
+				[add-end end];
+		}
 
-			:host([align-nested="control"]) ::slotted([slot="nested"]) {
-				grid-column: control-start / end;
-			}
+		:host([align-nested="control"]) ::slotted([slot="nested"]) {
+			grid-column: control-start / end;
+		}
 
-			::slotted([slot="drop-target"]) {
-				grid-column: start / end;
-			}
+		::slotted([slot="drop-target"]) {
+			grid-column: start / end;
+		}
 
-			::slotted([slot="outside-control"]),
-			::slotted([slot="color-indicator"]),
-			::slotted([slot="expand-collapse"]),
-			::slotted([slot="control"]),
-			::slotted([slot="content"]),
-			::slotted([slot="actions"]),
-			::slotted([slot="outside-control-action"]),
-			::slotted([slot="before-content"]),
-			::slotted([slot="control-action"]),
-			::slotted([slot="content-action"]),
-			::slotted([slot="outside-control-container"]),
-			::slotted([slot="control-container"]),
-			::slotted([slot="drop-target"]) {
-				grid-row: 2 / 3;
-			}
+		::slotted([slot="outside-control"]),
+		::slotted([slot="color-indicator"]),
+		::slotted([slot="expand-collapse"]),
+		::slotted([slot="control"]),
+		::slotted([slot="content"]),
+		::slotted([slot="actions"]),
+		::slotted([slot="outside-control-action"]),
+		::slotted([slot="before-content"]),
+		::slotted([slot="control-action"]),
+		::slotted([slot="content-action"]),
+		::slotted([slot="outside-control-container"]),
+		::slotted([slot="control-container"]),
+		::slotted([slot="drop-target"]) {
+			grid-row: 2 / 3;
+		}
 
-			::slotted([slot="outside-control"]) {
-				grid-column: outside-control-start / outside-control-end;
-			}
+		::slotted([slot="outside-control"]) {
+			grid-column: outside-control-start / outside-control-end;
+		}
 
-			::slotted([slot="outside-control"]:not(.handle-only)) {
-				pointer-events: none;
-			}
+		::slotted([slot="outside-control"]:not(.handle-only)) {
+			pointer-events: none;
+		}
 
-			::slotted([slot="expand-collapse"]) {
-				cursor: pointer;
-				grid-column: expand-collapse-start / expand-collapse-end;
-			}
+		::slotted([slot="expand-collapse"]) {
+			cursor: pointer;
+			grid-column: expand-collapse-start / expand-collapse-end;
+		}
 
-			::slotted([slot="control"]) {
-				grid-column: control-start / control-end;
-				pointer-events: none;
-				width: 2.1rem;
-			}
+		::slotted([slot="control"]) {
+			grid-column: control-start / control-end;
+			pointer-events: none;
+			width: 2.1rem;
+		}
 
-			::slotted([slot="content"]) {
-				grid-column: content-start / content-end;
-			}
+		::slotted([slot="content"]) {
+			grid-column: content-start / content-end;
+		}
 
-			::slotted([slot="color-indicator"]) {
-				grid-column: color-start / color-end;
-			}
+		::slotted([slot="color-indicator"]) {
+			grid-column: color-start / color-end;
+		}
 
-			::slotted([slot="before-content"]) {
-				grid-column: color-start / content-start;
-			}
+		::slotted([slot="before-content"]) {
+			grid-column: color-start / content-start;
+		}
 
-			::slotted([slot="control-action"]) ~ ::slotted([slot="content"]),
-			::slotted([slot="outside-control-action"]) ~ ::slotted([slot="content"]) {
-				pointer-events: unset;
-			}
+		::slotted([slot="control-action"]) ~ ::slotted([slot="content"]),
+		::slotted([slot="outside-control-action"]) ~ ::slotted([slot="content"]) {
+			pointer-events: unset;
+		}
 
-			slot[name="actions"] {
-				white-space: nowrap;
-			}
+		slot[name="actions"] {
+			white-space: nowrap;
+		}
 
-			::slotted([slot="actions"]) {
-				grid-column: actions-start / actions-end;
-				justify-self: end;
-			}
+		::slotted([slot="actions"]) {
+			grid-column: actions-start / actions-end;
+			justify-self: end;
+		}
 
-			::slotted([slot="outside-control-action"]) {
-				grid-column: start / end;
-			}
-			:host([no-primary-action]) ::slotted([slot="outside-control-action"]) {
-				grid-column: start / outside-control-end;
-			}
+		::slotted([slot="outside-control-action"]) {
+			grid-column: start / end;
+		}
+		:host([no-primary-action]) ::slotted([slot="outside-control-action"]) {
+			grid-column: start / outside-control-end;
+		}
 
-			::slotted([slot="content-action"]) {
-				grid-column: content-start / content-end;
-			}
+		::slotted([slot="content-action"]) {
+			grid-column: content-start / content-end;
+		}
 
-			:host([no-primary-action]) ::slotted([slot="content-action"]) {
-				display: none;
-			}
+		:host([no-primary-action]) ::slotted([slot="content-action"]) {
+			display: none;
+		}
 
-			::slotted([slot="control-action"]) {
-				grid-column-start: control-start;
-			}
+		::slotted([slot="control-action"]) {
+			grid-column-start: control-start;
+		}
 
-			:host(:not([no-primary-action])) ::slotted([slot="outside-control-action"]) {
-				grid-column-end: end;
-			}
+		:host(:not([no-primary-action])) ::slotted([slot="outside-control-action"]) {
+			grid-column-end: end;
+		}
 
-			:host(:not([no-primary-action])) ::slotted([slot="control-action"]) {
-				grid-column-end: actions-start;
-			}
+		:host(:not([no-primary-action])) ::slotted([slot="control-action"]) {
+			grid-column-end: actions-start;
+		}
 
-			::slotted([slot="outside-control-container"]) {
-				grid-column: start / end;
-			}
-			::slotted([slot="control-container"]) {
-				grid-column: color-start / end;
-			}
+		::slotted([slot="outside-control-container"]) {
+			grid-column: start / end;
+		}
+		::slotted([slot="control-container"]) {
+			grid-column: color-start / end;
+		}
 
-			::slotted([slot="nested"]) {
-				grid-column: content-start / end;
-				grid-row: nested;
-			}
+		::slotted([slot="nested"]) {
+			grid-column: content-start / end;
+			grid-row: nested;
+		}
 
-			:host([indentation]) ::slotted([slot="nested"]) {
-				grid-column-start: start;
-				padding-inline-start: var(--d2l-list-item-generic-layout-nested-indentation);
-			}
+		:host([indentation]) ::slotted([slot="nested"]) {
+			grid-column-start: start;
+			padding-inline-start: var(--d2l-list-item-generic-layout-nested-indentation);
+		}
 
-			::slotted([slot="add"]) {
-				grid-row: add;
-			}
-			::slotted([slot="add-top"]) {
-				grid-row: add-top;
-			}
-			::slotted([slot="add-top"]),
-			::slotted([slot="add"]) {
-				grid-column: color-start / end;
-			}
+		::slotted([slot="add"]) {
+			grid-row: add;
+		}
+		::slotted([slot="add-top"]) {
+			grid-row: add-top;
+		}
+		::slotted([slot="add-top"]),
+		::slotted([slot="add"]) {
+			grid-column: color-start / end;
+		}
 
-			:host([layout="tile"]) {
-				grid-template-columns:
-					[start outside-control-start] minmax(0, 26px)
-					[outside-control-end control-start] minmax(0, min-content)
-					[control-end actions-start] minmax(0, auto)
-					[actions-end end];
-				grid-template-rows:
-					[start header-start] minmax(0, min-content)
-					[header-end content-start] auto
-					[content-end end];
-				height: 100%;
-			}
+		:host([layout="tile"]) {
+			grid-template-columns:
+				[start outside-control-start] minmax(0, 26px)
+				[outside-control-end control-start] minmax(0, min-content)
+				[control-end actions-start] minmax(0, auto)
+				[actions-end end];
+			grid-template-rows:
+				[start header-start] minmax(0, min-content)
+				[header-end content-start] auto
+				[content-end end];
+			height: 100%;
+		}
 
-			:host([layout="tile"]:not([is-draggable])) {
-				grid-template-columns:
-					[start outside-control-start] 0
-					[outside-control-end control-start] minmax(0, min-content)
-					[control-end actions-start] minmax(0, auto)
-					[actions-end end];
-				grid-template-rows:
-					[start header-start] minmax(0, min-content)
-					[header-end content-start] auto
-					[content-end end];
-				height: 100%;
-			}
+		:host([layout="tile"]:not([is-draggable])) {
+			grid-template-columns:
+				[start outside-control-start] 0
+				[outside-control-end control-start] minmax(0, min-content)
+				[control-end actions-start] minmax(0, auto)
+				[actions-end end];
+			grid-template-rows:
+				[start header-start] minmax(0, min-content)
+				[header-end content-start] auto
+				[content-end end];
+			height: 100%;
+		}
 
-			:host([layout="tile"]) ::slotted([slot="header"]) {
-				grid-column: start / end;
-				grid-row: header-start / header-end;
-			}
+		:host([layout="tile"]) ::slotted([slot="header"]) {
+			grid-column: start / end;
+			grid-row: header-start / header-end;
+		}
 
-			:host([layout="tile"]) ::slotted([slot="content"]),
-			:host([layout="tile"]) ::slotted([slot="content-action"]),
-			:host([layout="tile"]) ::slotted([slot="control-action"]) {
-				grid-column: start / end;
-				grid-row: content-start / end;
-			}
-			:host([layout="tile"]) ::slotted([slot="outside-control-container"]) {
-				grid-column: start / end;
-				grid-row: start / end;
-			}
-			:host([layout="tile"]) ::slotted([slot="control"]) {
-				grid-column: control-start / control-end;
-				grid-row: start / start;
-				pointer-events: all;
-				width: unset;
-			}
+		:host([layout="tile"]) ::slotted([slot="content"]),
+		:host([layout="tile"]) ::slotted([slot="content-action"]),
+		:host([layout="tile"]) ::slotted([slot="control-action"]) {
+			grid-column: start / end;
+			grid-row: content-start / end;
+		}
+		:host([layout="tile"]) ::slotted([slot="outside-control-container"]) {
+			grid-column: start / end;
+			grid-row: start / end;
+		}
+		:host([layout="tile"]) ::slotted([slot="control"]) {
+			grid-column: control-start / control-end;
+			grid-row: start / start;
+			pointer-events: all;
+			width: unset;
+		}
 
-			:host([layout="tile"]) ::slotted([slot="actions"]) {
-				grid-column: actions-start / actions-end;
-				grid-row: start / start;
-			}
+		:host([layout="tile"]) ::slotted([slot="actions"]) {
+			grid-column: actions-start / actions-end;
+			grid-row: start / start;
+		}
 
-			:host([layout="tile"]) ::slotted([slot="color-indicator"]) {
-				grid-column: start;
-				grid-row: content-start / content-end;
-			}
+		:host([layout="tile"]) ::slotted([slot="color-indicator"]) {
+			grid-column: start;
+			grid-row: content-start / content-end;
+		}
 
-			:host([layout="tile"]) ::slotted([slot="outside-control"]) {
-				grid-column: outside-control-start / outside-control-end;
-				grid-row: start / start;
-				width: min-content;
-			}
+		:host([layout="tile"]) ::slotted([slot="outside-control"]) {
+			grid-column: outside-control-start / outside-control-end;
+			grid-row: start / start;
+			width: min-content;
+		}
 
-			:host([layout="tile"]) ::slotted([slot="outside-control-action"]) {
-				grid-column: start / end;
-				grid-row: start / start;
-			}
+		:host([layout="tile"]) ::slotted([slot="outside-control-action"]) {
+			grid-column: start / end;
+			grid-row: start / start;
+		}
 
-			:host(:not([layout="tile"])) slot[name="header"],
-			:host([layout="tile"]) slot[name="add-top"],
-			:host([layout="tile"]) slot[name="control-container"],
-			:host([layout="tile"]) slot[name="before-content"],
-			:host([layout="tile"]) slot[name="expand-collapse"],
-			:host([layout="tile"]) slot[name="nested"],
-			:host([layout="tile"]) slot[name="add"] {
-				display: none;
-			}
-		`;
-	}
+		:host(:not([layout="tile"])) slot[name="header"],
+		:host([layout="tile"]) slot[name="add-top"],
+		:host([layout="tile"]) slot[name="control-container"],
+		:host([layout="tile"]) slot[name="before-content"],
+		:host([layout="tile"]) slot[name="expand-collapse"],
+		:host([layout="tile"]) slot[name="nested"],
+		:host([layout="tile"]) slot[name="add"] {
+			display: none;
+		}
+	`;
 
 	constructor() {
 		super();

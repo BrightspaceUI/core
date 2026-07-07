@@ -11,38 +11,34 @@ import { styleMap } from 'lit/directives/style-map.js';
  */
 class CollapsiblePanelSummaryItem extends SkeletonMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * The number of lines to display before truncating text with an ellipsis. The text will not be truncated unless a value is specified.
 			 * @type {number}
 			 */
-			lines: { type: Number },
-			/**
+		lines: { type: Number },
+		/**
 			 * REQUIRED: Text that is displayed
 			 * @type {string}
 			 */
-			text: { type: String },
-		};
-	}
+		text: { type: String },
+	};
 
-	static get styles() {
-		return [super.styles, bodySmallStyles, css`
-			:host {
-				color: var(--d2l-theme-text-color-static-faint);
-				display: block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			.d2l-body-small {
-				line-height: 1.2rem;
-			}
-			p.truncate {
-				${getOverflowDeclarations({ lines: 1 })}
-			}
-		`];
-	}
+	static styles = [super.styles, bodySmallStyles, css`
+		:host {
+			color: var(--d2l-theme-text-color-static-faint);
+			display: block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.d2l-body-small {
+			line-height: 1.2rem;
+		}
+		p.truncate {
+			${getOverflowDeclarations({ lines: 1 })}
+		}
+	`];
 
 	constructor() {
 		super();

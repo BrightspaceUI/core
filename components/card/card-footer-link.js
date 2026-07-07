@@ -12,68 +12,65 @@ import { offscreenStyles } from '../offscreen/offscreen.js';
  */
 class CardFooterLink extends FocusMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
+	static properties = {
+		/**
 			 * Download a URL instead of navigating to it
 			 * @type {boolean}
 			 */
-			download: { type: Boolean, reflect: true },
-			/**
+		download: { type: Boolean, reflect: true },
+		/**
 			 * URL or URL fragment of the link
 			 * @type {string}
 			 */
-			href: { type: String, reflect: true },
-			/**
+		href: { type: String, reflect: true },
+		/**
 			 * Indicates the human language of the linked resource; purely advisory, with no built-in functionality
 			 * @type {string}
 			 */
-			hreflang: { type: String, reflect: true },
-			/**
+		hreflang: { type: String, reflect: true },
+		/**
 			 * REQUIRED: Preset icon key (e.g. "tier1:gear"). Must be a tier 1 icon.
 			 * @type {string}
 			 */
-			icon: { type: String, reflect: true },
-			/**
+		icon: { type: String, reflect: true },
+		/**
 			 * Specifies the relationship of the target object to the link object
 			 * @type {string}
 			 */
-			rel: { type: String, reflect: true },
-			/**
+		rel: { type: String, reflect: true },
+		/**
 			 * Secondary count to display as a count bubble on the icon
 			 * @type {number}
 			 */
-			secondaryCount: { type: Number, attribute: 'secondary-count', reflect: true },
-			/**
+		secondaryCount: { type: Number, attribute: 'secondary-count', reflect: true },
+		/**
 			 * Maximum digits to display in the secondary count. Defaults to no limit
 			 * @type {number}
 			 */
-			secondaryCountMaxDigits: { type: Number, attribute: 'secondary-count-max-digits' },
-			/**
+		secondaryCountMaxDigits: { type: Number, attribute: 'secondary-count-max-digits' },
+		/**
 			 * Controls the style of the secondary count bubble
 			 * @type {'count'|'notification'}
 			 */
-			secondaryCountType: { type: String, attribute: 'secondary-count-type', reflect: true },
-			/**
+		secondaryCountType: { type: String, attribute: 'secondary-count-type', reflect: true },
+		/**
 			 * Where to display the linked URL
 			 * @type {string}
 			 */
-			target: { type: String, reflect: true },
-			/**
+		target: { type: String, reflect: true },
+		/**
 			 * ACCESSIBILITY: REQUIRED: Accessible text for the link
 			 * @type {string}
 			 */
-			text: { type: String, reflect: true },
-			/**
+		text: { type: String, reflect: true },
+		/**
 			 * Specifies the media type in the form of a MIME type for the linked URL; purely advisory, with no built-in functionality
 			 * @type {string}
 			 */
-			type: { type: String, reflect: true }
-		};
-	}
+		type: { type: String, reflect: true }
+	};
 
-	static get styles() {
-		return [offscreenStyles, css`
+	static styles = [offscreenStyles, css`
 			:host {
 				display: inline-block;
 				position: relative;
@@ -92,7 +89,6 @@ class CardFooterLink extends FocusMixin(LitElement) {
 				text-align: initial;
 			}
 		`];
-	}
 
 	constructor() {
 		super();

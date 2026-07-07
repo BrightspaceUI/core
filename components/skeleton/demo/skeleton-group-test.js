@@ -5,14 +5,11 @@ import { css, html, LitElement } from 'lit';
 import { SkeletonGroupMixin } from '../skeleton-group-mixin.js';
 
 class SkeletonTestGroup extends LitElement {
-	static get properties() {
-		return {
-			_items: { state: true },
-			_loadAsGroup: { state: true },
-		};
-	}
-	static get styles() {
-		return css`
+	static properties = {
+		_items: { state: true },
+		_loadAsGroup: { state: true },
+	};
+	static styles = css`
 			.controls {
 				align-items: center;
 				display: flex;
@@ -24,7 +21,6 @@ class SkeletonTestGroup extends LitElement {
 				margin-bottom: 0.6rem;
 			}
 		`;
-	}
 
 	constructor() {
 		super();

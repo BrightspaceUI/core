@@ -9,31 +9,27 @@ import { until } from 'lit/directives/until.js';
 
 class Icon extends LitElement {
 
-	static get properties() {
-		return {
-			icon: {
-				type: String,
-				reflect: true
-			}
-		};
-	}
+	static properties = {
+		icon: {
+			type: String,
+			reflect: true
+		}
+	};
 
-	static get styles() {
-		return [ iconStyles, css`
-			:host([icon*="tier1:"]) {
-				height: var(--d2l-icon-height, 18px);
-				width: var(--d2l-icon-width, 18px);
-			}
-			:host([icon*="tier2:"]) {
-				height: var(--d2l-icon-height, 24px);
-				width: var(--d2l-icon-width, 24px);
-			}
-			:host([icon*="tier3:"]) {
-				height: var(--d2l-icon-height, 30px);
-				width: var(--d2l-icon-width, 30px);
-			}
-		`];
-	}
+	static styles = [ iconStyles, css`
+		:host([icon*="tier1:"]) {
+			height: var(--d2l-icon-height, 18px);
+			width: var(--d2l-icon-width, 18px);
+		}
+		:host([icon*="tier2:"]) {
+			height: var(--d2l-icon-height, 24px);
+			width: var(--d2l-icon-width, 24px);
+		}
+		:host([icon*="tier3:"]) {
+			height: var(--d2l-icon-height, 30px);
+			width: var(--d2l-icon-width, 30px);
+		}
+	`];
 
 	render() {
 		return guard([this.icon], () => until(this._getIcon(), noChange));
