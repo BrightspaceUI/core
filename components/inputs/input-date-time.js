@@ -43,85 +43,81 @@ function _getFormattedDefaultTime(defaultValue) {
  */
 class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
 
-	static get properties() {
-		return {
-			/**
-			 * Disables the input
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean },
-			/**
-			 * Hides the fieldset label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
-			 * @type {boolean}
-			 */
-			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
-			/**
-			 * Indicates that localization will be handled by the consumer. `*value` will not be converted from/to UTC.
-			 * @type {boolean}
-			 */
-			localized: { reflect: true, type: Boolean },
-			/**
-			 * Maximum valid date/time that could be selected by a user
-			 * @type {string}
-			 */
-			maxValue: { attribute: 'max-value', reflect: true, type: String },
-			/**
-			 * Minimum valid date/time that could be selected by a user
-			 * @type {string}
-			 */
-			minValue: { attribute: 'min-value', reflect: true, type: String },
-			/**
-			 * Indicates if the date or time dropdown is open
-			 * @type {boolean}
-			 */
-			opened: { type: Boolean },
-			/**
-			 * Indicates that a value is required
-			 * @type {boolean}
-			 */
-			required: { type: Boolean, reflect: true },
-			/**
-			 * Default value of time input. Accepts times formatted as "hh:mm:ss", and the keywords "startOfDay" and "endOfDay".
-			 * @type {string}
-			 */
-			timeDefaultValue: { attribute: 'time-default-value', reflect: true, type: String },
-			/**
-			 * Time zone identifier for the time input to use.
-			 * @type {string}
-			 */
-			timeZoneId: { type: String, attribute: 'time-zone-id' },
-			/**
-			 * Hides the time zone inside the time selection dropdown. Should only be used when the time input value is not related to any one time zone
-			 * @type {Boolean}
-			 */
-			timeZoneHidden: { type: Boolean, attribute: 'time-zone-hidden' },
-			/**
-			 * Value of the input
-			 * @type {string}
-			 */
-			value: { type: String },
-			_maxValueLocalized: { type: String },
-			_minValueLocalized: { type: String }
-		};
-	}
+	static properties = {
+		/**
+		 * Disables the input
+		 * @type {boolean}
+		 */
+		disabled: { type: Boolean },
+		/**
+		 * Hides the fieldset label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
+		 * @type {boolean}
+		 */
+		labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
+		/**
+		 * Indicates that localization will be handled by the consumer. `*value` will not be converted from/to UTC.
+		 * @type {boolean}
+		 */
+		localized: { reflect: true, type: Boolean },
+		/**
+		 * Maximum valid date/time that could be selected by a user
+		 * @type {string}
+		 */
+		maxValue: { attribute: 'max-value', reflect: true, type: String },
+		/**
+		 * Minimum valid date/time that could be selected by a user
+		 * @type {string}
+		 */
+		minValue: { attribute: 'min-value', reflect: true, type: String },
+		/**
+		 * Indicates if the date or time dropdown is open
+		 * @type {boolean}
+		 */
+		opened: { type: Boolean },
+		/**
+		 * Indicates that a value is required
+		 * @type {boolean}
+		 */
+		required: { type: Boolean, reflect: true },
+		/**
+		 * Default value of time input. Accepts times formatted as "hh:mm:ss", and the keywords "startOfDay" and "endOfDay".
+		 * @type {string}
+		 */
+		timeDefaultValue: { attribute: 'time-default-value', reflect: true, type: String },
+		/**
+		 * Time zone identifier for the time input to use.
+		 * @type {string}
+		 */
+		timeZoneId: { type: String, attribute: 'time-zone-id' },
+		/**
+		 * Hides the time zone inside the time selection dropdown. Should only be used when the time input value is not related to any one time zone
+		 * @type {Boolean}
+		 */
+		timeZoneHidden: { type: Boolean, attribute: 'time-zone-hidden' },
+		/**
+		 * Value of the input
+		 * @type {string}
+		 */
+		value: { type: String },
+		_maxValueLocalized: { type: String },
+		_minValueLocalized: { type: String }
+	};
 
-	static get styles() {
-		return [super.styles, css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			.d2l-input-date-time-container {
-				margin-top: -0.3rem;
-			}
-			d2l-input-date,
-			d2l-input-time {
-				margin-top: 0.3rem;
-			}
-		`];
-	}
+	static styles = [super.styles, css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.d2l-input-date-time-container {
+			margin-top: -0.3rem;
+		}
+		d2l-input-date,
+		d2l-input-time {
+			margin-top: 0.3rem;
+		}
+	`];
 
 	constructor() {
 		super();

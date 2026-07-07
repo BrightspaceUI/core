@@ -4,17 +4,15 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 export const ButtonCopyMixin = (superclass) => class extends LocalizeCoreElement(superclass) {
 
-	static get properties() {
-		return {
-			/**
-			 * Disables the button
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean, reflect: true },
-			_recentCopySuccessful: { state: true },
-			_toastState: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Disables the button
+		 * @type {boolean}
+		 */
+		disabled: { type: Boolean, reflect: true },
+		_recentCopySuccessful: { state: true },
+		_toastState: { state: true }
+	};
 
 	constructor() {
 		super();

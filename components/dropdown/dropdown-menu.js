@@ -14,43 +14,39 @@ const dropdownDelay = 300;
  */
 class DropdownMenu extends ThemeMixin(DropdownPopoverMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			_closeRadio: { type: Boolean, reflect: true, attribute: '_close-radio' },
-		};
-	}
+	static properties = {
+		_closeRadio: { type: Boolean, reflect: true, attribute: '_close-radio' },
+	};
 
-	static get styles() {
-		return [super.styles, css`
-			:host {
-				--d2l-dropdown-close-animation-name: d2l-dropdown-close-animation;
-			}
+	static styles = [super.styles, css`
+		:host {
+			--d2l-dropdown-close-animation-name: d2l-dropdown-close-animation;
+		}
 
-			:host([theme="dark"]) {
-				--d2l-dropdown-close-animation-name: d2l-dropdown-close-animation-dark;
-			}
+		:host([theme="dark"]) {
+			--d2l-dropdown-close-animation-name: d2l-dropdown-close-animation-dark;
+		}
 
+		:host([_close-radio]) {
+			animation: var(--d2l-dropdown-close-animation-name) ${dropdownDelay}ms ease-out;
+			animation-delay: 50ms;
+		}
+
+		@media (prefers-reduced-motion: reduce) {
 			:host([_close-radio]) {
-				animation: var(--d2l-dropdown-close-animation-name) ${dropdownDelay}ms ease-out;
-				animation-delay: 50ms;
+				animation: none !important;
 			}
+		}
+		@keyframes d2l-dropdown-close-animation {
+			0% { opacity: 1; transform: translate(0, 0); }
+			100% { opacity: 0; transform: translate(0, -10px); }
+		}
 
-			@media (prefers-reduced-motion: reduce) {
-				:host([_close-radio]) {
-					animation: none !important;
-				}
-			}
-			@keyframes d2l-dropdown-close-animation {
-				0% { opacity: 1; transform: translate(0, 0); }
-				100% { opacity: 0; transform: translate(0, -10px); }
-			}
-
-			@keyframes d2l-dropdown-close-animation-dark {
-				0% { opacity: 0.9; transform: translate(0, 0); }
-				100% { opacity: 0; transform: translate(0, -10px); }
-			}
-		`];
-	}
+		@keyframes d2l-dropdown-close-animation-dark {
+			0% { opacity: 0.9; transform: translate(0, 0); }
+			100% { opacity: 0; transform: translate(0, -10px); }
+		}
+	`];
 
 	constructor() {
 		super();

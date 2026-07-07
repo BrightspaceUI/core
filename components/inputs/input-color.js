@@ -88,155 +88,149 @@ const SWATCH_TRANSPARENT = `<svg xmlns="http://www.w3.org/2000/svg" width="24" h
  */
 class InputColor extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
 
-	static get properties() {
-		return {
-			/**
-			 * ACCESSIBILITY: Value of an associated color as a HEX which will be used for color contrast analysis
-			 * @type {string}
-			 */
-			associatedValue: { attribute: 'associated-value', type: String },
-			/**
-			 * Puts the input into a disabled state
-			 * @type {boolean}
-			 */
-			disabled: { reflect: true, type: Boolean },
-			/**
-			 * Disallows the user from selecting "None" as a color value
-			 * @type {boolean}
-			 */
-			disallowNone: { attribute: 'disallow-none', type: Boolean },
-			/**
-			 * ACCESSIBILITY: REQUIRED: Label for the input, comes with a default value for background & foreground types.
-			 * @type {string}
-			 */
-			label: {
-				type: String,
-				required: {
-					dependentProps: ['type'],
-					validator: (_value, elem, hasValue) => elem.type !== 'custom' || hasValue
-				}
-			},
-			/**
-			 * Hides the label visually
-			 * @type {boolean}
-			 */
-			labelHidden: { attribute: 'label-hidden', type: Boolean },
-			/**
-			 * Puts the input into a read-only state
-			 * @type {boolean}
-			 */
-			readonly: { type: Boolean },
-			/**
-			 * Type of color being chosen
-			 * @type {'background'|'foreground'|'custom'}
-			 * @default end
-			 */
-			type: { reflect: true, type: String },
-			/**
-			 * Value of the input as a HEX color
-			 * @type {string}
-			 */
-			value: { type: String },
-			/**
-			 * @ignore
-			 */
-			launchType: { attribute: 'launch-type', type: String },
-			_opened: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * ACCESSIBILITY: Value of an associated color as a HEX which will be used for color contrast analysis
+		 * @type {string}
+		 */
+		associatedValue: { attribute: 'associated-value', type: String },
+		/**
+		 * Puts the input into a disabled state
+		 * @type {boolean}
+		 */
+		disabled: { reflect: true, type: Boolean },
+		/**
+		 * Disallows the user from selecting "None" as a color value
+		 * @type {boolean}
+		 */
+		disallowNone: { attribute: 'disallow-none', type: Boolean },
+		/**
+		 * ACCESSIBILITY: REQUIRED: Label for the input, comes with a default value for background & foreground types.
+		 * @type {string}
+		 */
+		label: {
+			type: String,
+			required: {
+				dependentProps: ['type'],
+				validator: (_value, elem, hasValue) => elem.type !== 'custom' || hasValue
+			}
+		},
+		/**
+		 * Hides the label visually
+		 * @type {boolean}
+		 */
+		labelHidden: { attribute: 'label-hidden', type: Boolean },
+		/**
+		 * Puts the input into a read-only state
+		 * @type {boolean}
+		 */
+		readonly: { type: Boolean },
+		/**
+		 * Type of color being chosen
+		 * @type {'background'|'foreground'|'custom'}
+		 * @default end
+		 */
+		type: { reflect: true, type: String },
+		/**
+		 * Value of the input as a HEX color
+		 * @type {string}
+		 */
+		value: { type: String },
+		/**
+		 * @ignore
+		 */
+		launchType: { attribute: 'launch-type', type: String },
+		_opened: { state: true }
+	};
 
-	static get styles() {
-		return [ super.styles, buttonStyles, inputLabelStyles,
-			css`
-				:host {
-					display: inline-block;
-				}
-				:host([hidden]) {
-					display: none;
-				}
+	static styles = [super.styles, buttonStyles, inputLabelStyles, css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
 
-				button {
-					align-items: center;
-					background-color: var(--d2l-color-gypsum);
-					display: flex;
-					gap: 0.15rem;
-					min-height: auto;
-					padding: 0.55rem;
-					position: relative;
-				}
-				button:not([aria-disabled]):hover,
-				button:not([aria-disabled]):focus,
-				button.opened {
-					background-color: var(--d2l-color-mica);
-				}
-				:host([disabled]) button {
-					cursor: default;
-					opacity: 0.5;
-				}
-				/* Firefox includes a hidden border which messes up button dimensions */
-				button::-moz-focus-inner {
-					border: 0;
-				}
+		button {
+			align-items: center;
+			background-color: var(--d2l-color-gypsum);
+			display: flex;
+			gap: 0.15rem;
+			min-height: auto;
+			padding: 0.55rem;
+			position: relative;
+		}
+		button:not([aria-disabled]):hover,
+		button:not([aria-disabled]):focus,
+		button.opened {
+			background-color: var(--d2l-color-mica);
+		}
+		:host([disabled]) button {
+			cursor: default;
+			opacity: 0.5;
+		}
+		/* Firefox includes a hidden border which messes up button dimensions */
+		button::-moz-focus-inner {
+			border: 0;
+		}
 
-				.d2l-input-label {
-					margin-bottom: 0;
-					padding-bottom: 7px; /* prevent margin-collapse with readonly swatch margins */
-				}
+		.d2l-input-label {
+			margin-bottom: 0;
+			padding-bottom: 7px; /* prevent margin-collapse with readonly swatch margins */
+		}
 
-				.swatch {
-					border: 1px inset rgba(0, 0, 0, 0.42);
-					border-radius: 0.1rem;
-					box-sizing: border-box;
-					display: inline-block;
-					height: 0.3rem;
-					width: 1.2rem;
-				}
-				:host([type="custom"]) .swatch {
-					border-radius: 0.15rem;
-					height: 1rem;
-				}
-				.swatch-transparent {
-					background-image: ${svgToCSS(SWATCH_TRANSPARENT)};
-					background-position-y: -1.5px;
-					background-size: cover;
-				}
-				:host([type="custom"]) .swatch-transparent {
-					background-position-y: 0;
-				}
+		.swatch {
+			border: 1px inset rgba(0, 0, 0, 0.42);
+			border-radius: 0.1rem;
+			box-sizing: border-box;
+			display: inline-block;
+			height: 0.3rem;
+			width: 1.2rem;
+		}
+		:host([type="custom"]) .swatch {
+			border-radius: 0.15rem;
+			height: 1rem;
+		}
+		.swatch-transparent {
+			background-image: ${svgToCSS(SWATCH_TRANSPARENT)};
+			background-position-y: -1.5px;
+			background-size: cover;
+		}
+		:host([type="custom"]) .swatch-transparent {
+			background-position-y: 0;
+		}
 
-				.icon-wrapper {
-					align-items: center;
-					display: flex;
-					flex-direction: column;
-					gap: 0.1rem;
-				}
-				.icon-wrapper > svg {
-					height: 0.6rem;
-				}
+		.icon-wrapper {
+			align-items: center;
+			display: flex;
+			flex-direction: column;
+			gap: 0.1rem;
+		}
+		.icon-wrapper > svg {
+			height: 0.6rem;
+		}
 
-				button,
-				.readonly-wrapper {
-					color: var(--d2l-color-ferrite);
-				}
+		button,
+		.readonly-wrapper {
+			color: var(--d2l-color-ferrite);
+		}
 
-				.readonly-wrapper {
-					border-radius: 0.1rem;
-					display: block;
-					line-height: 0;
-					margin: 0.55rem 0;
-					outline: none;
-					width: 1.2rem;
-				}
-				${getFocusRingStyles('.readonly-wrapper')}
-				@media (prefers-contrast: more) {
-					.swatch {
-						border: 1px solid FieldText;
-						forced-color-adjust: none;
-					}
-				}
-			`
-		];
-	}
+		.readonly-wrapper {
+			border-radius: 0.1rem;
+			display: block;
+			line-height: 0;
+			margin: 0.55rem 0;
+			outline: none;
+			width: 1.2rem;
+		}
+		${getFocusRingStyles('.readonly-wrapper')}
+		@media (prefers-contrast: more) {
+			.swatch {
+				border: 1px solid FieldText;
+				forced-color-adjust: none;
+			}
+		}
+	`];
 
 	constructor() {
 		super();

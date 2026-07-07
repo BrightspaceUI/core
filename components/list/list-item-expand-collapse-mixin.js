@@ -10,26 +10,24 @@ const dragHoverDropTime = 1000;
 
 export const ListItemExpandCollapseMixin = superclass => class extends SkeletonMixin(superclass) {
 
-	static get properties() {
-		return {
-			/**
-			 * Whether to show the expand collapse toggle
-			 * @type {boolean}
-			 */
-			expandable: { type: Boolean },
-			/**
-			 * Default state for expand collapse toggle - if not set, collapsed will be the default state
-			 * @type {boolean}
-			 */
-			expanded: { type: Boolean, reflect: true },
-			_siblingHasNestedItems: { state: true },
-			_renderExpandCollapseSlot: { type: Boolean, reflect: true, attribute: '_render-expand-collapse-slot' },
-			_showNestedLoadingSpinner: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Whether to show the expand collapse toggle
+		 * @type {boolean}
+		 */
+		expandable: { type: Boolean },
+		/**
+		 * Default state for expand collapse toggle - if not set, collapsed will be the default state
+		 * @type {boolean}
+		 */
+		expanded: { type: Boolean, reflect: true },
+		_siblingHasNestedItems: { state: true },
+		_renderExpandCollapseSlot: { type: Boolean, reflect: true, attribute: '_render-expand-collapse-slot' },
+		_showNestedLoadingSpinner: { state: true }
+	};
 
 	static get styles() {
-		const styles = [ css`
+		const styles = [css`
 			:host {
 				--d2l-expand-collapse-slot-transition-duration: 0.3s;
 			}
@@ -66,7 +64,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 					transition: width var(--d2l-expand-collapse-slot-transition-duration) cubic-bezier(0, 0.7, 0.5, 1);
 				}
 			}
-		` ];
+		`];
 
 		super.styles && styles.unshift(super.styles);
 		return styles;

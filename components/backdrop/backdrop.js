@@ -20,64 +20,60 @@ let scrollOverflow = null;
  */
 class Backdrop extends LitElement {
 
-	static get properties() {
-		return {
-			/**
-			 * REQUIRED: id of the target element to display backdrop behind
-			 * @type {string}
-			 */
-			forTarget: { type: String, attribute: 'for-target' },
+	static properties = {
+		/**
+		 * REQUIRED: id of the target element to display backdrop behind
+		 * @type {string}
+		 */
+		forTarget: { type: String, attribute: 'for-target' },
 
-			/**
-			 * Disables the fade-out transition while the backdrop is being hidden
-			 * @type {boolean}
-			 */
-			noAnimateHide: { type: Boolean, attribute: 'no-animate-hide' },
+		/**
+		 * Disables the fade-out transition while the backdrop is being hidden
+		 * @type {boolean}
+		 */
+		noAnimateHide: { type: Boolean, attribute: 'no-animate-hide' },
 
-			/**
-			 * Used to control whether the backdrop is shown
-			 * @type {boolean}
-			 */
-			shown: { type: Boolean },
-			_state: { type: String, reflect: true }
-		};
-	}
+		/**
+		 * Used to control whether the backdrop is shown
+		 * @type {boolean}
+		 */
+		shown: { type: Boolean },
+		_state: { type: String, reflect: true }
+	};
 
-	static get styles() {
-		return [ css`
-			:host {
-				background-color: var(--d2l-theme-backdrop-background-color);
-				height: 0;
-				left: 0;
-				opacity: 0;
-				position: fixed;
-				top: 0;
-				transition: opacity ${TRANSITION_DURATION}ms ease-in;
-				width: 0;
-				z-index: 999;
-			}
+	static styles = [ css`
+		:host {
+			background-color: var(--d2l-theme-backdrop-background-color);
+			height: 0;
+			left: 0;
+			opacity: 0;
+			position: fixed;
+			top: 0;
+			transition: opacity ${TRANSITION_DURATION}ms ease-in;
+			width: 0;
+			z-index: 999;
+		}
+		:host([slow-transition]) {
+			transition: opacity 1200ms ease-in;
+		}
+		:host([_state="showing"]) {
+			opacity: var(--d2l-theme-backdrop-opacity);
+		}
+		:host([_state="showing"]),
+		:host([_state="hiding"]) {
+			height: 100%;
+			width: 100%;
+		}
+		:host([_state=null][no-animate-hide]) {
+			transition: none;
+		}
+		@media (prefers-reduced-motion: reduce) {
+			:host,
 			:host([slow-transition]) {
-				transition: opacity 1200ms ease-in;
-			}
-			:host([_state="showing"]) {
-				opacity: var(--d2l-theme-backdrop-opacity);
-			}
-			:host([_state="showing"]),
-			:host([_state="hiding"]) {
-				height: 100%;
-				width: 100%;
-			}
-			:host([_state=null][no-animate-hide]) {
 				transition: none;
 			}
-			@media (prefers-reduced-motion: reduce) {
-				:host,
-				:host([slow-transition]) {
-					transition: none;
-				}
-			}
-		`];
-	}
+		}
+	`];
 
 	constructor() {
 		super();

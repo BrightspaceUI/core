@@ -4,27 +4,25 @@ import { ListItemLinkMixin } from './list-item-link-mixin.js';
 
 export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(superclass) {
 
-	static get properties() {
-		return {
-			/**
-			 * Whether the list item is the current page in a navigation context. At most one list item should have the `current` attribute at any time; this will be managed by the `list` after initial render.
-			 * @type {boolean}
-			 */
-			current: { type: Boolean, reflect: true },
-			/**
-			 * Whether to prevent the default navigation behavior of the link
-			 * @type {boolean}
-			 */
-			preventNavigation: { type: Boolean, attribute: 'prevent-navigation' },
-			_childCurrent: { type: Boolean, reflect: true, attribute: '_child-current' },
-			_hasCurrentParent: { type: Boolean, reflect: true, attribute: '_has-current-parent' },
-			_nextSiblingCurrent: { type: Boolean, reflect: true, attribute: '_next-sibling-current' },
-		};
-	}
+	static properties = {
+		/**
+		 * Whether the list item is the current page in a navigation context. At most one list item should have the `current` attribute at any time; this will be managed by the `list` after initial render.
+		 * @type {boolean}
+		 */
+		current: { type: Boolean, reflect: true },
+		/**
+		 * Whether to prevent the default navigation behavior of the link
+		 * @type {boolean}
+		 */
+		preventNavigation: { type: Boolean, attribute: 'prevent-navigation' },
+		_childCurrent: { type: Boolean, reflect: true, attribute: '_child-current' },
+		_hasCurrentParent: { type: Boolean, reflect: true, attribute: '_has-current-parent' },
+		_nextSiblingCurrent: { type: Boolean, reflect: true, attribute: '_next-sibling-current' },
+	};
 
 	static get styles() {
 
-		const styles = [ css`
+		const styles = [css`
 			:host([action-href]:not([action-href=""])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-ferrite);
 			}
@@ -65,7 +63,7 @@ export const ListItemNavMixin = superclass => class extends ListItemLinkMixin(su
 			:host([current]) .d2l-list-item-color-outer {
 				padding-block: 3px;
 			}
-		` ];
+		`];
 
 		super.styles && styles.unshift(super.styles);
 		return styles;

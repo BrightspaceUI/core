@@ -35,134 +35,130 @@ const ro = new ResizeObserver(entries => {
  */
 class List extends PageableMixin(SelectionMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
-			 * When true, show the inline add button after each list item.
-			 * @type {boolean}
-			 */
-			addButton: { type: Boolean, reflect: true, attribute: 'add-button' },
-			/**
-			 * Text to show in label tooltip on inline add button. Defaults to "Add Item".
-			 * @type {string}
-			 */
-			addButtonText: { type: String, reflect: true, attribute: 'add-button-text' },
-			/**
-			 * Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used.
-			 * @type {array}
-			 */
-			breakpoints: { type: Array },
-			/**
-			 * Always show drag handle
-			 * @type {boolean}
-			 */
-			dragHandleShowAlways: { type: Boolean, attribute: 'drag-handle-show-always' },
-			/**
-			 * Whether the user can drag multiple items
-			 * @type {boolean}
+	static properties = {
+		/**
+		 * When true, show the inline add button after each list item.
+		 * @type {boolean}
+		 */
+		addButton: { type: Boolean, reflect: true, attribute: 'add-button' },
+		/**
+		 * Text to show in label tooltip on inline add button. Defaults to "Add Item".
+		 * @type {string}
+		 */
+		addButtonText: { type: String, reflect: true, attribute: 'add-button-text' },
+		/**
+		 * Breakpoints for responsiveness in pixels. There are four different breakpoints and only the four largest breakpoints will be used.
+		 * @type {array}
+		 */
+		breakpoints: { type: Array },
+		/**
+		 * Always show drag handle
+		 * @type {boolean}
+		 */
+		dragHandleShowAlways: { type: Boolean, attribute: 'drag-handle-show-always' },
+		/**
+		 * Whether the user can drag multiple items
+		 * @type {boolean}
  			 */
-			dragMultiple: { type: Boolean, reflect: true, attribute: 'drag-multiple' },
-			/**
-			 * Disable ability to drop items above or below this item
-			 * @type {boolean}
-			 */
-			dropNestedOnly: { type: Boolean, attribute: 'drop-nested-only' },
-			/**
-			 * Whether to extend the separators beyond the content's edge
-			 * @type {boolean}
-			 */
-			extendSeparators: { type: Boolean, reflect: true, attribute: 'extend-separators' },
-			/**
-			 * Use grid to manage focus with arrow keys. See [Accessibility](#accessibility).
-			 * @type {boolean}
-			 */
-			grid: { type: Boolean },
-			/**
-			 * Sets an accessible label. For use when the list context is unclear. This property is only valid on top-level lists and will have no effect on nested lists.
-			 * @type {string}
+		dragMultiple: { type: Boolean, reflect: true, attribute: 'drag-multiple' },
+		/**
+		 * Disable ability to drop items above or below this item
+		 * @type {boolean}
+		 */
+		dropNestedOnly: { type: Boolean, attribute: 'drop-nested-only' },
+		/**
+		 * Whether to extend the separators beyond the content's edge
+		 * @type {boolean}
+		 */
+		extendSeparators: { type: Boolean, reflect: true, attribute: 'extend-separators' },
+		/**
+		 * Use grid to manage focus with arrow keys. See [Accessibility](#accessibility).
+		 * @type {boolean}
+		 */
+		grid: { type: Boolean },
+		/**
+		 * Sets an accessible label. For use when the list context is unclear. This property is only valid on top-level lists and will have no effect on nested lists.
+		 * @type {string}
  			 */
-			label: { type: String },
-			/**
-			 * The type of layout for the list items. Valid values are "list" (default) and "tiles". The tile layout is only valid for single level (non-nested) lists.
-			 * @type {'list'|'tiles'}
-			 * @default "list"
-			 */
-			layout: { type: String, reflect: true },
-			/**
-			 * Display separators. Valid values are "all" (default), "between", "none"
-			 * @type {'all'|'between'|'none'}
-			 * @default "all"
-			 */
-			separators: { type: String, reflect: true },
-			/**
-			 * Show selection only on hover, focus or if at least one item is selected. Exclusive for the tile layout
-			 * @type {boolean}
-			 */
-			selectionWhenInteracted: { type: Boolean, attribute: 'selection-when-interacted', reflect: true },
-			_breakpoint: { type: Number, reflect: true },
-			_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' }
-		};
-	}
+		label: { type: String },
+		/**
+		 * The type of layout for the list items. Valid values are "list" (default) and "tiles". The tile layout is only valid for single level (non-nested) lists.
+		 * @type {'list'|'tiles'}
+		 * @default "list"
+		 */
+		layout: { type: String, reflect: true },
+		/**
+		 * Display separators. Valid values are "all" (default), "between", "none"
+		 * @type {'all'|'between'|'none'}
+		 * @default "all"
+		 */
+		separators: { type: String, reflect: true },
+		/**
+		 * Show selection only on hover, focus or if at least one item is selected. Exclusive for the tile layout
+		 * @type {boolean}
+		 */
+		selectionWhenInteracted: { type: Boolean, attribute: 'selection-when-interacted', reflect: true },
+		_breakpoint: { type: Number, reflect: true },
+		_slimColor: { type: Boolean, reflect: true, attribute: '_slim-color' }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				--d2l-list-item-color-border-radius: 6px;
-				--d2l-list-item-color-width: 6px;
-				--d2l-list-item-illustration-margin-inline-end: 0.9rem;
-				--d2l-list-item-illustration-max-height: 2.6rem;
-				--d2l-list-item-illustration-max-width: 4.5rem;
-				display: block;
-			}
-			:host([layout="tiles"]) > .d2l-list-content {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.9rem;
-				justify-content: normal;
-			}
-			:host(:not([slot="nested"])) > .d2l-list-content {
-				padding-bottom: 1px;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			slot[name="pager"]::slotted(*) {
-				margin-top: 10px;
-			}
-			:host([extend-separators]) slot[name="pager"]::slotted(*) {
-				margin-left: 0.9rem;
-				margin-right: 0.9rem;
-			}
-			:host([_breakpoint="1"]) {
-				--d2l-list-item-illustration-max-height: 3.55rem;
-				--d2l-list-item-illustration-max-width: 6rem;
-			}
-			:host([_breakpoint="2"]) {
-				--d2l-list-item-illustration-max-height: 5.1rem;
-				--d2l-list-item-illustration-max-width: 9rem;
-			}
-			:host([_breakpoint="3"]) {
-				--d2l-list-item-illustration-max-height: 6rem;
-				--d2l-list-item-illustration-max-width: 10.8rem;
-			}
-			:host([_slim-color]) {
-				--d2l-list-item-color-border-radius: 3px;
-				--d2l-list-item-color-width: 3px;
-			}
-			:host([add-button]) ::slotted([slot="controls"]) {
-				margin-bottom: calc(6px + 0.4rem); /* controls section margin-bottom + spacing for add-button */
-			}
+	static styles = css`
+		:host {
+			--d2l-list-item-color-border-radius: 6px;
+			--d2l-list-item-color-width: 6px;
+			--d2l-list-item-illustration-margin-inline-end: 0.9rem;
+			--d2l-list-item-illustration-max-height: 2.6rem;
+			--d2l-list-item-illustration-max-width: 4.5rem;
+			display: block;
+		}
+		:host([layout="tiles"]) > .d2l-list-content {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.9rem;
+			justify-content: normal;
+		}
+		:host(:not([slot="nested"])) > .d2l-list-content {
+			padding-bottom: 1px;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		slot[name="pager"]::slotted(*) {
+			margin-top: 10px;
+		}
+		:host([extend-separators]) slot[name="pager"]::slotted(*) {
+			margin-left: 0.9rem;
+			margin-right: 0.9rem;
+		}
+		:host([_breakpoint="1"]) {
+			--d2l-list-item-illustration-max-height: 3.55rem;
+			--d2l-list-item-illustration-max-width: 6rem;
+		}
+		:host([_breakpoint="2"]) {
+			--d2l-list-item-illustration-max-height: 5.1rem;
+			--d2l-list-item-illustration-max-width: 9rem;
+		}
+		:host([_breakpoint="3"]) {
+			--d2l-list-item-illustration-max-height: 6rem;
+			--d2l-list-item-illustration-max-width: 10.8rem;
+		}
+		:host([_slim-color]) {
+			--d2l-list-item-color-border-radius: 3px;
+			--d2l-list-item-color-width: 3px;
+		}
+		:host([add-button]) ::slotted([slot="controls"]) {
+			margin-bottom: calc(6px + 0.4rem); /* controls section margin-bottom + spacing for add-button */
+		}
 
-			::slotted(.d2l-list-tile-break) {
-				display: none;
-			}
-			:host([layout="tiles"]) ::slotted(.d2l-list-tile-break) {
-				display: block;
-				flex-basis: 100%;
-				height: 0;
-			}
-		`;
-	}
+		::slotted(.d2l-list-tile-break) {
+			display: none;
+		}
+		:host([layout="tiles"]) ::slotted(.d2l-list-tile-break) {
+			display: block;
+			flex-basis: 100%;
+			height: 0;
+		}
+	`;
 
 	constructor() {
 		super();

@@ -21,116 +21,112 @@ export const checkboxStyles = _generateInputCheckboxStyles('input[type="checkbox
  */
 class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitElement)))) {
 
-	static get properties() {
-		return {
-			/**
-			 * @ignore
-			 */
-			ariaLabel: { type: String, attribute: 'aria-label' },
-			/**
-			 * Checked state
-			 * @type {boolean}
-			 */
-			checked: { type: Boolean },
-			/**
-			 * ACCESSIBILITY: Additional information communicated to screenreader users when focusing on the input
-			 * @type {string}
-			 */
-			description: { type: String },
-			/**
-			 * Disables the input
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean },
-			/**
-			 * Tooltip text when disabled
-			 * @type {string}
-			 */
-			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
-			/**
-			 * Sets checkbox to an indeterminate state
-			 * @type {boolean}
-			 */
-			indeterminate: { type: Boolean },
-			/**
-			 * REQUIRED: Label for the input
-			 * @type {string}
-			 */
-			label: { type: String },
-			/**
-			 * Hides the label visually
-			 * @type {boolean}
-			 */
-			labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
-			/**
-			 * Hides the supporting slot when unchecked
-			 * @type {boolean}
-			 */
-			supportingHiddenWhenUnchecked: { type: Boolean, attribute: 'supporting-hidden-when-unchecked', reflect: true },
-			/**
-			 * Value of the input
-			 * @type {string}
-			 */
-			value: { type: String },
-			_hasSupporting: { state: true },
-			_isHovered: { state: true },
-		};
-	}
+	static properties = {
+		/**
+		 * @ignore
+		 */
+		ariaLabel: { type: String, attribute: 'aria-label' },
+		/**
+		 * Checked state
+		 * @type {boolean}
+		 */
+		checked: { type: Boolean },
+		/**
+		 * ACCESSIBILITY: Additional information communicated to screenreader users when focusing on the input
+		 * @type {string}
+		 */
+		description: { type: String },
+		/**
+		 * Disables the input
+		 * @type {boolean}
+		 */
+		disabled: { type: Boolean },
+		/**
+		 * Tooltip text when disabled
+		 * @type {string}
+		 */
+		disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
+		/**
+		 * Sets checkbox to an indeterminate state
+		 * @type {boolean}
+		 */
+		indeterminate: { type: Boolean },
+		/**
+		 * REQUIRED: Label for the input
+		 * @type {string}
+		 */
+		label: { type: String },
+		/**
+		 * Hides the label visually
+		 * @type {boolean}
+		 */
+		labelHidden: { attribute: 'label-hidden', reflect: true, type: Boolean },
+		/**
+		 * Hides the supporting slot when unchecked
+		 * @type {boolean}
+		 */
+		supportingHiddenWhenUnchecked: { type: Boolean, attribute: 'supporting-hidden-when-unchecked', reflect: true },
+		/**
+		 * Value of the input
+		 * @type {string}
+		 */
+		value: { type: String },
+		_hasSupporting: { state: true },
+		_isHovered: { state: true },
+	};
 
-	static get styles() {
-		return [ super.styles, checkboxStyles, offscreenStyles,
-			css`
-				:host {
-					display: block;
-					margin-block-end: 0.6rem;
-				}
-				:host([hidden]) {
-					display: none;
-				}
-				:host([label-hidden]) {
-					display: inline-block;
-					margin-block-end: 0;
-				}
-				label {
-					display: flex;
-					line-height: ${cssSizes.inputBoxSize}rem;
-					overflow-wrap: anywhere;
-				}
-				.d2l-input-checkbox-wrapper {
-					display: inline-block;
-				}
-				.d2l-input-checkbox-text {
-					color: var(--d2l-theme-text-color-static-standard);
-					display: inline-block;
-					font-size: 0.8rem;
-					font-weight: 400;
-					margin-inline-start: ${cssSizes.checkboxMargin}rem;
-					vertical-align: top;
-					white-space: normal;
-				}
-				:host([label-hidden]) .d2l-input-checkbox-text {
-					margin-inline-start: 0;
-				}
-				:host([skeleton]) .d2l-input-checkbox-text.d2l-skeletize::before {
-					bottom: 0.3rem;
-					top: 0.3rem;
-				}
-				.d2l-input-inline-help,
-				.d2l-input-checkbox-supporting {
-					margin-inline-start: ${cssSizes.inputBoxSize + cssSizes.checkboxMargin}rem;
-				}
-				:host(:not([skeleton])) .d2l-input-checkbox-text-disabled {
-					opacity: 0.5;
-				}
-				input[type="checkbox"].d2l-input-checkbox {
-					vertical-align: top;
-				}
-				.d2l-input-checkbox-supporting {
-					margin-block-start: 0.6rem;
-				}
-			`
-		];
-	}
+	static styles = [super.styles, checkboxStyles, offscreenStyles,
+		css`
+			:host {
+				display: block;
+				margin-block-end: 0.6rem;
+			}
+			:host([hidden]) {
+				display: none;
+			}
+			:host([label-hidden]) {
+				display: inline-block;
+				margin-block-end: 0;
+			}
+			label {
+				display: flex;
+				line-height: ${cssSizes.inputBoxSize}rem;
+				overflow-wrap: anywhere;
+			}
+			.d2l-input-checkbox-wrapper {
+				display: inline-block;
+			}
+			.d2l-input-checkbox-text {
+				color: var(--d2l-theme-text-color-static-standard);
+				display: inline-block;
+				font-size: 0.8rem;
+				font-weight: 400;
+				margin-inline-start: ${cssSizes.checkboxMargin}rem;
+				vertical-align: top;
+				white-space: normal;
+			}
+			:host([label-hidden]) .d2l-input-checkbox-text {
+				margin-inline-start: 0;
+			}
+			:host([skeleton]) .d2l-input-checkbox-text.d2l-skeletize::before {
+				bottom: 0.3rem;
+				top: 0.3rem;
+			}
+			.d2l-input-inline-help,
+			.d2l-input-checkbox-supporting {
+				margin-inline-start: ${cssSizes.inputBoxSize + cssSizes.checkboxMargin}rem;
+			}
+			:host(:not([skeleton])) .d2l-input-checkbox-text-disabled {
+				opacity: 0.5;
+			}
+			input[type="checkbox"].d2l-input-checkbox {
+				vertical-align: top;
+			}
+			.d2l-input-checkbox-supporting {
+				margin-block-start: 0.6rem;
+			}
+		`
+	];
 
 	constructor() {
 		super();

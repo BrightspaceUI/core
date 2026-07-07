@@ -80,124 +80,118 @@ function roundPrecisely(val, maxFractionDigits) {
  */
 class InputNumber extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
 
-	static get properties() {
-		return {
-			/**
-			 * Specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser.
-			 * @type {string}
-			 */
-			autocomplete: { type: String },
-			/**
-			 * @ignore
-			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			autofocus: { type: Boolean },
-			/**
-			 * Disables the input
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean },
-			/**
-			 * ADVANCED: Hide the alert icon when input is invalid
-			 * @type {boolean}
-			 */
-			hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
-			/**
-			 * Restricts the maximum width of the input box without restricting the width of the label
-			 * @type {string}
-			 */
-			inputWidth: { attribute: 'input-width', type: String },
-			/**
-			 * Hides the label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
-			 * @type {boolean}
-			 */
-			labelHidden: { type: Boolean, attribute: 'label-hidden' },
-			/**
-			 * Maximum value allowed
-			 * @type {number}
-			 */
-			max: { type: Number },
-			/**
-			 * Indicates whether the max value is exclusive
-			 * @type {boolean}
-			 */
-			maxExclusive: { type: Boolean, attribute: 'max-exclusive' },
-			/**
-			 * Maximum number of digits allowed after the decimal place. Must be between 0 and 20 and greater than or equal to `minFractionDigits`. Default is Greater of `minFractionDigits` or `3`.
-			 * @type {number}
-			 */
-			maxFractionDigits: { type: Number, attribute: 'max-fraction-digits' },
-			/**
-			 * Minimum value allowed
-			 * @type {number}
-			 */
-			min: { type: Number },
-			/**
-			 * Indicates whether the min value is exclusive
-			 * @type {boolean}
-			 */
-			minExclusive: { type: Boolean, attribute: 'min-exclusive' },
-			/**
-			 * Minimum number of digits allowed after the decimal place. Must be between 0 and 20 and less than or equal to `maxFractionDigits`. Default is `0`.
-			 * @type {number}
-			 */
-			minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
-			/**
-			 * Indicates that a value is required
-			 * @type {boolean}
-			 */
-			required: { type: Boolean },
-			/**
-			 * @ignore
-			 */
-			trailingZeroes: { type: Boolean, attribute: 'trailing-zeroes' },
-			/**
-			 * Unit associated with the input value, displayed next to input and announced as part of the label
-			 * @type {string}
-			 */
-			unit: { type: String },
-			/**
-			 * ACCESSIBILITY: Label for the unit, which is only picked up by screenreaders. Required if `unit` is used.
-			 * @type {string}
-			 */
-			unitLabel: { attribute: 'unit-label', type: String },
-			/**
-			 * Value of the input
-			 * @type {number}
-			 */
-			value: { type: Number, converter: numberConverter },
-			/**
-			 * Alignment of the value text within the input
-			 * @type {'start'|'end'}
-			 */
-			valueAlign: { attribute: 'value-align', type: String },
-			/**
-			 * @ignore
-			 */
-			valueTrailingZeroes: { type: String, attribute: 'value-trailing-zeroes' },
-			_afterSlotWidth: { state: true },
-			_hintType: { state: true },
-			_formattedValue: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser.
+		 * @type {string}
+		 */
+		autocomplete: { type: String },
+		/**
+		 * @ignore
+		 */
+		// eslint-disable-next-line lit/no-native-attributes
+		autofocus: { type: Boolean },
+		/**
+		 * Disables the input
+		 * @type {boolean}
+		 */
+		disabled: { type: Boolean },
+		/**
+		 * ADVANCED: Hide the alert icon when input is invalid
+		 * @type {boolean}
+		 */
+		hideInvalidIcon: { attribute: 'hide-invalid-icon', type: Boolean, reflect: true },
+		/**
+		 * Restricts the maximum width of the input box without restricting the width of the label
+		 * @type {string}
+		 */
+		inputWidth: { attribute: 'input-width', type: String },
+		/**
+		 * Hides the label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
+		 * @type {boolean}
+		 */
+		labelHidden: { type: Boolean, attribute: 'label-hidden' },
+		/**
+		 * Maximum value allowed
+		 * @type {number}
+		 */
+		max: { type: Number },
+		/**
+		 * Indicates whether the max value is exclusive
+		 * @type {boolean}
+		 */
+		maxExclusive: { type: Boolean, attribute: 'max-exclusive' },
+		/**
+		 * Maximum number of digits allowed after the decimal place. Must be between 0 and 20 and greater than or equal to `minFractionDigits`. Default is Greater of `minFractionDigits` or `3`.
+		 * @type {number}
+		 */
+		maxFractionDigits: { type: Number, attribute: 'max-fraction-digits' },
+		/**
+		 * Minimum value allowed
+		 * @type {number}
+		 */
+		min: { type: Number },
+		/**
+		 * Indicates whether the min value is exclusive
+		 * @type {boolean}
+		 */
+		minExclusive: { type: Boolean, attribute: 'min-exclusive' },
+		/**
+		 * Minimum number of digits allowed after the decimal place. Must be between 0 and 20 and less than or equal to `maxFractionDigits`. Default is `0`.
+		 * @type {number}
+		 */
+		minFractionDigits: { type: Number, attribute: 'min-fraction-digits' },
+		/**
+		 * Indicates that a value is required
+		 * @type {boolean}
+		 */
+		required: { type: Boolean },
+		/**
+		 * @ignore
+		 */
+		trailingZeroes: { type: Boolean, attribute: 'trailing-zeroes' },
+		/**
+		 * Unit associated with the input value, displayed next to input and announced as part of the label
+		 * @type {string}
+		 */
+		unit: { type: String },
+		/**
+		 * ACCESSIBILITY: Label for the unit, which is only picked up by screenreaders. Required if `unit` is used.
+		 * @type {string}
+		 */
+		unitLabel: { attribute: 'unit-label', type: String },
+		/**
+		 * Value of the input
+		 * @type {number}
+		 */
+		value: { type: Number, converter: numberConverter },
+		/**
+		 * Alignment of the value text within the input
+		 * @type {'start'|'end'}
+		 */
+		valueAlign: { attribute: 'value-align', type: String },
+		/**
+		 * @ignore
+		 */
+		valueTrailingZeroes: { type: String, attribute: 'value-trailing-zeroes' },
+		_afterSlotWidth: { state: true },
+		_hintType: { state: true },
+		_formattedValue: { state: true }
+	};
 
-	static get styles() {
-		return [ super.styles,
-			css`
-				:host {
-					display: inline-block;
-					position: var(--d2l-input-position, relative); /* overridden by sticky headers in grades */
-					width: 100%;
-				}
-				:host([hidden]) {
-					display: none;
-				}
-				d2l-input-text:not([skeleton]) {
-					width: auto;
-				}
-			`
-		];
-	}
+	static styles = [super.styles, css`
+		:host {
+			display: inline-block;
+			position: var(--d2l-input-position, relative); /* overridden by sticky headers in grades */
+			width: 100%;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		d2l-input-text:not([skeleton]) {
+			width: auto;
+		}
+	`];
 
 	constructor() {
 		super();

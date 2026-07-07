@@ -34,168 +34,164 @@ export const moveActions = Object.freeze({
  */
 class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
-			 * @ignore
-			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			autofocus: { type: Boolean, reflect: true },
-			/**
-			 * ACCESSIBILITY: A description to be added to the button for accessibility when text on button does not provide enough context
-			 * @type {string}
-			 */
-			description: { type: String },
-			/**
-			 * Disables the down interaction
-			 * @type {boolean}
-			 */
-			disabledDown: { type: Boolean, attribute: 'disabled-down', reflect: true },
-			/**
-			 * Disables the end interaction
-			 * @type {boolean}
-			 */
-			disabledEnd: { type: Boolean, attribute: 'disabled-end', reflect: true },
-			/**
-			 * Disables the home interaction
-			 * @type {boolean}
-			 */
-			disabledHome: { type: Boolean, attribute: 'disabled-home', reflect: true },
-			/**
-			 * Disables the left interaction
-			 * @type {boolean}
-			 */
-			disabledLeft: { type: Boolean, attribute: 'disabled-left', reflect: true },
-			/**
-			 * Disables the right interaction
-			 * @type {boolean}
-			 */
-			disabledRight: { type: Boolean, attribute: 'disabled-right', reflect: true },
-			/**
-			 * Disables the up interaction
-			 * @type {boolean}
-			 */
-			disabledUp: { type: Boolean, attribute: 'disabled-up', reflect: true },
-			/**
-			 * ACCESSIBILITY: REQUIRED: Accessible text for the button
-			 * @type {string}
-			 */
-			text: { type: String, reflect: true },
-			/**
-			 * Renders the buttons in a side by side orientation
-			 * @type {boolean}
-			 */
-			sideToSide: { type: Boolean, attribute: 'side-to-side', reflect: true }
-		};
-	}
+	static properties = {
+		/**
+		 * @ignore
+		 */
+		// eslint-disable-next-line lit/no-native-attributes
+		autofocus: { type: Boolean, reflect: true },
+		/**
+		 * ACCESSIBILITY: A description to be added to the button for accessibility when text on button does not provide enough context
+		 * @type {string}
+		 */
+		description: { type: String },
+		/**
+		 * Disables the down interaction
+		 * @type {boolean}
+		 */
+		disabledDown: { type: Boolean, attribute: 'disabled-down', reflect: true },
+		/**
+		 * Disables the end interaction
+		 * @type {boolean}
+		 */
+		disabledEnd: { type: Boolean, attribute: 'disabled-end', reflect: true },
+		/**
+		 * Disables the home interaction
+		 * @type {boolean}
+		 */
+		disabledHome: { type: Boolean, attribute: 'disabled-home', reflect: true },
+		/**
+		 * Disables the left interaction
+		 * @type {boolean}
+		 */
+		disabledLeft: { type: Boolean, attribute: 'disabled-left', reflect: true },
+		/**
+		 * Disables the right interaction
+		 * @type {boolean}
+		 */
+		disabledRight: { type: Boolean, attribute: 'disabled-right', reflect: true },
+		/**
+		 * Disables the up interaction
+		 * @type {boolean}
+		 */
+		disabledUp: { type: Boolean, attribute: 'disabled-up', reflect: true },
+		/**
+		 * ACCESSIBILITY: REQUIRED: Accessible text for the button
+		 * @type {string}
+		 */
+		text: { type: String, reflect: true },
+		/**
+		 * Renders the buttons in a side by side orientation
+		 * @type {boolean}
+		 */
+		sideToSide: { type: Boolean, attribute: 'side-to-side', reflect: true }
+	};
 
-	static get styles() {
-		return [ buttonStyles,
-			css`
-				:host {
-					--d2l-button-move-background-color-focus: #ffffff;
-					--d2l-button-move-icon-background-color-hover: var(--d2l-color-mica);
-					--d2l-icon-fill-color: var(--d2l-color-tungsten);
-					display: inline-block;
-					line-height: 0;
-				}
-				:host([hidden]) {
-					display: none;
-				}
-				:host([theme="dark"]) {
-					--d2l-button-move-background-color-focus: #000000;
-					--d2l-button-move-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
-					--d2l-icon-fill-color: var(--d2l-color-sylvite);
-					--d2l-focus-ring-color: var(--d2l-color-celestine-plus-1);
-				}
-				button {
-					background-color: transparent;
-					display: flex;
-					flex-direction: column;
-					gap: 2px;
-					margin: 0;
-					min-height: auto;
-					padding: 0;
-					position: relative;
-					width: 0.9rem;
-				}
-				d2l-icon {
-					border-radius: 0.1rem;
-					height: 0.85rem;
-					width: 0.9rem;
-				}
-				button:focus {
-					background-color: var(--d2l-button-move-background-color-focus);
-				}
-				button:hover > d2l-icon,
-				button:focus > d2l-icon {
-					background-color: var(--d2l-button-move-icon-background-color-hover);
-				}
-				.up-icon {
-					border-top-left-radius: 0.3rem;
-					border-top-right-radius: 0.3rem;
-				}
-				.down-icon {
-					border-bottom-left-radius: 0.3rem;
-					border-bottom-right-radius: 0.3rem;
-				}
-				.layer {
-					display: flex;
-					flex-direction: column;
-					height: calc(1.2rem * 2);
-					inset-inline-start: -0.2rem;
-					position: absolute;
-					top: -0.35rem;
-					width: 1.3rem;
-				}
-				.up-layer,
-				.down-layer {
-					height: 1.2rem;
-					position: relative;
-					width: 1.25rem;
-				}
+	static styles = [ buttonStyles,
+		css`
+			:host {
+				--d2l-button-move-background-color-focus: #ffffff;
+				--d2l-button-move-icon-background-color-hover: var(--d2l-color-mica);
+				--d2l-icon-fill-color: var(--d2l-color-tungsten);
+				display: inline-block;
+				line-height: 0;
+			}
+			:host([hidden]) {
+				display: none;
+			}
+			:host([theme="dark"]) {
+				--d2l-button-move-background-color-focus: #000000;
+				--d2l-button-move-icon-background-color-hover: rgba(51, 53, 54, 0.9); /* tungsten @70% @90% */
+				--d2l-icon-fill-color: var(--d2l-color-sylvite);
+				--d2l-focus-ring-color: var(--d2l-color-celestine-plus-1);
+			}
+			button {
+				background-color: transparent;
+				display: flex;
+				flex-direction: column;
+				gap: 2px;
+				margin: 0;
+				min-height: auto;
+				padding: 0;
+				position: relative;
+				width: 0.9rem;
+			}
+			d2l-icon {
+				border-radius: 0.1rem;
+				height: 0.85rem;
+				width: 0.9rem;
+			}
+			button:focus {
+				background-color: var(--d2l-button-move-background-color-focus);
+			}
+			button:hover > d2l-icon,
+			button:focus > d2l-icon {
+				background-color: var(--d2l-button-move-icon-background-color-hover);
+			}
+			.up-icon {
+				border-top-left-radius: 0.3rem;
+				border-top-right-radius: 0.3rem;
+			}
+			.down-icon {
+				border-bottom-left-radius: 0.3rem;
+				border-bottom-right-radius: 0.3rem;
+			}
+			.layer {
+				display: flex;
+				flex-direction: column;
+				height: calc(1.2rem * 2);
+				inset-inline-start: -0.2rem;
+				position: absolute;
+				top: -0.35rem;
+				width: 1.3rem;
+			}
+			.up-layer,
+			.down-layer {
+				height: 1.2rem;
+				position: relative;
+				width: 1.25rem;
+			}
 
-				/* Firefox includes a hidden border which messes up button dimensions */
-				button::-moz-focus-inner {
-					border: 0;
-				}
-				button[disabled]:hover > d2l-icon {
-					background-color: transparent;
-				}
-				:host([disabled-up]) .up-icon,
-				:host([disabled-down]) .down-icon {
-					opacity: 0.5;
-				}
-				:host([disabled-up]) .up-layer,
-				:host([disabled-down]) .down-layer {
-					cursor: default;
-				}
+			/* Firefox includes a hidden border which messes up button dimensions */
+			button::-moz-focus-inner {
+				border: 0;
+			}
+			button[disabled]:hover > d2l-icon {
+				background-color: transparent;
+			}
+			:host([disabled-up]) .up-icon,
+			:host([disabled-down]) .down-icon {
+				opacity: 0.5;
+			}
+			:host([disabled-up]) .up-layer,
+			:host([disabled-down]) .down-layer {
+				cursor: default;
+			}
 
-				:host([side-to-side]) button {
-					align-items: center;
-					flex-direction: row;
-					height: 1.2rem;
-					width: calc(calc(1.2rem + 1px) * 2);
-				}
+			:host([side-to-side]) button {
+				align-items: center;
+				flex-direction: row;
+				height: 1.2rem;
+				width: calc(calc(1.2rem + 1px) * 2);
+			}
 
-				:host([side-to-side]) .layer {
-					flex-direction: row;
-					gap: 2px;
-					height: 1.2rem;
-					inset-inline-start: 0;
-					top: 0;
-					width: calc(calc(1.2rem + 1px) * 2);
-				}
+			:host([side-to-side]) .layer {
+				flex-direction: row;
+				gap: 2px;
+				height: 1.2rem;
+				inset-inline-start: 0;
+				top: 0;
+				width: calc(calc(1.2rem + 1px) * 2);
+			}
 
-				:host([side-to-side]) d2l-icon {
-					height: 1.2rem;
-					/* Arrows need to be rotated in opposite direction for RTL */
-					transform: rotate(calc(-90deg * var(--d2l-length-factor)));
-					width: 1.2rem;
-				}
-			`
-		];
-	}
+			:host([side-to-side]) d2l-icon {
+				height: 1.2rem;
+				/* Arrows need to be rotated in opposite direction for RTL */
+				transform: rotate(calc(-90deg * var(--d2l-length-factor)));
+				width: 1.2rem;
+			}
+		`
+	];
 
 	constructor() {
 		super();

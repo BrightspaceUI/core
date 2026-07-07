@@ -63,79 +63,77 @@ export const ListItemMixin = superclass => class extends composeMixins(
 	ListItemRoleMixin,
 	SkeletonMixin) {
 
-	static get properties() {
-		return {
-			/**
-			 * A color indicator to appear at the beginning of a list item. Expected value is a valid 3, 4, 6, or 8 character CSS color hex code (e.g., #006fbf).
-			 * @type {string}
-			 */
-			color: { type: String },
-			/**
-			 * @ignore
-			 */
-			first: { type: Boolean, reflect: true },
-			/**
-			 * Whether to allow the drag target to be the handle only rather than the entire cell
-			 * @type {boolean}
-			 */
-			dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
-			/**
-			 * Inline start padding (in px) to apply to list item(s) in the nested slot. When used, nested list items will not use the grid start calcuations and will only use this number to determine indentation.
-			 * @type {number}
-			 */
-			indentation: { type: Number, reflect: true },
-			/**
-			 * @ignore
-			 */
-			last: { type: Boolean, reflect: true },
-			/**
-			 * @ignore
-			 */
-			layout: { type: String, reflect: true },
-			/**
-			 * Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive.
-			 * @type {boolean}
-			 */
-			noPrimaryAction: { type: Boolean, attribute: 'no-primary-action' },
-			/**
-			 * How much padding to render in standard/normal list items
-			 * @type {'normal'|'none'}
-			 */
-			paddingType: { type: String, attribute: 'padding-type' },
-			/**
-			 * Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive.
-			 * @type {boolean}
-			 */
-			tileHeader: { type: Boolean, reflect: true, attribute: 'tile-header' },
-			/**
-			 * How much padding to render in tile list items
-			 * @type {'normal'|'none'}
-			 * @default "normal"
-			 */
-			tilePaddingType: { type: String, attribute: 'tile-padding-type' },
-			_addButtonText: { state: true },
-			_displayKeyboardTooltip: { type: Boolean },
-			_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
-			_hasListItemContent: { state: true },
-			_hasNestedList: { type: Boolean, reflect: true, attribute: '_has-nested-list' },
-			_hasNestedListAddButton: { type: Boolean, reflect: true, attribute: '_has-nested-list-add-button' },
-			_hovering: { type: Boolean, reflect: true },
-			_hoveringControl: { type: Boolean, attribute: '_hovering-control', reflect: true },
-			_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
-			_focusing: { type: Boolean, reflect: true },
-			_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
-			_forceShowSelection: { type: Boolean, attribute: '_force-show-selection', reflect: true },
-			_highlight: { type: Boolean, reflect: true },
-			_highlighting: { type: Boolean, reflect: true },
-			_showAddButton: { type: Boolean, attribute: '_show-add-button', reflect: true },
-			_selectionWhenInteracted: { type: Boolean, attribute: '_selection-when-interacted', reflect: true },
-			_siblingHasColor: { state: true },
-		};
-	}
+	static properties = {
+		/**
+		 * A color indicator to appear at the beginning of a list item. Expected value is a valid 3, 4, 6, or 8 character CSS color hex code (e.g., #006fbf).
+		 * @type {string}
+		 */
+		color: { type: String },
+		/**
+		 * @ignore
+		 */
+		first: { type: Boolean, reflect: true },
+		/**
+		 * Whether to allow the drag target to be the handle only rather than the entire cell
+		 * @type {boolean}
+		 */
+		dragTargetHandleOnly: { type: Boolean, attribute: 'drag-target-handle-only' },
+		/**
+		 * Inline start padding (in px) to apply to list item(s) in the nested slot. When used, nested list items will not use the grid start calcuations and will only use this number to determine indentation.
+		 * @type {number}
+		 */
+		indentation: { type: Number, reflect: true },
+		/**
+		 * @ignore
+		 */
+		last: { type: Boolean, reflect: true },
+		/**
+		 * @ignore
+		 */
+		layout: { type: String, reflect: true },
+		/**
+		 * Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive.
+		 * @type {boolean}
+		 */
+		noPrimaryAction: { type: Boolean, attribute: 'no-primary-action' },
+		/**
+		 * How much padding to render in standard/normal list items
+		 * @type {'normal'|'none'}
+		 */
+		paddingType: { type: String, attribute: 'padding-type' },
+		/**
+		 * Whether to disable rendering the entire item as the primary action. Required if slotted content is interactive.
+		 * @type {boolean}
+		 */
+		tileHeader: { type: Boolean, reflect: true, attribute: 'tile-header' },
+		/**
+		 * How much padding to render in tile list items
+		 * @type {'normal'|'none'}
+		 * @default "normal"
+		 */
+		tilePaddingType: { type: String, attribute: 'tile-padding-type' },
+		_addButtonText: { state: true },
+		_displayKeyboardTooltip: { type: Boolean },
+		_hasColorSlot: { type: Boolean, reflect: true, attribute: '_has-color-slot' },
+		_hasListItemContent: { state: true },
+		_hasNestedList: { type: Boolean, reflect: true, attribute: '_has-nested-list' },
+		_hasNestedListAddButton: { type: Boolean, reflect: true, attribute: '_has-nested-list-add-button' },
+		_hovering: { type: Boolean, reflect: true },
+		_hoveringControl: { type: Boolean, attribute: '_hovering-control', reflect: true },
+		_hoveringPrimaryAction: { type: Boolean, attribute: '_hovering-primary-action', reflect: true },
+		_focusing: { type: Boolean, reflect: true },
+		_focusingPrimaryAction: { type: Boolean, attribute: '_focusing-primary-action', reflect: true },
+		_forceShowSelection: { type: Boolean, attribute: '_force-show-selection', reflect: true },
+		_highlight: { type: Boolean, reflect: true },
+		_highlighting: { type: Boolean, reflect: true },
+		_showAddButton: { type: Boolean, attribute: '_show-add-button', reflect: true },
+		_selectionWhenInteracted: { type: Boolean, attribute: '_selection-when-interacted', reflect: true },
+		_siblingHasColor: { state: true },
+	};
 
 	static get styles() {
 
-		const styles = [ css`
+		const styles = [css`
 			:host {
 				display: block;
 				position: relative;

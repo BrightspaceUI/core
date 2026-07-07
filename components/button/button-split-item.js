@@ -8,27 +8,23 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
  */
 class ButtonSplitItem extends PropertyRequiredMixin(MenuItemMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
-			 * REQUIRED: Key of the action
-			 * @type {string}
-			 */
-			key: { type: String, required: true }
-		};
-	}
+	static properties = {
+		/**
+		 * REQUIRED: Key of the action
+		 * @type {string}
+		 */
+		key: { type: String, required: true }
+	};
 
-	static get styles() {
-		return [ menuItemStyles,
-			css`
-				:host {
-					align-items: center;
-					display: flex;
-					padding: 0.75rem 1rem;
-				}
-			`
-		];
-	}
+	static styles = [ menuItemStyles,
+		css`
+			:host {
+				align-items: center;
+				display: flex;
+				padding: 0.75rem 1rem;
+			}
+		`
+	];
 
 	render() {
 		return html`

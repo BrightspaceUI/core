@@ -10,61 +10,57 @@ import { linkStyles } from '../link/link.js';
  */
 class Breadcrumb extends FocusMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * @ignore
-			 */
-			_compact: { attribute: 'data-compact', reflect: true, type: Boolean },
-			/**
-			 * @ignore
-			 */
-			_role: { type: 'string', attribute: 'role', reflect: true },
-			/**
-			 * The Url that breadcrumb is pointing to
-			 * @type {string}
-			 */
-			href: { type: String, reflect: true },
-			/**
-			 * The target of breadcrumb link
-			 * @type {string}
-			 */
-			target: { type: String, reflect: true },
-			/**
-			 * REQUIRED: The text of the breadcrumb link
-			 * @type {string}
-			 */
-			text: { type: String, reflect: true },
-			/**
-			 * ACCESSIBILITY: ARIA label for the breadcrumb, used if `text` does not provide enough context for screen reader users
-			 * @type {string}
-			 */
-			ariaLabel: { attribute: 'aria-label', type: String, reflect: true }
-		};
-	}
+	static properties = {
+		/**
+		 * @ignore
+		 */
+		_compact: { attribute: 'data-compact', reflect: true, type: Boolean },
+		/**
+		 * @ignore
+		 */
+		_role: { type: 'string', attribute: 'role', reflect: true },
+		/**
+		 * The Url that breadcrumb is pointing to
+		 * @type {string}
+		 */
+		href: { type: String, reflect: true },
+		/**
+		 * The target of breadcrumb link
+		 * @type {string}
+		 */
+		target: { type: String, reflect: true },
+		/**
+		 * REQUIRED: The text of the breadcrumb link
+		 * @type {string}
+		 */
+		text: { type: String, reflect: true },
+		/**
+		 * ACCESSIBILITY: ARIA label for the breadcrumb, used if `text` does not provide enough context for screen reader users
+		 * @type {string}
+		 */
+		ariaLabel: { attribute: 'aria-label', type: String, reflect: true }
+	};
 
-	static get styles() {
-		return [linkStyles, css`
-			:host {
-				align-items: center;
-				display: inline-flex;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			:host([data-compact]) {
-				flex-direction: row-reverse;
-			}
-			d2l-icon {
-				height: 8px;
-				padding-inline: 8px 3px;
-				width: 8px;
-			}
-			d2l-icon[icon="tier1:chevron-left"] {
-				padding-inline: 0 8px;
-			}
-		`];
-	}
+	static styles = [linkStyles, css`
+		:host {
+			align-items: center;
+			display: inline-flex;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		:host([data-compact]) {
+			flex-direction: row-reverse;
+		}
+		d2l-icon {
+			height: 8px;
+			padding-inline: 8px 3px;
+			width: 8px;
+		}
+		d2l-icon[icon="tier1:chevron-left"] {
+			padding-inline: 0 8px;
+		}
+	`];
 
 	constructor() {
 		super();

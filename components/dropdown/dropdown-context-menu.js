@@ -10,39 +10,36 @@ import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
  */
 class DropdownContextMenu extends DropdownOpenerMixin(VisibleOnAncestorMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
-			 * REQUIRED: Label for the context-menu button
-			 * @type {string}
-			 */
-			text: {
-				type: String
-			},
+	static properties = {
+		/**
+		 * REQUIRED: Label for the context-menu button
+		 * @type {string}
+		 */
+		text: {
+			type: String
+		},
 
-			/**
-			 * Attribute for busy/rich backgrounds
-			 * @type {boolean}
-			 */
-			translucent: {
-				type: Boolean
-			},
-		};
-	}
+		/**
+		 * Attribute for busy/rich backgrounds
+		 * @type {boolean}
+		 */
+		translucent: {
+			type: Boolean
+		},
+	};
 
-	static get styles() {
-		return [dropdownOpenerStyles, visibleOnAncestorStyles, css`
-			:host {
-				--d2l-dropdown-context-menu-min-height: calc(2rem + 2px);
-				--d2l-dropdown-context-menu-min-width: calc(2rem + 2px);
-				display: inline-block;
-			}
-			d2l-button-icon {
-				--d2l-button-icon-min-height: var(--d2l-dropdown-context-menu-min-height);
-				--d2l-button-icon-min-width: var(--d2l-dropdown-context-menu-min-height);
-			}
-		`];
-	}
+	static styles = [dropdownOpenerStyles, visibleOnAncestorStyles, css`
+		:host {
+			--d2l-dropdown-context-menu-min-height: calc(2rem + 2px);
+			--d2l-dropdown-context-menu-min-width: calc(2rem + 2px);
+			display: inline-block;
+		}
+		d2l-button-icon {
+			--d2l-button-icon-min-height: var(--d2l-dropdown-context-menu-min-height);
+			--d2l-button-icon-min-width: var(--d2l-dropdown-context-menu-min-height);
+		}
+	`];
+
 	constructor() {
 		super();
 		this.translucent = false;

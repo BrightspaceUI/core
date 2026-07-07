@@ -20,67 +20,63 @@ export const states = {
  */
 class ExpandCollapseContent extends LitElement {
 
-	static get properties() {
-		return {
-			/**
-			 * Specifies the expanded/collapsed state of the content
-			 * @type {boolean}
-			 */
-			expanded: { type: Boolean, reflect: true },
-			_height: { type: String },
-			_state: { type: String }
-		};
-	}
+	static properties = {
+		/**
+		 * Specifies the expanded/collapsed state of the content
+		 * @type {boolean}
+		 */
+		expanded: { type: Boolean, reflect: true },
+		_height: { type: String },
+		_state: { type: String }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				--d2l-expand-collapse-content-transition-duration: 0.2s;
-				--d2l-expand-collapse-content-transition-function: cubic-bezier(0.4, 0.4, 0.25, 1);
-				display: block;
-			}
+	static styles = css`
+		:host {
+			--d2l-expand-collapse-content-transition-duration: 0.2s;
+			--d2l-expand-collapse-content-transition-function: cubic-bezier(0.4, 0.4, 0.25, 1);
+			display: block;
+		}
 
-			:host([hidden]) {
-				display: none;
-			}
+		:host([hidden]) {
+			display: none;
+		}
 
+		.d2l-expand-collapse-content-container {
+			display: block;
+			opacity: 0;
+			overflow: hidden;
+			transition:
+				height var(--d2l-expand-collapse-content-transition-duration) var(--d2l-expand-collapse-content-transition-function),
+				opacity var(--d2l-expand-collapse-content-transition-duration) var(--d2l-expand-collapse-content-transition-function);
+		}
+
+		.d2l-expand-collapse-content-container[data-state="collapsed"] {
+			display: none;
+		}
+
+		.d2l-expand-collapse-content-container[data-state="expanded"] {
+			overflow: visible;
+		}
+
+
+		.d2l-expand-collapse-content-container[data-state="expanded"],
+		.d2l-expand-collapse-content-container[data-state="expanding"] {
+			opacity: 1;
+		}
+
+		/* prevent margin colapse on slotted children */
+		.d2l-expand-collapse-content-inner::before,
+		.d2l-expand-collapse-content-inner::after {
+			content: " ";
+			display: table;
+		}
+
+		@media (prefers-reduced-motion: reduce) {
 			.d2l-expand-collapse-content-container {
-				display: block;
-				opacity: 0;
-				overflow: hidden;
-				transition:
-					height var(--d2l-expand-collapse-content-transition-duration) var(--d2l-expand-collapse-content-transition-function),
-					opacity var(--d2l-expand-collapse-content-transition-duration) var(--d2l-expand-collapse-content-transition-function);
+				transition: none;
 			}
-
-			.d2l-expand-collapse-content-container[data-state="collapsed"] {
-				display: none;
-			}
-
-			.d2l-expand-collapse-content-container[data-state="expanded"] {
-				overflow: visible;
-			}
-
-
-			.d2l-expand-collapse-content-container[data-state="expanded"],
-			.d2l-expand-collapse-content-container[data-state="expanding"] {
-				opacity: 1;
-			}
-
-			/* prevent margin colapse on slotted children */
-			.d2l-expand-collapse-content-inner::before,
-			.d2l-expand-collapse-content-inner::after {
-				content: " ";
-				display: table;
-			}
-
-			@media (prefers-reduced-motion: reduce) {
-				.d2l-expand-collapse-content-container {
-					transition: none;
-				}
-			}
-		`;
-	}
+		}
+	`;
 
 	constructor() {
 		super();

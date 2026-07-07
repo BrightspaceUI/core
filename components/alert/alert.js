@@ -14,134 +14,130 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
  */
 class Alert extends LocalizeCoreElement(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * Text that is displayed within the alert's action button. If no text is provided the button is not displayed.
-			 * @type {string}
-			 */
-			buttonText: { type: String, attribute: 'button-text' },
+	static properties = {
+		/**
+		 * Text that is displayed within the alert's action button. If no text is provided the button is not displayed.
+		 * @type {string}
+		 */
+		buttonText: { type: String, attribute: 'button-text' },
 
-			/**
-			 * Gives the alert a close button that will close the alert when clicked
-			 * @type {boolean}
-			 */
-			hasCloseButton: { type: Boolean, attribute: 'has-close-button' },
+		/**
+		 * Gives the alert a close button that will close the alert when clicked
+		 * @type {boolean}
+		 */
+		hasCloseButton: { type: Boolean, attribute: 'has-close-button' },
 
-			/**
-			 * Opt out of default padding/whitespace around the alert
-			 * @type {boolean}
-			 */
-			noPadding: { type: Boolean, attribute: 'no-padding', reflect: true },
+		/**
+		 * Opt out of default padding/whitespace around the alert
+		 * @type {boolean}
+		 */
+		noPadding: { type: Boolean, attribute: 'no-padding', reflect: true },
 
-			/**
-			 * The text that is displayed below the main alert message
-			 * @type {string}
-			 */
-			subtext: { type: String },
+		/**
+		 * The text that is displayed below the main alert message
+		 * @type {string}
+		 */
+		subtext: { type: String },
 
-			/**
-			 * Type of the alert being displayed
-			 * @type {'default'|'critical'|'success'|'warning'}
-			 */
-			type: { type: String, reflect: true }
-		};
-	}
-	static get styles() {
-		return [bodyCompactStyles, bodyStandardStyles, css`
+		/**
+		 * Type of the alert being displayed
+		 * @type {'default'|'critical'|'success'|'warning'}
+		 */
+		type: { type: String, reflect: true }
+	};
+	static styles = [bodyCompactStyles, bodyStandardStyles, css`
 
-			:host {
-				animation: 600ms ease drop-in;
-				background: var(--d2l-theme-background-color-base);
-				border: 1px solid var(--d2l-theme-border-color-standard);
-				border-inline-start-width: 0.3rem;
-				border-radius: 0.3rem;
-				box-sizing: border-box;
-				display: flex;
-				flex: 1;
-				max-width: 710px;
-				position: relative;
-				width: 100%;
-			}
+		:host {
+			animation: 600ms ease drop-in;
+			background: var(--d2l-theme-background-color-base);
+			border: 1px solid var(--d2l-theme-border-color-standard);
+			border-inline-start-width: 0.3rem;
+			border-radius: 0.3rem;
+			box-sizing: border-box;
+			display: flex;
+			flex: 1;
+			max-width: 710px;
+			position: relative;
+			width: 100%;
+		}
 
-			:host([hidden]) {
-				display: none;
-			}
+		:host([hidden]) {
+			display: none;
+		}
 
-			:host([type="critical"]),
-			:host([type="error"]) {
-				border-inline-start-color: var(--d2l-theme-status-color-error);
-			}
-			:host([type="warning"]) {
-				border-inline-start-color: var(--d2l-theme-status-color-warning);
-			}
-			:host([type="default"]),
-			:host([type="call-to-action"]) {
-				border-inline-start-color: var(--d2l-theme-status-color-default);
-			}
-			:host([type="success"]) {
-				border-inline-start-color: var(--d2l-theme-status-color-success);
-			}
+		:host([type="critical"]),
+		:host([type="error"]) {
+			border-inline-start-color: var(--d2l-theme-status-color-error);
+		}
+		:host([type="warning"]) {
+			border-inline-start-color: var(--d2l-theme-status-color-warning);
+		}
+		:host([type="default"]),
+		:host([type="call-to-action"]) {
+			border-inline-start-color: var(--d2l-theme-status-color-default);
+		}
+		:host([type="success"]) {
+			border-inline-start-color: var(--d2l-theme-status-color-success);
+		}
 
+		.d2l-alert-text {
+			flex: 1;
+			padding-block: 0.9rem;
+			padding-inline-end: 1.5rem;
+			padding-inline-start: 1.2rem;
+			position: relative;
+		}
+		.d2l-alert-text-with-actions {
+			padding-inline-end: 0.9rem;
+		}
+
+		:host([no-padding]) .d2l-alert-text,
+		:host([no-padding]) .d2l-alert-text-with-actions {
+			padding-block: 0;
+			padding-inline-end: 0;
+			padding-inline-start: 0;
+		}
+
+		.d2l-alert-subtext {
+			margin: 0.5rem 0 0;
+		}
+
+		.d2l-alert-action {
+			margin-block: 0.6rem;
+			margin-inline-end: 0.6rem;
+			margin-inline-start: 0;
+		}
+		:host([no-padding]) .d2l-alert-action {
+			margin: 0;
+		}
+
+		@media (max-width: 615px) {
 			.d2l-alert-text {
 				flex: 1;
-				padding-block: 0.9rem;
-				padding-inline-end: 1.5rem;
-				padding-inline-start: 1.2rem;
 				position: relative;
 			}
-			.d2l-alert-text-with-actions {
-				padding-inline-end: 0.9rem;
-			}
-
-			:host([no-padding]) .d2l-alert-text,
-			:host([no-padding]) .d2l-alert-text-with-actions {
-				padding-block: 0;
-				padding-inline-end: 0;
-				padding-inline-start: 0;
-			}
-
-			.d2l-alert-subtext {
-				margin: 0.5rem 0 0;
-			}
-
 			.d2l-alert-action {
-				margin-block: 0.6rem;
-				margin-inline-end: 0.6rem;
-				margin-inline-start: 0;
+				margin: 0.45rem;
 			}
-			:host([no-padding]) .d2l-alert-action {
-				margin: 0;
-			}
+		}
 
-			@media (max-width: 615px) {
-				.d2l-alert-text {
-					flex: 1;
-					position: relative;
-				}
-				.d2l-alert-action {
-					margin: 0.45rem;
-				}
+		@keyframes drop-in {
+			from {
+				opacity: 0;
+				transform: translate(0, -10px);
 			}
+			to {
+				opacity: 1;
+				transform: translate(0, 0);
+			}
+		}
 
-			@keyframes drop-in {
-				from {
-					opacity: 0;
-					transform: translate(0, -10px);
-				}
-				to {
-					opacity: 1;
-					transform: translate(0, 0);
-				}
+		@media (prefers-reduced-motion: reduce) {
+			:host {
+				animation: none;
 			}
-
-			@media (prefers-reduced-motion: reduce) {
-				:host {
-					animation: none;
-				}
-			}
-		`];
-	}
+		}
+	`];
 
 	constructor() {
 		super();

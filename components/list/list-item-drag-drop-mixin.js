@@ -248,55 +248,53 @@ export class NewPositionEventDetails {
 
 export const ListItemDragDropMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			/**
-			 * **Drag & drop:** Disables keyboard dragging interaction. If draggable, a keyboard alternative should be provided for the dragging functionality.
-			 * @type {boolean}
-			 */
-			keyboardDragDisabled: { type: Boolean, attribute: 'keyboard-drag-disabled' },
-			/**
-			 * **Drag & drop:** Whether the item is draggable
-			 * @type {boolean}
-			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			draggable: { type: Boolean, reflect: true },
-			/**
-			 * @ignore
-			 */
-			dragging: { type: Boolean, reflect: true },
-			/**
-			 * **Drag & drop:** The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode.
-			 * @type {string}
-			*/
-			dragHandleText: { type: String, attribute: 'drag-handle-text' },
-			/**
-			 * **Drag & drop:** Whether nested items can be dropped on this item
-			 * @type {boolean}
-			*/
-			dropNested: { type: Boolean, attribute: 'drop-nested' },
-			/**
-			 * **Drag & drop:** Text to drag and drop
-			 * @type {string}
-			*/
-			dropText: { type: String, attribute: 'drop-text' },
-			/**
-			 * Value to identify item if selectable
-			 * @type {string}
-			*/
-			key: { type: String, reflect: true },
-			_dragHandleShowAlways: { type: Boolean, attribute: '_drag-handle-show-always', reflect: true },
-			_draggingOver: { type: Boolean },
-			_dropLocation: { type: Number, reflect: true, attribute: '_drop-location' },
-			_focusingDragHandle: { type: Boolean },
-			_hovering: { type: Boolean },
-			_keyboardActive: { type: Boolean },
-			_keyboardTextInfo: { type: Object }
-		};
-	}
+	static properties = {
+		/**
+		 * **Drag & drop:** Disables keyboard dragging interaction. If draggable, a keyboard alternative should be provided for the dragging functionality.
+		 * @type {boolean}
+		 */
+		keyboardDragDisabled: { type: Boolean, attribute: 'keyboard-drag-disabled' },
+		/**
+		 * **Drag & drop:** Whether the item is draggable
+		 * @type {boolean}
+		 */
+		// eslint-disable-next-line lit/no-native-attributes
+		draggable: { type: Boolean, reflect: true },
+		/**
+		 * @ignore
+		 */
+		dragging: { type: Boolean, reflect: true },
+		/**
+		 * **Drag & drop:** The drag-handle label for assistive technology. If implementing drag & drop, you should change this to dynamically announce what the drag-handle is moving for assistive technology in keyboard mode.
+		 * @type {string}
+		*/
+		dragHandleText: { type: String, attribute: 'drag-handle-text' },
+		/**
+		 * **Drag & drop:** Whether nested items can be dropped on this item
+		 * @type {boolean}
+		*/
+		dropNested: { type: Boolean, attribute: 'drop-nested' },
+		/**
+		 * **Drag & drop:** Text to drag and drop
+		 * @type {string}
+		*/
+		dropText: { type: String, attribute: 'drop-text' },
+		/**
+		 * Value to identify item if selectable
+		 * @type {string}
+		*/
+		key: { type: String, reflect: true },
+		_dragHandleShowAlways: { type: Boolean, attribute: '_drag-handle-show-always', reflect: true },
+		_draggingOver: { type: Boolean },
+		_dropLocation: { type: Number, reflect: true, attribute: '_drop-location' },
+		_focusingDragHandle: { type: Boolean },
+		_hovering: { type: Boolean },
+		_keyboardActive: { type: Boolean },
+		_keyboardTextInfo: { type: Object }
+	};
 
 	static get styles() {
-		const styles = [ css`
+		const styles = [css`
 			:host {
 				display: block;
 				position: relative;

@@ -22,120 +22,116 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
  */
 class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
-			 * The state of data in the element being overlaid. Set to 'clean' when the data represents the user's latest selections, 'dirty' when the data does not represent the user's latest selections, and 'loading' if the data is being actively refreshed
-			 * @type {'clean'|'dirty'|'loading'}
-			 */
-			dataState: {
-				reflect: true,
-				type: String
-			},
-			/**
-			 * Used to identify content that the backdrop should make inert
-			 * @type {string}
-			 */
-			for: { type: String, required: true },
-			/**
-			 * The text displayed on the dirty state overlay when the 'dirty' dataState is set.
-			 * @type {string}
-			 */
-			dirtyText: {
-				reflect: true,
-				attribute: 'dirty-text',
-				type: String
-			},
-			/**
-			 * The text displayed on the button of the dirty state overlay when the 'dirty' dataState is set.
-			 * @type {string}
-			 */
-			dirtyButtonText: {
-				reflect: true,
-				attribute: 'dirty-button-text',
-				type: String
-			},
-			_state: { type: String, reflect: true },
-			_spinnerTop: { state: true },
-			_ariaContent: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * The state of data in the element being overlaid. Set to 'clean' when the data represents the user's latest selections, 'dirty' when the data does not represent the user's latest selections, and 'loading' if the data is being actively refreshed
+		 * @type {'clean'|'dirty'|'loading'}
+		 */
+		dataState: {
+			reflect: true,
+			type: String
+		},
+		/**
+		 * Used to identify content that the backdrop should make inert
+		 * @type {string}
+		 */
+		for: { type: String, required: true },
+		/**
+		 * The text displayed on the dirty state overlay when the 'dirty' dataState is set.
+		 * @type {string}
+		 */
+		dirtyText: {
+			reflect: true,
+			attribute: 'dirty-text',
+			type: String
+		},
+		/**
+		 * The text displayed on the button of the dirty state overlay when the 'dirty' dataState is set.
+		 * @type {string}
+		 */
+		dirtyButtonText: {
+			reflect: true,
+			attribute: 'dirty-button-text',
+			type: String
+		},
+		_state: { type: String, reflect: true },
+		_spinnerTop: { state: true },
+		_ariaContent: { state: true }
+	};
 
-	static get styles() {
-		return [css`
-			#visible {
-				display: none;
-			}
+	static styles = [css`
+		#visible {
+			display: none;
+		}
 
-			:host([_state="showing"]),
-			:host([_state="shown"]),
-			:host([_state="hiding"]),
-			:host([_state="showing"]) #visible,
-			:host([_state="shown"]) #visible,
-			:host([_state="hiding"]) #visible {
-				display: flex;
-				height: 100%;
-				justify-content: center;
-				position: absolute;
-				top: 0;
-				width: 100%;
-				z-index: 999;
-			}
+		:host([_state="showing"]),
+		:host([_state="shown"]),
+		:host([_state="hiding"]),
+		:host([_state="showing"]) #visible,
+		:host([_state="shown"]) #visible,
+		:host([_state="hiding"]) #visible {
+			display: flex;
+			height: 100%;
+			justify-content: center;
+			position: absolute;
+			top: 0;
+			width: 100%;
+			z-index: 999;
+		}
 
-			.backdrop {
-				background-color: var(--d2l-theme-backdrop-background-color);
-				height: 100%;
-				opacity: 0;
-				position: absolute;
-				top: 0;
-				width: 100%;
-			}
-			:host([_state="shown"]) .backdrop {
-				opacity: var(--d2l-theme-backdrop-opacity);
-				transition: opacity ${FADE_DURATION_MS}ms ease-in;
-			}
-			:host([_state="hiding"]) .backdrop {
-				transition: opacity ${FADE_DURATION_MS}ms ease-out;
-			}
+		.backdrop {
+			background-color: var(--d2l-theme-backdrop-background-color);
+			height: 100%;
+			opacity: 0;
+			position: absolute;
+			top: 0;
+			width: 100%;
+		}
+		:host([_state="shown"]) .backdrop {
+			opacity: var(--d2l-theme-backdrop-opacity);
+			transition: opacity ${FADE_DURATION_MS}ms ease-in;
+		}
+		:host([_state="hiding"]) .backdrop {
+			transition: opacity ${FADE_DURATION_MS}ms ease-out;
+		}
 
-			d2l-loading-spinner {
-				opacity: 0;
-				position: absolute;
-			}
-			:host([_state="shown"]) d2l-loading-spinner {
-				opacity: 1;
-				transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
-			}
-			:host([_state="shown"][dataState="dirty"]) d2l-loading-spinner,
-			:host([_state="hiding"]) d2l-loading-spinner {
-				opacity: 0;
-				transition: opacity ${FADE_DURATION_MS}ms ease-out;
-			}
+		d2l-loading-spinner {
+			opacity: 0;
+			position: absolute;
+		}
+		:host([_state="shown"]) d2l-loading-spinner {
+			opacity: 1;
+			transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
+		}
+		:host([_state="shown"][dataState="dirty"]) d2l-loading-spinner,
+		:host([_state="hiding"]) d2l-loading-spinner {
+			opacity: 0;
+			transition: opacity ${FADE_DURATION_MS}ms ease-out;
+		}
 
-			d2l-backdrop-dirty-overlay {
-				background-color: var(--d2l-theme-backdrop-dialog-color);
-				height: fit-content;
-				justify-content: center;
-				opacity: 0;
-				position: relative;
-				top: 0;
-				z-index: 1000;
-			}
-			:host([_state="shown"]) d2l-backdrop-dirty-overlay {
-				opacity: 1;
-				transition: opacity ${FADE_DURATION_MS}ms ease-in;
-			}
-			:host([_state="shown"][dataState="loading"]) d2l-backdrop-dirty-overlay,
-			:host([_state="hiding"]) d2l-backdrop-dirty-overlay {
-				opacity: 0;
-				transition: opacity ${FADE_DURATION_MS}ms ease-out;
-			}
+		d2l-backdrop-dirty-overlay {
+			background-color: var(--d2l-theme-backdrop-dialog-color);
+			height: fit-content;
+			justify-content: center;
+			opacity: 0;
+			position: relative;
+			top: 0;
+			z-index: 1000;
+		}
+		:host([_state="shown"]) d2l-backdrop-dirty-overlay {
+			opacity: 1;
+			transition: opacity ${FADE_DURATION_MS}ms ease-in;
+		}
+		:host([_state="shown"][dataState="loading"]) d2l-backdrop-dirty-overlay,
+		:host([_state="hiding"]) d2l-backdrop-dirty-overlay {
+			opacity: 0;
+			transition: opacity ${FADE_DURATION_MS}ms ease-out;
+		}
 
-			@media (prefers-reduced-motion: reduce) {
-				* { transition: none; }
-			}
-		`];
-	}
+		@media (prefers-reduced-motion: reduce) {
+			* { transition: none; }
+		}
+	`];
 
 	constructor() {
 		super();

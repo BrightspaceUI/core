@@ -16,50 +16,44 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
  */
 class InputFieldset extends PropertyRequiredMixin(InputInlineHelpMixin(SkeletonMixin(LitElement))) {
 
-	static get properties() {
-		return {
-			/**
-			 * REQUIRED: Label for the fieldset
-			 * @type {string}
-			 */
-			label: { type: String, required: true },
-			/**
-			 * Hides the label visually
-			 * @type {boolean}
-			 */
-			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
-			/**
-			 * Style of the fieldset label
-			 * @type {'default'|'heading'}
-			 */
-			labelStyle: { type: String, attribute: 'label-style', reflect: true },
-			/**
-			 * Indicates that a value is required for inputs in the fieldset
-			 * @type {boolean}
-			 */
-			required: { type: Boolean, reflect: true }
-		};
-	}
+	static properties = {
+		/**
+		 * REQUIRED: Label for the fieldset
+		 * @type {string}
+		 */
+		label: { type: String, required: true },
+		/**
+		 * Hides the label visually
+		 * @type {boolean}
+		 */
+		labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
+		/**
+		 * Style of the fieldset label
+		 * @type {'default'|'heading'}
+		 */
+		labelStyle: { type: String, attribute: 'label-style', reflect: true },
+		/**
+		 * Indicates that a value is required for inputs in the fieldset
+		 * @type {boolean}
+		 */
+		required: { type: Boolean, reflect: true }
+	};
 
-	static get styles() {
-		return [ super.styles, heading4Styles, inputLabelStyles, offscreenStyles,
-			css`
-				:host {
-					display: block;
-				}
-				:host([hidden]) {
-					display: none;
-				}
-				:host([label-style="heading"]:not([label-hidden])) {
-					margin-block-start: 0.3rem;
-				}
-				legend.d2l-heading-4 {
-					margin-block: 0 0.6rem;
-					padding: 0;
-				}
-			`
-		];
-	}
+	static styles = [super.styles, heading4Styles, inputLabelStyles, offscreenStyles, css`
+		:host {
+			display: block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		:host([label-style="heading"]:not([label-hidden])) {
+			margin-block-start: 0.3rem;
+		}
+		legend.d2l-heading-4 {
+			margin-block: 0 0.6rem;
+			padding: 0;
+		}
+	`];
 
 	constructor() {
 		super();

@@ -6,20 +6,18 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const ListItemLinkMixin = superclass => class extends ListItemMixin(superclass) {
 
-	static get properties() {
-		return {
-			/**
-			 * Address of item link if navigable
-			 * @type {string}
-			 */
-			actionHref: { type: String, attribute: 'action-href', reflect: true },
-			_ariaCurrent: { type: String }
-		};
-	}
+	static properties = {
+		/**
+		 * Address of item link if navigable
+		 * @type {string}
+		 */
+		actionHref: { type: String, attribute: 'action-href', reflect: true },
+		_ariaCurrent: { type: String }
+	};
 
 	static get styles() {
 
-		const styles = [ css`
+		const styles = [css`
 			:host([action-href]:not([action-href=""])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
@@ -39,7 +37,7 @@ export const ListItemLinkMixin = superclass => class extends ListItemMixin(super
 			:host([action-href]:not([action-href=""])[layout="tile"]) [slot="outside-control-action"] {
 				grid-column-end: end;
 			}
-		` ];
+		`];
 
 		super.styles && styles.unshift(super.styles);
 		return styles;

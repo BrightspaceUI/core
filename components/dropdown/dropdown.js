@@ -8,9 +8,7 @@ import { dropdownOpenerStyles } from './dropdown-opener-styles.js';
  */
 class Dropdown extends DropdownOpenerMixin(LitElement) {
 
-	static get styles() {
-		return dropdownOpenerStyles;
-	}
+	static styles = dropdownOpenerStyles;
 
 	render() {
 		return html`<slot></slot>`;
