@@ -7,7 +7,7 @@ const demoData = {
 	'L1-1': {
 		primaryText: 'Earth Sciences (L1)',
 		supportingText: 'Earth science or geoscience includes all fields of natural science related to planet Earth. This is a branch of science dealing with the physical and chemical constitution of Earth and its atmosphere. Earth science can be considered to be a branch of planetary science, but with a much older history.',
-		nested: [ 'L2-1', 'L2-2', 'L2-3' ]
+		nested: ['L2-1', 'L2-2', 'L2-3']
 	},
 	'L1-2': {
 		primaryText: 'Biology (L1)',
@@ -20,7 +20,7 @@ const demoData = {
 	'L2-1': {
 		primaryText: 'Introductory Earth Sciences (L2)',
 		supportingText: 'This course explores the geological processes of the Earth\'s interior and surface. These include volcanism, earthquakes, mountain building, glaciation and weathering. Students will gain an appreciation of how these processes have controlled the evolution of our planet and the role of geology in meeting society\'s current and future demand for sustainable energy and mineral resources.',
-		nested: [ 'L3-1', 'L3-2', 'L3-3' ]
+		nested: ['L3-1', 'L3-2', 'L3-3']
 	},
 	'L2-2': {
 		primaryText: 'Flow and Transport Through Fractured Rocks (L2)',
@@ -33,7 +33,7 @@ const demoData = {
 	'L3-1': {
 		primaryText: 'Glaciation (L3)',
 		supportingText: 'Supporting Info',
-		nested: [ 'L4-1', 'L4-2' ]
+		nested: ['L4-1', 'L4-2']
 	},
 	'L3-2': {
 		primaryText: 'Weathering (L3)',
@@ -46,7 +46,7 @@ const demoData = {
 	'L4-1': {
 		primaryText: 'Ice Sheets',
 		supportingText: 'Supporting Info',
-		nested: [ /*'L5-1', 'L5-2', 'L5-3', 'L5-4', 'L5-5'*/ ]
+		nested: []
 	},
 	'L4-2': {
 		primaryText: 'Alpine Glaciers',
@@ -55,72 +55,72 @@ const demoData = {
 	'L5-1': {
 		primaryText: 'Topic L5-1',
 		supportingText: 'Supporting Info',
-		nested: [ 'L6-1' /*, 'L6-2', 'L6-3', 'L6-4', 'L6-5', 'L6-6', 'L6-7', 'L6-8'*/ ]
+		nested: ['L6-1']
 	},
 	'L5-2': {
 		primaryText: 'Topic L5-2',
 		supportingText: 'Supporting Info',
-		nested: [ 'L6-1', 'L6-2', 'L6-3', 'L6-4', 'L6-5', 'L6-6', 'L6-7', 'L6-8' ]
+		nested: ['L6-1', 'L6-2', 'L6-3', 'L6-4', 'L6-5', 'L6-6', 'L6-7', 'L6-8']
 	},
 	'L5-3': {
 		primaryText: 'Topic L5-3',
 		supportingText: 'Supporting Info',
-		nested: [ 'L6-1', 'L6-2', 'L6-3', 'L6-4', 'L6-5', 'L6-6', 'L6-7', 'L6-8' ]
+		nested: ['L6-1', 'L6-2', 'L6-3', 'L6-4', 'L6-5', 'L6-6', 'L6-7', 'L6-8']
 	},
 	'L5-4': {
 		primaryText: 'Topic L5-4',
 		supportingText: 'Supporting Info',
-		nested: [ 'L6-1', 'L6-2', 'L6-3', 'L6-4', 'L6-5', 'L6-6', 'L6-7', 'L6-8' ]
+		nested: ['L6-1', 'L6-2', 'L6-3', 'L6-4', 'L6-5', 'L6-6', 'L6-7', 'L6-8']
 	},
 	'L5-5': {
 		primaryText: 'Topic L5-5',
 		supportingText: 'Supporting Info',
-		nested: [ 'L6-1', 'L6-2', 'L6-3', 'L6-4', 'L6-5', 'L6-6', 'L6-7', 'L6-8' ]
+		nested: ['L6-1', 'L6-2', 'L6-3', 'L6-4', 'L6-5', 'L6-6', 'L6-7', 'L6-8']
 	},
 	'L6-1': {
 		primaryText: 'Topic L6-1',
 		supportingText: 'Supporting Info',
-		nested: [ 'L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10' ]
+		nested: ['L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10']
 	},
 	'L6-2': {
 		primaryText: 'Topic L6-2',
 		supportingText: 'Supporting Info',
-		nested: [ 'L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10' ]
+		nested: ['L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10']
 	},
 	'L6-3': {
 		primaryText: 'Topic L6-3',
 		supportingText: 'Supporting Info',
-		nested: [ 'L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10' ]
+		nested: ['L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10']
 	},
 	'L6-4': {
 		primaryText: 'Topic L6-4',
 		supportingText: 'Supporting Info',
-		nested: [ 'L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10' ]
+		nested: ['L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10']
 	},
 	'L6-5': {
 		primaryText: 'Topic L6-5',
 		supportingText: 'Supporting Info',
-		nested: [ 'L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10' ]
+		nested: ['L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10']
 	},
 	'L6-6': {
 		primaryText: 'Topic L6-6',
 		supportingText: 'Supporting Info',
-		nested: [ 'L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10' ]
+		nested: ['L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10']
 	},
 	'L6-7': {
 		primaryText: 'Topic L6-7',
 		supportingText: 'Supporting Info',
-		nested: [ 'L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10' ]
+		nested: ['L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10']
 	},
 	'L6-8': {
 		primaryText: 'Topic L6-8',
 		supportingText: 'Supporting Info',
-		nested: [ 'L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10' ]
+		nested: ['L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10']
 	},
 	'L6-9': {
 		primaryText: 'Topic L6-9',
 		supportingText: 'Supporting Info',
-		nested: [ 'L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10' ]
+		nested: ['L7-1', 'L7-2', 'L7-3', 'L7-4', 'L7-5', 'L7-6', 'L7-7', 'L7-8', 'L7-9', 'L7-10']
 	},
 	'L7-1': {
 		primaryText: 'Topic L7-1',

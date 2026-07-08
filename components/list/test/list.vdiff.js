@@ -415,7 +415,7 @@ describe('list', () => {
 
 	describe('separators', () => {
 
-		[ true, false ].forEach((addButton) => {
+		[true, false].forEach((addButton) => {
 			[
 				{ name: `default${addButton ? ' add-button' : ''}`, template: createSimpleList({ color1: '#0000ff', addButton }) },
 				{ name: `none${addButton ? ' add-button' : ''}`, template: createSimpleList({ color1: '#00ff00', color2: '#00ff00', separatorType: 'none', addButton }) },

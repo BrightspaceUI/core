@@ -1,5 +1,6 @@
 import { addExtensions, litConfig, nodeConfig, setDirectoryConfigs, testingConfig } from 'eslint-config-brightspace';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
+import stylistic from '@stylistic/eslint-plugin';
 
 export default [
 	{
@@ -37,5 +38,13 @@ export default [
 			'no-restricted-globals': ['error', 'document'],
 			'unicorn/prefer-global-this': 'error',
 		},
+	},
+	{
+		plugins: {
+			'@stylistic': stylistic
+		},
+		rules: {
+			'@stylistic/array-bracket-spacing': ['error', 'never']
+		}
 	}
 ];

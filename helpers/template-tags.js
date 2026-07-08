@@ -5,7 +5,7 @@ export function set(strings, ...expressions) {
 	let w = Number.MAX_SAFE_INTEGER;
 	const emptyStart = strings[0].match(emptyStartRe);
 	if (emptyStart) {
-		strings = [ strings[0].replace(emptyStartRe, ''), ...strings.slice(1) ];
+		strings = [strings[0].replace(emptyStartRe, ''), ...strings.slice(1)];
 		strings[strings.length - 1] = strings.at(-1).replace(emptyEndRe, '');
 	}
 	strings

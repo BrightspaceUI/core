@@ -13,7 +13,7 @@ function createAlertWithCloseButton(opts) {
 
 describe('alert', () => {
 
-	[ 'default', 'success', 'critical', 'warning', 'error', 'call-to-action'].forEach(type => {
+	['default', 'success', 'critical', 'warning', 'error', 'call-to-action'].forEach(type => {
 
 		const template = html`<d2l-alert type="${type}">${`A${type === 'error' ? 'n' : ''} ${type === 'call-to-action' ? 'call to action.' : `${type} message.`}`}</d2l-alert>`;
 

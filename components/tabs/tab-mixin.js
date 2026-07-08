@@ -34,7 +34,7 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 	};
 
 	static get styles() {
-		const styles = [ css`
+		const styles = [css`
 			:host {
 				box-sizing: border-box;
 				display: inline-block;

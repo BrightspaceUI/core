@@ -27,7 +27,7 @@ class Tab extends TabMixin(LitElement) {
 	};
 
 	static get styles() {
-		const styles = [ css`
+		const styles = [css`
 			.d2l-tab-text-inner-content {
 				--d2l-focus-ring-offset: 0;
 				display: flex;
