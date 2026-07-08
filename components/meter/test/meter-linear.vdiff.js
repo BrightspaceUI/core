@@ -51,7 +51,7 @@ describe('meter-linear', () => {
 	});
 
 	[
-		{ name: 'normal-text', template: html`<d2l-meter-linear id="normal-text" value="4" max="10" text="You're doing great!"></d2l-meter-linear>` },
+		{ name: 'normal-text', template: html`<d2l-meter-linear id="normal-text" value="4" max="10" text="You're doing great!"></d2l-meter-linear>`, allColorModes: true },
 		{ name: 'normal-max-zero-value-zero', template: html`<d2l-meter-linear value="0" max="0" text="Visited: {x/y}" percent></d2l-meter-linear>` },
 		{ name: 'normal-round-to-zero', template: html`<d2l-meter-linear value="0.004" max="10" text="Visited: {x/y}" percent></d2l-meter-linear>` },
 		{ name: 'normal-over-100', template: html`<d2l-meter-linear value="15" max="10" text="Visited: {x/y}" percent></d2l-meter-linear>` },
@@ -61,10 +61,10 @@ describe('meter-linear', () => {
 		{ name: 'normal-text-fraction-text-hidden', template: html`<d2l-meter-linear value="4" max="10" text="Visited: {x/y}" percent text-hidden></d2l-meter-linear>` },
 		{ name: 'text-inline-text-percent-text-hidden', template: html`<d2l-meter-linear value="4" max="10" text-inline text="Visited" percent text-hidden></d2l-meter-linear>` },
 		{ name: 'no-text-text-hidden', template: html`<d2l-meter-linear value="4" max="10" text-hidden></d2l-meter-linear>` },
-	].forEach(({ name, template, dark }) => {
+	].forEach(({ name, template, dark, allColorModes }) => {
 		it(name, async() => {
 			const elem = await fixture(createTemplateWrapper(template, dark));
-			await expect(elem.querySelector('d2l-meter-linear')).to.be.golden();
+			await expect(elem.querySelector('d2l-meter-linear')).to.be.golden({ allColorModes });
 		});
 	});
 });
