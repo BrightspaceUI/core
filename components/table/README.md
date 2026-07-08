@@ -145,11 +145,9 @@ For the example below:
 
   class MySortableTableElem extends LitElement {
 
-    static get properties() {
-      return {
-        _sortDesc: { attribute: false, type: Boolean }
-      };
-    }
+    static properties = {
+      _sortDesc: { attribute: false, type: Boolean }
+    };
 
     static styles = tableStyles;
 
@@ -286,12 +284,10 @@ When a single column is responsible for sorting in multiple facets (e.g., first 
     { firstname: 'Christopher', lastname: 'Martinez', grade: 83 }
   ];
   class MyComplexSortableTableElem extends LitElement {
-    static get properties() {
-      return {
-        _desc: { state: true },
-        _field: { state: true }
-      };
-    }
+    static properties = {
+      _desc: { state: true },
+      _field: { state: true }
+    };
     static styles = tableStyles;
     constructor() {
       super();

@@ -81,13 +81,11 @@ If you'd like to manually link the radio input with a label, or use an ARIA labe
 
   class MyRadioElem extends LitElement {
 
-    static get properties() {
-      return {
-        checked: { type: Boolean },
-        disabled: { type: Boolean },
-        invalid: { type: Boolean }
-      };
-    }
+    static properties = {
+      checked: { type: Boolean },
+      disabled: { type: Boolean },
+      invalid: { type: Boolean }
+    };
 
     static styles = radioStyles;
 

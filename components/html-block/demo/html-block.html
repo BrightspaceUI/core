@@ -565,12 +565,10 @@ helloGrumpy('Wizard');&lt;/code&gt;&lt;/pre&gt;">
 
 			class SomeComponent extends LitElement {
 
-				static get properties() {
-					return {
-						_htmlSnippets: { type: Array },
-						_updateCount: { type: Number }
-					};
-				}
+				static properties = {
+					_htmlSnippets: { type: Array },
+					_updateCount: { type: Number }
+				};
 
 				constructor() {
 					super();

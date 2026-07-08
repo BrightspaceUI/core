@@ -403,11 +403,9 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
   import { css, html, LitElement } from 'lit';
 
   class ListDemoDragAndDropUsage extends LitElement {
-    static get properties() {
-      return {
-        list: { type: Array }
-      };
-    }
+    static properties = {
+      list: { type: Array }
+    };
 
     constructor() {
       super();
