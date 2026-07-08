@@ -165,12 +165,12 @@ describe('page', () => {
 			];
 
 			[
-				{ category: 'no-scroll', tests: noScroll },
-				{ category: 'header-scrolls-away', tests: nonStickyHeaderScrollsAway },
-				{ category: 'header-sticks', tests: stickyHeader }
-			].forEach(categories => {
-				describe(categories.category, () => {
-					categories.tests.forEach(test => {
+				{ name: 'no-scroll', tests: noScroll },
+				{ name: 'header-scrolls-away', tests: nonStickyHeaderScrollsAway },
+				{ name: 'header-sticks', tests: stickyHeader }
+			].forEach(category => {
+				describe(category.name, () => {
+					category.tests.forEach(test => {
 						it(test.name, async() => {
 							const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 550 } });
 							window.scrollTo(0, document.body.scrollHeight);
@@ -227,16 +227,16 @@ describe('page', () => {
 			];
 
 			[
-				{ category: 'no-scroll', panel: '.side-nav-panel', tests: noScrollSideNav },
-				{ category: 'scrolls', panel: '.side-nav-panel', tests: scrollsSideNav },
-				{ category: 'no-scroll', panel: '.supporting-panel', tests: noScrollSupporting },
-				{ category: 'scrolls', panel: '.supporting-panel', tests: scrollsSupporting },
-			].forEach(categories => {
-				describe(categories.category, () => {
-					categories.tests.forEach(test => {
+				{ name: 'no-scroll', panel: '.side-nav-panel', tests: noScrollSideNav },
+				{ name: 'scrolls', panel: '.side-nav-panel', tests: scrollsSideNav },
+				{ name: 'no-scroll', panel: '.supporting-panel', tests: noScrollSupporting },
+				{ name: 'scrolls', panel: '.supporting-panel', tests: scrollsSupporting },
+			].forEach(category => {
+				describe(category.name, () => {
+					category.tests.forEach(test => {
 						it(test.name, async() => {
 							const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 550 } });
-							const panel = elem.shadowRoot.querySelector(categories.panel);
+							const panel = elem.shadowRoot.querySelector(category.panel);
 							panel.scrollTop = panel.scrollHeight;
 							await expect(elem).to.be.golden({ margin: 0 });
 						});
@@ -265,15 +265,15 @@ describe('page', () => {
 			];
 
 			[
-				{ category: 'header-scrolls-away', panel: '.side-nav-panel', tests: sideNav },
-				{ category: 'header-sticks', panel: '.supporting-panel', tests: supporting },
-			].forEach(categories => {
-				describe(categories.category, () => {
-					categories.tests.forEach(test => {
+				{ name: 'header-scrolls-away', panel: '.side-nav-panel', tests: sideNav },
+				{ name: 'header-sticks', panel: '.supporting-panel', tests: supporting },
+			].forEach(category => {
+				describe(category.name, () => {
+					category.tests.forEach(test => {
 						it(test.name, async() => {
 							const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 550 } });
 							window.scrollTo(0, document.body.scrollHeight);
-							const panel = elem.shadowRoot.querySelector(categories.panel);
+							const panel = elem.shadowRoot.querySelector(category.panel);
 							panel.scrollTop = panel.scrollHeight;
 							await expect(elem).to.be.golden({ margin: 0 });
 						});
