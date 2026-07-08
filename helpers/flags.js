@@ -25,7 +25,7 @@ export function getKnownFlags() {
 }
 
 export function mockFlag(key, value) {
-	if (!window.isD2LTestPage && knownFlags.has(key)) {
+	if (!globalThis.isD2LTestPage && knownFlags.has(key)) {
 		console.warn(getWarnMessage(key));
 	}
 	flagOverrides.set(key, value);
