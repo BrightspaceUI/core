@@ -22,80 +22,76 @@ const mediaQueryList = window.matchMedia('(max-width: 615px), (max-height: 420px
  */
 class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMixin(DialogMixin(LitElement)))) {
 
-	static get properties() {
-		return {
-			/**
-			 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
-			 */
-			async: { type: Boolean },
+	static properties = {
+		/**
+		 * Whether to render a loading-spinner and wait for state changes via AsyncContainerMixin
+		 */
+		async: { type: Boolean },
 
-			/**
-			 * Whether the dialog should indicate that its message is important to the user
-			 */
-			critical: { type: Boolean },
+		/**
+		 * Whether the dialog should indicate that its message is important to the user
+		 */
+		critical: { type: Boolean },
 
-			/**
-			 * Causes screen readers to announce the content of the dialog on open. Only use if the content is concise and contains only text since screen readers ignore HTML semantics and some have a ~250 character limit.
-			 */
-			describeContent: { type: Boolean, attribute: 'describe-content' },
+		/**
+		 * Causes screen readers to announce the content of the dialog on open. Only use if the content is concise and contains only text since screen readers ignore HTML semantics and some have a ~250 character limit.
+		 */
+		describeContent: { type: Boolean, attribute: 'describe-content' },
 
-			/**
-			 * Whether to render the dialog at the maximum height
-			 */
-			fullHeight: { type: Boolean, attribute: 'full-height' },
+		/**
+		 * Whether to render the dialog at the maximum height
+		 */
+		fullHeight: { type: Boolean, attribute: 'full-height' },
 
-			/**
-			 * REQUIRED: the title for the dialog
-			 */
-			titleText: { type: String, attribute: 'title-text', required: true },
+		/**
+		 * REQUIRED: the title for the dialog
+		 */
+		titleText: { type: String, attribute: 'title-text', required: true },
 
-			/**
-			 * The preferred width (unit-less) for the dialog
-			 */
-			width: { type: Number },
-			_hasFooterContent: { type: Boolean, attribute: false }
-		};
-	}
+		/**
+		 * The preferred width (unit-less) for the dialog
+		 */
+		width: { type: Number },
+		_hasFooterContent: { type: Boolean, attribute: false }
+	};
 
-	static get styles() {
-		return [ _generateResetStyles(':host'), dialogStyles, heading3Styles, css`
+	static styles = [_generateResetStyles(':host'), dialogStyles, heading3Styles, css`
+
+		.d2l-dialog-header,
+		:host([critical]) .d2l-dialog-header {
+			padding-bottom: 15px;
+		}
+
+		.d2l-dialog-header > div > d2l-button-icon {
+			flex: none;
+			margin-block: -4px 0;
+			margin-inline: 15px -15px;
+		}
+
+		.d2l-dialog-content > div {
+			/* required to properly calculate preferred height when there are bottom
+			margins at the end of the slotted content */
+			border-bottom: 1px solid transparent;
+		}
+
+		.d2l-dialog-content-loading {
+			text-align: center;
+		}
+
+		.d2l-dialog-footer.d2l-footer-no-content {
+			padding: 0 0 5px 0;
+		}
+
+		@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
 
 			.d2l-dialog-header,
 			:host([critical]) .d2l-dialog-header {
-				padding-bottom: 15px;
+				padding-bottom: 9px;
 			}
 
-			.d2l-dialog-header > div > d2l-button-icon {
-				flex: none;
-				margin-block: -4px 0;
-				margin-inline: 15px -15px;
-			}
+		}
 
-			.d2l-dialog-content > div {
-				/* required to properly calculate preferred height when there are bottom
-				margins at the end of the slotted content */
-				border-bottom: 1px solid transparent;
-			}
-
-			.d2l-dialog-content-loading {
-				text-align: center;
-			}
-
-			.d2l-dialog-footer.d2l-footer-no-content {
-				padding: 0 0 5px 0;
-			}
-
-			@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
-
-				.d2l-dialog-header,
-				:host([critical]) .d2l-dialog-header {
-					padding-bottom: 9px;
-				}
-
-			}
-
-		`];
-	}
+	`];
 
 	constructor() {
 		super();

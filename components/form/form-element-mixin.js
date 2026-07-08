@@ -77,41 +77,39 @@ export class FormElementValidityState {
 
 export const FormElementMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
-	static get properties() {
-		return {
-			/**
-			 * @ignore
-			 */
-			forceInvalid: { type: Boolean, attribute: false },
-			/**
-			 * @ignore
-			 */
-			invalid: { type: Boolean, reflect: true },
-			/**
-			 * Name of the form control. Submitted with the form as part of a name/value pair.
-			 * @type {string}
-			 */
-			name: { type: String },
-			/**
-			 * @ignore
-			 */
-			noValidate: { type: Boolean, attribute: 'novalidate' },
-			/**
-			 * @ignore
-			 * Perform validation immediately instead of waiting for the user to make changes.
-			 */
-			validateOnInit: { type: Boolean, attribute: 'validate-on-init' },
-			/**
-			 * @ignore
-			 */
-			validationError: { type: String, attribute: false },
-			/**
-			 * @ignore
-			 */
-			childErrors: { type: Object, attribute: false },
-			_errors: { type: Array, attribute: false }
-		};
-	}
+	static properties = {
+		/**
+		 * @ignore
+		 */
+		forceInvalid: { type: Boolean, attribute: false },
+		/**
+		 * @ignore
+		 */
+		invalid: { type: Boolean, reflect: true },
+		/**
+		 * Name of the form control. Submitted with the form as part of a name/value pair.
+		 * @type {string}
+		 */
+		name: { type: String },
+		/**
+		 * @ignore
+		 */
+		noValidate: { type: Boolean, attribute: 'novalidate' },
+		/**
+		 * @ignore
+		 * Perform validation immediately instead of waiting for the user to make changes.
+		 */
+		validateOnInit: { type: Boolean, attribute: 'validate-on-init' },
+		/**
+		 * @ignore
+		 */
+		validationError: { type: String, attribute: false },
+		/**
+		 * @ignore
+		 */
+		childErrors: { type: Object, attribute: false },
+		_errors: { type: Array, attribute: false }
+	};
 
 	constructor() {
 		super();

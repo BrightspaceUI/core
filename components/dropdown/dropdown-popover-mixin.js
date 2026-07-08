@@ -10,166 +10,162 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElement(PopoverMixin(superclass)) {
 
-	static get properties() {
-		return {
-			/**
-			 * Optionally align dropdown to either start or end. If not set, the dropdown will attempt to be centred.
-			 * @type {'start'|'end'}
-			 */
-			align: { type: String },
-			/**
-			 * Override max-height. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
-			 * @type {number}
-			 */
-			maxHeight: { type: Number, attribute: 'max-height' },
-			/**
-			 * Override default max-width (undefined). Specify a number that would be the px value.
-			 * @type {number}
-			 */
-			maxWidth: { type: Number, attribute: 'max-width' },
-			/**
-			 * Override default height used for required space when `no-auto-fit` is true. Specify a number that would be the px value. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
-			 * @type {number}
-			 */
-			minHeight: { type: Number, attribute: 'min-height' },
-			/**
-			 * Override default min-width (undefined). Specify a number that would be the px value.
-			 * @type {number}
-			 */
-			minWidth: { type: Number, attribute: 'min-width' },
-			/**
-			 * Override the breakpoint at which mobile styling is used. Defaults to 616px.
-			 * @type {number}
-			 */
-			mobileBreakpointOverride: { type: Number, attribute: 'mobile-breakpoint' },
-			/**
-			 * Mobile dropdown style.
-			 * @type {'left'|'right'|'bottom'}
-			 */
-			mobileTray: { type: String, attribute: 'mobile-tray' },
-			/**
-			 * Opt out of automatically closing on focus or click outside of the dropdown content
-			 * @type {boolean}
-			 */
-			noAutoClose: { type: Boolean, attribute: 'no-auto-close' },
-			/**
-			 * Opt out of auto-sizing
-			 * @type {boolean}
-			 */
-			noAutoFit: { type: Boolean, attribute: 'no-auto-fit' },
-			/**
-			 * Opt out of focus being automatically moved to the first focusable element in the dropdown when opened
-			 * @type {boolean}
-			 */
-			noAutoFocus: { type: Boolean, attribute: 'no-auto-focus' },
-			/**
-			 * Opt-out of showing a close button in the footer of tray-style mobile dropdowns.
-			 * @type {boolean}
-			 */
-			noMobileCloseButton: { type: Boolean, attribute: 'no-mobile-close-button' },
-			/**
-			 * Render with no padding
-			 * @type {boolean}
-			 */
-			noPadding: { type: Boolean, attribute: 'no-padding' },
-			/**
-			 * Render the footer with no padding (if it has content)
-			 * @type {boolean}
-			 */
-			noPaddingFooter: { type: Boolean, attribute: 'no-padding-footer' },
-			/**
-			 * Render the header with no padding (if it has content)
-			 * @type {boolean}
-			 */
-			noPaddingHeader: { type: Boolean, attribute: 'no-padding-header' },
-			/**
-			 * Render without a pointer
-			 * @type {boolean}
-			 */
-			noPointer: { type: Boolean, attribute: 'no-pointer' },
-			/**
-			 * Whether the dropdown is open or not
-			 * @type {boolean}
-			 */
-			opened: { type: Boolean, reflect: true },
-			/**
- 			 * Optionally render a d2l-focus-trap around the dropdown content
-			 * @type {boolean}
- 			 */
-			trapFocus: { type: Boolean, attribute: 'trap-focus' },
-			/**
-			 * Provide custom offset, positive or negative
-			 * @type {string}
-			 */
-			verticalOffset: { type: String, attribute: 'vertical-offset' },
-			_blockEndScroll: { state: true },
-			_blockStartScroll: { state: true },
-			_dropdownContent: { type: Boolean, attribute: 'dropdown-content', reflect: true },
-			_hasFooterSlotContent: { state: true },
-			_hasHeaderSlotContent: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Optionally align dropdown to either start or end. If not set, the dropdown will attempt to be centred.
+		 * @type {'start'|'end'}
+		 */
+		align: { type: String },
+		/**
+		 * Override max-height. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
+		 * @type {number}
+		 */
+		maxHeight: { type: Number, attribute: 'max-height' },
+		/**
+		 * Override default max-width (undefined). Specify a number that would be the px value.
+		 * @type {number}
+		 */
+		maxWidth: { type: Number, attribute: 'max-width' },
+		/**
+		 * Override default height used for required space when `no-auto-fit` is true. Specify a number that would be the px value. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
+		 * @type {number}
+		 */
+		minHeight: { type: Number, attribute: 'min-height' },
+		/**
+		 * Override default min-width (undefined). Specify a number that would be the px value.
+		 * @type {number}
+		 */
+		minWidth: { type: Number, attribute: 'min-width' },
+		/**
+		 * Override the breakpoint at which mobile styling is used. Defaults to 616px.
+		 * @type {number}
+		 */
+		mobileBreakpointOverride: { type: Number, attribute: 'mobile-breakpoint' },
+		/**
+		 * Mobile dropdown style.
+		 * @type {'left'|'right'|'bottom'}
+		 */
+		mobileTray: { type: String, attribute: 'mobile-tray' },
+		/**
+		 * Opt out of automatically closing on focus or click outside of the dropdown content
+		 * @type {boolean}
+		 */
+		noAutoClose: { type: Boolean, attribute: 'no-auto-close' },
+		/**
+		 * Opt out of auto-sizing
+		 * @type {boolean}
+		 */
+		noAutoFit: { type: Boolean, attribute: 'no-auto-fit' },
+		/**
+		 * Opt out of focus being automatically moved to the first focusable element in the dropdown when opened
+		 * @type {boolean}
+		 */
+		noAutoFocus: { type: Boolean, attribute: 'no-auto-focus' },
+		/**
+		 * Opt-out of showing a close button in the footer of tray-style mobile dropdowns.
+		 * @type {boolean}
+		 */
+		noMobileCloseButton: { type: Boolean, attribute: 'no-mobile-close-button' },
+		/**
+		 * Render with no padding
+		 * @type {boolean}
+		 */
+		noPadding: { type: Boolean, attribute: 'no-padding' },
+		/**
+		 * Render the footer with no padding (if it has content)
+		 * @type {boolean}
+		 */
+		noPaddingFooter: { type: Boolean, attribute: 'no-padding-footer' },
+		/**
+		 * Render the header with no padding (if it has content)
+		 * @type {boolean}
+		 */
+		noPaddingHeader: { type: Boolean, attribute: 'no-padding-header' },
+		/**
+		 * Render without a pointer
+		 * @type {boolean}
+		 */
+		noPointer: { type: Boolean, attribute: 'no-pointer' },
+		/**
+		 * Whether the dropdown is open or not
+		 * @type {boolean}
+		 */
+		opened: { type: Boolean, reflect: true },
+		/**
+ 		 * Optionally render a d2l-focus-trap around the dropdown content
+		 * @type {boolean}
+ 		 */
+		trapFocus: { type: Boolean, attribute: 'trap-focus' },
+		/**
+		 * Provide custom offset, positive or negative
+		 * @type {string}
+		 */
+		verticalOffset: { type: String, attribute: 'vertical-offset' },
+		_blockEndScroll: { state: true },
+		_blockStartScroll: { state: true },
+		_dropdownContent: { type: Boolean, attribute: 'dropdown-content', reflect: true },
+		_hasFooterSlotContent: { state: true },
+		_hasHeaderSlotContent: { state: true }
+	};
 
-	static get styles() {
-		return [super.styles, css`
-			.dropdown-content-layout {
-				align-items: stretch;
-				display: flex;
-				flex-direction: column;
-			}
-			.dropdown-content {
-				box-sizing: border-box;
-				flex: auto;
-				max-width: 100%;
-				overflow-y: auto;
-				padding: 1rem;
-			}
-			.dropdown-header,
-			.dropdown-footer {
-				box-sizing: border-box;
-				flex: none;
-				max-width: 100%;
-				min-height: 5px;
-				padding: 1rem;
-				position: relative;
-				width: 100%;
-				z-index: 2;
-			}
-			.dropdown-header {
-				border-block-end: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
-				border-start-end-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
-				border-start-start-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
-			}
-			.dropdown-footer {
-				border-block-start: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
-				border-end-end-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
-				border-end-start-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
-			}
-			.dropdown-no-header {
-				border-block-end: none;
-				padding: 0;
-			}
-			.dropdown-no-footer {
-				border-block-start: none;
-				padding: 0;
-			}
-			.dropdown-no-padding {
-				padding: 0;
-			}
-			.dropdown-header-scroll {
-				box-shadow: 0 3px 3px 0 var(--d2l-popover-shadow-color, var(--d2l-popover-default-shadow-color));
-			}
-			.dropdown-footer-scroll {
-				box-shadow: 0 -3px 3px 0 var(--d2l-popover-shadow-color, var(--d2l-popover-default-shadow-color));
-			}
+	static styles = [super.styles, css`
+		.dropdown-content-layout {
+			align-items: stretch;
+			display: flex;
+			flex-direction: column;
+		}
+		.dropdown-content {
+			box-sizing: border-box;
+			flex: auto;
+			max-width: 100%;
+			overflow-y: auto;
+			padding: 1rem;
+		}
+		.dropdown-header,
+		.dropdown-footer {
+			box-sizing: border-box;
+			flex: none;
+			max-width: 100%;
+			min-height: 5px;
+			padding: 1rem;
+			position: relative;
+			width: 100%;
+			z-index: 2;
+		}
+		.dropdown-header {
+			border-block-end: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
+			border-start-end-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
+			border-start-start-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
+		}
+		.dropdown-footer {
+			border-block-start: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
+			border-end-end-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
+			border-end-start-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
+		}
+		.dropdown-no-header {
+			border-block-end: none;
+			padding: 0;
+		}
+		.dropdown-no-footer {
+			border-block-start: none;
+			padding: 0;
+		}
+		.dropdown-no-padding {
+			padding: 0;
+		}
+		.dropdown-header-scroll {
+			box-shadow: 0 3px 3px 0 var(--d2l-popover-shadow-color, var(--d2l-popover-default-shadow-color));
+		}
+		.dropdown-footer-scroll {
+			box-shadow: 0 -3px 3px 0 var(--d2l-popover-shadow-color, var(--d2l-popover-default-shadow-color));
+		}
 
-			:host([_mobile][_mobile-tray-location="inline-start"][opened]) .dropdown-content-layout,
-			:host([_mobile][_mobile-tray-location="inline-end"][opened]) .dropdown-content-layout {
-				height: calc(var(--d2l-vh, 1vh) * 100);
-				height: 100dvh;
-			}
-		`];
-	}
+		:host([_mobile][_mobile-tray-location="inline-start"][opened]) .dropdown-content-layout,
+		:host([_mobile][_mobile-tray-location="inline-end"][opened]) .dropdown-content-layout {
+			height: calc(var(--d2l-vh, 1vh) * 100);
+			height: 100dvh;
+		}
+	`];
 
 	constructor() {
 		super();

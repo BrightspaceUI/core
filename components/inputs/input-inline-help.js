@@ -14,14 +14,12 @@ export const inlineHelpStyles = [
 
 export const InputInlineHelpMixin = superclass => class extends SkeletonMixin(superclass) {
 
-	static get properties() {
-		return {
-			_hasInlineHelp: { type: Boolean, reflect: true, attribute: '_has-inline-help' }
-		};
-	}
+	static properties = {
+		_hasInlineHelp: { type: Boolean, reflect: true, attribute: '_has-inline-help' }
+	};
 
 	static get styles() {
-		const styles = [ inlineHelpStyles, css`
+		const styles = [inlineHelpStyles, css`
 			:host([_has-inline-help]) .d2l-input-inline-help {
 				display: block;
 			}

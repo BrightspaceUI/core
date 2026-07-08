@@ -16,155 +16,151 @@ import { SlottedIconMixin } from '../icons/slotted-icon-mixin.js';
  */
 class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
-			 * ACCESSIBILITY: A description to be added to the button for accessibility when text on button does not provide enough context
-			 * @type {string}
-			 */
-			description: { type: String },
+	static properties = {
+		/**
+		 * ACCESSIBILITY: A description to be added to the button for accessibility when text on button does not provide enough context
+		 * @type {string}
+		 */
+		description: { type: String },
 
-			/**
-			 * Aligns the leading edge of text if value is set to "text" for left-aligned layouts, the trailing edge of text if value is set to "text-end" for right-aligned layouts
-			 * @type {'text'|'text-end'|''}
-			 */
-			hAlign: { type: String, reflect: true, attribute: 'h-align' },
+		/**
+		 * Aligns the leading edge of text if value is set to "text" for left-aligned layouts, the trailing edge of text if value is set to "text-end" for right-aligned layouts
+		 * @type {'text'|'text-end'|''}
+		 */
+		hAlign: { type: String, reflect: true, attribute: 'h-align' },
 
-			/**
-			 * Indicates that the icon should be rendered on right
-			 * @type {boolean}
-			 */
-			iconRight: { type: Boolean, reflect: true, attribute: 'icon-right' },
+		/**
+		 * Indicates that the icon should be rendered on right
+		 * @type {boolean}
+		 */
+		iconRight: { type: Boolean, reflect: true, attribute: 'icon-right' },
 
-			/**
-			 * Whether to render the slimmer version of the button
-			 * @type {boolean}
-			 */
-			slim: { type: Boolean, reflect: true },
+		/**
+		 * Whether to render the slimmer version of the button
+		 * @type {boolean}
+		 */
+		slim: { type: Boolean, reflect: true },
 
-			/**
-			 * ACCESSIBILITY: REQUIRED: Text for the button
-			 * @type {string}
-			 */
-			text: { type: String, reflect: true }
-		};
-	}
+		/**
+		 * ACCESSIBILITY: REQUIRED: Text for the button
+		 * @type {string}
+		 */
+		text: { type: String, reflect: true }
+	};
 
-	static get styles() {
-		return [super.styles, labelStyles, buttonStyles,
-			css`
-				:host {
-					--d2l-count-badge-background-color: var(--d2l-theme-background-color-interactive-primary-default);
-					--d2l-count-badge-foreground-color: var(--d2l-theme-text-color-static-inverted);
-					display: inline-block;
-				}
+	static styles = [super.styles, labelStyles, buttonStyles,
+		css`
+			:host {
+				--d2l-count-badge-background-color: var(--d2l-theme-background-color-interactive-primary-default);
+				--d2l-count-badge-foreground-color: var(--d2l-theme-text-color-static-inverted);
+				display: inline-block;
+			}
 
-				:host([hidden]) {
-					display: none;
-				}
+			:host([hidden]) {
+				display: none;
+			}
 
-				button {
-					--d2l-button-subtle-padding-inline-start: 0.6rem;
-					--d2l-button-subtle-padding-inline-end: 0.6rem;
-					align-items: center;
-					background-color: var(--d2l-theme-background-color-interactive-tertiary-default);
-					border-color: transparent;
-					column-gap: 0.3rem;
-					display: inline-flex;
-					font-family: inherit;
-					padding-block-end: 0;
-					padding-block-start: 0;
-					padding-inline-end: var(--d2l-button-subtle-padding-inline-end);
-					padding-inline-start: var(--d2l-button-subtle-padding-inline-start);
-					position: relative;
-				}
+			button {
+				--d2l-button-subtle-padding-inline-start: 0.6rem;
+				--d2l-button-subtle-padding-inline-end: 0.6rem;
+				align-items: center;
+				background-color: var(--d2l-theme-background-color-interactive-tertiary-default);
+				border-color: transparent;
+				column-gap: 0.3rem;
+				display: inline-flex;
+				font-family: inherit;
+				padding-block-end: 0;
+				padding-block-start: 0;
+				padding-inline-end: var(--d2l-button-subtle-padding-inline-end);
+				padding-inline-start: var(--d2l-button-subtle-padding-inline-start);
+				position: relative;
+			}
 
-				:host([slim]) button {
-					--d2l-button-subtle-padding-inline-start: 0.5rem;
-					--d2l-button-subtle-padding-inline-end: 0.5rem;
-					min-height: 1.5rem;
-				}
+			:host([slim]) button {
+				--d2l-button-subtle-padding-inline-start: 0.5rem;
+				--d2l-button-subtle-padding-inline-end: 0.5rem;
+				min-height: 1.5rem;
+			}
 
-				:host([slim]) button.d2l-button-subtle-has-icon {
-					--d2l-button-subtle-padding-inline-start: 0.4rem;
-					--d2l-button-subtle-padding-inline-end: 0.5rem;
-				}
+			:host([slim]) button.d2l-button-subtle-has-icon {
+				--d2l-button-subtle-padding-inline-start: 0.4rem;
+				--d2l-button-subtle-padding-inline-end: 0.5rem;
+			}
 
-				:host([slim][icon-right]) button.d2l-button-subtle-has-icon {
-					--d2l-button-subtle-padding-inline-start: 0.5rem;
-					--d2l-button-subtle-padding-inline-end: 0.4rem;
-				}
+			:host([slim][icon-right]) button.d2l-button-subtle-has-icon {
+				--d2l-button-subtle-padding-inline-start: 0.5rem;
+				--d2l-button-subtle-padding-inline-end: 0.4rem;
+			}
 
-				:host([h-align="text"]) button {
-					inset-inline-start: calc(var(--d2l-button-subtle-padding-inline-start) * -1);
-				}
-				:host([h-align="text-end"]) button {
-					inset-inline-end: calc(var(--d2l-button-subtle-padding-inline-end) * -1);
-				}
+			:host([h-align="text"]) button {
+				inset-inline-start: calc(var(--d2l-button-subtle-padding-inline-start) * -1);
+			}
+			:host([h-align="text-end"]) button {
+				inset-inline-end: calc(var(--d2l-button-subtle-padding-inline-end) * -1);
+			}
 
-				/* Firefox includes a hidden border which messes up button dimensions */
-				button::-moz-focus-inner {
-					border: 0;
-				}
+			/* Firefox includes a hidden border which messes up button dimensions */
+			button::-moz-focus-inner {
+				border: 0;
+			}
 
-				button[disabled]:hover,
-				button[disabled]:focus,
-				:host([active]) button[disabled] {
-					background-color: var(--d2l-theme-background-color-interactive-tertiary-default);
-				}
+			button[disabled]:hover,
+			button[disabled]:focus,
+			:host([active]) button[disabled] {
+				background-color: var(--d2l-theme-background-color-interactive-tertiary-default);
+			}
 
-				button:hover,
-				button:focus,
-				:host([active]) button {
-					background-color: var(--d2l-theme-background-color-interactive-tertiary-hover);
-				}
+			button:hover,
+			button:focus,
+			:host([active]) button {
+				background-color: var(--d2l-theme-background-color-interactive-tertiary-hover);
+			}
 
-				.d2l-button-subtle-content {
-					color: var(--d2l-theme-text-color-interactive-default);
-				}
+			.d2l-button-subtle-content {
+				color: var(--d2l-theme-text-color-interactive-default);
+			}
 
-				button:hover:not([disabled]) .d2l-button-subtle-content,
-				button:focus:not([disabled]) .d2l-button-subtle-content,
-				:host([active]:not([disabled])) button .d2l-button-subtle-content {
-					color: var(--d2l-theme-text-color-interactive-hover);
-				}
+			button:hover:not([disabled]) .d2l-button-subtle-content,
+			button:focus:not([disabled]) .d2l-button-subtle-content,
+			:host([active]:not([disabled])) button .d2l-button-subtle-content {
+				color: var(--d2l-theme-text-color-interactive-hover);
+			}
 
-				button:hover:not([disabled]),
-				button:focus:not([disabled]),
-				:host([active]:not([disabled])) {
-					--d2l-count-badge-background-color: var(--d2l-theme-text-color-interactive-hover);
-				}
+			button:hover:not([disabled]),
+			button:focus:not([disabled]),
+			:host([active]:not([disabled])) {
+				--d2l-count-badge-background-color: var(--d2l-theme-text-color-interactive-hover);
+			}
 
-				.property-icon,
-				slot[name="icon"]::slotted(d2l-icon-custom) {
-					color: var(--d2l-theme-text-color-interactive-default);
-				}
+			.property-icon,
+			slot[name="icon"]::slotted(d2l-icon-custom) {
+				color: var(--d2l-theme-text-color-interactive-default);
+			}
 
-				button:hover:not([disabled]) .property-icon,
-				button:focus:not([disabled]) .property-icon,
-				:host([active]:not([disabled])) button .property-icon,
-				button:hover:not([disabled]) slot[name="icon"]::slotted(d2l-icon-custom),
-				button:focus:not([disabled]) slot[name="icon"]::slotted(d2l-icon-custom),
-				:host([active]:not([disabled])) slot[name="icon"]::slotted(d2l-icon-custom) {
-					color: var(--d2l-theme-text-color-interactive-hover);
-				}
+			button:hover:not([disabled]) .property-icon,
+			button:focus:not([disabled]) .property-icon,
+			:host([active]:not([disabled])) button .property-icon,
+			button:hover:not([disabled]) slot[name="icon"]::slotted(d2l-icon-custom),
+			button:focus:not([disabled]) slot[name="icon"]::slotted(d2l-icon-custom),
+			:host([active]:not([disabled])) slot[name="icon"]::slotted(d2l-icon-custom) {
+				color: var(--d2l-theme-text-color-interactive-hover);
+			}
 
-				:host([icon-right]) .property-icon,
-				:host([icon-right]) slot[name="icon"]::slotted(d2l-icon-custom) {
-					order: 1;
-				}
+			:host([icon-right]) .property-icon,
+			:host([icon-right]) slot[name="icon"]::slotted(d2l-icon-custom) {
+				order: 1;
+			}
 
-				.d2l-button-subtle-content-wrapper slot {
-					color: var(--d2l-theme-text-color-static-standard);
-				}
+			.d2l-button-subtle-content-wrapper slot {
+				color: var(--d2l-theme-text-color-static-standard);
+			}
 
-				:host([disabled]) button {
-					cursor: default;
-					opacity: var(--d2l-theme-opacity-disabled-control);
-				}
-			`
-		];
-	}
+			:host([disabled]) button {
+				cursor: default;
+				opacity: var(--d2l-theme-opacity-disabled-control);
+			}
+		`
+	];
 
 	constructor() {
 		super();

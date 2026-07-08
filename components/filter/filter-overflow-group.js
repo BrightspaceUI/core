@@ -12,25 +12,21 @@ const updateEvents = ['d2l-filter-dimension-load-more', 'd2l-filter-dimension-se
 */
 class FilterOverflowGroup extends OverflowGroupMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * Show `d2l-filter-tags` beneath the filters. Tags will be shown for all filters in the group.
-			 * @type {boolean}
-			 */
-			tags: { type: Boolean },
-			_openedDimensions: { state: true },
-			_filterIds: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Show `d2l-filter-tags` beneath the filters. Tags will be shown for all filters in the group.
+		 * @type {boolean}
+		 */
+		tags: { type: Boolean },
+		_openedDimensions: { state: true },
+		_filterIds: { state: true }
+	};
 
-	static get styles() {
-		return [super.styles, css`
-			::slotted(d2l-filter) {
-				margin-inline-end: 0.3rem;
-			}
-		`];
-	}
+	static styles = [super.styles, css`
+		::slotted(d2l-filter) {
+			margin-inline-end: 0.3rem;
+		}
+	`];
 
 	constructor() {
 		super();

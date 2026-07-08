@@ -13,53 +13,51 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
  */
 class FilterDimensionSetDateTimeRangeValue extends LocalizeCoreElement(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * Whether this value in the filter is disabled or not
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
-			 * Value of the end date or date-time input. Expected to be in UTC.
-			 * @type {string}
-			 */
-			endValue: { type: String, attribute: 'end-value' },
-			/**
-			 * @ignore
-			 */
-			inactive: { type: Boolean },
-			/**
-			 * REQUIRED: Unique key to represent this value in the dimension
-			 * @type {string}
-			 */
-			key: { type: String },
-			/**
-			 * Whether this value in the filter is selected or not
-			 * @type {boolean}
-			 */
-			selected: { type: Boolean, reflect: true },
-			/**
-			 * Value of the start date or date-time input. Expected to be in UTC.
-			 * @type {string}
-			 */
-			startValue: { type: String, attribute: 'start-value' },
-			/**
-			 * Defaults to "Custom Date Range" (localized). Can be overridden if desired.
-			 * @type {string}
-			 */
-			text: { type: String, reflect: true },
-			/**
-			 * Date/time range input type
-			 * @type {'date'|'date-time'}
-			 */
-			type: { type: String },
-			/**
-			 * @ignore
-			 */
-			valueText: { type: String }
-		};
-	}
+	static properties = {
+		/**
+		 * Whether this value in the filter is disabled or not
+		 * @type {boolean}
+		 */
+		disabled: { type: Boolean, reflect: true },
+		/**
+		 * Value of the end date or date-time input. Expected to be in UTC.
+		 * @type {string}
+		 */
+		endValue: { type: String, attribute: 'end-value' },
+		/**
+		 * @ignore
+		 */
+		inactive: { type: Boolean },
+		/**
+		 * REQUIRED: Unique key to represent this value in the dimension
+		 * @type {string}
+		 */
+		key: { type: String },
+		/**
+		 * Whether this value in the filter is selected or not
+		 * @type {boolean}
+		 */
+		selected: { type: Boolean, reflect: true },
+		/**
+		 * Value of the start date or date-time input. Expected to be in UTC.
+		 * @type {string}
+		 */
+		startValue: { type: String, attribute: 'start-value' },
+		/**
+		 * Defaults to "Custom Date Range" (localized). Can be overridden if desired.
+		 * @type {string}
+		 */
+		text: { type: String, reflect: true },
+		/**
+		 * Date/time range input type
+		 * @type {'date'|'date-time'}
+		 */
+		type: { type: String },
+		/**
+		 * @ignore
+		 */
+		valueText: { type: String }
+	};
 
 	constructor() {
 		super();

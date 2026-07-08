@@ -8,44 +8,42 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(superclass) {
 
-	static get properties() {
-		return {
-			/**
-			 * **Selection:** Disables selection
-			 * @type {boolean}
-			 */
-			selectionDisabled: { type: Boolean, attribute: 'selection-disabled', reflect: true },
-			/**
-			 * **Selection:** Tooltip text when selection is disabled
-			 * @type {string}
-			 */
-			selectionDisabledTooltip: { type: String, attribute: 'selection-disabled-tooltip' },
-			/**
-			 * **Selection:** Value to identify item if selectable
-			 * @type {string}
-			 */
-			key: { type: String, reflect: true },
-			/**
-			 * **Selection:** Indicates an input should be rendered for selecting the item
-			 * @type {boolean}
-			 */
-			selectable: { type: Boolean },
-			/**
-			 * **Selection:** Whether the item is selected
-			 * @type {boolean}
-			 */
-			selected: { type: Boolean, reflect: true },
-			/**
-			 * Private. The selection info (set by the selection component).
-			 * @ignore
-			 */
-			selectionInfo: { type: Object, attribute: false },
-			_hoveringSelection: { type: Boolean, attribute: '_hovering-selection', reflect: true }
-		};
-	}
+	static properties = {
+		/**
+		 * **Selection:** Disables selection
+		 * @type {boolean}
+		 */
+		selectionDisabled: { type: Boolean, attribute: 'selection-disabled', reflect: true },
+		/**
+		 * **Selection:** Tooltip text when selection is disabled
+		 * @type {string}
+		 */
+		selectionDisabledTooltip: { type: String, attribute: 'selection-disabled-tooltip' },
+		/**
+		 * **Selection:** Value to identify item if selectable
+		 * @type {string}
+		 */
+		key: { type: String, reflect: true },
+		/**
+		 * **Selection:** Indicates an input should be rendered for selecting the item
+		 * @type {boolean}
+		 */
+		selectable: { type: Boolean },
+		/**
+		 * **Selection:** Whether the item is selected
+		 * @type {boolean}
+		 */
+		selected: { type: Boolean, reflect: true },
+		/**
+		 * Private. The selection info (set by the selection component).
+		 * @ignore
+		 */
+		selectionInfo: { type: Object, attribute: false },
+		_hoveringSelection: { type: Boolean, attribute: '_hovering-selection', reflect: true }
+	};
 
 	static get styles() {
-		const styles = [ css`
+		const styles = [css`
 			.d2l-checkbox-action {
 				cursor: pointer;
 				display: block;
@@ -61,7 +59,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			:host([layout="tile"]) .bump-inline {
 				margin-inline-start: 2rem !important;
 			}
-		` ];
+		`];
 
 		super.styles && styles.unshift(super.styles);
 		return styles;

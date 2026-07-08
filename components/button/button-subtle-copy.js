@@ -7,25 +7,23 @@ import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
  * A button component that copies to the clipboard, using the "subtle" button style.
  */
 class ButtonSubtleCopy extends FocusMixin(ButtonCopyMixin(LitElement)) {
-	static get properties() {
-		return {
-			/**
-			 * ACCESSIBILITY: A description to be added to the button for accessibility when text on button does not provide enough context
-			 * @type {string}
-			 */
-			description: { type: String },
-			/**
-			 * ACCESSIBILITY: REQUIRED: Text for the button
-			 * @type {string}
-			 */
-			text: { type: String, reflect: true },
-			/**
-			 * Whether to render the slimmer version of the button
-			 * @type {boolean}
-			 */
-			slim: { type: Boolean, reflect: true },
-		};
-	}
+	static properties = {
+		/**
+		 * ACCESSIBILITY: A description to be added to the button for accessibility when text on button does not provide enough context
+		 * @type {string}
+		 */
+		description: { type: String },
+		/**
+		 * ACCESSIBILITY: REQUIRED: Text for the button
+		 * @type {string}
+		 */
+		text: { type: String, reflect: true },
+		/**
+		 * Whether to render the slimmer version of the button
+		 * @type {boolean}
+		 */
+		slim: { type: Boolean, reflect: true },
+	};
 
 	static get focusElementSelector() {
 		return 'd2l-button-subtle';

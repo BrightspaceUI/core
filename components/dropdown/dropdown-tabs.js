@@ -10,13 +10,11 @@ import { DropdownPopoverMixin } from './dropdown-popover-mixin.js';
  */
 class DropdownTabs extends DropdownPopoverMixin(LitElement) {
 
-	static get styles() {
-		return [super.styles, css`
-			::slotted(d2l-tabs) {
-				margin-bottom: 0;
-			}
-		`];
-	}
+	static styles = [super.styles, css`
+		::slotted(d2l-tabs) {
+			margin-bottom: 0;
+		}
+	`];
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);

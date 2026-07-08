@@ -10,19 +10,15 @@ import { EmptyStateMixin } from './empty-state-mixin.js';
  */
 class EmptyStateSimple extends EmptyStateMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * REQUIRED: A description giving details about the empty state
-			 * @type {string}
-			 */
-			description: { type: String, required: true },
-		};
-	}
+	static properties = {
+		/**
+		 * REQUIRED: A description giving details about the empty state
+		 * @type {string}
+		 */
+		description: { type: String, required: true },
+	};
 
-	static get styles() {
-		return [bodyCompactStyles, emptyStateStyles, emptyStateSimpleStyles];
-	}
+	static styles = [bodyCompactStyles, emptyStateStyles, emptyStateSimpleStyles];
 
 	render() {
 		return html`

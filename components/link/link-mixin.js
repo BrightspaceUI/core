@@ -7,50 +7,46 @@ import { offscreenStyles } from '../offscreen/offscreen.js';
 
 export const LinkMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
-	static get properties() {
-		return {
-			/**
-			 * Prompts the user to save the linked URL instead of navigating to it.
-			 * Must be to a resource on the same origin.
-			 * Can be used with or without a value, when set the value becomes the filename.
-			 * @type {string}
-			 */
-			download: { type: String },
-			/**
-			 * REQUIRED: URL or URL fragment of the link
-			 * @type {string}
-			 */
-			href: { type: String },
-			/**
-			 * Where to display the linked URL
-			 * @type {string}
-			 */
-			target: { type: String }
-		};
-	}
+	static properties = {
+		/**
+		 * Prompts the user to save the linked URL instead of navigating to it.
+		 * Must be to a resource on the same origin.
+		 * Can be used with or without a value, when set the value becomes the filename.
+		 * @type {string}
+		 */
+		download: { type: String },
+		/**
+		 * REQUIRED: URL or URL fragment of the link
+		 * @type {string}
+		 */
+		href: { type: String },
+		/**
+		 * Where to display the linked URL
+		 * @type {string}
+		 */
+		target: { type: String }
+	};
 
-	static get styles() {
-		return [offscreenStyles, css`
-			#new-window {
-				line-height: 0;
-				white-space: nowrap;
-			}
+	static styles = [offscreenStyles, css`
+		#new-window {
+			line-height: 0;
+			white-space: nowrap;
+		}
+		d2l-icon {
+			color: inherit;
+			height: calc(1em - 1px);
+			margin-inline-start: 0.315em;
+			transform: translateY(0.1em);
+			vertical-align: inherit;
+			width: calc(1em - 1px);
+		}
+
+		@media print {
 			d2l-icon {
-				color: inherit;
-				height: calc(1em - 1px);
-				margin-inline-start: 0.315em;
-				transform: translateY(0.1em);
-				vertical-align: inherit;
-				width: calc(1em - 1px);
+				display: none;
 			}
-
-			@media print {
-				d2l-icon {
-					display: none;
-				}
-			}
-		`];
-	}
+		}
+	`];
 
 	getNewWindowDescription(label) {
 		return label && this.target === '_blank' ? this.localize('components.link.open-in-new-window') : undefined;
