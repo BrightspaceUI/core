@@ -88,7 +88,8 @@ class PageDivider extends PropertyRequiredMixin(LitElement) {
 	}
 
 	render() {
-		const currentSizePercent = formatPercent(Math.round(this.currentSize / this.maxSize) || 0);
+		let currentSizePercent = this.currentSize / this.maxSize;
+		if (!Number.isFinite(currentSizePercent)) currentSizePercent = 0; // Avoid NaN or Infinity
 
 		return html`
 			<div
@@ -100,7 +101,7 @@ class PageDivider extends PropertyRequiredMixin(LitElement) {
 				aria-valuemax="${this.maxSize}"
 				aria-valuemin="0"
 				aria-valuenow="${this.currentSize}"
-				aria-valuetext="${currentSizePercent}"
+				aria-valuetext="${formatPercent(currentSizePercent, { maximumFractionDigits: 0 })}"
 				@keydown="${this.#handleKeyDown}">
 			</div>
 		`;
