@@ -265,8 +265,8 @@ describe('page', () => {
 			];
 
 			[
-				{ name: 'header-scrolls-away', panel: '.side-nav-panel', tests: sideNav },
-				{ name: 'header-sticks', panel: '.supporting-panel', tests: supporting },
+				{ name: 'header-sticks', panel: '.side-nav-panel', tests: sideNav },
+				{ name: 'header-scrolls-away', panel: '.supporting-panel', tests: supporting },
 			].forEach(category => {
 				describe(category.name, () => {
 					category.tests.forEach(test => {
