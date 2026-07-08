@@ -9,21 +9,18 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 
 class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
-			 * REQUIRED: Preset icon key (e.g. "tier1:gear")
-			 * @type {string}
-			 */
-			icon: {
-				type: String,
-				reflect: true
-			}
-		};
-	}
+	static properties = {
+		/**
+		 * REQUIRED: Preset icon key (e.g. "tier1:gear")
+		 * @type {string}
+		 */
+		icon: {
+			type: String,
+			reflect: true
+		}
+	};
 
-	static get styles() {
-		return [super.styles, css`
+	static styles = [super.styles, css`
 		${getFocusRingStyles(pseudoClass => `:host([focus-ring]) d2l-icon, d2l-icon:${pseudoClass}`)}
 		:host {
 			display: inline-block;
@@ -52,8 +49,7 @@ class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 			border: 2px solid transparent;
 			border-radius: 6px;
 		}
-		`];
-	}
+	`];
 
 	constructor() {
 		super();

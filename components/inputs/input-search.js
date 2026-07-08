@@ -17,74 +17,69 @@ export const SUPPRESS_ENTER_TIMEOUT_MS = 1000;
  */
 class InputSearch extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
-			 * ACCESSIBILITY: Additional information communicated to screenreader users when focusing on the input
-			 * @type {string}
-			 */
-			description: { type: String, reflect: true },
-			/**
-			 * Disables the input
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean },
-			/**
-			 * ACCESSIBILITY: REQUIRED: Acts as the primary label for the input. Not visible.
-			 * @type {string}
-			 */
-			label: { type: String },
-			/**
-			 * @ignore
-			 */
-			lastSearchValue: { type: String, attribute: false },
-			/**
-			 * Imposes an upper character limit
-			 * @type {number}
-			 */
-			maxlength: { type: Number },
-			/**
-			 * Prevents the "clear" button from appearing
-			 * @type {boolean}
-			 */
-			noClear: { type: Boolean, attribute: 'no-clear' },
-			/**
-			 * Placeholder text (default: "Search...")
-			 * @type {string}
-			 */
-			placeholder: { type: String },
-			/**
-			 * Dispatch search events after each input event
-			 * @type {boolean}
-			 */
-			searchOnInput: { type: Boolean, attribute: 'search-on-input' },
-			/**
-			 * Value of the input
-			 * @type {string}
-			 */
-			value: { type: String }
-		};
-	}
+	static properties = {
+		/**
+		 * ACCESSIBILITY: Additional information communicated to screenreader users when focusing on the input
+		 * @type {string}
+		 */
+		description: { type: String, reflect: true },
+		/**
+		 * Disables the input
+		 * @type {boolean}
+		 */
+		disabled: { type: Boolean },
+		/**
+		 * ACCESSIBILITY: REQUIRED: Acts as the primary label for the input. Not visible.
+		 * @type {string}
+		 */
+		label: { type: String },
+		/**
+		 * @ignore
+		 */
+		lastSearchValue: { type: String, attribute: false },
+		/**
+		 * Imposes an upper character limit
+		 * @type {number}
+		 */
+		maxlength: { type: Number },
+		/**
+		 * Prevents the "clear" button from appearing
+		 * @type {boolean}
+		 */
+		noClear: { type: Boolean, attribute: 'no-clear' },
+		/**
+		 * Placeholder text (default: "Search...")
+		 * @type {string}
+		 */
+		placeholder: { type: String },
+		/**
+		 * Dispatch search events after each input event
+		 * @type {boolean}
+		 */
+		searchOnInput: { type: Boolean, attribute: 'search-on-input' },
+		/**
+		 * Value of the input
+		 * @type {string}
+		 */
+		value: { type: String }
+	};
 
-	static get styles() {
-		return [inputStyles, css`
-				:host {
-					display: inline-block;
-					width: 100%;
-				}
-				:host([hidden]) {
-					display: none;
-				}
-				d2l-button-icon {
-					--d2l-button-icon-min-height: 1.5rem;
-					--d2l-button-icon-min-width: 1.5rem;
-					--d2l-button-icon-border-radius: 4px;
-					--d2l-focus-ring-offset: 1px;
-					margin-inline: 0.3rem;
-				}
-			`
-		];
-	}
+	static styles = [inputStyles, css`
+		:host {
+			display: inline-block;
+			width: 100%;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		d2l-button-icon {
+			--d2l-button-icon-min-height: 1.5rem;
+			--d2l-button-icon-min-width: 1.5rem;
+			--d2l-button-icon-border-radius: 4px;
+			--d2l-focus-ring-offset: 1px;
+			margin-inline: 0.3rem;
+		}
+	`];
 
 	constructor() {
 		super();

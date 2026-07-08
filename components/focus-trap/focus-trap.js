@@ -12,27 +12,23 @@ const traps = [];
  */
 class FocusTrap extends FocusMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * Whether the component should trap user focus.
-			 * @type {boolean}
-			 */
-			trap: { type: Boolean },
-			_legacyPromptIds: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Whether the component should trap user focus.
+		 * @type {boolean}
+		 */
+		trap: { type: Boolean },
+		_legacyPromptIds: { state: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+	`;
 
 	constructor() {
 		super();

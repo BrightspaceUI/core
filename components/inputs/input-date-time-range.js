@@ -67,121 +67,116 @@ export function getShiftedEndDateTime(startValue, endValue, prevStartValue, incl
  */
 class InputDateTimeRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
 
-	static get properties() {
-		return {
-			/**
-			 * ADVANCED: Automatically shifts end date when start date changes to keep same range. If start and end date are equal, automatically shifts end time when start time changes.
-			 * @type {boolean}
-			 */
-			autoShiftDates: { attribute: 'auto-shift-dates', reflect: true, type: Boolean },
-			/**
-			 * Hides the start and end labels visually. Hidden labels are still read by screen readers so make sure to set appropriate start and end labels.
-			 * @type {boolean}
-			 */
-			childLabelsHidden: { attribute: 'child-labels-hidden', reflect: true, type: Boolean },
-			/**
-			 * Disables the inputs
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
-			 * ACCESSIBILITY: Label for the end date-time input. Defaults to localized "End Date".
-			 * @type {string}
-			 * @default "End Date"
-			 */
-			endLabel: { attribute: 'end-label', reflect: true, type: String },
-			/**
-			 * ADVANCED: Indicates if the end date or time dropdown is open
-			 * @type {boolean}
-			 */
-			endOpened: { attribute: 'end-opened', type: Boolean },
-			/**
-			 * Value of the end date-time input
-			 * @type {string}
-			 */
-			endValue: { attribute: 'end-value', reflect: true, type: String },
-			/**
-			 * Validates on inclusive range (i.e., it is valid for start and end date-times to be equal)
-			 * @type {boolean}
-			 */
-			inclusiveDateRange: { attribute: 'inclusive-date-range', reflect: true, type: Boolean },
-			/**
-			 * ACCESSIBILITY: REQUIRED: Label for the input fieldset that wraps the date-time inputs
-			 * @type {string}
-			 */
-			label: { type: String, reflect: true },
-			/**
-			 * Hides the fieldset label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
-			 * @type {boolean}
-			 */
-			labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
-			/**
-			 * Indicates that localization will be handled by the consumer. `*value` will not be converted from/to UTC.
-			 * @type {boolean}
-			 */
-			localized: { reflect: true, type: Boolean },
-			/**
-			 * Maximum valid date/time that could be selected by a user
-			 * @type {string}
-			 */
-			maxValue: { attribute: 'max-value', reflect: true, type: String },
-			/**
-			 * Minimum valid date/time that could be selected by a user
-			 * @type {string}
-			 */
-			minValue: { attribute: 'min-value', reflect: true, type: String },
-			/**
-			 * Indicates that values are required
-			 * @type {boolean}
-			 */
-			required: { type: Boolean, reflect: true },
-			/**
-			 * ACCESSIBILITY: Label for the start date-time input. Defaults to localized "Start Date".
-			 * @type {string}
-			 * @default "Start Date"
-			 */
-			startLabel: { attribute: 'start-label', reflect: true, type: String },
-			/**
-			 * ADVANCED: Indicates if the start date or time dropdown is open
-			 * @type {boolean}
-			 */
-			startOpened: { attribute: 'start-opened', type: Boolean },
-			/**
-			 * Value of the start date-time input
-			 * @type {string}
-			 */
-			startValue: { attribute: 'start-value', reflect: true, type: String },
-			/**
-			 * Time zone identifier for the time inputs to use.
-			 * @type {string}
-			 */
-			timeZoneId: { attribute: 'time-zone-id', type: String },
-			/**
-			 * Hides the time zone inside the time selection dropdowns. Should only be used when the time input values are not related to any one time zone
-			 * @type {Boolean}
-			 */
-			timeZoneHidden: { type: Boolean, attribute: 'time-zone-hidden' },
-			_slotOccupied: { type: Boolean }
-		};
-	}
+	static properties = {
+		/**
+		 * ADVANCED: Automatically shifts end date when start date changes to keep same range. If start and end date are equal, automatically shifts end time when start time changes.
+		 * @type {boolean}
+		 */
+		autoShiftDates: { attribute: 'auto-shift-dates', reflect: true, type: Boolean },
+		/**
+		 * Hides the start and end labels visually. Hidden labels are still read by screen readers so make sure to set appropriate start and end labels.
+		 * @type {boolean}
+		 */
+		childLabelsHidden: { attribute: 'child-labels-hidden', reflect: true, type: Boolean },
+		/**
+		 * Disables the inputs
+		 * @type {boolean}
+		 */
+		disabled: { type: Boolean, reflect: true },
+		/**
+		 * ACCESSIBILITY: Label for the end date-time input. Defaults to localized "End Date".
+		 * @type {string}
+		 * @default "End Date"
+		 */
+		endLabel: { attribute: 'end-label', reflect: true, type: String },
+		/**
+		 * ADVANCED: Indicates if the end date or time dropdown is open
+		 * @type {boolean}
+		 */
+		endOpened: { attribute: 'end-opened', type: Boolean },
+		/**
+		 * Value of the end date-time input
+		 * @type {string}
+		 */
+		endValue: { attribute: 'end-value', reflect: true, type: String },
+		/**
+		 * Validates on inclusive range (i.e., it is valid for start and end date-times to be equal)
+		 * @type {boolean}
+		 */
+		inclusiveDateRange: { attribute: 'inclusive-date-range', reflect: true, type: Boolean },
+		/**
+		 * ACCESSIBILITY: REQUIRED: Label for the input fieldset that wraps the date-time inputs
+		 * @type {string}
+		 */
+		label: { type: String, reflect: true },
+		/**
+		 * Hides the fieldset label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
+		 * @type {boolean}
+		 */
+		labelHidden: { type: Boolean, attribute: 'label-hidden', reflect: true },
+		/**
+		 * Indicates that localization will be handled by the consumer. `*value` will not be converted from/to UTC.
+		 * @type {boolean}
+		 */
+		localized: { reflect: true, type: Boolean },
+		/**
+		 * Maximum valid date/time that could be selected by a user
+		 * @type {string}
+		 */
+		maxValue: { attribute: 'max-value', reflect: true, type: String },
+		/**
+		 * Minimum valid date/time that could be selected by a user
+		 * @type {string}
+		 */
+		minValue: { attribute: 'min-value', reflect: true, type: String },
+		/**
+		 * Indicates that values are required
+		 * @type {boolean}
+		 */
+		required: { type: Boolean, reflect: true },
+		/**
+		 * ACCESSIBILITY: Label for the start date-time input. Defaults to localized "Start Date".
+		 * @type {string}
+		 * @default "Start Date"
+		 */
+		startLabel: { attribute: 'start-label', reflect: true, type: String },
+		/**
+		 * ADVANCED: Indicates if the start date or time dropdown is open
+		 * @type {boolean}
+		 */
+		startOpened: { attribute: 'start-opened', type: Boolean },
+		/**
+		 * Value of the start date-time input
+		 * @type {string}
+		 */
+		startValue: { attribute: 'start-value', reflect: true, type: String },
+		/**
+		 * Time zone identifier for the time inputs to use.
+		 * @type {string}
+		 */
+		timeZoneId: { attribute: 'time-zone-id', type: String },
+		/**
+		 * Hides the time zone inside the time selection dropdowns. Should only be used when the time input values are not related to any one time zone
+		 * @type {Boolean}
+		 */
+		timeZoneHidden: { type: Boolean, attribute: 'time-zone-hidden' },
+		_slotOccupied: { type: Boolean }
+	};
 
-	static get styles() {
-		return [super.styles, css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			d2l-input-date-time {
-				display: block;
-			}
-			::slotted(*) {
-				margin-top: 0.6rem;
-			}
-
-		`];
-	}
+	static styles = [super.styles, css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		d2l-input-date-time {
+			display: block;
+		}
+		::slotted(*) {
+			margin-top: 0.6rem;
+		}
+	`];
 
 	constructor() {
 		super();

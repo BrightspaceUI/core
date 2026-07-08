@@ -9,73 +9,71 @@ import { html, LitElement } from 'lit';
  */
 class FilterDimensionSet extends LitElement {
 
-	static get properties() {
-		return {
-			/**
-			 * Whether the dimension has more values to load. Manual search and selected first should be set if has more is being used
-			 * @type {boolean}
-			 */
-			hasMore: { type: Boolean, attribute: 'has-more' },
-			/**
-			 * A heading displayed above the list items. This is usually unnecessary, but can be used to emphasize or promote something specific about the list of items to help orient users.
-			 * @type {string}
-			 */
-			headerText: { type: String, attribute: 'header-text' },
-			/**
-			 * The introductory text to display at the top of the filter dropdown
-			 * @type {string}
-			 */
-			introductoryText: { type: String, attribute: 'introductory-text' },
-			/**
-			 * REQUIRED: Unique key to represent this dimension in the filter
-			 * @type {string}
-			 */
-			key: { type: String },
-			/**
-			 * Whether the values for this dimension are still loading and a loading spinner should be displayed
-			 * @type {boolean}
-			 */
-			loading: { type: Boolean },
-			/**
-			 * @ignore
-			 */
-			minWidth: { type: Number },
-			/**
-			 * ADVANCED: Whether to ignore the enforce single selection setting for this dimension.
-			 */
-			ignoreEnforceSelectionSingle: { type: Boolean, attribute: 'ignore-enforce-selection-single' },
-			/**
-			 * Whether to hide the search input, perform a simple text search, or fire an event on search
-			 * @type {'none'|'automatic'|'manual'}
-			 */
-			searchType: { type: String, attribute: 'search-type' },
-			/**
-			 * Adds a select all checkbox and summary for this dimension
-			 * @type {boolean}
-			 */
-			selectAll: { type: Boolean, attribute: 'select-all' },
-			/**
-			 * Whether to render the selected items at the top of the filter. Forced on if load more paging is being used
-			 * @type {boolean}
-			 */
-			selectedFirst: { type: Boolean, attribute: 'selected-first' },
-			/**
-			 * Whether only one value can be selected at a time for this dimension
-			 * @type {boolean}
-			 */
-			selectionSingle: { type: Boolean, attribute: 'selection-single' },
-			/**
-			 * REQUIRED: The text that is displayed for the dimension title
-			 * @type {string}
-			 */
-			text: { type: String },
-			/**
-			 * Whether to hide the dimension in the text sent to active filter subscribers
-			 * @type {boolean}
-			 */
-			valueOnlyActiveFilterText: { type: Boolean, attribute: 'value-only-active-filter-text' }
-		};
-	}
+	static properties = {
+		/**
+		 * Whether the dimension has more values to load. Manual search and selected first should be set if has more is being used
+		 * @type {boolean}
+		 */
+		hasMore: { type: Boolean, attribute: 'has-more' },
+		/**
+		 * A heading displayed above the list items. This is usually unnecessary, but can be used to emphasize or promote something specific about the list of items to help orient users.
+		 * @type {string}
+		 */
+		headerText: { type: String, attribute: 'header-text' },
+		/**
+		 * The introductory text to display at the top of the filter dropdown
+		 * @type {string}
+		 */
+		introductoryText: { type: String, attribute: 'introductory-text' },
+		/**
+		 * REQUIRED: Unique key to represent this dimension in the filter
+		 * @type {string}
+		 */
+		key: { type: String },
+		/**
+		 * Whether the values for this dimension are still loading and a loading spinner should be displayed
+		 * @type {boolean}
+		 */
+		loading: { type: Boolean },
+		/**
+		 * @ignore
+		 */
+		minWidth: { type: Number },
+		/**
+		 * ADVANCED: Whether to ignore the enforce single selection setting for this dimension.
+		 */
+		ignoreEnforceSelectionSingle: { type: Boolean, attribute: 'ignore-enforce-selection-single' },
+		/**
+		 * Whether to hide the search input, perform a simple text search, or fire an event on search
+		 * @type {'none'|'automatic'|'manual'}
+		 */
+		searchType: { type: String, attribute: 'search-type' },
+		/**
+		 * Adds a select all checkbox and summary for this dimension
+		 * @type {boolean}
+		 */
+		selectAll: { type: Boolean, attribute: 'select-all' },
+		/**
+		 * Whether to render the selected items at the top of the filter. Forced on if load more paging is being used
+		 * @type {boolean}
+		 */
+		selectedFirst: { type: Boolean, attribute: 'selected-first' },
+		/**
+		 * Whether only one value can be selected at a time for this dimension
+		 * @type {boolean}
+		 */
+		selectionSingle: { type: Boolean, attribute: 'selection-single' },
+		/**
+		 * REQUIRED: The text that is displayed for the dimension title
+		 * @type {string}
+		 */
+		text: { type: String },
+		/**
+		 * Whether to hide the dimension in the text sent to active filter subscribers
+		 * @type {boolean}
+		 */
+		valueOnlyActiveFilterText: { type: Boolean, attribute: 'value-only-active-filter-text' }
+	};
 
 	constructor() {
 		super();

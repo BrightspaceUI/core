@@ -1,11 +1,12 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "3.267.1",
+  "version": "3.267.3",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "build:clean": "node ./cli/clean.js",

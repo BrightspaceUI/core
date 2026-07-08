@@ -8,88 +8,84 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 class ListItemDragImage extends LocalizeCoreElement(SkeletonMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
-			 * @ignore
-			 */
-			count: { type: Number },
-			includePlusSign: { type: Boolean, attribute: 'include-plus-sign' }
-		};
-	}
+	static properties = {
+		/**
+		 * @ignore
+		 */
+		count: { type: Number },
+		includePlusSign: { type: Boolean, attribute: 'include-plus-sign' }
+	};
 
-	static get styles() {
-		return [ super.styles, bodySmallStyles, css`
-			:host {
-				display: block;
-				height: 70px;
-				inset-inline-start: -10000px;
-				position: absolute;
-				width: 340px;
-				z-index: 0;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			.first, .second, .third {
-				background-color: white;
-				border: 1px solid var(--d2l-color-mica);
-				border-radius: 4px;
-				box-sizing: border-box;
-				height: 100%;
-				position: absolute;
-				width: 100%;
-			}
-			.first {
-				align-items: start;
-				display: flex;
-				padding: 16px 8px;
-			}
-			.second {
-				margin-inline-start: 6px;
-				margin-top: 6px;
-				z-index: -1;
-			}
-			.third {
-				margin-inline-start: 12px;
-				margin-top: 12px;
-				z-index: -2;
-			}
-			.text {
-				width: 100%;
-			}
-			.line-1 {
-				height: 24px;
-				margin-bottom: 4px;
-				width: 100%;
-			}
-			.line-2 {
-				height: 16px;
-				width: 25%;
-			}
-			d2l-input-checkbox {
-				line-height: 0;
-				margin: 0;
-				margin-inline-start: 16px;
-			}
-			.count {
-				background-color: var(--d2l-color-celestine);
-				border-radius: 0.7rem;
-				box-sizing: border-box;
-				color: white;
-				left: 26px;
-				min-width: 1.4rem;
-				padding: 0.25rem 0.4rem;
-				position: absolute;
-				text-align: center;
-				top: 30px;
-				z-index: 998; /* must be higher than the skeleton z-index */
-			}
-			.count:dir(rtl) {
-				left: 14px;
-			}
-		`];
-	}
+	static styles = [super.styles, bodySmallStyles, css`
+		:host {
+			display: block;
+			height: 70px;
+			inset-inline-start: -10000px;
+			position: absolute;
+			width: 340px;
+			z-index: 0;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.first, .second, .third {
+			background-color: white;
+			border: 1px solid var(--d2l-color-mica);
+			border-radius: 4px;
+			box-sizing: border-box;
+			height: 100%;
+			position: absolute;
+			width: 100%;
+		}
+		.first {
+			align-items: start;
+			display: flex;
+			padding: 16px 8px;
+		}
+		.second {
+			margin-inline-start: 6px;
+			margin-top: 6px;
+			z-index: -1;
+		}
+		.third {
+			margin-inline-start: 12px;
+			margin-top: 12px;
+			z-index: -2;
+		}
+		.text {
+			width: 100%;
+		}
+		.line-1 {
+			height: 24px;
+			margin-bottom: 4px;
+			width: 100%;
+		}
+		.line-2 {
+			height: 16px;
+			width: 25%;
+		}
+		d2l-input-checkbox {
+			line-height: 0;
+			margin: 0;
+			margin-inline-start: 16px;
+		}
+		.count {
+			background-color: var(--d2l-color-celestine);
+			border-radius: 0.7rem;
+			box-sizing: border-box;
+			color: white;
+			left: 26px;
+			min-width: 1.4rem;
+			padding: 0.25rem 0.4rem;
+			position: absolute;
+			text-align: center;
+			top: 30px;
+			z-index: 998; /* must be higher than the skeleton z-index */
+		}
+		.count:dir(rtl) {
+			left: 14px;
+		}
+	`];
 
 	constructor() {
 		super();

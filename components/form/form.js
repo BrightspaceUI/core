@@ -17,43 +17,39 @@ import { localizeFormElement } from './form-element-localize-helper.js';
  */
 class Form extends LocalizeCoreElement(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * Indicates that the form should opt-out of nesting.
-			 * This means that it will not be submitted or validated if an ancestor form is submitted or validated.
-			 * However, directly submitting or validating a form with `no-nesting` will still trigger submission and validation for its descendant forms unless they also opt-out using `no-nesting`.
-			 * @type {boolean}
-			 */
-			noNesting: { type: Boolean, attribute: 'no-nesting', reflect: true },
-			/**
-			 * Indicates that the form should interrupt and warn on navigation if the user has unsaved changes on native elements.
-			 * @type {boolean}
-			 */
-			trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true },
-			/**
-			 * Id for an alternative error summary element
-			 * @type {string}
-			 */
-			summaryId: { type: String, attribute: 'summary-id' },
-			_errors: { type: Object },
-			_hasErrors: { type: Boolean, attribute: '_has-errors', reflect: true },
-		};
-	}
+	static properties = {
+		/**
+		 * Indicates that the form should opt-out of nesting.
+		 * This means that it will not be submitted or validated if an ancestor form is submitted or validated.
+		 * However, directly submitting or validating a form with `no-nesting` will still trigger submission and validation for its descendant forms unless they also opt-out using `no-nesting`.
+		 * @type {boolean}
+		 */
+		noNesting: { type: Boolean, attribute: 'no-nesting', reflect: true },
+		/**
+		 * Indicates that the form should interrupt and warn on navigation if the user has unsaved changes on native elements.
+		 * @type {boolean}
+		 */
+		trackChanges: { type: Boolean, attribute: 'track-changes', reflect: true },
+		/**
+		 * Id for an alternative error summary element
+		 * @type {string}
+		 */
+		summaryId: { type: String, attribute: 'summary-id' },
+		_errors: { type: Object },
+		_hasErrors: { type: Boolean, attribute: '_has-errors', reflect: true },
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			:host([_has-errors]) ::slotted(d2l-input-group) {
-				margin-block-start: 1rem;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		:host([_has-errors]) ::slotted(d2l-input-group) {
+			margin-block-start: 1rem;
+		}
+	`;
 
 	constructor() {
 		super();

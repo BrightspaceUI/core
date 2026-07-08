@@ -12,135 +12,131 @@ const maxBadgeDigits = 5;
 
 export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(SkeletonMixin(superclass)) {
 
-	static get properties() {
-		return {
-			/**
-			 * ACCESSIBILITY: When `true`, changes to the badge will be announced to screen reader users
-			 * @type {boolean}
-			 */
-			announceChanges: {
-				type: Boolean,
-				attribute: 'announce-changes'
-			},
-			/**
-			 * Forces the focus ring around the badge
-			 * @type {boolean}
-			 */
-			forceFocusRing: {
-				type: Boolean,
-				attribute: 'focus-ring',
-				reflect: true
-			},
-			/**
-			 * ACCESSIBILITY: Adds a tooltip on the badge, which will be visible on hover and keyboard interaction
-			 * @type {boolean}
-			 */
-			hasTooltip: {
-				type: Boolean,
-				attribute: 'has-tooltip'
-			},
-			/**
-			 * Hides the count badge when `number` is zero
-			 * @type {boolean}
-			 */
-			hideZero: {
-				type: Boolean,
-				attribute: 'hide-zero'
-			},
-			/**
-			 * Specifies a digit limit, after which numbers are truncated. Defaults to two for "notification" type and five for "count" type.
-			 * @type {number}
-			 */
-			maxDigits: {
-				type: Number,
-				attribute: 'max-digits'
-			},
-			/**
-			 * REQUIRED: The number to be displayed on the badge; must be a positive integer
-			 * @type {number}
-			 */
-			number: {
-				type: Number,
-				attribute: 'number'
-			},
-			/**
-			 * The size of the badge
-			 * @type {'small'|'large'}
-			 */
-			size: {
-				type: String,
-				reflect: true,
-				attribute: 'size'
-			},
-			/**
-			 * ACCESSIBILITY: Adds a tab stop to the badge, which allows screen reader and keyboard users to easily tab to the badge
-			 * @type {boolean}
-			 */
-			tabStop: {
-				type: Boolean,
-				attribute: 'tab-stop'
-			},
-			/**
-			 * ACCESSIBILITY: REQUIRED: Descriptive text for the badge which will act as an accessible label and tooltip text when tooltips are enabled
-			 * @type {string}
-			 */
-			text: {
-				type: String
-			},
-			/**
-			 * The type of the badge
-			 * @type {'count'|'notification'}
-			 */
-			type: {
-				type: String,
-				reflect: true,
-				attribute: 'type'
-			}
-		};
-	}
+	static properties = {
+		/**
+		 * ACCESSIBILITY: When `true`, changes to the badge will be announced to screen reader users
+		 * @type {boolean}
+		 */
+		announceChanges: {
+			type: Boolean,
+			attribute: 'announce-changes'
+		},
+		/**
+		 * Forces the focus ring around the badge
+		 * @type {boolean}
+		 */
+		forceFocusRing: {
+			type: Boolean,
+			attribute: 'focus-ring',
+			reflect: true
+		},
+		/**
+		 * ACCESSIBILITY: Adds a tooltip on the badge, which will be visible on hover and keyboard interaction
+		 * @type {boolean}
+		 */
+		hasTooltip: {
+			type: Boolean,
+			attribute: 'has-tooltip'
+		},
+		/**
+		 * Hides the count badge when `number` is zero
+		 * @type {boolean}
+		 */
+		hideZero: {
+			type: Boolean,
+			attribute: 'hide-zero'
+		},
+		/**
+		 * Specifies a digit limit, after which numbers are truncated. Defaults to two for "notification" type and five for "count" type.
+		 * @type {number}
+		 */
+		maxDigits: {
+			type: Number,
+			attribute: 'max-digits'
+		},
+		/**
+		 * REQUIRED: The number to be displayed on the badge; must be a positive integer
+		 * @type {number}
+		 */
+		number: {
+			type: Number,
+			attribute: 'number'
+		},
+		/**
+		 * The size of the badge
+		 * @type {'small'|'large'}
+		 */
+		size: {
+			type: String,
+			reflect: true,
+			attribute: 'size'
+		},
+		/**
+		 * ACCESSIBILITY: Adds a tab stop to the badge, which allows screen reader and keyboard users to easily tab to the badge
+		 * @type {boolean}
+		 */
+		tabStop: {
+			type: Boolean,
+			attribute: 'tab-stop'
+		},
+		/**
+		 * ACCESSIBILITY: REQUIRED: Descriptive text for the badge which will act as an accessible label and tooltip text when tooltips are enabled
+		 * @type {string}
+		 */
+		text: {
+			type: String
+		},
+		/**
+		 * The type of the badge
+		 * @type {'count'|'notification'}
+		 */
+		type: {
+			type: String,
+			reflect: true,
+			attribute: 'type'
+		}
+	};
 
-	static get styles() {
-		return [super.styles, offscreenStyles, css`
-			:host([hidden]) {
-				display: none;
-			}
+	static styles = [super.styles, offscreenStyles, css`
+		:host([hidden]) {
+			display: none;
+		}
 
-			:host {
-				display: inline-block;
-				min-width: 0.9rem;
-			}
+		:host {
+			display: inline-block;
+			min-width: 0.9rem;
+		}
 
-			.d2l-count-badge-number {
-				font-weight: bold;
-			}
+		.d2l-count-badge-number {
+			font-weight: bold;
+		}
 
-			:host([type="notification"]) .d2l-count-badge-number {
-				background-color: var(--d2l-theme-notification-background-color);
-				color: var(--d2l-theme-notification-text-color);
-			}
+		:host([type="notification"]) .d2l-count-badge-number {
+			background-color: var(--d2l-theme-notification-background-color);
+			color: var(--d2l-theme-notification-text-color);
+		}
 
-			:host([type="count"]) .d2l-count-badge-number {
-				background-color: var(--d2l-count-badge-background-color, var(--d2l-theme-badge-background-color));
-				color: var(--d2l-count-badge-foreground-color, var(--d2l-theme-badge-text-color));
-			}
+		:host([type="count"]) .d2l-count-badge-number {
+			background-color: var(--d2l-count-badge-background-color, var(--d2l-theme-badge-background-color));
+			color: var(--d2l-count-badge-foreground-color, var(--d2l-theme-badge-text-color));
+		}
 
-			:host([size="small"]) .d2l-count-badge-number {
-				border-radius: 0.55rem;
-				font-size: 0.6rem;
-				line-height: 0.9rem;
-				padding-left: 0.3rem;
-				padding-right: 0.3rem;
-			}
+		:host([size="small"]) .d2l-count-badge-number {
+			border-radius: 0.55rem;
+			font-size: 0.6rem;
+			line-height: 0.9rem;
+			padding-left: 0.3rem;
+			padding-right: 0.3rem;
+		}
 
-			:host([size="large"]) .d2l-count-badge-number {
-				border-radius: 0.7rem;
-				font-size: 0.8rem;
-				line-height: 1.2rem;
-				padding-left: 0.4rem;
-				padding-right: 0.4rem;
-			}
-		`];
-	}
+		:host([size="large"]) .d2l-count-badge-number {
+			border-radius: 0.7rem;
+			font-size: 0.8rem;
+			line-height: 1.2rem;
+			padding-left: 0.4rem;
+			padding-right: 0.4rem;
+		}
+	`];
 
 	constructor() {
 		super();

@@ -15,79 +15,75 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
  */
 class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
-			 * Whether the dialog should indicate that its message is important to the user
-			 */
-			critical: { type: Boolean },
+	static properties = {
+		/**
+		 * Whether the dialog should indicate that its message is important to the user
+		 */
+		critical: { type: Boolean },
 
-			/**
-			 * REQUIRED: The text content for the confirmation dialog. Newline characters (`&#10;` in HTML or `\n` in JavaScript) will render as multiple paragraphs.
-			 * @type {string}
-			 */
-			text: { type: String }
-		};
-	}
+		/**
+		 * REQUIRED: The text content for the confirmation dialog. Newline characters (`&#10;` in HTML or `\n` in JavaScript) will render as multiple paragraphs.
+		 * @type {string}
+		 */
+		text: { type: String }
+	};
 
-	static get styles() {
-		return [ _generateResetStyles(':host'), dialogStyles, heading3Styles, css`
+	static styles = [_generateResetStyles(':host'), dialogStyles, heading3Styles, css`
 
+		.d2l-dialog-outer {
+			max-width: 420px;
+		}
+
+		.d2l-dialog-header > h2 {
+			margin: 0;
+			width: fit-content;
+		}
+
+		${getFocusRingStyles(pseudoClass => `.d2l-dialog-content:${pseudoClass} > div`, { extraStyles: css`
+
+			--d2l-focus-ring-offset: -1px; border-radius: 6px;`
+		})}
+		.d2l-dialog-content:focus,
+		.d2l-dialog-content:focus-visible {
+			outline: none;
+		}
+
+		.d2l-dialog-content {
+			padding-top: 30px;
+		}
+
+		.d2l-dialog-header + .d2l-dialog-content {
+			padding-top: 0;
+		}
+
+		.d2l-dialog-content p {
+			margin: 1rem 0;
+		}
+
+		.d2l-dialog-content p:first-child {
+			margin-top: 0;
+		}
+
+		.d2l-dialog-content p:last-child {
+			margin-bottom: 0;
+		}
+
+		@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
+
+			dialog.d2l-dialog-outer,
 			.d2l-dialog-outer {
-				max-width: 420px;
-			}
-
-			.d2l-dialog-header > h2 {
-				margin: 0;
-				width: fit-content;
-			}
-
-			${getFocusRingStyles(pseudoClass => `.d2l-dialog-content:${pseudoClass} > div`, { extraStyles: css`
-
-				--d2l-focus-ring-offset: -1px; border-radius: 6px;`
-			})}
-			.d2l-dialog-content:focus,
-			.d2l-dialog-content:focus-visible {
-				outline: none;
+				bottom: 0;
+				margin: auto;
+				top: 0;
 			}
 
 			.d2l-dialog-content {
-				padding-top: 30px;
+				padding-top: 20px;
 			}
 
-			.d2l-dialog-header + .d2l-dialog-content {
-				padding-top: 0;
-			}
+		}
 
-			.d2l-dialog-content p {
-				margin: 1rem 0;
-			}
-
-			.d2l-dialog-content p:first-child {
-				margin-top: 0;
-			}
-
-			.d2l-dialog-content p:last-child {
-				margin-bottom: 0;
-			}
-
-			@media (max-width: 615px), (max-height: 420px) and (max-width: 900px) {
-
-				dialog.d2l-dialog-outer,
-				.d2l-dialog-outer {
-					bottom: 0;
-					margin: auto;
-					top: 0;
-				}
-
-				.d2l-dialog-content {
-					padding-top: 20px;
-				}
-
-			}
-
-		`];
-	}
+	`];
 
 	constructor() {
 		super();

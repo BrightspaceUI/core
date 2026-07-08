@@ -5,20 +5,18 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 export const ListItemButtonMixin = superclass => class extends ListItemMixin(superclass) {
-	static get properties() {
-		return {
-			/**
-			 * Disables the primary action button
-			 * @type {boolean}
-			 */
-			buttonDisabled : { type: Boolean, attribute: 'button-disabled', reflect: true },
-			_ariaCurrent: { type: String }
-		};
-	}
+	static properties = {
+		/**
+		 * Disables the primary action button
+		 * @type {boolean}
+		 */
+		buttonDisabled : { type: Boolean, attribute: 'button-disabled', reflect: true },
+		_ariaCurrent: { type: String }
+	};
 
 	static get styles() {
 
-		const styles = [ css`
+		const styles = [css`
 			:host(:not([button-disabled])) {
 				--d2l-list-item-content-text-color: var(--d2l-color-celestine);
 			}
@@ -49,7 +47,7 @@ export const ListItemButtonMixin = superclass => class extends ListItemMixin(sup
 			:host(:not([button-disabled])) [slot="outside-control-action"] {
 				grid-column-end: control-end;
 			}
-		` ];
+		`];
 
 		super.styles && styles.unshift(super.styles);
 		return styles;

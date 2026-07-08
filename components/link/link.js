@@ -20,129 +20,123 @@ export const linkStyles = _generateLinkStyles('.d2l-link', true);
  */
 class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
-			 * ACCESSIBILITY: Label to provide more context for screen reader users when the link text is not enough
-			 * @type {string}
-			 */
-			ariaLabel: { type: String, attribute: 'aria-label' },
-			/**
-			 * Disables the link
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
-			 * Tooltip text when disabled
-			 * @type {string}
-			 */
-			disabledTooltip: { type: String, attribute: 'disabled-tooltip', reflect: true },
-			/**
-			 * Download a URL instead of navigating to it
-			 * @type {boolean}
-			 */
-			download: { type: Boolean },
-			/**
-			 * REQUIRED: URL or URL fragment of the link
-			 * @type {string}
-			 */
-			href: { type: String },
-			/**
-			 * Whether to apply the "main" link style
-			 * @type {boolean}
-			 */
-			main: { type: Boolean, reflect: true },
-			/**
-			 * The number of lines to display before truncating text with an ellipsis. The text will not be truncated unless a value is specified.
-			 * @type {number}
-			 */
-			lines: { type: Number },
-			/**
-			 * Whether to apply the "small" link style
-			 * @type {boolean}
-			 */
-			small: { type: Boolean, reflect: true },
-			/**
-			 * Where to display the linked URL
-			 * @type {string}
-			 */
-			target: { type: String }
-		};
-	}
+	static properties = {
+		/**
+		 * ACCESSIBILITY: Label to provide more context for screen reader users when the link text is not enough
+		 * @type {string}
+		 */
+		ariaLabel: { type: String, attribute: 'aria-label' },
+		/**
+		 * Disables the link
+		 * @type {boolean}
+		 */
+		disabled: { type: Boolean, reflect: true },
+		/**
+		 * Tooltip text when disabled
+		 * @type {string}
+		 */
+		disabledTooltip: { type: String, attribute: 'disabled-tooltip', reflect: true },
+		/**
+		 * Download a URL instead of navigating to it
+		 * @type {boolean}
+		 */
+		download: { type: Boolean },
+		/**
+		 * REQUIRED: URL or URL fragment of the link
+		 * @type {string}
+		 */
+		href: { type: String },
+		/**
+		 * Whether to apply the "main" link style
+		 * @type {boolean}
+		 */
+		main: { type: Boolean, reflect: true },
+		/**
+		 * The number of lines to display before truncating text with an ellipsis. The text will not be truncated unless a value is specified.
+		 * @type {number}
+		 */
+		lines: { type: Number },
+		/**
+		 * Whether to apply the "small" link style
+		 * @type {boolean}
+		 */
+		small: { type: Boolean, reflect: true },
+		/**
+		 * Where to display the linked URL
+		 * @type {string}
+		 */
+		target: { type: String }
+	};
 
-	static get styles() {
-		return [ linkStyles, offscreenStyles,
-			css`
-				:host {
-					display: inline;
-				}
-				:host([hidden]) {
-					display: none;
-				}
-				:host([small]) {
-					/* needed to keep host element same height as link */
-					font-size: 0.7rem;
-					line-height: 1.05rem;
-				}
-				:host([lines]) {
-					min-width: 0;
-				}
-				a {
-					display: inherit;
-				}
-				:host([lines]) a {
-					align-items: baseline;
-					display: flex;
-				}
-				a span.truncate {
-					${getOverflowDeclarations({ lines: 1 })}
-				}
-				a span.truncate-one {
-					${overflowEllipsisDeclarations}
-				}
-				#new-window {
-					line-height: 0;
-					white-space: nowrap;
-				}
-				d2l-icon {
-					color: var(--d2l-theme-text-color-interactive-default);
-					height: calc(1em - 1px);
-					margin-inline-start: 0.315em;
-					transform: translateY(0.1em);
-					vertical-align: inherit;
-					width: calc(1em - 1px);
-				}
+	static styles = [linkStyles, offscreenStyles, css`
+		:host {
+			display: inline;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		:host([small]) {
+			/* needed to keep host element same height as link */
+			font-size: 0.7rem;
+			line-height: 1.05rem;
+		}
+		:host([lines]) {
+			min-width: 0;
+		}
+		a {
+			display: inherit;
+		}
+		:host([lines]) a {
+			align-items: baseline;
+			display: flex;
+		}
+		a span.truncate {
+			${getOverflowDeclarations({ lines: 1 })}
+		}
+		a span.truncate-one {
+			${overflowEllipsisDeclarations}
+		}
+		#new-window {
+			line-height: 0;
+			white-space: nowrap;
+		}
+		d2l-icon {
+			color: var(--d2l-theme-text-color-interactive-default);
+			height: calc(1em - 1px);
+			margin-inline-start: 0.315em;
+			transform: translateY(0.1em);
+			vertical-align: inherit;
+			width: calc(1em - 1px);
+		}
 
-				a:hover d2l-icon {
-					--d2l-icon-fill-color: var(--d2l-theme-text-color-interactive-hover);
-				}
+		a:hover d2l-icon {
+			--d2l-icon-fill-color: var(--d2l-theme-text-color-interactive-hover);
+		}
 
-				:host([disabled]:not([disabled-tooltip])) a:hover {
-					color: var(--d2l-theme-text-color-interactive-default);
-					text-decoration: none;
-				}
-				:host([disabled]:not([disabled-tooltip])) a:hover d2l-icon {
-					--d2l-icon-fill-color: var(--d2l-theme-text-color-interactive-default);
-				}
-				a[aria-disabled="true"],
-				a[aria-disabled="true"]:active {
-					cursor: default;
-				}
-				a[aria-disabled="true"] .d2l-link-content {
-					opacity: var(--d2l-theme-opacity-disabled-link);
-				}
-				a[aria-disabled="true"] d2l-icon {
-					opacity: var(--d2l-theme-opacity-disabled-linkicon);
-				}
+		:host([disabled]:not([disabled-tooltip])) a:hover {
+			color: var(--d2l-theme-text-color-interactive-default);
+			text-decoration: none;
+		}
+		:host([disabled]:not([disabled-tooltip])) a:hover d2l-icon {
+			--d2l-icon-fill-color: var(--d2l-theme-text-color-interactive-default);
+		}
+		a[aria-disabled="true"],
+		a[aria-disabled="true"]:active {
+			cursor: default;
+		}
+		a[aria-disabled="true"] .d2l-link-content {
+			opacity: var(--d2l-theme-opacity-disabled-link);
+		}
+		a[aria-disabled="true"] d2l-icon {
+			opacity: var(--d2l-theme-opacity-disabled-linkicon);
+		}
 
-				@media print {
-					d2l-icon {
-						display: none;
-					}
-				}
-			`
-		];
-	}
+		@media print {
+			d2l-icon {
+				display: none;
+			}
+		}
+	`];
 
 	constructor() {
 		super();

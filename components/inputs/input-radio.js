@@ -18,73 +18,69 @@ import { styleMap } from 'lit/directives/style-map.js';
  */
 class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyRequiredMixin(LitElement)))) {
 
-	static get properties() {
-		return {
-			/**
-			 * Checked state
-			 * @type {boolean}
-			 */
-			checked: { type: Boolean, reflect: true },
-			/**
-			 * ACCESSIBILITY: Additional information communicated to screenreader users when focusing on the input
-			 * @type {string}
-			 */
-			description: { type: String },
-			/**
-			 * Disables the input
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
-			 * Tooltip text displayed when the input is disabled
-			 * @type {string}
-			 */
-			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
-			/**
-			 * REQUIRED: Label for the input
-			 * @type {string}
-			 */
-			label: { required: true, type: String },
-			/**
-			 * Hides the supporting slot when unchecked
-			 * @type {boolean}
-			 */
-			supportingHiddenWhenUnchecked: { type: Boolean, attribute: 'supporting-hidden-when-unchecked', reflect: true },
-			/**
-			 * Value of the input
-			 * @type {string}
-			 */
-			value: { type: String },
-			_checked: { state: true },
-			_focusable: { state: true },
-			_hasSupporting: { state: true },
-			_horizontal: { state: true },
-			_isHovered: { state: true },
-			_invalid: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Checked state
+		 * @type {boolean}
+		 */
+		checked: { type: Boolean, reflect: true },
+		/**
+		 * ACCESSIBILITY: Additional information communicated to screenreader users when focusing on the input
+		 * @type {string}
+		 */
+		description: { type: String },
+		/**
+		 * Disables the input
+		 * @type {boolean}
+		 */
+		disabled: { type: Boolean, reflect: true },
+		/**
+		 * Tooltip text displayed when the input is disabled
+		 * @type {string}
+		 */
+		disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
+		/**
+		 * REQUIRED: Label for the input
+		 * @type {string}
+		 */
+		label: { required: true, type: String },
+		/**
+		 * Hides the supporting slot when unchecked
+		 * @type {boolean}
+		 */
+		supportingHiddenWhenUnchecked: { type: Boolean, attribute: 'supporting-hidden-when-unchecked', reflect: true },
+		/**
+		 * Value of the input
+		 * @type {string}
+		 */
+		value: { type: String },
+		_checked: { state: true },
+		_focusable: { state: true },
+		_hasSupporting: { state: true },
+		_horizontal: { state: true },
+		_isHovered: { state: true },
+		_invalid: { state: true }
+	};
 
-	static get styles() {
-		return [super.styles, radioStyles, css`
-			:host {
-				display: block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			.d2l-input-radio-label {
-				cursor: default;
-				margin-block-end: 0;
-			}
-			.d2l-input-inline-help,
-			.d2l-input-radio-supporting {
-				margin-inline-start: 1.7rem;
-			}
-			.d2l-input-radio-supporting {
-				margin-block-start: 0.6rem;
-			}
-		`];
-	}
+	static styles = [super.styles, radioStyles, css`
+		:host {
+			display: block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.d2l-input-radio-label {
+			cursor: default;
+			margin-block-end: 0;
+		}
+		.d2l-input-inline-help,
+		.d2l-input-radio-supporting {
+			margin-inline-start: 1.7rem;
+		}
+		.d2l-input-radio-supporting {
+			margin-block-start: 0.6rem;
+		}
+	`];
 
 	constructor() {
 		super();

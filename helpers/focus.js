@@ -72,10 +72,13 @@ export function getFocusableDescendants(node, options) {
 	return focusables;
 }
 
+/**
+ * @deprecated Use getFocusVisibleStyles instead.
+ */
 export function getFocusPseudoClass() {
 	return isFocusVisibleSupported() ? 'focus-visible' : 'focus';
 }
-export function getFocusRingStyles(selector, { extraStyles = null } = {}) {
+export function getFocusRingStyles(selector, { extraStyles = null, preferContrastMediaQueryExtraStyles = null } = {}) {
 	const stylesDelegate = selector => css`
 		${selector} {
 			${extraStyles ?? css``}
@@ -84,6 +87,7 @@ export function getFocusRingStyles(selector, { extraStyles = null } = {}) {
 		}
 		@media (prefers-contrast: more) {
 			${selector} {
+				${preferContrastMediaQueryExtraStyles ?? css``}
 				outline-color: Highlight;
 			}
 		}

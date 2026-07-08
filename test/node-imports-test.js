@@ -19,6 +19,11 @@ describe('node imports', () => {
 		assert.ok(t._generateHeading4Styles);
 	});
 
+	it('should import input select styles in a node environment', async() => {
+		const t = await import('../components/inputs/input-select-styles.js');
+		assert.ok(t._generateSelectStyles);
+	});
+
 	it('should import input text styles in a node environment', async() => {
 		const t = await import('../components/inputs/input-text-styles.js');
 		assert.ok(t._generateInputTextStyles);

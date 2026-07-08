@@ -7,73 +7,71 @@ class ListItemPlacementMarker extends LitElement {
 		vertical: { type: Boolean, reflect: true }
 	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: block;
-			}
+	static styles = css`
+		:host {
+			display: block;
+		}
 
-			:host([vertical]) {
-				height: 100%;
-			}
+		:host([vertical]) {
+			height: 100%;
+		}
 
-			:host([hidden]) {
-				display: none;
-			}
+		:host([hidden]) {
+			display: none;
+		}
 
-			:host([vertical]) .d2l-list-drag-marker-line {
-				height: 100%;
-				margin: -1px 0;
-				width: 12px;
-			}
+		:host([vertical]) .d2l-list-drag-marker-line {
+			height: 100%;
+			margin: -1px 0;
+			width: 12px;
+		}
 
-			.d2l-list-drag-marker-line {
-				height: 12px;
-				margin-inline: -1px;
-				stroke: var(--d2l-color-celestine);
-				stroke-width: 3px;
-				width: 100%;
-			}
+		.d2l-list-drag-marker-line {
+			height: 12px;
+			margin-inline: -1px;
+			stroke: var(--d2l-color-celestine);
+			stroke-width: 3px;
+			width: 100%;
+		}
 
-			:host([vertical]) .d2l-list-drag-marker-linecap {
-				height: 4px;
-				margin-inline: 0 -2px;
-				width: 12px;
-			}
+		:host([vertical]) .d2l-list-drag-marker-linecap {
+			height: 4px;
+			margin-inline: 0 -2px;
+			width: 12px;
+		}
 
-			.d2l-list-drag-marker-linecap {
-				fill: var(--d2l-color-celestine);
-				height: 12px;
-				margin-inline: -1px 0;
-				stroke: none;
-				width: 4px;
-			}
+		.d2l-list-drag-marker-linecap {
+			fill: var(--d2l-color-celestine);
+			height: 12px;
+			margin-inline: -1px 0;
+			stroke: none;
+			width: 4px;
+		}
 
-			:host([vertical]) .d2l-list-drag-marker-circle {
-				margin-inline: 0 0;
-			}
+		:host([vertical]) .d2l-list-drag-marker-circle {
+			margin-inline: 0 0;
+		}
 
 
-			.d2l-list-drag-marker-circle {
-				fill: none;
-				height: 12px;
-				margin-inline: 0 -1px;
-				stroke: var(--d2l-color-celestine);
-				stroke-width: 3px;
-				width: 12px;
-			}
+		.d2l-list-drag-marker-circle {
+			fill: none;
+			height: 12px;
+			margin-inline: 0 -1px;
+			stroke: var(--d2l-color-celestine);
+			stroke-width: 3px;
+			width: 12px;
+		}
 
-			.d2l-list-drag-marker {
-				display: flex;
-				flex-wrap: nowrap;
-			}
+		.d2l-list-drag-marker {
+			display: flex;
+			flex-wrap: nowrap;
+		}
 
-			:host([vertical]) .d2l-list-drag-marker {
-				flex-direction: column;
-				height: 100%;
-			}
-		`;
-	}
+		:host([vertical]) .d2l-list-drag-marker {
+			flex-direction: column;
+			height: 100%;
+		}
+	`;
 
 	constructor() {
 		super();

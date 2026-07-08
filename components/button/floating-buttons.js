@@ -16,84 +16,80 @@ const MINIMUM_TARGET_SIZE = 24;
  */
 class FloatingButtons extends LoadingCompleteMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * Indicates to display buttons as always floating
-			 * @type {boolean}
-			 */
-			alwaysFloat: { type: Boolean, attribute: 'always-float', reflect: true },
-			_containerMarginLeft: { attribute: false, type: String },
-			_containerMarginRight: { attribute: false, type: String },
-			_floating: { type: Boolean, reflect: true },
-			_innerContainerLeft: { attribute: false, type: String }
-		};
-	}
+	static properties = {
+		/**
+		 * Indicates to display buttons as always floating
+		 * @type {boolean}
+		 */
+		alwaysFloat: { type: Boolean, attribute: 'always-float', reflect: true },
+		_containerMarginLeft: { attribute: false, type: String },
+		_containerMarginRight: { attribute: false, type: String },
+		_floating: { type: Boolean, reflect: true },
+		_innerContainerLeft: { attribute: false, type: String }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				box-sizing: border-box;
-				display: block;
-			}
+	static styles = css`
+		:host {
+			box-sizing: border-box;
+			display: block;
+		}
 
-			:host([_floating]) {
-				bottom: -10px;
-				left: 0;
-				position: -webkit-sticky;
-				position: sticky;
-				right: 0;
-				z-index: 997;
-			}
+		:host([_floating]) {
+			bottom: -10px;
+			left: 0;
+			position: -webkit-sticky;
+			position: sticky;
+			right: 0;
+			z-index: 997;
+		}
 
-			:host([_floating][always-float]) {
-				bottom: 0;
-			}
+		:host([_floating][always-float]) {
+			bottom: 0;
+		}
 
-			:host([hidden]) {
-				display: none;
-			}
+		:host([hidden]) {
+			display: none;
+		}
 
-			.d2l-floating-buttons-container {
-				border-top: 1px solid transparent;
-				display: block;
-			}
+		.d2l-floating-buttons-container {
+			border-top: 1px solid transparent;
+			display: block;
+		}
 
-			:host([_floating]) .d2l-floating-buttons-container {
-				background-color: #ffffff;
-				background-color: rgba(255, 255, 255, 0.88);
-				border-top-color: var(--d2l-color-mica);
-				box-shadow: 0 -2px 4px rgba(32, 33, 34, 0.2); /* ferrite */
-			}
+		:host([_floating]) .d2l-floating-buttons-container {
+			background-color: #ffffff;
+			background-color: rgba(255, 255, 255, 0.88);
+			border-top-color: var(--d2l-color-mica);
+			box-shadow: 0 -2px 4px rgba(32, 33, 34, 0.2); /* ferrite */
+		}
 
+		:host([_floating]:not([always-float])) .d2l-floating-buttons-container {
+			transform: translate(0, -10px);
+			transition: transform 500ms, border-top-color 500ms, background-color 500ms;
+		}
+
+		.d2l-floating-buttons-inner-container {
+			padding: 0.75rem 0 0 0;
+			position: relative;
+		}
+
+		.d2l-floating-buttons-inner-container ::slotted(d2l-button),
+		.d2l-floating-buttons-inner-container ::slotted(button),
+		.d2l-floating-buttons-inner-container ::slotted(.d2l-button) {
+			margin-inline-end: 0.75rem !important;
+			margin-bottom: 0.75rem !important;
+		}
+
+		.d2l-floating-buttons-inner-container ::slotted(d2l-overflow-group) {
+			padding-bottom: 0.75rem !important;
+		}
+
+		@media (prefers-reduced-motion: reduce) {
 			:host([_floating]:not([always-float])) .d2l-floating-buttons-container {
-				transform: translate(0, -10px);
-				transition: transform 500ms, border-top-color 500ms, background-color 500ms;
+				transition: none;
 			}
-
-			.d2l-floating-buttons-inner-container {
-				padding: 0.75rem 0 0 0;
-				position: relative;
-			}
-
-			.d2l-floating-buttons-inner-container ::slotted(d2l-button),
-			.d2l-floating-buttons-inner-container ::slotted(button),
-			.d2l-floating-buttons-inner-container ::slotted(.d2l-button) {
-				margin-inline-end: 0.75rem !important;
-				margin-bottom: 0.75rem !important;
-			}
-
-			.d2l-floating-buttons-inner-container ::slotted(d2l-overflow-group) {
-				padding-bottom: 0.75rem !important;
-			}
-
-			@media (prefers-reduced-motion: reduce) {
-				:host([_floating]:not([always-float])) .d2l-floating-buttons-container {
-					transition: none;
-				}
-			}
-		`;
-	}
+		}
+	`;
 
 	constructor() {
 		super();
