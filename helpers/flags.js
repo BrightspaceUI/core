@@ -1,6 +1,10 @@
 const knownFlags = new Map();
 const flagOverrides = new Map();
 
+export function getWarnMessage(key) {
+	return `mockFlag called after getFlag for '${key}'. This is likely to result in unexpected behaviour.`;
+}
+
 export function getFlag(key, defaultValue) {
 	let value;
 	if (flagOverrides.has(key)) {
@@ -21,7 +25,9 @@ export function getKnownFlags() {
 }
 
 export function mockFlag(key, value) {
-	if (knownFlags.has(key)) console.warn(`mockFlag called after getFlag for '${key}'. This is likely to result in unexpected behaviour.`);
+	if (!globalThis.isD2LTestPage && knownFlags.has(key)) {
+		console.warn(getWarnMessage(key));
+	}
 	flagOverrides.set(key, value);
 }
 
