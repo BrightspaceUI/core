@@ -5,7 +5,8 @@
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "build:clean": "node ./cli/clean.js",
