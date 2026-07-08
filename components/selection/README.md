@@ -19,13 +19,11 @@ The `SelectionMixin` defines the `selection-single` attribute that consumers can
   import { SelectionMixin } from '@brightspace-ui/core/components/selection/selection-mixin.js';
 
   class DemoSelection extends SelectionMixin(LitElement) {
-    static get styles() {
-      return css`
-        :host {
-          display: block;
-        }
-      `;
-    }
+    static styles = css`
+      :host {
+        display: block;
+      }
+    `;
     render() {
       return html`
         <slot></slot>

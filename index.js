@@ -1,12 +1,10 @@
 import { html, LitElement } from 'lit';
 
 export class BuildInfo extends LitElement {
-	static get properties() {
-		return {
-			_buildDate: { state: true },
-			_buildVersion: { state: true },
-		};
-	}
+	static properties = {
+		_buildDate: { state: true },
+		_buildVersion: { state: true },
+	};
 
 	constructor() {
 		super();

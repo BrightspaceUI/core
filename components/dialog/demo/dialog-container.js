@@ -4,11 +4,9 @@ import { html, LitElement } from 'lit';
 
 class DialogContainer extends LitElement {
 
-	static get properties() {
-		return {
-			opened: { type: Boolean }
-		};
-	}
+	static properties = {
+		opened: { type: Boolean }
+	};
 
 	constructor() {
 		super();

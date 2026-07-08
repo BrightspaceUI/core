@@ -10,22 +10,18 @@ import { until } from 'lit/directives/until.js';
 
 class DialogAsyncContentUntil extends LoadingCompleteMixin(LitElement) {
 
-	static get properties() {
-		return {
-			href: { type: String }
-		};
-	}
+	static properties = {
+		href: { type: String }
+	};
 
-	static get styles() {
-		return css`
-			.content-button {
-				padding-block: 1rem;
-			}
-			.d2l-dialog-content-loading {
-				text-align: center;
-			}
-		`;
-	}
+	static styles = css`
+		.content-button {
+			padding-block: 1rem;
+		}
+		.d2l-dialog-content-loading {
+			text-align: center;
+		}
+	`;
 
 	constructor() {
 		super();

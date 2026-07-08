@@ -7,28 +7,24 @@ import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 
 class MenuItemReturn extends LocalizeCoreElement(MenuItemMixin(LitElement)) {
 
-	static get styles() {
-		return [ menuItemStyles,
-			css`
-				:host {
-					display: flex;
-					padding: 0.75rem 1rem;
-				}
+	static styles = [menuItemStyles, css`
+		:host {
+			display: flex;
+			padding: 0.75rem 1rem;
+		}
 
-				span {
-					flex: auto;
-					line-height: 1rem;
-					${overflowEllipsisDeclarations}
-				}
+		span {
+			flex: auto;
+			line-height: 1rem;
+			${overflowEllipsisDeclarations}
+		}
 
-				d2l-icon {
-					flex: none;
-					margin-inline-end: 1rem;
-					margin-top: 0.1rem;
-				}
-			`
-		];
-	}
+		d2l-icon {
+			flex: none;
+			margin-inline-end: 1rem;
+			margin-top: 0.1rem;
+		}
+	`];
 
 	constructor() {
 		super();

@@ -24,19 +24,17 @@ class Sort extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		_selectedItemValue: { state: true },
 	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			::slotted(:not(d2l-sort-item)) {
-				display: none;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		::slotted(:not(d2l-sort-item)) {
+			display: none;
+		}
+	`;
 
 	constructor() {
 		super();

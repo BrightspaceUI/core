@@ -10,11 +10,9 @@ import { css, LitElement } from 'lit';
 
 const wrappedDropdown = defineCE(
 	class extends LitElement {
-		static get styles() {
-			return css`
-				:host { display: inline-block; }
-			`;
-		}
+		static styles = css`
+			:host { display: inline-block; }
+		`;
 		render() {
 			return html`
 				<d2l-dropdown>

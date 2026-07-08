@@ -6,53 +6,50 @@ import { css, html, LitElement, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 class ListNestedIterationsHelper extends LitElement {
-	static get properties() {
-		return {
-			isDraggable: { attribute: 'is-draggable', type: Boolean },
-			separators: { type: String }
-		};
-	}
 
-	static get styles() {
-		return css`
-			:host {
-				display: block;
-			}
-			table {
-				border-collapse: collapse;
-				font-size: 0.8rem;
-				table-layout: fixed;
-				width: 100%;
-			}
-			table > * > tr > * {
-				border: 1px solid var(--d2l-color-mica);
-				font-weight: 400;
-				height: 41px;
-				padding: 0.5rem 1rem;
-				text-align: start;
-				vertical-align: middle;
-			}
-			table > * > tr > td {
-				vertical-align: top;
-			}
-			table > thead > tr > th,
-			table > * > tr.header > th {
-				background-color: var(--d2l-color-regolith);
-				font-size: 0.7rem;
-				height: 27px;
-				line-height: 0.9rem;
-			}
+	static properties = {
+		isDraggable: { attribute: 'is-draggable', type: Boolean },
+		separators: { type: String }
+	};
 
-			d2l-list:not([slot="nested"]) {
-				border: solid 1px black;
-				margin: 1rem;
-				padding: 1rem;
-			}
-			.minimize-width {
-				width: 4.5rem;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: block;
+		}
+		table {
+			border-collapse: collapse;
+			font-size: 0.8rem;
+			table-layout: fixed;
+			width: 100%;
+		}
+		table > * > tr > * {
+			border: 1px solid var(--d2l-color-mica);
+			font-weight: 400;
+			height: 41px;
+			padding: 0.5rem 1rem;
+			text-align: start;
+			vertical-align: middle;
+		}
+		table > * > tr > td {
+			vertical-align: top;
+		}
+		table > thead > tr > th,
+		table > * > tr.header > th {
+			background-color: var(--d2l-color-regolith);
+			font-size: 0.7rem;
+			height: 27px;
+			line-height: 0.9rem;
+		}
+
+		d2l-list:not([slot="nested"]) {
+			border: solid 1px black;
+			margin: 1rem;
+			padding: 1rem;
+		}
+		.minimize-width {
+			width: 4.5rem;
+		}
+	`;
 
 	constructor() {
 		super();

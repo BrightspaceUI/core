@@ -15,108 +15,104 @@ function setIndent(text, indent = 0, skipFirstLine = false) {
 
 class DemoSnippet extends LitElement {
 
-	static get properties() {
-		return {
-			codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
-			fullWidth: { type: Boolean, reflect: true, attribute: 'full-width' },
-			noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
-			overflowHidden: { type: Boolean, reflect: true, attribute: 'overflow-hidden' },
-			_code: { type: String },
-			_fullscreen: { state: true },
-			_hasSkeleton: { type: Boolean, attribute: false },
-			_settingsPeek: { state: true },
-			_skeletonOn: { type: Boolean, reflect: false }
-		};
-	}
+	static properties = {
+		codeViewHidden: { type: Boolean, reflect: true, attribute: 'code-view-hidden' },
+		fullWidth: { type: Boolean, reflect: true, attribute: 'full-width' },
+		noPadding: { type: Boolean, reflect: true, attribute: 'no-padding' },
+		overflowHidden: { type: Boolean, reflect: true, attribute: 'overflow-hidden' },
+		_code: { type: String },
+		_fullscreen: { state: true },
+		_hasSkeleton: { type: Boolean, attribute: false },
+		_settingsPeek: { state: true },
+		_skeletonOn: { type: Boolean, reflect: false }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				background-color: var(--d2l-theme-background-color-base);
-				border: 1px solid var(--d2l-theme-border-color-standard);
-				border-radius: 6px;
-				box-shadow: var(--d2l-theme-shadow-floating);
-				display: block;
-				max-width: 900px;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			:host([full-width]) {
-				max-width: unset;
-			}
-			.d2l-demo-snippet-demo-wrapper {
-				display: flex;
-			}
-			.d2l-demo-snippet-demo-wrapper.fullscreen {
-				background-color: var(--d2l-theme-background-color-base);
-				height: 100vh;
-				inset: 0;
-				overflow: auto;
-				position: absolute;
-				z-index: 2;
-			}
-			.d2l-demo-snippet-demo {
-				flex: 1 1 auto;
-				min-width: 0;
-				position: relative;
-			}
-			:host([full-width]) .d2l-demo-snippet-demo-wrapper.fullscreen .d2l-demo-snippet-demo {
-				width: 100vw;
-			}
-			:host([overflow-hidden]) .d2l-demo-snippet-demo {
-				overflow: hidden;
-			}
-			.d2l-demo-snippet-demo-padding {
-				padding: 18px;
-			}
-			:host([no-padding]) .d2l-demo-snippet-demo-padding,
-			.d2l-demo-snippet-demo-wrapper.fullscreen .d2l-demo-snippet-demo-padding {
-				padding: 0;
-			}
-			.d2l-demo-snippet-settings {
-				border-inline-start: 1px solid var(--d2l-theme-border-color-standard);
-				flex: 0 0 auto;
-				padding: 6px;
-			}
-			.d2l-demo-snippet-demo-wrapper.fullscreen .d2l-demo-snippet-settings {
-				position: sticky;
-				top: 0;
-			}
+	static styles = css`
+		:host {
+			background-color: var(--d2l-theme-background-color-base);
+			border: 1px solid var(--d2l-theme-border-color-standard);
+			border-radius: 6px;
+			box-shadow: var(--d2l-theme-shadow-floating);
+			display: block;
+			max-width: 900px;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		:host([full-width]) {
+			max-width: unset;
+		}
+		.d2l-demo-snippet-demo-wrapper {
+			display: flex;
+		}
+		.d2l-demo-snippet-demo-wrapper.fullscreen {
+			background-color: var(--d2l-theme-background-color-base);
+			height: 100vh;
+			inset: 0;
+			overflow: auto;
+			position: absolute;
+			z-index: 2;
+		}
+		.d2l-demo-snippet-demo {
+			flex: 1 1 auto;
+			min-width: 0;
+			position: relative;
+		}
+		:host([full-width]) .d2l-demo-snippet-demo-wrapper.fullscreen .d2l-demo-snippet-demo {
+			width: 100vw;
+		}
+		:host([overflow-hidden]) .d2l-demo-snippet-demo {
+			overflow: hidden;
+		}
+		.d2l-demo-snippet-demo-padding {
+			padding: 18px;
+		}
+		:host([no-padding]) .d2l-demo-snippet-demo-padding,
+		.d2l-demo-snippet-demo-wrapper.fullscreen .d2l-demo-snippet-demo-padding {
+			padding: 0;
+		}
+		.d2l-demo-snippet-settings {
+			border-inline-start: 1px solid var(--d2l-theme-border-color-standard);
+			flex: 0 0 auto;
+			padding: 6px;
+		}
+		.d2l-demo-snippet-demo-wrapper.fullscreen .d2l-demo-snippet-settings {
+			position: sticky;
+			top: 0;
+		}
+		d2l-dropdown.settings-dropdown {
+			background-color: var(--d2l-theme-background-color-base);
+			border-radius: 6px;
+			outline: 1px solid var(--d2l-color-celestine-minus-1);
+			position: fixed;
+			right: 1rem;
+			top: -0.25rem;
+			translate: 0 -1.5rem;
+			z-index: 9999; /* stack on top of sticky headers */
+		}
+		@media (prefers-reduced-motion: no-preference) {
 			d2l-dropdown.settings-dropdown {
-				background-color: var(--d2l-theme-background-color-base);
-				border-radius: 6px;
-				outline: 1px solid var(--d2l-color-celestine-minus-1);
-				position: fixed;
-				right: 1rem;
-				top: -0.25rem;
-				translate: 0 -1.5rem;
-				z-index: 9999; /* stack on top of sticky headers */
+				transition: translate 0.15s, box-shadow 0.15s;
 			}
-			@media (prefers-reduced-motion: no-preference) {
-				d2l-dropdown.settings-dropdown {
-					transition: translate 0.15s, box-shadow 0.15s;
-				}
-			}
-			d2l-dropdown.settings-dropdown.peek,
-			d2l-dropdown.settings-dropdown:hover,
-			d2l-dropdown.settings-dropdown:focus-within {
-				box-shadow: 0 -1px 0 1px white;
-				translate: 0;
-			}
-			d2l-code-view {
-				border: none;
-				border-top-left-radius: 0;
-				border-top-right-radius: 0;
-				box-shadow: none;
-				margin: 0;
-				max-width: 100%;
-			}
-			:host([code-view-hidden]) d2l-code-view {
-				display: none;
-			}
-		`;
-	}
+		}
+		d2l-dropdown.settings-dropdown.peek,
+		d2l-dropdown.settings-dropdown:hover,
+		d2l-dropdown.settings-dropdown:focus-within {
+			box-shadow: 0 -1px 0 1px white;
+			translate: 0;
+		}
+		d2l-code-view {
+			border: none;
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+			box-shadow: none;
+			margin: 0;
+			max-width: 100%;
+		}
+		:host([code-view-hidden]) d2l-code-view {
+			display: none;
+		}
+	`;
 
 	constructor() {
 		super();

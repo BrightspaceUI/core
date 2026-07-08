@@ -15,20 +15,16 @@ import { selectStyles } from '../../inputs/input-select-styles.js';
 
 class FormNestedDemo extends LitElement {
 
-	static get styles() {
-		return [inputStyles, selectStyles, css`
-
-			.d2l-form-demo-split-container {
-				display: flex;
-				margin-top: 18px;
-			}
-
-			.d2l-form-demo-main {
-				flex-grow: 1;
-				padding: 0 20px 20px 0;
-			}
-		`];
-	}
+	static styles = [inputStyles, selectStyles, css`
+		.d2l-form-demo-split-container {
+			display: flex;
+			margin-top: 18px;
+		}
+		.d2l-form-demo-main {
+			flex-grow: 1;
+			padding: 0 20px 20px 0;
+		}
+	`];
 
 	render() {
 		return html`

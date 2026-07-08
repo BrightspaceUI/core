@@ -3,13 +3,11 @@ import { PageableMixin } from '../../paging/pageable-mixin.js';
 import { SelectionMixin } from '../selection-mixin.js';
 
 class DemoBase extends LitElement {
-	static get styles() {
-		return css`
-			:host {
-				display: block;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: block;
+		}
+	`;
 	render() {
 		return html`
 			<slot></slot>

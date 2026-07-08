@@ -5,11 +5,9 @@ import { html, LitElement } from 'lit';
 
 class TabsArray extends LitElement {
 
-	static get properties() {
-		return {
-			_tabs: { type: Array }
-		};
-	}
+	static properties = {
+		_tabs: { type: Array }
+	};
 
 	constructor() {
 		super();

@@ -34,7 +34,7 @@ import { offscreenStyles } from './offscreen.js';
 
 class MyElement extends LitElement {
 
-  static get styles() { return [ offscreenStyles ] }
+  static styles = [ offscreenStyles ];
 
   render() {
     return html`

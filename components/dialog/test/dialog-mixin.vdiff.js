@@ -6,11 +6,9 @@ import { LoadingCompleteMixin } from '../../../mixins/loading-complete/loading-c
 
 const delayedTag = defineCE(
 	class extends LoadingCompleteMixin(LitElement) {
-		static get properties() {
-			return {
-				loaded: { type: Boolean }
-			};
-		}
+		static properties = {
+			loaded: { type: Boolean }
+		};
 		constructor() {
 			super();
 			this.loaded = false;

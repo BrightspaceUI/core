@@ -20,57 +20,53 @@ const nativeFocus = document.createElement('div').focus;
  */
 class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(LitElement))) {
 
-	static get properties() {
-		return {
-			/**
-			 * Whether there are more items that can be loaded.
-			 * @type {boolean}
-			 */
-			hasMore: { type: Boolean, attribute: 'has-more', reflect: true },
-			/**
-			 * The number of additional items to load.
-			 * @type {number}
-			 */
-			pageSize: { type: Number, attribute: 'page-size', reflect: true },
-			_loading: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Whether there are more items that can be loaded.
+		 * @type {boolean}
+		 */
+		hasMore: { type: Boolean, attribute: 'has-more', reflect: true },
+		/**
+		 * The number of additional items to load.
+		 * @type {number}
+		 */
+		pageSize: { type: Number, attribute: 'page-size', reflect: true },
+		_loading: { state: true }
+	};
 
-	static get styles() {
-		return [ buttonStyles, labelStyles, offscreenStyles, css`
-			:host {
-				display: block;
-			}
-			:host(:not([has-more])),
-			:host([hidden]) {
-				display: none;
-			}
-			button {
-				align-items: center;
-				background-color: var(--d2l-theme-background-color-interactive-faint-default);
-				border: 1px solid var(--d2l-theme-border-color-subtle);
-				display: flex;
-				font-family: inherit;
-				gap: 0.5rem;
-				justify-content: center;
-				width: 100%;
-			}
-			button:hover {
-				background-color: var(--d2l-theme-background-color-interactive-faint-hover);
-			}
-			.action {
-				color: var(--d2l-theme-text-color-interactive-default);
-			}
-			.separator {
-				border-right: 1px solid var(--d2l-theme-border-color-standard);
-				height: 0.8rem;
-			}
-			.info {
-				color: var(--d2l-theme-text-color-static-faint);
-				font-weight: 400;
-			}
-		`];
-	}
+	static styles = [buttonStyles, labelStyles, offscreenStyles, css`
+		:host {
+			display: block;
+		}
+		:host(:not([has-more])),
+		:host([hidden]) {
+			display: none;
+		}
+		button {
+			align-items: center;
+			background-color: var(--d2l-theme-background-color-interactive-faint-default);
+			border: 1px solid var(--d2l-theme-border-color-subtle);
+			display: flex;
+			font-family: inherit;
+			gap: 0.5rem;
+			justify-content: center;
+			width: 100%;
+		}
+		button:hover {
+			background-color: var(--d2l-theme-background-color-interactive-faint-hover);
+		}
+		.action {
+			color: var(--d2l-theme-text-color-interactive-default);
+		}
+		.separator {
+			border-right: 1px solid var(--d2l-theme-border-color-standard);
+			height: 0.8rem;
+		}
+		.info {
+			color: var(--d2l-theme-text-color-static-faint);
+			font-weight: 400;
+		}
+	`];
 
 	constructor() {
 		super();

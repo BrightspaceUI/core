@@ -34,11 +34,9 @@ function dispatchKeypressEvent(elem, key) {
 
 const inputWrapperTag = defineCE(
 	class extends LitElement {
-		static get properties() {
-			return {
-				number: { type: Number }
-			};
-		}
+		static properties = {
+			number: { type: Number }
+		};
 		constructor() {
 			super();
 			this.number = 1;

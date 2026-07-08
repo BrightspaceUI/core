@@ -9,13 +9,9 @@ const viewport = { width: 376 };
 
 const refTag = defineCE(class extends LitElement {
 
-	static get properties() {
-		return { required: { type: Boolean } };
-	}
+	static properties = { required: { type: Boolean } };
 
-	static get styles() {
-		return [inputStyles, inputLabelStyles, css`:host { display: block; }`];
-	}
+	static styles = [inputStyles, inputLabelStyles, css`:host { display: block; }`];
 
 	render() {
 		const ariaRequired = this.required ? 'true' : undefined;
@@ -29,13 +25,9 @@ const refTag = defineCE(class extends LitElement {
 
 const wrapTag = defineCE(class extends LitElement {
 
-	static get properties() {
-		return { isRequired: { type: Boolean, attribute: 'is-required' } };
-	}
+	static properties = { isRequired: { type: Boolean, attribute: 'is-required' } };
 
-	static get styles() {
-		return [inputStyles, inputLabelStyles, css`:host { display: block; }`];
-	}
+	static styles = [inputStyles, inputLabelStyles, css`:host { display: block; }`];
 
 	render() {
 		const classes = {

@@ -9,9 +9,7 @@ Apply the mixin and include the required `visibleOnAncestorStyles`.
 ```js
 import { VisibleOnAncestorMixin, visibleOnAncestorStyles } from '@brightspace-ui/core/mixins/visible-on-ancestor/visible-on-ancestor-mixin.js';
 class MyComponent extends VisibleOnAncestorMixin(LitElement) {
-  static get styles() {
-    return [ visibleOnAncestorStyles, css`/* MyComponent styles */` ];
-  }
+  static styles = [ visibleOnAncestorStyles, css`/* MyComponent styles */` ];
 }
 ```
 

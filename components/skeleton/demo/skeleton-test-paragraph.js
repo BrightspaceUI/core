@@ -5,27 +5,21 @@ import { SkeletonMixin } from '../skeleton-mixin.js';
 
 export class SkeletonTestParagraph extends SkeletonMixin(LitElement) {
 
-	static get properties() {
-		return {
-			lines: { type: Number },
-			type: { type: String }
-		};
-	}
+	static properties = {
+		lines: { type: Number },
+		type: { type: String }
+	};
 
-	static get styles() {
-		return [
-			super.styles,
-			bodyStandardStyles,
-			bodyCompactStyles,
-			bodySmallStyles,
-			labelStyles,
-			css`
-				:host {
-					display: block;
-				}
-			`
-		];
-	}
+	static styles = [
+		super.styles,
+		bodyStandardStyles,
+		bodyCompactStyles,
+		bodySmallStyles,
+		labelStyles, css`
+		:host {
+			display: block;
+		}
+	`];
 
 	constructor() {
 		super();

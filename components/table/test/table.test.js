@@ -35,19 +35,15 @@ describe('d2l-table-wrapper', () => {
 
 		const tagName = defineCE(
 			class extends LitElement {
-				static get properties() {
-					return {
-						stickyHeaders: { type: Boolean, reflect: true, attribute: 'sticky-headers' }
-					};
-				}
-				static get styles() {
-					return [tableStyles, css`
-						:host {
-							display: block;
-							width: 150px;
-						}
-					`];
-				}
+				static properties = {
+					stickyHeaders: { type: Boolean, reflect: true, attribute: 'sticky-headers' }
+				};
+				static styles = [tableStyles, css`
+					:host {
+						display: block;
+						width: 150px;
+					}
+				`];
 				render() {
 					return html`
 						<d2l-table-wrapper sticky-headers sticky-headers-scroll-wrapper>
@@ -100,21 +96,19 @@ describe('d2l-table-wrapper', () => {
 
 		const tagName = defineCE(
 			class extends LitElement {
-				static get styles() {
-					return [tableStyles, css`
-						:host {
-							display: block;
-							width: 400px;
-						}
-						.large-sticky {
-							min-width: 300px;
-						}
-						:host([td-size="larger"]) th.large-sticky,
-						:host([td-size="smaller"]) td.large-sticky {
-							min-width: 200px;
-						}
-					`];
-				}
+				static styles = [tableStyles, css`
+					:host {
+						display: block;
+						width: 400px;
+					}
+					.large-sticky {
+						min-width: 300px;
+					}
+					:host([td-size="larger"]) th.large-sticky,
+					:host([td-size="smaller"]) td.large-sticky {
+						min-width: 200px;
+					}
+				`];
 				render() {
 					return html`
 						<d2l-table-wrapper sticky-headers sticky-headers-scroll-wrapper>
@@ -160,11 +154,9 @@ describe('d2l-table-wrapper', () => {
 		let element, wrapper;
 		const tagName = defineCE(
 			class extends LitElement {
-				static get properties() {
-					return {
-						loadedCount: { status: true }
-					};
-				}
+				static properties = {
+					loadedCount: { status: true }
+				};
 				constructor() {
 					super();
 					this.loadedCount = 5;

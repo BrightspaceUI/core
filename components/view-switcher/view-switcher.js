@@ -7,36 +7,33 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
  */
 class ViewSwitcher extends LocalizeCoreElement(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * ACCESSIBILITY: Label for the switcher
-			 * @type {string}
-			 */
-			label: { type: String, required: true },
-			_count: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * ACCESSIBILITY: Label for the switcher
+		 * @type {string}
+		 */
+		label: { type: String, required: true },
+		_count: { state: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			.container {
-				align-items: center;
-				background-color: var(--d2l-color-gypsum);
-				border-radius: 0.3rem;
-				box-sizing: border-box;
-				display: flex;
-				gap: 0.3rem;
-				padding: 0.3rem;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.container {
+			align-items: center;
+			background-color: var(--d2l-color-gypsum);
+			border-radius: 0.3rem;
+			box-sizing: border-box;
+			display: flex;
+			gap: 0.3rem;
+			padding: 0.3rem;
+		}
+	`;
+
 	constructor() {
 		super();
 		this._count = 0;

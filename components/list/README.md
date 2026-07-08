@@ -467,15 +467,11 @@ These scenarios can be seen in the demo below.
   import { labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
 
   class ListDemoDragAndDropInteractiveUsage extends LitElement {
-    static get properties() {
-      return {
-        list: { type: Array }
-      };
-    }
+    static properties = {
+      list: { type: Array }
+    };
 
-    static get styles() {
-      return labelStyles;
-    }
+    static styles = labelStyles;
 
     constructor() {
       super();
@@ -1058,9 +1054,7 @@ class ListItem extends ListItemMixin(LitElement) {
 
 How add the styles:
 ```javascript
-static get styles() {
-  return [ super.styles ];
-}
+static styles = [super.styles];
 ```
 
 How to render the list item:

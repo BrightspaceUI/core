@@ -7,11 +7,9 @@ const inputs = html`<div style="border: 1px solid black; padding: 10px;">Inputs 
 
 const fieldsetManualTag = defineCE(class extends LitElement {
 
-	static get properties() {
-		return { required: { type: Boolean } };
-	}
+	static properties = { required: { type: Boolean } };
 
-	static get styles() { return [inputLabelStyles]; }
+	static styles = [inputLabelStyles];
 
 	render() {
 		return html`

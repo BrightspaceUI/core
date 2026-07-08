@@ -4,60 +4,58 @@ const defaultLines = 2;
 
 export const MenuItemMixin = superclass => class extends PropertyRequiredMixin(superclass) {
 
-	static get properties() {
-		return {
-			/**
-			 * Disables the menu item
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
-			 * @ignore
-			 */
-			first: { type: Boolean, reflect: true }, // set by d2l-menu
-			/**
-			 * @ignore
-			 */
-			hasChildView: { type: Boolean },
-			/**
-			 * @ignore
-			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			hidden: { type: Boolean, reflect: true },
-			/**
-			 * @ignore
-			 */
-			last: { type: String, reflect: true }, // set by d2l-menu
-			/**
-			 * The number of lines to display before truncating text with an ellipsis. Defaults to 2.
-			 * @type {number}
-			 */
-			lines: { type: Number },
-			/**
-			 * @ignore
-			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			role: { type: String, reflect: true },
-			/**
-			 * @ignore
-			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			tabindex: { type: String, reflect: true },
-			/**
-			 * REQUIRED: Text displayed by the menu item
-			 * @type {string}
-			 */
-			text: { type: String, required: true },
-			/**
-			 * ACCESSIBILITY: A description of the menu item that will be used by screen readers for additional context
-			 * @type {string}
-			 */
-			description: { type: String },
-			_ariaDisabled: { type: String, attribute: 'aria-disabled', reflect: true },
-			_ariaLabel: { type: String, attribute: 'aria-label', reflect: true },
-			_letClickPropagate: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Disables the menu item
+		 * @type {boolean}
+		 */
+		disabled: { type: Boolean, reflect: true },
+		/**
+		 * @ignore
+		 */
+		first: { type: Boolean, reflect: true }, // set by d2l-menu
+		/**
+		 * @ignore
+		 */
+		hasChildView: { type: Boolean },
+		/**
+		 * @ignore
+		 */
+		// eslint-disable-next-line lit/no-native-attributes
+		hidden: { type: Boolean, reflect: true },
+		/**
+		 * @ignore
+		 */
+		last: { type: String, reflect: true }, // set by d2l-menu
+		/**
+		 * The number of lines to display before truncating text with an ellipsis. Defaults to 2.
+		 * @type {number}
+		 */
+		lines: { type: Number },
+		/**
+		 * @ignore
+		 */
+		// eslint-disable-next-line lit/no-native-attributes
+		role: { type: String, reflect: true },
+		/**
+		 * @ignore
+		 */
+		// eslint-disable-next-line lit/no-native-attributes
+		tabindex: { type: String, reflect: true },
+		/**
+		 * REQUIRED: Text displayed by the menu item
+		 * @type {string}
+		 */
+		text: { type: String, required: true },
+		/**
+		 * ACCESSIBILITY: A description of the menu item that will be used by screen readers for additional context
+		 * @type {string}
+		 */
+		description: { type: String },
+		_ariaDisabled: { type: String, attribute: 'aria-disabled', reflect: true },
+		_ariaLabel: { type: String, attribute: 'aria-label', reflect: true },
+		_letClickPropagate: { state: true }
+	};
 
 	constructor() {
 		super();

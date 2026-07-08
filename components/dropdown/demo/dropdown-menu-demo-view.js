@@ -6,20 +6,18 @@ import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
 
 class DemoView extends LocalizeCoreElement(HierarchicalViewMixin(LitElement)) {
 
-	static get styles() {
-		return [ super.styles,
-			css`
-				:host {
-					box-sizing: border-box;
-					color: var(--d2l-color-ferrite);
-					cursor: default;
-				}
-				.d2l-hierarchical-view-content {
-					padding: 12px;
-				}
-			`
-		];
-	}
+	static styles = [super.styles,
+		css`
+			:host {
+				box-sizing: border-box;
+				color: var(--d2l-color-ferrite);
+				cursor: default;
+			}
+			.d2l-hierarchical-view-content {
+				padding: 12px;
+			}
+		`
+	];
 
 	render() {
 		return html`

@@ -12,27 +12,23 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
  */
 class SelectAll extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(LitElement))) {
 
-	static get properties() {
-		return {
-			/**
-			 * Disables the select all checkbox
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean }
-		};
-	}
+	static properties = {
+		/**
+		 * Disables the select all checkbox
+		 * @type {boolean}
+		 */
+		disabled: { type: Boolean }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-				line-height: normal;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+			line-height: normal;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+	`;
 
 	constructor() {
 		super();

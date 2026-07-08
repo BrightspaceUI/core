@@ -52,13 +52,11 @@ import { heading2Styles } from '@brightspace-ui/core/components/typography/style
 
 class MyComponent extends LitElement {
 
-  static get styles() {
-    return [ heading2Styles, css`
-      :host {
-        display: inline-block;
-      }
-    ` ];
-  }
+  static styles = [heading2Styles, css`
+    :host {
+      display: inline-block;
+    }
+  `];
 
   render() {
     return html `<h1 class="d2l-heading-2"> ... </h1>`;

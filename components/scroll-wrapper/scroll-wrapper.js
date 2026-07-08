@@ -36,126 +36,122 @@ function getStyleSheetInsertionPoint(elem) {
  */
 class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * An object containing custom primary/secondary scroll containers
-			 * @type {Object}
-			 */
-			customScrollers: {
-				attribute: false,
-				type: Object
-			},
-			/**
-			 * Whether to hide left/right scroll buttons
-			 * @type {boolean}
-			 */
-			hideActions: {
-				attribute: 'hide-actions',
-				type: Boolean
-			},
-			/**
-			 * The area in pixels to offset scroll width calculations
-			 * @type {number}
-			 */
-			scrollAreaOffset: {
-				attribute: 'scroll-area-offset',
-				type: Number
-			},
-			_hScrollbar: {
-				attribute: 'h-scrollbar',
-				reflect: true,
-				type: Boolean
-			},
-			_scrollbarLeft: {
-				attribute: 'scrollbar-left',
-				reflect: true,
-				type: Boolean
-			},
-			_scrollbarRight: {
-				attribute: 'scrollbar-right',
-				reflect: true,
-				type: Boolean
-			}
-		};
-	}
+	static properties = {
+		/**
+		 * An object containing custom primary/secondary scroll containers
+		 * @type {Object}
+		 */
+		customScrollers: {
+			attribute: false,
+			type: Object
+		},
+		/**
+		 * Whether to hide left/right scroll buttons
+		 * @type {boolean}
+		 */
+		hideActions: {
+			attribute: 'hide-actions',
+			type: Boolean
+		},
+		/**
+		 * The area in pixels to offset scroll width calculations
+		 * @type {number}
+		 */
+		scrollAreaOffset: {
+			attribute: 'scroll-area-offset',
+			type: Number
+		},
+		_hScrollbar: {
+			attribute: 'h-scrollbar',
+			reflect: true,
+			type: Boolean
+		},
+		_scrollbarLeft: {
+			attribute: 'scrollbar-left',
+			reflect: true,
+			type: Boolean
+		},
+		_scrollbarRight: {
+			attribute: 'scrollbar-right',
+			reflect: true,
+			type: Boolean
+		}
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: block;
-				position: relative;
-			}
-			:host([hidden]) {
+	static styles = css`
+		:host {
+			display: block;
+			position: relative;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.d2l-scroll-wrapper-container {
+			box-sizing: border-box;
+			overflow-y: var(--d2l-scroll-wrapper-overflow-y, visible);
+		}
+		:host([h-scrollbar]) .d2l-scroll-wrapper-container {
+			border-inline: 1px dashed var(--d2l-theme-border-color-standard);
+		}
+		:host([h-scrollbar][hide-actions]) .d2l-scroll-wrapper-container {
+			border-inline: none;
+		}
+		:host([scrollbar-left]) .d2l-scroll-wrapper-container {
+			border-inline-start: none;
+		}
+		:host([scrollbar-right]) .d2l-scroll-wrapper-container {
+			border-inline-end: none;
+		}
+
+		.d2l-scroll-wrapper-button-left {
+			inset-inline-start: -10px;
+		}
+		.d2l-scroll-wrapper-button-right {
+			inset-inline-end: -10px;
+		}
+
+		.d2l-scroll-wrapper-actions {
+			position: -webkit-sticky;
+			position: sticky;
+			top: var(--d2l-table-sticky-top, 0);
+			z-index: 5;
+		}
+
+		.d2l-scroll-wrapper-button {
+			background-color: var(--d2l-theme-background-color-interactive-faint-default);
+			border: 1px solid var(--d2l-theme-border-color-standard);
+			border-radius: 50%;
+			box-shadow: var(--d2l-theme-shadow-floating);
+			cursor: pointer;
+			display: inline-block;
+			height: 18px;
+			line-height: 0;
+			padding: 10px;
+			position: absolute;
+			top: 4px;
+			width: 18px;
+		}
+		.d2l-scroll-wrapper-button:hover {
+			background-color: var(--d2l-theme-background-color-interactive-faint-hover);
+		}
+		:host([scrollbar-right]) .d2l-scroll-wrapper-button-right {
+			display: none;
+		}
+		:host([scrollbar-left]) .d2l-scroll-wrapper-button-left {
+			display: none;
+		}
+
+		@media print {
+			.d2l-scroll-wrapper-actions {
 				display: none;
 			}
 			.d2l-scroll-wrapper-container {
-				box-sizing: border-box;
-				overflow-y: var(--d2l-scroll-wrapper-overflow-y, visible);
+				border: none !important;
+				box-sizing: content-box !important;
+				overflow: visible !important;
 			}
-			:host([h-scrollbar]) .d2l-scroll-wrapper-container {
-				border-inline: 1px dashed var(--d2l-theme-border-color-standard);
-			}
-			:host([h-scrollbar][hide-actions]) .d2l-scroll-wrapper-container {
-				border-inline: none;
-			}
-			:host([scrollbar-left]) .d2l-scroll-wrapper-container {
-				border-inline-start: none;
-			}
-			:host([scrollbar-right]) .d2l-scroll-wrapper-container {
-				border-inline-end: none;
-			}
-
-			.d2l-scroll-wrapper-button-left {
-				inset-inline-start: -10px;
-			}
-			.d2l-scroll-wrapper-button-right {
-				inset-inline-end: -10px;
-			}
-
-			.d2l-scroll-wrapper-actions {
-				position: -webkit-sticky;
-				position: sticky;
-				top: var(--d2l-table-sticky-top, 0);
-				z-index: 5;
-			}
-
-			.d2l-scroll-wrapper-button {
-				background-color: var(--d2l-theme-background-color-interactive-faint-default);
-				border: 1px solid var(--d2l-theme-border-color-standard);
-				border-radius: 50%;
-				box-shadow: var(--d2l-theme-shadow-floating);
-				cursor: pointer;
-				display: inline-block;
-				height: 18px;
-				line-height: 0;
-				padding: 10px;
-				position: absolute;
-				top: 4px;
-				width: 18px;
-			}
-			.d2l-scroll-wrapper-button:hover {
-				background-color: var(--d2l-theme-background-color-interactive-faint-hover);
-			}
-			:host([scrollbar-right]) .d2l-scroll-wrapper-button-right {
-				display: none;
-			}
-			:host([scrollbar-left]) .d2l-scroll-wrapper-button-left {
-				display: none;
-			}
-
-			@media print {
-				.d2l-scroll-wrapper-actions {
-					display: none;
-				}
-				.d2l-scroll-wrapper-container {
-					border: none !important;
-					box-sizing: content-box !important;
-					overflow: visible !important;
-				}
-			}
-		`;
-	}
+		}
+	`;
 
 	constructor() {
 		super();

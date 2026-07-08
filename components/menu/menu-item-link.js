@@ -10,43 +10,37 @@ import { menuItemStyles } from './menu-item-styles.js';
  */
 class MenuItemLink extends LinkMixin(MenuItemMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			_ariaDescription: { type: String, attribute: 'aria-description', reflect: true },
-		};
-	}
+	static properties = {
+		_ariaDescription: { type: String, attribute: 'aria-description', reflect: true },
+	};
 
-	static get styles() {
-		return [ super.styles, menuItemStyles,
-			css`
-				:host {
-					display: block;
-					padding: 0;
-				}
+	static styles = [super.styles, menuItemStyles, css`
+		:host {
+			display: block;
+			padding: 0;
+		}
 
-				:host > a {
-					align-items: center;
-					color: inherit;
-					display: flex;
-					line-height: 1rem;
-					outline: none;
-					overflow-x: hidden;
-					padding: 0.75rem 1rem;
-					text-decoration: none;
-				}
+		:host > a {
+			align-items: center;
+			color: inherit;
+			display: flex;
+			line-height: 1rem;
+			outline: none;
+			overflow-x: hidden;
+			padding: 0.75rem 1rem;
+			text-decoration: none;
+		}
 
-				:host([target="_blank"]) .d2l-menu-item-text {
-					align-self: baseline;
-					flex: 0 1 auto;
-				}
+		:host([target="_blank"]) .d2l-menu-item-text {
+			align-self: baseline;
+			flex: 0 1 auto;
+		}
 
-				#new-window {
-					align-self: baseline;
-					flex: auto;
-				}
-			`
-		];
-	}
+		#new-window {
+			align-self: baseline;
+			flex: auto;
+		}
+	`];
 
 	constructor() {
 		super();

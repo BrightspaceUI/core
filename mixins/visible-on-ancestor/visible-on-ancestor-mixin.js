@@ -41,19 +41,17 @@ export const visibleOnAncestorStyles = css`
 
 export const VisibleOnAncestorMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			/**
-			 * @ignore
-			 */
-			animationType: { type: String, reflect: true, attribute: 'animation-type' },
-			/**
-			 * @ignore
-			 */
-			visibleOnAncestor: { type: Boolean, reflect: true, attribute: 'visible-on-ancestor' },
-			__voaState: { type: String, reflect: true, attribute: '__voa-state' }
-		};
-	}
+	static properties = {
+		/**
+		 * @ignore
+		 */
+		animationType: { type: String, reflect: true, attribute: 'animation-type' },
+		/**
+		 * @ignore
+		 */
+		visibleOnAncestor: { type: Boolean, reflect: true, attribute: 'visible-on-ancestor' },
+		__voaState: { type: String, reflect: true, attribute: '__voa-state' }
+	};
 
 	constructor() {
 		super();

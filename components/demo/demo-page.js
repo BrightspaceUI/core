@@ -21,44 +21,40 @@ window.isD2LDemoPage = true;
 
 class DemoPage extends LitElement {
 
-	static get properties() {
-		return {
-			pageTitle: { type: String, attribute: 'page-title' },
-			_noScroll: { state: true }
-		};
-	}
+	static properties = {
+		pageTitle: { type: String, attribute: 'page-title' },
+		_noScroll: { state: true }
+	};
 
-	static get styles() {
-		return [ css`
-			:host {
-				background-color: var(--d2l-theme-background-color-sunken);
-				display: block;
-				padding: 30px;
-			}
-			main.no-scroll {
-				height: 0;
-				overflow: hidden;
-				padding: 0;
-			}
-			header {
-				margin-bottom: 1.5rem;
-				max-width: 900px;
-			}
-			.d2l-demo-page-content > ::slotted(h2),
-			.d2l-demo-page-content > ::slotted(h3) {
-				color: var(--d2l-theme-text-color-static-standard);
-				font-size: 0.8rem;
-				font-weight: 700;
-				line-height: 1.2rem;
-				margin: 1.5rem 0 1.5rem 0;
-			}
+	static styles = [css`
+		:host {
+			background-color: var(--d2l-theme-background-color-sunken);
+			display: block;
+			padding: 30px;
+		}
+		main.no-scroll {
+			height: 0;
+			overflow: hidden;
+			padding: 0;
+		}
+		header {
+			margin-bottom: 1.5rem;
+			max-width: 900px;
+		}
+		.d2l-demo-page-content > ::slotted(h2),
+		.d2l-demo-page-content > ::slotted(h3) {
+			color: var(--d2l-theme-text-color-static-standard);
+			font-size: 0.8rem;
+			font-weight: 700;
+			line-height: 1.2rem;
+			margin: 1.5rem 0 1.5rem 0;
+		}
 
-			.d2l-demo-page-content > ::slotted(d2l-code-view),
-			.d2l-demo-page-content > ::slotted(d2l-demo-snippet) {
-				margin-bottom: 36px;
-			}
-		`];
-	}
+		.d2l-demo-page-content > ::slotted(d2l-code-view),
+		.d2l-demo-page-content > ::slotted(d2l-demo-snippet) {
+			margin-bottom: 36px;
+		}
+	`];
 
 	connectedCallback() {
 		super.connectedCallback();

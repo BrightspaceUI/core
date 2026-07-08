@@ -67,20 +67,17 @@ import { FormElementMixin } from '@brightspace-ui/core/form/form-element-mixin.j
 // Use the FormElementMixin
 class MyFormElement extends FormElementMixin(LitElement) {
 
-	static get properties() {
-		return {
-			_val1: { type: String },
-			_val2: { type: String }
-		};
-	}
-	static get styles() {
-		return css`
-			/* Add our invalid styles */
-			:host([invalid]) {
-				border: 2px solid var(--d2l-color-cinnabar);
-			}
-		`;
-	}
+	static properties = {
+		_val1: { type: String },
+		_val2: { type: String }
+	};
+
+	static styles = css`
+		/* Add our invalid styles */
+		:host([invalid]) {
+			border: 2px solid var(--d2l-color-cinnabar);
+		}
+	`;
 
 	constructor() {
 		super();

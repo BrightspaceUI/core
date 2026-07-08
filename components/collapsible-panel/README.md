@@ -219,21 +219,17 @@ import { selectStyles } from '@brightspace-ui/core/components/inputs/input-selec
 
 class CollapsiblePanelDaylightDemo extends LitElement {
 
-	static get properties() {
-		return {
-      _addons: { state: true },
-			_icingType: { state: true },
-			_icingTypes: { state: true },
-		};
-	}
+	static properties = {
+		_addons: { state: true },
+		_icingType: { state: true },
+		_icingTypes: { state: true },
+	};
 
-	static get styles() {
-		return [labelStyles, selectStyles, css`
-			d2l-collapsible-panel {
-				width: 500px;
-			}
-		`];
-	}
+	static styles = [labelStyles, selectStyles, css`
+		d2l-collapsible-panel {
+			width: 500px;
+		}
+	`];
 
 	constructor() {
 		super();

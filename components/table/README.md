@@ -65,9 +65,7 @@ The `d2l-table-wrapper` element can be combined with table styles to apply defau
 
   class SampleTable extends LitElement {
 
-    static get styles() {
-      return tableStyles;
-    }
+    static styles = tableStyles;
 
     render() {
       const type = this.type === 'light' ? 'light' : 'default';
@@ -153,9 +151,7 @@ For the example below:
       };
     }
 
-    static get styles() {
-      return tableStyles;
-    }
+    static styles = tableStyles;
 
     constructor() {
       super();
@@ -296,9 +292,7 @@ When a single column is responsible for sorting in multiple facets (e.g., first 
         _field: { state: true }
       };
     }
-    static get styles() {
-      return tableStyles;
-    }
+    static styles = tableStyles;
     constructor() {
       super();
       this._data = data();
@@ -382,16 +376,12 @@ To enable selection, add `d2l-selection-input` components in the selection colum
 
   class SampleTableWithSelectionInputs extends LitElement {
 
-    static get properties() {
-      return {
-        selectionSingle: { type: Boolean, attribute: 'selection-single' },
-        _data: { state: true }
-      }
-    }
+    static properties = {
+      selectionSingle: { type: Boolean, attribute: 'selection-single' },
+      _data: { state: true }
+    };
 
-    static get styles() {
-      return tableStyles;
-    }
+    static styles = tableStyles;
 
     constructor() {
       super();
@@ -494,15 +484,11 @@ The `d2l-table-controls` component can be placed in the `d2l-table-wrapper`'s `c
 
   class SampleTableWithControls extends LitElement {
 
-    static get properties() {
-      return {
-        _data: { state: true }
-      }
-    }
+    static properties = {
+      _data: { state: true }
+    };
 
-    static get styles() {
-      return tableStyles;
-    }
+    static styles = tableStyles;
 
     constructor() {
       super();
