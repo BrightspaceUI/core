@@ -69,49 +69,45 @@ function createMenuItemSeparator() {
 */
 class OverflowGroup extends OverflowGroupMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * Setting this property will change the style of the overflow menu opener
-			 * @type {'default'|'subtle'}
-			 * @default "default"
-			 */
-			openerStyle: {
-				type: String,
-				reflect: true,
-				attribute: 'opener-style',
-			}
-		};
-	}
+	static properties = {
+		/**
+		 * Setting this property will change the style of the overflow menu opener
+		 * @type {'default'|'subtle'}
+		 * @default "default"
+		 */
+		openerStyle: {
+			type: String,
+			reflect: true,
+			attribute: 'opener-style',
+		}
+	};
 
-	static get styles() {
-		return [super.styles, css`
-			:host([opener-style="subtle"]) {
-				--d2l-button-icon-fill-color: var(--d2l-theme-text-color-interactive-default);
-				--d2l-button-icon-fill-color-hover: var(--d2l-theme-text-color-interactive-hover);
-			}
+	static styles = [super.styles, css`
+		:host([opener-style="subtle"]) {
+			--d2l-button-icon-fill-color: var(--d2l-theme-text-color-interactive-default);
+			--d2l-button-icon-fill-color-hover: var(--d2l-theme-text-color-interactive-hover);
+		}
 
-			::slotted(d2l-button),
-			::slotted(d2l-link),
-			::slotted(span),
-			::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
-			::slotted(d2l-dropdown-button) {
-				margin-inline-end: 0.6rem;
-			}
-			::slotted(d2l-button-subtle),
-			::slotted(d2l-button-icon),
-			::slotted(d2l-dropdown-button-subtle),
-			::slotted(d2l-dropdown-more),
-			::slotted(d2l-dropdown-context-menu),
-			::slotted(d2l-selection-action),
-			::slotted(d2l-selection-action-dropdown) {
-				margin-inline-end: 0.2rem;
-			}
-			::slotted(*:last-child) {
-				margin-inline-end: 0;
-			}
-		`];
-	}
+		::slotted(d2l-button),
+		::slotted(d2l-link),
+		::slotted(span),
+		::slotted(d2l-dropdown:not(.d2l-overflow-dropdown)),
+		::slotted(d2l-dropdown-button) {
+			margin-inline-end: 0.6rem;
+		}
+		::slotted(d2l-button-subtle),
+		::slotted(d2l-button-icon),
+		::slotted(d2l-dropdown-button-subtle),
+		::slotted(d2l-dropdown-more),
+		::slotted(d2l-dropdown-context-menu),
+		::slotted(d2l-selection-action),
+		::slotted(d2l-selection-action-dropdown) {
+			margin-inline-end: 0.2rem;
+		}
+		::slotted(*:last-child) {
+			margin-inline-end: 0;
+		}
+	`];
 
 	constructor() {
 		super();

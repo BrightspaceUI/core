@@ -32,18 +32,14 @@ const testElemTag = defineCE(
 );
 const offsetParentWrapperTag = defineCE(
 	class extends LitElement {
-		static get properties() {
-			return {
-				wrapperId: { type: String, attribute: 'wrapper-id' }
-			};
-		}
-		static get styles() {
-			return css`
-				#expected {
-					position: relative;
-				}
-			`;
-		}
+		static properties = {
+			wrapperId: { type: String, attribute: 'wrapper-id' }
+		};
+		static styles = css`
+			#expected {
+				position: relative;
+			}
+		`;
 		constructor() {
 			super();
 			this.wrapperId = 'notExpected';

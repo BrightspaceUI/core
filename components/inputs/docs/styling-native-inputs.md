@@ -16,9 +16,7 @@ Import `input-checkbox-styles.js` and apply the `d2l-input-checkbox` CSS class t
 
   class MyCheckboxElem extends LitElement {
 
-    static get styles() {
-      return checkboxStyles;
-    }
+    static styles = checkboxStyles;
 
     render() {
       return html`<input type="checkbox" class="d2l-input-checkbox">`;
@@ -46,9 +44,7 @@ For disabled items, add the `d2l-input-radio-label-disabled` class on the label 
 
   class MyRadioElem extends LitElement {
 
-    static get styles() {
-      return radioStyles;
-    }
+    static styles = radioStyles;
 
     render() {
       return html`
@@ -85,17 +81,13 @@ If you'd like to manually link the radio input with a label, or use an ARIA labe
 
   class MyRadioElem extends LitElement {
 
-    static get properties() {
-      return {
-        checked: { type: Boolean },
-        disabled: { type: Boolean },
-        invalid: { type: Boolean }
-      };
-    }
+    static properties = {
+      checked: { type: Boolean },
+      disabled: { type: Boolean },
+      invalid: { type: Boolean }
+    };
 
-    static get styles() {
-      return radioStyles;
-    }
+    static styles = radioStyles;
 
     render() {
       const invalid = this.invalid ? 'true' : 'false';
@@ -130,9 +122,7 @@ To align related content below radio buttons, the `d2l-input-radio-spacer` eleme
 
   class MyRadioElem extends LitElement {
 
-    static get styles() {
-      return [ radioStyles, inlineHelpStyles ];
-    }
+    static styles = [ radioStyles, inlineHelpStyles ];
 
     render() {
       return html`
@@ -164,9 +154,7 @@ Import `input-styles.js` and apply the `d2l-input` CSS class to the native `<inp
 
   class MyTextInputElem extends LitElement {
 
-    static get styles() {
-      return inputStyles;
-    }
+    static styles = inputStyles;
 
     render() {
       return html`<input type="text" class="d2l-input">`;
@@ -189,9 +177,7 @@ Import `input-styles.js` and apply the `d2l-input` CSS class to the  native `<te
   import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
 
   class MyTextareaInputElem extends LitElement {
-    static get styles() {
-      return inputStyles;
-    }
+    static styles = inputStyles;
     render() {
       return html`
         <textarea class="d2l-input">

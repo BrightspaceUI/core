@@ -13,19 +13,15 @@ import { SelectionActionMixin } from './selection-action-mixin.js';
  */
 class ActionDropdown extends FocusMixin(SelectionActionMixin(DropdownOpenerMixin(LitElement))) {
 
-	static get properties() {
-		return {
-			/**
-			 * REQUIRED: Text for the dropdown opener button
-			 * @type {string}
-			 */
-			text: { type: String }
-		};
-	}
+	static properties = {
+		/**
+		 * REQUIRED: Text for the dropdown opener button
+		 * @type {string}
+		 */
+		text: { type: String }
+	};
 
-	static get styles() {
-		return dropdownOpenerStyles;
-	}
+	static styles = dropdownOpenerStyles;
 
 	static get focusElementSelector() {
 		return 'd2l-button-subtle';

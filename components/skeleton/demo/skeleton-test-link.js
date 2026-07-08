@@ -5,24 +5,16 @@ import { SkeletonMixin } from '../skeleton-mixin.js';
 
 export class SkeletonTestLink extends SkeletonMixin(LitElement) {
 
-	static get properties() {
-		return {
-			type: { type: String },
-			width: { type: Number }
-		};
-	}
+	static properties = {
+		type: { type: String },
+		width: { type: Number }
+	};
 
-	static get styles() {
-		return [
-			super.styles,
-			linkStyles,
-			css`
-				:host {
-					display: block;
-				}
-			`
-		];
-	}
+	static styles = [super.styles, linkStyles, css`
+		:host {
+			display: block;
+		}
+	`];
 
 	constructor() {
 		super();

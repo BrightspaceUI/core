@@ -4,11 +4,9 @@ import { SubscriberRegistryController } from '../../controllers/subscriber/subsc
 
 export const PageableMixin = superclass => class extends CollectionMixin(superclass) {
 
-	static get properties() {
-		return {
-			_itemShowingCount: { state: true },
-		};
-	}
+	static properties = {
+		_itemShowingCount: { state: true },
+	};
 
 	constructor() {
 		super();

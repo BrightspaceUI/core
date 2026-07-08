@@ -5,26 +5,24 @@ import { css, html, LitElement } from 'lit';
 import { SkeletonGroupMixin } from '../skeleton-group-mixin.js';
 
 class SkeletonTestGroup extends LitElement {
-	static get properties() {
-		return {
-			_items: { state: true },
-			_loadAsGroup: { state: true },
-		};
-	}
-	static get styles() {
-		return css`
-			.controls {
-				align-items: center;
-				display: flex;
-				gap: 0.6rem;
-				justify-content: space-between;
-				margin-bottom: 0.6rem;
-			}
-			d2l-test-skeleton-container {
-				margin-bottom: 0.6rem;
-			}
-		`;
-	}
+
+	static properties = {
+		_items: { state: true },
+		_loadAsGroup: { state: true },
+	};
+
+	static styles = css`
+		.controls {
+			align-items: center;
+			display: flex;
+			gap: 0.6rem;
+			justify-content: space-between;
+			margin-bottom: 0.6rem;
+		}
+		d2l-test-skeleton-container {
+			margin-bottom: 0.6rem;
+		}
+	`;
 
 	constructor() {
 		super();

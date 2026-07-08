@@ -7,11 +7,9 @@ import { LoadingCompleteMixin } from '../../../mixins/loading-complete/loading-c
 
 class DialogAsyncContent extends LoadingCompleteMixin(LitElement) {
 
-	static get properties() {
-		return {
-			href: { type: String }
-		};
-	}
+	static properties = {
+		href: { type: String }
+	};
 
 	constructor() {
 		super();

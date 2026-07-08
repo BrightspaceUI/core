@@ -7,20 +7,18 @@ import { css, html, LitElement } from 'lit';
  */
 class PageHeaderSeparator extends LitElement {
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-				margin: 0 9px;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			d2l-icon {
-				color: var(--d2l-color-mica);
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+			margin: 0 9px;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		d2l-icon {
+			color: var(--d2l-color-mica);
+		}
+	`;
 
 	render() {
 		return html`

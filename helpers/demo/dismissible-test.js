@@ -4,26 +4,22 @@ import { css, html, LitElement } from 'lit';
 
 class DismissibleTest extends LitElement {
 
-	static get properties() {
-		return {
-			opened: { type: Boolean, reflect: true }
-		};
-	}
+	static properties = {
+		opened: { type: Boolean, reflect: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				background-color: #ffffff;
-				border: 1px solid var(--d2l-color-chromite);
-				display: none;
-				padding: 1rem;
-				position: absolute;
-			}
-			:host([opened]) {
-				display: block;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			background-color: #ffffff;
+			border: 1px solid var(--d2l-color-chromite);
+			display: none;
+			padding: 1rem;
+			position: absolute;
+		}
+		:host([opened]) {
+			display: block;
+		}
+	`;
 
 	constructor() {
 		super();

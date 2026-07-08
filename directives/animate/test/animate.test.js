@@ -5,11 +5,9 @@ import { getComposedActiveElement } from '../../../helpers/focus.js';
 
 class FocusTestElem extends LitElement {
 
-	static get properties() {
-		return {
-			animate: { type: Boolean }
-		};
-	}
+	static properties = {
+		animate: { type: Boolean }
+	};
 
 	render() {
 		const animateValue = this.animate ? hide() : undefined;

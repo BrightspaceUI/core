@@ -207,13 +207,11 @@ const multiMixinTagConsolidated = defineCE(
 );
 
 class StaticEl extends _LocalizeMixinBase(LitElement) {
-	static get properties() {
-		return {
-			name: {
-				type: String
-			}
-		};
-	}
+	static properties = {
+		name: {
+			type: String
+		}
+	};
 	static langResources = {
 		'en': {
 			'hello': 'Hello {name}',

@@ -14,18 +14,14 @@
 			import { classMap } from 'lit/directives/class-map.js';
 
 			class DemoPrism extends LitElement {
-				static get properties() {
-					return {
-						dark: { type: Boolean, reflect: true }
-					};
-				}
-				static get styles() {
-					return [codeStyles, css`
-						:host {
-							display: block;
-						}
-					`];
-				}
+				static properties = {
+					dark: { type: Boolean, reflect: true }
+				};
+				static styles = [codeStyles, css`
+					:host {
+						display: block;
+					}
+				`];
 				render() {
 					const classes = { 'd2l-code': true, 'd2l-code-dark': this.dark, 'line-numbers': true };
 					return html`

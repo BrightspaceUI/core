@@ -11,12 +11,10 @@ Apply the mixin and define RTL styles.
 ```js
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl/rtl-mixin.js';
 class MyComponent extends RtlMixin(LitElement) {
-  static get styles() {
-    return css`
-      :host([dir="rtl"]) .some-elem {
-        /* some RTL styles */
-      }
-    `;
-  }
+  static styles = css`
+    :host([dir="rtl"]) .some-elem {
+      /* some RTL styles */
+    }
+  `;
 }
 ```

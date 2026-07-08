@@ -3,11 +3,9 @@ import { LocalizeMixin } from '../localize-mixin.js';
 
 class Greeting extends LocalizeMixin(LitElement) {
 
-	static get properties() {
-		return {
-			name: {	type: String }
-		};
-	}
+	static properties = {
+		name: {	type: String }
+	};
 
 	static get localizeConfig() {
 		const langResources = {

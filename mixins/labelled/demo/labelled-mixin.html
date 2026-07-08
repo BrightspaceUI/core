@@ -10,16 +10,14 @@
 			import { ifDefined } from 'lit/directives/if-defined.js';
 
 			class DemoInput extends LabelledMixin(LitElement) {
-				static get styles() {
-					return css`
-						:host {
-							disply: inline-block;
-						}
-						d2l-input-checkbox {
-							margin-bottom: 0;
-						}
-					`;
-				}
+				static styles = css`
+					:host {
+						disply: inline-block;
+					}
+					d2l-input-checkbox {
+						margin-bottom: 0;
+					}
+				`;
 				render() {
 					return html`
 						<d2l-input-checkbox label="${ifDefined(this.label)}" label-hidden></d2l-input-checkbox>
@@ -29,18 +27,14 @@
 			customElements.define('d2l-demo-input', DemoInput);
 
 			class DemoText extends LabelMixin(LitElement) {
-				static get properties() {
-					return {
-						text: { type: String }
-					};
-				}
-				static get styles() {
-					return css`
-						:host {
-							disply: inline-block;
-						}
-					`;
-				}
+				static properties = {
+					text: { type: String }
+				};
+				static styles = css`
+					:host {
+						disply: inline-block;
+					}
+				`;
 				constructor() {
 					super();
 					this.text = '';

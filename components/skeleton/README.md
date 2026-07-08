@@ -23,9 +23,7 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 
 class MyElement extends SkeletonMixin(LitElement) {
 
-  static get styles() {
-    return [ super.styles, ... ];
-  }
+  static styles = [ super.styles, ... ];
 
 }
 ```
@@ -63,9 +61,7 @@ import { selectStyles } from '@brightspace-ui/core/components/inputs/input-selec
 import { SkeletonMixin } from '@brightspace-ui/core/skeleton/skeleton-mixin.js';
 
 class MyElement extends SkeletonMixin(LitElement) {
-  static get styles() {
-    return [super.styles, selectStyles];
-  }
+  static styles = [super.styles, selectStyles];
   render() {
     return html`
       <div class="d2l-skeletize">

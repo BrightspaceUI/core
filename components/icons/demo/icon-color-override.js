@@ -3,16 +3,14 @@ import { css, html, LitElement } from 'lit';
 
 class IconColorOverride extends LitElement {
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-			}
-			::slotted(d2l-icon), ::slotted(d2l-icon-custom) {
-				color: var(--d2l-color-celestine-minus-1);
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: inline-block;
+		}
+		::slotted(d2l-icon), ::slotted(d2l-icon-custom) {
+			color: var(--d2l-color-celestine-minus-1);
+		}
+	`;
 
 	render() {
 		return html`<slot></slot>`;

@@ -43,11 +43,9 @@ const registries = defineCE(
 );
 
 const generateSubscriber = (type, name) => class extends LitElement {
-	static get properties() {
-		return {
-			for: { type: String }
-		};
-	}
+	static properties = {
+		for: { type: String }
+	};
 	constructor() {
 		super();
 
@@ -92,7 +90,7 @@ const indirectSlotRegistries = defineCE(class extends LitElement {
 });
 
 const delayedRegistries = defineCE(class extends LitElement {
-	static get properties() { return { _ready: { state: true } }; }
+	static properties = { _ready: { state: true } };
 	constructor() {
 		super();
 		this._ready = false;

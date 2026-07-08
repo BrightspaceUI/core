@@ -13,21 +13,17 @@ import { SelectionInfo } from './selection-mixin.js';
  */
 class ActionMenuItem extends SelectionActionMixin(MenuItemMixin(LitElement)) {
 
-	static get styles() {
-		return [ menuItemStyles,
-			css`
-				:host {
-					align-items: center;
-					display: flex;
-					padding: 0.75rem 1rem;
-				}
-				d2l-icon {
-					flex: none;
-					margin-inline-start: 6px;
-				}
-			`
-		];
-	}
+	static styles = [menuItemStyles, css`
+		:host {
+			align-items: center;
+			display: flex;
+			padding: 0.75rem 1rem;
+		}
+		d2l-icon {
+			flex: none;
+			margin-inline-start: 6px;
+		}
+	`];
 
 	connectedCallback() {
 		super.connectedCallback();

@@ -18,15 +18,13 @@ const focusRingStyles = getFocusRingStyles(
  */
 class Tab extends TabMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * ACCESSIBILITY: REQUIRED: The text used for the tab and for labelling the corresponding panel
-			 * @type {string}
-			 */
-			text: { type: String }
-		};
-	}
+	static properties = {
+		/**
+		 * ACCESSIBILITY: REQUIRED: The text used for the tab and for labelling the corresponding panel
+		 * @type {string}
+		 */
+		text: { type: String }
+	};
 
 	static get styles() {
 		const styles = [ css`

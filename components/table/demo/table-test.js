@@ -39,38 +39,34 @@ const formatter = new Intl.NumberFormat('en-US');
 
 class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') {
 
-	static get properties() {
-		return {
-			paging: { type: Boolean, reflect: true },
-			multiLine: { type: Boolean, attribute: 'multi-line' },
-			resetOnSort: { type: Boolean, attribute: 'reset-on-sort' },
-			showButtons: { type: Boolean, attribute: 'show-buttons' },
-			stickyControls: { attribute: 'sticky-controls', type: Boolean, reflect: true },
-			visibleBackground: { attribute: 'visible-background', type: Boolean, reflect: true },
-			_data: { state: true },
-			_sortField: { state: true },
-			_sortDesc: { state: true }
-		};
-	}
+	static properties = {
+		paging: { type: Boolean, reflect: true },
+		multiLine: { type: Boolean, attribute: 'multi-line' },
+		resetOnSort: { type: Boolean, attribute: 'reset-on-sort' },
+		showButtons: { type: Boolean, attribute: 'show-buttons' },
+		stickyControls: { attribute: 'sticky-controls', type: Boolean, reflect: true },
+		visibleBackground: { attribute: 'visible-background', type: Boolean, reflect: true },
+		_data: { state: true },
+		_sortField: { state: true },
+		_sortDesc: { state: true }
+	};
 
-	static get styles() {
-		return [tableStyles, css`
-			:host {
-				display: block;
-			}
-			:host([visible-background]) {
-				--d2l-table-controls-background-color: #dddddd;
-			}
-			.d2l-table > * > tr > :has(d2l-button-icon),
-			.d2l-table > * > tr > :has(d2l-dropdown-context-menu) {
-				padding-block: 0;
-			}
-			.d2l-table > * > tr > :has(d2l-table-col-sort-button) d2l-button-icon,
-			.d2l-table > * > tr > :has(d2l-table-col-sort-button) d2l-dropdown-context-menu {
-				vertical-align: top;
-			}
-		`];
-	}
+	static styles = [tableStyles, css`
+		:host {
+			display: block;
+		}
+		:host([visible-background]) {
+			--d2l-table-controls-background-color: #dddddd;
+		}
+		.d2l-table > * > tr > :has(d2l-button-icon),
+		.d2l-table > * > tr > :has(d2l-dropdown-context-menu) {
+			padding-block: 0;
+		}
+		.d2l-table > * > tr > :has(d2l-table-col-sort-button) d2l-button-icon,
+		.d2l-table > * > tr > :has(d2l-table-col-sort-button) d2l-dropdown-context-menu {
+			vertical-align: top;
+		}
+	`];
 
 	constructor() {
 		super();

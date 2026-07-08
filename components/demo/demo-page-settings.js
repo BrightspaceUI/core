@@ -17,35 +17,31 @@ const localeSettings = getDocumentLocaleSettings();
 
 class DemoPageSettings extends LitElement {
 
-	static get properties() {
-		return {
-			panelTitle: { type: String, attribute: 'panel-title' },
-			_language: { state: true }
-		};
-	}
+	static properties = {
+		panelTitle: { type: String, attribute: 'panel-title' },
+		_language: { state: true }
+	};
 
-	static get styles() {
-		return [ inputLabelStyles, selectStyles, css`
-			:host {
-				display: block;
-			}
-			:host[hidden] {
-				display: none;
-			}
-			d2l-collapsible-panel {
-				width: 100%;
-			}
-			.color-mode-group {
-				display: inline-flex;
-			}
-			#applyFlagsButton {
-				max-width: max-content;
-			}
-			#useAsDefaultColorMode {
-				margin-block-end: 0;
-			}
-		`];
-	}
+	static styles = [inputLabelStyles, selectStyles, css`
+		:host {
+			display: block;
+		}
+		:host[hidden] {
+			display: none;
+		}
+		d2l-collapsible-panel {
+			width: 100%;
+		}
+		.color-mode-group {
+			display: inline-flex;
+		}
+		#applyFlagsButton {
+			max-width: max-content;
+		}
+		#useAsDefaultColorMode {
+			margin-block-end: 0;
+		}
+	`];
 
 	constructor() {
 		super();

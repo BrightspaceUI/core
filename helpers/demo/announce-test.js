@@ -5,17 +5,15 @@ import { announce } from '../announce.js';
 
 class AnnounceTest extends LitElement {
 
-	static get styles() {
-		return css`
-			:host {
-				display: block;
-				width: 400px;
-			}
-			d2l-input-text {
-				margin-bottom: 10px;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: block;
+			width: 400px;
+		}
+		d2l-input-text {
+			margin-bottom: 10px;
+		}
+	`;
 
 	render() {
 		return html`

@@ -205,7 +205,7 @@ async function createTableFixtureShared(type, rtl, tableContents, opts = {}) {
 	const tableClasses = { 'd2l-table': true, 'vdiff-target': opts.stickyHeaders };
 	const tag = defineCE(
 		class extends LitElement {
-			static get styles() { return [tableStyles]; }
+			static styles = [tableStyles];
 			render() {
 				const wrapper = html`
 					<d2l-table-wrapper

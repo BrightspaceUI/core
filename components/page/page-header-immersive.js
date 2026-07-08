@@ -11,80 +11,76 @@ import { RequesterMixin } from '../../mixins/provider/provider-mixin.js';
 
 class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)) {
 
-	static get properties() {
-		return {
-			backHref: { attribute: 'back-href', type: String },
-			backCustomText: { attribute: 'back-custom-text', type: String },
-			titleText: { attribute: 'title-text', type: String },
-			subtitleText: { attribute: 'subtitle-text', type: String },
-			_error: { state: true },
-			_hasActions: { state: true }
-		};
-	}
+	static properties = {
+		backHref: { attribute: 'back-href', type: String },
+		backCustomText: { attribute: 'back-custom-text', type: String },
+		titleText: { attribute: 'title-text', type: String },
+		subtitleText: { attribute: 'subtitle-text', type: String },
+		_error: { state: true },
+		_hasActions: { state: true }
+	};
 
-	static get styles() {
-		return [bodyCompactStyles, heading3Styles, labelStyles, highlightBorderStyles, highlightLinkStyles, css`
-			:host {
-				display: block;
-			}
-			:host([hidden]),
-			.actions[hidden] {
+	static styles = [bodyCompactStyles, heading3Styles, labelStyles, highlightBorderStyles, highlightLinkStyles, css`
+		:host {
+			display: block;
+		}
+		:host([hidden]),
+		.actions[hidden] {
+			display: none;
+		}
+		.container {
+			align-items: stretch;
+			display: flex;
+			gap: 24px;
+			height: 3.1rem;
+		}
+		.title {
+			flex: 0 1 auto;
+			min-width: 0;
+			width: 100%;
+		}
+		.back,
+		.actions {
+			flex: 0 0 auto;
+		}
+		.title,
+		.actions {
+			border-inline-start: 1px solid var(--d2l-color-gypsum);
+			padding-inline-start: 24px;
+		}
+		.title h1 {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+			justify-content: center;
+			margin: 0;
+		}
+		.actions {
+			align-items: center;
+			display: flex;
+			gap: 0.6rem;
+		}
+		.title h1 .d2l-heading-3 {
+			margin: 0;
+		}
+		.back-text-short {
+			display: none;
+		}
+		@media (max-width: 615px) {
+			.back-text-long {
 				display: none;
-			}
-			.container {
-				align-items: stretch;
-				display: flex;
-				gap: 24px;
-				height: 3.1rem;
-			}
-			.title {
-				flex: 0 1 auto;
-				min-width: 0;
-				width: 100%;
-			}
-			.back,
-			.actions {
-				flex: 0 0 auto;
-			}
-			.title,
-			.actions {
-				border-inline-start: 1px solid var(--d2l-color-gypsum);
-				padding-inline-start: 24px;
-			}
-			.title h1 {
-				display: flex;
-				flex-direction: column;
-				height: 100%;
-				justify-content: center;
-				margin: 0;
-			}
-			.actions {
-				align-items: center;
-				display: flex;
-				gap: 0.6rem;
-			}
-			.title h1 .d2l-heading-3 {
-				margin: 0;
 			}
 			.back-text-short {
-				display: none;
+				display: inline;
 			}
-			@media (max-width: 615px) {
-				.back-text-long {
-					display: none;
-				}
-				.back-text-short {
-					display: inline;
-				}
-			}
-			d2l-alert {
-				margin: 10px auto;
-			}
-			.title-text {
-				${overflowEllipsisDeclarations}
-			}
-		`];
-	}
+		}
+		d2l-alert {
+			margin: 10px auto;
+		}
+		.title-text {
+			${overflowEllipsisDeclarations}
+		}
+	`];
 
 	constructor() {
 		super();

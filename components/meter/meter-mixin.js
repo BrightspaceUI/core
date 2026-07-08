@@ -3,42 +3,40 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 export const MeterMixin = superclass => class extends LocalizeCoreElement(superclass) {
 
-	static get properties() {
-		return {
-			/**
-			 * Max number of units that are being measured by this meter.
-			 * Valid values: A number > 0
-			 * @type {number}
-			 */
-			max: { type: Number },
-			/**
-			 * Shows a percentage instead of "value/max"
-			 * @type {boolean}
-			 */
-			percent: { type: Boolean },
-			/**
-			 * Rounding mode for percentage text values
-			 * @type {"round" | "ceil" | "floor"}
-			 */
-			percentRoundingMode: { type: String, attribute: 'percent-rounding-mode' },
-			/**
-			 * Context information for the meter. If the text contains {%} or {x/y}, they will be replaced with a percentage or fraction respectively.
-			 * @type {string}
-			 */
-			text: { type: String },
-			/**
-			 * Hides the text visually
-			 * @type {boolean}
-			 */
-			textHidden: { type: Boolean, attribute: 'text-hidden' },
-			/**
-			 * REQUIRED: Current number of completed units.
-			 * Valid values: A number between 0 and max
-			 * @type {number}
-			 */
-			value: { type: Number }
-		};
-	}
+	static properties = {
+		/**
+		 * Max number of units that are being measured by this meter.
+		 * Valid values: A number > 0
+		 * @type {number}
+		 */
+		max: { type: Number },
+		/**
+		 * Shows a percentage instead of "value/max"
+		 * @type {boolean}
+		 */
+		percent: { type: Boolean },
+		/**
+		 * Rounding mode for percentage text values
+		 * @type {"round" | "ceil" | "floor"}
+		 */
+		percentRoundingMode: { type: String, attribute: 'percent-rounding-mode' },
+		/**
+		 * Context information for the meter. If the text contains {%} or {x/y}, they will be replaced with a percentage or fraction respectively.
+		 * @type {string}
+		 */
+		text: { type: String },
+		/**
+		 * Hides the text visually
+		 * @type {boolean}
+		 */
+		textHidden: { type: Boolean, attribute: 'text-hidden' },
+		/**
+		 * REQUIRED: Current number of completed units.
+		 * Valid values: A number between 0 and max
+		 * @type {number}
+		 */
+		value: { type: Number }
+	};
 
 	constructor() {
 		super();

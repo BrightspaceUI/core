@@ -16,125 +16,121 @@ const customScroll = isWindows && !isMobile;
  */
 class PageHeaderCustom extends LitElement {
 
-	static get properties() {
-		return {
-			/**
-			 * When set, the bottom slot will be a "d2l-visible-on-ancestor-target"
-			 * @type {boolean}
-			 */
-			bottomIsVisibleOnAncestorTarget: { type: Boolean, attribute: 'bottom-is-visible-on-ancestor-target' },
-			/**
-			 * Whether to render a skip nav link
-			 * @type {boolean}
-			 */
-			hasSkipNav: { type: Boolean, attribute: 'has-skip-nav', reflect: true },
-			_hasBottom: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * When set, the bottom slot will be a "d2l-visible-on-ancestor-target"
+		 * @type {boolean}
+		 */
+		bottomIsVisibleOnAncestorTarget: { type: Boolean, attribute: 'bottom-is-visible-on-ancestor-target' },
+		/**
+		 * Whether to render a skip nav link
+		 * @type {boolean}
+		 */
+		hasSkipNav: { type: Boolean, attribute: 'has-skip-nav', reflect: true },
+		_hasBottom: { state: true }
+	};
 
-	static get styles() {
-		return [css`
-			:host {
-				background-color: white;
-				display: block;
-				position: relative;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			.band {
-				background: linear-gradient(180deg, var(--d2l-branding-primary-color, var(--d2l-color-celestine)) 1.5rem, #ffffff 0%);
-				line-height: 0;
-				min-height: 4px;
-				position: relative; /* Needed for Firefox */
-			}
-			.band .padding {
-				display: inline-block;
-				position: unset;
-				vertical-align: top;
-			}
+	static styles = [css`
+		:host {
+			background-color: white;
+			display: block;
+			position: relative;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.band {
+			background: linear-gradient(180deg, var(--d2l-branding-primary-color, var(--d2l-color-celestine)) 1.5rem, #ffffff 0%);
+			line-height: 0;
+			min-height: 4px;
+			position: relative; /* Needed for Firefox */
+		}
+		.band .padding {
+			display: inline-block;
+			position: unset;
+			vertical-align: top;
+		}
+		.band-scroll {
+			overflow-x: auto;
+			overflow-y: hidden;
+			scroll-behavior: smooth;
+		}
+		@media (prefers-reduced-motion: reduce) {
 			.band-scroll {
-				overflow-x: auto;
-				overflow-y: hidden;
-				scroll-behavior: smooth;
+				scroll-behavior: auto;
 			}
-			@media (prefers-reduced-motion: reduce) {
-				.band-scroll {
-					scroll-behavior: auto;
-				}
-			}
-			.band-scroll[data-custom-scroll] {
-				/* Firefox Styles */
-				scrollbar-color: var(--d2l-color-galena) var(--d2l-color-sylvite);
-				scrollbar-width: thin;
-			}
-			/* Webkit Styles */
-			.band-scroll[data-custom-scroll]::-webkit-scrollbar {
-				background-color: var(--d2l-color-sylvite);
-				border-radius: 8px;
-				height: 9px;
-			}
-			.band-scroll[data-custom-scroll]::-webkit-scrollbar-thumb {
-				background-color: var(--d2l-color-galena);
-				border-bottom: 1px solid var(--d2l-color-sylvite);
-				border-radius: 8px;
-				border-top: 1px solid var(--d2l-color-sylvite);
-			}
-			/* Faded edges styles */
+		}
+		.band-scroll[data-custom-scroll] {
+			/* Firefox Styles */
+			scrollbar-color: var(--d2l-color-galena) var(--d2l-color-sylvite);
+			scrollbar-width: thin;
+		}
+		/* Webkit Styles */
+		.band-scroll[data-custom-scroll]::-webkit-scrollbar {
+			background-color: var(--d2l-color-sylvite);
+			border-radius: 8px;
+			height: 9px;
+		}
+		.band-scroll[data-custom-scroll]::-webkit-scrollbar-thumb {
+			background-color: var(--d2l-color-galena);
+			border-bottom: 1px solid var(--d2l-color-sylvite);
+			border-radius: 8px;
+			border-top: 1px solid var(--d2l-color-sylvite);
+		}
+		/* Faded edges styles */
+		.band-scroll-before,
+		.band-scroll-after {
+			height: 100%;
+			max-height: 1.5rem; /* should match linear-background height */
+			pointer-events: none;
+			position: absolute;
+			top: 0;
+			width: var(--d2l-page-padding, 30px);
+			z-index: 2;
+		}
+		.band-scroll-before {
+			background: linear-gradient(to right, var(--d2l-branding-primary-color, var(--d2l-color-celestine)), transparent);
+			left: 0;
+		}
+		.band-scroll-after {
+			background: linear-gradient(to left, var(--d2l-branding-primary-color, var(--d2l-color-celestine)), transparent);
+			right: 0;
+		}
+		@media (max-width: 615px) {
 			.band-scroll-before,
 			.band-scroll-after {
-				height: 100%;
-				max-height: 1.5rem; /* should match linear-background height */
-				pointer-events: none;
-				position: absolute;
-				top: 0;
-				width: var(--d2l-page-padding, 30px);
-				z-index: 2;
+				width: 15px;
 			}
-			.band-scroll-before {
-				background: linear-gradient(to right, var(--d2l-branding-primary-color, var(--d2l-color-celestine)), transparent);
-				left: 0;
-			}
+		}
+		@media (min-width: 1230px) {
+			.band-scroll-before,
 			.band-scroll-after {
-				background: linear-gradient(to left, var(--d2l-branding-primary-color, var(--d2l-color-celestine)), transparent);
-				right: 0;
+				width: 30px;
 			}
-			@media (max-width: 615px) {
-				.band-scroll-before,
-				.band-scroll-after {
-					width: 15px;
-				}
-			}
-			@media (min-width: 1230px) {
-				.band-scroll-before,
-				.band-scroll-after {
-					width: 30px;
-				}
-			}
-			.bottom,
-			.top {
-				border-bottom: 1px solid rgba(124, 134, 149, 0.18);
-			}
-			.bottom {
-				background-color: var(--d2l-page-header-bottom-background-color, transparent);
-			}
-			.shadow {
-				background-color: rgba(0, 0, 0, 0.02);
-				bottom: -4px;
-				height: 4px;
-				pointer-events: none;
-				position: absolute;
-				width: 100%;
-			}
-			.max-width {
-				margin-inline: var(--d2l-page-margin-inline, auto);
-				max-width: var(--d2l-page-header-max-width, 1230px);
-			}
-			.padding {
-				padding-inline: var(--d2l-page-padding, 30px);
-			}
-		`];
-	}
+		}
+		.bottom,
+		.top {
+			border-bottom: 1px solid rgba(124, 134, 149, 0.18);
+		}
+		.bottom {
+			background-color: var(--d2l-page-header-bottom-background-color, transparent);
+		}
+		.shadow {
+			background-color: rgba(0, 0, 0, 0.02);
+			bottom: -4px;
+			height: 4px;
+			pointer-events: none;
+			position: absolute;
+			width: 100%;
+		}
+		.max-width {
+			margin-inline: var(--d2l-page-margin-inline, auto);
+			max-width: var(--d2l-page-header-max-width, 1230px);
+		}
+		.padding {
+			padding-inline: var(--d2l-page-padding, 30px);
+		}
+	`];
 
 	constructor() {
 		super();

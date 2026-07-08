@@ -3,15 +3,13 @@ import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 
 export const RtlMixin = dedupeMixin(superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			/**
-			 * @ignore
-			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			dir: { type: String, reflect: true }
-		};
-	}
+	static properties = {
+		/**
+		 * @ignore
+		 */
+		// eslint-disable-next-line lit/no-native-attributes
+		dir: { type: String, reflect: true }
+	};
 
 	constructor() {
 		super();

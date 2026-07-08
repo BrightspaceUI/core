@@ -44,117 +44,113 @@ const focusSelector = isHasSelectorSupported() && isFocusVisibleSupported() ?
 
 export const TagListItemMixin = superclass => class extends LocalizeCoreElement(PropertyRequiredMixin(superclass)) {
 
-	static get properties() {
-		return {
-			/**
-			 * Enables the option to clear a tag list item. The `d2l-tag-list-item-clear` event will be dispatched when the user selects to delete the item. The consumer must handle the actual item deletion.
-			 * @type {boolean}
-			 */
-			clearable: { type: Boolean },
-			/**
-			 * REQUIRED if clearable. Acts as a unique identifier for the tag
-			 * @type {string}
-			 */
-			key: { type: String },
-			/**
-			 * @ignore
-			 */
-			keyboardTooltipItem: { type: Boolean, attribute: 'keyboard-tooltip-item' },
-			/**
-			 * @ignore
-			 */
-			_plainText: {
-				state: true,
-				required: {
-					message: (_value, elem) => `TagListItemMixin: "${elem.tagName.toLowerCase()}" called "_renderTag()" with empty "plainText" option`
-				}
-			},
-			_displayKeyboardTooltip: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Enables the option to clear a tag list item. The `d2l-tag-list-item-clear` event will be dispatched when the user selects to delete the item. The consumer must handle the actual item deletion.
+		 * @type {boolean}
+		 */
+		clearable: { type: Boolean },
+		/**
+		 * REQUIRED if clearable. Acts as a unique identifier for the tag
+		 * @type {string}
+		 */
+		key: { type: String },
+		/**
+		 * @ignore
+		 */
+		keyboardTooltipItem: { type: Boolean, attribute: 'keyboard-tooltip-item' },
+		/**
+		 * @ignore
+		 */
+		_plainText: {
+			state: true,
+			required: {
+				message: (_value, elem) => `TagListItemMixin: "${elem.tagName.toLowerCase()}" called "_renderTag()" with empty "plainText" option`
+			}
+		},
+		_displayKeyboardTooltip: { state: true }
+	};
 
-	static get styles() {
-		return [labelStyles, heading4Styles, css`
-			:host {
-				display: grid;
-				max-width: 100%;
-				outline: none;
-			}
-			:host([hidden]) {
-				display: none;
-			}
+	static styles = [labelStyles, heading4Styles, css`
+		:host {
+			display: grid;
+			max-width: 100%;
+			outline: none;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.tag-list-item-container {
+			--d2l-focus-ring-offset: -2px;
+			align-items: center;
+			background-color: var(--d2l-theme-background-color-interactive-faint-default);
+			border-radius: 6px;
+			box-shadow: var(--d2l-theme-shadow-attached);
+			box-sizing: border-box;
+			color: var(--d2l-theme-text-color-static-standard);
+			cursor: pointer;
+			display: flex;
+			line-height: 1rem;
+			max-width: 320px;
+			min-width: 0;
+			outline: 1px solid var(--d2l-theme-border-color-subtle);
+			outline-offset: -1px;
+			transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
+			white-space: nowrap;
+		}
+		.tag-list-item-container.tag-list-item-container-clearable {
+			padding-inline-end: 0.2rem;
+		}
+		.tag-list-item-content {
+			outline: none;
+			overflow: hidden;
+			padding: 0.25rem 0.6rem;
+			text-overflow: ellipsis;
+		}
+		${getFocusRingStyles(() => focusSelector)}
+		:host(:hover) .tag-list-item-container,
+		${unsafeCSS(focusSelector)} {
+			background-color: var(--d2l-theme-background-color-interactive-faint-hover);
+		}
+		:host(:hover) .tag-list-item-container:not(${unsafeCSS(focusSelector)}) {
+			outline-color: var(--d2l-theme-border-color-standard);
+		}
+
+		@media (prefers-reduced-motion: reduce) {
 			.tag-list-item-container {
-				--d2l-focus-ring-offset: -2px;
-				align-items: center;
-				background-color: var(--d2l-theme-background-color-interactive-faint-default);
-				border-radius: 6px;
-				box-shadow: var(--d2l-theme-shadow-attached);
-				box-sizing: border-box;
-				color: var(--d2l-theme-text-color-static-standard);
-				cursor: pointer;
-				display: flex;
-				line-height: 1rem;
-				max-width: 320px;
-				min-width: 0;
-				outline: 1px solid var(--d2l-theme-border-color-subtle);
-				outline-offset: -1px;
-				transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out;
-				white-space: nowrap;
+				transition: none;
 			}
-			.tag-list-item-container.tag-list-item-container-clearable {
-				padding-inline-end: 0.2rem;
+		}
+		.d2l-tag-list-item-clear-button {
+			margin-inline-start: calc(-0.6rem + 3px);
+		}
+		d2l-button-icon {
+			--d2l-button-icon-fill-color: var(--d2l-color-chromite);
+			--d2l-button-icon-min-height: 1.2rem;
+			--d2l-button-icon-min-width: 1.2rem;
+		}
+		d2l-button-icon:hover {
+			--d2l-button-icon-fill-color: var(--d2l-theme-icon-color-standard);
+		}
+		d2l-tooltip ul {
+			list-style: none;
+			margin-bottom: 0;
+			margin-top: 0.2rem;
+			padding: 0;
+		}
+		.d2l-tag-list-item-tooltip-title-key {
+			font-weight: 600;
+		}
+		.d2l-heading-4 {
+			margin: 0 0 0.5rem 0;
+		}
+		@media (prefers-contrast: more) {
+			:host(:hover) .tag-list-item-container {
+				outline-offset: -2px;
+				outline-width: 2px;
 			}
-			.tag-list-item-content {
-				outline: none;
-				overflow: hidden;
-				padding: 0.25rem 0.6rem;
-				text-overflow: ellipsis;
-			}
-			${getFocusRingStyles(() => focusSelector)}
-			:host(:hover) .tag-list-item-container,
-			${unsafeCSS(focusSelector)} {
-				background-color: var(--d2l-theme-background-color-interactive-faint-hover);
-			}
-			:host(:hover) .tag-list-item-container:not(${unsafeCSS(focusSelector)}) {
-				outline-color: var(--d2l-theme-border-color-standard);
-			}
-
-			@media (prefers-reduced-motion: reduce) {
-				.tag-list-item-container {
-					transition: none;
-				}
-			}
-			.d2l-tag-list-item-clear-button {
-				margin-inline-start: calc(-0.6rem + 3px);
-			}
-			d2l-button-icon {
-				--d2l-button-icon-fill-color: var(--d2l-color-chromite);
-				--d2l-button-icon-min-height: 1.2rem;
-				--d2l-button-icon-min-width: 1.2rem;
-			}
-			d2l-button-icon:hover {
-				--d2l-button-icon-fill-color: var(--d2l-theme-icon-color-standard);
-			}
-			d2l-tooltip ul {
-				list-style: none;
-				margin-bottom: 0;
-				margin-top: 0.2rem;
-				padding: 0;
-			}
-			.d2l-tag-list-item-tooltip-title-key {
-				font-weight: 600;
-			}
-			.d2l-heading-4 {
-				margin: 0 0 0.5rem 0;
-			}
-			@media (prefers-contrast: more) {
-				:host(:hover) .tag-list-item-container {
-					outline-offset: -2px;
-					outline-width: 2px;
-				}
-			}
-		`];
-	}
+		}
+	`];
 
 	constructor() {
 		super();
