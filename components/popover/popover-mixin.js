@@ -584,6 +584,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	#ancestorMutations;
 	#ifrauContextInfo;
 	#mediaQueryList;
+
 	#handleAncestorMutation = (mutations) => {
 		if (!this._opener) return;
 		const reposition = !!mutations.find(mutation => {
@@ -602,6 +603,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		});
 		if (reposition) this.#reposition();
 	};
+
 	#handleAutoCloseClick = (e) => {
 		if (!this._opened || this._noAutoClose) return;
 
@@ -613,6 +615,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		this.close();
 	};
+
 	#handleAutoCloseFocus = () => {
 
 		// todo: try to use relatedTarget instead - this logic is largely copied as-is from dropdown simply to mitigate risk of this fragile code
@@ -637,6 +640,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		}, 0);
 
 	};
+
 	#handleMobileResize = async() => {
 		this._mobile = this.#mediaQueryList.matches;
 		if (this._opened) {
@@ -644,9 +648,11 @@ export const PopoverMixin = superclass => class extends superclass {
 			await this.position();
 		}
 	};
+
 	#handleResize = () => {
 		this.resize();
 	};
+
 	#reposition = () => {
 		// throttle repositioning (https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event#scroll_event_throttling)
 		if (!this._repositioning) {
