@@ -19,50 +19,46 @@ const keyCodes = {
  */
 class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			/**
-			 * State of the input
-			 * @type {boolean}
-			 */
-			selected: { type: Boolean, reflect: true },
-			/**
-			 * Disables the input
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
-			 * Tooltip text when disabled
-			 * @type {string}
-			 */
-			disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
-			/**
-			 * Private. Force hovering state of input
-			 * @ignore
-			 * @type {boolean}
-			 */
-			hovering: { type: Boolean },
-			/**
-			 * REQUIRED: Key for the selectable
-			 * @type {string}
-			 */
-			key: { type: String },
-			_indeterminate: { type: Boolean },
-			_provider: { type: Object }
-		};
-	}
+	static properties = {
+		/**
+		 * State of the input
+		 * @type {boolean}
+		 */
+		selected: { type: Boolean, reflect: true },
+		/**
+		 * Disables the input
+		 * @type {boolean}
+		 */
+		disabled: { type: Boolean, reflect: true },
+		/**
+		 * Tooltip text when disabled
+		 * @type {string}
+		 */
+		disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
+		/**
+		 * Private. Force hovering state of input
+		 * @ignore
+		 * @type {boolean}
+		 */
+		hovering: { type: Boolean },
+		/**
+		 * REQUIRED: Key for the selectable
+		 * @type {string}
+		 */
+		key: { type: String },
+		_indeterminate: { type: Boolean },
+		_provider: { type: Object }
+	};
 
-	static get styles() {
-		return [ super.styles, radioStyles, css`
-			:host {
-				display: inline-block;
-				line-height: normal;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-		`];
-	}
+	static styles = [super.styles, radioStyles, css`
+		:host {
+			display: inline-block;
+			line-height: normal;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+	`];
 
 	constructor() {
 		super();

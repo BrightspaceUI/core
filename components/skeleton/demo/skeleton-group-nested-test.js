@@ -8,23 +8,21 @@ import { css, html, LitElement } from 'lit';
 import { SkeletonGroupMixin } from '../skeleton-group-mixin.js';
 
 class SkeletonTestNestedGroup extends SkeletonGroupMixin(LitElement) {
-	static get properties() {
-		return {
-			_skeletonParent: { state: true },
-			_skeletonContainer: { state: true },
-			_skeletonHeading: { state: true },
-		};
-	}
-	static get styles() {
-		return css`
-			.controls {
-				align-items: center;
-				display: flex;
-				gap: 0.6rem;
-				margin-bottom: 0.6rem;
-			}
-		`;
-	}
+
+	static properties = {
+		_skeletonParent: { state: true },
+		_skeletonContainer: { state: true },
+		_skeletonHeading: { state: true },
+	};
+
+	static styles = css`
+		.controls {
+			align-items: center;
+			display: flex;
+			gap: 0.6rem;
+			margin-bottom: 0.6rem;
+		}
+	`;
 
 	constructor() {
 		super();

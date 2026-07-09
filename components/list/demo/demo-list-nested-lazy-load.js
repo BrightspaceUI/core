@@ -10,11 +10,9 @@ import { repeat } from 'lit/directives/repeat.js';
 
 class ListDemoNestedLazyLoad extends LitElement {
 
-	static get properties() {
-		return {
-			_items: { state: true },
-		};
-	}
+	static properties = {
+		_items: { state: true },
+	};
 
 	constructor() {
 		super();

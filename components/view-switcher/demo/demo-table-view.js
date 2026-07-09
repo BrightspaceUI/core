@@ -2,13 +2,12 @@ import { css, html, LitElement } from 'lit';
 import { tableStyles } from '../../table/table-wrapper.js';
 
 class TableView extends LitElement {
-	static get styles() {
-		return [tableStyles, css`
-			:host([hidden]) {
-				display: none;
-			}
-		`];
-	}
+
+	static styles = [tableStyles, css`
+		:host([hidden]) {
+			display: none;
+		}
+	`];
 
 	render() {
 		return html`

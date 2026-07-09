@@ -9,25 +9,24 @@ import { ObjectPropertyListItem } from './object-property-list-item.js';
  * rendered as a link and with an optional icon.
  */
 class ObjectPropertyListItemLink extends FocusMixin(ObjectPropertyListItem) {
-	static get properties() {
-		return {
-			/**
-			 * Download a URL instead of navigating to it
-			 * @type {boolean}
-			 */
-			download: { type: Boolean },
-			/**
-			 * REQUIRED: URL or URL fragment of the link
-			 * @type {string}
-			 */
-			href: { type: String },
-			/**
-			 * Where to display the linked URL
-			 * @type {string}
-			 */
-			target: { type: String },
-		};
-	}
+
+	static properties = {
+		/**
+		 * Download a URL instead of navigating to it
+		 * @type {boolean}
+		 */
+		download: { type: Boolean },
+		/**
+		 * REQUIRED: URL or URL fragment of the link
+		 * @type {string}
+		 */
+		href: { type: String },
+		/**
+		 * Where to display the linked URL
+		 * @type {string}
+		 */
+		target: { type: String },
+	};
 
 	static get focusElementSelector() {
 		return 'd2l-link';

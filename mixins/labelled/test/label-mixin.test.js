@@ -16,11 +16,9 @@ const labelledTag = defineCE(
 
 const labelTag = defineCE(
 	class extends LabelMixin(LitElement) {
-		static get properties() {
-			return {
-				text: { type: String }
-			};
-		}
+		static properties = {
+			text: { type: String }
+		};
 		render() {
 			return html`
 				<span>${this.text}</span>

@@ -17,71 +17,67 @@ const transitionDur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0
  */
 class MoreLess extends LocalizeCoreElement(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * Indicates whether element is in "more" state
-			 * @type {boolean}
-			 */
-			expanded: { type: Boolean, reflect: true },
+	static properties = {
+		/**
+		 * Indicates whether element is in "more" state
+		 * @type {boolean}
+		 */
+		expanded: { type: Boolean, reflect: true },
 
-			/**
-			 * Aligns the leading edge of more/less button text if value is set to "text" for left-aligned layouts, the trailing edge of text if value is set to "text-end" for right-aligned layouts
-			 * @type {'text'|'text-end'|''}
-			 */
-			hAlign: { type: String, attribute: 'h-align' },
+		/**
+		 * Aligns the leading edge of more/less button text if value is set to "text" for left-aligned layouts, the trailing edge of text if value is set to "text-end" for right-aligned layouts
+		 * @type {'text'|'text-end'|''}
+		 */
+		hAlign: { type: String, attribute: 'h-align' },
 
-			/**
-			 * The maximum height of the content when in "less" state
-			 * @type {string}
-			 */
-			height: { type: String },
+		/**
+		 * The maximum height of the content when in "less" state
+		 * @type {string}
+		 */
+		height: { type: String },
 
-			/**
-			 * Whether the component is active or inactive
-			 * @type {boolean}
-			 */
-			inactive: { type: Boolean, reflect: true },
-			__maxHeight: { state: true },
-			__transitionAdded: { state: true }
-		};
-	}
+		/**
+		 * Whether the component is active or inactive
+		 * @type {boolean}
+		 */
+		inactive: { type: Boolean, reflect: true },
+		__maxHeight: { state: true },
+		__transitionAdded: { state: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: flow-root;
-			}
+	static styles = css`
+		:host {
+			display: flow-root;
+		}
 
-			.d2l-more-less-content {
-				display: flow-root;
-				margin: -1em -1em 0;
-				padding: 1em 1em 0;
-				${overflowHiddenDeclarations}
-			}
+		.d2l-more-less-content {
+			display: flow-root;
+			margin: -1em -1em 0;
+			padding: 1em 1em 0;
+			${overflowHiddenDeclarations}
+		}
+		.d2l-more-less-transition {
+			transition: max-height ${transitionDur}ms cubic-bezier(0, 0.7, 0.5, 1);
+		}
+		:host(:not([expanded]):not([inactive])) .d2l-more-less-content {
+			-webkit-mask-image: linear-gradient(to top, transparent, #000000 1em);
+			mask-image: linear-gradient(to top, transparent, #000000 1em);
+		}
+		:host([inactive]) .d2l-more-less-toggle {
+			display: none;
+		}
+
+		.force-margin-scroll {
+			height: 1px;
+			margin-top: -1px;
+		}
+
+		@media (prefers-reduced-motion: reduce) {
 			.d2l-more-less-transition {
-				transition: max-height ${transitionDur}ms cubic-bezier(0, 0.7, 0.5, 1);
+				transition: none;
 			}
-			:host(:not([expanded]):not([inactive])) .d2l-more-less-content {
-				-webkit-mask-image: linear-gradient(to top, transparent, #000000 1em);
-				mask-image: linear-gradient(to top, transparent, #000000 1em);
-			}
-			:host([inactive]) .d2l-more-less-toggle {
-				display: none;
-			}
-
-			.force-margin-scroll {
-				height: 1px;
-				margin-top: -1px;
-			}
-
-			@media (prefers-reduced-motion: reduce) {
-				.d2l-more-less-transition {
-					transition: none;
-				}
-			}
-		`;
-	}
+		}
+	`;
 
 	constructor() {
 		super();

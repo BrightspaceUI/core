@@ -166,18 +166,16 @@ export const skeletonStyles = css`
 
 export const SkeletonMixin = dedupeMixin(superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			/**
-			 * Render the component as a [skeleton loader](https://github.com/BrightspaceUI/core/tree/main/components/skeleton).
-			 * @type {boolean}
-			 */
-			skeleton: { reflect: true, type: Boolean },
-		};
-	}
+	static properties = {
+		/**
+		 * Render the component as a [skeleton loader](https://github.com/BrightspaceUI/core/tree/main/components/skeleton).
+		 * @type {boolean}
+		 */
+		skeleton: { reflect: true, type: Boolean },
+	};
 
 	static get styles() {
-		const styles = [ skeletonStyles ];
+		const styles = [skeletonStyles];
 		super.styles && styles.unshift(super.styles);
 		return styles;
 	}

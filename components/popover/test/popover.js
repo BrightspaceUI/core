@@ -5,113 +5,109 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 class Popover extends PopoverMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * Margin to include when computing space available.
-			 * @type {number}
-			 */
-			margin: { type: Number, reflect: true, attribute: 'margin' },
-			/**
-			 * Max-height. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
-			 * @type {number}
-			 */
-			maxHeight: { type: Number, reflect: true, attribute: 'max-height' },
-			/**
-			 * Max-width (undefined). Specify a number that would be the px value.
-			 * @type {number}
-			 */
-			maxWidth: { type: Number, reflect: true, attribute: 'max-width' },
-			/**
-			 * Min-height used when `no-auto-fit` is true. Specify a number that would be the px value. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
-			 * @type {number}
-			 */
-			minHeight: { type: Number, reflect: true, attribute: 'min-height' },
-			/**
-			 * Min-width (undefined). Specify a number that would be the px value.
-			 * @type {number}
-			 */
-			minWidth: { type: Number, reflect: true, attribute: 'min-width' },
-			/**
-			 * Mobile tray location.
-			 * @type {'inline-start'|'inline-end'|'block-end'}
-			 */
-			mobileTrayLocation: { type: String, reflect: true, attribute: 'mobile-tray-location' },
-			/**
-			 * Whether to disable auto-close/light-dismiss
-			 * @type {boolean}
-			 */
-			noAutoClose: { type: Boolean, reflect: true, attribute: 'no-auto-close' },
-			/**
-			 * Whether to disable auto-focus on the first focusable element when opened
-			 * @type {boolean}
-			 */
-			noAutoFocus: { type: Boolean, reflect: true, attribute: 'no-auto-focus' },
-			/**
-			 * Render without a pointer
-			 * @type {boolean}
-			 */
-			noPointer: { type: Boolean, reflect: true, attribute: 'no-pointer' },
-			/**
-			 * Position the popover before or after the opener. Default is "block-end" (after).
-			 * @type {'block-start'|'block-end'}
-			 */
-			positionLocation: { type: String, reflect: true, attribute: 'position-location' },
-			/**
-			 * Position the popover to span from the opener edge to this grid line. Default is "all" (centered).
-			 * @type {'start'|'end'|'all'}
-			 */
-			positionSpan: { type: String, reflect: true, attribute: 'position-span' },
-			/**
-			 * Whether to render a d2l-focus-trap around the content
-			 * @type {boolean}
-			*/
-			trapFocus: { type: Boolean, reflect: true, attribute: 'trap-focus' },
-			_hasFooterSlotContent: { state: true },
-			_hasHeaderSlotContent: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Margin to include when computing space available.
+		 * @type {number}
+		 */
+		margin: { type: Number, reflect: true, attribute: 'margin' },
+		/**
+		 * Max-height. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
+		 * @type {number}
+		 */
+		maxHeight: { type: Number, reflect: true, attribute: 'max-height' },
+		/**
+		 * Max-width (undefined). Specify a number that would be the px value.
+		 * @type {number}
+		 */
+		maxWidth: { type: Number, reflect: true, attribute: 'max-width' },
+		/**
+		 * Min-height used when `no-auto-fit` is true. Specify a number that would be the px value. Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed.
+		 * @type {number}
+		 */
+		minHeight: { type: Number, reflect: true, attribute: 'min-height' },
+		/**
+		 * Min-width (undefined). Specify a number that would be the px value.
+		 * @type {number}
+		 */
+		minWidth: { type: Number, reflect: true, attribute: 'min-width' },
+		/**
+		 * Mobile tray location.
+		 * @type {'inline-start'|'inline-end'|'block-end'}
+		 */
+		mobileTrayLocation: { type: String, reflect: true, attribute: 'mobile-tray-location' },
+		/**
+		 * Whether to disable auto-close/light-dismiss
+		 * @type {boolean}
+		 */
+		noAutoClose: { type: Boolean, reflect: true, attribute: 'no-auto-close' },
+		/**
+		 * Whether to disable auto-focus on the first focusable element when opened
+		 * @type {boolean}
+		 */
+		noAutoFocus: { type: Boolean, reflect: true, attribute: 'no-auto-focus' },
+		/**
+		 * Render without a pointer
+		 * @type {boolean}
+		 */
+		noPointer: { type: Boolean, reflect: true, attribute: 'no-pointer' },
+		/**
+		 * Position the popover before or after the opener. Default is "block-end" (after).
+		 * @type {'block-start'|'block-end'}
+		 */
+		positionLocation: { type: String, reflect: true, attribute: 'position-location' },
+		/**
+		 * Position the popover to span from the opener edge to this grid line. Default is "all" (centered).
+		 * @type {'start'|'end'|'all'}
+		 */
+		positionSpan: { type: String, reflect: true, attribute: 'position-span' },
+		/**
+		 * Whether to render a d2l-focus-trap around the content
+		 * @type {boolean}
+		*/
+		trapFocus: { type: Boolean, reflect: true, attribute: 'trap-focus' },
+		_hasFooterSlotContent: { state: true },
+		_hasHeaderSlotContent: { state: true }
+	};
 
-	static get styles() {
-		return [super.styles, css`
-			.test-content-layout {
-				align-items: flex-start;
-				display: flex;
-				flex-direction: column;
-			}
-			.test-content {
-				box-sizing: border-box;
-				flex: auto;
-				max-width: 100%;
-				overflow-y: auto;
-				padding: 1rem;
-			}
-			.test-header,
-			.test-footer {
-				box-sizing: border-box;
-				flex: none;
-				max-width: 100%;
-				width: 100%;
-			}
-			.test-footer {
-				padding: 0 1rem 1rem 1rem;
-			}
-			.test-no-header,
-			.test-no-footer {
-				display: none;
-			}
-			.test-close {
-				margin-block-start: 12px;
-				width: 100%;
-			}
-			.test-no-close {
-				display: none;
-			}
-			.test-close-no-margin {
-				margin-block-start: 0;
-			}
-		`];
-	}
+	static styles = [super.styles, css`
+		.test-content-layout {
+			align-items: flex-start;
+			display: flex;
+			flex-direction: column;
+		}
+		.test-content {
+			box-sizing: border-box;
+			flex: auto;
+			max-width: 100%;
+			overflow-y: auto;
+			padding: 1rem;
+		}
+		.test-header,
+		.test-footer {
+			box-sizing: border-box;
+			flex: none;
+			max-width: 100%;
+			width: 100%;
+		}
+		.test-footer {
+			padding: 0 1rem 1rem 1rem;
+		}
+		.test-no-header,
+		.test-no-footer {
+			display: none;
+		}
+		.test-close {
+			margin-block-start: 12px;
+			width: 100%;
+		}
+		.test-no-close {
+			display: none;
+		}
+		.test-close-no-margin {
+			margin-block-start: 0;
+		}
+	`];
 
 	constructor() {
 		super();

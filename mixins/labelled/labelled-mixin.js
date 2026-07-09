@@ -48,11 +48,9 @@ const waitForElement = async(contextElement, selector, timeout) => {
 
 export const LabelMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			_label: { type: String, reflect: true }
-		};
-	}
+	static properties = {
+		_label: { type: String, reflect: true }
+	};
 
 	connectedCallback() {
 		super.connectedCallback();
@@ -77,33 +75,31 @@ export const LabelMixin = superclass => class extends superclass {
 
 export const LabelledMixin = superclass => class extends PropertyRequiredMixin(superclass) {
 
-	static get properties() {
-		return {
-			/**
-			 * ACCESSIBILITY: The id of element that provides the label for this element. Use when another visible element should act as the label.
-			 * @type {string}
-			 */
-			labelledBy: { type: String, reflect: true, attribute: 'labelled-by' },
-			/**
-			 * ACCESSIBILITY: REQUIRED: Explicitly defined label for the element
-			 * @type {string}
-			 */
-			label: {
-				type: String,
-				required: {
-					message: (_value, elem, defaultMessage) => {
-						if (!elem.labelledBy) return defaultMessage;
-						return `LabelledMixin: "${elem.tagName.toLowerCase()}" is labelled-by="${elem.labelledBy}", but its label is empty`;
-					},
-					validator: (_value, elem, hasValue) => {
-						if (!elem.labelRequired || hasValue) return true;
-						if (!elem.labelledBy) return false;
-						return elem._labelElem !== null;
-					}
+	static properties = {
+		/**
+		 * ACCESSIBILITY: The id of element that provides the label for this element. Use when another visible element should act as the label.
+		 * @type {string}
+		 */
+		labelledBy: { type: String, reflect: true, attribute: 'labelled-by' },
+		/**
+		 * ACCESSIBILITY: REQUIRED: Explicitly defined label for the element
+		 * @type {string}
+		 */
+		label: {
+			type: String,
+			required: {
+				message: (_value, elem, defaultMessage) => {
+					if (!elem.labelledBy) return defaultMessage;
+					return `LabelledMixin: "${elem.tagName.toLowerCase()}" is labelled-by="${elem.labelledBy}", but its label is empty`;
+				},
+				validator: (_value, elem, hasValue) => {
+					if (!elem.labelRequired || hasValue) return true;
+					if (!elem.labelledBy) return false;
+					return elem._labelElem !== null;
 				}
 			}
-		};
-	}
+		}
+	};
 
 	constructor() {
 		super();

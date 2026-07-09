@@ -16,7 +16,7 @@ class ButtonSplitItem extends PropertyRequiredMixin(MenuItemMixin(LitElement)) {
 		key: { type: String, required: true }
 	};
 
-	static styles = [ menuItemStyles,
+	static styles = [menuItemStyles,
 		css`
 			:host {
 				align-items: center;

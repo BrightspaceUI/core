@@ -277,11 +277,9 @@ describe('d2l-menu', () => {
 		let makeReady;
 		const delayedUpdateMenuItem = defineCE(
 			class extends MenuItemMixin(LitElement) {
-				static get properties() {
-					return {
-						_ready: { type: Boolean, state: true }
-					};
-				}
+				static properties = {
+					_ready: { type: Boolean, state: true }
+				};
 				constructor() {
 					super();
 					this._ready = false;

@@ -11,13 +11,11 @@ import { SwitchMixin } from './switch-mixin.js';
  */
 class Switch extends SwitchMixin(LitElement) {
 
-	static get styles() {
-		return [super.styles, css`
-			.d2l-switch-icon-off > d2l-icon-custom {
-				color: var(--d2l-theme-icon-color-standard);
-			}
-		`];
-	}
+	static styles = [super.styles, css`
+		.d2l-switch-icon-off > d2l-icon-custom {
+			color: var(--d2l-theme-icon-color-standard);
+		}
+	`];
 
 	get offIcon() {
 		return html`

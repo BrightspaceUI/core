@@ -7,14 +7,14 @@ const OffSCREEN_SIZELESS = getFlag('d2l-offscreen-sizeless', true);
  * A private helper declarations that should not be used by general consumers
  */
 export const _offscreenStyleDeclarations = css`
-		direction: var(--d2l-document-direction, ${document.dir === 'rtl' ? css`rtl` : css`ltr`}); /* stylelint-disable-line @stylistic/string-quotes */
-		height: ${OffSCREEN_SIZELESS ? 0 : 1}px;
-		inset-inline-start: -10000px;
-		overflow: hidden;
-		position: absolute !important;
-		white-space: nowrap;
-		width: ${OffSCREEN_SIZELESS ? 0 : 1}px;
-		${document.dir === 'rtl' ? css`right` : css`left`}: -10000px;
+	direction: var(--d2l-document-direction, ${document.dir === 'rtl' ? css`rtl` : css`ltr`}); /* stylelint-disable-line @stylistic/string-quotes */
+	height: ${OffSCREEN_SIZELESS ? 0 : 1}px;
+	inset-inline-start: -10000px;
+	overflow: hidden;
+	position: absolute !important;
+	white-space: nowrap;
+	width: ${OffSCREEN_SIZELESS ? 0 : 1}px;
+	${document.dir === 'rtl' ? css`right` : css`left`}: -10000px;
 `;
 
 export const offscreenStyles = css`
@@ -28,13 +28,11 @@ export const offscreenStyles = css`
  * @slot - Default content placed inside of the component
  */
 class Offscreen extends LitElement {
-	static get styles() {
-		return css`
-			:host {
-				${_offscreenStyleDeclarations}
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			${_offscreenStyleDeclarations}
+		}
+	`;
 	render() {
 		return html`<slot></slot>`;
 	}

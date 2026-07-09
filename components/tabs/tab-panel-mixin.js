@@ -4,58 +4,54 @@ import { getUseNewTabsStructureFlag } from './tabs.js';
 
 export const TabPanelMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			/**
-			 * REQUIRED: Id of the tab that labels this panel
-			 * @type {string}
-			 */
-			labelledBy: { type: String, attribute: 'labelled-by', reflect: true },
-			/**
-			 * Opt out of default padding/whitespace around the panel
-			 * @type {boolean}
-			 */
-			noPadding: { type: Boolean, attribute: 'no-padding', reflect: true },
-			/**
-			 * @ignore
-			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			role: { type: String, reflect: true },
-			/**
-			 * DEPRECATED: Use to select the tab. Do NOT set if using the d2l-tab/d2l-tab-panel implementation.
-			 * Remove with GAUD-8299-core-tabs-use-new-structure flag clean up.
-			 * @type {boolean}
-			 */
-			selected: { type: Boolean, reflect: true },
-			/**
-			 * DEPRECATED: The text used for the tab, as well as labelling the panel. Required if not using d2l-tab/d2l-tab-panel implementation.
-			 * Remove with GAUD-8299-core-tabs-use-new-structure flag clean up.
-			 * @type {string}
-			 */
-			text: { type: String },
-			_selected: { type: Boolean, attribute: '_selected', reflect: true }
-		};
-	}
+	static properties = {
+		/**
+		 * REQUIRED: Id of the tab that labels this panel
+		 * @type {string}
+		 */
+		labelledBy: { type: String, attribute: 'labelled-by', reflect: true },
+		/**
+		 * Opt out of default padding/whitespace around the panel
+		 * @type {boolean}
+		 */
+		noPadding: { type: Boolean, attribute: 'no-padding', reflect: true },
+		/**
+		 * @ignore
+		 */
+		// eslint-disable-next-line lit/no-native-attributes
+		role: { type: String, reflect: true },
+		/**
+		 * DEPRECATED: Use to select the tab. Do NOT set if using the d2l-tab/d2l-tab-panel implementation.
+		 * Remove with GAUD-8299-core-tabs-use-new-structure flag clean up.
+		 * @type {boolean}
+		 */
+		selected: { type: Boolean, reflect: true },
+		/**
+		 * DEPRECATED: The text used for the tab, as well as labelling the panel. Required if not using d2l-tab/d2l-tab-panel implementation.
+		 * Remove with GAUD-8299-core-tabs-use-new-structure flag clean up.
+		 * @type {string}
+		 */
+		text: { type: String },
+		_selected: { type: Boolean, attribute: '_selected', reflect: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				box-sizing: border-box;
-				display: none;
-				margin: 1.2rem 0 0 0;
-			}
-			:host([no-padding]) {
-				margin: 0;
-			}
-			/* clean up with GAUD-8299-core-tabs-use-new-structure flag clean up */
-			:host([selected]) {
-				display: block;
-			}
-			:host([_selected]) {
-				display: block;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			box-sizing: border-box;
+			display: none;
+			margin: 1.2rem 0 0 0;
+		}
+		:host([no-padding]) {
+			margin: 0;
+		}
+		/* clean up with GAUD-8299-core-tabs-use-new-structure flag clean up */
+		:host([selected]) {
+			display: block;
+		}
+		:host([_selected]) {
+			display: block;
+		}
+	`;
 
 	constructor() {
 		super();

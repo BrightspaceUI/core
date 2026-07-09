@@ -20,7 +20,7 @@ describe('typography', () => {
 
 		describe(category, () => {
 
-			[ '1', '2', '3', '4'].forEach(level => {
+			['1', '2', '3', '4'].forEach(level => {
 
 				it(`heading-${level}`, async() => {
 					const elem = await fixture(createTypographyWrapper(html`<h1 class="d2l-heading-${level}">${`Heading ${level}`}</h1>`), { viewport });

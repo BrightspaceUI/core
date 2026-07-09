@@ -3,17 +3,15 @@ import { radioStyles } from '../input-radio-styles.js';
 
 class TestInputRadioLabel extends LitElement {
 
-	static get styles() {
-		return [ radioStyles,
-			css`
-				:host {
-					display: block;
-					overflow: hidden;
-					width: 200px;
-				}
-			`
-		];
-	}
+	static styles = [radioStyles,
+		css`
+			:host {
+				display: block;
+				overflow: hidden;
+				width: 200px;
+			}
+		`
+	];
 
 	render() {
 		return html`

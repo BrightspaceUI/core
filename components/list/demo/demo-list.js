@@ -114,29 +114,25 @@ const items = [{
 
 class DemoList extends LitElement {
 
-	static get properties() {
-		return {
-			addButton: { type: Boolean, attribute: 'add-button' },
-			grid: { type: Boolean },
-			extendSeparators: { type: Boolean, attribute: 'extend-separators' },
-			_lastItemLoadedIndex: { state: true }
-		};
-	}
+	static properties = {
+		addButton: { type: Boolean, attribute: 'add-button' },
+		grid: { type: Boolean },
+		extendSeparators: { type: Boolean, attribute: 'extend-separators' },
+		_lastItemLoadedIndex: { state: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: block;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			img {
-				height: 500px;
-				object-fit: cover;
-			}
-		`;
-	}
+	static styles = css`
+		:host {
+			display: block;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		img {
+			height: 500px;
+			object-fit: cover;
+		}
+	`;
 
 	constructor() {
 		super();

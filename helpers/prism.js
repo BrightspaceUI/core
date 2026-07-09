@@ -343,9 +343,9 @@ const getLanguageInfo = elem => {
 };
 
 const languageDependencies = {
-	arduino: [ 'cpp' ],
-	cpp: [ 'c' ],
-	racket: [ 'scheme' ]
+	arduino: ['cpp'],
+	cpp: ['c'],
+	racket: ['scheme']
 };
 
 const languagesLoaded = {

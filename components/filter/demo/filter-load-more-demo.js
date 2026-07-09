@@ -69,11 +69,9 @@ const FullData = [
 
 class FilterLoadMoreDemo extends LitElement {
 
-	static get properties() {
-		return {
-			useOverflowGroup: { type: Boolean, attribute: 'use-overflow-group' }
-		};
-	}
+	static properties = {
+		useOverflowGroup: { type: Boolean, attribute: 'use-overflow-group' }
+	};
 
 	constructor() {
 		super();

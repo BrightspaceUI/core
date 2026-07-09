@@ -9,8 +9,8 @@ import { meterStyles } from './meter-styles.js';
  * A circular progress indicator.
  */
 class MeterCircle extends MeterMixin(LitElement) {
-	static get styles() {
-		return [ bodySmallStyles, bodyStandardStyles, meterStyles, css`
+
+	static styles = [bodySmallStyles, bodyStandardStyles, meterStyles, css`
 		:host {
 			display: inline-block;
 			width: 2.4rem;
@@ -25,8 +25,7 @@ class MeterCircle extends MeterMixin(LitElement) {
 		.d2l-meter-circle-text {
 			font-size: 0.55rem;
 		}
-	` ];
-	}
+	`];
 
 	render() {
 		const lengthOfLine = 21 * Math.PI * 2; // approximation perimeter of circle

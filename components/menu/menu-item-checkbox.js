@@ -9,9 +9,7 @@ import { menuItemSelectableStyles } from './menu-item-selectable-styles.js';
  */
 class MenuItemCheckbox extends MenuItemSelectableMixin(LitElement) {
 
-	static get styles() {
-		return menuItemSelectableStyles;
-	}
+	static styles = menuItemSelectableStyles;
 
 	constructor() {
 		super();

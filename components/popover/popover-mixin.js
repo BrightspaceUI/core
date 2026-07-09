@@ -51,215 +51,211 @@ const SCROLLBAR_WIDTH = (() => {
 
 export const PopoverMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			_contentHeight: { state: true },
-			_location: { type: String, reflect: true, attribute: '_location' },
-			_margin: { state: true },
-			_maxHeight: { state: true },
-			_maxWidth: { state: true },
-			_minHeight: { state: true },
-			_minWidth: { state: true },
-			_mobile: { type: Boolean, reflect: true, attribute: '_mobile' },
-			_mobileBreakpoint: { state: true },
-			_mobileTrayLocation: { type: String, reflect: true, attribute: '_mobile-tray-location' },
-			_noAutoClose: { state: true },
-			_noAutoFit: { state: true },
-			_noAutoFocus: { state: true },
-			_noPointer: { state: true },
-			_offscreen: { type: Boolean, reflect: true, attribute: '_offscreen' },
-			_offset: { state: true },
-			_opened: { type: Boolean, reflect: true, attribute: '_opened' },
-			_pointerPosition: { state: true },
-			_position: { state: true },
-			_preferredPosition: { state: true },
-			_rtl: { state: true },
-			_showBackdrop: { state: true },
-			_trapFocus: { state: true },
-			_useNativePopover: { type: String, reflect: true, attribute: 'popover' },
-			_width: { state: true }
-		};
-	}
+	static properties = {
+		_contentHeight: { state: true },
+		_location: { type: String, reflect: true, attribute: '_location' },
+		_margin: { state: true },
+		_maxHeight: { state: true },
+		_maxWidth: { state: true },
+		_minHeight: { state: true },
+		_minWidth: { state: true },
+		_mobile: { type: Boolean, reflect: true, attribute: '_mobile' },
+		_mobileBreakpoint: { state: true },
+		_mobileTrayLocation: { type: String, reflect: true, attribute: '_mobile-tray-location' },
+		_noAutoClose: { state: true },
+		_noAutoFit: { state: true },
+		_noAutoFocus: { state: true },
+		_noPointer: { state: true },
+		_offscreen: { type: Boolean, reflect: true, attribute: '_offscreen' },
+		_offset: { state: true },
+		_opened: { type: Boolean, reflect: true, attribute: '_opened' },
+		_pointerPosition: { state: true },
+		_position: { state: true },
+		_preferredPosition: { state: true },
+		_rtl: { state: true },
+		_showBackdrop: { state: true },
+		_trapFocus: { state: true },
+		_useNativePopover: { type: String, reflect: true, attribute: 'popover' },
+		_width: { state: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				--d2l-popover-default-animation-name: d2l-popover-animation;
-				--d2l-popover-default-background-color: var(--d2l-theme-background-color-base);
-				--d2l-popover-default-border-color: var(--d2l-theme-border-color-standard);
-				--d2l-popover-default-border-radius: 0.3rem;
-				--d2l-popover-default-foreground-color: var(--d2l-theme-text-color-static-standard);
-				--d2l-popover-default-shadow-color: var(--d2l-theme-shadow-floating-color);
-				background-color: transparent; /* override popover default */
-				border: none; /* override popover */
-				box-sizing: border-box;
-				color: var(--d2l-popover-foreground-color, var(--d2l-popover-default-foreground-color));
-				display: none;
-				height: fit-content; /* normalize popover */
-				inset: 0; /* normalize popover */
-				margin: 0; /* override popover */
-				overflow: visible; /* override popover */
-				padding: 0; /* override popover */
-				position: fixed; /* normalize popover */
-				text-align: start;
-				width: fit-content; /* normalize popover */
-			}
-			:host([theme="dark"]) {
-				--d2l-popover-default-animation-name: d2l-popover-animation-dark;
-				--d2l-popover-default-background-color: #333536; /* tungsten @ 70% */
-				--d2l-popover-default-border-color: var(--d2l-color-tungsten);
-				--d2l-popover-default-foreground-color: var(--d2l-color-sylvite);
-				--d2l-popover-default-shadow-color: rgba(0, 0, 0, 1);
-				opacity: 0.9;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			:host(:not([popover])) {
-				z-index: 998; /* position on top of floating buttons */
-			}
+	static styles = css`
+		:host {
+			--d2l-popover-default-animation-name: d2l-popover-animation;
+			--d2l-popover-default-background-color: var(--d2l-theme-background-color-base);
+			--d2l-popover-default-border-color: var(--d2l-theme-border-color-standard);
+			--d2l-popover-default-border-radius: 0.3rem;
+			--d2l-popover-default-foreground-color: var(--d2l-theme-text-color-static-standard);
+			--d2l-popover-default-shadow-color: var(--d2l-theme-shadow-floating-color);
+			background-color: transparent; /* override popover default */
+			border: none; /* override popover */
+			box-sizing: border-box;
+			color: var(--d2l-popover-foreground-color, var(--d2l-popover-default-foreground-color));
+			display: none;
+			height: fit-content; /* normalize popover */
+			inset: 0; /* normalize popover */
+			margin: 0; /* override popover */
+			overflow: visible; /* override popover */
+			padding: 0; /* override popover */
+			position: fixed; /* normalize popover */
+			text-align: start;
+			width: fit-content; /* normalize popover */
+		}
+		:host([theme="dark"]) {
+			--d2l-popover-default-animation-name: d2l-popover-animation-dark;
+			--d2l-popover-default-background-color: #333536; /* tungsten @ 70% */
+			--d2l-popover-default-border-color: var(--d2l-color-tungsten);
+			--d2l-popover-default-foreground-color: var(--d2l-color-sylvite);
+			--d2l-popover-default-shadow-color: rgba(0, 0, 0, 1);
+			opacity: 0.9;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		:host(:not([popover])) {
+			z-index: 998; /* position on top of floating buttons */
+		}
+		:host([_opened]) {
+			display: inline-block;
+		}
+		:host([_location="block-start"]) {
+			bottom: 0;
+			top: auto;
+		}
+
+		.content-position {
+			display: inline-block;
+			position: absolute;
+		}
+		.content-width {
+			background-color: var(--d2l-popover-background-color, var(--d2l-popover-default-background-color));
+			border: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
+			border-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
+			box-shadow: var(--d2l-theme-shadow-floating-offset-x) var(--d2l-theme-shadow-floating-offset-y) var(--d2l-theme-shadow-floating-blur-radius) var(--d2l-theme-shadow-floating-spread-radius) var(--d2l-popover-shadow-color, var(--d2l-popover-default-shadow-color));
+			box-sizing: border-box;
+			display: flex;
+			max-width: 370px;
+			min-width: 70px;
+			outline: var(--d2l-popover-outline-width, 0) solid var(--d2l-popover-outline-color, transparent);
+			width: 100vw;
+		}
+		.content-container {
+			box-sizing: border-box;
+			display: inline-block;
+			max-width: 100%;
+			min-width: inherit;
+			outline: none;
+			overflow-y: auto;
+		}
+
+		.pointer {
+			clip: rect(-5px, 21px, 8px, -7px);
+			display: inline-block;
+			position: absolute;
+			z-index: 1;
+		}
+		:host([_location="block-start"]) .pointer {
+			clip: rect(9px, 21px, 22px, -3px);
+		}
+		:host([_location="inline-start"]) .pointer,
+		:host([_location="inline-end"]) .pointer.pointer-mirror {
+			clip: rect(-3px, 21px, 21px, 10px);
+		}
+		:host([_location="inline-end"]) .pointer,
+		:host([_location="inline-start"]) .pointer.pointer-mirror {
+			clip: rect(-3px, 8px, 21px, -3px);
+		}
+
+		.pointer > div {
+			background-color: var(--d2l-popover-background-color, var(--d2l-popover-default-background-color));
+			border: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
+			border-radius: 0.1rem;
+			box-shadow: -4px -4px 12px -5px var(--d2l-theme-shadow-floating-color);
+			height: ${pointerLength}px;
+			outline: var(--d2l-popover-outline-width, 0) solid var(--d2l-popover-outline-color, transparent);
+			transform: rotate(45deg);
+			width: ${pointerLength}px;
+		}
+
+		:host([_location="block-start"]) .pointer > div {
+			box-shadow: 4px 4px 12px -5px var(--d2l-theme-shadow-floating-color);
+		}
+
+		@keyframes d2l-popover-animation {
+			0% { opacity: 0; transform: translate(0, -10px); }
+			100% { opacity: 1; transform: translate(0, 0); }
+		}
+		@keyframes d2l-popover-animation-dark {
+			0% { opacity: 0; transform: translate(0, -10px); }
+			100% { opacity: 0.9; transform: translate(0, 0); }
+		}
+		@media (prefers-reduced-motion: no-preference) {
 			:host([_opened]) {
-				display: inline-block;
+				animation: var(--d2l-popover-animation-name, var(--d2l-popover-default-animation-name)) 300ms ease;
 			}
-			:host([_location="block-start"]) {
-				bottom: 0;
-				top: auto;
-			}
+		}
 
-			.content-position {
-				display: inline-block;
-				position: absolute;
-			}
-			.content-width {
-				background-color: var(--d2l-popover-background-color, var(--d2l-popover-default-background-color));
-				border: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
-				border-radius: var(--d2l-popover-border-radius, var(--d2l-popover-default-border-radius));
-				box-shadow: var(--d2l-theme-shadow-floating-offset-x) var(--d2l-theme-shadow-floating-offset-y) var(--d2l-theme-shadow-floating-blur-radius) var(--d2l-theme-shadow-floating-spread-radius) var(--d2l-popover-shadow-color, var(--d2l-popover-default-shadow-color));
-				box-sizing: border-box;
-				display: flex;
-				max-width: 370px;
-				min-width: 70px;
-				outline: var(--d2l-popover-outline-width, 0) solid var(--d2l-popover-outline-color, transparent);
-				width: 100vw;
-			}
-			.content-container {
-				box-sizing: border-box;
-				display: inline-block;
-				max-width: 100%;
-				min-width: inherit;
-				outline: none;
-				overflow-y: auto;
-			}
+		:host([_mobile][_mobile-tray-location]) .content-width {
+			position: fixed;
+			z-index: 1000;
+		}
 
-			.pointer {
-				clip: rect(-5px, 21px, 8px, -7px);
-				display: inline-block;
-				position: absolute;
-				z-index: 1;
-			}
-			:host([_location="block-start"]) .pointer {
-				clip: rect(9px, 21px, 22px, -3px);
-			}
-			:host([_location="inline-start"]) .pointer,
-			:host([_location="inline-end"]) .pointer.pointer-mirror {
-				clip: rect(-3px, 21px, 21px, 10px);
-			}
-			:host([_location="inline-end"]) .pointer,
-			:host([_location="inline-start"]) .pointer.pointer-mirror {
-				clip: rect(-3px, 8px, 21px, -3px);
-			}
+		:host([_mobile][_mobile-tray-location="inline-start"]) .content-width,
+		:host([_mobile][_mobile-tray-location="inline-end"]) .content-width {
+			inset-block-end: 0;
+			inset-block-start: 0;
+		}
 
-			.pointer > div {
-				background-color: var(--d2l-popover-background-color, var(--d2l-popover-default-background-color));
-				border: 1px solid var(--d2l-popover-border-color, var(--d2l-popover-default-border-color));
-				border-radius: 0.1rem;
-				box-shadow: -4px -4px 12px -5px var(--d2l-theme-shadow-floating-color);
-				height: ${pointerLength}px;
-				outline: var(--d2l-popover-outline-width, 0) solid var(--d2l-popover-outline-color, transparent);
-				transform: rotate(45deg);
-				width: ${pointerLength}px;
-			}
+		:host([_mobile][_mobile-tray-location="inline-start"]) .content-width {
+			border-end-start-radius: 0;
+			border-start-start-radius: 0;
+		}
 
-			:host([_location="block-start"]) .pointer > div {
-				box-shadow: 4px 4px 12px -5px var(--d2l-theme-shadow-floating-color);
-			}
+		:host([_mobile][_mobile-tray-location="inline-end"]) .content-width {
+			border-end-end-radius: 0;
+			border-start-end-radius: 0;
+		}
 
-			@keyframes d2l-popover-animation {
-				0% { opacity: 0; transform: translate(0, -10px); }
-				100% { opacity: 1; transform: translate(0, 0); }
-			}
-			@keyframes d2l-popover-animation-dark {
-				0% { opacity: 0; transform: translate(0, -10px); }
-				100% { opacity: 0.9; transform: translate(0, 0); }
-			}
-			@media (prefers-reduced-motion: no-preference) {
-				:host([_opened]) {
-					animation: var(--d2l-popover-animation-name, var(--d2l-popover-default-animation-name)) 300ms ease;
-				}
-			}
+		:host([_mobile][_mobile-tray-location="block-end"]) .content-width {
+			border-end-end-radius: 0;
+			border-end-start-radius: 0;
+			inset-inline-start: 0;
+		}
 
-			:host([_mobile][_mobile-tray-location]) .content-width {
-				position: fixed;
-				z-index: 1000;
-			}
+		:host([_mobile][_mobile-tray-location="inline-end"][opened]) .content-width {
+			inset-inline-end: 0;
+		}
 
-			:host([_mobile][_mobile-tray-location="inline-start"]) .content-width,
-			:host([_mobile][_mobile-tray-location="inline-end"]) .content-width {
-				inset-block-end: 0;
-				inset-block-start: 0;
-			}
+		:host([_mobile][_mobile-tray-location="inline-start"][opened]) .content-width {
+			inset-inline-start: 0;
+		}
 
-			:host([_mobile][_mobile-tray-location="inline-start"]) .content-width {
-				border-end-start-radius: 0;
-				border-start-start-radius: 0;
-			}
+		:host([_mobile][_mobile-tray-location="block-end"][opened]) .content-width {
+			inset-block-end: 0;
+		}
 
-			:host([_mobile][_mobile-tray-location="inline-end"]) .content-width {
-				border-end-end-radius: 0;
-				border-start-end-radius: 0;
-			}
+		:host([_mobile][_mobile-tray-location="inline-start"][opened]) .content-container,
+		:host([_mobile][_mobile-tray-location="inline-end"][opened]) .content-container {
+			height: calc(var(--d2l-vh, 1vh) * 100);
+			height: 100dvh;
+		}
 
-			:host([_mobile][_mobile-tray-location="block-end"]) .content-width {
-				border-end-end-radius: 0;
-				border-end-start-radius: 0;
-				inset-inline-start: 0;
-			}
+		:host([_mobile][_mobile-tray-location]) > .pointer {
+			display: none;
+		}
 
-			:host([_mobile][_mobile-tray-location="inline-end"][opened]) .content-width {
-				inset-inline-end: 0;
-			}
+		:host([_mobile][_mobile-tray-location][opened]) {
+			animation: none;
+		}
 
-			:host([_mobile][_mobile-tray-location="inline-start"][opened]) .content-width {
-				inset-inline-start: 0;
-			}
+		:host([_offscreen]) {
+			${_offscreenStyleDeclarations}
+		}
 
-			:host([_mobile][_mobile-tray-location="block-end"][opened]) .content-width {
-				inset-block-end: 0;
-			}
-
-			:host([_mobile][_mobile-tray-location="inline-start"][opened]) .content-container,
-			:host([_mobile][_mobile-tray-location="inline-end"][opened]) .content-container {
-				height: calc(var(--d2l-vh, 1vh) * 100);
-				height: 100dvh;
-			}
-
-			:host([_mobile][_mobile-tray-location]) > .pointer {
-				display: none;
-			}
-
-			:host([_mobile][_mobile-tray-location][opened]) {
-				animation: none;
-			}
-
-			:host([_offscreen]) {
-				${_offscreenStyleDeclarations}
-			}
-
-			d2l-focus-trap {
-				display: block;
-			}
-		`;
-	}
+		d2l-focus-trap {
+			display: block;
+		}
+	`;
 
 	constructor() {
 		super();

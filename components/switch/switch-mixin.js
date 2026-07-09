@@ -9,158 +9,154 @@ import { RtlMixin } from '../../mixins/rtl/rtl-mixin.js';
 
 export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(superclass)) {
 
-	static get properties() {
-		return {
-			/**
-			 * Disables the switch from being toggled.
-			 * @type {boolean}
-			 */
-			disabled: { type: Boolean, reflect: true },
-			/**
-			 * Active state.
-			 * @type {boolean}
-			 */
-			on: { type: Boolean, reflect: true },
-			/**
-			 * @ignore - Need to add documentation in each component that uses this mixin.
-			 */
-			text: { type: String, reflect: true },
-			/**
-			 * Determines where text should be positioned relative to the switch.
-			 * @type {'start'|'end'|'hidden'}
-			 * @default end
-			 */
-			textPosition: { type: String, attribute: 'text-position', reflect: true },
-			_hovering: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Disables the switch from being toggled.
+		 * @type {boolean}
+		 */
+		disabled: { type: Boolean, reflect: true },
+		/**
+		 * Active state.
+		 * @type {boolean}
+		 */
+		on: { type: Boolean, reflect: true },
+		/**
+		 * @ignore - Need to add documentation in each component that uses this mixin.
+		 */
+		text: { type: String, reflect: true },
+		/**
+		 * Determines where text should be positioned relative to the switch.
+		 * @type {'start'|'end'|'hidden'}
+		 * @default end
+		 */
+		textPosition: { type: String, attribute: 'text-position', reflect: true },
+		_hovering: { state: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-				user-select: none;
-				white-space: nowrap;
-			}
-			:host([hidden]) {
-				display: none;
-			}
+	static styles = css`
+		:host {
+			display: inline-block;
+			user-select: none;
+			white-space: nowrap;
+		}
+		:host([hidden]) {
+			display: none;
+		}
 
-			.d2l-switch-container {
-				--d2l-focus-ring-offset: 0;
-				background-color: var(--d2l-switch-container-background-color, var(--d2l-theme-background-color-base));
-				border-radius: 1rem;
-				box-sizing: border-box;
-				cursor: default;
-				display: inline-block;
-				font-size: 0;
-				line-height: 0;
-				outline-style: none;
-				padding: 0.1rem;
-				vertical-align: middle;
+		.d2l-switch-container {
+			--d2l-focus-ring-offset: 0;
+			background-color: var(--d2l-switch-container-background-color, var(--d2l-theme-background-color-base));
+			border-radius: 1rem;
+			box-sizing: border-box;
+			cursor: default;
+			display: inline-block;
+			font-size: 0;
+			line-height: 0;
+			outline-style: none;
+			padding: 0.1rem;
+			vertical-align: middle;
+		}
+		${getFocusRingStyles('.d2l-switch-container', { extraStyles: css`position: relative;` })}
+		:host([disabled]) .d2l-switch-container {
+			cursor: default;
+			opacity: var(--d2l-theme-opacity-disabled-control);
+		}
+		:host([disabled]) .d2l-switch-container:hover > .d2l-switch-inner,
+		:host([disabled]) .d2l-switch-inner:hover,
+		:host([disabled]) .switch-hover {
+			outline: none;
+		}
+		.d2l-switch-inner {
+			border: 1px solid var(--d2l-theme-border-color-emphasized);
+			border-radius: 0.8rem;
+			box-sizing: border-box;
+			padding: 0.3rem;
+			position: relative;
+			width: 3rem;
+		}
+		:host([on]) .d2l-switch-inner {
+			background-color: var(--d2l-theme-background-color-interactive-highlighted);
+		}
+		.d2l-switch-toggle {
+			position: relative;
+			transition: transform 150ms ease-out;
+		}
+		.d2l-switch-toggle > div {
+			background-color: var(--d2l-theme-background-color-base);
+			border: 1px solid var(--d2l-theme-border-color-emphasized);
+			border-radius: 0.6rem;
+			box-sizing: border-box;
+			display: inline-block;
+			height: 1.1rem;
+			left: -0.1rem;
+			position: absolute;
+			top: -0.95rem;
+			width: 1.1rem;
+		}
+		:host([on]) .d2l-switch-toggle > div {
+			left: 0.1rem;
+		}
+		:host([dir="rtl"][on]) .d2l-switch-toggle > div {
+			right: 0.3rem;
+		}
+		:host([dir="rtl"]) .d2l-switch-toggle > div {
+			left: auto;
+			right: -0.1rem;
+		}
+		:host([on]) .d2l-switch-toggle {
+			transform: translateX(1.2rem);
+		}
+		:host([dir="rtl"][on]) .d2l-switch-toggle {
+			right: -0.2rem;
+			transform: translateX(-1.2rem);
+		}
+		d2l-icon, d2l-icon-custom {
+			height: 0.8rem;
+			width: 0.8rem;
+		}
+		.d2l-switch-icon-on, .d2l-switch-icon-off {
+			display: inline-block;
+			transform: scale(1);
+			transition: transform 150ms ease-out;
+		}
+		.d2l-switch-icon-on {
+			margin-right: 0.65rem;
+		}
+		:host([dir="rtl"]) .d2l-switch-icon-on {
+			margin-left: 0.65rem;
+			margin-right: 0;
+		}
+		:host([on]) .d2l-switch-icon-on > d2l-icon,
+		:host([on]) .d2l-switch-icon-on > d2l-icon-custom {
+			color: var(--d2l-theme-icon-color-active);
+		}
+		:host([on]) .d2l-switch-icon-off {
+			transform: scale(0.35);
+		}
+		:host(:not([on])) .d2l-switch-icon-on {
+			color: var(--d2l-theme-icon-color-active);
+			transform: scale(0.35);
+		}
+		.d2l-switch-text {
+			cursor: default;
+			font-size: 0.8rem;
+			font-weight: 400;
+		}
+		:host([text-position="hidden"]) .d2l-switch-text {
+			display: none;
+		}
+		.d2l-switch-inner:hover, .switch-hover {
+			outline: 2px solid var(--d2l-theme-border-color-focus);
+			outline-offset: -2px;
+		}
+		@media (prefers-reduced-motion: reduce) {
+			.d2l-switch-toggle,
+			.d2l-switch-icon-on,
+			.d2l-switch-icon-off {
+				transition: none;
 			}
-			${getFocusRingStyles('.d2l-switch-container', { extraStyles: css`position: relative;` })}
-			:host([disabled]) .d2l-switch-container {
-				cursor: default;
-				opacity: var(--d2l-theme-opacity-disabled-control);
-			}
-			:host([disabled]) .d2l-switch-container:hover > .d2l-switch-inner,
-			:host([disabled]) .d2l-switch-inner:hover,
-			:host([disabled]) .switch-hover {
-				outline: none;
-			}
-			.d2l-switch-inner {
-				border: 1px solid var(--d2l-theme-border-color-emphasized);
-				border-radius: 0.8rem;
-				box-sizing: border-box;
-				padding: 0.3rem;
-				position: relative;
-				width: 3rem;
-			}
-			:host([on]) .d2l-switch-inner {
-				background-color: var(--d2l-theme-background-color-interactive-highlighted);
-			}
-			.d2l-switch-toggle {
-				position: relative;
-				transition: transform 150ms ease-out;
-			}
-			.d2l-switch-toggle > div {
-				background-color: var(--d2l-theme-background-color-base);
-				border: 1px solid var(--d2l-theme-border-color-emphasized);
-				border-radius: 0.6rem;
-				box-sizing: border-box;
-				display: inline-block;
-				height: 1.1rem;
-				left: -0.1rem;
-				position: absolute;
-				top: -0.95rem;
-				width: 1.1rem;
-			}
-			:host([on]) .d2l-switch-toggle > div {
-				left: 0.1rem;
-			}
-			:host([dir="rtl"][on]) .d2l-switch-toggle > div {
-				right: 0.3rem;
-			}
-			:host([dir="rtl"]) .d2l-switch-toggle > div {
-				left: auto;
-				right: -0.1rem;
-			}
-			:host([on]) .d2l-switch-toggle {
-				transform: translateX(1.2rem);
-			}
-			:host([dir="rtl"][on]) .d2l-switch-toggle {
-				right: -0.2rem;
-				transform: translateX(-1.2rem);
-			}
-			d2l-icon, d2l-icon-custom {
-				height: 0.8rem;
-				width: 0.8rem;
-			}
-			.d2l-switch-icon-on, .d2l-switch-icon-off {
-				display: inline-block;
-				transform: scale(1);
-				transition: transform 150ms ease-out;
-			}
-			.d2l-switch-icon-on {
-				margin-right: 0.65rem;
-			}
-			:host([dir="rtl"]) .d2l-switch-icon-on {
-				margin-left: 0.65rem;
-				margin-right: 0;
-			}
-			:host([on]) .d2l-switch-icon-on > d2l-icon,
-			:host([on]) .d2l-switch-icon-on > d2l-icon-custom {
-				color: var(--d2l-theme-icon-color-active);
-			}
-			:host([on]) .d2l-switch-icon-off {
-				transform: scale(0.35);
-			}
-			:host(:not([on])) .d2l-switch-icon-on {
-				color: var(--d2l-theme-icon-color-active);
-				transform: scale(0.35);
-			}
-			.d2l-switch-text {
-				cursor: default;
-				font-size: 0.8rem;
-				font-weight: 400;
-			}
-			:host([text-position="hidden"]) .d2l-switch-text {
-				display: none;
-			}
-			.d2l-switch-inner:hover, .switch-hover {
-				outline: 2px solid var(--d2l-theme-border-color-focus);
-				outline-offset: -2px;
-			}
-			@media (prefers-reduced-motion: reduce) {
-				.d2l-switch-toggle,
-				.d2l-switch-icon-on,
-				.d2l-switch-icon-off {
-					transition: none;
-				}
-			}
-		`;
-	}
+		}
+	`;
 
 	constructor() {
 		super();

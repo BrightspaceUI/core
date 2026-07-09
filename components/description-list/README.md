@@ -38,9 +38,7 @@ For very long values, or very small container sizes, the description list can us
 
   class TestDescriptionList extends LitElement {
 
-    static get styles() {
-      return descriptionListStyles;
-    }
+    static styles = descriptionListStyles;
 
     render() {
       return html`
@@ -77,15 +75,11 @@ The `d2l-dl-wrapper` component can be combined with `descriptionListStyles` to a
 
   class TestDescriptionList extends LitElement {
 
-    static get styles() {
-      return descriptionListStyles;
-    }
+    static styles = descriptionListStyles;
 
-    static get properties() {
-      return {
-        breakpoint: { type: Number },
-      }
-    }
+    static properties = {
+      breakpoint: { type: Number },
+    };
 
     render() {
       return html`
@@ -133,28 +127,26 @@ The `dt` and `dd` elements can contain non-text content such as links or profile
 
   class TestDescriptionList extends LitElement {
 
-    static get styles() {
-      return [
-        descriptionListStyles, css`
-          .user {
-            align-items: center;
-            display: flex;
-            gap: 0.5rem;
-          }
-          .avatar {
-            align-items: center;
-            background-color: var(--d2l-color-cinnabar-minus-1);
-            border-radius: 0.25rem;
-            color: white;
-            display: flex;
-            font-size: 0.7rem;
-            font-weight: 700;
-            height: 1.5rem;
-            justify-content: center;
-            width: 1.5rem;
-          }
-      `];
-    }
+    static styles = [
+      descriptionListStyles, css`
+        .user {
+          align-items: center;
+          display: flex;
+          gap: 0.5rem;
+        }
+        .avatar {
+          align-items: center;
+          background-color: var(--d2l-color-cinnabar-minus-1);
+          border-radius: 0.25rem;
+          color: white;
+          display: flex;
+          font-size: 0.7rem;
+          font-weight: 700;
+          height: 1.5rem;
+          justify-content: center;
+          width: 1.5rem;
+        }
+    `];
 
     render() {
       return html`

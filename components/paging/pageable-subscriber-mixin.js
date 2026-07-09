@@ -2,16 +2,14 @@ import { EventSubscriberController, IdSubscriberController } from '../../control
 
 export const PageableSubscriberMixin = superclass => class extends superclass {
 
-	static get properties() {
-		return {
-			/**
-			 * Id of the `PageableMixin` component this component wants to observe (if not located within that component)
-			 * @type {string}
-			 */
-			pageableFor: { type: String, reflect: true, attribute: 'pageable-for' },
-			_pageableInfo: { state: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Id of the `PageableMixin` component this component wants to observe (if not located within that component)
+		 * @type {string}
+		 */
+		pageableFor: { type: String, reflect: true, attribute: 'pageable-for' },
+		_pageableInfo: { state: true }
+	};
 
 	constructor() {
 		super();
@@ -27,7 +25,7 @@ export const PageableSubscriberMixin = superclass => class extends superclass {
 	}
 
 	_getPageableRegistries() {
-		return this.pageableFor ? this._pageableIdSubscriber.registries : [ this._pageableEventSubscriber.registry ];
+		return this.pageableFor ? this._pageableIdSubscriber.registries : [this._pageableEventSubscriber.registry];
 	}
 
 };

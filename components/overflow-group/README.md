@@ -102,9 +102,7 @@ class OtherOverflowGroup extends OverflowGroupMixin(LitElement) {
 **Styles:**
 
 ```javascript
-static get styles() {
-  return [ super.styles ];
-}
+static styles = [super.styles];
 ```
 
 **Functionality:**

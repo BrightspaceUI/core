@@ -9,62 +9,59 @@ import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
  * with an optional icon.
  */
 export class ObjectPropertyListItem extends SkeletonMixin(LitElement) {
-	static get properties() {
-		return {
-			/**
-			 * @ignore
-			 */
-			// eslint-disable-next-line lit/no-native-attributes
-			hidden: { type: Boolean },
-			/**
-			 * Name of an optional icon to display
-			 * @type {string}
-			 */
-			icon: { type: String },
-			/**
-			 * REQUIRED: Text to display on the item
-			 * @type {string}
-			 */
-			text: { type: String },
-			_showSeparator: { state: true },
-		};
-	}
 
-	static get styles() {
-		return [super.styles, css`
-			:host {
-				unicode-bidi: isolate;
-				vertical-align: middle;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			d2l-icon {
-				height: 1.2857em; /* 18px desired height at main font size (14px), but using em to scale properly at smaller breakpoint. */
-				width: 1.2857em;
-			}
-			.separator {
-				margin: 0 -0.05rem; /* 10px desired margin, subtract 5px arbitrary whitespace and 6px whitespace inside bullet icon. */
-			}
-			.separator d2l-icon {
-				color: var(--d2l-theme-text-color-static-faint);
-			}
-			.item-icon {
-				margin-inline-end: 0.05rem; /* 6px desired margin, subtract 5px arbitrary whitespace. */
-				margin-top: -0.1rem;
-			}
-			:host([skeleton]) d2l-icon {
-				color: var(--d2l-theme-background-color-interactive-faint-hover);
-			}
-			:host([skeleton]) .d2l-skeletize {
-				display: inline-block;
-				max-width: 80%;
-				overflow: hidden;
-				vertical-align: middle;
-				white-space: nowrap;
-			}
-		`];
-	}
+	static properties = {
+		/**
+		 * @ignore
+		 */
+		// eslint-disable-next-line lit/no-native-attributes
+		hidden: { type: Boolean },
+		/**
+		 * Name of an optional icon to display
+		 * @type {string}
+		 */
+		icon: { type: String },
+		/**
+		 * REQUIRED: Text to display on the item
+		 * @type {string}
+		 */
+		text: { type: String },
+		_showSeparator: { state: true },
+	};
+
+	static styles = [super.styles, css`
+		:host {
+			unicode-bidi: isolate;
+			vertical-align: middle;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		d2l-icon {
+			height: 1.2857em; /* 18px desired height at main font size (14px), but using em to scale properly at smaller breakpoint. */
+			width: 1.2857em;
+		}
+		.separator {
+			margin: 0 -0.05rem; /* 10px desired margin, subtract 5px arbitrary whitespace and 6px whitespace inside bullet icon. */
+		}
+		.separator d2l-icon {
+			color: var(--d2l-theme-text-color-static-faint);
+		}
+		.item-icon {
+			margin-inline-end: 0.05rem; /* 6px desired margin, subtract 5px arbitrary whitespace. */
+			margin-top: -0.1rem;
+		}
+		:host([skeleton]) d2l-icon {
+			color: var(--d2l-theme-background-color-interactive-faint-hover);
+		}
+		:host([skeleton]) .d2l-skeletize {
+			display: inline-block;
+			max-width: 80%;
+			overflow: hidden;
+			vertical-align: middle;
+			white-space: nowrap;
+		}
+	`];
 
 	constructor() {
 		super();

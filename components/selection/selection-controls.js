@@ -17,103 +17,99 @@ import { SelectionObserverMixin } from './selection-observer-mixin.js';
  */
 export class SelectionControls extends PageableSubscriberMixin(SelectionObserverMixin(LocalizeCoreElement(LitElement))) {
 
-	static get properties() {
-		return {
-			/**
-			 * Whether to render select-all and selection summary
-			 * @type {boolean}
-			 */
-			noSelection: { type: Boolean, attribute: 'no-selection' },
-			/**
-			 * ADVANCED: Text to display if no items are selected (overrides pageable counts)
-			 * @type {string}
-			 */
-			noSelectionText: { type: String, attribute: 'no-selection-text' },
-			/**
-			 * Disables sticky positioning for the controls
-			 * @type {boolean}
-			 */
-			noSticky: { type: Boolean, attribute: 'no-sticky', reflect: true },
-			/**
-			 * Whether all pages can be selected
-			 * @type {boolean}
-			 */
-			selectAllPagesAllowed: { type: Boolean, attribute: 'select-all-pages-allowed' },
-			_hasActions: { state: true },
-			_noSelectionText: { state: true },
-			_scrolled: { type: Boolean, reflect: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Whether to render select-all and selection summary
+		 * @type {boolean}
+		 */
+		noSelection: { type: Boolean, attribute: 'no-selection' },
+		/**
+		 * ADVANCED: Text to display if no items are selected (overrides pageable counts)
+		 * @type {string}
+		 */
+		noSelectionText: { type: String, attribute: 'no-selection-text' },
+		/**
+		 * Disables sticky positioning for the controls
+		 * @type {boolean}
+		 */
+		noSticky: { type: Boolean, attribute: 'no-sticky', reflect: true },
+		/**
+		 * Whether all pages can be selected
+		 * @type {boolean}
+		 */
+		selectAllPagesAllowed: { type: Boolean, attribute: 'select-all-pages-allowed' },
+		_hasActions: { state: true },
+		_noSelectionText: { state: true },
+		_scrolled: { type: Boolean, reflect: true }
+	};
 
-	static get styles() {
-		return css`
-			:host {
-				display: block;
-				position: sticky;
-				top: 0;
+	static styles = css`
+		:host {
+			display: block;
+			position: sticky;
+			top: 0;
+		}
+		:host([no-sticky]) {
+			position: static;
+		}
+		@media (prefers-reduced-motion: no-preference) {
+			.d2l-selection-controls-shadow {
+				transition: box-shadow 200ms ease-out;
 			}
-			:host([no-sticky]) {
-				position: static;
-			}
-			@media (prefers-reduced-motion: no-preference) {
-				.d2l-selection-controls-shadow {
-					transition: box-shadow 200ms ease-out;
-				}
-			}
-			:host([_scrolled]) .d2l-selection-controls-shadow {
-				background-color: var(--d2l-selection-controls-background-color, var(--d2l-theme-background-color-base));
-				bottom: -4px;
-				box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
-				clip: rect(30px, auto, 200px, auto);
-				display: var(--d2l-selection-controls-shadow-display, block);
-				height: 40px;
-				margin: 0 calc(-1*var(--d2l-selection-controls-padding, 0px));
-				padding: 0 var(--d2l-selection-controls-padding, 0);
-				position: absolute;
-				width: 100%;
-				z-index: -1;
-			}
-			:host([hidden]) {
-				display: none;
-			}
-			.d2l-selection-controls-container {
-				align-items: center;
-				background-color: var(--d2l-selection-controls-background-color, var(--d2l-theme-background-color-base));
-				display: flex;
-				margin: 6px calc(-1*var(--d2l-selection-controls-padding, 0px));
-				min-height: 54px;
-				padding: 0 var(--d2l-selection-controls-padding, 0);
-			}
-			:host([no-sticky]) .d2l-selection-controls-container {
-				background-color: transparent;
-			}
-			.d2l-selection-controls-container-slim {
-				min-height: 36px;
-			}
-			d2l-selection-select-all, d2l-selection-summary {
-				flex: none;
-			}
-			d2l-selection-select-all + d2l-selection-summary {
-				margin-inline-start: 0.9rem;
-			}
-			d2l-selection-select-all-pages {
-				flex: none;
-				margin-inline-start: 0.45rem;
-			}
-			.d2l-selection-controls-actions {
-				--d2l-overflow-group-justify-content: flex-end;
-				flex: auto;
-				margin-inline-end: var(--d2l-selection-controls-offset, 0);
-				text-align: end;
-			}
-			.d2l-sticky-edge {
-				left: 0;
-				position: absolute;
-				right: 0;
-				top: -1px;
-			}
-		`;
-	}
+		}
+		:host([_scrolled]) .d2l-selection-controls-shadow {
+			background-color: var(--d2l-selection-controls-background-color, var(--d2l-theme-background-color-base));
+			bottom: -4px;
+			box-shadow: 0 8px 12px -9px rgba(0, 0, 0, 0.3);
+			clip: rect(30px, auto, 200px, auto);
+			display: var(--d2l-selection-controls-shadow-display, block);
+			height: 40px;
+			margin: 0 calc(-1*var(--d2l-selection-controls-padding, 0px));
+			padding: 0 var(--d2l-selection-controls-padding, 0);
+			position: absolute;
+			width: 100%;
+			z-index: -1;
+		}
+		:host([hidden]) {
+			display: none;
+		}
+		.d2l-selection-controls-container {
+			align-items: center;
+			background-color: var(--d2l-selection-controls-background-color, var(--d2l-theme-background-color-base));
+			display: flex;
+			margin: 6px calc(-1*var(--d2l-selection-controls-padding, 0px));
+			min-height: 54px;
+			padding: 0 var(--d2l-selection-controls-padding, 0);
+		}
+		:host([no-sticky]) .d2l-selection-controls-container {
+			background-color: transparent;
+		}
+		.d2l-selection-controls-container-slim {
+			min-height: 36px;
+		}
+		d2l-selection-select-all, d2l-selection-summary {
+			flex: none;
+		}
+		d2l-selection-select-all + d2l-selection-summary {
+			margin-inline-start: 0.9rem;
+		}
+		d2l-selection-select-all-pages {
+			flex: none;
+			margin-inline-start: 0.45rem;
+		}
+		.d2l-selection-controls-actions {
+			--d2l-overflow-group-justify-content: flex-end;
+			flex: auto;
+			margin-inline-end: var(--d2l-selection-controls-offset, 0);
+			text-align: end;
+		}
+		.d2l-sticky-edge {
+			left: 0;
+			position: absolute;
+			right: 0;
+			top: -1px;
+		}
+	`;
 
 	constructor() {
 		super();

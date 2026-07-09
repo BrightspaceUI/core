@@ -7,19 +7,17 @@ import { repeat } from 'lit/directives/repeat.js';
 
 class ListDemoDragAndDropPosition extends LitElement {
 
-	static get properties() {
-		return {
-			addButton: { type: Boolean, attribute: 'add-button' },
-			list: { type: Array },
-			// below are for demonstration only
-			grid: { type: Boolean },
-			hrefs: { type: Boolean },
-			selectable: { type: Boolean },
-			tiles: { type: Boolean },
-			tileHeader: { type: Boolean, attribute: 'tile-header' },
-			actions: { type: Boolean, attribute: 'actions' }
-		};
-	}
+	static properties = {
+		addButton: { type: Boolean, attribute: 'add-button' },
+		list: { type: Array },
+		// below are for demonstration only
+		grid: { type: Boolean },
+		hrefs: { type: Boolean },
+		selectable: { type: Boolean },
+		tiles: { type: Boolean },
+		tileHeader: { type: Boolean, attribute: 'tile-header' },
+		actions: { type: Boolean, attribute: 'actions' }
+	};
 
 	static styles = css`
 		.actions-containter {

@@ -12,22 +12,18 @@ import { SwitchMixin } from './switch-mixin.js';
  */
 class VisibilitySwitch extends LocalizeCoreElement(SwitchMixin(LitElement)) {
 
-	static get properties() {
-		return {
-			_hasConditions: { state: true }
-		};
-	}
+	static properties = {
+		_hasConditions: { state: true }
+	};
 
-	static get styles() {
-		return [super.styles, css`
-			d2l-tooltip-help {
-				display: none;
-			}
-			d2l-tooltip-help.switch-visibility-conditions-show {
-				display: inline;
-			}
-		`];
-	}
+	static styles = [super.styles, css`
+		d2l-tooltip-help {
+			display: none;
+		}
+		d2l-tooltip-help.switch-visibility-conditions-show {
+			display: inline;
+		}
+	`];
 
 	constructor() {
 		super();

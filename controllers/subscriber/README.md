@@ -51,11 +51,9 @@ Like the `SubscriberRegistryController`, these `*subscriberController`s take opt
 import { EventSubscriberController, IdSubscriberController } from '@brightspace-ui/core/controllers/subscriber/subscriberControllers.js';
 
 class GeneralViewer extends LitElement {
-	static get properties() {
-		return {
-			_subscribedChannels: { type: Object }
-		};
-	}
+	static properties = {
+		_subscribedChannels: { type: Object }
+	};
 
 	constructor() {
 		super();
@@ -80,12 +78,10 @@ class GeneralViewer extends LitElement {
 }
 
 class YoungerViewer extends LitElement {
-	static get properties() {
-		return {
-			for: { type: String },
-			_subscribedChannels: { type: Object }
-		};
-	}
+	static properties = {
+		for: { type: String },
+		_subscribedChannels: { type: Object }
+	};
 
 	constructor() {
 		super();

@@ -5,11 +5,9 @@ import { LitElement } from 'lit';
 
 const tagName = defineCE(
 	class extends LinkMixin(LitElement) {
-		static get properties() {
-			return {
-				label: { type: String }
-			};
-		}
+		static properties = {
+			label: { type: String }
+		};
 
 		render() {
 			return this._render(html`Link Test${this._renderNewWindowIcon()}`, { ariaLabel: this.label });

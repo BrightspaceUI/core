@@ -5,7 +5,7 @@ import { TabMixin } from '../tab-mixin.js';
 class TabCustom extends TabMixin(LitElement) {
 
 	static get styles() {
-		const styles = [ css`
+		const styles = [css`
 			.d2l-tab-custom-content {
 				--d2l-focus-ring-offset: 0;
 				margin: 0.5rem;

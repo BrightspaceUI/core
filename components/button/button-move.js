@@ -87,7 +87,7 @@ class ButtonMove extends ThemeMixin(FocusMixin(LitElement)) {
 		sideToSide: { type: Boolean, attribute: 'side-to-side', reflect: true }
 	};
 
-	static styles = [ buttonStyles,
+	static styles = [buttonStyles,
 		css`
 			:host {
 				--d2l-button-move-background-color-focus: #ffffff;

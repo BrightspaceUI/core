@@ -6,12 +6,10 @@ import { html, LitElement } from 'lit';
 const formTag = defineCE(
 	class extends LitElement {
 
-		static get properties() {
-			return {
-				isValidationCustomValid: { type: Boolean },
-				value: { type: String, reflect: true },
-			};
-		}
+		static properties = {
+			isValidationCustomValid: { type: Boolean },
+			value: { type: String, reflect: true },
+		};
 
 		constructor() {
 			super();

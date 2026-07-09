@@ -58,115 +58,111 @@ let activeTooltip = null;
  */
 class Tooltip extends PopoverMixin(LitElement) {
 
-	static get properties() {
-		return {
-			/**
-			 * Align the tooltip with either the start or end of its target. If not set, the tooltip will attempt be centered.
-			 * @type {'start'|'end'}
-			 */
-			align: { type: String, reflect: true },
-			/**
-			 * ADVANCED: Announce the tooltip innerText when applicable (for use with custom elements)
-			 * @type {boolean}
-			 */
-			announced: { type: Boolean },
-			/**
-			 * ADVANCED: Causes the tooltip to close when its target is clicked
-			 * @type {boolean}
-			 */
-			closeOnClick: { type: Boolean, attribute: 'close-on-click' },
-			/**
-			 * Provide a delay in milliseconds to prevent the tooltip from opening immediately when hovered. This delay will only apply to hover, not focus.
-			 * @type {number}
-			 */
-			delay: { type: Number },
-			/**
-			 * ADVANCED: Disables focus lock so the tooltip will automatically close when no longer hovered even if it still has focus
-			 * @type {boolean}
-			 */
-			disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
-			/**
-			 * REQUIRED: The "id" of the tooltip's target element. Both elements must be within the same shadow root. If not provided, the tooltip's parent element will be used as its target.
-			 * @type {string}
-			 */
-			for: { type: String },
-			/**
-			 * ADVANCED: Force the tooltip to stay open as long as it remains "true"
-			 * @type {boolean}
-			 */
-			forceShow: { type: Boolean, attribute: 'force-show' },
-			/**
-			 * ADVANCED: Accessibility type for the tooltip to specify whether it is the primary label for the target or a secondary descriptor.
-			 * @type {'label'|'descriptor'}
-			 */
-			forType: { type: String, attribute: 'for-type' },
-			/**
-			 * Adjust the size of the gap between the tooltip and its target (px)
-			 * @type {number}
-			 */
-			offset: { type: Number },
-			/**
-			 * ADVANCED: Force the tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
-			 * @type {'top'|'bottom'|'left'|'right'}
-			 */
-			positionLocation: { type: String, attribute: 'position' },
-			/**
-			 * @ignore
-			 */
-			showing: { type: Boolean, reflect: true },
-			/**
-			 * ADVANCED: Only show the tooltip if we detect the target element is truncated
-			 * @type {boolean}
-			 */
-			showTruncatedOnly: { type: Boolean, attribute: 'show-truncated-only' },
-			/**
-			 * The style of the tooltip based on the type of information it displays
-			 * @type {'info'|'error'}
-			 */
-			state: { type: String, reflect: true }
-		};
-	}
+	static properties = {
+		/**
+		 * Align the tooltip with either the start or end of its target. If not set, the tooltip will attempt be centered.
+		 * @type {'start'|'end'}
+		 */
+		align: { type: String, reflect: true },
+		/**
+		 * ADVANCED: Announce the tooltip innerText when applicable (for use with custom elements)
+		 * @type {boolean}
+		 */
+		announced: { type: Boolean },
+		/**
+		 * ADVANCED: Causes the tooltip to close when its target is clicked
+		 * @type {boolean}
+		 */
+		closeOnClick: { type: Boolean, attribute: 'close-on-click' },
+		/**
+		 * Provide a delay in milliseconds to prevent the tooltip from opening immediately when hovered. This delay will only apply to hover, not focus.
+		 * @type {number}
+		 */
+		delay: { type: Number },
+		/**
+		 * ADVANCED: Disables focus lock so the tooltip will automatically close when no longer hovered even if it still has focus
+		 * @type {boolean}
+		 */
+		disableFocusLock: { type: Boolean, attribute: 'disable-focus-lock' },
+		/**
+		 * REQUIRED: The "id" of the tooltip's target element. Both elements must be within the same shadow root. If not provided, the tooltip's parent element will be used as its target.
+		 * @type {string}
+		 */
+		for: { type: String },
+		/**
+		 * ADVANCED: Force the tooltip to stay open as long as it remains "true"
+		 * @type {boolean}
+		 */
+		forceShow: { type: Boolean, attribute: 'force-show' },
+		/**
+		 * ADVANCED: Accessibility type for the tooltip to specify whether it is the primary label for the target or a secondary descriptor.
+		 * @type {'label'|'descriptor'}
+		 */
+		forType: { type: String, attribute: 'for-type' },
+		/**
+		 * Adjust the size of the gap between the tooltip and its target (px)
+		 * @type {number}
+		 */
+		offset: { type: Number },
+		/**
+		 * ADVANCED: Force the tooltip to open in a certain direction. If no position is provided, the tooltip will open in the first position that has enough space for it in the order: bottom, top, right, left.
+		 * @type {'top'|'bottom'|'left'|'right'}
+		 */
+		positionLocation: { type: String, attribute: 'position' },
+		/**
+		 * @ignore
+		 */
+		showing: { type: Boolean, reflect: true },
+		/**
+		 * ADVANCED: Only show the tooltip if we detect the target element is truncated
+		 * @type {boolean}
+		 */
+		showTruncatedOnly: { type: Boolean, attribute: 'show-truncated-only' },
+		/**
+		 * The style of the tooltip based on the type of information it displays
+		 * @type {'info'|'error'}
+		 */
+		state: { type: String, reflect: true }
+	};
 
-	static get styles() {
-		return [super.styles, bodySmallStyles, css`
-			:host {
-				--d2l-tooltip-background-color: var(--d2l-color-ferrite); /* Deprecated, use state attribute instead */
-				--d2l-tooltip-border-color: var(--d2l-color-ferrite); /* Deprecated, use state attribute instead */
-				--d2l-tooltip-outline-color: rgba(255, 255, 255, 0.32);
-				--d2l-popover-background-color: var(--d2l-tooltip-background-color);
-				--d2l-popover-border-color: var(--d2l-tooltip-border-color);
-				--d2l-popover-border-radius: 0.3rem;
-				--d2l-popover-outline-color: var(--d2l-tooltip-outline-color);
-				--d2l-popover-outline-width: 1px;
-			}
-			:host([state="error"]) {
-				--d2l-tooltip-background-color: var(--d2l-color-cinnabar);
-				--d2l-tooltip-border-color: var(--d2l-color-cinnabar);
-			}
+	static styles = [super.styles, bodySmallStyles, css`
+		:host {
+			--d2l-tooltip-background-color: var(--d2l-color-ferrite); /* Deprecated, use state attribute instead */
+			--d2l-tooltip-border-color: var(--d2l-color-ferrite); /* Deprecated, use state attribute instead */
+			--d2l-tooltip-outline-color: rgba(255, 255, 255, 0.32);
+			--d2l-popover-background-color: var(--d2l-tooltip-background-color);
+			--d2l-popover-border-color: var(--d2l-tooltip-border-color);
+			--d2l-popover-border-radius: 0.3rem;
+			--d2l-popover-outline-color: var(--d2l-tooltip-outline-color);
+			--d2l-popover-outline-width: 1px;
+		}
+		:host([state="error"]) {
+			--d2l-tooltip-background-color: var(--d2l-color-cinnabar);
+			--d2l-tooltip-border-color: var(--d2l-color-cinnabar);
+		}
+		.d2l-tooltip-content {
+			box-sizing: border-box;
+			color: white;
+			max-width: 17.5rem;
+			min-height: 1.85rem;
+			min-width: 2.1rem;
+			overflow: hidden;
+			overflow-wrap: anywhere;
+			padding-block: ${10 - contentBorderSize}px ${11 - contentBorderSize}px;
+			padding-inline: ${contentHorizontalPadding - contentBorderSize}px;
+			white-space: normal;
+		}
+		::slotted(ul),
+		::slotted(ol) {
+			padding-inline-start: 1rem;
+		}
+		@media (max-width: 615px) {
 			.d2l-tooltip-content {
-				box-sizing: border-box;
-				color: white;
-				max-width: 17.5rem;
-				min-height: 1.85rem;
-				min-width: 2.1rem;
-				overflow: hidden;
-				overflow-wrap: anywhere;
-				padding-block: ${10 - contentBorderSize}px ${11 - contentBorderSize}px;
-				padding-inline: ${contentHorizontalPadding - contentBorderSize}px;
-				white-space: normal;
+				padding-bottom: ${12 - contentBorderSize}px;
+				padding-top: ${12 - contentBorderSize}px;
 			}
-			::slotted(ul),
-			::slotted(ol) {
-				padding-inline-start: 1rem;
-			}
-			@media (max-width: 615px) {
-				.d2l-tooltip-content {
-					padding-bottom: ${12 - contentBorderSize}px;
-					padding-top: ${12 - contentBorderSize}px;
-				}
-			}
-		`];
-	}
+		}
+	`];
 
 	constructor() {
 		super();

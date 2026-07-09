@@ -11,7 +11,7 @@ describe('description-list-wrapper', () => {
 		{ name: 'bulk-course-import', template: html`<d2l-test-dl type="bulk-course-import"></d2l-test-dl>` },
 		{ name: 'slotted', template: html`<d2l-test-dl type="slotted"></d2l-test-dl>` }
 	].forEach(({ name, template }) => {
-		[ 799, 599, 299, 239 ].forEach((width) => {
+		[799, 599, 299, 239].forEach((width) => {
 			it(`${name} ${width}`, async() => {
 				const elem = await fixture(template, { viewport: { width: width + 76 } }); // body has 30px padding + 8px margin
 				await expect(elem).to.be.golden();
