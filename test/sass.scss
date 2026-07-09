@@ -1,6 +1,5 @@
 @use "../components/colors/colors.scss";
 @use "../components/inputs/sass/radio.scss";
-@use "../components/inputs/sass/select.scss";
 @use "../components/inputs/sass/text.scss";
 @use "../components/inputs/sass/textarea.scss";
 @use "../components/offscreen/offscreen.scss";
@@ -34,9 +33,6 @@
 }
 .d2l-test-input-radio {
 	@include radio.d2l-input-radio();
-}
-.d2l-test-input-select {
-	@include select.d2l-input-select();
 }
 .d2l-test-input-text {
 	@include text.d2l-input-text();
