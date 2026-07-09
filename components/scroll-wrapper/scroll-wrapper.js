@@ -293,8 +293,8 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 		this._baseContainer = this.shadowRoot.querySelector('.d2l-scroll-wrapper-container');
 		this._container = this.customScrollers?.primary || this._baseContainer;
 		this._secondaryScrollers = this.customScrollers?.secondary || [];
-		if (this._secondaryScrollers.length === undefined) this._secondaryScrollers = [ this._secondaryScrollers ];
-		this._allScrollers = [ this._container, ...this._secondaryScrollers ];
+		if (this._secondaryScrollers.length === undefined) this._secondaryScrollers = [this._secondaryScrollers];
+		this._allScrollers = [this._container, ...this._secondaryScrollers];
 
 		if (this._container) {
 			this._container.classList.add('d2l-scroll-wrapper-focus');

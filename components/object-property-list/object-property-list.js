@@ -65,7 +65,7 @@ class ObjectPropertyList extends LocalizeCoreElement(SkeletonMixin(LitElement)) 
 
 	_setItemSeparatorVisibility(slot) {
 		const slottedElements = slot.assignedElements();
-		const elements = slottedElements.length ? slottedElements : [ ...slot.children ];
+		const elements = slottedElements.length ? slottedElements : [...slot.children];
 		const filtered = elements.filter(item => item.tagName?.toLowerCase().includes('d2l-object-property-list-') && !item.hidden);
 
 		const lastIndex = filtered.length - 1;

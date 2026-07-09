@@ -1321,7 +1321,7 @@ describe('d2l-filter', () => {
 		it('slot chnages are ignored if _ignoreSlotChanges is true', async() => {
 			/* eslint-disable lit/no-private-properties */
 			const elem = await fixture(html`<d2l-filter _ignoreSlotChanges ._dimensions=${[
-				{ key: 'dim', type: 'd2l-filter-dimension-set', values: [ { key: 'value', text: 'Value', selected: true } ] }
+				{ key: 'dim', type: 'd2l-filter-dimension-set', values: [{ key: 'value', text: 'Value', selected: true }] }
 			]}></d2l-filter>`);
 			/* eslint-enable lit/no-private-properties */
 

@@ -127,7 +127,7 @@ describe('SubscriberRegistryController', () => {
 			expect(registry._eventSubscribers.subscribers.has(elem.querySelector('#event'))).to.be.true;
 			expect(registry._idSubscribers.subscribers.size).to.equal(1);
 			expect(registry._idSubscribers.subscribers.has(elem.querySelector('#id'))).to.be.true;
-			expect(registry._onSubscribeTargets).to.eql([ elem.querySelector('#id'), elem.querySelector('#event') ]);
+			expect(registry._onSubscribeTargets).to.eql([elem.querySelector('#id'), elem.querySelector('#event')]);
 		});
 
 		it('Additional subscribers can be subscribed manually', () => {
@@ -152,25 +152,25 @@ describe('SubscriberRegistryController', () => {
 			eventElem.remove();
 			await registry.updateComplete;
 			expect(registry._eventSubscribers.subscribers.size).to.equal(0);
-			expect(registry._onUnsubscribeTargets).to.eql([ eventElem ]);
+			expect(registry._onUnsubscribeTargets).to.eql([eventElem]);
 
 			const idElem = elem.querySelector('#id');
 			idElem.remove();
 			await registry.updateComplete;
 			expect(registry._idSubscribers.subscribers.size).to.equal(0);
-			expect(registry._onUnsubscribeTargets).to.eql([ eventElem, idElem ]);
+			expect(registry._onUnsubscribeTargets).to.eql([eventElem, idElem]);
 		});
 
 		it('Subscribers can be unsubscribed manually', () => {
 			const eventElem = elem.querySelector('#event');
 			registry._eventSubscribers.unsubscribe(eventElem);
 			expect(registry._eventSubscribers.subscribers.size).to.equal(0);
-			expect(registry._onUnsubscribeTargets).to.eql([ eventElem ]);
+			expect(registry._onUnsubscribeTargets).to.eql([eventElem]);
 
 			const idElem = elem.querySelector('#id');
 			registry._idSubscribers.unsubscribe(idElem);
 			expect(registry._idSubscribers.subscribers.size).to.equal(0);
-			expect(registry._onUnsubscribeTargets).to.eql([ eventElem, idElem ]);
+			expect(registry._onUnsubscribeTargets).to.eql([eventElem, idElem]);
 		});
 
 		it('Calls to updateSubscribers are debounced', async() => {
@@ -184,7 +184,7 @@ describe('SubscriberRegistryController', () => {
 			registry._eventSubscribers.updateSubscribers();
 			await nextFrame();
 			await nextFrame();
-			expect(registry._updateSubscribersCalledWith).to.eql([ registry._idSubscribers.subscribers, registry._eventSubscribers.subscribers ]);
+			expect(registry._updateSubscribersCalledWith).to.eql([registry._idSubscribers.subscribers, registry._eventSubscribers.subscribers]);
 		});
 	});
 
@@ -205,7 +205,7 @@ describe('SubscriberRegistryController', () => {
 			expect(registry._combinedSubscribers.subscribers.size).to.equal(2);
 			expect(registry._combinedSubscribers.subscribers.has(elem.querySelector('#event'))).to.be.true;
 			expect(registry._combinedSubscribers.subscribers.has(elem.querySelector('#id'))).to.be.true;
-			expect(registry._onSubscribeTargets).to.eql([ elem.querySelector('#id'), elem.querySelector('#event') ]);
+			expect(registry._onSubscribeTargets).to.eql([elem.querySelector('#id'), elem.querySelector('#event')]);
 		});
 
 		it('Additional subscribers can be subscribed manually', () => {
@@ -224,27 +224,27 @@ describe('SubscriberRegistryController', () => {
 			eventElem.remove();
 			await registry.updateComplete;
 			expect(registry._combinedSubscribers.subscribers.size).to.equal(1);
-			expect(registry._onUnsubscribeTargets).to.eql([ eventElem ]);
+			expect(registry._onUnsubscribeTargets).to.eql([eventElem]);
 			expect(registry._combinedSubscribers.subscribers.has(elem.querySelector('#id'))).to.be.true;
 
 			const idElem = elem.querySelector('#id');
 			idElem.remove();
 			await registry.updateComplete;
 			expect(registry._combinedSubscribers.subscribers.size).to.equal(0);
-			expect(registry._onUnsubscribeTargets).to.eql([ eventElem, idElem ]);
+			expect(registry._onUnsubscribeTargets).to.eql([eventElem, idElem]);
 		});
 
 		it('Subscribers can be unsubscribed manually', () => {
 			const eventElem = elem.querySelector('#event');
 			registry._combinedSubscribers.unsubscribe(eventElem);
 			expect(registry._combinedSubscribers.subscribers.size).to.equal(1);
-			expect(registry._onUnsubscribeTargets).to.eql([ eventElem ]);
+			expect(registry._onUnsubscribeTargets).to.eql([eventElem]);
 			expect(registry._combinedSubscribers.subscribers.has(elem.querySelector('#id'))).to.be.true;
 
 			const idElem = elem.querySelector('#id');
 			registry._combinedSubscribers.unsubscribe(idElem);
 			expect(registry._combinedSubscribers.subscribers.size).to.equal(0);
-			expect(registry._onUnsubscribeTargets).to.eql([ eventElem, idElem ]);
+			expect(registry._onUnsubscribeTargets).to.eql([eventElem, idElem]);
 		});
 
 		it('Calls to updateSubscribers are debounced', async() => {
@@ -255,7 +255,7 @@ describe('SubscriberRegistryController', () => {
 			registry._combinedSubscribers.updateSubscribers();
 			await nextFrame();
 			await nextFrame();
-			expect(registry._updateSubscribersCalledWith).to.eql([ registry._combinedSubscribers.subscribers ]);
+			expect(registry._updateSubscribersCalledWith).to.eql([registry._combinedSubscribers.subscribers]);
 		});
 	});
 });
@@ -285,7 +285,7 @@ describe('EventSubscriberController', () => {
 
 	it('Call onSubscribe after subscribing and getting the registry component', () => {
 		const subscriber = elem.querySelector('#success');
-		expect(subscriber._onSubscribeRegistries).to.eql([ elem.querySelector('#registry') ]);
+		expect(subscriber._onSubscribeRegistries).to.eql([elem.querySelector('#registry')]);
 		expect(subscriber._onErrorRegistryIds).to.eql([]);
 	});
 
@@ -294,12 +294,12 @@ describe('EventSubscriberController', () => {
 
 		clock.tick(400);
 		expect(subscriber._onSubscribeRegistries).to.eql([]);
-		expect(subscriber._onErrorRegistryIds).to.eql([ undefined ]);
+		expect(subscriber._onErrorRegistryIds).to.eql([undefined]);
 	});
 
 	it('Subscribe to slotted registries properly', () => {
 		const subscriber = elem.querySelector('#slotted');
-		expect(subscriber._onSubscribeRegistries).to.eql([ elem.querySelector('#registry-wrapper').shadowRoot.querySelector('#registry-shadow') ]);
+		expect(subscriber._onSubscribeRegistries).to.eql([elem.querySelector('#registry-wrapper').shadowRoot.querySelector('#registry-shadow')]);
 		expect(subscriber._onErrorRegistryIds).to.eql([]);
 	});
 
@@ -313,7 +313,7 @@ describe('EventSubscriberController', () => {
 		expect(subscriber._onSubscribeRegistries).to.eql([]);
 
 		clock.tick(40);
-		expect(subscriber._onSubscribeRegistries).to.eql([ elem.querySelector('#registry-wrapper-delayed').shadowRoot.querySelector('#registry-shadow') ]);
+		expect(subscriber._onSubscribeRegistries).to.eql([elem.querySelector('#registry-wrapper-delayed').shadowRoot.querySelector('#registry-shadow')]);
 		expect(subscriber._onErrorRegistryIds).to.eql([]);
 	});
 });
@@ -345,13 +345,13 @@ describe('IdSubscriberController', () => {
 
 		it('Call onSubscribe after subscribing and getting the registry component', () => {
 			const nestedSubscriber = elem.querySelector('#nested');
-			expect(nestedSubscriber._onSubscribeRegistries).to.eql([ elem.querySelector('#registry-1') ]);
+			expect(nestedSubscriber._onSubscribeRegistries).to.eql([elem.querySelector('#registry-1')]);
 
 			const singleSubscriber = elem.querySelector('#single');
-			expect(singleSubscriber._onSubscribeRegistries).to.eql([ elem.querySelector('#registry-1') ]);
+			expect(singleSubscriber._onSubscribeRegistries).to.eql([elem.querySelector('#registry-1')]);
 
 			const multipleSubscriber = elem.querySelector('#multiple');
-			expect(multipleSubscriber._onSubscribeRegistries).to.eql([ elem.querySelector('#registry-1'), elem.querySelector('#registry-2') ]);
+			expect(multipleSubscriber._onSubscribeRegistries).to.eql([elem.querySelector('#registry-1'), elem.querySelector('#registry-2')]);
 		});
 
 		it('If a registry component is removed, registry maps are updated', async() => {
@@ -366,10 +366,10 @@ describe('IdSubscriberController', () => {
 			await singleSubscriber.updateComplete;
 			await multipleSubscriber.updateComplete;
 
-			expect(singleSubscriber._onUnsubscribeRegistryIds).to.eql([ 'registry-1' ]);
+			expect(singleSubscriber._onUnsubscribeRegistryIds).to.eql(['registry-1']);
 			expect(singleSubscriber._subscriberController.registries).to.eql([]);
-			expect(multipleSubscriber._onUnsubscribeRegistryIds).to.eql([ 'registry-1' ]);
-			expect(multipleSubscriber._subscriberController.registries).to.eql([ registry2 ]);
+			expect(multipleSubscriber._onUnsubscribeRegistryIds).to.eql(['registry-1']);
+			expect(multipleSubscriber._subscriberController.registries).to.eql([registry2]);
 		});
 
 		it('If a registry component is added, the registry and subscriber maps are updated', async() => {
@@ -385,8 +385,8 @@ describe('IdSubscriberController', () => {
 			elem.appendChild(newNode);
 			await newNode.updateComplete;
 
-			expect(errorSubscriber._onSubscribeRegistries).to.eql([ newNode ]);
-			expect(errorSubscriber._subscriberController.registries).to.eql([ newNode ]);
+			expect(errorSubscriber._onSubscribeRegistries).to.eql([newNode]);
+			expect(errorSubscriber._subscriberController.registries).to.eql([newNode]);
 			expect(multipleSubscriber._onSubscribeRegistries.length).to.equal(3);
 			expect(multipleSubscriber._onSubscribeRegistries[2]).to.equal(newNode);
 			expect(multipleSubscriber._subscriberController.registries.length).to.equal(3);
@@ -400,18 +400,18 @@ describe('IdSubscriberController', () => {
 			const registry1 = elem.querySelector('#registry-1');
 			const registry2 = elem.querySelector('#registry-2');
 			const singleSubscriber = elem.querySelector('#single');
-			expect(singleSubscriber._onSubscribeRegistries).to.eql([ registry1 ]);
+			expect(singleSubscriber._onSubscribeRegistries).to.eql([registry1]);
 			expect(singleSubscriber._onUnsubscribeRegistryIds).to.eql([]);
-			expect(singleSubscriber._subscriberController.registries).to.eql([ registry1 ]);
+			expect(singleSubscriber._subscriberController.registries).to.eql([registry1]);
 			expect(registry1._idSubscribers.subscribers.has(singleSubscriber)).to.be.true;
 			expect(registry2._idSubscribers.subscribers.has(singleSubscriber)).to.be.false;
 
 			singleSubscriber.for = 'registry-2';
 			await singleSubscriber.updateComplete;
 
-			expect(singleSubscriber._onSubscribeRegistries).to.eql([ registry1, registry2 ]);
-			expect(singleSubscriber._onUnsubscribeRegistryIds).to.eql([ 'registry-1' ]);
-			expect(singleSubscriber._subscriberController.registries).to.eql([ registry2 ]);
+			expect(singleSubscriber._onSubscribeRegistries).to.eql([registry1, registry2]);
+			expect(singleSubscriber._onUnsubscribeRegistryIds).to.eql(['registry-1']);
+			expect(singleSubscriber._subscriberController.registries).to.eql([registry2]);
 			expect(registry1._idSubscribers.subscribers.has(singleSubscriber)).to.be.false;
 			expect(registry2._idSubscribers.subscribers.has(singleSubscriber)).to.be.true;
 		});
@@ -424,7 +424,7 @@ describe('IdSubscriberController', () => {
 			expect(subscriber._onSubscribeRegistries).to.eql([]);
 
 			clock.tick(100);
-			expect(subscriber._onSubscribeRegistries).to.eql([ registry3 ]);
+			expect(subscriber._onSubscribeRegistries).to.eql([registry3]);
 			expect(subscriber._onErrorRegistryIds).to.eql([]);
 		});
 	});
@@ -453,9 +453,9 @@ describe('IdSubscriberController', () => {
 			clock.tick(1);
 
 			expect(errorSubscriber._onSubscribeRegistries).to.be.empty;
-			expect(errorSubscriber._onErrorRegistryIds).to.eql([ 'non-existant' ]);
-			expect(multipleSubscriber._onSubscribeRegistries).to.eql([ elem.querySelector('#registry-1'), elem.querySelector('#registry-2') ]);
-			expect(multipleSubscriber._onErrorRegistryIds).to.eql([ 'non-existant' ]);
+			expect(errorSubscriber._onErrorRegistryIds).to.eql(['non-existant']);
+			expect(multipleSubscriber._onSubscribeRegistries).to.eql([elem.querySelector('#registry-1'), elem.querySelector('#registry-2')]);
+			expect(multipleSubscriber._onErrorRegistryIds).to.eql(['non-existant']);
 		});
 	});
 });

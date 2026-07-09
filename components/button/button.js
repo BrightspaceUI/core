@@ -27,7 +27,7 @@ class Button extends ButtonMixin(LitElement) {
 		primary: { type: Boolean, reflect: true }
 	};
 
-	static styles = [ labelStyles, buttonStyles,
+	static styles = [labelStyles, buttonStyles,
 		css`
 			:host {
 				display: inline-block;

@@ -79,27 +79,27 @@ describe('interactive', () => {
 	describe('isInteractiveInComposedPath', () => {
 		it('should return true if an interactive element is found', () => {
 			const ele = document.createElement('button');
-			const path = [ ele ];
+			const path = [ele];
 			expect(isInteractiveInComposedPath(path)).to.be.true;
 		});
 
 		it('should return false if no interactive elements are found', () => {
 			const ele = document.createElement('div');
-			const path = [ ele ];
+			const path = [ele];
 			expect(isInteractiveInComposedPath(path)).to.be.false;
 		});
 
 		it('should return true if interactive element is found in the path', () => {
 			const ele1 = document.createElement('div');
 			const ele2 = document.createElement('button');
-			const path = [ ele1, ele2 ];
+			const path = [ele1, ele2];
 			expect(isInteractiveInComposedPath(path)).to.be.true;
 		});
 
 		it('should return true if options elements are passed and an interactive element is found', () => {
 			const ele1 = document.createElement('div');
 			const ele2 = document.createElement('d2l-button');
-			const path = [ ele1, ele2 ];
+			const path = [ele1, ele2];
 			const options = { elements: { 'd2l-button': true } };
 			expect(isInteractiveInComposedPath(path, null, options)).to.be.true;
 		});
@@ -108,7 +108,7 @@ describe('interactive', () => {
 			const ele1 = document.createElement('div');
 			const ele2 = document.createElement('div');
 			ele2.setAttribute('role', 'h2');
-			const path = [ ele1, ele2 ];
+			const path = [ele1, ele2];
 			const options = { roles: { 'h2': true } };
 			expect(isInteractiveInComposedPath(path, null, options)).to.be.true;
 		});
@@ -118,7 +118,7 @@ describe('interactive', () => {
 			const ele2 = document.createElement('div');
 			ele2.setAttribute('id', 'test-id');
 			const ele3 = document.createElement('button');
-			const path = [ ele1, ele2, ele3 ];
+			const path = [ele1, ele2, ele3];
 			const isPrimaryAction = (elem) => elem.id === 'test-id';
 			expect(isInteractiveInComposedPath(path, isPrimaryAction)).to.be.false;
 		});

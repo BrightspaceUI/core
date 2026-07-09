@@ -1,7 +1,7 @@
 import { css } from 'lit';
 import { menuItemStyles } from './menu-item-styles.js';
 
-export const menuItemSelectableStyles = [ menuItemStyles,
+export const menuItemSelectableStyles = [menuItemStyles,
 	css`
 		:host {
 			align-items: center;

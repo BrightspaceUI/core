@@ -3,7 +3,7 @@ import { Host } from 'ifrau/host.js';
 
 describe('dialog-ifrau', () => {
 
-	[/*'native',*/ 'custom'].forEach((type) => {
+	[/*'native', */'custom'].forEach((type) => {
 
 		describe(type, () => {
 			let iframeSrc;

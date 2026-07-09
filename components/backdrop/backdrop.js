@@ -41,7 +41,7 @@ class Backdrop extends LitElement {
 		_state: { type: String, reflect: true }
 	};
 
-	static styles = [ css`
+	static styles = [css`
 		:host {
 			background-color: var(--d2l-theme-backdrop-background-color);
 			height: 0;

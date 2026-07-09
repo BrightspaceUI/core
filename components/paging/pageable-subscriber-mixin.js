@@ -25,7 +25,7 @@ export const PageableSubscriberMixin = superclass => class extends superclass {
 	}
 
 	_getPageableRegistries() {
-		return this.pageableFor ? this._pageableIdSubscriber.registries : [ this._pageableEventSubscriber.registry ];
+		return this.pageableFor ? this._pageableIdSubscriber.registries : [this._pageableEventSubscriber.registry];
 	}
 
 };

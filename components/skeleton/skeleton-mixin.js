@@ -175,7 +175,7 @@ export const SkeletonMixin = dedupeMixin(superclass => class extends superclass 
 	};
 
 	static get styles() {
-		const styles = [ skeletonStyles ];
+		const styles = [skeletonStyles];
 		super.styles && styles.unshift(super.styles);
 		return styles;
 	}
