@@ -263,12 +263,6 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._mobile = false;
 		this._showBackdrop = false;
 		this._useNativePopover = isPopoverSupported ? 'manual' : undefined;
-		this.#handleAncestorMutationBound = this.#handleAncestorMutation.bind(this);
-		this.#handleAutoCloseClickBound = this.#handleAutoCloseClick.bind(this);
-		this.#handleAutoCloseFocusBound = this.#handleAutoCloseFocus.bind(this);
-		this.#handleMobileResizeBound = this.#handleMobileResize.bind(this);
-		this.#handleResizeBound = this.#handleResize.bind(this);
-		this.#repositionBound = this.#reposition.bind(this);
 	}
 
 	connectedCallback() {
@@ -590,23 +584,96 @@ export const PopoverMixin = superclass => class extends superclass {
 	#ancestorMutations;
 	#ifrauContextInfo;
 	#mediaQueryList;
-	#handleAncestorMutationBound;
-	#handleAutoCloseClickBound;
-	#handleAutoCloseFocusBound;
-	#handleMobileResizeBound;
-	#handleResizeBound;
-	#repositionBound;
+
+	#handleAncestorMutation = (mutations) => {
+		if (!this._opener) return;
+		const reposition = !!mutations.find(mutation => {
+
+			// ignore mutations that are within this popover
+			if (isComposedAncestor(this._opener, mutation.target)) return false;
+
+			// ignore elements that are thrashing (ex. iframe's being resized on a setTimeout)
+			const previousMutation = this.#ancestorMutations?.get(mutation.target);
+			if (previousMutation && previousMutation === mutation.target.style.cssText) return false;
+			if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+				this.#ancestorMutations?.set(mutation.target, mutation.target.style.cssText);
+			}
+
+			return true;
+		});
+		if (reposition) this.#reposition();
+	};
+
+	#handleAutoCloseClick = (e) => {
+		if (!this._opened || this._noAutoClose) return;
+
+		const rootTarget = e.composedPath()[0];
+		if (isComposedAncestor(this.#getContentContainer(), rootTarget)
+			|| (this._opener !== document.body && isComposedAncestor(this._opener, rootTarget))) {
+			return;
+		}
+
+		this.close();
+	};
+
+	#handleAutoCloseFocus = () => {
+
+		// todo: try to use relatedTarget instead - this logic is largely copied as-is from dropdown simply to mitigate risk of this fragile code
+		setTimeout(() => {
+			// we ignore focusable ancestors othrwise the popover will close when user clicks empty space inside the popover
+			if (!this._opened
+				|| this._noAutoClose
+				|| !document.activeElement
+				|| document.activeElement === this._previousFocusableAncestor
+				|| document.activeElement === document.body) {
+				return;
+			}
+
+			const activeElement = getComposedActiveElement();
+			if (isComposedAncestor(this, activeElement)
+				|| isComposedAncestor(this._opener, activeElement)
+				|| activeElement === this._previousFocusableAncestor) {
+				return;
+			}
+
+			this.close();
+		}, 0);
+
+	};
+
+	#handleMobileResize = async() => {
+		this._mobile = this.#mediaQueryList.matches;
+		if (this._opened) {
+			this._showBackdrop = this._mobile && this._mobileTrayLocation;
+			await this.position();
+		}
+	};
+
+	#handleResize = () => {
+		this.resize();
+	};
+
+	#reposition = () => {
+		// throttle repositioning (https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event#scroll_event_throttling)
+		if (!this._repositioning) {
+			requestAnimationFrame(() => {
+				this.position(undefined, { updateLocation: false, updateHeight: false });
+				this._repositioning = false;
+			});
+		}
+		this._repositioning = true;
+	};
 
 	#addAutoCloseHandlers() {
-		this.addEventListener('blur', this.#handleAutoCloseFocusBound, { capture: true });
-		document.body.addEventListener('focus', this.#handleAutoCloseFocusBound, { capture: true });
-		document.addEventListener('click', this.#handleAutoCloseClickBound, { capture: true });
+		this.addEventListener('blur', this.#handleAutoCloseFocus, { capture: true });
+		document.body.addEventListener('focus', this.#handleAutoCloseFocus, { capture: true });
+		document.addEventListener('click', this.#handleAutoCloseClick, { capture: true });
 	}
 
 	#addMediaQueryHandlers() {
 		this.#mediaQueryList = window.matchMedia(`(max-width: ${this._mobileBreakpoint - 1}px)`);
 		this._mobile = this.#mediaQueryList.matches;
-		this.#mediaQueryList.addEventListener?.('change', this.#handleMobileResizeBound);
+		this.#mediaQueryList.addEventListener?.('change', this.#handleMobileResize);
 	}
 
 	#addRepositionHandlers() {
@@ -618,9 +685,9 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		this.#removeRepositionHandlers();
 		this.#ancestorMutations = new Map();
-		addResizeNoopEventListener(this.#handleResizeBound);
+		addResizeNoopEventListener(this.#handleResize);
 
-		this._ancestorMutationObserver ??= new MutationObserver(this.#handleAncestorMutationBound);
+		this._ancestorMutationObserver ??= new MutationObserver(this.#handleAncestorMutation);
 		const mutationConfig = { attributes: true, childList: true, subtree: true };
 
 		let node = this;
@@ -636,7 +703,7 @@ export const PopoverMixin = superclass => class extends superclass {
 			}
 			if (observeScrollable) {
 				this._scrollablesObserved.push(node);
-				node.addEventListener('scroll', this.#repositionBound);
+				node.addEventListener('scroll', this.#reposition);
 			}
 
 			// observe mutations on each DOM scope (excludes sibling scopes... can only do so much)
@@ -1094,62 +1161,6 @@ export const PopoverMixin = superclass => class extends superclass {
 		};
 	}
 
-	#handleAncestorMutation(mutations) {
-		if (!this._opener) return;
-		const reposition = !!mutations.find(mutation => {
-
-			// ignore mutations that are within this popover
-			if (isComposedAncestor(this._opener, mutation.target)) return false;
-
-			// ignore elements that are thrashing (ex. iframe's being resized on a setTimeout)
-			const previousMutation = this.#ancestorMutations?.get(mutation.target);
-			if (previousMutation && previousMutation === mutation.target.style.cssText) return false;
-			if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-				this.#ancestorMutations?.set(mutation.target, mutation.target.style.cssText);
-			}
-
-			return true;
-		});
-		if (reposition) this.#reposition();
-	}
-
-	#handleAutoCloseClick(e) {
-		if (!this._opened || this._noAutoClose) return;
-
-		const rootTarget = e.composedPath()[0];
-		if (isComposedAncestor(this.#getContentContainer(), rootTarget)
-			|| (this._opener !== document.body && isComposedAncestor(this._opener, rootTarget))) {
-			return;
-		}
-
-		this.close();
-	}
-
-	#handleAutoCloseFocus() {
-
-		// todo: try to use relatedTarget instead - this logic is largely copied as-is from dropdown simply to mitigate risk of this fragile code
-		setTimeout(() => {
-			// we ignore focusable ancestors othrwise the popover will close when user clicks empty space inside the popover
-			if (!this._opened
-				|| this._noAutoClose
-				|| !document.activeElement
-				|| document.activeElement === this._previousFocusableAncestor
-				|| document.activeElement === document.body) {
-				return;
-			}
-
-			const activeElement = getComposedActiveElement();
-			if (isComposedAncestor(this, activeElement)
-				|| isComposedAncestor(this._opener, activeElement)
-				|| activeElement === this._previousFocusableAncestor) {
-				return;
-			}
-
-			this.close();
-		}, 0);
-
-	}
-
 	#handleBackdropClick() {
 		this.close();
 	}
@@ -1161,26 +1172,14 @@ export const PopoverMixin = superclass => class extends superclass {
 		this.dispatchEvent(new CustomEvent('d2l-popover-focus-enter', { detail: { applyFocus: this._applyFocus } }));
 	}
 
-	async #handleMobileResize() {
-		this._mobile = this.#mediaQueryList.matches;
-		if (this._opened) {
-			this._showBackdrop = this._mobile && this._mobileTrayLocation;
-			await this.position();
-		}
-	}
-
-	#handleResize() {
-		this.resize();
-	}
-
 	#removeAutoCloseHandlers() {
-		this.removeEventListener('blur', this.#handleAutoCloseFocusBound, { capture: true });
-		document.body?.removeEventListener('focus', this.#handleAutoCloseFocusBound, { capture: true }); // DE41322: document.body can be null in some scenarios
-		document.removeEventListener('click', this.#handleAutoCloseClickBound, { capture: true });
+		this.removeEventListener('blur', this.#handleAutoCloseFocus, { capture: true });
+		document.body?.removeEventListener('focus', this.#handleAutoCloseFocus, { capture: true }); // DE41322: document.body can be null in some scenarios
+		document.removeEventListener('click', this.#handleAutoCloseClick, { capture: true });
 	}
 
 	#removeMediaQueryHandlers() {
-		this.#mediaQueryList?.removeEventListener?.('change', this.#handleMobileResizeBound);
+		this.#mediaQueryList?.removeEventListener?.('change', this.#handleMobileResize);
 	}
 
 	#removeRepositionHandlers() {
@@ -1188,22 +1187,11 @@ export const PopoverMixin = superclass => class extends superclass {
 			this._openerIntersectionObserver?.unobserve(this._opener);
 		}
 		this._scrollablesObserved?.forEach(node => {
-			node.removeEventListener('scroll', this.#repositionBound);
+			node.removeEventListener('scroll', this.#reposition);
 		});
 		this._scrollablesObserved = null;
 		this._ancestorMutationObserver?.disconnect();
-		removeResizeNoopEventListener(this.#handleResizeBound);
-	}
-
-	#reposition() {
-		// throttle repositioning (https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event#scroll_event_throttling)
-		if (!this._repositioning) {
-			requestAnimationFrame(() => {
-				this.position(undefined, { updateLocation: false, updateHeight: false });
-				this._repositioning = false;
-			});
-		}
-		this._repositioning = true;
+		removeResizeNoopEventListener(this.#handleResize);
 	}
 
 };
