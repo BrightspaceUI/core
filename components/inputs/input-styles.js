@@ -14,9 +14,6 @@ registerSemanticVariableForSvgImageUrl(
 	</svg>`
 );
 
-/**
- * A private helper method that should not be used by general consumers
- */
 function _getInputBaseStyleDelegates(selector, focusSelector) {
 	return {
 		selector: focusClass => `
@@ -63,9 +60,6 @@ function getStyleDelegates(selector, focusSelector, textAreaSelector) {
 	};
 }
 
-/**
- * A private helper method that should not be used by general consumers
- */
 function _generateInputBaseStyles(selector) {
 	return css`
 		${selector} {
@@ -93,9 +87,6 @@ function _generateInputBaseStyles(selector) {
 	`;
 }
 
-/**
- * A private helper method that should not be used by general consumers
- */
 export function _generateInputPlaceholderBaseStyles(selector) {
 	return css`
 		${selector}::placeholder {
@@ -107,9 +98,6 @@ export function _generateInputPlaceholderBaseStyles(selector) {
 	`;
 }
 
-/**
- * A private helper method that should not be used by general consumers
- */
 function _generateInputAriaInvalidBaseStyles(selector) {
 	return css`
 		${selector}[aria-invalid="true"]:not(:disabled) {
@@ -118,13 +106,19 @@ function _generateInputAriaInvalidBaseStyles(selector) {
 	`;
 }
 
-/**
- * A private helper method that should not be used by general consumers
- */
 function _generateInputDisabledBaseStyles(selector) {
 	return css`
 		${selector}:disabled {
 			opacity: var(--d2l-theme-opacity-disabled-control);
+		}
+	`;
+}
+
+function _generatewebkitSearchStyles(selector) {
+	return css`
+		${selector}::-webkit-search-cancel-button,
+		${selector}::-webkit-search-decoration {
+			display: none;
 		}
 	`;
 }
@@ -156,10 +150,8 @@ export function _generateInputStyles(selector, focusSelector) {
 
 		${_generateInputDisabledBaseStyles(selector)}
 
-		${selector}::-webkit-search-cancel-button,
-		${selector}::-webkit-search-decoration {
-			display: none;
-		}
+		${_generatewebkitSearchStyles(selector)}
+
 		${selector}::-ms-clear {
 			display: none;
 			height: 0;
@@ -214,7 +206,9 @@ export function _generateInputTextStyles(selector) {
 
 		${ _generateInputAriaInvalidBaseStyles(finalSelector) }
 
-		${_generateInputDisabledBaseStyles(finalSelector)}
+		${ _generateInputDisabledBaseStyles(finalSelector) }
+
+		${ _generatewebkitSearchStyles(finalSelector) }
 	`;
 }
 
