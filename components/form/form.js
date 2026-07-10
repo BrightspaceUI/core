@@ -4,7 +4,6 @@ import '../link/link.js';
 import { css, html, LitElement } from 'lit';
 import { findFormElements, flattenMap, getFormElementData, isCustomFormElement, isNativeFormElement } from './form-helper.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
-import { getComposedActiveElement } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { localizeFormElement } from './form-element-localize-helper.js';
@@ -67,7 +66,6 @@ class Form extends LocalizeCoreElement(LitElement) {
 		this._validationCustoms = new Set();
 
 		this._onUnload = this._onUnload.bind(this);
-		this._onNativeSubmit = this._onNativeSubmit.bind(this);
 
 		/** @ignore */
 		this.addEventListener('d2l-form-connect', this._onFormConnect);
@@ -294,13 +292,6 @@ class Form extends LocalizeCoreElement(LitElement) {
 		e.stopPropagation();
 		const errors = await this._validateFormElement(ele, e.type === 'focusout');
 		this._updateErrors(ele, errors);
-	}
-
-	_onNativeSubmit(e) {
-		e.preventDefault();
-		e.stopPropagation();
-		const submitter = e.submitter || getComposedActiveElement();
-		this.requestSubmit(submitter);
 	}
 
 	_onUnload(e) {
