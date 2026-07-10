@@ -1,21 +1,24 @@
 import '../page.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
 
+// TO DO: See if we can remove once we are handling <h1> and page title setting
+const rulesToIgnore = ['document-title', 'page-has-heading-one'];
+
 describe('page', () => {
 
 	it('single panel', async() => {
-		const elem = await fixture(html`
+		await fixture(html`
 			<d2l-page>
 				<div slot="header">Header</div>
 				<div>Content</div>
 				<div slot="footer">Footer</div>
 			</d2l-page>
 		`);
-		await expect(elem).to.be.accessible();
+		await expect(document).to.be.accessible({ ignoredRules: rulesToIgnore });
 	});
 
 	it('with side-nav panel', async() => {
-		const elem = await fixture(html`
+		await fixture(html`
 			<d2l-page>
 				<div slot="header">Header</div>
 				<div>Content</div>
@@ -23,11 +26,11 @@ describe('page', () => {
 				<div slot="footer">Footer</div>
 			</d2l-page>
 		`);
-		await expect(elem).to.be.accessible();
+		await expect(document).to.be.accessible({ ignoredRules: rulesToIgnore });
 	});
 
 	it('with supporting panel', async() => {
-		const elem = await fixture(html`
+		await fixture(html`
 			<d2l-page>
 				<div slot="header">Header</div>
 				<div>Content</div>
@@ -35,6 +38,6 @@ describe('page', () => {
 				<div slot="footer">Footer</div>
 			</d2l-page>
 		`);
-		await expect(elem).to.be.accessible();
+		await expect(document).to.be.accessible({ ignoredRules: rulesToIgnore });
 	});
 });
