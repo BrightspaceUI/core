@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
 import { formatPercent } from '@brightspace-ui/intl';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 export const DIVIDER_WIDTH = 4;
@@ -88,7 +89,10 @@ class PageDivider extends PropertyRequiredMixin(LitElement) {
 	}
 
 	render() {
-		const currentSizePercent = formatPercent(Math.round(this.currentSize / this.maxSize) || 0);
+		let ariaValues = {};
+		if (this.maxSize > 0) {
+			ariaValues = { max: this.maxSize, min: 0, now: this.currentSize, text: formatPercent(this.currentSize / this.maxSize, { maximumFractionDigits: 0 }) };
+		}
 
 		return html`
 			<div
@@ -97,10 +101,10 @@ class PageDivider extends PropertyRequiredMixin(LitElement) {
 				tabindex="0"
 				aria-label="${this.label}"
 				aria-orientation="${this.panelType === 'panel' ? 'horizontal' : 'vertical'}"
-				aria-valuemax="${this.maxSize}"
-				aria-valuemin="0"
-				aria-valuenow="${this.currentSize}"
-				aria-valuetext="${currentSizePercent}"
+				aria-valuemax="${ifDefined(ariaValues.max)}"
+				aria-valuemin="${ifDefined(ariaValues.min)}"
+				aria-valuenow="${ifDefined(ariaValues.now)}"
+				aria-valuetext="${ifDefined(ariaValues.text)}"
 				@keydown="${this.#handleKeyDown}">
 			</div>
 		`;
