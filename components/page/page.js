@@ -111,10 +111,14 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		}
 
 		.content {
+			box-sizing: border-box;
 			display: flex;
 			margin-inline: var(--d2l-page-margin-inline, 0);
 			max-width: var(--d2l-page-content-max-width, 100%);
 			padding-bottom: var(--d2l-page-footer-height, 0); /* Reserve space for fixed footer */
+		}
+		.content.has-panels {
+			min-height: calc(100vh - var(--d2l-page-header-height-measured, 0px));
 		}
 
 		main {
@@ -124,7 +128,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 		.side-nav-panel,
 		.supporting-panel {
-			height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
+			max-height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
 			overflow: clip auto;
 			position: sticky;
 			top: var(--d2l-page-header-height, 0);
@@ -166,6 +170,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			for (const entry of entries) {
 				if (entry.target.classList.contains('header')) {
 					this._headerHeight = entry.target.offsetHeight;
+					this.style.setProperty('--d2l-page-header-height-measured', `${this._headerHeight}px`);
 
 					const height = this._headerIsSticky ? this._headerHeight : 0;
 					this.style.setProperty('--d2l-page-header-height', `${height}px`);
@@ -216,11 +221,15 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			'page': true,
 			'header-sticky': this._headerIsSticky
 		};
+		const contentClasses = {
+			'content': true,
+			'has-panels': this._slotVisibility['side-nav'] || this._slotVisibility['supporting']
+		};
 
 		return html`
 			<div class="${classMap(pageClasses)}">
 				${this.#renderHeader()}
-				<div class="content">
+				<div class="${classMap(contentClasses)}">
 					${this.#renderSideNavPanel()}
 					<main><slot></slot></main>
 					${this.#renderSupportingPanel()}
