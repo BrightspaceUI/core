@@ -168,9 +168,7 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 		this._scrollbarRight = false;
 		this._syncDriver = null;
 		this._syncDriverTimeout = null;
-		this._checkScrollThresholds = this._checkScrollThresholds.bind(this);
 
-		this._synchronizeScroll = this._synchronizeScroll.bind(this);
 	}
 
 	disconnectedCallback() {
@@ -218,7 +216,7 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 	checkScrollbar() {
 		if (!this._container) return;
 		this._hScrollbar = this._container.offsetWidth !== this._container.scrollWidth;
-		this._checkScrollThresholds();
+		this.#checkScrollThresholds();
 	}
 
 	notifyResize() {
@@ -237,13 +235,24 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 		}
 	}
 
-	_checkScrollThresholds() {
+	#checkScrollThresholds = () => {
 		if (!this._container) return;
 		const lowerScrollValue = this._container.scrollWidth - this._baseContainer.offsetWidth - Math.abs(this._container.scrollLeft);
 		this._scrollbarLeft = (this._container.scrollLeft === 0);
 		this._scrollbarRight = (lowerScrollValue <= 0);
 
-	}
+	};
+
+	#synchronizeScroll = (e) => {
+		if (this._syncDriver && e.target !== this._syncDriver) return;
+		if (this._syncDriverTimeout) clearTimeout(this._syncDriverTimeout);
+
+		this._syncDriver = e.target;
+		this._allScrollers.forEach(element => {
+			if (element && element !== e.target) element.scrollLeft = e.target.scrollLeft;
+		});
+		this._syncDriverTimeout = setTimeout(() => this._syncDriver = null, 100);
+	};
 
 	_disconnectAll() {
 		this._resizeObserver?.disconnect();
@@ -252,11 +261,11 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 			this._container.style.removeProperty('overflow-x');
 			this._container.classList.remove('d2l-scroll-wrapper-focus');
 			this._container.removeAttribute('tabindex');
-			this._container.removeEventListener('scroll', this._synchronizeScroll);
-			this._container.removeEventListener('scroll', this._checkScrollThresholds);
+			this._container.removeEventListener('scroll', this.#synchronizeScroll);
+			this._container.removeEventListener('scroll', this.#checkScrollThresholds);
 			this._secondaryScrollers.forEach(element => {
 				element.style.removeProperty('overflow-x');
-				element.removeEventListener('scroll', this._synchronizeScroll);
+				element.removeEventListener('scroll', this.#synchronizeScroll);
 			});
 		}
 	}
@@ -274,17 +283,6 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 		if (!this._container) return;
 		const scrollDistance = this._getScrollDistance();
 		this.scrollDistance(scrollDistance, true);
-	}
-
-	_synchronizeScroll(e) {
-		if (this._syncDriver && e.target !== this._syncDriver) return;
-		if (this._syncDriverTimeout) clearTimeout(this._syncDriverTimeout);
-
-		this._syncDriver = e.target;
-		this._allScrollers.forEach(element => {
-			if (element && element !== e.target) element.scrollLeft = e.target.scrollLeft;
-		});
-		this._syncDriverTimeout = setTimeout(() => this._syncDriver = null, 100);
 	}
 
 	_updateScrollTargets() {
@@ -307,17 +305,17 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 			}
 			this._container.style.overflowX = 'auto';
 			this._resizeObserver.observe(this._container);
-			this._container.addEventListener('scroll', this._checkScrollThresholds);
+			this._container.addEventListener('scroll', this.#checkScrollThresholds);
 			this._updateTabIndex();
 		}
 
 		if (this._secondaryScrollers.length) {
 			this._secondaryScrollers.forEach(element => {
 				element.style.overflowX = 'hidden';
-				element.addEventListener('scroll', this._synchronizeScroll);
+				element.addEventListener('scroll', this.#synchronizeScroll);
 			});
-			this._container.addEventListener('scroll', this._synchronizeScroll);
-			this._synchronizeScroll({ target: this._container });
+			this._container.addEventListener('scroll', this.#synchronizeScroll);
+			this.#synchronizeScroll({ target: this._container });
 		}
 	}
 

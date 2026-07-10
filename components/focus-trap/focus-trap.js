@@ -33,9 +33,6 @@ class FocusTrap extends FocusMixin(LitElement) {
 	constructor() {
 		super();
 		this.trap = false;
-		this._handleBodyFocus = this._handleBodyFocus.bind(this);
-		this._handleLegacyPromptOpen = this._handleLegacyPromptOpen.bind(this);
-		this._handleLegacyPromptClose = this._handleLegacyPromptClose.bind(this);
 		this._legacyPromptIds = new Set();
 	}
 
@@ -45,16 +42,16 @@ class FocusTrap extends FocusMixin(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		document.body.addEventListener('focus', this._handleBodyFocus, true);
-		document.body.addEventListener('d2l-legacy-prompt-open', this._handleLegacyPromptOpen);
-		document.body.addEventListener('d2l-legacy-prompt-close', this._handleLegacyPromptClose);
+		document.body.addEventListener('focus', this.#handleBodyFocus, true);
+		document.body.addEventListener('d2l-legacy-prompt-open', this.#handleLegacyPromptOpen);
+		document.body.addEventListener('d2l-legacy-prompt-close', this.#handleLegacyPromptClose);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		document.body.removeEventListener('focus', this._handleBodyFocus, true);
-		document.body.removeEventListener('d2l-legacy-prompt-open', this._handleLegacyPromptOpen);
-		document.body.removeEventListener('d2l-legacy-prompt-close', this._handleLegacyPromptClose);
+		document.body.removeEventListener('focus', this.#handleBodyFocus, true);
+		document.body.removeEventListener('d2l-legacy-prompt-open', this.#handleLegacyPromptOpen);
+		document.body.removeEventListener('d2l-legacy-prompt-close', this.#handleLegacyPromptClose);
 	}
 
 	render() {
@@ -83,6 +80,25 @@ class FocusTrap extends FocusMixin(LitElement) {
 		'.equatio-toolbar-shadow-root-container'
 	].join(', ');
 
+	#handleBodyFocus = (e) => {
+		const lastTrap = traps[traps.length - 1];
+		if (!this.trap || this._legacyPromptIds.size > 0 || lastTrap !== this) return;
+		const container = this._getContainer();
+		const target = e.composedPath()[0];
+		if (isComposedAncestor(container, target) || FocusTrap.#isExempt(target)) return;
+		this._focusFirst();
+	};
+
+	#handleLegacyPromptClose = (e) => {
+		this._legacyPromptIds.delete(e.detail.id);
+		this.requestUpdate();
+	};
+
+	#handleLegacyPromptOpen = (e) => {
+		this._legacyPromptIds.add(e.detail.id);
+		this.requestUpdate();
+	};
+
 	_focusFirst() {
 		const focusable = this.shadowRoot &&
 			getNextFocusable(this.shadowRoot.querySelector('.d2l-focus-trap-start'));
@@ -92,15 +108,6 @@ class FocusTrap extends FocusMixin(LitElement) {
 
 	_getContainer() {
 		return this.shadowRoot && this.shadowRoot.querySelector('.d2l-focus-trap-start').parentNode;
-	}
-
-	_handleBodyFocus(e) {
-		const lastTrap = traps[traps.length - 1];
-		if (!this.trap || this._legacyPromptIds.size > 0 || lastTrap !== this) return;
-		const container = this._getContainer();
-		const target = e.composedPath()[0];
-		if (isComposedAncestor(container, target) || FocusTrap.#isExempt(target)) return;
-		this._focusFirst();
 	}
 
 	_handleEndFocusIn(e) {
@@ -114,16 +121,6 @@ class FocusTrap extends FocusMixin(LitElement) {
 			}
 		}
 		this._focusFirst();
-	}
-
-	_handleLegacyPromptClose(e) {
-		this._legacyPromptIds.delete(e.detail.id);
-		this.requestUpdate();
-	}
-
-	_handleLegacyPromptOpen(e) {
-		this._legacyPromptIds.add(e.detail.id);
-		this.requestUpdate();
 	}
 
 	_handleStartFocusIn(e) {

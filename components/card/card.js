@@ -227,15 +227,13 @@ class Card extends LitElement {
 		this._footerHidden = true;
 		this._hover = false;
 		this._tooltipShowing = false;
-		this._onBadgeResize = this._onBadgeResize.bind(this);
-		this._onFooterResize = this._onFooterResize.bind(this);
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		const badgeObserver = new ResizeObserver(this._onBadgeResize);
+		const badgeObserver = new ResizeObserver(this.#onBadgeResize);
 		badgeObserver.observe(this.shadowRoot.querySelector('.d2l-card-badge'));
-		const footerObserver = new ResizeObserver(this._onFooterResize);
+		const footerObserver = new ResizeObserver(this.#onFooterResize);
 		footerObserver.observe(this.shadowRoot.querySelector('.d2l-card-footer'));
 
 		if (this._focusOnFirstRender) {
@@ -307,11 +305,19 @@ class Card extends LitElement {
 		else super.focus();
 	}
 
-	_onBadgeResize(entries) {
+	#onBadgeResize = (entries) => {
 		if (!entries || entries.length === 0) return;
 		const entry = entries[0];
 		requestAnimationFrame(() => this._badgeMarginTop = `${-0.5 * entry.contentRect.height}px`);
-	}
+	};
+
+	#onFooterResize = (entries) => {
+		if (!entries || entries.length === 0) return;
+		const entry = entries[0];
+		// firefox has a rounding error when calculating the height of the contentRect
+		// with `box-sizing: border-box;` so check for numbers which are close to 0 as well
+		requestAnimationFrame(() => this._footerHidden = (entry.contentRect.height < 1));
+	};
 
 	_onDropdownClose() {
 		this._dropdownActionOpen = false;
@@ -319,14 +325,6 @@ class Card extends LitElement {
 
 	_onDropdownOpen() {
 		this._dropdownActionOpen = true;
-	}
-
-	_onFooterResize(entries) {
-		if (!entries || entries.length === 0) return;
-		const entry = entries[0];
-		// firefox has a rounding error when calculating the height of the contentRect
-		// with `box-sizing: border-box;` so check for numbers which are close to 0 as well
-		requestAnimationFrame(() => this._footerHidden = (entry.contentRect.height < 1));
 	}
 
 	_onLinkBlur() {

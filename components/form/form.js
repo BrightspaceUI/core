@@ -65,8 +65,6 @@ class Form extends LocalizeCoreElement(LitElement) {
 		this._tooltips = new Map();
 		this._validationCustoms = new Set();
 
-		this._onUnload = this._onUnload.bind(this);
-
 		/** @ignore */
 		this.addEventListener('d2l-form-connect', this._onFormConnect);
 		this.addEventListener('d2l-form-errors-change', this._onErrorsChange);
@@ -82,14 +80,14 @@ class Form extends LocalizeCoreElement(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		window.addEventListener('beforeunload', this._onUnload);
+		window.addEventListener('beforeunload', this.#onUnload);
 		/** @ignore */
 		this._isSubForm = !this.dispatchEvent(new CustomEvent('d2l-form-connect', { bubbles: true, composed: true, cancelable: true }));
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		window.removeEventListener('beforeunload', this._onUnload);
+		window.removeEventListener('beforeunload', this.#onUnload);
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-form-disconnect'));
 		this._isSubForm = false;
@@ -190,6 +188,13 @@ class Form extends LocalizeCoreElement(LitElement) {
 		}
 		return flattenedErrorMap;
 	}
+
+	#onUnload = (e) => {
+		if (this.trackChanges && this._dirty) {
+			e.preventDefault();
+			e.returnValue = false;
+		}
+	};
 
 	_displayInvalid(ele, message) {
 		let tooltip = this._tooltips.get(ele);
@@ -292,13 +297,6 @@ class Form extends LocalizeCoreElement(LitElement) {
 		e.stopPropagation();
 		const errors = await this._validateFormElement(ele, e.type === 'focusout');
 		this._updateErrors(ele, errors);
-	}
-
-	_onUnload(e) {
-		if (this.trackChanges && this._dirty) {
-			e.preventDefault();
-			e.returnValue = false;
-		}
 	}
 
 	_setupDialogValidationReset() {
