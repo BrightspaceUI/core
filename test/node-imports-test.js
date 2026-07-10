@@ -24,4 +24,10 @@ describe('node imports', () => {
 		assert.ok(t._generateSelectStyles);
 	});
 
+	it('should import offscreen styles in a node environment', async() => {
+		const t = await import('../components/offscreen/offscreen-styles.js');
+		assert.ok(t._offscreenStyleDeclarations);
+		assert.ok(t.offscreenStyles);
+	});
+
 });
