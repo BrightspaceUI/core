@@ -122,6 +122,11 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			min-width: min(${MAIN_MIN_WIDTH}px, 100%);
 		}
 
+		.side-nav,
+		.supporting {
+			display: contents;
+		}
+
 		.side-nav-panel,
 		.supporting-panel {
 			height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
@@ -308,7 +313,11 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		const footerContainerClasses = { 'footer': true, 'fixed-footer': fixedFooter };
 		const footerContents = html`<div class="footer-contents"><slot name="footer" @slotchange="${this.#handleSlotVisibilityChange}"></slot></div>`;
 		return html`
-			<div class="${classMap(footerContainerClasses)}" ?hidden="${!this._slotVisibility['footer']}">
+			<div
+				role="region"
+				aria-label="TO DO"
+				class="${classMap(footerContainerClasses)}"
+				?hidden="${!this._slotVisibility['footer']}">
 				${fixedFooter ? footerContents : this.#renderFloatingButtons(footerContents)}	
 			</div>
 		`;
@@ -326,28 +335,30 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	#renderSideNavPanel() {
 		return html`
-			<nav
-				class="side-nav-panel"
-				style=${styleMap({ width: `${this._panelState.getSize('side-nav')}px` })}
-				?hidden="${!this._slotVisibility['side-nav']}"
-				aria-label="${this.localize('components.page.side-nav-label')}">
-				<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+			<nav class="side-nav" aria-label="${this.localize('components.page.side-nav-label')}">
+				<div
+					class="side-nav-panel"
+					style=${styleMap({ width: `${this._panelState.getSize('side-nav')}px` })}
+					?hidden="${!this._slotVisibility['side-nav']}">
+					<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+				</div>
+				${!this._slotVisibility['side-nav'] ? nothing :
+					this.#renderDivider('side-nav', this.localize('components.page.side-nav-divider-label'), 'start')}
 			</nav>
-			${!this._slotVisibility['side-nav'] ? nothing :
-				this.#renderDivider('side-nav', this.localize('components.page.side-nav-divider-label'), 'start')}
 		`;
 	}
 
 	#renderSupportingPanel() {
 		return html`
-			${!this._slotVisibility['supporting'] ? nothing :
-				this.#renderDivider('supporting', this.localize('components.page.supporting-divider-label'), 'end')}
-			<aside
-				class="supporting-panel"
-				style=${styleMap({ width: `${this._panelState.getSize('supporting')}px` })}
-				?hidden="${!this._slotVisibility['supporting']}"
-				aria-label="${this.localize('components.page.supporting-panel-label')}">
-				<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+			<aside class="supporting" aria-label="${this.localize('components.page.supporting-label')}">
+				${!this._slotVisibility['supporting'] ? nothing :
+					this.#renderDivider('supporting', this.localize('components.page.supporting-divider-label'), 'end')}
+				<div
+					class="supporting-panel"
+					style=${styleMap({ width: `${this._panelState.getSize('supporting')}px` })}
+					?hidden="${!this._slotVisibility['supporting']}">
+					<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+				</div>
 			</aside>
 		`;
 	}
