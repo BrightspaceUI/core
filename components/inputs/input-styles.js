@@ -17,7 +17,7 @@ registerSemanticVariableForSvgImageUrl(
 /**
  * A private helper method that should not be used by general consumers
  */
-export function _getInputBaseStyleDelegates(selector, focusSelector) {
+function _getInputBaseStyleDelegates(selector, focusSelector) {
 	return {
 		selector: focusClass => `
 			${focusSelector ? `${focusSelector},` : ''}
@@ -66,7 +66,7 @@ function getStyleDelegates(selector, focusSelector, textAreaSelector) {
 /**
  * A private helper method that should not be used by general consumers
  */
-export function _generateInputBaseStyles(selector) {
+function _generateInputBaseStyles(selector) {
 	return css`
 		${selector} {
 			background-color: var(--d2l-input-background-color, var(--d2l-theme-background-color-base));
@@ -110,7 +110,7 @@ export function _generateInputPlaceholderBaseStyles(selector) {
 /**
  * A private helper method that should not be used by general consumers
  */
-export function _generateInputAriaInvalidBaseStyles(selector) {
+function _generateInputAriaInvalidBaseStyles(selector) {
 	return css`
 		${selector}[aria-invalid="true"]:not(:disabled) {
 			border-color: var(--d2l-theme-status-color-error);
@@ -121,7 +121,7 @@ export function _generateInputAriaInvalidBaseStyles(selector) {
 /**
  * A private helper method that should not be used by general consumers
  */
-export function _generateInputDisabledBaseStyles(selector) {
+function _generateInputDisabledBaseStyles(selector) {
 	return css`
 		${selector}:disabled {
 			opacity: var(--d2l-theme-opacity-disabled-control);
@@ -194,6 +194,27 @@ export function _generateInputStyles(selector, focusSelector) {
 				border-color: Highlight;
 			}` : css``}
 		}
+	`;
+}
+
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export function _generateInputTextStyles(selector) {
+	if (!_isValidCssSelector(selector)) return '';
+	const finalSelector = unsafeCSS(selector);
+	const input = _getInputBaseStyleDelegates(selector);
+
+	return css`
+		${ _generateInputBaseStyles(finalSelector) }
+
+		${ _generateInputPlaceholderBaseStyles(finalSelector) }
+
+		${ getFocusVisibleStyles(input.selector, input.style) }
+
+		${ _generateInputAriaInvalidBaseStyles(finalSelector) }
+
+		${_generateInputDisabledBaseStyles(finalSelector)}
 	`;
 }
 

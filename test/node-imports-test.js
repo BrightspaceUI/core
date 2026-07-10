@@ -25,7 +25,7 @@ describe('node imports', () => {
 	});
 
 	it('should import input text styles in a node environment', async() => {
-		const t = await import('../components/inputs/input-text-styles.js');
+		const t = await import('../components/inputs/input-styles.js');
 		assert.ok(t._generateInputTextStyles);
 	});
 
