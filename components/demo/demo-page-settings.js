@@ -45,8 +45,6 @@ class DemoPageSettings extends LitElement {
 
 	constructor() {
 		super();
-		this.#handleFlagsKnownBound = this.#handleFlagsKnown.bind(this);
-		this.#handleDocumentLanguageChangeBound = this.#handleDocumentLanguageChange.bind(this);
 		const urlParams = new URLSearchParams(window.location.search);
 		if (urlParams.has('lang')) {
 			const newLanguageCode = urlParams.get('lang');
@@ -64,14 +62,14 @@ class DemoPageSettings extends LitElement {
 
 	connectedCallback() {
 		super.connectedCallback();
-		document.addEventListener('d2l-flags-known', this.#handleFlagsKnownBound);
-		localeSettings.addChangeListener(this.#handleDocumentLanguageChangeBound);
+		document.addEventListener('d2l-flags-known', this.#handleFlagsKnown);
+		localeSettings.addChangeListener(this.#handleDocumentLanguageChange);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		document.removeEventListener('d2l-flags-known', this.#handleFlagsKnownBound);
-		localeSettings.removeChangeListener(this.#handleDocumentLanguageChangeBound);
+		document.removeEventListener('d2l-flags-known', this.#handleFlagsKnown);
+		localeSettings.removeChangeListener(this.#handleDocumentLanguageChange);
 	}
 
 	render() {
@@ -133,8 +131,20 @@ class DemoPageSettings extends LitElement {
 		`;
 	}
 
-	#handleDocumentLanguageChangeBound;
-	#handleFlagsKnownBound;
+	#handleDocumentLanguageChange = () => {
+		this._language = localeSettings.language;
+		const url = new URL(window.location.href);
+		if (this._language === 'en-us') {
+			url.searchParams.delete('lang');
+		} else {
+			url.searchParams.set('lang', this._language);
+		}
+		window.history.replaceState({}, '', url.toString());
+	};
+
+	#handleFlagsKnown = () => {
+		this.requestUpdate();
+	};
 
 	#getKnownFlagsSorted() {
 		return new Map([...getKnownFlags().entries()].sort((entry1, entry2) => {
@@ -179,21 +189,6 @@ class DemoPageSettings extends LitElement {
 
 		url.searchParams.set('color-mode', newColorMode);
 		window.history.replaceState({}, '', url.toString());
-	}
-
-	#handleDocumentLanguageChange() {
-		this._language = localeSettings.language;
-		const url = new URL(window.location.href);
-		if (this._language === 'en-us') {
-			url.searchParams.delete('lang');
-		} else {
-			url.searchParams.set('lang', this._language);
-		}
-		window.history.replaceState({}, '', url.toString());
-	}
-
-	#handleFlagsKnown() {
-		this.requestUpdate();
 	}
 
 	#handleLanguageChange(e) {
