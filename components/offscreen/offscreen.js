@@ -1,6 +1,5 @@
-import { css, html, LitElement } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
 import { _offscreenStyleDeclarations, offscreenStyles } from './offscreen-styles.js';
+import { css, html, LitElement } from 'lit';
 
 export { _offscreenStyleDeclarations, offscreenStyles };
 
