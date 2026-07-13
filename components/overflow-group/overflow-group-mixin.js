@@ -83,10 +83,8 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	constructor() {
 		super();
 
-		this._handleItemMutation = this._handleItemMutation.bind(this);
-		this._handleResize = this._handleResize.bind(this);
-		this._itemObserver = new MutationObserver(this._handleItemMutation);
-		this._resizeObserver = new ResizeObserver((entries) => requestAnimationFrame(() => this._handleResize(entries)));
+		this._itemObserver = new MutationObserver(this.#handleItemMutation);
+		this._resizeObserver = new ResizeObserver((entries) => requestAnimationFrame(() => this.#handleResize(entries)));
 
 		this._hasResized = false;
 		this._isObservingResize = false;
@@ -182,6 +180,46 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 	getOverflowContainer() {
 		throw new Error('OverflowGroupMixin.getOverflowContainer must be overridden');
 	}
+
+	#handleItemMutation = (mutations) => {
+		if (!mutations || mutations.length === 0) return;
+		if (this._updateOverflowItemsRequested) return;
+
+		let isWidthModifyingMutation = false;
+		for (const mutation of mutations) {
+			if (mutation.attributeName
+				&& (mutation.attributeName === 'selected' || mutation.attributeName === 'text')
+			) {
+				isWidthModifyingMutation = true;
+				break;
+			}
+		}
+
+		this._updateOverflowItemsRequested = true;
+		setTimeout(() => {
+			this._overflowItems = this._slotItems.map((node) => this.convertToOverflowItem(node));
+
+			// when certain attributes change the corresponding item width can also change and so we need to re-get the layouts and chomp
+			if (isWidthModifyingMutation) {
+				this._itemLayouts = this._getItemLayouts(this._slotItems);
+				this._chomp();
+			}
+			this._updateOverflowItemsRequested = false;
+			this.requestUpdate();
+		}, 0);
+	};
+
+	#handleResize = async(entries) => {
+		await (document.fonts ? document.fonts.ready : Promise.resolve()); // computed widths can be incorrect if we don't wait for fonts to load
+		this._availableWidth = Math.ceil(entries[0].contentRect.width);
+
+		if (!this._hasResized) {
+			this._hasResized = true;
+			this._handleSlotChange();
+		} else {
+			this._chomp();
+		}
+	};
 
 	_autoDetectBoundaries(items) {
 		if (!items) return;
@@ -333,46 +371,6 @@ export const OverflowGroupMixin = superclass => class extends LocalizeCoreElemen
 		});
 
 		return filteredNodes;
-	}
-
-	_handleItemMutation(mutations) {
-		if (!mutations || mutations.length === 0) return;
-		if (this._updateOverflowItemsRequested) return;
-
-		let isWidthModifyingMutation = false;
-		for (const mutation of mutations) {
-			if (mutation.attributeName
-				&& (mutation.attributeName === 'selected' || mutation.attributeName === 'text')
-			) {
-				isWidthModifyingMutation = true;
-				break;
-			}
-		}
-
-		this._updateOverflowItemsRequested = true;
-		setTimeout(() => {
-			this._overflowItems = this._slotItems.map((node) => this.convertToOverflowItem(node));
-
-			// when certain attributes change the corresponding item width can also change and so we need to re-get the layouts and chomp
-			if (isWidthModifyingMutation) {
-				this._itemLayouts = this._getItemLayouts(this._slotItems);
-				this._chomp();
-			}
-			this._updateOverflowItemsRequested = false;
-			this.requestUpdate();
-		}, 0);
-	}
-
-	async _handleResize(entries) {
-		await (document.fonts ? document.fonts.ready : Promise.resolve()); // computed widths can be incorrect if we don't wait for fonts to load
-		this._availableWidth = Math.ceil(entries[0].contentRect.width);
-
-		if (!this._hasResized) {
-			this._hasResized = true;
-			this._handleSlotChange();
-		} else {
-			this._chomp();
-		}
 	}
 
 	_handleSlotChange() {

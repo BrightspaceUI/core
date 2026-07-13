@@ -113,8 +113,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	constructor() {
 		super();
-		this._validationCustomConnected = this._validationCustomConnected.bind(this);
-		this._onFormElementErrorsChange = this._onFormElementErrorsChange.bind(this);
 
 		this._firstUpdateResolve = null;
 		this._firstUpdatePromise = new Promise((resolve) => {
@@ -160,14 +158,14 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.shadowRoot.addEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
-		this.shadowRoot.addEventListener('d2l-form-element-errors-change', this._onFormElementErrorsChange);
+		this.shadowRoot.addEventListener('d2l-validation-custom-connected', this.#validationCustomConnected);
+		this.shadowRoot.addEventListener('d2l-form-element-errors-change', this.#onFormElementErrorsChange);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this.shadowRoot.removeEventListener('d2l-validation-custom-connected', this._validationCustomConnected);
-		this.shadowRoot.removeEventListener('d2l-form-element-errors-change', this._onFormElementErrorsChange);
+		this.shadowRoot.removeEventListener('d2l-validation-custom-connected', this.#validationCustomConnected);
+		this.shadowRoot.removeEventListener('d2l-form-element-errors-change', this.#onFormElementErrorsChange);
 	}
 
 	firstUpdated(changedProperties) {
@@ -261,7 +259,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		this._validationCustoms.delete(custom);
 	}
 
-	_onFormElementErrorsChange(e) {
+	#onFormElementErrorsChange = (e) => {
 		e.stopPropagation();
 		const errors = e.detail.errors;
 		if (errors.length === 0) {
@@ -273,9 +271,9 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 			this.childErrors.set(e.target, errors);
 			this.requestUpdate('childErrors');
 		}
-	}
+	};
 
-	_validationCustomConnected(e) {
+	#validationCustomConnected = (e) => {
 		e.stopPropagation();
 		const custom = e.composedPath()[0];
 		this.validationCustomConnected(custom);
@@ -285,6 +283,6 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 			this.validationCustomDisconnected(custom);
 		};
 		custom.addEventListener('d2l-validation-custom-disconnected', onDisconnect);
-	}
+	};
 
 };

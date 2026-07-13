@@ -79,7 +79,6 @@ export const DialogMixin = superclass => class extends superclass {
 		this._autoSize = true;
 		this._dialogId = getUniqueId();
 		this._fullscreenWithin = 0;
-		this._handleMvcDialogOpen = this._handleMvcDialogOpen.bind(this);
 		this._inIframe = false;
 		this._isDialogMixin = true;
 		this._isFullHeight = false;
@@ -93,21 +92,19 @@ export const DialogMixin = superclass => class extends superclass {
 		this._scroll = false;
 		this._state = null;
 		this._top = 0;
-		this._updateOverflow = this._updateOverflow.bind(this);
-		this._updateSize = this._updateSize.bind(this);
 		this._width = 0;
 	}
 
 	async connectedCallback() {
 		super.connectedCallback();
 		if (this._useNative) {
-			window.addEventListener('d2l-mvc-dialog-open', this._handleMvcDialogOpen);
+			window.addEventListener('d2l-mvc-dialog-open', this.#handleMvcDialogOpen);
 		}
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		window.removeEventListener('d2l-mvc-dialog-open', this._handleMvcDialogOpen);
+		window.removeEventListener('d2l-mvc-dialog-open', this.#handleMvcDialogOpen);
 
 		// If the dialog is disconnected before the close animation finishes
 		if (this.opened && closeDialogWhenDisconnectedFlag) {
@@ -158,7 +155,7 @@ export const DialogMixin = superclass => class extends superclass {
 	resize() {
 		return new Promise(resolve => {
 			setTimeout(async() => {
-				await this._updateSize();
+				await this.#updateSize();
 				resolve();
 			}, 0);
 		});
@@ -172,10 +169,56 @@ export const DialogMixin = superclass => class extends superclass {
 
 	#useNativeInitialized = false;
 
+	#handleMvcDialogOpen = () => {
+		// native dialogs on top layer will be stacked on non-native dialogs regardless of z-index
+		// so we need to opt out of native dialogs if a non-native nested dialog is launched
+		this._useNative = false;
+	};
+
+	#updateOverflow = () => {
+		if (!this.shadowRoot) return;
+		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
+		// On Windows, browser zoom can cause scrollTop to be a fraction
+		const bottomOverflow = content.scrollHeight - (Math.ceil(content.scrollTop) + content.clientHeight);
+		this._overflowTop = (content.scrollTop > 0);
+		this._overflowBottom = (bottomOverflow > 0);
+	};
+
+	#updateSize = async() => {
+		if (this._autoSize) {
+			if (this._ifrauContextInfo) {
+				if (this._ifrauContextInfo.top > defaultMargin.top) {
+					this._top = 0;
+					this._margin.top = 0;
+				} else if (this._ifrauContextInfo.top < 0) {
+					this._top = defaultMargin.top - this._ifrauContextInfo.top;
+					this._margin.top = defaultMargin.top;
+				} else {
+					this._top = defaultMargin.top - this._ifrauContextInfo.top;
+					this._margin.top = defaultMargin.top - this._ifrauContextInfo.top;
+				}
+			}
+			this._width = this._getWidth();
+			this._left = this._getLeft();
+			await this.updateComplete;
+			this._height = this._getHeight();
+			await this.updateComplete;
+		} else {
+			this._width = 0;
+		}
+		await new Promise(resolve => {
+			requestAnimationFrame(async() => {
+				this.#updateOverflow();
+				await this.updateComplete;
+				resolve();
+			});
+		});
+	};
+
 	_addHandlers() {
-		window.addEventListener('resize', this._updateSize);
+		window.addEventListener('resize', this.#updateSize);
 		this.addEventListener('touchstart', this._handleTouchStart);
-		if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-dialog-content').addEventListener('scroll', this._updateOverflow);
+		if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-dialog-content').addEventListener('scroll', this.#updateOverflow);
 	}
 
 	_close(action) {
@@ -379,12 +422,6 @@ export const DialogMixin = superclass => class extends superclass {
 		}
 	}
 
-	_handleMvcDialogOpen() {
-		// native dialogs on top layer will be stacked on non-native dialogs regardless of z-index
-		// so we need to opt out of native dialogs if a non-native nested dialog is launched
-		this._useNative = false;
-	}
-
 	_handleTouchStart(e) {
 		// elements external to the dialog such as primary-secondary template should not be reacting
 		// to touchstart events originating inside the dialog or backdrop
@@ -450,7 +487,7 @@ export const DialogMixin = superclass => class extends superclass {
 				this._scroll = true;
 			}, 0);
 
-			await this._updateSize();
+			await this.#updateSize();
 			if (!this._useNative) this._state = 'showing';
 			await this.updateComplete;
 
@@ -470,7 +507,7 @@ export const DialogMixin = superclass => class extends superclass {
 			requestAnimationFrame(() => this._updateFocusableContentElemPresent());
 
 			await this.waitForUpdateComplete();
-			await this._updateSize();
+			await this.#updateSize();
 			/** Dispatched when the dialog is opened */
 			this.dispatchEvent(new CustomEvent(
 				'd2l-dialog-open', { bubbles: true, composed: true }
@@ -481,9 +518,9 @@ export const DialogMixin = superclass => class extends superclass {
 	}
 
 	_removeHandlers() {
-		window.removeEventListener('resize', this._updateSize);
+		window.removeEventListener('resize', this.#updateSize);
 		this.removeEventListener('touchstart', this._handleTouchStart);
-		this.shadowRoot?.querySelector('.d2l-dialog-content')?.removeEventListener('scroll', this._updateOverflow);
+		this.shadowRoot?.querySelector('.d2l-dialog-content')?.removeEventListener('scroll', this.#updateOverflow);
 	}
 
 	_render(inner, info, iframeTopOverride) {
@@ -562,46 +599,6 @@ export const DialogMixin = superclass => class extends superclass {
 			this.focusableContentElemPresent = true;
 		}
 		return elementToFocus;
-	}
-
-	_updateOverflow() {
-		if (!this.shadowRoot) return;
-		const content = this.shadowRoot.querySelector('.d2l-dialog-content');
-		// On Windows, browser zoom can cause scrollTop to be a fraction
-		const bottomOverflow = content.scrollHeight - (Math.ceil(content.scrollTop) + content.clientHeight);
-		this._overflowTop = (content.scrollTop > 0);
-		this._overflowBottom = (bottomOverflow > 0);
-	}
-
-	async _updateSize() {
-		if (this._autoSize) {
-			if (this._ifrauContextInfo) {
-				if (this._ifrauContextInfo.top > defaultMargin.top) {
-					this._top = 0;
-					this._margin.top = 0;
-				} else if (this._ifrauContextInfo.top < 0) {
-					this._top = defaultMargin.top - this._ifrauContextInfo.top;
-					this._margin.top = defaultMargin.top;
-				} else {
-					this._top = defaultMargin.top - this._ifrauContextInfo.top;
-					this._margin.top = defaultMargin.top - this._ifrauContextInfo.top;
-				}
-			}
-			this._width = this._getWidth();
-			this._left = this._getLeft();
-			await this.updateComplete;
-			this._height = this._getHeight();
-			await this.updateComplete;
-		} else {
-			this._width = 0;
-		}
-		await new Promise(resolve => {
-			requestAnimationFrame(async() => {
-				this._updateOverflow();
-				await this.updateComplete;
-				resolve();
-			});
-		});
 	}
 
 };
