@@ -25,7 +25,7 @@ class PageDemoCommsApp extends LitElement {
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            min-height: calc(100vh - var(--d2l-page-header-height-measured) - 70px - 75px); /* sticky header is 70px and input box is 75px */
+            height: 100%;
             justify-content: end;
         }
 
