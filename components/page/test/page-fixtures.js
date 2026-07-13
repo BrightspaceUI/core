@@ -44,8 +44,8 @@ export function createPage({
 	hasSupportingHeader = false,
 	layout = 'main-only',
 	mainHeight = '200px',
-	sideNavHeight = '275px',
-	supportingHeight = '275px',
+	sideNavHeight = '250px',
+	supportingHeight = '250px',
 	widthType = 'normal',
 	overrides = {}
 } = {}) {
