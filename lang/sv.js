@@ -155,6 +155,7 @@ export default {
 	"components.more-less.more": "mer",
 	"components.object-property-list.item-placeholder-text": "Platshållarobjekt",
 	"components.overflow-group.moreActions": "Fler åtgärder",
+	"components.page.footer-region-label": "Footer",
 	"components.page.header-nav-label": "Huvudsida",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Sida",

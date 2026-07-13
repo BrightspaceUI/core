@@ -155,6 +155,7 @@ export default {
 	"components.more-less.more": "más",
 	"components.object-property-list.item-placeholder-text": "Elemento de marcador de posición",
 	"components.overflow-group.moreActions": "Más acciones",
+	"components.page.footer-region-label": "Footer",
 	"components.page.header-nav-label": "Principal",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Lateral",

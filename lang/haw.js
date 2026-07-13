@@ -155,6 +155,7 @@ export default {
 	"components.more-less.more": "hou aku",
 	"components.object-property-list.item-placeholder-text": "Mea Paʻa Wahi",
 	"components.overflow-group.moreActions": "Nā Hana Hou",
+	"components.page.footer-region-label": "Footer",
 	"components.page.header-nav-label": "Nui",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "ʻaoʻao",

@@ -155,6 +155,7 @@ export default {
 	"components.more-less.more": "ētahi atu",
 	"components.object-property-list.item-placeholder-text": "Tūemi Puriwāhi",
 	"components.overflow-group.moreActions": "Ētahi atu Hohenga",
+	"components.page.footer-region-label": "Footer",
 	"components.page.header-nav-label": "Matua",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Taha",

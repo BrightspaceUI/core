@@ -155,6 +155,7 @@ export default {
 	"components.more-less.more": "meer",
 	"components.object-property-list.item-placeholder-text": "Item tijdelijke aanduiding",
 	"components.overflow-group.moreActions": "Meer acties",
+	"components.page.footer-region-label": "Footer",
 	"components.page.header-nav-label": "Hoofdgedeelte",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Zij",
