@@ -302,8 +302,6 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		this._lastSlotWidth = 0;
 		this._prevValue = '';
 
-		this._handleBlur = this._handleBlur.bind(this);
-		this._handleFocus = this._handleFocus.bind(this);
 		this._perfMonitor = new PerfMonitor(this);
 	}
 
@@ -369,8 +367,8 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		if (this._intersectionObserver) this._intersectionObserver.disconnect();
 		const container = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-text-container');
 		if (!container) return;
-		container.removeEventListener('blur', this._handleBlur, true);
-		container.removeEventListener('focus', this._handleFocus, true);
+		container.removeEventListener('blur', this.#handleBlur, true);
+		container.removeEventListener('focus', this.#handleFocus, true);
 	}
 
 	firstUpdated(changedProperties) {
@@ -380,8 +378,8 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 
 		const container = this.shadowRoot && this.shadowRoot.querySelector('.d2l-input-text-container');
 		if (!container) return;
-		container.addEventListener('blur', this._handleBlur, true);
-		container.addEventListener('focus', this._handleFocus, true);
+		container.addEventListener('blur', this.#handleBlur, true);
+		container.addEventListener('focus', this.#handleFocus, true);
 
 		// if initially hidden then update layout when it becomes visible
 		if (typeof(IntersectionObserver) === 'function') {
@@ -534,6 +532,24 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		});
 	}
 
+	#handleBlur = async(e) => {
+		this._focused = false;
+		this.requestValidate(true);
+
+		/**
+		 * This is needed only for Legacy-Edge
+		 * the _handleChange function is NOT triggered, therefore we have to detect the blur and handle it ourselves.
+		 */
+		const browserType = window.navigator.userAgent;
+		if (this._prevValue !== e.target.value && (browserType.indexOf('Edge') > -1)) {
+			this._handleChange();
+		}
+	};
+
+	#handleFocus = () => {
+		this._focused = true;
+	};
+
 	_getAriaLabel() {
 		let label;
 		if (this.label && (this.labelHidden || this.labelledBy)) {
@@ -565,30 +581,12 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		this._hasAfterContent = (afterContent && afterContent.length > 0);
 	}
 
-	async _handleBlur(e) {
-		this._focused = false;
-		this.requestValidate(true);
-
-		/**
-		 * This is needed only for Legacy-Edge
-		 * the _handleChange function is NOT triggered, therefore we have to detect the blur and handle it ourselves.
-		 */
-		const browserType = window.navigator.userAgent;
-		if (this._prevValue !== e.target.value && (browserType.indexOf('Edge') > -1)) {
-			this._handleChange();
-		}
-	}
-
 	_handleChange() {
 		// Change events aren't composed, so we need to re-dispatch
 		this.dispatchEvent(new CustomEvent(
 			'change',
 			{ bubbles: true, composed: false }
 		));
-	}
-
-	_handleFocus() {
-		this._focused = true;
 	}
 
 	_handleInput(e) {

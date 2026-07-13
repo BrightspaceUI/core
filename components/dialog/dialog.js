@@ -102,7 +102,6 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		this.preferNative = false;
 		this.width = 600;
 		this._criticalLabelId = getUniqueId();
-		this._handleResize = this._handleResize.bind(this);
 		this._titleId = getUniqueId();
 		this._textId = getUniqueId();
 	}
@@ -113,17 +112,17 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 
 	connectedCallback() {
 		super.connectedCallback();
-		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this._handleResize);
+		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this.#handleResize);
 	}
 
 	disconnectedCallback() {
-		if (mediaQueryList.removeEventListener) mediaQueryList.removeEventListener('change', this._handleResize);
+		if (mediaQueryList.removeEventListener) mediaQueryList.removeEventListener('change', this.#handleResize);
 		super.disconnectedCallback();
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		this._handleResize();
+		this.#handleResize();
 	}
 
 	render() {
@@ -202,6 +201,11 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		}
 	}
 
+	#handleResize = () => {
+		this._autoSize = !mediaQueryList.matches;
+		this.resize();
+	};
+
 	_abort() {
 		this._close('abort');
 	}
@@ -209,11 +213,6 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 	_handleFooterSlotChange(e) {
 		const footerContent = e.target.assignedNodes({ flatten: true });
 		this._hasFooterContent = (footerContent && footerContent.length > 0);
-	}
-
-	_handleResize() {
-		this._autoSize = !mediaQueryList.matches;
-		this.resize();
 	}
 
 	_handleSlotChange() {

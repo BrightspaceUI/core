@@ -163,10 +163,6 @@ class AlertToast extends LitElement {
 		this._state = states.CLOSED;
 		this._totalSiblingHeightBelow = 0;
 
-		this._closeTimerStop = this._closeTimerStop.bind(this);
-		this._handlePageResize = this._handlePageResize.bind(this);
-		this._handleSiblingCloseTimerStart = this._handleSiblingCloseTimerStart.bind(this);
-		this._handleSiblingResize = this._handleSiblingResize.bind(this);
 		this._resizeObserver = null;
 	}
 
@@ -185,11 +181,11 @@ class AlertToast extends LitElement {
 
 	async connectedCallback() {
 		super.connectedCallback();
-		document.body.addEventListener('d2l-alert-toast-close', this._handleSiblingResize);
-		document.body.addEventListener('d2l-alert-toast-resize', this._handleSiblingResize);
-		document.body.addEventListener('d2l-alert-toast-timer-start', this._handleSiblingCloseTimerStart);
-		document.body.addEventListener('d2l-alert-toast-timer-stop', this._closeTimerStop);
-		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this._handlePageResize);
+		document.body.addEventListener('d2l-alert-toast-close', this.#handleSiblingResize);
+		document.body.addEventListener('d2l-alert-toast-resize', this.#handleSiblingResize);
+		document.body.addEventListener('d2l-alert-toast-timer-start', this.#handleSiblingCloseTimerStart);
+		document.body.addEventListener('d2l-alert-toast-timer-stop', this.#closeTimerStop);
+		if (mediaQueryList.addEventListener) mediaQueryList.addEventListener('change', this.#handlePageResize);
 
 		await this.updateComplete;
 		this._resizeObserver = new ResizeObserver((e) => requestAnimationFrame(() => this._handleResize(e)));
@@ -198,12 +194,12 @@ class AlertToast extends LitElement {
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		document.body.removeEventListener('d2l-alert-toast-close', this._handleSiblingResize);
-		document.body.removeEventListener('d2l-alert-toast-resize', this._handleSiblingResize);
-		document.body.removeEventListener('d2l-alert-toast-timer-start', this._handleSiblingCloseTimerStart);
-		document.body.removeEventListener('d2l-alert-toast-timer-stop', this._closeTimerStop);
+		document.body.removeEventListener('d2l-alert-toast-close', this.#handleSiblingResize);
+		document.body.removeEventListener('d2l-alert-toast-resize', this.#handleSiblingResize);
+		document.body.removeEventListener('d2l-alert-toast-timer-start', this.#handleSiblingCloseTimerStart);
+		document.body.removeEventListener('d2l-alert-toast-timer-stop', this.#closeTimerStop);
 		if (this._resizeObserver) this._resizeObserver.disconnect();
-		if (mediaQueryList.removeEventListener) mediaQueryList.removeEventListener('change', this._handlePageResize);
+		if (mediaQueryList.removeEventListener) mediaQueryList.removeEventListener('change', this.#handlePageResize);
 
 		if (this._hasMouse) ALERT_HAS_HOVER = false;
 		if (this._hasFocus) ALERT_HAS_FOCUS = false;
@@ -274,6 +270,39 @@ class AlertToast extends LitElement {
 		}
 	}
 
+	#closeTimerStop = () => {
+		if (!this.open) return;
+		clearTimeout(this._setTimeoutId);
+	};
+
+	#handlePageResize = (e) => {
+		this._smallWidth = e.matches;
+	};
+
+	#handleSiblingCloseTimerStart = () => {
+		if (!this.open) return;
+		this._closeTimerStart();
+	};
+
+	#handleSiblingResize = (e) => {
+		if (e?.composedPath()[0] === this || !this.open) return;
+
+		if (!e.detail.opening) {
+			const containerBottom = this._innerContainer.getBoundingClientRect().bottom;
+			const siblingContainerBottom = e.detail.bottom;
+			if (siblingContainerBottom < containerBottom) return; // resized alert is above this alert, no need to adjust bottom spacing
+		}
+
+		this._totalSiblingHeightBelow += e.detail.heightDifference;
+		if (e.detail.opening) {
+			this._numAlertsBelow += 1;
+			if (!activeReduceMotion) this._state = states.SLIDING;
+		} else if (e.detail.closing) {
+			this._numAlertsBelow -= 1;
+			if (!activeReduceMotion) this._state = states.SLIDING;
+		}
+	};
+
 	_closeTimerStart() {
 		clearTimeout(this._setTimeoutId);
 		if (!this.noAutoClose && !ALERT_HAS_FOCUS && !ALERT_HAS_HOVER) {
@@ -284,18 +313,9 @@ class AlertToast extends LitElement {
 		}
 	}
 
-	_closeTimerStop() {
-		if (!this.open) return;
-		clearTimeout(this._setTimeoutId);
-	}
-
 	_handleButtonPress(e) {
 		e.stopPropagation();
 		this.dispatchEvent(new CustomEvent('d2l-alert-toast-button-press'));
-	}
-
-	_handlePageResize(e) {
-		this._smallWidth = e.matches;
 	}
 
 	_handleResize() {
@@ -318,30 +338,6 @@ class AlertToast extends LitElement {
 		));
 	}
 
-	_handleSiblingCloseTimerStart() {
-		if (!this.open) return;
-		this._closeTimerStart();
-	}
-
-	_handleSiblingResize(e) {
-		if (e?.composedPath()[0] === this || !this.open) return;
-
-		if (!e.detail.opening) {
-			const containerBottom = this._innerContainer.getBoundingClientRect().bottom;
-			const siblingContainerBottom = e.detail.bottom;
-			if (siblingContainerBottom < containerBottom) return; // resized alert is above this alert, no need to adjust bottom spacing
-		}
-
-		this._totalSiblingHeightBelow += e.detail.heightDifference;
-		if (e.detail.opening) {
-			this._numAlertsBelow += 1;
-			if (!activeReduceMotion) this._state = states.SLIDING;
-		} else if (e.detail.closing) {
-			this._numAlertsBelow -= 1;
-			if (!activeReduceMotion) this._state = states.SLIDING;
-		}
-	}
-
 	_onBlur() {
 		ALERT_HAS_FOCUS = false;
 		this._hasFocus = false;
@@ -361,7 +357,7 @@ class AlertToast extends LitElement {
 	_onFocus() {
 		ALERT_HAS_FOCUS = true;
 		this._hasFocus = true;
-		this._closeTimerStop();
+		this.#closeTimerStop();
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-stop', { bubbles: true, composed: false }));
 	}
@@ -369,7 +365,7 @@ class AlertToast extends LitElement {
 	_onMouseEnter() {
 		ALERT_HAS_HOVER = true;
 		this._hasMouse = true;
-		this._closeTimerStop();
+		this.#closeTimerStop();
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-alert-toast-timer-stop', { bubbles: true, composed: false }));
 	}
@@ -458,7 +454,7 @@ class AlertToast extends LitElement {
 		if (newlyOpened || newlyOpenedReduceMotion) {
 			this._closeTimerStart();
 		} else if (newState !== states.SLIDING && newState !== states.OPEN) {
-			this._closeTimerStop();
+			this.#closeTimerStop();
 		}
 	}
 }
