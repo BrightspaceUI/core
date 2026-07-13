@@ -66,6 +66,10 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 		.d2l-table > * > tr > :has(d2l-table-col-sort-button) d2l-dropdown-context-menu {
 			vertical-align: top;
 		}
+		d2l-table-controls > d2l-input-radio-group {
+			align-content: center;
+			max-height: 42px;
+		}
 	`];
 
 	constructor() {
@@ -89,14 +93,14 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 					<d2l-selection-action
 						text="Sticky controls"
 						icon="tier1:${this.stickyControls ? 'check' : 'close-default'}"
-						@d2l-selection-action-click="${this._toggleStickyControls}"
-					></d2l-selection-action>
+						@d2l-selection-action-click="${this._toggleStickyControls}">
+					</d2l-selection-action>
 					<d2l-selection-action
 						text="Sticky headers"
 						icon="tier1:${this.stickyHeaders ? 'check' : 'close-default'}"
-						@d2l-selection-action-click="${this._toggleStickyHeaders}"
-					></d2l-selection-action>
-					<d2l-input-radio-group style="align-content:center;max-height:42px" label="Date State" horizontal label-hidden name="dataState" @change=${this._handleDataStateChange}>
+						@d2l-selection-action-click="${this._toggleStickyHeaders}">
+					</d2l-selection-action>
+					<d2l-input-radio-group label="Date State" horizontal label-hidden name="dataState" @change=${this._handleDataStateChange}>
 						<d2l-input-radio label="Clean" value="clean" ?checked=${this.dataState === 'clean'}></d2l-input-radio>
 						<d2l-input-radio label="Dirty" value="dirty" ?checked=${this.dataState === 'dirty'}></d2l-input-radio>
 						<d2l-input-radio label="Loading" value="loading" ?checked=${this.dataState === 'loading'}></d2l-input-radio>
