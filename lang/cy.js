@@ -155,6 +155,7 @@ export default {
 	"components.more-less.more": "mwy",
 	"components.object-property-list.item-placeholder-text": "Eitem Dalfan",
 	"components.overflow-group.moreActions": "Rhagor o Gamau Gweithredu",
+	"components.page.footer-region-label": "Footer",
 	"components.page.header-nav-label": "Prif",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Ochr",

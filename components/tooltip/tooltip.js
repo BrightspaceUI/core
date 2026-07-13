@@ -175,16 +175,6 @@ class Tooltip extends PopoverMixin(LitElement) {
 		this.offset = 10;
 		this.showTruncatedOnly = false;
 		this.state = 'info';
-
-		this.#handleTargetBlurBound = this.#handleTargetBlur.bind(this);
-		this.#handleTargetClickBound = this.#handleTargetClick.bind(this);
-		this.#handleTargetFocusBound = this.#handleTargetFocus.bind(this);
-		this.#handleTargetMouseEnterBound = this.#handleTargetMouseEnter.bind(this);
-		this.#handleTargetMouseLeaveBound = this.#handleTargetMouseLeave.bind(this);
-		this.#handleTargetMutationBound = this.#handleTargetMutation.bind(this);
-		this.#handleTargetResizeBound = this.#handleTargetResize.bind(this);
-		this.#handleTargetTouchEndBound = this.#handleTargetTouchEnd.bind(this);
-		this.#handleTargetTouchStartBound = this.#handleTargetTouchStart.bind(this);
 	}
 
 	/** @ignore */
@@ -204,7 +194,7 @@ class Tooltip extends PopoverMixin(LitElement) {
 		super.connectedCallback();
 		this.showing = false;
 		this.#addListeners();
-		window.addEventListener('resize', this.#handleTargetResizeBound);
+		window.addEventListener('resize', this.#handleTargetResize);
 
 		requestAnimationFrame(() => this.#updateTarget());
 	}
@@ -214,7 +204,7 @@ class Tooltip extends PopoverMixin(LitElement) {
 		if (activeTooltip === this) activeTooltip = null;
 
 		this.#removeListeners();
-		window.removeEventListener('resize', this.#handleTargetResizeBound);
+		window.removeEventListener('resize', this.#handleTargetResize);
 
 		delayTimeoutId = null;
 
@@ -273,15 +263,6 @@ class Tooltip extends PopoverMixin(LitElement) {
 		return super.position();
 	}
 
-	#handleTargetBlurBound;
-	#handleTargetClickBound;
-	#handleTargetFocusBound;
-	#handleTargetMouseEnterBound;
-	#handleTargetMouseLeaveBound;
-	#handleTargetMutationBound;
-	#handleTargetResizeBound;
-	#handleTargetTouchEndBound;
-	#handleTargetTouchStartBound;
 	#hoverTimeout;
 	#isFocusing = false;
 	#isHovering = false;
@@ -295,6 +276,77 @@ class Tooltip extends PopoverMixin(LitElement) {
 	#target;
 	#targetSizeObserver;
 	#targetMutationObserver;
+
+	#handleTargetBlur = () => {
+		this.#isFocusing = false;
+		this.#updateShowing();
+	};
+
+	#handleTargetClick = () => {
+		if (this.closeOnClick) this.hide();
+	};
+
+	#handleTargetFocus = async() => {
+		if (this.showTruncatedOnly) {
+			await this.#updateTruncating();
+			if (!this.#isTruncating) return;
+		}
+
+		if (this.disableFocusLock) {
+			this.showing = true;
+		} else {
+			this.#isFocusing = true;
+			this.#updateShowing();
+		}
+	};
+
+	#handleTargetMouseEnter = () => {
+		// came from tooltip so keep showing
+		if (this.#mouseLeftTooltip) {
+			this.#isHovering = true;
+			return;
+		}
+
+		this.#hoverTimeout = setTimeout(async() => {
+			if (this.showTruncatedOnly) {
+				await this.#updateTruncating();
+				if (!this.#isTruncating) return;
+			}
+
+			this.#isHovering = true;
+			this.#updateShowing();
+		}, getDelay(this.delay));
+	};
+
+	#handleTargetMouseLeave = () => {
+		clearTimeout(this.#hoverTimeout);
+		this.#isHovering = false;
+		if (this.showing) resetDelayTimeout();
+		setTimeout(() => this.#updateShowing(), 100); // delay to allow for mouseenter to fire if hovering on tooltip
+	};
+
+	#handleTargetMutation = ([m]) => {
+		if (!this.#target.isConnected || (m.target === this.#target && m.attributeName === 'id')) {
+			this.#targetMutationObserver.disconnect();
+			this.#updateTarget();
+		}
+	};
+
+	#handleTargetResize = () => {
+		this.#resizeRunSinceTruncationCheck = true;
+		if (!this.showing) return;
+		super.position();
+	};
+
+	#handleTargetTouchEnd = () => {
+		clearTimeout(this.#longPressTimeout);
+	};
+
+	#handleTargetTouchStart = () => {
+		this.#longPressTimeout = setTimeout(() => {
+			this.#target.focus();
+		}, 500);
+	};
 
 	// for testing only!
 	_getTarget() {
@@ -324,19 +376,19 @@ class Tooltip extends PopoverMixin(LitElement) {
 
 		if (!this.#target) return;
 
-		this.#target.addEventListener('mouseenter', this.#handleTargetMouseEnterBound);
-		this.#target.addEventListener('mouseleave', this.#handleTargetMouseLeaveBound);
-		this.#target.addEventListener('focus', this.#handleTargetFocusBound);
-		this.#target.addEventListener('blur', this.#handleTargetBlurBound);
-		this.#target.addEventListener('click', this.#handleTargetClickBound);
-		this.#target.addEventListener('touchstart', this.#handleTargetTouchStartBound, { passive: true });
-		this.#target.addEventListener('touchcancel', this.#handleTargetTouchEndBound);
-		this.#target.addEventListener('touchend', this.#handleTargetTouchEndBound);
+		this.#target.addEventListener('mouseenter', this.#handleTargetMouseEnter);
+		this.#target.addEventListener('mouseleave', this.#handleTargetMouseLeave);
+		this.#target.addEventListener('focus', this.#handleTargetFocus);
+		this.#target.addEventListener('blur', this.#handleTargetBlur);
+		this.#target.addEventListener('click', this.#handleTargetClick);
+		this.#target.addEventListener('touchstart', this.#handleTargetTouchStart, { passive: true });
+		this.#target.addEventListener('touchcancel', this.#handleTargetTouchEnd);
+		this.#target.addEventListener('touchend', this.#handleTargetTouchEnd);
 
-		this.#targetSizeObserver = new ResizeObserver(this.#handleTargetResizeBound);
+		this.#targetSizeObserver = new ResizeObserver(this.#handleTargetResize);
 		this.#targetSizeObserver.observe(this.#target);
 
-		this.#targetMutationObserver = new MutationObserver(this.#handleTargetMutationBound);
+		this.#targetMutationObserver = new MutationObserver(this.#handleTargetMutation);
 		this.#targetMutationObserver.observe(this.#target, { attributes: true, attributeFilter: ['id'] });
 		this.#targetMutationObserver.observe(this.#target.parentNode, { childList: true });
 	}
@@ -359,77 +411,6 @@ class Tooltip extends PopoverMixin(LitElement) {
 			}
 		}
 		return target;
-	}
-
-	#handleTargetBlur() {
-		this.#isFocusing = false;
-		this.#updateShowing();
-	}
-
-	#handleTargetClick() {
-		if (this.closeOnClick) this.hide();
-	}
-
-	async #handleTargetFocus() {
-		if (this.showTruncatedOnly) {
-			await this.#updateTruncating();
-			if (!this.#isTruncating) return;
-		}
-
-		if (this.disableFocusLock) {
-			this.showing = true;
-		} else {
-			this.#isFocusing = true;
-			this.#updateShowing();
-		}
-	}
-
-	#handleTargetMouseEnter() {
-		// came from tooltip so keep showing
-		if (this.#mouseLeftTooltip) {
-			this.#isHovering = true;
-			return;
-		}
-
-		this.#hoverTimeout = setTimeout(async() => {
-			if (this.showTruncatedOnly) {
-				await this.#updateTruncating();
-				if (!this.#isTruncating) return;
-			}
-
-			this.#isHovering = true;
-			this.#updateShowing();
-		}, getDelay(this.delay));
-	}
-
-	#handleTargetMouseLeave() {
-		clearTimeout(this.#hoverTimeout);
-		this.#isHovering = false;
-		if (this.showing) resetDelayTimeout();
-		setTimeout(() => this.#updateShowing(), 100); // delay to allow for mouseenter to fire if hovering on tooltip
-	}
-
-	#handleTargetMutation([m]) {
-		if (!this.#target.isConnected || (m.target === this.#target && m.attributeName === 'id')) {
-			this.#targetMutationObserver.disconnect();
-			this.#updateTarget();
-		}
-	}
-
-	#handleTargetResize() {
-		this.#resizeRunSinceTruncationCheck = true;
-		if (!this.showing) return;
-		super.position();
-	}
-
-	#handleTargetTouchEnd() {
-		clearTimeout(this.#longPressTimeout);
-	}
-
-	#handleTargetTouchStart() {
-		this.#longPressTimeout = setTimeout(() => {
-			this.#target.focus();
-		}, 500);
 	}
 
 	#handleTooltipMouseEnter() {
@@ -456,14 +437,14 @@ class Tooltip extends PopoverMixin(LitElement) {
 
 		if (!this.#target) return;
 
-		this.#target.removeEventListener('mouseenter', this.#handleTargetMouseEnterBound);
-		this.#target.removeEventListener('mouseleave', this.#handleTargetMouseLeaveBound);
-		this.#target.removeEventListener('focus', this.#handleTargetFocusBound);
-		this.#target.removeEventListener('blur', this.#handleTargetBlurBound);
-		this.#target.removeEventListener('click', this.#handleTargetClickBound);
-		this.#target.removeEventListener('touchstart', this.#handleTargetTouchStartBound);
-		this.#target.removeEventListener('touchcancel', this.#handleTargetTouchEndBound);
-		this.#target.removeEventListener('touchend', this.#handleTargetTouchEndBound);
+		this.#target.removeEventListener('mouseenter', this.#handleTargetMouseEnter);
+		this.#target.removeEventListener('mouseleave', this.#handleTargetMouseLeave);
+		this.#target.removeEventListener('focus', this.#handleTargetFocus);
+		this.#target.removeEventListener('blur', this.#handleTargetBlur);
+		this.#target.removeEventListener('click', this.#handleTargetClick);
+		this.#target.removeEventListener('touchstart', this.#handleTargetTouchStart);
+		this.#target.removeEventListener('touchcancel', this.#handleTargetTouchEnd);
+		this.#target.removeEventListener('touchend', this.#handleTargetTouchEnd);
 
 		if (this.#targetSizeObserver) {
 			this.#targetSizeObserver.disconnect();
@@ -550,7 +531,7 @@ class Tooltip extends PopoverMixin(LitElement) {
 				if (!super._opened) super.open(this.#target, false);
 				else super.position();
 			} else if (!targetDisabled && isComposedAncestor(this.#target, getComposedActiveElement())) {
-				this.#handleTargetFocusBound();
+				this.#handleTargetFocus();
 			}
 		}
 		this.#addListeners();

@@ -155,6 +155,7 @@ export default {
 	"components.more-less.more": "more",
 	"components.object-property-list.item-placeholder-text": "Placeholder Item",
 	"components.overflow-group.moreActions": "More Actions",
+	"components.page.footer-region-label": "Footer",
 	"components.page.header-nav-label": "Main",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Side",

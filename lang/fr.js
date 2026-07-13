@@ -155,6 +155,7 @@ export default {
 	"components.more-less.more": "plus",
 	"components.object-property-list.item-placeholder-text": "Élément de paramètre fictif",
 	"components.overflow-group.moreActions": "Plus d’actions",
+	"components.page.footer-region-label": "Footer",
 	"components.page.header-nav-label": "Principal",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Côté",

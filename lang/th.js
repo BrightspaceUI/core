@@ -151,6 +151,7 @@ export default {
 	"components.more-less.more": "เพิ่มเติม",
 	"components.object-property-list.item-placeholder-text": "รายการตัวแทน",
 	"components.overflow-group.moreActions": "การดำเนินการเพิ่มเติม",
+	"components.page.footer-region-label": "Footer",
 	"components.page.header-nav-label": "หลัก",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "ด้านข้าง",

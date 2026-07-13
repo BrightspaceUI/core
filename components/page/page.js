@@ -111,10 +111,14 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		}
 
 		.content {
+			box-sizing: border-box;
 			display: flex;
 			margin-inline: var(--d2l-page-margin-inline, 0);
 			max-width: var(--d2l-page-content-max-width, 100%);
 			padding-bottom: var(--d2l-page-footer-height, 0); /* Reserve space for fixed footer */
+		}
+		.content.has-panels {
+			min-height: calc(100vh - var(--d2l-page-header-height-measured, 0px));
 		}
 
 		main {
@@ -122,9 +126,14 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			min-width: min(${MAIN_MIN_WIDTH}px, 100%);
 		}
 
+		.side-nav,
+		.supporting {
+			display: contents;
+		}
+
 		.side-nav-panel,
 		.supporting-panel {
-			height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
+			max-height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
 			overflow: clip auto;
 			position: sticky;
 			top: var(--d2l-page-header-height, 0);
@@ -162,11 +171,11 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			'supporting-mobile': { minSize: DRAWER_MIN_HEIGHT }
 		});
 		this._slotVisibility = {};
-		this.#handleWindowResizeBound = this.#handleWindowResize.bind(this);
 		this.#resizeObserver = new ResizeObserver(entries => {
 			for (const entry of entries) {
 				if (entry.target.classList.contains('header')) {
 					this._headerHeight = entry.target.offsetHeight;
+					this.style.setProperty('--d2l-page-header-height-measured', `${this._headerHeight}px`);
 
 					const height = this._headerIsSticky ? this._headerHeight : 0;
 					this.style.setProperty('--d2l-page-header-height', `${height}px`);
@@ -194,13 +203,13 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		window.addEventListener('resize', this.#handleWindowResizeBound);
+		window.addEventListener('resize', this.#handleWindowResize);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.#resizeObserver.disconnect();
-		window.removeEventListener('resize', this.#handleWindowResizeBound);
+		window.removeEventListener('resize', this.#handleWindowResize);
 	}
 
 	firstUpdated() {
@@ -217,11 +226,15 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			'page': true,
 			'header-sticky': this._headerIsSticky
 		};
+		const contentClasses = {
+			'content': true,
+			'has-panels': this._slotVisibility['side-nav'] || this._slotVisibility['supporting']
+		};
 
 		return html`
 			<div class="${classMap(pageClasses)}">
 				${this.#renderHeader()}
-				<div class="content">
+				<div class="${classMap(contentClasses)}">
 					${this.#renderSideNavPanel()}
 					<main><slot></slot></main>
 					${this.#renderSupportingPanel()}
@@ -238,8 +251,11 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		}
 	}
 
-	#handleWindowResizeBound;
 	#resizeObserver;
+
+	#handleWindowResize = () => {
+		this._panelState.updateMaxSize('supporting-mobile', this.#getMaxDrawerHeight());
+	};
 
 	#getMaxDrawerHeight() {
 		const reservedSpace = this._headerHeight + this._footerHeight + DIVIDER_WIDTH;
@@ -265,10 +281,6 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		const nodes = e.target.assignedNodes();
 		this._slotVisibility = { ...this._slotVisibility, [key]: nodes.length !== 0 };
 	}
-
-	#handleWindowResize() {
-		this._panelState.updateMaxSize('supporting-mobile', this.#getMaxDrawerHeight());
-	};
 
 	#initializePanelSizes() {
 		const defaultWidth = Math.floor(this._contentWidth / 3);
@@ -310,7 +322,11 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		const footerContainerClasses = { 'footer': true, 'fixed-footer': fixedFooter };
 		const footerContents = html`<div class="footer-contents"><slot name="footer" @slotchange="${this.#handleSlotVisibilityChange}"></slot></div>`;
 		return html`
-			<div class="${classMap(footerContainerClasses)}" ?hidden="${!this._slotVisibility['footer']}">
+			<div
+				role="region"
+				aria-label="${this.localize('components.page.footer-region-label')}"
+				class="${classMap(footerContainerClasses)}"
+				?hidden="${!this._slotVisibility['footer']}">
 				${fixedFooter ? footerContents : this.#renderFloatingButtons(footerContents)}	
 			</div>
 		`;
@@ -328,28 +344,30 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	#renderSideNavPanel() {
 		return html`
-			<nav
-				class="side-nav-panel"
-				style=${styleMap({ width: `${this._panelState.getSize('side-nav')}px` })}
-				?hidden="${!this._slotVisibility['side-nav']}"
-				aria-label="${this.localize('components.page.side-nav-label')}">
-				<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+			<nav class="side-nav" aria-label="${this.localize('components.page.side-nav-label')}">
+				<div
+					class="side-nav-panel"
+					style=${styleMap({ width: `${this._panelState.getSize('side-nav')}px` })}
+					?hidden="${!this._slotVisibility['side-nav']}">
+					<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+				</div>
+				${!this._slotVisibility['side-nav'] ? nothing :
+					this.#renderDivider('side-nav', this.localize('components.page.side-nav-divider-label'), 'start')}
 			</nav>
-			${!this._slotVisibility['side-nav'] ? nothing :
-				this.#renderDivider('side-nav', this.localize('components.page.side-nav-divider-label'), 'start')}
 		`;
 	}
 
 	#renderSupportingPanel() {
 		return html`
-			${!this._slotVisibility['supporting'] ? nothing :
-				this.#renderDivider('supporting', this.localize('components.page.supporting-divider-label'), 'end')}
-			<aside
-				class="supporting-panel"
-				style=${styleMap({ width: `${this._panelState.getSize('supporting')}px` })}
-				?hidden="${!this._slotVisibility['supporting']}"
-				aria-label="${this.localize('components.page.supporting-panel-label')}">
-				<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+			<aside class="supporting" aria-label="${this.localize('components.page.supporting-label')}">
+				${!this._slotVisibility['supporting'] ? nothing :
+					this.#renderDivider('supporting', this.localize('components.page.supporting-divider-label'), 'end')}
+				<div
+					class="supporting-panel"
+					style=${styleMap({ width: `${this._panelState.getSize('supporting')}px` })}
+					?hidden="${!this._slotVisibility['supporting']}">
+					<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+				</div>
 			</aside>
 		`;
 	}

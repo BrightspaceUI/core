@@ -14,26 +14,25 @@ export const RtlMixin = dedupeMixin(superclass => class extends superclass {
 	constructor() {
 		super();
 		this._localeSettings = getDocumentLocaleSettings();
-		this._handleLanguageChange = this._handleLanguageChange.bind(this);
-		this._handleLanguageChange();
+		this.#handleLanguageChange();
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
-		this._localeSettings.addChangeListener(this._handleLanguageChange);
+		this._localeSettings.addChangeListener(this.#handleLanguageChange);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this._localeSettings.removeChangeListener(this._handleLanguageChange);
+		this._localeSettings.removeChangeListener(this.#handleLanguageChange);
 	}
 
-	_handleLanguageChange() {
+	#handleLanguageChange = () => {
 		const dir = document.documentElement.getAttribute('dir');
 		// avoid reflecting "ltr" for better performance
 		if (dir && (dir !== 'ltr' || this.dir === 'rtl')) {
 			this.dir = dir;
 		}
-	}
+	};
 
 });

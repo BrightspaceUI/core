@@ -149,6 +149,7 @@ export default {
 	"components.more-less.more": "thêm",
 	"components.object-property-list.item-placeholder-text": "Mục giữ chỗ",
 	"components.overflow-group.moreActions": "Thêm các Tác vụ",
+	"components.page.footer-region-label": "Footer",
 	"components.page.header-nav-label": "Chính",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Bên",

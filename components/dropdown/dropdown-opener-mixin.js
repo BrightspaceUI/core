@@ -62,7 +62,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this._isHovering = false;
 		this._isFading = false;
 
-		this._onOutsideClick = this._onOutsideClick.bind(this);
 		this._contentRendered = null;
 		this._openerRendered = null;
 	}
@@ -77,7 +76,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.addEventListener('mouseleave', this.__onMouseLeave);
 
 		if (this.openOnHover) {
-			document.body.addEventListener('mouseup', this._onOutsideClick);
+			document.body.addEventListener('mouseup', this.#onOutsideClick);
 		}
 	}
 
@@ -90,7 +89,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		this.removeEventListener('mouseleave', this.__onMouseLeave);
 
 		if (this.openOnHover) {
-			document.body.removeEventListener('mouseup', this._onOutsideClick);
+			document.body.removeEventListener('mouseup', this.#onOutsideClick);
 		}
 	}
 
@@ -166,6 +165,22 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		content.toggleOpen(applyFocus);
 		this.dropdownOpened = !this.dropdownOpened;
 	}
+
+	/* used by open-on-hover option */
+	#onOutsideClick = (e) => {
+		if (!this.dropdownOpened) return;
+		const dropdownContent = this.__getContentElement();
+		const isWithinDropdown = isComposedAncestor(dropdownContent, e.composedPath()[0]);
+		const isWithinOpener = isComposedAncestor(this.getOpenerElement(), e.composedPath()[0]);
+
+		const isBackdropClick = isWithinDropdown
+			&& dropdownContent._mobile
+			&& e.composedPath().find(node => node.nodeName === 'D2L-BACKDROP');
+
+		if (!isWithinOpener && (!isWithinDropdown || isBackdropClick)) {
+			this.closeDropdown();
+		}
+	};
 
 	__dispatchOpenerClickEvent() {
 		/** Dispatched when the opener is clicked, useful for when no-auto-open is enabled */
@@ -287,22 +302,6 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	_closeTimerStop() {
 		clearTimeout(this._setTimeoutId);
 		this._isFading = false;
-	}
-
-	/* used by open-on-hover option */
-	_onOutsideClick(e) {
-		if (!this.dropdownOpened) return;
-		const dropdownContent = this.__getContentElement();
-		const isWithinDropdown = isComposedAncestor(dropdownContent, e.composedPath()[0]);
-		const isWithinOpener = isComposedAncestor(this.getOpenerElement(), e.composedPath()[0]);
-
-		const isBackdropClick = isWithinDropdown
-			&& dropdownContent._mobile
-			&& e.composedPath().find(node => node.nodeName === 'D2L-BACKDROP');
-
-		if (!isWithinOpener && (!isWithinDropdown || isBackdropClick)) {
-			this.closeDropdown();
-		}
 	}
 
 	_setOpenerElementAttribute(val, setActive = false, hasPopup) {
