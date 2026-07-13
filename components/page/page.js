@@ -324,7 +324,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		return html`
 			<div
 				role="region"
-				aria-label="TO DO"
+				aria-label="${this.localize('components.page.footer-region-label')}"
 				class="${classMap(footerContainerClasses)}"
 				?hidden="${!this._slotVisibility['footer']}">
 				${fixedFooter ? footerContents : this.#renderFloatingButtons(footerContents)}	

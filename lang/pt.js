@@ -156,6 +156,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Item de espaço reservado",
 	"components.overflow-group.moreActions": "Mais ações",
 	"components.page.header-nav-label": "Principal",
+	"components.page.footer-region-label": "Footer",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Lateral",
 	"components.page.supporting-divider-label": "Supporting Panel Divider",

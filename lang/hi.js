@@ -156,6 +156,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "प्लेसहोल्डर आइटम",
 	"components.overflow-group.moreActions": "अधिक क्रियाएँ",
 	"components.page.header-nav-label": "मुख्य",
+	"components.page.footer-region-label": "Footer",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "साइड",
 	"components.page.supporting-divider-label": "Supporting Panel Divider",

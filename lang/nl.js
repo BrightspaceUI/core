@@ -156,6 +156,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Item tijdelijke aanduiding",
 	"components.overflow-group.moreActions": "Meer acties",
 	"components.page.header-nav-label": "Hoofdgedeelte",
+	"components.page.footer-region-label": "Footer",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Zij",
 	"components.page.supporting-divider-label": "Supporting Panel Divider",

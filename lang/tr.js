@@ -156,6 +156,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Yer Tutucu Öğesi",
 	"components.overflow-group.moreActions": "Daha Fazla Eylem",
 	"components.page.header-nav-label": "Ana",
+	"components.page.footer-region-label": "Footer",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Yan",
 	"components.page.supporting-divider-label": "Supporting Panel Divider",

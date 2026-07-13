@@ -151,6 +151,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "プレースホルダの項目",
 	"components.overflow-group.moreActions": "その他のアクション",
 	"components.page.header-nav-label": "メイン",
+	"components.page.footer-region-label": "Footer",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "サイド",
 	"components.page.supporting-divider-label": "Supporting Panel Divider",

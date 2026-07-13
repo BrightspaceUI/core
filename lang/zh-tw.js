@@ -152,6 +152,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "預留位置項目",
 	"components.overflow-group.moreActions": "其他動作",
 	"components.page.header-nav-label": "主要",
+	"components.page.footer-region-label": "Footer",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "側邊",
 	"components.page.supporting-divider-label": "Supporting Panel Divider",

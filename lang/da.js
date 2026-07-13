@@ -156,6 +156,7 @@ export default {
 	"components.object-property-list.item-placeholder-text": "Pladsholder-element",
 	"components.overflow-group.moreActions": "Flere handlinger",
 	"components.page.header-nav-label": "Hoved",
+	"components.page.footer-region-label": "Footer",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Side",
 	"components.page.supporting-divider-label": "Supporting Panel Divider",
