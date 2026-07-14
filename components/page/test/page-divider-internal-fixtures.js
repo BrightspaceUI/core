@@ -24,6 +24,10 @@ export function getDivider(elem, panelKey) {
 	return elem.shadowRoot.querySelector(`d2l-page-divider-internal[data-panel-key="${panelKey}"]`);
 }
 
+export function getSlider(elem) {
+	return elem.shadowRoot.querySelector('.divider');
+}
+
 export const pageDividerFixtures = {
 	sideNavBothHeaders: createPage({ layout: 'side-nav', hasMainHeader: true, hasSideNavHeader: true }),
 	sideNavBothHeadersFooter: createPage({ layout: 'side-nav', hasMainHeader: true, hasSideNavHeader: true, hasFooter: true }),
