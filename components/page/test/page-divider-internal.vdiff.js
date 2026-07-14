@@ -51,6 +51,24 @@ describe('page-divider-internal', () => {
 		});
 	});
 
+	describe('focus-stay-scrolled', () => {
+		[
+			{ name: 'main', divider: 'side-nav', fixture: pageDividerFixtures.sideNavLongMainBothHeaders },
+			{ name: 'panel', divider: 'supporting', fixture: pageDividerFixtures.supportingLongFooter },
+			{ name: 'immersive-main', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveLongMain },
+			{ name: 'immersive-panel', divider: 'side-nav', fixture: pageDividerFixtures.sideNavImmersiveLongFooter }
+		].forEach(test => {
+			it(test.name, async() => {
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				window.scrollTo(0, document.body.scrollHeight);
+				const panel = elem.shadowRoot.querySelector(`.${test.divider}-panel`);
+				panel.scrollTop = panel.scrollHeight;
+				await focusElem(getDivider(elem, test.divider));
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+	});
+
 	describe('keyboard', () => {
 		// TO DO once arrow visuals added
 	});
