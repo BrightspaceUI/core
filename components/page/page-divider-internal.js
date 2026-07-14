@@ -1,19 +1,20 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
+import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 export const DIVIDER_WIDTH = 4;
-const KEYBOARD_STEP = 20; // TO DO: Confirm
-const KEYBOARD_STEP_LARGE = 80; // TO DO: Confirm
+export const KEYBOARD_STEP = 20; // TO DO: Confirm
+export const KEYBOARD_STEP_LARGE = 80; // TO DO: Confirm
 
 const clampedSize = (size, min, max) => Math.max(min, Math.min(size, max));
 
 /**
  * Internal divider used by d2l-page to resize its side-nav and supporting panels.
  */
-class PageDivider extends PropertyRequiredMixin(LitElement) {
+class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
 	static properties = {
 		/**
@@ -76,6 +77,8 @@ class PageDivider extends PropertyRequiredMixin(LitElement) {
 		/* TO DO: Lots more divider styling to come */
 
 	`;
+
+	static focusElementSelector = '.divider';
 
 	constructor() {
 		super();
