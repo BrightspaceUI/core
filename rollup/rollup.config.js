@@ -1,7 +1,7 @@
+import { globSync, readFileSync } from 'node:fs';
 import copy from 'rollup-plugin-copy';
 import del from 'rollup-plugin-delete';
 import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
-import { globSync, readFileSync } from 'node:fs';
 import replace from '@rollup/plugin-replace';
 import resolve from '@rollup/plugin-node-resolve';
 
