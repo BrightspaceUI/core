@@ -6,8 +6,8 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 export const DIVIDER_WIDTH = 4;
-const KEYBOARD_STEP = 20; // TO DO: Confirm
-const KEYBOARD_STEP_LARGE = 80; // TO DO: Confirm
+export const KEYBOARD_STEP = 20; // TO DO: Confirm
+export const KEYBOARD_STEP_LARGE = 80; // TO DO: Confirm
 
 const clampedSize = (size, min, max) => Math.max(min, Math.min(size, max));
 
@@ -78,6 +78,8 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
 	`;
 
+	static focusElementSelector = '.divider';
+
 	constructor() {
 		super();
 
@@ -87,10 +89,6 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		this.minSize = 0;
 		this.panelPosition = 'start';
 		this.panelType = 'panel';
-	}
-
-	static get focusElementSelector() {
-		return '.divider';
 	}
 
 	render() {

@@ -1,5 +1,5 @@
-import '../page-divider-internal.js';
 import { expect, fixture, html, nextFrame, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
+import { KEYBOARD_STEP, KEYBOARD_STEP_LARGE } from '../page-divider-internal.js';
 import { createDivider } from './page-divider-internal-fixtures.js';
 
 describe('d2l-page-divider-internal', () => {
@@ -21,10 +21,10 @@ describe('d2l-page-divider-internal', () => {
 		it('does not set aria values when in unknown state', async() => {
 			const elem = await fixture(html`<d2l-page-divider-internal label="Resize"></d2l-page-divider-internal>`);
 			const slider = elem.shadowRoot.querySelector('.divider');
-			expect(slider.getAttribute('aria-valuemax')).to.be.null;
-			expect(slider.getAttribute('aria-valuemin')).to.be.null;
-			expect(slider.getAttribute('aria-valuenow')).to.be.null;
-			expect(slider.getAttribute('aria-valuetext')).to.be.null;
+			expect(slider.hasAttribute('aria-valuemax')).to.be.false;
+			expect(slider.hasAttribute('aria-valuemin')).to.be.false;
+			expect(slider.hasAttribute('aria-valuenow')).to.be.false;
+			expect(slider.hasAttribute('aria-valuetext')).to.be.false;
 		});
 	});
 
@@ -52,8 +52,10 @@ describe('d2l-page-divider-internal', () => {
 				const currentSize = 450;
 				const minSize = 320;
 				const maxSize = 600;
-				const step = 20;
-				const largeStep = 80;
+				const step = KEYBOARD_STEP;
+				const halfStep = Math.ceil(step / 2);
+				const largeStep = KEYBOARD_STEP_LARGE;
+				const halfLargeStep = Math.ceil(largeStep / 2);
 
 				[
 					{ name: 'start panel', panelType: 'panel', panelPosition: 'start', grow: 'ArrowRight', shrink: 'ArrowLeft', inactiveKeys: ['ArrowUp', 'ArrowDown'] },
@@ -86,10 +88,10 @@ describe('d2l-page-divider-internal', () => {
 						});
 
 						[
-							{ action: 'grow', key: test.grow, currentSize: maxSize - 10, expectedSize: maxSize },
-							{ action: 'shrink', key: test.shrink, currentSize: minSize + 10, expectedSize: minSize },
-							{ action: 'large grow', key: 'PageUp', currentSize: maxSize - 40, expectedSize: maxSize },
-							{ action: 'large shrink', key: 'PageDown', currentSize: minSize + 40, expectedSize: minSize },
+							{ action: 'grow', key: test.grow, currentSize: maxSize - halfStep, expectedSize: maxSize },
+							{ action: 'shrink', key: test.shrink, currentSize: minSize + halfStep, expectedSize: minSize },
+							{ action: 'large grow', key: 'PageUp', currentSize: maxSize - halfLargeStep, expectedSize: maxSize },
+							{ action: 'large shrink', key: 'PageDown', currentSize: minSize + halfLargeStep, expectedSize: minSize },
 							{ action: 'max', key: 'End', currentSize: maxSize, expectedSize: maxSize },
 							{ action: 'min', key: 'Home', currentSize: minSize, expectedSize: minSize }
 						].forEach(({ action, key, currentSize, expectedSize }) => {
