@@ -57,15 +57,21 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			background-color: var(--d2l-color-gypsum);
 			cursor: ew-resize;
 			height: 100%;
-			outline: none;
+			position: relative;
 			width: ${DIVIDER_WIDTH}px;
 		}
 		.divider:hover {
 			background-color: var(--d2l-color-mica);
 		}
-		.divider:focus {
+		.divider:focus-within {
 			background-color: var(--d2l-color-celestine);
 		}
+
+		.slider {
+            outline: none;
+            position: absolute;
+            top: 55px;
+        }
 
 		:host([panel-type="drawer"]) .divider {
 			background-color: var(--d2l-color-celestine);
@@ -74,11 +80,16 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			width: 100%;
 		}
 
+		:host([panel-type="drawer"]) .slider {
+            right: 18px;
+            top: auto;
+        }
+
 		/* TO DO: Lots more divider styling to come */
 
 	`;
 
-	static focusElementSelector = '.divider';
+	static focusElementSelector = '.slider';
 
 	constructor() {
 		super();
@@ -98,17 +109,19 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		}
 
 		return html`
-			<div
-				class="divider"
-				role="slider"
-				tabindex="0"
-				aria-label="${this.label}"
-				aria-orientation="${this.panelType === 'panel' ? 'horizontal' : 'vertical'}"
-				aria-valuemax="${ifDefined(ariaValues.max)}"
-				aria-valuemin="${ifDefined(ariaValues.min)}"
-				aria-valuenow="${ifDefined(ariaValues.now)}"
-				aria-valuetext="${ifDefined(ariaValues.text)}"
-				@keydown="${this.#handleKeyDown}">
+		    <div class="divider" @pointerdown="${this.#handlePointerDown}">
+				<div
+					class="slider"
+					role="slider"
+					tabindex="0"
+					aria-label="${this.label}"
+					aria-orientation="${this.panelType === 'panel' ? 'horizontal' : 'vertical'}"
+					aria-valuemax="${ifDefined(ariaValues.max)}"
+					aria-valuemin="${ifDefined(ariaValues.min)}"
+					aria-valuenow="${ifDefined(ariaValues.now)}"
+					aria-valuetext="${ifDefined(ariaValues.text)}"
+					@keydown="${this.#handleKeyDown}">
+				</div>
 			</div>
 		`;
 	}
@@ -146,6 +159,11 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		const step = (e.key === positiveStepKey ? 1 : -1) * KEYBOARD_STEP;
 		const requestedSize = this.currentSize + step;
 		this.#sendResizeEvent(requestedSize);
+	}
+
+	#handlePointerDown(e) {
+		e.preventDefault();
+		this.focus();
 	}
 
 	#sendResizeEvent(requestedSize) {

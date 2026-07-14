@@ -60,6 +60,7 @@ class PageDemo extends LitElement {
 		}
 		.horizontal-fields {
 			display: flex;
+			flex-wrap: wrap;
 			gap: 1rem;
 		}
 	`];
