@@ -71,21 +71,17 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 		:host([_state="shown"]) #visible,
 		:host([_state="hiding"]) #visible {
 			display: flex;
-			height: 100%;
+			inset: 0;
 			justify-content: center;
 			position: absolute;
-			top: 0;
-			width: 100%;
 			z-index: 999;
 		}
 
 		.backdrop {
 			background-color: var(--d2l-theme-backdrop-background-color);
-			height: 100%;
+			inset: 0;
 			opacity: 0;
 			position: absolute;
-			top: 0;
-			width: 100%;
 		}
 		:host([_state="shown"]) .backdrop {
 			opacity: var(--d2l-theme-backdrop-opacity);
