@@ -68,10 +68,10 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		}
 
 		.slider {
-            outline: none;
-            position: absolute;
-            top: 55px;
-        }
+			outline: none;
+			position: absolute;
+			top: 55px;
+		}
 
 		:host([panel-type="drawer"]) .divider {
 			background-color: var(--d2l-color-celestine);
@@ -81,9 +81,9 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		}
 
 		:host([panel-type="drawer"]) .slider {
-            right: 18px;
-            top: auto;
-        }
+			right: 18px;
+			top: auto;
+		}
 
 		/* TO DO: Lots more divider styling to come */
 
