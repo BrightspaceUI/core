@@ -9,7 +9,7 @@ describe('page-divider-internal', () => {
 			{ name: 'supporting-immersive', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveFooter }
 		].forEach(test => {
 			it(test.name, async() => {
-				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 550 } });
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
 				await hoverElem(getDivider(elem, test.divider));
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
@@ -26,7 +26,7 @@ describe('page-divider-internal', () => {
 			{ name: 'supporting-immersive-long-no-scroll', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveLongMain }
 		].forEach(test => {
 			it(test.name, async() => {
-				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 550 } });
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
 				await focusElem(getDivider(elem, test.divider));
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
@@ -41,7 +41,7 @@ describe('page-divider-internal', () => {
 			{ name: 'immersive-panel', divider: 'side-nav', fixture: pageDividerFixtures.sideNavImmersiveLongFooter }
 		].forEach(test => {
 			it(test.name, async() => {
-				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 550 } });
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
 				await focusElem(getDivider(elem, test.divider));
 				window.scrollTo(0, document.body.scrollHeight);
 				const panel = elem.shadowRoot.querySelector(`.${test.divider}-panel`);
