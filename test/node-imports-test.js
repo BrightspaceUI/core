@@ -30,4 +30,9 @@ describe('node imports', () => {
 		assert.ok(t.offscreenStyles);
 	});
 
+	it('should import input text styles in a node environment', async() => {
+		const t = await import('../components/inputs/input-styles.js');
+		assert.ok(t._generateInputTextStyles);
+	});
+
 });
