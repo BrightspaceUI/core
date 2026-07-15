@@ -1,6 +1,6 @@
+import { createDivider, getSlider } from './page-divider-internal-fixtures.js';
 import { expect, fixture, html, nextFrame, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 import { KEYBOARD_STEP, KEYBOARD_STEP_LARGE } from '../page-divider-internal.js';
-import { createDivider } from './page-divider-internal-fixtures.js';
 
 describe('d2l-page-divider-internal', () => {
 
@@ -11,7 +11,7 @@ describe('d2l-page-divider-internal', () => {
 	describe('accessibility', () => {
 		it('calculates aria values correctly', async() => {
 			const elem = await fixture(html`<d2l-page-divider-internal label="Resize" min-size="100" max-size="200" current-size="150"></d2l-page-divider-internal>`);
-			const slider = elem.shadowRoot.querySelector('.divider');
+			const slider = getSlider(elem);
 			expect(slider.getAttribute('aria-valuemax')).to.equal('200');
 			expect(slider.getAttribute('aria-valuemin')).to.equal('0');
 			expect(slider.getAttribute('aria-valuenow')).to.equal('150');
@@ -20,7 +20,7 @@ describe('d2l-page-divider-internal', () => {
 
 		it('does not set aria values when in unknown state', async() => {
 			const elem = await fixture(html`<d2l-page-divider-internal label="Resize"></d2l-page-divider-internal>`);
-			const slider = elem.shadowRoot.querySelector('.divider');
+			const slider = getSlider(elem);
 			expect(slider.hasAttribute('aria-valuemax')).to.be.false;
 			expect(slider.hasAttribute('aria-valuemin')).to.be.false;
 			expect(slider.hasAttribute('aria-valuenow')).to.be.false;

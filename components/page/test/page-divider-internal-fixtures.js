@@ -34,7 +34,7 @@ export function getDivider(elem, panelKey) {
 }
 
 export function getSlider(elem) {
-	return elem.shadowRoot.querySelector('.divider');
+	return elem.shadowRoot.querySelector('.slider');
 }
 
 export const pageDividerFixtures = {

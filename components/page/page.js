@@ -132,11 +132,16 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		}
 
 		.side-nav-panel,
-		.supporting-panel {
+		.supporting-panel,
+		.divider {
 			max-height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
-			overflow: clip auto;
 			position: sticky;
 			top: var(--d2l-page-header-height, 0);
+		}
+
+		.side-nav-panel,
+		.supporting-panel {
+			overflow: clip auto;
 		}
 
 		.footer:not([hidden]),
@@ -294,6 +299,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	#renderDivider(panelKey, label, panelPosition) {
 		return html`
 			<d2l-page-divider-internal
+				class="divider"
 				data-panel-key="${panelKey}"
 				label="${label}"
 				current-size="${this._panelState.getSize(panelKey)}"
