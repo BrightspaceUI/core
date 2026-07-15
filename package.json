@@ -61,7 +61,6 @@
     "eslint": "^9",
     "eslint-config-brightspace": "^4",
     "eslint-plugin-unicorn": "^65",
-    "glob-all": "^3",
     "messageformat-validator": "^3.0.0-beta",
     "mocha": "^11",
     "rollup": "^4",
