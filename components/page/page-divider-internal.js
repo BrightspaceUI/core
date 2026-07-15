@@ -81,7 +81,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		}
 
 		:host([panel-type="drawer"]) .slider {
-			right: 18px;
+			inset-inline-end: 18px;
 			top: auto;
 		}
 
