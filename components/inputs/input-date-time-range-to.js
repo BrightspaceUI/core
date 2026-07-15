@@ -32,7 +32,7 @@ class InputDateTimeRangeTo extends SkeletonMixin(LocalizeCoreElement(LitElement)
 		 * @type {boolean}
 		 */
 		topMargin: { attribute: 'top-margin', type: Boolean },
-		_blockDisplay: { attribute: false, type: Boolean }
+		_blockDisplay: { state: true }
 	};
 
 	static styles = [super.styles, bodySmallStyles, css`

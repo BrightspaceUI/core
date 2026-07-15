@@ -596,11 +596,11 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 		 */
 		hasForm: { type: Boolean, attribute: 'has-form' },
 		_formErrorSummary: { type: Array },
-		_hasFooter: { type: Boolean, attribute: false },
-		_isCollapsed: { type: Boolean, attribute: false },
-		_isExpanded: { type: Boolean, attribute: false },
-		_isMobile: { type: Boolean, attribute: false },
-		_size: { type: Number, attribute: false },
+		_hasFooter: { state: true },
+		_isCollapsed: { state: true },
+		_isExpanded: { state: true },
+		_isMobile: { state: true },
+		_size: { state: true },
 		_sizeAsPercent: { state: true }
 	};
 
