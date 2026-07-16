@@ -3,34 +3,7 @@
 @use "../components/inputs/sass/text.scss";
 @use "../components/inputs/sass/textarea.scss";
 @use "../components/offscreen/offscreen.scss";
-@use "../components/typography/typography.scss";
 
-@include typography.d2l-typography-font-face();
-
-.d2l-test-body {
-	@include typography.d2l-typography();
-}
-.d2l-test-body-standard {
-	@include typography.d2l-body-standard();
-}
-.d2l-test-body-compact {
-	@include typography.d2l-body-compact();
-}
-.d2l-test-body-small {
-	@include typography.d2l-body-small();
-}
-.d2l-test-heading-1 {
-	@include typography.d2l-heading-1();
-}
-.d2l-test-heading-2 {
-	@include typography.d2l-heading-2();
-}
-.d2l-test-heading-3 {
-	@include typography.d2l-heading-3();
-}
-.d2l-test-heading-4 {
-	@include typography.d2l-heading-4();
-}
 .d2l-test-input-radio {
 	@include radio.d2l-input-radio();
 }
