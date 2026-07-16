@@ -52,7 +52,7 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		 * The preferred width (unit-less) for the dialog
 		 */
 		width: { type: Number },
-		_hasFooterContent: { type: Boolean, attribute: false }
+		_hasFooterContent: { state: true }
 	};
 
 	static styles = [_generateResetStyles(':host'), dialogStyles, heading3Styles, css`

@@ -15,7 +15,7 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 		 * @type {object}
 		 */
 		selectionInfo: { type: Object },
-		_provider: { type: Object, attribute: false }
+		_provider: { state: true }
 	};
 
 	constructor() {

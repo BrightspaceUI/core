@@ -185,7 +185,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		 */
 		valueAlign: { attribute: 'value-align', type: String },
 		_firstSlotWidth: { type: Number },
-		_hasAfterContent: { type: Boolean, attribute: false },
+		_hasAfterContent: { state: true },
 		_focused: { type: Boolean },
 		_hovered: { type: Boolean },
 		_lastSlotWidth: { type: Number }

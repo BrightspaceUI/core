@@ -22,7 +22,7 @@ class DemoSnippet extends LitElement {
 		overflowHidden: { type: Boolean, reflect: true, attribute: 'overflow-hidden' },
 		_code: { type: String },
 		_fullscreen: { state: true },
-		_hasSkeleton: { type: Boolean, attribute: false },
+		_hasSkeleton: { state: true },
 		_settingsPeek: { state: true },
 		_skeletonOn: { type: Boolean, reflect: false }
 	};
