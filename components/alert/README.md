@@ -58,7 +58,7 @@ Use an inline alert if there is important information a user needs to know while
 * Don't display more than one paragraph of text
 * Avoid overusing them — the more commonly alerts appear, the less effective they will be
 * Don't use them for promotional material or information that is not relevant to the user’s workflow
-* Don’t use them for validation errors – instead, use the [Form](../../components/form) component for a consistent user experience
+* Don’t use them for validation errors – instead, use the [Form](../../components/form-layout-validation/#d2l-form) component for a consistent user experience
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 
