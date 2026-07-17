@@ -181,6 +181,8 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 		}
 	}
 
+	#announcementTimeoutId;
+
 	async #centerLoadingSpinnerAndDirtyOverlay() {
 		if (this._state === 'hidden') { return; }
 
@@ -216,11 +218,11 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 	#clearLiveArea() {
 		this._ariaContent = '';
 
-		if (this.announcementTimeout) {
-			clearTimeout(this.announcementTimeout);
+		if (this.#announcementTimeoutId) {
+			clearTimeout(this.#announcementTimeoutId);
 		}
 
-		this.announcementTimeout = null;
+		this.#announcementTimeoutId = null;
 	}
 
 	#fade() {
@@ -266,7 +268,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	#setLiveArea(content, { delay } = {}) {
-		this.announcementTimeout = setTimeout(() => this._ariaContent = content, delay || 0);
+		this.#announcementTimeoutId = setTimeout(() => this._ariaContent = content, delay || 0);
 	}
 
 	#show() {
