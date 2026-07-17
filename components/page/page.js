@@ -118,7 +118,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 		.header {
 			position: relative;
-			z-index: 15; /* To be over sticky content of our core components */
+			z-index: 2; /* Ensures the header is over the divider */
 		}
 
 		.page.header-sticky .header {
@@ -139,6 +139,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 		main {
 			flex: 1;
+			isolation: isolate;
 			min-width: min(${MAIN_MIN_WIDTH}px, 100%);
 		}
 
@@ -160,6 +161,10 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			overflow: clip auto;
 		}
 
+		.divider {
+			z-index: 1; /* Ensures the divider is over the panels */
+		}
+
 		.footer:not([hidden]),
 		.floating-buttons-container {
 			display: inline;
@@ -170,7 +175,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			inset: auto 0 0;
 			padding-block-start: 0.75rem;
 			position: fixed;
-			z-index: 10; /* To be over sticky content of our core components */
+			z-index: 1; /* Ensures the footer is over the divider */
 		}
 		.footer-contents {
 			margin-inline: var(--d2l-page-margin-inline, 0);
@@ -187,6 +192,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		.page.legacy-browser-mode.header-sticky.has-panels .header {
 			flex: 0 0 auto;
 			position: static;
+			z-index: 15; /* To be over sticky content of our core components */
 		}
 		.page.legacy-browser-mode.has-panels .content {
 			flex: 1 1 auto;
@@ -211,6 +217,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		}
 		.page.legacy-browser-mode.has-panels .fixed-footer {
 			position: static;
+			z-index: 10; /* To be over sticky content of our core components */
 		}
 	`;
 
