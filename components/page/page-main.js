@@ -11,7 +11,7 @@ class PageMain extends PagePanelMixin(LitElement) {
 
 	static styles = [pagePanelStyles, css`
 		.panel-header {
-			top: var(--d2l-page-header-height, 0);
+			top: var(--d2l-page-main-sticky-top, 0);
 		}
 	`];
 
