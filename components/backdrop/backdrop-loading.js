@@ -27,9 +27,9 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 		 * @type {string}
 		 */
 		for: { type: String, required: true },
-		_state: { type: String, reflect: true },
+		_ariaContent: { state: true },
 		_spinnerTop: { state: true },
-		_ariaContent: { state: true }
+		_state: { type: String, reflect: true }
 	};
 
 	static styles = [css`
@@ -104,10 +104,10 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 
 	constructor() {
 		super();
-		this._state = 'hidden';
-		this._spinnerTop = 0;
-		this._dirtyDialogTop = 0;
 		this._ariaContent = '';
+		this._dirtyDialogTop = 0;
+		this._spinnerTop = 0;
+		this._state = 'hidden';
 	}
 
 	render() {
