@@ -5,6 +5,7 @@ import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { DataStateMixin, dataStates } from '../../mixins/data-state/data-state-mixin.js';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const BACKDROP_DELAY_MS = 800;
@@ -18,7 +19,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /**
  * A component for displaying a semi-transparent backdrop and a loading spinner over the containing element
  */
-class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
+class BackdropLoading extends PropertyRequiredMixin(DataStateMixin(LocalizeCoreElement(LitElement))) {
 
 	static properties = {
 		/**
