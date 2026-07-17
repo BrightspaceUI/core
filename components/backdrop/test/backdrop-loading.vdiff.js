@@ -1,5 +1,6 @@
 import '../backdrop-loading.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
+import { dataStates } from '../../../mixins/data-state/data-state-mixin.js';
 
 const template = html`
 	<div style="position:relative">
@@ -11,7 +12,13 @@ const template = html`
 `;
 
 describe('backdrop-loading', () => {
-	['clean', 'dirty', 'loading'].forEach((dataState) => {
+
+	[
+		dataStates.clean,
+		dataStates.dirty,
+		dataStates.loading
+	].forEach((dataState) => {
+
 		it(dataState, async() => {
 			const elem = await fixture(template);
 			const backdrop = elem.querySelector('d2l-backdrop-loading');
@@ -20,5 +27,7 @@ describe('backdrop-loading', () => {
 
 			await expect(elem).to.be.golden({ allColorModes: true });
 		});
+
 	});
+
 });
