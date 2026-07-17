@@ -1,7 +1,7 @@
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
 import './backdrop-dirty-overlay.js';
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { DataStateMixin, dataStates } from '../../mixins/data-state/data-state-mixin.js';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -72,7 +72,7 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 			opacity: 1;
 			transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
 		}
-		:host([_state="shown"][data-state="dirty"]) d2l-loading-spinner,
+		:host([_state="shown"][data-state="${unsafeCSS(dataStates.dirty)}"]) d2l-loading-spinner,
 		:host([_state="hiding"]) d2l-loading-spinner {
 			opacity: 0;
 			transition: opacity ${FADE_DURATION_MS}ms ease-out;
@@ -91,7 +91,7 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 			opacity: 1;
 			transition: opacity ${FADE_DURATION_MS}ms ease-in;
 		}
-		:host([_state="shown"][data-state="loading"]) d2l-backdrop-dirty-overlay,
+		:host([_state="shown"][data-state="${unsafeCSS(dataStates.loading)}"]) d2l-backdrop-dirty-overlay,
 		:host([_state="hiding"]) d2l-backdrop-dirty-overlay {
 			opacity: 0;
 			transition: opacity ${FADE_DURATION_MS}ms ease-out;
