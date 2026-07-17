@@ -188,11 +188,13 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			flex-direction: column;
 			height: 100vh;
 		}
+		.page.legacy-browser-mode .header {
+			z-index: 16; /* To be over sticky content of our core components and divider */
+		}
 		.page.legacy-browser-mode.has-panels .header,
 		.page.legacy-browser-mode.header-sticky.has-panels .header {
 			flex: 0 0 auto;
 			position: static;
-			z-index: 15; /* To be over sticky content of our core components */
 		}
 		.page.legacy-browser-mode.has-panels .content {
 			flex: 1 1 auto;
@@ -200,6 +202,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			overflow: hidden;
 			padding-bottom: 0;
 			width: 100%;
+		}
+		.page.legacy-browser-mode main {
+			isolation: auto;
 		}
 		.page.legacy-browser-mode.has-panels main {
 			min-height: 0;
@@ -212,12 +217,15 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			min-height: 0;
 			position: static;
 		}
+		.page.legacy-browser-mode .divider {
+			z-index: 15; /* To be over sticky content of our core components */
+		}
 		.page.legacy-browser-mode.has-panels .footer {
 			flex: 0 0 auto;
 		}
 		.page.legacy-browser-mode.has-panels .fixed-footer {
 			position: static;
-			z-index: 10; /* To be over sticky content of our core components */
+			z-index: 15; /* To be over sticky content of our core components and divider */
 		}
 	`;
 
