@@ -183,38 +183,6 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 
 	#announcementTimeoutId;
 
-	async #updatePosition() {
-		if (this._state === 'hidden') { return; }
-
-		const loadingSpinner = this.shadowRoot.querySelector('d2l-loading-spinner');
-		if (!loadingSpinner) { return; }
-
-		const backdropContainerRect = this.shadowRoot.querySelector('.backdrop-container').getBoundingClientRect();
-
-		// Calculate the centerpoint of the visible portion of the element
-		const upperVisibleBound = Math.max(0, backdropContainerRect.top);
-		const lowerVisibleBound = Math.min(window.innerHeight, backdropContainerRect.bottom);
-		const visibleHeight = lowerVisibleBound - upperVisibleBound;
-		const centeringOffset = (visibleHeight / 4);
-
-		// Calculate if an offset is required to move to the top of the viewport before centering
-		const topOffset = Math.max(0, -backdropContainerRect.top); // measures the distance below the top of the viewport, which is negative if the element starts above the viewport
-
-		// Adjust for the size of the spinner
-		const spinnerSizeOffset = LOADING_SPINNER_SIZE / 2;
-
-		this._loadingSpinnerTop = centeringOffset + topOffset - spinnerSizeOffset;
-
-		// Adjust for the size of the dirty overlay
-		const dirtyOverlay = this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay');
-		if (dirtyOverlay) {
-			await this.shadowRoot.querySelector('d2l-empty-state-action-button')?.getUpdateComplete();
-			const dirtyOverlaySizeOffset = dirtyOverlay.getBoundingClientRect().height / 2;
-
-			this._dirtyOverlayTop = centeringOffset + topOffset - dirtyOverlaySizeOffset;
-		}
-	}
-
 	#clearLiveRegionContent() {
 		this._ariaContent = '';
 
@@ -279,6 +247,38 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 		if (containingBlock.getAttribute('inert') !== null) containingBlock.dataset.initiallyInert = '1';
 
 		containingBlock.setAttribute('inert', 'inert');
+	}
+
+	async #updatePosition() {
+		if (this._state === 'hidden') { return; }
+
+		const loadingSpinner = this.shadowRoot.querySelector('d2l-loading-spinner');
+		if (!loadingSpinner) { return; }
+
+		const backdropContainerRect = this.shadowRoot.querySelector('.backdrop-container').getBoundingClientRect();
+
+		// Calculate the centerpoint of the visible portion of the element
+		const upperVisibleBound = Math.max(0, backdropContainerRect.top);
+		const lowerVisibleBound = Math.min(window.innerHeight, backdropContainerRect.bottom);
+		const visibleHeight = lowerVisibleBound - upperVisibleBound;
+		const centeringOffset = (visibleHeight / 4);
+
+		// Calculate if an offset is required to move to the top of the viewport before centering
+		const topOffset = Math.max(0, -backdropContainerRect.top); // measures the distance below the top of the viewport, which is negative if the element starts above the viewport
+
+		// Adjust for the size of the spinner
+		const spinnerSizeOffset = LOADING_SPINNER_SIZE / 2;
+
+		this._loadingSpinnerTop = centeringOffset + topOffset - spinnerSizeOffset;
+
+		// Adjust for the size of the dirty overlay
+		const dirtyOverlay = this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay');
+		if (dirtyOverlay) {
+			await this.shadowRoot.querySelector('d2l-empty-state-action-button')?.getUpdateComplete();
+			const dirtyOverlaySizeOffset = dirtyOverlay.getBoundingClientRect().height / 2;
+
+			this._dirtyOverlayTop = centeringOffset + topOffset - dirtyOverlaySizeOffset;
+		}
 	}
 
 }
