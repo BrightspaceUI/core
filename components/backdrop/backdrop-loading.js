@@ -29,7 +29,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 		for: { type: String, required: true },
 		_ariaContent: { state: true },
 		_dirtyOverlayTop: { state: true },
-		_spinnerTop: { state: true },
+		_loadingSpinnerTop: { state: true },
 		_state: { type: String, reflect: true }
 	};
 
@@ -107,7 +107,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 		super();
 		this._ariaContent = '';
 		this._dirtyOverlayTop = 0;
-		this._spinnerTop = 0;
+		this._loadingSpinnerTop = 0;
 		this._state = 'hidden';
 	}
 
@@ -118,7 +118,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 			${backdropVisible ?
 					html`<div class="backdrop-container">
 						<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#handleTransitionEnd}"></div>
-						<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
+						<d2l-loading-spinner style=${styleMap({ top: `${this._loadingSpinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
 					</div>` : nothing
 			}
 			<div aria-live="polite" class="backdrop-dirty-container">
@@ -204,7 +204,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 		// Adjust for the size of the spinner
 		const spinnerSizeOffset = LOADING_SPINNER_SIZE / 2;
 
-		this._spinnerTop = centeringOffset + topOffset - spinnerSizeOffset;
+		this._loadingSpinnerTop = centeringOffset + topOffset - spinnerSizeOffset;
 
 		// Adjust for the size of the dirty dialog
 		const dirtyOverlay = this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay');
