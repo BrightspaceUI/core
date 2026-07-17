@@ -2,8 +2,8 @@ import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
 import './backdrop-dirty-overlay.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { DataStateMixin, dataStates } from '../../mixins/data-state/data-state-mixin.js';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
-import { DataStateMixin } from '../../mixins/data-state/data-state-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -122,7 +122,7 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 			style=${styleMap({ top: `${this._dirtyOverlayTop}px` })}
 			description="${this.dirtyText}"
 			action="${this.dirtyButtonText}"
-			?inert=${this.dataState !== 'dirty'}>
+			?inert=${this.dataState !== dataStates.dirty}>
 		</d2l-backdrop-dirty-overlay>` : nothing;
 
 		return html`
@@ -143,7 +143,7 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 
 		if (changedProperties.has('_state')) {
 			if (this._state === 'showing') {
-				if (this.dataState === 'loading') {
+				if (this.dataState === dataStates.loading) {
 					setTimeout(() => {
 						if (this._state === 'showing') this._state = 'shown';
 					}, BACKDROP_DELAY_MS);
@@ -163,17 +163,17 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 			const oldState = changedProperties.get('dataState');
 			const newState = this.dataState;
 
-			if (newState === 'loading') {
+			if (newState === dataStates.loading) {
 				this.#setLiveRegionContent(this.localize('components.backdrop-loading.loadingAnnouncement'), { delay: LOADING_ANNOUNCEMENT_DELAY });
-			} else if (oldState === 'loading' && newState === 'clean') {
+			} else if (oldState === dataStates.loading && newState === dataStates.clean) {
 				this.#setLiveRegionContent(this.localize('components.backdrop-loading.loadingCompleteAnnouncement'));
 			}
 
-			if (oldState === 'clean') {
+			if (oldState === dataStates.clean) {
 				this.#show();
-			} else if (newState === 'clean') {
+			} else if (newState === dataStates.clean) {
 				this.#fade();
-			} else if (oldState === 'loading' && newState === 'dirty') {
+			} else if (oldState === dataStates.loading && newState === dataStates.dirty) {
 				setTimeout(() => {
 					if (this._state === 'showing') this._state = 'shown';
 				}, BACKDROP_DELAY_MS);
