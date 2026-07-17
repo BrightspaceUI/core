@@ -19,6 +19,7 @@ import '../../inputs/input-radio-group.js';
 
 import { css, html, nothing } from 'lit';
 import { tableStyles, TableWrapper } from '../table-wrapper.js';
+import { dataStates } from '../../../mixins/data-state/data-state-mixin.js';
 import { DemoPassthroughMixin } from '../../demo/demo-passthrough-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
@@ -83,7 +84,7 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 		this._data = data();
 		this._sortField = undefined;
 		this._sortDesc = false;
-		this.dataState = 'clean';
+		this.dataState = dataStates.clean;
 	}
 
 	render() {
@@ -101,9 +102,9 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 						@d2l-selection-action-click="${this._toggleStickyHeaders}">
 					</d2l-selection-action>
 					<d2l-input-radio-group label="Date State" horizontal label-hidden name="dataState" @change=${this._handleDataStateChange}>
-						<d2l-input-radio label="Clean" value="clean" ?checked=${this.dataState === 'clean'}></d2l-input-radio>
-						<d2l-input-radio label="Dirty" value="dirty" ?checked=${this.dataState === 'dirty'}></d2l-input-radio>
-						<d2l-input-radio label="Loading" value="loading" ?checked=${this.dataState === 'loading'}></d2l-input-radio>
+						<d2l-input-radio label="Clean" value="${dataStates.clean}" ?checked=${this.dataState === dataStates.clean}></d2l-input-radio>
+						<d2l-input-radio label="Dirty" value="${dataStates.dirty}" ?checked=${this.dataState === dataStates.dirty}></d2l-input-radio>
+						<d2l-input-radio label="Loading" value="${dataStates.loading}" ?checked=${this.dataState === dataStates.loading}></d2l-input-radio>
 					</d2l-input-radio-group>
 				</d2l-table-controls>
 
