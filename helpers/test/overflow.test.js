@@ -27,7 +27,7 @@ describe('overflow', () => {
 				min-width: 0; /* clamps width of flex items */
 				overflow-x: clip;
 				display: -webkit-box;
-				overflow-clip-margin: 0.2em;
+				overflow-clip-margin: var(--d2l-overflow-clip-margin, 0.2em);
 				overflow-wrap: anywhere;
 				overflow-y: clip;
 				text-overflow: ellipsis;
