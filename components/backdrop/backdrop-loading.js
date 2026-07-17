@@ -140,7 +140,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 		super.updated(changedProperties);
 		if (changedProperties.get('_state') && changedProperties.get('_state') === 'hidden')
 		{
-			this.#centerLoadingSpinnerAndDialog();
+			this.#centerLoadingSpinnerAndDirtyOverlay();
 		}
 
 		if (changedProperties.has('_state')) {
@@ -184,35 +184,35 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 		}
 	}
 
-	async #centerLoadingSpinnerAndDialog() {
+	async #centerLoadingSpinnerAndDirtyOverlay() {
 		if (this._state === 'hidden') { return; }
 
 		const loadingSpinner = this.shadowRoot.querySelector('d2l-loading-spinner');
 		if (!loadingSpinner) { return; }
 
-		const boundingRect = this.shadowRoot.querySelector('.backdrop-container').getBoundingClientRect();
+		const backdropContainerRect = this.shadowRoot.querySelector('.backdrop-container').getBoundingClientRect();
 
 		// Calculate the centerpoint of the visible portion of the element
-		const upperVisibleBound = Math.max(0, boundingRect.top);
-		const lowerVisibleBound = Math.min(window.innerHeight, boundingRect.bottom);
+		const upperVisibleBound = Math.max(0, backdropContainerRect.top);
+		const lowerVisibleBound = Math.min(window.innerHeight, backdropContainerRect.bottom);
 		const visibleHeight = lowerVisibleBound - upperVisibleBound;
 		const centeringOffset = (visibleHeight / 4);
 
 		// Calculate if an offset is required to move to the top of the viewport before centering
-		const topOffset = Math.max(0, -boundingRect.top); // measures the distance below the top of the viewport, which is negative if the element starts above the viewport
+		const topOffset = Math.max(0, -backdropContainerRect.top); // measures the distance below the top of the viewport, which is negative if the element starts above the viewport
 
 		// Adjust for the size of the spinner
 		const spinnerSizeOffset = LOADING_SPINNER_SIZE / 2;
 
 		this._loadingSpinnerTop = centeringOffset + topOffset - spinnerSizeOffset;
 
-		// Adjust for the size of the dirty dialog
+		// Adjust for the size of the dirty overlay
 		const dirtyOverlay = this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay');
 		if (dirtyOverlay) {
 			await this.shadowRoot.querySelector('d2l-empty-state-action-button')?.getUpdateComplete();
-			const dirtyDialogSizeOffset = dirtyOverlay.getBoundingClientRect().height / 2;
+			const dirtyOverlaySizeOffset = dirtyOverlay.getBoundingClientRect().height / 2;
 
-			this._dirtyOverlayTop = centeringOffset + topOffset - dirtyDialogSizeOffset;
+			this._dirtyOverlayTop = centeringOffset + topOffset - dirtyOverlaySizeOffset;
 		}
 	}
 
