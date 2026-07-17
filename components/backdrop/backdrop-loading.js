@@ -3,9 +3,8 @@ import '../loading-spinner/loading-spinner.js';
 import './backdrop-dirty-overlay.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
+import { DataStateMixin } from '../../mixins/data-state/data-state-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-
-import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const BACKDROP_DELAY_MS = 800;
@@ -20,40 +19,14 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /**
  * A component for displaying a semi-transparent backdrop and a loading spinner over the containing element
  */
-class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitElement)) {
+class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 
 	static properties = {
-		/**
-		 * The state of data in the element being overlaid. Set to 'clean' when the data represents the user's latest selections, 'dirty' when the data does not represent the user's latest selections, and 'loading' if the data is being actively refreshed
-		 * @type {'clean'|'dirty'|'loading'}
-		 */
-		dataState: {
-			reflect: true,
-			type: String
-		},
 		/**
 		 * Used to identify content that the backdrop should make inert
 		 * @type {string}
 		 */
 		for: { type: String, required: true },
-		/**
-		 * The text displayed on the dirty state overlay when the 'dirty' dataState is set.
-		 * @type {string}
-		 */
-		dirtyText: {
-			reflect: true,
-			attribute: 'dirty-text',
-			type: String
-		},
-		/**
-		 * The text displayed on the button of the dirty state overlay when the 'dirty' dataState is set.
-		 * @type {string}
-		 */
-		dirtyButtonText: {
-			reflect: true,
-			attribute: 'dirty-button-text',
-			type: String
-		},
 		_state: { type: String, reflect: true },
 		_spinnerTop: { state: true },
 		_ariaContent: { state: true }
@@ -99,7 +72,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 			opacity: 1;
 			transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
 		}
-		:host([_state="shown"][dataState="dirty"]) d2l-loading-spinner,
+		:host([_state="shown"][data-state="dirty"]) d2l-loading-spinner,
 		:host([_state="hiding"]) d2l-loading-spinner {
 			opacity: 0;
 			transition: opacity ${FADE_DURATION_MS}ms ease-out;
@@ -118,7 +91,7 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 			opacity: 1;
 			transition: opacity ${FADE_DURATION_MS}ms ease-in;
 		}
-		:host([_state="shown"][dataState="loading"]) d2l-backdrop-dirty-overlay,
+		:host([_state="shown"][data-state="loading"]) d2l-backdrop-dirty-overlay,
 		:host([_state="hiding"]) d2l-backdrop-dirty-overlay {
 			opacity: 0;
 			transition: opacity ${FADE_DURATION_MS}ms ease-out;
@@ -131,7 +104,6 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 
 	constructor() {
 		super();
-		this.dataState = 'clean';
 		this._state = 'hidden';
 		this._spinnerTop = 0;
 		this._dirtyDialogTop = 0;
@@ -162,7 +134,9 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 			</div>
 		`;
 	}
+
 	updated(changedProperties) {
+		super.updated(changedProperties);
 		if (changedProperties.get('_state') && changedProperties.get('_state') === 'hidden')
 		{
 			this.#centerLoadingSpinnerAndDialog();
@@ -180,7 +154,9 @@ class LoadingBackdrop extends PropertyRequiredMixin(LocalizeCoreElement(LitEleme
 			}
 		}
 	}
+
 	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
 		if (changedProperties.has('dataState') && changedProperties.get('dataState') !== undefined) {
 			this.#clearLiveArea();
 

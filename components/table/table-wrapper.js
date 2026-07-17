@@ -3,11 +3,11 @@ import '../scroll-wrapper/scroll-wrapper.js';
 import '../backdrop/backdrop-loading.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { cssSizes } from '../inputs/input-checkbox-styles.js';
+import { DataStateMixin } from '../../mixins/data-state/data-state-mixin.js';
 import { getComposedParent } from '../../helpers/dom.js';
 import { getFlag } from '../../helpers/flags.js';
 import { isPopoverSupported } from '../popover/popover-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
-import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
 
 const enableStickyScrollyFix = getFlag('table-sticky-scrolly-fix', true);
@@ -266,7 +266,7 @@ const SELECTORS = {
  * @slot controls - Slot for `d2l-table-controls` to be rendered above the table
  * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the table
  */
-export class TableWrapper extends PropertyRequiredMixin(PageableMixin(SelectionMixin(LitElement))) {
+export class TableWrapper extends DataStateMixin(PageableMixin(SelectionMixin(LitElement))) {
 
 	static properties = {
 		/**
@@ -310,40 +310,6 @@ export class TableWrapper extends PropertyRequiredMixin(PageableMixin(SelectionM
 			attribute: '_no-scroll-width',
 			reflect: true,
 			type: Boolean,
-		},
-		/**
-		 * The state of data in the table. Set to 'clean' when the data represents the user's latest selections, 'dirty' when the data does not represent the user's latest selections, and 'loading' if the data is being actively refreshed
-		 * @type {'clean'|'dirty'|'loading'}
-		 */
-		dataState: {
-			reflect: true,
-			type: String
-		},
-		/**
-		 * The text displayed on the dirty state overlay when the 'dirty' dataState is set.
-		 * @type {string}
-		 */
-		dirtyText: {
-			reflect: true,
-			attribute: 'dirty-text',
-			required: {
-				dependentProps: ['dataState'],
-				validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
-			},
-			type: String
-		},
-		/**
-		 * The text displayed on the button dirty state overlay when the 'dirty' dataState is set.
-		 * @type {string}
-		 */
-		dirtyButtonText: {
-			reflect: true,
-			attribute: 'dirty-button-text',
-			required: {
-				dependentProps: ['dataState'],
-				validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
-			},
-			type: String
 		}
 	};
 
@@ -412,10 +378,6 @@ export class TableWrapper extends PropertyRequiredMixin(PageableMixin(SelectionM
 		this._tableIntersectionObserver = null;
 		this._tableMutationObserver = null;
 		this._tableScrollers = {};
-		this.dataState = 'clean';
-
-		this.dirtyText = null;
-		this.dirtyButtonText = null;
 	}
 
 	connectedCallback() {
