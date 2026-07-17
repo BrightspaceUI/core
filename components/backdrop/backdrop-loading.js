@@ -136,6 +136,7 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
+
 		if (changedProperties.get('_state') && changedProperties.get('_state') === 'hidden') {
 			this.#updatePosition();
 		}
@@ -155,20 +156,19 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
+
 		if (changedProperties.has('dataState') && changedProperties.get('dataState') !== undefined) {
 			this.#clearLiveRegionContent();
 
 			const oldState = changedProperties.get('dataState');
 			const newState = this.dataState;
 
-			// Calculate announcements
 			if (newState === 'loading') {
 				this.#setLiveRegionContent(this.localize('components.backdrop-loading.loadingAnnouncement'), { delay: LOADING_ANNOUNCEMENT_DELAY });
 			} else if (oldState === 'loading' && newState === 'clean') {
 				this.#setLiveRegionContent(this.localize('components.backdrop-loading.loadingCompleteAnnouncement'));
 			}
 
-			// Update backdrop
 			if (oldState === 'clean') {
 				this.#show();
 			} else if (newState === 'clean') {
@@ -186,10 +186,7 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 	#clearLiveRegionContent() {
 		this._ariaContent = '';
 
-		if (this.#announcementTimeoutId) {
-			clearTimeout(this.#announcementTimeoutId);
-		}
-
+		if (this.#announcementTimeoutId) clearTimeout(this.#announcementTimeoutId);
 		this.#announcementTimeoutId = null;
 	}
 
@@ -210,14 +207,10 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 	#getBackdropTarget() {
 		const parent = getComposedParent(this);
 
-		const targetedChildren = getComposedChildren(
-			parent,
-			(elem) => elem.id === this.for,
-			false
-		);
-
-		if (targetedChildren.length === 0) { throw new Error(`Backdrop cannot find sibling identified by 'for' property with value ${this.for}`);}
-
+		const targetedChildren = getComposedChildren(parent, (elem) => elem.id === this.for, false);
+		if (targetedChildren.length === 0) {
+			throw new Error(`Backdrop cannot find sibling identified by 'for' property with value ${this.for}`);
+		}
 		return targetedChildren[0];
 	}
 
@@ -231,7 +224,6 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 		this._state = 'hidden';
 
 		const containingBlock = this.#getBackdropTarget();
-
 		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
 	}
 
@@ -243,9 +235,7 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 		this._state = reduceMotion ? 'shown' : 'showing';
 
 		const containingBlock = this.#getBackdropTarget();
-
 		if (containingBlock.getAttribute('inert') !== null) containingBlock.dataset.initiallyInert = '1';
-
 		containingBlock.setAttribute('inert', 'inert');
 	}
 
