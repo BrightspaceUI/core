@@ -28,6 +28,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 		 */
 		for: { type: String, required: true },
 		_ariaContent: { state: true },
+		_dirtyOverlayTop: { state: true },
 		_spinnerTop: { state: true },
 		_state: { type: String, reflect: true }
 	};
@@ -105,7 +106,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 	constructor() {
 		super();
 		this._ariaContent = '';
-		this._dirtyDialogTop = 0;
+		this._dirtyOverlayTop = 0;
 		this._spinnerTop = 0;
 		this._state = 'hidden';
 	}
@@ -123,7 +124,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 			<div aria-live="polite" class="backdrop-dirty-container">
 				${backdropVisible ?
 					html`<d2l-backdrop-dirty-overlay
-						style=${styleMap({ top: `${this._dirtyDialogTop}px` })}
+						style=${styleMap({ top: `${this._dirtyOverlayTop}px` })}
 						description="${this.dirtyText}"
 						action="${this.dirtyButtonText}"
 						?inert=${this.dataState !== 'dirty'}
@@ -211,7 +212,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 			await this.shadowRoot.querySelector('d2l-empty-state-action-button')?.getUpdateComplete();
 			const dirtyDialogSizeOffset = dirtyOverlay.getBoundingClientRect().height / 2;
 
-			this._dirtyDialogTop = centeringOffset + topOffset - dirtyDialogSizeOffset;
+			this._dirtyOverlayTop = centeringOffset + topOffset - dirtyDialogSizeOffset;
 		}
 	}
 
