@@ -156,16 +156,16 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 		if (changedProperties.has('dataState') && changedProperties.get('dataState') !== undefined) {
-			this.#clearLiveArea();
+			this.#clearLiveRegionContent();
 
 			const oldState = changedProperties.get('dataState');
 			const newState = this.dataState;
 
 			// Calculate announcements
 			if (newState === 'loading') {
-				this.#setLiveArea(this.localize('components.backdrop-loading.loadingAnnouncement'), { delay: LOADING_ANNOUNCEMENT_DELAY });
+				this.#setLiveRegionContent(this.localize('components.backdrop-loading.loadingAnnouncement'), { delay: LOADING_ANNOUNCEMENT_DELAY });
 			} else if (oldState === 'loading' && newState === 'clean') {
-				this.#setLiveArea(this.localize('components.backdrop-loading.loadingCompleteAnnouncement'));
+				this.#setLiveRegionContent(this.localize('components.backdrop-loading.loadingCompleteAnnouncement'));
 			}
 
 			// Update backdrop
@@ -215,7 +215,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 		}
 	}
 
-	#clearLiveArea() {
+	#clearLiveRegionContent() {
 		this._ariaContent = '';
 
 		if (this.#announcementTimeoutId) {
@@ -267,7 +267,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 		if (containingBlock.dataset.initiallyInert !== '1') containingBlock.removeAttribute('inert');
 	}
 
-	#setLiveArea(content, { delay } = {}) {
+	#setLiveRegionContent(content, { delay } = {}) {
 		this.#announcementTimeoutId = setTimeout(() => this._ariaContent = content, delay || 0);
 	}
 
