@@ -18,7 +18,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /**
  * A component for displaying a semi-transparent backdrop and a loading spinner over the containing element
  */
-class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
+class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 
 	static properties = {
 		/**
@@ -283,4 +283,4 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 
 }
 
-customElements.define('d2l-backdrop-loading', LoadingBackdrop);
+customElements.define('d2l-backdrop-loading', BackdropLoading);
