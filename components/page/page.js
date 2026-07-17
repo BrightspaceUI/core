@@ -11,6 +11,22 @@ const DRAWER_MIN_HEIGHT = 200; // TO DO: Confirm
 const MAIN_MIN_WIDTH = 600; // TO DO: Confirm
 const PANEL_MIN_WIDTH = 320;
 
+/*
+* Legacy Browser Mode can be deleted once we have hard-blocked all browsers that do not support the Popover api,
+* and dialog will be able to escape stacking contexts. It creates a "scrolling container" layout for pages with panels,
+* to avoid the stacking context created by position: sticky.
+*/
+let forceLegacyBrowserMode = false;
+const isPopoverSupported = ('popover' in HTMLElement.prototype);
+function isLegacyBrowserMode() {
+	return forceLegacyBrowserMode || !isPopoverSupported;
+}
+// Back door for the demo page and unit tests to force legacy browser mode, bypassing popover feature detection.
+// DO NOT use in production.
+export function _forceLegacyBrowserMode(on) {
+	forceLegacyBrowserMode = on;
+}
+
 class PanelStateController {
 	constructor(host, panelConfigs) {
 		this.#host = host;
@@ -117,7 +133,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			max-width: var(--d2l-page-content-max-width, 100%);
 			padding-bottom: var(--d2l-page-footer-height, 0); /* Reserve space for fixed footer */
 		}
-		.content.has-panels {
+		.page.has-panels .content {
 			min-height: calc(100vh - var(--d2l-page-header-height-measured, 0px));
 		}
 
@@ -160,6 +176,42 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			margin-inline: var(--d2l-page-margin-inline, 0);
 			max-width: var(--d2l-page-footer-max-width, 100%);
 		}
+
+		/* Legacy Browser Mode */
+		.page.legacy-browser-mode.has-panels {
+			display: flex;
+			flex-direction: column;
+			height: 100vh;
+		}
+		.page.legacy-browser-mode.has-panels .header,
+		.page.legacy-browser-mode.header-sticky.has-panels .header {
+			flex: 0 0 auto;
+			position: static;
+		}
+		.page.legacy-browser-mode.has-panels .content {
+			flex: 1 1 auto;
+			min-height: 0;
+			overflow: hidden;
+			padding-bottom: 0;
+			width: 100%;
+		}
+		.page.legacy-browser-mode.has-panels main {
+			min-height: 0;
+			overflow: auto;
+		}
+		.page.legacy-browser-mode.has-panels .side-nav-panel,
+		.page.legacy-browser-mode.has-panels .supporting-panel,
+		.page.legacy-browser-mode.has-panels .divider {
+			max-height: none;
+			min-height: 0;
+			position: static;
+		}
+		.page.legacy-browser-mode.has-panels .footer {
+			flex: 0 0 auto;
+		}
+		.page.legacy-browser-mode.has-panels .fixed-footer {
+			position: static;
+		}
 	`;
 
 	constructor() {
@@ -182,7 +234,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 					this._headerHeight = entry.target.offsetHeight;
 					this.style.setProperty('--d2l-page-header-height-measured', `${this._headerHeight}px`);
 
-					const height = this._headerIsSticky ? this._headerHeight : 0;
+					const height = this._headerIsSticky && !isLegacyBrowserMode() ? this._headerHeight : 0;
 					this.style.setProperty('--d2l-page-header-height', `${height}px`);
 					this._panelState.updateMaxSize('supporting-mobile', this.#getMaxDrawerHeight());
 				} else if (entry.target.classList.contains('footer')) {
@@ -229,17 +281,15 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	render() {
 		const pageClasses = {
 			'page': true,
-			'header-sticky': this._headerIsSticky
-		};
-		const contentClasses = {
-			'content': true,
+			'header-sticky': this._headerIsSticky,
+			'legacy-browser-mode': isLegacyBrowserMode(),
 			'has-panels': this._slotVisibility['side-nav'] || this._slotVisibility['supporting']
 		};
 
 		return html`
 			<div class="${classMap(pageClasses)}">
 				${this.#renderHeader()}
-				<div class="${classMap(contentClasses)}">
+				<div class="content">
 					${this.#renderSideNavPanel()}
 					<main><slot></slot></main>
 					${this.#renderSupportingPanel()}
