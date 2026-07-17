@@ -137,7 +137,7 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 	updated(changedProperties) {
 		super.updated(changedProperties);
 		if (changedProperties.get('_state') && changedProperties.get('_state') === 'hidden') {
-			this.#centerLoadingSpinnerAndDirtyOverlay();
+			this.#updatePosition();
 		}
 
 		if (changedProperties.has('_state')) {
@@ -183,7 +183,7 @@ class BackdropLoading extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 
 	#announcementTimeoutId;
 
-	async #centerLoadingSpinnerAndDirtyOverlay() {
+	async #updatePosition() {
 		if (this._state === 'hidden') { return; }
 
 		const loadingSpinner = this.shadowRoot.querySelector('d2l-loading-spinner');
