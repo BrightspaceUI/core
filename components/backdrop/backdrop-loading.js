@@ -11,7 +11,6 @@ const BACKDROP_DELAY_MS = 800;
 const FADE_DURATION_MS = 500;
 const SPINNER_DELAY_MS = FADE_DURATION_MS;
 const LOADING_ANNOUNCEMENT_DELAY = 1000;
-
 const LOADING_SPINNER_SIZE = 50;
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -114,24 +113,23 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 	render() {
 		const backdropVisible = this._state !== 'hidden';
 
+		const backdropContainer = backdropVisible ? html`<div class="backdrop-container">
+			<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#handleTransitionEnd}"></div>
+			<d2l-loading-spinner style=${styleMap({ top: `${this._loadingSpinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
+		</div>` : nothing;
+
+		const backdropDirtyOverlay = backdropVisible ? html`<d2l-backdrop-dirty-overlay
+			style=${styleMap({ top: `${this._dirtyOverlayTop}px` })}
+			description="${this.dirtyText}"
+			action="${this.dirtyButtonText}"
+			?inert=${this.dataState !== 'dirty'}>
+		</d2l-backdrop-dirty-overlay>` : nothing;
+
 		return html`
-			${backdropVisible ?
-					html`<div class="backdrop-container">
-						<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#handleTransitionEnd}"></div>
-						<d2l-loading-spinner style=${styleMap({ top: `${this._loadingSpinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
-					</div>` : nothing
-			}
+			${backdropContainer}
 			<div aria-live="polite" class="backdrop-dirty-container">
-				${backdropVisible ?
-					html`<d2l-backdrop-dirty-overlay
-						style=${styleMap({ top: `${this._dirtyOverlayTop}px` })}
-						description="${this.dirtyText}"
-						action="${this.dirtyButtonText}"
-						?inert=${this.dataState !== 'dirty'}
-					></d2l-backdrop-dirty-overlay>` : nothing }
-				<d2l-offscreen>
-					${this._ariaContent}
-				</d2l-offscreen>
+				${backdropDirtyOverlay}
+				<d2l-offscreen>${this._ariaContent}</d2l-offscreen>
 			</div>
 		`;
 	}
