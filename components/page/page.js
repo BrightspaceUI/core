@@ -118,7 +118,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 		.header {
 			position: relative;
-			z-index: 15; /* To be over sticky content of our core components */
+			z-index: 2; /* Ensures the header is over the divider */
 		}
 
 		.page.header-sticky .header {
@@ -140,6 +140,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		main {
 			--d2l-page-main-sticky-top: var(--d2l-page-header-height, 0);
 			flex: 1;
+			isolation: isolate;
 			min-width: min(${MAIN_MIN_WIDTH}px, 100%);
 		}
 
@@ -161,6 +162,10 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			overflow: clip auto;
 		}
 
+		.divider {
+			z-index: 1; /* Ensures the divider is over the panels */
+		}
+
 		.footer:not([hidden]),
 		.floating-buttons-container {
 			display: inline;
@@ -171,7 +176,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			inset: auto 0 0;
 			padding-block-start: 0.75rem;
 			position: fixed;
-			z-index: 10; /* To be over sticky content of our core components */
+			z-index: 1; /* Ensures the footer is over the divider */
 		}
 		.footer-contents {
 			margin-inline: var(--d2l-page-margin-inline, 0);
@@ -183,6 +188,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			display: flex;
 			flex-direction: column;
 			height: 100vh;
+		}
+		.page.legacy-browser-mode .header {
+			z-index: 16; /* To be over sticky content of our core components and divider */
 		}
 		.page.legacy-browser-mode.has-panels .header,
 		.page.legacy-browser-mode.header-sticky.has-panels .header {
@@ -196,6 +204,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			padding-bottom: 0;
 			width: 100%;
 		}
+		.page.legacy-browser-mode main {
+			isolation: auto;
+		}
 		.page.legacy-browser-mode.has-panels main {
 			--d2l-page-main-sticky-top: 0; /* Header is static and content scrolls within main, so panel headers stick to the top of the scroll container */
 			min-height: 0;
@@ -208,11 +219,15 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			min-height: 0;
 			position: static;
 		}
+		.page.legacy-browser-mode .divider {
+			z-index: 15; /* To be over sticky content of our core components */
+		}
 		.page.legacy-browser-mode.has-panels .footer {
 			flex: 0 0 auto;
 		}
 		.page.legacy-browser-mode.has-panels .fixed-footer {
 			position: static;
+			z-index: 15; /* To be over sticky content of our core components and divider */
 		}
 	`;
 
