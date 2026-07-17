@@ -138,6 +138,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		}
 
 		main {
+			--d2l-page-main-sticky-top: var(--d2l-page-header-height, 0);
 			flex: 1;
 			isolation: isolate;
 			min-width: min(${MAIN_MIN_WIDTH}px, 100%);
@@ -207,6 +208,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			isolation: auto;
 		}
 		.page.legacy-browser-mode.has-panels main {
+			--d2l-page-main-sticky-top: 0; /* Header is static and content scrolls within main, so panel headers stick to the top of the scroll container */
 			min-height: 0;
 			overflow: auto;
 		}
@@ -249,7 +251,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 					this._headerHeight = entry.target.offsetHeight;
 					this.style.setProperty('--d2l-page-header-height-measured', `${this._headerHeight}px`);
 
-					const height = this._headerIsSticky && !isLegacyBrowserMode() ? this._headerHeight : 0;
+					const height = this._headerIsSticky ? this._headerHeight : 0;
 					this.style.setProperty('--d2l-page-header-height', `${height}px`);
 					this._panelState.updateMaxSize('supporting-mobile', this.#getMaxDrawerHeight());
 				} else if (entry.target.classList.contains('footer')) {
