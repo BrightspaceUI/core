@@ -1,5 +1,11 @@
 import { PropertyRequiredMixin } from '../property-required/property-required-mixin.js';
 
+export const dataStates = Object.freeze({
+	clean: 'clean',
+	dirty: 'dirty',
+	loading: 'loading'
+});
+
 export const DataStateMixin = superclass => class extends PropertyRequiredMixin(superclass) {
 
 	static properties = {
@@ -7,6 +13,7 @@ export const DataStateMixin = superclass => class extends PropertyRequiredMixin(
 		/**
 		 * The state of data in the data component. Set to 'clean' when the data represents the user's latest selections, 'dirty' when the data does not represent the user's latest selections, and 'loading' if the data is being actively refreshed
 		 * @type {'clean'|'dirty'|'loading'}
+		 * @default "clean"
 		 */
 		dataState: { type: String, attribute: 'data-state', reflect: true },
 		/**
@@ -16,7 +23,7 @@ export const DataStateMixin = superclass => class extends PropertyRequiredMixin(
 		dirtyButtonText: {
 			type: String, attribute: 'dirty-button-text', reflect: true, required: {
 				dependentProps: ['dataState'],
-				validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
+				validator: (_value, elem, hasValue) => hasValue || elem.dataState !== dataStates.dirty
 			}
 		},
 		/**
@@ -26,14 +33,14 @@ export const DataStateMixin = superclass => class extends PropertyRequiredMixin(
 		dirtyText: {
 			type: String, attribute: 'dirty-text', reflect: true, required: {
 				dependentProps: ['dataState'],
-				validator: (_value, elem, hasValue) => hasValue || elem.dataState !== 'dirty'
+				validator: (_value, elem, hasValue) => hasValue || elem.dataState !== dataStates.dirty
 			}
 		}
 	};
 
 	constructor() {
 		super();
-		this.dataState = 'clean';
+		this.dataState = dataStates.clean;
 		this.dirtyButtonText = null;
 		this.dirtyText = null;
 	}
