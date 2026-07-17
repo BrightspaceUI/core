@@ -33,16 +33,16 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 	};
 
 	static styles = [css`
-		#visible {
+		.backdrop-container {
 			display: none;
 		}
 
 		:host([_state="showing"]),
 		:host([_state="shown"]),
 		:host([_state="hiding"]),
-		:host([_state="showing"]) #visible,
-		:host([_state="shown"]) #visible,
-		:host([_state="hiding"]) #visible {
+		:host([_state="showing"]) .backdrop-container,
+		:host([_state="shown"]) .backdrop-container,
+		:host([_state="hiding"]) .backdrop-container {
 			display: flex;
 			inset: 0;
 			justify-content: center;
@@ -115,12 +115,12 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 
 		return html`
 			${backdropVisible ?
-					html`<div id="visible">
+					html`<div class="backdrop-container">
 						<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#handleTransitionEnd}"></div>
 						<d2l-loading-spinner style=${styleMap({ top: `${this._spinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
 					</div>` : nothing
 			}
-			<div aria-live="polite" id="d2l-live-region">
+			<div aria-live="polite" class="backdrop-dirty-container">
 				${backdropVisible ?
 					html`<d2l-backdrop-dirty-overlay
 						style=${styleMap({ top: `${this._dirtyDialogTop}px` })}
@@ -189,7 +189,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 		const loadingSpinner = this.shadowRoot.querySelector('d2l-loading-spinner');
 		if (!loadingSpinner) { return; }
 
-		const boundingRect = this.shadowRoot.querySelector('#visible').getBoundingClientRect();
+		const boundingRect = this.shadowRoot.querySelector('.backdrop-container').getBoundingClientRect();
 
 		// Calculate the centerpoint of the visible portion of the element
 		const upperVisibleBound = Math.max(0, boundingRect.top);
@@ -228,7 +228,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 	#fade() {
 		let hideImmediately = reduceMotion || this._state === 'showing';
 		if (this._state === 'shown') {
-			const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('#d2l-live-region')).opacity;
+			const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('.backdrop-dirty-container')).opacity;
 			hideImmediately ||= (currentOpacity === '0');
 		}
 
