@@ -136,8 +136,7 @@ class LoadingBackdrop extends DataStateMixin(LocalizeCoreElement(LitElement)) {
 
 	updated(changedProperties) {
 		super.updated(changedProperties);
-		if (changedProperties.get('_state') && changedProperties.get('_state') === 'hidden')
-		{
+		if (changedProperties.get('_state') && changedProperties.get('_state') === 'hidden') {
 			this.#centerLoadingSpinnerAndDirtyOverlay();
 		}
 
