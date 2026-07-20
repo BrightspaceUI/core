@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { cp, glob as globFiles, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { glob as globFiles, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve, relative } from 'node:path';
 
@@ -78,15 +78,14 @@ function transformProperties(content) {
 	return result + content.slice(sourceIndex);
 }
 
-async function copyAndTransformFiles(files, temporaryDirectory) {
+async function transformFiles(files, temporaryDirectory) {
 	for (const file of files) {
 		const sourcePath = resolve(file);
 		const relativePath = relative(process.cwd(), sourcePath);
 		const destinationPath = join(temporaryDirectory, relativePath);
 
 		await mkdir(dirname(destinationPath), { recursive: true });
-		await cp(sourcePath, destinationPath);
-		const content = await readFile(destinationPath, 'utf8');
+		const content = await readFile(sourcePath, 'utf8');
 		await writeFile(destinationPath, transformProperties(content));
 	}
 }
@@ -140,7 +139,7 @@ async function main() {
 	try {
 		const files = await Array.fromAsync(globFiles(glob, { nodir: true }));
 
-		await copyAndTransformFiles(files, temporaryDirectory);
+		await transformFiles(files, temporaryDirectory);
 
 		await runWca(join(temporaryDirectory, '**/*.js'));
 
