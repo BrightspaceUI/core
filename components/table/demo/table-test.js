@@ -19,8 +19,8 @@ import '../../inputs/input-radio-group.js';
 
 import { css, html, nothing } from 'lit';
 import { tableStyles, TableWrapper } from '../table-wrapper.js';
-import { dataStates } from '../../../mixins/data-state/data-state-mixin.js';
 import { DemoPassthroughMixin } from '../../demo/demo-passthrough-mixin.js';
+import { freshness } from '../../../mixins/freshness/freshness-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 const columns = ['Population', 'Size', 'Elevation'];
@@ -84,12 +84,12 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 		this._data = data();
 		this._sortField = undefined;
 		this._sortDesc = false;
-		this.dataState = dataStates.clean;
+		this.freshness = freshness.fresh;
 	}
 
 	render() {
 		return html`
-			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}" dirty-text="This text indicates we're in the dirty state" dirty-button-text="Refresh">
+			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}" freshness-stale-text="This text indicates the table data is stale." freshness-stale-button-text="Refresh">
 				<d2l-table-controls slot="controls" ?no-sticky="${!this.stickyControls}" select-all-pages-allowed>
 					<d2l-selection-action
 						text="Sticky controls"
@@ -101,10 +101,10 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 						icon="tier1:${this.stickyHeaders ? 'check' : 'close-default'}"
 						@d2l-selection-action-click="${this._toggleStickyHeaders}">
 					</d2l-selection-action>
-					<d2l-input-radio-group label="Date State" horizontal label-hidden name="dataState" @change=${this._handleDataStateChange}>
-						<d2l-input-radio label="Clean" value="${dataStates.clean}" ?checked=${this.dataState === dataStates.clean}></d2l-input-radio>
-						<d2l-input-radio label="Dirty" value="${dataStates.dirty}" ?checked=${this.dataState === dataStates.dirty}></d2l-input-radio>
-						<d2l-input-radio label="Loading" value="${dataStates.loading}" ?checked=${this.dataState === dataStates.loading}></d2l-input-radio>
+					<d2l-input-radio-group label="Freshness" horizontal label-hidden name="freshness" @change=${this._handleFreshnessChange}>
+						<d2l-input-radio label="Fresh" value="${freshness.fresh}" ?checked=${this.freshness === freshness.fresh}></d2l-input-radio>
+						<d2l-input-radio label="Stale" value="${freshness.stale}" ?checked=${this.freshness === freshness.stale}></d2l-input-radio>
+						<d2l-input-radio label="Loading" value="${freshness.loading}" ?checked=${this.freshness === freshness.loading}></d2l-input-radio>
 					</d2l-input-radio-group>
 				</d2l-table-controls>
 
@@ -171,8 +171,8 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 		`;
 	}
 
-	_handleDataStateChange(e) {
-		this.dataState = e.detail.value;
+	_handleFreshnessChange(e) {
+		this.freshness = e.detail.value;
 	}
 
 	async _handlePagerLoadMore(e) {

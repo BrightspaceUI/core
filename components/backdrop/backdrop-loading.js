@@ -1,8 +1,8 @@
+import './backdrop-stale-overlay.js';
 import '../colors/colors.js';
 import '../loading-spinner/loading-spinner.js';
-import './backdrop-dirty-overlay.js';
 import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
-import { DataStateMixin, dataStates } from '../../mixins/data-state/data-state-mixin.js';
+import { freshness, FreshnessMixin } from '../../mixins/freshness/freshness-mixin.js';
 import { getComposedChildren, getComposedParent } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
@@ -19,7 +19,7 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 /**
  * A component for displaying a semi-transparent backdrop and a loading spinner over the containing element
  */
-class BackdropLoading extends PropertyRequiredMixin(DataStateMixin(LocalizeCoreElement(LitElement))) {
+class BackdropLoading extends PropertyRequiredMixin(FreshnessMixin(LocalizeCoreElement(LitElement))) {
 
 	static properties = {
 		/**
@@ -28,8 +28,8 @@ class BackdropLoading extends PropertyRequiredMixin(DataStateMixin(LocalizeCoreE
 		 */
 		for: { type: String, required: true },
 		_ariaContent: { state: true },
-		_dirtyOverlayTop: { state: true },
 		_loadingSpinnerTop: { state: true },
+		_staleOverlayTop: { state: true },
 		_state: { type: String, reflect: true }
 	};
 
@@ -73,13 +73,13 @@ class BackdropLoading extends PropertyRequiredMixin(DataStateMixin(LocalizeCoreE
 			opacity: 1;
 			transition: opacity ${FADE_DURATION_MS}ms ease-in ${SPINNER_DELAY_MS}ms;
 		}
-		:host([_state="shown"][data-state="${unsafeCSS(dataStates.dirty)}"]) d2l-loading-spinner,
+		:host([_state="shown"][freshness="${unsafeCSS(freshness.stale)}"]) d2l-loading-spinner,
 		:host([_state="hiding"]) d2l-loading-spinner {
 			opacity: 0;
 			transition: opacity ${FADE_DURATION_MS}ms ease-out;
 		}
 
-		d2l-backdrop-dirty-overlay {
+		d2l-backdrop-stale-overlay {
 			background-color: var(--d2l-theme-backdrop-dialog-color);
 			height: fit-content;
 			justify-content: center;
@@ -88,12 +88,12 @@ class BackdropLoading extends PropertyRequiredMixin(DataStateMixin(LocalizeCoreE
 			top: 0;
 			z-index: 1000;
 		}
-		:host([_state="shown"]) d2l-backdrop-dirty-overlay {
+		:host([_state="shown"]) d2l-backdrop-stale-overlay {
 			opacity: 1;
 			transition: opacity ${FADE_DURATION_MS}ms ease-in;
 		}
-		:host([_state="shown"][data-state="${unsafeCSS(dataStates.loading)}"]) d2l-backdrop-dirty-overlay,
-		:host([_state="hiding"]) d2l-backdrop-dirty-overlay {
+		:host([_state="shown"][freshness="${unsafeCSS(freshness.loading)}"]) d2l-backdrop-stale-overlay,
+		:host([_state="hiding"]) d2l-backdrop-stale-overlay {
 			opacity: 0;
 			transition: opacity ${FADE_DURATION_MS}ms ease-out;
 		}
@@ -106,8 +106,8 @@ class BackdropLoading extends PropertyRequiredMixin(DataStateMixin(LocalizeCoreE
 	constructor() {
 		super();
 		this._ariaContent = '';
-		this._dirtyOverlayTop = 0;
 		this._loadingSpinnerTop = 0;
+		this._staleOverlayTop = 0;
 		this._state = 'hidden';
 	}
 
@@ -116,20 +116,20 @@ class BackdropLoading extends PropertyRequiredMixin(DataStateMixin(LocalizeCoreE
 
 		const backdropContainer = backdropVisible ? html`<div class="backdrop-container">
 			<div class="backdrop" @transitionend="${this.#handleTransitionEnd}" @transitioncancel="${this.#handleTransitionEnd}"></div>
-			<d2l-loading-spinner style=${styleMap({ top: `${this._loadingSpinnerTop}px` })} size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
+			<d2l-loading-spinner style="${styleMap({ top: `${this._loadingSpinnerTop}px` })}" size="${LOADING_SPINNER_SIZE}"></d2l-loading-spinner>
 		</div>` : nothing;
 
-		const backdropDirtyOverlay = backdropVisible ? html`<d2l-backdrop-dirty-overlay
-			style=${styleMap({ top: `${this._dirtyOverlayTop}px` })}
-			description="${this.dirtyText}"
-			action="${this.dirtyButtonText}"
-			?inert=${this.dataState !== dataStates.dirty}>
-		</d2l-backdrop-dirty-overlay>` : nothing;
+		const backdropStaleOverlay = backdropVisible ? html`<d2l-backdrop-stale-overlay
+			button-text="${this.freshnessStaleButtonText}"
+			text="${this.freshnessStaleText}"
+			?inert="${this.freshness !== freshness.stale}"
+			style="${styleMap({ top: `${this._staleOverlayTop}px` })}">
+		</d2l-backdrop-stale-overlay>` : nothing;
 
 		return html`
 			${backdropContainer}
-			<div aria-live="polite" class="backdrop-dirty-container">
-				${backdropDirtyOverlay}
+			<div aria-live="polite" class="backdrop-stale-container">
+				${backdropStaleOverlay}
 				<d2l-offscreen>${this._ariaContent}</d2l-offscreen>
 			</div>
 		`;
@@ -144,7 +144,7 @@ class BackdropLoading extends PropertyRequiredMixin(DataStateMixin(LocalizeCoreE
 
 		if (changedProperties.has('_state')) {
 			if (this._state === 'showing') {
-				if (this.dataState === dataStates.loading) {
+				if (this.freshness === freshness.loading) {
 					setTimeout(() => {
 						if (this._state === 'showing') this._state = 'shown';
 					}, BACKDROP_DELAY_MS);
@@ -158,23 +158,23 @@ class BackdropLoading extends PropertyRequiredMixin(DataStateMixin(LocalizeCoreE
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 
-		if (changedProperties.has('dataState') && changedProperties.get('dataState') !== undefined) {
+		if (changedProperties.has('freshness') && changedProperties.get('freshness') !== undefined) {
 			this.#clearLiveRegionContent();
 
-			const oldState = changedProperties.get('dataState');
-			const newState = this.dataState;
+			const oldState = changedProperties.get('freshness');
+			const newState = this.freshness;
 
-			if (newState === dataStates.loading) {
+			if (newState === freshness.loading) {
 				this.#setLiveRegionContent(this.localize('components.backdrop-loading.loadingAnnouncement'), { delay: LOADING_ANNOUNCEMENT_DELAY });
-			} else if (oldState === dataStates.loading && newState === dataStates.clean) {
+			} else if (oldState === freshness.loading && newState === freshness.fresh) {
 				this.#setLiveRegionContent(this.localize('components.backdrop-loading.loadingCompleteAnnouncement'));
 			}
 
-			if (oldState === dataStates.clean) {
+			if (oldState === freshness.fresh) {
 				this.#show();
-			} else if (newState === dataStates.clean) {
+			} else if (newState === freshness.fresh) {
 				this.#fade();
-			} else if (oldState === dataStates.loading && newState === dataStates.dirty) {
+			} else if (oldState === freshness.loading && newState === freshness.stale) {
 				setTimeout(() => {
 					if (this._state === 'showing') this._state = 'shown';
 				}, BACKDROP_DELAY_MS);
@@ -194,7 +194,7 @@ class BackdropLoading extends PropertyRequiredMixin(DataStateMixin(LocalizeCoreE
 	#fade() {
 		let hideImmediately = reduceMotion || this._state === 'showing';
 		if (this._state === 'shown') {
-			const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('.backdrop-dirty-container')).opacity;
+			const currentOpacity = getComputedStyle(this.shadowRoot.querySelector('.backdrop-stale-container')).opacity;
 			hideImmediately ||= (currentOpacity === '0');
 		}
 
@@ -262,13 +262,13 @@ class BackdropLoading extends PropertyRequiredMixin(DataStateMixin(LocalizeCoreE
 
 		this._loadingSpinnerTop = centeringOffset + topOffset - spinnerSizeOffset;
 
-		// Adjust for the size of the dirty overlay
-		const dirtyOverlay = this.shadowRoot.querySelector('d2l-backdrop-dirty-overlay');
-		if (dirtyOverlay) {
+		// Adjust for the size of the stale overlay
+		const staleOverlay = this.shadowRoot.querySelector('d2l-backdrop-stale-overlay');
+		if (staleOverlay) {
 			await this.shadowRoot.querySelector('d2l-empty-state-action-button')?.getUpdateComplete();
-			const dirtyOverlaySizeOffset = dirtyOverlay.getBoundingClientRect().height / 2;
+			const staleOverlaySizeOffset = staleOverlay.getBoundingClientRect().height / 2;
 
-			this._dirtyOverlayTop = centeringOffset + topOffset - dirtyOverlaySizeOffset;
+			this._staleOverlayTop = centeringOffset + topOffset - staleOverlaySizeOffset;
 		}
 	}
 

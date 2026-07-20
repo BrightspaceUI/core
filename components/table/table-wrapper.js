@@ -3,7 +3,7 @@ import '../scroll-wrapper/scroll-wrapper.js';
 import '../backdrop/backdrop-loading.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { cssSizes } from '../inputs/input-checkbox-styles.js';
-import { DataStateMixin } from '../../mixins/data-state/data-state-mixin.js';
+import { FreshnessMixin } from '../../mixins/freshness/freshness-mixin.js';
 import { getComposedParent } from '../../helpers/dom.js';
 import { getFlag } from '../../helpers/flags.js';
 import { isPopoverSupported } from '../popover/popover-mixin.js';
@@ -266,7 +266,7 @@ const SELECTORS = {
  * @slot controls - Slot for `d2l-table-controls` to be rendered above the table
  * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the table
  */
-export class TableWrapper extends DataStateMixin(PageableMixin(SelectionMixin(LitElement))) {
+export class TableWrapper extends FreshnessMixin(PageableMixin(SelectionMixin(LitElement))) {
 
 	static properties = {
 		/**
@@ -409,7 +409,7 @@ export class TableWrapper extends DataStateMixin(PageableMixin(SelectionMixin(Li
 		const slot = html`
 			<div style="position:relative">
 				<slot id="table-slot" @slotchange="${this._handleSlotChange}"></slot>
-				<d2l-backdrop-loading @d2l-backdrop-dirty-overlay-action=${this._handleDirtyButton} for="table-slot" dataState=${this.dataState} dirty-text="${this.dirtyText}" dirty-button-text="${this.dirtyButtonText}"></d2l-backdrop-loading>
+				<d2l-backdrop-loading @d2l-backdrop-stale-overlay-action="${this._handleStaleButton}" for="table-slot" freshness="${this.freshness}" freshness-stale-text="${this.freshnessStaleText}" freshness-stale-button-text="${this.freshnessStaleButtonText}"></d2l-backdrop-loading>
 			</div>
 		`;
 		const useScrollWrapper = this.stickyHeadersScrollWrapper || !this.stickyHeaders;
@@ -536,11 +536,6 @@ export class TableWrapper extends DataStateMixin(PageableMixin(SelectionMixin(Li
 		this._handleControlsChange();
 	}
 
-	_handleDirtyButton() {
-		/** Dispatched when the action button on the dirty overlay is clicked */
-		this.dispatchEvent(new CustomEvent('d2l-table-dirty-button-clicked'));
-	}
-
 	_handlePopoverClose(e) {
 		this._updateStickyAncestor(e.target, false);
 	}
@@ -593,6 +588,11 @@ export class TableWrapper extends DataStateMixin(PageableMixin(SelectionMixin(Li
 		this.querySelectorAll('tr:first-child *').forEach(el => this._tableResizeObserver.observe(el));
 
 		this._handleTableChange();
+	}
+
+	_handleStaleButton() {
+		/** Dispatched when the action button on the stale overlay is clicked */
+		this.dispatchEvent(new CustomEvent('d2l-table-stale-button-click'));
 	}
 
 	async _handleTableChange(mutationRecords) {
