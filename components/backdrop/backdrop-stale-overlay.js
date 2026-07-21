@@ -13,12 +13,12 @@ class BackdropStaleOverlay extends LocalizeCoreElement(LitElement) {
 		 * The action button text
 		 * @type {string}
 		 */
-		buttonText: { type: String, attribute: 'button-text', required: true },
+		buttonText: { type: String, attribute: 'button-text' },
 		/**
 		 * The text displayed on the overlay
 		 * @type {string}
 		 */
-		text: { type: String, required: true }
+		text: { type: String }
 	};
 
 	static styles = [bodyCompactStyles, css`
@@ -35,12 +35,13 @@ class BackdropStaleOverlay extends LocalizeCoreElement(LitElement) {
 
 	render() {
 		const message = this.text || this.localize('components.backdrop-stale-overlay.message');
+		const buttonText = this.buttonText || this.localize('intl-common:actions:reload');;
 
 		return html`
 			<p class="d2l-body-compact">${message}</p>
 			<d2l-button-subtle
 				@click="${this.#handleActionClick}"
-				text="${this.buttonText}">
+				text="${buttonText}">
 			</d2l-button-subtle>
 		`;
 	}
