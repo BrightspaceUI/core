@@ -13,7 +13,7 @@ export const FreshnessMixin = superclass => class extends PropertyRequiredMixin(
 		/**
 		 * The freshness of the component data
 		 * @type {'fresh'|'stale'|'loading'}
-		 * @default "clean"
+		 * @default "fresh"
 		 */
 		freshness: { type: String, attribute: 'freshness', reflect: true },
 		/**
