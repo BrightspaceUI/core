@@ -177,14 +177,14 @@ describe('d2l-input-time', () => {
 			const clock = sinon.useFakeTimers({ now: newToday.getTime(), toFake: ['Date'] });
 
 			const elem = await fixture('<d2l-input-time label="label text" value=""></d2l-input-time>');
-			expect(getInput(elem).value).to.equal('8:00 AM');
+			expect(getInput(elem).value).to.equal('8:00 AM');
 
 			clock.restore();
 		});
 
 		it('should correctly set given value', async() => {
 			const elem = await fixture(fixtureWithValue);
-			expect(getInput(elem).value).to.equal('11:22 AM');
+			expect(getInput(elem).value).to.equal('11:22 AM');
 		});
 
 		it('should throw an error with invalid given value', async() => {
@@ -195,7 +195,7 @@ describe('d2l-input-time', () => {
 
 		it('should correctly set given value over default value', async() => {
 			const elem = await fixture('<d2l-input-time label="label text" default-value="02:00:00" value="04:00:00"></d2l-input-time>');
-			expect(getInput(elem).value).to.equal('4:00 AM');
+			expect(getInput(elem).value).to.equal('4:00 AM');
 		});
 
 		it('should not save input seconds after time changes', async() => {
@@ -225,7 +225,7 @@ describe('d2l-input-time', () => {
 			});
 			await oneEvent(elem, 'change');
 			await elem.updateComplete;
-			expect(getInput(elem).value).to.equal('12:01 AM');
+			expect(getInput(elem).value).to.equal('12:01 AM');
 		});
 
 	});
@@ -247,18 +247,18 @@ describe('d2l-input-time', () => {
 			expect(await getNumberOfIntervals(elem)).to.equal(24);
 		});
 
-		it('should contain 12:00 AM as first dropdown option when intervals enforced', async() => {
+		it('should contain 12:00 AM as first dropdown option when intervals enforced', async() => {
 			const elem = await fixture(hourLongIntervalsEnforced);
 			elem._dropdownFirstOpened = true;
 			await elem.updateComplete;
-			expect(elem.shadowRoot.querySelector('.d2l-input-time-menu d2l-menu-item-radio').text).to.equal('12:00 AM');
+			expect(elem.shadowRoot.querySelector('.d2l-input-time-menu d2l-menu-item-radio').text).to.equal('12:00 AM');
 		});
 
-		it('should contain 12:01 AM as first dropdown option when intervals not enforced', async() => {
+		it('should contain 12:01 AM as first dropdown option when intervals not enforced', async() => {
 			const elem = await fixture(basicFixture);
 			elem._dropdownFirstOpened = true;
 			await elem.updateComplete;
-			expect(elem.shadowRoot.querySelector('.d2l-input-time-menu d2l-menu-item-radio').text).to.equal('12:01 AM');
+			expect(elem.shadowRoot.querySelector('.d2l-input-time-menu d2l-menu-item-radio').text).to.equal('12:01 AM');
 		});
 
 		it('should round-up to next interval when intervals are enforced', async() => {
