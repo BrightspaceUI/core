@@ -117,8 +117,8 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			align-items: center;
 			background-color: white;
 			border: 1px solid var(--d2l-color-mica);
-			box-sizing: border-box;
 			border-radius: 50%;
+			box-sizing: border-box;
 			cursor: pointer;
 			display: flex;
 			height: ${DIVIDER_HANDLE_SIZE}px;
