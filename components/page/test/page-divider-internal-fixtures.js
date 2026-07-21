@@ -11,7 +11,7 @@ export function createDivider({
 } = {}) {
 	return html`
 		<d2l-page-divider-internal
-			style="display: inline-block; height: 300px;"
+			style="height: 300px;"
 			label="Resize"
 			?collapsed="${collapsed}"
 			current-size="${currentSize}"

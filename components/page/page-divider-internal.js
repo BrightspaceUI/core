@@ -90,6 +90,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
 	static styles = css`
 		:host {
+			display: inline-block;
 			flex: none;
 		}
 		.divider {
@@ -107,7 +108,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		}
 
 		.slider {
-			left: -${DIVIDER_HANDLE_SIZE / 2 - DIVIDER_WIDTH / 2}px;
+			inset-inline-start: -${DIVIDER_HANDLE_SIZE / 2 - DIVIDER_WIDTH / 2}px;
 			outline: none;
 			position: absolute;
 			top: 55px;
