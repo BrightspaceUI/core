@@ -21,6 +21,7 @@ class PanelStateController {
 		host.addController(this);
 	}
 
+	getCollapsed(key) { return this.#panels[key].collapsed; }
 	getMaxSize(key) { return this.#panels[key].maxSize; }
 	getMinSize(key) { return this.#panels[key].minSize; }
 	getSize(key) { return this.#panels[key].size; }
@@ -29,6 +30,12 @@ class PanelStateController {
 		const panel = this.#panels[key];
 		// Clamp requested size to min and max bounds
 		panel.size = Math.max(panel.minSize, Math.min(requestedSize, panel.maxSize));
+		this.#host.requestUpdate();
+	}
+
+	setCollapsed(key, collapsed) {
+		const panel = this.#panels[key];
+		panel.collapsed = collapsed;
 		this.#host.requestUpdate();
 	}
 
@@ -102,7 +109,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 		.header {
 			position: relative;
-			z-index: 15; /* To be over sticky content of our core components */
+			z-index: 16; /* To be over sticky content of our core components and the divider */
 		}
 
 		.page.header-sticky .header {
@@ -144,6 +151,10 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			overflow: clip auto;
 		}
 
+		.divider {
+			z-index: 15; /* To be over d2l-page-* panel headers */
+		}
+
 		.footer:not([hidden]),
 		.floating-buttons-container {
 			display: inline;
@@ -154,7 +165,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			inset: auto 0 0;
 			padding-block-start: 0.75rem;
 			position: fixed;
-			z-index: 10; /* To be over sticky content of our core components */
+			z-index: 15; /* To be over sticky content of our core components and divider */
 		}
 		.footer-contents {
 			margin-inline: var(--d2l-page-margin-inline, 0);
@@ -277,8 +288,10 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		this._panelState.resize(panelKey, e.detail.requestedSize);
 	};
 
-	#handleDividerToggle() {
-		// TO DO
+	#handleDividerToggle(e) {
+		const panelKey = e.target.dataset.panelKey;
+		const collapsed = !this._panelState.getCollapsed(panelKey);
+		this._panelState.setCollapsed(panelKey, collapsed);
 	};
 
 	#handleSlotVisibilityChange(e) {
@@ -302,6 +315,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 				class="divider"
 				data-panel-key="${panelKey}"
 				label="${label}"
+				?collapsed="${this._panelState.getCollapsed(panelKey)}"
 				current-size="${this._panelState.getSize(panelKey)}"
 				max-size="${this._panelState.getMaxSize(panelKey)}"
 				min-size="${this._panelState.getMinSize(panelKey)}"

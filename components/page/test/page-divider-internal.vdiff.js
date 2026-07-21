@@ -1,5 +1,5 @@
-import { expect, fixture, focusElem, hoverElem } from '@brightspace-ui/testing';
-import { getDivider, pageDividerFixtures } from './page-divider-internal-fixtures.js';
+import { clickElem, expect, fixture, focusElem, hoverElem } from '@brightspace-ui/testing';
+import { getDivider, getSlider, pageDividerFixtures } from './page-divider-internal-fixtures.js';
 
 describe('page-divider-internal', () => {
 
@@ -11,6 +11,18 @@ describe('page-divider-internal', () => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
 				await hoverElem(getDivider(elem, test.divider));
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+
+		[
+			{ name: 'handle-side-nav', divider: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeaders },
+			{ name: 'handle-supporting-immersive', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveFooter }
+		].forEach(test => {
+			it(test.name, async() => {
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				const divider = getDivider(elem, test.divider);
+				await hoverElem(getSlider(divider));
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -73,8 +85,55 @@ describe('page-divider-internal', () => {
 		// TO DO once arrow visuals added
 	});
 
-	describe('mouse', () => {
-		// TO DO
+	describe('click', () => {
+		describe('handle', () => {
+			[
+				{ name: 'collapse-side-nav', divider: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeaders },
+				{ name: 'collapse-supporting-immersive', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveFooter }
+			].forEach(test => {
+				it(test.name, async() => {
+					const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+					const divider = getDivider(elem, test.divider);
+					await clickElem(getSlider(divider));
+					await expect(elem).to.be.golden({ margin: 0 });
+				});
+			});
+
+			[
+				{ name: 'expand-side-nav-immersive', divider: 'side-nav', fixture: pageDividerFixtures.sideNavImmersiveFooter },
+				{ name: 'expand-supporting', divider: 'supporting', fixture: pageDividerFixtures.supportingLongFooter }
+			].forEach(test => {
+				it(test.name, async() => {
+					const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+					const divider = getDivider(elem, test.divider);
+					await clickElem(getSlider(divider));
+					await clickElem(getSlider(divider));
+					await expect(elem).to.be.golden({ margin: 0 });
+				});
+			});
+		});
+
+		describe('divider line', () => {
+			it('no-collapse-side-nav', async() => {
+				const elem = await fixture(pageDividerFixtures.sideNavBothHeaders, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				const divider = getDivider(elem, 'side-nav');
+				await clickElem(divider);
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+
+			it('expand-supporting-immersive', async() => {
+				const elem = await fixture(pageDividerFixtures.supportingImmersiveFooter, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				const divider = getDivider(elem, 'supporting');
+				await clickElem(getSlider(divider));
+				await clickElem(divider);
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+
+
+
+
+
 	});
 
 });
