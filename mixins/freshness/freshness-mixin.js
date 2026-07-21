@@ -9,7 +9,6 @@ export const freshness = Object.freeze({
 export const FreshnessMixin = superclass => class extends PropertyRequiredMixin(superclass) {
 
 	static properties = {
-
 		/**
 		 * The freshness of the component data
 		 * @type {'fresh'|'stale'|'loading'}
@@ -23,7 +22,7 @@ export const FreshnessMixin = superclass => class extends PropertyRequiredMixin(
 		freshnessStaleButtonText: {
 			type: String, attribute: 'freshness-stale-button-text', reflect: true, required: {
 				dependentProps: ['freshness'],
-				validator: (_value, elem, hasValue) => hasValue || elem.freshness !== freshness.stale
+				validator: (_value, elem, hasValue) => hasValue || !elem._hasBeenStale
 			}
 		},
 		/**
@@ -33,7 +32,7 @@ export const FreshnessMixin = superclass => class extends PropertyRequiredMixin(
 		freshnessStaleText: {
 			type: String, attribute: 'freshness-stale-text', reflect: true, required: {
 				dependentProps: ['freshness'],
-				validator: (_value, elem, hasValue) => hasValue || elem.freshness !== freshness.stale
+				validator: (_value, elem, hasValue) => hasValue || !elem._hasBeenStale
 			}
 		}
 	};
@@ -41,6 +40,12 @@ export const FreshnessMixin = superclass => class extends PropertyRequiredMixin(
 	constructor() {
 		super();
 		this.freshness = freshness.fresh;
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+
+		if (!this._hasBeenStale && this.freshness === freshness.stale) this._hasBeenStale = true;
 	}
 
 };
