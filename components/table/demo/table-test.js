@@ -88,7 +88,7 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 
 	render() {
 		return html`
-			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}" freshness-stale-text="This text indicates the table data is stale." freshness-stale-button-text="Refresh">
+			<d2l-table-wrapper item-count="${ifDefined(this.paging ? 500 : undefined)}" freshness-stale-text="This table data is out of date." freshness-stale-button-text="Reload Me!">
 				<d2l-table-controls slot="controls" ?no-sticky="${!this.stickyControls}" select-all-pages-allowed>
 					<d2l-selection-action
 						text="Sticky controls"
