@@ -1,5 +1,4 @@
 import { css } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
 
 const HAS_DOCUMENT = globalThis.document !== undefined;
 
