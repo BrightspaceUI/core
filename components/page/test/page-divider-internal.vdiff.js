@@ -129,11 +129,6 @@ describe('page-divider-internal', () => {
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
-
-
-
-
-
 	});
 
 });
