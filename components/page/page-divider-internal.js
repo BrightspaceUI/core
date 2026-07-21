@@ -54,14 +54,14 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			flex: none;
 		}
 		.divider {
-			background-color: var(--d2l-color-gypsum);
+			background-color: var(--d2l-color-mica);
 			cursor: ew-resize;
 			height: 100%;
 			position: relative;
 			width: ${DIVIDER_WIDTH}px;
 		}
 		.divider:hover {
-			background-color: var(--d2l-color-mica);
+			background-color: var(--d2l-color-corundum);
 		}
 		.divider:focus-within {
 			background-color: var(--d2l-color-celestine);
