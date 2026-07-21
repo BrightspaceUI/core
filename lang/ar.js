@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "إغلاق التنبيه",
 	"components.backdrop-loading.loadingAnnouncement": "جارٍ التحميل",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "اكتمل التحميل.",
+	"components.backdrop-stale-overlay.message": "This data is out of date.",
 	"components.breadcrumbs.breadcrumb": "مسار التنقل",
 	"components.button-add.addItem": "إضافة عنصر",
 	"components.button-copy.copied": "تم النسخ!",

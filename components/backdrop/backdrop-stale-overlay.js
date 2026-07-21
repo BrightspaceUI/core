@@ -1,11 +1,12 @@
 import '../button/button-subtle.js';
 import { css, html, LitElement } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
+import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 /**
  * A component to render as an overlay over another element with stale data.
  */
-class BackdropStaleOverlay extends LitElement {
+class BackdropStaleOverlay extends LocalizeCoreElement(LitElement) {
 
 	static properties = {
 		/**
@@ -33,8 +34,10 @@ class BackdropStaleOverlay extends LitElement {
 	`];
 
 	render() {
+		const message = this.text || this.localize('components.backdrop-stale-overlay.message');
+
 		return html`
-			<p class="d2l-body-compact">${this.text}</p>
+			<p class="d2l-body-compact">${message}</p>
 			<d2l-button-subtle
 				@click="${this.#handleActionClick}"
 				text="${this.buttonText}">

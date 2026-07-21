@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "Kati Matohi",
 	"components.backdrop-loading.loadingAnnouncement": "Kei te uta.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Kua Oti te Utaina.",
+	"components.backdrop-stale-overlay.message": "This data is out of date.",
 	"components.breadcrumbs.breadcrumb": "Pānui",
 	"components.button-add.addItem": "Tāpiri Tūemi",
 	"components.button-copy.copied": "Kua tāruatia!",

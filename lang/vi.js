@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "Đóng Cảnh Báo",
 	"components.backdrop-loading.loadingAnnouncement": "Đang tải.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Quá trình tải hoàn tất.",
+	"components.backdrop-stale-overlay.message": "This data is out of date.",
 	"components.breadcrumbs.breadcrumb": "Đường dẫn",
 	"components.button-add.addItem": "Thêm mục",
 	"components.button-copy.copied": "Đã sao chép!",

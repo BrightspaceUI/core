@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "Benachrichtigung schließen",
 	"components.backdrop-loading.loadingAnnouncement": "Wird geladen.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Ladevorgang abgeschlossen.",
+	"components.backdrop-stale-overlay.message": "This data is out of date.",
 	"components.breadcrumbs.breadcrumb": "Brotkrümelnavigation",
 	"components.button-add.addItem": "Element hinzufügen",
 	"components.button-copy.copied": "Kopiert.",

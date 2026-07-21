@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "Tanca l’alerta",
 	"components.backdrop-loading.loadingAnnouncement": "Carregant.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Càrrega completa.",
+	"components.backdrop-stale-overlay.message": "This data is out of date.",
 	"components.breadcrumbs.breadcrumb": "Breadcrumb",
 	"components.button-add.addItem": "Afegeix element",
 	"components.button-copy.copied": "S’ha copiat!",

@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "Cau Hysbysiad",
 	"components.backdrop-loading.loadingAnnouncement": "Wrthi’n llwytho.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Llwytho wedi Gorffen.",
+	"components.backdrop-stale-overlay.message": "This data is out of date.",
 	"components.breadcrumbs.breadcrumb": "Briwsionyn Bara",
 	"components.button-add.addItem": "Ychwanegu Eitem",
 	"components.button-copy.copied": "Wedi’i gopïo!",
