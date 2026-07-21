@@ -18,9 +18,8 @@ import '../../inputs/input-radio.js';
 import '../../inputs/input-radio-group.js';
 
 import { css, html, nothing } from 'lit';
-import { tableStyles, TableWrapper } from '../table-wrapper.js';
+import { tableFreshness, tableStyles, TableWrapper } from '../table-wrapper.js';
 import { DemoPassthroughMixin } from '../../demo/demo-passthrough-mixin.js';
-import { freshness } from '../../../mixins/freshness/freshness-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
 const columns = ['Population', 'Size', 'Elevation'];
@@ -84,7 +83,7 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 		this._data = data();
 		this._sortField = undefined;
 		this._sortDesc = false;
-		this.freshness = freshness.fresh;
+		this.freshness = tableFreshness.fresh;
 	}
 
 	render() {
@@ -102,9 +101,9 @@ class TestTable extends DemoPassthroughMixin(TableWrapper, 'd2l-table-wrapper') 
 						@d2l-selection-action-click="${this._toggleStickyHeaders}">
 					</d2l-selection-action>
 					<d2l-input-radio-group label="Freshness" horizontal label-hidden name="freshness" @change=${this._handleFreshnessChange}>
-						<d2l-input-radio label="Fresh" value="${freshness.fresh}" ?checked=${this.freshness === freshness.fresh}></d2l-input-radio>
-						<d2l-input-radio label="Stale" value="${freshness.stale}" ?checked=${this.freshness === freshness.stale}></d2l-input-radio>
-						<d2l-input-radio label="Loading" value="${freshness.loading}" ?checked=${this.freshness === freshness.loading}></d2l-input-radio>
+						<d2l-input-radio label="Fresh" value="${tableFreshness.fresh}" ?checked=${this.freshness === tableFreshness.fresh}></d2l-input-radio>
+						<d2l-input-radio label="Stale" value="${tableFreshness.stale}" ?checked=${this.freshness === tableFreshness.stale}></d2l-input-radio>
+						<d2l-input-radio label="Loading" value="${tableFreshness.loading}" ?checked=${this.freshness === tableFreshness.loading}></d2l-input-radio>
 					</d2l-input-radio-group>
 				</d2l-table-controls>
 

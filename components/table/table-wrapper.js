@@ -12,6 +12,8 @@ import { SelectionMixin } from '../selection/selection-mixin.js';
 
 const enableStickyScrollyFix = getFlag('table-sticky-scrolly-fix', true);
 
+export const tableFreshness = freshness;
+
 export const tableStyles = css`
 	.d2l-table {
 		border-collapse: separate; /* needed to override reset stylesheets */
