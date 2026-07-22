@@ -52,6 +52,7 @@ describe('d2l-page-divider-internal', () => {
 					let dispatched = false;
 					elem.addEventListener('d2l-page-divider-toggle', () => dispatched = true);
 					await clickElem(elem);
+					await nextFrame();
 					expect(dispatched).to.be.false;
 				});
 
