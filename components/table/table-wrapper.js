@@ -4,13 +4,10 @@ import '../backdrop/backdrop-loading.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { cssSizes } from '../inputs/input-checkbox-styles.js';
 import { getComposedParent } from '../../helpers/dom.js';
-import { getFlag } from '../../helpers/flags.js';
 import { isPopoverSupported } from '../popover/popover-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
-
-const enableStickyScrollyFix = getFlag('table-sticky-scrolly-fix', true);
 
 export const tableStyles = css`
 	.d2l-table {
@@ -682,20 +679,12 @@ export class TableWrapper extends PropertyRequiredMixin(PageableMixin(SelectionM
 		const head = this._table.querySelector('thead');
 		const body = this._table.querySelector('tbody');
 
-		if (enableStickyScrollyFix) {
-			clearTimeout(this.#noScrollWidthTimeout);
-			this.#noScrollWidthTimeout = setTimeout(() => {
-				const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
-				this._noScrollWidth = (maxScrollWidth <= this.clientWidth);
-			});
-			if (!head || !body || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth || !this.#hasIntersected) return;
-		} else {
+		clearTimeout(this.#noScrollWidthTimeout);
+		this.#noScrollWidthTimeout = setTimeout(() => {
 			const maxScrollWidth = Math.max(head?.scrollWidth, body?.scrollWidth);
-			setTimeout(() => {
-				this._noScrollWidth = this.clientWidth === maxScrollWidth;
-			});
-			if (!head || !body || !this._table || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth) return;
-		}
+			this._noScrollWidth = (maxScrollWidth <= this.clientWidth);
+		});
+		if (!head || !body || !this.stickyHeaders || !this.stickyHeadersScrollWrapper || this._noScrollWidth || !this.#hasIntersected) return;
 
 		const candidateRowHeadCells = [];
 
