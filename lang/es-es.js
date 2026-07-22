@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "Cerrar alerta",
 	"components.backdrop-loading.loadingAnnouncement": "Cargando.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Carga completa.",
+	"components.backdrop-stale-overlay.message": "This data is out of date.",
 	"components.breadcrumbs.breadcrumb": "Ruta de navegación",
 	"components.button-add.addItem": "Agregar elemento",
 	"components.button-copy.copied": "¡Copiado!",

@@ -2,6 +2,7 @@ export default {
 	"components.alert.close": "Luk besked",
 	"components.backdrop-loading.loadingAnnouncement": "Indlæser.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Indlæsning fuldført.",
+	"components.backdrop-stale-overlay.message": "This data is out of date.",
 	"components.breadcrumbs.breadcrumb": "Brødkrumme",
 	"components.button-add.addItem": "Tilføj element",
 	"components.button-copy.copied": "Kopieret!",
