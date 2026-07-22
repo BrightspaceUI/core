@@ -44,10 +44,12 @@ export const pageDividerFixtures = {
 	sideNavBothHeaders: createDividerPage({ layout: 'side-nav', hasMainHeader: true, hasSideNavHeader: true }),
 	sideNavBothHeadersFooter: createDividerPage({ layout: 'side-nav', hasMainHeader: true, hasSideNavHeader: true, hasFooter: true }),
 	sideNavLongMainBothHeaders: createDividerPage({ layout: 'side-nav', hasMainHeader: true, hasSideNavHeader: true, mainHeight: '400px' }),
+	sideNavLongMainLongFooter: createDividerPage({ layout: 'side-nav', mainHeight: '400px', sideNavHeight: '400px', hasFooter: true }),
 	sideNavImmersiveFooter: createDividerPage({ layout: 'side-nav', header: 'immersive', hasFooter: true }),
 	sideNavImmersiveLongFooter: createDividerPage({ layout: 'side-nav', header: 'immersive', hasFooter: true, sideNavHeight: '400px' }),
 	supportingLongFooter: createDividerPage({ layout: 'supporting', hasFooter: true, supportingHeight: '400px' }),
 	supportingImmersiveLongMain: createDividerPage({ layout: 'supporting', header: 'immersive', mainHeight: '400px' }),
 	supportingImmersiveFooter: createDividerPage({ layout: 'supporting', header: 'immersive', hasFooter: true }),
 	supportingImmersiveBothHeaders: createDividerPage({ layout: 'supporting', header: 'immersive', hasMainHeader: true, hasSupportingHeader: true }),
+	supportingImmersiveLongMainLongBothHeaders: createDividerPage({ layout: 'supporting', header: 'immersive', hasMainHeader: true, hasSupportingHeader: true, mainHeight: '400px', supportingHeight: '400px' }),
 };
