@@ -241,7 +241,7 @@ class BackdropLoading extends PropertyRequiredMixin(FreshnessMixin(LocalizeCoreE
 	}
 
 	async #updatePosition() {
-		if (this._state === 'hidden') { return; }
+		if (this._state === 'hidden') return;
 
 		const loadingSpinner = this.shadowRoot.querySelector('d2l-loading-spinner');
 		if (!loadingSpinner) { return; }
