@@ -1,8 +1,12 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
+import {
+	_generateButtonStyles,
+	_generateMozillaButtonBorderStyles,
+	buttonStyles
+} from './button-styles.js';
 import { css, html, LitElement } from 'lit';
 import { ButtonMixin } from './button-mixin.js';
-import { buttonStyles } from './button-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
@@ -36,19 +40,13 @@ class Button extends ButtonMixin(LitElement) {
 				display: none;
 			}
 
+			${_generateButtonStyles('button')}
+
 			button {
-				font-family: inherit;
-				padding-block-end: 0;
-				padding-block-start: 0;
-				padding-inline-end: var(--d2l-button-padding-inline-end, 1.5rem);
-				padding-inline-start: var(--d2l-button-padding-inline-start, 1.5rem);
 				width: 100%;
 			}
 
-			/* Firefox includes a hidden border which messes up button dimensions */
-			button::-moz-focus-inner {
-				border: 0;
-			}
+			${_generateMozillaButtonBorderStyles('button')}
 
 			button,
 			button[disabled]:hover,

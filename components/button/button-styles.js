@@ -32,6 +32,33 @@ function _generateButtonBaseStyles(selector) {
 	`;
 }
 
+export function _generateButtonStyles(selector) {
+	if (!_isValidCssSelector(selector)) return unsafeCSS('');
+	selector = unsafeCSS(selector.trim());
+
+	return css`
+		${selector} {
+			font-family: inherit;
+			padding-block-end: 0;
+			padding-block-start: 0;
+			padding-inline-end: var(--d2l-button-padding-inline-end, 1.5rem);
+			padding-inline-start: var(--d2l-button-padding-inline-start, 1.5rem);
+		}
+	`;
+}
+
+export function _generateMozillaButtonBorderStyles(selector) {
+	if (!_isValidCssSelector(selector)) return unsafeCSS('');
+	selector = unsafeCSS(selector.trim());
+
+	return css`
+		/* Firefox includes a hidden border which messes up button dimensions */
+		${selector}::-moz-focus-inner {
+			border: 0;
+		}
+	`;
+}
+
 export const buttonStyles = css`
 	${_generateButtonBaseStyles('button')}
 	${getFocusRingStyles('button', { preferContrastMediaQueryExtraStyles: css`border: 2px solid transparent;` })}
