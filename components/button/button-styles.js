@@ -76,6 +76,23 @@ export function _generateButtonDisabledStyles(selector, isForBsi = false) {
 	`;
 }
 
+export function _generateButtonEnabledStyles(selector, isForBsi = false) {
+	if (!_isValidCssSelector(selector)) return unsafeCSS('');
+	selector = unsafeCSS(selector.trim());
+
+	const activeSelector = isForBsi ? unsafeCSS(`${selector}[active]`) : unsafeCSS(`:host([active]) ${selector}`);
+	const additionalBSISelector = isForBsi ? unsafeCSS(`${selector}.d2l-button-hover, ${selector}.d2l-button-focus,`) : unsafeCSS('');
+
+	return css`
+		${additionalBSISelector}
+		${selector}:hover,
+		${selector}:focus,
+		${activeSelector} {
+			background-color: var(--d2l-theme-background-color-interactive-secondary-hover);
+		}
+	`;
+}
+
 export const buttonStyles = css`
 	${_generateButtonBaseStyles('button')}
 	${getFocusRingStyles('button', { preferContrastMediaQueryExtraStyles: css`border: 2px solid transparent;` })}

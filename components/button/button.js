@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import {
 	_generateButtonDisabledStyles,
+	_generateButtonEnabledStyles,
 	_generateButtonStyles,
 	_generateMozillaButtonBorderStyles,
 	buttonStyles
@@ -51,11 +52,7 @@ class Button extends ButtonMixin(LitElement) {
 
 			${_generateButtonDisabledStyles('button')}
 
-			button:hover,
-			button:focus,
-			:host([active]) button {
-				background-color: var(--d2l-theme-background-color-interactive-secondary-hover);
-			}
+			${_generateButtonEnabledStyles('button')}
 
 			:host([disabled]) button {
 				cursor: default;
