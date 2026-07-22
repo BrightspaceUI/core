@@ -93,6 +93,17 @@ export function _generateButtonEnabledStyles(selector, isForBsi = false) {
 	`;
 }
 
+export function _generateBSIButtonFocusStyles(selector) {
+	if (!_isValidCssSelector(selector)) return unsafeCSS('');
+	const getSelector = (focusPseudoClass) => `
+			${selector}:${focusPseudoClass},
+			${selector}.d2l-button-focus,
+			${selector}[primary]:${focusPseudoClass},
+			${selector}[primary].d2l-button-focus`;
+
+	return getFocusRingStyles(getSelector);
+}
+
 export const buttonStyles = css`
 	${_generateButtonBaseStyles('button')}
 	${getFocusRingStyles('button', { preferContrastMediaQueryExtraStyles: css`border: 2px solid transparent;` })}
