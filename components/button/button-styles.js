@@ -104,6 +104,27 @@ export function _generateBSIButtonFocusStyles(selector) {
 	return getFocusRingStyles(getSelector);
 }
 
+export function _generatePrimaryButtonDisabledStyles(selector, isForBsi = false) {
+	if (!_isValidCssSelector(selector)) return unsafeCSS('');
+	selector = unsafeCSS(selector.trim());
+
+	const finalSelector = isForBsi ? `${selector}[primary],
+		${selector}[primary].d2l-button-hover,
+		${selector}[primary]:focus,
+		${selector}[primary].d2l-button-focus,
+		${selector}[primary][active]` : `:host([primary]) ${selector},
+		:host([primary]) ${selector}[disabled]:hover,
+		:host([primary]) ${selector}[disabled]:focus,
+		:host([primary][active]) ${selector}[disabled]`;
+
+	return css`
+		${unsafeCSS(finalSelector)} {
+			background-color: var(--d2l-theme-background-color-interactive-primary-default);
+			color: var(--d2l-theme-text-color-static-inverted);
+		}
+	`;
+}
+
 export const buttonStyles = css`
 	${_generateButtonBaseStyles('button')}
 	${getFocusRingStyles('button', { preferContrastMediaQueryExtraStyles: css`border: 2px solid transparent;` })}

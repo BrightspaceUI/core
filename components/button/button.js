@@ -5,6 +5,7 @@ import {
 	_generateButtonEnabledStyles,
 	_generateButtonStyles,
 	_generateMozillaButtonBorderStyles,
+	_generatePrimaryButtonDisabledStyles,
 	buttonStyles
 } from './button-styles.js';
 import { css, html, LitElement } from 'lit';
@@ -67,13 +68,7 @@ class Button extends ButtonMixin(LitElement) {
 				position: absolute;
 			}
 
-			:host([primary]) button,
-			:host([primary]) button[disabled]:hover,
-			:host([primary]) button[disabled]:focus,
-			:host([primary][active]) button[disabled] {
-				background-color: var(--d2l-theme-background-color-interactive-primary-default);
-				color: var(--d2l-theme-text-color-static-inverted);
-			}
+			${_generatePrimaryButtonDisabledStyles('button')}
 			:host([primary]) button:hover,
 			:host([primary]) button:focus,
 			:host([primary][active]) button {
