@@ -1,8 +1,8 @@
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
+import { buttonBaseStyles } from './button-styles.js';
 import { ButtonMixin } from './button-mixin.js';
-import { buttonStyles } from './button-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -48,7 +48,7 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 		text: { type: String, reflect: true }
 	};
 
-	static styles = [super.styles, labelStyles, buttonStyles,
+	static styles = [super.styles, labelStyles, buttonBaseStyles,
 		css`
 			:host {
 				--d2l-count-badge-background-color: var(--d2l-theme-background-color-interactive-primary-default);

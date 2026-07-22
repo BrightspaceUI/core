@@ -32,7 +32,7 @@ function _generateButtonBaseStyles(selector) {
 	`;
 }
 
-export const buttonStyles = css`
+export const buttonBaseStyles = css`
 	${_generateButtonBaseStyles('button')}
 	${getFocusRingStyles('button', { preferContrastMediaQueryExtraStyles: css`border: 2px solid transparent;` })}
 `;

@@ -1,8 +1,8 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
+import { buttonBaseStyles } from './button-styles.js';
 import { ButtonMixin } from './button-mixin.js';
-import { buttonStyles } from './button-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
@@ -27,7 +27,7 @@ class Button extends ButtonMixin(LitElement) {
 		primary: { type: Boolean, reflect: true }
 	};
 
-	static styles = [labelStyles, buttonStyles,
+	static styles = [labelStyles, buttonBaseStyles,
 		css`
 			:host {
 				display: inline-block;
