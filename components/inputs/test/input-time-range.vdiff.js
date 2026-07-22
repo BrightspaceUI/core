@@ -37,7 +37,7 @@ const create = (opts = {}) => {
 		...opts
 	};
 	const styles = {
-		maxWidth: wrapped ? '238px' : undefined,
+		maxWidth: wrapped ? '236px' : undefined,
 	};
 	const elem = html`
 		<d2l-input-time-range
