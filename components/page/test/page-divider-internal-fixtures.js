@@ -2,6 +2,7 @@ import { createPage } from './page-fixtures.js';
 import { html } from 'lit';
 
 export function createDivider({
+	collapsed = false,
 	currentSize = 450,
 	maxSize = 600,
 	minSize = 320,
@@ -10,7 +11,9 @@ export function createDivider({
 } = {}) {
 	return html`
 		<d2l-page-divider-internal
+			style="height: 300px;"
 			label="Resize"
+			?collapsed="${collapsed}"
 			current-size="${currentSize}"
 			min-size="${minSize}"
 			max-size="${maxSize}"

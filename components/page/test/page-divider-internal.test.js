@@ -1,5 +1,5 @@
+import { clickElem, expect, fixture, html, nextFrame, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 import { createDivider, getSlider } from './page-divider-internal-fixtures.js';
-import { expect, fixture, html, nextFrame, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 import { KEYBOARD_STEP, KEYBOARD_STEP_LARGE } from '../page-divider-internal.js';
 
 describe('d2l-page-divider-internal', () => {
@@ -32,17 +32,40 @@ describe('d2l-page-divider-internal', () => {
 		describe('d2l-page-divider-toggle', () => {
 			describe('keyboard', () => {
 				['Enter', ' '].forEach(key => {
-					it(`dispatches d2l-page-divider-toggle on "${key === ' ' ? 'Space' : key}"`, async() => {
+					it(`dispatches event on "${key === ' ' ? 'Space' : key}"`, async() => {
 						const elem = await fixture(createDivider());
 						sendKeysElem(elem, 'press', key);
-						const e = await oneEvent(elem, 'd2l-page-divider-toggle');
-						expect(e.detail).to.be.null; // TO DO: Will eventually have the collapse state
+						await oneEvent(elem, 'd2l-page-divider-toggle');
 					});
 				});
 			});
 
 			describe('mouse', () => {
-				// TO DO
+				it('dispatches event when handle is clicked', async() => {
+					const elem = await fixture(createDivider());
+					clickElem(getSlider(elem));
+					await oneEvent(elem, 'd2l-page-divider-toggle');
+				});
+
+				it('does not dispatch event when divider line is clicked', async() => {
+					const elem = await fixture(createDivider());
+					let dispatched = false;
+					elem.addEventListener('d2l-page-divider-toggle', () => dispatched = true);
+					await clickElem(elem);
+					expect(dispatched).to.be.false;
+				});
+
+				it('dispatches event when handle is clicked if collapsed', async() => {
+					const elem = await fixture(createDivider({ collapsed: true }));
+					clickElem(getSlider(elem));
+					await oneEvent(elem, 'd2l-page-divider-toggle');
+				});
+
+				it('dispatches event when divider line is clicked if collapsed', async() => {
+					const elem = await fixture(createDivider({ collapsed: true }));
+					clickElem(elem);
+					await oneEvent(elem, 'd2l-page-divider-toggle');
+				});
 			});
 
 		});
