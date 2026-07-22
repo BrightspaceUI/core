@@ -34,10 +34,5 @@ function _generateButtonBaseStyles(selector) {
 
 export const buttonStyles = css`
 	${_generateButtonBaseStyles('button')}
-	${getFocusRingStyles('button')}
-	@media (prefers-contrast: more) {
-		button {
-			border: 2px solid transparent;
-		}
-	}
+	${getFocusRingStyles('button', { preferContrastMediaQueryExtraStyles: css`border: 2px solid transparent;` })}
 `;
