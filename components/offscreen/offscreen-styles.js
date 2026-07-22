@@ -7,12 +7,12 @@ const HAS_DOCUMENT = globalThis.document !== undefined;
  */
 export const _offscreenStyleDeclarations = css`
 	direction: var(--d2l-document-direction, ${ !HAS_DOCUMENT ? css`unset` : (document.dir === 'rtl' ? css`rtl` : css`ltr`)}); /* stylelint-disable-line @stylistic/string-quotes */
-	height: 0px;
+	height: 0;
 	inset-inline-start: -10000px;
 	overflow: hidden;
 	position: absolute !important;
 	white-space: nowrap;
-	width: 0px;
+	width: 0;
 `;
 
 export const offscreenStyles = css`
