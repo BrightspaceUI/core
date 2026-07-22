@@ -59,6 +59,23 @@ export function _generateMozillaButtonBorderStyles(selector) {
 	`;
 }
 
+export function _generateButtonDisabledStyles(selector, isForBsi = false) {
+	if (!_isValidCssSelector(selector)) return unsafeCSS('');
+	selector = unsafeCSS(selector.trim());
+
+	const activeDisabledSelector = isForBsi ? unsafeCSS(`${selector}[active][disabled]`) : unsafeCSS(`:host([active]) ${selector}[disabled]`);
+
+	return css`
+		${selector},
+		${selector}[disabled]:hover,
+		${selector}[disabled]:focus,
+		${activeDisabledSelector} {
+			background-color: var(--d2l-theme-background-color-interactive-secondary-default);
+			color: var(--d2l-theme-text-color-static-standard);
+		}
+	`;
+}
+
 export const buttonStyles = css`
 	${_generateButtonBaseStyles('button')}
 	${getFocusRingStyles('button', { preferContrastMediaQueryExtraStyles: css`border: 2px solid transparent;` })}
