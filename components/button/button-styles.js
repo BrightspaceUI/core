@@ -125,6 +125,25 @@ export function _generatePrimaryButtonDisabledStyles(selector, isForBsi = false)
 	`;
 }
 
+export function _generatePrimaryButtonEnabledStyles(selector, isForBsi = false) {
+	if (!_isValidCssSelector(selector)) return unsafeCSS('');
+	selector = unsafeCSS(selector.trim());
+
+	const finalSelector = isForBsi ? `${selector}[primary]:hover,
+	${selector}[primary].d2l-button-hover,
+	${selector}[primary]:focus,
+	${selector}[primary].d2l-button-focus,
+	${selector}[primary][active]` : `:host([primary]) ${selector}:hover,
+	:host([primary]) ${selector}:focus,
+	:host([primary][active]) ${selector}`;
+
+	return css`
+		${unsafeCSS(finalSelector)} {
+			background-color: var(--d2l-theme-background-color-interactive-primary-hover);
+		}
+	`;
+}
+
 export const buttonStyles = css`
 	${_generateButtonBaseStyles('button')}
 	${getFocusRingStyles('button', { preferContrastMediaQueryExtraStyles: css`border: 2px solid transparent;` })}

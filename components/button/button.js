@@ -6,6 +6,7 @@ import {
 	_generateButtonStyles,
 	_generateMozillaButtonBorderStyles,
 	_generatePrimaryButtonDisabledStyles,
+	_generatePrimaryButtonEnabledStyles,
 	buttonStyles
 } from './button-styles.js';
 import { css, html, LitElement } from 'lit';
@@ -44,7 +45,6 @@ class Button extends ButtonMixin(LitElement) {
 			}
 
 			${_generateButtonStyles('button')}
-
 			button {
 				width: 100%;
 			}
@@ -54,7 +54,6 @@ class Button extends ButtonMixin(LitElement) {
 			${_generateButtonDisabledStyles('button')}
 
 			${_generateButtonEnabledStyles('button')}
-
 			:host([disabled]) button {
 				cursor: default;
 				position: relative;
@@ -69,11 +68,7 @@ class Button extends ButtonMixin(LitElement) {
 			}
 
 			${_generatePrimaryButtonDisabledStyles('button')}
-			:host([primary]) button:hover,
-			:host([primary]) button:focus,
-			:host([primary][active]) button {
-				background-color: var(--d2l-theme-background-color-interactive-primary-hover);
-			}
+			${_generatePrimaryButtonEnabledStyles('button')}
 		`
 	];
 
