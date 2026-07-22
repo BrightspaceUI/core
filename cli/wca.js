@@ -1,9 +1,12 @@
 import { spawn } from 'node:child_process';
 import { glob as globFiles, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve, relative } from 'node:path';
 
 const customElementsFileName = 'custom-elements.json';
+const require = createRequire(import.meta.url);
+const wcaCliPath = join(dirname(require.resolve('web-component-analyzer')), '../../cli.js');
 
 function findObjectEnd(content, start) {
 	let depth = 0;
@@ -113,7 +116,8 @@ async function restoreCustomElementsPaths(temporaryDirectory) {
 
 function runWca(src) {
 	return new Promise((resolve, reject) => {
-		const child = spawn('wca', [
+		const child = spawn(process.execPath, [
+			wcaCliPath,
 			'analyze',
 			src,
 			'--format', 'json',
