@@ -1,5 +1,6 @@
 import '../colors/colors.js';
 import { css, html } from 'lit';
+import { getFlag } from '../../helpers/flags.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 const keyCodes = {
@@ -37,7 +38,8 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 			:host {
 				box-sizing: border-box;
 				display: inline-block;
-				max-width: min(20rem, max(33%, 10rem));
+				/* TODO: When removing the GAUD-9963-dropdown-tabs-not-resizing flag, Keep the min max code */
+				max-width: var(--d2l-gaud-9963-tab-max-width, 200px);
 				outline: none;
 				position: relative;
 				vertical-align: middle;
@@ -111,6 +113,13 @@ export const TabMixin = superclass => class extends SkeletonMixin(superclass) {
 		this.addEventListener('keyup', this.#handleKeyup);
 
 		this.#hasInitialized = true;
+		/**
+		 * TODO: remove this whole if when removing the GAUD-9963-dropdown-tabs-not-resizing flag
+		 * keep the min max code an place that into the styles above
+		 */
+		if (getFlag('GAUD-9963-dropdown-tabs-not-resizing', true)) {
+			this.style.setProperty('--d2l-gaud-9963-tab-max-width', 'min(20rem, max(33%, 10rem))');
+		}
 	}
 
 	render() {
