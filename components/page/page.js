@@ -181,11 +181,19 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		.supporting .divider[collapsed] {
 			margin-inline-end: 18px;
 		}
+		.side-nav-panel.collapsed,
+        .supporting-panel.collapsed {
+            visibility: hidden;
+        }
 		@media (prefers-reduced-motion: no-preference) {
 			.side-nav-panel.animate,
 			.supporting-panel.animate {
 				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
+			.side-nav-panel.animate.collapsed,
+        	.supporting-panel.animate.collapsed {
+        		transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1), visibility 0s 400ms;
+        	}
 		}
 
 		.footer:not([hidden]),
@@ -398,7 +406,8 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	#renderSideNavPanel() {
 		const classes = {
 			'side-nav-panel': true,
-			'animate': this._panelState.getAnimate('side-nav')
+			'animate': this._panelState.getAnimate('side-nav'),
+			'collapsed': this._panelState.getCollapsed('side-nav')
 		};
 		return html`
 			<nav class="side-nav" aria-label="${this.localize('components.page.side-nav-label')}">
@@ -417,7 +426,8 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	#renderSupportingPanel() {
 		const classes = {
 			'supporting-panel': true,
-			'animate': this._panelState.getAnimate('supporting')
+			'animate': this._panelState.getAnimate('supporting'),
+			'collapsed': this._panelState.getCollapsed('supporting')
 		};
 		return html`
 			<aside class="supporting" aria-label="${this.localize('components.page.supporting-label')}">
