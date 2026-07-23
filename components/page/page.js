@@ -171,6 +171,18 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			overflow: clip auto;
 		}
 
+		.side-nav-panel-content,
+		.supporting-panel-content {
+			min-width: ${PANEL_MIN_WIDTH}px;
+			width: 100%;
+		}
+		.side-nav-panel-content {
+			float: inline-end;
+		}
+		.supporting-panel-content {
+			float: inline-start;
+		}
+
 		.divider {
 			z-index: 15; /* To be over d2l-page-* panel headers */
 		}
@@ -415,7 +427,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 					class="${classMap(classes)}"
 					style=${styleMap({ width: `${this._panelState.getSize('side-nav')}px` })}
 					?hidden="${!this._slotVisibility['side-nav']}">
-					<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+					<div class="side-nav-panel-content">
+						<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+					</div>
 				</div>
 				${!this._slotVisibility['side-nav'] ? nothing :
 					this.#renderDivider('side-nav', this.localize('components.page.side-nav-divider-label'), 'start')}
@@ -437,7 +451,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 					class="${classMap(classes)}"
 					style=${styleMap({ width: `${this._panelState.getSize('supporting')}px` })}
 					?hidden="${!this._slotVisibility['supporting']}">
-					<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+					<div class="supporting-panel-content">
+						<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+					</div>
 				</div>
 			</aside>
 		`;
