@@ -182,18 +182,18 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			margin-inline-end: 18px;
 		}
 		.side-nav-panel.collapsed,
-        .supporting-panel.collapsed {
-            visibility: hidden;
-        }
+		.supporting-panel.collapsed {
+			visibility: hidden;
+		}
 		@media (prefers-reduced-motion: no-preference) {
 			.side-nav-panel.animate,
 			.supporting-panel.animate {
 				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
 			.side-nav-panel.animate.collapsed,
-        	.supporting-panel.animate.collapsed {
-        		transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1), visibility 0s 400ms;
-        	}
+			.supporting-panel.animate.collapsed {
+				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1), visibility 0s 400ms;
+			}
 		}
 
 		.footer:not([hidden]),
