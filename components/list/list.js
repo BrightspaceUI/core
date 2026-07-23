@@ -153,6 +153,10 @@ class List extends FreshnessMixin(PageableMixin(SelectionMixin(LitElement)))  {
 			margin-bottom: calc(6px + 0.4rem); /* controls section margin-bottom + spacing for add-button */
 		}
 
+		.backdrop-loading-container {
+			position: relative;
+		}
+
 		::slotted(.d2l-list-tile-break) {
 			display: none;
 		}
@@ -249,7 +253,7 @@ class List extends FreshnessMixin(PageableMixin(SelectionMixin(LitElement)))  {
 		return html`
 			<slot name="controls"></slot>
 			<slot name="header"></slot>
-			<div style="position: relative;">
+			<div class="backdrop-loading-container">
 				<div id="list-content" role="${role}" aria-label="${ifDefined(ariaLabel)}" class="d2l-list-content">
 					<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
 				</div>
