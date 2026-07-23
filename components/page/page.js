@@ -16,12 +16,18 @@ class PanelStateController {
 		this.#host = host;
 		this.#panels = {};
 		for (const [key, config] of Object.entries(panelConfigs)) {
-			this.#panels[key] = { animationOn: false, collapsed: false, size: 0, minSize: config.minSize, maxSize: config.minSize };
+			this.#panels[key] = {
+				animate: false,
+				collapsed: false,
+				size: 0,
+				minSize: config.minSize,
+				maxSize: config.minSize
+			};
 		}
 		host.addController(this);
 	}
 
-	getAnimationOn(key) { return this.#panels[key].animationOn; }
+	getAnimate(key) { return this.#panels[key].animate; }
 	getCollapsed(key) { return this.#panels[key].collapsed; }
 	getMaxSize(key) { return this.#panels[key].maxSize; }
 	getMinSize(key) { return this.#panels[key].minSize; }
@@ -35,21 +41,21 @@ class PanelStateController {
 		const panel = this.#panels[key];
 		// Clamp requested size to min and max bounds
 		panel.size = Math.max(panel.minSize, Math.min(requestedSize, panel.maxSize));
-		panel.animationOn = animate;
+		panel.animate = animate;
 		this.#host.requestUpdate();
 	}
 
 	setCollapsed(key, collapsed) {
 		const panel = this.#panels[key];
 		panel.collapsed = collapsed;
-		panel.animationOn = true;
+		panel.animate = true;
 		this.#host.requestUpdate();
 	}
 
 	setDragSize(key) {
 		const panel = this.#panels[key];
 		// TO DO: Handle Dragging
-		panel.animationOn = false;
+		panel.animate = false;
 		this.#host.requestUpdate();
 	}
 
@@ -175,14 +181,10 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		.supporting .divider[collapsed] {
 			margin-inline-end: 18px;
 		}
-		.side-nav-panel.animate,
-		.supporting-panel.animate {
-			transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1);
-		}
-		@media (prefers-reduced-motion: reduce) {
+		@media (prefers-reduced-motion: no-preference) {
 			.side-nav-panel.animate,
 			.supporting-panel.animate {
-				transition: none;
+				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
 		}
 
@@ -396,7 +398,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	#renderSideNavPanel() {
 		const classes = {
 			'side-nav-panel': true,
-			'animate': this._panelState.getAnimationOn('side-nav')
+			'animate': this._panelState.getAnimate('side-nav')
 		};
 		return html`
 			<nav class="side-nav" aria-label="${this.localize('components.page.side-nav-label')}">
@@ -415,7 +417,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	#renderSupportingPanel() {
 		const classes = {
 			'supporting-panel': true,
-			'animate': this._panelState.getAnimationOn('supporting')
+			'animate': this._panelState.getAnimate('supporting')
 		};
 		return html`
 			<aside class="supporting" aria-label="${this.localize('components.page.supporting-label')}">
