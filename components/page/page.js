@@ -187,10 +187,10 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			overflow: clip auto;
 		}
 		.side-nav-panel-content {
-			float: inline-end;
+			float: inline-start;
 		}
 		.supporting-panel-content {
-			float: inline-start;
+			float: inline-end;
 		}
 
 		.divider {
