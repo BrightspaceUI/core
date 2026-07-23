@@ -1,4 +1,6 @@
+import '../backdrop/backdrop-loading.js';
 import { css, html, LitElement } from 'lit';
+import { freshness, FreshnessMixin } from '../../mixins/freshness/freshness-mixin.js';
 import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { SelectionInfo, SelectionMixin } from '../selection/selection-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -10,6 +12,7 @@ const keyCodes = {
 };
 
 export const listSelectionStates = SelectionInfo.states;
+export const listFreshness = freshness;
 
 export const listLayouts = Object.freeze({
 	list: 'list',
@@ -33,7 +36,7 @@ const ro = new ResizeObserver(entries => {
  * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the list
  * @fires d2l-list-items-move - Dispatched when one or more items are moved. See [Event Details: d2l-list-items-move](#event-details%3A-%40d2l-list-items-move).
  */
-class List extends PageableMixin(SelectionMixin(LitElement)) {
+class List extends FreshnessMixin(PageableMixin(SelectionMixin(LitElement)))  {
 
 	static properties = {
 		/**
@@ -111,13 +114,13 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 			--d2l-list-item-illustration-max-width: 4.5rem;
 			display: block;
 		}
-		:host([layout="tiles"]) > .d2l-list-content {
+		:host([layout="tiles"]) > div > .d2l-list-content {
 			display: flex;
 			flex-wrap: wrap;
 			gap: 0.9rem;
 			justify-content: normal;
 		}
-		:host(:not([slot="nested"])) > .d2l-list-content {
+		:host(:not([slot="nested"])) > div > .d2l-list-content {
 			padding-bottom: 1px;
 		}
 		:host([hidden]) {
@@ -246,12 +249,22 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 		return html`
 			<slot name="controls"></slot>
 			<slot name="header"></slot>
-			<div role="${role}" aria-label="${ifDefined(ariaLabel)}" class="d2l-list-content">
-				<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
+			<div style="position: relative;">
+				<div id="list-content" role="${role}" aria-label="${ifDefined(ariaLabel)}" class="d2l-list-content">
+					<slot @keydown="${this._handleKeyDown}" @slotchange="${this._handleSlotChange}"></slot>
+				</div>
+				<d2l-backdrop-loading
+					@d2l-backdrop-stale-overlay-action="${this._handleBackdropStaleOverlayAction}"
+					for="list-content"
+					freshness="${this.freshness}"
+					freshness-stale-button-text="${this.freshnessStaleButtonText}"
+					freshness-stale-text="${this.freshnessStaleText}">
+				</d2l-backdrop-loading>
+				${this._renderPagerContainer()}
 			</div>
-			${this._renderPagerContainer()}
 		`;
 	}
+
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 		if (changedProperties.has('breakpoints') && changedProperties.get('breakpoints') !== undefined) {
@@ -375,6 +388,13 @@ class List extends PageableMixin(SelectionMixin(LitElement)) {
 	_getLazyLoadItems() {
 		const items = this.getItems();
 		return items.length > 0 ? items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
+	}
+
+
+
+	_handleBackdropStaleOverlayAction() {
+		/** Dispatched when the action button on the stale overlay is clicked */
+		this.dispatchEvent(new CustomEvent('d2l-list-stale-button-click'));
 	}
 
 	_handleKeyDown(e) {

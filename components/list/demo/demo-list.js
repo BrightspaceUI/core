@@ -12,10 +12,10 @@ import '../../tooltip/tooltip.js';
 import '../list-controls.js';
 import '../list-item-content.js';
 import '../list-item.js';
-import '../list.js';
 import { css, html, LitElement } from 'lit';
 import { getUniqueId } from '../../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { listFreshness } from '../list.js';
 import { repeat } from 'lit/directives/repeat.js';
 
 const items = [{
@@ -148,13 +148,16 @@ class DemoList extends LitElement {
 		const addButtonText = this.addButton ? 'Add New Item' : undefined;
 		return html`
 			<d2l-list
-				?grid="${this.grid}"
-				item-count="${this.items.length}"
-				?extend-separators="${this.extendSeparators}"
 				?add-button="${this.addButton}"
-				add-button-text="${ifDefined(addButtonText)}">
+				add-button-text="${ifDefined(addButtonText)}"
+				@d2l-list-stale-button-click="${this._handleListStaleButtonClick}"
+				?extend-separators="${this.extendSeparators}"
+				freshness-stale-text="Click the shiny button to show a fresh list."
+				?grid="${this.grid}"
+				item-count="${this.items.length}">
 				<d2l-list-controls slot="controls" select-all-pages-allowed>
 					<d2l-selection-action icon="tier1:plus-default" text="Add" @d2l-selection-action-click="${this._handleAddItem}"></d2l-selection-action>
+					<d2l-selection-action icon="tier1:refresh" text="Freshness" @d2l-selection-action-click="${this._handleFreshness}"></d2l-selection-action>
 					<d2l-selection-action-dropdown text="Move To" requires-selection>
 						<d2l-dropdown-menu>
 							<d2l-menu label="Move To Options">
@@ -224,6 +227,12 @@ class DemoList extends LitElement {
 		this.requestUpdate();
 	}
 
+	_handleFreshness() {
+		const list = this.shadowRoot.querySelector('d2l-list');
+		list.freshness = listFreshness.stale;
+		console.log('List is now stale.', list);
+	}
+
 	_handlePagerLoadMore(e) {
 		// mock delay consumers might have
 		setTimeout(() => {
@@ -231,6 +240,22 @@ class DemoList extends LitElement {
 			e.detail.complete();
 		}, 2000);
 
+	}
+
+	_handleListStaleButtonClick() {
+		const list = this.shadowRoot.querySelector('d2l-list');
+
+		list.freshness = listFreshness.loading;
+		console.log('List is now loading.', list);
+
+		setTimeout(() => {
+			list.freshness = listFreshness.fresh;
+
+			// make an update to test concept of refreshing the list in a different state
+			this._lastItemLoadedIndex = 10;
+
+			console.log('List is now fresh.', list);
+		}, 5000);
 	}
 
 }
