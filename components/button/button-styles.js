@@ -143,6 +143,72 @@ export function _generatePrimaryButtonEnabledStyles(selector, isForBsi = false) 
 	`;
 }
 
+function _generateVuiButtonStyles(selector) {
+	if (!_isValidCssSelector(selector)) return unsafeCSS('');
+	const isPrimary = selector.includes('-primary');
+	const cssSelector = unsafeCSS(selector.trim());
+
+	return css`
+		${cssSelector} {
+			border-radius: 0.3rem;
+			box-sizing: border-box;
+			color: ${unsafeCSS(isPrimary ? '#ffffff' : 'var(--d2l-color-ferrite)')};
+			cursor: pointer;
+			display: inline-block;
+			font-family: inherit;
+			font-size: 0.7rem;
+			font-weight: 700;
+			line-height: 1rem;
+			letter-spacing: 0.02rem;
+			margin: 0;
+			min-height: calc(2rem + 2px);
+			padding: 0.55rem 1.5rem;
+			text-align: center;
+			user-select: none;
+			vertical-align: middle;
+			white-space: nowrap;
+			width: auto;
+		}
+
+		${cssSelector},
+		${cssSelector}:visited,
+		${cssSelector}:link,
+		${cssSelector}:hover,
+		${cssSelector}:focus,
+		${cssSelector}.vui-disabled:hover,
+		${cssSelector}.vui-disabled:focus,
+		${cssSelector}[disabled]:hover,
+		${cssSelector}[disabled]:focus {
+			background-color: ${unsafeCSS(isPrimary ? 'var(--d2l-color-celestine)' : 'var(--d2l-color-gypsum)')};
+			border: none;
+			color: ${unsafeCSS(isPrimary ? '#ffffff' : 'var(--d2l-color-ferrite)')};
+			outline: none;
+			text-decoration: none;
+		}
+
+		${cssSelector}:after {
+			content: " ";
+			width: 0;
+		}
+
+		${_generateMozillaButtonBorderStyles(selector)}
+		${cssSelector}::-moz-focus-inner {
+			padding: 0;
+		}
+
+		${cssSelector}.vui-disabled,
+		${cssSelector}[disabled] {
+			opacity: 0.5;
+			cursor: default;
+		}
+
+		${cssSelector}:hover,
+		${cssSelector}:focus {
+			background-color: ${unsafeCSS(isPrimary ? 'var(--d2l-color-celestine-minus-1)' : 'var(--d2l-color-mica)')};
+		}
+	`;
+}
+
 export const buttonStyles = css`
 	${_generateButtonBaseStyles('button')}
 	${getFocusRingStyles('button', { preferContrastMediaQueryExtraStyles: css`border: 2px solid transparent;` })}
