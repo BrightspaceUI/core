@@ -230,7 +230,6 @@ class DemoList extends LitElement {
 	_handleFreshness() {
 		const list = this.shadowRoot.querySelector('d2l-list');
 		list.freshness = listFreshness.stale;
-		console.log('List is now stale.', list);
 	}
 
 	_handlePagerLoadMore(e) {
@@ -246,15 +245,11 @@ class DemoList extends LitElement {
 		const list = this.shadowRoot.querySelector('d2l-list');
 
 		list.freshness = listFreshness.loading;
-		console.log('List is now loading.', list);
 
 		setTimeout(() => {
 			list.freshness = listFreshness.fresh;
-
 			// make an update to test concept of refreshing the list in a different state
 			this._lastItemLoadedIndex = 10;
-
-			console.log('List is now fresh.', list);
 		}, 5000);
 	}
 
