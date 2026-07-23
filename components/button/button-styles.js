@@ -101,7 +101,7 @@ export function _generateBSIButtonFocusStyles(selector) {
 			${selector}[primary]:${focusPseudoClass},
 			${selector}[primary].d2l-button-focus`;
 
-	return getFocusRingStyles(getSelector);
+	return getFocusRingStyles(getSelector, { includePreferContrastMediaQuery: false });
 }
 
 export function _generatePrimaryButtonDisabledStyles(selector, isForBsi = false) {
