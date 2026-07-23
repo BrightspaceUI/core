@@ -43,16 +43,12 @@ class Button extends ButtonMixin(LitElement) {
 			:host([hidden]) {
 				display: none;
 			}
-
 			${_generateButtonStyles('button')}
 			button {
 				width: 100%;
 			}
-
 			${_generateMozillaButtonBorderStyles('button')}
-
 			${_generateButtonDisabledStyles('button')}
-
 			${_generateButtonEnabledStyles('button')}
 			:host([disabled]) button {
 				cursor: default;
@@ -66,7 +62,6 @@ class Button extends ButtonMixin(LitElement) {
 				opacity: var(--d2l-theme-opacity-disabled-control);
 				position: absolute;
 			}
-
 			${_generatePrimaryButtonDisabledStyles('button')}
 			${_generatePrimaryButtonEnabledStyles('button')}
 		`
