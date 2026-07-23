@@ -109,10 +109,9 @@ export function _generatePrimaryButtonDisabledStyles(selector, isForBsi = false)
 	selector = unsafeCSS(selector.trim());
 
 	const finalSelector = isForBsi ? `${selector}[primary],
-		${selector}[primary].d2l-button-hover,
-		${selector}[primary]:focus,
-		${selector}[primary].d2l-button-focus,
-		${selector}[primary][active]` : `:host([primary]) ${selector},
+		${selector}[primary][disabled]:hover,
+		${selector}[primary][disabled]:focus,
+		${selector}[primary][active][disabled]` : `:host([primary]) ${selector},
 		:host([primary]) ${selector}[disabled]:hover,
 		:host([primary]) ${selector}[disabled]:focus,
 		:host([primary][active]) ${selector}[disabled]`;
