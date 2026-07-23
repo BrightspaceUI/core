@@ -36,7 +36,7 @@ const ro = new ResizeObserver(entries => {
  * @slot pager - Slot for `d2l-pager-load-more` to be rendered below the list
  * @fires d2l-list-items-move - Dispatched when one or more items are moved. See [Event Details: d2l-list-items-move](#event-details%3A-%40d2l-list-items-move).
  */
-class List extends FreshnessMixin(PageableMixin(SelectionMixin(LitElement)))  {
+class List extends FreshnessMixin(PageableMixin(SelectionMixin(LitElement))) {
 
 	static properties = {
 		/**
@@ -393,8 +393,6 @@ class List extends FreshnessMixin(PageableMixin(SelectionMixin(LitElement)))  {
 		const items = this.getItems();
 		return items.length > 0 ? items[0]._getFlattenedListItems().lazyLoadListItems : new Map();
 	}
-
-
 
 	_handleBackdropStaleOverlayAction() {
 		/** Dispatched when the action button on the stale overlay is clicked */

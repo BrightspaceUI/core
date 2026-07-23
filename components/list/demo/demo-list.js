@@ -232,15 +232,6 @@ class DemoList extends LitElement {
 		list.freshness = listFreshness.stale;
 	}
 
-	_handlePagerLoadMore(e) {
-		// mock delay consumers might have
-		setTimeout(() => {
-			this._lastItemLoadedIndex += this._pageSize;
-			e.detail.complete();
-		}, 2000);
-
-	}
-
 	_handleListStaleButtonClick() {
 		const list = this.shadowRoot.querySelector('d2l-list');
 
@@ -251,6 +242,15 @@ class DemoList extends LitElement {
 			// make an update to test concept of refreshing the list in a different state
 			this._lastItemLoadedIndex = 10;
 		}, 5000);
+	}
+
+	_handlePagerLoadMore(e) {
+		// mock delay consumers might have
+		setTimeout(() => {
+			this._lastItemLoadedIndex += this._pageSize;
+			e.detail.complete();
+		}, 2000);
+
 	}
 
 }
