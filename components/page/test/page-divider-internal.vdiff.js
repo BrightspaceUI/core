@@ -1,5 +1,6 @@
 import { clickElem, expect, fixture, focusElem, hoverElem } from '@brightspace-ui/testing';
 import { getDivider, getSlider, pageDividerFixtures } from './page-divider-internal-fixtures.js';
+import { scrollBody, scrollPanel } from './page-fixtures.js';
 
 describe('page-divider-internal', () => {
 
@@ -55,9 +56,8 @@ describe('page-divider-internal', () => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
 				await focusElem(getDivider(elem, test.divider));
-				window.scrollTo(0, document.body.scrollHeight);
-				const panel = elem.shadowRoot.querySelector(`.${test.divider}-panel`);
-				panel.scrollTop = panel.scrollHeight;
+				scrollBody();
+				scrollPanel(elem, test.divider);
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -72,9 +72,8 @@ describe('page-divider-internal', () => {
 		].forEach(test => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				window.scrollTo(0, document.body.scrollHeight);
-				const panel = elem.shadowRoot.querySelector(`.${test.divider}-panel`);
-				panel.scrollTop = panel.scrollHeight;
+				scrollBody();
+				scrollPanel(elem, test.divider);
 				await focusElem(getDivider(elem, test.divider));
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
