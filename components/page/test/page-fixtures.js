@@ -12,7 +12,7 @@ export function scrollBody() {
 }
 
 export function scrollPanel(elem, panel) {
-	const panelElem = elem.shadowRoot.querySelector(`.${panel}-panel`);
+	const panelElem = elem.shadowRoot.querySelector(`.${panel}-panel-content`);
 	panelElem.scrollTop = panelElem.scrollHeight;
 }
 
