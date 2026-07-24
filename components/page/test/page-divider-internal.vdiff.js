@@ -91,7 +91,7 @@ describe('page-divider-internal', () => {
 		].forEach(test => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				window.scrollTo(0, document.body.scrollHeight);
+				scrollBody();
 				await sendKeysElem(getDivider(elem, test.divider), 'press', 'Enter');
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
@@ -107,9 +107,8 @@ describe('page-divider-internal', () => {
 		].forEach(test => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				const panel = elem.shadowRoot.querySelector(`.${test.divider}-panel`);
-				panel.scrollTop = panel.scrollHeight;
-				window.scrollTo(0, document.body.scrollHeight);
+				scrollPanel(elem, test.divider);
+				scrollBody();
 
 				const divider = getDivider(elem, test.divider);
 				await sendKeysElem(divider, 'press', 'Enter');
@@ -132,7 +131,7 @@ describe('page-divider-internal', () => {
 				await clickElem(getSlider(divider));
 				await nextFrame();
 
-				window.scrollTo(0, document.body.scrollHeight);
+				scrollBody();
 				await sendKeysElem(divider, 'press', ' ');
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
