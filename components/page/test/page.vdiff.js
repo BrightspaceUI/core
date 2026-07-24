@@ -1,5 +1,5 @@
 import { expect, fixture } from '@brightspace-ui/testing';
-import { pageFixtures } from './page-fixtures.js';
+import { pageFixtures, scrollBody, scrollPanel } from './page-fixtures.js';
 
 describe('page', () => {
 	describe('layout', () => {
@@ -173,7 +173,7 @@ describe('page', () => {
 					category.tests.forEach(test => {
 						it(test.name, async() => {
 							const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 550 } });
-							window.scrollTo(0, document.body.scrollHeight);
+							scrollBody();
 							await expect(elem).to.be.golden({ margin: 0 });
 						});
 					});
@@ -227,17 +227,16 @@ describe('page', () => {
 			];
 
 			[
-				{ name: 'no-scroll', panel: '.side-nav-panel', tests: noScrollSideNav },
-				{ name: 'scrolls', panel: '.side-nav-panel', tests: scrollsSideNav },
-				{ name: 'no-scroll', panel: '.supporting-panel', tests: noScrollSupporting },
-				{ name: 'scrolls', panel: '.supporting-panel', tests: scrollsSupporting },
+				{ name: 'no-scroll', panel: 'side-nav', tests: noScrollSideNav },
+				{ name: 'scrolls', panel: 'side-nav', tests: scrollsSideNav },
+				{ name: 'no-scroll', panel: 'supporting', tests: noScrollSupporting },
+				{ name: 'scrolls', panel: 'supporting', tests: scrollsSupporting },
 			].forEach(category => {
 				describe(category.name, () => {
 					category.tests.forEach(test => {
 						it(test.name, async() => {
 							const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 550 } });
-							const panel = elem.shadowRoot.querySelector(category.panel);
-							panel.scrollTop = panel.scrollHeight;
+							scrollPanel(elem, category.panel);
 							await expect(elem).to.be.golden({ margin: 0 });
 						});
 					});
@@ -265,16 +264,15 @@ describe('page', () => {
 			];
 
 			[
-				{ name: 'header-sticks', panel: '.side-nav-panel', tests: sideNav },
-				{ name: 'header-scrolls-away', panel: '.supporting-panel', tests: supporting },
+				{ name: 'header-sticks', panel: 'side-nav', tests: sideNav },
+				{ name: 'header-scrolls-away', panel: 'supporting', tests: supporting },
 			].forEach(category => {
 				describe(category.name, () => {
 					category.tests.forEach(test => {
 						it(test.name, async() => {
 							const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 550 } });
-							window.scrollTo(0, document.body.scrollHeight);
-							const panel = elem.shadowRoot.querySelector(category.panel);
-							panel.scrollTop = panel.scrollHeight;
+							scrollBody();
+							scrollPanel(elem, category.panel);
 							await expect(elem).to.be.golden({ margin: 0 });
 						});
 					});

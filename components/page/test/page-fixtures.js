@@ -7,6 +7,15 @@ import '../page-side-nav.js';
 import '../page-supporting.js';
 import { html, nothing } from 'lit';
 
+export function scrollBody() {
+	window.scrollTo(0, document.body.scrollHeight);
+}
+
+export function scrollPanel(elem, panel) {
+	const panelElem = elem.shadowRoot.querySelector(`.${panel}-panel`);
+	panelElem.scrollTop = panelElem.scrollHeight;
+}
+
 const footer = html`
 	<d2l-page-footer slot="footer">
 		Footer
