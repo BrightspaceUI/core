@@ -158,7 +158,7 @@ class BackdropLoading extends PropertyRequiredMixin(FreshnessMixin(LocalizeCoreE
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 
-		if (changedProperties.has('freshness') && changedProperties.get('freshness') !== undefined) {
+		if (changedProperties.has('freshness')) {
 			this.#clearLiveRegionContent();
 
 			const oldState = changedProperties.get('freshness');
@@ -170,9 +170,9 @@ class BackdropLoading extends PropertyRequiredMixin(FreshnessMixin(LocalizeCoreE
 				this.#setLiveRegionContent(this.localize('components.backdrop-loading.loadingCompleteAnnouncement'));
 			}
 
-			if (oldState === freshness.fresh) {
+			if (oldState === freshness.fresh || (oldState === undefined && this.freshness !== freshness.fresh)) {
 				this.#show();
-			} else if (newState === freshness.fresh) {
+			} else if (oldState !== undefined && newState === freshness.fresh) {
 				this.#fade();
 			} else if (oldState === freshness.loading && newState === freshness.stale) {
 				setTimeout(() => {
