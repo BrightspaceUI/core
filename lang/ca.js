@@ -27,18 +27,33 @@ export default {
 	"components.filter.clearAnnounce": "S’estan esborrant els filtres per a: {filterName}",
 	"components.filter.clearDescription": "Esborrar els filtres per a: {filterName}",
 	"components.filter.filterCountDescription":
-		`{number, plural, =0 {No s’ha aplicat cap filtre.} one {{number} filtre aplicat.} other {{number} filtres aplicats.}}`,
+		`{number, plural,
+			=0 {No s’ha aplicat cap filtre.}
+			one {{number} filtre aplicat.}
+			other {{number} filtres aplicats.}
+		}`,
 	"components.filter.filters": "Filtres",
 	"components.filter.loading": "Carregant filtres",
 	"components.filter.noFilters": "Cap filtre disponible",
 	"components.filter.searchResults":
-		`{number, plural, =0 {Cap resultat de cerca} one {{number} resultat de cerca} other {{number} resultats de cerca}}`,
+		`{number, plural,
+			=0 {Cap resultat de cerca}
+			one {{number} resultat de cerca}
+			other {{number} resultats de cerca}
+		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Els filtres seleccionats apareixen primer.",
 	"components.filter.singleDimensionDescription": "Filtra per: {filterName}",
 	"components.filter-dimension-set-date-text-value.textDays":
-		`{num, plural, =0 {Avui} one {Últim  {num} dia} other {Últims {num} dies}}`,
+		`{num, plural,
+			=0 {Avui}
+			one {Últim  {num} dia}
+			other {Últims {num} dies}
+		}`,
 	"components.filter-dimension-set-date-text-value.textHours":
-		`{num, plural, =1 {Última hora} other {Últimes  {num} hores}}`,
+		`{num, plural,
+			=1 {Última hora}
+			other {Últimes  {num} hores}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Últims {num} mesos",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, expandir per triar dates",
 	"components.filter-dimension-set-date-time-range-value.text": "Interval de dates personalitzat",
@@ -49,16 +64,34 @@ export default {
 	"components.form-element.defaultFieldLabel": "Camp",
 	"components.form-element.input.email.typeMismatch": "El correu electrònic no és vàlid",
 	"components.form-element.input.number.rangeError":
-		`{minExclusive, select, true {{maxExclusive, select, true {El número ha de ser superior a {min} i inferior a {max}.} other {El número ha de ser superior a {min} i inferior o igual a {max}.}}} other {{maxExclusive, select, true {El número ha de ser igual o superior a {min} i inferior a {max}.} other {El número ha de ser igual o superior a {min} i igual o inferior a {max}.}}}}`,
+		`{minExclusive, select,
+			true {{maxExclusive, select,
+				true {El número ha de ser superior a {min} i inferior a {max}.}
+				other {El número ha de ser superior a {min} i inferior o igual a {max}.}
+			}}
+			other {{maxExclusive, select,
+				true {El número ha de ser igual o superior a {min} i inferior a {max}.}
+				other {El número ha de ser igual o superior a {min} i igual o inferior a {max}.}
+			}}
+		}`,
 	"components.form-element.input.number.rangeOverflow":
-		`{maxExclusive, select, true {El número ha de ser inferior a {max}.} other {El número ha de ser inferior o igual a {max}.}}`,
+		`{maxExclusive, select,
+			true {El número ha de ser inferior a {max}.}
+			other {El número ha de ser inferior o igual a {max}.}
+		}`,
 	"components.form-element.input.number.rangeUnderflow":
-		`{minExclusive, select, true {El número ha de ser superior a {min}.} other {El número ha de ser superior o igual a {min}.}}`,
+		`{minExclusive, select,
+			true {El número ha de ser superior a {min}.}
+			other {El número ha de ser superior o igual a {min}.}
+		}`,
 	"components.form-element.input.text.tooShort": "{label} ha de tenir com a mínim {minlength} caràcters",
 	"components.form-element.input.url.typeMismatch": "URL no vàlida",
 	"components.form-element.valueMissing": "{label} és obligatori",
 	"components.form-error-summary.errorSummary":
-		`{count, plural, one {S’ha trobat {count} error en la informació que heu introduït.} other {S’han trobat {count} error en la informació que heu introduït.}}`,
+		`{count, plural,
+			one {S’ha trobat {count} error en la informació que heu introduït.}
+			other {S’han trobat {count} error en la informació que heu introduït.}
+		}`,
 	"components.form-error-summary.text": "Mostra/amaga els detalls de l’error",
 	"components.input-color.backgroundColor": "Color de fons",
 	"components.input-color.foregroundColor": "Color de primer pla",
@@ -130,20 +163,33 @@ export default {
 	"components.page.supporting-divider-label": "Supporting Panel Divider",
 	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
-		`{count, plural, one {{countFormatted} element} other {{countFormatted} elements}}`,
+		`{count, plural,
+			one {{countFormatted} element}
+			other {{countFormatted} elements}
+		}`,
 	"components.pageable.info-with-total":
-		`{totalCount, plural, one {{countFormatted} de {totalCountFormatted} element} other {{countFormatted} de {totalCountFormatted} elements}}`,
+		`{totalCount, plural,
+			one {{countFormatted} de {totalCountFormatted} element}
+			other {{countFormatted} de {totalCountFormatted} elements}
+		}`,
 	"components.pager-load-more.action": "Carrega’n més",
 	"components.pager-load-more.action-with-page-size": "Carregar {count} més",
 	"components.pager-load-more.status-loading": "S’estan carregant més elements",
 	"components.scroll-wrapper.scroll-left": "Desplaçar cap a l’esquerra",
 	"components.scroll-wrapper.scroll-right": "Desplaçar cap a la dreta",
 	"components.selection.action-max-hint":
-		`{count, plural, one {Es desactiva quan es selecciona {countFormatted} element} other {Es desactiva quan es seleccionrn {countFormatted} elements}}`,
+		`{count, plural,
+			one {Es desactiva quan es selecciona {countFormatted} element}
+			other {Es desactiva quan es seleccionrn {countFormatted} elements}
+		}`,
 	"components.selection.action-required-hint": "Seleccioneu un element per dur a terme aquesta acció",
 	"components.selection.select-all": "Seleccioneu-ho tot",
 	"components.selection.select-all-items":
-		`{count, plural, =1 {Seleccioneu un element} one {Seleccioneu {countFormatted} element} other {Seleccioneu tots els {countFormatted} elements}}`,
+		`{count, plural,
+			=1 {Seleccioneu un element}
+			one {Seleccioneu {countFormatted} element}
+			other {Seleccioneu tots els {countFormatted} elements}
+		}`,
 	"components.selection.selected": "{count} seleccionats",
 	"components.selection.selected-plus": "{count}+ seleccionats",
 	"components.selection-controls.label": "Accions per a la selecció",
@@ -157,7 +203,25 @@ export default {
 	"components.table-col-sort-button.addSortOrder": "Seleccionar per afegir una ordre de classificació",
 	"components.table-col-sort-button.changeSortOrder": "Seleccionar per canviar l’ordre de classificació",
 	"components.table-col-sort-button.title":
-		`{sourceType, select, dates {{direction, select, desc {Ordenat de més nou a més antic} other {Ordenat de més antic a més nou}}} numbers {{direction, select, desc {Ordenat de més alt a més baix} other {Ordenat de més baix a més alt}}} words {{direction, select, desc {Ordenat de la Z a la A} other {Ordenat de la A a la Z}}} value {Ordenat {selectedMenuItemText}} other {{direction, select, desc {Ordenat en ordre descendent} other {Ordenat en ordre ascendent}}}}`,
+		`{sourceType, select,
+			dates {{direction, select,
+				desc {Ordenat de més nou a més antic}
+				other {Ordenat de més antic a més nou}
+			}}
+			numbers {{direction, select,
+				desc {Ordenat de més alt a més baix}
+				other {Ordenat de més baix a més alt}
+			}}
+			words {{direction, select,
+				desc {Ordenat de la Z a la A}
+				other {Ordenat de la A a la Z}
+			}}
+			value {Ordenat {selectedMenuItemText}}
+			other {{direction, select,
+				desc {Ordenat en ordre descendent}
+				other {Ordenat en ordre ascendent}
+			}}
+		}`,
 	"components.table-controls.label": "Accions per a la taula",
 	"components.tabs.next": "Desplaçar endavant",
 	"components.tabs.previous": "Desplaçar endarrere",
@@ -168,7 +232,11 @@ export default {
 	"components.tag-list.interactive-label": "Llista d’etiquetes, {count} elements",
 	"components.tag-list.num-hidden": "+ {count} més",
 	"components.tag-list.role-description":
-		`{count, plural, =0 {Llista d’etiquetes amb 0 elements} one {Llista d’etiquetes amb  {count} element} other {Llissta d’etiquetes amb  {count} elements}}`,
+		`{count, plural,
+			=0 {Llista d’etiquetes amb 0 elements}
+			one {Llista d’etiquetes amb  {count} element}
+			other {Llissta d’etiquetes amb  {count} elements}
+		}`,
 	"components.tag-list.show-less": "Mostra menys",
 	"components.tag-list.show-more-description": "Seleccioneu per mostrar els elements de la llista d’etiquetes ocultes",
 	"components.tag-list-item.role-description": "Etiqueta",
@@ -178,7 +246,11 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "Eliminar l’etiqueta enfocada",
 	"components.tag-list-item.tooltip-title": "Controls del teclat",
 	"components.view-switcher.role-description":
-		`{count, plural, =0 {Selector de vista amb 0 elements} one {Selector de vista amb {count} element} other {Selector de vista amb {count} elements}}`,
+		`{count, plural,
+			=0 {Selector de vista amb 0 elements}
+			one {Selector de vista amb {count} element}
+			other {Selector de vista amb {count} elements}
+		}`,
 	"templates.primary-secondary.divider": "Separador de panell secundari",
 	"templates.primary-secondary.secondary-panel": "Panell secundari"
 };
