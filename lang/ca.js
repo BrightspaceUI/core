@@ -1,11 +1,11 @@
 export default {
-	"components.alert.close": "Tanca l'alerta",
+	"components.alert.close": "Tanca l’alerta",
 	"components.backdrop-loading.loadingAnnouncement": "Carregant.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Càrrega completa.",
 	"components.backdrop-stale-overlay.message": "This data is out of date.",
 	"components.breadcrumbs.breadcrumb": "Breadcrumb",
 	"components.button-add.addItem": "Afegeix element",
-	"components.button-copy.copied": "S'ha copiat!",
+	"components.button-copy.copied": "S’ha copiat!",
 	"components.button-copy.error": "La còpia ha fallat. Torneu-ho a provar o copieu-ho manualment.",
 	"components.button-split.otherOptions": "Altres opcions",
 	"components.calendar.hasEvents": "Té esdeveniments.",
@@ -17,28 +17,43 @@ export default {
 	"components.dialog.critical": "Crític!",
 	"components.dropdown.close": "Tancar",
 	"components.filter.activeFilters": "Filtres actius:",
-	"components.filter.additionalContentTooltip": "Utilitzeu les <b>fletxes esquerra/dreta</b> per moure el focus dins d'aquest element de la llista.",
+	"components.filter.additionalContentTooltip": "Utilitzeu les <b>fletxes esquerra/dreta</b> per moure el focus dins d’aquest element de la llista.",
 	"components.filter.clear": "Esborrar",
 	"components.filter.clearAll": "Esborrar-ho tot",
-	"components.filter.clearAllAnnounce": "S'estan esborrant tots els filtres",
-	"components.filter.clearAllAnnounceOverride": "S'estan esborrant tots els filtres per a: {filterText}",
+	"components.filter.clearAllAnnounce": "S’estan esborrant tots els filtres",
+	"components.filter.clearAllAnnounceOverride": "S’estan esborrant tots els filtres per a: {filterText}",
 	"components.filter.clearAllDescription": "Esborrar tots els filtres",
 	"components.filter.clearAllDescriptionOverride": "Esborrar tots els filtres per a: {filterText}",
-	"components.filter.clearAnnounce": "S'estan esborrant els filtres per a: {filterName}",
+	"components.filter.clearAnnounce": "S’estan esborrant els filtres per a: {filterName}",
 	"components.filter.clearDescription": "Esborrar els filtres per a: {filterName}",
 	"components.filter.filterCountDescription":
-		`{number,plural,=0{No s'ha aplicat cap filtre.} one{{number} filtre aplicat.} other{{number} filtres aplicats.}}`,
+		`{number, plural,
+			=0 {No s’ha aplicat cap filtre.}
+			one {{number} filtre aplicat.}
+			other {{number} filtres aplicats.}
+		}`,
 	"components.filter.filters": "Filtres",
 	"components.filter.loading": "Carregant filtres",
 	"components.filter.noFilters": "Cap filtre disponible",
 	"components.filter.searchResults":
-		`{number,plural,=0{Cap resultat de cerca} one{{number} resultat de cerca} other{{number} resultats de cerca}}`,
+		`{number, plural,
+			=0 {Cap resultat de cerca}
+			one {{number} resultat de cerca}
+			other {{number} resultats de cerca}
+		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Els filtres seleccionats apareixen primer.",
 	"components.filter.singleDimensionDescription": "Filtra per: {filterName}",
 	"components.filter-dimension-set-date-text-value.textDays":
-		`{num,plural,=0{Avui} one{Últim  {num} dia} other{Últims {num} dies}}`,
+		`{num, plural,
+			=0 {Avui}
+			one {Últim  {num} dia}
+			other {Últims {num} dies}
+		}`,
 	"components.filter-dimension-set-date-text-value.textHours":
-		`{num,plural,=1{Última hora} other{Últimes  {num} hores}}`,
+		`{num, plural,
+			=1 {Última hora}
+			other {Últimes  {num} hores}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Últims {num} mesos",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, expandir per triar dates",
 	"components.filter-dimension-set-date-time-range-value.text": "Interval de dates personalitzat",
@@ -49,17 +64,35 @@ export default {
 	"components.form-element.defaultFieldLabel": "Camp",
 	"components.form-element.input.email.typeMismatch": "El correu electrònic no és vàlid",
 	"components.form-element.input.number.rangeError":
-		`{minExclusive,select,true{{maxExclusive,select,true{El número ha de ser superior a {min} i inferior a {max}.} other{El número ha de ser superior a {min} i inferior o igual a {max}.}}} other{{maxExclusive,select,true{El número ha de ser igual o superior a {min} i inferior a {max}.} other{El número ha de ser igual o superior a {min} i igual o inferior a {max}.}}}}`,
+		`{minExclusive, select,
+			true {{maxExclusive, select,
+				true {El número ha de ser superior a {min} i inferior a {max}.}
+				other {El número ha de ser superior a {min} i inferior o igual a {max}.}
+			}}
+			other {{maxExclusive, select,
+				true {El número ha de ser igual o superior a {min} i inferior a {max}.}
+				other {El número ha de ser igual o superior a {min} i igual o inferior a {max}.}
+			}}
+		}`,
 	"components.form-element.input.number.rangeOverflow":
-		`{maxExclusive,select,true{El número ha de ser inferior a {max}.} other{El número ha de ser inferior o igual a {max}.}}`,
+		`{maxExclusive, select,
+			true {El número ha de ser inferior a {max}.}
+			other {El número ha de ser inferior o igual a {max}.}
+		}`,
 	"components.form-element.input.number.rangeUnderflow":
-		`{minExclusive,select,true{El número ha de ser superior a {min}.} other{El número ha de ser superior o igual a {min}.}}`,
+		`{minExclusive, select,
+			true {El número ha de ser superior a {min}.}
+			other {El número ha de ser superior o igual a {min}.}
+		}`,
 	"components.form-element.input.text.tooShort": "{label} ha de tenir com a mínim {minlength} caràcters",
 	"components.form-element.input.url.typeMismatch": "URL no vàlida",
 	"components.form-element.valueMissing": "{label} és obligatori",
 	"components.form-error-summary.errorSummary":
-		`{count,plural,one{S'ha trobat {count} error en la informació que heu introduït.} other{S'han trobat {count} error en la informació que heu introduït.}}`,
-	"components.form-error-summary.text": "Mostra/amaga els detalls de l'error",
+		`{count, plural,
+			one {S’ha trobat {count} error en la informació que heu introduït.}
+			other {S’han trobat {count} error en la informació que heu introduït.}
+		}`,
+	"components.form-error-summary.text": "Mostra/amaga els detalls de l’error",
 	"components.input-color.backgroundColor": "Color de fons",
 	"components.input-color.foregroundColor": "Color de primer pla",
 	"components.input-color.none": "Cap",
@@ -74,8 +107,8 @@ export default {
 	"components.input-date.useDateFormat": "Utilitzeu el format de data {format}.",
 	"components.input-date-range.endDate": "Data de finalització",
 	"components.input-date-range.errorBadInput": "{startLabel} ha de ser abans de {endLabel}",
-	"components.input-date-range.interactive-label": "Introducció d'un interval de dates",
-	"components.input-date-range.startDate": "Data d'inici",
+	"components.input-date-range.interactive-label": "Introducció d’un interval de dates",
+	"components.input-date-range.startDate": "Data d’inici",
 	"components.input-date-time.date": "Data",
 	"components.input-date-time.errorMaxDateOnly": "La data ha de ser abans o el{maxDate}",
 	"components.input-date-time.errorMinDateOnly": "La data ha de ser el o posterior al {minDate}",
@@ -83,35 +116,35 @@ export default {
 	"components.input-date-time.time": "Hora",
 	"components.input-date-time-range.endDate": "Data de finalització",
 	"components.input-date-time-range.errorBadInput": "{startLabel} ha de ser abans de {endLabel}",
-	"components.input-date-time-range.interactive-label": "Entrada d'interval de data i hora",
-	"components.input-date-time-range.startDate": "Data d'inici",
+	"components.input-date-time-range.interactive-label": "Entrada d’interval de data i hora",
+	"components.input-date-time-range.startDate": "Data d’inici",
 	"components.input-date-time-range-to.to": "Fins a",
 	"components.input-number.hintDecimalDuplicate": "Ja hi ha un decimal en aquest nombre",
 	"components.input-number.hintDecimalIncorrectComma": "Per afegir un decimal, feu servir el caràcter coma “,”",
-	"components.input-number.hintDecimalIncorrectPeriod": "Per afegir un decimal, utilitzeu el caràcter punt \".\"",
+	"components.input-number.hintDecimalIncorrectPeriod": "Per afegir un decimal, utilitzeu el caràcter punt «.»",
 	"components.input-number.hintInteger": "Aquest camp només accepta valors enters (sense decimals)",
 	"components.input-search.clear": "Esborrar cerca",
 	"components.input-search.defaultPlaceholder": "Cercar...",
 	"components.input-search.search": "Cerca",
 	"components.input-time-range.endTime": "Hora de finalització",
 	"components.input-time-range.errorBadInput": "{startLabel} ha de ser abans de {endLabel}",
-	"components.input-time-range.startTime": "Hora d'inici",
+	"components.input-time-range.startTime": "Hora d’inici",
 	"components.interactive.instructions": "Premeu Intro per interactuar, Esc per sortir",
-	"components.link.open-in-new-window": "S'obre en una nova finestra",
-	"components.list.keyboard": "Utilitzeu les <b>tecles de fletxa</b> per moure el focus dins d'aquesta llista, o <b>Re Pàgina amunt/Av Pàgina avall</b> per moure-us cinc posicions cap amunt o cap avall.",
+	"components.link.open-in-new-window": "S’obre en una nova finestra",
+	"components.list.keyboard": "Utilitzeu les <b>tecles de fletxa</b> per moure el focus dins d’aquesta llista, o <b>Re Pàgina amunt/Av Pàgina avall</b> per moure-us cinc posicions cap amunt o cap avall.",
 	"components.list-controls.label": "Accions per a la llista",
 	"components.list-item.addItem": "Afegeix element",
-	"components.list-item-drag-handle.default": "Acció de reordenar l'element per a {name}",
+	"components.list-item-drag-handle.default": "Acció de reordenar l’element per a {name}",
 	"components.list-item-drag-handle.keyboard": "Reordenar element, posició actual {currentPosition} de {size}. Per moure aquest element, premeu les fletxes amunt o avall.",
 	"components.list-item-drag-handle.side-to-side.keyboard": "Reorder item, current position {currentPosition} out of {size}. To move this item, press left or right arrows.",
 	"components.list-item-drag-handle-tooltip.enter-desc": "Canviar el mode de reordenació del teclat.",
 	"components.list-item-drag-handle-tooltip.enter-key": "Introduir",
-	"components.list-item-drag-handle-tooltip.left-right-desc": "Canviar el nivell d'anidament.",
+	"components.list-item-drag-handle-tooltip.left-right-desc": "Canviar el nivell d’anidament.",
 	"components.list-item-drag-handle-tooltip.left-right-key": "Esquerra/Dreta",
 	"components.list-item-drag-handle-tooltip.side-to-side.left-right-desc": "Move item left or right in the list.",
 	"components.list-item-drag-handle-tooltip.side-to-side.up-down-desc": "Move item left or right in the list.",
 	"components.list-item-drag-handle-tooltip.title": "Controls del teclat per reordenar:",
-	"components.list-item-drag-handle-tooltip.up-down-desc": "Mou l'element amunt o avall a la llista.",
+	"components.list-item-drag-handle-tooltip.up-down-desc": "Mou l’element amunt o avall a la llista.",
 	"components.list-item-drag-handle-tooltip.up-down-key": "Amunt/Avall",
 	"components.menu-item-return.return": "Tornar al menú anterior.",
 	"components.menu-item-return.returnCurrentlyShowing": "Tornar al menú anterior. Estàs veient {menuTitle}.",
@@ -130,20 +163,33 @@ export default {
 	"components.page.supporting-divider-label": "Supporting Panel Divider",
 	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
-		`{count,plural,one{{countFormatted} element} other{{countFormatted} elements}}`,
+		`{count, plural,
+			one {{countFormatted} element}
+			other {{countFormatted} elements}
+		}`,
 	"components.pageable.info-with-total":
-		`{totalCount,plural,one{{countFormatted} de {totalCountFormatted} element} other{{countFormatted} de {totalCountFormatted} elements}}`,
-	"components.pager-load-more.action": "Carrega'n més",
+		`{totalCount, plural,
+			one {{countFormatted} de {totalCountFormatted} element}
+			other {{countFormatted} de {totalCountFormatted} elements}
+		}`,
+	"components.pager-load-more.action": "Carrega’n més",
 	"components.pager-load-more.action-with-page-size": "Carregar {count} més",
-	"components.pager-load-more.status-loading": "S'estan carregant més elements",
-	"components.scroll-wrapper.scroll-left": "Desplaçar cap a l'esquerra",
+	"components.pager-load-more.status-loading": "S’estan carregant més elements",
+	"components.scroll-wrapper.scroll-left": "Desplaçar cap a l’esquerra",
 	"components.scroll-wrapper.scroll-right": "Desplaçar cap a la dreta",
 	"components.selection.action-max-hint":
-		`{count,plural,one{Es desactiva quan es selecciona {countFormatted} element} other{Es desactiva quan es seleccionrn {countFormatted} elements}}`,
+		`{count, plural,
+			one {Es desactiva quan es selecciona {countFormatted} element}
+			other {Es desactiva quan es seleccionrn {countFormatted} elements}
+		}`,
 	"components.selection.action-required-hint": "Seleccioneu un element per dur a terme aquesta acció",
 	"components.selection.select-all": "Seleccioneu-ho tot",
 	"components.selection.select-all-items":
-		`{count,plural,=1{Seleccioneu un element} one{Seleccioneu {countFormatted} element} other{Seleccioneu tots els {countFormatted} elements}}`,
+		`{count, plural,
+			=1 {Seleccioneu un element}
+			one {Seleccioneu {countFormatted} element}
+			other {Seleccioneu tots els {countFormatted} elements}
+		}`,
 	"components.selection.selected": "{count} seleccionats",
 	"components.selection.selected-plus": "{count}+ seleccionats",
 	"components.selection-controls.label": "Accions per a la selecció",
@@ -155,30 +201,56 @@ export default {
 	"components.switch.visible": "Visible",
 	"components.switch.visibleWithPeriod": "Visible.",
 	"components.table-col-sort-button.addSortOrder": "Seleccionar per afegir una ordre de classificació",
-	"components.table-col-sort-button.changeSortOrder": "Seleccionar per canviar l'ordre de classificació",
+	"components.table-col-sort-button.changeSortOrder": "Seleccionar per canviar l’ordre de classificació",
 	"components.table-col-sort-button.title":
-		`{sourceType,select,dates{{direction,select,desc{Ordenat de més nou a més antic} other{Ordenat de més antic a més nou}}} numbers{{direction,select,desc{Ordenat de més alt a més baix} other{Ordenat de més baix a més alt}}} words{{direction,select,desc{Ordenat de la Z a la A} other{Ordenat de la A a la Z}}} value{Ordenat {selectedMenuItemText}} other{{direction,select,desc{Ordenat en ordre descendent} other{Ordenat en ordre ascendent}}}}`,
+		`{sourceType, select,
+			dates {{direction, select,
+				desc {Ordenat de més nou a més antic}
+				other {Ordenat de més antic a més nou}
+			}}
+			numbers {{direction, select,
+				desc {Ordenat de més alt a més baix}
+				other {Ordenat de més baix a més alt}
+			}}
+			words {{direction, select,
+				desc {Ordenat de la Z a la A}
+				other {Ordenat de la A a la Z}
+			}}
+			value {Ordenat {selectedMenuItemText}}
+			other {{direction, select,
+				desc {Ordenat en ordre descendent}
+				other {Ordenat en ordre ascendent}
+			}}
+		}`,
 	"components.table-controls.label": "Accions per a la taula",
 	"components.tabs.next": "Desplaçar endavant",
 	"components.tabs.previous": "Desplaçar endarrere",
-	"components.tag-list.clear": "Feu clic, premeu la tecla de retrocés o premeu la tecla de suprimir per eliminar l'element {value}",
+	"components.tag-list.clear": "Feu clic, premeu la tecla de retrocés o premeu la tecla de suprimir per eliminar l’element {value}",
 	"components.tag-list.clear-all": "Esborrar-ho tot",
-	"components.tag-list.cleared-all": "S'han eliminat tots els elements de la llista d'etiquetes",
-	"components.tag-list.cleared-item": "S'ha eliminat l'element de la llista d'etiquetes {value}",
-	"components.tag-list.interactive-label": "Llista d'etiquetes, {count} elements",
+	"components.tag-list.cleared-all": "S’han eliminat tots els elements de la llista d’etiquetes",
+	"components.tag-list.cleared-item": "S’ha eliminat l’element de la llista d’etiquetes {value}",
+	"components.tag-list.interactive-label": "Llista d’etiquetes, {count} elements",
 	"components.tag-list.num-hidden": "+ {count} més",
 	"components.tag-list.role-description":
-		`{count,plural,=0{Llista d'etiquetes amb 0 elements} one{Llista d'etiquetes amb  {count} element} other{Llissta d'etiquetes amb  {count} elements}}`,
+		`{count, plural,
+			=0 {Llista d’etiquetes amb 0 elements}
+			one {Llista d’etiquetes amb  {count} element}
+			other {Llissta d’etiquetes amb  {count} elements}
+		}`,
 	"components.tag-list.show-less": "Mostra menys",
-	"components.tag-list.show-more-description": "Seleccioneu per mostrar els elements de la llista d'etiquetes ocultes",
+	"components.tag-list.show-more-description": "Seleccioneu per mostrar els elements de la llista d’etiquetes ocultes",
 	"components.tag-list-item.role-description": "Etiqueta",
 	"components.tag-list-item.tooltip-arrow-keys": "Tecles de fletxa",
 	"components.tag-list-item.tooltip-arrow-keys-desc": "Moure entre etiquetes",
 	"components.tag-list-item.tooltip-delete-key": "Retrocés/Eliminar",
-	"components.tag-list-item.tooltip-delete-key-desc": "Eliminar l'etiqueta enfocada",
+	"components.tag-list-item.tooltip-delete-key-desc": "Eliminar l’etiqueta enfocada",
 	"components.tag-list-item.tooltip-title": "Controls del teclat",
 	"components.view-switcher.role-description":
-		`{count,plural,one{Selector de vista amb {count} element} =0{Selector de vista amb 0 elements} other{Selector de vista amb {count} elements}}`,
+		`{count, plural,
+			=0 {Selector de vista amb 0 elements}
+			one {Selector de vista amb {count} element}
+			other {Selector de vista amb {count} elements}
+		}`,
 	"templates.primary-secondary.divider": "Separador de panell secundari",
 	"templates.primary-secondary.secondary-panel": "Panell secundari"
 };
