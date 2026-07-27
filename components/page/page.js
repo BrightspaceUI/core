@@ -36,6 +36,10 @@ class PanelStateController {
 		// TO DO: Factor in dragging
 		return panel.collapsed ? 0 : panel.size;
 	}
+	getTrueSize(key) {
+		const panel = this.#panels[key];
+		return panel.size;
+	}
 
 	resize(key, requestedSize, animate = false) {
 		const panel = this.#panels[key];
@@ -159,16 +163,35 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		}
 
 		.side-nav-panel,
+		.supporting-panel {
+			overflow: hidden;
+		}
+
+		.side-nav-panel,
 		.supporting-panel,
 		.divider {
-			max-height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
 			position: sticky;
 			top: var(--d2l-page-header-height, 0);
 		}
 
 		.side-nav-panel,
-		.supporting-panel {
+		.supporting-panel,
+		.side-nav-panel-content,
+		.supporting-panel-content,
+		.divider {
+			max-height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
+		}
+
+		.side-nav-panel-content,
+		.supporting-panel-content {
+			box-sizing: border-box;
 			overflow: clip auto;
+		}
+		.side-nav-panel-content {
+			float: inline-end;
+		}
+		.supporting-panel-content {
+			float: inline-start;
 		}
 
 		.divider {
@@ -187,7 +210,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		}
 		@media (prefers-reduced-motion: no-preference) {
 			.side-nav-panel.animate,
-			.supporting-panel.animate {
+			.supporting-panel.animate,
+			.side-nav-panel.animate .side-nav-panel-content,
+			.supporting-panel.animate .supporting-panel-content {
 				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
 			.side-nav-panel.animate.collapsed,
@@ -415,7 +440,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 					class="${classMap(classes)}"
 					style=${styleMap({ width: `${this._panelState.getSize('side-nav')}px` })}
 					?hidden="${!this._slotVisibility['side-nav']}">
-					<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+					<div class="side-nav-panel-content" style=${styleMap({ width: `${this._panelState.getTrueSize('side-nav')}px` })}>
+						<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+					</div>
 				</div>
 				${!this._slotVisibility['side-nav'] ? nothing :
 					this.#renderDivider('side-nav', this.localize('components.page.side-nav-divider-label'), 'start')}
@@ -437,7 +464,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 					class="${classMap(classes)}"
 					style=${styleMap({ width: `${this._panelState.getSize('supporting')}px` })}
 					?hidden="${!this._slotVisibility['supporting']}">
-					<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+					<div class="supporting-panel-content" style=${styleMap({ width: `${this._panelState.getTrueSize('supporting')}px` })}>
+						<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+					</div>
 				</div>
 			</aside>
 		`;
