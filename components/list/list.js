@@ -156,6 +156,13 @@ class List extends FreshnessMixin(PageableMixin(SelectionMixin(LitElement))) {
 		.backdrop-loading-container {
 			position: relative;
 		}
+		d2l-backdrop-loading {
+			margin: -12px; /* must match outside-control-container */
+		}
+		:host([extend-separators]) d2l-backdrop-loading,
+		:host([layout="tiles"]) d2l-backdrop-loading {
+			margin: 0; /* must match outside-control-container */
+		}
 
 		::slotted(.d2l-list-tile-break) {
 			display: none;
