@@ -16,26 +16,46 @@ class PanelStateController {
 		this.#host = host;
 		this.#panels = {};
 		for (const [key, config] of Object.entries(panelConfigs)) {
-			this.#panels[key] = { collapsed: false, size: 0, minSize: config.minSize, maxSize: config.minSize };
+			this.#panels[key] = {
+				animate: false,
+				collapsed: false,
+				size: 0,
+				minSize: config.minSize,
+				maxSize: config.minSize
+			};
 		}
 		host.addController(this);
 	}
 
+	getAnimate(key) { return this.#panels[key].animate; }
 	getCollapsed(key) { return this.#panels[key].collapsed; }
 	getMaxSize(key) { return this.#panels[key].maxSize; }
 	getMinSize(key) { return this.#panels[key].minSize; }
-	getSize(key) { return this.#panels[key].size; }
+	getSize(key) {
+		const panel = this.#panels[key];
+		// TO DO: Factor in dragging
+		return panel.collapsed ? 0 : panel.size;
+	}
 
-	resize(key, requestedSize) {
+	resize(key, requestedSize, animate = false) {
 		const panel = this.#panels[key];
 		// Clamp requested size to min and max bounds
 		panel.size = Math.max(panel.minSize, Math.min(requestedSize, panel.maxSize));
+		panel.animate = animate;
 		this.#host.requestUpdate();
 	}
 
 	setCollapsed(key, collapsed) {
 		const panel = this.#panels[key];
 		panel.collapsed = collapsed;
+		panel.animate = true;
+		this.#host.requestUpdate();
+	}
+
+	setDragSize(key) {
+		const panel = this.#panels[key];
+		// TO DO: Handle Dragging
+		panel.animate = false;
 		this.#host.requestUpdate();
 	}
 
@@ -153,6 +173,27 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 		.divider {
 			z-index: 15; /* To be over d2l-page-* panel headers */
+		}
+
+		.side-nav .divider[collapsed] {
+			margin-inline-start: 18px;
+		}
+		.supporting .divider[collapsed] {
+			margin-inline-end: 18px;
+		}
+		.side-nav-panel.collapsed,
+		.supporting-panel.collapsed {
+			visibility: hidden;
+		}
+		@media (prefers-reduced-motion: no-preference) {
+			.side-nav-panel.animate,
+			.supporting-panel.animate {
+				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1);
+			}
+			.side-nav-panel.animate.collapsed,
+			.supporting-panel.animate.collapsed {
+				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1), visibility 0s 400ms;
+			}
 		}
 
 		.footer:not([hidden]),
@@ -285,7 +326,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	#handleDividerResize(e) {
 		const panelKey = e.target.dataset.panelKey;
-		this._panelState.resize(panelKey, e.detail.requestedSize);
+		this._panelState.resize(panelKey, e.detail.requestedSize, true);
 	};
 
 	#handleDividerToggle(e) {
@@ -363,10 +404,15 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	#renderSideNavPanel() {
+		const classes = {
+			'side-nav-panel': true,
+			'animate': this._panelState.getAnimate('side-nav'),
+			'collapsed': this._panelState.getCollapsed('side-nav')
+		};
 		return html`
 			<nav class="side-nav" aria-label="${this.localize('components.page.side-nav-label')}">
 				<div
-					class="side-nav-panel"
+					class="${classMap(classes)}"
 					style=${styleMap({ width: `${this._panelState.getSize('side-nav')}px` })}
 					?hidden="${!this._slotVisibility['side-nav']}">
 					<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
@@ -378,12 +424,17 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	#renderSupportingPanel() {
+		const classes = {
+			'supporting-panel': true,
+			'animate': this._panelState.getAnimate('supporting'),
+			'collapsed': this._panelState.getCollapsed('supporting')
+		};
 		return html`
 			<aside class="supporting" aria-label="${this.localize('components.page.supporting-label')}">
 				${!this._slotVisibility['supporting'] ? nothing :
 					this.#renderDivider('supporting', this.localize('components.page.supporting-divider-label'), 'end')}
 				<div
-					class="supporting-panel"
+					class="${classMap(classes)}"
 					style=${styleMap({ width: `${this._panelState.getSize('supporting')}px` })}
 					?hidden="${!this._slotVisibility['supporting']}">
 					<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>

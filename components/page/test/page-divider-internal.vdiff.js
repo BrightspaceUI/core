@@ -1,4 +1,4 @@
-import { clickElem, expect, fixture, focusElem, hoverElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, nextFrame, sendKeysElem } from '@brightspace-ui/testing';
 import { getDivider, getSlider, pageDividerFixtures } from './page-divider-internal-fixtures.js';
 import { scrollBody, scrollPanel } from './page-fixtures.js';
 
@@ -27,6 +27,10 @@ describe('page-divider-internal', () => {
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
+	});
+
+	describe('hover-collapsed', () => {
+		// TO DO once previous panel state is saved and restored (so I can set collapsed easily)
 	});
 
 	describe('focus', () => {
@@ -75,6 +79,60 @@ describe('page-divider-internal', () => {
 				scrollBody();
 				scrollPanel(elem, test.divider);
 				await focusElem(getDivider(elem, test.divider));
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+	});
+
+	describe('collapse-stay-scrolled', () => {
+		[
+			{ name: 'main', divider: 'side-nav', fixture: pageDividerFixtures.sideNavLongMainBothHeaders },
+			{ name: 'immersive-main', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveLongMain }
+		].forEach(test => {
+			it(test.name, async() => {
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				scrollBody();
+				await sendKeysElem(getDivider(elem, test.divider), 'press', 'Enter');
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+	});
+
+	describe('expand-stay-scrolled', () => {
+		[
+			{ name: 'panel', divider: 'supporting', fixture: pageDividerFixtures.supportingLongFooter },
+			{ name: 'both', divider: 'side-nav', fixture: pageDividerFixtures.sideNavLongMainLongFooter },
+			{ name: 'immersive-panel', divider: 'side-nav', fixture: pageDividerFixtures.sideNavImmersiveLongFooter },
+			{ name: 'immersive-both', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveLongMainLongBothHeaders },
+		].forEach(test => {
+			it(test.name, async() => {
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				scrollPanel(elem, test.divider);
+				scrollBody();
+
+				const divider = getDivider(elem, test.divider);
+				await sendKeysElem(divider, 'press', 'Enter');
+				await nextFrame();
+
+				await sendKeysElem(divider, 'press', ' ');
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+	});
+
+	describe('expand-not-scrolled', () => {
+		[
+			{ name: 'panel', divider: 'side-nav', fixture: pageDividerFixtures.sideNavLongMainLongFooter },
+			{ name: 'immersive-panel', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveLongMainLongBothHeaders }
+		].forEach(test => {
+			it(test.name, async() => {
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				const divider = getDivider(elem, test.divider);
+				await clickElem(getSlider(divider));
+				await nextFrame();
+
+				scrollBody();
+				await sendKeysElem(divider, 'press', ' ');
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
