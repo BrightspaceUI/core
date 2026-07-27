@@ -34,6 +34,10 @@ class BackdropLoading extends PropertyRequiredMixin(FreshnessMixin(LocalizeCoreE
 	};
 
 	static styles = [css`
+
+		:host {
+			position: absolute;
+		}
 		.backdrop-container {
 			display: none;
 		}
