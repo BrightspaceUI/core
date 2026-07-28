@@ -84,7 +84,7 @@ export function getComposedChildren(node, predicate = () => true) {
 	if (!node) {
 		return null;
 	}
-	if (node.nodeType !== 1 && node.nodeType !== 9 && node.nodeType !== 11) {
+	if (node.nodeType !== Node.ELEMENT_NODE && node.nodeType !== Node.DOCUMENT_NODE && node.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) {
 		return null;
 	}
 
@@ -94,6 +94,7 @@ export function getComposedChildren(node, predicate = () => true) {
 	if (node.tagName === 'CONTENT') {
 		nodes = node.getDistributedNodes();
 	} else if (node.tagName === 'SLOT') {
+		// note: this is not handling default slot content
 		nodes = node.assignedNodes({ flatten: true });
 	} else {
 		if (node.shadowRoot) {
@@ -103,7 +104,7 @@ export function getComposedChildren(node, predicate = () => true) {
 	}
 
 	for (let i = 0; i < nodes.length; i++) {
-		if (nodes[i].nodeType === 1) {
+		if (nodes[i].nodeType === Node.ELEMENT_NODE) {
 			if (predicate(nodes[i])) {
 				children.push(nodes[i]);
 			}
@@ -243,7 +244,7 @@ export function getFirstVisibleAncestor(node) {
 
 export function querySelectorComposed(node, selector) {
 
-	if (!node || (node.nodeType !== 1 && node.nodeType !== 9 && node.nodeType !== 11)) {
+	if (!node || (node.nodeType !== Node.ELEMENT_NODE && node.nodeType !== Node.DOCUMENT_NODE && node.nodeType !== Node.DOCUMENT_FRAGMENT_NODE)) {
 		throw new TypeError('Invalid node. Must be nodeType document, element or document fragment');
 	}
 	if (typeof selector !== 'string') {
