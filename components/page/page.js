@@ -215,6 +215,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			.supporting-panel.animate .supporting-panel-content {
 				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
+			.divider.animate {
+				transition: margin 400ms cubic-bezier(0, 0.7, 0.5, 1);
+			}
 			.side-nav-panel.animate.collapsed,
 			.supporting-panel.animate.collapsed {
 				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1), visibility 0s 400ms;
@@ -376,9 +379,13 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	#renderDivider(panelKey, label, panelPosition) {
+		const classes = {
+			'divider': true,
+			'animate': this._panelState.getAnimate(panelKey)
+		};
 		return html`
 			<d2l-page-divider-internal
-				class="divider"
+				class="${classMap(classes)}"
 				data-panel-key="${panelKey}"
 				label="${label}"
 				?collapsed="${this._panelState.getCollapsed(panelKey)}"
