@@ -1,4 +1,5 @@
 import { css, html, LitElement } from 'lit';
+import { FreshnessMixin } from '../../../mixins/freshness/freshness-mixin.js';
 import { PageableMixin } from '../../paging/pageable-mixin.js';
 import { SelectionMixin } from '../selection-mixin.js';
 import { SelectionObserverMixin } from '../selection-observer-mixin.js';
@@ -16,7 +17,7 @@ class TestBase extends LitElement {
 	}
 }
 
-class TestSelection extends SelectionMixin(TestBase) {}
+class TestSelection extends FreshnessMixin(SelectionMixin(TestBase)) {}
 
 class TestSelectionObserver extends SelectionObserverMixin(LitElement) {}
 
