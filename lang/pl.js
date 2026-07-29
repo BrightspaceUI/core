@@ -27,18 +27,41 @@ export default {
 	"components.filter.clearAnnounce": "Czyszczenie filtrów dla: {filterName}",
 	"components.filter.clearDescription": "Wyczyść filtry dla: {filterName}",
 	"components.filter.filterCountDescription":
-		`{number,plural,one{Zastosowano {number} filtr.} few{Zastosowano {number} filtry.} many{Zastosowano {number} filtrów.} =0{Brak zastosowanych filtrów.} other{Zastosowano {number} filtrów.}}`,
+		`{number, plural,
+			=0 {Brak zastosowanych filtrów.}
+			one {Zastosowano {number} filtr.}
+			few {Zastosowano {number} filtry.}
+			many {Zastosowano {number} filtrów.}
+			other {Zastosowano {number} filtrów.}
+		}`,
 	"components.filter.filters": "Filtry",
 	"components.filter.loading": "Wczytywanie filtrów",
 	"components.filter.noFilters": "Brak dostępnych filtrów",
 	"components.filter.searchResults":
-		`{number,plural,one{{number} wynik wyszukiwania} few{{number} wyniki wyszukiwania} many{{number} wyników wyszukiwania} =0{Brak wyników wyszukiwania} other{{number} wyników wyszukiwania}}`,
+		`{number, plural,
+			=0 {Brak wyników wyszukiwania}
+			one {{number} wynik wyszukiwania}
+			few {{number} wyniki wyszukiwania}
+			many {{number} wyników wyszukiwania}
+			other {{number} wyników wyszukiwania}
+		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Wybrane filtry są wyświetlane jako pierwsze.",
 	"components.filter.singleDimensionDescription": "Filtruj według: {filterName}",
 	"components.filter-dimension-set-date-text-value.textDays":
-		`{num,plural,one{Ostatni {num} dzień} few{Ostatnie {num} dni} many{Ostatnich {num} dni} =0{Dzisiaj} other{Ostatnich {num} dni}}`,
+		`{num, plural,
+			=0 {Dzisiaj}
+			one {Ostatni {num} dzień}
+			few {Ostatnie {num} dni}
+			many {Ostatnich {num} dni}
+			other {Ostatnich {num} dni}
+		}`,
 	"components.filter-dimension-set-date-text-value.textHours":
-		`{num,plural,few{Ostatnie {num} godziny} many{Ostatnich {num} godzin} =1{Ostatnia godzina} other{Ostatnich {num} godzin}}`,
+		`{num, plural,
+			=1 {Ostatnia godzina}
+			few {Ostatnie {num} godziny}
+			many {Ostatnich {num} godzin}
+			other {Ostatnich {num} godzin}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "Ostatnie(-ch) {num} miesiące(-ęcy)",
 	"components.filter-dimension-set-date-time-range-value.label": "{text} – rozwiń, aby wybrać daty",
 	"components.filter-dimension-set-date-time-range-value.text": "Niestandardowy zakres dat",
@@ -49,16 +72,36 @@ export default {
 	"components.form-element.defaultFieldLabel": "Pole",
 	"components.form-element.input.email.typeMismatch": "E-mail jest nieprawidłowy",
 	"components.form-element.input.number.rangeError":
-		`{minExclusive,select,true{{maxExclusive,select,true{Liczba musi być większa niż {min} i mniejsza niż {max}.} other{Liczba musi być większa niż {min} i mniejsza lub równa {max}.}}} other{{maxExclusive,select,true{Liczba musi być większa lub równa {min} i mniejsza niż {max}.} other{Liczba musi być większa lub równa {min} i mniejsza lub równa {max}.}}}}`,
+		`{minExclusive, select,
+			true {{maxExclusive, select,
+				true {Liczba musi być większa niż {min} i mniejsza niż {max}.}
+				other {Liczba musi być większa niż {min} i mniejsza lub równa {max}.}
+			}}
+			other {{maxExclusive, select,
+				true {Liczba musi być większa lub równa {min} i mniejsza niż {max}.}
+				other {Liczba musi być większa lub równa {min} i mniejsza lub równa {max}.}
+			}}
+		}`,
 	"components.form-element.input.number.rangeOverflow":
-		`{maxExclusive,select,true{Liczba musi być mniejsza niż {max}.} other{Liczba musi być mniejsza lub równa {max}.}}`,
+		`{maxExclusive, select,
+			true {Liczba musi być mniejsza niż {max}.}
+			other {Liczba musi być mniejsza lub równa {max}.}
+		}`,
 	"components.form-element.input.number.rangeUnderflow":
-		`{minExclusive,select,true{Liczba musi być większa niż {min}.} other{Liczba musi być większa lub równa {min}.}}`,
+		`{minExclusive, select,
+			true {Liczba musi być większa niż {min}.}
+			other {Liczba musi być większa lub równa {min}.}
+		}`,
 	"components.form-element.input.text.tooShort": "{label} musi mieć co najmniej {minlength} znaków",
 	"components.form-element.input.url.typeMismatch": "Adres URL jest nieprawidłowy",
 	"components.form-element.valueMissing": "Wymagany jest {label}",
 	"components.form-error-summary.errorSummary":
-		`{count,plural,one{W przesłanych danych był {count} błąd.} few{W przesłanych danych były {count} błędy.} many{W przesłanych danych było {count} błędów.} other{W przesłanych danych było {count} błędu.}}`,
+		`{count, plural,
+			one {W przesłanych danych był {count} błąd.}
+			few {W przesłanych danych były {count} błędy.}
+			many {W przesłanych danych było {count} błędów.}
+			other {W przesłanych danych było {count} błędu.}
+		}`,
 	"components.form-error-summary.text": "Przełącz szczegóły błędów",
 	"components.input-color.backgroundColor": "Kolor tła",
 	"components.input-color.foregroundColor": "Kolor pierwszego planu",
@@ -130,20 +173,40 @@ export default {
 	"components.page.supporting-divider-label": "Supporting Panel Divider",
 	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
-		`{count,plural,one{{countFormatted} element} few{{countFormatted} elementy} many{{countFormatted} elementów} other{{countFormatted} elementów}}`,
+		`{count, plural,
+			one {{countFormatted} element}
+			few {{countFormatted} elementy}
+			many {{countFormatted} elementów}
+			other {{countFormatted} elementów}
+		}`,
 	"components.pageable.info-with-total":
-		`{totalCount,plural,one{{countFormatted} z {totalCountFormatted} elementu} few{{countFormatted} z {totalCountFormatted} elementów} many{{countFormatted} z {totalCountFormatted} elementów} other{{countFormatted} z {totalCountFormatted} elementów}}`,
+		`{totalCount, plural,
+			one {{countFormatted} z {totalCountFormatted} elementu}
+			few {{countFormatted} z {totalCountFormatted} elementów}
+			many {{countFormatted} z {totalCountFormatted} elementów}
+			other {{countFormatted} z {totalCountFormatted} elementów}
+		}`,
 	"components.pager-load-more.action": "Wczytaj więcej",
 	"components.pager-load-more.action-with-page-size": "Wczytaj {count} więcej",
 	"components.pager-load-more.status-loading": "Wczytywanie większej liczby elementów",
 	"components.scroll-wrapper.scroll-left": "Przewiń w lewo",
 	"components.scroll-wrapper.scroll-right": "Przewiń w prawo",
 	"components.selection.action-max-hint":
-		`{count,plural,one{Wyłączone, gdy wybrano więcej niż {countFormatted} element} few{Wyłączone, gdy wybrano więcej niż {countFormatted} elementy} many{Wyłączone, gdy wybrano więcej niż {countFormatted} elementów} other{Wyłączone, gdy wybrano więcej niż {countFormatted} elementu}}`,
+		`{count, plural,
+			one {Wyłączone, gdy wybrano więcej niż {countFormatted} element}
+			few {Wyłączone, gdy wybrano więcej niż {countFormatted} elementy}
+			many {Wyłączone, gdy wybrano więcej niż {countFormatted} elementów}
+			other {Wyłączone, gdy wybrano więcej niż {countFormatted} elementu}
+		}`,
 	"components.selection.action-required-hint": "Wybierz element, aby wykonać to działanie",
-	"components.selection.select-all": "Zaznacz wszystko ",
+	"components.selection.select-all": "Zaznacz wszystko",
 	"components.selection.select-all-items":
-		`{count,plural,one{Wybierz element} few{Wybierz wszystkie {countFormatted} elementy} many{Wybierz wszystkich {countFormatted} elementów} =1{Wybierz element} other{Wybierz wszystkich {countFormatted} elementów}}`,
+		`{count, plural,
+			one {Wybierz element}
+			few {Wybierz wszystkie {countFormatted} elementy}
+			many {Wybierz wszystkich {countFormatted} elementów}
+			other {Wybierz wszystkich {countFormatted} elementów}
+		}`,
 	"components.selection.selected": "Liczba wybranych opcji: {count}",
 	"components.selection.selected-plus": "Wybrano {count}+ opcji",
 	"components.selection-controls.label": "Działania związane z wyborem",
@@ -157,7 +220,25 @@ export default {
 	"components.table-col-sort-button.addSortOrder": "Wybierz, aby dodać kolejność sortowania",
 	"components.table-col-sort-button.changeSortOrder": "Wybierz, aby zmienić kolejność sortowania",
 	"components.table-col-sort-button.title":
-		`{sourceType,select,dates{{direction,select,desc{Posortowane od nowego do starego} other{Posortowane od starego do nowego}}} numbers{{direction,select,desc{Posortowane od najwyższego do najniższego} other{Posortowane od niskiego do wysokiego}}} words{{direction,select,desc{Posortowane od Z do A} other{Posortowane od A do Z}}} value{Posortowano {selectedMenuItemText}} other{{direction,select,desc{Posortowane malejąco} other{Posortowane rosnąco}}}}`,
+		`{sourceType, select,
+			dates {{direction, select,
+				desc {Posortowane od nowego do starego}
+				other {Posortowane od starego do nowego}
+			}}
+			numbers {{direction, select,
+				desc {Posortowane od najwyższego do najniższego}
+				other {Posortowane od niskiego do wysokiego}
+			}}
+			words {{direction, select,
+				desc {Posortowane od Z do A}
+				other {Posortowane od A do Z}
+			}}
+			value {Posortowano {selectedMenuItemText}}
+			other {{direction, select,
+				desc {Posortowane malejąco}
+				other {Posortowane rosnąco}
+			}}
+		}`,
 	"components.table-controls.label": "Działania związane z tabelą",
 	"components.tabs.next": "Przewiń do przodu",
 	"components.tabs.previous": "Przewiń do tyłu",
@@ -168,7 +249,13 @@ export default {
 	"components.tag-list.interactive-label": "Lista tagów, elementy {count}",
 	"components.tag-list.num-hidden": "+{count} więcej",
 	"components.tag-list.role-description":
-		`{count,plural,one{Lista tagów, która zawiera {count} element} few{Lista tagów, która zawiera {count} elementy} many{Lista tagów, która zawiera {count} elementów} =0{Lista tagów, która zawiera 0 elementów} other{Lista tagów, która zawiera {count} elementów}}`,
+		`{count, plural,
+			=0 {Lista tagów, która zawiera 0 elementów}
+			one {Lista tagów, która zawiera {count} element}
+			few {Lista tagów, która zawiera {count} elementy}
+			many {Lista tagów, która zawiera {count} elementów}
+			other {Lista tagów, która zawiera {count} elementów}
+		}`,
 	"components.tag-list.show-less": "Pokaż mniej",
 	"components.tag-list.show-more-description": "Zaznacz, aby pokazać ukryte elementy listy tagów",
 	"components.tag-list-item.role-description": "Tag",
@@ -178,7 +265,13 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "Usuń aktywny tag",
 	"components.tag-list-item.tooltip-title": "Sterowanie klawiaturą",
 	"components.view-switcher.role-description":
-		`{count,plural,one{Przełącznik widoków, który zawiera {count} element} few{Przełącznik widoków, który zawiera {count} elementy} many{Przełącznik widoków, który zawiera {count} elementów} =0{Przełącznik widoków, który zawiera 0 elementów} other{Przełącznik widoków, który zawiera {count} elementów}}`,
+		`{count, plural,
+			=0 {Przełącznik widoków, który zawiera 0 elementów}
+			one {Przełącznik widoków, który zawiera {count} element}
+			few {Przełącznik widoków, który zawiera {count} elementy}
+			many {Przełącznik widoków, który zawiera {count} elementów}
+			other {Przełącznik widoków, który zawiera {count} elementów}
+		}`,
 	"templates.primary-secondary.divider": "Separator panelu dodatkowego",
 	"templates.primary-secondary.secondary-panel": "Panel dodatkowy"
 };
