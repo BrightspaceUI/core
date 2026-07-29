@@ -1,256 +1,277 @@
 export default {
-	"components.alert.close": "Close Alert",
-	"components.backdrop-loading.loadingAnnouncement": "Loading.",
-	"components.backdrop-loading.loadingCompleteAnnouncement": "Loading Complete.",
+	"components.alert.close": "Zamknij alert",
+	"components.backdrop-loading.loadingAnnouncement": "Wczytywanie.",
+	"components.backdrop-loading.loadingCompleteAnnouncement": "Wczytywanie zakończone.",
 	"components.backdrop-stale-overlay.message": "This data is out of date.",
-	"components.breadcrumbs.breadcrumb": "Breadcrumb",
-	"components.button-add.addItem": "Add Item",
-	"components.button-copy.copied": "Copied!",
-	"components.button-copy.error": "Copy failed. Try again, or try copying manually.",
-	"components.button-split.otherOptions": "Other Options",
-	"components.calendar.hasEvents": "Has Events.",
-	"components.calendar.notSelected": "Not Selected.",
-	"components.calendar.selected": "Selected.",
-	"components.calendar.show": "Show {month}",
+	"components.breadcrumbs.breadcrumb": "Menu okruszkowe",
+	"components.button-add.addItem": "Dodaj element",
+	"components.button-copy.copied": "Skopiowano!",
+	"components.button-copy.error": "Kopiowanie nie powiodło się. Spróbuj ponownie lub spróbuj wykonać kopię ręcznie.",
+	"components.button-split.otherOptions": "Inne opcje",
+	"components.calendar.hasEvents": "Zawiera wydarzenia.",
+	"components.calendar.notSelected": "Nie wybrano.",
+	"components.calendar.selected": "Wybrano.",
+	"components.calendar.show": "Pokaż {month}",
 	"components.count-badge.plus": "{number}+",
-	"components.dialog.close": "Close this dialog",
-	"components.dialog.critical": "Critical!",
-	"components.dropdown.close": "Close",
-	"components.filter.activeFilters": "Active Filters:",
-	"components.filter.additionalContentTooltip": "Use <b>left/right arrow keys</b> to move focus inside this list item",
-	"components.filter.clear": "Clear",
-	"components.filter.clearAll": "Clear All",
-	"components.filter.clearAllAnnounce": "Clearing all filters",
-	"components.filter.clearAllAnnounceOverride": "Clearing all filters for: {filterText}",
-	"components.filter.clearAllDescription": "Clear all filters",
-	"components.filter.clearAllDescriptionOverride": "Clear all filters for: {filterText}",
-	"components.filter.clearAnnounce": "Clearing filters for: {filterName}",
-	"components.filter.clearDescription": "Clear filters for: {filterName}",
+	"components.dialog.close": "Zamknij to okno dialogowe",
+	"components.dialog.critical": "Krytyczne!",
+	"components.dropdown.close": "Zamknij",
+	"components.filter.activeFilters": "Aktywne filtry:",
+	"components.filter.additionalContentTooltip": "Użyj <b>klawiszy strzałek lewo/prawo</b>, aby przesunąć zaznaczenie wewnątrz tego elementu listy",
+	"components.filter.clear": "Wyczyść",
+	"components.filter.clearAll": "Wyczyść wszystko",
+	"components.filter.clearAllAnnounce": "Czyszczenie wszystkich filtrów",
+	"components.filter.clearAllAnnounceOverride": "Usuwanie wszystkich filtrów dla: {filterText}",
+	"components.filter.clearAllDescription": "Wyczyść wszystkie filtry",
+	"components.filter.clearAllDescriptionOverride": "Wyczyść wszystkie filtry dla: {filterText}",
+	"components.filter.clearAnnounce": "Czyszczenie filtrów dla: {filterName}",
+	"components.filter.clearDescription": "Wyczyść filtry dla: {filterName}",
 	"components.filter.filterCountDescription":
 		`{number, plural,
-			=0 {No filters applied.}
-			one {{number} filter applied.}
-			other {{number} filters applied.}
+			=0 {Brak zastosowanych filtrów.}
+			one {Zastosowano {number} filtr.}
+			few {Zastosowano {number} filtry.}
+			many {Zastosowano {number} filtrów.}
+			other {Zastosowano {number} filtrów.}
 		}`,
-	"components.filter.filters": "Filters",
-	"components.filter.loading": "Loading filters",
-	"components.filter.noFilters": "No available filters",
+	"components.filter.filters": "Filtry",
+	"components.filter.loading": "Wczytywanie filtrów",
+	"components.filter.noFilters": "Brak dostępnych filtrów",
 	"components.filter.searchResults":
 		`{number, plural,
-			=0 {No search results}
-			one {{number} search result}
-			other {{number} search results}
+			=0 {Brak wyników wyszukiwania}
+			one {{number} wynik wyszukiwania}
+			few {{number} wyniki wyszukiwania}
+			many {{number} wyników wyszukiwania}
+			other {{number} wyników wyszukiwania}
 		}`,
-	"components.filter.selectedFirstListLabel": "{headerText}. Selected filters appear first.",
-	"components.filter.singleDimensionDescription": "Filter by: {filterName}",
+	"components.filter.selectedFirstListLabel": "{headerText}. Wybrane filtry są wyświetlane jako pierwsze.",
+	"components.filter.singleDimensionDescription": "Filtruj według: {filterName}",
 	"components.filter-dimension-set-date-text-value.textDays":
 		`{num, plural,
-			=0 {Today}
-			one {Last {num} day}
-			other {Last {num} days}
+			=0 {Dzisiaj}
+			one {Ostatni {num} dzień}
+			few {Ostatnie {num} dni}
+			many {Ostatnich {num} dni}
+			other {Ostatnich {num} dni}
 		}`,
 	"components.filter-dimension-set-date-text-value.textHours":
 		`{num, plural,
-			=1 {Last hour}
-			other {Last {num} hours}
+			=1 {Ostatnia godzina}
+			few {Ostatnie {num} godziny}
+			many {Ostatnich {num} godzin}
+			other {Ostatnich {num} godzin}
 		}`,
-	"components.filter-dimension-set-date-text-value.textMonths": "Last {num} months",
-	"components.filter-dimension-set-date-time-range-value.label": "{text}, expand to choose dates",
-	"components.filter-dimension-set-date-time-range-value.text": "Custom date range",
-	"components.filter-dimension-set-date-time-range-value.valueTextRange": "{startValue} to {endValue}",
-	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "Before {endValue}",
-	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "After {startValue}",
-	"components.form-element.defaultError": "{label} is invalid",
-	"components.form-element.defaultFieldLabel": "Field",
-	"components.form-element.input.email.typeMismatch": "Email is not valid",
+	"components.filter-dimension-set-date-text-value.textMonths": "Ostatnie(-ch) {num} miesiące(-ęcy)",
+	"components.filter-dimension-set-date-time-range-value.label": "{text} – rozwiń, aby wybrać daty",
+	"components.filter-dimension-set-date-time-range-value.text": "Niestandardowy zakres dat",
+	"components.filter-dimension-set-date-time-range-value.valueTextRange": "Od {startValue} do {endValue}",
+	"components.filter-dimension-set-date-time-range-value.valueTextRangeEndOnly": "Przed {endValue}",
+	"components.filter-dimension-set-date-time-range-value.valueTextRangeStartOnly": "Po {startValue}",
+	"components.form-element.defaultError": "{label} jest nieprawidłowy",
+	"components.form-element.defaultFieldLabel": "Pole",
+	"components.form-element.input.email.typeMismatch": "E-mail jest nieprawidłowy",
 	"components.form-element.input.number.rangeError":
 		`{minExclusive, select,
 			true {{maxExclusive, select,
-				true {Number must be greater than {min} and less than {max}.}
-				other {Number must be greater than {min} and less than or equal to {max}.}
+				true {Liczba musi być większa niż {min} i mniejsza niż {max}.}
+				other {Liczba musi być większa niż {min} i mniejsza lub równa {max}.}
 			}}
 			other {{maxExclusive, select,
-				true {Number must be greater than or equal to {min} and less than {max}.}
-				other {Number must be greater than or equal to {min} and less than or equal to {max}.}
+				true {Liczba musi być większa lub równa {min} i mniejsza niż {max}.}
+				other {Liczba musi być większa lub równa {min} i mniejsza lub równa {max}.}
 			}}
 		}`,
 	"components.form-element.input.number.rangeOverflow":
 		`{maxExclusive, select,
-			true {Number must be less than {max}.}
-			other {Number must be less than or equal to {max}.}
+			true {Liczba musi być mniejsza niż {max}.}
+			other {Liczba musi być mniejsza lub równa {max}.}
 		}`,
 	"components.form-element.input.number.rangeUnderflow":
 		`{minExclusive, select,
-			true {Number must be greater than {min}.}
-			other {Number must be greater than or equal to {min}.}
+			true {Liczba musi być większa niż {min}.}
+			other {Liczba musi być większa lub równa {min}.}
 		}`,
-	"components.form-element.input.text.tooShort": "{label} must be at least {minlength} characters",
-	"components.form-element.input.url.typeMismatch": "URL is not valid",
-	"components.form-element.valueMissing": "{label} is required",
+	"components.form-element.input.text.tooShort": "{label} musi mieć co najmniej {minlength} znaków",
+	"components.form-element.input.url.typeMismatch": "Adres URL jest nieprawidłowy",
+	"components.form-element.valueMissing": "Wymagany jest {label}",
 	"components.form-error-summary.errorSummary":
 		`{count, plural,
-			one {There was {count} error found in the information you submitted}
-			other {There were {count} errors found in the information you submitted}
+			one {W przesłanych danych był {count} błąd.}
+			few {W przesłanych danych były {count} błędy.}
+			many {W przesłanych danych było {count} błędów.}
+			other {W przesłanych danych było {count} błędu.}
 		}`,
-	"components.form-error-summary.text": "Toggle error details",
-	"components.input-color.backgroundColor": "Background Color",
-	"components.input-color.foregroundColor": "Foreground Color",
-	"components.input-color.none": "None",
-	"components.input-date.clear": "Clear",
-	"components.input-date.errorMaxDateOnly": "Date must be before or on {maxDate}",
-	"components.input-date.errorMinDateOnly": "Date must be on or after {minDate}",
-	"components.input-date.errorOutsideRange": "Date must be between {minDate} and {maxDate}",
-	"components.input-date.now": "Now",
-	"components.input-date.openInstructions": "Use date format {format}. Arrow down or press enter to access mini-calendar.",
-	"components.input-date.revert": "{label} reverted to previous value.",
-	"components.input-date.today": "Today",
-	"components.input-date.useDateFormat": "Use date format {format}.",
-	"components.input-date-range.endDate": "End Date",
-	"components.input-date-range.errorBadInput": "{startLabel} must be before {endLabel}",
-	"components.input-date-range.interactive-label": "Date range input",
-	"components.input-date-range.startDate": "Start Date",
-	"components.input-date-time.date": "Date",
-	"components.input-date-time.errorMaxDateOnly": "Date must be before or on {maxDate}",
-	"components.input-date-time.errorMinDateOnly": "Date must be on or after {minDate}",
-	"components.input-date-time.errorOutsideRange": "Date must be between {minDate} and {maxDate}",
-	"components.input-date-time.time": "Time",
-	"components.input-date-time-range.endDate": "End Date",
-	"components.input-date-time-range.errorBadInput": "{startLabel} must be before {endLabel}",
-	"components.input-date-time-range.interactive-label": "Date and time range input",
-	"components.input-date-time-range.startDate": "Start Date",
-	"components.input-date-time-range-to.to": "to",
-	"components.input-number.hintDecimalDuplicate": "There’s already a decimal in this number",
-	"components.input-number.hintDecimalIncorrectComma": "To add a decimal use the comma “,” character",
-	"components.input-number.hintDecimalIncorrectPeriod": "To add a decimal use the period “.” character",
-	"components.input-number.hintInteger": "This field only accepts integer values (no decimals)",
-	"components.input-search.clear": "Clear Search",
-	"components.input-search.defaultPlaceholder": "Search...",
-	"components.input-search.search": "Search",
-	"components.input-time-range.endTime": "End Time",
-	"components.input-time-range.errorBadInput": "{startLabel} must be before {endLabel}",
-	"components.input-time-range.startTime": "Start Time",
-	"components.interactive.instructions": "Press Enter to interact, Escape to exit",
-	"components.link.open-in-new-window": "Opens in a new window.",
-	"components.list.keyboard": "Use <b>arrow keys</b> to move focus inside this list, or <b>page up/down</b> to move up or down by 5",
-	"components.list-controls.label": "Actions for list",
-	"components.list-item.addItem": "Add Item",
-	"components.list-item-drag-handle.default": "Reorder item action for {name}",
-	"components.list-item-drag-handle.keyboard": "Reorder item, current position {currentPosition} out of {size}. To move this item, press up or down arrows.",
+	"components.form-error-summary.text": "Przełącz szczegóły błędów",
+	"components.input-color.backgroundColor": "Kolor tła",
+	"components.input-color.foregroundColor": "Kolor pierwszego planu",
+	"components.input-color.none": "Brak",
+	"components.input-date.clear": "Wyczyść",
+	"components.input-date.errorMaxDateOnly": "Data musi przypadać na lub przed {maxDate}",
+	"components.input-date.errorMinDateOnly": "Data musi przypadać na lub po {minDate}",
+	"components.input-date.errorOutsideRange": "Data musi znajdować się pomiędzy {minDate} a {maxDate}",
+	"components.input-date.now": "Teraz",
+	"components.input-date.openInstructions": "Użyj formatu daty {format}. Użyj strzałki w dół lub naciśnij klawisz Enter, aby uzyskać dostęp do mini-kalendarza.",
+	"components.input-date.revert": "Wartość {label} została przywrócona do poprzedniej wartości.",
+	"components.input-date.today": "Dzisiaj",
+	"components.input-date.useDateFormat": "Użyj formatu daty {format}.",
+	"components.input-date-range.endDate": "Data zakończenia",
+	"components.input-date-range.errorBadInput": "{startLabel} musi poprzedzać {endLabel}",
+	"components.input-date-range.interactive-label": "Wprowadzanie zakresu dat",
+	"components.input-date-range.startDate": "Data rozpoczęcia",
+	"components.input-date-time.date": "Data",
+	"components.input-date-time.errorMaxDateOnly": "Data musi przypadać na lub przed {maxDate}",
+	"components.input-date-time.errorMinDateOnly": "Data musi przypadać na lub po {minDate}",
+	"components.input-date-time.errorOutsideRange": "Data musi znajdować się pomiędzy {minDate} a {maxDate}",
+	"components.input-date-time.time": "Godzina",
+	"components.input-date-time-range.endDate": "Data zakończenia",
+	"components.input-date-time-range.errorBadInput": "{startLabel} musi poprzedzać {endLabel}",
+	"components.input-date-time-range.interactive-label": "Wprowadzanie zakresu daty i godziny",
+	"components.input-date-time-range.startDate": "Data rozpoczęcia",
+	"components.input-date-time-range-to.to": "do",
+	"components.input-number.hintDecimalDuplicate": "Ta liczba zawiera już ułamek dziesiętny",
+	"components.input-number.hintDecimalIncorrectComma": "Aby dodać części dziesiętne, użyj znaku przecinka „,”",
+	"components.input-number.hintDecimalIncorrectPeriod": "Aby dodać części dziesiętne, użyj znaku kropki „.”",
+	"components.input-number.hintInteger": "To pole akceptuje tylko liczby całkowite (bez części dziesiętnych)",
+	"components.input-search.clear": "Wyczyść wyszukiwanie",
+	"components.input-search.defaultPlaceholder": "Wyszukaj...",
+	"components.input-search.search": "Wyszukiwanie",
+	"components.input-time-range.endTime": "Czas zakończenia",
+	"components.input-time-range.errorBadInput": "{startLabel} musi poprzedzać {endLabel}",
+	"components.input-time-range.startTime": "Czas rozpoczęcia",
+	"components.interactive.instructions": "Naciśnij Enter, aby wejść w interakcję, Escape, aby wyjść",
+	"components.link.open-in-new-window": "Otwiera się w nowym oknie.",
+	"components.list.keyboard": "Użyj <b>klawiszy strzałek</b>, aby przesunąć fokus wewnątrz tej listy, lub <b>klawiszy Page Up/Page Down</b>, aby przesunąć w górę lub w dół o 5",
+	"components.list-controls.label": "Działania związane z listą",
+	"components.list-item.addItem": "Dodaj element",
+	"components.list-item-drag-handle.default": "Działanie zmiany kolejności elementu dla {name}",
+	"components.list-item-drag-handle.keyboard": "Zmień kolejność elementu, obecna pozycja: {currentPosition} z {size}. Aby przenieść ten element, naciśnij strzałkę w górę lub w dół.",
 	"components.list-item-drag-handle.side-to-side.keyboard": "Reorder item, current position {currentPosition} out of {size}. To move this item, press left or right arrows.",
-	"components.list-item-drag-handle-tooltip.enter-desc": "Toggle keyboard reorder mode.",
-	"components.list-item-drag-handle-tooltip.enter-key": "Enter",
-	"components.list-item-drag-handle-tooltip.left-right-desc": "Change the nesting level.",
-	"components.list-item-drag-handle-tooltip.left-right-key": "Left/Right",
+	"components.list-item-drag-handle-tooltip.enter-desc": "Przełącz tryb zmiany kolejności za pomocą klawiatury.",
+	"components.list-item-drag-handle-tooltip.enter-key": "Wpisz",
+	"components.list-item-drag-handle-tooltip.left-right-desc": "Zmień poziom gniazdowania.",
+	"components.list-item-drag-handle-tooltip.left-right-key": "Lewo/Prawo",
 	"components.list-item-drag-handle-tooltip.side-to-side.left-right-desc": "Move item left or right in the list.",
 	"components.list-item-drag-handle-tooltip.side-to-side.up-down-desc": "Move item left or right in the list.",
-	"components.list-item-drag-handle-tooltip.title": "Keyboard Controls for Reordering:",
-	"components.list-item-drag-handle-tooltip.up-down-desc": "Move item up or down in the list.",
-	"components.list-item-drag-handle-tooltip.up-down-key": "Up/Down",
-	"components.menu-item-return.return": "Return to previous menu.",
-	"components.menu-item-return.returnCurrentlyShowing": "Return to previous menu. You are viewing {menuTitle}.",
+	"components.list-item-drag-handle-tooltip.title": "Elementy sterujące klawiatury do zmiany kolejności:",
+	"components.list-item-drag-handle-tooltip.up-down-desc": "Przesuń element w górę lub w dół na liście.",
+	"components.list-item-drag-handle-tooltip.up-down-key": "W górę/w dół",
+	"components.menu-item-return.return": "Powrót do poprzedniego menu.",
+	"components.menu-item-return.returnCurrentlyShowing": "Powrót do poprzedniego menu. Przeglądasz {menuTitle}.",
 	"components.meter-mixin.commaSeperatedAria": "{term1}, {term2}",
 	"components.meter-mixin.fraction": "{x}∕{y}",
-	"components.meter-mixin.fractionAria": "{x} out of {y}",
-	"components.meter-mixin.progressIndicator": "Progress Indicator",
-	"components.more-less.less": "less",
-	"components.more-less.more": "more",
-	"components.object-property-list.item-placeholder-text": "Placeholder Item",
-	"components.overflow-group.moreActions": "More Actions",
+	"components.meter-mixin.fractionAria": "{x} z {y}",
+	"components.meter-mixin.progressIndicator": "Wskaźnik postępu",
+	"components.more-less.less": "mniej",
+	"components.more-less.more": "więcej",
+	"components.object-property-list.item-placeholder-text": "Element zastępczy",
+	"components.overflow-group.moreActions": "Więcej działań",
 	"components.page.footer-region-label": "Footer",
-	"components.page.header-nav-label": "Main",
+	"components.page.header-nav-label": "Główna",
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
-	"components.page.side-nav-label": "Side",
+	"components.page.side-nav-label": "Strona boczna",
 	"components.page.supporting-divider-label": "Supporting Panel Divider",
 	"components.page.supporting-panel-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
-			one {{countFormatted} item}
-			other {{countFormatted} items}
+			one {{countFormatted} element}
+			few {{countFormatted} elementy}
+			many {{countFormatted} elementów}
+			other {{countFormatted} elementów}
 		}`,
 	"components.pageable.info-with-total":
 		`{totalCount, plural,
-			one {{countFormatted} of {totalCountFormatted} item}
-			other {{countFormatted} of {totalCountFormatted} items}
+			one {{countFormatted} z {totalCountFormatted} elementu}
+			few {{countFormatted} z {totalCountFormatted} elementów}
+			many {{countFormatted} z {totalCountFormatted} elementów}
+			other {{countFormatted} z {totalCountFormatted} elementów}
 		}`,
-	"components.pager-load-more.action": "Load More",
-	"components.pager-load-more.action-with-page-size": "Load {count} More",
-	"components.pager-load-more.status-loading": "Loading more items",
-	"components.scroll-wrapper.scroll-left": "Scroll left",
-	"components.scroll-wrapper.scroll-right": "Scroll right",
+	"components.pager-load-more.action": "Wczytaj więcej",
+	"components.pager-load-more.action-with-page-size": "Wczytaj {count} więcej",
+	"components.pager-load-more.status-loading": "Wczytywanie większej liczby elementów",
+	"components.scroll-wrapper.scroll-left": "Przewiń w lewo",
+	"components.scroll-wrapper.scroll-right": "Przewiń w prawo",
 	"components.selection.action-max-hint":
 		`{count, plural,
-			one {Disabled when more than {countFormatted} item is selected}
-			other {Disabled when more than {countFormatted} items are selected}
+			one {Wyłączone, gdy wybrano więcej niż {countFormatted} element}
+			few {Wyłączone, gdy wybrano więcej niż {countFormatted} elementy}
+			many {Wyłączone, gdy wybrano więcej niż {countFormatted} elementów}
+			other {Wyłączone, gdy wybrano więcej niż {countFormatted} elementu}
 		}`,
-	"components.selection.action-required-hint": "Select an item to perform this action",
-	"components.selection.select-all": "Select All",
+	"components.selection.action-required-hint": "Wybierz element, aby wykonać to działanie",
+	"components.selection.select-all": "Zaznacz wszystko",
 	"components.selection.select-all-items":
 		`{count, plural,
-			=1 {Select Item}
-			one {Select All {countFormatted} Item}
-			other {Select All {countFormatted} Items}
+			one {Wybierz element}
+			few {Wybierz wszystkie {countFormatted} elementy}
+			many {Wybierz wszystkich {countFormatted} elementów}
+			other {Wybierz wszystkich {countFormatted} elementów}
 		}`,
-	"components.selection.selected": "{count} selected",
-	"components.selection.selected-plus": "{count}+ selected",
-	"components.selection-controls.label": "Actions for selection",
-	"components.skip-nav.skipToMainContent": "skip to main content",
-	"components.sort.label": "Sort",
-	"components.sort.text": "Sort: {selectedItemText}",
-	"components.switch.conditions": "Conditions must be met",
-	"components.switch.hidden": "Hidden",
-	"components.switch.visible": "Visible",
-	"components.switch.visibleWithPeriod": "Visible.",
-	"components.table-col-sort-button.addSortOrder": "Select to add sort order",
-	"components.table-col-sort-button.changeSortOrder": "Select to change sort order",
+	"components.selection.selected": "Liczba wybranych opcji: {count}",
+	"components.selection.selected-plus": "Wybrano {count}+ opcji",
+	"components.selection-controls.label": "Działania związane z wyborem",
+	"components.skip-nav.skipToMainContent": "przejdź do głównej zawartości",
+	"components.sort.label": "Sortuj",
+	"components.sort.text": "Sortowanie: {selectedItemText}",
+	"components.switch.conditions": "Warunki muszą być spełnione",
+	"components.switch.hidden": "Ukryte",
+	"components.switch.visible": "Widoczny",
+	"components.switch.visibleWithPeriod": "Widoczna.",
+	"components.table-col-sort-button.addSortOrder": "Wybierz, aby dodać kolejność sortowania",
+	"components.table-col-sort-button.changeSortOrder": "Wybierz, aby zmienić kolejność sortowania",
 	"components.table-col-sort-button.title":
 		`{sourceType, select,
 			dates {{direction, select,
-				desc {Sorted new to old}
-				other {Sorted old to new}
+				desc {Posortowane od nowego do starego}
+				other {Posortowane od starego do nowego}
 			}}
 			numbers {{direction, select,
-				desc {Sorted high to low}
-				other {Sorted low to high}
+				desc {Posortowane od najwyższego do najniższego}
+				other {Posortowane od niskiego do wysokiego}
 			}}
 			words {{direction, select,
-				desc {Sorted Z to A}
-				other {Sorted A to Z}
+				desc {Posortowane od Z do A}
+				other {Posortowane od A do Z}
 			}}
-			value {Sorted {selectedMenuItemText}}
+			value {Posortowano {selectedMenuItemText}}
 			other {{direction, select,
-				desc {Sorted descending}
-				other {Sorted ascending}
+				desc {Posortowane malejąco}
+				other {Posortowane rosnąco}
 			}}
 		}`,
-	"components.table-controls.label": "Actions for table",
-	"components.tabs.next": "Scroll Forward",
-	"components.tabs.previous": "Scroll Backward",
-	"components.tag-list.clear": "Click, press backspace, or press delete key to remove item {value}",
-	"components.tag-list.clear-all": "Clear All",
-	"components.tag-list.cleared-all": "Removed all tag list items",
-	"components.tag-list.cleared-item": "Removed tag list item {value}",
-	"components.tag-list.interactive-label": "Tag List, {count} items",
-	"components.tag-list.num-hidden": "+ {count} more",
+	"components.table-controls.label": "Działania związane z tabelą",
+	"components.tabs.next": "Przewiń do przodu",
+	"components.tabs.previous": "Przewiń do tyłu",
+	"components.tag-list.clear": "Kliknij, naciśnij klawisz Backspace lub naciśnij klawisz Delete, aby usunąć element {value}",
+	"components.tag-list.clear-all": "Wyczyść wszystko",
+	"components.tag-list.cleared-all": "Usunięto wszystkie elementy listy tagów",
+	"components.tag-list.cleared-item": "Usunięto pozycję listy tagów {value}",
+	"components.tag-list.interactive-label": "Lista tagów, elementy {count}",
+	"components.tag-list.num-hidden": "+{count} więcej",
 	"components.tag-list.role-description":
 		`{count, plural,
-			=0 {Tag List with 0 items}
-			one {Tag List with {count} item}
-			other {Tag List with {count} items}
+			=0 {Lista tagów, która zawiera 0 elementów}
+			one {Lista tagów, która zawiera {count} element}
+			few {Lista tagów, która zawiera {count} elementy}
+			many {Lista tagów, która zawiera {count} elementów}
+			other {Lista tagów, która zawiera {count} elementów}
 		}`,
-	"components.tag-list.show-less": "Show Less",
-	"components.tag-list.show-more-description": "Select to show hidden tag list items",
+	"components.tag-list.show-less": "Pokaż mniej",
+	"components.tag-list.show-more-description": "Zaznacz, aby pokazać ukryte elementy listy tagów",
 	"components.tag-list-item.role-description": "Tag",
-	"components.tag-list-item.tooltip-arrow-keys": "Arrow Keys",
-	"components.tag-list-item.tooltip-arrow-keys-desc": "Move between tags",
+	"components.tag-list-item.tooltip-arrow-keys": "Klawisze strzałek",
+	"components.tag-list-item.tooltip-arrow-keys-desc": "Poruszanie się między tagami",
 	"components.tag-list-item.tooltip-delete-key": "Backspace/Delete",
-	"components.tag-list-item.tooltip-delete-key-desc": "Delete the focused tag",
-	"components.tag-list-item.tooltip-title": "Keyboard Controls",
+	"components.tag-list-item.tooltip-delete-key-desc": "Usuń aktywny tag",
+	"components.tag-list-item.tooltip-title": "Sterowanie klawiaturą",
 	"components.view-switcher.role-description":
 		`{count, plural,
-			=0 {View Switcher with 0 items}
-			one {View Switcher with {count} item}
-			other {View Switcher with {count} items}
+			=0 {Przełącznik widoków, który zawiera 0 elementów}
+			one {Przełącznik widoków, który zawiera {count} element}
+			few {Przełącznik widoków, który zawiera {count} elementy}
+			many {Przełącznik widoków, który zawiera {count} elementów}
+			other {Przełącznik widoków, który zawiera {count} elementów}
 		}`,
-	"templates.primary-secondary.divider": "Secondary panel divider",
-	"templates.primary-secondary.secondary-panel": "Secondary panel"
+	"templates.primary-secondary.divider": "Separator panelu dodatkowego",
+	"templates.primary-secondary.secondary-panel": "Panel dodatkowy"
 };
