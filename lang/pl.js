@@ -141,7 +141,7 @@ export default {
 	"components.selection.action-max-hint":
 		`{count, plural, one {Wyłączone, gdy wybrano więcej niż {countFormatted} element} few {Wyłączone, gdy wybrano więcej niż {countFormatted} elementy} many {Wyłączone, gdy wybrano więcej niż {countFormatted} elementów} other {Wyłączone, gdy wybrano więcej niż {countFormatted} elementu}}`,
 	"components.selection.action-required-hint": "Wybierz element, aby wykonać to działanie",
-	"components.selection.select-all": "Zaznacz wszystko ",
+	"components.selection.select-all": "Zaznacz wszystko",
 	"components.selection.select-all-items":
 		`{count, plural, one {Wybierz element} few {Wybierz wszystkie {countFormatted} elementy} many {Wybierz wszystkich {countFormatted} elementów} other {Wybierz wszystkich {countFormatted} elementów}}`,
 	"components.selection.selected": "Liczba wybranych opcji: {count}",
