@@ -7,6 +7,8 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { ProviderMixin } from '../../mixins/provider/provider-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+export const panelStateStorageKey = key => `d2l-page-panel-state-${key}`;
+
 const DRAWER_MIN_HEIGHT = 200; // TO DO: Confirm
 const MAIN_MIN_WIDTH = 600; // TO DO: Confirm
 const PANEL_MIN_WIDTH = 320;
@@ -92,12 +94,12 @@ class PanelStateController {
 	#host;
 	#panels;
 
-	#getFullStorageKey() {
-		return this.#host.stateStorageKey ? `d2l-page-panel-state-${this.#host.stateStorageKey}` : null;
+	#getPanelStateStorageKey() {
+		return this.#host.stateStorageKey ? panelStateStorageKey(this.#host.stateStorageKey) : null;
 	}
 
 	#getStoredState() {
-		const fullKey = this.#getFullStorageKey();
+		const fullKey = this.#getPanelStateStorageKey();
 		if (!fullKey) return;
 
 		try {
@@ -109,7 +111,7 @@ class PanelStateController {
 	}
 
 	#storePanelState(panelKey) {
-		const fullKey = this.#getFullStorageKey();
+		const fullKey = this.#getPanelStateStorageKey();
 		if (!fullKey) return;
 		const state = this.#getStoredState() || {};
 
