@@ -180,8 +180,10 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 
 	#linkId = getUniqueId();
 
-	#handleClick() {
-		if (this.disabled) return false;
+	#handleClick(e) {
+		if (this.disabled) {
+			e.stopPropagation();
+			e.preventDefault();
 	}
 
 }
