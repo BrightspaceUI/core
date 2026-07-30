@@ -58,7 +58,7 @@ class PanelStateController {
 		}
 	}
 
-	resize(key, requestedSize, animate = false, storeState = false) {
+	resize(key, requestedSize, { animate = false, storeState = false } = {}) {
 		const panel = this.#panels[key];
 		// Clamp requested size to min and max bounds
 		panel.size = Math.max(panel.minSize, Math.min(requestedSize, panel.maxSize));
@@ -412,7 +412,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	#handleDividerResize(e) {
 		const panelKey = e.target.dataset.panelKey;
-		this._panelState.resize(panelKey, e.detail.requestedSize, true, true);
+		this._panelState.resize(panelKey, e.detail.requestedSize, { animate: true, storeState: true });
 	};
 
 	#handleDividerToggle(e) {
