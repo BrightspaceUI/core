@@ -2,15 +2,14 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { _generateLinkStyles } from './link-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
+import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
-import { styleMap } from 'lit/directives/style-map.js';
 
 export const linkStyles = _generateLinkStyles('.d2l-link', true);
 
@@ -90,12 +89,6 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			align-items: baseline;
 			display: flex;
 		}
-		a span.truncate {
-			${getOverflowDeclarations({ lines: 1 })}
-		}
-		a span.truncate-one {
-			${overflowEllipsisDeclarations}
-		}
 		#new-window {
 			line-height: 0;
 			white-space: nowrap;
@@ -157,12 +150,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 			'd2l-link-main': this.main,
 			'd2l-link-small': this.small
 		};
-		const spanClasses = {
-			'd2l-link-content': true,
-			'truncate': this.lines > 1,
-			'truncate-one': this.lines === 1
-		};
-		const styles = { webkitLineClamp: this.lines || null };
+		const styles = this.lines ? getOverflowDeclarations({ lines: this.lines }) : null;
 		const newWindowElements = (this.target === '_blank')
 			? html`<span id="new-window"><span style="font-size: 0;">&nbsp;</span><d2l-icon icon="tier1:new-window"></d2l-icon></span><span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
 			: nothing;
@@ -186,17 +174,14 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				tabindex="${ifDefined(this.disabled && this.disabledTooltip ? 0 : undefined)}"
 				target="${ifDefined(this.target)}"
 				><span
-					class="${classMap(spanClasses)}"
-					style="${styleMap(styles)}"><slot></slot></span>${newWindowElements}</a>${disabledTooltip}`;
+					class="d2l-link-content"
+					style="${styles ?? nothing}"><slot></slot></span>${newWindowElements}</a>${disabledTooltip}`;
 	}
 
 	#linkId = getUniqueId();
 
-	#handleClick(e) {
-		if (this.disabled) {
-			e.stopPropagation();
-			e.preventDefault();
-		}
+	#handleClick() {
+		if (this.disabled) return false;
 	}
 
 }
