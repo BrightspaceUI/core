@@ -49,7 +49,7 @@ class PanelStateController {
 			if (stored) {
 				const storedSize = parseInt(stored.size);
 				this.resize(key, isFinite(storedSize) ? storedSize : defaults[key]);
-				if (stored.collapsed === 'true') panel.collapsed = true;
+				if (stored.collapsed) panel.collapsed = true;
 			} else {
 				this.resize(key, defaults[key]);
 			}
@@ -115,8 +115,8 @@ class PanelStateController {
 
 		try {
 			state[panelKey] = {
-				size: String(this.#panels[panelKey].size),
-				collapsed: String(this.#panels[panelKey].collapsed)
+				size: this.#panels[panelKey].size,
+				collapsed: this.#panels[panelKey].collapsed
 			};
 			localStorage.setItem(fullKey, JSON.stringify(state));
 		} catch {

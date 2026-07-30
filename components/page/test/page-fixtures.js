@@ -26,6 +26,9 @@ export function getStoredPanelState() {
 export function setStoredPanelState(state) {
 	localStorage.setItem(fullStorageKey, JSON.stringify(state));
 }
+export function clearStoredPanelState() {
+	localStorage.removeItem(fullStorageKey);
+}
 
 const footer = html`
 	<d2l-page-footer slot="footer">
