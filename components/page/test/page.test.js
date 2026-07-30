@@ -2,6 +2,7 @@ import '../page.js';
 import { clearStoredPanelState, getStoredPanelState, pageFixtures, setStoredPanelState } from './page-fixtures.js';
 import { expect, fixture, runConstructor, setViewport, waitUntil } from '@brightspace-ui/testing';
 import { getDivider } from './page-divider-internal-fixtures.js';
+import { restore, spy } from 'sinon';
 
 const defaultFixtureOptions = { pagePadding: false, viewport: { width: 1300, height: 800 } };
 
@@ -98,6 +99,10 @@ describe('page', () => {
 		});
 
 		describe('storing', () => {
+			afterEach(() => {
+				restore();
+			});
+
 			it('persists the size when a panel is resized', async() => {
 				const elem = await fixture(pageFixtures.sideNavHeaderStorageKey, defaultFixtureOptions);
 				getDivider(elem, 'side-nav').dispatchEvent(new CustomEvent('d2l-page-divider-resize', { detail: { requestedSize: 450 } }));
@@ -125,9 +130,10 @@ describe('page', () => {
 			});
 
 			it('does not persist when no storage key is set', async() => {
+				const setItemSpy = spy(localStorage, 'setItem');
 				const elem = await fixture(pageFixtures.sideNavHeader, defaultFixtureOptions);
 				getDivider(elem, 'side-nav').dispatchEvent(new CustomEvent('d2l-page-divider-resize', { detail: { requestedSize: 450 } }));
-				expect(getStoredPanelState()).to.be.null;
+				expect(setItemSpy.called).to.be.false;
 			});
 
 			it('does not update when size adjusted by initial clamping', async() => {
