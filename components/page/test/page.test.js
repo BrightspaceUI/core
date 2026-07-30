@@ -1,8 +1,8 @@
 import '../page.js';
 import { clearStoredPanelState, getStoredPanelState, pageFixtures, setStoredPanelState } from './page-fixtures.js';
 import { expect, fixture, runConstructor, setViewport, waitUntil } from '@brightspace-ui/testing';
-import { getDivider } from './page-divider-internal-fixtures.js';
 import { restore, spy } from 'sinon';
+import { getDivider } from './page-divider-internal-fixtures.js';
 
 const defaultFixtureOptions = { pagePadding: false, viewport: { width: 1300, height: 800 } };
 
