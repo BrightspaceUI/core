@@ -121,6 +121,7 @@ class PanelStateController {
 			localStorage.setItem(fullKey, JSON.stringify(state));
 		} catch {
 			// Do nothing if storage quota exceeded or using private browsing mode of an old Safari version
+			// TO DO: If QuotaExceededError, log this to our logging framework
 		}
 	}
 }
