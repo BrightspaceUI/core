@@ -93,7 +93,7 @@ class PanelStateController {
 	#panels;
 
 	#getFullStorageKey() {
-		return this.#host.storageKey ? `d2l-page-panel-state-${this.#host.storageKey}` : null;
+		return this.#host.stateStorageKey ? `d2l-page-panel-state-${this.#host.stateStorageKey}` : null;
 	}
 
 	#getStoredState() {
@@ -138,10 +138,11 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	static properties = {
 		/**
-		 * Key used to optionally store panel sizes across reloads (using localStorage). Different pages should use different keys.
+		 * Key used to optionally store page state across reloads (using localStorage). Different pages should use different keys.
+		 * Currently, this includes panel state info.
 		 * @type {string}
 		 */
-		storageKey: { type: String, attribute: 'storage-key' },
+		stateStorageKey: { type: String, attribute: 'state-storage-key' },
 		/**
 		 * Width type of the page and its underlying pieces
 		 * @type {'normal'|'wide'|'fullscreen'}

@@ -74,7 +74,7 @@ export function createPage({
 	overrides = {}
 } = {}) {
 	return html`
-		<d2l-page width-type="${widthType}" storage-key="${ifDefined(setStorageKey ? TEST_STORAGE_KEY : undefined)}">
+		<d2l-page width-type="${widthType}" state-storage-key="${ifDefined(setStorageKey ? TEST_STORAGE_KEY : undefined)}">
 			${header === 'full' ? fullHeader : immersiveHeader}
 			${layout === 'side-nav' ? html`
 				<d2l-page-side-nav slot="side-nav">
