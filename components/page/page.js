@@ -13,6 +13,10 @@ const DRAWER_MIN_HEIGHT = 200; // TO DO: Confirm
 const MAIN_MIN_WIDTH = 600; // TO DO: Confirm
 const PANEL_MIN_WIDTH = 320;
 
+export const SIDE_NAV_DEFAULT_WIDTH = 334;
+export const supportingDefaultWidth = contentWidth => Math.floor(contentWidth / 3);
+export const supportingMobileDefaultHeight = fullHeight => Math.floor(fullHeight / 2);
+
 class PanelStateController {
 	constructor(host, panelConfigs) {
 		this.#host = host;
@@ -428,13 +432,10 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	#initializePanelSizes() {
-		const defaultWidth = Math.floor(this._contentWidth / 3);
-		const defaultHeight = Math.floor(window.innerHeight / 2);
-
 		this._panelState.initialize({
-			'side-nav': defaultWidth,
-			'supporting': defaultWidth,
-			'supporting-mobile': defaultHeight
+			'side-nav': SIDE_NAV_DEFAULT_WIDTH,
+			'supporting': supportingDefaultWidth(this._contentWidth),
+			'supporting-mobile': supportingMobileDefaultHeight(window.innerHeight)
 		});
 	}
 
