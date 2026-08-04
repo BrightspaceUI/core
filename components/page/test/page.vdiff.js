@@ -1,5 +1,7 @@
+import { addMarkers, clearStoredPanelState, pageFixtures, scrollBody, scrollPanel, setStoredPanelState } from './page-fixtures.js';
 import { expect, fixture } from '@brightspace-ui/testing';
-import { pageFixtures, scrollBody, scrollPanel } from './page-fixtures.js';
+import { MAIN_MIN_WIDTH, PANEL_MIN_WIDTH, SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth } from '../page.js';
+import { DIVIDER_WIDTH } from '../page-divider-internal.js';
 
 describe('page', () => {
 	describe('layout', () => {
@@ -314,6 +316,84 @@ describe('page', () => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1600, height: 550 } });
 				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+	});
+
+	describe('panel', () => {
+		afterEach(() => {
+			clearStoredPanelState();
+		});
+
+		describe('collapsed', () => {
+			[
+				// Non-sticky header
+				{ name: 'normal-side-nav-header', fixture: pageFixtures.sideNavHeaderStorageKey },
+				{ name: 'normal-supporting-footer', fixture: pageFixtures.supportingFooterStorageKey },
+				{ name: 'wide-side-nav-both-headers-footer', fixture: pageFixtures.sideNavBothHeadersFooterWideStorageKey },
+				{ name: 'wide-supporting-both-headers-footer', fixture: pageFixtures.supportingBothHeadersFooterWideStorageKey },
+				{ name: 'fullscreen-side-nav-both-headers-footer', fixture: pageFixtures.sideNavBothHeadersFooterFullscreenStorageKey },
+				{ name: 'fullscreen-supporting-both-headers-footer', fixture: pageFixtures.supportingBothHeadersFooterFullscreenStorageKey },
+
+				// Sticky header
+				{ name: 'normal-immersive-side-nav-header-footer', fixture: pageFixtures.sideNavImmersiveHeaderFooterStorageKey },
+				{ name: 'normal-immersive-supporting-both-headers', fixture: pageFixtures.supportingImmersiveBothHeadersStorageKey },
+				{ name: 'wide-immersive-side-nav-both-headers-footer', fixture: pageFixtures.sideNavImmersiveBothHeadersFooterWideStorageKey },
+				{ name: 'wide-immersive-supporting-both-headers-footer', fixture: pageFixtures.supportingImmersiveBothHeadersFooterWideStorageKey },
+				{ name: 'fullscreen-immersive-side-nav-both-headers-footer', fixture: pageFixtures.sideNavImmersiveBothHeadersFooterFullscreenStorageKey },
+				{ name: 'fullscreen-immersive-supporting-both-headers-footer', fixture: pageFixtures.supportingImmersiveBothHeadersFooterFullscreenStorageKey },
+
+				// RTL
+				{ name: 'rtl-normal-side-nav-header', rtl: true, fixture: pageFixtures.sideNavHeaderStorageKey },
+				{ name: 'rtl-normal-supporting-footer', rtl: true, fixture: pageFixtures.supportingFooterStorageKey },
+				{ name : 'rtl-normal-immersive-side-nav-header-footer', rtl: true, fixture: pageFixtures.sideNavImmersiveHeaderFooterStorageKey },
+				{ name: 'rtl-normal-immersive-supporting-both-headers', rtl: true, fixture: pageFixtures.supportingImmersiveBothHeadersStorageKey },
+			].forEach(test => {
+				it(test.name, async() => {
+					setStoredPanelState({
+						'side-nav': { collapsed: true, size: 300 },
+						'supporting': { collapsed: true, size: 300 }
+					});
+					const elem = await fixture(test.fixture, { pagePadding: false, rtl: test.rtl, viewport: { width: 1600, height: 550 } });
+					await expect(elem).to.be.golden({ margin: 0 });
+				});
+			});
+		});
+
+		// Grey marker is default size
+		// Blue marker is stored size
+		// Green marker is the expected resulting position
+		describe('restored', () => {
+			const width = 1200;
+			const maxPanelSize = width - MAIN_MIN_WIDTH - DIVIDER_WIDTH;
+			const minPanelSize = PANEL_MIN_WIDTH;
+			const sideNavDefault = SIDE_NAV_DEFAULT_WIDTH;
+			const supportingDefault = supportingDefaultWidth(width);
+
+			[
+				{ name: 'side-nav-larger', position: 'start', fixture: pageFixtures.sideNavHeaderStorageKey, default: sideNavDefault, stored: 500, expected: 500 },
+				{ name: 'side-nav-smaller', position: 'start', fixture: pageFixtures.sideNavHeaderStorageKey, default: sideNavDefault, stored: 325, expected: 325 },
+				{ name: 'side-nav-max', position: 'start', fixture: pageFixtures.sideNavHeaderStorageKey, default: sideNavDefault, stored: 800, expected: maxPanelSize },
+				{ name: 'side-nav-min', position: 'start', fixture: pageFixtures.sideNavHeaderStorageKey, default: sideNavDefault, stored: 200, expected: minPanelSize },
+
+				{ name: 'supporting-larger', position: 'end', fixture: pageFixtures.supportingFooterStorageKey, default: supportingDefault, stored: 500, expected: 500 },
+				{ name: 'supporting-smaller', position: 'end', fixture: pageFixtures.supportingFooterStorageKey, default: supportingDefault, stored: 350, expected: 350 },
+				{ name: 'supporting-max', position: 'end', fixture: pageFixtures.supportingFooterStorageKey, default: supportingDefault, stored: 800, expected: maxPanelSize },
+				{ name: 'supporting-min', position: 'end', fixture: pageFixtures.supportingFooterStorageKey, default: supportingDefault, stored: 200, expected: minPanelSize },
+			].forEach(test => {
+				it(test.name, async() => {
+					setStoredPanelState({
+						'side-nav': { collapsed: false, size: test.stored },
+						'supporting': { collapsed: false, size: test.stored }
+					});
+					const elem = await fixture(test.fixture, { pagePadding: false, rtl: test.rtl, viewport: { width: width, height: 450 } });
+					addMarkers(elem, test.position, [
+						{ color: 'grey', size: test.default },
+						{ color: 'green', size: test.expected },
+						...(test.stored !== test.expected ? [{ color: 'blue', size: test.stored }] : [])
+					]);
+					await expect(elem).to.be.golden({ margin: 0 });
+				});
 			});
 		});
 	});
