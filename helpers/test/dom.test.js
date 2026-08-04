@@ -83,6 +83,7 @@ const simpleMultiElementFixture = html`
 		<div id="light2"></div>
 		some text
 		<div id="light3"></div>
+		<div id="light4"></div>
 	</div>`
 ;
 const wcFixture = `
@@ -498,6 +499,21 @@ describe('dom', () => {
 			const elementSibling = getComposedNextElementSibling(target);
 			const expected = elem.querySelector('#light3');
 			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns next element sibling that fulfills predicate in vanilla', async() => {
+			const elem = await fixture(simpleMultiElementFixture);
+			const target = elem.querySelector('#light2');
+			const elementSibling = getComposedNextElementSibling(target, { predicate: elem => elem.id === 'light4' });
+			const expected = elem.querySelector('#light4');
+			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns null when no next element siblings fulfill predicate in vanilla', async() => {
+			const elem = await fixture(simpleMultiElementFixture);
+			const target = elem.querySelector('#light2');
+			const elementSibling = getComposedNextElementSibling(target, { predicate: elem => elem.id === 'light5' });
+			expect(elementSibling).to.be.null;
 		});
 
 		it('returns next element sibling in default slot of custom element', async() => {
