@@ -79,7 +79,7 @@ export function getBoundingAncestor(node) {
 	});
 }
 
-function getComposedChildNodes(node, { elementsOnly, predicate } = {}) {
+function getComposedChildNodes(node, { elementsOnly = false, predicate } = {}) {
 
 	if (!node) return null;
 
