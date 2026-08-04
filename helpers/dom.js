@@ -203,6 +203,7 @@ export function getComposedPreviousElementSibling(node, { predicate } = {}) {
 	return getComposedElementSibling(node, { direction: 'previous', predicate });
 }
 
+// This method can be removed when cleaning up GAUD-10260-get-focusable-fix (double-check usage)
 export function getNextAncestorSibling(node, predicate = () => true) {
 	let parentNode = getComposedParent(node);
 
@@ -215,6 +216,7 @@ export function getNextAncestorSibling(node, predicate = () => true) {
 	return null;
 }
 
+// This method can be removed when cleaning up GAUD-10260-get-focusable-fix (double-check usage)
 export function getPreviousAncestorSibling(node, predicate = () => true) {
 	let parentNode = getComposedParent(node);
 

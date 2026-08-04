@@ -155,6 +155,7 @@ export function getPreviousFocusable(node, includeHidden) {
 			return null;
 		}
 
+		// Clean-up this next line when cleaning up GAUD-10260-get-focusable-fix
 		const previousAncestorSibling = focusableFixFlag ? getComposedPreviousAncestorElementSibling(node) : getPreviousAncestorSibling(node);
 		if (previousAncestorSibling) {
 			const parentSibingFocusable = _getPreviousFocusable(previousAncestorSibling, false, false);
@@ -193,6 +194,7 @@ export function getNextFocusable(node, includeHidden, ignore, ignoreChildren) {
 			return null;
 		}
 
+		// Clean-up this next line when cleaning up GAUD-10260-get-focusable-fix
 		const nextParentSibling = focusableFixFlag ? getComposedNextAncestorElementSibling(node) : getNextAncestorSibling(node);
 		if (nextParentSibling) {
 			const parentSibingFocusable = _getNextFocusable(nextParentSibling, false, false);
