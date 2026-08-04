@@ -7,6 +7,8 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { ProviderMixin } from '../../mixins/provider/provider-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+export const panelStateStorageKey = key => `d2l-page-panel-state-${key}`;
+
 const DRAWER_MIN_HEIGHT = 200; // TO DO: Confirm
 const MAIN_MIN_WIDTH = 600; // TO DO: Confirm
 const PANEL_MIN_WIDTH = 320;
@@ -41,12 +43,28 @@ class PanelStateController {
 		return panel.size;
 	}
 
-	resize(key, requestedSize, animate = false) {
+	initialize(defaults) {
+		const storedState = this.#getStoredState();
+
+		for (const [key, panel] of Object.entries(this.#panels)) {
+			const stored = storedState?.[key];
+			if (stored) {
+				const storedSize = parseInt(stored.size);
+				this.resize(key, isFinite(storedSize) ? storedSize : defaults[key]);
+				if (stored.collapsed) panel.collapsed = true;
+			} else {
+				this.resize(key, defaults[key]);
+			}
+		}
+	}
+
+	resize(key, requestedSize, { animate = false, storeState = false } = {}) {
 		const panel = this.#panels[key];
 		// Clamp requested size to min and max bounds
 		panel.size = Math.max(panel.minSize, Math.min(requestedSize, panel.maxSize));
 		panel.animate = animate;
 		this.#host.requestUpdate();
+		if (storeState) this.#storePanelState(key);
 	}
 
 	setCollapsed(key, collapsed) {
@@ -54,6 +72,7 @@ class PanelStateController {
 		panel.collapsed = collapsed;
 		panel.animate = true;
 		this.#host.requestUpdate();
+		this.#storePanelState(key);
 	}
 
 	setDragSize(key) {
@@ -74,6 +93,39 @@ class PanelStateController {
 
 	#host;
 	#panels;
+
+	#getPanelStateStorageKey() {
+		return this.#host.stateStorageKey ? panelStateStorageKey(this.#host.stateStorageKey) : null;
+	}
+
+	#getStoredState() {
+		const fullKey = this.#getPanelStateStorageKey();
+		if (!fullKey) return;
+
+		try {
+			return JSON.parse(localStorage.getItem(fullKey));
+		} catch {
+			// Return nothing if local storage isn't available or has bad data
+			return;
+		}
+	}
+
+	#storePanelState(panelKey) {
+		const fullKey = this.#getPanelStateStorageKey();
+		if (!fullKey) return;
+		const state = this.#getStoredState() || {};
+
+		try {
+			state[panelKey] = {
+				size: this.#panels[panelKey].size,
+				collapsed: this.#panels[panelKey].collapsed
+			};
+			localStorage.setItem(fullKey, JSON.stringify(state));
+		} catch {
+			// Do nothing if storage quota exceeded or using private browsing mode of an old Safari version
+			// TO DO: If QuotaExceededError, log this to our logging framework
+		}
+	}
 }
 
 /**
@@ -87,6 +139,12 @@ class PanelStateController {
 class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	static properties = {
+		/**
+		 * Key used to optionally store page state across reloads (using localStorage). Different pages should use different keys.
+		 * Currently, this includes panel state info.
+		 * @type {string}
+		 */
+		stateStorageKey: { type: String, attribute: 'state-storage-key' },
 		/**
 		 * Width type of the page and its underlying pieces
 		 * @type {'normal'|'wide'|'fullscreen'}
@@ -354,7 +412,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	#handleDividerResize(e) {
 		const panelKey = e.target.dataset.panelKey;
-		this._panelState.resize(panelKey, e.detail.requestedSize, true);
+		this._panelState.resize(panelKey, e.detail.requestedSize, { animate: true, storeState: true });
 	};
 
 	#handleDividerToggle(e) {
@@ -373,9 +431,11 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		const defaultWidth = Math.floor(this._contentWidth / 3);
 		const defaultHeight = Math.floor(window.innerHeight / 2);
 
-		this._panelState.resize('side-nav', defaultWidth);
-		this._panelState.resize('supporting', defaultWidth);
-		this._panelState.resize('supporting-mobile', defaultHeight);
+		this._panelState.initialize({
+			'side-nav': defaultWidth,
+			'supporting': defaultWidth,
+			'supporting-mobile': defaultHeight
+		});
 	}
 
 	#renderDivider(panelKey, label, panelPosition) {

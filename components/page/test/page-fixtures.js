@@ -1,4 +1,3 @@
-import '../page.js';
 import '../page-footer.js';
 import '../page-header-custom.js';
 import '../page-header-immersive.js';
@@ -6,6 +5,8 @@ import '../page-main.js';
 import '../page-side-nav.js';
 import '../page-supporting.js';
 import { html, nothing } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
+import { panelStateStorageKey } from '../page.js';
 
 export function scrollBody() {
 	window.scrollTo(0, document.body.scrollHeight);
@@ -14,6 +15,19 @@ export function scrollBody() {
 export function scrollPanel(elem, panel) {
 	const panelElem = elem.shadowRoot.querySelector(`.${panel}-panel-content`);
 	panelElem.scrollTop = panelElem.scrollHeight;
+}
+
+const TEST_STATE_STORAGE_KEY = 'test-page';
+const panelStorageKey = panelStateStorageKey(TEST_STATE_STORAGE_KEY);
+export function getStoredPanelState() {
+	const stored = localStorage.getItem(panelStorageKey);
+	return JSON.parse(stored);
+}
+export function setStoredPanelState(state) {
+	localStorage.setItem(panelStorageKey, JSON.stringify(state));
+}
+export function clearStoredPanelState() {
+	localStorage.removeItem(panelStorageKey);
 }
 
 const footer = html`
@@ -56,10 +70,11 @@ export function createPage({
 	sideNavHeight = '250px',
 	supportingHeight = '250px',
 	widthType = 'normal',
+	setStateStorageKey = false,
 	overrides = {}
 } = {}) {
 	return html`
-		<d2l-page width-type="${widthType}">
+		<d2l-page width-type="${widthType}" state-storage-key="${ifDefined(setStateStorageKey ? TEST_STATE_STORAGE_KEY : undefined)}">
 			${header === 'full' ? fullHeader : immersiveHeader}
 			${layout === 'side-nav' ? html`
 				<d2l-page-side-nav slot="side-nav">
@@ -160,5 +175,9 @@ export const pageFixtures = {
 	supportingBothHeadersFooterWide: createPage({ layout: 'supporting', widthType: 'wide', mainHeight: '600px', hasMainHeader: true, hasSupportingHeader: true, hasFooter: true }),
 	supportingBothHeadersFooterFullscreen: createPage({ layout: 'supporting', widthType: 'fullscreen', mainHeight: '600px', hasMainHeader: true, hasSupportingHeader: true, hasFooter: true }),
 	supportingImmersiveBothHeadersFooterWide: createPage({ header: 'immersive', layout: 'supporting', widthType: 'wide', hasMainHeader: true, hasSupportingHeader: true, hasFooter: true }),
-	supportingImmersiveBothHeadersFooterFullscreen: createPage({ header: 'immersive', layout: 'supporting', widthType: 'fullscreen', hasMainHeader: true, hasSupportingHeader: true, hasFooter: true })
+	supportingImmersiveBothHeadersFooterFullscreen: createPage({ header: 'immersive', layout: 'supporting', widthType: 'fullscreen', hasMainHeader: true, hasSupportingHeader: true, hasFooter: true }),
+	// With state-storage-key set
+	mainStorageKey: createPage({ setStateStorageKey: true }),
+	sideNavHeaderStorageKey: createPage({ setStateStorageKey: true, layout: 'side-nav', hasSideNavHeader: true }),
+	supportingFooterStorageKey: createPage({ setStateStorageKey: true, layout: 'supporting', mainHeight: '600px', hasFooter: true }),
 };
