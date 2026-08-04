@@ -7,6 +7,7 @@ import {
 	findComposedAncestor,
 	getBoundingAncestor,
 	getComposedChildren,
+	getComposedNextElementSibling,
 	getComposedParent,
 	getFirstVisibleAncestor,
 	getNextAncestorSibling,
@@ -26,10 +27,28 @@ const testElemTag = defineCE(
 			return html`<div id="container"><slot id="slot1"></slot></div>`;
 		}
 		getContainer() {
-			return this.shadowRoot && this.shadowRoot.querySelector('#container');
+			return this.shadowRoot?.querySelector('#container');
 		}
 	},
 );
+
+const testMultiSlotElemTag = defineCE(
+	class extends LitElement {
+		render() {
+			return html`<div id="container">
+				<slot id="slot1" name="slot1"></slot>
+				text node before divider
+				<div id="divider"></div>
+				text node after divider
+				<slot id="slot2" name="slot1"></slot>
+			</div>`;
+		}
+		getContainer() {
+			return this.shadowRoot?.querySelector('#container');
+		}
+	},
+);
+
 const offsetParentWrapperTag = defineCE(
 	class extends LitElement {
 		static properties = {
@@ -59,11 +78,25 @@ const simpleFixture = html`
 		some text
 	</div>`
 ;
+const simpleMultiElementFixture = html`
+	<div id="light1">
+		<div id="light2"></div>
+		some text
+		<div id="light3"></div>
+	</div>`
+;
 const wcFixture = `
 	<${testElemTag}>
 		<div id="light1"></div>
 		<div id="light2"></div>
 	</${testElemTag}>
+`;
+const wcMultiSlotFixture = `
+	<${testMultiSlotElemTag}>
+		<div id="light1" slot="slot1"></div>
+		<div id="light2" slot="slot2"></div>
+		<div id="light3" slot="slot1"></div>
+	</${testMultiSlotElemTag}>
 `;
 const mixedFixture = `
 	<div id="light1">
@@ -405,6 +438,16 @@ describe('dom', () => {
 			expect(children[0]).to.equal(expected[0]);
 		});
 
+		it('returns filtered child elememts', async() => {
+			const elem = await fixture(wcFixture);
+			const container = elem.getContainer();
+			let children = getComposedChildren(container);
+			expect(children[0].tagName).to.be.oneOf(['SLOT', 'CONTENT']);
+			children = getComposedChildren(children[0], elem => elem.id === 'light2');
+			expect(children.length).to.equal(1);
+			expect(children[0]).to.equal(elem.querySelector('#light2'));
+		});
+
 		it('returns child elememts for document', async() => {
 			const children = getComposedChildren(document);
 			const expected = document.children;
@@ -428,6 +471,79 @@ describe('dom', () => {
 			expect(children.length).to.equal(2);
 			expect(children[0]).to.equal(elem.querySelector('#light1'));
 			expect(children[1]).to.equal(elem.querySelector('#light2'));
+		});
+
+	});
+
+	describe('getComposedNextElementSibling', () => {
+
+		it('returns next element sibling in vanilla', async() => {
+			const elem = await fixture(simpleMultiElementFixture);
+			const target = elem.querySelector('#light2');
+			const elementSibling = getComposedNextElementSibling(target);
+			const expected = elem.querySelector('#light3');
+			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns null when there is no next element sibling in vanilla', async() => {
+			const elem = await fixture(simpleFixture);
+			const target = elem.querySelector('#light2');
+			const elementSibling = getComposedNextElementSibling(target);
+			expect(elementSibling).to.be.null;
+		});
+
+		it('returns next element sibling when text node is passed in vanilla', async() => {
+			const elem = await fixture(simpleMultiElementFixture);
+			const target = elem.querySelector('#light2').nextSibling;
+			const elementSibling = getComposedNextElementSibling(target);
+			const expected = elem.querySelector('#light3');
+			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns next element sibling in default slot of custom element', async() => {
+			const elem = await fixture(wcFixture);
+			const target = elem.querySelector('#light1');
+			const elementSibling = getComposedNextElementSibling(target);
+			const expected = elem.querySelector('#light2');
+			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns null when there is no next element sibling in the same slot of custom element', async() => {
+			const elem = await fixture(wcMultiSlotFixture);
+			const target = elem.querySelector('#light2');
+			const elementSibling = getComposedNextElementSibling(target);
+			expect(elementSibling).to.be.null;
+		});
+
+		it('returns next element sibling in the same slot of custom element', async() => {
+			const elem = await fixture(wcMultiSlotFixture);
+			const target = elem.querySelector('#light1');
+			const elementSibling = getComposedNextElementSibling(target);
+			const expected = elem.querySelector('#light3');
+			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns next element sibling in shadowDOM of custom element', async() => {
+			const elem = await fixture(wcMultiSlotFixture);
+			const target = elem.getContainer().querySelector('#slot1');
+			const elementSibling = getComposedNextElementSibling(target);
+			const expected = elem.getContainer().querySelector('#divider');
+			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns next element sibling slot in shadowDOM of custom element', async() => {
+			const elem = await fixture(wcMultiSlotFixture);
+			const target = elem.getContainer().querySelector('#divider');
+			const elementSibling = getComposedNextElementSibling(target);
+			const expected = elem.getContainer().querySelector('#slot2');
+			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns null when the target is the shadowRoot', async() => {
+			const elem = await fixture(wcFixture);
+			const target = elem.shadowRoot;
+			const elementSibling = getComposedNextElementSibling(target);
+			expect(elementSibling).to.be.null;
 		});
 
 	});

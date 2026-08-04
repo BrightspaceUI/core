@@ -86,18 +86,25 @@ elemIdListRemoves(node, attrName, value);
 findComposedAncestor(node, predicate);
 
 // gets the composed children (including shadow children & distributed children)
-// includes a predicate which will add children nodes when predicate(node) is true
+// includes optional predicate for filtering child elements
 getComposedChildren(element, predicate = () => true);
+
+// gets the composed next element sibling considing how children are distributed into slots
+// includes optional predicate for filtering elements
+getComposedNextElementSibling(node, { predicate } = {}) {
 
 // gets the composed parent (including shadow host & insertion points)
 getComposedParent(node);
 
+// returns the first visible ancestor of the given node
+getFirstVisibleAncestor(node)
+
 // returns the next composed sibling at least one dom level up
-// includes a predicate which will return the node when predicate(node) is true
+// includes optional predicate for filtering elements
 getNextAncestorSibling(node, predicate = () => true);
 
 // returns the previous composed sibling at least one dom level up
-// includes a predicate which will return the node when predicate(node) is true
+// includes optional predicate for filtering elements
 getPreviousAncestorSibling(node, predicate = () => true);
 
 // browser consistent implementation of HTMLElement.offsetParent
@@ -108,9 +115,6 @@ isComposedAncestor(ancestorNode, node);
 
 // returns true/false whether the element is visible regardless of positioning
 isVisible(node, { checkAncestors: true });
-
-// returns the first visible ancestor of the given node
-getFirstVisibleAncestor(node)
 
 // similar to document.querySelector or element.querySelector,
 // except it queries not just the light DOM but also shadow DOM
