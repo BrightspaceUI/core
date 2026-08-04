@@ -91,10 +91,14 @@ getComposedChildren(element, predicate = () => true);
 
 // gets the composed next element sibling considing how children are distributed into slots
 // includes optional predicate for filtering elements
-getComposedNextElementSibling(node, { predicate } = {}) {
+getComposedNextElementSibling(node, { predicate });
 
 // gets the composed parent (including shadow host & insertion points)
 getComposedParent(node);
+
+// gets the composed previous element sibling considing how children are distributed into slots
+// includes optional predicate for filtering elements
+getComposedPreviousElementSibling(node, { predicate });
 
 // returns the first visible ancestor of the given node
 getFirstVisibleAncestor(node)
