@@ -57,7 +57,7 @@
     "@rollup/plugin-replace": "^6",
     "@stylistic/eslint-plugin": "^5",
     "@web/dev-server": "^1.0",
-    "chalk": "^5",
+    "chalk": "^6",
     "eslint": "^9",
     "eslint-config-brightspace": "^4",
     "eslint-plugin-unicorn": "^65",
