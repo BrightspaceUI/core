@@ -127,12 +127,12 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			width: ${DIVIDER_HANDLE_SIZE}px;
 		}
 		.divider-handle:hover {
-			background-color: var(--d2l-color-sylvite);
+			background-color: var(--d2l-color-gypsum);
 			border-color: var(--d2l-color-celestine);
 		}
 		.slider:focus .divider-handle {
-			background-color: var(--d2l-color-celestine);
-			border-color: var(--d2l-color-celestine);
+			background-color: var(--d2l-color-celestine-minus-1);
+			border-color: var(--d2l-color-celestine-minus-1);
 		}
 		.slider:focus .divider-handle .handle-icon {
 			color: white;

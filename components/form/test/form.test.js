@@ -3,7 +3,8 @@ import '../../dialog/dialog.js';
 import '../form.js';
 import './form-element.js';
 import './nested-form.js';
-import { defineCE, expect, fixture, oneEvent } from '@brightspace-ui/testing';
+import { defineCE, expect, fixture, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
+import { fake, replace, restore } from 'sinon';
 import { html, LitElement } from 'lit';
 import { FormElementMixin } from '../form-element-mixin.js';
 
@@ -40,6 +41,10 @@ describe('d2l-form', () => {
 
 	before(() => {
 		customElements.define('d2l-test-two-forms', TestTwoForms);
+	});
+
+	afterEach(() => {
+		restore();
 	});
 
 	describe('single form', () => {
@@ -552,6 +557,79 @@ describe('d2l-form', () => {
 			expect(form._errors.size).to.equal(0);
 		});
 
+	});
+
+	describe('track-changes', () => {
+
+		const createFixture = async(trackChanges) => {
+			const elem = await fixture(html`
+				<d2l-form ?track-changes="${trackChanges}">
+					<input name="cb" type="text">
+				</d2l-form>
+			`);
+			return elem;
+		};
+
+		let beforeUnloadListeners;
+		const triggerBeforeUnload = function() {
+			const event = new Event('beforeunload', { cancelable: true });
+			beforeUnloadListeners.forEach(listener => listener(event));
+			return event;
+		};
+
+		beforeEach(() => {
+			beforeUnloadListeners = [];
+			replace(window, 'addEventListener', fake((eventName, listener) => {
+				if (eventName === 'beforeunload') beforeUnloadListeners.push(listener);
+			}));
+			replace(window, 'removeEventListener', fake((eventName, listener) => {
+				if (eventName === 'beforeunload') {
+					const index = beforeUnloadListeners.indexOf(listener);
+					if (index > -1) beforeUnloadListeners.splice(index, 1);
+				}
+			}));
+		});
+
+		it('should not prompt on unload if track-changes is false', async() => {
+			const elem = await createFixture(false);
+			await sendKeysElem(elem.querySelector('input'), 'type', 'hello');
+			const event = triggerBeforeUnload();
+			expect(event.defaultPrevented).to.be.false;
+			expect(event.returnValue).to.be.true;
+		});
+
+		it('should not prompt on unload if track-changes is true and form is pristine', async() => {
+			await createFixture(true);
+			const event = triggerBeforeUnload();
+			expect(event.defaultPrevented).to.be.false;
+			expect(event.returnValue).to.be.true;
+		});
+
+		it('should prompt on unload if track-changes is true and form is dirty', async() => {
+			const elem = await createFixture(true);
+			await sendKeysElem(elem.querySelector('input'), 'type', 'hello');
+			const event = triggerBeforeUnload();
+			expect(event.defaultPrevented).to.be.true;
+			expect(event.returnValue).to.be.false;
+		});
+
+		it('should not prompt on unload after dirty form is submitted', async() => {
+			const elem = await createFixture(true);
+			await sendKeysElem(elem.querySelector('input'), 'type', 'hello');
+			await elem.requestSubmit();
+			const event = triggerBeforeUnload();
+			expect(event.defaultPrevented).to.be.false;
+			expect(event.returnValue).to.be.true;
+		});
+
+		it('should not prompt on unload if track-changes is disabled later and form is dirty', async() => {
+			const elem = await createFixture(true);
+			await sendKeysElem(elem.querySelector('input'), 'type', 'hello');
+			elem.trackChanges = false;
+			const event = triggerBeforeUnload();
+			expect(event.defaultPrevented).to.be.false;
+			expect(event.returnValue).to.be.true;
+		});
 	});
 
 	it('should validate custom form elements when they have nested forms', async() => {
