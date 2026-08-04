@@ -116,7 +116,7 @@ export function getComposedChildren(node, predicate) {
 	return getComposedChildNodes(node, { elementsOnly: true, predicate });
 }
 
-export function getComposedNextElementSibling(node, { predicate } = {}) {
+function getComposedElementSibling(node, { direction = 'next', predicate } = {}) {
 
 	if (!node || node.nodeType === undefined) return null;
 
@@ -131,13 +131,25 @@ export function getComposedNextElementSibling(node, { predicate } = {}) {
 	const index = composedChildNodes.indexOf(node);
 	if (index === -1) return null;
 
-	for (let i = index + 1; i < composedChildNodes.length; i++) {
-		if (composedChildNodes[i].nodeType === Node.ELEMENT_NODE && (!predicate || predicate(composedChildNodes[i]))) {
-			return composedChildNodes[i];
+	if (direction === 'previous') {
+		for (let i = index - 1; i >= 0; i--) {
+			if (composedChildNodes[i].nodeType === Node.ELEMENT_NODE && (!predicate || predicate(composedChildNodes[i]))) {
+				return composedChildNodes[i];
+			}
+		}
+	} else {
+		for (let i = index + 1; i < composedChildNodes.length; i++) {
+			if (composedChildNodes[i].nodeType === Node.ELEMENT_NODE && (!predicate || predicate(composedChildNodes[i]))) {
+				return composedChildNodes[i];
+			}
 		}
 	}
 
 	return null;
+}
+
+export function getComposedNextElementSibling(node, { predicate } = {}) {
+	return getComposedElementSibling(node, { direction: 'next', predicate });
 }
 
 export function getComposedParent(node) {
@@ -161,6 +173,10 @@ export function getComposedParent(node) {
 
 	return null;
 
+}
+
+export function getComposedPreviousElementSibling(node, { predicate } = {}) {
+	return getComposedElementSibling(node, { direction: 'previous', predicate });
 }
 
 export function getNextAncestorSibling(node, predicate = () => true) {

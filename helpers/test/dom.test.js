@@ -9,6 +9,7 @@ import {
 	getComposedChildren,
 	getComposedNextElementSibling,
 	getComposedParent,
+	getComposedPreviousElementSibling,
 	getFirstVisibleAncestor,
 	getNextAncestorSibling,
 	getOffsetParent,
@@ -592,6 +593,94 @@ describe('dom', () => {
 		it('returns null as parent of document', async() => {
 			expect(getComposedParent(document))
 				.to.equal(null);
+		});
+
+	});
+
+	describe('getComposedPreviousElementSibling', () => {
+
+		it('returns previous element sibling in vanilla', async() => {
+			const elem = await fixture(simpleMultiElementFixture);
+			const target = elem.querySelector('#light4');
+			const elementSibling = getComposedPreviousElementSibling(target);
+			const expected = elem.querySelector('#light3');
+			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns null when there is no previous element sibling in vanilla', async() => {
+			const elem = await fixture(simpleFixture);
+			const target = elem.querySelector('#light2');
+			const elementSibling = getComposedPreviousElementSibling(target);
+			expect(elementSibling).to.be.null;
+		});
+
+		it('returns previous element sibling when text node is passed in vanilla', async() => {
+			const elem = await fixture(simpleMultiElementFixture);
+			const target = elem.querySelector('#light3').previousSibling;
+			const elementSibling = getComposedPreviousElementSibling(target);
+			const expected = elem.querySelector('#light2');
+			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns previous element sibling that fulfills predicate in vanilla', async() => {
+			const elem = await fixture(simpleMultiElementFixture);
+			const target = elem.querySelector('#light4');
+			const elementSibling = getComposedPreviousElementSibling(target, { predicate: elem => elem.id === 'light2' });
+			const expected = elem.querySelector('#light2');
+			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns null when no previous element siblings fulfill predicate in vanilla', async() => {
+			const elem = await fixture(simpleMultiElementFixture);
+			const target = elem.querySelector('#light4');
+			const elementSibling = getComposedPreviousElementSibling(target, { predicate: elem => elem.id === 'light0' });
+			expect(elementSibling).to.be.null;
+		});
+
+		it('returns previous element sibling in default slot of custom element', async() => {
+			const elem = await fixture(wcFixture);
+			const target = elem.querySelector('#light2');
+			const elementSibling = getComposedPreviousElementSibling(target);
+			const expected = elem.querySelector('#light1');
+			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns null when there is no previous element sibling in the same slot of custom element', async() => {
+			const elem = await fixture(wcMultiSlotFixture);
+			const target = elem.querySelector('#light2');
+			const elementSibling = getComposedPreviousElementSibling(target);
+			expect(elementSibling).to.be.null;
+		});
+
+		it('returns previous element sibling in the same slot of custom element', async() => {
+			const elem = await fixture(wcMultiSlotFixture);
+			const target = elem.querySelector('#light3');
+			const elementSibling = getComposedPreviousElementSibling(target);
+			const expected = elem.querySelector('#light1');
+			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns previous element sibling in shadowDOM of custom element', async() => {
+			const elem = await fixture(wcMultiSlotFixture);
+			const target = elem.getContainer().querySelector('#slot2');
+			const elementSibling = getComposedPreviousElementSibling(target);
+			const expected = elem.getContainer().querySelector('#divider');
+			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns previous element sibling slot in shadowDOM of custom element', async() => {
+			const elem = await fixture(wcMultiSlotFixture);
+			const target = elem.getContainer().querySelector('#divider');
+			const elementSibling = getComposedPreviousElementSibling(target);
+			const expected = elem.getContainer().querySelector('#slot1');
+			expect(elementSibling).to.equal(expected);
+		});
+
+		it('returns null when the target is the shadowRoot', async() => {
+			const elem = await fixture(wcFixture);
+			const target = elem.shadowRoot;
+			const elementSibling = getComposedPreviousElementSibling(target);
+			expect(elementSibling).to.be.null;
 		});
 
 	});
