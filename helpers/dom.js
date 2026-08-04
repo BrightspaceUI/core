@@ -148,7 +148,7 @@ function getComposedElementSibling(node, { direction = 'next', predicate } = {})
 	return null;
 }
 
-export function getComposedNextAncestorSibling(node, { predicate } = {}) {
+export function getComposedNextAncestorElementSibling(node, { predicate } = {}) {
 	let parentNode = getComposedParent(node);
 
 	while (parentNode) {
@@ -187,7 +187,7 @@ export function getComposedParent(node) {
 
 }
 
-export function getComposedPreviousAncestorSibling(node, { predicate } = {}) {
+export function getComposedPreviousAncestorElementSibling(node, { predicate } = {}) {
 	let parentNode = getComposedParent(node);
 
 	while (parentNode) {
