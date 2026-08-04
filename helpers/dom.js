@@ -148,6 +148,18 @@ function getComposedElementSibling(node, { direction = 'next', predicate } = {})
 	return null;
 }
 
+export function getComposedNextAncestorSibling(node, { predicate } = {}) {
+	let parentNode = getComposedParent(node);
+
+	while (parentNode) {
+		const nextParentSibling = getComposedNextElementSibling(parentNode, { predicate });
+		if (nextParentSibling) return nextParentSibling;
+		parentNode = getComposedParent(parentNode);
+	}
+
+	return null;
+}
+
 export function getComposedNextElementSibling(node, { predicate } = {}) {
 	return getComposedElementSibling(node, { direction: 'next', predicate });
 }
@@ -173,6 +185,18 @@ export function getComposedParent(node) {
 
 	return null;
 
+}
+
+export function getComposedPreviousAncestorSibling(node, { predicate } = {}) {
+	let parentNode = getComposedParent(node);
+
+	while (parentNode) {
+		const previousParentSibling = getComposedPreviousElementSibling(parentNode, { predicate });
+		if (previousParentSibling) return previousParentSibling;
+		parentNode = getComposedParent(parentNode);
+	}
+
+	return null;
 }
 
 export function getComposedPreviousElementSibling(node, { predicate } = {}) {
