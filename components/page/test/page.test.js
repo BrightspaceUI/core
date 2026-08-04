@@ -1,10 +1,11 @@
-import '../page.js';
 import { clearStoredPanelState, getStoredPanelState, pageFixtures, setStoredPanelState } from './page-fixtures.js';
 import { expect, fixture, runConstructor, setViewport, waitUntil } from '@brightspace-ui/testing';
 import { restore, spy } from 'sinon';
+import { SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth, supportingMobileDefaultHeight } from '../page.js';
 import { getDivider } from './page-divider-internal-fixtures.js';
 
-const defaultFixtureOptions = { pagePadding: false, viewport: { width: 1300, height: 800 } };
+const fixtureHeight = 800;
+const defaultFixtureOptions = { pagePadding: false, viewport: { width: 1300, height: fixtureHeight } };
 
 describe('page', () => {
 
@@ -35,14 +36,14 @@ describe('page', () => {
 
 			it('falls back to the default when no storage key set', async() => {
 				const elem = await fixture(pageFixtures.sideNavHeader, defaultFixtureOptions);
-				expect(elem._panelState.getTrueSize('side-nav')).to.equal(Math.floor(elem._contentWidth / 3));
+				expect(elem._panelState.getTrueSize('side-nav')).to.equal(SIDE_NAV_DEFAULT_WIDTH);
 				expect(elem._panelState.getCollapsed('side-nav')).to.be.false;
 			});
 
 			it('falls back to the default when there is no stored entry', async() => {
 				const elem = await fixture(pageFixtures.mainStorageKey, defaultFixtureOptions);
-				expect(elem._panelState.getTrueSize('side-nav')).to.equal(Math.floor(elem._contentWidth / 3));
-				expect(elem._panelState.getCollapsed('side-nav')).to.be.false;
+				expect(elem._panelState.getTrueSize('supporting')).to.equal(supportingDefaultWidth(1230));
+				expect(elem._panelState.getCollapsed('supporting')).to.be.false;
 			});
 
 			it('clamps a stored size larger than the max', async() => {
@@ -72,28 +73,28 @@ describe('page', () => {
 			it('ignores empty stored state', async() => {
 				setStoredPanelState({});
 				const elem = await fixture(pageFixtures.mainStorageKey, defaultFixtureOptions);
-				expect(elem._panelState.getTrueSize('supporting-mobile')).to.equal(Math.floor(window.innerHeight / 2));
+				expect(elem._panelState.getTrueSize('supporting-mobile')).to.equal(supportingMobileDefaultHeight(fixtureHeight));
 				expect(elem._panelState.getCollapsed('supporting-mobile')).to.be.false;
 			});
 
 			it('ignores empty stored panel state', async() => {
 				setStoredPanelState({ 'supporting-mobile': {} });
 				const elem = await fixture(pageFixtures.mainStorageKey, defaultFixtureOptions);
-				expect(elem._panelState.getTrueSize('supporting-mobile')).to.equal(Math.floor(window.innerHeight / 2));
+				expect(elem._panelState.getTrueSize('supporting-mobile')).to.equal(supportingMobileDefaultHeight(fixtureHeight));
 				expect(elem._panelState.getCollapsed('supporting-mobile')).to.be.false;
 			});
 
 			it('ignores invalid stored state', async() => {
 				setStoredPanelState('not-json');
 				const elem = await fixture(pageFixtures.mainStorageKey, defaultFixtureOptions);
-				expect(elem._panelState.getTrueSize('supporting-mobile')).to.equal(Math.floor(window.innerHeight / 2));
+				expect(elem._panelState.getTrueSize('supporting-mobile')).to.equal(supportingMobileDefaultHeight(fixtureHeight));
 				expect(elem._panelState.getCollapsed('supporting-mobile')).to.be.false;
 			});
 
 			it('ignores invalid stored panel state', async() => {
 				setStoredPanelState({ 'supporting-mobile': { size: 'not-a-number', collapsed: true } });
 				const elem = await fixture(pageFixtures.mainStorageKey, defaultFixtureOptions);
-				expect(elem._panelState.getTrueSize('supporting-mobile')).to.equal(Math.floor(window.innerHeight / 2));
+				expect(elem._panelState.getTrueSize('supporting-mobile')).to.equal(supportingMobileDefaultHeight(fixtureHeight));
 				expect(elem._panelState.getCollapsed('supporting-mobile')).to.be.true;
 			});
 		});
@@ -115,7 +116,7 @@ describe('page', () => {
 				getDivider(elem, 'side-nav').dispatchEvent(new CustomEvent('d2l-page-divider-toggle'));
 				const stored = getStoredPanelState();
 				expect(stored['side-nav'].collapsed).to.be.true;
-				expect(stored['side-nav'].size).to.equal(Math.floor(elem._contentWidth / 3));
+				expect(stored['side-nav'].size).to.equal(SIDE_NAV_DEFAULT_WIDTH);
 			});
 
 			it('persists each panel under its own key', async() => {
@@ -149,7 +150,7 @@ describe('page', () => {
 				const elem = await fixture(pageFixtures.supportingFooterStorageKey, defaultFixtureOptions);
 				expect(elem._panelState.getTrueSize('supporting')).to.equal(500);
 
-				await setViewport({ height: 800, width: 1000 });
+				await setViewport({ width: 1000, height: fixtureHeight });
 				await waitUntil(() => elem._panelState.getTrueSize('supporting') !== 500);
 
 				const stored = getStoredPanelState();
