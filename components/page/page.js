@@ -7,6 +7,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { ProviderMixin } from '../../mixins/provider/provider-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+const VALID_STATE_STORAGE_KEY = /^[a-z0-9_-]+$/i;
 export const panelStateStorageKey = key => `d2l-page-panel-state-${key}`;
 
 const DRAWER_MIN_HEIGHT = 200; // TO DO: Confirm
@@ -348,6 +349,16 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		});
 	}
 
+	get stateStorageKey() { return this.#stateStorageKey; }
+	set stateStorageKey(value) {
+		if (value && !VALID_STATE_STORAGE_KEY.test(value)) {
+			this.#stateStorageKey = undefined;
+			throw new Error(`d2l-page: invalid state-storage-key "${value}". Keys may only contain alphanumeric characters, dashes, and underscores.`);
+		}
+
+		this.#stateStorageKey = value;
+	}
+
 	connectedCallback() {
 		super.connectedCallback();
 		window.addEventListener('resize', this.#handleWindowResize);
@@ -399,6 +410,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	#resizeObserver;
+	#stateStorageKey;
 
 	#handleWindowResize = () => {
 		this._panelState.updateMaxSize('supporting-mobile', this.#getMaxDrawerHeight());

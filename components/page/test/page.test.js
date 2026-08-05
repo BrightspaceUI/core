@@ -18,6 +18,28 @@ describe('page', () => {
 			clearStoredPanelState();
 		});
 
+		describe('key validation', () => {
+			it('accepts valid keys', async() => {
+				const elem = await fixture(pageFixtures.sideNavHeader, defaultFixtureOptions);
+				elem.stateStorageKey = 'test-PAGE_123';
+				expect(elem.stateStorageKey).to.equal('test-PAGE_123');
+			});
+
+			it('rejects invalid keys', async() => {
+				const elem = await fixture(pageFixtures.sideNavHeader, defaultFixtureOptions);
+				expect(() => { elem.stateStorageKey = 'test page'; }).to.throw();
+				expect(elem.stateStorageKey).to.be.undefined;
+			});
+
+			it('clears key once invalid key is set', async() => {
+				const elem = await fixture(pageFixtures.sideNavHeaderStorageKey, defaultFixtureOptions);
+				expect(elem.stateStorageKey).to.equal('test-page');
+
+				expect(() => { elem.stateStorageKey = 'test page'; }).to.throw();
+				expect(elem.stateStorageKey).to.be.undefined;
+			});
+		});
+
 		describe('restoring', () => {
 			it('applies the stored size over the default', async() => {
 				setStoredPanelState({ 'side-nav': { size: 450, collapsed: false } });
