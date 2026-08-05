@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import { css, unsafeCSS } from 'lit';
 import { _isValidCssSelector } from '../../helpers/internal/css.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
 
 function _generateButtonBaseStyles(selector) {
@@ -139,7 +140,267 @@ export function _generateButtonStyles(selector) {
 	`;
 }
 
+function _generateVuiButtonStyles(selector) {
+	if (!_isValidCssSelector(selector)) return unsafeCSS('');
+	const isPrimary = selector.includes('-primary');
+	const cssSelector = unsafeCSS(selector.trim());
+
+	return css`
+		${cssSelector} {
+			border-radius: 0.3rem;
+			box-sizing: border-box;
+			color: ${unsafeCSS(isPrimary ? '#ffffff' : 'var(--d2l-color-ferrite)')};
+			cursor: pointer;
+			display: inline-block;
+			font-family: inherit;
+			font-size: 0.7rem;
+			font-weight: 700;
+			line-height: 1rem;
+			letter-spacing: 0.02rem;
+			margin: 0;
+			min-height: calc(2rem + 2px);
+			padding: 0.55rem 1.5rem;
+			text-align: center;
+			user-select: none;
+			vertical-align: middle;
+			white-space: nowrap;
+			width: auto;
+		}
+
+		${cssSelector},
+		${cssSelector}:visited,
+		${cssSelector}:link,
+		${cssSelector}:hover,
+		${cssSelector}:focus,
+		${cssSelector}.vui-disabled:hover,
+		${cssSelector}.vui-disabled:focus,
+		${cssSelector}[disabled]:hover,
+		${cssSelector}[disabled]:focus {
+			background-color: ${unsafeCSS(isPrimary ? 'var(--d2l-color-celestine)' : 'var(--d2l-color-gypsum)')};
+			border: none;
+			color: ${unsafeCSS(isPrimary ? '#ffffff' : 'var(--d2l-color-ferrite)')};
+			outline: none;
+			text-decoration: none;
+		}
+
+		${cssSelector}:after {
+			content: " ";
+			width: 0;
+		}
+
+		${_generateMozillaButtonBorderStyles(selector)}
+		${cssSelector}::-moz-focus-inner {
+			padding: 0;
+		}
+
+		${cssSelector}.vui-disabled,
+		${cssSelector}[disabled] {
+			opacity: 0.5;
+			cursor: default;
+		}
+
+		${cssSelector}:hover,
+		${cssSelector}:focus {
+			background-color: ${unsafeCSS(isPrimary ? 'var(--d2l-color-celestine-minus-1)' : 'var(--d2l-color-mica)')};
+		}
+	`;
+}
+
 export const buttonStyles = css`
 	${_generateButtonBaseStyles('button')}
 	${getFocusRingStyles('button', { preferContrastMediaQueryExtraStyles: css`border: 2px solid transparent;` })}
 `;
+
+// remove this variable when cleaning up GAUD-8866-remove-button-scss-from-bsi flag
+const bsiButtonSassStyles = css`
+	/* these are still referenced by a few FRAs, button-filter-groups, iterator */
+	.d2l-button {
+		border-radius: 0.3rem;
+		border-style: none;
+		box-sizing: border-box;
+		cursor: pointer;
+		display: inline-block;
+		font-family: inherit;
+		margin-block: 0;
+		margin-inline: 0 0.75rem;
+		min-height: calc(2rem + 2px);
+		outline: none;
+		padding: 0 1.5rem;
+		text-align: center;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		vertical-align: middle;
+		white-space: nowrap;
+		width: auto;
+	}
+	.d2l-button::-moz-focus-inner {
+		border: 0;
+	}
+	.d2l-button, .d2l-button[disabled]:hover, .d2l-button[disabled]:focus, .d2l-button[active][disabled] {
+		background-color: var(--d2l-color-gypsum);
+		color: var(--d2l-color-ferrite);
+	}
+	.d2l-button:hover, .d2l-button:focus, .d2l-button[active], .d2l-button.d2l-button-hover, .d2l-button.d2l-button-focus {
+		background-color: var(--d2l-color-mica);
+	}
+	.d2l-focus-visible-not-supported .d2l-button:focus, .d2l-button.d2l-button-focus, .d2l-focus-visible-not-supported .d2l-button[primary]:focus, .d2l-button[primary].d2l-button-focus {
+		outline: 2px solid var(--d2l-color-celestine);
+		outline-offset: 2px;
+	}
+	.d2l-button:focus-visible, .d2l-button[primary]:focus-visible {
+		outline: 2px solid var(--d2l-color-celestine);
+		outline-offset: 2px;
+	}
+	.d2l-button[disabled] {
+		opacity: 0.5;
+		cursor: default;
+	}
+	.d2l-button[primary], .d2l-button[primary][disabled]:hover, .d2l-button[primary][disabled]:focus, .d2l-button[primary][active][disabled] {
+		background-color: var(--d2l-color-celestine);
+		color: #ffffff;
+	}
+	.d2l-button[primary]:hover, .d2l-button[primary].d2l-button-hover, .d2l-button[primary]:focus, .d2l-button[primary].d2l-button-focus, .d2l-button[primary][active] {
+		background-color: var(--d2l-color-celestine-minus-1);
+	}
+	d2l-dialog-fullscreen .d2l-button[slot=footer] {
+		margin-block-end: 18px;
+		margin-inline-end: 18px;
+	}
+	@media (prefers-contrast: more) {
+		.d2l-button {
+			border: 2px solid transparent;
+		}
+	}
+
+	.dlay_r > .d2l-button {
+		margin-inline-start: 0.75rem;
+		margin-inline-end: 0;
+	}
+
+	.vui-button {
+		color: var(--d2l-color-ferrite);
+		font-family: inherit;
+		font-size: 0.7rem;
+		font-weight: 700;
+		line-height: 1rem;
+		letter-spacing: 0.02rem;
+		margin: 0;
+		border-radius: 0.3rem;
+		box-sizing: border-box;
+		cursor: pointer;
+		display: inline-block;
+		min-height: calc(2rem + 2px);
+		padding: 0.55rem 1.5rem;
+		text-align: center;
+		user-select: none;
+		vertical-align: middle;
+		white-space: nowrap;
+		width: auto;
+	}
+	.vui-button, .vui-button:visited, .vui-button:link, .vui-button:hover, .vui-button:focus, .vui-button.vui-disabled:hover, .vui-button.vui-disabled:focus, .vui-button[disabled]:hover, .vui-button[disabled]:focus {
+		background-color: var(--d2l-color-gypsum);
+		border: none;
+		color: var(--d2l-color-ferrite);
+		outline: none;
+		text-decoration: none;
+	}
+	.vui-button:after {
+		content: " ";
+		width: 0;
+	}
+	.vui-button::-moz-focus-inner {
+		border: 0;
+		padding: 0;
+	}
+	.vui-button.vui-disabled, .vui-button[disabled] {
+		opacity: 0.5;
+		cursor: default;
+	}
+	.vui-button:hover, .vui-button:focus {
+		background-color: var(--d2l-color-mica);
+	}
+
+	.vui-button-primary {
+		color: #ffffff;
+		font-family: inherit;
+		font-size: 0.7rem;
+		font-weight: 700;
+		line-height: 1rem;
+		letter-spacing: 0.02rem;
+		margin: 0;
+		border-radius: 0.3rem;
+		box-sizing: border-box;
+		cursor: pointer;
+		display: inline-block;
+		min-height: calc(2rem + 2px);
+		padding: 0.55rem 1.5rem;
+		text-align: center;
+		user-select: none;
+		vertical-align: middle;
+		white-space: nowrap;
+		width: auto;
+	}
+	.vui-button-primary, .vui-button-primary:visited, .vui-button-primary:link, .vui-button-primary:hover, .vui-button-primary:focus, .vui-button-primary.vui-disabled:hover, .vui-button-primary.vui-disabled:focus, .vui-button-primary[disabled]:hover, .vui-button-primary[disabled]:focus {
+		background-color: var(--d2l-color-celestine);
+		border: none;
+		color: #ffffff;
+		outline: none;
+		text-decoration: none;
+	}
+	.vui-button-primary:after {
+		content: " ";
+		width: 0;
+	}
+	.vui-button-primary::-moz-focus-inner {
+		border: 0;
+		padding: 0;
+	}
+	.vui-button-primary.vui-disabled, .vui-button-primary[disabled] {
+		opacity: 0.5;
+		cursor: default;
+	}
+	.vui-button-primary:hover, .vui-button-primary:focus {
+		background-color: var(--d2l-color-celestine-minus-1);
+	}
+`;
+
+const bsiD2lButtonStyles = css`
+	${_generateButtonBaseStyles('.d2l-button')}
+	${_generateButtonStyles('.d2l-button')}
+	.d2l {
+		margin-inline: 0 0.75rem;
+	}
+	${_generateMozillaButtonBorderStyles('.d2l-button')}
+	${_generateButtonDisabledStyles('.d2l-button', true)}
+	${_generateButtonEnabledStyles('.d2l-button', true)}
+	${_generateBSIButtonFocusStyles('.d2l-button')}
+	.d2l-button[disabled] { /* Missing this one in core */
+		opacity: 0.5;
+		cursor: default;
+	}
+	${_generatePrimaryButtonDisabledStyles('.d2l-button', true)}
+	${_generatePrimaryButtonEnabledStyles('.d2l-button', true)}
+	d2l-dialog-fullscreen .d2l-button[slot=footer] { /* Missing this one in core */
+		margin-block-end: 18px;
+		margin-inline-end: 18px;
+	}
+	@media (prefers-contrast: more) { /* Missing this one in core */
+		.d2l-button {
+			border: 2px solid transparent;
+		}
+	}
+`;
+
+// remove the false case code when cleaning up GAUD-8866-remove-button-scss-from-bsi flag
+export const bsiButtonStyles = getFlag('GAUD-8866-remove-button-scss-from-bsi', true) ? css`
+	${bsiD2lButtonStyles}
+	.dlay_r > .d2l-button {
+		margin-inline-start: 0.75rem;
+		margin-inline-end: 0;
+	}
+
+	/* these are still referenced by a few FRAs, button-filter-groups, iterator */
+	${_generateVuiButtonStyles('.vui-button')}
+	${_generateVuiButtonStyles('.vui-button-primary')}` : bsiButtonSassStyles;

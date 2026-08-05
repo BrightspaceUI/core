@@ -78,19 +78,19 @@ export function getFocusableDescendants(node, options) {
 export function getFocusPseudoClass() {
 	return isFocusVisibleSupported() ? 'focus-visible' : 'focus';
 }
-export function getFocusRingStyles(selector, { extraStyles = null, preferContrastMediaQueryExtraStyles = null } = {}) {
+export function getFocusRingStyles(selector, { extraStyles = null, preferContrastMediaQueryExtraStyles = null, includePreferContrastMediaQuery = true } = {}) {
 	const stylesDelegate = selector => css`
 		${selector} {
 			${extraStyles ?? css``}
 			outline: 2px solid var(--d2l-focus-ring-color, var(--d2l-theme-border-color-focus));
 			outline-offset: var(--d2l-focus-ring-offset, 2px);
 		}
-		@media (prefers-contrast: more) {
+		${includePreferContrastMediaQuery ? css`@media (prefers-contrast: more) {
 			${selector} {
 				${preferContrastMediaQueryExtraStyles ?? css``}
 				outline-color: Highlight;
 			}
-		}
+		}` : css``}
 	`;
 	return getFocusVisibleStyles(selector, stylesDelegate);
 }
