@@ -1,5 +1,6 @@
-import { expect, fixture, focusElem, hoverElem } from '@brightspace-ui/testing';
-import { getDivider, pageDividerFixtures } from './page-divider-internal-fixtures.js';
+import { clickElem, expect, fixture, focusElem, hoverElem, nextFrame, sendKeysElem } from '@brightspace-ui/testing';
+import { getDivider, getSlider, pageDividerFixtures } from './page-divider-internal-fixtures.js';
+import { scrollBody, scrollPanel } from './page-fixtures.js';
 
 describe('page-divider-internal', () => {
 
@@ -14,6 +15,22 @@ describe('page-divider-internal', () => {
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
+
+		[
+			{ name: 'handle-side-nav', divider: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeaders },
+			{ name: 'handle-supporting-immersive', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveFooter }
+		].forEach(test => {
+			it(test.name, async() => {
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				const divider = getDivider(elem, test.divider);
+				await hoverElem(getSlider(divider));
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+	});
+
+	describe('hover-collapsed', () => {
+		// TO DO once previous panel state is saved and restored (so I can set collapsed easily)
 	});
 
 	describe('focus', () => {
@@ -43,9 +60,8 @@ describe('page-divider-internal', () => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
 				await focusElem(getDivider(elem, test.divider));
-				window.scrollTo(0, document.body.scrollHeight);
-				const panel = elem.shadowRoot.querySelector(`.${test.divider}-panel`);
-				panel.scrollTop = panel.scrollHeight;
+				scrollBody();
+				scrollPanel(elem, test.divider);
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -60,10 +76,63 @@ describe('page-divider-internal', () => {
 		].forEach(test => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				window.scrollTo(0, document.body.scrollHeight);
-				const panel = elem.shadowRoot.querySelector(`.${test.divider}-panel`);
-				panel.scrollTop = panel.scrollHeight;
+				scrollBody();
+				scrollPanel(elem, test.divider);
 				await focusElem(getDivider(elem, test.divider));
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+	});
+
+	describe('collapse-stay-scrolled', () => {
+		[
+			{ name: 'main', divider: 'side-nav', fixture: pageDividerFixtures.sideNavLongMainBothHeaders },
+			{ name: 'immersive-main', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveLongMain }
+		].forEach(test => {
+			it(test.name, async() => {
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				scrollBody();
+				await sendKeysElem(getDivider(elem, test.divider), 'press', 'Enter');
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+	});
+
+	describe('expand-stay-scrolled', () => {
+		[
+			{ name: 'panel', divider: 'supporting', fixture: pageDividerFixtures.supportingLongFooter },
+			{ name: 'both', divider: 'side-nav', fixture: pageDividerFixtures.sideNavLongMainLongFooter },
+			{ name: 'immersive-panel', divider: 'side-nav', fixture: pageDividerFixtures.sideNavImmersiveLongFooter },
+			{ name: 'immersive-both', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveLongMainLongBothHeaders },
+		].forEach(test => {
+			it(test.name, async() => {
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				scrollPanel(elem, test.divider);
+				scrollBody();
+
+				const divider = getDivider(elem, test.divider);
+				await sendKeysElem(divider, 'press', 'Enter');
+				await nextFrame();
+
+				await sendKeysElem(divider, 'press', ' ');
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+	});
+
+	describe('expand-not-scrolled', () => {
+		[
+			{ name: 'panel', divider: 'side-nav', fixture: pageDividerFixtures.sideNavLongMainLongFooter },
+			{ name: 'immersive-panel', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveLongMainLongBothHeaders }
+		].forEach(test => {
+			it(test.name, async() => {
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				const divider = getDivider(elem, test.divider);
+				await clickElem(getSlider(divider));
+				await nextFrame();
+
+				scrollBody();
+				await sendKeysElem(divider, 'press', ' ');
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -73,8 +142,50 @@ describe('page-divider-internal', () => {
 		// TO DO once arrow visuals added
 	});
 
-	describe('mouse', () => {
-		// TO DO
+	describe('click', () => {
+		describe('handle', () => {
+			[
+				{ name: 'collapse-side-nav', divider: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeaders },
+				{ name: 'collapse-supporting-immersive', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveFooter }
+			].forEach(test => {
+				it(test.name, async() => {
+					const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+					const divider = getDivider(elem, test.divider);
+					await clickElem(getSlider(divider));
+					await expect(elem).to.be.golden({ margin: 0 });
+				});
+			});
+
+			[
+				{ name: 'expand-side-nav-immersive', divider: 'side-nav', fixture: pageDividerFixtures.sideNavImmersiveFooter },
+				{ name: 'expand-supporting', divider: 'supporting', fixture: pageDividerFixtures.supportingLongFooter }
+			].forEach(test => {
+				it(test.name, async() => {
+					const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+					const divider = getDivider(elem, test.divider);
+					await clickElem(getSlider(divider));
+					await clickElem(getSlider(divider));
+					await expect(elem).to.be.golden({ margin: 0 });
+				});
+			});
+		});
+
+		describe('divider line', () => {
+			it('no-collapse-side-nav', async() => {
+				const elem = await fixture(pageDividerFixtures.sideNavBothHeaders, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				const divider = getDivider(elem, 'side-nav');
+				await clickElem(divider);
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+
+			it('expand-supporting-immersive', async() => {
+				const elem = await fixture(pageDividerFixtures.supportingImmersiveFooter, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				const divider = getDivider(elem, 'supporting');
+				await clickElem(getSlider(divider));
+				await clickElem(divider);
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
 	});
 
 });
