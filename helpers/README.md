@@ -89,6 +89,10 @@ findComposedAncestor(node, predicate);
 // includes optional predicate for filtering child elements
 getComposedChildren(element, predicate = () => true);
 
+//gets the composed next ancestor sibling by walking the composed ancestors
+// includes optional predicate for filtering elements
+getComposedNextAncestorElementSibling(node, { predicate });
+
 // gets the composed next element sibling considing how children are distributed into slots
 // includes optional predicate for filtering elements
 getComposedNextElementSibling(node, { predicate });
@@ -96,20 +100,16 @@ getComposedNextElementSibling(node, { predicate });
 // gets the composed parent (including shadow host & insertion points)
 getComposedParent(node);
 
+//gets the composed previous ancestor sibling by walking the composed ancestors
+// includes optional predicate for filtering elements
+getComposedPreviousAncestorElementSibling(node, { predicate });
+
 // gets the composed previous element sibling considing how children are distributed into slots
 // includes optional predicate for filtering elements
 getComposedPreviousElementSibling(node, { predicate });
 
 // returns the first visible ancestor of the given node
 getFirstVisibleAncestor(node)
-
-// returns the next composed sibling at least one dom level up
-// includes optional predicate for filtering elements
-getNextAncestorSibling(node, predicate = () => true);
-
-// returns the previous composed sibling at least one dom level up
-// includes optional predicate for filtering elements
-getPreviousAncestorSibling(node, predicate = () => true);
 
 // browser consistent implementation of HTMLElement.offsetParent
 getOffsetParent(node);

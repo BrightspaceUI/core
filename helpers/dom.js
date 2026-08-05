@@ -1,3 +1,5 @@
+import { getFlag } from './flags.js';
+
 // needed for legacy-Edge, after it's removed use CSS.escape directly
 export function cssEscape(val) {
 	if (window.CSS && window.CSS.escape) {
@@ -149,10 +151,14 @@ function getComposedElementSibling(node, { direction = 'next', predicate } = {})
 }
 
 export function getComposedNextAncestorElementSibling(node, { predicate } = {}) {
+
+	const focusableFixFlag = getFlag('GAUD-10260-get-focusable-fix', true);
+
 	let parentNode = getComposedParent(node);
 
 	while (parentNode) {
-		const nextParentSibling = getComposedNextElementSibling(parentNode, { predicate });
+		// Clean-up this next line when cleaning up GAUD-10260-get-focusable-fix
+		const nextParentSibling = focusableFixFlag ? getComposedNextElementSibling(parentNode, { predicate }) : parentNode.nextElementSibling;
 		if (nextParentSibling) return nextParentSibling;
 		parentNode = getComposedParent(parentNode);
 	}
@@ -188,10 +194,14 @@ export function getComposedParent(node) {
 }
 
 export function getComposedPreviousAncestorElementSibling(node, { predicate } = {}) {
+
+	const focusableFixFlag = getFlag('GAUD-10260-get-focusable-fix', true);
+
 	let parentNode = getComposedParent(node);
 
 	while (parentNode) {
-		const previousParentSibling = getComposedPreviousElementSibling(parentNode, { predicate });
+		// Clean-up this next line when cleaning up GAUD-10260-get-focusable-fix
+		const previousParentSibling = focusableFixFlag ? getComposedPreviousElementSibling(parentNode, { predicate }) : parentNode.previousElementSibling;
 		if (previousParentSibling) return previousParentSibling;
 		parentNode = getComposedParent(parentNode);
 	}
@@ -201,32 +211,6 @@ export function getComposedPreviousAncestorElementSibling(node, { predicate } = 
 
 export function getComposedPreviousElementSibling(node, { predicate } = {}) {
 	return getComposedElementSibling(node, { direction: 'previous', predicate });
-}
-
-// This method can be removed when cleaning up GAUD-10260-get-focusable-fix (double-check usage)
-export function getNextAncestorSibling(node, predicate = () => true) {
-	let parentNode = getComposedParent(node);
-
-	while (parentNode) {
-		const nextParentSibling = parentNode.nextElementSibling;
-		if (nextParentSibling && predicate(nextParentSibling)) return nextParentSibling;
-		parentNode = getComposedParent(parentNode);
-	}
-
-	return null;
-}
-
-// This method can be removed when cleaning up GAUD-10260-get-focusable-fix (double-check usage)
-export function getPreviousAncestorSibling(node, predicate = () => true) {
-	let parentNode = getComposedParent(node);
-
-	while (parentNode) {
-		const previousParentSibling = parentNode.previousElementSibling;
-		if (previousParentSibling && predicate(previousParentSibling)) return previousParentSibling;
-		parentNode = getComposedParent(parentNode);
-	}
-
-	return null;
 }
 
 export function getOffsetParent(node) {
