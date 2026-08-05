@@ -1,11 +1,13 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
+import { _generateButtonStyles, buttonStyles as baseButtonStyles } from './button-styles.js';
 import { css, html, LitElement } from 'lit';
 import { ButtonMixin } from './button-mixin.js';
-import { buttonStyles } from './button-styles.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
+
+const buttonStyles = _generateButtonStyles('button');
 
 /**
  * A button component that can be used just like the native button element.
@@ -27,7 +29,7 @@ class Button extends ButtonMixin(LitElement) {
 		primary: { type: Boolean, reflect: true }
 	};
 
-	static styles = [labelStyles, buttonStyles,
+	static styles = [labelStyles, baseButtonStyles, buttonStyles,
 		css`
 			:host {
 				display: inline-block;
@@ -35,35 +37,9 @@ class Button extends ButtonMixin(LitElement) {
 			:host([hidden]) {
 				display: none;
 			}
-
 			button {
-				font-family: inherit;
-				padding-block-end: 0;
-				padding-block-start: 0;
-				padding-inline-end: var(--d2l-button-padding-inline-end, 1.5rem);
-				padding-inline-start: var(--d2l-button-padding-inline-start, 1.5rem);
 				width: 100%;
 			}
-
-			/* Firefox includes a hidden border which messes up button dimensions */
-			button::-moz-focus-inner {
-				border: 0;
-			}
-
-			button,
-			button[disabled]:hover,
-			button[disabled]:focus,
-			:host([active]) button[disabled] {
-				background-color: var(--d2l-theme-background-color-interactive-secondary-default);
-				color: var(--d2l-theme-text-color-static-standard);
-			}
-
-			button:hover,
-			button:focus,
-			:host([active]) button {
-				background-color: var(--d2l-theme-background-color-interactive-secondary-hover);
-			}
-
 			:host([disabled]) button {
 				cursor: default;
 				position: relative;
@@ -75,19 +51,6 @@ class Button extends ButtonMixin(LitElement) {
 				inset: 0;
 				opacity: var(--d2l-theme-opacity-disabled-control);
 				position: absolute;
-			}
-
-			:host([primary]) button,
-			:host([primary]) button[disabled]:hover,
-			:host([primary]) button[disabled]:focus,
-			:host([primary][active]) button[disabled] {
-				background-color: var(--d2l-theme-background-color-interactive-primary-default);
-				color: var(--d2l-theme-text-color-static-inverted);
-			}
-			:host([primary]) button:hover,
-			:host([primary]) button:focus,
-			:host([primary][active]) button {
-				background-color: var(--d2l-theme-background-color-interactive-primary-hover);
 			}
 		`
 	];
