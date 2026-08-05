@@ -1,3 +1,5 @@
+import { getFlag } from './flags.js';
+
 // needed for legacy-Edge, after it's removed use CSS.escape directly
 export function cssEscape(val) {
 	if (window.CSS && window.CSS.escape) {
@@ -148,6 +150,22 @@ function getComposedElementSibling(node, { direction = 'next', predicate } = {})
 	return null;
 }
 
+export function getComposedNextAncestorElementSibling(node, { predicate } = {}) {
+
+	const focusableFixFlag = getFlag('GAUD-10260-get-focusable-fix', true);
+
+	let parentNode = getComposedParent(node);
+
+	while (parentNode) {
+		// Clean-up this next line when cleaning up GAUD-10260-get-focusable-fix
+		const nextParentSibling = focusableFixFlag ? getComposedNextElementSibling(parentNode, { predicate }) : parentNode.nextElementSibling;
+		if (nextParentSibling) return nextParentSibling;
+		parentNode = getComposedParent(parentNode);
+	}
+
+	return null;
+}
+
 export function getComposedNextElementSibling(node, { predicate } = {}) {
 	return getComposedElementSibling(node, { direction: 'next', predicate });
 }
@@ -175,32 +193,24 @@ export function getComposedParent(node) {
 
 }
 
+export function getComposedPreviousAncestorElementSibling(node, { predicate } = {}) {
+
+	const focusableFixFlag = getFlag('GAUD-10260-get-focusable-fix', true);
+
+	let parentNode = getComposedParent(node);
+
+	while (parentNode) {
+		// Clean-up this next line when cleaning up GAUD-10260-get-focusable-fix
+		const previousParentSibling = focusableFixFlag ? getComposedPreviousElementSibling(parentNode, { predicate }) : parentNode.previousElementSibling;
+		if (previousParentSibling) return previousParentSibling;
+		parentNode = getComposedParent(parentNode);
+	}
+
+	return null;
+}
+
 export function getComposedPreviousElementSibling(node, { predicate } = {}) {
 	return getComposedElementSibling(node, { direction: 'previous', predicate });
-}
-
-export function getNextAncestorSibling(node, predicate = () => true) {
-	let parentNode = getComposedParent(node);
-
-	while (parentNode) {
-		const nextParentSibling = parentNode.nextElementSibling;
-		if (nextParentSibling && predicate(nextParentSibling)) return nextParentSibling;
-		parentNode = getComposedParent(parentNode);
-	}
-
-	return null;
-}
-
-export function getPreviousAncestorSibling(node, predicate = () => true) {
-	let parentNode = getComposedParent(node);
-
-	while (parentNode) {
-		const previousParentSibling = parentNode.previousElementSibling;
-		if (previousParentSibling && predicate(previousParentSibling)) return previousParentSibling;
-		parentNode = getComposedParent(parentNode);
-	}
-
-	return null;
 }
 
 export function getOffsetParent(node) {

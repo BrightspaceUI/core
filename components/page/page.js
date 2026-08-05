@@ -11,8 +11,8 @@ const VALID_STATE_STORAGE_KEY = /^[a-z0-9_-]+$/i;
 export const panelStateStorageKey = key => `d2l-page-panel-state-${key}`;
 
 const DRAWER_MIN_HEIGHT = 200; // TO DO: Confirm
-const MAIN_MIN_WIDTH = 600; // TO DO: Confirm
-const PANEL_MIN_WIDTH = 320;
+export const MAIN_MIN_WIDTH = 600; // TO DO: Confirm
+export const PANEL_MIN_WIDTH = 320;
 
 export const SIDE_NAV_DEFAULT_WIDTH = 334;
 export const supportingDefaultWidth = contentWidth => Math.floor(contentWidth / 3);

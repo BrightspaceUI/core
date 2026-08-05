@@ -7,11 +7,12 @@ import {
 	findComposedAncestor,
 	getBoundingAncestor,
 	getComposedChildren,
+	getComposedNextAncestorElementSibling,
 	getComposedNextElementSibling,
 	getComposedParent,
+	getComposedPreviousAncestorElementSibling,
 	getComposedPreviousElementSibling,
 	getFirstVisibleAncestor,
-	getNextAncestorSibling,
 	getOffsetParent,
 	isComposedAncestor,
 	isVisible,
@@ -20,6 +21,7 @@ import {
 } from '../dom.js';
 import { css, html, LitElement } from 'lit';
 import { defineCE, expect, fixture } from '@brightspace-ui/testing';
+import { mockFlag, resetFlag } from '../flags.js';
 import sinon from 'sinon';
 
 const testElemTag = defineCE(
@@ -41,7 +43,7 @@ const testMultiSlotElemTag = defineCE(
 				text node before divider
 				<div id="divider"></div>
 				text node after divider
-				<slot id="slot2" name="slot1"></slot>
+				<slot id="slot2" name="slot2"></slot>
 			</div>`;
 		}
 		getContainer() {
@@ -95,9 +97,9 @@ const wcFixture = `
 `;
 const wcMultiSlotFixture = `
 	<${testMultiSlotElemTag}>
-		<div id="light1" slot="slot1"></div>
-		<div id="light2" slot="slot2"></div>
-		<div id="light3" slot="slot1"></div>
+		<div id="light1" slot="slot1">slot 1 text 1</div>
+		<div id="light2" slot="slot2">slot 2 text 1</div>
+		<div id="light3" slot="slot1">slot 1 text 2</div>
 	</${testMultiSlotElemTag}>
 `;
 const mixedFixture = `
@@ -477,6 +479,163 @@ describe('dom', () => {
 
 	});
 
+	// Remove this loop when cleaning up GAUD-10260-get-focusable-fix
+	[true, false].forEach(focusableFixFlag => {
+
+		describe('getComposedNextAncestorElementSibling', () => {
+
+			before(() => mockFlag('GAUD-10260-get-focusable-fix', focusableFixFlag));
+			after(() => resetFlag('GAUD-10260-get-focusable-fix'));
+
+			it('returns null when no ancestors have siblings in vanilla', async() => {
+				const elem = await fixture(simpleFixture);
+				const ancestorSibling = getComposedNextAncestorElementSibling(elem);
+				expect(ancestorSibling).to.be.null;
+			});
+
+			it('returns next ancestor sibling one level up in vanilla', async() => {
+				const elem = await fixture(html`
+					<div id="parent">
+						<div>
+							<div id="target"></div>
+						</div>
+						<div id="expected"></div>
+						<div></div>
+					</div>
+				`);
+				const ancestorSibling = getComposedNextAncestorElementSibling(elem.querySelector('#target'));
+				const expected = elem.querySelector('#expected');
+				expect(ancestorSibling).to.be.equal(expected);
+			});
+
+			it('returns next ancestor sibling one level up after ignoring non-element nodes in vanilla', async() => {
+				const elem = await fixture(html`
+					<div id="parent">
+						<div>
+							<div id="target"></div>
+						</div>
+						birthday cake
+						<!-- birthday cake is yummy -->
+						<div id="expected"></div>
+						<div></div>
+					</div>
+				`);
+				const ancestorSibling = getComposedNextAncestorElementSibling(elem.querySelector('#target'));
+				const expected = elem.querySelector('#expected');
+				expect(ancestorSibling).to.be.equal(expected);
+			});
+
+			it('returns next ancestor sibling two levels up in vanilla', async() => {
+				const elem = await fixture(html`
+					<div id="parent">
+						<div>
+							<div>
+								<div id="target"></div>
+							</div>
+						</div>
+						<div id="expected"></div>
+					</div>
+				`);
+				const ancestorSibling = getComposedNextAncestorElementSibling(elem.querySelector('#target'));
+				const expected = elem.querySelector('#expected');
+				expect(ancestorSibling).to.be.equal(expected);
+			});
+
+			// Remove this if-check (keep the tests though!) when cleaning up GAUD-10260-get-focusable-fix
+			if (focusableFixFlag) {
+
+				it('returns next ancestor sibling that fulfills predicate in vanilla', async() => {
+					const elem = await fixture(html`
+						<div id="parent">
+							<div>
+								<div id="target"></div>
+							</div>
+							<div></div>
+							<div id="expected"></div>
+						</div>
+					`);
+					const ancestorSibling = getComposedNextAncestorElementSibling(
+						elem.querySelector('#target'),
+						{ predicate: elem => elem.id === 'expected' }
+					);
+					const expected = elem.querySelector('#expected');
+					expect(ancestorSibling).to.be.equal(expected);
+				});
+
+				it('returns next sibling of ancestor slot in custom element shadowDOM', async() => {
+					const elem = await fixture(wcMultiSlotFixture);
+					const ancestorSibling = getComposedNextAncestorElementSibling(elem.querySelector('#light1'));
+					const expected = elem.getContainer().querySelector('#divider');
+					expect(ancestorSibling).to.be.equal(expected);
+				});
+
+				it('returns next sibling of ancestor slot that fulfills predicate in custom element shadowDOM', async() => {
+					const elem = await fixture(wcMultiSlotFixture);
+					const ancestorSibling = getComposedNextAncestorElementSibling(
+						elem.querySelector('#light1'),
+						{ predicate: elem => elem.tagName === 'SLOT' }
+					);
+					const expected = elem.getContainer().querySelector('#slot2');
+					expect(ancestorSibling).to.be.equal(expected);
+				});
+
+				it('returns null when there are no next ancestor siblings that fulfill predicate', async() => {
+					const elem = await fixture(wcMultiSlotFixture);
+					const ancestorSibling = getComposedNextAncestorElementSibling(
+						elem.querySelector('#light1'),
+						{ predicate: elem => elem.tagName === 'INVALID-TAG' }
+					);
+					expect(ancestorSibling).to.be.null;
+				});
+
+				it('returns null when no ancestors have next siblings in custom element', async() => {
+					const elem = await fixture(wcMultiSlotFixture);
+					const ancestorSibling = getComposedNextAncestorElementSibling(elem.querySelector('#light2'));
+					expect(ancestorSibling).to.be.null;
+				});
+
+				it('returns next sibling of ancestor slot when text node is target', async() => {
+					const elem = await fixture(wcMultiSlotFixture);
+					const ancestorSibling = getComposedNextAncestorElementSibling(elem.querySelector('#light1').childNodes[0]);
+					const expected = elem.querySelector('#light3');
+					expect(ancestorSibling).to.be.equal(expected);
+				});
+
+				it('returns next ancestor sibling of custom element when target is child of slot and there are no other ancestor siblings in the shadowDOM', async() => {
+					const elem = await fixture(`
+						<div>
+							<${testElemTag}>
+								<div id="target"></div>
+							</${testElemTag}>
+							<div id="expected"></div>
+						</div>
+					`);
+					const ancestorSibling = getComposedNextAncestorElementSibling(elem.querySelector('#target'));
+					const expected = elem.querySelector('#expected');
+					expect(ancestorSibling).to.be.equal(expected);
+				});
+
+				it('returns next ancestor sibling of custom element when target is in shadowDOM and there are no other ancestor siblings in the shadowDOM', async() => {
+					const elem = await fixture(`
+						<div>
+							<${testElemTag} id="wc">
+								<div id="target"></div>
+							</${testElemTag}>
+							<div id="expected"></div>
+						</div>
+					`);
+					const target = elem.querySelector('#wc').getContainer().querySelector('#slot1');
+					const ancestorSibling = getComposedNextAncestorElementSibling(target);
+					const expected = elem.querySelector('#expected');
+					expect(ancestorSibling).to.be.equal(expected);
+				});
+
+			}
+
+		});
+
+	});
+
 	describe('getComposedNextElementSibling', () => {
 
 		it('returns next element sibling in vanilla', async() => {
@@ -593,6 +752,141 @@ describe('dom', () => {
 		it('returns null as parent of document', async() => {
 			expect(getComposedParent(document))
 				.to.equal(null);
+		});
+
+	});
+
+	describe('getComposedPreviousAncestorElementSibling', () => {
+
+		before(() => mockFlag('GAUD-10260-get-focusable-fix', true));
+		after(() => resetFlag('GAUD-10260-get-focusable-fix'));
+
+		it('returns previous ancestor sibling one level up in vanilla', async() => {
+			const elem = await fixture(html`
+				<div id="parent">
+					<div></div>
+					<div id="expected"></div>
+					<div>
+						<div id="target"></div>
+					</div>
+				</div>
+			`);
+			const ancestorSibling = getComposedPreviousAncestorElementSibling(elem.querySelector('#target'));
+			const expected = elem.querySelector('#expected');
+			expect(ancestorSibling).to.be.equal(expected);
+		});
+
+		it('returns previous ancestor sibling one level up after ignoring non-element nodes in vanilla', async() => {
+			const elem = await fixture(html`
+				<div id="parent">
+					<div></div>
+					<div id="expected"></div>
+					<!-- birthday cake is yummy -->
+					birthday cake
+					<div>
+						<div id="target"></div>
+					</div>
+				</div>
+			`);
+			const ancestorSibling = getComposedPreviousAncestorElementSibling(elem.querySelector('#target'));
+			const expected = elem.querySelector('#expected');
+			expect(ancestorSibling).to.be.equal(expected);
+		});
+
+		it('returns previous ancestor sibling two levels up in vanilla', async() => {
+			const elem = await fixture(html`
+				<div id="parent">
+					<div id="expected"></div>
+					<div>
+						<div>
+							<div id="target"></div>
+						</div>
+					</div>
+				</div>
+			`);
+			const ancestorSibling = getComposedPreviousAncestorElementSibling(elem.querySelector('#target'));
+			const expected = elem.querySelector('#expected');
+			expect(ancestorSibling).to.be.equal(expected);
+		});
+
+		it('returns previous ancestor sibling that fulfills predicate in vanilla', async() => {
+			const elem = await fixture(html`
+				<div id="parent">
+					<div id="expected"></div>
+					<div></div>
+					<div>
+						<div id="target"></div>
+					</div>
+				</div>
+			`);
+			const ancestorSibling = getComposedPreviousAncestorElementSibling(
+				elem.querySelector('#target'),
+				{ predicate: elem => elem.id === 'expected' }
+			);
+			const expected = elem.querySelector('#expected');
+			expect(ancestorSibling).to.be.equal(expected);
+		});
+
+		it('returns previous sibling of ancestor slot in custom element shadowDOM', async() => {
+			const elem = await fixture(wcMultiSlotFixture);
+			const ancestorSibling = getComposedPreviousAncestorElementSibling(elem.querySelector('#light2'));
+			const expected = elem.getContainer().querySelector('#divider');
+			expect(ancestorSibling).to.be.equal(expected);
+		});
+
+		it('returns previous sibling of ancestor slot that fulfills predicate in custom element shadowDOM', async() => {
+			const elem = await fixture(wcMultiSlotFixture);
+			const ancestorSibling = getComposedPreviousAncestorElementSibling(
+				elem.querySelector('#light2'),
+				{ predicate: elem => elem.tagName === 'SLOT' }
+			);
+			const expected = elem.getContainer().querySelector('#slot1');
+			expect(ancestorSibling).to.be.equal(expected);
+		});
+
+		it('returns null when there are no previous ancestor siblings that fulfill predicate', async() => {
+			const elem = await fixture(wcMultiSlotFixture);
+			const ancestorSibling = getComposedPreviousAncestorElementSibling(
+				elem.querySelector('#light2'),
+				{ predicate: elem => elem.tagName === 'INVALID-TAG' }
+			);
+			expect(ancestorSibling).to.be.null;
+		});
+
+		it('returns previous sibling of ancestor slot when text node is target', async() => {
+			const elem = await fixture(wcMultiSlotFixture);
+			const ancestorSibling = getComposedPreviousAncestorElementSibling(elem.querySelector('#light3').childNodes[0]);
+			const expected = elem.querySelector('#light1');
+			expect(ancestorSibling).to.be.equal(expected);
+		});
+
+		it('returns previous ancestor sibling of custom element when target is child of slot and there are no other ancestor siblings in the shadowDOM', async() => {
+			const elem = await fixture(`
+				<div>
+					<div id="expected"></div>
+					<${testElemTag}>
+						<div id="target"></div>
+					</${testElemTag}>
+				</div>
+			`);
+			const ancestorSibling = getComposedPreviousAncestorElementSibling(elem.querySelector('#target'));
+			const expected = elem.querySelector('#expected');
+			expect(ancestorSibling).to.be.equal(expected);
+		});
+
+		it('returns previous ancestor sibling of custom element when target is in shadowDOM and there are no other ancestor siblings in the shadowDOM', async() => {
+			const elem = await fixture(`
+				<div>
+					<div id="expected"></div>
+					<${testElemTag} id="wc">
+						<div id="target"></div>
+					</${testElemTag}>
+				</div>
+			`);
+			const target = elem.querySelector('#wc').getContainer().querySelector('#slot1');
+			const ancestorSibling = getComposedPreviousAncestorElementSibling(target);
+			const expected = elem.querySelector('#expected');
+			expect(ancestorSibling).to.be.equal(expected);
 		});
 
 	});
@@ -927,43 +1221,6 @@ describe('dom', () => {
 			expect(getOffsetParent(child)).to.equal(expected);
 		});
 
-	});
-
-	describe('getNextAncestorSibling', () => {
-
-		it('returns null when no siblings', async() => {
-			const elem = await fixture(simpleFixture);
-			expect(getNextAncestorSibling(elem)).to.be.null;
-		});
-
-		it('returns the ancestor sibling one level up', async() => {
-			const elem = await fixture(html`
-			<div id="parent">
-				<div>
-					<div id="target"></div>
-				</div>
-				<div id="expected"></div>
-				<div></div>
-			</div>
-			`);
-			expect(getNextAncestorSibling(elem.querySelector('#target')))
-				.to.be.equal(elem.querySelector('#expected'));
-		});
-
-		it('returns the ancestor sibling two levels up', async() => {
-			const elem = await fixture(html`
-			<div id="parent">
-				<div>
-					<div>
-						<div id="target"></div>
-					</div>
-				</div>
-				<div id="expected"></div>
-			</div>
-			`);
-			expect(getNextAncestorSibling(elem.querySelector('#target')))
-				.to.be.equal(elem.querySelector('#expected'));
-		});
 	});
 
 	describe('isComposedAncestor', () => {
