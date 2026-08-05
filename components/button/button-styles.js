@@ -33,25 +33,7 @@ function _generateButtonBaseStyles(selector) {
 	`;
 }
 
-export function _generateButtonStyles(selector) {
-	if (!_isValidCssSelector(selector)) return unsafeCSS('');
-	selector = unsafeCSS(selector.trim());
-
-	return css`
-		${selector} {
-			font-family: inherit;
-			padding-block-end: 0;
-			padding-block-start: 0;
-			padding-inline-end: var(--d2l-button-padding-inline-end, 1.5rem);
-			padding-inline-start: var(--d2l-button-padding-inline-start, 1.5rem);
-		}
-	`;
-}
-
-export function _generateMozillaButtonBorderStyles(selector) {
-	if (!_isValidCssSelector(selector)) return unsafeCSS('');
-	selector = unsafeCSS(selector.trim());
-
+function _generateMozillaButtonBorderStyles(selector) {
 	return css`
 		/* Firefox includes a hidden border which messes up button dimensions */
 		${selector}::-moz-focus-inner {
@@ -60,10 +42,7 @@ export function _generateMozillaButtonBorderStyles(selector) {
 	`;
 }
 
-export function _generateButtonDisabledStyles(selector, isForBsi = false) {
-	if (!_isValidCssSelector(selector)) return unsafeCSS('');
-	selector = unsafeCSS(selector.trim());
-
+function _generateButtonDisabledStyles(selector, isForBsi = false) {
 	const activeDisabledSelector = isForBsi ? unsafeCSS(`${selector}[active][disabled]`) : unsafeCSS(`:host([active]) ${selector}[disabled]`);
 
 	return css`
@@ -77,10 +56,7 @@ export function _generateButtonDisabledStyles(selector, isForBsi = false) {
 	`;
 }
 
-export function _generateButtonEnabledStyles(selector, isForBsi = false) {
-	if (!_isValidCssSelector(selector)) return unsafeCSS('');
-	selector = unsafeCSS(selector.trim());
-
+function _generateButtonEnabledStyles(selector, isForBsi = false) {
 	const activeSelector = isForBsi ? unsafeCSS(`${selector}[active]`) : unsafeCSS(`:host([active]) ${selector}`);
 	const additionalBSISelector = isForBsi ? unsafeCSS(`${selector}.d2l-button-hover, ${selector}.d2l-button-focus,`) : unsafeCSS('');
 
@@ -94,21 +70,7 @@ export function _generateButtonEnabledStyles(selector, isForBsi = false) {
 	`;
 }
 
-export function _generateBSIButtonFocusStyles(selector) {
-	if (!_isValidCssSelector(selector)) return unsafeCSS('');
-	const getSelector = (focusPseudoClass) => `
-			${selector}:${focusPseudoClass},
-			${selector}.d2l-button-focus,
-			${selector}[primary]:${focusPseudoClass},
-			${selector}[primary].d2l-button-focus`;
-
-	return getFocusRingStyles(getSelector, { includePreferContrastMediaQuery: false });
-}
-
-export function _generatePrimaryButtonDisabledStyles(selector, isForBsi = false) {
-	if (!_isValidCssSelector(selector)) return unsafeCSS('');
-	selector = unsafeCSS(selector.trim());
-
+function _generatePrimaryButtonDisabledStyles(selector, isForBsi = false) {
 	const finalSelector = isForBsi ? `${selector}[primary],
 		${selector}[primary][disabled]:hover,
 		${selector}[primary][disabled]:focus,
@@ -125,10 +87,7 @@ export function _generatePrimaryButtonDisabledStyles(selector, isForBsi = false)
 	`;
 }
 
-export function _generatePrimaryButtonEnabledStyles(selector, isForBsi = false) {
-	if (!_isValidCssSelector(selector)) return unsafeCSS('');
-	selector = unsafeCSS(selector.trim());
-
+function _generatePrimaryButtonEnabledStyles(selector, isForBsi = false) {
 	const finalSelector = isForBsi ? `${selector}[primary]:hover,
 	${selector}[primary].d2l-button-hover,
 	${selector}[primary]:focus,
@@ -141,6 +100,43 @@ export function _generatePrimaryButtonEnabledStyles(selector, isForBsi = false) 
 		${unsafeCSS(finalSelector)} {
 			background-color: var(--d2l-theme-background-color-interactive-primary-hover);
 		}
+	`;
+}
+
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export function _generateBSIButtonFocusStyles(selector) {
+	const getSelector = (focusPseudoClass) => `
+			${selector}:${focusPseudoClass},
+			${selector}.d2l-button-focus,
+			${selector}[primary]:${focusPseudoClass},
+			${selector}[primary].d2l-button-focus`;
+
+	return getFocusRingStyles(getSelector);
+}
+
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export function _generateButtonStyles(selector) {
+	if (!_isValidCssSelector(selector)) return unsafeCSS('');
+	const safeSelector = unsafeCSS(selector.trim());
+
+	return css`
+		${safeSelector} {
+			font-family: inherit;
+			padding-block-end: 0;
+			padding-block-start: 0;
+			padding-inline-end: var(--d2l-button-padding-inline-end, 1.5rem);
+			padding-inline-start: var(--d2l-button-padding-inline-start, 1.5rem);
+		}
+
+		${_generateMozillaButtonBorderStyles(safeSelector)}
+		${_generateButtonDisabledStyles(safeSelector)}
+		${_generateButtonEnabledStyles(safeSelector)}
+		${_generatePrimaryButtonDisabledStyles(safeSelector)}
+		${_generatePrimaryButtonEnabledStyles(safeSelector)}
 	`;
 }
 

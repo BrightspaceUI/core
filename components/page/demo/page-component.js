@@ -27,7 +27,6 @@ import '../../selection/selection-action.js';
 import '../../switch/switch-visibility.js';
 import '../../switch/switch.js';
 import '../../table/table-controls.js';
-import '../page.js';
 import '../page-footer.js';
 import '../page-main.js';
 import '../page-side-nav.js';
@@ -37,8 +36,11 @@ import { css, html, LitElement, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputLabelStyles } from '../../inputs/input-label-styles.js';
 import { pageHeaderImmersiveActionsDemo } from '../test/page-header-immersive-fixtures.js';
+import { panelStateStorageKey } from '../page.js';
 import { selectStyles } from '../../inputs/input-select-styles.js';
 import { tableStyles } from '../../table/table-wrapper.js';
+
+const DEMO_STATE_STORAGE_KEY = 'core-demo';
 
 class PageDemo extends LitElement {
 
@@ -99,7 +101,7 @@ class PageDemo extends LitElement {
 
 	render() {
 		return html`
-			<d2l-page width-type="${this.widthType}">
+			<d2l-page state-storage-key="${DEMO_STATE_STORAGE_KEY}" width-type="${this.widthType}">
 				${this.#renderHeader()}
 				${this.#renderSideNavPanel()}
 				${this.#renderMainPanel()}
@@ -107,6 +109,10 @@ class PageDemo extends LitElement {
 				${this.#renderFooter()}
 			</d2l-page>
 		`;
+	}
+
+	#handleClearStateStorage() {
+		localStorage.removeItem(panelStateStorageKey(DEMO_STATE_STORAGE_KEY));
 	}
 
 	#handleHeaderChange(e) {
@@ -250,6 +256,9 @@ class PageDemo extends LitElement {
 								<d2l-switch id="switch-main-header" text="Main" data-key="hasMainHeader" @change="${this.#handleVisibilityChange}" ?on="${this.hasMainHeader}"></d2l-switch>
 								${this.layout === 'side-nav' ? html`<d2l-switch text="Side Nav" data-key="hasSideNavHeader" @change="${this.#handleVisibilityChange}" ?on="${this.hasSideNavHeader}"></d2l-switch>` : nothing}
 								${this.layout === 'supporting' ? html`<d2l-switch text="Supporting" data-key="hasSupportingHeader" @change="${this.#handleVisibilityChange}" ?on="${this.hasSupportingHeader}"></d2l-switch>` : nothing}
+							</d2l-input-fieldset>
+							<d2l-input-fieldset label="State Storage">
+								<d2l-button-subtle text="Clear" @click="${this.#handleClearStateStorage}"></d2l-button-subtle>
 							</d2l-input-fieldset>
 						</div>
 					</d2l-input-fieldset>

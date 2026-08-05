@@ -1,19 +1,13 @@
 import '../colors/colors.js';
 import '../tooltip/tooltip.js';
-import {
-	_generateButtonDisabledStyles,
-	_generateButtonEnabledStyles,
-	_generateButtonStyles,
-	_generateMozillaButtonBorderStyles,
-	_generatePrimaryButtonDisabledStyles,
-	_generatePrimaryButtonEnabledStyles,
-	buttonStyles
-} from './button-styles.js';
+import { _generateButtonStyles, buttonStyles as baseButtonStyles } from './button-styles.js';
 import { css, html, LitElement } from 'lit';
 import { ButtonMixin } from './button-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
+
+const buttonStyles = _generateButtonStyles('button');
 
 /**
  * A button component that can be used just like the native button element.
@@ -35,7 +29,7 @@ class Button extends ButtonMixin(LitElement) {
 		primary: { type: Boolean, reflect: true }
 	};
 
-	static styles = [labelStyles, buttonStyles,
+	static styles = [labelStyles, baseButtonStyles, buttonStyles,
 		css`
 			:host {
 				display: inline-block;
@@ -43,13 +37,9 @@ class Button extends ButtonMixin(LitElement) {
 			:host([hidden]) {
 				display: none;
 			}
-			${_generateButtonStyles('button')}
 			button {
 				width: 100%;
 			}
-			${_generateMozillaButtonBorderStyles('button')}
-			${_generateButtonDisabledStyles('button')}
-			${_generateButtonEnabledStyles('button')}
 			:host([disabled]) button {
 				cursor: default;
 				position: relative;
@@ -62,8 +52,6 @@ class Button extends ButtonMixin(LitElement) {
 				opacity: var(--d2l-theme-opacity-disabled-control);
 				position: absolute;
 			}
-			${_generatePrimaryButtonDisabledStyles('button')}
-			${_generatePrimaryButtonEnabledStyles('button')}
 		`
 	];
 

@@ -5,6 +5,12 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 
 	static properties = {
 		/**
+		 * Whether selection is disabled (set by the selection component)
+		 * @ignore
+		 * @type {boolean}
+		 */
+		selectionDisabled: { type: Boolean, reflect: true, attribute: 'selection-disabled' },
+		/**
 		 * Id of the `SelectionMixin` component this component wants to observe (if not located within that component)
 		 * @type {string}
 		 */
@@ -20,6 +26,7 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 
 	constructor() {
 		super();
+		this.selectionDisabled = false;
 		this.selectionInfo = new SelectionInfo();
 		this._provider = null;
 	}

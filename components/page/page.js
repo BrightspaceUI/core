@@ -7,28 +7,82 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { ProviderMixin } from '../../mixins/provider/provider-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+export const panelStateStorageKey = key => `d2l-page-panel-state-${key}`;
+
 const DRAWER_MIN_HEIGHT = 200; // TO DO: Confirm
 const MAIN_MIN_WIDTH = 600; // TO DO: Confirm
 const PANEL_MIN_WIDTH = 320;
+
+export const SIDE_NAV_DEFAULT_WIDTH = 334;
+export const supportingDefaultWidth = contentWidth => Math.floor(contentWidth / 3);
+export const supportingMobileDefaultHeight = fullHeight => Math.floor(fullHeight / 2);
 
 class PanelStateController {
 	constructor(host, panelConfigs) {
 		this.#host = host;
 		this.#panels = {};
 		for (const [key, config] of Object.entries(panelConfigs)) {
-			this.#panels[key] = { collapsed: false, size: 0, minSize: config.minSize, maxSize: config.minSize };
+			this.#panels[key] = {
+				animate: false,
+				collapsed: false,
+				size: 0,
+				minSize: config.minSize,
+				maxSize: config.minSize
+			};
 		}
 		host.addController(this);
 	}
 
+	getAnimate(key) { return this.#panels[key].animate; }
+	getCollapsed(key) { return this.#panels[key].collapsed; }
 	getMaxSize(key) { return this.#panels[key].maxSize; }
 	getMinSize(key) { return this.#panels[key].minSize; }
-	getSize(key) { return this.#panels[key].size; }
+	getSize(key) {
+		const panel = this.#panels[key];
+		// TO DO: Factor in dragging
+		return panel.collapsed ? 0 : panel.size;
+	}
+	getTrueSize(key) {
+		const panel = this.#panels[key];
+		return panel.size;
+	}
 
-	resize(key, requestedSize) {
+	initialize(defaults) {
+		const storedState = this.#getStoredState();
+
+		for (const [key, panel] of Object.entries(this.#panels)) {
+			const stored = storedState?.[key];
+			if (stored) {
+				const storedSize = parseInt(stored.size);
+				this.resize(key, isFinite(storedSize) ? storedSize : defaults[key]);
+				if (stored.collapsed) panel.collapsed = true;
+			} else {
+				this.resize(key, defaults[key]);
+			}
+		}
+	}
+
+	resize(key, requestedSize, { animate = false, storeState = false } = {}) {
 		const panel = this.#panels[key];
 		// Clamp requested size to min and max bounds
 		panel.size = Math.max(panel.minSize, Math.min(requestedSize, panel.maxSize));
+		panel.animate = animate;
+		this.#host.requestUpdate();
+		if (storeState) this.#storePanelState(key);
+	}
+
+	setCollapsed(key, collapsed) {
+		const panel = this.#panels[key];
+		panel.collapsed = collapsed;
+		panel.animate = true;
+		this.#host.requestUpdate();
+		this.#storePanelState(key);
+	}
+
+	setDragSize(key) {
+		const panel = this.#panels[key];
+		// TO DO: Handle Dragging
+		panel.animate = false;
 		this.#host.requestUpdate();
 	}
 
@@ -43,6 +97,39 @@ class PanelStateController {
 
 	#host;
 	#panels;
+
+	#getPanelStateStorageKey() {
+		return this.#host.stateStorageKey ? panelStateStorageKey(this.#host.stateStorageKey) : null;
+	}
+
+	#getStoredState() {
+		const fullKey = this.#getPanelStateStorageKey();
+		if (!fullKey) return;
+
+		try {
+			return JSON.parse(localStorage.getItem(fullKey));
+		} catch {
+			// Return nothing if local storage isn't available or has bad data
+			return;
+		}
+	}
+
+	#storePanelState(panelKey) {
+		const fullKey = this.#getPanelStateStorageKey();
+		if (!fullKey) return;
+		const state = this.#getStoredState() || {};
+
+		try {
+			state[panelKey] = {
+				size: this.#panels[panelKey].size,
+				collapsed: this.#panels[panelKey].collapsed
+			};
+			localStorage.setItem(fullKey, JSON.stringify(state));
+		} catch {
+			// Do nothing if storage quota exceeded or using private browsing mode of an old Safari version
+			// TO DO: If QuotaExceededError, log this to our logging framework
+		}
+	}
 }
 
 /**
@@ -56,6 +143,12 @@ class PanelStateController {
 class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	static properties = {
+		/**
+		 * Key used to optionally store page state across reloads (using localStorage). Different pages should use different keys.
+		 * Currently, this includes panel state info.
+		 * @type {string}
+		 */
+		stateStorageKey: { type: String, attribute: 'state-storage-key' },
 		/**
 		 * Width type of the page and its underlying pieces
 		 * @type {'normal'|'wide'|'fullscreen'}
@@ -102,7 +195,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 		.header {
 			position: relative;
-			z-index: 15; /* To be over sticky content of our core components */
+			z-index: 16; /* To be over sticky content of our core components and the divider */
 		}
 
 		.page.header-sticky .header {
@@ -132,16 +225,65 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		}
 
 		.side-nav-panel,
+		.supporting-panel {
+			overflow: hidden;
+		}
+
+		.side-nav-panel,
 		.supporting-panel,
 		.divider {
-			max-height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
 			position: sticky;
 			top: var(--d2l-page-header-height, 0);
 		}
 
 		.side-nav-panel,
-		.supporting-panel {
+		.supporting-panel,
+		.side-nav-panel-content,
+		.supporting-panel-content,
+		.divider {
+			max-height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
+		}
+
+		.side-nav-panel-content,
+		.supporting-panel-content {
+			box-sizing: border-box;
 			overflow: clip auto;
+		}
+		.side-nav-panel-content {
+			float: inline-end;
+		}
+		.supporting-panel-content {
+			float: inline-start;
+		}
+
+		.divider {
+			z-index: 15; /* To be over d2l-page-* panel headers */
+		}
+
+		.side-nav .divider[collapsed] {
+			margin-inline-start: 18px;
+		}
+		.supporting .divider[collapsed] {
+			margin-inline-end: 18px;
+		}
+		.side-nav-panel.collapsed,
+		.supporting-panel.collapsed {
+			visibility: hidden;
+		}
+		@media (prefers-reduced-motion: no-preference) {
+			.side-nav-panel.animate,
+			.supporting-panel.animate,
+			.side-nav-panel.animate .side-nav-panel-content,
+			.supporting-panel.animate .supporting-panel-content {
+				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1);
+			}
+			.divider.animate {
+				transition: margin 400ms cubic-bezier(0, 0.7, 0.5, 1);
+			}
+			.side-nav-panel.animate.collapsed,
+			.supporting-panel.animate.collapsed {
+				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1), visibility 0s 400ms;
+			}
 		}
 
 		.footer:not([hidden]),
@@ -154,7 +296,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			inset: auto 0 0;
 			padding-block-start: 0.75rem;
 			position: fixed;
-			z-index: 10; /* To be over sticky content of our core components */
+			z-index: 15; /* To be over sticky content of our core components and divider */
 		}
 		.footer-contents {
 			margin-inline: var(--d2l-page-margin-inline, 0);
@@ -274,11 +416,13 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	#handleDividerResize(e) {
 		const panelKey = e.target.dataset.panelKey;
-		this._panelState.resize(panelKey, e.detail.requestedSize);
+		this._panelState.resize(panelKey, e.detail.requestedSize, { animate: true, storeState: true });
 	};
 
-	#handleDividerToggle() {
-		// TO DO
+	#handleDividerToggle(e) {
+		const panelKey = e.target.dataset.panelKey;
+		const collapsed = !this._panelState.getCollapsed(panelKey);
+		this._panelState.setCollapsed(panelKey, collapsed);
 	};
 
 	#handleSlotVisibilityChange(e) {
@@ -288,20 +432,24 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	#initializePanelSizes() {
-		const defaultWidth = Math.floor(this._contentWidth / 3);
-		const defaultHeight = Math.floor(window.innerHeight / 2);
-
-		this._panelState.resize('side-nav', defaultWidth);
-		this._panelState.resize('supporting', defaultWidth);
-		this._panelState.resize('supporting-mobile', defaultHeight);
+		this._panelState.initialize({
+			'side-nav': SIDE_NAV_DEFAULT_WIDTH,
+			'supporting': supportingDefaultWidth(this._contentWidth),
+			'supporting-mobile': supportingMobileDefaultHeight(window.innerHeight)
+		});
 	}
 
 	#renderDivider(panelKey, label, panelPosition) {
+		const classes = {
+			'divider': true,
+			'animate': this._panelState.getAnimate(panelKey)
+		};
 		return html`
 			<d2l-page-divider-internal
-				class="divider"
+				class="${classMap(classes)}"
 				data-panel-key="${panelKey}"
 				label="${label}"
+				?collapsed="${this._panelState.getCollapsed(panelKey)}"
 				current-size="${this._panelState.getSize(panelKey)}"
 				max-size="${this._panelState.getMaxSize(panelKey)}"
 				min-size="${this._panelState.getMinSize(panelKey)}"
@@ -349,13 +497,20 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	#renderSideNavPanel() {
+		const classes = {
+			'side-nav-panel': true,
+			'animate': this._panelState.getAnimate('side-nav'),
+			'collapsed': this._panelState.getCollapsed('side-nav')
+		};
 		return html`
 			<nav class="side-nav" aria-label="${this.localize('components.page.side-nav-label')}">
 				<div
-					class="side-nav-panel"
+					class="${classMap(classes)}"
 					style=${styleMap({ width: `${this._panelState.getSize('side-nav')}px` })}
 					?hidden="${!this._slotVisibility['side-nav']}">
-					<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+					<div class="side-nav-panel-content" style=${styleMap({ width: `${this._panelState.getTrueSize('side-nav')}px` })}>
+						<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+					</div>
 				</div>
 				${!this._slotVisibility['side-nav'] ? nothing :
 					this.#renderDivider('side-nav', this.localize('components.page.side-nav-divider-label'), 'start')}
@@ -364,15 +519,22 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	#renderSupportingPanel() {
+		const classes = {
+			'supporting-panel': true,
+			'animate': this._panelState.getAnimate('supporting'),
+			'collapsed': this._panelState.getCollapsed('supporting')
+		};
 		return html`
 			<aside class="supporting" aria-label="${this.localize('components.page.supporting-label')}">
 				${!this._slotVisibility['supporting'] ? nothing :
 					this.#renderDivider('supporting', this.localize('components.page.supporting-divider-label'), 'end')}
 				<div
-					class="supporting-panel"
+					class="${classMap(classes)}"
 					style=${styleMap({ width: `${this._panelState.getSize('supporting')}px` })}
 					?hidden="${!this._slotVisibility['supporting']}">
-					<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+					<div class="supporting-panel-content" style=${styleMap({ width: `${this._panelState.getTrueSize('supporting')}px` })}>
+						<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+					</div>
 				</div>
 			</aside>
 		`;
