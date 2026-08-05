@@ -2,8 +2,10 @@ import { css, unsafeCSS } from 'lit';
 import {
 	getComposedChildren,
 	getComposedNextAncestorElementSibling,
+	getComposedNextElementSibling,
 	getComposedParent,
 	getComposedPreviousAncestorElementSibling,
+	getComposedPreviousElementSibling,
 	getFirstVisibleAncestor,
 	getNextAncestorSibling,
 	getPreviousAncestorSibling,
@@ -148,7 +150,8 @@ export function getPreviousFocusable(node, includeHidden) {
 			if (focusable) return focusable;
 		}
 
-		const previousSibling = node.previousElementSibling;
+		// Clean-up this next line when cleaning up GAUD-10260-get-focusable-fix
+		const previousSibling = focusableFixFlag ? getComposedPreviousElementSibling(node) : node.previousElementSibling;
 		if (previousSibling) {
 			const siblingFocusable = _getPreviousFocusable(previousSibling, false, false);
 			if (siblingFocusable) return siblingFocusable;
@@ -187,7 +190,8 @@ export function getNextFocusable(node, includeHidden, ignore, ignoreChildren) {
 			if (focusable) return focusable;
 		}
 
-		const nextSibling = node.nextElementSibling;
+		// Clean-up this next line when cleaning up GAUD-10260-get-focusable-fix
+		const nextSibling = focusableFixFlag ? getComposedNextElementSibling(node) : node.nextElementSibling;
 		if (nextSibling) {
 			const siblingFocusable = _getNextFocusable(nextSibling, false, false);
 			if (siblingFocusable) return siblingFocusable;
