@@ -198,7 +198,7 @@ describe('d2l-page-divider-internal', () => {
 										{ rtl: test.rtl }
 									);
 									const arrowElem = getDividerArrow(elem, arrow);
-									expect(arrowElem === null).to.be.true;
+									expect(arrowElem.hidden).to.be.true;
 								});
 							});
 
@@ -208,7 +208,7 @@ describe('d2l-page-divider-internal', () => {
 									{ rtl: test.rtl }
 								);
 								const arrowElem = getDividerArrow(elem, test.shrinkArrow);
-								expect(arrowElem === null).to.be.true;
+								expect(arrowElem.hidden).to.be.true;
 							});
 
 							it('grow arrow appears and requests a resize to min size when collapsed', async() => {

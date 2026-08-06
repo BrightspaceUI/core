@@ -153,7 +153,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		.divider-arrow d2l-icon-custom {
 			color: var(--d2l-color-celestine);
 		}
-		.divider:focus-within .divider-arrow {
+		.divider:focus-within .divider-arrow:not([hidden]) {
 			display: flex;
 		}
 		.divider-arrow:hover {
@@ -212,14 +212,14 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
 		return html`
 		    <div class="divider" @click="${this.#handleClick}" @pointerdown="${this.#handlePointerDown}">
-				${showStartArrow ? html`
-					<div class="divider-arrow start" data-position="start">
+				${this.panelType === 'panel' ? html`
+					<div class="divider-arrow start" data-position="start" ?hidden="${!showStartArrow}">
 						<d2l-icon-custom size="tier1">${ICON_ARROW_COLLAPSE_LEFT}</d2l-icon-custom>
-					</div>` : nothing}
-				${showEndArrow ? html`
-					<div class="divider-arrow end" data-position="end">
+					</div>
+					<div class="divider-arrow end" data-position="end" ?hidden="${!showEndArrow}">
 						<d2l-icon-custom size="tier1">${ICON_ARROW_COLLAPSE_RIGHT}</d2l-icon-custom>
-					</div>` : nothing}
+					</div>
+				` : nothing}
 				<div
 					class="slider"
 					role="slider"
