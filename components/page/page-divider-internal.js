@@ -213,11 +213,11 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		return html`
 		    <div class="divider" @click="${this.#handleClick}" @pointerdown="${this.#handlePointerDown}">
 				${showStartArrow ? html`
-					<div class="divider-arrow start" data-direction="start">
+					<div class="divider-arrow start" data-position="start">
 						<d2l-icon-custom size="tier1">${ICON_ARROW_COLLAPSE_LEFT}</d2l-icon-custom>
 					</div>` : nothing}
 				${showEndArrow ? html`
-					<div class="divider-arrow end" data-direction="end">
+					<div class="divider-arrow end" data-position="end">
 						<d2l-icon-custom size="tier1">${ICON_ARROW_COLLAPSE_RIGHT}</d2l-icon-custom>
 					</div>` : nothing}
 				<div
@@ -316,7 +316,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
 		const clickedArrow = path.find(el => el.classList?.contains('divider-arrow'));
 		if (clickedArrow) {
-			const endArrowClicked = clickedArrow.dataset.direction === 'end';
+			const endArrowClicked = clickedArrow.dataset.position === 'end';
 			const shouldGrow = endArrowClicked === (this.panelPosition === 'start');
 
 			const step = (shouldGrow ? 1 : -1) * KEYBOARD_STEP;

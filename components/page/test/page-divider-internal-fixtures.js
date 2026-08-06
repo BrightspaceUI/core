@@ -36,8 +36,8 @@ export function getDivider(elem, panelKey) {
 	return elem.shadowRoot.querySelector(`d2l-page-divider-internal[data-panel-key="${panelKey}"]`);
 }
 
-export function getDividerArrow(elem, direction) {
-	return elem.shadowRoot.querySelector(`.divider-arrow.${direction}`);
+export function getDividerArrow(elem, position) {
+	return elem.shadowRoot.querySelector(`.divider-arrow.${position}`);
 }
 
 export function getSlider(elem) {
