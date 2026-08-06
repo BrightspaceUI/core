@@ -186,9 +186,17 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		this._hasHeaderSlotContent = false;
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.#resizeObserver.disconnect();
+	}
+
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 		this.#contentElement = this.shadowRoot?.querySelector('.dropdown-content');
+		if (this.#contentElement) {
+			this.#resizeObserver.observe(this.#contentElement);
+		}
 		this.addEventListener('d2l-popover-open', this.#handlePopoverOpen);
 		this.addEventListener('d2l-popover-close', this.#handlePopoverClose);
 		this.addEventListener('d2l-popover-position', this.#handlePopoverPosition);
@@ -291,6 +299,9 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	#contentElement;
+	#resizeObserver = new ResizeObserver(() => {
+		this.#toggleScrollStyles();
+	});
 
 	#adaptMobileTrayLocation(val) {
 		switch (val) {

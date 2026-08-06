@@ -54,6 +54,11 @@ const scrollContent = `
 	${Array.from(Array(12).keys()).map((key) => `<div>Line ${key + 1}</div>`).join('')}
 	<div>Bottom</div>
 `;
+const noScrollContent = `
+	<div>Top</div>
+	<div>Line 1</div>
+	<div>Bottom</div>
+`;
 const scroll = html`${unsafeHTML(scrollContent)}`;
 
 describe('dropdown-content', () => {
@@ -133,8 +138,8 @@ describe('dropdown-content', () => {
 			{ name: 'both', allColorModes: true, initialContent: scroll, scrollTo: 75 },
 			{ name: 'bottom', allColorModes: true, initialContent: scroll },
 			{ name: 'top', allColorModes: true, initialContent: scroll, scrollTo: 1000 },
-			{ name: 'async-content-added', initialContent: 'Initial Content', asyncContent: scrollContent },
-			{ name: 'async-content-removed', initialContent: scroll, asyncContent: 'Updated' }
+			{ name: 'async-content-added', initialContent: unsafeHTML(noScrollContent), asyncContent: scrollContent },
+			{ name: 'async-content-removed', initialContent: scroll, asyncContent: noScrollContent }
 		].forEach(({ name, allColorModes, initialContent, scrollTo, asyncContent }) => {
 			it(name, async() => {
 				const elem = await fixture(
