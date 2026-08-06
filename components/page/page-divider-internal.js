@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import '../icons/icon-custom.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -138,6 +138,41 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			color: white;
 		}
 
+		.divider-arrow {
+			align-items: center;
+			background-color: rgba(255, 255, 255, 0.5);
+			cursor: pointer;
+			display: none;
+			height: 24px;
+			inset-block-start: max(50%, 90px); /* Do not hide behind slider on short screens */
+			justify-content: center;
+			position: absolute;
+			transform: translateY(-50%);
+			width: 24px;
+		}
+		.divider-arrow d2l-icon-custom {
+			color: var(--d2l-color-celestine);
+		}
+		.divider:focus-within .divider-arrow {
+			display: flex;
+		}
+		.divider-arrow:hover {
+			background-color: var(--d2l-color-gypsum);
+		}
+		.divider-arrow:hover d2l-icon-custom {
+			color: var(--d2l-color-celestine-minus-1);
+		}
+		.divider-arrow.start {
+			border-start-start-radius: 6px;
+			border-end-start-radius: 6px;
+			inset-inline-end: 100%;
+		}
+		.divider-arrow.end {
+			border-start-end-radius: 6px;
+			border-end-end-radius: 6px;
+			inset-inline-start: 100%;
+		}
+
 		:host([panel-type="drawer"]) .divider {
 			background-color: var(--d2l-color-celestine);
 			cursor: ns-resize;
@@ -150,7 +185,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			top: auto;
 		}
 
-		/* TO DO: Lots more divider styling to come */
+		/* TO DO: Lots more drawer styling to come */
 
 	`;
 
@@ -169,13 +204,22 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 	}
 
 	render() {
+		const { showStartArrow, showEndArrow } = this.#getArrowVisibility();
 		let ariaValues = {};
 		if (this.maxSize > 0) {
 			ariaValues = { max: this.maxSize, min: 0, now: this.currentSize, text: formatPercent(this.currentSize / this.maxSize, { maximumFractionDigits: 0 }) };
 		}
 
 		return html`
-		    <div class="divider" @pointerdown="${this.#handlePointerDown}">
+		    <div class="divider" @click="${this.#handleClick}" @pointerdown="${this.#handlePointerDown}">
+				${showStartArrow ? html`
+					<div class="divider-arrow start" data-direction="start">
+						<d2l-icon-custom size="tier1">${ICON_ARROW_COLLAPSE_LEFT}</d2l-icon-custom>
+					</div>` : nothing}
+				${showEndArrow ? html`
+					<div class="divider-arrow end" data-direction="end">
+						<d2l-icon-custom size="tier1">${ICON_ARROW_COLLAPSE_RIGHT}</d2l-icon-custom>
+					</div>` : nothing}
 				<div
 					class="slider"
 					role="slider"
@@ -197,6 +241,17 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		`;
 	}
 
+	#clickedHandle = false;
+
+	#getArrowVisibility() {
+		if (this.panelType !== 'panel') return { showStartArrow: false, showEndArrow: false };
+		const canShrink = !this.collapsed && this.currentSize > this.minSize;
+		const canGrow = this.collapsed || this.currentSize < this.maxSize;
+		const showStartArrow = this.panelPosition === 'start' ? canShrink : canGrow;
+		const showEndArrow = this.panelPosition === 'start' ? canGrow : canShrink;
+		return { showStartArrow, showEndArrow };
+	}
+
 	#getHandleIcon() {
 		if (this.panelType === 'panel') {
 			if (this.panelPosition === 'start') {
@@ -206,6 +261,14 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			}
 		} else if (this.panelType === 'drawer') {
 			return this.collapsed ? ICON_ARROW_EXPAND_UP : ICON_ARROW_COLLAPSE_DOWN;
+		}
+	}
+
+	#handleClick(e) {
+		// Do not toggle until click event is received, to avoid clicking on elements under the handle in drawer mode
+		e.stopPropagation();
+		if (this.collapsed || this.#clickedHandle) {
+			this.#sendToggleEvent();
 		}
 	}
 
@@ -248,12 +311,18 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		e.preventDefault();
 		this.focus();
 
-		const handle = this.shadowRoot.querySelector('.divider-handle');
-		const clickedHandle = handle && handle.contains(e.target);
+		const path = e.composedPath();
+		this.#clickedHandle = path.some(el => el.classList?.contains('divider-handle'));
 
-		// TO DO: Will move to PointerUp once we add dragging ability
-		if (this.collapsed || clickedHandle) {
-			this.#sendToggleEvent();
+		const clickedArrow = path.find(el => el.classList?.contains('divider-arrow'));
+		if (clickedArrow) {
+			const endArrowClicked = clickedArrow.dataset.direction === 'end';
+			const shouldGrow = endArrowClicked === (this.panelPosition === 'start');
+
+			const step = (shouldGrow ? 1 : -1) * KEYBOARD_STEP;
+			const requestedSize = this.currentSize + step;
+			this.#sendResizeEvent(requestedSize);
+			return;
 		}
 	}
 
