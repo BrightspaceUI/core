@@ -144,7 +144,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			cursor: pointer;
 			display: none;
 			height: 24px;
-			inset-block-start: max(50%, 90px); /* Do not hide behind slider on short screens */
+			inset-block-start: max(50%, 97px); /* Do not hide behind slider on short screens */
 			justify-content: center;
 			position: absolute;
 			transform: translateY(-50%);
