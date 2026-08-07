@@ -394,8 +394,11 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	#toggleScrollStyles() {
-		this._blockEndScroll = this.#contentElement.scrollHeight - (this.#contentElement.scrollTop + this.#contentElement.clientHeight) >= 5;
-		this._blockStartScroll = this.#contentElement.scrollTop !== 0;
+		// scrollHeight can sometimes not be updated right away
+		requestAnimationFrame(() => {
+			this._blockEndScroll = this.#contentElement.scrollHeight - (this.#contentElement.scrollTop + this.#contentElement.clientHeight) >= 5;
+			this._blockStartScroll = this.#contentElement.scrollTop !== 0;
+		});
 	}
 
 };
