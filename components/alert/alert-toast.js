@@ -1,8 +1,8 @@
 import './alert.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { getFlag } from '../../helpers/flags.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const isPopoverSupported = ('popover' in HTMLElement.prototype);
