@@ -149,6 +149,7 @@ export const _generateBodySmallStyles = (selector, includeSkeleton = true) => {
 		}` : unsafeCSS('');
 	return css`
 		${selector} {
+			--d2l-overflow-clip-margin: 0.1em;
 			color: var(--d2l-theme-text-color-static-subtle);
 			font-size: 0.7rem;
 			font-weight: 400;
@@ -186,6 +187,7 @@ export const _generateHeading1Styles = (selector, includeFocus = false) => {
 		${focusStyles}
 		@media (max-width: 615px) {
 			${selector} {
+				--d2l-overflow-clip-margin: 0.15em;
 				font-size: 1.5rem;
 				line-height: 1.8rem;
 			}
@@ -224,6 +226,7 @@ export const _generateHeading2Styles = (selector, includeFocus = false) => {
 	selector = unsafeCSS(selector);
 	return css`
 		${selector} {
+			--d2l-overflow-clip-margin: 0.15em;
 			font-size: 1.5rem;
 			font-weight: 400;
 			line-height: 1.8rem;
@@ -352,6 +355,7 @@ export const _generateLabelStyles = (selector, includeSkeleton = true) => {
 	` : unsafeCSS('');
 	return css`
 		${selector} {
+			--d2l-overflow-clip-margin: 0.1em;
 			font-size: 0.7rem;
 			font-weight: 700;
 			letter-spacing: 0.2px;
