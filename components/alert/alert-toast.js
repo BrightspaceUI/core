@@ -2,10 +2,11 @@ import './alert.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { getFlag } from '../../helpers/flags.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const isPopoverSupported = ('popover' in HTMLElement.prototype);
-const usePopover = isPopoverSupported; // todo: flag check
+const usePopover = getFlag('GAUD-10337-use-alert-toast-popover', true) && isPopoverSupported;
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let activeReduceMotion = reduceMotion;
