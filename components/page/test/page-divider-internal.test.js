@@ -1,5 +1,5 @@
-import { clickElem, expect, fixture, html, nextFrame, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
-import { createDivider, getSlider } from './page-divider-internal-fixtures.js';
+import { clickElem, expect, fixture, focusElem, html, nextFrame, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
+import { createDivider, getDividerArrow, getSlider } from './page-divider-internal-fixtures.js';
 import { KEYBOARD_STEP, KEYBOARD_STEP_LARGE } from '../page-divider-internal.js';
 
 describe('d2l-page-divider-internal', () => {
@@ -71,15 +71,15 @@ describe('d2l-page-divider-internal', () => {
 		});
 
 		describe('d2l-page-divider-resize', () => {
-			describe('keyboard', () => {
-				const currentSize = 450;
-				const minSize = 320;
-				const maxSize = 600;
-				const step = KEYBOARD_STEP;
-				const halfStep = Math.ceil(step / 2);
-				const largeStep = KEYBOARD_STEP_LARGE;
-				const halfLargeStep = Math.ceil(largeStep / 2);
+			const currentSize = 450;
+			const minSize = 320;
+			const maxSize = 600;
+			const step = KEYBOARD_STEP;
+			const halfStep = Math.ceil(step / 2);
+			const largeStep = KEYBOARD_STEP_LARGE;
+			const halfLargeStep = Math.ceil(largeStep / 2);
 
+			describe('keyboard', () => {
 				[
 					{ name: 'start panel', panelType: 'panel', panelPosition: 'start', grow: 'ArrowRight', shrink: 'ArrowLeft', inactiveKeys: ['ArrowUp', 'ArrowDown'] },
 					{ name: 'end panel', panelType: 'panel', panelPosition: 'end', grow: 'ArrowLeft', shrink: 'ArrowRight', inactiveKeys: ['ArrowUp', 'ArrowDown'] },
@@ -147,7 +147,93 @@ describe('d2l-page-divider-internal', () => {
 			});
 
 			describe('mouse', () => {
-				// TO DO
+				describe('arrow click', () => {
+					[
+						{ name: 'start panel', panelPosition: 'start', growArrow: 'end', shrinkArrow: 'start' },
+						{ name: 'end panel', panelPosition: 'end', growArrow: 'start', shrinkArrow: 'end' },
+						{ name: 'start panel in rtl', rtl: true, panelPosition: 'start', growArrow: 'end', shrinkArrow: 'start' },
+						{ name: 'end panel in rtl', rtl: true, panelPosition: 'end', growArrow: 'start', shrinkArrow: 'end' },
+					].forEach(test => {
+
+						describe(test.name, () => {
+							[
+								{ action: 'grow', arrow: test.growArrow, expectedSize: currentSize + step },
+								{ action: 'shrink', arrow: test.shrinkArrow, expectedSize: currentSize - step }
+							].forEach(({ action, arrow, expectedSize }) => {
+								it(`dispatches event with requestedSize ${expectedSize} when "${action}" action requested (Arrow: ${arrow})`, async() => {
+									const elem = await fixture(
+										createDivider({ panelPosition: test.panelPosition }),
+										{ rtl: test.rtl }
+									);
+									await focusElem(elem);
+									clickElem(getDividerArrow(elem, arrow));
+									const e = await oneEvent(elem, 'd2l-page-divider-resize');
+									expect(e.detail.requestedSize).to.equal(expectedSize);
+								});
+							});
+
+							[
+								{ action: 'grow', arrow: test.growArrow, currentSize: maxSize - halfStep, expectedSize: maxSize },
+								{ action: 'shrink', arrow: test.shrinkArrow, currentSize: minSize + halfStep, expectedSize: minSize }
+							].forEach(({ action, arrow, currentSize, expectedSize }) => {
+								it(`does not ${action} past limits`, async() => {
+									const elem = await fixture(
+										createDivider({ currentSize, panelPosition: test.panelPosition }),
+										{ rtl: test.rtl }
+									);
+									await focusElem(elem);
+									clickElem(getDividerArrow(elem, arrow));
+									const e = await oneEvent(elem, 'd2l-page-divider-resize');
+									expect(e.detail.requestedSize).to.equal(expectedSize);
+								});
+							});
+
+							[
+								{ arrow: test.growArrow, currentSize: maxSize },
+								{ arrow: test.shrinkArrow, currentSize: minSize }
+							].forEach(({ arrow, currentSize }) => {
+								it(`${arrow} arrow does not appear at limit`, async() => {
+									const elem = await fixture(
+										createDivider({ currentSize, panelPosition: test.panelPosition }),
+										{ rtl: test.rtl }
+									);
+									const arrowElem = getDividerArrow(elem, arrow);
+									expect(arrowElem.hidden).to.be.true;
+								});
+							});
+
+							it('shrink arrow does not appear when collapsed', async() => {
+								const elem = await fixture(
+									createDivider({ collapsed: true, currentSize, panelPosition: test.panelPosition }),
+									{ rtl: test.rtl }
+								);
+								const arrowElem = getDividerArrow(elem, test.shrinkArrow);
+								expect(arrowElem.hidden).to.be.true;
+							});
+
+							it('grow arrow appears and requests a resize to min size when collapsed', async() => {
+								const elem = await fixture(
+									createDivider({ collapsed: true, currentSize: 0, panelPosition: test.panelPosition }),
+									{ rtl: test.rtl }
+								);
+								await focusElem(elem);
+								clickElem(getDividerArrow(elem, test.growArrow));
+								const e = await oneEvent(elem, 'd2l-page-divider-resize');
+								expect(e.detail.requestedSize).to.equal(minSize);
+							});
+						});
+					});
+
+					it('arrows do not appear in drawer mode', async() => {
+						const elem = await fixture(createDivider({ panelType: 'drawer' }));
+						const arrows = elem.shadowRoot.querySelectorAll('.divider-arrow');
+						expect(arrows.length).to.equal(0);
+					});
+				});
+
+				describe('dragging', () => {
+					// TO DO
+				});
 			});
 		});
 	});

@@ -11,7 +11,7 @@ export function createDivider({
 } = {}) {
 	return html`
 		<d2l-page-divider-internal
-			style="height: 300px;"
+			style="height: 300px; margin-inline: 30px;"
 			label="Resize"
 			?collapsed="${collapsed}"
 			current-size="${currentSize}"
@@ -36,6 +36,10 @@ export function getDivider(elem, panelKey) {
 	return elem.shadowRoot.querySelector(`d2l-page-divider-internal[data-panel-key="${panelKey}"]`);
 }
 
+export function getDividerArrow(elem, position) {
+	return elem.shadowRoot.querySelector(`.divider-arrow.${position}`);
+}
+
 export function getSlider(elem) {
 	return elem.shadowRoot.querySelector('.slider');
 }
@@ -52,4 +56,7 @@ export const pageDividerFixtures = {
 	supportingImmersiveFooter: createDividerPage({ layout: 'supporting', header: 'immersive', hasFooter: true }),
 	supportingImmersiveBothHeaders: createDividerPage({ layout: 'supporting', header: 'immersive', hasMainHeader: true, hasSupportingHeader: true }),
 	supportingImmersiveLongMainLongBothHeaders: createDividerPage({ layout: 'supporting', header: 'immersive', hasMainHeader: true, hasSupportingHeader: true, mainHeight: '400px', supportingHeight: '400px' }),
+	// With state-storage-key set
+	sideNavBothHeadersFooterStorageKey: createDividerPage({ setStateStorageKey: true, layout: 'side-nav', hasMainHeader: true, hasSideNavHeader: true, hasFooter: true }),
+	supportingImmersiveBothHeadersStorageKey: createDividerPage({ setStateStorageKey: true, layout: 'supporting', header: 'immersive', hasMainHeader: true, hasSupportingHeader: true }),
 };
