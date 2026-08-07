@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../icons/icon-custom.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -141,7 +142,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		.divider-arrow {
 			align-items: center;
 			background-color: rgba(255, 255, 255, 0.5);
-			cursor: pointer;
+			cursor: default;
 			display: none;
 			height: 24px;
 			inset-block-start: max(50%, 97px); /* Do not hide behind slider on short screens */
@@ -150,16 +151,19 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			transform: translateY(-50%);
 			width: 24px;
 		}
+		.divider-arrow.active {
+			cursor: pointer;
+		}
 		.divider-arrow d2l-icon-custom {
 			color: var(--d2l-color-celestine);
 		}
 		.divider:focus-within .divider-arrow:not([hidden]) {
 			display: flex;
 		}
-		.divider-arrow:hover {
+		.divider-arrow.active:hover {
 			background-color: var(--d2l-color-gypsum);
 		}
-		.divider-arrow:hover d2l-icon-custom {
+		.divider-arrow.active:hover d2l-icon-custom {
 			color: var(--d2l-color-celestine-minus-1);
 		}
 		.divider-arrow.start {
@@ -205,6 +209,8 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
 	render() {
 		const { showStartArrow, showEndArrow } = this.#getArrowVisibility();
+		const startArrowClasses = { 'divider-arrow': true, 'start': true, 'active': !this.collapsed };
+		const endArrowClasses = { 'divider-arrow': true, 'end': true, 'active': !this.collapsed };
 		let ariaValues = {};
 		if (this.maxSize > 0) {
 			ariaValues = { max: this.maxSize, min: 0, now: this.currentSize, text: formatPercent(this.currentSize / this.maxSize, { maximumFractionDigits: 0 }) };
@@ -213,10 +219,10 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		return html`
 		    <div class="divider" @click="${this.#handleClick}" @pointerdown="${this.#handlePointerDown}">
 				${this.panelType === 'panel' ? html`
-					<div class="divider-arrow start" data-position="start" ?hidden="${!showStartArrow}">
+					<div class="${classMap(startArrowClasses)}" data-position="start" ?hidden="${!showStartArrow}">
 						<d2l-icon-custom size="tier1">${ICON_ARROW_COLLAPSE_LEFT}</d2l-icon-custom>
 					</div>
-					<div class="divider-arrow end" data-position="end" ?hidden="${!showEndArrow}">
+					<div class="${classMap(endArrowClasses)}" data-position="end" ?hidden="${!showEndArrow}">
 						<d2l-icon-custom size="tier1">${ICON_ARROW_COLLAPSE_RIGHT}</d2l-icon-custom>
 					</div>
 				` : nothing}
@@ -241,6 +247,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		`;
 	}
 
+	#clickedArrow;
 	#clickedHandle = false;
 
 	#getArrowVisibility() {
@@ -265,10 +272,20 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 	}
 
 	#handleClick(e) {
-		// Do not toggle until click event is received, to avoid clicking on elements under the handle in drawer mode
+		// Do not toggle/resize until click event is received,
+		// to avoid clicking on elements under the arrows in overlay mode or under the handle in drawer mode
 		e.stopPropagation();
-		if (this.collapsed || this.#clickedHandle) {
+		if (this.collapsed && this.#clickedArrow) {
+			return;
+		} else if (this.collapsed || this.#clickedHandle) {
 			this.#sendToggleEvent();
+		} else if (this.#clickedArrow) {
+			const endArrowClicked = this.#clickedArrow.dataset.position === 'end';
+			const shouldGrow = endArrowClicked === (this.panelPosition === 'start');
+
+			const step = (shouldGrow ? 1 : -1) * KEYBOARD_STEP;
+			const requestedSize = this.currentSize + step;
+			this.#sendResizeEvent(requestedSize);
 		}
 	}
 
@@ -313,17 +330,10 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
 		const path = e.composedPath();
 		this.#clickedHandle = path.some(el => el.classList?.contains('divider-handle'));
+		this.#clickedArrow = path.find(el => el.classList?.contains('divider-arrow'));
+		if (this.#clickedArrow) return; // Arrows don't support dragging
 
-		const clickedArrow = path.find(el => el.classList?.contains('divider-arrow'));
-		if (clickedArrow) {
-			const endArrowClicked = clickedArrow.dataset.position === 'end';
-			const shouldGrow = endArrowClicked === (this.panelPosition === 'start');
-
-			const step = (shouldGrow ? 1 : -1) * KEYBOARD_STEP;
-			const requestedSize = this.currentSize + step;
-			this.#sendResizeEvent(requestedSize);
-			return;
-		}
+		// TO DO: Dragging
 	}
 
 	#sendResizeEvent(requestedSize) {
