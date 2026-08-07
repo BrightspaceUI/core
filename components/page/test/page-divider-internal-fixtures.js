@@ -56,7 +56,12 @@ export const pageDividerFixtures = {
 	supportingImmersiveFooter: createDividerPage({ layout: 'supporting', header: 'immersive', hasFooter: true }),
 	supportingImmersiveBothHeaders: createDividerPage({ layout: 'supporting', header: 'immersive', hasMainHeader: true, hasSupportingHeader: true }),
 	supportingImmersiveLongMainLongBothHeaders: createDividerPage({ layout: 'supporting', header: 'immersive', hasMainHeader: true, hasSupportingHeader: true, mainHeight: '400px', supportingHeight: '400px' }),
+	// Alternate width-type iterations
+	sideNavBothHeadersWide: createDividerPage({ widthType: 'wide', layout: 'side-nav', hasMainHeader: true, hasSideNavHeader: true }),
+	supportingLongFooterWide: createDividerPage({ widthType: 'wide', layout: 'supporting', hasFooter: true, supportingHeight: '400px' }),
 	// With state-storage-key set
+	sideNavBothHeadersStorageKey: createDividerPage({ setStateStorageKey: true, layout: 'side-nav', hasMainHeader: true, hasSideNavHeader: true }),
 	sideNavBothHeadersFooterStorageKey: createDividerPage({ setStateStorageKey: true, layout: 'side-nav', hasMainHeader: true, hasSideNavHeader: true, hasFooter: true }),
+	supportingLongFooterStorageKey: createDividerPage({ setStateStorageKey: true, layout: 'supporting', hasFooter: true, supportingHeight: '400px' }),
 	supportingImmersiveBothHeadersStorageKey: createDividerPage({ setStateStorageKey: true, layout: 'supporting', header: 'immersive', hasMainHeader: true, hasSupportingHeader: true }),
 };
