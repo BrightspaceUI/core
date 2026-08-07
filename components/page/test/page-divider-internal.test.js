@@ -66,6 +66,18 @@ describe('d2l-page-divider-internal', () => {
 					clickElem(elem);
 					await oneEvent(elem, 'd2l-page-divider-toggle');
 				});
+
+				it('does not dispatch event when divider arrow is clicked if collapsed', async() => {
+					const elem = await fixture(createDivider({ collapsed: true }));
+					const arrow = getDividerArrow(elem, 'end');
+					expect(arrow.hidden).to.be.false;
+
+					await focusElem(elem);
+					let dispatched = false;
+					elem.addEventListener('d2l-page-divider-toggle', () => dispatched = true);
+					await clickElem(arrow);
+					expect(dispatched).to.be.false;
+				});
 			});
 
 		});
@@ -211,15 +223,19 @@ describe('d2l-page-divider-internal', () => {
 								expect(arrowElem.hidden).to.be.true;
 							});
 
-							it('grow arrow appears and requests a resize to min size when collapsed', async() => {
+							it('grow arrow appears when collapsed but does not dispatch event on click', async() => {
 								const elem = await fixture(
-									createDivider({ collapsed: true, currentSize: 0, panelPosition: test.panelPosition }),
+									createDivider({ collapsed: true, currentSize, panelPosition: test.panelPosition }),
 									{ rtl: test.rtl }
 								);
+								const arrowElem = getDividerArrow(elem, test.growArrow);
+								expect(arrowElem.hidden).to.be.false;
+
 								await focusElem(elem);
-								clickElem(getDividerArrow(elem, test.growArrow));
-								const e = await oneEvent(elem, 'd2l-page-divider-resize');
-								expect(e.detail.requestedSize).to.equal(minSize);
+								let dispatched = false;
+								elem.addEventListener('d2l-page-divider-resize', () => dispatched = true);
+								await clickElem(elem);
+								expect(dispatched).to.be.false;
 							});
 						});
 					});
