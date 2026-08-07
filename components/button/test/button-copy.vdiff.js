@@ -49,6 +49,7 @@ describe('button-copy', () => {
 			writeTextStub = stub(navigator.clipboard, 'writeText').resolves();
 			const elem = await fixture(template, { viewport: { width: 700, height: 200 } });
 			await clickAction(elem);
+			await elem.updateComplete;
 
 			clock.tick(4000);
 			await elem.updateComplete;
