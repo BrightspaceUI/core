@@ -163,13 +163,13 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			color: var(--d2l-color-celestine-minus-1);
 		}
 		.divider-arrow.start {
-			border-start-start-radius: 6px;
 			border-end-start-radius: 6px;
+			border-start-start-radius: 6px;
 			inset-inline-end: 100%;
 		}
 		.divider-arrow.end {
-			border-start-end-radius: 6px;
 			border-end-end-radius: 6px;
+			border-start-end-radius: 6px;
 			inset-inline-start: 100%;
 		}
 
