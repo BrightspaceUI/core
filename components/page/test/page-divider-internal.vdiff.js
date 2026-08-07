@@ -1,6 +1,8 @@
+import { addMarkers, clearStoredPanelState, scrollBody, scrollPanel, setStoredPanelState } from './page-fixtures.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, nextFrame, sendKeysElem } from '@brightspace-ui/testing';
-import { getDivider, getSlider, pageDividerFixtures } from './page-divider-internal-fixtures.js';
-import { scrollBody, scrollPanel } from './page-fixtures.js';
+import { DIVIDER_WIDTH, KEYBOARD_STEP, KEYBOARD_STEP_LARGE } from '../page-divider-internal.js';
+import { getDivider, getDividerArrow, getSlider, pageDividerFixtures } from './page-divider-internal-fixtures.js';
+import { MAIN_MIN_WIDTH, PANEL_MIN_WIDTH, SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth } from '../page.js';
 
 describe('page-divider-internal', () => {
 
@@ -27,10 +29,66 @@ describe('page-divider-internal', () => {
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
+
+		[
+			{ name: 'arrow-start-side-nav', arrow: 'start', divider: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeaders },
+			{ name: 'arrow-end-side-nav', arrow: 'end', divider: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeaders },
+			{ name: 'arrow-start-supporting-immersive', arrow: 'start', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveFooter },
+			{ name: 'arrow-end-supporting-immersive', arrow: 'end', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveFooter }
+		].forEach(test => {
+			it(test.name, async() => {
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				const divider = getDivider(elem, test.divider);
+				await focusElem(divider);
+				await hoverElem(getDividerArrow(divider, test.arrow));
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
 	});
 
 	describe('hover-collapsed', () => {
-		// TO DO once previous panel state is saved and restored (so I can set collapsed easily)
+		afterEach(() => {
+			clearStoredPanelState();
+		});
+
+		[
+			{ name: 'side-nav', divider: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeadersFooterStorageKey },
+			{ name: 'supporting-immersive', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveBothHeadersStorageKey }
+		].forEach(test => {
+			it(test.name, async() => {
+				setStoredPanelState({ [test.divider]: { size: 400, collapsed: true } });
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				await hoverElem(getDivider(elem, test.divider));
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+
+		[
+			{ name: 'handle-side-nav', divider: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeadersFooterStorageKey },
+			{ name: 'handle-supporting-immersive', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveBothHeadersStorageKey }
+		].forEach(test => {
+			it(test.name, async() => {
+				setStoredPanelState({ [test.divider]: { size: 400, collapsed: true } });
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				const divider = getDivider(elem, test.divider);
+				await hoverElem(getSlider(divider));
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+
+		[
+			{ name: 'arrow-side-nav', arrow: 'end', divider: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeadersFooterStorageKey },
+			{ name: 'arrow-supporting-immersive', arrow: 'start', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveBothHeadersStorageKey }
+		].forEach(test => {
+			it(test.name, async() => {
+				setStoredPanelState({ [test.divider]: { size: 400, collapsed: true } });
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+				const divider = getDivider(elem, test.divider);
+				await focusElem(divider);
+				await hoverElem(getDividerArrow(divider, test.arrow));
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
 	});
 
 	describe('focus', () => {
@@ -138,8 +196,46 @@ describe('page-divider-internal', () => {
 		});
 	});
 
+	// Grey marker is default size
+	// Blue marker is requested step size
+	// Green marker is the expected resulting position
 	describe('keyboard', () => {
-		// TO DO once arrow visuals added
+		const width = 1250;
+		const maxPanelSize = width - MAIN_MIN_WIDTH - DIVIDER_WIDTH;
+		const minPanelSize = PANEL_MIN_WIDTH;
+		const sideNavDefault = SIDE_NAV_DEFAULT_WIDTH;
+		const supportingDefault = supportingDefaultWidth(width);
+
+		[
+			{ name: 'side-nav', position: 'start', fixture: pageDividerFixtures.sideNavBothHeadersWide, divider: 'side-nav', grow: 'ArrowRight', shrink: 'ArrowLeft', default: sideNavDefault },
+			{ name: 'supporting', position: 'end', fixture: pageDividerFixtures.supportingLongFooterWide, divider: 'supporting', grow: 'ArrowLeft', shrink: 'ArrowRight', default: supportingDefault },
+			{ name: 'rtl-side-nav', rtl: true, position: 'start', fixture: pageDividerFixtures.sideNavBothHeadersWide, divider: 'side-nav', grow: 'ArrowLeft', shrink: 'ArrowRight', default: sideNavDefault },
+			{ name: 'rtl-supporting', rtl: true, position: 'end', fixture: pageDividerFixtures.supportingLongFooterWide, divider: 'supporting', grow: 'ArrowRight', shrink: 'ArrowLeft', default: supportingDefault }
+		].forEach(test => {
+			describe(test.name, () => {
+				[
+					{ action: 'grow-small', key: test.grow, requested: test.default + KEYBOARD_STEP, expected: Math.min(test.default + KEYBOARD_STEP, maxPanelSize) },
+					{ action: 'shrink-small', key: test.shrink, requested: test.default - KEYBOARD_STEP, expected: Math.max(test.default - KEYBOARD_STEP, minPanelSize) },
+					{ action: 'grow-large', key: 'PageUp', requested: test.default + KEYBOARD_STEP_LARGE, expected: Math.min(test.default + KEYBOARD_STEP_LARGE, maxPanelSize) },
+					{ action: 'shrink-large', key: 'PageDown', requested: test.default - KEYBOARD_STEP_LARGE, expected: Math.max(test.default - KEYBOARD_STEP_LARGE, minPanelSize) },
+					{ action: 'max', key: 'End', requested: maxPanelSize, expected: maxPanelSize },
+					{ action: 'min', key: 'Home', requested: minPanelSize, expected: minPanelSize },
+				].forEach(({ action, key, requested, expected }) => {
+					it(action, async() => {
+						const elem = await fixture(test.fixture, { pagePadding: false, rtl: test.rtl, viewport: { height: 325, width: width } });
+						addMarkers(elem, test.position, [
+							{ color: 'grey', size: test.default },
+							{ color: 'green', size: expected },
+							...(requested !== expected ? [{ color: 'blue', size: requested }] : [])
+						]);
+
+						const divider = getDivider(elem, test.divider);
+						await sendKeysElem(divider, 'press', key);
+						await expect(elem).to.be.golden({ margin: 0 });
+					});
+				});
+			});
+		});
 	});
 
 	describe('click', () => {
@@ -184,6 +280,47 @@ describe('page-divider-internal', () => {
 				await clickElem(getSlider(divider));
 				await clickElem(divider);
 				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+
+		// Grey marker is starting position
+		// Green marker is the expected resulting position
+		describe('arrow', () => {
+			const stored = 400;
+
+			afterEach(() => {
+				clearStoredPanelState();
+			});
+
+			[
+				{ name: 'side-nav', position: 'start', fixture: pageDividerFixtures.sideNavBothHeadersStorageKey, divider: 'side-nav', grow: 'end', shrink: 'start' },
+				{ name: 'supporting', position: 'end', fixture: pageDividerFixtures.supportingLongFooterStorageKey, divider: 'supporting', grow: 'start', shrink: 'end' },
+				{ name: 'rtl-side-nav', rtl: true, position: 'start', fixture: pageDividerFixtures.sideNavBothHeadersStorageKey, divider: 'side-nav', grow: 'end', shrink: 'start' },
+				{ name: 'rtl-supporting', rtl: true, position: 'end', fixture: pageDividerFixtures.supportingLongFooterStorageKey, divider: 'supporting', grow: 'start', shrink: 'end' }
+			].forEach(test => {
+				describe(test.name, () => {
+					[
+						{ action: 'grow', arrow: test.grow, collapsed: false, startingSize: stored, expected: stored + KEYBOARD_STEP },
+						{ action: 'shrink', arrow: test.shrink, collapsed: false, startingSize: stored, expected: stored - KEYBOARD_STEP }
+					].forEach(({ action, arrow, collapsed, startingSize, expected }) => {
+						it(action, async() => {
+							setStoredPanelState({
+								'side-nav': { collapsed: collapsed, size: stored },
+								'supporting': { collapsed: collapsed, size: stored }
+							});
+							const elem = await fixture(test.fixture, { pagePadding: false, rtl: test.rtl, viewport: { height: 325, width: 1100 } });
+							addMarkers(elem, test.position, [
+								{ color: 'grey', size: startingSize },
+								{ color: 'green', size: expected }
+							]);
+
+							const divider = getDivider(elem, test.divider);
+							await focusElem(divider);
+							await clickElem(getDividerArrow(divider, arrow));
+							await expect(elem).to.be.golden({ margin: 0 });
+						});
+					});
+				});
 			});
 		});
 	});
