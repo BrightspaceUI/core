@@ -5,8 +5,9 @@ import { getFlag } from '../../helpers/flags.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+const alertToastPopoverFlag = getFlag('GAUD-10337-use-alert-toast-popover', true);
 const isPopoverSupported = ('popover' in HTMLElement.prototype);
-const usePopover = getFlag('GAUD-10337-use-alert-toast-popover', true) && isPopoverSupported;
+const usePopover = alertToastPopoverFlag && isPopoverSupported;
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let activeReduceMotion = reduceMotion;
@@ -409,8 +410,11 @@ class AlertToast extends LitElement {
 	async _openChanged(newOpen) {
 		if (newOpen) {
 
-			await this.updateComplete; // wait for popover attribute before managing top-layer
-			if (this.isConnected) this.shadowRoot.querySelector('[popover="manual"]')?.showPopover();
+			// Clean-up when removing GAUD-10337-use-alert-toast-popover
+			if (alertToastPopoverFlag) {
+				await this.updateComplete; // wait for popover attribute before managing top-layer
+				if (this.isConnected) this.shadowRoot.querySelector('[popover="manual"]')?.showPopover();
+			}
 
 			if (this._state === states.CLOSING) {
 				this._state = states.OPENING;
@@ -430,7 +434,10 @@ class AlertToast extends LitElement {
 		} else {
 			if (!this._innerContainer) return;
 
-			this.shadowRoot.querySelector('[popover="manual"]')?.hidePopover();
+			// Clean-up when removing GAUD-10337-use-alert-toast-popover
+			if (alertToastPopoverFlag) {
+				this.shadowRoot.querySelector('[popover="manual"]')?.hidePopover();
+			}
 
 			if (activeReduceMotion || this._state === states.PREOPENING) {
 				cancelAnimationFrame(this._preopenFrame);
