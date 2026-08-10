@@ -261,14 +261,14 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			z-index: 15; /* To be over d2l-page-* panel headers */
 		}
 
-		.side-nav .divider[collapsed] {
-			margin-inline-start: 18px;
+		.side-nav-panel.collapsed {
+			padding-inline-end: 18px;
 		}
-		.supporting .divider[collapsed] {
-			margin-inline-end: 18px;
-		}
-		.side-nav-panel.collapsed,
 		.supporting-panel.collapsed {
+			padding-inline-start: 18px;
+		}
+		.side-nav-panel.collapsed .side-nav-panel-content,
+		.supporting-panel.collapsed .supporting-panel-content {
 			visibility: hidden;
 		}
 		@media (prefers-reduced-motion: no-preference) {
@@ -276,14 +276,15 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			.supporting-panel.animate,
 			.side-nav-panel.animate .side-nav-panel-content,
 			.supporting-panel.animate .supporting-panel-content {
-				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1);
+				transition:
+					width 400ms cubic-bezier(0, 0.7, 0.5, 1),
+					padding 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
-			.divider.animate {
-				transition: margin 400ms cubic-bezier(0, 0.7, 0.5, 1);
-			}
-			.side-nav-panel.animate.collapsed,
-			.supporting-panel.animate.collapsed {
-				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1), visibility 0s 400ms;
+			.side-nav-panel.animate.collapsed .side-nav-panel-content,
+			.supporting-panel.animate.collapsed .supporting-panel-content {
+				transition:
+					width 400ms cubic-bezier(0, 0.7, 0.5, 1),
+					visibility 0s 400ms;
 			}
 		}
 
