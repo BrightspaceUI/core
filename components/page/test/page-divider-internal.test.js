@@ -202,24 +202,15 @@ describe('d2l-page-divider-internal', () => {
 								});
 							});
 
-							it('shrink arrow does not appear when collapsed', async() => {
+							it('both arrows are hidden when collapsed', async() => {
 								const elem = await fixture(
 									createDivider({ collapsed: true, currentSize, panelPosition: test.panelPosition }),
 									{ rtl: test.rtl }
 								);
-								const arrowElem = getDividerArrow(elem, test.shrinkArrow);
-								expect(arrowElem.hidden).to.be.true;
-							});
-
-							it('grow arrow appears and requests a resize to min size when collapsed', async() => {
-								const elem = await fixture(
-									createDivider({ collapsed: true, currentSize: 0, panelPosition: test.panelPosition }),
-									{ rtl: test.rtl }
-								);
-								await focusElem(elem);
-								clickElem(getDividerArrow(elem, test.growArrow));
-								const e = await oneEvent(elem, 'd2l-page-divider-resize');
-								expect(e.detail.requestedSize).to.equal(minSize);
+								const shrinkArrowElem = getDividerArrow(elem, test.shrinkArrow);
+								expect(shrinkArrowElem.hidden).to.be.true;
+								const growArrowElem = getDividerArrow(elem, test.growArrow);
+								expect(growArrowElem.hidden).to.be.true;
 							});
 						});
 					});

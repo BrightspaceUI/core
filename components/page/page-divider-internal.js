@@ -241,12 +241,13 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		`;
 	}
 
+	#clickedArrow;
 	#clickedHandle = false;
 
 	#getArrowVisibility() {
-		if (this.panelType !== 'panel') return { showStartArrow: false, showEndArrow: false };
-		const canShrink = !this.collapsed && this.currentSize > this.minSize;
-		const canGrow = this.collapsed || this.currentSize < this.maxSize;
+		if (this.panelType !== 'panel' || this.collapsed) return { showStartArrow: false, showEndArrow: false };
+		const canShrink = this.currentSize > this.minSize;
+		const canGrow = this.currentSize < this.maxSize;
 		const showStartArrow = this.panelPosition === 'start' ? canShrink : canGrow;
 		const showEndArrow = this.panelPosition === 'start' ? canGrow : canShrink;
 		return { showStartArrow, showEndArrow };
@@ -265,10 +266,18 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 	}
 
 	#handleClick(e) {
-		// Do not toggle until click event is received, to avoid clicking on elements under the handle in drawer mode
+		// Do not toggle/resize until click event is received,
+		// to avoid clicking on elements under the arrows in overlay mode or under the handle in drawer mode
 		e.stopPropagation();
 		if (this.collapsed || this.#clickedHandle) {
 			this.#sendToggleEvent();
+		} else if (this.#clickedArrow) {
+			const endArrowClicked = this.#clickedArrow.dataset.position === 'end';
+			const shouldGrow = endArrowClicked === (this.panelPosition === 'start');
+
+			const step = (shouldGrow ? 1 : -1) * KEYBOARD_STEP;
+			const requestedSize = this.currentSize + step;
+			this.#sendResizeEvent(requestedSize);
 		}
 	}
 
@@ -313,17 +322,10 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
 		const path = e.composedPath();
 		this.#clickedHandle = path.some(el => el.classList?.contains('divider-handle'));
+		this.#clickedArrow = path.find(el => el.classList?.contains('divider-arrow'));
+		if (this.#clickedArrow) return; // Arrows don't support dragging
 
-		const clickedArrow = path.find(el => el.classList?.contains('divider-arrow'));
-		if (clickedArrow) {
-			const endArrowClicked = clickedArrow.dataset.position === 'end';
-			const shouldGrow = endArrowClicked === (this.panelPosition === 'start');
-
-			const step = (shouldGrow ? 1 : -1) * KEYBOARD_STEP;
-			const requestedSize = this.currentSize + step;
-			this.#sendResizeEvent(requestedSize);
-			return;
-		}
+		// TO DO: Dragging
 	}
 
 	#sendResizeEvent(requestedSize) {

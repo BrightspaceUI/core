@@ -75,20 +75,6 @@ describe('page-divider-internal', () => {
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
-
-		[
-			{ name: 'arrow-side-nav', arrow: 'end', divider: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeadersFooterStorageKey },
-			{ name: 'arrow-supporting-immersive', arrow: 'start', divider: 'supporting', fixture: pageDividerFixtures.supportingImmersiveBothHeadersStorageKey }
-		].forEach(test => {
-			it(test.name, async() => {
-				setStoredPanelState({ [test.divider]: { size: 400, collapsed: true } });
-				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				const divider = getDivider(elem, test.divider);
-				await focusElem(divider);
-				await hoverElem(getDividerArrow(divider, test.arrow));
-				await expect(elem).to.be.golden({ margin: 0 });
-			});
-		});
 	});
 
 	describe('focus', () => {
