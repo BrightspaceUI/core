@@ -276,13 +276,15 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			.supporting-panel.animate,
 			.side-nav-panel.animate .side-nav-panel-content,
 			.supporting-panel.animate .supporting-panel-content {
-				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1),
-							padding 400ms cubic-bezier(0, 0.7, 0.5, 1);
+				transition:
+					width 400ms cubic-bezier(0, 0.7, 0.5, 1),
+					padding 400ms cubic-bezier(0, 0.7, 0.5, 1);
 			}
 			.side-nav-panel.animate.collapsed .side-nav-panel-content,
 			.supporting-panel.animate.collapsed .supporting-panel-content {
-				transition: width 400ms cubic-bezier(0, 0.7, 0.5, 1),
-							visibility 0s 400ms;
+				transition:
+					width 400ms cubic-bezier(0, 0.7, 0.5, 1),
+					visibility 0s 400ms;
 			}
 		}
 
