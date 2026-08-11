@@ -13,6 +13,28 @@ describe('page', () => {
 		runConstructor('d2l-page');
 	});
 
+	describe('accessibility', () => {
+		describe('hides panels with no content', () => {
+			it('single panel', async() => {
+				const elem = await fixture(pageFixtures.mainHeaderFooter, defaultFixtureOptions);
+				expect(elem.shadowRoot.querySelector('.side-nav').hasAttribute('hidden')).to.be.true;
+				expect(elem.shadowRoot.querySelector('.supporting').hasAttribute('hidden')).to.be.true;
+			});
+			it('side-nav', async() => {
+				const elem = await fixture(pageFixtures.sideNavHeader, defaultFixtureOptions);
+				expect(elem.shadowRoot.querySelector('.side-nav').getAttribute('aria-label')).to.equal('Side');
+				expect(elem.shadowRoot.querySelector('.side-nav').hasAttribute('hidden')).to.be.false;
+				expect(elem.shadowRoot.querySelector('.supporting').hasAttribute('hidden')).to.be.true;
+			});
+			it('supporting', async() => {
+				const elem = await fixture(pageFixtures.supportingImmersiveBothHeaders, defaultFixtureOptions);
+				expect(elem.shadowRoot.querySelector('.supporting').getAttribute('aria-label')).to.equal('Supporting');
+				expect(elem.shadowRoot.querySelector('.supporting').hasAttribute('hidden')).to.be.false;
+				expect(elem.shadowRoot.querySelector('.side-nav').hasAttribute('hidden')).to.be.true;
+			});
+		});
+	});
+
 	describe('storing panel state', () => {
 		afterEach(() => {
 			clearStoredPanelState();
