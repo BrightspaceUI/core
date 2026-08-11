@@ -1,5 +1,5 @@
-import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
-import { buttonToggleFixtures } from './button-toggle-fixtures.js';
+import { buttonToggleFixtures, clickActiveButton } from './button-toggle-fixtures.js';
+import { expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 describe('d2l-button-toggle', () => {
 
@@ -15,14 +15,14 @@ describe('d2l-button-toggle', () => {
 
 		it('dispatches d2l-button-toggle-change event not-pressed is clicked', async() => {
 			const el = await fixture(buttonToggleFixtures.iconNotPressed);
-			clickElem(el.querySelector('[slot="not-pressed"]'));
+			clickActiveButton(el);
 			const e = await oneEvent(el, 'd2l-button-toggle-change');
 			expect(e.target.pressed).to.equal(true);
 		});
 
 		it('dispatches d2l-button-toggle-change event pressed is clicked', async() => {
 			const el = await fixture(buttonToggleFixtures.iconPressed);
-			clickElem(el.querySelector('[slot="pressed"]'));
+			clickActiveButton(el);
 			const e = await oneEvent(el, 'd2l-button-toggle-change');
 			expect(e.target.pressed).to.equal(false);
 		});
@@ -40,7 +40,7 @@ describe('d2l-button-toggle', () => {
 			const el = await fixture(buttonToggleFixtures.iconDisabled);
 			let dispatched = false;
 			el.addEventListener('d2l-button-toggle-change', () => dispatched = true);
-			await clickElem(el.querySelector('[slot="not-pressed"]'));
+			await clickActiveButton(el);
 			expect(el.pressed).to.equal(false);
 			expect(dispatched).to.be.false;
 		});
@@ -58,7 +58,7 @@ describe('d2l-button-toggle', () => {
 			el.addEventListener('d2l-button-toggle-before-change', (e) => {
 				e.preventDefault();
 			});
-			await clickElem(el.querySelector('[slot="not-pressed"]'));
+			await clickActiveButton(el);
 			expect(el.pressed).to.equal(false);
 		});
 
@@ -67,13 +67,13 @@ describe('d2l-button-toggle', () => {
 				e.preventDefault();
 				e.detail.update(!e.target.pressed);
 			});
-			clickElem(el.querySelector('[slot="not-pressed"]'));
+			clickActiveButton(el);
 			const e = await oneEvent(el, 'd2l-button-toggle-change');
 			expect(e.target.pressed).to.equal(true);
 		});
 
 		it('d2l-button-toggle-before-change event has correct detail structure', async() => {
-			clickElem(el.querySelector('[slot="not-pressed"]'));
+			clickActiveButton(el);
 			const e = await oneEvent(el, 'd2l-button-toggle-before-change');
 			expect(e.detail).to.have.property('update').that.is.a('function');
 		});

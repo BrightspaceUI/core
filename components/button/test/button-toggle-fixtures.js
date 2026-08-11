@@ -1,6 +1,15 @@
 import '../button-icon.js';
+import '../button-subtle.js';
 import '../button-toggle.js';
-import { html } from 'lit';
+import { clickElem, html } from '@brightspace-ui/testing';
+
+export async function clickActiveButton(elem) {
+	return clickElem(getActiveButton(elem));
+}
+
+export function getActiveButton(elem) {
+	return (elem.pressed) ? elem.querySelector('[slot="pressed"]') : elem.querySelector('[slot="not-pressed"]');
+}
 
 export const buttonToggleFixtures = {
 	iconDisabled: html`
