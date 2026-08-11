@@ -1,16 +1,14 @@
-import '../button-icon.js';
-import '../button-subtle.js';
-import '../button-toggle.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, html, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, sendKeysElem } from '@brightspace-ui/testing';
+import { buttonToggleFixtures } from './button-toggle-fixtures.js';
 
 describe('button-toggle', () => {
 
 	[
-		{ category: 'button-icon', template: html`<d2l-button-toggle><d2l-button-icon slot="not-pressed" icon="tier1:pin-hollow" text="Unpinned, click to pin."></d2l-button-icon><d2l-button-icon slot="pressed" icon="tier1:pin-filled" text="Pinned, click to unpin."></d2l-button-icon></d2l-button-toggle>` },
-		{ category: 'button-icon-pressed', template: html`<d2l-button-toggle pressed><d2l-button-icon slot="not-pressed" icon="tier1:pin-hollow" text="Unpinned, click to pin."></d2l-button-icon><d2l-button-icon slot="pressed" icon="tier1:pin-filled" text="Pinned, click to unpin."></d2l-button-icon></d2l-button-toggle>` },
-		{ category: 'button-subtle', template: html`<d2l-button-toggle><d2l-button-subtle slot="not-pressed" icon="tier1:lock-unlock" text="Unlocked" description="Click to lock."></d2l-button-subtle><d2l-button-subtle slot="pressed" icon="tier1:lock-locked" text="Locked" description="Click to unlock."></d2l-button-subtle></d2l-button-toggle>` },
-		{ category: 'button-subtle-pressed', template: html`<d2l-button-toggle pressed><d2l-button-subtle slot="not-pressed" icon="tier1:lock-unlock" text="Unlocked" description="Click to lock."></d2l-button-subtle><d2l-button-subtle slot="pressed" icon="tier1:lock-locked" text="Locked" description="Click to unlock."></d2l-button-subtle></d2l-button-toggle>` },
-		{ category: 'button-subtle-disabled', template: html`<d2l-button-toggle><d2l-button-subtle slot="not-pressed" disabled icon="tier1:lock-unlock" text="Unlocked" description="Click to lock."></d2l-button-subtle><d2l-button-subtle slot="pressed" disabled icon="tier1:lock-locked" text="Locked" description="Click to unlock."></d2l-button-subtle></d2l-button-toggle>` }
+		{ category: 'button-icon', template: buttonToggleFixtures.iconNotPressed },
+		{ category: 'button-icon-pressed', template: buttonToggleFixtures.iconPressed },
+		{ category: 'button-subtle', template: buttonToggleFixtures.subtleNotPressed },
+		{ category: 'button-subtle-pressed', template: buttonToggleFixtures.subtlePressed },
+		{ category: 'button-subtle-disabled', template: buttonToggleFixtures.subtleDisabled }
 	].forEach(({ category, template }) => {
 
 		const getActiveButton = elem => {
