@@ -157,7 +157,7 @@ export default {
 	"components.page.side-nav-divider-label": "側邊導覽分隔線",
 	"components.page.side-nav-label": "側邊",
 	"components.page.supporting-divider-label": "支援面板分隔線",
-	"components.page.supporting-panel-label": "支援",
+	"components.page.supporting-label": "支援",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} 個項目}

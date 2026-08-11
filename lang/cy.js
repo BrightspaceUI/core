@@ -161,7 +161,7 @@ export default {
 	"components.page.side-nav-divider-label": "Raniwr Llywio Ochr",
 	"components.page.side-nav-label": "Ochr",
 	"components.page.supporting-divider-label": "Raniwr Panel Cymorth",
-	"components.page.supporting-panel-label": "Cefnogi",
+	"components.page.supporting-label": "Cefnogi",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} eitem}

@@ -157,7 +157,7 @@ export default {
 	"components.page.side-nav-divider-label": "ตัวแบ่งในแถบนำทางด้านข้าง",
 	"components.page.side-nav-label": "ด้านข้าง",
 	"components.page.supporting-divider-label": "ตัวแบ่งในแผงส่วนเสริม",
-	"components.page.supporting-panel-label": "ส่วนเสริม",
+	"components.page.supporting-label": "ส่วนเสริม",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} รายการ}

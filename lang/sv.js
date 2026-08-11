@@ -161,7 +161,7 @@ export default {
 	"components.page.side-nav-divider-label": "Avgränsare för sidnavigering",
 	"components.page.side-nav-label": "Sida",
 	"components.page.supporting-divider-label": "Avgränsare för supportpanel",
-	"components.page.supporting-panel-label": "Support",
+	"components.page.supporting-label": "Support",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} objekt}

@@ -161,7 +161,7 @@ export default {
 	"components.page.side-nav-divider-label": "Side Navigation Divider",
 	"components.page.side-nav-label": "Side",
 	"components.page.supporting-divider-label": "Supporting Panel Divider",
-	"components.page.supporting-panel-label": "Supporting",
+	"components.page.supporting-label": "Supporting",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} item}

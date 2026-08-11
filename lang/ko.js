@@ -156,7 +156,7 @@ export default {
 	"components.page.side-nav-divider-label": "측면 탐색 구분선",
 	"components.page.side-nav-label": "사이드",
 	"components.page.supporting-divider-label": "보조 패널 구분선",
-	"components.page.supporting-panel-label": "지원",
+	"components.page.supporting-label": "지원",
 	"components.pageable.info":
 		`{count, plural,
 			other {해당 항목 수 {countFormatted}개}

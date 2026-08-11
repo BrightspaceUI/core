@@ -155,7 +155,7 @@ export default {
 	"components.page.side-nav-divider-label": "Phân cách điều hướng bên",
 	"components.page.side-nav-label": "Bên",
 	"components.page.supporting-divider-label": "Bộ phân cách bảng hỗ trợ",
-	"components.page.supporting-panel-label": "Hỗ trợ",
+	"components.page.supporting-label": "Hỗ trợ",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} mục}

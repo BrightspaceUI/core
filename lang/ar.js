@@ -161,7 +161,7 @@ export default {
 	"components.page.side-nav-divider-label": "مقسّم التنقل الجانبي",
 	"components.page.side-nav-label": "جانبية",
 	"components.page.supporting-divider-label": "فاصل اللوحة الداعمة",
-	"components.page.supporting-panel-label": "داعمة",
+	"components.page.supporting-label": "داعمة",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} مادة واحد}

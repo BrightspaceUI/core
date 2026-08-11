@@ -156,7 +156,7 @@ export default {
 	"components.page.side-nav-divider-label": "侧边导航分隔条",
 	"components.page.side-nav-label": "侧面",
 	"components.page.supporting-divider-label": "辅助面板分隔条",
-	"components.page.supporting-panel-label": "辅助",
+	"components.page.supporting-label": "辅助",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} 项}

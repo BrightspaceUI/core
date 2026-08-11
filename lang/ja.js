@@ -156,7 +156,7 @@ export default {
 	"components.page.side-nav-divider-label": "サイドナビゲーション区切り",
 	"components.page.side-nav-label": "サイド",
 	"components.page.supporting-divider-label": "サポートパネル区切り",
-	"components.page.supporting-panel-label": "サポート",
+	"components.page.supporting-label": "サポート",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} 個の項目}
