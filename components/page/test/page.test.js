@@ -1,7 +1,7 @@
 import { clearStoredPanelState, getStoredPanelState, pageFixtures, setStoredPanelState } from './page-fixtures.js';
 import { expect, fixture, runConstructor, setViewport, waitUntil } from '@brightspace-ui/testing';
 import { restore, spy } from 'sinon';
-import { SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth, supportingMobileDefaultHeight } from '../page.js';
+import { SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth, supportingMobileDefaultHeight, supportingOverlayDefaultWidth } from '../page.js';
 import { getDivider } from './page-divider-internal-fixtures.js';
 
 const fixtureHeight = 800;
@@ -184,7 +184,7 @@ describe('page', () => {
 				getDivider(elem, 'side-nav-overlay').dispatchEvent(new CustomEvent('d2l-page-divider-toggle'));
 				const stored = getStoredPanelState();
 				expect(stored['side-nav-overlay'].collapsed).to.be.undefined;
-				expect(stored['side-nav-overlay'].size).to.equal(320); // TO DO: Should be SIDE_NAV_DEFAULT_WIDTH once overlay styles applied
+				expect(stored['side-nav-overlay'].size).to.equal(SIDE_NAV_DEFAULT_WIDTH);
 			});
 
 			it('does not persist the collapsed state for supporting-overlay', async() => {
@@ -192,7 +192,7 @@ describe('page', () => {
 				getDivider(elem, 'supporting-overlay').dispatchEvent(new CustomEvent('d2l-page-divider-toggle'));
 				const stored = getStoredPanelState();
 				expect(stored['supporting-overlay'].collapsed).to.be.undefined;
-				expect(stored['supporting-overlay'].size).to.equal(320); // TO DO: Should be supportingOverlayDefaultWidth(800) once overlay styles applied
+				expect(stored['supporting-overlay'].size).to.equal(supportingOverlayDefaultWidth(800));
 			});
 
 			it('persists each panel under its own key', async() => {

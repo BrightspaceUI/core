@@ -375,11 +375,13 @@ describe('page', () => {
 				{ name: 'side-nav-smaller', position: 'start', fixture: pageFixtures.sideNavHeaderStorageKey, default: sideNavDefault, stored: 325, expected: 325 },
 				{ name: 'side-nav-max', position: 'start', fixture: pageFixtures.sideNavHeaderStorageKey, default: sideNavDefault, stored: maxPanelSize + 200, expected: maxPanelSize },
 				{ name: 'side-nav-min', position: 'start', fixture: pageFixtures.sideNavHeaderStorageKey, default: sideNavDefault, stored: minPanelSize - 120, expected: minPanelSize },
+				{ name: 'rtl-side-nav-larger', rtl: true, position: 'start', fixture: pageFixtures.sideNavHeaderStorageKey, default: sideNavDefault, stored: 500, expected: 500 },
 
 				{ name: 'supporting-larger', position: 'end', fixture: pageFixtures.supportingFooterStorageKey, default: supportingDefault, stored: 500, expected: 500 },
 				{ name: 'supporting-smaller', position: 'end', fixture: pageFixtures.supportingFooterStorageKey, default: supportingDefault, stored: 350, expected: 350 },
 				{ name: 'supporting-max', position: 'end', fixture: pageFixtures.supportingFooterStorageKey, default: supportingDefault, stored: maxPanelSize + 200, expected: maxPanelSize },
 				{ name: 'supporting-min', position: 'end', fixture: pageFixtures.supportingFooterStorageKey, default: supportingDefault, stored: minPanelSize - 120, expected: minPanelSize },
+				{ name: 'rtl-supporting-larger', rtl: true, position: 'end', fixture: pageFixtures.supportingFooterStorageKey, default: supportingDefault, stored: 500, expected: 500 },
 			].forEach(test => {
 				it(test.name, async() => {
 					setStoredPanelState({

@@ -224,6 +224,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			margin-inline: var(--d2l-page-margin-inline, 0);
 			max-width: var(--d2l-page-content-max-width, 100%);
 			padding-bottom: var(--d2l-page-footer-height, 0); /* Reserve space for fixed footer */
+			position: relative;
 		}
 		.content.has-panels {
 			min-height: calc(100vh - var(--d2l-page-header-height-measured, 0px));
@@ -232,6 +233,11 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		main {
 			flex: 1;
 			min-width: min(${MAIN_MIN_WIDTH}px, 100%);
+			position: relative;
+		}
+		.content.has-panels main {
+			max-width: calc(100% - ${DIVIDER_WIDTH}px - ${DIVIDER_GUTTER_WIDTH}px);
+			min-width: min(${MAIN_MIN_WIDTH}px, calc(100% - ${DIVIDER_WIDTH}px - ${DIVIDER_GUTTER_WIDTH}px));
 		}
 
 		.side-nav,
@@ -245,6 +251,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 		.side-nav-panel,
 		.supporting-panel {
+			background-color: white;
 			overflow: hidden;
 		}
 
@@ -321,6 +328,30 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		.footer-contents {
 			margin-inline: var(--d2l-page-margin-inline, 0);
 			max-width: var(--d2l-page-footer-max-width, 100%);
+		}
+
+		/* Overlay Mode */
+		.scrim {
+			background-color: var(--d2l-color-regolith);
+			inset: 0;
+			opacity: 0.7;
+			position: absolute;
+			z-index: 14; /* To be over d2l-page-main panel header and sticky content of our core components */
+		}
+		@media (max-width: ${OVERLAY_MODE_BREAKPOINT}px) {
+			.content.scrimmed {
+				overflow: clip;
+			}
+			.side-nav-panel {
+				flex-shrink: 0;
+			}
+			.supporting {
+				display: flex;
+				inset-block: 0;
+				inset-inline-end: 0;
+				position: absolute;
+				z-index: 15; /* To be over d2l-page-* panel headers and sticky content of our core components */
+			}
 		}
 	`;
 
@@ -413,6 +444,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	render() {
 		const sideNavPanelKey = this._inOverlayMode ? 'side-nav-overlay' : 'side-nav';
 		const supportingPanelKey = this._inMobileMode ? 'supporting-overlay' : (this._inOverlayMode ? 'supporting-overlay' : 'supporting'); // TO DO: Switch to supporting-mobile
+		const { showScrim, scrimMessage } = this.#determineScrimVisibility();
 
 		const pageClasses = {
 			'page': true,
@@ -420,7 +452,8 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		};
 		const contentClasses = {
 			'content': true,
-			'has-panels': this._slotVisibility['side-nav'] || this._slotVisibility['supporting']
+			'has-panels': this._slotVisibility['side-nav'] || this._slotVisibility['supporting'],
+			'scrimmed': showScrim
 		};
 
 		return html`
@@ -428,7 +461,10 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 				${this.#renderHeader()}
 				<div class="${classMap(contentClasses)}">
 					${this.#renderSideNavPanel(sideNavPanelKey)}
-					<main><slot></slot></main>
+					<main aria-label="${ifDefined(showScrim ? this.localize(scrimMessage) : undefined)}">
+						<div class="main" ?inert="${showScrim}"><slot></slot></div>
+						${showScrim ? html`<div class="scrim"></div>` : nothing}
+					</main>
 					${this.#renderSupportingPanel(supportingPanelKey)}
 				</div>
 				${this.#renderFooter()}
@@ -460,13 +496,26 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		this._panelState.updateMaxSize('supporting-mobile', this.#getMaxDrawerHeight());
 	};
 
+	#determineScrimVisibility() {
+		let scrimMessage = null;
+		if (!this._inOverlayMode) return { showScrim: false, scrimMessage };
+
+		if (this._slotVisibility['side-nav'] && !this._panelState.getCollapsed('side-nav-overlay')) {
+			scrimMessage = 'components.page.side-nav-scrim';
+		} else if (this._slotVisibility['supporting'] && !this._panelState.getCollapsed('supporting-overlay')) {
+			// TO DO: No scrim for supporting in mobile mode
+			scrimMessage = 'components.page.supporting-scrim';
+		}
+		return { showScrim: scrimMessage !== null, scrimMessage };
+	}
+
 	#getMaxDrawerHeight() {
 		const reservedSpace = this._headerHeight + this._footerHeight + DIVIDER_WIDTH;
 		return Math.max(DRAWER_MIN_HEIGHT, window.innerHeight - reservedSpace);
 	}
 
 	#getMaxPanelOverlayWidth() {
-		const reservedSpace = MAIN_MIN_WIDTH + DIVIDER_WIDTH; // TO DO: Update when overlay styles added
+		const reservedSpace = DIVIDER_WIDTH + DIVIDER_GUTTER_WIDTH;
 		return Math.max(PANEL_MIN_WIDTH, this._contentWidth - reservedSpace);
 	}
 
