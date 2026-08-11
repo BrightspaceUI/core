@@ -330,8 +330,8 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		this._footerHeight = 0;
 		this._panelState = new PanelStateController(this, {
 			'side-nav': { collapsed: false, minSize: PANEL_MIN_WIDTH },
-			'supporting': { collapsed: false, minSize: PANEL_MIN_WIDTH },
 			'side-nav-overlay': { collapsed: true, minSize: PANEL_MIN_WIDTH },
+			'supporting': { collapsed: false, minSize: PANEL_MIN_WIDTH },
 			'supporting-overlay': { collapsed: true, minSize: PANEL_MIN_WIDTH },
 			'supporting-mobile': { collapsed: false, minSize: DRAWER_MIN_HEIGHT }
 		});
@@ -491,8 +491,8 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	#initializePanelSizes() {
 		this._panelState.initialize({
 			'side-nav': SIDE_NAV_DEFAULT_WIDTH,
-			'supporting': supportingDefaultWidth(this._contentWidth),
 			'side-nav-overlay': SIDE_NAV_DEFAULT_WIDTH,
+			'supporting': supportingDefaultWidth(this._contentWidth),
 			'supporting-overlay': supportingOverlayDefaultWidth(this._contentWidth),
 			'supporting-mobile': supportingMobileDefaultHeight(window.innerHeight)
 		});
