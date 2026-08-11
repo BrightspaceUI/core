@@ -6,6 +6,7 @@ import '../page-side-nav.js';
 import '../page-supporting.js';
 import { html, nothing, render } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { nextFrame } from '@brightspace-ui/testing';
 import { panelStateStorageKey } from '../page.js';
 
 export function scrollBody() {
@@ -17,7 +18,13 @@ export function scrollPanel(elem, panel) {
 	panelElem.scrollTop = panelElem.scrollHeight;
 }
 
-const TEST_STATE_STORAGE_KEY = 'test-page';
+export async function openPanel(elem, panelKey) {
+	const divider = elem.shadowRoot.querySelector(`d2l-page-divider-internal[data-panel-key="${panelKey}"]`);
+	divider.dispatchEvent(new CustomEvent('d2l-page-divider-toggle'));
+	await nextFrame();
+}
+
+export const TEST_STATE_STORAGE_KEY = 'test-page';
 const panelStorageKey = panelStateStorageKey(TEST_STATE_STORAGE_KEY);
 export function getStoredPanelState() {
 	const stored = localStorage.getItem(panelStorageKey);
