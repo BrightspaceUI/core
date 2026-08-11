@@ -156,8 +156,10 @@ export default {
 	"components.page.header-nav-label": "หลัก",
 	"components.page.side-nav-divider-label": "ตัวแบ่งในแถบนำทางด้านข้าง",
 	"components.page.side-nav-label": "ด้านข้าง",
+	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
 	"components.page.supporting-divider-label": "ตัวแบ่งในแผงส่วนเสริม",
 	"components.page.supporting-label": "ส่วนเสริม",
+	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} รายการ}

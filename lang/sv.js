@@ -160,8 +160,10 @@ export default {
 	"components.page.header-nav-label": "Huvudsida",
 	"components.page.side-nav-divider-label": "Avgränsare för sidnavigering",
 	"components.page.side-nav-label": "Sida",
+	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
 	"components.page.supporting-divider-label": "Avgränsare för supportpanel",
 	"components.page.supporting-label": "Support",
+	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} objekt}

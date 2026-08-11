@@ -170,8 +170,10 @@ export default {
 	"components.page.header-nav-label": "Главная",
 	"components.page.side-nav-divider-label": "Боковой навигационный разделитель",
 	"components.page.side-nav-label": "Сторона",
+	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
 	"components.page.supporting-divider-label": "Опорный разделитель панелей",
 	"components.page.supporting-label": "Поддерживающий",
+	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} элемент}

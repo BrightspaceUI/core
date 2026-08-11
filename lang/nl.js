@@ -160,8 +160,10 @@ export default {
 	"components.page.header-nav-label": "Hoofdgedeelte",
 	"components.page.side-nav-divider-label": "Scheidingslijn zijmenu",
 	"components.page.side-nav-label": "Zij",
+	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
 	"components.page.supporting-divider-label": "Scheidingslijn ondersteunend paneel",
 	"components.page.supporting-label": "Ondersteuning",
+	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} item}

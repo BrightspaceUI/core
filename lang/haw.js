@@ -160,8 +160,10 @@ export default {
 	"components.page.header-nav-label": "Nui",
 	"components.page.side-nav-divider-label": "Māhele Hoʻokele ʻAoʻao",
 	"components.page.side-nav-label": "ʻaoʻao",
+	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
 	"components.page.supporting-divider-label": "Mea Hoʻokaʻawale Panel Kākoʻo",
 	"components.page.supporting-label": "Ke kākoʻo nei",
+	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} mea}

@@ -155,8 +155,10 @@ export default {
 	"components.page.header-nav-label": "메인",
 	"components.page.side-nav-divider-label": "측면 탐색 구분선",
 	"components.page.side-nav-label": "사이드",
+	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
 	"components.page.supporting-divider-label": "보조 패널 구분선",
 	"components.page.supporting-label": "지원",
+	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
 	"components.pageable.info":
 		`{count, plural,
 			other {해당 항목 수 {countFormatted}개}

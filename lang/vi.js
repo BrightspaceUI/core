@@ -154,8 +154,10 @@ export default {
 	"components.page.header-nav-label": "Chính",
 	"components.page.side-nav-divider-label": "Phân cách điều hướng bên",
 	"components.page.side-nav-label": "Bên",
+	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
 	"components.page.supporting-divider-label": "Bộ phân cách bảng hỗ trợ",
 	"components.page.supporting-label": "Hỗ trợ",
+	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} mục}

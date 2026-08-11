@@ -160,8 +160,10 @@ export default {
 	"components.page.header-nav-label": "Haupt-",
 	"components.page.side-nav-divider-label": "Trennung für Seitennavigation",
 	"components.page.side-nav-label": "Seiten-",
+	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
 	"components.page.supporting-divider-label": "Trennung für Unterstützungsbereich",
 	"components.page.supporting-label": "Unterstützung",
+	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} Element}
