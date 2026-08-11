@@ -14,9 +14,18 @@ const DRAWER_MIN_HEIGHT = 200; // TO DO: Confirm
 export const MAIN_MIN_WIDTH = 600; // TO DO: Confirm
 export const PANEL_MIN_WIDTH = 320;
 
+const DIVIDER_GUTTER_WIDTH = 18;
+
 export const SIDE_NAV_DEFAULT_WIDTH = 334;
 export const supportingDefaultWidth = contentWidth => Math.floor(contentWidth / 3);
+export const supportingOverlayDefaultWidth = contentWidth => Math.min(400, Math.floor(0.9 * (contentWidth - DIVIDER_WIDTH - DIVIDER_GUTTER_WIDTH)));
 export const supportingMobileDefaultHeight = fullHeight => Math.floor(fullHeight / 2);
+
+const OVERLAY_MODE_BREAKPOINT = 929;
+const MOBILE_MODE_BREAKPOINT = 767;
+
+const overlayModeQuery = window.matchMedia(`(max-width: ${OVERLAY_MODE_BREAKPOINT}px)`);
+const mobileModeQuery = window.matchMedia(`(max-width: ${MOBILE_MODE_BREAKPOINT}px)`);
 
 class PanelStateController {
 	constructor(host, panelConfigs) {
@@ -25,7 +34,8 @@ class PanelStateController {
 		for (const [key, config] of Object.entries(panelConfigs)) {
 			this.#panels[key] = {
 				animate: false,
-				collapsed: false,
+				collapsed: config.collapsed,
+				restoreCollapsed: !config.collapsed,
 				size: 0,
 				minSize: config.minSize,
 				maxSize: config.minSize
@@ -56,7 +66,7 @@ class PanelStateController {
 			if (stored) {
 				const storedSize = parseInt(stored.size);
 				this.resize(key, isFinite(storedSize) ? storedSize : defaults[key]);
-				if (stored.collapsed) panel.collapsed = true;
+				if (panel.restoreCollapsed && stored.collapsed) panel.collapsed = true;
 			} else {
 				this.resize(key, defaults[key]);
 			}
@@ -92,7 +102,7 @@ class PanelStateController {
 		panel.maxSize = newMaxSize;
 
 		if (panel.size > newMaxSize) {
-			this.resize(key, panel.size);
+			this.resize(key, panel.size, { animate: true });
 		}
 	}
 
@@ -122,9 +132,11 @@ class PanelStateController {
 
 		try {
 			state[panelKey] = {
-				size: this.#panels[panelKey].size,
-				collapsed: this.#panels[panelKey].collapsed
+				size: this.#panels[panelKey].size
 			};
+			if (this.#panels[panelKey].restoreCollapsed) {
+				state[panelKey].collapsed = this.#panels[panelKey].collapsed;
+			}
 			localStorage.setItem(fullKey, JSON.stringify(state));
 		} catch {
 			// Do nothing if storage quota exceeded or using private browsing mode of an old Safari version
@@ -159,6 +171,8 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		_headerHeight: { state: true },
 		_headerIsSticky: { state: true },
 		_footerHeight: { state: true },
+		_inOverlayMode: { state: true },
+		_inMobileMode: { state: true },
 		_slotVisibility: { state: true }
 	};
 
@@ -183,12 +197,12 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			--d2l-page-footer-max-width: 100%;
 		}
 
-		@media (max-width: 929px) {
+		@media (max-width: ${OVERLAY_MODE_BREAKPOINT}px) {
 			:host {
 				--d2l-page-padding: 24px;
 			}
 		}
-		@media (max-width: 767px) {
+		@media (max-width: ${MOBILE_MODE_BREAKPOINT}px) {
 			:host {
 				--d2l-page-padding: 18px;
 			}
@@ -262,10 +276,10 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		}
 
 		.side-nav-panel.collapsed {
-			padding-inline-end: 18px;
+			padding-inline-end: ${DIVIDER_GUTTER_WIDTH}px;
 		}
 		.supporting-panel.collapsed {
-			padding-inline-start: 18px;
+			padding-inline-start: ${DIVIDER_GUTTER_WIDTH}px;
 		}
 		.side-nav-panel.collapsed .side-nav-panel-content,
 		.supporting-panel.collapsed .supporting-panel-content {
@@ -315,9 +329,11 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		this._headerIsSticky = false;
 		this._footerHeight = 0;
 		this._panelState = new PanelStateController(this, {
-			'side-nav': { minSize: PANEL_MIN_WIDTH },
-			'supporting': { minSize: PANEL_MIN_WIDTH },
-			'supporting-mobile': { minSize: DRAWER_MIN_HEIGHT }
+			'side-nav': { collapsed: false, minSize: PANEL_MIN_WIDTH },
+			'supporting': { collapsed: false, minSize: PANEL_MIN_WIDTH },
+			'side-nav-overlay': { collapsed: true, minSize: PANEL_MIN_WIDTH },
+			'supporting-overlay': { collapsed: true, minSize: PANEL_MIN_WIDTH },
+			'supporting-mobile': { collapsed: false, minSize: DRAWER_MIN_HEIGHT }
 		});
 		this._slotVisibility = {};
 		this.#resizeObserver = new ResizeObserver(entries => {
@@ -341,7 +357,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 					this._panelState.updateMaxSize('side-nav', newMaxWidth);
 					this._panelState.updateMaxSize('supporting', newMaxWidth);
 
-					// TO DO: Collapse panel if needed
+					const newMaxOverlayWidth = this.#getMaxPanelOverlayWidth();
+					this._panelState.updateMaxSize('side-nav-overlay', newMaxOverlayWidth);
+					this._panelState.updateMaxSize('supporting-overlay', newMaxOverlayWidth);
 				}
 			}
 		});
@@ -363,12 +381,20 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	connectedCallback() {
 		super.connectedCallback();
 		window.addEventListener('resize', this.#handleWindowResize);
+
+		this._inOverlayMode = overlayModeQuery.matches;
+		overlayModeQuery.addEventListener('change', this.#handleOverlayModeChange);
+		this._inMobileMode = mobileModeQuery.matches;
+		mobileModeQuery.addEventListener('change', this.#handleMobileModeChange);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.#resizeObserver.disconnect();
 		window.removeEventListener('resize', this.#handleWindowResize);
+
+		overlayModeQuery.removeEventListener('change', this.#handleOverlayModeChange);
+		mobileModeQuery.removeEventListener('change', this.#handleMobileModeChange);
 	}
 
 	firstUpdated() {
@@ -381,6 +407,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	render() {
+		const sideNavPanelKey = this._inOverlayMode ? 'side-nav-overlay' : 'side-nav';
+		const supportingPanelKey = this._inMobileMode ? 'supporting-overlay' : (this._inOverlayMode ? 'supporting-overlay' : 'supporting'); // TO DO: Switch to supporting-mobile
+
 		const pageClasses = {
 			'page': true,
 			'header-sticky': this._headerIsSticky
@@ -394,9 +423,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			<div class="${classMap(pageClasses)}">
 				${this.#renderHeader()}
 				<div class="${classMap(contentClasses)}">
-					${this.#renderSideNavPanel()}
+					${this.#renderSideNavPanel(sideNavPanelKey)}
 					<main><slot></slot></main>
-					${this.#renderSupportingPanel()}
+					${this.#renderSupportingPanel(supportingPanelKey)}
 				</div>
 				${this.#renderFooter()}
 			</div>
@@ -413,6 +442,16 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	#resizeObserver;
 	#stateStorageKey;
 
+	#handleMobileModeChange = (e) => {
+		// TO DO: Collapse supporting panel if needed
+		this._inMobileMode = e.matches;
+	};
+
+	#handleOverlayModeChange = (e) => {
+		// TO DO: Collapse side-nav and supporting panel if needed
+		this._inOverlayMode = e.matches;
+	};
+
 	#handleWindowResize = () => {
 		this._panelState.updateMaxSize('supporting-mobile', this.#getMaxDrawerHeight());
 	};
@@ -420,6 +459,11 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	#getMaxDrawerHeight() {
 		const reservedSpace = this._headerHeight + this._footerHeight + DIVIDER_WIDTH;
 		return Math.max(DRAWER_MIN_HEIGHT, window.innerHeight - reservedSpace);
+	}
+
+	#getMaxPanelOverlayWidth() {
+		const reservedSpace = MAIN_MIN_WIDTH + DIVIDER_WIDTH; // TO DO: Update when overlay styles added
+		return Math.max(PANEL_MIN_WIDTH, this._contentWidth - reservedSpace);
 	}
 
 	#getMaxPanelWidth() {
@@ -448,6 +492,8 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		this._panelState.initialize({
 			'side-nav': SIDE_NAV_DEFAULT_WIDTH,
 			'supporting': supportingDefaultWidth(this._contentWidth),
+			'side-nav-overlay': SIDE_NAV_DEFAULT_WIDTH,
+			'supporting-overlay': supportingOverlayDefaultWidth(this._contentWidth),
 			'supporting-mobile': supportingMobileDefaultHeight(window.innerHeight)
 		});
 	}
@@ -509,43 +555,43 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		`;
 	}
 
-	#renderSideNavPanel() {
+	#renderSideNavPanel(panelKey) {
 		const classes = {
 			'side-nav-panel': true,
-			'animate': this._panelState.getAnimate('side-nav'),
-			'collapsed': this._panelState.getCollapsed('side-nav')
+			'animate': this._panelState.getAnimate(panelKey),
+			'collapsed': this._panelState.getCollapsed(panelKey)
 		};
 		return html`
 			<nav class="side-nav" aria-label="${this.localize('components.page.side-nav-label')}">
 				<div
 					class="${classMap(classes)}"
-					style=${styleMap({ width: `${this._panelState.getSize('side-nav')}px` })}
+					style=${styleMap({ width: `${this._panelState.getSize(panelKey)}px` })}
 					?hidden="${!this._slotVisibility['side-nav']}">
-					<div class="side-nav-panel-content" style=${styleMap({ width: `${this._panelState.getTrueSize('side-nav')}px` })}>
+					<div class="side-nav-panel-content" style=${styleMap({ width: `${this._panelState.getTrueSize(panelKey)}px` })}>
 						<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
 					</div>
 				</div>
 				${!this._slotVisibility['side-nav'] ? nothing :
-					this.#renderDivider('side-nav', this.localize('components.page.side-nav-divider-label'), 'start')}
+					this.#renderDivider(panelKey, this.localize('components.page.side-nav-divider-label'), 'start')}
 			</nav>
 		`;
 	}
 
-	#renderSupportingPanel() {
+	#renderSupportingPanel(panelKey) {
 		const classes = {
 			'supporting-panel': true,
-			'animate': this._panelState.getAnimate('supporting'),
-			'collapsed': this._panelState.getCollapsed('supporting')
+			'animate': this._panelState.getAnimate(panelKey),
+			'collapsed': this._panelState.getCollapsed(panelKey)
 		};
 		return html`
 			<aside class="supporting" aria-label="${this.localize('components.page.supporting-label')}">
 				${!this._slotVisibility['supporting'] ? nothing :
-					this.#renderDivider('supporting', this.localize('components.page.supporting-divider-label'), 'end')}
+					this.#renderDivider(panelKey, this.localize('components.page.supporting-divider-label'), 'end')}
 				<div
 					class="${classMap(classes)}"
-					style=${styleMap({ width: `${this._panelState.getSize('supporting')}px` })}
+					style=${styleMap({ width: `${this._panelState.getSize(panelKey)}px` })}
 					?hidden="${!this._slotVisibility['supporting']}">
-					<div class="supporting-panel-content" style=${styleMap({ width: `${this._panelState.getTrueSize('supporting')}px` })}>
+					<div class="supporting-panel-content" style=${styleMap({ width: `${this._panelState.getTrueSize(panelKey)}px` })}>
 						<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
 					</div>
 				</div>

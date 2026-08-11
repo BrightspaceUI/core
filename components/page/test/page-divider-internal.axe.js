@@ -1,6 +1,6 @@
 import '../page-divider-internal.js';
-import { clearStoredPanelState, setStoredPanelState } from './page-fixtures.js';
-import { clickElem, expect, fixture, hoverElem, nextFrame } from '@brightspace-ui/testing';
+import { clearStoredPanelState, openPanel, setStoredPanelState } from './page-fixtures.js';
+import { clickElem, expect, fixture, focusElem, hoverElem, nextFrame } from '@brightspace-ui/testing';
 import { getDivider, getDividerArrow, getSlider, pageDividerFixtures } from './page-divider-internal-fixtures.js';
 
 const defaultFixtureOptions = { pagePadding: false, viewport: { width: 1300, height: 800 } };
@@ -66,6 +66,79 @@ describe('page-divider-internal', () => {
 		await clickElem(getSlider(divider));
 		await nextFrame();
 		await expect(elem).to.be.accessible();
+	});
+
+	describe('overlay', () => {
+		const overlayFixtureOptions = (panelKey) => ({ pagePadding: false, viewport: { width: panelKey === 'side-nav-overlay' ? 450 : 800, height: 500 } });
+
+		[
+			{ name: 'side-nav', key: 'side-nav-overlay', fixture: pageDividerFixtures.sideNavBothHeadersFooter },
+			{ name: 'supporting', key: 'supporting-overlay', fixture: pageDividerFixtures.supportingImmersiveFooter }
+		].forEach(panel => {
+
+			describe(panel.name, () => {
+				it('hover', async() => {
+					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
+					await openPanel(elem, panel.key);
+					await hoverElem(getDivider(elem, panel.key));
+					await expect(elem).to.be.accessible();
+				});
+
+				it('hover handle', async() => {
+					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
+					await openPanel(elem, panel.key);
+					const divider = getDivider(elem, panel.key);
+					await hoverElem(getSlider(divider));
+					await expect(elem).to.be.accessible();
+				});
+
+				it('focus', async() => {
+					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
+					await openPanel(elem, panel.key);
+					await focusElem(getDivider(elem, panel.key));
+					await expect(elem).to.be.accessible();
+				});
+
+				// TO DO: Confirm this test is working once these arrows show up
+				it('focus then hover start arrow', async() => {
+					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
+					await openPanel(elem, panel.key);
+
+					const divider = getDivider(elem, panel.key);
+					await clickElem(divider);
+					await nextFrame();
+					await hoverElem(getDividerArrow(divider, 'start'));
+					await expect(elem).to.be.accessible();
+				});
+
+				// TO DO: Confirm this test is working once these arrows show up
+				it('focus then hover end arrow', async() => {
+					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
+					await openPanel(elem, panel.key);
+
+					const divider = getDivider(elem, panel.key);
+					await clickElem(divider);
+					await nextFrame();
+					await hoverElem(getDividerArrow(divider, 'end'));
+					await expect(elem).to.be.accessible();
+				});
+
+				it('collapsed', async() => {
+					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
+					await expect(elem).to.be.accessible();
+				});
+
+				it('collapsed focused', async() => {
+					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
+					await focusElem(getDivider(elem, panel.key));
+					await expect(elem).to.be.accessible();
+				});
+			});
+		});
+	});
+
+	describe('drawer', () => {
+		// TO DO
 	});
 
 });

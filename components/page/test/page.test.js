@@ -56,8 +56,24 @@ describe('page', () => {
 				expect(elem._panelState.getTrueSize('side-nav')).to.equal(450);
 			});
 
+			it('does not apply a stored collapsed state for side-nav-overlay', async() => {
+				setStoredPanelState({ 'side-nav-overlay': { size: 450, collapsed: false } });
+				const elem = await fixture(pageFixtures.mainStorageKey, defaultFixtureOptions);
+				expect(elem._panelState.getCollapsed('side-nav-overlay')).to.be.true;
+				expect(elem._panelState.getSize('side-nav-overlay')).to.equal(0);
+				expect(elem._panelState.getTrueSize('side-nav-overlay')).to.equal(450);
+			});
+
+			it('does not apply a stored collapsed state for supporting-overlay', async() => {
+				setStoredPanelState({ 'supporting-overlay': { size: 350, collapsed: false } });
+				const elem = await fixture(pageFixtures.mainStorageKey, defaultFixtureOptions);
+				expect(elem._panelState.getCollapsed('supporting-overlay')).to.be.true;
+				expect(elem._panelState.getSize('supporting-overlay')).to.equal(0);
+				expect(elem._panelState.getTrueSize('supporting-overlay')).to.equal(350);
+			});
+
 			it('falls back to the default when no storage key set', async() => {
-				const elem = await fixture(pageFixtures.sideNavHeader, defaultFixtureOptions);
+				const elem = await fixture(pageFixtures.mainStorageKey, defaultFixtureOptions);
 				expect(elem._panelState.getTrueSize('side-nav')).to.equal(SIDE_NAV_DEFAULT_WIDTH);
 				expect(elem._panelState.getCollapsed('side-nav')).to.be.false;
 			});
@@ -141,6 +157,22 @@ describe('page', () => {
 				expect(stored['side-nav'].size).to.equal(SIDE_NAV_DEFAULT_WIDTH);
 			});
 
+			it('does not persist the collapsed state for side-nav-overlay', async() => {
+				const elem = await fixture(pageFixtures.sideNavHeaderStorageKey, { pagePadding: false, viewport: { width: 450, height: fixtureHeight } });
+				getDivider(elem, 'side-nav-overlay').dispatchEvent(new CustomEvent('d2l-page-divider-toggle'));
+				const stored = getStoredPanelState();
+				expect(stored['side-nav-overlay'].collapsed).to.be.undefined;
+				expect(stored['side-nav-overlay'].size).to.equal(320); // TO DO: Should be SIDE_NAV_DEFAULT_WIDTH once overlay styles applied
+			});
+
+			it('does not persist the collapsed state for supporting-overlay', async() => {
+				const elem = await fixture(pageFixtures.supportingFooterStorageKey, { pagePadding: false, viewport: { width: 800, height: fixtureHeight } });
+				getDivider(elem, 'supporting-overlay').dispatchEvent(new CustomEvent('d2l-page-divider-toggle'));
+				const stored = getStoredPanelState();
+				expect(stored['supporting-overlay'].collapsed).to.be.undefined;
+				expect(stored['supporting-overlay'].size).to.equal(320); // TO DO: Should be supportingOverlayDefaultWidth(800) once overlay styles applied
+			});
+
 			it('persists each panel under its own key', async() => {
 				setStoredPanelState({ 'side-nav': { size: 450, collapsed: true } });
 				const elem = await fixture(pageFixtures.supportingFooterStorageKey, defaultFixtureOptions);
@@ -167,16 +199,28 @@ describe('page', () => {
 				expect(stored['supporting'].size).to.equal(9999);
 			});
 
-			it('does not update when size adjusted by window resize', async() => {
+			it('does not update when size adjusted by window width resize', async() => {
 				setStoredPanelState({ 'supporting': { size: 500, collapsed: false } });
 				const elem = await fixture(pageFixtures.supportingFooterStorageKey, defaultFixtureOptions);
 				expect(elem._panelState.getTrueSize('supporting')).to.equal(500);
 
-				await setViewport({ width: 1000, height: fixtureHeight });
+				await setViewport({ width: 1000 });
 				await waitUntil(() => elem._panelState.getTrueSize('supporting') !== 500);
 
 				const stored = getStoredPanelState();
 				expect(stored['supporting'].size).to.equal(500);
+			});
+
+			it('does not update when size adjusted by window height resize', async() => {
+				setStoredPanelState({ 'supporting-mobile': { size: 600, collapsed: false } });
+				const elem = await fixture(pageFixtures.supportingFooterStorageKey, defaultFixtureOptions);
+				expect(elem._panelState.getTrueSize('supporting-mobile')).to.equal(600);
+
+				await setViewport({ height: 650 });
+				await waitUntil(() => elem._panelState.getTrueSize('supporting-mobile') !== 600);
+
+				const stored = getStoredPanelState();
+				expect(stored['supporting-mobile'].size).to.equal(600);
 			});
 		});
 	});
