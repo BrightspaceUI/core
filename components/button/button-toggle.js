@@ -39,16 +39,16 @@ class ButtonToggle extends LitElement {
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		if (this._focusOnFirstRender) {
-			this._focusOnFirstRender = false;
+		if (this.#focusOnFirstRender) {
+			this.#focusOnFirstRender = false;
 			this.focus();
 		}
 	}
 
 	render() {
 		return html`
-			<slot @click="${this._handleNotPressedClick}" name="not-pressed"></slot>
-			<slot @click="${this._handlePressedClick}" name="pressed"></slot>
+			<slot @click="${this.#handleNotPressedClick}" name="not-pressed"></slot>
+			<slot @click="${this.#handlePressedClick}" name="pressed"></slot>
 		`;
 	}
 
@@ -63,7 +63,7 @@ class ButtonToggle extends LitElement {
 
 	focus() {
 		if (!this.hasUpdated) {
-			this._focusOnFirstRender = true;
+			this.#focusOnFirstRender = true;
 			return;
 		}
 
@@ -75,28 +75,30 @@ class ButtonToggle extends LitElement {
 		elem.focus();
 	}
 
-	async _handleClick(pressed) {
+	#focusOnFirstRender = false;
+
+	async #handleClick(pressed) {
 		const beforeToggleEvent = new CustomEvent('d2l-button-toggle-before-change', {
 			detail: {
-				update: (newPressed) => this._updatePressedState(newPressed)
+				update: (newPressed) => this.#updatePressedState(newPressed)
 			},
 			cancelable: true
 		});
 		this.dispatchEvent(beforeToggleEvent);
 		if (beforeToggleEvent.defaultPrevented) return;
 
-		this._updatePressedState(pressed);
+		this.#updatePressedState(pressed);
 	}
 
-	_handleNotPressedClick() {
-		this._handleClick(true);
+	#handleNotPressedClick() {
+		this.#handleClick(true);
 	}
 
-	_handlePressedClick() {
-		this._handleClick(false);
+	#handlePressedClick() {
+		this.#handleClick(false);
 	}
 
-	async _updatePressedState(newPressed) {
+	async #updatePressedState(newPressed) {
 		this.pressed = newPressed;
 		await this.updateComplete;
 		this.focus();
