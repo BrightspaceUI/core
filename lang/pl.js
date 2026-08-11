@@ -171,7 +171,7 @@ export default {
 	"components.page.side-nav-divider-label": "Separator nawigacji bocznej",
 	"components.page.side-nav-label": "Strona boczna",
 	"components.page.supporting-divider-label": "Separator panelu pomocniczego",
-	"components.page.supporting-panel-label": "Wsparcie",
+	"components.page.supporting-label": "Wsparcie",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} element}

@@ -171,7 +171,7 @@ export default {
 	"components.page.side-nav-divider-label": "Боковой навигационный разделитель",
 	"components.page.side-nav-label": "Сторона",
 	"components.page.supporting-divider-label": "Опорный разделитель панелей",
-	"components.page.supporting-panel-label": "Поддерживающий",
+	"components.page.supporting-label": "Поддерживающий",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} элемент}

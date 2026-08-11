@@ -161,7 +161,7 @@ export default {
 	"components.page.side-nav-divider-label": "Trennung für Seitennavigation",
 	"components.page.side-nav-label": "Seiten-",
 	"components.page.supporting-divider-label": "Trennung für Unterstützungsbereich",
-	"components.page.supporting-panel-label": "Unterstützung",
+	"components.page.supporting-label": "Unterstützung",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} Element}

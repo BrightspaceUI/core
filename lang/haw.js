@@ -161,7 +161,7 @@ export default {
 	"components.page.side-nav-divider-label": "Māhele Hoʻokele ʻAoʻao",
 	"components.page.side-nav-label": "ʻaoʻao",
 	"components.page.supporting-divider-label": "Mea Hoʻokaʻawale Panel Kākoʻo",
-	"components.page.supporting-panel-label": "Ke kākoʻo nei",
+	"components.page.supporting-label": "Ke kākoʻo nei",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} mea}

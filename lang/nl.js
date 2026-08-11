@@ -161,7 +161,7 @@ export default {
 	"components.page.side-nav-divider-label": "Scheidingslijn zijmenu",
 	"components.page.side-nav-label": "Zij",
 	"components.page.supporting-divider-label": "Scheidingslijn ondersteunend paneel",
-	"components.page.supporting-panel-label": "Ondersteuning",
+	"components.page.supporting-label": "Ondersteuning",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} item}

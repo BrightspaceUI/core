@@ -161,7 +161,7 @@ export default {
 	"components.page.side-nav-divider-label": "Divisor de navegación lateral",
 	"components.page.side-nav-label": "Lateral",
 	"components.page.supporting-divider-label": "Divisor de panel de soporte",
-	"components.page.supporting-panel-label": "Soporte",
+	"components.page.supporting-label": "Soporte",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} elemento}

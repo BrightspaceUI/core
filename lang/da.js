@@ -161,7 +161,7 @@ export default {
 	"components.page.side-nav-divider-label": "Skillelinje i sidemenu",
 	"components.page.side-nav-label": "Side",
 	"components.page.supporting-divider-label": "Skillelinje i sidepanel",
-	"components.page.supporting-panel-label": "Understøttende",
+	"components.page.supporting-label": "Understøttende",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} element}

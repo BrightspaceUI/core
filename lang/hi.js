@@ -161,7 +161,7 @@ export default {
 	"components.page.side-nav-divider-label": "साइड नेविगेशन डिवाइडर",
 	"components.page.side-nav-label": "साइड",
 	"components.page.supporting-divider-label": "सपोर्टिंग पैनल डिवाइडर",
-	"components.page.supporting-panel-label": "सपोर्टिंग",
+	"components.page.supporting-label": "सपोर्टिंग",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} आइटम}

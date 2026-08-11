@@ -161,7 +161,7 @@ export default {
 	"components.page.side-nav-divider-label": "Yan Navigasyon Ayırıcı",
 	"components.page.side-nav-label": "Yan",
 	"components.page.supporting-divider-label": "Destekleyici Panel Ayırıcı",
-	"components.page.supporting-panel-label": "Destekleyici",
+	"components.page.supporting-label": "Destekleyici",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} öğe}

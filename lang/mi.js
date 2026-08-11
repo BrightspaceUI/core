@@ -161,7 +161,7 @@ export default {
 	"components.page.side-nav-divider-label": "Wehewehenga Whakatere Taha",
 	"components.page.side-nav-label": "Taha",
 	"components.page.supporting-divider-label": "Te Wehewehe Paewhiri Tautoko",
-	"components.page.supporting-panel-label": "Te tautoko",
+	"components.page.supporting-label": "Te tautoko",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} Tūemi}

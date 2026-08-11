@@ -161,7 +161,7 @@ export default {
 	"components.page.side-nav-divider-label": "Séparateur de navigation latérale",
 	"components.page.side-nav-label": "Côté",
 	"components.page.supporting-divider-label": "Séparateur de panneau d’aide",
-	"components.page.supporting-panel-label": "Pris en charge",
+	"components.page.supporting-label": "Pris en charge",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} élément}
