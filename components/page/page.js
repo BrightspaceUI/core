@@ -238,6 +238,10 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		.supporting {
 			display: contents;
 		}
+		.side-nav[hidden],
+		.supporting[hidden] {
+			display: none;
+		}
 
 		.side-nav-panel,
 		.supporting-panel {
@@ -562,11 +566,10 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			'collapsed': this._panelState.getCollapsed(panelKey)
 		};
 		return html`
-			<nav class="side-nav" aria-label="${this.localize('components.page.side-nav-label')}">
+			<nav class="side-nav" ?hidden="${!this._slotVisibility['side-nav']}" aria-label="${this.localize('components.page.side-nav-label')}">
 				<div
 					class="${classMap(classes)}"
-					style=${styleMap({ width: `${this._panelState.getSize(panelKey)}px` })}
-					?hidden="${!this._slotVisibility['side-nav']}">
+					style=${styleMap({ width: `${this._panelState.getSize(panelKey)}px` })}>
 					<div class="side-nav-panel-content" style=${styleMap({ width: `${this._panelState.getTrueSize(panelKey)}px` })}>
 						<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
 					</div>
@@ -584,13 +587,12 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			'collapsed': this._panelState.getCollapsed(panelKey)
 		};
 		return html`
-			<aside class="supporting" aria-label="${this.localize('components.page.supporting-label')}">
+			<aside class="supporting" ?hidden="${!this._slotVisibility['supporting']}" aria-label="${this.localize('components.page.supporting-label')}">
 				${!this._slotVisibility['supporting'] ? nothing :
 					this.#renderDivider(panelKey, this.localize('components.page.supporting-divider-label'), 'end')}
 				<div
 					class="${classMap(classes)}"
-					style=${styleMap({ width: `${this._panelState.getSize(panelKey)}px` })}
-					?hidden="${!this._slotVisibility['supporting']}">
+					style=${styleMap({ width: `${this._panelState.getSize(panelKey)}px` })}>
 					<div class="supporting-panel-content" style=${styleMap({ width: `${this._panelState.getTrueSize(panelKey)}px` })}>
 						<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
 					</div>
