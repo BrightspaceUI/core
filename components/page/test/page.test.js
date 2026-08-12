@@ -1,5 +1,5 @@
 import { clearStoredPanelState, getStoredPanelState, pageFixtures, setStoredPanelState } from './page-fixtures.js';
-import { expect, fixture, runConstructor, setViewport, waitUntil } from '@brightspace-ui/testing';
+import { expect, fixture, nextFrame, runConstructor, setViewport, waitUntil } from '@brightspace-ui/testing';
 import { restore, spy } from 'sinon';
 import { SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth, supportingMobileDefaultHeight, supportingOverlayDefaultWidth } from '../page.js';
 import { getDivider } from './page-divider-internal-fixtures.js';
@@ -243,6 +243,106 @@ describe('page', () => {
 
 				const stored = getStoredPanelState();
 				expect(stored['supporting-mobile'].size).to.equal(600);
+			});
+		});
+	});
+
+	describe('adjusting collapsed panel state', () => {
+		const setInitialState = (elem, key, collapsed) => elem._panelState.setCollapsed(key, collapsed === 'collapsed');
+
+		describe('desktop to overlay', () => {
+			[
+				{ panelStart: 'opened', overlayStart: 'collapsed', overlayResult: 'collapsed' },
+				{ panelStart: 'collapsed', overlayStart: 'collapsed', overlayResult: 'collapsed' },
+				{ panelStart: 'opened', overlayStart: 'opened', overlayResult: 'collapsed' },
+				{ panelStart: 'collapsed', overlayStart: 'opened', overlayResult: 'collapsed' },
+			].forEach(({ panelStart, overlayStart, overlayResult }) => {
+				it(`side-nav panel ${panelStart} + overlay ${overlayStart} → overlay ${overlayResult}`, async() => {
+					const elem = await fixture(pageFixtures.sideNavHeader, { pagePadding: false, viewport: { width: 1000 } });
+					setInitialState(elem, 'side-nav', panelStart);
+					setInitialState(elem, 'side-nav-overlay', overlayStart);
+
+					await setViewport({ width: 450 });
+					await nextFrame();
+					expect(elem._panelState.getCollapsed('side-nav-overlay')).to.equal(overlayResult === 'collapsed');
+				});
+
+				it(`supporting panel ${panelStart} + overlay ${overlayStart} → overlay ${overlayResult}`, async() => {
+					const elem = await fixture(pageFixtures.supportingFooter, { pagePadding: false, viewport: { width: 1000 } });
+					setInitialState(elem, 'supporting', panelStart);
+					setInitialState(elem, 'supporting-overlay', overlayStart);
+
+					await setViewport({ width: 800 });
+					await nextFrame();
+					expect(elem._panelState.getCollapsed('supporting-overlay')).to.equal(overlayResult === 'collapsed');
+				});
+			});
+		});
+
+		describe('overlay to desktop', () => {
+			[
+				{ panelStart: 'opened', overlayStart: 'collapsed', panelResult: 'opened' },
+				{ panelStart: 'collapsed', overlayStart: 'collapsed', panelResult: 'collapsed' },
+				{ panelStart: 'opened', overlayStart: 'opened', panelResult: 'opened' },
+				{ panelStart: 'collapsed', overlayStart: 'opened', panelResult: 'opened' }
+			].forEach(({ panelStart, overlayStart, panelResult }) => {
+				it(`side-nav panel ${panelStart} + overlay ${overlayStart} → panel ${panelResult}`, async() => {
+					const elem = await fixture(pageFixtures.sideNavHeader, { pagePadding: false, viewport: { width: 450 } });
+					setInitialState(elem, 'side-nav', panelStart);
+					setInitialState(elem, 'side-nav-overlay', overlayStart);
+
+					await setViewport({ width: 1000 });
+					await nextFrame();
+					expect(elem._panelState.getCollapsed('side-nav')).to.equal(panelResult === 'collapsed');
+				});
+
+				it(`supporting panel ${panelStart} + overlay ${overlayStart} → panel ${panelResult}`, async() => {
+					const elem = await fixture(pageFixtures.supportingFooter, { pagePadding: false, viewport: { width: 800 } });
+					setInitialState(elem, 'supporting', panelStart);
+					setInitialState(elem, 'supporting-overlay', overlayStart);
+
+					await setViewport({ width: 1000 });
+					await nextFrame();
+					expect(elem._panelState.getCollapsed('supporting')).to.equal(panelResult === 'collapsed');
+				});
+			});
+		});
+
+		describe('overlay to mobile', () => {
+			[
+				{ overlayStart: 'opened', mobileStart: 'collapsed', mobileResult: 'collapsed' },
+				{ overlayStart: 'collapsed', mobileStart: 'collapsed', mobileResult: 'collapsed' },
+				{ overlayStart: 'opened', mobileStart: 'opened', mobileResult: 'opened' },
+				{ overlayStart: 'collapsed', mobileStart: 'opened', mobileResult: 'opened' }
+			].forEach(({ overlayStart, mobileStart, mobileResult }) => {
+				it(`supporting overlay ${overlayStart} + mobile ${mobileStart} → mobile ${mobileResult}`, async() => {
+					const elem = await fixture(pageFixtures.supportingFooter, { pagePadding: false, viewport: { width: 800 } });
+					setInitialState(elem, 'supporting-overlay', overlayStart);
+					setInitialState(elem, 'supporting-mobile', mobileStart);
+
+					await setViewport({ width: 500 });
+					await nextFrame();
+					expect(elem._panelState.getCollapsed('supporting-mobile')).to.equal(mobileResult === 'collapsed');
+				});
+			});
+		});
+
+		describe('mobile to overlay', () => {
+			[
+				{ overlayStart: 'opened', mobileStart: 'collapsed', overlayResult: 'opened' }, // TO DO: Should be collapsed once drawer is implemented
+				{ overlayStart: 'collapsed', mobileStart: 'collapsed', overlayResult: 'collapsed' },
+				{ overlayStart: 'opened', mobileStart: 'opened', overlayResult: 'opened' }, // TO DO: Should be collapsed once drawer is implemented
+				{ overlayStart: 'collapsed', mobileStart: 'opened', overlayResult: 'collapsed' }
+			].forEach(({ overlayStart, mobileStart, overlayResult }) => {
+				it(`supporting overlay ${overlayStart} + mobile ${mobileStart} → overlay ${overlayResult}`, async() => {
+					const elem = await fixture(pageFixtures.supportingFooter, { pagePadding: false, viewport: { width: 500 } });
+					setInitialState(elem, 'supporting-overlay', overlayStart);
+					setInitialState(elem, 'supporting-mobile', mobileStart);
+
+					await setViewport({ width: 800 });
+					await nextFrame();
+					expect(elem._panelState.getCollapsed('supporting-overlay')).to.equal(overlayResult === 'collapsed');
+				});
 			});
 		});
 	});
