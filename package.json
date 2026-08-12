@@ -43,6 +43,7 @@
     "!test",
     "/components/demo",
     "/components/description-list/demo",
+    "/components/filter/demo/",
     "/components/selection/demo",
     "/components/table/demo",
     "!/components/demo/demo"
