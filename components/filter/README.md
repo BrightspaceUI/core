@@ -360,7 +360,8 @@ e.detail.loadMoreCompleteCallback({ displayAllKeys: true });
 ### Selection and manual search/paging
 
 The filter component depends entirely on the consumer to include the selected filter values in order for the selected counts and `d2l-filter-tags` to display the correct values. Ideally, all values should be loaded into the dimensions and the event callbacks should be leveraged to set the visibility on those values. However, in the cases where this is not possible and new values are being added/removed manually from the dimension, then selection should be persisted. This means that selected items should always be loaded and included in the dimension and they should not be removed in order to maintain the functionality of counts and filter tags.
-<!-- docs: demo -->
+
+<!-- docs: demo align:start autoOpen:true autoSize:false size:large -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/filter/demo/filter-load-more-demo.js'
