@@ -1,6 +1,6 @@
 import { addMarkers, clearStoredPanelState, openPanel, pageFixtures, scrollBody, scrollPanel, setStoredPanelState } from './page-fixtures.js';
+import { clickElemAt, expect, fixture } from '@brightspace-ui/testing';
 import { DIVIDER_GUTTER_WIDTH, MAIN_MIN_WIDTH, PANEL_MIN_WIDTH, SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth, supportingOverlayDefaultWidth } from '../page.js';
-import { expect, fixture } from '@brightspace-ui/testing';
 import { DIVIDER_WIDTH } from '../page-divider-internal.js';
 
 describe('page', () => {
@@ -700,8 +700,20 @@ describe('page', () => {
 			// TO DO - Test auto-closing when moving from desktop to overlay
 		});
 
-		describe('scrim', () => {
-			// TO DO - Test click behaviour
+		describe('scrim click', () => {
+			it('closes-side-nav', async() => {
+				const elem = await fixture(pageFixtures.sideNavImmersiveBothHeaders, { pagePadding: false, viewport: { width: 450, height: 550 } });
+				await openPanel(elem, 'side-nav-overlay');
+				await clickElemAt(elem.querySelector('d2l-page-main'), 30, 30);
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+
+			it('closes-supporting', async() => {
+				const elem = await fixture(pageFixtures.supportingFooter, { pagePadding: false, viewport: { width: 800, height: 550 } });
+				await openPanel(elem, 'supporting-overlay');
+				await clickElemAt(elem.querySelector('d2l-page-main'), 30, 30);
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
 		});
 	});
 
