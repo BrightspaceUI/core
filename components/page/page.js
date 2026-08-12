@@ -14,7 +14,7 @@ const DRAWER_MIN_HEIGHT = 200; // TO DO: Confirm
 export const MAIN_MIN_WIDTH = 600; // TO DO: Confirm
 export const PANEL_MIN_WIDTH = 320;
 
-const DIVIDER_GUTTER_WIDTH = 18;
+export const DIVIDER_GUTTER_WIDTH = 18;
 
 export const SIDE_NAV_DEFAULT_WIDTH = 334;
 export const supportingDefaultWidth = contentWidth => Math.floor(contentWidth / 3);
