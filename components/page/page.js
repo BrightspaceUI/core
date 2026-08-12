@@ -463,7 +463,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 					${this.#renderSideNavPanel(sideNavPanelKey)}
 					<main aria-label="${ifDefined(showScrim ? this.localize(scrimMessage) : undefined)}">
 						<div class="main" ?inert="${showScrim}"><slot></slot></div>
-						${showScrim ? html`<div class="scrim"></div>` : nothing}
+						${showScrim ? html`<div class="scrim" @click="${this.#handleScrimClick}"></div>` : nothing}
 					</main>
 					${this.#renderSupportingPanel(supportingPanelKey)}
 				</div>
@@ -534,6 +534,11 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		const collapsed = !this._panelState.getCollapsed(panelKey);
 		this._panelState.setCollapsed(panelKey, collapsed);
 	};
+
+	#handleScrimClick() {
+		this._panelState.setCollapsed('side-nav-overlay', true);
+		this._panelState.setCollapsed('supporting-overlay', true);
+	}
 
 	#handleSlotVisibilityChange(e) {
 		const key = e.target.name;
