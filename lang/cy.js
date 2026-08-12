@@ -160,8 +160,10 @@ export default {
 	"components.page.header-nav-label": "Prif",
 	"components.page.side-nav-divider-label": "Raniwr Llywio Ochr",
 	"components.page.side-nav-label": "Ochr",
+	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
 	"components.page.supporting-divider-label": "Raniwr Panel Cymorth",
 	"components.page.supporting-label": "Cefnogi",
+	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} eitem}

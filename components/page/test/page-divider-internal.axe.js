@@ -99,7 +99,6 @@ describe('page-divider-internal', () => {
 					await expect(elem).to.be.accessible();
 				});
 
-				// TO DO: Confirm this test is working once these arrows show up
 				it('focus then hover start arrow', async() => {
 					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
 					await openPanel(elem, panel.key);
@@ -111,7 +110,6 @@ describe('page-divider-internal', () => {
 					await expect(elem).to.be.accessible();
 				});
 
-				// TO DO: Confirm this test is working once these arrows show up
 				it('focus then hover end arrow', async() => {
 					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
 					await openPanel(elem, panel.key);

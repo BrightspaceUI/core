@@ -156,8 +156,10 @@ export default {
 	"components.page.header-nav-label": "主要",
 	"components.page.side-nav-divider-label": "側邊導覽分隔線",
 	"components.page.side-nav-label": "側邊",
+	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
 	"components.page.supporting-divider-label": "支援面板分隔線",
 	"components.page.supporting-label": "支援",
+	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} 個項目}

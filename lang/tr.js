@@ -160,8 +160,10 @@ export default {
 	"components.page.header-nav-label": "Ana",
 	"components.page.side-nav-divider-label": "Yan Navigasyon Ayırıcı",
 	"components.page.side-nav-label": "Yan",
+	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
 	"components.page.supporting-divider-label": "Destekleyici Panel Ayırıcı",
 	"components.page.supporting-label": "Destekleyici",
+	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} öğe}

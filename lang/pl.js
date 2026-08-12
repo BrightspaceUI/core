@@ -170,8 +170,10 @@ export default {
 	"components.page.header-nav-label": "Główna",
 	"components.page.side-nav-divider-label": "Separator nawigacji bocznej",
 	"components.page.side-nav-label": "Strona boczna",
+	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
 	"components.page.supporting-divider-label": "Separator panelu pomocniczego",
 	"components.page.supporting-label": "Wsparcie",
+	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} element}

@@ -160,8 +160,10 @@ export default {
 	"components.page.header-nav-label": "Hoved",
 	"components.page.side-nav-divider-label": "Skillelinje i sidemenu",
 	"components.page.side-nav-label": "Side",
+	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
 	"components.page.supporting-divider-label": "Skillelinje i sidepanel",
 	"components.page.supporting-label": "Understøttende",
+	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} element}
