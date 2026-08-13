@@ -12,7 +12,7 @@ export const panelStateStorageKey = key => `d2l-page-panel-state-${key}`;
 
 const DRAWER_MIN_HEIGHT = 200; // TO DO: Confirm
 export const MAIN_MIN_WIDTH = 600; // TO DO: Confirm
-export const PANEL_MIN_WIDTH = 320;
+export const PANEL_MIN_WIDTH = 298;
 
 export const DIVIDER_GUTTER_WIDTH = 18;
 
