@@ -696,10 +696,6 @@ describe('page', () => {
 			});
 		});
 
-		describe('auto-close', () => {
-			// TO DO - Test auto-closing when moving from desktop to overlay
-		});
-
 		describe('scrim click', () => {
 			it('closes-side-nav', async() => {
 				const elem = await fixture(pageFixtures.sideNavImmersiveBothHeaders, { pagePadding: false, viewport: { width: 450, height: 550 } });

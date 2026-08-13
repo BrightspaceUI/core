@@ -483,12 +483,22 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	#stateStorageKey;
 
 	#handleMobileModeChange = (e) => {
-		// TO DO: Collapse supporting panel if needed
+		// TO DO: Collapse supporting-overlay panel when moving from mobile to overlay mode
 		this._inMobileMode = e.matches;
 	};
 
 	#handleOverlayModeChange = (e) => {
-		// TO DO: Collapse side-nav and supporting panel if needed
+		if (!this._inOverlayMode && e.matches) {
+			this._panelState.setCollapsed('side-nav-overlay', true);
+			this._panelState.setCollapsed('supporting-overlay', true);
+		} else if (this._inOverlayMode && !e.matches) {
+			if (!this._panelState.getCollapsed('side-nav-overlay')) {
+				this._panelState.setCollapsed('side-nav', false);
+			}
+			if (!this._panelState.getCollapsed('supporting-overlay')) {
+				this._panelState.setCollapsed('supporting', false);
+			}
+		}
 		this._inOverlayMode = e.matches;
 	};
 
