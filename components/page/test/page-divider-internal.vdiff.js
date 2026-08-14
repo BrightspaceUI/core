@@ -44,6 +44,21 @@ describe('page-divider-internal', () => {
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
+
+		[
+			{ name: 'arrow-short-viewport', height: 175, arrow: 'start', panelKey: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeaders },
+			{ name: 'arrow-short-viewport-immersive', height: 200, arrow: 'end', panelKey: 'supporting', fixture: pageDividerFixtures.supportingImmersiveLongMain }
+		].forEach(test => {
+			it(test.name, async() => {
+				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: test.height } });
+				const header = elem.querySelector('d2l-page-header-custom div');
+				if (header) header.style.height = '50px'; // Shorten full header so arrows are on screen
+				const divider = getDivider(elem, test.panelKey);
+				await focusElem(divider);
+				await hoverElem(getDividerArrow(divider, test.arrow));
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
 	});
 
 	describe('hover-collapsed', () => {
