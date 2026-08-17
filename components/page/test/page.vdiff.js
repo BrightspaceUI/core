@@ -1,6 +1,6 @@
-import { addMarkers, clearStoredPanelState, pageFixtures, scrollBody, scrollPanel, setStoredPanelState } from './page-fixtures.js';
-import { expect, fixture } from '@brightspace-ui/testing';
-import { MAIN_MIN_WIDTH, PANEL_MIN_WIDTH, SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth } from '../page.js';
+import { addMarkers, clearStoredPanelState, openPanel, pageFixtures, scrollBody, scrollPanel, setStoredPanelState } from './page-fixtures.js';
+import { clickElemAt, expect, fixture } from '@brightspace-ui/testing';
+import { DIVIDER_GUTTER_WIDTH, MAIN_MIN_WIDTH, PANEL_MIN_WIDTH, SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth, supportingOverlayDefaultWidth } from '../page.js';
 import { DIVIDER_WIDTH } from '../page-divider-internal.js';
 
 describe('page', () => {
@@ -398,5 +398,322 @@ describe('page', () => {
 				});
 			});
 		});
+	});
+
+	describe('overlay', () => {
+		describe('layout', () => {
+			const singlePanel = [
+				// Non-sticky header
+				{ name: 'short', fixture: pageFixtures.mainHeaderFooter },
+				{ name: 'long', fixture: pageFixtures.mainLongHeaderFooter },
+
+				// Sticky header
+				{ name: 'immersive-short', fixture: pageFixtures.mainImmersiveHeaderFooter },
+				{ name: 'immersive-long', fixture: pageFixtures.mainImmersiveLongHeaderFooter },
+			];
+
+			const sideNav = [
+				// With short main panel
+				{ name: 'side-nav', fixture: pageFixtures.sideNav },
+				{ name: 'side-nav-long-header', fixture: pageFixtures.sideNavLongHeader },
+				{ name: 'side-nav-footer', fixture: pageFixtures.sideNavFooter },
+				{ name: 'side-nav-long-header-footer', fixture: pageFixtures.sideNavLongHeaderFooter },
+				{ name: 'side-nav-both-headers', fixture: pageFixtures.sideNavBothHeaders },
+				{ name: 'side-nav-both-headers-footer', fixture: pageFixtures.sideNavBothHeadersFooter },
+
+				// With long main panel
+				{ name: 'immersive-side-nav', fixture: pageFixtures.sideNavImmersive },
+				{ name: 'immersive-side-nav-long-header', fixture: pageFixtures.sideNavImmersiveLongHeader },
+				{ name: 'immersive-side-nav-footer', fixture: pageFixtures.sideNavImmersiveFooter },
+				{ name: 'immersive-side-nav-long-header-footer', fixture: pageFixtures.sideNavImmersiveLongHeaderFooter },
+				{ name: 'immersive-side-nav-both-headers', fixture: pageFixtures.sideNavImmersiveBothHeaders },
+				{ name: 'immersive-side-nav-both-headers-footer', fixture: pageFixtures.sideNavImmersiveBothHeadersFooter },
+			];
+
+			const supporting = [
+				// With long main panel
+				{ name: 'supporting', fixture: pageFixtures.supporting },
+				{ name: 'supporting-long-header', fixture: pageFixtures.supportingLongHeader },
+				{ name: 'supporting-footer', fixture: pageFixtures.supportingFooter },
+				{ name: 'supporting-long-header-footer', fixture: pageFixtures.supportingLongHeaderFooter },
+				{ name: 'supporting-both-headers', fixture: pageFixtures.supportingBothHeaders },
+				{ name: 'supporting-both-headers-footer', fixture: pageFixtures.supportingBothHeadersFooter },
+
+				// With short main panel
+				{ name: 'immersive-supporting', fixture: pageFixtures.supportingImmersive },
+				{ name: 'immersive-supporting-long-header', fixture: pageFixtures.supportingImmersiveLongHeader },
+				{ name: 'immersive-supporting-footer', fixture: pageFixtures.supportingImmersiveFooter },
+				{ name: 'immersive-supporting-long-header-footer', fixture: pageFixtures.supportingImmersiveLongHeaderFooter },
+				{ name: 'immersive-supporting-both-headers', fixture: pageFixtures.supportingImmersiveBothHeaders },
+				{ name: 'immersive-supporting-both-headers-footer', fixture: pageFixtures.supportingImmersiveBothHeadersFooter },
+			];
+
+			[
+				{ tests: singlePanel },
+				{ tests: sideNav, panelKey: 'side-nav-overlay' },
+				{ tests: supporting, panelKey: 'supporting-overlay' }
+			].forEach(category => {
+				category.tests.forEach(test => {
+					it(test.name, async() => {
+						const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 800, height: 550 } });
+						if (category.panelKey) {
+							await openPanel(elem, category.panelKey);
+						}
+						await expect(elem).to.be.golden({ margin: 0 });
+					});
+				});
+			});
+
+			describe('rtl', () => {
+				[
+					// Non-sticky header
+					{ name: 'side-nav-both-headers-footer', panelKey: 'side-nav-overlay', fixture: pageFixtures.sideNavBothHeadersFooter },
+					{ name: 'supporting-both-headers-footer', panelKey: 'supporting-overlay', fixture: pageFixtures.supportingBothHeadersFooter },
+
+					// Sticky header
+					{ name: 'immersive-side-nav-both-headers-footer', panelKey: 'side-nav-overlay', fixture: pageFixtures.sideNavImmersiveBothHeadersFooter },
+					{ name: 'immersive-supporting-both-headers-footer', panelKey: 'supporting-overlay', fixture: pageFixtures.supportingImmersiveBothHeadersFooter },
+				].forEach(test => {
+					it(test.name, async() => {
+						const elem = await fixture(test.fixture, { rtl: true, pagePadding: false, viewport: { width: 800, height: 550 } });
+						await openPanel(elem, test.panelKey);
+						await expect(elem).to.be.golden({ margin: 0 });
+					});
+				});
+			});
+		});
+
+		describe('scroll', () => {
+
+			describe('body', () => {
+				const noScroll = [
+					// Non-sticky header with short main panel
+					{ name: 'short', fixture: pageFixtures.mainHeaderFooter },
+					{ name: 'side-nav', panelKey: 'side-nav-overlay', fixture: pageFixtures.sideNavBothHeadersFooter },
+					// Sticky header with short main panel
+					{ name: 'immersive-short', fixture: pageFixtures.mainImmersiveHeaderFooter },
+					{ name: 'immersive-supporting', panelKey: 'supporting-overlay', fixture: pageFixtures.supportingImmersiveBothHeaders },
+					{ name: 'immersive-supporting-long', panelKey: 'supporting-overlay', fixture: pageFixtures.supportingImmersiveLongHeaderFooter },
+				];
+
+				const nonStickyHeaderScrollsAway = [
+					// With long main panel
+					{ name: 'long', fixture: pageFixtures.mainLongHeaderFooter },
+					{ name: 'supporting', panelKey: 'supporting-overlay', fixture: pageFixtures.supportingBothHeadersFooter },
+					// With long side panel
+					{ name: 'side-nav-long', panelKey: 'side-nav-overlay', fixture: pageFixtures.sideNavLong },
+					{ name: 'side-nav-long-header-footer', panelKey: 'side-nav-overlay', fixture: pageFixtures.sideNavLongHeaderFooter },
+					// With long main and side panel
+					{ name: 'supporting-long', panelKey: 'supporting-overlay', fixture: pageFixtures.supportingLongHeader },
+				];
+
+				const stickyHeader = [
+					// With long main panel
+					{ name: 'immersive-long', fixture: pageFixtures.mainImmersiveLongHeaderFooter },
+					{ name: 'immersive-side-nav', panelKey: 'side-nav-overlay', fixture: pageFixtures.sideNavImmersiveBothHeaders },
+					// With long main and side panel
+					{ name: 'immersive-side-nav-long', panelKey: 'side-nav-overlay', fixture: pageFixtures.sideNavImmersiveLongHeaderFooter },
+				];
+
+				[
+					{ name: 'no-scroll', tests: noScroll },
+					{ name: 'header-scrolls-away', tests: nonStickyHeaderScrollsAway },
+					{ name: 'header-sticks', tests: stickyHeader }
+				].forEach(category => {
+					describe(category.name, () => {
+						category.tests.forEach(test => {
+							it(test.name, async() => {
+								const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 800, height: 550 } });
+								if (test.panelKey) {
+									await openPanel(elem, test.panelKey);
+								}
+								scrollBody();
+								await expect(elem).to.be.golden({ margin: 0 });
+							});
+						});
+					});
+				});
+			});
+
+			describe('panel', () => {
+				const noScrollSideNav = [
+					{ name: 'side-nav', fixture: pageFixtures.sideNavBothHeadersFooter },
+					{ name: 'immersive-side-nav', fixture: pageFixtures.sideNavImmersiveBothHeadersFooter },
+				];
+
+				const scrollsSideNav = [
+					{ name: 'side-nav-long', fixture: pageFixtures.sideNavLong },
+					{ name: 'side-nav-long-header', fixture: pageFixtures.sideNavLongHeader },
+					{ name: 'side-nav-long-footer', fixture: pageFixtures.sideNavLongFooter },
+					{ name: 'side-nav-long-header-footer', fixture: pageFixtures.sideNavLongHeaderFooter },
+					{ name: 'immersive-side-nav-long', fixture: pageFixtures.sideNavImmersiveLong },
+					{ name: 'immersive-side-nav-long-header', fixture: pageFixtures.sideNavImmersiveLongHeader },
+					{ name: 'immersive-side-nav-long-footer', fixture: pageFixtures.sideNavImmersiveLongFooter },
+					{ name: 'immersive-side-nav-long-header-footer', fixture: pageFixtures.sideNavImmersiveLongHeaderFooter },
+				];
+
+				const noScrollSupporting = [
+					{ name: 'supporting', fixture: pageFixtures.supportingHeaderFooter },
+					{ name: 'immersive-supporting', fixture: pageFixtures.supportingImmersiveHeaderFooter },
+				];
+
+				const scrollsSupporting = [
+					{ name: 'supporting-long', fixture: pageFixtures.supportingLong },
+					{ name: 'supporting-long-header', fixture: pageFixtures.supportingLongHeader },
+					{ name: 'supporting-long-footer', fixture: pageFixtures.supportingLongFooter },
+					{ name: 'supporting-long-header-footer', fixture: pageFixtures.supportingLongHeaderFooter },
+					{ name: 'immersive-supporting-long', fixture: pageFixtures.supportingImmersiveLong },
+					{ name: 'immersive-supporting-long-header', fixture: pageFixtures.supportingImmersiveLongHeader },
+					{ name: 'immersive-supporting-long-footer', fixture: pageFixtures.supportingImmersiveLongFooter },
+					{ name: 'immersive-supporting-long-header-footer', fixture: pageFixtures.supportingImmersiveLongHeaderFooter },
+				];
+
+				[
+					{ name: 'no-scroll', panel: 'side-nav', panelKey: 'side-nav-overlay', tests: noScrollSideNav },
+					{ name: 'scrolls', panel: 'side-nav', panelKey: 'side-nav-overlay', tests: scrollsSideNav },
+					{ name: 'no-scroll', panel: 'supporting', panelKey: 'supporting-overlay', tests: noScrollSupporting },
+					{ name: 'scrolls', panel: 'supporting', panelKey: 'supporting-overlay', tests: scrollsSupporting },
+				].forEach(category => {
+					describe(category.name, () => {
+						category.tests.forEach(test => {
+							it(test.name, async() => {
+								const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 800, height: 550 } });
+								await openPanel(elem, category.panelKey);
+								scrollPanel(elem, category.panel);
+								await expect(elem).to.be.golden({ margin: 0 });
+							});
+						});
+					});
+				});
+			});
+
+			describe('both', () => {
+				const sideNav = [
+					{ name: 'immersive-side-nav-long-footer', fixture: pageFixtures.sideNavImmersiveLongFooter },
+					{ name: 'immersive-side-nav-long-header-footer', fixture: pageFixtures.sideNavImmersiveLongHeaderFooter },
+					{ name: 'immersive-side-nav-long-both-headers', fixture: pageFixtures.sideNavImmersiveLongBothHeaders },
+				];
+
+				const supporting = [
+					{ name: 'supporting-long-header', fixture: pageFixtures.supportingLongHeader },
+					{ name: 'supporting-long-footer', fixture: pageFixtures.supportingLongFooter },
+					{ name: 'supporting-long-both-headers-footer', fixture: pageFixtures.supportingLongBothHeadersFooter },
+				];
+
+				[
+					{ name: 'header-sticks', panel: 'side-nav', panelKey: 'side-nav-overlay', tests: sideNav },
+					{ name: 'header-scrolls-away', panel: 'supporting', panelKey: 'supporting-overlay', tests: supporting },
+				].forEach(category => {
+					describe(category.name, () => {
+						category.tests.forEach(test => {
+							it(test.name, async() => {
+								const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 800, height: 550 } });
+								await openPanel(elem, category.panelKey);
+								scrollBody();
+								scrollPanel(elem, category.panel);
+								await expect(elem).to.be.golden({ margin: 0 });
+							});
+						});
+					});
+				});
+			});
+		});
+
+		describe('panel', () => {
+			afterEach(() => {
+				clearStoredPanelState();
+			});
+
+			describe('collapsed', () => {
+				[
+					// Non-sticky header
+					{ name: 'side-nav-header', fixture: pageFixtures.sideNavHeaderStorageKey },
+					{ name: 'supporting-footer', fixture: pageFixtures.supportingFooterStorageKey },
+
+					// Sticky header
+					{ name: 'immersive-side-nav-header-footer', fixture: pageFixtures.sideNavImmersiveHeaderFooterStorageKey },
+					{ name: 'immersive-supporting-both-headers', fixture: pageFixtures.supportingImmersiveBothHeadersStorageKey },
+
+					// RTL
+					{ name: 'rtl-side-nav-header', rtl: true, fixture: pageFixtures.sideNavHeaderStorageKey },
+					{ name: 'rtl-supporting-footer', rtl: true, fixture: pageFixtures.supportingFooterStorageKey },
+					{ name: 'rtl-immersive-side-nav-header-footer', rtl: true, fixture: pageFixtures.sideNavImmersiveHeaderFooterStorageKey },
+					{ name: 'rtl-immersive-supporting-both-headers', rtl: true, fixture: pageFixtures.supportingImmersiveBothHeadersStorageKey },
+				].forEach(test => {
+					it(test.name, async() => {
+						const elem = await fixture(test.fixture, { pagePadding: false, rtl: test.rtl, viewport: { width: 800, height: 550 } });
+						await expect(elem).to.be.golden({ margin: 0 });
+					});
+				});
+			});
+
+			// Grey marker is default size
+			// Blue marker is stored size
+			// Green marker is the expected resulting position
+			describe('restored', () => {
+				const width = 800;
+				const maxPanelSize = width - DIVIDER_WIDTH - DIVIDER_GUTTER_WIDTH;
+				const minPanelSize = PANEL_MIN_WIDTH;
+				const sideNavDefault = SIDE_NAV_DEFAULT_WIDTH;
+				const supportingDefault = supportingOverlayDefaultWidth(width);
+
+				const sideNav = [
+					{ name: 'side-nav-larger', stored: 500, expected: 500 },
+					{ name: 'side-nav-smaller', stored: 325, expected: 325 },
+					{ name: 'side-nav-max', stored: maxPanelSize + 200, expected: maxPanelSize },
+					{ name: 'side-nav-min', stored: minPanelSize - 120, expected: minPanelSize },
+					{ name: 'rtl-side-nav-larger', rtl: true, stored: 500, expected: 500 },
+				];
+
+				const supporting = [
+					{ name: 'supporting-larger', stored: 500, expected: 500 },
+					{ name: 'supporting-smaller', stored: 350, expected: 350 },
+					{ name: 'supporting-max', stored: maxPanelSize + 200, expected: maxPanelSize },
+					{ name: 'supporting-min', stored: minPanelSize - 120, expected: minPanelSize },
+					{ name: 'rtl-supporting-larger', rtl: true, stored: 500, expected: 500 },
+				];
+
+				[
+					{ tests: sideNav, panelKey: 'side-nav-overlay', position: 'start', fixture: pageFixtures.sideNavHeaderStorageKey, default: sideNavDefault },
+					{ tests: supporting, panelKey: 'supporting-overlay', position: 'end', fixture: pageFixtures.supportingFooterStorageKey, default: supportingDefault },
+				].forEach(category => {
+					category.tests.forEach(test => {
+						it(test.name, async() => {
+							setStoredPanelState({
+								[category.panelKey]: { collapsed: false, size: test.stored }
+							});
+							const elem = await fixture(category.fixture, { pagePadding: false, rtl: test.rtl, viewport: { width: width, height: 450 } });
+							await openPanel(elem, category.panelKey);
+							addMarkers(elem, category.position, [
+								{ color: 'grey', size: category.default },
+								{ color: 'green', size: test.expected },
+								...(test.stored !== test.expected ? [{ color: 'blue', size: test.stored }] : [])
+							]);
+							await expect(elem).to.be.golden({ margin: 0 });
+						});
+					});
+				});
+			});
+		});
+
+		describe('scrim click', () => {
+			it('closes-side-nav', async() => {
+				const elem = await fixture(pageFixtures.sideNavImmersiveBothHeaders, { pagePadding: false, viewport: { width: 450, height: 550 } });
+				await openPanel(elem, 'side-nav-overlay');
+				await clickElemAt(elem.querySelector('d2l-page-main'), 30, 30);
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+
+			it('closes-supporting', async() => {
+				const elem = await fixture(pageFixtures.supportingFooter, { pagePadding: false, viewport: { width: 800, height: 550 } });
+				await openPanel(elem, 'supporting-overlay');
+				await clickElemAt(elem.querySelector('d2l-page-main'), 30, 30);
+				await expect(elem).to.be.golden({ margin: 0 });
+			});
+		});
+	});
+
+	describe('mobile', () => {
+		// TO DO
 	});
 });

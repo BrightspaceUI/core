@@ -12,9 +12,9 @@ export const panelStateStorageKey = key => `d2l-page-panel-state-${key}`;
 
 const DRAWER_MIN_HEIGHT = 200; // TO DO: Confirm
 export const MAIN_MIN_WIDTH = 600; // TO DO: Confirm
-export const PANEL_MIN_WIDTH = 320;
+export const PANEL_MIN_WIDTH = 298;
 
-const DIVIDER_GUTTER_WIDTH = 18;
+export const DIVIDER_GUTTER_WIDTH = 18;
 
 export const SIDE_NAV_DEFAULT_WIDTH = 334;
 export const supportingDefaultWidth = contentWidth => Math.floor(contentWidth / 3);
@@ -463,7 +463,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 					${this.#renderSideNavPanel(sideNavPanelKey)}
 					<main aria-label="${ifDefined(showScrim ? this.localize(scrimMessage) : undefined)}">
 						<div class="main" ?inert="${showScrim}"><slot></slot></div>
-						${showScrim ? html`<div class="scrim"></div>` : nothing}
+						${showScrim ? html`<div class="scrim" @click="${this.#handleScrimClick}"></div>` : nothing}
 					</main>
 					${this.#renderSupportingPanel(supportingPanelKey)}
 				</div>
@@ -483,12 +483,22 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	#stateStorageKey;
 
 	#handleMobileModeChange = (e) => {
-		// TO DO: Collapse supporting panel if needed
+		// TO DO: Collapse supporting-overlay panel when moving from mobile to overlay mode
 		this._inMobileMode = e.matches;
 	};
 
 	#handleOverlayModeChange = (e) => {
-		// TO DO: Collapse side-nav and supporting panel if needed
+		if (!this._inOverlayMode && e.matches) {
+			this._panelState.setCollapsed('side-nav-overlay', true);
+			this._panelState.setCollapsed('supporting-overlay', true);
+		} else if (this._inOverlayMode && !e.matches) {
+			if (!this._panelState.getCollapsed('side-nav-overlay')) {
+				this._panelState.setCollapsed('side-nav', false);
+			}
+			if (!this._panelState.getCollapsed('supporting-overlay')) {
+				this._panelState.setCollapsed('supporting', false);
+			}
+		}
 		this._inOverlayMode = e.matches;
 	};
 
@@ -534,6 +544,11 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		const collapsed = !this._panelState.getCollapsed(panelKey);
 		this._panelState.setCollapsed(panelKey, collapsed);
 	};
+
+	#handleScrimClick() {
+		this._panelState.setCollapsed('side-nav-overlay', true);
+		this._panelState.setCollapsed('supporting-overlay', true);
+	}
 
 	#handleSlotVisibilityChange(e) {
 		const key = e.target.name;
