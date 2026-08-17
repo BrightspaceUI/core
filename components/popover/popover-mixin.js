@@ -370,6 +370,8 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		this._dismissibleId = setDismissible(() => this.close());
 
+		this.#addRepositionHandlers();
+
 		let doWait = false;
 		await new Promise(resolve => {
 			const beforeOpenEvent = new CustomEvent(
@@ -390,12 +392,10 @@ export const PopoverMixin = superclass => class extends superclass {
 		});
 		if (doWait) {
 			await waitForElem(this.#getContentContainer());
-			await this.resize();
+			await this.position();
 		}
 
 		this.#focusContent(this);
-
-		this.#addRepositionHandlers();
 
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
