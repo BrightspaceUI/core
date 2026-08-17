@@ -10,6 +10,7 @@ import { _offscreenStyleDeclarations } from '../offscreen/offscreen.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
+import { waitForElem } from '../../helpers/internal/waitForElem.js';
 
 export const positionLocations = Object.freeze({
 	blockEnd: 'block-end',
@@ -368,6 +369,29 @@ export const PopoverMixin = superclass => class extends superclass {
 		}
 
 		this._dismissibleId = setDismissible(() => this.close());
+
+		let doWait = false;
+		await new Promise(resolve => {
+			const beforeOpenEvent = new CustomEvent(
+				'd2l-popover-before-open', {
+					bubbles: false,
+					cancelable: true,
+					composed: false,
+					detail: { complete: resolve }
+				}
+			);
+			/** @ignore */
+			this.dispatchEvent(beforeOpenEvent);
+			if (!beforeOpenEvent.defaultPrevented) {
+				resolve();
+			} else {
+				doWait = true;
+			}
+		});
+		if (doWait) {
+			await waitForElem(this.#getContentContainer());
+			await this.resize();
+		}
 
 		this.#focusContent(this);
 
