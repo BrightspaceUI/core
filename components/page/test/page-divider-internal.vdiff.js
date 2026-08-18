@@ -1,8 +1,8 @@
 import { addMarkers, clearStoredPanelState, openPanel, scrollBody, scrollPanel, setStoredPanelState } from './page-fixtures.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, nextFrame, sendKeysElem } from '@brightspace-ui/testing';
+import { clickDivider, clickDividerArrow, clickDividerHandle, focusDivider, hoverDivider, hoverDividerArrow, hoverDividerHandle, pageDividerFixtures, pressKeyDivider } from './page-divider-internal-fixtures.js';
 import { DIVIDER_GUTTER_WIDTH, MAIN_MIN_WIDTH, PANEL_MIN_WIDTH, SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth, supportingOverlayDefaultWidth } from '../page.js';
 import { DIVIDER_WIDTH, KEYBOARD_STEP, KEYBOARD_STEP_LARGE } from '../page-divider-internal.js';
-import { getDivider, getDividerArrow, getSlider, pageDividerFixtures } from './page-divider-internal-fixtures.js';
+import { expect, fixture, nextFrame } from '@brightspace-ui/testing';
 
 describe('page-divider-internal', () => {
 
@@ -13,7 +13,7 @@ describe('page-divider-internal', () => {
 		].forEach(test => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				await hoverElem(getDivider(elem, test.panelKey));
+				await hoverDivider(elem, test.panelKey);
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -24,8 +24,7 @@ describe('page-divider-internal', () => {
 		].forEach(test => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				const divider = getDivider(elem, test.panelKey);
-				await hoverElem(getSlider(divider));
+				await hoverDividerHandle(elem, test.panelKey);
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -38,9 +37,7 @@ describe('page-divider-internal', () => {
 		].forEach(test => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				const divider = getDivider(elem, test.panelKey);
-				await focusElem(divider);
-				await hoverElem(getDividerArrow(divider, test.arrow));
+				await hoverDividerArrow(elem, test.panelKey, test.arrow);
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -53,9 +50,7 @@ describe('page-divider-internal', () => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: test.height } });
 				const header = elem.querySelector('d2l-page-header-custom div');
 				if (header) header.style.height = '50px'; // Shorten full header so arrows are on screen
-				const divider = getDivider(elem, test.panelKey);
-				await focusElem(divider);
-				await hoverElem(getDividerArrow(divider, test.arrow));
+				await hoverDividerArrow(elem, test.panelKey, test.arrow);
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -73,7 +68,7 @@ describe('page-divider-internal', () => {
 			it(test.name, async() => {
 				setStoredPanelState({ [test.panelKey]: { size: 400, collapsed: true } });
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				await hoverElem(getDivider(elem, test.panelKey));
+				await hoverDivider(elem, test.panelKey);
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -85,8 +80,7 @@ describe('page-divider-internal', () => {
 			it(test.name, async() => {
 				setStoredPanelState({ [test.panelKey]: { size: 400, collapsed: true } });
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				const divider = getDivider(elem, test.panelKey);
-				await hoverElem(getSlider(divider));
+				await hoverDividerHandle(elem, test.panelKey);
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -103,7 +97,7 @@ describe('page-divider-internal', () => {
 		].forEach(test => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				await focusElem(getDivider(elem, test.panelKey));
+				await focusDivider(elem, test.panelKey);
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -118,7 +112,7 @@ describe('page-divider-internal', () => {
 		].forEach(test => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				await focusElem(getDivider(elem, test.panelKey));
+				await focusDivider(elem, test.panelKey);
 				scrollBody();
 				scrollPanel(elem, test.panelKey);
 				await expect(elem).to.be.golden({ margin: 0 });
@@ -137,7 +131,7 @@ describe('page-divider-internal', () => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
 				scrollBody();
 				scrollPanel(elem, test.panelKey);
-				await focusElem(getDivider(elem, test.panelKey));
+				await focusDivider(elem, test.panelKey);
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -151,7 +145,7 @@ describe('page-divider-internal', () => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
 				scrollBody();
-				await sendKeysElem(getDivider(elem, test.panelKey), 'press', 'Enter');
+				await pressKeyDivider(elem, test.panelKey, 'Enter');
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -169,11 +163,10 @@ describe('page-divider-internal', () => {
 				scrollPanel(elem, test.panelKey);
 				scrollBody();
 
-				const divider = getDivider(elem, test.panelKey);
-				await sendKeysElem(divider, 'press', 'Enter');
+				await pressKeyDivider(elem, test.panelKey, 'Enter');
 				await nextFrame();
 
-				await sendKeysElem(divider, 'press', ' ');
+				await pressKeyDivider(elem, test.panelKey, ' ');
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -186,12 +179,11 @@ describe('page-divider-internal', () => {
 		].forEach(test => {
 			it(test.name, async() => {
 				const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				const divider = getDivider(elem, test.panelKey);
-				await clickElem(getSlider(divider));
+				await clickDividerHandle(elem, test.panelKey);
 				await nextFrame();
 
 				scrollBody();
-				await sendKeysElem(divider, 'press', ' ');
+				await pressKeyDivider(elem, test.panelKey, ' ');
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -230,8 +222,7 @@ describe('page-divider-internal', () => {
 							...(requested !== expected ? [{ color: 'blue', size: requested }] : [])
 						]);
 
-						const divider = getDivider(elem, test.panelKey);
-						await sendKeysElem(divider, 'press', key);
+						await pressKeyDivider(elem, test.panelKey, key);
 						await expect(elem).to.be.golden({ margin: 0 });
 					});
 				});
@@ -247,8 +238,7 @@ describe('page-divider-internal', () => {
 			].forEach(test => {
 				it(test.name, async() => {
 					const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-					const divider = getDivider(elem, test.panelKey);
-					await clickElem(getSlider(divider));
+					await clickDividerHandle(elem, test.panelKey);
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 			});
@@ -259,9 +249,8 @@ describe('page-divider-internal', () => {
 			].forEach(test => {
 				it(test.name, async() => {
 					const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-					const divider = getDivider(elem, test.panelKey);
-					await clickElem(getSlider(divider));
-					await clickElem(getSlider(divider));
+					await clickDividerHandle(elem, test.panelKey);
+					await clickDividerHandle(elem, test.panelKey);
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 			});
@@ -270,16 +259,14 @@ describe('page-divider-internal', () => {
 		describe('divider line', () => {
 			it('no-collapse-side-nav', async() => {
 				const elem = await fixture(pageDividerFixtures.sideNavBothHeaders, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				const divider = getDivider(elem, 'side-nav');
-				await clickElem(divider);
+				await clickDivider(elem, 'side-nav');
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 
 			it('expand-supporting-immersive', async() => {
 				const elem = await fixture(pageDividerFixtures.supportingImmersiveFooter, { pagePadding: false, viewport: { width: 1000, height: 400 } });
-				const divider = getDivider(elem, 'supporting');
-				await clickElem(getSlider(divider));
-				await clickElem(divider);
+				await clickDividerHandle(elem, 'supporting');
+				await clickDivider(elem, 'supporting');
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
 		});
@@ -315,9 +302,7 @@ describe('page-divider-internal', () => {
 								{ color: 'green', size: expected }
 							]);
 
-							const divider = getDivider(elem, test.panelKey);
-							await focusElem(divider);
-							await clickElem(getDividerArrow(divider, arrow));
+							await clickDividerArrow(elem, test.panelKey, arrow);
 							await expect(elem).to.be.golden({ margin: 0 });
 						});
 					});
@@ -341,7 +326,7 @@ describe('page-divider-internal', () => {
 				it(test.name, async() => {
 					const elem = await fixture(test.fixture, fixtureOptions(test.panelKey));
 					await openPanel(elem, test.panelKey);
-					await hoverElem(getDivider(elem, test.panelKey));
+					await hoverDivider(elem, test.panelKey);
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 			});
@@ -353,8 +338,7 @@ describe('page-divider-internal', () => {
 				it(test.name, async() => {
 					const elem = await fixture(test.fixture, fixtureOptions(test.panelKey));
 					await openPanel(elem, test.panelKey);
-					const divider = getDivider(elem, test.panelKey);
-					await hoverElem(getSlider(divider));
+					await hoverDividerHandle(elem, test.panelKey);
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 			});
@@ -368,9 +352,7 @@ describe('page-divider-internal', () => {
 				it(test.name, async() => {
 					const elem = await fixture(test.fixture, fixtureOptions(test.panelKey));
 					await openPanel(elem, test.panelKey);
-					const divider = getDivider(elem, test.panelKey);
-					await focusElem(divider);
-					await hoverElem(getDividerArrow(divider, test.arrow));
+					await hoverDividerArrow(elem, test.panelKey, test.arrow);
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 			});
@@ -383,7 +365,7 @@ describe('page-divider-internal', () => {
 			].forEach(test => {
 				it(test.name, async() => {
 					const elem = await fixture(test.fixture, fixtureOptions(test.panelKey));
-					await hoverElem(getDivider(elem, test.panelKey));
+					await hoverDivider(elem, test.panelKey);
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 			});
@@ -394,8 +376,7 @@ describe('page-divider-internal', () => {
 			].forEach(test => {
 				it(test.name, async() => {
 					const elem = await fixture(test.fixture, fixtureOptions(test.panelKey));
-					const divider = getDivider(elem, test.panelKey);
-					await hoverElem(getSlider(divider));
+					await hoverDividerHandle(elem, test.panelKey);
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 			});
@@ -413,7 +394,7 @@ describe('page-divider-internal', () => {
 				it(test.name, async() => {
 					const elem = await fixture(test.fixture, fixtureOptions(test.panelKey));
 					await openPanel(elem, test.panelKey);
-					await focusElem(getDivider(elem, test.panelKey));
+					await focusDivider(elem, test.panelKey);
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 			});
@@ -429,7 +410,7 @@ describe('page-divider-internal', () => {
 				it(test.name, async() => {
 					const elem = await fixture(test.fixture, fixtureOptions(test.panelKey));
 					await openPanel(elem, test.panelKey);
-					await focusElem(getDivider(elem, test.panelKey));
+					await focusDivider(elem, test.panelKey);
 					scrollBody();
 					scrollPanel(elem, test.panel);
 					await expect(elem).to.be.golden({ margin: 0 });
@@ -449,7 +430,7 @@ describe('page-divider-internal', () => {
 					await openPanel(elem, test.panelKey);
 					scrollBody();
 					scrollPanel(elem, test.panel);
-					await focusElem(getDivider(elem, test.panelKey));
+					await focusDivider(elem, test.panelKey);
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 			});
@@ -464,7 +445,7 @@ describe('page-divider-internal', () => {
 					const elem = await fixture(test.fixture, fixtureOptions(test.panelKey));
 					await openPanel(elem, test.panelKey);
 					scrollBody();
-					await sendKeysElem(getDivider(elem, test.panelKey), 'press', 'Enter');
+					await pressKeyDivider(elem, test.panelKey, 'Enter');
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 			});
@@ -483,11 +464,10 @@ describe('page-divider-internal', () => {
 					scrollPanel(elem, test.panel);
 					scrollBody();
 
-					const divider = getDivider(elem, test.panelKey);
-					await sendKeysElem(divider, 'press', 'Enter');
+					await pressKeyDivider(elem, test.panelKey, 'Enter');
 					await nextFrame();
 
-					await sendKeysElem(divider, 'press', ' ');
+					await pressKeyDivider(elem, test.panelKey, ' ');
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 			});
@@ -502,8 +482,7 @@ describe('page-divider-internal', () => {
 					const elem = await fixture(test.fixture, fixtureOptions(test.panelKey));
 					scrollBody();
 
-					const divider = getDivider(elem, test.panelKey);
-					await sendKeysElem(divider, 'press', ' ');
+					await pressKeyDivider(elem, test.panelKey, ' ');
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 			});
@@ -546,8 +525,7 @@ describe('page-divider-internal', () => {
 									...(requested !== expected ? [{ color: 'blue', size: requested }] : [])
 								]);
 
-								const divider = getDivider(elem, test.panelKey);
-								await sendKeysElem(divider, 'press', key);
+								await pressKeyDivider(elem, test.panelKey, key);
 								await expect(elem).to.be.golden({ margin: 0 });
 							});
 						});
@@ -565,8 +543,7 @@ describe('page-divider-internal', () => {
 					it(test.name, async() => {
 						const elem = await fixture(test.fixture, fixtureOptions(test.panelKey));
 						await openPanel(elem, test.panelKey);
-						const divider = getDivider(elem, test.panelKey);
-						await clickElem(getSlider(divider));
+						await clickDividerHandle(elem, test.panelKey);
 						await expect(elem).to.be.golden({ margin: 0 });
 					});
 				});
@@ -577,8 +554,7 @@ describe('page-divider-internal', () => {
 				].forEach(test => {
 					it(test.name, async() => {
 						const elem = await fixture(test.fixture, fixtureOptions(test.panelKey));
-						const divider = getDivider(elem, test.panelKey);
-						await clickElem(getSlider(divider));
+						await clickDividerHandle(elem, test.panelKey);
 						await expect(elem).to.be.golden({ margin: 0 });
 					});
 				});
@@ -588,15 +564,13 @@ describe('page-divider-internal', () => {
 				it('no-collapse-side-nav', async() => {
 					const elem = await fixture(pageDividerFixtures.sideNavBothHeaders, fixtureOptions('side-nav-overlay'));
 					await openPanel(elem, 'side-nav-overlay');
-					const divider = getDivider(elem, 'side-nav-overlay');
-					await clickElem(divider);
+					await clickDivider(elem, 'side-nav-overlay');
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 
 				it('expand-supporting-immersive', async() => {
 					const elem = await fixture(pageDividerFixtures.supportingImmersiveFooter, fixtureOptions('supporting-overlay'));
-					const divider = getDivider(elem, 'supporting-overlay');
-					await clickElem(divider);
+					await clickDivider(elem, 'supporting-overlay');
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 			});
@@ -635,9 +609,7 @@ describe('page-divider-internal', () => {
 										{ color: 'green', size: expected }
 									]);
 
-									const divider = getDivider(elem, test.panelKey);
-									await focusElem(divider);
-									await clickElem(getDividerArrow(divider, arrow));
+									await clickDividerArrow(elem, test.panelKey, arrow);
 									await expect(elem).to.be.golden({ margin: 0 });
 								});
 							});

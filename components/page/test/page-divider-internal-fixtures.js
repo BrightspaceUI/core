@@ -1,5 +1,65 @@
-import { createPage } from './page-fixtures.js';
+import { clickElem, focusElem, hoverElem, nextFrame, sendKeysElem } from '@brightspace-ui/testing';
+import { createPage, getDivider } from './page-fixtures.js';
 import { html } from 'lit';
+
+/* Page Helpers */
+export function dispatchDividerResize(elem, panelKey, requestedSize) {
+	getDivider(elem, panelKey).dispatchEvent(new CustomEvent('d2l-page-divider-resize', { detail: { requestedSize } }));
+}
+export function dispatchDividerToggle(elem, panelKey) {
+	getDivider(elem, panelKey).dispatchEvent(new CustomEvent('d2l-page-divider-toggle'));
+}
+
+export async function clickDivider(elem, panelKey) {
+	await clickElem(getDivider(elem, panelKey));
+	await nextFrame();
+}
+export async function clickDividerHandle(elem, panelKey) {
+	await clickElem(getSlider(getDivider(elem, panelKey)));
+	await nextFrame();
+}
+export async function clickDividerArrow(elem, panelKey, arrowPosition) {
+	const divider = getDivider(elem, panelKey);
+	await focusElem(divider);
+	await clickElem(getDividerArrow(divider, arrowPosition));
+}
+
+export async function focusDivider(elem, panelKey) {
+	await focusElem(getDivider(elem, panelKey));
+}
+
+export async function hoverDivider(elem, panelKey) {
+	await hoverElem(getDivider(elem, panelKey));
+}
+export async function hoverDividerHandle(elem, panelKey) {
+	await hoverElem(getSlider(getDivider(elem, panelKey)));
+}
+export async function hoverDividerArrow(elem, panelKey, arrowPosition) {
+	const divider = getDivider(elem, panelKey);
+	await focusElem(divider);
+	await hoverElem(getDividerArrow(divider, arrowPosition));
+}
+
+export async function pressKeyDivider(elem, panelKey, key) {
+	const divider = getDivider(elem, panelKey);
+	await sendKeysElem(divider, 'press', key);
+}
+
+/* Divider Helpers */
+export function getDividerArrow(elem, position) {
+	return elem.shadowRoot.querySelector(`.divider-arrow.${position}`);
+}
+export function getSlider(elem) {
+	return elem.shadowRoot.querySelector('.slider');
+}
+
+export async function clickArrow(elem, arrowPosition) {
+	await focusElem(elem);
+	await clickElem(getDividerArrow(elem, arrowPosition));
+}
+export async function clickHandle(elem) {
+	await clickElem(getSlider(elem));
+}
 
 export function createDivider({
 	collapsed = false,
@@ -30,18 +90,6 @@ function createDividerPage(options) {
 		supportingHeight: '100px',
 		...options
 	});
-}
-
-export function getDivider(elem, panelKey) {
-	return elem.shadowRoot.querySelector(`d2l-page-divider-internal[data-panel-key="${panelKey}"]`);
-}
-
-export function getDividerArrow(elem, position) {
-	return elem.shadowRoot.querySelector(`.divider-arrow.${position}`);
-}
-
-export function getSlider(elem) {
-	return elem.shadowRoot.querySelector('.slider');
 }
 
 export const pageDividerFixtures = {

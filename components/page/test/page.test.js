@@ -1,8 +1,8 @@
 import { clearStoredPanelState, getStoredPanelState, pageFixtures, setStoredPanelState } from './page-fixtures.js';
+import { dispatchDividerResize, dispatchDividerToggle } from './page-divider-internal-fixtures.js';
 import { expect, fixture, nextFrame, runConstructor, setViewport, waitUntil } from '@brightspace-ui/testing';
 import { restore, spy } from 'sinon';
 import { SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth, supportingMobileDefaultHeight, supportingOverlayDefaultWidth } from '../page.js';
-import { getDivider } from './page-divider-internal-fixtures.js';
 
 const fixtureHeight = 800;
 const defaultFixtureOptions = { pagePadding: false, viewport: { width: 1300, height: fixtureHeight } };
@@ -166,14 +166,14 @@ describe('page', () => {
 
 			it('persists the size when a panel is resized', async() => {
 				const elem = await fixture(pageFixtures.sideNavHeaderStorageKey, defaultFixtureOptions);
-				getDivider(elem, 'side-nav').dispatchEvent(new CustomEvent('d2l-page-divider-resize', { detail: { requestedSize: 450 } }));
+				dispatchDividerResize(elem, 'side-nav', 450);
 				const stored = getStoredPanelState();
 				expect(stored['side-nav'].size).to.equal(450);
 			});
 
 			it('persists the collapsed state when a panel is toggled', async() => {
 				const elem = await fixture(pageFixtures.sideNavHeaderStorageKey, defaultFixtureOptions);
-				getDivider(elem, 'side-nav').dispatchEvent(new CustomEvent('d2l-page-divider-toggle'));
+				dispatchDividerToggle(elem, 'side-nav');
 				const stored = getStoredPanelState();
 				expect(stored['side-nav'].collapsed).to.be.true;
 				expect(stored['side-nav'].size).to.equal(SIDE_NAV_DEFAULT_WIDTH);
@@ -181,7 +181,7 @@ describe('page', () => {
 
 			it('does not persist the collapsed state for side-nav-overlay', async() => {
 				const elem = await fixture(pageFixtures.sideNavHeaderStorageKey, { pagePadding: false, viewport: { width: 450, height: fixtureHeight } });
-				getDivider(elem, 'side-nav-overlay').dispatchEvent(new CustomEvent('d2l-page-divider-toggle'));
+				dispatchDividerToggle(elem, 'side-nav-overlay');
 				const stored = getStoredPanelState();
 				expect(stored['side-nav-overlay'].collapsed).to.be.undefined;
 				expect(stored['side-nav-overlay'].size).to.equal(SIDE_NAV_DEFAULT_WIDTH);
@@ -189,7 +189,7 @@ describe('page', () => {
 
 			it('does not persist the collapsed state for supporting-overlay', async() => {
 				const elem = await fixture(pageFixtures.supportingFooterStorageKey, { pagePadding: false, viewport: { width: 800, height: fixtureHeight } });
-				getDivider(elem, 'supporting-overlay').dispatchEvent(new CustomEvent('d2l-page-divider-toggle'));
+				dispatchDividerToggle(elem, 'supporting-overlay');
 				const stored = getStoredPanelState();
 				expect(stored['supporting-overlay'].collapsed).to.be.undefined;
 				expect(stored['supporting-overlay'].size).to.equal(supportingOverlayDefaultWidth(800));
@@ -198,7 +198,7 @@ describe('page', () => {
 			it('persists each panel under its own key', async() => {
 				setStoredPanelState({ 'side-nav': { size: 450, collapsed: true } });
 				const elem = await fixture(pageFixtures.supportingFooterStorageKey, defaultFixtureOptions);
-				getDivider(elem, 'supporting').dispatchEvent(new CustomEvent('d2l-page-divider-resize', { detail: { requestedSize: 500 } }));
+				dispatchDividerResize(elem, 'supporting', 500);
 				const stored = getStoredPanelState();
 				expect(stored['side-nav'].size).to.equal(450);
 				expect(stored['side-nav'].collapsed).to.be.true;
@@ -209,7 +209,7 @@ describe('page', () => {
 			it('does not persist when no storage key is set', async() => {
 				const setItemSpy = spy(localStorage, 'setItem');
 				const elem = await fixture(pageFixtures.sideNavHeader, defaultFixtureOptions);
-				getDivider(elem, 'side-nav').dispatchEvent(new CustomEvent('d2l-page-divider-resize', { detail: { requestedSize: 450 } }));
+				dispatchDividerResize(elem, 'side-nav', 450);
 				expect(setItemSpy.called).to.be.false;
 			});
 
