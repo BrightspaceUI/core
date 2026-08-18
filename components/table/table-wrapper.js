@@ -269,21 +269,6 @@ export class TableWrapper extends FreshnessMixin(PageableMixin(SelectionMixin(Li
 
 	static properties = {
 		/**
-		 * Todo: remove once consumers are updated to freshness. Use freshness instead.
-		 * @ignore
-		 */
-		dataState: { reflect: true, type: String },
-		/**
-		 * Todo: remove once consumers are updated to freshness-stale-text. Use freshness-stale-text instead.
-		 * @ignore
-		 */
-		dirtyText: { reflect: true, attribute: 'dirty-text', type: String },
-		/**
-		 * Todo: remove once consumers are updated to freshness-stale-button-text. Use freshness-stale-button-text instead.
-		 * @ignore
-		 */
-		dirtyButtonText: { reflect: true, attribute: 'dirty-button-text', type: String },
-		/**
 		 * Hides the column borders on "default" table type
 		 * @type {boolean}
 		 */
@@ -448,19 +433,6 @@ export class TableWrapper extends FreshnessMixin(PageableMixin(SelectionMixin(Li
 		}
 	}
 
-	willUpdate(changedProperties) {
-		super.willUpdate(changedProperties);
-
-		// Todo: remove these once consumers are updated to freshness properties
-		if (this.dataState) {
-			if (this.dataState === 'clean') this.freshness = freshness.fresh;
-			else if (this.dataState === 'dirty') this.freshness = freshness.stale;
-			else if (this.dataState === 'loading') this.freshness = freshness.loading;
-		}
-		if (this.dirtyText) this.freshnessStaleText = this.dirtyText;
-		if (this.dirtyButtonText) this.freshnessStaleButtonText = this.dirtyButtonText;
-	}
-
 	#hasIntersected = false;
 
 	#noScrollWidthTimeout = null;
@@ -620,9 +592,6 @@ export class TableWrapper extends FreshnessMixin(PageableMixin(SelectionMixin(Li
 	_handleStaleButton() {
 		/** Dispatched when the action button on the stale overlay is clicked */
 		this.dispatchEvent(new CustomEvent('d2l-table-stale-button-click'));
-
-		/** @ignore Todo: remove once consumers are updated to d2l-table-stale-button-click */
-		this.dispatchEvent(new CustomEvent('d2l-table-dirty-button-clicked'));
 	}
 
 	async _handleTableChange(mutationRecords) {
