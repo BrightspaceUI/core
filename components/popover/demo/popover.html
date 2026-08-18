@@ -297,6 +297,30 @@
 			</template>
 		</d2l-demo-snippet>
 
+		<h2>Popover (async)</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-button-subtle text="Open"></d2l-button-subtle>
+				<d2l-test-popover><div id="content">Loading...</div></d2l-test-popover>
+				<script data-demo-hide>
+					(demo => {
+						window.wireUpPopover(demo);
+						demo.querySelector('d2l-test-popover').addEventListener('d2l-popover-open-async', async(e) => {
+							e.preventDefault();
+							setTimeout(() => {
+								const b = document.createElement('d2l-button');
+								b.innerText = 'Focus Here On Very Wide Button';
+								const content = demo.querySelector('#content');
+								content.innerHTML = '';
+								content.appendChild(b);
+								e.detail.complete();
+							}, 3000);
+						});
+					})(document.currentScript.parentNode);
+				</script>
+			</template>
+		</d2l-demo-snippet>
+
 	</d2l-demo-page>
 
 	<script>

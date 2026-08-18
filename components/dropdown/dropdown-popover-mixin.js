@@ -197,8 +197,8 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		if (this.#contentElement) {
 			this.#resizeObserver.observe(this.#contentElement);
 		}
-		this.addEventListener('d2l-popover-before-open', this.#handlePopoverBeforeOpen);
 		this.addEventListener('d2l-popover-open', this.#handlePopoverOpen);
+		this.addEventListener('d2l-popover-open-async', this.#handlePopoverOpenAsync);
 		this.addEventListener('d2l-popover-close', this.#handlePopoverClose);
 		this.addEventListener('d2l-popover-position', this.#handlePopoverPosition);
 		this.addEventListener('d2l-popover-focus-enter', this.#handlePopoverFocusEnter);
@@ -356,22 +356,6 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		this._hasHeaderSlotContent = e.target.assignedNodes().length !== 0;
 	}
 
-	#handlePopoverBeforeOpen(e) {
-		const beforeOpenEvent = new CustomEvent(
-			'd2l-dropdown-before-open', {
-				bubbles: false,
-				cancelable: true,
-				composed: false,
-				detail: { complete: e.detail.complete }
-			}
-		);
-		/** Dispatched before the dropdown is opened, giving an opportunity to handle async content */
-		this.dispatchEvent(beforeOpenEvent);
-		if (beforeOpenEvent.defaultPrevented) {
-			e.preventDefault();
-		}
-	}
-
 	#handlePopoverClose(e) {
 		// ignore popover close events from nested popovers
 		if (e.target !== this) return;
@@ -401,6 +385,22 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 			/** Dispatched when the dropdown is opened */
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
 		});
+	}
+
+	#handlePopoverOpenAsync(e) {
+		const openAsyncEvent = new CustomEvent(
+			'd2l-dropdown-open-async', {
+				bubbles: false,
+				cancelable: true,
+				composed: false,
+				detail: { complete: e.detail.complete }
+			}
+		);
+		/** Dispatched before the dropdown is opened for the first time, giving an opportunity to load async content */
+		this.dispatchEvent(openAsyncEvent);
+		if (openAsyncEvent.defaultPrevented) {
+			e.preventDefault();
+		}
 	}
 
 	#handlePopoverPosition() {

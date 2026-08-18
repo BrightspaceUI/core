@@ -1,5 +1,5 @@
 import './popover.js';
-import { clickElem, defineCE, expect, fixture, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, defineCE, expect, fixture, html, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
 
 const asyncPopoverTag = defineCE(class extends LitElement {
@@ -15,21 +15,19 @@ const asyncPopoverTag = defineCE(class extends LitElement {
 		return html`
 			<span>
 				<button @click="${this.#handleOpen}">Open</button>
-				<d2l-test-popover @d2l-popover-before-open="${this.#handlePopoverBeforeOpen}" class="vdiff-include">${content}</d2l-test-popover>
+				<d2l-test-popover @d2l-popover-open-async="${this.#handlePopoverOpenAsync}" class="vdiff-include">${content}</d2l-test-popover>
 			</span>
 		`;
 	}
 	#handleOpen(e) {
 		this.shadowRoot.querySelector('d2l-test-popover').open(e.target);
 	}
-	#handlePopoverBeforeOpen(e) {
-		if (!this._loaded) {
-			e.preventDefault();
-			setTimeout(() => {
-				this._loaded = true;
-				e.detail.complete();
-			}, 200);
-		}
+	#handlePopoverOpenAsync(e) {
+		e.preventDefault();
+		setTimeout(() => {
+			this._loaded = true;
+			e.detail.complete();
+		}, 200);
 	}
 });
 
@@ -50,17 +48,33 @@ describe('popover-mixin', () => {
 		});
 	});
 
-	it('async-loading', async() => {
-		const el = await fixture(`<${asyncPopoverTag}></${asyncPopoverTag}>`, { viewport });
-		await sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
-		await expect(el.shadowRoot.querySelector('span')).to.be.golden();
-	});
+	describe('async', () => {
 
-	it('async-loaded', async() => {
-		const el = await fixture(`<${asyncPopoverTag}></${asyncPopoverTag}>`, { viewport });
-		sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
-		await oneEvent(el, 'd2l-popover-open');
-		await expect(el.shadowRoot.querySelector('span')).to.be.golden();
+		let el;
+		beforeEach(async() => {
+			el = await fixture(`<${asyncPopoverTag}></${asyncPopoverTag}>`, { viewport });
+		});
+
+		it('loading', async() => {
+			await sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
+			await expect(el.shadowRoot.querySelector('span')).to.be.golden();
+		});
+
+		it('loaded', async() => {
+			sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
+			await oneEvent(el, 'd2l-popover-open');
+			await expect(el.shadowRoot.querySelector('span')).to.be.golden();
+		});
+
+		it('subsequent', async() => {
+			sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
+			await oneEvent(el, 'd2l-popover-open');
+			await sendKeys('press', 'Escape');
+			sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
+			await oneEvent(el, 'd2l-popover-open');
+			await expect(el.shadowRoot.querySelector('span')).to.be.golden();
+		});
+
 	});
 
 });

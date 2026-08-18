@@ -372,28 +372,7 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		this.#addRepositionHandlers();
 
-		let doWait = false;
-		await new Promise(resolve => {
-			const beforeOpenEvent = new CustomEvent(
-				'd2l-popover-before-open', {
-					bubbles: false,
-					cancelable: true,
-					composed: false,
-					detail: { complete: resolve }
-				}
-			);
-			/** @ignore */
-			this.dispatchEvent(beforeOpenEvent);
-			if (!beforeOpenEvent.defaultPrevented) {
-				resolve();
-			} else {
-				doWait = true;
-			}
-		});
-		if (doWait) {
-			await waitForElem(this.#getContentContainer());
-			await this.position();
-		}
+		await this.#waitForOpenAsync();
 
 		this.#focusContent(this);
 
@@ -606,6 +585,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	}
 
 	#ancestorMutations;
+	#firstOpen = true;
 	#ifrauContextInfo;
 	#mediaQueryList;
 
@@ -1216,6 +1196,34 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._scrollablesObserved = null;
 		this._ancestorMutationObserver?.disconnect();
 		removeResizeNoopEventListener(this.#handleResize);
+	}
+
+	async #waitForOpenAsync() {
+		if (!this.#firstOpen) return;
+		this.#firstOpen = false;
+
+		let doWait = false;
+		await new Promise(resolve => {
+			const openAsyncEvent = new CustomEvent(
+				'd2l-popover-open-async', {
+					bubbles: false,
+					cancelable: true,
+					composed: false,
+					detail: { complete: resolve }
+				}
+			);
+			/** @ignore */
+			this.dispatchEvent(openAsyncEvent);
+			if (!openAsyncEvent.defaultPrevented) {
+				resolve();
+			} else {
+				doWait = true;
+			}
+		});
+		if (doWait) {
+			await waitForElem(this.#getContentContainer());
+			await this.position();
+		}
 	}
 
 };
