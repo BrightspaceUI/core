@@ -88,7 +88,7 @@ function handleTouchStart(e) {
 					y: distanceY
 				},
 				direction: {
-					angle: theta,
+					angle: theta, // deg, clock-wise from y-axis (12:00 position is 0deg)
 					horizontal: horizontal,
 					vertical: vertical
 				},
