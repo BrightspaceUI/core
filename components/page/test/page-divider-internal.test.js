@@ -1,5 +1,5 @@
-import { clickElem, expect, fixture, focusElem, html, nextFrame, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
-import { createDivider, getDividerArrow, getSlider } from './page-divider-internal-fixtures.js';
+import { clickArrow, clickHandle, createDivider, getDividerArrow, getSlider } from './page-divider-internal-fixtures.js';
+import { clickElem, expect, fixture, html, nextFrame, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 import { KEYBOARD_STEP, KEYBOARD_STEP_LARGE } from '../page-divider-internal.js';
 
 describe('d2l-page-divider-internal', () => {
@@ -43,7 +43,7 @@ describe('d2l-page-divider-internal', () => {
 			describe('mouse', () => {
 				it('dispatches event when handle is clicked', async() => {
 					const elem = await fixture(createDivider());
-					clickElem(getSlider(elem));
+					clickHandle(elem);
 					await oneEvent(elem, 'd2l-page-divider-toggle');
 				});
 
@@ -57,7 +57,7 @@ describe('d2l-page-divider-internal', () => {
 
 				it('dispatches event when handle is clicked if collapsed', async() => {
 					const elem = await fixture(createDivider({ collapsed: true }));
-					clickElem(getSlider(elem));
+					clickHandle(elem);
 					await oneEvent(elem, 'd2l-page-divider-toggle');
 				});
 
@@ -165,8 +165,7 @@ describe('d2l-page-divider-internal', () => {
 										createDivider({ panelPosition: test.panelPosition }),
 										{ rtl: test.rtl }
 									);
-									await focusElem(elem);
-									clickElem(getDividerArrow(elem, arrow));
+									clickArrow(elem, arrow);
 									const e = await oneEvent(elem, 'd2l-page-divider-resize');
 									expect(e.detail.requestedSize).to.equal(expectedSize);
 								});
@@ -181,8 +180,7 @@ describe('d2l-page-divider-internal', () => {
 										createDivider({ currentSize, panelPosition: test.panelPosition }),
 										{ rtl: test.rtl }
 									);
-									await focusElem(elem);
-									clickElem(getDividerArrow(elem, arrow));
+									clickArrow(elem, arrow);
 									const e = await oneEvent(elem, 'd2l-page-divider-resize');
 									expect(e.detail.requestedSize).to.equal(expectedSize);
 								});

@@ -19,9 +19,12 @@ export function scrollPanel(elem, panel) {
 }
 
 export async function openPanel(elem, panelKey) {
-	const divider = elem.shadowRoot.querySelector(`d2l-page-divider-internal[data-panel-key="${panelKey}"]`);
-	divider.dispatchEvent(new CustomEvent('d2l-page-divider-toggle'));
+	getDivider(elem, panelKey).dispatchEvent(new CustomEvent('d2l-page-divider-toggle'));
 	await nextFrame();
+}
+
+export function getDivider(elem, panelKey) {
+	return elem.shadowRoot.querySelector(`d2l-page-divider-internal[data-panel-key="${panelKey}"]`);
 }
 
 export const TEST_STATE_STORAGE_KEY = 'test-page';

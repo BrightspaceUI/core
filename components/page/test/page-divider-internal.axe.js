@@ -1,7 +1,7 @@
 import '../page-divider-internal.js';
 import { clearStoredPanelState, openPanel, setStoredPanelState } from './page-fixtures.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, nextFrame } from '@brightspace-ui/testing';
-import { getDivider, getDividerArrow, getSlider, pageDividerFixtures } from './page-divider-internal-fixtures.js';
+import { clickDivider, clickDividerHandle, focusDivider, hoverDivider, hoverDividerArrow, hoverDividerHandle, pageDividerFixtures } from './page-divider-internal-fixtures.js';
+import { expect, fixture } from '@brightspace-ui/testing';
 
 const defaultFixtureOptions = { pagePadding: false, viewport: { width: 1300, height: 800 } };
 
@@ -13,30 +13,25 @@ describe('page-divider-internal', () => {
 
 	it('hover', async() => {
 		const elem = await fixture(pageDividerFixtures.supportingImmersiveFooter, defaultFixtureOptions);
-		await hoverElem(getDivider(elem, 'supporting'));
+		await hoverDivider(elem, 'supporting');
 		await expect(elem).to.be.accessible();
 	});
 
 	it('hover handle', async() => {
 		const elem = await fixture(pageDividerFixtures.supportingImmersiveFooter, defaultFixtureOptions);
-		const divider = getDivider(elem, 'supporting');
-		await hoverElem(getSlider(divider));
+		await hoverDividerHandle(elem, 'supporting');
 		await expect(elem).to.be.accessible();
 	});
 
 	it('focus', async() => {
 		const elem = await fixture(pageDividerFixtures.sideNavBothHeadersFooter, defaultFixtureOptions);
-		await clickElem(getDivider(elem, 'side-nav'));
-		await nextFrame();
+		await clickDivider(elem, 'side-nav');
 		await expect(elem).to.be.accessible();
 	});
 
-	it('focus then hover arrow', async() => {
+	it('focus and hover arrow', async() => {
 		const elem = await fixture(pageDividerFixtures.supportingImmersiveFooter, defaultFixtureOptions);
-		const divider = getDivider(elem, 'supporting');
-		await clickElem(divider);
-		await nextFrame();
-		await hoverElem(getDividerArrow(divider, 'start'));
+		await hoverDividerArrow(elem, 'supporting', 'start');
 		await expect(elem).to.be.accessible();
 	});
 
@@ -48,9 +43,7 @@ describe('page-divider-internal', () => {
 
 	it('collapsed side-nav focused', async() => {
 		const elem = await fixture(pageDividerFixtures.sideNavBothHeadersFooter, defaultFixtureOptions);
-		const divider = getDivider(elem, 'side-nav');
-		await clickElem(getSlider(divider));
-		await nextFrame();
+		await clickDividerHandle(elem, 'side-nav');
 		await expect(elem).to.be.accessible();
 	});
 
@@ -62,9 +55,7 @@ describe('page-divider-internal', () => {
 
 	it('collapsed supporting focused', async() => {
 		const elem = await fixture(pageDividerFixtures.supportingImmersiveFooter, defaultFixtureOptions);
-		const divider = getDivider(elem, 'supporting');
-		await clickElem(getSlider(divider));
-		await nextFrame();
+		await clickDividerHandle(elem, 'supporting');
 		await expect(elem).to.be.accessible();
 	});
 
@@ -80,44 +71,35 @@ describe('page-divider-internal', () => {
 				it('hover', async() => {
 					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
 					await openPanel(elem, panel.key);
-					await hoverElem(getDivider(elem, panel.key));
+					await hoverDivider(elem, panel.key);
 					await expect(elem).to.be.accessible();
 				});
 
 				it('hover handle', async() => {
 					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
 					await openPanel(elem, panel.key);
-					const divider = getDivider(elem, panel.key);
-					await hoverElem(getSlider(divider));
+					await hoverDividerHandle(elem, panel.key);
 					await expect(elem).to.be.accessible();
 				});
 
 				it('focus', async() => {
 					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
 					await openPanel(elem, panel.key);
-					await focusElem(getDivider(elem, panel.key));
+					await focusDivider(elem, panel.key);
 					await expect(elem).to.be.accessible();
 				});
 
-				it('focus then hover start arrow', async() => {
+				it('focus and hover start arrow', async() => {
 					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
 					await openPanel(elem, panel.key);
-
-					const divider = getDivider(elem, panel.key);
-					await clickElem(divider);
-					await nextFrame();
-					await hoverElem(getDividerArrow(divider, 'start'));
+					await hoverDividerArrow(elem, panel.key, 'start');
 					await expect(elem).to.be.accessible();
 				});
 
-				it('focus then hover end arrow', async() => {
+				it('focus and hover end arrow', async() => {
 					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
 					await openPanel(elem, panel.key);
-
-					const divider = getDivider(elem, panel.key);
-					await clickElem(divider);
-					await nextFrame();
-					await hoverElem(getDividerArrow(divider, 'end'));
+					await hoverDividerArrow(elem, panel.key, 'end');
 					await expect(elem).to.be.accessible();
 				});
 
@@ -128,7 +110,7 @@ describe('page-divider-internal', () => {
 
 				it('collapsed focused', async() => {
 					const elem = await fixture(panel.fixture, overlayFixtureOptions(panel.key));
-					await focusElem(getDivider(elem, panel.key));
+					await focusDivider(elem, panel.key);
 					await expect(elem).to.be.accessible();
 				});
 			});
