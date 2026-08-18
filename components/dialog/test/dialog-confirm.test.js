@@ -14,7 +14,7 @@ describe('d2l-dialog-confirm', () => {
 
 	});
 
-	describe('focus management (prefer-native)', () => {
+	describe('focus management', () => {
 
 		it('should focus on title', async() => {
 			const el = await fixture(html`
