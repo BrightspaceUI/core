@@ -55,6 +55,7 @@ let activeTooltip = null;
  * @slot - Default content placed inside of the tooltip
  * @fires d2l-tooltip-show - Dispatched when the tooltip is opened
  * @fires d2l-tooltip-hide - Dispatched when the tooltip is closed
+ * @fires d2l-popover-open-async - Ignore
  */
 class Tooltip extends PopoverMixin(LitElement) {
 

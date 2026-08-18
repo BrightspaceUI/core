@@ -396,7 +396,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 				detail: { complete: e.detail.complete }
 			}
 		);
-		/** Dispatched before the dropdown is opened for the first time, giving an opportunity to load async content */
+		/** @ignore */
 		this.dispatchEvent(openAsyncEvent);
 		if (openAsyncEvent.defaultPrevented) {
 			e.preventDefault();
