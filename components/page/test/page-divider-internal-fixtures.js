@@ -14,14 +14,14 @@ export async function clickDivider(elem, panelKey) {
 	await clickElem(getDivider(elem, panelKey));
 	await nextFrame();
 }
-export async function clickDividerHandle(elem, panelKey) {
-	await clickElem(getSlider(getDivider(elem, panelKey)));
-	await nextFrame();
-}
 export async function clickDividerArrow(elem, panelKey, arrowPosition) {
 	const divider = getDivider(elem, panelKey);
 	await focusElem(divider);
 	await clickElem(getDividerArrow(divider, arrowPosition));
+}
+export async function clickDividerHandle(elem, panelKey) {
+	await clickElem(getSlider(getDivider(elem, panelKey)));
+	await nextFrame();
 }
 
 export async function focusDivider(elem, panelKey) {
@@ -31,13 +31,13 @@ export async function focusDivider(elem, panelKey) {
 export async function hoverDivider(elem, panelKey) {
 	await hoverElem(getDivider(elem, panelKey));
 }
-export async function hoverDividerHandle(elem, panelKey) {
-	await hoverElem(getSlider(getDivider(elem, panelKey)));
-}
 export async function hoverDividerArrow(elem, panelKey, arrowPosition) {
 	const divider = getDivider(elem, panelKey);
 	await focusElem(divider);
 	await hoverElem(getDividerArrow(divider, arrowPosition));
+}
+export async function hoverDividerHandle(elem, panelKey) {
+	await hoverElem(getSlider(getDivider(elem, panelKey)));
 }
 
 export async function pressKeyDivider(elem, panelKey, key) {
