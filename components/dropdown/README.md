@@ -236,6 +236,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 | Name | Description |
 |---|---|
 | `d2l-dropdown-open` | Dispatched when the dropdown is opened |
+| `d2l-dropdown-open-async` | Dispatched before the dropdown is opened for the first time, giving an opportunity to load async content |
 | `d2l-dropdown-close` | dispatched when the dropdown is closed |
 | `d2l-dropdown-position` | Dispatched when the dropdown position finishes adjusting |
 | `d2l-dropdown-focus-enter` | dispatched when the 'trap-focus' attribute is applied and the focus-trap is entered (trap-focus option only) |
@@ -250,6 +251,35 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 
 ### Methods
 * `async resize()`: Call if the size of the content changes due to a change in a nested component. The nested component may choose to fire a custom event, which the component containing the `d2l-dropdown-content` can catch and call this method. |
+
+### Asynchronous Content
+
+For dropdown content that's fetched asynchronously, the `d2l-dropdown-open-async` event can be leveraged to let `<d2l-dropdown-content>` know when things are ready. That way, automatic focus and sizing logic until can be delayed.
+
+- Add a listener for the `d2l-dropdown-open-async` event
+- In the handler, call `preventDefault()` on the event to let it know that the content will be loaded asynchronously
+- Fetch the content and when it's ready, call `complete()` on the event detail
+- Note: the `d2l-dropdown-open-async` event will only be dispatched the first time the dropdown is opened, so no need to ignore subsequent calls
+
+```javascript
+class MyElem extends LitElement {
+  render() {
+    const content = this._loading ? 'Loading...' : 'Loaded!';
+    return html`
+      <d2l-dropdown-content
+        @d2l-dropdown-open-async="${this.#handleDropdownOpenAsync}">
+        ${content}
+      </d2l-dropdown-content>
+    `;
+  }
+  async #handleDropdownOpenAsync(e) {
+    e.preventDefault();
+    await this.#fetchData();
+    this._loaded = true;
+    e.detail.complete();
+  }
+}
+```
 
 ## Content: Menu [d2l-dropdown-menu]
 `d2l-dropdown-menu` is a container for a [d2l-menu](https://github.com/BrightspaceUI/core/tree/main/components/menu) component. It provides additional support on top of `d2l-dropdown-content` for closing the menu when menu items are selected, resetting to the root of nested menus when reopening and automatic resizing when the menu resizes.

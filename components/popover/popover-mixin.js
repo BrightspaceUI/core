@@ -10,6 +10,7 @@ import { _offscreenStyleDeclarations } from '../offscreen/offscreen.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
+import { waitForElem } from '../../helpers/internal/waitForElem.js';
 
 export const positionLocations = Object.freeze({
 	blockEnd: 'block-end',
@@ -369,9 +370,11 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		this._dismissibleId = setDismissible(() => this.close());
 
-		this.#focusContent(this);
-
 		this.#addRepositionHandlers();
+
+		await this.#waitForOpenAsync();
+
+		this.#focusContent(this);
 
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
@@ -582,6 +585,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	}
 
 	#ancestorMutations;
+	#firstOpen = true;
 	#ifrauContextInfo;
 	#mediaQueryList;
 
@@ -1192,6 +1196,34 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._scrollablesObserved = null;
 		this._ancestorMutationObserver?.disconnect();
 		removeResizeNoopEventListener(this.#handleResize);
+	}
+
+	async #waitForOpenAsync() {
+		if (!this.#firstOpen) return;
+		this.#firstOpen = false;
+
+		let doWait = false;
+		await new Promise(resolve => {
+			const openAsyncEvent = new CustomEvent(
+				'd2l-popover-open-async', {
+					bubbles: false,
+					cancelable: true,
+					composed: false,
+					detail: { complete: resolve }
+				}
+			);
+			/** @ignore */
+			this.dispatchEvent(openAsyncEvent);
+			if (!openAsyncEvent.defaultPrevented) {
+				resolve();
+			} else {
+				doWait = true;
+			}
+		});
+		if (doWait) {
+			await waitForElem(this.#getContentContainer());
+			await this.position();
+		}
 	}
 
 };
