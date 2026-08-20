@@ -9,7 +9,7 @@ The `d2l-validation-custom` component is used to add custom validation logic to 
 **Custom Form Elements:**
 - When attached to custom form elements created with the [`FormElementMixin`](../form/docs/form-element-mixin.md), the `d2l-validation-custom` will function even if no [`d2l-form`](../form/docs/form.md) is present.
 
-<!-- docs: demo code properties display:block autosize:false size:large name:d2l-validation-custom sandboxTitle:'Custom Validation' -->
+<!-- docs: demo code properties autoSize:false size:small name:d2l-validation-custom sandboxTitle:'Custom Validation' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/inputs/input-text.js';
