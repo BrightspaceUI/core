@@ -3,7 +3,15 @@ import { isCustomFormElement } from '../form/form-helper.js';
 export const ValidationCustomMixin = superclass => class extends superclass {
 
 	static properties = {
+		/**
+		 * REQUIRED: The text to display when validation fails.
+		 * @type {string}
+		 */
 		failureText: { type: String, attribute: 'failure-text' },
+		/**
+		 * REQUIRED: The id of the form element to validate.
+		 * @type {string}
+		 */
 		for: { type: String }
 	};
 
