@@ -147,4 +147,4 @@ Within the fieldset, `<d2l-input-group>` can still be used to provide a consiste
 
 ## Custom Validation [validation-custom]
 
-For knowing on how to use a customized validation component or how to build yours, please take a look at the [Custom Validation](../components/custom-validation/) documentation page
+To attach custom validation logic to an existing component (native or custom), use [d2l-validation-custom](../../../components/validation).

@@ -4,10 +4,10 @@
 The `d2l-validation-custom` component is used to add custom validation logic to native form elements like `input`, `select` and `textarea` or custom form elements created with the [`FormElementMixin`](https://github.com/BrightspaceUI/core/blob/main/components/form/docs/form-element-mixin.md).
 
 **Native Form Elements:**
-- When attached to native form elements like `input`, `select` and `textarea`, both the `d2l-validation-custom` and native form element **must** be within a [`d2l-form`](https://github.com/BrightspaceUI/core/blob/main/components/form/README.md) for the validation custom to function.
+- When attached to native form elements like `input`, `select` and `textarea`, both the `d2l-validation-custom` and native form element **must** be within a [`d2l-form`](../../components/form-layout-validation) for the validation custom to function.
 
 **Custom Form Elements:**
-- When attached to custom form elements created with the [`FormElementMixin`](https://github.com/BrightspaceUI/core/blob/main/components/form/docs/form-element-mixin.md), the `d2l-validation-custom` will function even if no [`d2l-form`](https://github.com/BrightspaceUI/core/blob/main/components/form/README.md) is present.
+- When attached to custom form elements created with the [`FormElementMixin`](https://github.com/BrightspaceUI/core/blob/main/components/form/docs/form-element-mixin.md), the `d2l-validation-custom` will function even if no [`d2l-form`](../../components/form-layout-validation) is present.
 
 **Usage:**
 <!-- docs: demo code properties autoSize:false size:small name:d2l-validation-custom sandboxTitle:'Custom Validation' -->
