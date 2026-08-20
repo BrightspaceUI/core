@@ -144,3 +144,7 @@ Within the fieldset, `<d2l-input-group>` can still be used to provide a consiste
 * `Default`: Related input components
 * `inline-help`: Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
 <!-- docs: end hidden content -->
+
+## Custom Validation [validation-custom]
+
+For knowing on how to use a customized validation component or how to build yours, please take a look at the [Custom Validation](../components/custom-validation/) documentation page
