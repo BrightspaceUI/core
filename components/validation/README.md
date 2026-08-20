@@ -1,14 +1,15 @@
 # Validation
 ## Validation Custom [d2l-validation-custom]
 
-The `d2l-validation-custom` component is used to add custom validation logic to native form elements like `input`, `select` and `textarea` or custom form elements created with the [`FormElementMixin`](../form/docs/form-element-mixin.md).
+The `d2l-validation-custom` component is used to add custom validation logic to native form elements like `input`, `select` and `textarea` or custom form elements created with the [`FormElementMixin`](https://github.com/BrightspaceUI/core/blob/main/components/form/docs/form-element-mixin.md).
 
 **Native Form Elements:**
-- When attached to native form elements like `input`, `select` and `textarea`, both the `d2l-validation-custom` and native form element **must** be within a [`d2l-form`](../form/docs/form.md) for the validation custom to function.
+- When attached to native form elements like `input`, `select` and `textarea`, both the `d2l-validation-custom` and native form element **must** be within a [`d2l-form`](https://github.com/BrightspaceUI/core/blob/main/components/form/README.md) for the validation custom to function.
 
 **Custom Form Elements:**
-- When attached to custom form elements created with the [`FormElementMixin`](../form/docs/form-element-mixin.md), the `d2l-validation-custom` will function even if no [`d2l-form`](../form/docs/form.md) is present.
+- When attached to custom form elements created with the [`FormElementMixin`](https://github.com/BrightspaceUI/core/blob/main/components/form/docs/form-element-mixin.md), the `d2l-validation-custom` will function even if no [`d2l-form`](https://github.com/BrightspaceUI/core/blob/main/components/form/README.md) is present.
 
+**Usage:**
 <!-- docs: demo code properties autoSize:false size:small name:d2l-validation-custom sandboxTitle:'Custom Validation' -->
 ```html
 <script type="module">
@@ -43,7 +44,7 @@ The `d2l-validation-custom` component is used to add custom validation logic to 
 
 <!-- docs: end hidden content -->
 
-## ValidationCustomMixin
+## Validation Custom Mixin [ValidationCustomMixin]
 
 If you find yourself duplicating `d2l-validation-custom` validation logic in many places you may want to create your own custom validator using the `ValidationCustomMixin`.
 
