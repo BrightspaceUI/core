@@ -12,6 +12,11 @@ import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 import { waitForElem } from '../../helpers/internal/waitForElem.js';
 
+export const asyncStates = Object.freeze({
+	unloaded: 'unloaded',
+	loading: 'loading',
+	loaded: 'loaded'
+});
 export const positionLocations = Object.freeze({
 	blockEnd: 'block-end',
 	blockStart: 'block-start',
@@ -53,6 +58,8 @@ const SCROLLBAR_WIDTH = (() => {
 export const PopoverMixin = superclass => class extends superclass {
 
 	static properties = {
+		_async: { type: Boolean },
+		_asyncState: { state: true },
 		_contentHeight: { state: true },
 		_location: { type: String, reflect: true, attribute: '_location' },
 		_margin: { state: true },
@@ -261,6 +268,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this.configure();
+		this._asyncState = asyncStates.unloaded;
 		this._mobile = false;
 		this._showBackdrop = false;
 		this._useNativePopover = isPopoverSupported ? 'manual' : undefined;
@@ -316,6 +324,7 @@ export const PopoverMixin = superclass => class extends superclass {
 		else if (properties?.position?.location === positionLocations.inlineStart
 			|| properties?.position?.location === positionLocations.inlineEnd) this._margin = 0;
 		else this._margin = 18;
+		this._async = properties?.async ?? false;
 		this._maxHeight = properties?.maxHeight;
 		this._maxWidth = properties?.maxWidth;
 		this._minHeight = properties?.minHeight;
@@ -372,7 +381,15 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		this.#addRepositionHandlers();
 
-		await this.#waitForOpenAsync();
+		if (this._async) {
+			await this.startAsyncLoad();
+			if (!this._opened) return; // could have closed while async loading
+			if (this.#firstOpen) {
+				this.#firstOpen = false;
+				await waitForElem(this.#getContentContainer());
+				await this.position();
+			}
+		}
 
 		this.#focusContent(this);
 
@@ -579,12 +596,43 @@ export const PopoverMixin = superclass => class extends superclass {
 		await this.position();
 	}
 
+	async startAsyncLoad() {
+		if (!this._async || this._asyncState === asyncStates.loaded) return;
+		if (this._asyncState === asyncStates.loading) {
+			return this.#asyncLoadPromise;
+		}
+		this._asyncState = asyncStates.loading;
+
+		this.#asyncLoadPromise = new Promise(resolve => {
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent(
+				'd2l-popover-async-load', {
+					bubbles: false,
+					cancelable: true,
+					composed: false,
+					detail: {
+						complete: resolve,
+						reset: () => {
+							this._asyncState = asyncStates.unloaded;
+							this.#firstOpen = true;
+						}
+					}
+				}
+			));
+		});
+		await this.#asyncLoadPromise;
+
+		this._asyncState = asyncStates.loaded;
+		await this.updateComplete;
+	}
+
 	toggleOpen(opener, applyFocus = true) {
 		if (this._opened) return this.close();
 		else return this.open(opener, (!this._noAutoFocus && applyFocus));
 	}
 
 	#ancestorMutations;
+	#asyncLoadPromise;
 	#firstOpen = true;
 	#ifrauContextInfo;
 	#mediaQueryList;
@@ -1196,34 +1244,6 @@ export const PopoverMixin = superclass => class extends superclass {
 		this._scrollablesObserved = null;
 		this._ancestorMutationObserver?.disconnect();
 		removeResizeNoopEventListener(this.#handleResize);
-	}
-
-	async #waitForOpenAsync() {
-		if (!this.#firstOpen) return;
-		this.#firstOpen = false;
-
-		let doWait = false;
-		await new Promise(resolve => {
-			const openAsyncEvent = new CustomEvent(
-				'd2l-popover-open-async', {
-					bubbles: false,
-					cancelable: true,
-					composed: false,
-					detail: { complete: resolve }
-				}
-			);
-			/** @ignore */
-			this.dispatchEvent(openAsyncEvent);
-			if (!openAsyncEvent.defaultPrevented) {
-				resolve();
-			} else {
-				doWait = true;
-			}
-		});
-		if (doWait) {
-			await waitForElem(this.#getContentContainer());
-			await this.position();
-		}
 	}
 
 };

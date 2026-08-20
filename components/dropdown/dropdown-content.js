@@ -7,8 +7,6 @@ import { LitElement } from 'lit';
  * @slot header - Sticky container at the top of the dropdown
  * @slot footer - Sticky container at the bottom of the dropdown
  * @fires d2l-dropdown-open - Dispatched when the dropdown is opened
- * @fires d2l-dropdown-open-async - Dispatched before the dropdown is opened for the first time, giving an opportunity to load async content
- * @fires d2l-popover-open-async - Ignore
  */
 class DropdownContent extends DropdownPopoverMixin(LitElement) { }
 customElements.define('d2l-dropdown-content', DropdownContent);

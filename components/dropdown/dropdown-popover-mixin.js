@@ -1,16 +1,21 @@
 import '../button/button.js';
+import '../loading-spinner/loading-spinner.js';
 import '../../helpers/viewport-size.js';
 import '../../helpers/visualReady.js';
-import { css, html } from 'lit';
+import { asyncStates, PopoverMixin } from '../popover/popover-mixin.js';
+import { css, html, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { findComposedAncestor } from '../../helpers/dom.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { PopoverMixin } from '../popover/popover-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElement(PopoverMixin(superclass)) {
 
 	static properties = {
+		/**
+		 * Enable when dropdown contains async content. When set, the dropdown will dispatch a `d2l-dropdown-async-load` event before opening for the first time, giving an opportunity to load async content.
+		 */
+		async: { type: Boolean },
 		/**
 		 * Optionally align dropdown to either start or end. If not set, the dropdown will attempt to be centred.
 		 * @type {'start'|'end'}
@@ -121,6 +126,11 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 			overflow-y: auto;
 			padding: 1rem;
 		}
+		.dropdown-content-loading {
+			display: flex;
+			justify-content: center;
+			padding: 20px;
+		}
 		.dropdown-header,
 		.dropdown-footer {
 			box-sizing: border-box;
@@ -169,6 +179,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 
 	constructor() {
 		super();
+		this.async = false;
 		this.opened = false;
 		this.noAutoClose = false;
 		this.noAutoFit = false;
@@ -197,8 +208,8 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		if (this.#contentElement) {
 			this.#resizeObserver.observe(this.#contentElement);
 		}
+		this.addEventListener('d2l-popover-async-load', this.#handlePopoverAsyncLoad);
 		this.addEventListener('d2l-popover-open', this.#handlePopoverOpen);
-		this.addEventListener('d2l-popover-open-async', this.#handlePopoverOpenAsync);
 		this.addEventListener('d2l-popover-close', this.#handlePopoverClose);
 		this.addEventListener('d2l-popover-position', this.#handlePopoverPosition);
 		this.addEventListener('d2l-popover-focus-enter', this.#handlePopoverFocusEnter);
@@ -232,13 +243,16 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 
 		const closeButtonStyles = this.#getMobileCloseButtonStyles();
 
+		const isLoading = (this._async && this._asyncState === asyncStates.loading);
+		const loading = isLoading ? html`<div class="dropdown-content-loading"><d2l-loading-spinner></d2l-loading-spinner></div>` : nothing;
+
 		const content = html`
 			<div class="dropdown-content-layout" style="${styleMap(contentLayoutStyles)}">
 				<div class="${classMap(headerClasses)}">
 					<slot name="header" @slotchange="${this.#handleHeaderSlotChange}"></slot>
 				</div>
 				<div class="${classMap(contentClasses)}" @scroll="${this.#toggleScrollStyles}">
-					<slot></slot>
+					<slot>${loading}</slot>
 				</div>
 				<div class="${classMap(footerClasses)}">
 					<slot name="footer" @slotchange="${this.#handleFooterSlotChange}"></slot>
@@ -253,12 +267,13 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 	}
 
 	willUpdate(changedProperties) {
-		if (changedProperties.has('align') || changedProperties.has('maxHeight') || changedProperties.has('maxWidth') || changedProperties.has('minHeight') || changedProperties.has('minWidth') || changedProperties.has('mobileBreakpointOverride') || changedProperties.has('mobileTray') || changedProperties.has('noAutoClose') || changedProperties.has('noAutoFit') || changedProperties.has('noAutoFocus') || changedProperties.has('noPointer') || changedProperties.has('trapFocus') || changedProperties.has('verticalOffset')) {
+		if (changedProperties.has('align') || changedProperties.has('async') || changedProperties.has('maxHeight') || changedProperties.has('maxWidth') || changedProperties.has('minHeight') || changedProperties.has('minWidth') || changedProperties.has('mobileBreakpointOverride') || changedProperties.has('mobileTray') || changedProperties.has('noAutoClose') || changedProperties.has('noAutoFit') || changedProperties.has('noAutoFocus') || changedProperties.has('noPointer') || changedProperties.has('trapFocus') || changedProperties.has('verticalOffset')) {
 			super.configure({
+				async: this.async,
 				maxHeight: this.maxHeight,
 				maxWidth: this.maxWidth,
 				minHeight: this.minHeight,
-				minWidth: this.minWidth,
+				minWidth: (this.minWidth === undefined && this.async) ? 88 : this.minWidth, /* loading-spinner + padding */
 				mobileBreakpoint: this.mobileBreakpointOverride,
 				mobileTrayLocation: this.#adaptMobileTrayLocation(this.mobileTray),
 				noAutoClose: this.noAutoClose,
@@ -356,6 +371,20 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		this._hasHeaderSlotContent = e.target.assignedNodes().length !== 0;
 	}
 
+	#handlePopoverAsyncLoad(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		/** Dispatched when "async" before the dropdown is opened for the first time, giving an opportunity to load async content */
+		this.dispatchEvent(new CustomEvent(
+			'd2l-dropdown-async-load', {
+				bubbles: false,
+				cancelable: false,
+				composed: false,
+				detail: { complete: e.detail.complete, reset: e.detail.reset }
+			}
+		));
+	}
+
 	#handlePopoverClose(e) {
 		// ignore popover close events from nested popovers
 		if (e.target !== this) return;
@@ -385,22 +414,6 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 			/** Dispatched when the dropdown is opened */
 			this.dispatchEvent(new CustomEvent('d2l-dropdown-open', { bubbles: true, composed: true }));
 		});
-	}
-
-	#handlePopoverOpenAsync(e) {
-		const openAsyncEvent = new CustomEvent(
-			'd2l-dropdown-open-async', {
-				bubbles: false,
-				cancelable: true,
-				composed: false,
-				detail: { complete: e.detail.complete }
-			}
-		);
-		/** @ignore */
-		this.dispatchEvent(openAsyncEvent);
-		if (openAsyncEvent.defaultPrevented) {
-			e.preventDefault();
-		}
 	}
 
 	#handlePopoverPosition() {

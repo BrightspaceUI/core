@@ -2,7 +2,9 @@ import '../dropdown-button-subtle.js';
 import '../dropdown-button.js';
 import '../dropdown-context-menu.js';
 import '../dropdown-more.js';
-import { fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, hoverElem, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { asyncDropdownTag } from './dropdown-fixtures.js';
+import { asyncStates } from '../../popover/popover-mixin.js';
 
 describe('d2l-dropdown-openers', () => {
 
@@ -49,6 +51,27 @@ describe('d2l-dropdown-openers', () => {
 				elem.getOpenerElement().dispatchEvent(event);
 			});
 			await oneEvent(elem, 'd2l-dropdown-opener-click');
+		});
+
+	});
+
+	describe('async', () => {
+
+		let elem;
+		beforeEach(async() => {
+			elem = await fixture(`<${asyncDropdownTag}></${asyncDropdownTag}>`);
+		});
+
+		[
+			{ action: 'focus', cb: focusElem },
+			{ action: 'hover', cb: hoverElem }
+		].forEach(({ action, cb }) => {
+			it(`should start loading on "${action}"`, async() => {
+				const contentElem = elem.getContent();
+				expect(contentElem._asyncState).to.equal(asyncStates.unloaded);
+				await cb(elem.getOpener());
+				expect(contentElem._asyncState).to.equal(asyncStates.loading);
+			});
 		});
 
 	});

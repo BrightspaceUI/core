@@ -71,6 +71,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 		// listeners
 		this.addEventListener('keypress', this.__onKeypress);
+		this.addEventListener('focus', this.#handleFocus);
 		this.addEventListener('mouseup', this.__onMouseUp);
 		this.addEventListener('mouseenter', this.__onMouseEnter);
 		this.addEventListener('mouseleave', this.__onMouseLeave);
@@ -226,11 +227,14 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 	}
 
 	async __onMouseEnter() {
-		if (!this.openOnHover) return;
-		// do not respond to hover events on mobile screens
 		const dropdownContent = this.__getContentElement();
 
+		// do not respond to hover events on mobile screens
 		if (dropdownContent._mobile) return;
+
+		dropdownContent?.startAsyncLoad();
+
+		if (!this.openOnHover) return;
 
 		clearTimeout(this._dismissTimerId);
 		if (!this.dropdownOpened) await this.openDropdown(false);
@@ -315,5 +319,9 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 			else opener.removeAttribute('active');
 		}
 		return true;
+	}
+
+	#handleFocus() {
+		this.__getContentElement()?.startAsyncLoad();
 	}
 };
