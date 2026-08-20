@@ -22,17 +22,15 @@ export function createFooter({
 	hasEnd = false,
 } = {}) {
 	return wrap(html`
-		<div style="padding-top: 0.75rem;">
-			<d2l-page-footer>
-				${emptyDefault ? nothing : defaultContents}
-				${hasEnd ? endContents : nothing}
-			</d2l-page-footer>
-		</div>
+		<d2l-page-footer>
+			${emptyDefault ? nothing : defaultContents}
+			${hasEnd ? endContents : nothing}
+		</d2l-page-footer>
 	`);
 }
 
 export const pageFooterFixtures = {
 	default: createFooter(),
 	withEnd: createFooter({ hasEnd: true }),
-	onlyEnd: createFooter({ emptyDefault: true }),
+	onlyEnd: createFooter({ emptyDefault: true, hasEnd: true }),
 };
