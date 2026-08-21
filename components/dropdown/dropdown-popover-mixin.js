@@ -374,7 +374,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 	#handlePopoverAsyncLoad(e) {
 		e.preventDefault();
 		e.stopPropagation();
-		/** Dispatched when "async" before the dropdown is opened for the first time, giving an opportunity to load async content */
+		/** Dispatched before an "async" dropdown is opened for the first time, giving an opportunity to load async content */
 		this.dispatchEvent(new CustomEvent(
 			'd2l-dropdown-async-load', {
 				bubbles: false,
