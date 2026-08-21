@@ -8,7 +8,6 @@
 		import '../../demo/demo-page.js';
 		import '../../button/button.js';
 		import '../dropdown.js';
-		import '../dropdown-button.js';
 		import '../dropdown-content.js';
 	</script>
 </head>
@@ -215,9 +214,10 @@
 		<h2>Async Dropdown</h2>
 		<d2l-demo-snippet>
 			<template>
-				<d2l-dropdown-button text="Open it!">
+				<d2l-dropdown>
+					<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
 					<d2l-dropdown-content async></d2l-dropdown-content>
-				</d2l-dropdown-button>
+				</d2l-dropdown>
 				<script data-demo-hide>
 					(demo => {
 						demo.querySelector('d2l-dropdown-content').addEventListener('d2l-dropdown-async-load', async(e) => {
