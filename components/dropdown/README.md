@@ -263,6 +263,7 @@ Automatic focus and sizing logic will be delayed until content has loaded.
 - Add a listener for the `d2l-dropdown-async-load` event that fetches the content
 - Render `nothing` inside  `<d2l-dropdown-content>`, allowing dropdown to render a loading spinner while content loads
 - When content is ready, call `complete()` on the event detail
+- To avoid a shift in size between the "loading" and "loaded" states, consider setting a `min-width` matching the typical width of the loaded content 
 
 The `d2l-dropdown-async-load` event will dispatch pre-emptively when the user hovers or focuses on the dropdown opener, anticipating that the dropdown will be opened.
 
