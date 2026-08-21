@@ -215,6 +215,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 | Property | Type | Description |
 |---|---|---|
 | `align` | String | Optionally align dropdown to either `start` or `end`. If not set, the dropdown will attempt to be centred. |
+| `async` | Boolean, default: `false` | Enable when dropdown contains async content. When set, the dropdown will dispatch a `d2l-dropdown-async-load` event before opening for the first time, giving an opportunity to load async content. |
 | `max-height` | Number | Override default `max-height`. _Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed_ |
 | `min-height` | Number | Override default height used for required space when `no-auto-fit` is true. Specify a number that would be the px value. _Note that the default behaviour is to be as tall as necessary within the viewport, so this property is usually not needed._ |
 | `max-width` | Number | Override default `max-width` |
@@ -236,7 +237,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 | Name | Description |
 |---|---|
 | `d2l-dropdown-open` | Dispatched when the dropdown is opened |
-| `d2l-dropdown-open-async` | Dispatched before the dropdown is opened for the first time, giving an opportunity to load async content |
+| `d2l-dropdown-async-load` | Dispatched before an "async" dropdown is opened for the first time, giving an opportunity to load async content |
 | `d2l-dropdown-close` | dispatched when the dropdown is closed |
 | `d2l-dropdown-position` | Dispatched when the dropdown position finishes adjusting |
 | `d2l-dropdown-focus-enter` | dispatched when the 'trap-focus' attribute is applied and the focus-trap is entered (trap-focus option only) |
@@ -254,28 +255,35 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 
 ### Asynchronous Content
 
-For dropdown content that's fetched asynchronously, the `d2l-dropdown-open-async` event can be leveraged to let `<d2l-dropdown-content>` know when things are ready. That way, automatic focus and sizing logic until can be delayed.
+For dropdown content that's fetched asynchronously, the `async` attribute and the `d2l-dropdown-async-load` event can be leveraged to let `<d2l-dropdown-content>` know when things are ready.
 
-- Add a listener for the `d2l-dropdown-open-async` event
-- In the handler, call `preventDefault()` on the event to let it know that the content will be loaded asynchronously
-- Fetch the content and when it's ready, call `complete()` on the event detail
-- Note: the `d2l-dropdown-open-async` event will only be dispatched the first time the dropdown is opened, so no need to ignore subsequent calls
+Automatic focus and sizing logic will be delayed until content has loaded.
+
+- Set the `async` attribute
+- Add a listener for the `d2l-dropdown-async-load` event that fetches the content
+- Render `nothing` inside  `<d2l-dropdown-content>`, allowing dropdown to render a loading spinner while content loads
+- When content is ready, call `complete()` on the event detail
+- To avoid a shift in size between the "loading" and "loaded" states, consider setting a `min-width` matching the typical width of the loaded content 
+
+The `d2l-dropdown-async-load` event will dispatch pre-emptively when the user hovers or focuses on the dropdown opener, anticipating that the dropdown will be opened.
+
+It is also only be dispatched once, so there's no need to ignore subsequent calls
 
 ```javascript
 class MyElem extends LitElement {
+  properties: {
+    _content: { state: true }
+  }
   render() {
-    const content = this._loading ? 'Loading...' : 'Loaded!';
     return html`
       <d2l-dropdown-content
-        @d2l-dropdown-open-async="${this.#handleDropdownOpenAsync}">
-        ${content}
+        @d2l-dropdown-async-load="${this.#handleDropdownAsyncLoad}">
+        ${this._content}
       </d2l-dropdown-content>
     `;
   }
-  async #handleDropdownOpenAsync(e) {
-    e.preventDefault();
-    await this.#fetchData();
-    this._loaded = true;
+  async #handleDropdownAsyncLoad(e) {
+    this._content = await this.#fetchData();
     e.detail.complete();
   }
 }
