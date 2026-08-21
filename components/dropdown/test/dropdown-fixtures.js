@@ -16,7 +16,7 @@ export const asyncDropdownTag = defineCE(class extends LitElement {
 	}
 	render() {
 		const content = !this._loaded ? nothing : html`<button>Loading Complete, focus here</button>`;
-		const dropdownContent = html`<d2l-dropdown-content async @d2l-dropdown-async-load="${this.#handleDropdownAsyncLoad}" class="vdiff-target">${content}</d2l-dropdown-content>`; 
+		const dropdownContent = html`<d2l-dropdown-content async @d2l-dropdown-async-load="${this.#handleDropdownAsyncLoad}" class="vdiff-target">${content}</d2l-dropdown-content>`;
 		if (this.openerType === 'dropdown-button') {
 			return html`
 				<d2l-dropdown-button class="vdiff-target" text="Open">
