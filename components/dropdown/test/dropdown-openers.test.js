@@ -56,17 +56,13 @@ describe('d2l-dropdown-openers', () => {
 	});
 
 	describe('async', () => {
-
-		let elem;
-		beforeEach(async() => {
-			elem = await fixture(`<${asyncDropdownTag}></${asyncDropdownTag}>`);
-		});
-
 		[
-			{ action: 'focus', cb: focusElem },
-			{ action: 'hover', cb: hoverElem }
-		].forEach(({ action, cb }) => {
-			it(`should start loading on "${action}"`, async() => {
+			{ action: 'focus', openerType: 'button', cb: focusElem },
+			{ action: 'focus', openerType: 'dropdown-button', cb: focusElem },
+			{ action: 'hover', openerType: 'dropdown-button', cb: hoverElem }
+		].forEach(({ action, openerType, cb }) => {
+			it(`should start loading on "${action}" with opener type "${openerType}"`, async() => {
+				const elem = await fixture(`<${asyncDropdownTag} opener-type="${openerType}"></${asyncDropdownTag}>`);
 				const contentElem = elem.getContent();
 				expect(contentElem._asyncState).to.equal(asyncStates.unloaded);
 				await cb(elem.getOpener());
