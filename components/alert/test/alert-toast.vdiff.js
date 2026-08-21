@@ -38,6 +38,9 @@ const tag = defineCE(
 
 describe('alert-toast', () => {
 
+	before(() => mockPopoverSupported(false));
+	after(() => resetPopoverSupported());
+
 	const doTests = () => {
 
 		[
