@@ -50,7 +50,6 @@ describe('button-subtle-copy', () => {
 			writeTextStub = stub(navigator.clipboard, 'writeText').resolves();
 			const elem = await fixture(template, { viewport: { width: 500, height: 200 } });
 			await clickAction(elem);
-			await elem.updateComplete;
 
 			clock.tick(4000);
 			await elem.updateComplete;

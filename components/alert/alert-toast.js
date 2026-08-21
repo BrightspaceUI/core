@@ -414,12 +414,14 @@ class AlertToast extends LitElement {
 		}
 	}
 
-	async _openChanged(newOpen) {
+	_openChanged(newOpen) {
 		if (newOpen) {
 
 			if (usePopover()) {
-				await this.updateComplete; // wait for popover attribute before managing top-layer
-				if (this.isConnected) this.shadowRoot.querySelector('[popover="manual"]')?.showPopover();
+				// wait for popover attribute before managing top-layer (needed for case where toast is open immediately)
+				requestAnimationFrame(() => {
+					if (this.isConnected) this.shadowRoot.querySelector('[popover="manual"]')?.showPopover();
+				});
 			}
 
 			if (this._state === states.CLOSING) {
