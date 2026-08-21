@@ -5,9 +5,16 @@ import { getFlag } from '../../helpers/flags.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-const alertToastPopoverFlag = getFlag('GAUD-10337-use-alert-toast-popover', true);
-const isPopoverSupported = ('popover' in HTMLElement.prototype);
-const usePopover = alertToastPopoverFlag && isPopoverSupported;
+let mockedPopoverSupported = null;
+export function mockPopoverSupported(value) { mockedPopoverSupported = value; }
+export function resetPopoverSupported() { mockedPopoverSupported = null; }
+function isPopoverSupported() {
+	return mockedPopoverSupported ?? ('popover' in HTMLElement.prototype);
+}
+
+function usePopover() {
+	return getFlag('GAUD-10337-use-alert-toast-popover', true) && isPopoverSupported();
+}
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let activeReduceMotion = reduceMotion;
@@ -228,7 +235,7 @@ class AlertToast extends LitElement {
 			insetBlockEnd: (this._totalSiblingHeightBelow || this._numAlertsBelow) ? `calc(${this._totalSiblingHeightBelow}px + ${spaceBetweenAlerts}rem)` : 0
 		};
 		const containerClasses = {
-			'd2l-alert-toast-container-not-popover': !usePopover,
+			'd2l-alert-toast-container-not-popover': !usePopover(),
 			'd2l-alert-toast-container': true,
 			'd2l-alert-toast-container-close-clicked': this._closeClicked,
 			'd2l-alert-toast-container-lowest': !this._totalSiblingHeightBelow,
@@ -239,7 +246,7 @@ class AlertToast extends LitElement {
 			<div
 				class="${classMap(containerClasses)}"
 				data-state="${this._state}"
-				popover="${ifDefined(usePopover ? 'manual' : undefined)}"
+				popover="${ifDefined(usePopover() ? 'manual' : undefined)}"
 				style="${styleMap(containerStyles)}"
 				@transitionend="${this._onTransitionEnd}">
 				<d2l-alert
@@ -410,7 +417,7 @@ class AlertToast extends LitElement {
 	async _openChanged(newOpen) {
 		if (newOpen) {
 
-			if (usePopover) {
+			if (usePopover()) {
 				await this.updateComplete; // wait for popover attribute before managing top-layer
 				if (this.isConnected) this.shadowRoot.querySelector('[popover="manual"]')?.showPopover();
 			}
@@ -433,7 +440,7 @@ class AlertToast extends LitElement {
 		} else {
 			if (!this._innerContainer) return;
 
-			if (usePopover) {
+			if (usePopover()) {
 				this.shadowRoot.querySelector('[popover="manual"]')?.hidePopover();
 			}
 
