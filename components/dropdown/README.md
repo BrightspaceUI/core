@@ -237,7 +237,7 @@ To make your usage of `d2l-dropdown-more` accessible, use the following property
 | Name | Description |
 |---|---|
 | `d2l-dropdown-open` | Dispatched when the dropdown is opened |
-| `d2l-dropdown-async-load` | Dispatched when `async` before the dropdown is opened for the first time, giving an opportunity to load async content |
+| `d2l-dropdown-async-load` | Dispatched before an "async" dropdown is opened for the first time, giving an opportunity to load async content |
 | `d2l-dropdown-close` | dispatched when the dropdown is closed |
 | `d2l-dropdown-position` | Dispatched when the dropdown position finishes adjusting |
 | `d2l-dropdown-focus-enter` | dispatched when the 'trap-focus' attribute is applied and the focus-trap is entered (trap-focus option only) |
