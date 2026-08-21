@@ -410,8 +410,7 @@ class AlertToast extends LitElement {
 	async _openChanged(newOpen) {
 		if (newOpen) {
 
-			// Clean-up when removing GAUD-10337-use-alert-toast-popover
-			if (alertToastPopoverFlag) {
+			if (usePopover) {
 				await this.updateComplete; // wait for popover attribute before managing top-layer
 				if (this.isConnected) this.shadowRoot.querySelector('[popover="manual"]')?.showPopover();
 			}
@@ -434,8 +433,7 @@ class AlertToast extends LitElement {
 		} else {
 			if (!this._innerContainer) return;
 
-			// Clean-up when removing GAUD-10337-use-alert-toast-popover
-			if (alertToastPopoverFlag) {
+			if (usePopover) {
 				this.shadowRoot.querySelector('[popover="manual"]')?.hidePopover();
 			}
 
