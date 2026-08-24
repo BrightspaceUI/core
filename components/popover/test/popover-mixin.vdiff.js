@@ -13,21 +13,24 @@ const asyncPopoverTag = defineCE(class extends LitElement {
 	render() {
 		const content = !this._loaded ? 'Loading...' : html`<button>Loading Complete, focus here</button>`;
 		return html`
-			<span>
-				<button @click="${this.#handleOpen}">Open</button>
-				<d2l-test-popover @d2l-popover-open-async="${this.#handlePopoverOpenAsync}" class="vdiff-include">${content}</d2l-test-popover>
-			</span>
+			<button @click="${this.#handleOpen}">Open</button>
+			<d2l-test-popover async @d2l-popover-async-load="${this.#handlePopoverAsyncLoad}" class="vdiff-target">${content}</d2l-test-popover>
 		`;
 	}
+	async reset() {
+		this._loaded = false;
+		this.#resetCallback?.();
+		await this.updateComplete;
+	}
+	#resetCallback;
 	#handleOpen(e) {
 		this.shadowRoot.querySelector('d2l-test-popover').open(e.target);
 	}
-	#handlePopoverOpenAsync(e) {
-		e.preventDefault();
-		setTimeout(() => {
-			this._loaded = true;
-			e.detail.complete();
-		}, 200);
+	async #handlePopoverAsyncLoad(e) {
+		this.#resetCallback = e.detail.reset;
+		await new Promise(resolve => setTimeout(resolve, 200));
+		this._loaded = true;
+		e.detail.complete();
 	}
 });
 
@@ -57,13 +60,13 @@ describe('popover-mixin', () => {
 
 		it('loading', async() => {
 			await sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
-			await expect(el.shadowRoot.querySelector('span')).to.be.golden();
+			await expect(el).to.be.golden();
 		});
 
 		it('loaded', async() => {
 			sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
 			await oneEvent(el, 'd2l-popover-open');
-			await expect(el.shadowRoot.querySelector('span')).to.be.golden();
+			await expect(el).to.be.golden();
 		});
 
 		it('subsequent', async() => {
@@ -72,7 +75,16 @@ describe('popover-mixin', () => {
 			await sendKeys('press', 'Escape');
 			sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
 			await oneEvent(el, 'd2l-popover-open');
-			await expect(el.shadowRoot.querySelector('span')).to.be.golden();
+			await expect(el).to.be.golden();
+		});
+
+		it('reset', async() => {
+			sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
+			await oneEvent(el, 'd2l-popover-open');
+			await sendKeys('press', 'Escape');
+			await el.reset();
+			await sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
+			await expect(el).to.be.golden();
 		});
 
 	});

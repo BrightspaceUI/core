@@ -216,22 +216,17 @@
 			<template>
 				<d2l-dropdown>
 					<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
-					<d2l-dropdown-content>
-						<div id="content">Loading...</div>
-					</d2l-dropdown-content>
+					<d2l-dropdown-content async></d2l-dropdown-content>
 				</d2l-dropdown>
 				<script data-demo-hide>
 					(demo => {
-						demo.querySelector('d2l-dropdown-content').addEventListener('d2l-dropdown-open-async', async(e) => {
-							e.preventDefault();
-							setTimeout(() => {
-								const b = document.createElement('d2l-button');
-								b.innerText = 'Focus Here On Very Wide Button';
-								const content = demo.querySelector('#content');
-								content.innerHTML = '';
-								content.appendChild(b);
-								e.detail.complete();
-							}, 3000);
+						demo.querySelector('d2l-dropdown-content').addEventListener('d2l-dropdown-async-load', async(e) => {
+							await new Promise(resolve => setTimeout(resolve, 3000));
+							const b = document.createElement('d2l-button');
+							b.innerText = 'Focus Here On Very Wide Button';
+							const content = demo.querySelector('d2l-dropdown-content');
+							content.appendChild(b);
+							e.detail.complete();
 						});
 					})(document.currentScript.parentNode);
 				</script>

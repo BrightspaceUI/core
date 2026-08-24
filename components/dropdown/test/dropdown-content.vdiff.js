@@ -1,8 +1,8 @@
-import '../../button/button.js';
 import '../dropdown.js';
 import '../dropdown-content.js';
-import { defineCE, expect, fixture, html, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
-import { LitElement } from 'lit';
+import { expect, fixture, html, oneEvent, sendKeys, waitUntil } from '@brightspace-ui/testing';
+import { asyncDropdownTag } from './dropdown-fixtures.js';
+import { asyncStates } from '../../popover/popover-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
@@ -61,32 +61,6 @@ const noScrollContent = `
 	<div>Bottom</div>
 `;
 const scroll = html`${unsafeHTML(scrollContent)}`;
-
-const asyncDropdownTag = defineCE(class extends LitElement {
-	static properties = {
-		_loaded: { state: true }
-	};
-	constructor() {
-		super();
-		this._loaded = false;
-	}
-	render() {
-		const content = !this._loaded ? 'Loading...' : html`<button>Loading Complete, focus here</button>`;
-		return html`
-			<d2l-dropdown>
-				<button class="d2l-dropdown-opener">Open</button>
-				<d2l-dropdown-content @d2l-dropdown-open-async="${this.#handleDropdownOpenAsync}" class="vdiff-target">${content}</d2l-dropdown-content>
-			</d2l-dropdown>
-		`;
-	}
-	#handleDropdownOpenAsync(e) {
-		e.preventDefault();
-		setTimeout(() => {
-			this._loaded = true;
-			e.detail.complete();
-		}, 200);
-	}
-});
 
 describe('dropdown-content', () => {
 	[
@@ -193,22 +167,41 @@ describe('dropdown-content', () => {
 		});
 
 		it('loading', async() => {
-			await sendKeysElem(elem.shadowRoot.querySelector('button'), 'press', 'Enter');
+			await elem.openKeyboard();
 			await expect(elem).to.be.golden();
 		});
 
 		it('loaded', async() => {
-			sendKeysElem(elem.shadowRoot.querySelector('button'), 'press', 'Enter');
+			elem.openKeyboard();
 			await oneEvent(elem, 'd2l-dropdown-open');
 			await expect(elem).to.be.golden();
 		});
 
 		it('subsequent', async() => {
-			sendKeysElem(elem.shadowRoot.querySelector('button'), 'press', 'Enter');
+			elem.openKeyboard();
 			await oneEvent(elem, 'd2l-dropdown-open');
+			sendKeys('press', 'Escape');
+			await oneEvent(elem, 'd2l-dropdown-close');
+			elem.openKeyboard();
+			await oneEvent(elem, 'd2l-dropdown-open');
+			await expect(elem).to.be.golden();
+		});
+
+		it('close-while-loading', async() => {
+			const contentElem = elem.getContent();
+			await elem.openKeyboard();
 			await sendKeys('press', 'Escape');
-			sendKeysElem(elem.shadowRoot.querySelector('button'), 'press', 'Enter');
+			await waitUntil(() => contentElem._asyncState === asyncStates.loaded);
+			await expect(elem).to.be.golden();
+		});
+
+		it('reset', async() => {
+			elem.openKeyboard();
 			await oneEvent(elem, 'd2l-dropdown-open');
+			sendKeys('press', 'Escape');
+			await oneEvent(elem, 'd2l-dropdown-close');
+			await elem.reset();
+			await elem.openKeyboard();
 			await expect(elem).to.be.golden();
 		});
 
