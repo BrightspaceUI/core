@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Cau Hysbysiad",
 	"components.backdrop-loading.loadingAnnouncement": "Wrthi’n llwytho.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Llwytho wedi Gorffen.",
-	"components.backdrop-stale-overlay.message": "Mae'r data hwn yn hen.",
+	"components.backdrop-stale-overlay.message": "Mae’r data hwn yn hen.",
 	"components.breadcrumbs.breadcrumb": "Briwsionyn Bara",
 	"components.button-add.addItem": "Ychwanegu Eitem",
 	"components.button-copy.copied": "Wedi’i gopïo!",
@@ -160,10 +160,10 @@ export default {
 	"components.page.header-nav-label": "Prif",
 	"components.page.side-nav-divider-label": "Raniwr Llywio Ochr",
 	"components.page.side-nav-label": "Ochr",
-	"components.page.side-nav-scrim": "Mae'r prif Gynnwys wedi'i guddio ar hyn o bryd gan y Panel Llywio Ochr. Caewch y panel i gael mynediad.",
+	"components.page.side-nav-scrim": "Mae’r prif Gynnwys wedi’i guddio ar hyn o bryd gan y Panel Llywio Ochr. Caewch y panel i gael mynediad.",
 	"components.page.supporting-divider-label": "Raniwr Panel Cymorth",
 	"components.page.supporting-label": "Cefnogi",
-	"components.page.supporting-scrim": "Mae'r prif Gynnwys wedi'i guddio ar hyn o bryd gan y Panel Cefnogi. Caewch y panel i gael mynediad.",
+	"components.page.supporting-scrim": "Mae’r prif Gynnwys wedi’i guddio ar hyn o bryd gan y Panel Cefnogi. Caewch y panel i gael mynediad.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} eitem}
