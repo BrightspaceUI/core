@@ -2,7 +2,6 @@ import '../../form/form.js';
 import '../input-checkbox.js';
 import { clickElem, expect, fixture, focusElem, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { checkboxFixtures } from './input-checkbox-fixtures.js';
-import { restore } from 'sinon';
 
 function getInput(elem) {
 	return elem.shadowRoot.querySelector('input.d2l-input-checkbox');
@@ -208,8 +207,6 @@ describe('d2l-input-checkbox', () => {
 	});
 
 	describe('labels', () => {
-
-		afterEach(() => restore());
 
 		it('should set aria-label when label-hidden', async() => {
 			const elem = await fixture(checkboxFixtures.labelHidden);
