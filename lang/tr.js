@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Kapatma Uyarısı",
 	"components.backdrop-loading.loadingAnnouncement": "Yükleniyor.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Yükleme Tamamlandı.",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "Bu veriler güncel değil.",
 	"components.breadcrumbs.breadcrumb": "İçerik Haritası",
 	"components.button-add.addItem": "Öğe Ekle",
 	"components.button-copy.copied": "Kopyalandı!",
@@ -160,10 +160,10 @@ export default {
 	"components.page.header-nav-label": "Ana",
 	"components.page.side-nav-divider-label": "Yan Navigasyon Ayırıcı",
 	"components.page.side-nav-label": "Yan",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "Ana içeriği şu anda Yan Gezinti Paneli gizliyor. Erişmek için paneli kapatın.",
 	"components.page.supporting-divider-label": "Destekleyici Panel Ayırıcı",
 	"components.page.supporting-label": "Destekleyici",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "Ana içeriği şu anda Destekleyici Panel gizliyor. Erişmek için paneli kapatın.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} öğe}

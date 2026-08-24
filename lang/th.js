@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "ปิดการแจ้งเตือน",
 	"components.backdrop-loading.loadingAnnouncement": "กำลังโหลด",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "การโหลดเสร็จสิ้น",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "ข้อมูลนี้ล้าสมัยแล้ว",
 	"components.breadcrumbs.breadcrumb": "แถบนำทาง",
 	"components.button-add.addItem": "เพิ่มรายการ",
 	"components.button-copy.copied": "คัดลอกแล้ว!",
@@ -156,10 +156,10 @@ export default {
 	"components.page.header-nav-label": "หลัก",
 	"components.page.side-nav-divider-label": "ตัวแบ่งในแถบนำทางด้านข้าง",
 	"components.page.side-nav-label": "ด้านข้าง",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "เนื้อหาหลักถูกซ่อนอยู่ใน บานหน้าต่างการนำทางด้านข้าง ปิดบานหน้าต่างเพื่อเข้าถึง",
 	"components.page.supporting-divider-label": "ตัวแบ่งในแผงส่วนเสริม",
 	"components.page.supporting-label": "ส่วนเสริม",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "ปัจจุบันเนื้อหาหลักถูกซ่อนโดย บานหน้าต่างส่วนเสริม ปิดบานหน้าต่างเพื่อเข้าถึง",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} รายการ}

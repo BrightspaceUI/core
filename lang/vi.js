@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Đóng Cảnh Báo",
 	"components.backdrop-loading.loadingAnnouncement": "Đang tải.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Quá trình tải hoàn tất.",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "Dữ liệu này đã lỗi thời.",
 	"components.breadcrumbs.breadcrumb": "Đường dẫn",
 	"components.button-add.addItem": "Thêm mục",
 	"components.button-copy.copied": "Đã sao chép!",
@@ -154,10 +154,10 @@ export default {
 	"components.page.header-nav-label": "Chính",
 	"components.page.side-nav-divider-label": "Phân cách điều hướng bên",
 	"components.page.side-nav-label": "Bên",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "Nội dung chính hiện đang bị ẩn bởi Bảng điều hướng bên. Đóng bảng để truy cập.",
 	"components.page.supporting-divider-label": "Bộ phân cách bảng hỗ trợ",
 	"components.page.supporting-label": "Hỗ trợ",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "Nội dung chính hiện đang bị ẩn bởi Bảng hỗ trợ. Đóng bảng để truy cập.",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} mục}

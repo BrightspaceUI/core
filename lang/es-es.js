@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Cerrar alerta",
 	"components.backdrop-loading.loadingAnnouncement": "Cargando.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Carga completa.",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "Estos datos no están actualizados.",
 	"components.breadcrumbs.breadcrumb": "Ruta de navegación",
 	"components.button-add.addItem": "Agregar elemento",
 	"components.button-copy.copied": "¡Copiado!",
@@ -160,10 +160,10 @@ export default {
 	"components.page.header-nav-label": "Principal",
 	"components.page.side-nav-divider-label": "Separador de navegación lateral",
 	"components.page.side-nav-label": "Lateral",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "El contenido principal está oculto por el panel de navegación lateral. Cierre el panel para acceder.",
 	"components.page.supporting-divider-label": "Separador del panel complementario",
 	"components.page.supporting-label": "Complementario",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "El contenido principal está oculto por el panel complementario. Cierre el panel para acceder.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} elemento}

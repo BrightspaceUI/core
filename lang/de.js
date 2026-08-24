@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Benachrichtigung schließen",
 	"components.backdrop-loading.loadingAnnouncement": "Wird geladen.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Ladevorgang abgeschlossen.",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "Diese Daten sind veraltet.",
 	"components.breadcrumbs.breadcrumb": "Brotkrümelnavigation",
 	"components.button-add.addItem": "Element hinzufügen",
 	"components.button-copy.copied": "Kopiert.",
@@ -160,10 +160,10 @@ export default {
 	"components.page.header-nav-label": "Haupt-",
 	"components.page.side-nav-divider-label": "Trennung für Seitennavigation",
 	"components.page.side-nav-label": "Seiten-",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "Der Hauptinhalt wird derzeit vom seitlichen Navigationsbereich verdeckt. Schließen Sie den Bereich, um Zugriff zu erhalten.",
 	"components.page.supporting-divider-label": "Trennung für Unterstützungsbereich",
 	"components.page.supporting-label": "Unterstützung",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "Der Hauptinhalt wird derzeit vom Unterstützungsbereich verdeckt. Schließen Sie den Bereich, um Zugriff zu erhalten.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} Element}

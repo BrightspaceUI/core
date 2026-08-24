@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Zamknij alert",
 	"components.backdrop-loading.loadingAnnouncement": "Wczytywanie.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Wczytywanie zakończone.",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "Te dane są nieaktualne.",
 	"components.breadcrumbs.breadcrumb": "Menu okruszkowe",
 	"components.button-add.addItem": "Dodaj element",
 	"components.button-copy.copied": "Skopiowano!",
@@ -170,10 +170,10 @@ export default {
 	"components.page.header-nav-label": "Główna",
 	"components.page.side-nav-divider-label": "Separator nawigacji bocznej",
 	"components.page.side-nav-label": "Strona boczna",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "Główna zawartość jest obecnie ukryta przez boczny panel nawigacyjny. Zamknij panel, aby uzyskać dostęp.",
 	"components.page.supporting-divider-label": "Separator panelu pomocniczego",
-	"components.page.supporting-label": "Wsparcie",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-label": "Pomocniczy",
+	"components.page.supporting-scrim": "Główna zawartość jest obecnie ukryta przez Panel pomocniczy. Zamknij panel, aby uzyskać dostęp.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} element}

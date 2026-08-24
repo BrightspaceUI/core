@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Stängningsvarning",
 	"components.backdrop-loading.loadingAnnouncement": "Läser in.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Inläsning slutförd.",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "Dessa data är för gamla.",
 	"components.breadcrumbs.breadcrumb": "Sökväg",
 	"components.button-add.addItem": "Lägg till objekt",
 	"components.button-copy.copied": "Kopierat!",
@@ -160,10 +160,10 @@ export default {
 	"components.page.header-nav-label": "Huvudsida",
 	"components.page.side-nav-divider-label": "Avgränsare för sidnavigering",
 	"components.page.side-nav-label": "Sida",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "Huvudinnehållet döljs för närvarande av sidonavigeringspanelen. Stäng panelen för att få åtkomst.",
 	"components.page.supporting-divider-label": "Avgränsare för supportpanel",
 	"components.page.supporting-label": "Support",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "Huvudinnehållet döljs för närvarande av supportpanelen. Stäng panelen för att få åtkomst.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} objekt}

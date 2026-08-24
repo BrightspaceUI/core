@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Kati Matohi",
 	"components.backdrop-loading.loadingAnnouncement": "Kei te uta.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Kua Oti te Utaina.",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "Kua tawhito tēnei raraunga.",
 	"components.breadcrumbs.breadcrumb": "Pānui",
 	"components.button-add.addItem": "Tāpiri Tūemi",
 	"components.button-copy.copied": "Kua tāruatia!",
@@ -160,10 +160,10 @@ export default {
 	"components.page.header-nav-label": "Matua",
 	"components.page.side-nav-divider-label": "Wehewehenga Whakatere Taha",
 	"components.page.side-nav-label": "Taha",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "Kei te hunaia he ihirangi matua e te Paewhiri Whakatere Taha i tēnei wā. Katia te paewhiri hei uru atu.",
 	"components.page.supporting-divider-label": "Te Wehewehe Paewhiri Tautoko",
 	"components.page.supporting-label": "Te tautoko",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "Kei te hunaia he ihirangi matua e te Paewhiri Tautoko i tēnei wā. Katia te paewhiri hei uru atu.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} Tūemi}

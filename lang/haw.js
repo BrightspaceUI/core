@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Pani i ka makaʻala",
 	"components.backdrop-loading.loadingAnnouncement": "Ke hoʻouka nei.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Ua pau ka hoʻouka ʻana.",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "Ua pau kēia ʻikepili i ka lā.",
 	"components.breadcrumbs.breadcrumb": "Palapalapala",
 	"components.button-add.addItem": "Pākuʻi Mea",
 	"components.button-copy.copied": "Kope ʻia!",
@@ -160,10 +160,10 @@ export default {
 	"components.page.header-nav-label": "Nui",
 	"components.page.side-nav-divider-label": "Māhele Hoʻokele ʻAoʻao",
 	"components.page.side-nav-label": "ʻaoʻao",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "Ua hūnā ʻia ka ʻike nui i kēia manawa e ka ʻaoʻao hoʻokele ʻaoʻao. E pani i ka panela e komo ai.",
 	"components.page.supporting-divider-label": "Mea Hoʻokaʻawale Panel Kākoʻo",
 	"components.page.supporting-label": "Ke kākoʻo nei",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "Ua hūnā ʻia ka ʻike nui i kēia manawa e ka Panel Kākoʻo. E pani i ka panela e komo ai.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} mea}
