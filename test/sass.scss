@@ -1,7 +1,6 @@
 @use "../components/inputs/sass/radio.scss";
 @use "../components/inputs/sass/text.scss";
 @use "../components/inputs/sass/textarea.scss";
-@use "../components/offscreen/offscreen.scss";
 
 .d2l-test-input-radio {
 	@include radio.d2l-input-radio();
@@ -11,7 +10,4 @@
 }
 .d2l-test-input-textarea {
 	@include textarea.d2l-input-textarea();
-}
-.d2l-test-offscreen {
-	@include offscreen.d2l-offscreen();
 }
