@@ -72,4 +72,10 @@ describe('d2l-dropdown-openers', () => {
 
 	});
 
+	it('should not throw when hovering and content is missing', async() => {
+		const elem = await fixture(html`<d2l-dropdown><button class="d2l-dropdown-opener">Open</button></d2l-dropdown>`);
+		const opener = elem.querySelector('.d2l-dropdown-opener');
+		await hoverElem(opener);
+	});
+
 });

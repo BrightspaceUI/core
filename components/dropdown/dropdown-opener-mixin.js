@@ -226,8 +226,9 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		}
 	}
 
-	async __onMouseEnter() {
+	__onMouseEnter() {
 		const dropdownContent = this.__getContentElement();
+		if (!dropdownContent) return;
 
 		// do not respond to hover events on mobile screens
 		if (dropdownContent._mobile) return;
@@ -236,16 +237,24 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 
 		if (!this.openOnHover) return;
 
+		const afterOpen = () => {
+			this._closeTimerStop();
+			if (!this._isOpenedViaClick) this._isHovering = true;
+		};
+
 		clearTimeout(this._dismissTimerId);
-		if (!this.dropdownOpened) await this.openDropdown(false);
-		this._closeTimerStop();
-		if (!this._isOpenedViaClick) this._isHovering = true;
+		if (!this.dropdownOpened) {
+			this.openDropdown(false).then(afterOpen);
+		} else {
+			afterOpen();
+		}
 	}
 
 	async __onMouseLeave() {
 		if (!this.openOnHover) return;
 		// do not respond to hover events on mobile screens
 		const dropdownContent = this.__getContentElement();
+		if (!dropdownContent) return;
 
 		if (dropdownContent._mobile) return;
 
