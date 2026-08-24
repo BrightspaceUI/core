@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "關閉警示",
 	"components.backdrop-loading.loadingAnnouncement": "正在載入。",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "載入完成。",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "此資料已過期。",
 	"components.breadcrumbs.breadcrumb": "導覽路徑",
 	"components.button-add.addItem": "新增項目",
 	"components.button-copy.copied": "複製成功！",
@@ -156,10 +156,10 @@ export default {
 	"components.page.header-nav-label": "主要",
 	"components.page.side-nav-divider-label": "側邊導覽分隔線",
 	"components.page.side-nav-label": "側邊",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "主要內容目前被側邊導覽面板遮住。關閉面板以存取內容。",
 	"components.page.supporting-divider-label": "支援面板分隔線",
-	"components.page.supporting-label": "支援",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-label": "輔助",
+	"components.page.supporting-scrim": "主要內容目前被輔助面板遮住。關閉面板以存取內容。",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} 個項目}

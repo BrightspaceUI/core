@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "경보 닫기",
 	"components.backdrop-loading.loadingAnnouncement": "로드 중.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "로드 완료.",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "이 데이터는 최신 버전이 아닙니다.",
 	"components.breadcrumbs.breadcrumb": "이동 경로",
 	"components.button-add.addItem": "항목 추가",
 	"components.button-copy.copied": "복사 완료!",
@@ -155,10 +155,10 @@ export default {
 	"components.page.header-nav-label": "메인",
 	"components.page.side-nav-divider-label": "측면 탐색 구분선",
 	"components.page.side-nav-label": "사이드",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "현재 메인 콘텐츠는 측면 탐색 패널로 숨깁니다. 패널을 닫아 액세스합니다.",
 	"components.page.supporting-divider-label": "보조 패널 구분선",
 	"components.page.supporting-label": "지원",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "현재 메인 콘텐츠는 지원 패널로 숨깁니다. 패널을 닫아 액세스합니다.",
 	"components.pageable.info":
 		`{count, plural,
 			other {해당 항목 수 {countFormatted}개}

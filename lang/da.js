@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Luk besked",
 	"components.backdrop-loading.loadingAnnouncement": "Indlæser.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Indlæsning fuldført.",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "Disse data er forældede.",
 	"components.breadcrumbs.breadcrumb": "Brødkrumme",
 	"components.button-add.addItem": "Tilføj element",
 	"components.button-copy.copied": "Kopieret!",
@@ -160,10 +160,10 @@ export default {
 	"components.page.header-nav-label": "Hoved",
 	"components.page.side-nav-divider-label": "Skillelinje i sidemenu",
 	"components.page.side-nav-label": "Side",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "Hovedindholdet er i øjeblikket skjult af sidenavigationspanelet. Luk panelet for at få adgang til det.",
 	"components.page.supporting-divider-label": "Skillelinje i sidepanel",
 	"components.page.supporting-label": "Understøttende",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "Hovedindholdet er i øjeblikket skjult af det understøttende panel. Luk panelet for at få adgang til det.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} element}

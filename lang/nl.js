@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Waarschuwing sluiten",
 	"components.backdrop-loading.loadingAnnouncement": "Laden.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Laden voltooid.",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "Deze gegevens zijn verouderd.",
 	"components.breadcrumbs.breadcrumb": "Kruimelpad",
 	"components.button-add.addItem": "Item toevoegen",
 	"components.button-copy.copied": "Gekopieerd!",
@@ -160,10 +160,10 @@ export default {
 	"components.page.header-nav-label": "Hoofdgedeelte",
 	"components.page.side-nav-divider-label": "Scheidingslijn zijmenu",
 	"components.page.side-nav-label": "Zij",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "De hoofdinhoud wordt momenteel verborgen de navigatiebalk aan de zijkant. Sluit de balk om toegang te krijgen.",
 	"components.page.supporting-divider-label": "Scheidingslijn ondersteunend paneel",
 	"components.page.supporting-label": "Ondersteuning",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "De hoofdinhoud wordt momenteel verborgen door de ondersteuningsbalk. Sluit de balk om toegang te krijgen.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} item}

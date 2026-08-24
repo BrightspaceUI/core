@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "アラートを閉じる",
 	"components.backdrop-loading.loadingAnnouncement": "読み込み中。",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "読み込みが完了しました。",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "このデータは最新ではありません。",
 	"components.breadcrumbs.breadcrumb": "階層",
 	"components.button-add.addItem": "項目の追加",
 	"components.button-copy.copied": "コピーできました。",
@@ -155,10 +155,10 @@ export default {
 	"components.page.header-nav-label": "メイン",
 	"components.page.side-nav-divider-label": "サイドナビゲーション区切り",
 	"components.page.side-nav-label": "サイド",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "メインコンテンツがサイドナビゲーションパネルによって隠れています。アクセスするにはパネルを閉じてください。",
 	"components.page.supporting-divider-label": "サポートパネル区切り",
 	"components.page.supporting-label": "サポート",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "メインコンテンツがサポートパネルによって隠れています。アクセスするにはパネルを閉じてください。",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} 個の項目}

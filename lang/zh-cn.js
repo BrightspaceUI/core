@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "关闭提醒",
 	"components.backdrop-loading.loadingAnnouncement": "正在加载。",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "加载完成。",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "此数据已过期。",
 	"components.breadcrumbs.breadcrumb": "痕迹导航",
 	"components.button-add.addItem": "添加项目",
 	"components.button-copy.copied": "已复制！",
@@ -155,10 +155,10 @@ export default {
 	"components.page.header-nav-label": "主要",
 	"components.page.side-nav-divider-label": "侧边导航分隔条",
 	"components.page.side-nav-label": "侧面",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "主要内容目前被侧边导航面板遮挡。关闭该面板即可查看。",
 	"components.page.supporting-divider-label": "辅助面板分隔条",
 	"components.page.supporting-label": "辅助",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "主要内容目前被辅助面板遮挡。关闭该面板即可查看。",
 	"components.pageable.info":
 		`{count, plural,
 			other {{countFormatted} 项}

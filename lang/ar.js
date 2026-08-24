@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "إغلاق التنبيه",
 	"components.backdrop-loading.loadingAnnouncement": "جارٍ التحميل",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "اكتمل التحميل.",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "هذه البيانات قديمة.",
 	"components.breadcrumbs.breadcrumb": "مسار التنقل",
 	"components.button-add.addItem": "إضافة عنصر",
 	"components.button-copy.copied": "تم النسخ!",
@@ -160,10 +160,10 @@ export default {
 	"components.page.header-nav-label": "الرئيسية",
 	"components.page.side-nav-divider-label": "مقسّم التنقل الجانبي",
 	"components.page.side-nav-label": "جانبية",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "المحتوى الرئيسي مخفي حاليًا بواسطة لوحة التنقّل الجانبية. أغلق اللوحة للوصول.",
 	"components.page.supporting-divider-label": "فاصل اللوحة الداعمة",
 	"components.page.supporting-label": "داعمة",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "المحتوى الرئيسي مخفي حاليًا بواسطة لوحة الدعم. أغلق اللوحة للوصول.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} مادة واحد}

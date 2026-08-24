@@ -2,7 +2,7 @@ export default {
 	"components.alert.close": "Tanca l’alerta",
 	"components.backdrop-loading.loadingAnnouncement": "Carregant.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Càrrega completa.",
-	"components.backdrop-stale-overlay.message": "This data is out of date.",
+	"components.backdrop-stale-overlay.message": "Aquestes dades estan desactualitzades.",
 	"components.breadcrumbs.breadcrumb": "Breadcrumb",
 	"components.button-add.addItem": "Afegeix element",
 	"components.button-copy.copied": "S’ha copiat!",
@@ -160,10 +160,10 @@ export default {
 	"components.page.header-nav-label": "Principal",
 	"components.page.side-nav-divider-label": "Separador de la navegació lateral",
 	"components.page.side-nav-label": "Lateral",
-	"components.page.side-nav-scrim": "Main content is currently hidden by the Side Navigation Panel. Close the panel to access.",
+	"components.page.side-nav-scrim": "El contingut principal està actualment ocult pel panell de navegació lateral. Tanqueu-lo per accedir-hi.",
 	"components.page.supporting-divider-label": "Divisor del panell de suport",
 	"components.page.supporting-label": "Suport",
-	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
+	"components.page.supporting-scrim": "El contingut principal està actualment ocult pel panell de suport. Tanqueu el panell per accedir-hi.",
 	"components.pageable.info":
 		`{count, plural,
 			one {{countFormatted} element}
