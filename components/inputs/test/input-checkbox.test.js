@@ -1,8 +1,8 @@
 import '../../form/form.js';
 import '../input-checkbox.js';
 import { clickElem, expect, fixture, focusElem, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
-import { restore, stub } from 'sinon';
 import { checkboxFixtures } from './input-checkbox-fixtures.js';
+import { restore } from 'sinon';
 
 function getInput(elem) {
 	return elem.shadowRoot.querySelector('input.d2l-input-checkbox');
@@ -67,11 +67,11 @@ describe('d2l-input-checkbox', () => {
 
 		it('should prevent "change" events inside supporting slot from propagating', async() => {
 			const elem = await fixture(html`
-				<d2l-input-checkbox aria-label="label">
-					<d2l-input-checkbox aria-label="nested" slot="supporting"></d2l-input-checkbox>
+				<d2l-input-checkbox label="label" label-hidden>
+					<d2l-input-checkbox label="nested" label-hidden slot="supporting"></d2l-input-checkbox>
 				</d2l-input-checkbox>
 			`);
-			const nestedElem = elem.querySelector('[aria-label="nested"]');
+			const nestedElem = elem.querySelector('[label="nested"]');
 			let eventFired = false;
 			elem.addEventListener('change', () => eventFired = true);
 			await clickElem(getInput(nestedElem));
@@ -209,27 +209,12 @@ describe('d2l-input-checkbox', () => {
 
 	describe('labels', () => {
 
-		let consoleErrorStub;
-
-		beforeEach(() => {
-			consoleErrorStub = stub(console, 'error');
-		});
-
 		afterEach(() => restore());
 
 		it('should set aria-label when label-hidden', async() => {
 			const elem = await fixture(checkboxFixtures.labelHidden);
 			expect(getInput(elem).getAttribute('aria-label')).to.equal('label hidden');
 			expect(getText(elem)).to.equal('');
-		});
-
-		it('should set aria-label when aria-label', async() => {
-			const elem = await fixture(checkboxFixtures.labelAria);
-			expect(elem.label).to.equal('label aria');
-			expect(elem.labelHidden).to.be.true;
-			expect(getInput(elem).getAttribute('aria-label')).to.equal('label aria');
-			expect(getText(elem)).to.equal('');
-			expect(consoleErrorStub).to.be.calledWith('d2l-input-checkbox: the ariaLabel property is no longer supported. Use the label property with label-hidden instead.');
 		});
 
 		it('should use visible label when not label-hidden', async() => {
