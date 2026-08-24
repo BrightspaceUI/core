@@ -23,10 +23,6 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 
 	static properties = {
 		/**
-		 * @ignore
-		 */
-		ariaLabel: { type: String, attribute: 'aria-label' },
-		/**
 		 * Checked state
 		 * @type {boolean}
 		 */
@@ -195,15 +191,6 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 		super.updated(changedProperties);
 		if (changedProperties.has('value')) {
 			this.setFormValue(this.value); // d2l-form handles not using value when unchecked
-		}
-	}
-
-	willUpdate(changedProperties) {
-		super.willUpdate(changedProperties);
-		if (changedProperties.has('ariaLabel') && this.ariaLabel !== undefined) {
-			console.error('d2l-input-checkbox: the ariaLabel property is no longer supported. Use the label property with label-hidden instead.');
-			this.label = this.ariaLabel;
-			this.labelHidden = true;
 		}
 	}
 
