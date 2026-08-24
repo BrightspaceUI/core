@@ -254,6 +254,7 @@ export const DropdownOpenerMixin = superclass => class extends superclass {
 		if (!this.openOnHover) return;
 		// do not respond to hover events on mobile screens
 		const dropdownContent = this.__getContentElement();
+		if (!dropdownContent) return;
 
 		if (dropdownContent._mobile) return;
 
