@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import './editor-icon.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="Editor Icons">
+
+			<h3>Icons</h3>
+			<d2l-demo-snippet code-view-hidden>
+				<template>
+					<div id="container"></div>
+					<script data-demo-hide type="module">
+						import * as editorIcons from '../editor-icons.js';
+
+						const container = document.querySelector('#container');
+
+						for (const [name, svg] of Object.entries(editorIcons)) {
+							const icon = document.createElement('d2l-demo-editor-icon');
+							icon.size = 'tier1';
+							icon.svg = svg;
+							icon.text = name;
+							container.appendChild(icon);
+						}
+					</script>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+	</body>
+</html>
