@@ -11,7 +11,12 @@ export const DIVIDER_HANDLE_SIZE = 30;
 export const KEYBOARD_STEP = 20; // TO DO: Confirm
 export const KEYBOARD_STEP_LARGE = 80; // TO DO: Confirm
 
+const DRAG_THRESHOLD = 3; // Number of pixels to move to count as a drag
+const AUTO_EXPAND_WIDTH_FACTOR = 0.1;
+const AUTO_COLLAPSE_WIDTH_FACTOR = 0.75;
+
 const clampedSize = (size, min, max) => Math.max(min, Math.min(size, max));
+const isRtl = () => document.documentElement.getAttribute('dir') === 'rtl';
 
 const ICON_ARROW_COLLAPSE_LEFT = html`
 	<svg width="18" height="18" mirror-in-rtl xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
@@ -56,6 +61,11 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		 * @type {boolean}
 		 */
 		collapsed: { type: Boolean, reflect: true },
+		/**
+		 * Size the panel/drawer occupies while collapsed (the drag starts from here)
+		 * @type {number}
+		 */
+		collapsedSize: { type: Number, attribute: 'collapsed-size' },
 		/**
 		 * Current size of the panel/drawer the divider controls
 		 * @type {number}
@@ -195,6 +205,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		super();
 
 		this.collapsed = false;
+		this.collapsedSize = 0;
 		this.currentSize = 0;
 		this.label = '';
 		this.maxSize = 0;
@@ -243,6 +254,48 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
 	#clickedArrow;
 	#clickedHandle = false;
+	#draggedDivider = false;
+	#dragStats;
+
+	#handlePointerMove = (e) => {
+		if (!this.#dragStats || e.pointerId !== this.#dragStats.pointerId) return;
+		const delta = this.panelType === 'panel' ? (e.clientX - this.#dragStats.startX) : (e.clientY - this.#dragStats.startY);
+		if (Math.abs(delta) >= DRAG_THRESHOLD) this.#dragStats.moved = true;
+		if (!this.#dragStats.moved) return;
+
+		let growthDirectionIsPositive;
+		if (this.panelType === 'panel') {
+			growthDirectionIsPositive = (this.panelPosition === 'start') !== isRtl();
+		} else if (this.panelType === 'drawer') {
+			growthDirectionIsPositive = false;
+		}
+		const signedDelta = (growthDirectionIsPositive ? 1 : -1) * delta;
+		const requestedSize = this.#dragStats.startSize + signedDelta;
+
+		this.#dragStats.lastSize = requestedSize;
+		this.#sendResizeLiveEvent(requestedSize);
+	};
+
+	#handlePointerUp = (e) => {
+		if (!this.#dragStats || e.pointerId !== this.#dragStats.pointerId) return;
+		const target = e.currentTarget;
+		target.removeEventListener('pointermove', this.#handlePointerMove);
+		target.removeEventListener('pointerup', this.#handlePointerUp);
+		target.removeEventListener('pointercancel', this.#handlePointerUp);
+
+		if (this.collapsed && this.#dragStats.lastSize > this.minSize * AUTO_EXPAND_WIDTH_FACTOR) {
+			this.#draggedDivider = true;
+			this.#sendToggleEvent();
+			this.#sendResizeEvent(this.#dragStats.lastSize);
+		} else if (!this.collapsed && this.#dragStats.lastSize < this.minSize * AUTO_COLLAPSE_WIDTH_FACTOR) {
+			this.#draggedDivider = true;
+			this.#sendToggleEvent();
+		} else if (this.#dragStats.moved) {
+			this.#draggedDivider = true;
+			this.#sendResizeEvent(this.#dragStats.lastSize);
+		}
+		this.#dragStats = null;
+	};
 
 	#getArrowVisibility() {
 		if (this.panelType !== 'panel' || this.collapsed) return { showStartArrow: false, showEndArrow: false };
@@ -269,6 +322,8 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		// Do not toggle/resize until click event is received,
 		// to avoid clicking on elements under the arrows in overlay mode or under the handle in drawer mode
 		e.stopPropagation();
+		if (this.#draggedDivider) return;
+
 		if (this.collapsed || this.#clickedHandle) {
 			this.#sendToggleEvent();
 		} else if (this.#clickedArrow) {
@@ -303,8 +358,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		let positiveStepKey;
 		if (this.panelType === 'panel') {
 			if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-			const isRtl = (document.documentElement.getAttribute('dir') === 'rtl');
-			positiveStepKey = (this.panelPosition === 'start') !== isRtl ? 'ArrowRight' : 'ArrowLeft';
+			positiveStepKey = (this.panelPosition === 'start') !== isRtl() ? 'ArrowRight' : 'ArrowLeft';
 		} else if (this.panelType === 'drawer') {
 			if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
 			positiveStepKey = 'ArrowUp';
@@ -316,8 +370,11 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 	}
 
 	#handlePointerDown(e) {
+		this.#draggedDivider = false;
+
 		if (e.button !== 0) return; // Don't collapse when right-clicking to debug
 		e.preventDefault();
+		e.stopPropagation();
 		this.focus();
 
 		const path = e.composedPath();
@@ -325,13 +382,36 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		this.#clickedArrow = path.find(el => el.classList?.contains('divider-arrow'));
 		if (this.#clickedArrow) return; // Arrows don't support dragging
 
-		// TO DO: Dragging
+		const startSize = this.collapsed ? this.collapsedSize : this.currentSize;
+		this.#dragStats = {
+			pointerId: e.pointerId,
+			startX: e.clientX,
+			startY: e.clientY,
+			startSize,
+			lastSize: startSize,
+			moved: false
+		};
+
+		const target = e.currentTarget;
+		target.setPointerCapture(e.pointerId);
+		target.addEventListener('pointermove', this.#handlePointerMove);
+		target.addEventListener('pointerup', this.#handlePointerUp);
+		target.addEventListener('pointercancel', this.#handlePointerUp);
 	}
 
 	#sendResizeEvent(requestedSize) {
 		const clampedRequestedSize = clampedSize(requestedSize, this.minSize, this.maxSize);
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-page-divider-resize', { detail: {
+			requestedSize: clampedRequestedSize
+		} }));
+	}
+
+	#sendResizeLiveEvent(requestedSize) {
+		const clampedRequestedSize = clampedSize(requestedSize, this.collapsedSize, this.maxSize);
+		if (clampedRequestedSize === this.currentSize) return; // Don't bother sending events when dragging past min/max
+		/** @ignore */
+		this.dispatchEvent(new CustomEvent('d2l-page-divider-resize-live', { detail: {
 			requestedSize: clampedRequestedSize
 		} }));
 	}
