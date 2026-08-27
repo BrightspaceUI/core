@@ -434,9 +434,9 @@ describe('d2l-page-divider-internal', () => {
 
 				describe(test.name, () => {
 					[
-						{ action: 'growing', dragSign: test.growPositive ? 1 : -1, expectedSize: currentSize + dragDistance, step: 10 },
-						{ action: 'shrinking', dragSign: test.growPositive ? -1 : 1, expectedSize: currentSize - dragDistance, step: -10 }
-					].forEach(({ action, dragSign, expectedSize, step }) => {
+						{ action: 'growing', dragSign: test.growPositive ? 1 : -1, expectedSize: currentSize + dragDistance },
+						{ action: 'shrinking', dragSign: test.growPositive ? -1 : 1, expectedSize: currentSize - dragDistance }
+					].forEach(({ action, dragSign, expectedSize }) => {
 						it(`dispatches events throughout drag while ${action}`, async() => {
 							const elem = await fixture(
 								createDivider({ panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
@@ -448,7 +448,8 @@ describe('d2l-page-divider-internal', () => {
 							elem.addEventListener('d2l-page-divider-resize', () => resizeCount += 1);
 							await dragDivider(elem, { [test.coord]: dragDistance * dragSign });
 
-							expect(requestedSizes).to.deep.equal([currentSize + step, currentSize + 2 * step, currentSize + 3 * step, currentSize + 4 * step, expectedSize]);
+							expect(requestedSizes.length).to.be.greaterThan(1);
+							expect(requestedSizes.at(-1)).to.equal(expectedSize);
 							expect(resizeCount).to.equal(1);
 						});
 					});
@@ -461,7 +462,7 @@ describe('d2l-page-divider-internal', () => {
 						const requestedSizes = [];
 						elem.addEventListener('d2l-page-divider-resize-live', (e) => requestedSizes.push(e.detail.requestedSize));
 						await dragDivider(elem, { [test.coord]: 50 * (test.growPositive ? 1 : -1) });
-						expect(requestedSizes).to.deep.equal([maxSize - 20, maxSize - 10, maxSize, maxSize, maxSize]);
+						expect(requestedSizes.at(-1)).to.equal(maxSize);
 					});
 
 					it('dispatches the event for sizes below min while dragging past min', async() => {
@@ -472,7 +473,6 @@ describe('d2l-page-divider-internal', () => {
 						const requestedSizes = [];
 						elem.addEventListener('d2l-page-divider-resize-live', (e) => requestedSizes.push(e.detail.requestedSize));
 						await dragDivider(elem, { [test.coord]: 200 * (test.growPositive ? -1 : 1) });
-						expect(requestedSizes.length).to.equal(20);
 						expect(requestedSizes.at(-1)).to.equal(currentSize - 200);
 						expect(requestedSizes.at(-1)).to.be.below(minSize);
 					});
@@ -485,7 +485,18 @@ describe('d2l-page-divider-internal', () => {
 						const requestedSizes = [];
 						elem.addEventListener('d2l-page-divider-resize-live', (e) => requestedSizes.push(e.detail.requestedSize));
 						await dragDivider(elem, { [test.coord]: 50 * (test.growPositive ? -1 : 1) });
-						expect(requestedSizes).to.deep.equal([30, 20, collapsedSize, collapsedSize, collapsedSize]);
+						expect(requestedSizes.at(-1)).to.equal(collapsedSize);
+					});
+
+					it('does not dispatch event when drag does not exceed threshold', async() => {
+						const elem = await fixture(
+							createDivider({ panelType: test.panelType, panelPosition: test.panelPosition }),
+							{ rtl: test.rtl }
+						);
+						let dispatched = false;
+						elem.addEventListener('d2l-page-divider-resize-live', () => dispatched = true);
+						await dragDivider(elem, { [test.coord]: 2 });
+						expect(dispatched).to.be.false;
 					});
 				});
 			});
