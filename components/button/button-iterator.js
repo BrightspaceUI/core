@@ -66,7 +66,7 @@ class ButtonIterator extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElemen
 			margin-inline: 6px;
 		}
 		@media (max-width: 556px) {
-			.description { 
+			.description {
 				display: none;
 			}
 		}
@@ -80,8 +80,8 @@ class ButtonIterator extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElemen
 		}
 		button {
 			background-color: var(--d2l-theme-background-color-interactive-secondary-default);
-			padding: 0;
 			min-width: calc(2rem + 2px);
+			padding: 0;
 		}
 		button:not([disabled]):hover,
 		button:not([disabled]):focus {
