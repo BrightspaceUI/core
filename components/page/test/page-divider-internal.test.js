@@ -372,13 +372,13 @@ describe('d2l-page-divider-internal', () => {
 
 							it('dispatches event when dragged open', async() => {
 								const elem = await fixture(
-									createDivider({ collapsed: true, currentSize: 0, panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
-									{ rtl: test.rtl }
+									createDivider({ collapsed: true, currentSize: 0, panelType: test.panelType, panelPosition: test.panelPosition, margin: 400 }),
+									{ rtl: test.rtl, viewport: { width: 900, height: 900 } }
 								);
 
-								dragDivider(elem, { [test.coord]: 425 * (test.growPositive ? 1 : -1) });
+								dragDivider(elem, { [test.coord]: 375 * (test.growPositive ? 1 : -1) });
 								const e = await oneEvent(elem, 'd2l-page-divider-resize');
-								expect(e.detail.requestedSize).to.equal(collapsedSize + 425);
+								expect(e.detail.requestedSize).to.equal(collapsedSize + 375);
 							});
 
 							it('dispatches event when dragged slightly open (update to min panel size)', async() => {
