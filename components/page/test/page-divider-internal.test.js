@@ -112,9 +112,7 @@ describe('d2l-page-divider-internal', () => {
 								let dispatched = false;
 								elem.addEventListener('d2l-page-divider-toggle', () => dispatched = true);
 								await dragDivider(elem, { [test.coord]: 50 * (test.growPositive ? 1 : -1) });
-								await nextFrame();
 								await dragDivider(elem, { [test.coord]: 100 * (test.growPositive ? -1 : 1) });
-								await nextFrame();
 								expect(dispatched).to.be.false;
 							});
 
@@ -126,7 +124,6 @@ describe('d2l-page-divider-internal', () => {
 								let dispatched = false;
 								elem.addEventListener('d2l-page-divider-toggle', () => dispatched = true);
 								await dragDivider(elem, { [test.coord]: autoCollapseDistance * (test.growPositive ? -1 : 1) });
-								await nextFrame();
 								expect(dispatched).to.be.false;
 							});
 
@@ -138,7 +135,6 @@ describe('d2l-page-divider-internal', () => {
 								let dispatched = false;
 								elem.addEventListener('d2l-page-divider-toggle', () => dispatched = true);
 								await dragDivider(elem, { [test.coord]: autoExpandDistance * (test.growPositive ? 1 : -1) });
-								await nextFrame();
 								expect(dispatched).to.be.false;
 							});
 						});
@@ -155,7 +151,6 @@ describe('d2l-page-divider-internal', () => {
 						let dispatched = false;
 						elem.addEventListener('d2l-page-divider-toggle', () => dispatched = true);
 						await dragArrow(elem, 'start', { x: -250 });
-						await nextFrame();
 						expect(dispatched).to.be.false;
 					});
 				});
@@ -366,7 +361,6 @@ describe('d2l-page-divider-internal', () => {
 								let dispatched = false;
 								elem.addEventListener('d2l-page-divider-resize', () => dispatched = true);
 								await dragDivider(elem, { [test.coord]: (autoCollapseDistance + 20) * (test.growPositive ? -1 : 1) });
-								await nextFrame();
 								expect(dispatched).to.be.false;
 							});
 
@@ -400,7 +394,6 @@ describe('d2l-page-divider-internal', () => {
 								let dispatched = false;
 								elem.addEventListener('d2l-page-divider-resize', () => dispatched = true);
 								await dragDivider(elem, { [test.coord]: 2 });
-								await nextFrame();
 								expect(dispatched).to.be.false;
 							});
 						});
@@ -418,7 +411,6 @@ describe('d2l-page-divider-internal', () => {
 						let dispatched = false;
 						elem.addEventListener('d2l-page-divider-resize', () => dispatched = true);
 						await dragArrow(elem, 'end', { x: 50 });
-						await nextFrame();
 						expect(dispatched).to.be.false;
 					});
 				});
@@ -503,7 +495,6 @@ describe('d2l-page-divider-internal', () => {
 				let dispatched = false;
 				elem.addEventListener('d2l-page-divider-resize-live', () => dispatched = true);
 				await dragDivider(elem, { x: 50 });
-				await nextFrame();
 				expect(dispatched).to.be.false;
 			});
 
@@ -520,7 +511,6 @@ describe('d2l-page-divider-internal', () => {
 				let dispatched = false;
 				elem.addEventListener('d2l-page-divider-resize-live', () => dispatched = true);
 				await dragArrow(elem, 'end', { x: 50 });
-				await nextFrame();
 				expect(dispatched).to.be.false;
 			});
 		});
