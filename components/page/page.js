@@ -81,7 +81,7 @@ class PanelStateController {
 		const panel = this.#panels[key];
 		// Clamp requested size to min and max bounds
 		panel.size = Math.max(panel.minSize, Math.min(requestedSize, panel.maxSize));
-		panel.animate = animate;
+		panel.animate = panel.collapsed ? false : animate; // Don't animate re-close if not dragged far enough to open
 		panel.dragSize = null;
 		this.#host.requestUpdate();
 		if (storeState) this.#storePanelState(key);
