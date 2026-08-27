@@ -1,4 +1,4 @@
-import { clickElem, focusElem, hoverElem, nextFrame, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, dragElemBy, focusElem, hoverElem, nextFrame, sendKeysElem } from '@brightspace-ui/testing';
 import { createPage, getDivider } from './page-fixtures.js';
 import { html } from 'lit';
 
@@ -61,19 +61,36 @@ export async function clickHandle(elem) {
 	await clickElem(getSlider(elem));
 }
 
+export async function dragArrow(elem, arrowPosition, { x = 0, y = 0 } = {}) {
+	await focusElem(elem);
+	await dragElemBy(getDividerArrow(elem, arrowPosition), x, y);
+}
+export async function dragDivider(elem, { x = 0, y = 0 } = {}) {
+	await dragElemBy(elem, x, y);
+}
+export async function dragHandle(elem, { x = 0, y = 0 } = {}) {
+	await dragElemBy(getSlider(elem), x, y);
+}
+
 export function createDivider({
 	collapsed = false,
+	collapsedSize = 14,
 	currentSize = 450,
 	maxSize = 600,
 	minSize = 320,
 	panelType = 'panel',
-	panelPosition = 'start'
+	panelPosition = 'start',
+	margin = 30
 } = {}) {
+	const drawerStyles = `width: 300px; margin-block: ${margin}px;`;
+	const panelStyles = `height: 300px; margin-inline: ${margin}px;`;
+
 	return html`
 		<d2l-page-divider-internal
-			style="height: 300px; margin-inline: 30px;"
+			style="${panelType === 'drawer' ? drawerStyles : panelStyles}"
 			label="Resize"
 			?collapsed="${collapsed}"
+			collapsed-size="${collapsedSize}"
 			current-size="${currentSize}"
 			min-size="${minSize}"
 			max-size="${maxSize}"

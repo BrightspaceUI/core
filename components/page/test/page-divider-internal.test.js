@@ -1,4 +1,4 @@
-import { clickArrow, clickHandle, createDivider, getDividerArrow, getSlider } from './page-divider-internal-fixtures.js';
+import { clickArrow, clickHandle, createDivider, dragArrow, dragDivider, dragHandle, getDividerArrow, getSlider } from './page-divider-internal-fixtures.js';
 import { clickElem, expect, fixture, html, nextFrame, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 import { KEYBOARD_STEP, KEYBOARD_STEP_LARGE } from '../page-divider-internal.js';
 
@@ -65,6 +65,99 @@ describe('d2l-page-divider-internal', () => {
 					const elem = await fixture(createDivider({ collapsed: true }));
 					clickElem(elem);
 					await oneEvent(elem, 'd2l-page-divider-toggle');
+				});
+
+				describe('dragging', () => {
+					const collapsedSize = 14;
+					const currentSize = 450;
+					const minSize = 320;
+					const dragDistance = 250;
+					const autoCollapseDistance = currentSize - (minSize * 0.75);
+					const autoExpandDistance = minSize * 0.1 - collapsedSize;
+
+					[
+						{ name: 'start panel', panelType: 'panel', panelPosition: 'start', growPositive: true, coord: 'x' },
+						{ name: 'end panel', panelType: 'panel', panelPosition: 'end', growPositive: false, coord: 'x' },
+						{ name: 'drawer', panelType: 'drawer', growPositive: false, coord: 'y' },
+						{ name: 'start panel in rtl', rtl: true, panelType: 'panel', panelPosition: 'start', growPositive: false, coord: 'x' },
+						{ name: 'end panel in rtl', rtl: true, panelType: 'panel', panelPosition: 'end', growPositive: true, coord: 'x' },
+						{ name: 'drawer in rtl', rtl: true, panelType: 'drawer', growPositive: false, coord: 'y' },
+					].forEach(test => {
+
+						describe(test.name, () => {
+
+							it('dispatches event when dragging expands a collapsed panel', async() => {
+								const elem = await fixture(
+									createDivider({ collapsed: true, currentSize: 0, panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
+									{ rtl: test.rtl }
+								);
+								dragDivider(elem, { [test.coord]: dragDistance * (test.growPositive ? 1 : -1) });
+								await oneEvent(elem, 'd2l-page-divider-toggle');
+							});
+
+							it('dispatches event when dragging collapses an expanded panel', async() => {
+								const elem = await fixture(
+									createDivider({ panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
+									{ rtl: test.rtl }
+								);
+								dragDivider(elem, { [test.coord]: dragDistance * (test.growPositive ? -1 : 1) });
+								await oneEvent(elem, 'd2l-page-divider-toggle');
+							});
+
+							it('does not dispatch event when dragging to resize within limits', async() => {
+								const elem = await fixture(
+									createDivider({ panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
+									{ rtl: test.rtl }
+								);
+								let dispatched = false;
+								elem.addEventListener('d2l-page-divider-toggle', () => dispatched = true);
+								await dragDivider(elem, { [test.coord]: 50 * (test.growPositive ? 1 : -1) });
+								await nextFrame();
+								await dragDivider(elem, { [test.coord]: 100 * (test.growPositive ? -1 : 1) });
+								await nextFrame();
+								expect(dispatched).to.be.false;
+							});
+
+							it('does not dispatch event when dragging above auto-collapse factor', async() => {
+								const elem = await fixture(
+									createDivider({ panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
+									{ rtl: test.rtl }
+								);
+								let dispatched = false;
+								elem.addEventListener('d2l-page-divider-toggle', () => dispatched = true);
+								await dragDivider(elem, { [test.coord]: autoCollapseDistance * (test.growPositive ? -1 : 1) });
+								await nextFrame();
+								expect(dispatched).to.be.false;
+							});
+
+							it('does not dispatch event when dragging below auto-expand factor', async() => {
+								const elem = await fixture(
+									createDivider({ collapsed: true, currentSize: 0, panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
+									{ rtl: test.rtl }
+								);
+								let dispatched = false;
+								elem.addEventListener('d2l-page-divider-toggle', () => dispatched = true);
+								await dragDivider(elem, { [test.coord]: autoExpandDistance * (test.growPositive ? 1 : -1) });
+								await nextFrame();
+								expect(dispatched).to.be.false;
+							});
+						});
+					});
+
+					it('dispatches event when the handle is dragged', async() => {
+						const elem = await fixture(createDivider({ margin: 350 }));
+						dragHandle(elem, { x: -250 });
+						await oneEvent(elem, 'd2l-page-divider-toggle');
+					});
+
+					it('does not dispatch event when the arrows are dragged', async() => {
+						const elem = await fixture(createDivider({ margin: 350 }));
+						let dispatched = false;
+						elem.addEventListener('d2l-page-divider-toggle', () => dispatched = true);
+						await dragArrow(elem, 'start', { x: -250 });
+						await nextFrame();
+						expect(dispatched).to.be.false;
+					});
 				});
 			});
 
@@ -221,8 +314,214 @@ describe('d2l-page-divider-internal', () => {
 				});
 
 				describe('dragging', () => {
-					// TO DO
+					const collapsedSize = 14;
+					const dragDistance = 50;
+					const halfDragDistance = dragDistance / 2;
+					const autoCollapseDistance = currentSize - (minSize * 0.75);
+					[
+						{ name: 'start panel', panelType: 'panel', panelPosition: 'start', growPositive: true, coord: 'x' },
+						{ name: 'end panel', panelType: 'panel', panelPosition: 'end', growPositive: false, coord: 'x' },
+						{ name: 'drawer', panelType: 'drawer', growPositive: false, coord: 'y' },
+						{ name: 'start panel in rtl', rtl: true, panelType: 'panel', panelPosition: 'start', growPositive: false, coord: 'x' },
+						{ name: 'end panel in rtl', rtl: true, panelType: 'panel', panelPosition: 'end', growPositive: true, coord: 'x' },
+						{ name: 'drawer in rtl', rtl: true, panelType: 'drawer', growPositive: false, coord: 'y' },
+					].forEach(test => {
+
+						describe(test.name, () => {
+							[
+								{ action: 'grow', dragSign: test.growPositive ? 1 : -1, expectedSize: currentSize + dragDistance },
+								{ action: 'shrink', dragSign: test.growPositive ? -1 : 1, expectedSize: currentSize - dragDistance }
+							].forEach(({ action, dragSign, expectedSize }) => {
+								it(`dispatches event with requestedSize ${expectedSize} when dragged to ${action}`, async() => {
+									const elem = await fixture(
+										createDivider({ panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
+										{ rtl: test.rtl }
+									);
+									dragDivider(elem, { [test.coord]: dragDistance * dragSign });
+									const e = await oneEvent(elem, 'd2l-page-divider-resize');
+									expect(e.detail.requestedSize).to.equal(expectedSize);
+								});
+							});
+
+							[
+								{ action: 'grow', dragSign: test.growPositive ? 1 : -1, currentSize: maxSize - halfDragDistance, expectedSize: maxSize },
+								{ action: 'shrink', dragSign: test.growPositive ? -1 : 1, currentSize: minSize + halfDragDistance, expectedSize: minSize }
+							].forEach(({ action, dragSign, currentSize, expectedSize }) => {
+								it(`does not ${action} past limits`, async() => {
+									const elem = await fixture(
+										createDivider({ currentSize, panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
+										{ rtl: test.rtl }
+									);
+									dragDivider(elem, { [test.coord]: dragDistance * dragSign });
+									const e = await oneEvent(elem, 'd2l-page-divider-resize');
+									expect(e.detail.requestedSize).to.equal(expectedSize);
+								});
+							});
+
+							it('does not dispatch event when dragged closed (keep previous size stored)', async() => {
+								const elem = await fixture(
+									createDivider({ panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
+									{ rtl: test.rtl }
+								);
+								let dispatched = false;
+								elem.addEventListener('d2l-page-divider-resize', () => dispatched = true);
+								await dragDivider(elem, { [test.coord]: (autoCollapseDistance + 20) * (test.growPositive ? -1 : 1) });
+								await nextFrame();
+								expect(dispatched).to.be.false;
+							});
+
+							it('dispatches event when dragged open', async() => {
+								const elem = await fixture(
+									createDivider({ collapsed: true, currentSize: 0, panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
+									{ rtl: test.rtl }
+								);
+
+								dragDivider(elem, { [test.coord]: 425 * (test.growPositive ? 1 : -1) });
+								const e = await oneEvent(elem, 'd2l-page-divider-resize');
+								expect(e.detail.requestedSize).to.equal(collapsedSize + 425);
+							});
+
+							it('dispatches event when dragged slightly open (update to min panel size)', async() => {
+								const elem = await fixture(
+									createDivider({ collapsed: true, currentSize: 0, panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
+									{ rtl: test.rtl }
+								);
+
+								dragDivider(elem, { [test.coord]: 3 * (test.growPositive ? 1 : -1) });
+								const e = await oneEvent(elem, 'd2l-page-divider-resize');
+								expect(e.detail.requestedSize).to.equal(minSize);
+							});
+
+							it('does not dispatch event when drag does not exceed threshold', async() => {
+								const elem = await fixture(
+									createDivider({ panelType: test.panelType, panelPosition: test.panelPosition }),
+									{ rtl: test.rtl }
+								);
+								let dispatched = false;
+								elem.addEventListener('d2l-page-divider-resize', () => dispatched = true);
+								await dragDivider(elem, { [test.coord]: 2 });
+								await nextFrame();
+								expect(dispatched).to.be.false;
+							});
+						});
+					});
+
+					it('dispatches event when the handle is dragged', async() => {
+						const elem = await fixture(createDivider({ margin: 350 }));
+						dragHandle(elem, { x: 50 });
+						const e = await oneEvent(elem, 'd2l-page-divider-resize');
+						expect(e.detail.requestedSize).to.equal(currentSize + 50);
+					});
+
+					it('does not dispatch event when the arrows are dragged', async() => {
+						const elem = await fixture(createDivider({ margin: 350 }));
+						let dispatched = false;
+						elem.addEventListener('d2l-page-divider-resize', () => dispatched = true);
+						await dragArrow(elem, 'end', { x: 50 });
+						await nextFrame();
+						expect(dispatched).to.be.false;
+					});
 				});
+			});
+		});
+
+		describe('d2l-page-divider-resize-live', () => {
+			const collapsedSize = 14;
+			const currentSize = 450;
+			const minSize = 320;
+			const maxSize = 600;
+			const dragDistance = 50;
+			[
+				{ name: 'start panel', panelType: 'panel', panelPosition: 'start', growPositive: true, coord: 'x' },
+				{ name: 'end panel', panelType: 'panel', panelPosition: 'end', growPositive: false, coord: 'x' },
+				{ name: 'drawer', panelType: 'drawer', growPositive: false, coord: 'y' },
+				{ name: 'start panel in rtl', rtl: true, panelType: 'panel', panelPosition: 'start', growPositive: false, coord: 'x' },
+				{ name: 'end panel in rtl', rtl: true, panelType: 'panel', panelPosition: 'end', growPositive: true, coord: 'x' },
+				{ name: 'drawer in rtl', rtl: true, panelType: 'drawer', growPositive: false, coord: 'y' },
+			].forEach(test => {
+
+				describe(test.name, () => {
+					[
+						{ action: 'growing', dragSign: test.growPositive ? 1 : -1, expectedSize: currentSize + dragDistance, step: 10 },
+						{ action: 'shrinking', dragSign: test.growPositive ? -1 : 1, expectedSize: currentSize - dragDistance, step: -10 }
+					].forEach(({ action, dragSign, expectedSize, step }) => {
+						it(`dispatches events throughout drag while ${action}`, async() => {
+							const elem = await fixture(
+								createDivider({ panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
+								{ rtl: test.rtl }
+							);
+							const requestedSizes = [];
+							let resizeCount = 0;
+							elem.addEventListener('d2l-page-divider-resize-live', (e) => requestedSizes.push(e.detail.requestedSize));
+							elem.addEventListener('d2l-page-divider-resize', () => resizeCount += 1);
+							await dragDivider(elem, { [test.coord]: dragDistance * dragSign });
+
+							expect(requestedSizes).to.deep.equal([currentSize + step, currentSize + 2 * step, currentSize + 3 * step, currentSize + 4 * step, expectedSize]);
+							expect(resizeCount).to.equal(1);
+						});
+					});
+
+					it('clamps to max size while dragging past max', async() => {
+						const elem = await fixture(
+							createDivider({ currentSize: maxSize - 30, panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
+							{ rtl: test.rtl }
+						);
+						const requestedSizes = [];
+						elem.addEventListener('d2l-page-divider-resize-live', (e) => requestedSizes.push(e.detail.requestedSize));
+						await dragDivider(elem, { [test.coord]: 50 * (test.growPositive ? 1 : -1) });
+						expect(requestedSizes).to.deep.equal([maxSize - 20, maxSize - 10, maxSize, maxSize, maxSize]);
+					});
+
+					it('dispatches the event for sizes below min while dragging past min', async() => {
+						const elem = await fixture(
+							createDivider({ panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
+							{ rtl: test.rtl }
+						);
+						const requestedSizes = [];
+						elem.addEventListener('d2l-page-divider-resize-live', (e) => requestedSizes.push(e.detail.requestedSize));
+						await dragDivider(elem, { [test.coord]: 200 * (test.growPositive ? -1 : 1) });
+						expect(requestedSizes.length).to.equal(20);
+						expect(requestedSizes.at(-1)).to.equal(currentSize - 200);
+						expect(requestedSizes.at(-1)).to.be.below(minSize);
+					});
+
+					it('clamps to collapsed size while dragging past collapsed start', async() => {
+						const elem = await fixture(
+							createDivider({ currentSize: 40, panelType: test.panelType, panelPosition: test.panelPosition, margin: 350 }),
+							{ rtl: test.rtl }
+						);
+						const requestedSizes = [];
+						elem.addEventListener('d2l-page-divider-resize-live', (e) => requestedSizes.push(e.detail.requestedSize));
+						await dragDivider(elem, { [test.coord]: 50 * (test.growPositive ? -1 : 1) });
+						expect(requestedSizes).to.deep.equal([30, 20, collapsedSize, collapsedSize, collapsedSize]);
+					});
+				});
+			});
+
+			it('does not dispatch event when the size is unchanged', async() => {
+				const elem = await fixture(createDivider({ currentSize: maxSize, margin: 350 }));
+				let dispatched = false;
+				elem.addEventListener('d2l-page-divider-resize-live', () => dispatched = true);
+				await dragDivider(elem, { x: 50 });
+				await nextFrame();
+				expect(dispatched).to.be.false;
+			});
+
+			it('dispatches event when the handle is dragged', async() => {
+				const elem = await fixture(createDivider({ margin: 350 }));
+				const requestedSizes = [];
+				elem.addEventListener('d2l-page-divider-resize-live', (e) => requestedSizes.push(e.detail.requestedSize));
+				await dragHandle(elem, { x: 50 });
+				expect(requestedSizes.at(-1)).to.equal(currentSize + 50);
+			});
+
+			it('does not dispatch event when the arrows are dragged', async() => {
+				const elem = await fixture(createDivider({ margin: 350 }));
+				let dispatched = false;
+				elem.addEventListener('d2l-page-divider-resize-live', () => dispatched = true);
+				await dragArrow(elem, 'end', { x: 50 });
+				await nextFrame();
+				expect(dispatched).to.be.false;
 			});
 		});
 	});
