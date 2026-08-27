@@ -298,7 +298,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 	};
 
 	#getArrowVisibility() {
-		if (this.panelType !== 'panel' || this.collapsed) return { showStartArrow: false, showEndArrow: false };
+		if (this.panelType !== 'panel' || this.currentSize === 0) return { showStartArrow: false, showEndArrow: false };
 		const canShrink = this.currentSize > this.minSize;
 		const canGrow = this.currentSize < this.maxSize;
 		const showStartArrow = this.panelPosition === 'start' ? canShrink : canGrow;

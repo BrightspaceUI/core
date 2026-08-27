@@ -288,9 +288,9 @@ describe('d2l-page-divider-internal', () => {
 								});
 							});
 
-							it('both arrows are hidden when collapsed', async() => {
+							it('both arrows are hidden when currentSize is 0', async() => {
 								const elem = await fixture(
-									createDivider({ collapsed: true, currentSize, panelPosition: test.panelPosition }),
+									createDivider({ currentSize: 0, panelPosition: test.panelPosition }),
 									{ rtl: test.rtl }
 								);
 								const shrinkArrowElem = getDividerArrow(elem, test.shrinkArrow);
