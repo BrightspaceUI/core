@@ -16,7 +16,7 @@ describe('d2l-button-iterator', () => {
 			{ name: 'next', template: buttonIteratorFixtures.default, button: getNext, expectedEvent: 'd2l-button-iterator-next-click' },
 			{ name: 'next-only', template: buttonIteratorFixtures.nextOnly, button: getNextOnly, expectedEvent: 'd2l-button-iterator-next-click' },
 		].forEach(({ name, template, button, expectedEvent }) => {
-			it(name, async() => {
+			it(`should dispatch "${expectedEvent}" when "${name}" is clicked`, async() => {
 				const elem = await fixture(template);
 				clickElem(button(elem));
 				await oneEvent(elem, expectedEvent);
@@ -24,10 +24,10 @@ describe('d2l-button-iterator', () => {
 		});
 
 		[
-			{ name: 'previous-disabled', template: buttonIteratorFixtures.disabled, button: getPrevious },
-			{ name: 'next-disabled', template: buttonIteratorFixtures.disabled, button: getNext }
+			{ name: 'previous', template: buttonIteratorFixtures.disabled, button: getPrevious },
+			{ name: 'next', template: buttonIteratorFixtures.disabled, button: getNext }
 		].forEach(({ name, template, button }) => {
-			it(name, async() => {
+			it(`it should not dispatch an event when disabled "${name}" is clicked`, async() => {
 				const elem = await fixture(template);
 				let eventDispatched = false;
 				elem.addEventListener('d2l-button-iterator-next-click', () => eventDispatched = true);
