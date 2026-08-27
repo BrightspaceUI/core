@@ -37,6 +37,10 @@ class ButtonIterator extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElemen
 		 * @type {boolean}
 		 */
 		nextDisabled: { attribute: 'next-disabled', type: Boolean },
+		/**
+		 * Renders only the next button
+		 * @type {boolean}
+		 */
 		nextOnly: { attribute: 'next-only', type: Boolean },
 		/**
 		 * Overrides the default text for the next button
