@@ -13,13 +13,15 @@ describe('button-iterator', () => {
 		{ name: 'custom-prev-focus', template: buttonIteratorFixtures.custom, action: focusPrevious },
 		{ name: 'custom-prev-hover', template: buttonIteratorFixtures.custom, action: hoverPrevious },
 		{ name: 'description', template: buttonIteratorFixtures.description },
+		{ name: 'description-small', template: buttonIteratorFixtures.description, width: 500 },
 		{ name: 'disabled', template: buttonIteratorFixtures.disabled },
 		{ name: 'disabled-next-hover', template: buttonIteratorFixtures.disabled, action: hoverNext },
 		{ name: 'disabled-prev-hover', template: buttonIteratorFixtures.disabled, action: hoverPrevious },
 		{ name: 'next-only', template: buttonIteratorFixtures.nextOnly }
-	].forEach(({ name, template, action }) => {
+	].forEach(({ name, template, action, width }) => {
 		it(name, async() => {
-			const elem = await fixture(template);
+			const options = (width !== undefined) ? { viewport: { width } } : undefined;
+			const elem = await fixture(template, options);
 			if (action) await action(elem);
 			await expect(elem).to.be.golden();
 		});
