@@ -37,6 +37,7 @@ class PanelStateController {
 				collapsed: config.collapsed,
 				restoreCollapsed: !config.collapsed,
 				size: 0,
+				dragSize: null,
 				minSize: config.minSize,
 				maxSize: config.minSize
 			};
@@ -50,11 +51,14 @@ class PanelStateController {
 	getMinSize(key) { return this.#panels[key].minSize; }
 	getSize(key) {
 		const panel = this.#panels[key];
-		// TO DO: Factor in dragging
+		if (panel.dragSize !== null) return panel.dragSize;
 		return panel.collapsed ? 0 : panel.size;
 	}
 	getTrueSize(key) {
 		const panel = this.#panels[key];
+		if (panel.dragSize !== null) {
+			return Math.max(panel.minSize, panel.dragSize);
+		}
 		return panel.size;
 	}
 
@@ -78,6 +82,7 @@ class PanelStateController {
 		// Clamp requested size to min and max bounds
 		panel.size = Math.max(panel.minSize, Math.min(requestedSize, panel.maxSize));
 		panel.animate = animate;
+		panel.dragSize = null;
 		this.#host.requestUpdate();
 		if (storeState) this.#storePanelState(key);
 	}
@@ -85,14 +90,15 @@ class PanelStateController {
 	setCollapsed(key, collapsed) {
 		const panel = this.#panels[key];
 		panel.collapsed = collapsed;
+		panel.dragSize = null;
 		panel.animate = true;
 		this.#host.requestUpdate();
 		this.#storePanelState(key);
 	}
 
-	setDragSize(key) {
+	setDragSize(key, dragSize) {
 		const panel = this.#panels[key];
-		// TO DO: Handle Dragging
+		panel.dragSize = dragSize;
 		panel.animate = false;
 		this.#host.requestUpdate();
 	}
@@ -539,6 +545,11 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		this._panelState.resize(panelKey, e.detail.requestedSize, { animate: true, storeState: true });
 	};
 
+	#handleDividerResizeLive(e) {
+		const panelKey = e.target.dataset.panelKey;
+		this._panelState.setDragSize(panelKey, e.detail.requestedSize);
+	}
+
 	#handleDividerToggle(e) {
 		const panelKey = e.target.dataset.panelKey;
 		const collapsed = !this._panelState.getCollapsed(panelKey);
@@ -577,11 +588,13 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 				data-panel-key="${panelKey}"
 				label="${label}"
 				?collapsed="${this._panelState.getCollapsed(panelKey)}"
+				collapsed-size="${DIVIDER_GUTTER_WIDTH}"
 				current-size="${this._panelState.getSize(panelKey)}"
 				max-size="${this._panelState.getMaxSize(panelKey)}"
 				min-size="${this._panelState.getMinSize(panelKey)}"
 				panel-position="${ifDefined(panelPosition)}"
 				@d2l-page-divider-resize="${this.#handleDividerResize}"
+				@d2l-page-divider-resize-live="${this.#handleDividerResizeLive}"
 				@d2l-page-divider-toggle="${this.#handleDividerToggle}"
 			></d2l-page-divider-internal>
 		`;
@@ -627,7 +640,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		const classes = {
 			'side-nav-panel': true,
 			'animate': this._panelState.getAnimate(panelKey),
-			'collapsed': this._panelState.getCollapsed(panelKey)
+			'collapsed': this._panelState.getSize(panelKey) === 0 // Collapsed and not being dragged
 		};
 		return html`
 			<nav class="side-nav" ?hidden="${!this._slotVisibility['side-nav']}" aria-label="${this.localize('components.page.side-nav-label')}">
@@ -648,7 +661,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		const classes = {
 			'supporting-panel': true,
 			'animate': this._panelState.getAnimate(panelKey),
-			'collapsed': this._panelState.getCollapsed(panelKey)
+			'collapsed': this._panelState.getSize(panelKey) === 0 // Collapsed and not being dragged
 		};
 		return html`
 			<aside class="supporting" ?hidden="${!this._slotVisibility['supporting']}" aria-label="${this.localize('components.page.supporting-label')}">
