@@ -87,11 +87,11 @@ class PanelStateController {
 		if (storeState) this.#storePanelState(key);
 	}
 
-	setCollapsed(key, collapsed) {
+	setCollapsed(key, collapsed, { animate = true } = {}) {
 		const panel = this.#panels[key];
 		panel.collapsed = collapsed;
 		panel.dragSize = null;
-		panel.animate = true;
+		panel.animate = animate;
 		this.#host.requestUpdate();
 		this.#storePanelState(key);
 	}
@@ -542,7 +542,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	#handleDividerResize(e) {
 		const panelKey = e.target.dataset.panelKey;
-		this._panelState.resize(panelKey, e.detail.requestedSize, { animate: true, storeState: true });
+		// Do not animate if dragging past closed size
+		const animate = this._panelState.getSize(panelKey) > DIVIDER_GUTTER_WIDTH;
+		this._panelState.resize(panelKey, e.detail.requestedSize, { animate, storeState: true });
 	};
 
 	#handleDividerResizeLive(e) {
@@ -552,8 +554,10 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	#handleDividerToggle(e) {
 		const panelKey = e.target.dataset.panelKey;
-		const collapsed = !this._panelState.getCollapsed(panelKey);
-		this._panelState.setCollapsed(panelKey, collapsed);
+		const collapsed = this._panelState.getCollapsed(panelKey);
+		// Do not animate if dragged to fully closed
+		const animate = collapsed || this._panelState.getSize(panelKey) > DIVIDER_GUTTER_WIDTH;
+		this._panelState.setCollapsed(panelKey, !collapsed, { animate });
 	};
 
 	#handleScrimClick() {
@@ -578,13 +582,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 	}
 
 	#renderDivider(panelKey, label, panelPosition) {
-		const classes = {
-			'divider': true,
-			'animate': this._panelState.getAnimate(panelKey)
-		};
 		return html`
 			<d2l-page-divider-internal
-				class="${classMap(classes)}"
+				class="divider"
 				data-panel-key="${panelKey}"
 				label="${label}"
 				?collapsed="${this._panelState.getCollapsed(panelKey)}"
