@@ -110,7 +110,7 @@ class ButtonIterator extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElemen
 	render() {
 		const nextText = this.nextText ? this.nextText : this.localizeCommon('navigation:next:title');
 		if (this.nextOnly) {
-			return this.#renderButton(this.#nextId, 'next-only', 'tier1:chevron-right', nextText, undefined, this.nextDisabled, this.#handleNextClicked);
+			return this.#renderButton(this.#nextId, 'next-only', 'tier1:chevron-right', nextText, undefined, this.nextDisabled);
 		}
 
 		const hasDescription = (this.description !== undefined && this.description !== '' && !this.nextOnly);
@@ -121,9 +121,9 @@ class ButtonIterator extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElemen
 
 		return html`
 			<div class="container">
-				${this.#renderButton(this.#previousId, 'previous', 'tier1:chevron-left', previousText, descriptionId, this.previousDisabled, this.#handlePreviousClicked)}
+				${this.#renderButton(this.#previousId, 'previous', 'tier1:chevron-left', previousText, descriptionId, this.previousDisabled)}
 				${description}
-				${this.#renderButton(this.#nextId, 'next', 'tier1:chevron-right', nextText, descriptionId, this.nextDisabled, this.#handleNextClicked)}
+				${this.#renderButton(this.#nextId, 'next', 'tier1:chevron-right', nextText, descriptionId, this.nextDisabled)}
 			</div>
 		`;
 	}
@@ -132,25 +132,22 @@ class ButtonIterator extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElemen
 	#previousId = getUniqueId();
 	#nextId = getUniqueId();
 
-	#handleNextClicked(e) {
-		if (this.nextDisabled) {
+	#handleButtonClick(e) {
+		const button = e.currentTarget;
+		if (button.disabled) {
 			return;
 		}
 		e.stopPropagation();
-		/** Dispatched when the next button is clicked. */
-		this.dispatchEvent(new CustomEvent('d2l-button-iterator-next-click'));
-	}
-
-	#handlePreviousClicked(e) {
-		if (this.previousDisabled) {
-			return;
+		if (button.id === this.#nextId) {
+			/** Dispatched when the next button is clicked. */
+			this.dispatchEvent(new CustomEvent('d2l-button-iterator-next-click'));
+		} else if (button.id === this.#previousId) {
+			/** Dispatched when the previous button is clicked. */
+			this.dispatchEvent(new CustomEvent('d2l-button-iterator-previous-click'));
 		}
-		e.stopPropagation();
-		/** Dispatched when the previous button is clicked. */
-		this.dispatchEvent(new CustomEvent('d2l-button-iterator-previous-click'));
 	}
 
-	#renderButton(id, className, icon, text, descriptionId, disabled, clickHandler) {
+	#renderButton(id, className, icon, text, descriptionId, disabled) {
 		const ariaLabel = disabled ? text : undefined;
 		const tooltip = !disabled ? html`
 			<d2l-tooltip
@@ -163,7 +160,7 @@ class ButtonIterator extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElemen
 				aria-describedby="${ifDefined(descriptionId)}"
 				aria-label="${ifDefined(ariaLabel)}"
 				class="${className}"
-				@click="${clickHandler}"
+				@click="${this.#handleButtonClick}"
 				?disabled="${disabled}"
 				id="${id}"
 				type="button">
