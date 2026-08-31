@@ -178,7 +178,7 @@ Use icon buttons for compact, supplementary actions where space is limited and t
 
 A navigation control for moving sequentially through a set of items.
 
-<!-- docs: demo code properties name:d2l-button-iterator sandboxTitle:'Iterator Button' -->
+<!-- docs: demo code properties name:d2l-button-iterator autoSize:false size:small sandboxTitle:'Iterator Button' -->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/button/button-iterator.js';

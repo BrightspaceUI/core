@@ -95,12 +95,12 @@ class ButtonIterator extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElemen
 
 	constructor() {
 		super();
-		this.description = undefined;
+		this.description = '';
 		this.nextDisabled = false;
 		this.nextOnly = false;
-		this.nextText = undefined;
+		this.nextText = '';
 		this.previousDisabled = false;
-		this.previousText = undefined;
+		this.previousText = '';
 	}
 
 	static get focusElementSelector() {
