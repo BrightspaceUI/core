@@ -21,7 +21,6 @@ codeLanguages.set('json', 'JSON');
 codeLanguages.set('kotlin', 'Kotlin');
 codeLanguages.set('latex', 'LaTeX');
 codeLanguages.set('markup', 'Markup');
-codeLanguages.set('markdown', 'Markdown');
 codeLanguages.set('matlab', 'MATLAB');
 codeLanguages.set('plain', 'Plain Text');
 codeLanguages.set('python', 'Python');
