@@ -174,6 +174,36 @@ Use icon buttons for compact, supplementary actions where space is limited and t
 </d2l-button-icon>
 ```
 
+## Button Iterator [d2l-button-iterator]
+
+A navigation control for moving sequentially through a set of items.
+
+<!-- docs: demo code properties name:d2l-button-iterator autoSize:false size:small sandboxTitle:'Iterator Button' -->
+```html
+<script type="module">
+  import '@brightspace-ui/core/components/button/button-iterator.js';
+</script>
+<d2l-button-iterator></d2l-button-iterator>
+```
+
+<!-- docs: start hidden content -->
+### Properties
+
+| Property | Type | Description |
+|--|--|--|
+| `description` | String | An optional description, typically for indicating the current position within the set of items |
+| `previous-disabled` | Boolean | Disables the previous button |
+| `previous-text` | String | Overrides the default text for the previous button |
+| `next-disabled` | Boolean | Disables the next button |
+| `next-only` | Boolean | Renders only the next button |
+| `next-text` | String | Overrides the default text for the next button |
+
+### Events
+
+- `d2l-button-iterator-previous-click`: dispatched when the previous button is clicked
+- `d2l-button-iterator-next-click`: dispatched when the next button is clicked
+<!-- docs: end hidden content -->
+
 ## Toggle Button [d2l-button-toggle]
 
 Use toggle buttons when users need to easily flip between two opposing states, such as when subscribing or unsubscribing.
