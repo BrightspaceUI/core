@@ -382,7 +382,7 @@ Load-More paging functionality can be implemented in lists by placing a `d2l-pag
 
 ## Drag & Drop Lists
 
-The `d2l-list` supports drag & drop.
+The `d2l-list` supports drag & drop, in both `list` and `tiles` layout.
 
 The `d2l-list` is simply a rendering component, so there is some light work involved in hooking up this behaviour. In order for items to be draggable, they must have their `draggable` and `key` attributes set. Optionally, the `drop-nested` attribute can be applied to items to indicate whether other items can be dropped as nested children on the item.
 
@@ -394,7 +394,7 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
 
 ### Example
 
-<!-- docs: demo code display:block autoSize:false size:medium sandboxTitle:'List - Drag & Drop'-->
+<!-- docs: demo code display:block sandboxTitle:'List - Drag & Drop'-->
 ```html
 <script type="module">
   import '@brightspace-ui/core/components/list/list.js';
@@ -404,11 +404,13 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
 
   class ListDemoDragAndDropUsage extends LitElement {
     static properties = {
+      layout: { type: String },
       list: { type: Array }
     };
 
     constructor() {
       super();
+      this.layout = "list";
       this.list = [
         { key: '1', content: 'Initially first list item' },
         { key: '2', content: 'Initially second list item' },
@@ -429,7 +431,7 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
       });
 
       return html`
-        <d2l-list @d2l-list-item-position-change="${this._moveItems}">
+        <d2l-list layout="${this.layout}" @d2l-list-item-position-change="${this._moveItems}">
           ${listItems}
         </d2l-list>
       `;
@@ -443,6 +445,7 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
   customElements.define('d2l-my-drag-drop-elem', ListDemoDragAndDropUsage);
 </script>
 <d2l-my-drag-drop-elem></d2l-my-drag-drop-elem>
+<d2l-my-drag-drop-elem layout="tiles" style="display: flex; justify-content: center; margin-top: 1.5rem;"></d2l-my-drag-drop-elem>
 ```
 
 #### Draggable lists with interactive content
@@ -801,7 +804,7 @@ The example below also includes expand/collapse behavior in order to expand or c
 
 The `d2l-list` component supports displaying items in a tile layout. The built-in rendering will take care of laying out the illustration, selection, secondary actions, and color indicators for each item in either the `list` (default) or `tiles` layout. To display items in a tile layout, set the `d2l-list`'s `layout` property to `tiles`.
 
-**Note:** Nested lists, separators, and drag & drop are not supported in the tile layout.
+**Note:** Nested lists and separators are not supported in the tile layout.
 
 <!-- docs: demo code display:block autoSize:true sandboxTitle:'List - Tile Layout'-->
 ```html
