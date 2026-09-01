@@ -42,14 +42,14 @@ export default {
 			},
 		}),
 		resolve(),
+		dynamicImportVars(),
 		replace({
 			delimiters: ['', ''],
 			include: '**/components/demo/code-view.js',
 			preventAssignment: true,
 			values: {
-				'prismjs/components/': '../../node_modules/prismjs/components/',
+				'../../node_modules/prismjs/components/': 'prismjs/components/',
 			},
 		}),
-		dynamicImportVars(),
 	],
 };
