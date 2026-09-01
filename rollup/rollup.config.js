@@ -43,13 +43,5 @@ export default {
 		}),
 		resolve(),
 		dynamicImportVars(),
-		replace({
-			delimiters: ['', ''],
-			include: '**/components/demo/code-view.js',
-			preventAssignment: true,
-			values: {
-				'../../node_modules/prismjs/components/': 'prismjs/components/',
-			},
-		}),
 	],
 };

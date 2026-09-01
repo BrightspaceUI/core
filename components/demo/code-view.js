@@ -1,5 +1,5 @@
-import 'prismjs/prism.js';
 import { html, LitElement } from 'lit';
+import { formatCodeElement } from '../../helpers/prism.js';
 import { styles } from './code-view-styles.js';
 import { themeStyles } from './code-dark-plus-styles.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
@@ -17,17 +17,10 @@ class CodeView extends LitElement {
 	constructor() {
 		super();
 		this.language = 'html';
-		this._dependenciesPromise = Promise.resolve();
 	}
 
 	attributeChangedCallback(name, oldval, newval) {
 		if (name !== 'language' || oldval === newval) return;
-		const language = this._getLanguage(newval);
-		if (Prism.languages[language]) {
-			this._dependenciesPromise = Promise.resolve();
-		} else {
-			this._dependenciesPromise = import(`../../node_modules/prismjs/components/prism-${language}.min.js`);
-		}
 		if (this.shadowRoot) this._updateCode(this.shadowRoot.querySelector('slot'));
 		super.attributeChangedCallback(name, oldval, newval);
 	}
@@ -78,17 +71,6 @@ class CodeView extends LitElement {
 		}).join('\n');
 	}
 
-	_getLanguage(language) {
-		const aliases = { shell: 'bash' };
-		return aliases[language] ? aliases[language] : language;
-	}
-
-	_getPrismGrammar(language) {
-		language = this._getLanguage(language);
-		if (Prism.languages[language]) return Prism.languages[language];
-		else return Prism.languages.html;
-	}
-
 	_handleSlotChange(e) {
 		this._updateCode(e.target);
 	}
@@ -107,8 +89,11 @@ class CodeView extends LitElement {
 		let code = this._formatCode(nodes.reduce((code, node) => code + node.textContent, ''));
 
 		try {
-			await this._dependenciesPromise;
-			code = Prism.highlight(code, this._getPrismGrammar(this.language), this.language);
+			const codeElement = document.createElement('code');
+			codeElement.className = `language-${this.language}`;
+			codeElement.textContent = code;
+			await formatCodeElement(codeElement);
+			code = codeElement.innerHTML;
 		} catch (ex) {
 			// eslint-disable-next-line no-console
 			console.log(ex);
