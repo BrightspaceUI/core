@@ -410,7 +410,7 @@ If an item is draggable, the `drag-handle-text` attribute should be used to prov
 
     constructor() {
       super();
-      this.layout = "list";
+      this.layout = 'list';
       this.list = [
         { key: '1', content: 'Initially first list item' },
         { key: '2', content: 'Initially second list item' },
