@@ -159,6 +159,7 @@ describe('d2l-page-divider-internal', () => {
 		});
 
 		describe('d2l-page-divider-resize', () => {
+			const collapsedSize = 14;
 			const currentSize = 450;
 			const minSize = 320;
 			const maxSize = 600;
@@ -298,6 +299,17 @@ describe('d2l-page-divider-internal', () => {
 								const growArrowElem = getDividerArrow(elem, test.growArrow);
 								expect(growArrowElem.hidden).to.be.true;
 							});
+
+							it('both arrows are hidden when currentSize is at collapsedSize', async() => {
+								const elem = await fixture(
+									createDivider({ currentSize: collapsedSize, panelPosition: test.panelPosition }),
+									{ rtl: test.rtl }
+								);
+								const shrinkArrowElem = getDividerArrow(elem, test.shrinkArrow);
+								expect(shrinkArrowElem.hidden).to.be.true;
+								const growArrowElem = getDividerArrow(elem, test.growArrow);
+								expect(growArrowElem.hidden).to.be.true;
+							});
 						});
 					});
 
@@ -309,7 +321,6 @@ describe('d2l-page-divider-internal', () => {
 				});
 
 				describe('dragging', () => {
-					const collapsedSize = 14;
 					const dragDistance = 50;
 					const halfDragDistance = dragDistance / 2;
 					const autoCollapseDistance = currentSize - (minSize * 0.75);
