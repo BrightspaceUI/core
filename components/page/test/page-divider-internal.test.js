@@ -289,26 +289,17 @@ describe('d2l-page-divider-internal', () => {
 								});
 							});
 
-							it('both arrows are hidden when currentSize is 0', async() => {
-								const elem = await fixture(
-									createDivider({ currentSize: 0, panelPosition: test.panelPosition }),
-									{ rtl: test.rtl }
-								);
-								const shrinkArrowElem = getDividerArrow(elem, test.shrinkArrow);
-								expect(shrinkArrowElem.hidden).to.be.true;
-								const growArrowElem = getDividerArrow(elem, test.growArrow);
-								expect(growArrowElem.hidden).to.be.true;
-							});
-
-							it('both arrows are hidden when currentSize is at collapsedSize', async() => {
-								const elem = await fixture(
-									createDivider({ currentSize: collapsedSize, panelPosition: test.panelPosition }),
-									{ rtl: test.rtl }
-								);
-								const shrinkArrowElem = getDividerArrow(elem, test.shrinkArrow);
-								expect(shrinkArrowElem.hidden).to.be.true;
-								const growArrowElem = getDividerArrow(elem, test.growArrow);
-								expect(growArrowElem.hidden).to.be.true;
+							[0, collapsedSize].forEach(size => {
+								it(`both arrows are hidden when currentSize is ${size}`, async() => {
+									const elem = await fixture(
+										createDivider({ currentSize: size, panelPosition: test.panelPosition }),
+										{ rtl: test.rtl }
+									);
+									const shrinkArrowElem = getDividerArrow(elem, test.shrinkArrow);
+									expect(shrinkArrowElem.hidden).to.be.true;
+									const growArrowElem = getDividerArrow(elem, test.growArrow);
+									expect(growArrowElem.hidden).to.be.true;
+								});
 							});
 						});
 					});
