@@ -1,6 +1,7 @@
 import '../colors/colors.js';
 import '../icons/icon-custom.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -116,6 +117,14 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		.divider:focus-within {
 			background-color: var(--d2l-color-celestine);
 		}
+		:host([panel-position="start"]) .divider.collapsed,
+		:host([panel-position="end"]) .divider.maxed {
+			cursor: var(--d2l-cursor-resize-inline-end, e-resize);
+		}
+		:host([panel-position="start"]) .divider.maxed,
+		:host([panel-position="end"]) .divider.collapsed {
+			cursor: var(--d2l-cursor-resize-inline-start, w-resize);
+		}
 
 		.slider {
 			inset-inline-start: -${DIVIDER_HANDLE_SIZE / 2 - DIVIDER_WIDTH / 2}px;
@@ -189,6 +198,12 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			height: ${DIVIDER_WIDTH}px;
 			width: 100%;
 		}
+		:host([panel-type="drawer"]) .divider.collapsed {
+			cursor: n-resize;
+		}
+		:host([panel-type="drawer"]) .divider.maxed {
+			cursor: s-resize;
+		}
 
 		:host([panel-type="drawer"]) .slider {
 			inset-inline-end: 18px;
@@ -215,6 +230,11 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 	}
 
 	render() {
+		const dividerClasses = {
+			divider: true,
+			collapsed: this.currentSize <= this.collapsedSize,
+			maxed: this.currentSize === this.maxSize
+		};
 		const { showStartArrow, showEndArrow } = this.#getArrowVisibility();
 		let ariaValues = {};
 		if (this.maxSize > 0) {
@@ -222,7 +242,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		}
 
 		return html`
-		    <div class="divider" @click="${this.#handleClick}" @pointerdown="${this.#handlePointerDown}">
+		    <div class="${classMap(dividerClasses)}" @click="${this.#handleClick}" @pointerdown="${this.#handlePointerDown}">
 				${this.panelType === 'panel' ? html`
 					<div class="divider-arrow start" data-position="start" ?hidden="${!showStartArrow}">
 						<d2l-icon-custom size="tier1">${ICON_ARROW_COLLAPSE_LEFT}</d2l-icon-custom>
