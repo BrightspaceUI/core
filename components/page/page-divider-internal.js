@@ -109,6 +109,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			cursor: ew-resize;
 			height: 100%;
 			position: relative;
+			touch-action: none;
 			width: ${DIVIDER_WIDTH}px;
 		}
 		.divider:hover {
