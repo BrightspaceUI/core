@@ -92,7 +92,7 @@ class CodeView extends LitElement {
 			const codeElement = document.createElement('code');
 			codeElement.className = `language-${this.language}`;
 			codeElement.textContent = code;
-			await formatCodeElement(codeElement);
+			await formatCodeElement(codeElement, { allowAllLanguages: true });
 			code = codeElement.innerHTML;
 		} catch (ex) {
 			// eslint-disable-next-line no-console
