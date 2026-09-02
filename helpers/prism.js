@@ -355,6 +355,7 @@ const languageDependencies = {
 const languagesLoaded = {
 	clike: Promise.resolve(),
 	css: Promise.resolve(),
+	html: Promise.resolve(),
 	javascript: Promise.resolve(),
 	markup: Promise.resolve(),
 	plain: Promise.resolve()
@@ -362,7 +363,6 @@ const languagesLoaded = {
 
 const loadLanguage = async key => {
 	if (languagesLoaded[key]) return languagesLoaded[key];
-	if (Prism.languages[key]) return Promise.resolve();
 
 	// Prism languages can extend other anguages and must be loaded in order
 
@@ -447,6 +447,7 @@ const getCodeElement = elem => {
 	return elem.querySelector('code');
 };
 
+// allowAllLanguages is intended only for development consumers.
 export async function formatCodeElement(elem, { allowAllLanguages = false } = {}) {
 	const code = getCodeElement(elem);
 
