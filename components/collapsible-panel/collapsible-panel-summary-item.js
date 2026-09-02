@@ -1,10 +1,8 @@
 import '../colors/colors.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { bodySmallStyles } from '../typography/styles.js';
-import { classMap } from 'lit/directives/class-map.js';
 import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
-import { styleMap } from 'lit/directives/style-map.js';
 
 /**
  * A component for a "summary item" child component that describes the content in a collapsible panel.
@@ -35,9 +33,6 @@ class CollapsiblePanelSummaryItem extends SkeletonMixin(LitElement) {
 		.d2l-body-small {
 			line-height: 1.2rem;
 		}
-		p.truncate {
-			${getOverflowDeclarations({ lines: 1 })}
-		}
 	`];
 
 	constructor() {
@@ -47,13 +42,8 @@ class CollapsiblePanelSummaryItem extends SkeletonMixin(LitElement) {
 	}
 
 	render() {
-		const classes = {
-			'd2l-body-small': true,
-			'd2l-skeletize': true,
-			'truncate': this.lines > 0
-		};
-		const styles = (this.lines > 0) ? { '-webkit-line-clamp': this.lines } : {};
-		return html`<p class="${classMap(classes)}" style="${styleMap(styles)}">${this.text}</p>`;
+		const styles = this.lines ? getOverflowDeclarations({ lines: this.lines }) : null;
+		return html`<p class="d2l-body-small d2l-skeletize" style="${styles ?? nothing}">${this.text}</p>`;
 	}
 }
 
