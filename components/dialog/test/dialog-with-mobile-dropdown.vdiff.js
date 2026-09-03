@@ -2,6 +2,9 @@ import '../dialog.js';
 import '../dialog-fullscreen.js';
 import { dropdowns, filter, footer, general } from './dialog-shared-contents.js';
 import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
+import { mockFlag, resetFlag } from '../../../helpers/flags.js';
+
+const preferNativeFullscreenDialogsFlag = 'GAUD-10336-prefer-native-fullscreen-dialogs';
 
 const dialog = html`
 	<d2l-dialog title-text="Dialog Title" opened>
@@ -47,7 +50,12 @@ describe('dialog-with-mobile-dropdown', () => {
 	[/*'native', */'custom'].forEach((type) => {
 
 		describe(type, () => {
-			before(() => window.D2L.DialogMixin.preferNative = type === 'native');
+
+			before(() => {
+				window.D2L.DialogMixin.preferNative = type === 'native';
+				mockFlag(preferNativeFullscreenDialogsFlag, type === 'native');
+			});
+			after(() => resetFlag(preferNativeFullscreenDialogsFlag));
 
 			describe('default-breakpoint', () => {
 				[
