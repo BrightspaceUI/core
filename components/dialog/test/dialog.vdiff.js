@@ -31,6 +31,24 @@ describe('dialog', () => {
 			before(() => mockFlag(preferNativeGeneralDialogsFlag, type === 'native'));
 			after(() => resetFlag(preferNativeGeneralDialogsFlag));
 
+			const focusOnContentTestCases = (type === 'custom') ? [
+				{ name: 'focus on content when overflowing content', template: createDialog({ content: html`<div style="height: 5000px;">Line 1</div>` }), action: async() => await sendKeys('press', 'Tab') },
+				{ name: 'focus on content when overflowing content and footer', template: createDialog({ content: html`<div style="height: 5000px;">Line 1</div>${footer}` }), action:
+					async() => {
+						await sendKeys('press', 'Tab');
+						await sendKeys('press', 'Tab');
+						await sendKeys('press', 'Tab');
+					}
+				},
+				{ name: 'focus on content when short content', template: createDialog({ content: html`<div style="height: 200px;">Line 1</div>` }), action: async() => await sendKeys('press', 'Tab') },
+				{ name: 'focus on focusable elem when overflowing content', template: createDialog({ content: html`<div style="height: 5000px;"><button>My button</button></div>` }), action:
+					async() => {
+						await sendKeys('press', 'Tab');
+						await sendKeys('press', 'Tab');
+					}
+				}
+			] : [];
+
 			[
 				{ screen: 'tall-wide', viewport: { width: 800, height: 500 } },
 				{ screen: 'tall-narrow', viewport: { width: 600, height: 500 } },
@@ -49,21 +67,7 @@ describe('dialog', () => {
 								elem.resize();
 							}
 						},
-						{ name: 'focus on content when overflowing content', template: createDialog({ content: html`<div style="height: 5000px;">Line 1</div>` }), action: async() => await sendKeys('press', 'Tab') },
-						{ name: 'focus on content when overflowing content and footer', template: createDialog({ content: html`<div style="height: 5000px;">Line 1</div>${footer}` }), action:
-							async() => {
-								await sendKeys('press', 'Tab');
-								await sendKeys('press', 'Tab');
-								await sendKeys('press', 'Tab');
-							}
-						},
-						{ name: 'focus on content when short content', template: createDialog({ content: html`<div style="height: 200px;">Line 1</div>` }), action: async() => await sendKeys('press', 'Tab') },
-						{ name: 'focus on focusable elem when overflowing content', template: createDialog({ content: html`<div style="height: 5000px;"><button>My button</button></div>` }), action:
-							async() => {
-								await sendKeys('press', 'Tab');
-								await sendKeys('press', 'Tab');
-							}
-						}
+						...focusOnContentTestCases
 					].forEach(({ name, template, rtl, action }) => {
 						it(name, async() => {
 							const elem = await fixture(template, { viewport, rtl });
