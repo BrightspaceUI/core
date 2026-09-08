@@ -1,8 +1,8 @@
 import { addMarkers, clearStoredPanelState, openPanel, scrollBody, scrollPanel, setStoredPanelState } from './page-fixtures.js';
-import { clickDivider, clickDividerArrow, clickDividerHandle, focusDivider, hoverDivider, hoverDividerArrow, hoverDividerHandle, pageDividerFixtures, pressKeyDivider } from './page-divider-internal-fixtures.js';
+import { clickAt, expect, fixture, nextFrame } from '@brightspace-ui/testing';
+import { clickDivider, clickDividerArrow, clickDividerHandle, focusDivider, forceDividerActive, hoverDivider, hoverDividerArrow, hoverDividerHandle, pageDividerFixtures, pressKeyDivider } from './page-divider-internal-fixtures.js';
 import { DIVIDER_GUTTER_WIDTH, MAIN_MIN_WIDTH, PANEL_MIN_WIDTH, SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth, supportingOverlayDefaultWidth } from '../page.js';
 import { DIVIDER_WIDTH, KEYBOARD_STEP, KEYBOARD_STEP_LARGE } from '../page-divider-internal.js';
-import { expect, fixture, nextFrame } from '@brightspace-ui/testing';
 
 describe('page-divider-internal', () => {
 
@@ -83,6 +83,23 @@ describe('page-divider-internal', () => {
 				await hoverDividerHandle(elem, test.panelKey);
 				await expect(elem).to.be.golden({ margin: 0 });
 			});
+		});
+	});
+
+	describe('active', () => {
+		it('on', async() => {
+			const elem = await fixture(pageDividerFixtures.sideNavBothHeadersFooter, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+			await forceDividerActive(elem, 'side-nav');
+
+			await expect(elem).to.be.golden({ margin: 0 });
+		});
+
+		it('off', async() => {
+			const elem = await fixture(pageDividerFixtures.supportingImmersiveLongMain, { pagePadding: false, viewport: { width: 1000, height: 400 } });
+			await forceDividerActive(elem, 'supporting');
+
+			await clickAt(0, 0);
+			await expect(elem).to.be.golden({ margin: 0 });
 		});
 	});
 

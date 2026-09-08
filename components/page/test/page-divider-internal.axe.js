@@ -1,6 +1,6 @@
 import '../page-divider-internal.js';
 import { clearStoredPanelState, openPanel, setStoredPanelState } from './page-fixtures.js';
-import { clickDivider, clickDividerHandle, focusDivider, hoverDivider, hoverDividerArrow, hoverDividerHandle, pageDividerFixtures } from './page-divider-internal-fixtures.js';
+import { clickDivider, clickDividerHandle, focusDivider, forceDividerActive, hoverDivider, hoverDividerArrow, hoverDividerHandle, pageDividerFixtures } from './page-divider-internal-fixtures.js';
 import { expect, fixture } from '@brightspace-ui/testing';
 
 const defaultFixtureOptions = { pagePadding: false, viewport: { width: 1300, height: 800 } };
@@ -20,6 +20,12 @@ describe('page-divider-internal', () => {
 	it('hover handle', async() => {
 		const elem = await fixture(pageDividerFixtures.supportingImmersiveFooter, defaultFixtureOptions);
 		await hoverDividerHandle(elem, 'supporting');
+		await expect(elem).to.be.accessible();
+	});
+
+	it('active (forced focus)', async() => {
+		const elem = await fixture(pageDividerFixtures.sideNavBothHeadersFooter, defaultFixtureOptions);
+		await forceDividerActive(elem, 'side-nav');
 		await expect(elem).to.be.accessible();
 	});
 

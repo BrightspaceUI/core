@@ -28,6 +28,12 @@ export async function focusDivider(elem, panelKey) {
 	await focusElem(getDivider(elem, panelKey));
 }
 
+export async function forceDividerActive(elem, panelKey) {
+	const divider = getDivider(elem, panelKey);
+	divider._active = true;
+	await divider.updateComplete;
+}
+
 export async function hoverDivider(elem, panelKey) {
 	await hoverElem(getDivider(elem, panelKey));
 }
