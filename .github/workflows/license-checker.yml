@@ -1,5 +1,9 @@
 name: License Checker
 on: pull_request
+
+permissions:
+  contents: read
+
 jobs:
   lint:
     name: License Checker
