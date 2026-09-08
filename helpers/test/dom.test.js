@@ -1,7 +1,6 @@
 import {
 	addResizeNoopEventListener,
 	clearResizeNoopEventListeners,
-	cssEscape,
 	elemIdListAdd,
 	elemIdListRemove,
 	findComposedAncestor,
@@ -158,24 +157,6 @@ class TestElement extends LitElement {
 customElements.define('test-elem', TestElement);
 
 describe('dom', () => {
-
-	describe('cssEscape', () => {
-
-		let oldCss;
-		beforeEach(() => {
-			oldCss = window.CSS;
-			window.CSS = undefined;
-		});
-		afterEach(() => {
-			window.CSS = oldCss;
-		});
-
-		it('should escape $ using polyfill', () => {
-			const val = cssEscape('foo$bar$blah');
-			expect(val).to.equal('foo\\$bar\\$blah');
-		});
-
-	});
 
 	describe('elemIdList', () => {
 
