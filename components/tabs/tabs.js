@@ -2,7 +2,7 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import './tab-internal.js';
 import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
-import { cssEscape, findComposedAncestor, getOffsetParent, isVisible } from '../../helpers/dom.js';
+import { findComposedAncestor, getOffsetParent, isVisible } from '../../helpers/dom.js';
 import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
@@ -455,7 +455,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	_animateTabAdditionDefaultSlotBehavior(tabInfo) {
 		const tab = this.shadowRoot
-			&& this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
+			&& this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${CSS.escape(tabInfo.id)}"]`);
 		if (!tab) Promise.resolve();
 
 		return new Promise((resolve) => {
@@ -487,7 +487,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	_animateTabRemovalDefaultSlotBehavior(tabInfo) {
 		const tab = this.shadowRoot &&
-			this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
+			this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${CSS.escape(tabInfo.id)}"]`);
 		if (!tab) Promise.resolve();
 
 		return new Promise((resolve) => {

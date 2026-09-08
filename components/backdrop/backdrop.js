@@ -1,6 +1,6 @@
 import '../colors/colors.js';
 import { css, html, LitElement } from 'lit';
-import { cssEscape, getComposedChildren, getComposedParent, isComposedAncestor, isVisible } from '../../helpers/dom.js';
+import { getComposedChildren, getComposedParent, isComposedAncestor, isVisible } from '../../helpers/dom.js';
 import { getComposedActiveElement } from '../../helpers/focus.js';
 
 const BACKDROP_HIDDEN = 'data-d2l-backdrop-hidden';
@@ -103,7 +103,7 @@ class Backdrop extends LitElement {
 
 			if (this._state === null) {
 				preventBodyScroll(this);
-				const target = this.parentNode.querySelector(`#${cssEscape(this.forTarget)}`);
+				const target = this.parentNode.querySelector(`#${CSS.escape(this.forTarget)}`);
 				// aria-hidden elements cannot have focus, so wait for focus to be within target
 				waitForFocusWithinTarget(target, Date.now() + 200).then(() => {
 					if (!this.shown || this._state !== 'showing') return;

@@ -1,4 +1,3 @@
-import { cssEscape } from '../../helpers/dom.js';
 import { SelectionInfo } from './selection-mixin.js';
 
 export const SelectionObserverMixin = superclass => class extends superclass {
@@ -103,7 +102,7 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 	}
 
 	_updateProvider() {
-		const selectionComponent = this.selectionFor ? this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`) : undefined;
+		const selectionComponent = this.selectionFor ? this.getRootNode().querySelector(`#${CSS.escape(this.selectionFor)}`) : undefined;
 		if (this._provider === selectionComponent) return;
 
 		this._disconnectProvider();
