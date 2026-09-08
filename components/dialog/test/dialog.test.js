@@ -1,8 +1,11 @@
 import '../dialog.js';
 import { aTimeout, expect, fixture, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
+import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 import { createMessage } from '../../../mixins/property-required/property-required-mixin.js';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { html } from 'lit';
+
+const preferNativeGeneralDialogsFlag = 'GAUD-10409-prefer-native-general-dialogs';
 
 describe('d2l-dialog', () => {
 
@@ -24,7 +27,38 @@ describe('d2l-dialog', () => {
 
 	});
 
-	describe('focus management', () => {
+	describe('focus management - native', () => {
+
+		before(() => mockFlag(preferNativeGeneralDialogsFlag, true));
+		after(() => resetFlag(preferNativeGeneralDialogsFlag));
+
+		it('should focus on heading when there are no focusable elements in content', async() => {
+			const el = await fixture(html`<d2l-dialog title-text="dialog title" opened>not focusable</d2l-dialog>`);
+			await oneEvent(el, 'd2l-dialog-open');
+			expect(getComposedActiveElement().tagName).to.equal('H2');
+			expect(getComposedActiveElement().textContent).to.equal('dialog title');
+		});
+
+		it('should focus on heading when there are focusable elements in content', async() => {
+			const el = await fixture(html`<d2l-dialog title-text="dialog title" opened><button>focusable</button></d2l-dialog>`);
+			await oneEvent(el, 'd2l-dialog-open');
+			expect(getComposedActiveElement().tagName).to.equal('H2');
+			expect(getComposedActiveElement().textContent).to.equal('dialog title');
+		});
+
+		it('should focus on heading even if content uses autofocus', async() => {
+			const el = await fixture(html`<d2l-dialog title-text="dialog title" opened><p autofocus tabindex="-1">focus</p><button>focus</button></d2l-dialog>`);
+			await oneEvent(el, 'd2l-dialog-open');
+			expect(getComposedActiveElement().tagName).to.equal('H2');
+			expect(getComposedActiveElement().textContent).to.equal('dialog title');
+		});
+
+	});
+
+	describe('focus management - custom', () => {
+
+		before(() => mockFlag(preferNativeGeneralDialogsFlag, false));
+		after(() => resetFlag(preferNativeGeneralDialogsFlag));
 
 		it('should focus on close button if no focusable elements inside', async() => {
 			const el = await fixture(html`<d2l-dialog>not focusable</d2l-dialog>`);

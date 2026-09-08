@@ -4,6 +4,7 @@ import { dropdowns, filter, footer, general } from './dialog-shared-contents.js'
 import { expect, fixture, html, oneEvent } from '@brightspace-ui/testing';
 import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 
+const preferNativeGeneralDialogsFlag = 'GAUD-10409-prefer-native-general-dialogs';
 const preferNativeFullscreenDialogsFlag = 'GAUD-10336-prefer-native-fullscreen-dialogs';
 
 const dialog = html`
@@ -47,15 +48,18 @@ async function openFilter(filter) {
 
 describe('dialog-with-mobile-dropdown', () => {
 
-	[/*'native', */'custom'].forEach((type) => {
+	['native', 'custom'].forEach((type) => {
 
 		describe(type, () => {
 
 			before(() => {
-				window.D2L.DialogMixin.preferNative = type === 'native';
+				mockFlag(preferNativeGeneralDialogsFlag, type === 'native');
 				mockFlag(preferNativeFullscreenDialogsFlag, type === 'native');
 			});
-			after(() => resetFlag(preferNativeFullscreenDialogsFlag));
+			after(() => {
+				resetFlag(preferNativeGeneralDialogsFlag);
+				resetFlag(preferNativeFullscreenDialogsFlag);
+			});
 
 			describe('default-breakpoint', () => {
 				[
