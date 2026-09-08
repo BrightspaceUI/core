@@ -93,10 +93,7 @@ describe('LoadingCompleteMixin', () => {
 		});
 
 		it('does not log a console warning when resolveLoadingComplete if the element is disconnected', async() => {
-			fixture(`<${noResolveTag}></${noResolveTag}>`);
-
-			await nextFrame();
-			const elem = document.querySelector(noResolveTag);
+			const elem = await fixture(`<${noResolveTag}></${noResolveTag}>`, { awaitLoadingComplete: false });
 			elem.remove();
 			clock.tick(30000);
 			expect(warnStub).to.not.be.called;
