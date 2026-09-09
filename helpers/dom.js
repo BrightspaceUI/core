@@ -1,14 +1,5 @@
 import { getFlag } from './flags.js';
 
-// needed for legacy-Edge, after it's removed use CSS.escape directly
-export function cssEscape(val) {
-	if (window.CSS && window.CSS.escape) {
-		return window.CSS.escape(val);
-	}
-	val = val.replace(/\$/g, '\\$');
-	return val;
-}
-
 export function elemIdListAdd(elem, attrName, value) {
 
 	if (elem === undefined || elem === null || !elem.getAttribute || !elem.setAttribute) {

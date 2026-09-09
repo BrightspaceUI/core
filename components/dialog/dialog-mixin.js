@@ -582,6 +582,32 @@ export const DialogMixin = superclass => class extends superclass {
 
 	}
 
+	_renderContent(content, options) {
+		let tabIndex = undefined;
+		let autoFocus = false;
+		if (this._useNative) {
+			if (!options.hasTitleText) {
+				tabIndex = '-1';
+				autoFocus = true;
+			}
+		} else {
+			tabIndex = !this.focusableContentElemPresent ? '0' : undefined;
+		}
+		return html`<div ?autofocus="${autoFocus}" class="d2l-dialog-content" @pending-state="${ifDefined(options.handleAsyncItemState)}" tabindex="${ifDefined(tabIndex)}">${content}</div>`;
+	}
+
+	_renderHeading(text, options) {
+		let tabIndex = undefined;
+		let autoFocus = false;
+		if (this._useNative) {
+			if (text) {
+				tabIndex = '-1';
+				autoFocus = true;
+			}
+		}
+		return html`<h2 ?autofocus="${autoFocus}" class="${ifDefined(options.class)}" id="${ifDefined(options.id)}" tabindex="${ifDefined(tabIndex)}">${text}</h2>`;
+	}
+
 	_tryApplyFocus(node) {
 		const focusable = getFirstFocusableRelative(node);
 		if (focusable) focusable.focus();
