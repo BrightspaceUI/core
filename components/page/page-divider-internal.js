@@ -240,6 +240,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		document.removeEventListener('pointerdown', this.#handleDocumentPointerDown, { capture: true });
+		this._active = false;
 	}
 
 	render() {
