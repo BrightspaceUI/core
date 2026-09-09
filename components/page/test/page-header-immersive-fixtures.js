@@ -1,7 +1,6 @@
-import '../page-header-button.js';
 import '../page-header-immersive.js';
-import '../page-header-separator.js';
 import '../page.js';
+import '../../button/button-iterator.js';
 import '../../dropdown/dropdown-content.js';
 import '../../dropdown/dropdown-more.js';
 import '../../switch/switch-visibility.js';
@@ -22,11 +21,7 @@ export const pageHeaderImmersiveActionsDemo = html`
 	<d2l-dropdown-more slot="actions" text="More options">
 		<d2l-dropdown-content>Actions go here</d2l-dropdown-content>
 	</d2l-dropdown-more>
-	<div slot="actions" style="height: 100%">
-		<d2l-page-header-button icon="tier3:chevron-left-circle" text="Previous" text-hidden></d2l-page-header-button>
-		<d2l-page-header-separator style="margin: 0;"></d2l-page-header-separator>
-		<d2l-page-header-button icon="tier3:chevron-right-circle" text="Next" text-hidden></d2l-page-header-button>
-	</div>
+	<d2l-button-iterator slot="actions"></d2l-button-iterator>
 `;
 
 export const pageHeaderImmersiveFixtures = {
