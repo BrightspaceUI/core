@@ -10,6 +10,10 @@ import { until } from 'lit/directives/until.js';
 class Icon extends LitElement {
 
 	static properties = {
+		alt: {
+			type: String,
+			reflect: true
+		},
 		icon: {
 			type: String,
 			reflect: true
@@ -46,6 +50,7 @@ class Icon extends LitElement {
 
 		const svg = template.content.firstChild;
 		fixSvg(svg);
+		if (this.alt) svg.setAttribute('aria-label', this.alt);
 
 		return html`${unsafeSVG(template.innerHTML)}`;
 
