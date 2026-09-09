@@ -3,39 +3,52 @@ import { getBackLink, pageHeaderImmersiveFixtures } from './page-header-immersiv
 
 describe('d2l-page-header-immersive', () => {
 
-	[
-		{ name: 'actions', template: pageHeaderImmersiveFixtures.actions },
-		{ name: 'back-custom-text', template: pageHeaderImmersiveFixtures.backCustomText },
-		{ name: 'back-only', template: pageHeaderImmersiveFixtures.backOnly },
-		{ name: 'subtitle-only', template: pageHeaderImmersiveFixtures.subtitleOnly },
-		{ name: 'title-custom', template: pageHeaderImmersiveFixtures.titleCustom },
-		{ name: 'title-only', template: pageHeaderImmersiveFixtures.titleOnly },
-		{ name: 'titles-overflow', template: pageHeaderImmersiveFixtures.titlesOverflow },
-		{ name: 'title-subtitle', template: pageHeaderImmersiveFixtures.titleSubtitle }
-	].forEach(({ name, template }) => {
-		it(name, async() => {
-			const elem = await fixture(template);
-			await expect(elem).to.be.golden();
+	describe('actions', () => {
+		[
+			{ name: 'title', template: pageHeaderImmersiveFixtures.actionsTitle },
+			{ name: 'title-rtl', template: pageHeaderImmersiveFixtures.actionsTitle, rtl: true },
+			{ name: 'no-title', template: pageHeaderImmersiveFixtures.actionsNoTitle }
+		].forEach(({ name, template, rtl = false }) => {
+			it(name, async() => {
+				const elem = await fixture(template, { rtl });
+				await expect(elem).to.be.golden();
+			});
+		});
+	});
+
+	describe('title', () => {
+		[
+			{ name: 'subtitle-only', template: pageHeaderImmersiveFixtures.subtitleOnly },
+			{ name: 'custom', template: pageHeaderImmersiveFixtures.titleCustom },
+			{ name: 'title-only', template: pageHeaderImmersiveFixtures.titleOnly },
+			{ name: 'overflow', template: pageHeaderImmersiveFixtures.titleOverflow },
+			{ name: 'title-subtitle', template: pageHeaderImmersiveFixtures.titleSubtitle },
+			{ name: 'hidden', template: pageHeaderImmersiveFixtures.titleSubtitle, width: 200 }
+		].forEach(({ name, template, width }) => {
+			it(name, async() => {
+				const elem = await fixture(template, width ? { viewport: { width } } : undefined);
+				await expect(elem).to.be.golden();
+			});
 		});
 	});
 
 	describe('back', () => {
 
-		it('short', async() => {
-			const elem = await fixture(pageHeaderImmersiveFixtures.backCustomText, { viewport: { width: 600 } });
-			await expect(elem).to.be.golden();
-		});
-
-		it('hover', async() => {
-			const elem = await fixture(pageHeaderImmersiveFixtures.backOnly);
-			await hoverElem(getBackLink(elem));
-			await expect(elem).to.be.golden();
-		});
-
-		it('focus', async() => {
-			const elem = await fixture(pageHeaderImmersiveFixtures.backOnly);
-			await focusElem(getBackLink(elem));
-			await expect(elem).to.be.golden();
+		[
+			{ name: 'custom-text', template: pageHeaderImmersiveFixtures.backCustomText },
+			{ name: 'only', template: pageHeaderImmersiveFixtures.backOnly },
+			{ name: 'short', template: pageHeaderImmersiveFixtures.backCustomText, width: 600 },
+			{ name: 'compact', template: pageHeaderImmersiveFixtures.backOnly, width: 350 },
+			{ name: 'hover', template: pageHeaderImmersiveFixtures.backOnly, action: hoverElem },
+			{ name: 'focus', template: pageHeaderImmersiveFixtures.backOnly, action: focusElem }
+		].forEach(({ name, template, action, width }) => {
+			it(name, async() => {
+				const elem = await fixture(template, width ? { viewport: { width } } : undefined);
+				if (action) {
+					await action(getBackLink(elem));
+				}
+				await expect(elem).to.be.golden();
+			});
 		});
 
 	});
@@ -49,19 +62,6 @@ describe('d2l-page-header-immersive', () => {
 
 	});
 
-	describe('rtl', () => {
-
-		[
-			{ name: 'actions' }
-		].forEach(({ name }) => {
-			it(name, async() => {
-				const elem = await fixture(pageHeaderImmersiveFixtures.actions, { rtl: true });
-				await expect(elem).to.be.golden();
-			});
-		});
-
-	});
-
 	describe('width-type', () => {
 
 		[
@@ -70,7 +70,7 @@ describe('d2l-page-header-immersive', () => {
 			{ name: 'fullscreen' },
 		].forEach(({ name }) => {
 			it(name, async() => {
-				const elem = await fixture(pageHeaderImmersiveFixtures.actions, { viewport: { width: 1700 } });
+				const elem = await fixture(pageHeaderImmersiveFixtures.actionsTitle, { viewport: { width: 1700 } });
 				elem.setAttribute('width-type', name);
 				await expect(elem).to.be.golden();
 			});
