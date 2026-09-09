@@ -7,6 +7,7 @@ export function fixSvg(svg) {
 
 	svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
 	svg.setAttribute('focusable', 'false');
+	svg.setAttribute('role', 'img');
 	svg.removeAttribute('height');
 	svg.removeAttribute('width');
 
