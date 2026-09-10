@@ -33,9 +33,9 @@ import '../page-side-nav.js';
 import '../page-supporting.js';
 import './page-header-full.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { pageHeaderImmersiveActionsDemo, pageHeaderImmersiveCustomTitleDemo } from '../test/page-header-immersive-fixtures.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputLabelStyles } from '../../inputs/input-label-styles.js';
-import { pageHeaderImmersiveActionsDemo } from '../test/page-header-immersive-fixtures.js';
 import { panelStateStorageKey } from '../page.js';
 import { selectStyles } from '../../inputs/input-select-styles.js';
 import { tableStyles } from '../../table/table-wrapper.js';
@@ -203,6 +203,7 @@ class PageDemo extends LitElement {
 						<option value="title-subtitle" ?selected="${this.immersiveHeaderTitleType === 'title-subtitle'}">Title &amp; Subtitle</option>
 						<option value="title-only" ?selected="${this.immersiveHeaderTitleType === 'title-only'}">Title Only</option>
 						<option value="none" ?selected="${this.immersiveHeaderTitleType === 'none'}">None</option>
+						<option value="custom" ?selected="${this.immersiveHeaderTitleType === 'custom'}">Custom</option>
 					</select>
 				</label>
 				<d2l-input-fieldset label="Actions">
@@ -285,11 +286,13 @@ class PageDemo extends LitElement {
 		if (this.header === 'full') {
 			return html`<d2l-page-header-full-demo slot="header"></d2l-page-header-full-demo>`;
 		}
-		const titleText = this.immersiveHeaderTitleType === 'none' ? undefined : 'Assignment 1';
+		const titleText = (this.immersiveHeaderTitleType === 'none' || this.immersiveHeaderTitleType === 'custom') ? undefined : 'Assignment 1';
 		const subtitleText = this.immersiveHeaderTitleType === 'title-subtitle' ? 'Introduction to Economics' : undefined;
+		const customTitle = (this.immersiveHeaderTitleType === 'custom') ? pageHeaderImmersiveCustomTitleDemo : nothing;
 		return html`
-			<d2l-page-header-immersive slot="header" title-text="${ifDefined(titleText)}" subtitle-text="${ifDefined(subtitleText)}">
+			<d2l-page-header-immersive slot="header" back-custom-text="Back to Course" title-text="${ifDefined(titleText)}" subtitle-text="${ifDefined(subtitleText)}">
 				${this.hasImmersiveHeaderActions ? pageHeaderImmersiveActionsDemo : nothing}
+				${customTitle}
 			</d2l-page-header-immersive>
 		`;
 	}
