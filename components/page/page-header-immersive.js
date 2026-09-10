@@ -14,7 +14,6 @@ import { RequesterMixin } from '../../mixins/provider/provider-mixin.js';
 
 const CONTAINER_GAP = 24;
 const MINIMUM_TITLE_WIDTH = 100;
-const TITLE_PADDING_BORDER_WIDTH = CONTAINER_GAP * 2 + 1;
 
 class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)) {
 
@@ -227,7 +226,8 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 			if (entry.target === this.#refTitle.value) {
 				if (this.#hasTitle()) {
 					if (this._titleHidden) {
-						this._titleHidden = entry.contentRect.width - TITLE_PADDING_BORDER_WIDTH < MINIMUM_TITLE_WIDTH;
+						const extraSpace = this._hasActions ? (CONTAINER_GAP * 2 + 1) : (CONTAINER_GAP + 1);
+						this._titleHidden = entry.contentRect.width - extraSpace < MINIMUM_TITLE_WIDTH;
 					} else {
 						this._titleHidden = entry.contentRect.width < MINIMUM_TITLE_WIDTH;
 					}
