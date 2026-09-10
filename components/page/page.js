@@ -234,6 +234,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		}
 		.content.has-panels {
 			min-height: calc(100vh - var(--d2l-page-header-height-measured, 0px));
+			min-height: calc(100dvh - var(--d2l-page-header-height-measured, 0px));
 		}
 
 		main {
@@ -274,6 +275,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		.supporting-panel-content,
 		.divider {
 			max-height: calc(100vh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
+			max-height: calc(100dvh - var(--d2l-page-header-height, 0) - var(--d2l-page-footer-height, 0));
 		}
 
 		.side-nav-panel-content,
