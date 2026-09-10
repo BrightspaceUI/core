@@ -12,8 +12,9 @@ import { offscreenStyles } from '../offscreen/offscreen.js';
 import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { RequesterMixin } from '../../mixins/provider/provider-mixin.js';
 
+const CONTAINER_GAP = 24;
 const MINIMUM_TITLE_WIDTH = 100;
-const TITLE_PADDING_BORDER_WIDTH = 24 * 2 + 1;
+const TITLE_PADDING_BORDER_WIDTH = CONTAINER_GAP * 2 + 1;
 
 class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)) {
 
@@ -25,7 +26,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		_error: { state: true },
 		_hasActions: { state: true },
 		_hasTitleSlot: { state: true },
-		_hideTitle: { state: true }
+		_titleHidden: { state: true }
 	};
 
 	static styles = [bodyCompactStyles, heading3Styles, labelStyles, highlightBorderStyles, highlightLinkStyles, offscreenStyles, css`
@@ -39,7 +40,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		.container {
 			align-items: stretch;
 			display: flex;
-			gap: 24px;
+			gap: ${CONTAINER_GAP}px;
 			height: 3.1rem;
 		}
 		.title {
@@ -60,7 +61,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		}
 		.title.has-title,
 		.actions.has-title {
-			padding-inline-start: 24px;
+			padding-inline-start: ${CONTAINER_GAP}px;
 		}
 		.title h1 {
 			display: flex;
@@ -106,7 +107,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		this._error = false;
 		this._hasActions = false;
 		this._hasTitleSlot = false;
-		this._hideTitle = false;
+		this._titleHidden = false;
 	}
 
 	connectedCallback() {
@@ -135,7 +136,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		if (this._error) return this.#renderError();
 		const actionsClasses = {
 			'actions': true,
-			'has-title': this.#hasTitle()
+			'has-title': this.#hasVisibleTitle()
 		};
 		return html`
 			<d2l-page-header-custom>
@@ -171,7 +172,11 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 	}
 
 	#hasTitle() {
-		return !this._hideTitle && (this._hasTitleSlot || this.titleText || this.subtitleText);
+		return this._hasTitleSlot || this.titleText || this.subtitleText;
+	}
+
+	#hasVisibleTitle() {
+		return !this._titleHidden && this.#hasTitle();
 	}
 
 	#renderBack() {
@@ -202,11 +207,11 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		const heading = (title || subtitle) && html`<h1>${title}${subtitle}</h1>`;
 		const titleClasses = {
 			'title': true,
-			'has-title': this.#hasTitle()
+			'has-title': this.#hasVisibleTitle()
 		};
 		const wrapperClasses = {
 			'title-wrapper': true,
-			'd2l-offscreen': this._hideTitle
+			'd2l-offscreen': this._titleHidden
 		};
 		return html`
 			<div class="${classMap(titleClasses)}" ${ref(this.#refTitle)}>
@@ -220,12 +225,11 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 	#updateSizes(entries) {
 		entries.forEach(entry => {
 			if (entry.target === this.#refTitle.value) {
-				const hasTitle = this._hasTitleSlot || this.titleText || this.subtitleText;
-				if (hasTitle) {
-					if (this._hideTitle) {
-						this._hideTitle = entry.contentRect.width - TITLE_PADDING_BORDER_WIDTH < MINIMUM_TITLE_WIDTH;
+				if (this.#hasTitle()) {
+					if (this._titleHidden) {
+						this._titleHidden = entry.contentRect.width - TITLE_PADDING_BORDER_WIDTH < MINIMUM_TITLE_WIDTH;
 					} else {
-						this._hideTitle = entry.contentRect.width < MINIMUM_TITLE_WIDTH;
+						this._titleHidden = entry.contentRect.width < MINIMUM_TITLE_WIDTH;
 					}
 				}
 			}
