@@ -345,8 +345,8 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 			z-index: 14; /* To be over d2l-page-main panel header and sticky content of our core components */
 		}
 		@media (max-width: ${OVERLAY_MODE_BREAKPOINT}px) {
-			.content.scrimmed {
-				overflow: clip;
+			.content.has-panels {
+				overflow-x: clip; /* Needed for iOS to properly calculate content size, not only for scrimming */
 			}
 			.side-nav-panel {
 				flex-shrink: 0;
@@ -458,8 +458,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		};
 		const contentClasses = {
 			'content': true,
-			'has-panels': this._slotVisibility['side-nav'] || this._slotVisibility['supporting'],
-			'scrimmed': showScrim
+			'has-panels': this._slotVisibility['side-nav'] || this._slotVisibility['supporting']
 		};
 
 		return html`
