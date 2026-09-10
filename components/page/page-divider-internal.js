@@ -96,7 +96,8 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		 * Whether the divider is controlling a left/right panel or a bottom drawer
 		 * @type {'panel'|'drawer'}
 		 */
-		panelType: { type: String, attribute: 'panel-type' }
+		panelType: { type: String, attribute: 'panel-type' },
+		_active: { state: true }
 	};
 
 	static styles = css`
@@ -115,7 +116,8 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		.divider:hover {
 			background-color: var(--d2l-color-corundum);
 		}
-		.divider:focus-within {
+		.divider:focus-within,
+		.divider.active {
 			background-color: var(--d2l-color-celestine);
 		}
 		:host([panel-position="start"]) .divider.collapsed,
@@ -150,11 +152,13 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 			background-color: var(--d2l-color-gypsum);
 			border-color: var(--d2l-color-celestine);
 		}
-		.slider:focus .divider-handle {
+		.slider:focus .divider-handle,
+		.divider.active .divider-handle {
 			background-color: var(--d2l-color-celestine-minus-1);
 			border-color: var(--d2l-color-celestine-minus-1);
 		}
-		.slider:focus .divider-handle .handle-icon {
+		.slider:focus .divider-handle .handle-icon,
+		.divider.active .divider-handle .handle-icon {
 			color: white;
 		}
 
@@ -173,7 +177,8 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		.divider-arrow d2l-icon-custom {
 			color: var(--d2l-color-celestine);
 		}
-		.divider:focus-within .divider-arrow:not([hidden]) {
+		.divider:focus-within .divider-arrow:not([hidden]),
+		.divider.active .divider-arrow:not([hidden]) {
 			display: flex;
 		}
 		.divider-arrow:hover {
@@ -228,11 +233,20 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		this.minSize = 0;
 		this.panelPosition = 'start';
 		this.panelType = 'panel';
+
+		this._active = false;
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		document.removeEventListener('pointerdown', this.#handleDocumentPointerDown, { capture: true });
+		this._active = false;
 	}
 
 	render() {
 		const dividerClasses = {
 			divider: true,
+			active: this._active,
 			collapsed: this.currentSize <= this.collapsedSize,
 			maxed: this.currentSize === this.maxSize
 		};
@@ -273,10 +287,26 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		`;
 	}
 
+	updated(changedProperties) {
+		super.updated(changedProperties);
+		if (changedProperties.has('_active')) {
+			if (this._active) {
+				document.addEventListener('pointerdown', this.#handleDocumentPointerDown, { capture: true });
+			} else if (changedProperties.get('_active')) {
+				document.removeEventListener('pointerdown', this.#handleDocumentPointerDown, { capture: true });
+			}
+		}
+	}
+
 	#clickedArrow;
 	#clickedHandle = false;
 	#draggedDivider = false;
 	#dragStats;
+
+	#handleDocumentPointerDown = (e) => {
+		if (e.composedPath().includes(this)) return;
+		this._active = false;
+	};
 
 	#handlePointerMove = (e) => {
 		if (!this.#dragStats || e.pointerId !== this.#dragStats.pointerId) return;
@@ -401,6 +431,13 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		const path = e.composedPath();
 		this.#clickedHandle = path.some(el => el.classList?.contains('divider-handle'));
 		this.#clickedArrow = path.find(el => el.classList?.contains('divider-arrow'));
+
+		// iOS clears focus on the slider once the tap completes, so we use a
+		// persistent `active` state to keep focus styles applied and the arrows visible.
+		if (e.pointerType === 'touch') {
+			this._active = true;
+		}
+
 		if (this.#clickedArrow) return; // Arrows don't support dragging
 
 		const startSize = this.collapsed ? this.collapsedSize : this.currentSize;
