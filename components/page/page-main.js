@@ -10,6 +10,15 @@ import { PagePanelMixin, pagePanelStyles } from './page-panel-mixin.js';
 class PageMain extends PagePanelMixin(LitElement) {
 
 	static styles = [pagePanelStyles, css`
+		:host {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+		}
+		.panel {
+			box-sizing: border-box;
+			flex: 1 0 auto;
+		}
 		.panel-header {
 			top: var(--d2l-page-header-height, 0);
 		}
