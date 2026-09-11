@@ -27,6 +27,8 @@ const MOBILE_MODE_BREAKPOINT = 767;
 const overlayModeQuery = window.matchMedia(`(max-width: ${OVERLAY_MODE_BREAKPOINT}px)`);
 const mobileModeQuery = window.matchMedia(`(max-width: ${MOBILE_MODE_BREAKPOINT}px)`);
 
+export const HIDE_ARROWS_BREAKPOINT = 400;
+
 class PanelStateController {
 	constructor(host, panelConfigs) {
 		this.#host = host;
@@ -594,6 +596,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 				max-size="${this._panelState.getMaxSize(panelKey)}"
 				min-size="${this._panelState.getMinSize(panelKey)}"
 				panel-position="${ifDefined(panelPosition)}"
+				?hide-arrows="${this._contentWidth < HIDE_ARROWS_BREAKPOINT}"
 				@d2l-page-divider-resize="${this.#handleDividerResize}"
 				@d2l-page-divider-resize-live="${this.#handleDividerResizeLive}"
 				@d2l-page-divider-toggle="${this.#handleDividerToggle}"
