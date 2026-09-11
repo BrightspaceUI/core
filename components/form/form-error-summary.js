@@ -9,7 +9,7 @@ class FormErrorSummary extends LocalizeCoreElement(LitElement) {
 
 	static properties = {
 		errors: { type: Object, attribute: false },
-		_expanded: { type: Boolean, attribute: false },
+		_expanded: { state: true },
 		_hasTopMargin: { type: Boolean, attribute: '_has-top-margin', reflect: true },
 		_hasErrors: { type: Boolean, attribute: '_has-errors', reflect: true },
 	};

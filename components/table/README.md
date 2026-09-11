@@ -146,7 +146,7 @@ For the example below:
   class MySortableTableElem extends LitElement {
 
     static properties = {
-      _sortDesc: { attribute: false, type: Boolean }
+      _sortDesc: { state: true }
     };
 
     static styles = tableStyles;

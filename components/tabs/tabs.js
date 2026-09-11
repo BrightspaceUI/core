@@ -2,7 +2,7 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import './tab-internal.js';
 import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
-import { cssEscape, findComposedAncestor, getOffsetParent, isVisible } from '../../helpers/dom.js';
+import { findComposedAncestor, getOffsetParent, isVisible } from '../../helpers/dom.js';
 import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
@@ -426,7 +426,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		return (Object.keys(this._tabIds).length > 1 && !reduceMotion) ? this._animateTabRemoval(tab) : Promise.resolve();
 	}
 
-	#GAUD_9963_FLAG = getFlag('GAUD-9963-dropdown-tabs-not-resizing', true);
 	#checkTabPanelMatchRequested;
 	#newTabsPanelStructure = getUseNewTabsStructureFlag();
 	#panels;
@@ -456,7 +455,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	_animateTabAdditionDefaultSlotBehavior(tabInfo) {
 		const tab = this.shadowRoot
-			&& this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
+			&& this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${CSS.escape(tabInfo.id)}"]`);
 		if (!tab) Promise.resolve();
 
 		return new Promise((resolve) => {
@@ -488,7 +487,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
 	_animateTabRemovalDefaultSlotBehavior(tabInfo) {
 		const tab = this.shadowRoot &&
-			this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${cssEscape(tabInfo.id)}"]`);
+			this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${CSS.escape(tabInfo.id)}"]`);
 		if (!tab) Promise.resolve();
 
 		return new Promise((resolve) => {
@@ -897,7 +896,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		if (selectedTab) {
 			Promise.all(animPromises).then(async() => {
-				if (this.#GAUD_9963_FLAG) await new Promise(resolve => requestAnimationFrame(resolve)); /* TODO: when removing the GAUD-9963-dropdown-tabs-not-resizing flag, keep the Promise */
+				await new Promise(resolve => requestAnimationFrame(resolve));
 				this._updateMeasures();
 				this._updateScrollPosition(selectedTab);
 			});

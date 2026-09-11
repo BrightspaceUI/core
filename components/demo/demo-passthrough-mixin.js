@@ -8,9 +8,7 @@ import { LitElement } from 'lit';
  * @param { String } target The element name or other selector string of the element to pass properties to.
  */
 export const DemoPassthroughMixin = (superclass, target) => class extends LitElement {
-	static get properties() {
-		return Object.fromEntries(superclass.elementProperties);
-	}
+	static properties = Object.fromEntries(superclass.elementProperties);
 
 	firstUpdated() {
 		this.target = this.shadowRoot.querySelector(target);

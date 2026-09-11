@@ -1,5 +1,6 @@
 import '../backdrop-loading.js';
 import { expect, fixture, html, runConstructor } from '@brightspace-ui/testing';
+import { freshness } from '../../../mixins/freshness/freshness-mixin.js';
 
 const backdropLoadingFixture = html`
 	<div>
@@ -30,6 +31,7 @@ const backdropLoadingNoForFixture = html`
 `;
 
 describe('d2l-backdrop-loading', () => {
+
 	let elem, backdropLoading, composedParent, targetedSibling, otherSibling;
 
 	async function loadWithFixture(fixtureName) {
@@ -53,7 +55,7 @@ describe('d2l-backdrop-loading', () => {
 		it('toggles inert property on sibling with for ID', async() => {
 			await loadWithFixture(backdropLoadingFixture);
 
-			backdropLoading.dataState = 'loading';
+			backdropLoading.freshness = freshness.loading;
 			await backdropLoading.updateComplete;
 
 			expect(backdropLoading.hasAttribute('inert')).to.be.false;
@@ -61,7 +63,7 @@ describe('d2l-backdrop-loading', () => {
 			expect(otherSibling.hasAttribute('inert')).to.be.false;
 			expect(targetedSibling.hasAttribute('inert')).to.be.true;
 
-			backdropLoading.dataState = 'clean';
+			backdropLoading.freshness = freshness.fresh;
 			await backdropLoading.updateComplete;
 
 			expect(targetedSibling.hasAttribute('inert')).to.be.false;
@@ -72,12 +74,12 @@ describe('d2l-backdrop-loading', () => {
 
 			targetedSibling.setAttribute('inert', 'inert');
 
-			backdropLoading.dataState = 'loading';
+			backdropLoading.freshness = freshness.loading;
 			await backdropLoading.updateComplete;
 
 			expect(targetedSibling.hasAttribute('inert')).to.be.true;
 
-			backdropLoading.dataState = 'clean';
+			backdropLoading.freshness = freshness.fresh;
 			await backdropLoading.updateComplete;
 
 			expect(targetedSibling.hasAttribute('inert')).to.be.true;
@@ -87,7 +89,7 @@ describe('d2l-backdrop-loading', () => {
 			await loadWithFixture(backdropLoadingMismatchedForFixture);
 
 			try {
-				backdropLoading.dataState = 'loading';
+				backdropLoading.freshness = freshness.loading;
 				await backdropLoading.updateComplete;
 			} catch (e) {
 				expect(e.message).to.equal('Backdrop cannot find sibling identified by \'for\' property with value does-not-exist');
@@ -98,7 +100,7 @@ describe('d2l-backdrop-loading', () => {
 			await loadWithFixture(backdropLoadingNoForFixture);
 
 			try {
-				backdropLoading.dataState = 'loading';
+				backdropLoading.freshness = freshness.loading;
 				await backdropLoading.updateComplete;
 			} catch (e) {
 				expect(e.message).to.equal('Backdrop cannot find sibling identified by \'for\' property with value undefined');

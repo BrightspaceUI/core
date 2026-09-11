@@ -51,7 +51,7 @@ class SelectAll extends FocusMixin(LocalizeCoreElement(SelectionObserverMixin(Li
 				label-hidden
 				@change="${this.#handleCheckboxChange}"
 				?checked="${this.#getIsChecked()}"
-				?disabled="${this.disabled}"
+				?disabled="${this.disabled || this.selectionDisabled }"
 				description="${ifDefined(this.selectionInfo.state !== SelectionInfo.states.none ? summary : undefined)}"
 				?indeterminate="${this.#getIsIndeterminate()}">
 			</d2l-input-checkbox>

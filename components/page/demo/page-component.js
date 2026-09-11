@@ -1,3 +1,4 @@
+import '../../alert/alert-toast.js';
 import '../../button/button-icon.js';
 import '../../button/button-subtle.js';
 import '../../button/button.js';
@@ -6,6 +7,7 @@ import '../../collapsible-panel/collapsible-panel-group.js';
 import '../../collapsible-panel/collapsible-panel-summary-item.js';
 import '../../demo/demo-page-settings.js';
 import '../../dialog/dialog.js';
+import '../../dialog/dialog-confirm.js';
 import '../../filter/filter.js';
 import '../../filter/filter-dimension-set.js';
 import '../../filter/filter-dimension-set-value.js';
@@ -25,18 +27,20 @@ import '../../selection/selection-action.js';
 import '../../switch/switch-visibility.js';
 import '../../switch/switch.js';
 import '../../table/table-controls.js';
-import '../page.js';
 import '../page-footer.js';
 import '../page-main.js';
 import '../page-side-nav.js';
 import '../page-supporting.js';
 import './page-header-full.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { pageHeaderImmersiveActionsDemo, pageHeaderImmersiveCustomTitleDemo } from '../test/page-header-immersive-fixtures.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputLabelStyles } from '../../inputs/input-label-styles.js';
-import { pageHeaderImmersiveActionsDemo } from '../test/page-header-immersive-fixtures.js';
+import { panelStateStorageKey } from '../page.js';
 import { selectStyles } from '../../inputs/input-select-styles.js';
 import { tableStyles } from '../../table/table-wrapper.js';
+
+const DEMO_STATE_STORAGE_KEY = 'core-demo';
 
 class PageDemo extends LitElement {
 
@@ -51,7 +55,14 @@ class PageDemo extends LitElement {
 		immersiveHeaderTitleType: { type: String, attribute: 'immersive-header-title-type' },
 		layout: { type: String, attribute: 'layout' },
 		widthType: { type: String, attribute: 'width-type' },
-		_demoDialogOpened: { state: true }
+		_mainDialogOpened: { state: true },
+		_mainToastOpened: { state: true },
+		_sideNavDialogOpened: { state: true },
+		_sideNavNativeDialogOpened: { state: true },
+		_sideNavSecondToastOpened: { state: true },
+		_sideNavToastOpened: { state: true },
+		_supportingDialogOpened: { state: true },
+		_supportingToastOpened: { state: true }
 	};
 
 	static styles = [inputLabelStyles, selectStyles, tableStyles, css`
@@ -60,6 +71,7 @@ class PageDemo extends LitElement {
 		}
 		.horizontal-fields {
 			display: flex;
+			flex-wrap: wrap;
 			gap: 1rem;
 		}
 	`];
@@ -77,12 +89,19 @@ class PageDemo extends LitElement {
 		this.immersiveHeaderTitleType = urlParams.get('immersiveHeaderTitleType') || 'title-subtitle';
 		this.layout = urlParams.get('layout') || 'main-only';
 		this.widthType = urlParams.get('widthType') || 'normal';
-		this._demoDialogOpened = false;
+		this._mainDialogOpened = false;
+		this._mainToastOpened = false;
+		this._sideNavDialogOpened = false;
+		this._sideNavNativeDialogOpened = false;
+		this._sideNavToastOpened = false;
+		this._sideNavSecondToastOpened = false;
+		this._supportingDialogOpened = false;
+		this._supportingToastOpened = false;
 	}
 
 	render() {
 		return html`
-			<d2l-page width-type="${this.widthType}">
+			<d2l-page state-storage-key="${DEMO_STATE_STORAGE_KEY}" width-type="${this.widthType}">
 				${this.#renderHeader()}
 				${this.#renderSideNavPanel()}
 				${this.#renderMainPanel()}
@@ -92,12 +111,8 @@ class PageDemo extends LitElement {
 		`;
 	}
 
-	#handleDialogClose() {
-		this._demoDialogOpened = false;
-	}
-
-	#handleDialogOpen() {
-		this._demoDialogOpened = true;
+	#handleClearStateStorage() {
+		localStorage.removeItem(panelStateStorageKey(DEMO_STATE_STORAGE_KEY));
 	}
 
 	#handleHeaderChange(e) {
@@ -113,6 +128,58 @@ class PageDemo extends LitElement {
 	#handleLayoutChange(e) {
 		this.layout = e.target.value;
 		this.#updateUrlParam('layout', this.layout);
+	}
+
+	#handleMainDialogClose() {
+		this._mainDialogOpened = false;
+		this._mainToastOpened = true;
+	}
+
+	#handleMainDialogOpen() {
+		this._mainDialogOpened = true;
+	}
+
+	#handleMainToastClose() {
+		this._mainToastOpened = false;
+	}
+
+	#handleSideNavDialogClose() {
+		this._sideNavDialogOpened = false;
+		this._sideNavToastOpened = true;
+	}
+
+	#handleSideNavDialogOpen() {
+		this._sideNavDialogOpened = true;
+	}
+
+	#handleSideNavNativeDialogClose() {
+		this._sideNavNativeDialogOpened = false;
+		this._sideNavSecondToastOpened = true;
+	}
+
+	#handleSideNavNativeDialogOpen() {
+		this._sideNavNativeDialogOpened = true;
+	}
+
+	#handleSideNavSecondToastClose() {
+		this._sideNavSecondToastOpened = false;
+	}
+
+	#handleSideNavToastClose() {
+		this._sideNavToastOpened = false;
+	}
+
+	#handleSupportingDialogClose() {
+		this._supportingDialogOpened = false;
+		this._supportingToastOpened = true;
+	}
+
+	#handleSupportingDialogOpen() {
+		this._supportingDialogOpened = true;
+	}
+
+	#handleSupportingToastClose() {
+		this._supportingToastOpened = false;
 	}
 
 	#handleVisibilityChange(e) {
@@ -136,6 +203,7 @@ class PageDemo extends LitElement {
 						<option value="title-subtitle" ?selected="${this.immersiveHeaderTitleType === 'title-subtitle'}">Title &amp; Subtitle</option>
 						<option value="title-only" ?selected="${this.immersiveHeaderTitleType === 'title-only'}">Title Only</option>
 						<option value="none" ?selected="${this.immersiveHeaderTitleType === 'none'}">None</option>
+						<option value="custom" ?selected="${this.immersiveHeaderTitleType === 'custom'}">Custom</option>
 					</select>
 				</label>
 				<d2l-input-fieldset label="Actions">
@@ -190,6 +258,9 @@ class PageDemo extends LitElement {
 								${this.layout === 'side-nav' ? html`<d2l-switch text="Side Nav" data-key="hasSideNavHeader" @change="${this.#handleVisibilityChange}" ?on="${this.hasSideNavHeader}"></d2l-switch>` : nothing}
 								${this.layout === 'supporting' ? html`<d2l-switch text="Supporting" data-key="hasSupportingHeader" @change="${this.#handleVisibilityChange}" ?on="${this.hasSupportingHeader}"></d2l-switch>` : nothing}
 							</d2l-input-fieldset>
+							<d2l-input-fieldset label="State Storage">
+								<d2l-button-subtle text="Clear" @click="${this.#handleClearStateStorage}"></d2l-button-subtle>
+							</d2l-input-fieldset>
 						</div>
 					</d2l-input-fieldset>
 					${this.#renderDemoHeaderControls()}
@@ -215,11 +286,13 @@ class PageDemo extends LitElement {
 		if (this.header === 'full') {
 			return html`<d2l-page-header-full-demo slot="header"></d2l-page-header-full-demo>`;
 		}
-		const titleText = this.immersiveHeaderTitleType === 'none' ? undefined : 'Assignment 1';
+		const titleText = (this.immersiveHeaderTitleType === 'none' || this.immersiveHeaderTitleType === 'custom') ? undefined : 'Assignment 1';
 		const subtitleText = this.immersiveHeaderTitleType === 'title-subtitle' ? 'Introduction to Economics' : undefined;
+		const customTitle = (this.immersiveHeaderTitleType === 'custom') ? pageHeaderImmersiveCustomTitleDemo : nothing;
 		return html`
-			<d2l-page-header-immersive slot="header" title-text="${ifDefined(titleText)}" subtitle-text="${ifDefined(subtitleText)}">
+			<d2l-page-header-immersive slot="header" back-custom-text="Back to Course" title-text="${ifDefined(titleText)}" subtitle-text="${ifDefined(subtitleText)}">
 				${this.hasImmersiveHeaderActions ? pageHeaderImmersiveActionsDemo : nothing}
+				${customTitle}
 			</d2l-page-header-immersive>
 		`;
 	}
@@ -237,7 +310,7 @@ class PageDemo extends LitElement {
 							<d2l-filter-dimension-set-value key="content" text="Content Topics"></d2l-filter-dimension-set-value>
 						</d2l-filter-dimension-set>
 					</d2l-filter>
-					<d2l-button slot="header-end" primary @click="${this.#handleDialogOpen}">New Assignment</d2l-button>
+					<d2l-button slot="header-end" primary @click="${this.#handleMainDialogOpen}">New Assignment</d2l-button>
 				` : nothing	}
 				
 				${this.#renderDemoMainControls()}
@@ -390,7 +463,7 @@ class PageDemo extends LitElement {
 					</table>
 				</d2l-table-wrapper>
 				<div style="align-items: end; display: flex; height: 500px;">End of Content</div>
-				<d2l-dialog id="demo-dialog" title-text="New Assignment" ?opened="${this._demoDialogOpened}" @d2l-dialog-close="${this.#handleDialogClose}">
+				<d2l-dialog id="main-dialog" title-text="New Assignment" ?opened="${this._mainDialogOpened}" @d2l-dialog-close="${this.#handleMainDialogClose}">
 					<div style="display: flex; flex-direction: column; gap: 0.75rem;">
 						<d2l-input-text label="Assignment Name" value=""></d2l-input-text>
 						<d2l-input-number label="Points" value="100"></d2l-input-number>
@@ -400,6 +473,7 @@ class PageDemo extends LitElement {
 					<d2l-button slot="footer" primary data-dialog-action="create">Create</d2l-button>
 					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
 				</d2l-dialog>
+				<d2l-alert-toast type="success" ?open="${this._mainToastOpened}" @d2l-alert-toast-close="${this.#handleMainToastClose}">Assignment saved.</d2l-alert-toast>
 			</d2l-page-main>
 		`;
 	}
@@ -409,8 +483,8 @@ class PageDemo extends LitElement {
 		return html`
 			<d2l-page-side-nav slot="side-nav">
 				${this.hasSideNavHeader ? html`
-					<d2l-button-subtle slot="header-start" text="Add Topic" icon="tier1:plus-default"></d2l-button-subtle>
-					<d2l-button-icon slot="header-end" text="Collapse All" icon="tier1:arrow-collapse"></d2l-button-icon>
+					<d2l-button-subtle slot="header-start" text="Add Topic" icon="tier1:plus-default" @click="${this.#handleSideNavDialogOpen}"></d2l-button-subtle>
+					<d2l-button-icon slot="header-end" text="Collapse All" icon="tier1:arrow-collapse" @click="${this.#handleSideNavNativeDialogOpen}"></d2l-button-icon>
 					<d2l-button-icon slot="header-end" text="Reorder" icon="tier1:dragger"></d2l-button-icon>
 				` : nothing}
 				<d2l-list grid drag-multiple style="width: 100%;">
@@ -505,6 +579,26 @@ class PageDemo extends LitElement {
 					</d2l-list-item-nav>
 				</d2l-list>
 				<div style="align-items: end; display: flex; height: 150px;">End of Content</div>
+				<d2l-dialog id="side-nav-dialog" title-text="Add Topic" ?opened="${this._sideNavDialogOpened}" @d2l-dialog-close="${this.#handleSideNavDialogClose}">
+					<div style="display: flex; flex-direction: column; gap: 0.75rem;">
+						<d2l-input-text label="Topic Name" value=""></d2l-input-text>
+						<select class="d2l-input-select" aria-label="Topic type">
+							<option selected>Content Topic</option>
+							<option>Assignment</option>
+							<option>Quiz</option>
+							<option>Discussion</option>
+						</select>
+						<d2l-input-checkbox checked>Make visible to learners</d2l-input-checkbox>
+					</div>
+					<d2l-button slot="footer" primary data-dialog-action="add">Add</d2l-button>
+					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+				</d2l-dialog>
+				<d2l-dialog-confirm id="side-nav-native-dialog" title-text="Collapse All" text="Are you sure you want to collapse all units? Any unsaved changes to expanded items will remain." ?opened="${this._sideNavNativeDialogOpened}" @d2l-dialog-close="${this.#handleSideNavNativeDialogClose}">
+					<d2l-button slot="footer" primary data-dialog-action="yes">Collapse All</d2l-button>
+					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+				</d2l-dialog-confirm>
+				<d2l-alert-toast type="success" ?open="${this._sideNavToastOpened}" @d2l-alert-toast-close="${this.#handleSideNavToastClose}">Topic added.</d2l-alert-toast>
+				<d2l-alert-toast ?open="${this._sideNavSecondToastOpened}" @d2l-alert-toast-close="${this.#handleSideNavSecondToastClose}">All units collapsed.</d2l-alert-toast>
 			</d2l-page-side-nav>
 		`;
 	}
@@ -526,7 +620,7 @@ class PageDemo extends LitElement {
 							<d2l-input-date label="End Date" value="2026-06-30"></d2l-input-date>
 							<d2l-input-checkbox checked>Has start date</d2l-input-checkbox>
 							<d2l-input-checkbox checked>Has end date</d2l-input-checkbox>
-							<d2l-button-subtle text="Manage Release Conditions"></d2l-button-subtle>
+							<d2l-button-subtle text="Manage Release Conditions" @click="${this.#handleSupportingDialogOpen}"></d2l-button-subtle>
 						</div>
 					</d2l-collapsible-panel>
 					<d2l-collapsible-panel panel-title="Grading and Assessment">
@@ -565,6 +659,22 @@ class PageDemo extends LitElement {
 					</d2l-collapsible-panel>
 				</d2l-collapsible-panel-group>
 				<div style="align-items: end; display: flex; height: 150px;">End of Content</div>
+				<d2l-dialog id="supporting-dialog" title-text="Manage Release Conditions" ?opened="${this._supportingDialogOpened}" @d2l-dialog-close="${this.#handleSupportingDialogClose}">
+					<div style="display: flex; flex-direction: column; gap: 0.75rem;">
+						<select class="d2l-input-select" aria-label="Condition type">
+							<option selected>Grade received on an item</option>
+							<option>Assignment submission</option>
+							<option>Quiz completion</option>
+							<option>Content topic visited</option>
+						</select>
+						<d2l-input-text label="Item" value="Assignment 1: Research Proposal"></d2l-input-text>
+						<d2l-input-number label="Minimum grade (%)" value="60"></d2l-input-number>
+						<d2l-input-checkbox checked>All conditions must be met</d2l-input-checkbox>
+					</div>
+					<d2l-button slot="footer" primary data-dialog-action="create">Create</d2l-button>
+					<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+				</d2l-dialog>
+				<d2l-alert-toast type="success" ?open="${this._supportingToastOpened}" @d2l-alert-toast-close="${this.#handleSupportingToastClose}">Release conditions updated.</d2l-alert-toast>
 			</d2l-page-supporting>
 		`;
 	}

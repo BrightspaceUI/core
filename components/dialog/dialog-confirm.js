@@ -2,7 +2,6 @@ import { _generateResetStyles, heading3Styles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
-import { getFlag } from '../../helpers/flags.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -88,7 +87,7 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 	constructor() {
 		super();
 		this.critical = false;
-		this.preferNative = getFlag('GAUD-9644-prefer-native-confirm-dialogs', true);
+		this.preferNative = true;
 		this._criticalLabelId = getUniqueId();
 		this._textId = getUniqueId();
 		this._titleId = getUniqueId();

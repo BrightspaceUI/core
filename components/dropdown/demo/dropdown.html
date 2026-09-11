@@ -137,7 +137,7 @@
 			</template>
 		</d2l-demo-snippet>
 
-	<h2>Mobile Tray Style - Left (No close button)</h2>
+		<h2>Mobile Tray Style - Left (No close button)</h2>
 		<d2l-demo-snippet>
 			<template>
 				<d2l-dropdown>
@@ -155,7 +155,7 @@
 			</template>
 		</d2l-demo-snippet>
 
-	<h2>Mobile Tray Style - Bottom</h2>
+		<h2>Mobile Tray Style - Bottom</h2>
 		<d2l-demo-snippet>
 			<template>
 				<d2l-dropdown>
@@ -208,6 +208,28 @@
 						<p>Content</p>
 					</d2l-dropdown-content>
 				</d2l-dropdown>
+			</template>
+		</d2l-demo-snippet>
+
+		<h2>Async Dropdown</h2>
+		<d2l-demo-snippet>
+			<template>
+				<d2l-dropdown>
+					<d2l-button class="d2l-dropdown-opener">Open it!</d2l-button>
+					<d2l-dropdown-content async></d2l-dropdown-content>
+				</d2l-dropdown>
+				<script data-demo-hide>
+					(demo => {
+						demo.querySelector('d2l-dropdown-content').addEventListener('d2l-dropdown-async-load', async(e) => {
+							await new Promise(resolve => setTimeout(resolve, 3000));
+							const b = document.createElement('d2l-button');
+							b.innerText = 'Focus Here On Very Wide Button';
+							const content = demo.querySelector('d2l-dropdown-content');
+							content.appendChild(b);
+							e.detail.complete();
+						});
+					})(document.currentScript.parentNode);
+				</script>
 			</template>
 		</d2l-demo-snippet>
 	</d2l-demo-page>

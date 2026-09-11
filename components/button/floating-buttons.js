@@ -22,10 +22,10 @@ class FloatingButtons extends LoadingCompleteMixin(LitElement) {
 		 * @type {boolean}
 		 */
 		alwaysFloat: { type: Boolean, attribute: 'always-float', reflect: true },
-		_containerMarginLeft: { attribute: false, type: String },
-		_containerMarginRight: { attribute: false, type: String },
+		_containerMarginLeft: { state: true },
+		_containerMarginRight: { state: true },
 		_floating: { type: Boolean, reflect: true },
-		_innerContainerLeft: { attribute: false, type: String }
+		_innerContainerLeft: { state: true }
 	};
 
 	static styles = css`

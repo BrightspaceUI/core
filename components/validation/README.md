@@ -1,25 +1,21 @@
 # Validation
-## d2l-validation-custom
+## Validation Custom [d2l-validation-custom]
 
-The `d2l-validation-custom` component is used to add custom validation logic to native form elements like `input`, `select` and `textarea` or custom form elements created with the [`FormElementMixin`](../form/docs/form-element-mixin.md).
+The `d2l-validation-custom` component is used to add custom validation logic to native form elements like `input`, `select` and `textarea` or custom form elements created with the [`FormElementMixin`](https://github.com/BrightspaceUI/core/blob/main/components/form/docs/form-element-mixin.md).
 
 **Native Form Elements:**
-- When attached to native form elements like `input`, `select` and `textarea`, both the `d2l-validation-custom` and native form element **must** be within a [`d2l-form`](../form/docs/form.md) for the validation custom to function.
+- When attached to native form elements like `input`, `select` and `textarea`, both the `d2l-validation-custom` and native form element **must** be within a [`d2l-form`](../../components/form-layout-validation) for the validation custom to function.
 
 **Custom Form Elements:**
-- When attached to custom form elements created with the [`FormElementMixin`](../form/docs/form-element-mixin.md), the `d2l-validation-custom` will function even if no [`d2l-form`](../form/docs/form.md) is present.
+- When attached to custom form elements created with the [`FormElementMixin`](https://github.com/BrightspaceUI/core/blob/main/components/form/docs/form-element-mixin.md), the `d2l-validation-custom` will function even if no [`d2l-form`](../../components/form-layout-validation) is present.
 
 **Usage:**
+<!-- docs: demo code properties autoSize:false size:small name:d2l-validation-custom sandboxTitle:'Custom Validation' -->
 ```html
 <script type="module">
+  import '@brightspace-ui/core/components/inputs/input-text.js';
   import '@brightspace-ui/core/components/validation/validation-custom.js';
-</script>
 
-<d2l-input-text id="my-text-input"></d2l-input-text>
-<d2l-validation-custom for="my-text-input" failure-text="My custom error message">
-</d2l-validation-custom>
-
-<script>
   const validator = document.querySelector('d2l-validation-custom');
   validator.addEventListener('d2l-validation-custom-validate', e => {
     // Implement your custom validation logic
@@ -28,8 +24,12 @@ The `d2l-validation-custom` component is used to add custom validation logic to 
     e.detail.resolve(isValid);
   });
 </script>
-```
 
+<d2l-input-text id="my-text-input" label="name" style="max-width: 200px;"></d2l-input-text>
+<d2l-validation-custom for="my-text-input" failure-text="My custom error message">
+</d2l-validation-custom>
+```
+<!-- docs: start hidden content -->
 **Properties:**
 
 | Property | Type | Description |
@@ -42,7 +42,9 @@ The `d2l-validation-custom` component is used to add custom validation logic to 
   * The form element being validated can be accessed from the `detail`'s `forElement` property.
   * When validation is finished, the `detail`'s `resolve` function **must** be called with a `boolean` value to indicate valid or invalid. If it is not called then validation will never complete and the component will be stuck in a validating state.
 
-## ValidationCustomMixin
+<!-- docs: end hidden content -->
+
+## Validation Custom Mixin [ValidationCustomMixin]
 
 If you find yourself duplicating `d2l-validation-custom` validation logic in many places you may want to create your own custom validator using the `ValidationCustomMixin`.
 
@@ -64,7 +66,3 @@ customElements.define('my-validation-custom', MyValidationCustom);
 ```
 
 Once a component has been created using the `ValidationCustomMixin`, it may be used exactly like a `d2l-validation-custom`. However, the `d2l-validation-custom-validate` event isn't needed because the validation logic is included in the component itself.
-
-## Future Enhancements
-
-Looking for an enhancement not listed here? Create a GitHub issue!

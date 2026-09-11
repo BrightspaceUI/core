@@ -16,8 +16,8 @@ import '../list-item-button.js';
 import '../list-item-content.js';
 import '../list-item-nav.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, oneEvent } from '@brightspace-ui/testing';
+import { listFreshness, listLayouts } from '../list.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { listLayouts } from '../list.js';
 import { nothing } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -189,12 +189,13 @@ function createItems({ lineBreak, paddingType, width, withColors = false } = {})
 	`;
 }
 
-function createList({ extendSeparators = false, itemsTemplate = createItems(), layout, selectionSingle = false, separators, selectionWhenInteracted = false, width } = {}) {
+function createList({ extendSeparators = false, freshness, itemsTemplate = createItems(), layout, selectionSingle = false, separators, selectionWhenInteracted = false, width } = {}) {
 	const styles = {};
 	if (width) styles['width'] = width;
 	return html`
 		<d2l-list
 			?extend-separators="${extendSeparators}"
+			freshness="${ifDefined(freshness)}"
 			layout="${ifDefined(layout)}"
 			?selection-single="${selectionSingle}"
 			separators="${ifDefined(separators)}"
@@ -351,7 +352,9 @@ describe('list', () => {
 				{ name: 'item color indicator rtl', template: createList({ itemsTemplate: createItem({ color: '#46a661', template: createListItemContent() }), layout, width: '400px' }), margin: 24, rtl: true, target: 'd2l-list-item' },
 				{ name: 'item color indicator alpha', template: createList({ itemsTemplate: createItem({ color: '#46a66199', template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
 				{ name: 'item color indicator illustration', template: createList({ itemsTemplate: createItem({ color: '#46a661', illustration: createImgIllustration(), template: createListItemContent() }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
-				{ name: 'item color indicator tile-header', template: createList({ itemsTemplate: createItem({ actions: createItemActions(), color: '#46a661', template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' }
+				{ name: 'item color indicator tile-header', template: createList({ itemsTemplate: createItem({ actions: createItemActions(), color: '#46a661', template: createListItemContent(), tileHeader: true }), layout, width: '400px' }), margin: 24, target: 'd2l-list-item' },
+				// freshness
+				{ name: 'freshness-stale', template: createList({ freshness: listFreshness.stale, layout }) }
 			].forEach(({ name, template, action, margin, rtl, target }) => {
 
 				it(name, async() => {
@@ -554,11 +557,12 @@ describe('list', () => {
 	describe('pager', () => {
 		[
 			{ name: 'default', extendSeparators: false },
-			{ name: 'extended separators', extendSeparators: true }
-		].forEach(({ name, extendSeparators }) => {
+			{ name: 'extended separators', extendSeparators: true },
+			{ name: 'freshness-stale', extendSeparators: false, freshness: listFreshness.stale }
+		].forEach(({ name, extendSeparators, freshness }) => {
 			it(name, async() => {
 				const elem = await fixture(html`
-					<d2l-list ?extend-separators="${extendSeparators}" style="width: 400px;">
+					<d2l-list ?extend-separators="${extendSeparators}" freshness="${ifDefined(freshness)}" style="width: 400px;">
 						<d2l-list-item label="Item 1" selectable key="1">
 							<d2l-list-item-content>
 								<div>Item 1</div>
@@ -843,7 +847,7 @@ describe('list', () => {
 
 	describe('controls', () => {
 		function createListWithControls(opts) {
-			const { actions, color2, extendSeparators, selectable, selected, selectAllPages } = {
+			const { actions, color2, extendSeparators, freshness, selectable, selected, selectAllPages } = {
 				actions: false,
 				extendSeparators: false,
 				selectable: true,
@@ -852,7 +856,7 @@ describe('list', () => {
 				...opts
 			};
 			return html`
-				<d2l-list item-count="${ifDefined(selectAllPages ? '50' : undefined)}" ?extend-separators="${extendSeparators}" style="width: 400px;">
+				<d2l-list item-count="${ifDefined(selectAllPages ? '50' : undefined)}" ?extend-separators="${extendSeparators}" freshness="${ifDefined(freshness)}" style="width: 400px;">
 					<d2l-list-controls slot="controls" ?no-selection="${!selectable}" ?select-all-pages-allowed="${selectAllPages}" no-sticky>
 						${actions ? html`
 							<d2l-selection-action text="Delete" icon="tier1:delete"></d2l-selection-action>
@@ -871,6 +875,7 @@ describe('list', () => {
 			{ name: 'some selected', template: createListWithControls({ color2: '#00ff00', selected: [true, false] }), margin: 24 },
 			{ name: 'all selected', template: createListWithControls({ selected: [true, true] }), margin: 24 },
 			{ name: 'all selected pages', template: createListWithControls({ selectAllPages: true, selected: [true, true] }), margin: 24 },
+			{ name: 'all selected pages freshness stale', template: createListWithControls({ freshness: listFreshness.stale, selectAllPages: true, selected: [true, true] }), margin: 24 },
 			{ name: 'selectable actions', template: createListWithControls({ actions: true, selectable: true }) },
 			{ name: 'selectable actions color', template: createListWithControls({ actions: true, color2: '#00ff00', selectable: true }) },
 			{ name: 'selectable no-actions', template: createListWithControls({ selectable: true }) },
@@ -1451,4 +1456,5 @@ describe('list-nested', () => {
 			}).timeout(30000);
 		});
 	});
+
 });

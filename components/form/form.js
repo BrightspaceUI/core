@@ -80,7 +80,6 @@ class Form extends LocalizeCoreElement(LitElement) {
 
 	connectedCallback() {
 		super.connectedCallback();
-		window.addEventListener('beforeunload', this.#onUnload);
 		/** @ignore */
 		this._isSubForm = !this.dispatchEvent(new CustomEvent('d2l-form-connect', { bubbles: true, composed: true, cancelable: true }));
 	}
@@ -286,7 +285,10 @@ class Form extends LocalizeCoreElement(LitElement) {
 		const ele = e.target;
 
 		if ((isNativeFormElement(ele) || isCustomFormElement(ele)) && e.type !== 'focusout') {
-			this._dirty = true;
+			if (!this._dirty) {
+				window.addEventListener('beforeunload', this.#onUnload);
+				this._dirty = true;
+			}
 			/** Dispatched whenever any form element fires an `input` or `change` event. Can be used to track whether the form is dirty or not. */
 			this.dispatchEvent(new CustomEvent('d2l-form-dirty'));
 		}
@@ -312,6 +314,7 @@ class Form extends LocalizeCoreElement(LitElement) {
 	}
 
 	async _submitData(submitter) {
+		window.removeEventListener('beforeunload', this.#onUnload);
 		this._dirty = false;
 
 		let formData = {};

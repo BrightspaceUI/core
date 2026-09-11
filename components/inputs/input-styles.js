@@ -14,23 +14,25 @@ registerSemanticVariableForSvgImageUrl(
 	</svg>`
 );
 
+function _getInputBaseStyleDelegates(selector, focusSelector) {
+	return {
+		selector: focusClass => `
+			${focusSelector ? `${focusSelector},` : ''}
+			${selector}:${focusClass}:not(:disabled),
+			${selector}:hover:not(:disabled)`,
+		style:  fullSelector => css`
+			${fullSelector} {
+				border-color: var(--d2l-theme-border-color-focus);
+				border-width: 2px;
+				outline: none;
+				padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
+			}`
+	};
+}
+
 function getStyleDelegates(selector, focusSelector, textAreaSelector) {
 	return {
-		input: {
-			selector: focusClass => `
-				${focusSelector ? `${focusSelector},` : ''}
-				${selector}:${focusClass}:not(:disabled),
-				${selector}:hover:not(:disabled)
-			`,
-			style:  fullSelector => css`
-				${fullSelector} {
-					border-color: var(--d2l-theme-border-color-focus);
-					border-width: 2px;
-					outline: none;
-					padding: var(--d2l-input-padding-focus, calc(0.4rem - 1px) calc(0.75rem - 1px));
-				}
-			`
-		},
+		input: _getInputBaseStyleDelegates(selector, focusSelector),
 		textarea: {
 			selector: focusClass => `
 				${textAreaSelector}:hover:not(:disabled),
@@ -58,13 +60,7 @@ function getStyleDelegates(selector, focusSelector, textAreaSelector) {
 	};
 }
 
-export function _generateInputStyles(selector, focusSelector) {
-	if (!_isValidCssSelector(selector) || (focusSelector && !_isValidCssSelector(focusSelector))) return '';
-	const lastSpaceIndex = selector.lastIndexOf(' ');
-	const textareaSelector = unsafeCSS(`${selector.substring(0, lastSpaceIndex + 1)}textarea${selector.substring(lastSpaceIndex + 1)}`);
-	const delegates = getStyleDelegates(selector, focusSelector, textareaSelector);
-
-	selector = unsafeCSS(selector);
+function _generateInputBaseStyles(selector) {
 	return css`
 		${selector} {
 			background-color: var(--d2l-input-background-color, var(--d2l-theme-background-color-base));
@@ -89,30 +85,74 @@ export function _generateInputStyles(selector, focusSelector) {
 			vertical-align: middle;
 			width: 100%;
 		}
-		${getFocusVisibleStyles(delegates.input.selector, delegates.input.style)}
+	`;
+}
 
+export function _generateInputPlaceholderBaseStyles(selector) {
+	return css`
 		${selector}::placeholder {
 			color: var(--d2l-theme-text-color-static-faint);
 			font-size: 0.8rem;
 			font-weight: 400;
 			opacity: 1; /* Firefox has non-1 default */
 		}
+	`;
+}
+
+function _generateInputAriaInvalidBaseStyles(selector) {
+	return css`
+		${selector}[aria-invalid="true"]:not(:disabled) {
+			border-color: var(--d2l-theme-status-color-error);
+		}
+	`;
+}
+
+function _generateInputDisabledBaseStyles(selector) {
+	return css`
+		${selector}:disabled {
+			opacity: var(--d2l-theme-opacity-disabled-control);
+		}
+	`;
+}
+
+function _generatewebkitSearchStyles(selector) {
+	return css`
+		${selector}::-webkit-search-cancel-button,
+		${selector}::-webkit-search-decoration {
+			display: none;
+		}
+	`;
+}
+
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export function _generateInputStyles(selector, focusSelector) {
+	if (!_isValidCssSelector(selector) || (focusSelector && !_isValidCssSelector(focusSelector))) return '';
+	const lastSpaceIndex = selector.lastIndexOf(' ');
+	const textareaSelector = unsafeCSS(`${selector.substring(0, lastSpaceIndex + 1)}textarea${selector.substring(lastSpaceIndex + 1)}`);
+	const delegates = getStyleDelegates(selector, focusSelector, textareaSelector);
+
+	selector = unsafeCSS(selector);
+	return css`
+		${_generateInputBaseStyles(selector)}
+
+		${getFocusVisibleStyles(delegates.input.selector, delegates.input.style)}
+
+		${_generateInputPlaceholderBaseStyles(selector)}
+
 		${selector}::-ms-input-placeholder {
 			color: var(--d2l-theme-text-color-static-faint);
 			font-size: 0.8rem;
 			font-weight: 400;
 		}
 
-		[aria-invalid="true"]${selector}:not(:disabled) {
-			border-color: var(--d2l-theme-status-color-error);
-		}
-		${selector}:disabled {
-			opacity: var(--d2l-theme-opacity-disabled-control);
-		}
-		${selector}::-webkit-search-cancel-button,
-		${selector}::-webkit-search-decoration {
-			display: none;
-		}
+		${_generateInputAriaInvalidBaseStyles(selector)}
+
+		${_generateInputDisabledBaseStyles(selector)}
+
+		${_generatewebkitSearchStyles(selector)}
+
 		${selector}::-ms-clear {
 			display: none;
 			height: 0;
@@ -147,6 +187,29 @@ export function _generateInputStyles(selector, focusSelector) {
 				border-color: Highlight;
 			}` : css``}
 		}
+	`;
+}
+
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export function _generateInputTextStyles(selector) {
+	if (!_isValidCssSelector(selector)) return '';
+	const finalSelector = unsafeCSS(selector);
+	const input = _getInputBaseStyleDelegates(selector);
+
+	return css`
+		${ _generateInputBaseStyles(finalSelector) }
+
+		${ _generateInputPlaceholderBaseStyles(finalSelector) }
+
+		${ getFocusVisibleStyles(input.selector, input.style) }
+
+		${ _generateInputAriaInvalidBaseStyles(finalSelector) }
+
+		${ _generateInputDisabledBaseStyles(finalSelector) }
+
+		${ _generatewebkitSearchStyles(finalSelector) }
 	`;
 }
 

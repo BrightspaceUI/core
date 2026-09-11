@@ -32,16 +32,20 @@ Empty state components are used to convey that there is no data available to be 
 
 <!-- docs: start best practices -->
 <!-- docs: start dos -->
-* Use clear language to indicate there is no data available
-* Offer concise guidance about next steps
+* Use an empty state in place of an empty list, table, widget, or page section
+  * Replace the entire content with its empty state; do not show an empty table or list header
 * Include an [Empty State Action](#d2l-empty-state-action-button) or [Link](#d2l-empty-state-action-link) if it can help the user
-* Replace the entire content with its empty state; do not show an empty table or list header
+* Follow our [Writing guidelines]({{ project.assetPath }}/style-elements/writing/#periods)
+  * Use clear language to indicate there is no data available
+  * Offer concise guidance about next steps unless the action or button already provides a next step
+  * If you include an action or button, end your message with a period even if it's a single sentence (this is an exception to the rules for [Periods]({{ project.assetPath }}/style-elements/writing/#periods))
 <!-- docs: end dos -->
 
 <!-- docs: start donts -->
-* Don’t use an empty state as a default state while data is loading
-* Don't leave a section completely empty, or use a skeleton loading screen in place of an empty state component
-* Avoid causing users to believe that they have hit a dead-end when they have not
+* Don’t use an empty state as a default state while data is loading — consider using a [Skeleton Loader or Loading Spinner]({{ project.assetPath }}/components/loading-spinner/#when-should-i-use-the-skeleton-loader-pattern-vs.-a-loading-spinner) instead
+* Avoid having multiple empty state messages caused by the same root issue
+  * The presence of multiple empty states often indicates a special case that can be addressed at the design level
+  * For instance, an underlying error causing no data to be returned or a first-time user who could be guided through creating the data instead of seeing a bunch of empty states
 <!-- docs: end donts -->
 <!-- docs: end best practices -->
 

@@ -1,3 +1,4 @@
+const degreesPerRadian = 57.3;
 const maxTime = 2000;
 const minDistance = 30;
 
@@ -50,16 +51,16 @@ function handleTouchStart(e) {
 		// angle of arc from y (deg)
 		if (distanceY > 0 && distanceX > 0) {
 			// swipe down and right
-			theta = (Math.PI - theta) * 57.3;
+			theta = (Math.PI - theta) * degreesPerRadian;
 		} else if (distanceY > 0 && distanceX < 0) {
 			// swipe down and left
-			theta = (Math.PI + theta) * 57.3;
+			theta = (Math.PI + theta) * degreesPerRadian;
 		} else if (distanceY < 0 && distanceX > 0) {
 			// swipe up and right
-			theta = theta * 57.3;
+			theta = theta * degreesPerRadian;
 		} else if (distanceY < 0 && distanceX < 0) {
 			// swipe up and left
-			theta = ((2 * Math.PI) - theta) * 57.3;
+			theta = ((2 * Math.PI) - theta) * degreesPerRadian;
 		}
 
 		let horizontal = 'none';
@@ -87,7 +88,7 @@ function handleTouchStart(e) {
 					y: distanceY
 				},
 				direction: {
-					angle: theta,
+					angle: theta, // deg, clock-wise from y-axis (12:00 position is 0deg)
 					horizontal: horizontal,
 					vertical: vertical
 				},

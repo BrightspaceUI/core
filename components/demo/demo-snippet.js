@@ -22,7 +22,7 @@ class DemoSnippet extends LitElement {
 		overflowHidden: { type: Boolean, reflect: true, attribute: 'overflow-hidden' },
 		_code: { type: String },
 		_fullscreen: { state: true },
-		_hasSkeleton: { type: Boolean, attribute: false },
+		_hasSkeleton: { state: true },
 		_settingsPeek: { state: true },
 		_skeletonOn: { type: Boolean, reflect: false }
 	};
@@ -168,9 +168,9 @@ class DemoSnippet extends LitElement {
 
 		// fix script whitespace
 		text = setIndent(text.replace(/\t/g, '  '))
-			.replace(/( *)<script( type="module")?>([^\n]+?)<\/script>/g, '$1<script$2>\n$1  $3\n$1</script>') // convert single line scripts to multi-line
-			.replace(/( *)<\/script>/g, '\n$1</script>')
-			.replace(/<script( type="module")?>/g, '<script$1>\n')
+			.replace(/( *)<script( type="module")?>([^\n]+?)<\/script>/gi, '$1<script$2>\n$1  $3\n$1</script>') // convert single line scripts to multi-line
+			.replace(/( *)<\/script>/gi, '\n$1</script>')
+			.replace(/<script( type="module")?>/gi, '<script$1>\n')
 			.replace(/(\n *)?<script data-demo-hide(.+?)<\/script>/gis, '');
 
 		const startTags = new Set([...text.matchAll(/<[^/](.*?)>/g)].map(m => m[0]));

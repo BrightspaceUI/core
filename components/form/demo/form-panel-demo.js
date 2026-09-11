@@ -12,7 +12,7 @@ import { inputStyles } from '../../inputs/input-styles.js';
 class FormPanelDemo extends LitElement {
 
 	static properties = {
-		_expanded: { type: Boolean, attribute: false }
+		_expanded: { state: true }
 	};
 
 	static styles = [heading3Styles, inputStyles, css`

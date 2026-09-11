@@ -1,8 +1,7 @@
+import { globSync, readFileSync } from 'node:fs';
 import copy from 'rollup-plugin-copy';
 import del from 'rollup-plugin-delete';
 import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
-import glob from 'glob-all';
-import { readFileSync } from 'fs';
 import replace from '@rollup/plugin-replace';
 import resolve from '@rollup/plugin-node-resolve';
 
@@ -12,7 +11,6 @@ const buildDate = Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto' }).
 const jsGlob = [
 	'@(components|controllers|directives|helpers|mixins|templates|test|tools)/**/*.js',
 	'./index.js',
-	'!**/*.@(test|axe|vdiff).js',
 ];
 const nonJsGlob = [
 	'@(components|controllers|directives|helpers|mixins|templates|test|tools)/**/*.*',
@@ -23,7 +21,7 @@ const nonJsGlob = [
 ];
 
 export default {
-	input: glob.sync(jsGlob),
+	input: globSync(jsGlob, { exclude: ['**/*.@(test|axe|vdiff).js'] }),
 	output: { dir: 'build', format: 'es', preserveModules: true },
 	external: ['@brightspace-ui/testing', 'sinon'],
 	plugins: [

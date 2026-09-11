@@ -1,9 +1,14 @@
-import { cssEscape } from '../../helpers/dom.js';
 import { SelectionInfo } from './selection-mixin.js';
 
 export const SelectionObserverMixin = superclass => class extends superclass {
 
 	static properties = {
+		/**
+		 * Whether selection is disabled (set by the selection component)
+		 * @ignore
+		 * @type {boolean}
+		 */
+		selectionDisabled: { type: Boolean, reflect: true, attribute: 'selection-disabled' },
 		/**
 		 * Id of the `SelectionMixin` component this component wants to observe (if not located within that component)
 		 * @type {string}
@@ -15,11 +20,12 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 		 * @type {object}
 		 */
 		selectionInfo: { type: Object },
-		_provider: { type: Object, attribute: false }
+		_provider: { state: true }
 	};
 
 	constructor() {
 		super();
+		this.selectionDisabled = false;
 		this.selectionInfo = new SelectionInfo();
 		this._provider = null;
 	}
@@ -96,7 +102,7 @@ export const SelectionObserverMixin = superclass => class extends superclass {
 	}
 
 	_updateProvider() {
-		const selectionComponent = this.selectionFor ? this.getRootNode().querySelector(`#${cssEscape(this.selectionFor)}`) : undefined;
+		const selectionComponent = this.selectionFor ? this.getRootNode().querySelector(`#${CSS.escape(this.selectionFor)}`) : undefined;
 		if (this._provider === selectionComponent) return;
 
 		this._disconnectProvider();
