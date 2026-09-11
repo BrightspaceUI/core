@@ -1,8 +1,10 @@
-import '../../button/button.js';
 import '../dropdown.js';
 import '../dropdown-content.js';
-import { expect, fixture, html } from '@brightspace-ui/testing';
+import { expect, fixture, html, oneEvent, sendKeys, waitUntil } from '@brightspace-ui/testing';
+import { asyncDropdownTag } from './dropdown-fixtures.js';
+import { asyncStates } from '../../popover/popover-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 function createDropdown(content, dropdown, opener) {
 	const dropdownStyles = { position: 'absolute', ...dropdown };
@@ -48,11 +50,17 @@ const withLink = html`
 	${basicText}
 `;
 
-const scroll = html`
+const scrollContent = `
 	<div>Top</div>
-	${Array.from(Array(12).keys()).map((key) => html`<div>Line ${key + 1}</div>`)}
+	${Array.from(Array(12).keys()).map((key) => `<div>Line ${key + 1}</div>`).join('')}
 	<div>Bottom</div>
 `;
+const noScrollContent = `
+	<div>Top</div>
+	<div>Line 1</div>
+	<div>Bottom</div>
+`;
+const scroll = html`${unsafeHTML(scrollContent)}`;
 
 describe('dropdown-content', () => {
 	[
@@ -64,7 +72,6 @@ describe('dropdown-content', () => {
 		{ name: 'wide-opener', dropdownStyles: { left: '30px', right: '30px', top: '75px' }, openerStyles: { borderRadius: '5px', width: '100%' }, content: html`<d2l-dropdown-content opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'with-header-footer', allColorModes: true, content: html`<d2l-dropdown-content opened>${withHeaderFooter}</d2l-dropdown-content>` },
 		{ name: 'no-padding-no-pointer', content: html`<d2l-dropdown-content no-padding no-pointer opened>${basicText}</d2l-dropdown-content>` },
-		{ name: 'scroll-bottom-shadow', allColorModes: true, content: html`<d2l-dropdown-content opened>${scroll}</d2l-dropdown-content>` },
 		{ name: 'vertical-offset', dropdownStyles: { left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="100" opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'vertical-offset-above', dropdownStyles: { bottom: '30px', left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="100" opened>${basicText}</d2l-dropdown-content>` },
 		{ name: 'vertical-offset-edge', dropdownStyles: { left: '50%' }, content: html`<d2l-dropdown-content vertical-offset="100" opened>${longerText}</d2l-dropdown-content>` },
@@ -127,10 +134,76 @@ describe('dropdown-content', () => {
 		});
 	});
 
-	it('scroll-top-shadow', async() => {
-		const elem = await fixture(createDropdown(html`<d2l-dropdown-content opened>${scroll}</d2l-dropdown-content>`), { viewport: { height: 400 }, pagePadding: false });
-		const content = elem.querySelector('d2l-dropdown-content');
-		content.scrollTo(1000);
-		await expect(document).to.be.golden({ allColorModes: true });
+	describe('shadows', () => {
+		[
+			{ name: 'both', allColorModes: true, initialContent: scroll, scrollTo: 75 },
+			{ name: 'bottom', allColorModes: true, initialContent: scroll },
+			{ name: 'top', allColorModes: true, initialContent: scroll, scrollTo: 1000 },
+			{ name: 'async-content-added', initialContent: unsafeHTML(noScrollContent), asyncContent: scrollContent },
+			{ name: 'async-content-removed', initialContent: scroll, asyncContent: noScrollContent }
+		].forEach(({ name, allColorModes, initialContent, scrollTo, asyncContent }) => {
+			it(name, async() => {
+				const elem = await fixture(
+					createDropdown(html`<d2l-dropdown-content opened>${initialContent}</d2l-dropdown-content>`),
+					{ viewport: { height: 400 }, pagePadding: false }
+				);
+				const contentElem = elem.querySelector('d2l-dropdown-content');
+				if (scrollTo) {
+					contentElem.scrollTo(scrollTo);
+				}
+				if (asyncContent) {
+					contentElem.innerHTML = asyncContent;
+				}
+				await expect(document).to.be.golden({ allColorModes });
+			});
+		});
+	});
+
+	describe('async', () => {
+
+		let elem;
+		beforeEach(async() => {
+			elem = await fixture(`<${asyncDropdownTag}></${asyncDropdownTag}>`);
+		});
+
+		it('loading', async() => {
+			await elem.openKeyboard();
+			await expect(elem).to.be.golden();
+		});
+
+		it('loaded', async() => {
+			elem.openKeyboard();
+			await oneEvent(elem, 'd2l-dropdown-open');
+			await expect(elem).to.be.golden();
+		});
+
+		it('subsequent', async() => {
+			elem.openKeyboard();
+			await oneEvent(elem, 'd2l-dropdown-open');
+			sendKeys('press', 'Escape');
+			await oneEvent(elem, 'd2l-dropdown-close');
+			elem.openKeyboard();
+			await oneEvent(elem, 'd2l-dropdown-open');
+			await expect(elem).to.be.golden();
+		});
+
+		it('close-while-loading', async() => {
+			const contentElem = elem.getContent();
+			await elem.openKeyboard();
+			await sendKeys('press', 'Escape');
+			await waitUntil(() => contentElem._asyncState === asyncStates.loaded);
+			await expect(elem).to.be.golden();
+		});
+
+		it('reset', async() => {
+			elem.openKeyboard();
+			await oneEvent(elem, 'd2l-dropdown-open');
+			sendKeys('press', 'Escape');
+			await oneEvent(elem, 'd2l-dropdown-close');
+			await elem.reset();
+			await elem.openKeyboard();
+			await expect(elem).to.be.golden();
+		});
+
 	});
 });

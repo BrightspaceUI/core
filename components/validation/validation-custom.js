@@ -2,6 +2,10 @@
 import { css, LitElement } from 'lit';
 import { ValidationCustomMixin } from './validation-custom-mixin.js';
 
+/**
+ * A component that can be used to provide custom validation for a form element. The component is hidden and does not render any visible content.
+ * @fires d2l-validation-custom-validate - Dispatched when the component is validated.
+ */
 class ValidationCustom extends ValidationCustomMixin(LitElement) {
 
 	static styles = css`

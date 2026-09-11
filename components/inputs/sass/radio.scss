@@ -1,5 +1,3 @@
-@use "../../colors/colors.scss";
-
 @mixin d2l-input-radio() {
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -21,18 +19,18 @@
 	}
 	&,
 	&:hover:disabled {
-		background-color: colors.$d2l-color-regolith;
-		border-color: colors.$d2l-color-galena;
+		background-color: var(--d2l-color-regolith);
+		border-color: var(--d2l-color-galena);
 		border-width: 1px;
 	}
 	&:hover,
 	&:focus {
-		border-color: colors.$d2l-color-celestine;
+		border-color: var(--d2l-color-celestine);
 		border-width: 2px;
 		outline: none;
 	}
 	&[aria-invalid="true"] {
-		border-color: colors.$d2l-color-cinnabar;
+		border-color: var(--d2l-color-cinnabar);
 	}
 	&:disabled {
 		opacity: 0.5;

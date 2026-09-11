@@ -108,7 +108,7 @@ export const FormElementMixin = superclass => class extends LocalizeCoreElement(
 		 * @ignore
 		 */
 		childErrors: { type: Object, attribute: false },
-		_errors: { type: Array, attribute: false }
+		_errors: { state: true }
 	};
 
 	constructor() {

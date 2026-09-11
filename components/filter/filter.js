@@ -88,12 +88,12 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		 * @type {string}
 		 */
 		text: { type: String },
-		_activeDimensionKey: { type: String, attribute: false },
-		_dimensions: { type: Array, attribute: false },
+		_activeDimensionKey: { state: true },
+		_dimensions: { state: true },
 		_displayKeyboardTooltip: { state: true },
 		_ignoreSlotChanges: { type: Boolean },
-		_minWidth: { type: Number, attribute: false },
-		_totalAppliedCount: { type: Number, attribute: false }
+		_minWidth: { state: true },
+		_totalAppliedCount: { state: true }
 	};
 
 	static styles = [bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles, offscreenStyles, css`

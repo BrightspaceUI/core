@@ -61,7 +61,6 @@ describe('d2l-input-checkbox', () => {
 		{ name: 'multiline-rtl', rtl: true, template: checkboxFixtures.labelMultiline },
 		{ name: 'multiline-unbreakable', template: checkboxFixtures.labelMultilineUnbreakable },
 		{ name: 'multiline-unbreakable-rtl', rtl: true, template: checkboxFixtures.labelMultilineUnbreakable },
-		{ name: 'aria-label', template: checkboxFixtures.labelAria },
 		{ name: 'hidden-label', template: checkboxFixtures.labelHidden },
 		{ name: 'hidden-label-rtl', rtl: true, template: checkboxFixtures.labelHidden },
 		{ name: 'supporting', template: checkboxFixtures.supporting, allColorModes: true },

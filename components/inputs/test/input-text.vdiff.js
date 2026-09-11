@@ -2,7 +2,7 @@ import '../../button/button-icon.js';
 import '../../icons/icon.js';
 import '../input-text.js';
 import { expect, fixture, focusElem, hoverElem, hoverElemAt, html } from '@brightspace-ui/testing';
-import { loadSass, unloadSass } from '../../../test/load-sass.js';
+import { _generateInputTextStyles } from '../input-styles.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
 
 const createIcon = (icon, slot) => html`<d2l-icon icon="tier1:${icon}" slot="${slot}" style="margin-left: 0.55rem; margin-right: 0.55rem"></d2l-icon>`;
@@ -35,6 +35,7 @@ const iconRightInvalidFixture = html`
 `;
 const invalidFixture = html`<d2l-input-text label="Name" label-hidden type="email" value="invalid@"></d2l-input-text>`;
 const ariaInvalidFixture = html`<d2l-input-text label="Name" label-hidden value="aria-invalid" aria-invalid="true"></d2l-input-text>`;
+const inputSearchFixture = html`<d2l-input-text label="Name" label-hidden type="search" value="search"></d2l-input-text>`;
 
 const viewport = { width: 376 };
 
@@ -46,7 +47,8 @@ describe('d2l-input-text', () => {
 		{ name: 'email', template: html`<d2l-input-text label="Name" label-hidden type="email" value="bill@nye.com"></d2l-input-text>` },
 		{ name: 'number', template: html`<d2l-input-text label="Name" label-hidden type="number" value="500"></d2l-input-text>` },
 		{ name: 'password', template: html`<d2l-input-text label="Name" label-hidden type="password" value="123456"></d2l-input-text>` },
-		{ name: 'search', template: html`<d2l-input-text label="Name" label-hidden type="search" value="search"></d2l-input-text>` },
+		{ name: 'search', template: inputSearchFixture },
+		{ name: 'search-hover', template: inputSearchFixture, action: async(elem) => await hoverElem(elem.shadowRoot.querySelector('input')) },
 		{ name: 'tel', template: html`<d2l-input-text label="Name" label-hidden type="tel" value="123-456-7890"></d2l-input-text>` },
 		{ name: 'url', template: html`<d2l-input-text label="Name" label-hidden type="url" value="https://www.d2l.com"></d2l-input-text>` },
 		{ name: 'disabled', allColorModes: true, template: html`<d2l-input-text label="Name" label-hidden disabled value="text disabled"></d2l-input-text>` },
@@ -166,12 +168,20 @@ describe('d2l-input-text', () => {
 
 	describe('sass', () => {
 
-		before(loadSass);
-		after(unloadSass);
+		before(() => {
+			const style = document.createElement('style');
+			style.id = 'generated-styles';
+			style.textContent = _generateInputTextStyles('.d2l-test-input-text');
+			document.head.appendChild(style);
+		});
+		after(() => {
+			document.getElementById('generated-styles')?.remove();
+		});
 
 		const sassBasicFixture = html`<input class="d2l-test-input-text" type="text" value="text">`;
 		const sassInvalidFixture = html`<input class="d2l-test-input-text" type="email" value="invalid@">`;
 		const sassAriaInvalidFixture = html`<input class="d2l-test-input-text" value="aria-invalid" aria-invalid="true">`;
+		const sassInputSearchFixture = html`<input class="d2l-test-input-text" type="search" value="search">`;
 
 		[
 			{ name: 'basic', template: sassBasicFixture },
@@ -179,7 +189,8 @@ describe('d2l-input-text', () => {
 			{ name: 'email', template: html`<input class="d2l-test-input-text" type="email" value="bill@nye.com">` },
 			{ name: 'number', template: html`<input class="d2l-test-input-text" type="number" value="500">` },
 			{ name: 'password', template: html`<input class="d2l-test-input-text" type="password" value="123456">` },
-			{ name: 'search', template: html`<input class="d2l-test-input-text" type="search" value="search">` },
+			{ name: 'search', template: sassInputSearchFixture },
+			{ name: 'search-hover', template: sassInputSearchFixture, action: async(elem) => await hoverElem(elem) },
 			{ name: 'tel', template: html`<input class="d2l-test-input-text" type="tel" value="123-456-7890">` },
 			{ name: 'url', template: html`<input class="d2l-test-input-text" type="url" value="https://www.d2l.com">` },
 			{ name: 'disabled', template: html`<input class="d2l-test-input-text" disabled value="text disabled">` },
@@ -191,10 +202,11 @@ describe('d2l-input-text', () => {
 			{ name: 'aria-invalid', template: sassAriaInvalidFixture },
 			{ name: 'aria-invalid-disabled', template: html`<input class="d2l-test-input-text" disabled value="aria-invalid-disabled" aria-invalid="true">` },
 			{ name: 'aria-invalid-focus', template: sassAriaInvalidFixture, focus: true },
-		].forEach(({ name, template, focus }) => {
+		].forEach(({ name, template, focus, action }) => {
 			it(name, async() => {
 				const elem = await fixture(template, { viewport });
 				if (focus) await focusElem(elem);
+				if (action) await action(elem);
 				await expect(elem).to.be.golden();
 			});
 		});

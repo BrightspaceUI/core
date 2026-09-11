@@ -6,8 +6,8 @@ import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { DialogMixin } from './dialog-mixin.js';
 import { dialogStyles } from './dialog-styles.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -48,6 +48,11 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 	};
 
 	static styles = [_generateResetStyles(':host'), dialogStyles, heading2Styles, heading3Styles, css`
+
+		.d2l-dialog-header > div {
+			display: flex;
+			flex-direction: row-reverse;
+		}
 
 		.d2l-dialog-footer.d2l-footer-no-content {
 			display: none;
@@ -189,7 +194,7 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 		super();
 		this.async = false;
 		this.noPadding = false;
-		this.preferNative = false;
+		this.preferNative = getFlag('GAUD-10336-prefer-native-fullscreen-dialogs', true);
 		this._autoSize = false;
 		this._hasFooterContent = false;
 		this._icon = 'tier1:close-large-thick';
@@ -251,17 +256,15 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 			<div style=${styleMap(slotStyles)}><slot @slotchange="${this._handleSlotChange}"></slot></div>
 		`;
 
-		const contentTabIndex = !this.focusableContentElemPresent ? '0' : undefined;
-
 		const inner = html`
 			<div class="d2l-dialog-inner" style=${styleMap(heightOverride)}>
 				<div class="d2l-dialog-header">
 					<div>
-						<h2 id="${this._titleId}" class="${this._headerStyle}">${this.titleText}</h2>
 						<d2l-button-icon icon="${this._icon}" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
+						${this._renderHeading(this.titleText, { id: this._titleId, class: this._headerStyle })}
 					</div>
 				</div>
-				<div class="d2l-dialog-content" @pending-state="${this._handleAsyncItemState}" tabindex="${ifDefined(contentTabIndex)}">${content}</div>
+				${this._renderContent(content, { handleAsyncItemState: this._handleAsyncItemState, hasTitleText: !!this.titleText })}
 				<div class="${classMap(footerClasses)}">
 					<slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot>
 				</div>
@@ -294,6 +297,11 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 
 	_abort() {
 		this._close('abort');
+	}
+
+	_focusInitial() {
+		if (!this.shadowRoot || this._useNative) return;
+		else super._focusInitial();
 	}
 
 	_handleFooterSlotChange(e) {
