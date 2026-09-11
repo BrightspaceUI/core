@@ -1,7 +1,7 @@
 import { addMarkers, clearStoredPanelState, openPanel, scrollBody, scrollPanel, setStoredPanelState } from './page-fixtures.js';
 import { clickAt, expect, fixture, nextFrame } from '@brightspace-ui/testing';
 import { clickDivider, clickDividerArrow, clickDividerHandle, focusDivider, forceDividerActive, hoverDivider, hoverDividerArrow, hoverDividerHandle, pageDividerFixtures, pressKeyDivider } from './page-divider-internal-fixtures.js';
-import { DIVIDER_GUTTER_WIDTH, MAIN_MIN_WIDTH, PANEL_MIN_WIDTH, SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth, supportingOverlayDefaultWidth } from '../page.js';
+import { DIVIDER_GUTTER_WIDTH, HIDE_ARROWS_BREAKPOINT, MAIN_MIN_WIDTH, PANEL_MIN_WIDTH, SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth, supportingOverlayDefaultWidth } from '../page.js';
 import { DIVIDER_WIDTH, KEYBOARD_STEP, KEYBOARD_STEP_LARGE } from '../page-divider-internal.js';
 
 describe('page-divider-internal', () => {
@@ -634,6 +634,22 @@ describe('page-divider-internal', () => {
 					});
 				});
 			});
+		});
+
+		describe('smaller side-nav', () => {
+			[
+				{ name: 'hide-arrows', fixture: pageDividerFixtures.sideNavBothHeaders },
+				{ name: 'immersive-hide-arrows', fixture: pageDividerFixtures.sideNavImmersiveFooter },
+
+			].forEach(test => {
+				it(test.name, async() => {
+					const elem = await fixture(test.fixture, { pagePadding: false, viewport: { width: HIDE_ARROWS_BREAKPOINT - 1, height: 400 } });
+					await openPanel(elem, 'side-nav-overlay');
+					await focusDivider(elem, 'side-nav-overlay');
+					await expect(elem).to.be.golden({ margin: 0 });
+				});
+			});
+
 		});
 	});
 

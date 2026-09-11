@@ -73,6 +73,11 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		 */
 		currentSize: { type: Number, attribute: 'current-size' },
 		/**
+		 * Whether to force-hide the directional arrows
+		 * @type {boolean}
+		 */
+		hideArrows: { type: Boolean, attribute: 'hide-arrows' },
+		/**
 		 * REQUIRED: label for the divider
 		 * @type {string}
 		 */
@@ -228,6 +233,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 		this.collapsed = false;
 		this.collapsedSize = 0;
 		this.currentSize = 0;
+		this.hideArrows = false;
 		this.label = '';
 		this.maxSize = 0;
 		this.minSize = 0;
@@ -258,7 +264,7 @@ class PageDivider extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
 		return html`
 		    <div class="${classMap(dividerClasses)}" @click="${this.#handleClick}" @pointerdown="${this.#handlePointerDown}">
-				${this.panelType === 'panel' ? html`
+				${this.panelType === 'panel' && !this.hideArrows ? html`
 					<div class="divider-arrow start" data-position="start" ?hidden="${!showStartArrow}">
 						<d2l-icon-custom size="tier1">${ICON_ARROW_COLLAPSE_LEFT}</d2l-icon-custom>
 					</div>
