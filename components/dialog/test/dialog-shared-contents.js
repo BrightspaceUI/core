@@ -6,7 +6,6 @@ import '../../filter/filter-dimension-set.js';
 import '../../filter/filter-dimension-set-value.js';
 import '../../tabs/tab.js';
 import '../../tabs/tab-panel.js';
-import { getUseNewTabsStructureFlag } from '../../tabs/tabs.js';
 import { html } from '@brightspace-ui/testing';
 
 const base = html`
@@ -79,8 +78,7 @@ export const filter = html`
 	</d2l-filter>
 `;
 
-// Clean up when removing GAUD-8299-core-tabs-use-new-structure flag.
-export const tabs = getUseNewTabsStructureFlag() ? html`
+export const tabs = html`
 	<d2l-tabs>
 		<d2l-tab id="s18" text="S18" slot="tabs"></d2l-tab>
 		<d2l-tab id="w18" text="W18" slot="tabs"></d2l-tab>
@@ -126,29 +124,5 @@ export const tabs = getUseNewTabsStructureFlag() ? html`
 		<d2l-tab-panel labelled-by="w12" slot="panels" id="w12-panel">Tab content for W12</d2l-tab-panel>
 		<d2l-tab-panel labelled-by="f11" slot="panels" id="f11-panel">Tab content for F11</d2l-tab-panel>
 		<d2l-tab-panel labelled-by="s11" slot="panels" id="s11-panel">Tab content for S11</d2l-tab-panel>
-	</d2l-tabs>` : html`
-	<d2l-tabs>
-		<d2l-tab-panel text="S18">Tab content for S18</d2l-tab-panel>
-		<d2l-tab-panel text="W18">Tab content for W18</d2l-tab-panel>
-		<d2l-tab-panel text="F17">Tab content for F17</d2l-tab-panel>
-		<d2l-tab-panel text="S17">Tab content for S17</d2l-tab-panel>
-		<d2l-tab-panel text="W17">Tab content for W17</d2l-tab-panel>
-		<d2l-tab-panel text="F16">Tab content for F16</d2l-tab-panel>
-		<d2l-tab-panel text="S16">Tab content for S16</d2l-tab-panel>
-		<d2l-tab-panel text="W16">Tab content for W16</d2l-tab-panel>
-		<d2l-tab-panel text="F15">Tab content for F15</d2l-tab-panel>
-		<d2l-tab-panel text="S15">Tab content for S15</d2l-tab-panel>
-		<d2l-tab-panel text="W15">Tab content for W15</d2l-tab-panel>
-		<d2l-tab-panel text="F14">Tab content for F14</d2l-tab-panel>
-		<d2l-tab-panel text="S14">Tab content for S14</d2l-tab-panel>
-		<d2l-tab-panel text="W14">Tab content for W14</d2l-tab-panel>
-		<d2l-tab-panel text="F13">Tab content for F13</d2l-tab-panel>
-		<d2l-tab-panel text="S13">Tab content for S13</d2l-tab-panel>
-		<d2l-tab-panel text="W13">Tab content for W13</d2l-tab-panel>
-		<d2l-tab-panel text="F12">Tab content for F12</d2l-tab-panel>
-		<d2l-tab-panel text="S12">Tab content for S12</d2l-tab-panel>
-		<d2l-tab-panel text="W12">Tab content for W12</d2l-tab-panel>
-		<d2l-tab-panel text="F11">Tab content for F11</d2l-tab-panel>
-		<d2l-tab-panel text="S11">Tab content for S11</d2l-tab-panel>
 	</d2l-tabs>
 `;
