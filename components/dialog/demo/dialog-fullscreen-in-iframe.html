@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+		</script>
+		<style>
+			#iframe-container {
+				border: 2px dashed var(--d2l-color-celestine);
+				box-sizing: border-box;
+				height: 50vh;
+				margin: 30px 0;
+				overflow: hidden;
+				width: 100%;
+			}
+			#iframe-container iframe {
+				display: block;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-dialog-fullscreen (in iframe)">
+
+			<h2>Fullscreen Dialog inside a constrained iframe</h2>
+
+			<p>The dashed box below is a fixed-size iframe (smaller than the browser viewport) hosting a page that opens a <code>d2l-dialog-fullscreen</code>. This simulates the dialog being embedded in a product iframe that doesn't fill the whole window, relying on the ifrau backdrop service to size itself to the available iframe space.</p>
+
+			<div id="iframe-container"></div>
+
+			<script type="module">
+				import { Host } from 'ifrau/host.js';
+
+				const iframeSrc = new URL('./dialog-fullscreen-in-iframe-contents.html', window.location.href).href;
+				const iframeOrigin = new URL(iframeSrc).origin;
+
+				// the ifrau client posts this to detect whether it's running inside a frame
+				window.addEventListener('message', evt => {
+					if (!evt || evt.data !== 'isFramedRequest' || evt.origin !== iframeOrigin) return;
+					evt.source.postMessage({ isFramed: true }, iframeSrc);
+				});
+
+				(async() => {
+					const ifrauHost = new Host(
+						() => document.querySelector('#iframe-container'),
+						iframeSrc,
+						{ height: '100%' }
+					);
+
+					await ifrauHost.registerService('dialogWC', '0.1', {
+						// availableHeight matches the container, which is sized to half the viewport height
+						showBackdrop: () => ({ availableHeight: document.querySelector('#iframe-container').clientHeight, top: 0 }),
+						hideBackdrop: async() => {}
+					});
+					await ifrauHost.connect();
+				})();
+			</script>
+
+		</d2l-demo-page>
+
+	</body>
+</html>
