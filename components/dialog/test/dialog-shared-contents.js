@@ -5,6 +5,7 @@ import '../../filter/filter.js';
 import '../../filter/filter-dimension-set.js';
 import '../../filter/filter-dimension-set-value.js';
 import '../../tabs/tab.js';
+import '../../tabs/tabs.js';
 import '../../tabs/tab-panel.js';
 import { html } from '@brightspace-ui/testing';
 
