@@ -1,23 +1,16 @@
 import '../colors/colors.js';
 import '../icons/icon.js';
-import './tab-internal.js';
-import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
+import { css, html, LitElement, unsafeCSS } from 'lit';
 import { findComposedAncestor, getOffsetParent, isVisible } from '../../helpers/dom.js';
 import { getFocusPseudoClass, getFocusRingStyles } from '../../helpers/focus.js';
 import { ArrowKeysMixin } from '../../mixins/arrow-keys/arrow-keys-mixin.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { getFlag } from '../../helpers/flags.js';
 import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
-import { repeat } from 'lit/directives/repeat.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
-
-export function getUseNewTabsStructureFlag() {
-	return getFlag('GAUD-8299-core-tabs-use-new-structure', true);
-}
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -30,7 +23,6 @@ function getOffsetLeft(tab, tabRect) {
 
 /**
  * A component for tabbed content. It supports the "d2l-tab" component and "TabMixin" consumers for tabs, the "d2l-tab-panel" component for the tab content, renders tabs responsively, and provides virtual scrolling for large tab lists.
- * @slot - DEPRECATED: Contains the tab panels (e.g., "d2l-tab-panel" components)
  * @slot ext - Additional content (e.g., a button) positioned at right
  * @slot tabs - Contains the tabs (e.g., "d2l-tab" components or custom components that use `TabMixin`)
  * @slot panels - Contains the tab panels (e.g., "d2l-tab-panel" components)
@@ -50,11 +42,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		text: { type: String },
 		_allowScrollNext: { type: Boolean },
 		_allowScrollPrevious: { type: Boolean },
-		_defaultSlotBehavior: { state: true },
 		_maxWidth: { type: Number },
 		_scrollCollapsed: { type: Boolean },
 		_state: { type: String },
-		_tabInfos: { type: Array },
 		_translationValue: {}
 	};
 
@@ -169,12 +159,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			transition: margin-top 200ms ease-out;
 		}
 
-		d2l-tab-internal, ::slotted([role="tab"]) {
+		::slotted([role="tab"]) {
 			-webkit-transition: max-width 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
 			transition: max-width 200ms ease-out, opacity 200ms ease-out, transform 200ms ease-out;
 		}
-		d2l-tab-internal[data-state="adding"],
-		d2l-tab-internal[data-state="removing"],
 		::slotted([role="tab"][data-state="adding"]),
 		::slotted([role="tab"][data-state="removing"]) {
 			max-width: 0;
@@ -200,7 +188,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				-webkit-transition: none;
 				transition: none;
 			}
-			d2l-tab-internal, ::slotted([role="tab"]) {
+			::slotted([role="tab"]) {
 				-webkit-transition: none;
 				transition: none;
 			}
@@ -229,13 +217,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this.maxToShow = -1;
 		this._allowScrollNext = false;
 		this._allowScrollPrevious = false;
-
-		/*
-		* Remove this._defaultSlotBehavior and related code with GAUD-8299-core-tabs-use-new-structure flag clean up
-		* NOTE: remove the TRUE case of _defaultSlotBehavior
-		*/
-		this._defaultSlotBehavior = !this.#newTabsPanelStructure;
-
 		this._loadingCompleteResolve = undefined;
 		this._loadingCompletePromise = new Promise(resolve => this._loadingCompleteResolve = resolve);
 		this._maxWidth = null;
@@ -243,7 +224,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._state = 'shown';
 		this._tabIds = {};
 		this._tabs = [];
-		if (this._defaultSlotBehavior) this._tabInfos = [];
 		this._translationValue = 0;
 	}
 
@@ -268,61 +248,32 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		super.firstUpdated(changedProperties);
 
 		this.arrowKeysFocusablesProvider = async() => {
-			return this._defaultSlotBehavior ? [...this.shadowRoot.querySelectorAll('d2l-tab-internal')] : this._tabs;
+			return this._tabs;
 		};
 
 		this.arrowKeysOnBeforeFocus = async(tab) => {
-			if (this._defaultSlotBehavior) {
-				// remove this section with GAUD-8299-core-tabs-use-new-structure flag clean up
-				const tabInfo = this._getTabInfo(tab.controlsPanel);
-				this._setFocusableDefaultSlotBehavior(tabInfo);
+			this._setFocusable(tab);
 
-				this.requestUpdate();
-				await this.updateComplete;
+			this.requestUpdate();
+			await this.updateComplete;
 
-				if (!this._scrollCollapsed) {
-					return this._updateScrollPositionDefaultSlotBehavior(tabInfo);
-				} else {
-					const measures = this._getMeasures();
-					const newTranslationValue = this._calculateScrollPositionDefaultSlotBehavior(tabInfo, measures);
-
-					if (!this.#isRTL()) {
-						if (newTranslationValue >= 0) return;
-					} else {
-						if (newTranslationValue <= 0) return;
-					}
-
-					const expanded = await this._tryExpandTabsContainer(measures);
-					if (expanded) {
-						return;
-					} else {
-						return this._updateScrollPositionDefaultSlotBehavior(tabInfo);
-					}
-				}
+			if (!this._scrollCollapsed) {
+				return this._updateScrollPosition(tab);
 			} else {
-				this._setFocusable(tab);
+				const measures = this._getMeasures();
+				const newTranslationValue = this._calculateScrollPosition(tab, measures);
 
-				this.requestUpdate();
-				await this.updateComplete;
-
-				if (!this._scrollCollapsed) {
-					return this._updateScrollPosition(tab);
+				if (!this.#isRTL()) {
+					if (newTranslationValue >= 0) return;
 				} else {
-					const measures = this._getMeasures();
-					const newTranslationValue = this._calculateScrollPosition(tab, measures);
+					if (newTranslationValue <= 0) return;
+				}
 
-					if (!this.#isRTL()) {
-						if (newTranslationValue >= 0) return;
-					} else {
-						if (newTranslationValue <= 0) return;
-					}
-
-					const expanded = await this._tryExpandTabsContainer(measures);
-					if (expanded) {
-						return;
-					} else {
-						return this._updateScrollPosition(tab);
-					}
+				const expanded = await this._tryExpandTabsContainer(measures);
+				if (expanded) {
+					return;
+				} else {
+					return this._updateScrollPosition(tab);
 				}
 			}
 		};
@@ -377,15 +328,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 							aria-label="${ifDefined(this.text)}"
 							role="tablist"
 							style="${styleMap(tabsContainerListStyles)}">
-							${!this.#newTabsPanelStructure ? repeat(this._tabInfos, (tabInfo) => tabInfo.id, (tabInfo) => html`
-								<d2l-tab-internal aria-selected="${tabInfo.selected ? 'true' : 'false'}"
-									.controlsPanel="${tabInfo.id}"
-									data-state="${tabInfo.state}"
-									?skeleton="${this.skeleton}"
-									tabindex="${tabInfo.activeFocusable ? 0 : -1}"
-									text="${tabInfo.text}">
-								</d2l-tab-internal>
-							`) : nothing}
 							<slot name="tabs" @slotchange="${this._handleTabsSlotChange}"></slot>
 						</div>
 					`)}
@@ -399,10 +341,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				</div>
 				<div class="d2l-tabs-container-ext"><slot name="ext"></slot></div>
 			</div>
-			<div class="${classMap(panelContainerClasses)}"
-				@d2l-tab-panel-selected="${ifDefined(!this.#newTabsPanelStructure ? this._handlePanelSelected : undefined)}"
-				@d2l-tab-panel-text-changed="${ifDefined(!this.#newTabsPanelStructure ? this._handlePanelTextChange : undefined)}">
-				${!this.#newTabsPanelStructure ? html`<slot @slotchange="${this._handleDefaultSlotChange}"></slot>` : nothing}
+			<div class="${classMap(panelContainerClasses)}">
 				<slot name="panels" @slotchange="${this._handlePanelsSlotChange}"></slot>
 			</div>
 		`;
@@ -427,7 +366,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	#checkTabPanelMatchRequested;
-	#newTabsPanelStructure = getUseNewTabsStructureFlag();
 	#panels;
 	#updateAriaControlsRequested;
 
@@ -452,24 +390,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		});
 	}
 
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	_animateTabAdditionDefaultSlotBehavior(tabInfo) {
-		const tab = this.shadowRoot
-			&& this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${CSS.escape(tabInfo.id)}"]`);
-		if (!tab) Promise.resolve();
-
-		return new Promise((resolve) => {
-			const handleTransitionEnd = (e) => {
-				if (e.propertyName !== 'max-width') return;
-				tab.removeEventListener('transitionend', handleTransitionEnd);
-				resolve();
-			};
-			tab.addEventListener('transitionend', handleTransitionEnd);
-			tabInfo.state = '';
-			this.requestUpdate();
-		});
-	}
-
 	_animateTabRemoval(tab) {
 		if (!tab || reduceMotion) return Promise.resolve();
 
@@ -484,57 +404,17 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		});
 	}
 
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	_animateTabRemovalDefaultSlotBehavior(tabInfo) {
-		const tab = this.shadowRoot &&
-			this.shadowRoot.querySelector(`d2l-tab-internal[controls-panel="${CSS.escape(tabInfo.id)}"]`);
-		if (!tab) Promise.resolve();
-
-		return new Promise((resolve) => {
-			const handleTransitionEnd = (e) => {
-				if (e.propertyName !== 'max-width') return;
-				tab.removeEventListener('transitionend', handleTransitionEnd);
-				this._tabInfos.splice(this._tabInfos.findIndex(info => info.id === tabInfo.id), 1);
-				this.requestUpdate();
-				resolve();
-			};
-			tab.addEventListener('transitionend', handleTransitionEnd);
-		});
-	}
-
 	_calculateScrollPosition(selectedTab, measures) {
 		const tabs = this._tabs;
 		const selectedTabIndex = tabs.indexOf(selectedTab);
 		return this.#calculateScrollPositionLogic(tabs, selectedTabIndex, measures);
 	}
 
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	_calculateScrollPositionDefaultSlotBehavior(selectedTabInfo, measures) {
-		const selectedTabIndex = this._tabInfos.indexOf(selectedTabInfo);
-		return this.#calculateScrollPositionLogic(this._tabInfos, selectedTabIndex, measures);
-	}
-
 	async _focusSelected() {
-		if (this._defaultSlotBehavior) {
-			this._focusSelectedDefaultSlotBehavior();
-			return;
-		}
-
 		const selectedTab = this._tabs.find(ti => ti.selected);
 		if (!selectedTab) return;
 
 		await this._updateScrollPosition(selectedTab);
-
-		selectedTab.focus();
-	}
-
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	async _focusSelectedDefaultSlotBehavior() {
-		const selectedTab = this.shadowRoot && this.shadowRoot.querySelector('d2l-tab-internal[aria-selected="true"]');
-		if (!selectedTab) return;
-
-		const selectedTabInfo = this._getTabInfo(selectedTab.controlsPanel);
-		await this._updateScrollPositionDefaultSlotBehavior(selectedTabInfo);
 
 		selectedTab.focus();
 	}
@@ -559,118 +439,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_getPanel(id) {
-		if (this._defaultSlotBehavior) return this._getPanelDefaultSlotBehavior(id);
-
 		if (!this.#panels) return;
 		return this.#panels.find(panel => panel.labelledBy === id);
-	}
-
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	_getPanelDefaultSlotBehavior(id) {
-		if (!this.shadowRoot) return;
-		// use simple selector for slot (Edge)
-		const slot = this.shadowRoot.querySelector('.d2l-panels-container').querySelector('slot');
-		const panels = this._getPanelsDefaultSlotBehavior(slot);
-		for (let i = 0; i < panels.length; i++) {
-			if (panels[i].nodeType === Node.ELEMENT_NODE && panels[i].role === 'tabpanel' && panels[i].id === id) {
-				return panels[i];
-			}
-		}
-	}
-
-	// rremove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	_getPanelsDefaultSlotBehavior(slot) {
-		if (!slot) return;
-		return slot.assignedElements({ flatten: true }).filter((node) => node.role === 'tabpanel');
-	}
-
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	_getTabInfo(id) {
-		return this._tabInfos.find((t) => t.id === id);
-	}
-
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	async _handleDefaultSlotChange(e) {
-		if (!this._defaultSlotBehavior) return;
-
-		const panels = this._getPanelsDefaultSlotBehavior(e.target);
-
-		// handle case where there are less than two tabs initially
-		this._updateTabListVisibility(panels);
-
-		if (!this._initialized && panels.length === 0) return;
-
-		let selectedTabInfo = null;
-
-		const newTabInfos = panels.map((panel) => {
-			let state = '';
-			if (this._initialized && !reduceMotion && panels.length !== this._tabInfos.length) {
-				// if it's a new tab, update state to animate addition
-				if (this._tabInfos.findIndex(info => info.id === panel.id) === -1) {
-					state = 'adding';
-				}
-			}
-			const tabInfo = {
-				id: panel.id,
-				text: panel.text,
-				selected: panel.selected,
-				state: state
-			};
-			if (tabInfo.selected) {
-				selectedTabInfo = tabInfo;
-				this._setFocusableDefaultSlotBehavior(tabInfo);
-			}
-			return tabInfo;
-		});
-
-		if (this._initialized && !reduceMotion && this._tabInfos.length !== newTabInfos.length) {
-			this._tabInfos.forEach((info, index) => {
-				// if a tab was removed, include old info to animate it away
-				if (newTabInfos.findIndex(newInfo => newInfo.id === info.id) === -1) {
-					info.state = 'removing';
-					info.selected = false;
-					newTabInfos.splice(index, 0, info);
-				}
-			});
-		}
-		this._tabInfos = newTabInfos;
-
-		if (this._tabInfos.length > 0 && !selectedTabInfo) {
-			selectedTabInfo = this._tabInfos.find(tabInfo => tabInfo.state !== 'removing');
-			if (selectedTabInfo) {
-				selectedTabInfo.activeFocusable = true;
-				selectedTabInfo.selected = true;
-			}
-		}
-
-		await this.updateComplete;
-
-		const animPromises = [];
-		if (!this._initialized && this._tabInfos.length > 0) {
-
-			this._initialized = true;
-			await this._updateTabsContainerWidthDefaultSlotBehavior(selectedTabInfo);
-
-		} else {
-
-			if (this._tabInfos.length > 1) {
-				this._tabInfos.forEach((info) => {
-					if (info.state === 'adding') animPromises.push(this._animateTabAdditionDefaultSlotBehavior(info));
-					else if (info.state === 'removing') animPromises.push(this._animateTabRemovalDefaultSlotBehavior(info));
-				});
-			}
-
-			// required for animation
-			this._updateMeasures();
-		}
-
-		if (selectedTabInfo) {
-			Promise.all(animPromises).then(() => {
-				this._updateMeasures();
-				return this._updateScrollPositionDefaultSlotBehavior(selectedTabInfo);
-			});
-		}
-
 	}
 
 	_handleFocusOut(e) {
@@ -678,37 +448,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this._resetFocusables();
 	}
 
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	_handlePanelSelected(e) {
-		if (!this._defaultSlotBehavior) return;
-
-		const tabInfo = this._getTabInfo(e.target.id);
-		// event could be from nested tabs
-		if (!tabInfo) return;
-
-		this._setFocusableDefaultSlotBehavior(tabInfo);
-		tabInfo.selected = true;
-		this.requestUpdate();
-	}
-
 	_handlePanelsSlotChange(e) {
-		if (this._defaultSlotBehavior) return;
-
 		this.#panels = e.target.assignedElements({ flatten: true }).filter((node) => node.role === 'tabpanel');
 		this.#checkTabPanelMatch();
 		this.#setAriaControls();
-	}
-
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	async _handlePanelTextChange(e) {
-		const tabInfo = this._getTabInfo(e.target.id);
-		// event could be from nested tabs
-		if (!tabInfo) return;
-		tabInfo.text = e.target.text;
-		this.requestUpdate();
-		await this.updateComplete;
-		this._updateMeasures();
-		await this._updateScrollVisibility(this._getMeasures());
 	}
 
 	_handleResize(entries) {
@@ -801,48 +544,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	async _handleTabSelected(e) {
-		if (this._defaultSlotBehavior) {
-			this._handleTabSelectedDefaultSlotBehavior(e);
-			return;
-		}
-
 		const selectedTab = e.target;
 		this.#updateSelectedTab(selectedTab);
 		await this.updateComplete;
 		this._updateScrollPosition(selectedTab);
 	}
 
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	async _handleTabSelectedDefaultSlotBehavior(e) {
-		e.stopPropagation();
-
-		const selectedTab = e.target;
-		const selectedPanel = this._getPanel(selectedTab.controlsPanel);
-		const selectedTabInfo = this._getTabInfo(selectedTab.controlsPanel);
-		selectedTabInfo.activeFocusable = true;
-
-		await this.updateComplete;
-		this._updateScrollPositionDefaultSlotBehavior(selectedTabInfo);
-
-		selectedPanel.selected = true;
-		this._tabInfos.forEach((tabInfo) => {
-			if (tabInfo.id !== selectedTab.controlsPanel) {
-				if (tabInfo.selected) {
-					tabInfo.selected = false;
-					const panel = this._getPanel(tabInfo.id);
-					// panel may not exist if it's being removed
-					if (panel) panel.selected = false;
-				}
-				if (tabInfo.activeFocusable) tabInfo.activeFocusable = false;
-			}
-		});
-
-		this.requestUpdate();
-	}
-
 	async _handleTabsSlotChange(e) {
-		this._defaultSlotBehavior = false;
-
 		this._tabs = e.target.assignedElements({ flatten: true }).filter((node) => node.role === 'tab');
 
 		// handle case where there are less than two tabs initially
@@ -912,13 +620,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_resetFocusables() {
-		if (this._defaultSlotBehavior) {
-			const selectedTab = this._tabInfos.find(ti => ti.selected);
-			if (selectedTab) this._setFocusableDefaultSlotBehavior(selectedTab);
-		} else {
-			const selectedTab = this._tabs.find(ti => ti.selected);
-			if (selectedTab) this._setFocusable(selectedTab);
-		}
+		const selectedTab = this._tabs.find(ti => ti.selected);
+		if (selectedTab) this._setFocusable(selectedTab);
 		this.requestUpdate();
 	}
 
@@ -948,14 +651,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		if (currentFocusable) currentFocusable.tabIndex = -1;
 
 		tab.tabIndex = 0;
-	}
-
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	_setFocusableDefaultSlotBehavior(tabInfo) {
-		const currentFocusable = this._tabInfos.find(ti => ti.activeFocusable);
-		if (currentFocusable) currentFocusable.activeFocusable = false;
-
-		tabInfo.activeFocusable = true;
 	}
 
 	async _tryExpandTabsContainer(measures) {
@@ -1005,11 +700,11 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	_updateMeasures() {
 		let totalTabsWidth = 0;
 		if (!this.shadowRoot) return;
-		const tabs = this._defaultSlotBehavior ? [...this.shadowRoot.querySelectorAll('d2l-tab-internal')] : this._tabs;
+		const tabs = this._tabs;
 
 		const tabRects = tabs.map((tab) => {
 			const tabRect = tab.getBoundingClientRect();
-			const offsetLeft = this._defaultSlotBehavior ? tab.offsetLeft : getOffsetLeft(tab, tabRect);
+			const offsetLeft = getOffsetLeft(tab, tabRect);
 
 			const measures = {
 				rect: tabRect,
@@ -1030,13 +725,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	_updateScrollPosition(selectedTab) {
 		const measures = this._getMeasures();
 		const newTranslationValue = this._calculateScrollPosition(selectedTab, measures);
-		return this.#updateScrollPositionLogic(measures, newTranslationValue);
-	}
-
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	_updateScrollPositionDefaultSlotBehavior(selectedTabInfo) {
-		const measures = this._getMeasures();
-		const newTranslationValue = this._calculateScrollPositionDefaultSlotBehavior(selectedTabInfo, measures);
 		return this.#updateScrollPositionLogic(measures, newTranslationValue);
 	}
 
@@ -1061,19 +749,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	_updateTabListVisibility(tabs) {
-		// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-		if (!this.#newTabsPanelStructure) {
-			if (this._state === 'shown' && tabs.length < 2) {
-				this.#hideTabsList();
-			} else if (this._state === 'hidden' && tabs.length > 1) {
-				this.#showTabsList();
-			} else if (this._state === 'shown' && tabs.length > 1) {
-				// check if there are hidden tabs and tab list container should actually be hidden
-				this.#handleTabHiddenChange();
-			}
-			return;
-		}
-
 		const visibleCount = tabs.filter(tab => !tab.hidden).length;
 		if (this._state === 'shown' && visibleCount < 2) {
 			this.#hideTabsList();
@@ -1089,13 +764,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		const tabs = this._tabs;
 		if (!this.maxToShow || this.maxToShow <= 0 || this.maxToShow >= tabs.length) return;
 		if (tabs.indexOf(selectedTab) > this.maxToShow - 1) return;
-		return this.#updateTabsContainerWidthLogic();
-	}
-
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	_updateTabsContainerWidthDefaultSlotBehavior(selectedTabInfo) {
-		if (!this.maxToShow || this.maxToShow <= 0 || this.maxToShow >= this._tabInfos.length) return;
-		if (this._tabInfos.indexOf(selectedTabInfo) > this.maxToShow - 1) return;
 		return this.#updateTabsContainerWidthLogic();
 	}
 
@@ -1199,10 +867,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	#handleTabDeselected(e) {
 		const panel = this._getPanel(e.target.id);
-		if (panel) {
-			if (this.#newTabsPanelStructure) panel._selected = false;
-			else panel.selected = false; // remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-		}
+		if (panel) panel._selected = false;
 	}
 
 	#handleTabHiddenChange() {
@@ -1290,20 +955,14 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		selectedTab.tabIndex = 0;
 
 		const selectedPanel = this._getPanel(selectedTab.id);
-		if (selectedPanel) {
-			if (this.#newTabsPanelStructure) selectedPanel._selected = true;
-			else selectedPanel.selected = true; // remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-		}
+		if (selectedPanel) selectedPanel._selected = true;
 		this._tabs.forEach((tab) => {
 			if (tab.id !== selectedTab.id) {
 				if (tab.selected) {
 					tab.selected = false;
 					const panel = this._getPanel(tab.id);
 					// panel may not exist if it's being removed
-					if (panel) {
-						if (this.#newTabsPanelStructure) panel._selected = false;
-						else panel.selected = false; // remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-					}
+					if (panel) panel._selected = false;
 				}
 				if (tab.tabIndex === 0) tab.tabIndex = -1;
 			}

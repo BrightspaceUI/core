@@ -5,9 +5,6 @@ import '../tab.js';
 import '../tabs.js';
 import '../tab-panel.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, sendKeysElem } from '@brightspace-ui/testing';
-import { mockFlag, resetFlag } from '../../../helpers/flags.js';
-
-const newTabsStructureFlag = 'GAUD-8299-core-tabs-use-new-structure';
 
 const noPanelSelectedFixture = {
 	deprecated: html`
@@ -245,13 +242,6 @@ const viewport = { width: 376 };
 const useFixture = 'paired';
 
 describe('d2l-tabs', () => {
-
-	before(() => {
-		mockFlag(newTabsStructureFlag, true);
-	});
-	after(() => {
-		resetFlag(newTabsStructureFlag);
-	});
 
 	describe('basic', () => {
 
@@ -732,122 +722,4 @@ describe('d2l-tabs', () => {
 		});
 	});
 
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	describe('basic (flag off)', () => {
-
-		before(() => mockFlag(newTabsStructureFlag, false));
-		after(() => resetFlag(newTabsStructureFlag));
-
-		it('no panel selected', async() => {
-			const elem = await fixture(noPanelSelectedFixture[useFixture], { viewport });
-			await expect(elem).to.be.golden();
-		});
-
-		it('panel selected', async() => {
-			const elem = await fixture(panelSelectedFixture[useFixture], { viewport });
-			await expect(elem).to.be.golden();
-		});
-	});
-
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	describe('deprecated structure', () => {
-
-		before(() => mockFlag(newTabsStructureFlag, false));
-		after(() => resetFlag(newTabsStructureFlag));
-
-		describe('basic', () => {
-			it('no panel selected', async() => {
-				const elem = await fixture(noPanelSelectedFixture['deprecated'], { viewport });
-				await expect(elem).to.be.golden();
-			});
-
-			it('panel selected', async() => {
-				const elem = await fixture(panelSelectedFixture['deprecated'], { viewport });
-				await expect(elem).to.be.golden();
-			});
-
-			it('one tab', async() => {
-				const elem = await fixture(oneTabFixture['deprecated'], { viewport });
-				await expect(elem).to.be.golden();
-			});
-		});
-
-		describe('overflow', () => {
-			const nextFixture = {
-				deprecated: html`
-					<d2l-tabs>
-						<d2l-tab-panel text="All Courses">Tab content for All</d2l-tab-panel>
-						<d2l-tab-panel text="Biology" selected>Tab content for Biology</d2l-tab-panel>
-						<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
-						<d2l-tab-panel text="Geology">Tab content for Geology</d2l-tab-panel>
-					</d2l-tabs>
-				`
-			};
-
-			['ltr', 'rtl'].forEach((dir) => {
-
-				const rtl = dir === 'rtl';
-
-				describe(dir, () => {
-
-					it('scroll next', async() => {
-						const elem = await fixture(nextFixture['deprecated'], { viewport, rtl });
-						await expect(elem).to.be.golden();
-					});
-
-					it('scrolls next on click', async() => {
-						const elem = await fixture(nextFixture['deprecated'], { viewport, rtl });
-						await clickElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button'));
-						await expect(elem).to.be.golden();
-					});
-
-					it('action slot', async() => {
-						const elem = await fixture(actionSlotOverflowFixture['deprecated'], { viewport, rtl });
-						await expect(elem).to.be.golden();
-					});
-
-					it('focus next', async() => {
-						const elem = await fixture(nextFixture['deprecated'], { viewport, rtl });
-						await focusElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button'));
-						await expect(elem).to.be.golden();
-					});
-				});
-			});
-		});
-
-		describe('keyboard', () => {
-
-			const keyboardFixture = {
-				deprecated: html`
-					<d2l-tabs>
-						<d2l-tab-panel text="All Courses">Tab content for All</d2l-tab-panel>
-						<d2l-tab-panel text="Biology" selected>Tab content for Biology</d2l-tab-panel>
-						<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
-					</d2l-tabs>
-				`
-			};
-
-			it('focuses next on right arrow', async() => {
-				const elem = await fixture(keyboardFixture['deprecated'], { viewport });
-				await sendKeysElem(elem, 'press', 'ArrowRight');
-				await expect(elem).to.be.golden();
-			});
-
-			['Space', 'Enter'].forEach((key) => {
-				const keyboardSelectionFixture = {
-					deprecated: html`
-						<d2l-tabs>
-							<d2l-tab-panel text="All Courses">Tab content for All</d2l-tab-panel>
-							<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
-						</d2l-tabs>
-					`
-				};
-				it(`selects on ${key}`, async() => {
-					const elem = await fixture(keyboardSelectionFixture['deprecated'], { viewport });
-					await sendKeysElem(elem, 'press', `ArrowRight+${key}`);
-					await expect(elem).to.be.golden();
-				});
-			});
-		});
-	});
 });
