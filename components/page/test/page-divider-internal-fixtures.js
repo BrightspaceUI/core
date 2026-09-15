@@ -82,6 +82,7 @@ export function createDivider({
 	collapsed = false,
 	collapsedSize = 14,
 	currentSize = 450,
+	hideArrows = false,
 	maxSize = 600,
 	minSize = 320,
 	panelType = 'panel',
@@ -101,7 +102,8 @@ export function createDivider({
 			min-size="${minSize}"
 			max-size="${maxSize}"
 			panel-type="${panelType}"
-			panel-position="${panelPosition}">
+			panel-position="${panelPosition}"
+			?hide-arrows="${hideArrows}">
 		</d2l-page-divider-internal>
 	`;
 }

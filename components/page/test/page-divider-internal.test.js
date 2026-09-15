@@ -309,6 +309,12 @@ describe('d2l-page-divider-internal', () => {
 						const arrows = elem.shadowRoot.querySelectorAll('.divider-arrow');
 						expect(arrows.length).to.equal(0);
 					});
+
+					it('arrows do not appear with hide-arrows set', async() => {
+						const elem = await fixture(createDivider({ hideArrows: true }));
+						const arrows = elem.shadowRoot.querySelectorAll('.divider-arrow');
+						expect(arrows.length).to.equal(0);
+					});
 				});
 
 				describe('dragging', () => {
