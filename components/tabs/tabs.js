@@ -217,13 +217,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this.maxToShow = -1;
 		this._allowScrollNext = false;
 		this._allowScrollPrevious = false;
-		this._loadingCompleteResolve = undefined;
-		this._loadingCompletePromise = new Promise(resolve => this._loadingCompleteResolve = resolve);
+		this.#loadingCompleteResolve = undefined;
+		this.#loadingCompletePromise = new Promise(resolve => this.#loadingCompleteResolve = resolve);
 		this._maxWidth = null;
 		this._scrollCollapsed = false;
 		this._state = 'shown';
-		this._tabIds = {};
-		this._tabs = [];
+		this.#tabIds = {};
+		this.#tabs = [];
 		this._translationValue = 0;
 	}
 
@@ -241,14 +241,14 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		if (this._resizeObserver) this._resizeObserver.disconnect();
+		if (this.#resizeObserver) this.#resizeObserver.disconnect();
 	}
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
 
 		this.arrowKeysFocusablesProvider = async() => {
-			return this._tabs;
+			return this.#tabs;
 		};
 
 		this.arrowKeysOnBeforeFocus = async(tab) => {
@@ -278,8 +278,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			}
 		};
 
-		this._resizeObserver = new ResizeObserver(this.#handleResize);
-		this._resizeObserver.observe(this.shadowRoot.querySelector('.d2l-tabs-container-list'));
+		this.#resizeObserver = new ResizeObserver(this.#handleResize);
+		this.#resizeObserver.observe(this.shadowRoot.querySelector('.d2l-tabs-container-list'));
 
 	}
 
@@ -351,7 +351,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	async getLoadingComplete() {
-		return this._loadingCompletePromise;
+		return this.#loadingCompletePromise;
 	}
 
 	getTabListRect() {
@@ -361,11 +361,18 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	hideTab(tab) {
 		tab.setAttribute('data-state', 'removing');
-		return (Object.keys(this._tabIds).length > 1 && !reduceMotion) ? this.#animateTabRemoval(tab) : Promise.resolve();
+		return (Object.keys(this.#tabIds).length > 1 && !reduceMotion) ? this.#animateTabRemoval(tab) : Promise.resolve();
 	}
 
 	#checkTabPanelMatchRequested;
+	#initialized;
+	#loadingCompletePromise;
+	#loadingCompleteResolve;
+	#measures;
 	#panels;
+	#resizeObserver;
+	#tabIds;
+	#tabs;
 	#updateAriaControlsRequested;
 
 	#animateTabAddition(tab) {
@@ -404,13 +411,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	#calculateScrollPosition(selectedTab, measures) {
-		const tabs = this._tabs;
+		const tabs = this.#tabs;
 		const selectedTabIndex = tabs.indexOf(selectedTab);
 		return this.#calculateScrollPositionLogic(tabs, selectedTabIndex, measures);
 	}
 
 	async #focusSelected() {
-		const selectedTab = this._tabs.find(ti => ti.selected);
+		const selectedTab = this.#tabs.find(ti => ti.selected);
 		if (!selectedTab) return;
 
 		await this.#updateScrollPosition(selectedTab);
@@ -433,8 +440,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	#getMeasures() {
-		if (!this._measures) this.#updateMeasures();
-		return this._measures;
+		if (!this.#measures) this.#updateMeasures();
+		return this.#measures;
 	}
 
 	#getPanel(id) {
@@ -550,20 +557,20 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	async #handleTabsSlotChange(e) {
-		this._tabs = e.target.assignedElements({ flatten: true }).filter((node) => node.role === 'tab');
+		this.#tabs = e.target.assignedElements({ flatten: true }).filter((node) => node.role === 'tab');
 
 		// handle case where there are less than two tabs initially
-		this.#updateTabListVisibility(this._tabs);
+		this.#updateTabListVisibility(this.#tabs);
 
-		if (!this._initialized && this._tabs.length === 0) return;
+		if (!this.#initialized && this.#tabs.length === 0) return;
 
 		let selectedTab = null;
 		const newTabIds = {};
-		this._tabs?.forEach((tab) => {
-			const isNew = this._initialized && !this._tabIds[tab.id];
-			if (isNew && !reduceMotion && this._tabs.length !== Object.keys(this._tabIds).length) {
+		this.#tabs?.forEach((tab) => {
+			const isNew = this.#initialized && !this.#tabIds[tab.id];
+			if (isNew && !reduceMotion && this.#tabs.length !== Object.keys(this.#tabIds).length) {
 				// if it's a new tab, update state to animate addition
-				this._tabIds[tab.id] = true;
+				this.#tabIds[tab.id] = true;
 				tab.setAttribute('data-state', 'adding');
 			}
 			if (tab.selected && tab.getAttribute('data-state') !== 'removing') {
@@ -573,10 +580,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			newTabIds[tab.id] = true;
 		});
 
-		this._tabIds = newTabIds;
+		this.#tabIds = newTabIds;
 
 		if (!selectedTab) {
-			selectedTab = this._tabs.find((tab) => tab.getAttribute('data-state') !== 'removing');
+			selectedTab = this.#tabs.find((tab) => tab.getAttribute('data-state') !== 'removing');
 			if (selectedTab) selectedTab.selected = true;
 		}
 		if (selectedTab) {
@@ -589,12 +596,12 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		const animPromises = [];
 
-		if (!this._initialized && this._tabs.length > 0) {
-			this._initialized = true;
+		if (!this.#initialized && this.#tabs.length > 0) {
+			this.#initialized = true;
 			await this.#updateTabsContainerWidth(selectedTab);
 		} else {
-			if (this._tabs.length > 1) {
-				this._tabs.forEach((tab) => {
+			if (this.#tabs.length > 1) {
+				this.#tabs.forEach((tab) => {
 					if (tab.getAttribute('data-state') === 'adding') animPromises.push(this.#animateTabAddition(tab));
 				});
 			}
@@ -619,7 +626,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	#resetFocusables() {
-		const selectedTab = this._tabs.find(ti => ti.selected);
+		const selectedTab = this.#tabs.find(ti => ti.selected);
 		if (selectedTab) this.#setFocusable(selectedTab);
 		this.requestUpdate();
 	}
@@ -646,7 +653,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	#setFocusable(tab) {
-		const currentFocusable = this._tabs.find(tab => tab.tabIndex === 0);
+		const currentFocusable = this.#tabs.find(tab => tab.tabIndex === 0);
 		if (currentFocusable) currentFocusable.tabIndex = -1;
 
 		tab.tabIndex = 0;
@@ -679,7 +686,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		await expandedPromise;
 
-		this._measures = null;
+		this.#measures = null;
 
 		await this.#updateScrollVisibility(this.#getMeasures());
 		this._maxWidth = null;
@@ -699,7 +706,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	#updateMeasures() {
 		let totalTabsWidth = 0;
 		if (!this.shadowRoot) return;
-		const tabs = this._tabs;
+		const tabs = this.#tabs;
 
 		const tabRects = tabs.map((tab) => {
 			const tabRect = tab.getBoundingClientRect();
@@ -713,7 +720,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			return measures;
 		});
 
-		this._measures = {
+		this.#measures = {
 			tabsContainerRect: this.shadowRoot.querySelector('.d2l-tabs-container').getBoundingClientRect(),
 			tabsContainerListRect: this.shadowRoot.querySelector('.d2l-tabs-container-list').getBoundingClientRect(),
 			tabRects: tabRects,
@@ -760,7 +767,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	#updateTabsContainerWidth(selectedTab) {
-		const tabs = this._tabs;
+		const tabs = this.#tabs;
 		if (!this.maxToShow || this.maxToShow <= 0 || this.maxToShow >= tabs.length) return;
 		if (tabs.indexOf(selectedTab) > this.maxToShow - 1) return;
 		return this.#updateTabsContainerWidthLogic();
@@ -855,9 +862,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		this.#checkTabPanelMatchRequested = true;
 		setTimeout(() => {
-			if ((this._tabs && !this.#panels) || (this.#panels && !this._tabs)) {
+			if ((this.#tabs && !this.#panels) || (this.#panels && !this.#tabs)) {
 				console.warn('d2l-tabs: tabs and panels are not in sync');
-			} else if (this._tabs.length !== this.#panels.length) {
+			} else if (this.#tabs.length !== this.#panels.length) {
 				console.warn('d2l-tabs: number of tabs and panels does not match');
 			}
 			this.#checkTabPanelMatchRequested = false;
@@ -870,10 +877,10 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	}
 
 	#handleTabHiddenChange() {
-		if (!this._tabs || this._tabs.length <= 1) return;
+		if (!this.#tabs || this.#tabs.length <= 1) return;
 
 		let visibleTabCount = 0;
-		this._tabs.forEach((tab) => {
+		this.#tabs.forEach((tab) => {
 			if (!tab.hidden) visibleTabCount++;
 		});
 
@@ -883,7 +890,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	#hideTabsList() {
 		// don't animate the tabs list visibility if it's the inital render
-		if (reduceMotion || !this._initialized || !isVisible(this)) {
+		if (reduceMotion || !this.#initialized || !isVisible(this)) {
 			this._state = 'hidden';
 		} else if (this.shadowRoot) {
 			const layout = this.shadowRoot.querySelector('.d2l-tabs-layout');
@@ -907,7 +914,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		this.#updateAriaControlsRequested = true;
 		setTimeout(() => {
-			this._tabs?.forEach((tab) => {
+			this.#tabs?.forEach((tab) => {
 				const panel = this.#getPanel(tab.id);
 				if (!panel) {
 					console.warn('d2l-tabs: tab without matching panel');
@@ -921,7 +928,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 	#showTabsList() {
 		// don't animate the tabs list visibility if it's the inital render
-		if (reduceMotion || !this._initialized) {
+		if (reduceMotion || !this.#initialized) {
 			this._state = 'shown';
 		} else {
 			this._state = 'anim';
@@ -939,9 +946,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			scrollToPromise
 		]);
 		p.then(() => {
-			if (this._loadingCompleteResolve) {
-				this._loadingCompleteResolve();
-				this._loadingCompleteResolve = undefined;
+			if (this.#loadingCompleteResolve) {
+				this.#loadingCompleteResolve();
+				this.#loadingCompleteResolve = undefined;
 			}
 		});
 		return p;
@@ -955,7 +962,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		const selectedPanel = this.#getPanel(selectedTab.id);
 		if (selectedPanel) selectedPanel._selected = true;
-		this._tabs.forEach((tab) => {
+		this.#tabs.forEach((tab) => {
 			if (tab.id !== selectedTab.id) {
 				if (tab.selected) {
 					tab.selected = false;
@@ -984,7 +991,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		this._maxWidth = maxWidth;
 		this._scrollCollapsed = true;
-		this._measures = null;
+		this.#measures = null;
 
 		return this.updateComplete;
 	}
