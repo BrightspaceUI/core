@@ -278,8 +278,7 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			}
 		};
 
-		this._handleResize = this._handleResize.bind(this);
-		this._resizeObserver = new ResizeObserver(this._handleResize);
+		this._resizeObserver = new ResizeObserver(this.#handleResize);
 		this._resizeObserver.observe(this.shadowRoot.querySelector('.d2l-tabs-container-list'));
 
 	}
@@ -454,12 +453,12 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		this.#setAriaControls();
 	}
 
-	_handleResize(entries) {
+	#handleResize = (entries) => {
 		const measures = this.#getMeasures();
 		if (entries.length === 1 && entries[0].contentRect.width === measures.tabsContainerListRect.width) return;
 		this.#updateMeasures();
 		this.#updateScrollVisibility(this.#getMeasures());
-	}
+	};
 
 	async #handleScrollNext() {
 
