@@ -52,6 +52,7 @@
 
 					await ifrauHost.registerService('dialogWC', '0.1', {
 						// availableHeight matches the container, which is sized to half the viewport height
+						getContextInfo: () => ({ availableHeight: document.querySelector('#iframe-container').clientHeight, top: 0 }),
 						showBackdrop: () => ({ availableHeight: document.querySelector('#iframe-container').clientHeight, top: 0 }),
 						hideBackdrop: async() => {}
 					});

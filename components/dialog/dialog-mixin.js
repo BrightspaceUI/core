@@ -185,7 +185,7 @@ export const DialogMixin = superclass => class extends superclass {
 	};
 
 	#updateSize = async() => {
-		if (this._inIframe && this.#ifrauDialogService) this._ifrauContextInfo = await this.#ifrauDialogService.showBackdrop();
+		if (this._inIframe && this.#ifrauDialogService) this._ifrauContextInfo = await this.#ifrauDialogService.getContextInfo();
 		if (this._autoSize) {
 			if (this._ifrauContextInfo) {
 				if (this._ifrauContextInfo.top > defaultMargin.top) {
