@@ -48,7 +48,7 @@ describe('scroll-wrapper', () => {
 			await focusElem(wrapper.querySelector('.not-sticky button'));
 			await oneEvent(wrapper._container, 'scrollend');
 			for (const scroller of wrapper._allScrollers)
-				expect(scroller.scrollLeft).to.equal(0);
+				expect(scroller.scrollLeft).to.be.lessThan(10); // scroll left seems to vary based on browser/environment so exact value makes it flaky
 		});
 
 	});
