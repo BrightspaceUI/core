@@ -375,6 +375,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 	#tabs;
 	#updateAriaControlsRequested;
 
+	#handleResize = (entries) => {
+		const measures = this.#getMeasures();
+		if (entries.length === 1 && entries[0].contentRect.width === measures.tabsContainerListRect.width) return;
+		this.#updateMeasures();
+		this.#updateScrollVisibility(this.#getMeasures());
+	};
+
 	#animateTabAddition(tab) {
 		if (!tab || reduceMotion) {
 			return new Promise((resolve) => {
@@ -414,363 +421,6 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		const tabs = this.#tabs;
 		const selectedTabIndex = tabs.indexOf(selectedTab);
 		return this.#calculateScrollPositionLogic(tabs, selectedTabIndex, measures);
-	}
-
-	async #focusSelected() {
-		const selectedTab = this.#tabs.find(ti => ti.selected);
-		if (!selectedTab) return;
-
-		await this.#updateScrollPosition(selectedTab);
-
-		selectedTab.focus();
-	}
-
-	#getComputedBackgroundColor() {
-		let bgColor = null;
-
-		findComposedAncestor(this, (node) => {
-			if (!node || node.nodeType !== Node.ELEMENT_NODE) return false;
-			const nodeColor = getComputedStyle(node, null)['backgroundColor'];
-			if (nodeColor === 'rgba(0, 0, 0, 0)' || nodeColor === 'transparent') return false;
-			bgColor = nodeColor;
-			return true;
-		});
-
-		return bgColor;
-	}
-
-	#getMeasures() {
-		if (!this.#measures) this.#updateMeasures();
-		return this.#measures;
-	}
-
-	#getPanel(id) {
-		if (!this.#panels) return;
-		return this.#panels.find(panel => panel.labelledBy === id);
-	}
-
-	#handleFocusOut(e) {
-		if (e.relatedTarget && e.relatedTarget.role === 'tab') return;
-		this.#resetFocusables();
-	}
-
-	#handlePanelsSlotChange(e) {
-		this.#panels = e.target.assignedElements({ flatten: true }).filter((node) => node.role === 'tabpanel');
-		this.#checkTabPanelMatch();
-		this.#setAriaControls();
-	}
-
-	#handleResize = (entries) => {
-		const measures = this.#getMeasures();
-		if (entries.length === 1 && entries[0].contentRect.width === measures.tabsContainerListRect.width) return;
-		this.#updateMeasures();
-		this.#updateScrollVisibility(this.#getMeasures());
-	};
-
-	async #handleScrollNext() {
-
-		const measures = this.#getMeasures();
-
-		const expanded = await this.#tryExpandTabsContainer(measures);
-		const newMeasures = expanded ? this.#getMeasures() : measures;
-
-		let newTranslationValue;
-		const lastTabMeasures = measures.tabRects[measures.tabRects.length - 1];
-		let isOverflowingNext;
-
-		if (!this.#isRTL()) {
-
-			newTranslationValue = (this._translationValue - measures.tabsContainerRect.width + scrollButtonWidth);
-			if (newTranslationValue < 0) newTranslationValue += scrollButtonWidth;
-
-			isOverflowingNext = (lastTabMeasures.offsetLeft + lastTabMeasures.rect.width + newTranslationValue >= newMeasures.tabsContainerRect.width);
-			if (!isOverflowingNext) {
-				newTranslationValue = -1 * (lastTabMeasures.offsetLeft - newMeasures.tabsContainerRect.width + lastTabMeasures.rect.width);
-				if (newTranslationValue > 0) newTranslationValue = 0;
-			}
-
-		} else {
-
-			newTranslationValue = (this._translationValue + measures.tabsContainerRect.width - scrollButtonWidth);
-			if (newTranslationValue > 0) newTranslationValue -= scrollButtonWidth;
-
-			isOverflowingNext = (lastTabMeasures.offsetLeft + newTranslationValue < 0);
-			if (!isOverflowingNext) {
-				newTranslationValue = -1 * lastTabMeasures.offsetLeft;
-				if (newTranslationValue < 0) newTranslationValue = 0;
-			}
-
-		}
-
-		await this.#scrollToPosition(newTranslationValue);
-		await this.#updateScrollVisibility(newMeasures);
-
-		if (!isOverflowingNext && this.shadowRoot) {
-			this.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container button').focus();
-		}
-
-	}
-
-	async #handleScrollPrevious() {
-
-		const measures = this.#getMeasures();
-
-		const expanded = await this.#tryExpandTabsContainer(measures);
-		const newMeasures = expanded ? this.#getMeasures() : measures;
-
-		let newTranslationValue;
-		let isOverflowingPrevious;
-
-		if (!this.#isRTL()) {
-
-			newTranslationValue = (this._translationValue + measures.tabsContainerRect.width - scrollButtonWidth);
-			isOverflowingPrevious = (newTranslationValue < 0);
-			if (!isOverflowingPrevious) newTranslationValue = 0;
-
-		} else {
-
-			newTranslationValue = (this._translationValue - measures.tabsContainerRect.width + scrollButtonWidth);
-			isOverflowingPrevious = (newTranslationValue > 0);
-			if (!isOverflowingPrevious) newTranslationValue = 0;
-
-		}
-
-		await this.#scrollToPosition(newTranslationValue);
-		await this.#updateScrollVisibility(newMeasures);
-
-		if (!isOverflowingPrevious && this.shadowRoot) {
-			this.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button').focus();
-		}
-
-	}
-
-	async #handleTabContentChange() {
-		this.#updateMeasures();
-		await this.#updateScrollVisibility(this.#getMeasures());
-	}
-
-	async #handleTabSelected(e) {
-		const selectedTab = e.target;
-		this.#updateSelectedTab(selectedTab);
-		await this.updateComplete;
-		this.#updateScrollPosition(selectedTab);
-	}
-
-	async #handleTabsSlotChange(e) {
-		this.#tabs = e.target.assignedElements({ flatten: true }).filter((node) => node.role === 'tab');
-
-		// handle case where there are less than two tabs initially
-		this.#updateTabListVisibility(this.#tabs);
-
-		if (!this.#initialized && this.#tabs.length === 0) return;
-
-		let selectedTab = null;
-		const newTabIds = {};
-		this.#tabs?.forEach((tab) => {
-			const isNew = this.#initialized && !this.#tabIds[tab.id];
-			if (isNew && !reduceMotion && this.#tabs.length !== Object.keys(this.#tabIds).length) {
-				// if it's a new tab, update state to animate addition
-				this.#tabIds[tab.id] = true;
-				tab.setAttribute('data-state', 'adding');
-			}
-			if (tab.selected && tab.getAttribute('data-state') !== 'removing') {
-				// Newly added tabs with selected=true take priority over existing selected tabs
-				if (!selectedTab || isNew) selectedTab = tab;
-			}
-			newTabIds[tab.id] = true;
-		});
-
-		this.#tabIds = newTabIds;
-
-		if (!selectedTab) {
-			selectedTab = this.#tabs.find((tab) => tab.getAttribute('data-state') !== 'removing');
-			if (selectedTab) selectedTab.selected = true;
-		}
-		if (selectedTab) {
-			this.#updateSelectedTab(selectedTab);
-		}
-
-		await this.updateComplete;
-		this.#checkTabPanelMatch();
-		this.#setAriaControls();
-
-		const animPromises = [];
-
-		if (!this.#initialized && this.#tabs.length > 0) {
-			this.#initialized = true;
-			await this.#updateTabsContainerWidth(selectedTab);
-		} else {
-			if (this.#tabs.length > 1) {
-				this.#tabs.forEach((tab) => {
-					if (tab.getAttribute('data-state') === 'adding') animPromises.push(this.#animateTabAddition(tab));
-				});
-			}
-			this.#updateMeasures();
-		}
-
-		if (selectedTab) {
-			Promise.all(animPromises).then(async() => {
-				await new Promise(resolve => requestAnimationFrame(resolve));
-				this.#updateMeasures();
-				this.#updateScrollPosition(selectedTab);
-			});
-		}
-	}
-
-	#isPositionInLeftScrollArea(position) {
-		return position > 0 && position < scrollButtonWidth;
-	}
-
-	#isPositionInRightScrollArea(position, measures) {
-		return (position > measures.tabsContainerRect.width - scrollButtonWidth) && (position < measures.tabsContainerRect.width);
-	}
-
-	#resetFocusables() {
-		const selectedTab = this.#tabs.find(ti => ti.selected);
-		if (selectedTab) this.#setFocusable(selectedTab);
-		this.requestUpdate();
-	}
-
-	#scrollToPosition(translationValue) {
-		if (translationValue === this._translationValue) {
-			return Promise.resolve();
-		}
-
-		this._translationValue = translationValue;
-		if (!this.shadowRoot || reduceMotion) return this.updateComplete;
-
-		return new Promise((resolve) => {
-			const tabList = this.shadowRoot.querySelector('.d2l-tabs-container-list');
-			const handleTransitionEnd = (e) => {
-				if (e.propertyName !== 'transform') {
-					return;
-				}
-				tabList.removeEventListener('transitionend', handleTransitionEnd);
-				resolve();
-			};
-			tabList.addEventListener('transitionend', handleTransitionEnd);
-		});
-	}
-
-	#setFocusable(tab) {
-		const currentFocusable = this.#tabs.find(tab => tab.tabIndex === 0);
-		if (currentFocusable) currentFocusable.tabIndex = -1;
-
-		tab.tabIndex = 0;
-	}
-
-	async #tryExpandTabsContainer(measures) {
-
-		if (!this._scrollCollapsed) return false;
-
-		let expandedPromise;
-		this.maxToShow = null;
-
-		if (reduceMotion) {
-			this._scrollCollapsed = false;
-			this._maxWidth = measures.totalTabsWidth + 50;
-			expandedPromise = this.updateComplete;
-		} else {
-			expandedPromise = new Promise((resolve) => {
-				const tabsContainer = this.shadowRoot && this.shadowRoot.querySelector('.d2l-tabs-container');
-				const handleTransitionEnd = (e) => {
-					if (e.propertyName !== 'max-width') return;
-					if (tabsContainer) tabsContainer.removeEventListener('transitionend', handleTransitionEnd);
-					resolve();
-				};
-				if (tabsContainer) tabsContainer.addEventListener('transitionend', handleTransitionEnd);
-				this._scrollCollapsed = false;
-				this._maxWidth = measures.totalTabsWidth + 50;
-			});
-		}
-
-		await expandedPromise;
-
-		this.#measures = null;
-
-		await this.#updateScrollVisibility(this.#getMeasures());
-		this._maxWidth = null;
-
-		if (!this._allowScrollNext) {
-			if (!this._allowScrollPrevious) {
-				this.#focusSelected();
-			} else {
-				if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container button').focus();
-			}
-		}
-
-		await this.updateComplete;
-		return true;
-	}
-
-	#updateMeasures() {
-		let totalTabsWidth = 0;
-		if (!this.shadowRoot) return;
-		const tabs = this.#tabs;
-
-		const tabRects = tabs.map((tab) => {
-			const tabRect = tab.getBoundingClientRect();
-			const offsetLeft = getOffsetLeft(tab, tabRect);
-
-			const measures = {
-				rect: tabRect,
-				offsetLeft: offsetLeft
-			};
-			totalTabsWidth += measures.rect.width;
-			return measures;
-		});
-
-		this.#measures = {
-			tabsContainerRect: this.shadowRoot.querySelector('.d2l-tabs-container').getBoundingClientRect(),
-			tabsContainerListRect: this.shadowRoot.querySelector('.d2l-tabs-container-list').getBoundingClientRect(),
-			tabRects: tabRects,
-			totalTabsWidth: totalTabsWidth
-		};
-	}
-
-	#updateScrollPosition(selectedTab) {
-		const measures = this.#getMeasures();
-		const newTranslationValue = this.#calculateScrollPosition(selectedTab, measures);
-		return this.#updateScrollPositionLogic(measures, newTranslationValue);
-	}
-
-	#updateScrollVisibility(measures) {
-
-		const lastTabMeasures = measures.tabRects[measures.tabRects.length - 1];
-		if (!lastTabMeasures) {
-			return Promise.resolve();
-		}
-
-		if (!this.#isRTL()) {
-			// show/hide scroll buttons
-			this._allowScrollPrevious = (this._translationValue < 0);
-			this._allowScrollNext = (lastTabMeasures.offsetLeft + lastTabMeasures.rect.width + this._translationValue > measures.tabsContainerRect.width);
-		} else {
-			// show/hide scrolls buttons (rtl)
-			this._allowScrollPrevious = (this._translationValue > 0);
-			this._allowScrollNext = (lastTabMeasures.offsetLeft + this._translationValue < 0);
-		}
-
-		return this.updateComplete;
-	}
-
-	#updateTabListVisibility(tabs) {
-		const visibleCount = tabs.filter(tab => !tab.hidden).length;
-		if (this._state === 'shown' && visibleCount < 2) {
-			this.#hideTabsList();
-		} else if (this._state === 'hidden' && visibleCount > 1) {
-			this.#showTabsList();
-		} else if (this._state === 'shown' && visibleCount > 1) {
-			// check if there are hidden tabs and tab list container should actually be hidden
-			this.#handleTabHiddenChange();
-		}
-	}
-
-	#updateTabsContainerWidth(selectedTab) {
-		const tabs = this.#tabs;
-		if (!this.maxToShow || this.maxToShow <= 0 || this.maxToShow >= tabs.length) return;
-		if (tabs.indexOf(selectedTab) > this.maxToShow - 1) return;
-		return this.#updateTabsContainerWidthLogic();
 	}
 
 	#calculateScrollPositionLogic(tabsDataStructure, selectedTabIndex, measures) {
@@ -871,6 +521,132 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		}, 0);
 	}
 
+	async #focusSelected() {
+		const selectedTab = this.#tabs.find(ti => ti.selected);
+		if (!selectedTab) return;
+
+		await this.#updateScrollPosition(selectedTab);
+
+		selectedTab.focus();
+	}
+
+	#getComputedBackgroundColor() {
+		let bgColor = null;
+
+		findComposedAncestor(this, (node) => {
+			if (!node || node.nodeType !== Node.ELEMENT_NODE) return false;
+			const nodeColor = getComputedStyle(node, null)['backgroundColor'];
+			if (nodeColor === 'rgba(0, 0, 0, 0)' || nodeColor === 'transparent') return false;
+			bgColor = nodeColor;
+			return true;
+		});
+
+		return bgColor;
+	}
+
+	#getMeasures() {
+		if (!this.#measures) this.#updateMeasures();
+		return this.#measures;
+	}
+
+	#getPanel(id) {
+		if (!this.#panels) return;
+		return this.#panels.find(panel => panel.labelledBy === id);
+	}
+
+	#handleFocusOut(e) {
+		if (e.relatedTarget && e.relatedTarget.role === 'tab') return;
+		this.#resetFocusables();
+	}
+
+	#handlePanelsSlotChange(e) {
+		this.#panels = e.target.assignedElements({ flatten: true }).filter((node) => node.role === 'tabpanel');
+		this.#checkTabPanelMatch();
+		this.#setAriaControls();
+	}
+
+	async #handleScrollNext() {
+
+		const measures = this.#getMeasures();
+
+		const expanded = await this.#tryExpandTabsContainer(measures);
+		const newMeasures = expanded ? this.#getMeasures() : measures;
+
+		let newTranslationValue;
+		const lastTabMeasures = measures.tabRects[measures.tabRects.length - 1];
+		let isOverflowingNext;
+
+		if (!this.#isRTL()) {
+
+			newTranslationValue = (this._translationValue - measures.tabsContainerRect.width + scrollButtonWidth);
+			if (newTranslationValue < 0) newTranslationValue += scrollButtonWidth;
+
+			isOverflowingNext = (lastTabMeasures.offsetLeft + lastTabMeasures.rect.width + newTranslationValue >= newMeasures.tabsContainerRect.width);
+			if (!isOverflowingNext) {
+				newTranslationValue = -1 * (lastTabMeasures.offsetLeft - newMeasures.tabsContainerRect.width + lastTabMeasures.rect.width);
+				if (newTranslationValue > 0) newTranslationValue = 0;
+			}
+
+		} else {
+
+			newTranslationValue = (this._translationValue + measures.tabsContainerRect.width - scrollButtonWidth);
+			if (newTranslationValue > 0) newTranslationValue -= scrollButtonWidth;
+
+			isOverflowingNext = (lastTabMeasures.offsetLeft + newTranslationValue < 0);
+			if (!isOverflowingNext) {
+				newTranslationValue = -1 * lastTabMeasures.offsetLeft;
+				if (newTranslationValue < 0) newTranslationValue = 0;
+			}
+
+		}
+
+		await this.#scrollToPosition(newTranslationValue);
+		await this.#updateScrollVisibility(newMeasures);
+
+		if (!isOverflowingNext && this.shadowRoot) {
+			this.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container button').focus();
+		}
+
+	}
+
+	async #handleScrollPrevious() {
+
+		const measures = this.#getMeasures();
+
+		const expanded = await this.#tryExpandTabsContainer(measures);
+		const newMeasures = expanded ? this.#getMeasures() : measures;
+
+		let newTranslationValue;
+		let isOverflowingPrevious;
+
+		if (!this.#isRTL()) {
+
+			newTranslationValue = (this._translationValue + measures.tabsContainerRect.width - scrollButtonWidth);
+			isOverflowingPrevious = (newTranslationValue < 0);
+			if (!isOverflowingPrevious) newTranslationValue = 0;
+
+		} else {
+
+			newTranslationValue = (this._translationValue - measures.tabsContainerRect.width + scrollButtonWidth);
+			isOverflowingPrevious = (newTranslationValue > 0);
+			if (!isOverflowingPrevious) newTranslationValue = 0;
+
+		}
+
+		await this.#scrollToPosition(newTranslationValue);
+		await this.#updateScrollVisibility(newMeasures);
+
+		if (!isOverflowingPrevious && this.shadowRoot) {
+			this.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button').focus();
+		}
+
+	}
+
+	async #handleTabContentChange() {
+		this.#updateMeasures();
+		await this.#updateScrollVisibility(this.#getMeasures());
+	}
+
 	#handleTabDeselected(e) {
 		const panel = this.#getPanel(e.target.id);
 		if (panel) panel._selected = false;
@@ -886,6 +662,74 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 
 		if (visibleTabCount > 1 && this._state === 'hidden') this.#showTabsList();
 		else if (visibleTabCount <= 1 && this._state === 'shown') this.#hideTabsList();
+	}
+
+	async #handleTabSelected(e) {
+		const selectedTab = e.target;
+		this.#updateSelectedTab(selectedTab);
+		await this.updateComplete;
+		this.#updateScrollPosition(selectedTab);
+	}
+
+	async #handleTabsSlotChange(e) {
+		this.#tabs = e.target.assignedElements({ flatten: true }).filter((node) => node.role === 'tab');
+
+		// handle case where there are less than two tabs initially
+		this.#updateTabListVisibility(this.#tabs);
+
+		if (!this.#initialized && this.#tabs.length === 0) return;
+
+		let selectedTab = null;
+		const newTabIds = {};
+		this.#tabs?.forEach((tab) => {
+			const isNew = this.#initialized && !this.#tabIds[tab.id];
+			if (isNew && !reduceMotion && this.#tabs.length !== Object.keys(this.#tabIds).length) {
+				// if it's a new tab, update state to animate addition
+				this.#tabIds[tab.id] = true;
+				tab.setAttribute('data-state', 'adding');
+			}
+			if (tab.selected && tab.getAttribute('data-state') !== 'removing') {
+				// Newly added tabs with selected=true take priority over existing selected tabs
+				if (!selectedTab || isNew) selectedTab = tab;
+			}
+			newTabIds[tab.id] = true;
+		});
+
+		this.#tabIds = newTabIds;
+
+		if (!selectedTab) {
+			selectedTab = this.#tabs.find((tab) => tab.getAttribute('data-state') !== 'removing');
+			if (selectedTab) selectedTab.selected = true;
+		}
+		if (selectedTab) {
+			this.#updateSelectedTab(selectedTab);
+		}
+
+		await this.updateComplete;
+		this.#checkTabPanelMatch();
+		this.#setAriaControls();
+
+		const animPromises = [];
+
+		if (!this.#initialized && this.#tabs.length > 0) {
+			this.#initialized = true;
+			await this.#updateTabsContainerWidth(selectedTab);
+		} else {
+			if (this.#tabs.length > 1) {
+				this.#tabs.forEach((tab) => {
+					if (tab.getAttribute('data-state') === 'adding') animPromises.push(this.#animateTabAddition(tab));
+				});
+			}
+			this.#updateMeasures();
+		}
+
+		if (selectedTab) {
+			Promise.all(animPromises).then(async() => {
+				await new Promise(resolve => requestAnimationFrame(resolve));
+				this.#updateMeasures();
+				this.#updateScrollPosition(selectedTab);
+			});
+		}
 	}
 
 	#hideTabsList() {
@@ -904,8 +748,43 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		}
 	}
 
+	#isPositionInLeftScrollArea(position) {
+		return position > 0 && position < scrollButtonWidth;
+	}
+
+	#isPositionInRightScrollArea(position, measures) {
+		return (position > measures.tabsContainerRect.width - scrollButtonWidth) && (position < measures.tabsContainerRect.width);
+	}
+
 	#isRTL() {
 		return document.documentElement.getAttribute('dir') === 'rtl';
+	}
+
+	#resetFocusables() {
+		const selectedTab = this.#tabs.find(ti => ti.selected);
+		if (selectedTab) this.#setFocusable(selectedTab);
+		this.requestUpdate();
+	}
+
+	#scrollToPosition(translationValue) {
+		if (translationValue === this._translationValue) {
+			return Promise.resolve();
+		}
+
+		this._translationValue = translationValue;
+		if (!this.shadowRoot || reduceMotion) return this.updateComplete;
+
+		return new Promise((resolve) => {
+			const tabList = this.shadowRoot.querySelector('.d2l-tabs-container-list');
+			const handleTransitionEnd = (e) => {
+				if (e.propertyName !== 'transform') {
+					return;
+				}
+				tabList.removeEventListener('transitionend', handleTransitionEnd);
+				resolve();
+			};
+			tabList.addEventListener('transitionend', handleTransitionEnd);
+		});
 	}
 
 	#setAriaControls() {
@@ -926,6 +805,13 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		}, 0);
 	}
 
+	#setFocusable(tab) {
+		const currentFocusable = this.#tabs.find(tab => tab.tabIndex === 0);
+		if (currentFocusable) currentFocusable.tabIndex = -1;
+
+		tab.tabIndex = 0;
+	}
+
 	#showTabsList() {
 		// don't animate the tabs list visibility if it's the inital render
 		if (reduceMotion || !this.#initialized) {
@@ -936,6 +822,81 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				this._state = 'shown';
 			});
 		}
+	}
+
+	async #tryExpandTabsContainer(measures) {
+
+		if (!this._scrollCollapsed) return false;
+
+		let expandedPromise;
+		this.maxToShow = null;
+
+		if (reduceMotion) {
+			this._scrollCollapsed = false;
+			this._maxWidth = measures.totalTabsWidth + 50;
+			expandedPromise = this.updateComplete;
+		} else {
+			expandedPromise = new Promise((resolve) => {
+				const tabsContainer = this.shadowRoot && this.shadowRoot.querySelector('.d2l-tabs-container');
+				const handleTransitionEnd = (e) => {
+					if (e.propertyName !== 'max-width') return;
+					if (tabsContainer) tabsContainer.removeEventListener('transitionend', handleTransitionEnd);
+					resolve();
+				};
+				if (tabsContainer) tabsContainer.addEventListener('transitionend', handleTransitionEnd);
+				this._scrollCollapsed = false;
+				this._maxWidth = measures.totalTabsWidth + 50;
+			});
+		}
+
+		await expandedPromise;
+
+		this.#measures = null;
+
+		await this.#updateScrollVisibility(this.#getMeasures());
+		this._maxWidth = null;
+
+		if (!this._allowScrollNext) {
+			if (!this._allowScrollPrevious) {
+				this.#focusSelected();
+			} else {
+				if (this.shadowRoot) this.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container button').focus();
+			}
+		}
+
+		await this.updateComplete;
+		return true;
+	}
+
+	#updateMeasures() {
+		let totalTabsWidth = 0;
+		if (!this.shadowRoot) return;
+		const tabs = this.#tabs;
+
+		const tabRects = tabs.map((tab) => {
+			const tabRect = tab.getBoundingClientRect();
+			const offsetLeft = getOffsetLeft(tab, tabRect);
+
+			const measures = {
+				rect: tabRect,
+				offsetLeft: offsetLeft
+			};
+			totalTabsWidth += measures.rect.width;
+			return measures;
+		});
+
+		this.#measures = {
+			tabsContainerRect: this.shadowRoot.querySelector('.d2l-tabs-container').getBoundingClientRect(),
+			tabsContainerListRect: this.shadowRoot.querySelector('.d2l-tabs-container-list').getBoundingClientRect(),
+			tabRects: tabRects,
+			totalTabsWidth: totalTabsWidth
+		};
+	}
+
+	#updateScrollPosition(selectedTab) {
+		const measures = this.#getMeasures();
+		const newTranslationValue = this.#calculateScrollPosition(selectedTab, measures);
+		return this.#updateScrollPositionLogic(measures, newTranslationValue);
 	}
 
 	#updateScrollPositionLogic(measures, newTranslationValue) {
@@ -952,6 +913,26 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			}
 		});
 		return p;
+	}
+
+	#updateScrollVisibility(measures) {
+
+		const lastTabMeasures = measures.tabRects[measures.tabRects.length - 1];
+		if (!lastTabMeasures) {
+			return Promise.resolve();
+		}
+
+		if (!this.#isRTL()) {
+			// show/hide scroll buttons
+			this._allowScrollPrevious = (this._translationValue < 0);
+			this._allowScrollNext = (lastTabMeasures.offsetLeft + lastTabMeasures.rect.width + this._translationValue > measures.tabsContainerRect.width);
+		} else {
+			// show/hide scrolls buttons (rtl)
+			this._allowScrollPrevious = (this._translationValue > 0);
+			this._allowScrollNext = (lastTabMeasures.offsetLeft + this._translationValue < 0);
+		}
+
+		return this.updateComplete;
 	}
 
 	async #updateSelectedTab(selectedTab) {
@@ -973,6 +954,25 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 				if (tab.tabIndex === 0) tab.tabIndex = -1;
 			}
 		});
+	}
+
+	#updateTabListVisibility(tabs) {
+		const visibleCount = tabs.filter(tab => !tab.hidden).length;
+		if (this._state === 'shown' && visibleCount < 2) {
+			this.#hideTabsList();
+		} else if (this._state === 'hidden' && visibleCount > 1) {
+			this.#showTabsList();
+		} else if (this._state === 'shown' && visibleCount > 1) {
+			// check if there are hidden tabs and tab list container should actually be hidden
+			this.#handleTabHiddenChange();
+		}
+	}
+
+	#updateTabsContainerWidth(selectedTab) {
+		const tabs = this.#tabs;
+		if (!this.maxToShow || this.maxToShow <= 0 || this.maxToShow >= tabs.length) return;
+		if (tabs.indexOf(selectedTab) > this.maxToShow - 1) return;
+		return this.#updateTabsContainerWidthLogic();
 	}
 
 	#updateTabsContainerWidthLogic() {
