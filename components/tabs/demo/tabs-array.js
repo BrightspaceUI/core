@@ -16,7 +16,7 @@ class TabsArray extends LitElement {
 
 	render() {
 		return html`
-			<d2l-tabs @d2l-tab-selected="${this._handleTabSelected}">
+			<d2l-tabs @d2l-tab-selected="${this.#handleTabSelected}">
 				${this._tabs.map((tab, index) => html`
 					<d2l-tab text="${tab.text}" ?selected="${tab.selected}" slot="tabs" id="tab-${index}"></d2l-tab>
 					<d2l-tab-panel labelled-by="tab-${index}" slot="panels">
@@ -27,7 +27,7 @@ class TabsArray extends LitElement {
 		`;
 	}
 
-	_handleTabSelected(e) {
+	#handleTabSelected(e) {
 		const selectedTab = e.target;
 		this._tabs = this._tabs.map(tab => {
 			return {
