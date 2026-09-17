@@ -1,7 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { getFocusPseudoClass, getFocusVisibleStyles } from '../../helpers/focus.js';
 import { _isValidCssSelector } from '../../helpers/internal/css.js';
-import { getFlag } from '../../helpers/flags.js';
 import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
 
 const focusClass = unsafeCSS(globalThis.document !== undefined ? getFocusPseudoClass() : 'focus-visible');
