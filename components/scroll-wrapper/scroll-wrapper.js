@@ -246,6 +246,7 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 		clearTimeout(this._checkFocusStickyTimeout);
 		const horizontallySticky = findComposedAncestor(e.target, element => {
 			if (this._allScrollers.includes(element)) return true; // Stop search early if we hit a scroller
+			if (element.nodeType !== Node.ELEMENT_NODE) return false;
 			const styles = getComputedStyle(element);
 			return (styles.position === 'sticky' && styles.insetInlineStart !== 'auto');
 		});
