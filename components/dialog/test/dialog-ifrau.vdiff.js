@@ -34,6 +34,7 @@ describe('dialog-ifrau', () => {
 			);
 
 			await ifrauHost.registerService('dialogWC', '0.1', {
+				getContextInfo: () => ({ availableHeight: ifrau.availableHeight, top: ifrau.top }),
 				showBackdrop: () => {
 					return {
 						availableHeight: ifrau.availableHeight,

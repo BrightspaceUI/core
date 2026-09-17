@@ -116,6 +116,7 @@ export const DialogMixin = superclass => class extends superclass {
 		const ifrauDialogService = await tryGetIfrauBackdropService();
 		if (this.opened) {
 			if (ifrauDialogService) {
+				this.#ifrauDialogService = ifrauDialogService;
 				this._ifrauContextInfo = await ifrauDialogService.showBackdrop();
 				this._inIframe = true;
 			}
@@ -125,6 +126,7 @@ export const DialogMixin = superclass => class extends superclass {
 				ifrauDialogService.hideBackdrop();
 				this._ifrauContextInfo = null;
 			}
+			this.#ifrauDialogService = null;
 			this._close();
 		}
 	}
@@ -165,6 +167,7 @@ export const DialogMixin = superclass => class extends superclass {
 	}
 
 	#useNativeInitialized = false;
+	#ifrauDialogService = null;
 
 	#handleMvcDialogOpen = () => {
 		// native dialogs on top layer will be stacked on non-native dialogs regardless of z-index
@@ -182,6 +185,7 @@ export const DialogMixin = superclass => class extends superclass {
 	};
 
 	#updateSize = async() => {
+		if (this._inIframe && this.#ifrauDialogService) this._ifrauContextInfo = await this.#ifrauDialogService.getContextInfo();
 		if (this._autoSize) {
 			if (this._ifrauContextInfo) {
 				if (this._ifrauContextInfo.top > defaultMargin.top) {
