@@ -1,5 +1,8 @@
 import '../colors/colors.js';
-import { css } from 'lit';
+import { css, unsafeCSS } from 'lit';
+import { getFlag } from '../../helpers/flags.js';
+
+const overflowWrapValue = unsafeCSS(getFlag('GAUD-10606-overflow-wrap-anywhere', true) ? 'anywhere' : 'normal');
 
 export const meterStyles = css`
 	.d2l-meter-container {
@@ -28,6 +31,7 @@ export const meterStyles = css`
 		color: var(--d2l-color-ferrite);
 		fill: var(--d2l-color-ferrite);
 		line-height: 0.8rem;
+		overflow-wrap: ${overflowWrapValue};
 		text-align: center;
 	}
 	:host([foreground-light]) .d2l-meter-text {
