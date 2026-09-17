@@ -1,6 +1,6 @@
+import { AUTO_COLLAPSE_WIDTH_FACTOR, AUTO_EXPAND_WIDTH_FACTOR, KEYBOARD_STEP, KEYBOARD_STEP_LARGE } from '../page-divider-internal.js';
 import { clickArrow, clickHandle, createDivider, dragArrow, dragDivider, dragHandle, getDividerArrow, getSlider } from './page-divider-internal-fixtures.js';
 import { clickElem, expect, fixture, html, nextFrame, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
-import { KEYBOARD_STEP, KEYBOARD_STEP_LARGE } from '../page-divider-internal.js';
 
 describe('d2l-page-divider-internal', () => {
 
@@ -72,8 +72,8 @@ describe('d2l-page-divider-internal', () => {
 					const currentSize = 450;
 					const minSize = 320;
 					const dragDistance = 250;
-					const autoCollapseDistance = currentSize - (minSize * 0.75);
-					const autoExpandDistance = minSize * 0.1 - collapsedSize;
+					const autoCollapseDistance = currentSize - (minSize * AUTO_COLLAPSE_WIDTH_FACTOR);
+					const autoExpandDistance = minSize * AUTO_EXPAND_WIDTH_FACTOR - collapsedSize;
 
 					[
 						{ name: 'start panel', panelType: 'panel', panelPosition: 'start', growPositive: true, coord: 'x' },

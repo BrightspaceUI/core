@@ -1,8 +1,8 @@
 import { addMarkers, clearStoredPanelState, openPanel, scrollBody, scrollPanel, setStoredPanelState } from './page-fixtures.js';
+import { AUTO_COLLAPSE_WIDTH_FACTOR, AUTO_EXPAND_WIDTH_FACTOR, DIVIDER_WIDTH, KEYBOARD_STEP, KEYBOARD_STEP_LARGE } from '../page-divider-internal.js';
 import { clickAt, expect, fixture, nextFrame } from '@brightspace-ui/testing';
-import { clickDivider, clickDividerArrow, clickDividerHandle, focusDivider, forceDividerActive, hoverDivider, hoverDividerArrow, hoverDividerHandle, pageDividerFixtures, pressKeyDivider } from './page-divider-internal-fixtures.js';
+import { clickDivider, clickDividerArrow, clickDividerHandle, dragDividerBy, dragDividerHandleBy, focusDivider, forceDividerActive, hoverDivider, hoverDividerArrow, hoverDividerHandle, pageDividerFixtures, pressKeyDivider } from './page-divider-internal-fixtures.js';
 import { DIVIDER_GUTTER_WIDTH, HIDE_ARROWS_BREAKPOINT, MAIN_MIN_WIDTH, PANEL_MIN_WIDTH, SIDE_NAV_DEFAULT_WIDTH, supportingDefaultWidth, supportingOverlayDefaultWidth } from '../page.js';
-import { DIVIDER_WIDTH, KEYBOARD_STEP, KEYBOARD_STEP_LARGE } from '../page-divider-internal.js';
 
 describe('page-divider-internal', () => {
 
@@ -322,6 +322,140 @@ describe('page-divider-internal', () => {
 							await clickDividerArrow(elem, test.panelKey, arrow);
 							await expect(elem).to.be.golden({ margin: 0 });
 						});
+					});
+				});
+			});
+		});
+	});
+
+	// Grey marker is starting position
+	// Blue marker is the where the divider is dragged to
+	// Green marker is the expected size the panel will be upon completing the drag
+	describe('drag', () => {
+		const defaultStart = 400;
+		const dragSize = 100;
+		const width = 1200;
+		const maxPanelSize = width - MAIN_MIN_WIDTH - DIVIDER_WIDTH;
+		const minPanelSize = PANEL_MIN_WIDTH;
+		const autoCollapseDistance = minPanelSize - Math.ceil(minPanelSize * AUTO_COLLAPSE_WIDTH_FACTOR);
+		const autoExpandDistance = Math.floor(minPanelSize * AUTO_EXPAND_WIDTH_FACTOR) - DIVIDER_GUTTER_WIDTH;
+
+		afterEach(() => {
+			clearStoredPanelState();
+		});
+
+		[
+			{ name: 'side-nav', position: 'start', fixture: pageDividerFixtures.sideNavBothHeadersStorageKey, panelKey: 'side-nav', growSign: 1 },
+			{ name: 'supporting', position: 'end', fixture: pageDividerFixtures.supportingLongFooterStorageKey, panelKey: 'supporting', growSign: -1 },
+			{ name: 'rtl-side-nav', rtl: true, position: 'start', fixture: pageDividerFixtures.sideNavBothHeadersStorageKey, panelKey: 'side-nav', growSign: -1 },
+			{ name: 'rtl-supporting', rtl: true, position: 'end', fixture: pageDividerFixtures.supportingLongFooterStorageKey, panelKey: 'supporting', growSign: 1 }
+		].forEach(test => {
+			describe(test.name, () => {
+
+				[
+					{ action: 'grow', grows: true, start: defaultStart, drag: dragSize, expected: defaultStart + dragSize },
+					{ action: 'shrink', grows: false, start: defaultStart, drag: dragSize, expected: defaultStart - dragSize },
+					{ action: 'max', grows: true, start: maxPanelSize - 50, drag: dragSize, expected: maxPanelSize },
+					{ action: 'min', grows: false, start: minPanelSize + 50, drag: dragSize, expected: minPanelSize },
+					{ action: 'snap-to-min', grows: false, start: minPanelSize, drag: autoCollapseDistance, expected: minPanelSize },
+					{ action: 'auto-collapse', grows: false, start: minPanelSize, drag: autoCollapseDistance + 1, expected: DIVIDER_GUTTER_WIDTH },
+					{ action: 'snap-to-collapsed', collapsed: true, grows: true, start: DIVIDER_GUTTER_WIDTH, drag: autoExpandDistance, expected: DIVIDER_GUTTER_WIDTH },
+					{ action: 'auto-expand', collapsed: true, grows: true, start: DIVIDER_GUTTER_WIDTH, drag: autoExpandDistance + 1, expected: minPanelSize },
+				].forEach(({ action, collapsed = false, grows, start, drag, expected }) => {
+					it(action, async() => {
+						setStoredPanelState({ [test.panelKey]: { collapsed, size: start } });
+						const elem = await fixture(test.fixture, { pagePadding: false, rtl: test.rtl, viewport: { height: 325, width: width } });
+						const dragDelta = grows ? drag : -drag;
+						const requested = start + dragDelta;
+						addMarkers(elem, test.position, [
+							{ color: 'grey', size: start },
+							{ color: 'green', size: expected },
+							...(requested !== expected ? [{ color: 'blue', size: requested }] : [])
+						]);
+
+						await dragDividerBy(elem, test.panelKey, { x: dragDelta * test.growSign });
+						await expect(elem).to.be.golden({ margin: 0 });
+					});
+				});
+			});
+		});
+	});
+
+	describe('dragging', () => {
+		afterEach(() => {
+			clearStoredPanelState();
+		});
+
+		// Drag divider handle
+		[
+			{ name: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeadersStorageKey, panelKey: 'side-nav', growSign: 1 },
+			{ name: 'supporting-immersive', fixture: pageDividerFixtures.supportingImmersiveBothHeadersStorageKey, panelKey: 'supporting', growSign: -1 },
+			{ name: 'rtl-side-nav-immersive', rtl: true, fixture: pageDividerFixtures.sideNavImmersiveLongMainLongFooterStorageKey, panelKey: 'side-nav', growSign: -1 },
+			{ name: 'rtl-supporting', rtl: true, fixture: pageDividerFixtures.supportingLongFooterStorageKey, panelKey: 'supporting', growSign: 1 }
+		].forEach(test => {
+			describe(test.name, () => {
+
+				[
+					{ action: 'closing', grows: false, drag: 200 },
+					{ action: 'opening', collapsed: true, grows: true, drag: 100 },
+				].forEach(({ action, collapsed = false, grows, drag }) => {
+					it(action, async() => {
+						setStoredPanelState({ [test.panelKey]: { collapsed, size: 400 } });
+						const elem = await fixture(test.fixture, { pagePadding: false, rtl: test.rtl, viewport: { height: 400, width: 1000 } });
+
+						await dragDividerHandleBy(elem, test.panelKey, { x: (grows ? drag : -drag) * test.growSign, completeDrag: false });
+						await expect(elem).to.be.golden({ margin: 0 });
+					});
+				});
+			});
+		});
+
+		// Wider viewport, drag divider line
+		[
+			{ name: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeadersFooterStorageKey, panelKey: 'side-nav', growSign: 1 },
+			{ name: 'supporting-immersive', fixture: pageDividerFixtures.supportingImmersiveBothHeadersStorageKey, panelKey: 'supporting', growSign: -1 },
+		].forEach(test => {
+			describe(test.name, () => {
+
+				[
+					{ action: 'closing-wide', grows: false, drag: 200 },
+					{ action: 'opening-wide', collapsed: true, grows: true, drag: 100 },
+					{ action: 'past-max', grows: true, drag: 500 },
+					{ action: 'past-collapsed', grows: false, drag: 500 },
+				].forEach(({ action, collapsed = false, grows, drag }) => {
+					it(action, async() => {
+						setStoredPanelState({ [test.panelKey]: { collapsed, size: 400 } });
+						const elem = await fixture(test.fixture, { pagePadding: false, viewport: { height: 400, width: 1400 } });
+
+						await dragDividerBy(elem, test.panelKey, { x: (grows ? drag : -drag) * test.growSign, completeDrag: false });
+						await expect(elem).to.be.golden({ margin: 0 });
+					});
+				});
+			});
+		});
+
+		// Scrollable content, drag divider line
+		[
+			{ name: 'side-nav-immersive', fixture: pageDividerFixtures.sideNavImmersiveLongMainLongFooterStorageKey, panelKey: 'side-nav', growSign: 1 },
+			{ name: 'supporting', fixture: pageDividerFixtures.supportingLongMainLongBothHeadersStorageKey, panelKey: 'supporting', growSign: -1 },
+		].forEach(test => {
+			describe(test.name, () => {
+
+				[
+					{ action: 'closing-panel-scrolled', scroll: { panel: true }, grows: false, drag: 200 },
+					{ action: 'opening-panel-scrolled', collapsed: true, scroll: { panel: true }, grows: true, drag: 100 },
+					{ action: 'closing-both-scrolled', scroll: { body: true, panel: true }, grows: false, drag: 200 },
+					{ action: 'opening-both-scrolled', collapsed: true, scroll: { body: true, panel: true }, grows: true, drag: 100 },
+				].forEach(({ action, collapsed = false, scroll = {}, grows, drag }) => {
+					it(action, async() => {
+						setStoredPanelState({ [test.panelKey]: { size: 400 } });
+						const elem = await fixture(test.fixture, { pagePadding: false, viewport: { height: 400, width: 1000 } });
+						if (scroll.panel) scrollPanel(elem, test.panelKey);
+						if (collapsed) await clickDividerHandle(elem, test.panelKey);
+						if (scroll.body) scrollBody(elem);
+
+						await dragDividerBy(elem, test.panelKey, { x: (grows ? drag : -drag) * test.growSign, completeDrag: false });
+						await expect(elem).to.be.golden({ margin: 0 });
 					});
 				});
 			});
@@ -649,7 +783,150 @@ describe('page-divider-internal', () => {
 					await expect(elem).to.be.golden({ margin: 0 });
 				});
 			});
+		});
 
+		// Grey marker is starting position
+		// Blue marker is the where the divider is dragged to
+		// Green marker is the expected size the panel will be upon completing the drag
+		describe('drag', () => {
+			const minPanelSize = PANEL_MIN_WIDTH;
+			const autoCollapseDistance = minPanelSize - Math.ceil(minPanelSize * AUTO_COLLAPSE_WIDTH_FACTOR);
+			const autoExpandDistance = Math.floor(minPanelSize * AUTO_EXPAND_WIDTH_FACTOR) - DIVIDER_GUTTER_WIDTH;
+
+			afterEach(() => {
+				clearStoredPanelState();
+			});
+
+			const sideNavTests = [
+				{ name: 'side-nav', position: 'start', fixture: pageDividerFixtures.sideNavBothHeadersStorageKey, panelKey: 'side-nav-overlay', growSign: 1 },
+				{ name: 'rtl-side-nav', rtl: true, position: 'start', fixture: pageDividerFixtures.sideNavBothHeadersStorageKey, panelKey: 'side-nav-overlay', growSign: -1 },
+			];
+
+			const supportingTests =	[
+				{ name: 'supporting', position: 'end', fixture: pageDividerFixtures.supportingLongFooterStorageKey, panelKey: 'supporting-overlay', growSign: -1 },
+				{ name: 'rtl-supporting', rtl: true, position: 'end', fixture: pageDividerFixtures.supportingLongFooterStorageKey, panelKey: 'supporting-overlay', growSign: 1 }
+			];
+
+			[
+				{ tests: sideNavTests, width: 450, dragSize: 50, defaultStart: 375, maxPanelSize: 450 - DIVIDER_WIDTH - DIVIDER_GUTTER_WIDTH, },
+				{ tests: supportingTests, width: 800, dragSize: 100, defaultStart: 500, maxPanelSize: 800 - DIVIDER_WIDTH - DIVIDER_GUTTER_WIDTH, },
+			].forEach(({ tests, width, dragSize, defaultStart, maxPanelSize }) => {
+				tests.forEach(test => {
+					describe(test.name, () => {
+
+						[
+							{ action: 'grow', grows: true, start: defaultStart, drag: dragSize, expected: defaultStart + dragSize },
+							{ action: 'shrink', grows: false, start: defaultStart, drag: dragSize, expected: defaultStart - dragSize },
+							{ action: 'max', grows: true, start: maxPanelSize - dragSize + 15, drag: dragSize, expected: maxPanelSize },
+							{ action: 'min', grows: false, start: minPanelSize + dragSize - 25, drag: dragSize, expected: minPanelSize },
+							{ action: 'snap-to-min', grows: false, start: minPanelSize, drag: autoCollapseDistance, expected: minPanelSize },
+							{ action: 'auto-collapse', grows: false, start: minPanelSize, drag: autoCollapseDistance + 1, expected: DIVIDER_GUTTER_WIDTH },
+							{ action: 'snap-to-collapsed', collapsed: true, grows: true, start: DIVIDER_GUTTER_WIDTH, drag: autoExpandDistance, expected: DIVIDER_GUTTER_WIDTH },
+							{ action: 'auto-expand', collapsed: true, grows: true, start: DIVIDER_GUTTER_WIDTH, drag: autoExpandDistance + 1, expected: minPanelSize },
+						].forEach(({ action, collapsed = false, grows, start, drag, expected }) => {
+							it(action, async() => {
+								setStoredPanelState({ [test.panelKey]: { size: start } });
+								const elem = await fixture(test.fixture, { pagePadding: false, rtl: test.rtl, viewport: { height: 325, width: width } });
+								if (!collapsed) await openPanel(elem, test.panelKey);
+
+								const dragDelta = grows ? drag : -drag;
+								const requested = start + dragDelta;
+								addMarkers(elem, test.position, [
+									{ color: 'grey', size: start },
+									{ color: 'green', size: expected },
+									...(requested !== expected ? [{ color: 'blue', size: requested }] : [])
+								]);
+
+								await dragDividerBy(elem, test.panelKey, { x: dragDelta * test.growSign });
+								await expect(elem).to.be.golden({ margin: 0 });
+							});
+						});
+					});
+				});
+			});
+		});
+
+		describe('dragging', () => {
+			afterEach(() => {
+				clearStoredPanelState();
+			});
+
+			// Drag divider handle
+			[
+				{ name: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeadersStorageKey, panelKey: 'side-nav-overlay', growSign: 1 },
+				{ name: 'supporting-immersive', fixture: pageDividerFixtures.supportingImmersiveBothHeadersStorageKey, panelKey: 'supporting-overlay', growSign: -1 },
+				{ name: 'rtl-side-nav-immersive', rtl: true, fixture: pageDividerFixtures.sideNavImmersiveLongMainLongFooterStorageKey, panelKey: 'side-nav-overlay', growSign: -1 },
+				{ name: 'rtl-supporting', rtl: true, fixture: pageDividerFixtures.supportingLongFooterStorageKey, panelKey: 'supporting-overlay', growSign: 1 }
+			].forEach(test => {
+				describe(test.name, () => {
+
+					[
+						{ action: 'closing', collapsed: false, grows: false, drag: 200 },
+						{ action: 'opening', collapsed: true, grows: true, drag: 100 },
+					].forEach(({ action, collapsed, grows, drag }) => {
+						it(action, async() => {
+							setStoredPanelState({ [test.panelKey]: { size: 400 } });
+							const elem = await fixture(test.fixture, { rtl: test.rtl, ...fixtureOptions(test.panelKey) });
+							if (!collapsed) await openPanel(elem, test.panelKey);
+
+							await dragDividerHandleBy(elem, test.panelKey, { x: (grows ? drag : -drag) * test.growSign, completeDrag: false });
+							await expect(elem).to.be.golden({ margin: 0 });
+						});
+					});
+				});
+			});
+
+			// Drag divider line
+			[
+				{ name: 'side-nav', fixture: pageDividerFixtures.sideNavBothHeadersFooterStorageKey, panelKey: 'side-nav-overlay', growSign: 1 },
+				{ name: 'supporting-immersive', fixture: pageDividerFixtures.supportingImmersiveBothHeadersStorageKey, panelKey: 'supporting-overlay', growSign: -1 },
+			].forEach(test => {
+				describe(test.name, () => {
+
+					[
+						{ action: 'past-max', grows: true, drag: 500 },
+						{ action: 'past-collapsed', grows: false, drag: 500 },
+					].forEach(({ action, grows, drag }) => {
+						it(action, async() => {
+							setStoredPanelState({ [test.panelKey]: { size: 400 } });
+							const elem = await fixture(test.fixture, fixtureOptions(test.panelKey));
+							await openPanel(elem, test.panelKey);
+
+							await dragDividerBy(elem, test.panelKey, { x: (grows ? drag : -drag) * test.growSign, completeDrag: false });
+							await expect(elem).to.be.golden({ margin: 0 });
+						});
+					});
+				});
+			});
+
+			// Scrollable content, drag divider line
+			[
+				{ name: 'side-nav-immersive', fixture: pageDividerFixtures.sideNavImmersiveLongMainLongFooterStorageKey, panel: 'side-nav', panelKey: 'side-nav-overlay', growSign: 1 },
+				{ name: 'supporting', fixture: pageDividerFixtures.supportingLongMainLongBothHeadersStorageKey, panel: 'supporting', panelKey: 'supporting-overlay', growSign: -1 },
+			].forEach(test => {
+				describe(test.name, () => {
+
+					[
+						{ action: 'closing-panel-scrolled', scroll: { panel: true }, grows: false, drag: 200 },
+						{ action: 'opening-panel-scrolled', collapsed: true, scroll: { panel: true }, grows: true, drag: 100 },
+						{ action: 'closing-both-scrolled', scroll: { body: true, panel: true }, grows: false, drag: 200 },
+						{ action: 'opening-both-scrolled', collapsed: true, scroll: { body: true, panel: true }, grows: true, drag: 100 },
+					].forEach(({ action, collapsed = false, scroll = {}, grows, drag }) => {
+						it(action, async() => {
+							setStoredPanelState({ [test.panelKey]: { size: 400 } });
+							const elem = await fixture(test.fixture, fixtureOptions(test.panelKey));
+							await openPanel(elem, test.panelKey);
+
+							if (scroll.panel) scrollPanel(elem, test.panel);
+							if (collapsed) await clickDividerHandle(elem, test.panelKey);
+							if (scroll.body) scrollBody(elem);
+
+							await dragDividerBy(elem, test.panelKey, { x: (grows ? drag : -drag) * test.growSign, completeDrag: false });
+							await expect(elem).to.be.golden({ margin: 0 });
+						});
+					});
+				});
+			});
 		});
 	});
 
