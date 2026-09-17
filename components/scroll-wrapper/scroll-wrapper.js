@@ -2,6 +2,7 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { findComposedAncestor } from '../../helpers/dom.js';
 import { getFocusRingStyles } from '../../helpers/focus.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
@@ -240,6 +241,22 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 		}
 	}
 
+	#checkFocusSticky = e => {
+		if (!this._container) return;
+		clearTimeout(this._checkFocusStickyTimeout);
+		const horizontallySticky = findComposedAncestor(e.target, element => {
+			if (this._allScrollers.includes(element)) return true; // Stop search early if we hit a scroller
+			if (element.nodeType !== Node.ELEMENT_NODE) return false;
+			const styles = getComputedStyle(element);
+			return (styles.position === 'sticky' && styles.insetInlineStart !== 'auto');
+		});
+
+		if (horizontallySticky && !(this._allScrollers.includes(horizontallySticky))) {
+			this.#focusedSticky = true;
+			this._checkFocusStickyTimeout = setTimeout(() => this.#focusedSticky = false, 100);
+		}
+	};
+
 	#checkScrollThresholds = () => {
 		if (!this._container) return;
 		const lowerScrollValue = this._container.scrollWidth - this._baseContainer.offsetWidth - Math.abs(this._container.scrollLeft);
@@ -248,13 +265,25 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 
 	};
 
-	#synchronizeScroll = (e) => {
-		if (this._syncDriver && e.target !== this._syncDriver) return;
+	#focusedSticky = false;
+	#lastScrollPosition = 0;
+	#onScroll = (e) => {
+		if (this.#focusedSticky) {
+			this._allScrollers.forEach(element => {
+				element.scrollLeft = this.#lastScrollPosition;
+			});
+		} else if (this._secondaryScrollers.length) this.#synchronizeScroll(e.target);
+		if (e.target === this._container) this.#checkScrollThresholds();
+		this.#lastScrollPosition = this._container.scrollLeft;
+	};
+
+	#synchronizeScroll = (target) => {
+		if (this._syncDriver && target !== this._syncDriver) return;
 		if (this._syncDriverTimeout) clearTimeout(this._syncDriverTimeout);
 
-		this._syncDriver = e.target;
+		this._syncDriver = target;
 		this._allScrollers.forEach(element => {
-			if (element && element !== e.target) element.scrollLeft = e.target.scrollLeft;
+			if (element && element !== target) element.scrollLeft = target.scrollLeft;
 		});
 		this._syncDriverTimeout = setTimeout(() => this._syncDriver = null, 100);
 	};
@@ -266,11 +295,10 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 			this._container.style.removeProperty('overflow-x');
 			this._container.classList.remove('d2l-scroll-wrapper-focus');
 			this._container.removeAttribute('tabindex');
-			this._container.removeEventListener('scroll', this.#synchronizeScroll);
-			this._container.removeEventListener('scroll', this.#checkScrollThresholds);
+			this._container.removeEventListener('scroll', this.#onScroll);
 			this._secondaryScrollers.forEach(element => {
 				element.style.removeProperty('overflow-x');
-				element.removeEventListener('scroll', this.#synchronizeScroll);
+				element.removeEventListener('scroll', this.#onScroll);
 			});
 		}
 	}
@@ -310,17 +338,18 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 			}
 			this._container.style.overflowX = 'auto';
 			this._resizeObserver.observe(this._container);
-			this._container.addEventListener('scroll', this.#checkScrollThresholds);
+			this._container.addEventListener('scroll', this.#onScroll);
+			this._container.addEventListener('focusin', this.#checkFocusSticky);
 			this._updateTabIndex();
 		}
 
 		if (this._secondaryScrollers.length) {
 			this._secondaryScrollers.forEach(element => {
 				element.style.overflowX = 'hidden';
-				element.addEventListener('scroll', this.#synchronizeScroll);
+				element.addEventListener('scroll', this.#onScroll);
+				element.addEventListener('focusin', this.#checkFocusSticky);
 			});
-			this._container.addEventListener('scroll', this.#synchronizeScroll);
-			this.#synchronizeScroll({ target: this._container });
+			this.#synchronizeScroll(this._container);
 		}
 	}
 
