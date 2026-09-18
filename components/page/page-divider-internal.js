@@ -13,8 +13,8 @@ export const KEYBOARD_STEP = 20; // TO DO: Confirm
 export const KEYBOARD_STEP_LARGE = 80; // TO DO: Confirm
 
 const DRAG_THRESHOLD = 3; // Number of pixels to move to count as a drag
-const AUTO_EXPAND_WIDTH_FACTOR = 0.1;
-const AUTO_COLLAPSE_WIDTH_FACTOR = 0.75;
+export const AUTO_EXPAND_WIDTH_FACTOR = 0.1;
+export const AUTO_COLLAPSE_WIDTH_FACTOR = 0.75;
 
 const clampedSize = (size, min, max) => Math.max(min, Math.min(size, max));
 const isRtl = () => document.documentElement.getAttribute('dir') === 'rtl';
