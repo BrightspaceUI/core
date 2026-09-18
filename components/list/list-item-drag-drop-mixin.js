@@ -427,6 +427,9 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (this.shadowRoot) this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
 	}
 
+	#scrollableContainer;
+	#touchAction = '';
+
 	_annoucePositionChange(dragTargetKey, dropTargetKey, dropLocation) {
 		/** Dispatched when a draggable list item's position changes in the list. See [Event Details: d2l-list-item-position-change](#event-details%3A-d2l-list-item-position-change). */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-position-change', {
@@ -558,6 +561,19 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_findListItemFromCoordinates(x, y) {
 		const listNode = findComposedAncestor(this.parentNode, (node) => node && node.tagName === 'D2L-LIST');
 		return listNode.shadowRoot.elementFromPoint(x, y);
+	}
+
+	_findListItemScrollableContainer(listItem) {
+		return findComposedAncestor(listItem, (el) => {
+			// skip non-element nodes (e.g. shadow root fragments) encountered while traversing up
+			if (el.nodeType !== Node.ELEMENT_NODE) return false;
+			const styles = getComputedStyle(el);
+			const overflowY = styles.getPropertyValue('overflow-y');
+			const overflowX = styles.getPropertyValue('overflow-x');
+			const overflow = styles.getPropertyValue('overflow');
+			const overflowValues = ['auto', 'scroll'];
+			return (overflowValues.includes(overflowY) || overflowValues.includes(overflowX) || overflowValues.includes(overflow) || el === document.body);
+		});
 	}
 
 	_getKeyboardText() {
@@ -802,6 +818,15 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (!this._touchStarted) return;
 		e.preventDefault();
 		this._touchStarted = false;
+		if (this.#scrollableContainer) {
+			if (this.#touchAction) {
+				this.#scrollableContainer.style.setProperty('touch-action', this.#touchAction);
+			} else {
+				this.#scrollableContainer.style.removeProperty('touch-action');
+			}
+			this.#touchAction = '';
+		}
+		this.#scrollableContainer = undefined;
 		this._currentTouchListItem = undefined;
 		// simulate drop if over a drop area
 		const touch = e.changedTouches[0];
@@ -862,6 +887,14 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		// simulate dragstart for touch and hold
 		this._touchTimeoutId = setTimeout(() => {
 			this._touchStarted = true;
+			// search for scrollable container
+			this.#scrollableContainer = this._findListItemScrollableContainer(this);
+			if (this.#scrollableContainer) {
+				// check if it has the touch-action style already
+				const touchAction = this.#scrollableContainer.style.getPropertyValue('touch-action');
+				if (touchAction && touchAction !== 'none') this.#touchAction = touchAction;
+				this.#scrollableContainer.style.setProperty('touch-action', 'none');
+			}
 			if (this.shadowRoot)
 				this.shadowRoot.querySelector('.d2l-list-item-drag-area').dispatchEvent(createDragEvent('dragstart'));
 		}, touchHoldDuration);
