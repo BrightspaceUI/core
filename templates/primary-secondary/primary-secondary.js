@@ -12,6 +12,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const desktopMinHeight = 256;
 
 const desktopMinSize = 320;
 
@@ -370,12 +371,16 @@ class MobileMouseResizer extends Resizer {
 		this._target = null;
 	}
 
+	#getY(e) {
+		return e.clientY + document.documentElement.scrollTop - this.contentRect.top;
+	}
+
 	_onMouseDown(e) {
 		if (this.isMobile) {
 			this._wasCollapsed = this.isCollapsed;
 			this.dispatchResizeStart();
 			e.preventDefault();
-			const y = e.clientY - this.contentRect.top;
+			const y = this.#getY(e);
 			this._offset = y - (this.contentRect.height - this.panelSize);
 			this._isDragging = false;
 			this._isResizing = true;
@@ -387,7 +392,7 @@ class MobileMouseResizer extends Resizer {
 		if (!this._isResizing) {
 			return;
 		}
-		const y = e.clientY - this.contentRect.top;
+		const y = this.#getY(e);
 		const secondaryHeight = this.clampMaxHeight(this.contentRect.height - y + this._offset);
 		this._isDragging = true;
 		this.dispatchResize(secondaryHeight, false);
@@ -399,7 +404,7 @@ class MobileMouseResizer extends Resizer {
 		}
 		const expandedCollapseThreshold = this.contentBounds.minHeight * 0.75;
 		const collapsedCollapseThreshold = this.contentBounds.minHeight * 0.1;
-		const y = e.clientY - this.contentRect.top;
+		const y = this.#getY(e);
 		const desiredSecondaryHeight = this.contentRect.height - y + this._offset;
 		if (
 			this._isDragging
@@ -595,6 +600,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 		 * @type {boolean}
 		 */
 		hasForm: { type: Boolean, attribute: 'has-form' },
+		_fixedFooter: { type: Boolean, attribute: '_fixedFooter', reflect: true },
 		_formErrorSummary: { type: Array },
 		_hasFooter: { state: true },
 		_isCollapsed: { state: true },
@@ -867,6 +873,35 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			.d2l-template-primary-secondary-divider-handle-desktop {
 				display: none;
 			}
+
+			:host(:not([_fixedFooter])),
+			:host(:not([_fixedFooter])) > d2l-form {
+				bottom: unset;
+			}
+			:host(:not([_fixedFooter])) .d2l-template-primary-secondary-container {
+				min-height: 100vh;
+			}
+			:host(:not([_fixedFooter])) .d2l-template-primary-secondary-content {
+				display: grid;
+				flex-grow: 1;
+				grid-template: 1fr auto auto / 1fr;
+			}
+			:host(:not([_fixedFooter])) .d2l-template-primary-secondary-content > * {
+				grid-column: 1/-1;
+			}
+			:host(:not([_fixedFooter])) main {
+				grid-row: 1 / -1;
+			}
+			:host(:not([_fixedFooter])) .d2l-template-primary-secondary-divider {
+				grid-row: 2 / 3;
+			}
+			:host(:not([_fixedFooter])) .d2l-template-primary-secondary-secondary-container {
+				grid-row: 3 / 4;
+			}
+			:host(:not([_fixedFooter])) :not([data-background-shading="secondary"]) > .d2l-template-primary-secondary-secondary-container {
+				background-color: white;
+			}
+
 			/* Attribute selector is only used to increase specificity */
 			:host([resizable]) .d2l-template-primary-secondary-divider,
 			:host(:not([resizable])) .d2l-template-primary-secondary-divider {
@@ -1009,6 +1044,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 		this.widthType = 'fullscreen';
 
 		this._animateResize = false;
+		this._fixedFooter = true;
 		this._isCollapsed = false;
 		this._isExpanded = false;
 		this._isMobile = isMobile();
@@ -1151,11 +1187,13 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 			this.shadowRoot.querySelector('.d2l-template-primary-secondary-divider-not-resizable');
 		const desktopDividerSize = divider.offsetWidth;
 		const mobileDividerSize = divider.offsetHeight;
+		const footerSize = this.shadowRoot.querySelector('footer')?.offsetHeight ?? 0;
+		const maxAvailableHeight = this._fixedFooter ? contentRect.height : Math.min(contentRect.height, window.innerHeight - footerSize);
 		return {
 			height: contentRect.height,
 			minWidth: desktopMinSize,
 			maxWidth: contentRect.width - desktopMinSize - desktopDividerSize,
-			minHeight: (contentRect.height - mobileDividerSize) * (1 / 3),
+			minHeight: (maxAvailableHeight - mobileDividerSize) * (1 / 3),
 			maxHeight: (contentRect.height - mobileDividerSize) * (2 / 3),
 			width: contentRect.width
 		};
@@ -1173,6 +1211,9 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 	_onContentResize(entries) {
 		const entry = entries[0];
 		const contentRect = entry.target.getBoundingClientRect();
+		const footerSize = this.shadowRoot.querySelector('footer')?.offsetHeight ?? 0;
+		const headerSize = this.shadowRoot.querySelector('header')?.offsetHeight ?? 0;
+		this._fixedFooter = window.innerHeight - footerSize - headerSize >= desktopMinHeight;
 		this._contentBounds = this._computeContentBounds(contentRect);
 		this._isMobile = isMobile();
 
