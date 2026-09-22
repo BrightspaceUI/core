@@ -12,7 +12,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const desktopMinHeight = 256;
+const desktopMinHeight = 3*44; // Primary/Secondary panels have a min-height of 1/3 of the viewport on mobile view. This threshhold prevents them from being smaller than the recommended WCAG Target size(AAA)
 
 const desktopMinSize = 320;
 
