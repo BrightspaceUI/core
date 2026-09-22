@@ -432,7 +432,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	#scrollableContainer;
 	#touchAction = '';
-	#improvedMobileScroll = getFlag('GAUD-10642-improved-scroll-in-mobile', true);
+	#improvedMobileScroll = getFlag('GAUD-10642-improved-mobile-drag-and-drop', true);
 
 	_annoucePositionChange(dragTargetKey, dropTargetKey, dropLocation) {
 		/** Dispatched when a draggable list item's position changes in the list. See [Event Details: d2l-list-item-position-change](#event-details%3A-d2l-list-item-position-change). */
