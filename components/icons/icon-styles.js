@@ -1,19 +1,32 @@
 import '../colors/colors.js';
-import { css } from 'lit';
+import { css, nothing, unsafeCSS } from 'lit';
 
-export const inlineLinkIconStyles = css`
-	d2l-icon {
-		color: var(--d2l-theme-text-color-interactive-default);
-		height: calc(1em - 1px);
-		margin-inline-start: 0.315em;
-		transform: translateY(0.1em);
-		vertical-align: inherit;
-		width: calc(1em - 1px);
-	}
-	a:hover d2l-icon {
-		--d2l-icon-fill-color: var(--d2l-theme-text-color-interactive-hover);
-	}
-`;
+/**
+ * A private helper method that should not be used by general consumers
+ */
+export const _generateInlineLinkIconStyles = (iconContainerId) => {
+	const iconContainerStyles = iconContainerId ? css`
+		${unsafeCSS(iconContainerId)} {
+			line-height: 0;
+			white-space: nowrap;
+		}
+	` : nothing;
+
+	return css`
+		d2l-icon {
+			color: var(--d2l-theme-text-color-interactive-default);
+			height: calc(1em - 1px);
+			margin-inline-start: 0.315em;
+			transform: translateY(0.1em);
+			vertical-align: inherit;
+			width: calc(1em - 1px);
+		}
+		a:hover d2l-icon {
+			--d2l-icon-fill-color: var(--d2l-theme-text-color-interactive-hover);
+		}
+		${iconContainerStyles}
+	`;
+};
 
 export const iconStyles = css`
 	:host {

@@ -3,17 +3,18 @@ import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
+import { _generateInlineLinkIconStyles } from '../icons/icon-styles.js';
 import { _generateLinkStyles } from './link-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
-import { inlineLinkIconStyles } from '../icons/icon-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 export const linkStyles = _generateLinkStyles('.d2l-link', true);
+const inlineLinkIconStyles = _generateInlineLinkIconStyles('#new-window');
 
 /**
  * This component can be used just like the native anchor tag.
@@ -96,10 +97,6 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		}
 		a span.truncate-one {
 			${overflowEllipsisDeclarations}
-		}
-		#new-window {
-			line-height: 0;
-			white-space: nowrap;
 		}
 
 		:host([disabled]:not([disabled-tooltip])) a:hover {
