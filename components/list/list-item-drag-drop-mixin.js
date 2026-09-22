@@ -26,6 +26,7 @@ const dropTargetLeaveDelay = 1000; // ms
 const touchHoldDuration = 400; // length of time user needs to hold down touch before dragging occurs
 const scrollSensitivity = 150; // pixels between top/bottom of viewport to scroll for mobile
 const scrollContainerSensitivity = 60; // pixels between top/bottom of scrollable container to scroll for mobile
+const scrollSpeed = 10; // pixels to scroll for mobile
 
 const createDragEvent = (name) => {
 	const event = new Event(name, { bubbles: true });
@@ -988,10 +989,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		const rect = this.#scrollableContainer.getBoundingClientRect();
 		if (rect.bottom - touch.clientY < scrollContainerSensitivity) {
 			// scroll down
-			this.#scrollableContainer.scrollBy(0, 10);
+			this.#scrollableContainer.scrollBy(0, scrollSpeed);
 		} else if (touch.clientY - rect.top < scrollContainerSensitivity) {
 			// scroll up
-			this.#scrollableContainer.scrollBy(0, -10);
+			this.#scrollableContainer.scrollBy(0, -scrollSpeed);
 		}
 	}
 
@@ -999,10 +1000,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		const height = window.innerHeight;
 		if (touch.clientY > height / 2 && height - touch.clientY < scrollSensitivity) {
 			// scroll down
-			window.scrollBy(0, 10);
+			window.scrollBy(0, scrollSpeed);
 		} else if (touch.clientY < height / 2 && touch.clientY < scrollSensitivity) {
 			// scroll up
-			window.scrollBy(0, -10);
+			window.scrollBy(0, -scrollSpeed);
 		}
 	}
 
