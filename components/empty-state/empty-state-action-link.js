@@ -1,9 +1,10 @@
 import '../offscreen/offscreen.js';
 import '../icons/icon.js';
-import { css, html, LitElement, nothing } from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineLinkIconStyles } from '../icons/icon-styles.js';
 import { linkStyles } from '../link/link.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
@@ -30,8 +31,7 @@ class EmptyStateActionLink extends LocalizeCoreElement(FocusMixin(PropertyRequir
 		 */
 		target: { type: String },
 	};
-
-	static styles = [bodyCompactStyles, linkStyles];
+	static styles = [bodyCompactStyles, linkStyles, inlineLinkIconStyles];
 
 	static get focusElementSelector() {
 		return '.d2l-link';

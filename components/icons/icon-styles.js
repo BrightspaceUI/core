@@ -1,6 +1,20 @@
 import '../colors/colors.js';
 import { css } from 'lit';
 
+export const inlineLinkIconStyles = css`
+	d2l-icon {
+		color: var(--d2l-theme-text-color-interactive-default);
+		height: calc(1em - 1px);
+		margin-inline-start: 0.315em;
+		transform: translateY(0.1em);
+		vertical-align: inherit;
+		width: calc(1em - 1px);
+	}
+	a:hover d2l-icon {
+		--d2l-icon-fill-color: var(--d2l-theme-text-color-interactive-hover);
+	}
+`;
+
 export const iconStyles = css`
 	:host {
 		-webkit-align-items: center;

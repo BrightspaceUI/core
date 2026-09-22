@@ -8,6 +8,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
+import { inlineLinkIconStyles } from '../icons/icon-styles.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -68,7 +69,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		target: { type: String }
 	};
 
-	static styles = [linkStyles, offscreenStyles, css`
+	static styles = [linkStyles, offscreenStyles, inlineLinkIconStyles, css`
 		:host {
 			display: inline;
 		}
@@ -99,18 +100,6 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		#new-window {
 			line-height: 0;
 			white-space: nowrap;
-		}
-		d2l-icon {
-			color: var(--d2l-theme-text-color-interactive-default);
-			height: calc(1em - 1px);
-			margin-inline-start: 0.315em;
-			transform: translateY(0.1em);
-			vertical-align: inherit;
-			width: calc(1em - 1px);
-		}
-
-		a:hover d2l-icon {
-			--d2l-icon-fill-color: var(--d2l-theme-text-color-interactive-hover);
 		}
 
 		:host([disabled]:not([disabled-tooltip])) a:hover {
