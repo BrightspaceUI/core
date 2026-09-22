@@ -125,7 +125,7 @@ function _generatewebkitSearchStyles(selector) {
  * A private helper method that should not be used by general consumers
  */
 export function _generateInputStyles(selector, focusSelector) {
-	if (!_isValidCssSelector(selector) || (focusSelector && !_isValidCssSelector(focusSelector))) return '';
+	if (!_isValidCssSelector(selector) || (focusSelector && !_isValidCssSelector(focusSelector))) return;
 	const lastSpaceIndex = selector.lastIndexOf(' ');
 	const textareaSelector = unsafeCSS(`${selector.substring(0, lastSpaceIndex + 1)}textarea${selector.substring(lastSpaceIndex + 1)}`);
 	const delegates = getStyleDelegates(selector, focusSelector, textareaSelector);
@@ -191,7 +191,7 @@ export function _generateInputStyles(selector, focusSelector) {
  * A private helper method that should not be used by general consumers
  */
 export function _generateInputTextStyles(selector) {
-	if (!_isValidCssSelector(selector)) return '';
+	if (!_isValidCssSelector(selector)) return;
 	const finalSelector = unsafeCSS(selector);
 	const input = _getInputBaseStyleDelegates(selector);
 

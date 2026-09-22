@@ -38,7 +38,7 @@ function _getSelectFocusStyles(selector) {
  * A private helper method that should not be used by general consumers
  */
 export function _generateSelectStyles(selector) {
-	if (!_isValidCssSelector(selector)) return '';
+	if (!_isValidCssSelector(selector)) return;
 	const finalSelector = unsafeCSS(selector);
 	const selectFocusStyles = _getSelectFocusStyles(finalSelector);
 
