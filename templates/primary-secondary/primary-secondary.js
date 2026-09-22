@@ -12,7 +12,7 @@ import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const desktopMinHeight = 3*44; // Primary/Secondary panels have a min-height of 1/3 of the viewport on mobile view. This threshhold prevents them from being smaller than the recommended WCAG Target size(AAA)
+const desktopMinHeight = 3 * 44; // Primary/Secondary panels have a min-height of 1/3 of the viewport on mobile view. This threshhold prevents them from being smaller than the recommended WCAG Target size(AAA)
 
 const desktopMinSize = 320;
 
@@ -371,10 +371,6 @@ class MobileMouseResizer extends Resizer {
 		this._target = null;
 	}
 
-	#getY(e) {
-		return e.clientY + document.documentElement.scrollTop - this.contentRect.top;
-	}
-
 	_onMouseDown(e) {
 		if (this.isMobile) {
 			this._wasCollapsed = this.isCollapsed;
@@ -418,6 +414,9 @@ class MobileMouseResizer extends Resizer {
 		}
 		this._isResizing = false;
 		this.dispatchResizeEnd();
+	}
+	#getY(e) {
+		return e.clientY + document.documentElement.scrollTop - this.contentRect.top;
 	}
 
 }
