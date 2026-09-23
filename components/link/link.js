@@ -3,7 +3,6 @@ import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
-import { _generateInlineLinkIconStyles } from '../icons/icon-styles.js';
 import { _generateLinkStyles } from './link-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
@@ -14,7 +13,6 @@ import { offscreenStyles } from '../offscreen/offscreen.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
 export const linkStyles = _generateLinkStyles('.d2l-link', true);
-const inlineLinkIconStyles = _generateInlineLinkIconStyles('#new-window');
 
 /**
  * This component can be used just like the native anchor tag.
@@ -70,7 +68,7 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		target: { type: String }
 	};
 
-	static styles = [linkStyles, offscreenStyles, inlineLinkIconStyles, css`
+	static styles = [linkStyles, offscreenStyles, css`
 		:host {
 			display: inline;
 		}
@@ -97,6 +95,22 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		}
 		a span.truncate-one {
 			${overflowEllipsisDeclarations}
+		}
+		#new-window {
+			line-height: 0;
+			white-space: nowrap;
+		}
+		d2l-icon {
+			color: var(--d2l-theme-text-color-interactive-default);
+			height: calc(1em - 1px);
+			margin-inline-start: 0.315em;
+			transform: translateY(0.1em);
+			vertical-align: inherit;
+			width: calc(1em - 1px);
+		}
+
+		a:hover d2l-icon {
+			--d2l-icon-fill-color: var(--d2l-theme-text-color-interactive-hover);
 		}
 
 		:host([disabled]:not([disabled-tooltip])) a:hover {
