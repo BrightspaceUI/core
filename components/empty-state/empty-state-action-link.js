@@ -1,5 +1,3 @@
-import '../offscreen/offscreen.js';
-import '../icons/icon.js';
 import { html, LitElement } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
