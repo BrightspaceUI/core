@@ -19,7 +19,7 @@ export const LinkMixin = superclass => class extends LocalizeCoreElement(supercl
 		 * REQUIRED: URL or URL fragment of the link
 		 * @type {string}
 		 */
-		href: { type: String, required: true },
+		href: { type: String },
 		/**
 		 * Where to display the linked URL
 		 * @type {string}
