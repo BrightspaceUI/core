@@ -16,7 +16,13 @@ class EmptyStateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(Li
 		 * @type {string}
 		 */
 		text: { type: String, required: true },
+		/**
+		 * REQUIRED: The action URL or URL fragment of the link
+		 * @type {string}
+		 */
+		href: { type: String, required: true },
 	};
+
 	static styles = [super.styles, bodyCompactStyles, linkStyles];
 
 	static get focusElementSelector() {
