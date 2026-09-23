@@ -822,15 +822,18 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (!this._touchStarted) return;
 		e.preventDefault();
 		this._touchStarted = false;
-		if (this.#scrollableContainer) {
-			if (this.#touchAction) {
-				this.#scrollableContainer.style.setProperty('touch-action', this.#touchAction);
-			} else {
-				this.#scrollableContainer.style.removeProperty('touch-action');
+		// leave the code inside the if when removing 'GAUD-10642-improved-mobile-drag-and-drop'
+		if (this.#improvedMobileScroll) {
+			if (this.#scrollableContainer) {
+				if (this.#touchAction) {
+					this.#scrollableContainer.style.setProperty('touch-action', this.#touchAction);
+				} else {
+					this.#scrollableContainer.style.removeProperty('touch-action');
+				}
+				this.#touchAction = '';
 			}
-			this.#touchAction = '';
+			this.#scrollableContainer = undefined;
 		}
-		this.#scrollableContainer = undefined;
 		this._currentTouchListItem = undefined;
 		// simulate drop if over a drop area
 		const touch = e.changedTouches[0];
@@ -896,13 +899,16 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		// simulate dragstart for touch and hold
 		this._touchTimeoutId = setTimeout(() => {
 			this._touchStarted = true;
-			// search for scrollable container
-			this.#scrollableContainer = this._findListItemScrollableContainer(this);
-			if (this.#scrollableContainer) {
-				// check if it has the touch-action style already
-				const touchAction = this.#scrollableContainer.style.getPropertyValue('touch-action');
-				if (touchAction && touchAction !== 'none') this.#touchAction = touchAction;
-				this.#scrollableContainer.style.setProperty('touch-action', 'none');
+			// leave the code inside the if when removing 'GAUD-10642-improved-mobile-drag-and-drop'
+			if (this.#improvedMobileScroll) {
+				// search for scrollable container
+				this.#scrollableContainer = this._findListItemScrollableContainer(this);
+				if (this.#scrollableContainer) {
+					// check if it has the touch-action style already
+					const touchAction = this.#scrollableContainer.style.getPropertyValue('touch-action');
+					if (touchAction && touchAction !== 'none') this.#touchAction = touchAction;
+					this.#scrollableContainer.style.setProperty('touch-action', 'none');
+				}
 			}
 			if (this.shadowRoot)
 				this.shadowRoot.querySelector('.d2l-list-item-drag-area').dispatchEvent(createDragEvent('dragstart'));
