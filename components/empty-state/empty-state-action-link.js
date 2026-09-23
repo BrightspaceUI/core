@@ -24,7 +24,7 @@ class EmptyStateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(Li
 	}
 
 	render() {
-		if (!this.text) return nothing;
+		if (!this.text || !this.href) return nothing;
 		const linkClasses = { 'd2l-body-compact': true, 'd2l-link': true };
 		const inner = html`${this.text}${this._renderNewWindowIcon()}`;
 		return this._render(inner, { linkClasses });
