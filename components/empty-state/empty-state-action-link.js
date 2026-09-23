@@ -1,4 +1,4 @@
-import { html, LitElement } from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { LinkMixin } from '../link/link-mixin.js';
@@ -24,6 +24,7 @@ class EmptyStateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(Li
 	}
 
 	render() {
+		if (!this.text) return nothing;
 		const linkClasses = { 'd2l-body-compact': true, 'd2l-link': true };
 		const inner = html`${this.text}${this._renderNewWindowIcon()}`;
 		return this._render(inner, { linkClasses });
