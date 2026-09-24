@@ -164,8 +164,8 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 		this._hScrollbar = true;
 
 		this._resizeObserver = new ResizeObserver(() => requestAnimationFrame(() => this.checkScrollbar()));
-		this._scrollbarLeft = false;
-		this._scrollbarRight = false;
+		this._scrollbarLeft = true;
+		this._scrollbarRight = true;
 		this._syncDriver = null;
 		this._syncDriverTimeout = null;
 
