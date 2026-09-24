@@ -219,6 +219,12 @@ describe('d2l-input-date-time-range', () => {
 			await expect(elem).to.be.golden();
 		}
 
+		async function waitForBlockDisplay(elem) {
+			const actualElem = elem.querySelector('d2l-input-date-time-range');
+			const toElem = actualElem.shadowRoot.querySelector('d2l-input-date-time-range-to');
+			await waitUntil(() => toElem._blockDisplay, 'component never changed layout');
+		}
+
 		it('start equals end when inclusive', async() => {
 			const elem = await fixture(create({ inclusiveDateRange: true }));
 			await changeInnerInputTextDate(elem, startDateSelector, dateInRange);
@@ -271,8 +277,9 @@ describe('d2l-input-date-time-range', () => {
 					const elem = await fixture(minMaxFixture);
 					const actualElem = elem.querySelector('d2l-input-date-time-range');
 					actualElem.shadowRoot.querySelector('d2l-input-date-time').shadowRoot.querySelector('d2l-input-date')._handleFirstDropdownOpen();
-					await changeInnerInputTextDate(elem, startDateSelector, dateLaterInRange);
-					await changeInnerInputTextDate(elem, endDateSelector, dateInRange);
+					await changeInnerInputTextDate(elem, startDateSelector, dateLaterInRange, true);
+					await changeInnerInputTextDate(elem, endDateSelector, dateInRange, true);
+					await waitForBlockDisplay(elem);
 					const input = actualElem.shadowRoot.querySelector('d2l-input-date-time');
 					const input2 = input.shadowRoot.querySelector('d2l-input-date');
 					const input3 = input2.shadowRoot.querySelector('d2l-input-text');
@@ -293,7 +300,7 @@ describe('d2l-input-date-time-range', () => {
 						actualElem = elem.querySelector('d2l-input-date-time-range');
 						await changeInnerInputDateTime(elem, startDateSelector, startDate);
 						await changeInnerInputDateTime(elem, endDateSelector, endDate, true);
-						await waitUntil(() => actualElem.shadowRoot.querySelector('d2l-input-date-time-range-to')._blockDisplay, 'component never changed layout');
+						await waitForBlockDisplay(elem);
 					});
 
 					it('basic', async() => {
@@ -328,7 +335,7 @@ describe('d2l-input-date-time-range', () => {
 						actualElem = elem.querySelector('d2l-input-date-time-range');
 						await changeInnerInputTextDate(elem, startDateSelector, startDate, true);
 						await changeInnerInputTextDate(elem, endDateSelector, endDate, true);
-						await waitUntil(() => actualElem.shadowRoot.querySelector('d2l-input-date-time-range-to')._blockDisplay, 'component never changed layout');
+						await waitForBlockDisplay(elem);
 					});
 
 					it('basic', async() => {
@@ -383,7 +390,7 @@ describe('d2l-input-date-time-range', () => {
 						actualElem = elem.querySelector('d2l-input-date-time-range');
 						await changeInnerInputTextDate(elem, changeStartDateFirst ? startDateSelector : endDateSelector, changeStartDateFirst ? startDate : endDate, true);
 						await changeInnerInputTextDate(elem, changeStartDateFirst ? endDateSelector : startDateSelector, changeStartDateFirst ? endDate : startDate, true);
-						await waitUntil(() => actualElem.shadowRoot.querySelector('d2l-input-date-time-range-to')._blockDisplay, 'component never changed layout');
+						await waitForBlockDisplay(elem);
 					});
 
 					it('focus start', async() => {

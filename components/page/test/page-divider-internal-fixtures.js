@@ -24,6 +24,13 @@ export async function clickDividerHandle(elem, panelKey) {
 	await nextFrame();
 }
 
+export async function dragDividerBy(elem, panelKey, { x = 0, y = 0, completeDrag = true } = {}) {
+	await dragElemBy(getDivider(elem, panelKey), x, y, completeDrag);
+}
+export async function dragDividerHandleBy(elem, panelKey, { x = 0, y = 0, completeDrag = true } = {}) {
+	await dragElemBy(getSlider(getDivider(elem, panelKey)), x, y, completeDrag);
+}
+
 export async function focusDivider(elem, panelKey) {
 	await focusElem(getDivider(elem, panelKey));
 }
@@ -135,6 +142,8 @@ export const pageDividerFixtures = {
 	// With state-storage-key set
 	sideNavBothHeadersStorageKey: createDividerPage({ setStateStorageKey: true, layout: 'side-nav', hasMainHeader: true, hasSideNavHeader: true }),
 	sideNavBothHeadersFooterStorageKey: createDividerPage({ setStateStorageKey: true, layout: 'side-nav', hasMainHeader: true, hasSideNavHeader: true, hasFooter: true }),
+	sideNavImmersiveLongMainLongFooterStorageKey: createDividerPage({ setStateStorageKey: true, layout: 'side-nav', header: 'immersive', mainHeight: '350px', sideNavHeight: '400px', hasFooter: true }),
 	supportingLongFooterStorageKey: createDividerPage({ setStateStorageKey: true, layout: 'supporting', hasFooter: true, supportingHeight: '400px' }),
+	supportingLongMainLongBothHeadersStorageKey: createDividerPage({ setStateStorageKey: true, layout: 'supporting', hasMainHeader: true, hasSupportingHeader: true, mainHeight: '350px', supportingHeight: '400px' }),
 	supportingImmersiveBothHeadersStorageKey: createDividerPage({ setStateStorageKey: true, layout: 'supporting', header: 'immersive', hasMainHeader: true, hasSupportingHeader: true }),
 };
