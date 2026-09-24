@@ -4,7 +4,7 @@ import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { EmptyStateMixin } from './empty-state-mixin.js';
 import { LoadingCompleteMixin } from '../../mixins/loading-complete/loading-complete-mixin.js';
-import { loadSvg } from '../../generated/empty-state/presetIllustrationLoader.js';
+import { loadSvg } from '../../generated/state/presetIllustrationLoader.js';
 import { runAsync } from '../../directives/run-async/run-async.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
@@ -49,13 +49,11 @@ class EmptyStateIllustrated extends LoadingCompleteMixin(EmptyStateMixin(LitElem
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('d2l-empty-state-illustrated-check', this.#handleEmptyStateIllustratedCheck);
 		this._resizeObserver.observe(this);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this.removeEventListener('d2l-empty-state-illustrated-check', this.#handleEmptyStateIllustratedCheck);
 		this._resizeObserver.disconnect();
 	}
 
@@ -70,7 +68,7 @@ class EmptyStateIllustrated extends LoadingCompleteMixin(EmptyStateMixin(LitElem
 			${this.#renderIllustration()}
 			<p class="${classMap(titleClass)}">${this.titleText}</p>
 			<p class="d2l-body-compact d2l-empty-state-description" tabindex="-1">${this.description}</p>
-			<slot class="action-slot"></slot>
+			<slot class="action-slot" @slotchange=${this.#handleSlotChange}></slot>
 		`;
 	}
 
@@ -97,9 +95,10 @@ class EmptyStateIllustrated extends LoadingCompleteMixin(EmptyStateMixin(LitElem
 		return svg ? html`${unsafeSVG(svg.val)}` : nothing;
 	}
 
-	#handleEmptyStateIllustratedCheck(e) {
-		e.stopPropagation();
-		e.detail.illustrated = true;
+	#handleSlotChange(e) {
+		const nodes = e.target.assignedNodes({ flatten: true });
+		const stateActionButtons = nodes.filter(node => node.isStateActionButton);
+		stateActionButtons.forEach(btn => btn._illustrated = true);
 	}
 
 	#renderIllustration() {
