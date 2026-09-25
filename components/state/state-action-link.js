@@ -6,7 +6,7 @@ import { linkStyles } from '../link/link.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 /**
- * `d2l-state-action-link` is an empty state action component that can be placed inside of the default slot of state components to add a link action.
+ * `d2l-state-action-link` is an state action component that can be placed inside of the default slot of state components to add a link action.
  */
 export class StateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(LitElement))) {
 
@@ -27,6 +27,10 @@ export class StateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(
 
 	static get focusElementSelector() {
 		return '.d2l-link';
+	}
+
+	get isStateActionLink() {
+		return true;
 	}
 
 	render() {

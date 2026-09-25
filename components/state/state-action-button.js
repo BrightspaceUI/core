@@ -7,7 +7,7 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 /**
- * `d2l-state-action-button` is an empty state action component that can be placed inside of the default slot of state components to add a button action.
+ * `d2l-state-action-button` is an state action component that can be placed inside of the default slot of state components to add a button action.
  * @fires d2l-state-action - Dispatched when the action button is clicked
  * @fires d2l-state-illustrated-check - Internal event
  */

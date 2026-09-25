@@ -60,7 +60,7 @@ describe('d2l-empty-state-simple', () => {
 
 		it('should focus on description when no action is present', async() => {
 			const el = await fixture(noActionFixture);
-			const description = el.shadowRoot.querySelector('.d2l-empty-state-description');
+			const description = el.shadowRoot.querySelector('.d2l-state-description');
 			await focusElem(el);
 			const areEqual = getComposedActiveElement() === description;
 			expect(areEqual).to.be.true;
