@@ -32,6 +32,9 @@ export const asyncDropdownTag = defineCE(class extends LitElement {
 			`;
 		}
 	}
+	finishLoading() {
+		this.#loadingResolve?.();
+	}
 	getContent() {
 		return this.shadowRoot.querySelector('d2l-dropdown-content');
 	}
@@ -45,13 +48,16 @@ export const asyncDropdownTag = defineCE(class extends LitElement {
 	}
 	async reset() {
 		this._loaded = false;
+		this.#loadingPromise = new Promise(resolve => this.#loadingResolve = resolve);
 		this.#resetCallback?.();
 		await this.updateComplete;
 	}
+	#loadingResolve;
+	#loadingPromise = new Promise(resolve => this.#loadingResolve = resolve);
 	#resetCallback;
 	async #handleDropdownAsyncLoad(e) {
 		this.#resetCallback = e.detail.reset;
-		await new Promise(resolve => setTimeout(resolve, 200));
+		await this.#loadingPromise;
 		this._loaded = true;
 		e.detail.complete();
 	}
