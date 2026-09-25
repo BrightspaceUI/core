@@ -2,6 +2,7 @@ import '../button/button-subtle.js';
 import { html, LitElement } from 'lit';
 import { stateSimpleStyles, stateStyles } from '../state/state-styles.js';
 import { bodyCompactStyles } from '../typography/styles.js';
+import { emptyStateStyles } from './empty-state-styles.js';
 import { StateMixin } from '../state/state-mixin.js';
 
 /**
@@ -18,7 +19,7 @@ class EmptyStateSimple extends StateMixin(LitElement) {
 		description: { type: String, required: true },
 	};
 
-	static styles = [bodyCompactStyles, stateStyles, stateSimpleStyles];
+	static styles = [bodyCompactStyles, stateStyles, stateSimpleStyles, emptyStateStyles];
 
 	render() {
 		return html`
