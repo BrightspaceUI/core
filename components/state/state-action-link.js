@@ -6,13 +6,13 @@ import { linkStyles } from '../link/link.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 /**
- * `d2l-empty-state-action-link` is an empty state action component that can be placed inside of the default slot of `empty-state-simple` or `empty-state-illustrated` to add a link action to the component.
+ * `d2l-state-action-link` is an state action component that can be placed inside of the default slot of state components to add a link action.
  */
-class EmptyStateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(LitElement))) {
+class StateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(LitElement))) {
 
 	static properties = {
 		/**
-		 * REQUIRED: The action text to be used in the subtle button
+		 * REQUIRED: The action text to be used in the link
 		 * @type {string}
 		 */
 		text: { type: String, required: true },
@@ -29,6 +29,10 @@ class EmptyStateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(Li
 		return '.d2l-link';
 	}
 
+	get isStateActionLink() {
+		return true;
+	}
+
 	render() {
 		if (!this.text || !this.href) return nothing;
 		const linkClasses = { 'd2l-body-compact': true, 'd2l-link': true };
@@ -38,4 +42,4 @@ class EmptyStateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(Li
 
 }
 
-customElements.define('d2l-empty-state-action-link', EmptyStateActionLink);
+customElements.define('d2l-state-action-link', StateActionLink);
