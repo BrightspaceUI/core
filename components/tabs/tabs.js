@@ -907,8 +907,9 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 			scrollToPromise
 		]);
 		p.then(async() => {
+			await new Promise(resolve => requestAnimationFrame(resolve));
+			await new Promise(resolve => requestAnimationFrame(resolve));
 			if (this.#loadingCompleteResolve) {
-				await new Promise(requestAnimationFrame);
 				this.#loadingCompleteResolve();
 				this.#loadingCompleteResolve = undefined;
 			}
