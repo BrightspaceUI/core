@@ -2,6 +2,14 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
 
 export const EmptyStateMixin = superclass => class extends PropertyRequiredMixin(superclass) {
 
+	static properties = {
+		/**
+		 * REQUIRED: A description giving details about the empty state
+		 * @type {string}
+		 */
+		description: { type: String, required: true },
+	};
+
 	focus() {
 		if (!this.hasUpdated) {
 			return;
