@@ -10,7 +10,7 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
  * @fires d2l-state-action - Dispatched when the action button is clicked
  * @fires d2l-state-illustrated-check - Internal event
  */
-class StateActionButton extends FocusMixin(PropertyRequiredMixin(LitElement)) {
+export class StateActionButton extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
 	static properties = {
 		/**

@@ -16,7 +16,7 @@ const illustrationAspectRatio = 500 / 330;
  * @slot - Slot for state actions
  * @slot illustration - Slot for custom SVG content if `illustration-name` property is not set
  */
-class StateIllustrated extends LoadingCompleteMixin(StateMixin(LitElement)) {
+export class StateIllustrated extends LoadingCompleteMixin(StateMixin(LitElement)) {
 
 	static properties = {
 		/**
