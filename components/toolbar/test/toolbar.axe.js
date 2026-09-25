@@ -4,8 +4,8 @@ import { expect, fixture, focusElem, hoverElem } from '@brightspace-ui/testing';
 describe('d2l-toolbar', () => {
 
 	it('normal', async() => {
-		const el = await fixture(createToolbar());
-		await expect(el).to.be.accessible();
+		const elem = await fixture(createToolbar());
+		await expect(elem).to.be.accessible();
 	});
 
 });
@@ -19,9 +19,9 @@ describe('d2l-toolbar-button', () => {
 		{ name: 'focus', template: createToolbarButton(), action: focusElem }
 	].forEach(({ action, name, template }) => {
 		it(name, async() => {
-			const el = await fixture(template);
-			if (action) await action(el);
-			await expect(el).to.be.accessible();
+			const elem = await fixture(template);
+			if (action) await action(elem);
+			await expect(elem).to.be.accessible();
 		});
 	});
 

@@ -14,13 +14,13 @@ describe('d2l-toolbar', () => {
 	describe('general', () => {
 
 		it('renders the toolbar role', async() => {
-			const el = await fixture(createToolbar());
-			expect(el.shadowRoot.querySelector('[role]').role).to.equal('toolbar');
+			const elem = (await fixture(createToolbar())).querySelector('d2l-toolbar');
+			expect(elem.shadowRoot.querySelector('[role]').role).to.equal('toolbar');
 		});
 
 		it('renders the label', async() => {
-			const el = await fixture(createToolbar());
-			expect(el.shadowRoot.querySelector('[role="toolbar"]').getAttribute('aria-label')).to.equal('Fancy Toolbar');
+			const elem = (await fixture(createToolbar())).querySelector('d2l-toolbar');
+			expect(elem.shadowRoot.querySelector('[role="toolbar"]').getAttribute('aria-label')).to.equal('Fancy Toolbar');
 		});
 
 	});
@@ -28,8 +28,8 @@ describe('d2l-toolbar', () => {
 	describe('focus management', () => {
 
 		it('initializes first focusable as active focusable', async() => {
-			const el = await fixture(createToolbar());
-			const firstFocusable = el.firstElementChild;
+			const elem = (await fixture(createToolbar())).querySelector('d2l-toolbar');
+			const firstFocusable = elem.firstElementChild;
 			expect(firstFocusable._activeFocusable).to.equal(true);
 		});
 
@@ -86,12 +86,14 @@ describe('d2l-toolbar', () => {
 		].forEach(({ name, rtl, initialIndex, key, expectedIndex }) => {
 			it(name, async() => {
 				const elem = await fixture(createToolbar(), { rtl });
-				const initialElem = elem.children[initialIndex];
-				elem.setActiveFocusable(initialElem);
+				const toolbar = elem.querySelector('d2l-toolbar');
+				const initialElem = toolbar.children[initialIndex];
+
+				toolbar.setActiveFocusable(initialElem);
 				await sendKeysElem(initialElem, 'press', key);
 				await nextFrame();
-				expect(elem.children[expectedIndex]._activeFocusable).to.equal(true);
-				expect(document.activeElement).to.equal(elem.children[expectedIndex]);
+				expect(toolbar.children[expectedIndex]._activeFocusable).to.equal(true);
+				expect(document.activeElement).to.equal(toolbar.children[expectedIndex]);
 			});
 		});
 
@@ -112,44 +114,44 @@ describe('d2l-toolbar-button', () => {
 	describe('general', () => {
 
 		it('renders button with aria-label and title using the text', async() => {
-			const el = await fixture(createToolbarButton());
-			const button = el.shadowRoot.querySelector('button');
+			const elem = await fixture(createToolbarButton());
+			const button = elem.shadowRoot.querySelector('button');
 			expect(button.getAttribute('aria-label')).to.equal('Fancy Button');
 			expect(button.getAttribute('title')).to.equal('Fancy Button');
 		});
 
 		it('renders button with aria-disabled when disabled', async() => {
-			const el = await fixture(createToolbarButton({ disabled: true }));
-			const button = el.shadowRoot.querySelector('button');
+			const elem = await fixture(createToolbarButton({ disabled: true }));
+			const button = elem.shadowRoot.querySelector('button');
 			expect(button.getAttribute('aria-disabled')).to.equal('true');
 			expect(button.hasAttribute('disabled')).to.equal(false);
 		});
 
 		it('renders button with tabindex="-1" when not active focusable', async() => {
-			const el = await fixture(createToolbarButton());
-			const button = el.shadowRoot.querySelector('button');
+			const elem = await fixture(createToolbarButton());
+			const button = elem.shadowRoot.querySelector('button');
 			expect(button.getAttribute('tabindex')).to.equal('-1');
 		});
 
 		it('renders button with tabindex="0" when active focusable', async() => {
-			const el = await fixture(createToolbarButton());
-			const button = el.shadowRoot.querySelector('button');
-			el._activeFocusable = true;
+			const elem = await fixture(createToolbarButton());
+			const button = elem.shadowRoot.querySelector('button');
+			elem._activeFocusable = true;
 			await button.updateComplete;
 			expect(button.getAttribute('tabindex')).to.equal('0');
 		});
 
 		it('dispatches the click event when enabled and clicked', async() => {
-			const el = await fixture(createToolbarButton());
-			clickElem(el);
-			await oneEvent(el, 'click');
+			const elem = await fixture(createToolbarButton());
+			clickElem(elem);
+			await oneEvent(elem, 'click');
 		});
 
 		it('does not dispatch the click event when disabled and clicked', async() => {
 			let dispatched = false;
-			const el = await fixture(createToolbarButton({ disabled: true }));
-			el.addEventListener('click', () => dispatched = true);
-			await clickElem(el);
+			const elem = await fixture(createToolbarButton({ disabled: true }));
+			elem.addEventListener('click', () => dispatched = true);
+			await clickElem(elem);
 			expect(dispatched).to.equal(false);
 		});
 
