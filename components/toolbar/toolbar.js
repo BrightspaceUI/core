@@ -1,4 +1,5 @@
 import '../colors/colors.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { css, html, LitElement } from 'lit';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
@@ -51,7 +52,7 @@ class Toolbar extends PropertyRequiredMixin(LitElement) {
 				class="container"
 				@keydown="${this.#handleKeyDown}"
 				role="toolbar">
-				<slot @slotchange="${this.#handleSlotChange}"></slot>
+				<slot ${ref(this.#slotRef)} @slotchange="${this.#handleSlotChange}"></slot>
 			</div>
 		`;
 	}
@@ -65,14 +66,22 @@ class Toolbar extends PropertyRequiredMixin(LitElement) {
 
 	setActiveFocusable(focusable) {
 		const focusables = this.#getFocusables();
+		if (focusables.length === 0) return;
+
+		const focusableExists = !!focusables.find(item => item === focusable);
+		if (!focusableExists) return;
+
 		const currentFocusable = focusables.find(item => item._activeFocusable);
-		currentFocusable._activeFocusable = false;
+		if (currentFocusable) currentFocusable._activeFocusable = false;
+
 		focusable._activeFocusable = true;
 	}
 
-	#getFocusables(slot) {
-		if (!slot) slot = this.shadowRoot.querySelector('slot');
-		return slot.assignedElements({ flatten: true }).filter(elem => elem.tagName === 'D2L-TOOLBAR-BUTTON');
+	#slotRef = createRef();
+
+	#getFocusables() {
+		return this.#slotRef.value?.assignedElements({ flatten: true })
+			.filter(elem => elem.tagName === 'D2L-TOOLBAR-BUTTON') ?? [];
 	}
 
 	async #handleKeyDown(e) {
@@ -83,6 +92,7 @@ class Toolbar extends PropertyRequiredMixin(LitElement) {
 
 		const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
 		const focusables = this.#getFocusables();
+		if (focusables.length === 0) return;
 
 		const index = focusables.findIndex(item => item._activeFocusable);
 		focusables[index]._activeFocusable = false;
@@ -114,12 +124,14 @@ class Toolbar extends PropertyRequiredMixin(LitElement) {
 		requestAnimationFrame(() => focusable.focus());
 	}
 
-	#handleSlotChange(e) {
-		const focusables = this.#getFocusables(e.target);
+	#handleSlotChange() {
+		const focusables = this.#getFocusables();
 		this.#resetActiveFocusable(focusables);
 	}
 
 	#resetActiveFocusable(focusables) {
+		if (focusables.length === 0) return;
+
 		const item = focusables.find(item => item._activeFocusable);
 		if (item) item._activeFocusable = false;
 
