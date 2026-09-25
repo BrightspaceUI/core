@@ -1,6 +1,6 @@
-import '../state-action-button.js';
-import '../state-action-link.js';
-import '../state-simple.js';
+import '../../state/state-action-button.js';
+import '../../state/state-action-link.js';
+import '../../state/state-simple.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
 
 const short = 'There are no assignments to display.';
