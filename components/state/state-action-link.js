@@ -6,9 +6,9 @@ import { linkStyles } from '../link/link.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
 /**
- * `d2l-empty-state-action-link` is an empty state action component that can be placed inside of the default slot of `empty-state-simple` or `empty-state-illustrated` to add a link action to the component.
+ * `d2l-state-action-link` is an state action component that can be placed inside of the default slot of `state-simple` or `state-illustrated` to add a link action to the component.
  */
-class EmptyStateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(LitElement))) {
+class StateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(LitElement))) {
 
 	static properties = {
 		/**
@@ -38,4 +38,4 @@ class EmptyStateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(Li
 
 }
 
-customElements.define('d2l-empty-state-action-link', EmptyStateActionLink);
+customElements.define('d2l-state-action-link', StateActionLink);
