@@ -1,11 +1,11 @@
-import { stateIllustratedStyles, stateStyles } from './state-styles.js';
 import { html, LitElement, nothing } from 'lit';
+import { stateIllustratedStyles, stateStyles } from './state-styles.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { StateMixin } from './state-mixin.js';
 import { LoadingCompleteMixin } from '../../mixins/loading-complete/loading-complete-mixin.js';
 import { loadSvg } from '../../generated/state/presetIllustrationLoader.js';
 import { runAsync } from '../../directives/run-async/run-async.js';
+import { StateMixin } from './state-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 

@@ -1,8 +1,7 @@
 import '../state-action-button.js';
 import '../state-action-link.js';
 import '../state-illustrated.js';
-import { clickElem, expect, fixture, focusElem, oneEvent, runConstructor } from '@brightspace-ui/testing';
-import { getComposedActiveElement } from '../../../helpers/focus.js';
+import { clickElem, fixture, oneEvent, runConstructor } from '@brightspace-ui/testing';
 import { html } from 'lit';
 
 describe('d2l-state-actions', () => {

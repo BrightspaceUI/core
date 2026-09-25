@@ -1,7 +1,7 @@
 import '../../state/state-action-button.js';
 import '../../state/state-action-link.js';
 import '../empty-state-simple.js';
-import { expect, fixture, focusElem, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, runConstructor } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { html } from 'lit';
 
