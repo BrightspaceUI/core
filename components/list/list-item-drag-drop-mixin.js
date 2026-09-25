@@ -4,6 +4,7 @@ import { findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { SelectionInfo } from '../selection/selection-mixin.js';
@@ -24,6 +25,8 @@ export const dropLocation = moveLocations; // backwards compatibility
 const dropTargetLeaveDelay = 1000; // ms
 const touchHoldDuration = 400; // length of time user needs to hold down touch before dragging occurs
 const scrollSensitivity = 150; // pixels between top/bottom of viewport to scroll for mobile
+const scrollContainerSensitivity = 60; // pixels between top/bottom of scrollable container to scroll for mobile
+const scrollSpeed = 10; // pixels to scroll for mobile
 
 const createDragEvent = (name) => {
 	const event = new Event(name, { bubbles: true });
@@ -427,6 +430,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (this.shadowRoot) this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
 	}
 
+	#scrollableContainer;
+	#touchAction = '';
+	#improvedMobileScroll = getFlag('GAUD-10642-improved-mobile-drag-and-drop', true);
+
 	_annoucePositionChange(dragTargetKey, dropTargetKey, dropLocation) {
 		/** Dispatched when a draggable list item's position changes in the list. See [Event Details: d2l-list-item-position-change](#event-details%3A-d2l-list-item-position-change). */
 		this.dispatchEvent(new CustomEvent('d2l-list-item-position-change', {
@@ -558,6 +565,19 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_findListItemFromCoordinates(x, y) {
 		const listNode = findComposedAncestor(this.parentNode, (node) => node && node.tagName === 'D2L-LIST');
 		return listNode.shadowRoot.elementFromPoint(x, y);
+	}
+
+	_findListItemScrollableContainer(listItem) {
+		return findComposedAncestor(listItem, (el) => {
+			// skip non-element nodes (e.g. shadow root fragments) encountered while traversing up
+			if (el.nodeType !== Node.ELEMENT_NODE) return false;
+			const styles = getComputedStyle(el);
+			const overflowY = styles.getPropertyValue('overflow-y');
+			const overflowX = styles.getPropertyValue('overflow-x');
+			const overflow = styles.getPropertyValue('overflow');
+			const overflowValues = ['auto', 'scroll'];
+			return (overflowValues.includes(overflowY) || overflowValues.includes(overflowX) || overflowValues.includes(overflow) || el === document.body);
+		});
 	}
 
 	_getKeyboardText() {
@@ -802,6 +822,18 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (!this._touchStarted) return;
 		e.preventDefault();
 		this._touchStarted = false;
+		// leave the code inside the if when removing 'GAUD-10642-improved-mobile-drag-and-drop'
+		if (this.#improvedMobileScroll) {
+			if (this.#scrollableContainer) {
+				if (this.#touchAction) {
+					this.#scrollableContainer.style.setProperty('touch-action', this.#touchAction);
+				} else {
+					this.#scrollableContainer.style.removeProperty('touch-action');
+				}
+				this.#touchAction = '';
+			}
+			this.#scrollableContainer = undefined;
+		}
 		this._currentTouchListItem = undefined;
 		// simulate drop if over a drop area
 		const touch = e.changedTouches[0];
@@ -830,6 +862,9 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			listItem.dispatchEvent(createDragEvent('dragenter'));
 			this._currentTouchListItem = listItem;
 		}
+
+		if (this.#improvedMobileScroll) this.#doScroll(touch);
+
 		// get the drop area
 		const dropGrid = listItem.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
 		if (!dropGrid) return;
@@ -845,6 +880,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 				this._currentTouchDropArea = movingOverElem;
 			}
 		}
+		// Delete all of the following code when removing 'GAUD-10642-improved-scroll-in-mobile'
+		if (this.#improvedMobileScroll) return;
 		// scroll the viewport if we've reached the end
 		if (touch.clientY > window.innerHeight / 2 && window.innerHeight - touch.clientY < scrollSensitivity) {
 			// scroll down
@@ -862,6 +899,17 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		// simulate dragstart for touch and hold
 		this._touchTimeoutId = setTimeout(() => {
 			this._touchStarted = true;
+			// leave the code inside the if when removing 'GAUD-10642-improved-mobile-drag-and-drop'
+			if (this.#improvedMobileScroll) {
+				// search for scrollable container
+				this.#scrollableContainer = this._findListItemScrollableContainer(this);
+				if (this.#scrollableContainer) {
+					// check if it has the touch-action style already
+					const touchAction = this.#scrollableContainer.style.getPropertyValue('touch-action');
+					if (touchAction && touchAction !== 'none') this.#touchAction = touchAction;
+					this.#scrollableContainer.style.setProperty('touch-action', 'none');
+				}
+			}
 			if (this.shadowRoot)
 				this.shadowRoot.querySelector('.d2l-list-item-drag-area').dispatchEvent(createDragEvent('dragstart'));
 		}, touchHoldDuration);
@@ -931,6 +979,38 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_renderTopPlacementMarker(renderTemplate) {
 		return this._dropLocation === dropLocation.above ? html`<div class="d2l-list-item-drag-top-marker">${renderTemplate}</div>` : null;
+	}
+
+	#doScroll(touch) {
+		if (!touch || !this.#scrollableContainer) return;
+		if (this.#scrollableContainer === document.body) {
+			this.#handleViewPortScrolling(touch);
+		} else {
+			this.#handleContainerScrolling(touch);
+		}
+	}
+
+	#handleContainerScrolling(touch) {
+		// scroll the viewport if we've reached the end
+		const rect = this.#scrollableContainer.getBoundingClientRect();
+		if (rect.bottom - touch.clientY < scrollContainerSensitivity) {
+			// scroll down
+			this.#scrollableContainer.scrollBy(0, scrollSpeed);
+		} else if (touch.clientY - rect.top < scrollContainerSensitivity) {
+			// scroll up
+			this.#scrollableContainer.scrollBy(0, -scrollSpeed);
+		}
+	}
+
+	#handleViewPortScrolling(touch) {
+		const height = window.innerHeight;
+		if (touch.clientY > height / 2 && height - touch.clientY < scrollSensitivity) {
+			// scroll down
+			window.scrollBy(0, scrollSpeed);
+		} else if (touch.clientY < height / 2 && touch.clientY < scrollSensitivity) {
+			// scroll up
+			window.scrollBy(0, -scrollSpeed);
+		}
 	}
 
 	#onDropEnterHelper(e, isTopHalf, isMiddle) {
