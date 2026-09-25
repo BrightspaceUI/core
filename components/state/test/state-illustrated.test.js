@@ -1,77 +1,77 @@
-import '../empty-state-illustrated.js';
-import '../empty-state-action-button.js';
-import '../empty-state-action-link.js';
+import '../state-illustrated.js';
+import '../state-action-button.js';
+import '../state-action-link.js';
 import { expect, fixture, focusElem, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
 import { getComposedActiveElement } from '../../../helpers/focus.js';
 import { html } from 'lit';
 
 const noActionFixture = html`
-	<d2l-empty-state-illustrated
+	<d2l-state-illustrated
 		illustration-name="fish-hook"
 		title-text="No Learning Paths Yet"
-		description="Get started by clicking below to create your first learning path."></d2l-empty-state-illustrated>
+		description="Get started by clicking below to create your first learning path."></d2l-state-illustrated>
 `;
 
 const actionButtonFixture = html`
-	<d2l-empty-state-illustrated
+	<d2l-state-illustrated
 		illustration-name="tumbleweed"
 		title-text="No Learning Paths Yet"
 		description="Get started by clicking below to create your first learning path.">
-		<d2l-empty-state-action-button
+		<d2l-state-action-button
 			text="Create Learning Paths">
-		</d2l-empty-state-action-button>
-	</d2l-empty-state-illustrated>
+		</d2l-state-action-button>
+	</d2l-state-illustrated>
 `;
 
 const actionLinkFixture = html`
-	<d2l-empty-state-illustrated
+	<d2l-state-illustrated
 		illustration-name="tumbleweed"
 		title-text="No Learning Paths Yet"
 		description="Get started by clicking below to create your first learning path.">
-		<d2l-empty-state-action-link
+		<d2l-state-action-link
 			text="Create Learning Paths"
 			href="#">
-		</d2l-empty-state-action-link>
-	</d2l-empty-state-illustrated>
+		</d2l-state-action-link>
+	</d2l-state-illustrated>
 `;
 
-describe('d2l-empty-state-illustrated', () => {
+describe('d2l-state-illustrated', () => {
 
 	it('should construct', () => {
-		runConstructor('d2l-empty-state-illustrated');
+		runConstructor('d2l-state-illustrated');
 	});
 
-	it('dispatches d2l-empty-state-action when action is clicked when using the default subtle button', async() => {
+	it('dispatches d2l-state-action when action is clicked when using the default subtle button', async() => {
 		const el = await fixture(actionButtonFixture);
-		const button = el.querySelector('d2l-empty-state-action-button');
+		const button = el.querySelector('d2l-state-action-button');
 		setTimeout(() => button.shadowRoot.querySelector('d2l-button-subtle').click());
-		await oneEvent(button, 'd2l-empty-state-action');
+		await oneEvent(button, 'd2l-state-action');
 	});
 
-	it('dispatches d2l-empty-state-action when action is clicked when using a primary button', async() => {
+	it('dispatches d2l-state-action when action is clicked when using a primary button', async() => {
 		const el = await fixture(html`
-			<d2l-empty-state-illustrated
+			<d2l-state-illustrated
 				illustration-name="tumbleweed"
 				title-text="No Learning Paths Yet"
 				description="Get started by clicking below to create your first learning path.">
-				<d2l-empty-state-action-button
+				<d2l-state-action-button
 					text="Create Learning Paths"
 					primary>
-				</d2l-empty-state-action-button>
-			</d2l-empty-state-illustrated>
+				</d2l-state-action-button>
+			</d2l-state-illustrated>
 		`);
-		const button = el.querySelector('d2l-empty-state-action-button');
+		const button = el.querySelector('d2l-state-action-button');
 
 		// Wait for primary button to render
 		await waitUntil(() => button.shadowRoot.querySelector('d2l-button') !== null, 'Primary button should render', { timeout: 5000 });
 
 		setTimeout(() => button.shadowRoot.querySelector('d2l-button').click());
-		await oneEvent(button, 'd2l-empty-state-action');
+		await oneEvent(button, 'd2l-state-action');
 	});
 
 	it('dispatches click event when action link is clicked', async() => {
 		const el = await fixture(actionLinkFixture);
-		const link = el.querySelector('d2l-empty-state-action-link');
+		const link = el.querySelector('d2l-state-action-link');
 		setTimeout(() => link.shadowRoot.querySelector('a').click());
 		await oneEvent(link, 'click');
 	});
@@ -89,7 +89,7 @@ describe('d2l-empty-state-illustrated', () => {
 		it('should focus on action button', async() => {
 			const el = await fixture(actionButtonFixture);
 			const button = el
-				.querySelector('d2l-empty-state-action-button')
+				.querySelector('d2l-state-action-button')
 				.shadowRoot.querySelector('d2l-button-subtle')
 				.shadowRoot.querySelector('button');
 			await focusElem(el);
@@ -100,7 +100,7 @@ describe('d2l-empty-state-illustrated', () => {
 		it('should focus on action link', async() => {
 			const el = await fixture(actionLinkFixture);
 			const link = el
-				.querySelector('d2l-empty-state-action-link')
+				.querySelector('d2l-state-action-link')
 				.shadowRoot.querySelector('a');
 			await focusElem(el);
 			const areEqual = getComposedActiveElement() === link;
