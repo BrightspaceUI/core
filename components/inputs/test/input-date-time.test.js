@@ -52,8 +52,8 @@ describe('d2l-input-date-time', () => {
 		});
 
 		describe('localized', () => {
-			const expectedStart = 'Aug 27, 2018 3:30 AM';
-			const expectedEnd = 'Sep 30, 2018 5:30 PM';
+			const expectedStart = 'Aug 27, 2018 3:30 AM';
+			const expectedEnd = 'Sep 30, 2018 5:30 PM';
 
 			it('should set correct min and max on d2l-input-date', async() => {
 				const elem = await fixture(minMaxLocalizedFixture);
@@ -91,8 +91,8 @@ describe('d2l-input-date-time', () => {
 		});
 
 		describe('validation', () => {
-			const expectedStart = 'Aug 26, 2018 11:30 PM';
-			const expectedEnd = 'Sep 30, 2018 1:30 PM';
+			const expectedStart = 'Aug 26, 2018 11:30 PM';
+			const expectedEnd = 'Sep 30, 2018 1:30 PM';
 
 			it('should change value if min and max value and typed date before minValue', async() => {
 				const elem = await fixture(minMaxFixture);

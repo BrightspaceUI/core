@@ -3,7 +3,6 @@ import { html } from 'lit';
 
 export const checkboxFixtures = {
 	/* label variants */
-	labelAria: html`<d2l-input-checkbox aria-label="label aria"></d2l-input-checkbox>`,
 	labelNormal: html`<d2l-input-checkbox label="label normal"></d2l-input-checkbox>`,
 	labelHidden: html`<d2l-input-checkbox label="label hidden" label-hidden></d2l-input-checkbox>`,
 	labelSlotted: html`<d2l-input-checkbox>label slotted</d2l-input-checkbox>`,

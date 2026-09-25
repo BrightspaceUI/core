@@ -1,6 +1,5 @@
 import { css } from 'lit';
 import { getUniqueId } from '../../helpers/uniqueId.js';
-import { getUseNewTabsStructureFlag } from './tabs.js';
 
 export const TabPanelMixin = superclass => class extends superclass {
 
@@ -20,18 +19,6 @@ export const TabPanelMixin = superclass => class extends superclass {
 		 */
 		// eslint-disable-next-line lit/no-native-attributes
 		role: { type: String, reflect: true },
-		/**
-		 * DEPRECATED: Use to select the tab. Do NOT set if using the d2l-tab/d2l-tab-panel implementation.
-		 * Remove with GAUD-8299-core-tabs-use-new-structure flag clean up.
-		 * @type {boolean}
-		 */
-		selected: { type: Boolean, reflect: true },
-		/**
-		 * DEPRECATED: The text used for the tab, as well as labelling the panel. Required if not using d2l-tab/d2l-tab-panel implementation.
-		 * Remove with GAUD-8299-core-tabs-use-new-structure flag clean up.
-		 * @type {string}
-		 */
-		text: { type: String },
 		_selected: { type: Boolean, attribute: '_selected', reflect: true }
 	};
 
@@ -44,10 +31,6 @@ export const TabPanelMixin = superclass => class extends superclass {
 		:host([no-padding]) {
 			margin: 0;
 		}
-		/* clean up with GAUD-8299-core-tabs-use-new-structure flag clean up */
-		:host([selected]) {
-			display: block;
-		}
 		:host([_selected]) {
 			display: block;
 		}
@@ -59,7 +42,6 @@ export const TabPanelMixin = superclass => class extends superclass {
 		/** @ignore */
 		this.role = 'tabpanel';
 		this._selected = false;
-		if (!this.#useTabsNewStructure) this.selected = false; // clean up with GAUD-8299-core-tabs-use-new-structure flag clean up
 	}
 
 	connectedCallback() {
@@ -74,29 +56,7 @@ export const TabPanelMixin = superclass => class extends superclass {
 			if (prop === 'labelledBy') {
 				this.setAttribute('aria-labelledby', this.labelledBy);
 			}
-
-			// clean up below with GAUD-8299-core-tabs-use-new-structure flag clean up
-			if (this.#useTabsNewStructure) return;
-
-			if (prop === 'selected') {
-				if (this.selected) {
-					requestAnimationFrame(() => {
-						/** DEPRECATED: Dispatched when a tab is selected */
-						this.dispatchEvent(new CustomEvent(
-							'd2l-tab-panel-selected', { bubbles: true, composed: true }
-						));
-					});
-				}
-			} else if (prop === 'text') {
-				this.setAttribute('aria-label', this.text);
-				/** DEPRECATED: Dispatched when the text attribute is changed */
-				this.dispatchEvent(new CustomEvent(
-					'd2l-tab-panel-text-changed', { bubbles: true, composed: true, detail: { text: this.text } }
-				));
-			}
 		});
 	}
-
-	#useTabsNewStructure = getUseNewTabsStructureFlag();
 
 };

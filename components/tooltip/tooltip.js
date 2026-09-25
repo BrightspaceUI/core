@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit';
-import { cssEscape, elemIdListAdd, elemIdListRemove, isComposedAncestor } from '../../helpers/dom.js';
+import { elemIdListAdd, elemIdListRemove, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, isFocusable } from '../../helpers/focus.js';
 import { interactiveElements, interactiveRoles, isInteractive } from '../../helpers/interactive.js';
 import { announce } from '../../helpers/announce.js';
@@ -398,7 +398,7 @@ class Tooltip extends PopoverMixin(LitElement) {
 
 		let target;
 		if (this.for) {
-			const targetSelector = `#${cssEscape(this.for)}`;
+			const targetSelector = `#${CSS.escape(this.for)}`;
 			target = ownerRoot.querySelector(targetSelector);
 			target = (target || ownerRoot?.host?.querySelector(targetSelector)) ?? null;
 		} else {

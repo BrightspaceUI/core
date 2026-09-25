@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<script type="module">
+		import '../../typography/typography.js';
+		import '../../button/button.js';
+		import '../dialog-fullscreen.js';
+	</script>
+	<title>d2l-dialog-fullscreen (iframe contents)</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<style>
+		body {
+			margin: 0;
+			padding: 30px;
+		}
+	</style>
+</head>
+<body class="d2l-typography">
+	<d2l-button id="open">Open Dialog</d2l-button>
+
+	<d2l-dialog-fullscreen id="dialogFullscreen" title-text="Fullscreen Title in Iframe" opened>
+		<p>This dialog is rendered inside an iframe that is smaller than the browser viewport. It uses the ifrau backdrop service to size itself to the iframe's available space rather than the full window.</p>
+		<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+		<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+		<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
+		<p>Deadlights jack lad schooner scallywag dance the hempen jig carouser broadside cable strike colors. Bring a spring upon her cable holystone blow the man down spanker</p>
+		<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
+		<d2l-button slot="footer" primary data-dialog-action="save">Save</d2l-button>
+		<d2l-button slot="footer" data-dialog-action>Cancel</d2l-button>
+	</d2l-dialog-fullscreen>
+
+	<script>
+		document.querySelector('#open').addEventListener('click', () => {
+			document.querySelector('#dialogFullscreen').opened = true;
+		});
+		document.querySelector('#dialogFullscreen').addEventListener('d2l-dialog-close', (e) => {
+			console.log('dialog action:', e.detail.action);
+		});
+	</script>
+</body>
+</html>

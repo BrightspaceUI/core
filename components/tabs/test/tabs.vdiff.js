@@ -5,10 +5,6 @@ import '../tab.js';
 import '../tabs.js';
 import '../tab-panel.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, sendKeysElem } from '@brightspace-ui/testing';
-import { mockFlag, resetFlag } from '../../../helpers/flags.js';
-
-const newTabsStructureFlag = 'GAUD-8299-core-tabs-use-new-structure';
-const GAUD_9963_FLAG = 'GAUD-9963-dropdown-tabs-not-resizing';
 
 const noPanelSelectedFixture = {
 	deprecated: html`
@@ -246,15 +242,6 @@ const viewport = { width: 376 };
 const useFixture = 'paired';
 
 describe('d2l-tabs', () => {
-
-	before(() => {
-		mockFlag(newTabsStructureFlag, true);
-		mockFlag(GAUD_9963_FLAG, true);
-	});
-	after(() => {
-		resetFlag(newTabsStructureFlag);
-		resetFlag(GAUD_9963_FLAG);
-	});
 
 	describe('basic', () => {
 
@@ -735,138 +722,4 @@ describe('d2l-tabs', () => {
 		});
 	});
 
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	describe('basic (flag off)', () => {
-
-		before(() => mockFlag(newTabsStructureFlag, false));
-		after(() => resetFlag(newTabsStructureFlag));
-
-		it('no panel selected', async() => {
-			const elem = await fixture(noPanelSelectedFixture[useFixture], { viewport });
-			await expect(elem).to.be.golden();
-		});
-
-		it('panel selected', async() => {
-			const elem = await fixture(panelSelectedFixture[useFixture], { viewport });
-			await expect(elem).to.be.golden();
-		});
-	});
-
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	describe('deprecated structure', () => {
-
-		before(() => mockFlag(newTabsStructureFlag, false));
-		after(() => resetFlag(newTabsStructureFlag));
-
-		describe('basic', () => {
-			it('no panel selected', async() => {
-				const elem = await fixture(noPanelSelectedFixture['deprecated'], { viewport });
-				await expect(elem).to.be.golden();
-			});
-
-			it('panel selected', async() => {
-				const elem = await fixture(panelSelectedFixture['deprecated'], { viewport });
-				await expect(elem).to.be.golden();
-			});
-
-			it('one tab', async() => {
-				const elem = await fixture(oneTabFixture['deprecated'], { viewport });
-				await expect(elem).to.be.golden();
-			});
-		});
-
-		describe('overflow', () => {
-			const nextFixture = {
-				deprecated: html`
-					<d2l-tabs>
-						<d2l-tab-panel text="All Courses">Tab content for All</d2l-tab-panel>
-						<d2l-tab-panel text="Biology" selected>Tab content for Biology</d2l-tab-panel>
-						<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
-						<d2l-tab-panel text="Geology">Tab content for Geology</d2l-tab-panel>
-					</d2l-tabs>
-				`
-			};
-
-			['ltr', 'rtl'].forEach((dir) => {
-
-				const rtl = dir === 'rtl';
-
-				describe(dir, () => {
-
-					it('scroll next', async() => {
-						const elem = await fixture(nextFixture['deprecated'], { viewport, rtl });
-						await expect(elem).to.be.golden();
-					});
-
-					it('scrolls next on click', async() => {
-						const elem = await fixture(nextFixture['deprecated'], { viewport, rtl });
-						await clickElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button'));
-						await expect(elem).to.be.golden();
-					});
-
-					it('action slot', async() => {
-						const elem = await fixture(actionSlotOverflowFixture['deprecated'], { viewport, rtl });
-						await expect(elem).to.be.golden();
-					});
-
-					it('focus next', async() => {
-						const elem = await fixture(nextFixture['deprecated'], { viewport, rtl });
-						await focusElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button'));
-						await expect(elem).to.be.golden();
-					});
-				});
-			});
-		});
-
-		describe('keyboard', () => {
-
-			const keyboardFixture = {
-				deprecated: html`
-					<d2l-tabs>
-						<d2l-tab-panel text="All Courses">Tab content for All</d2l-tab-panel>
-						<d2l-tab-panel text="Biology" selected>Tab content for Biology</d2l-tab-panel>
-						<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
-					</d2l-tabs>
-				`
-			};
-
-			it('focuses next on right arrow', async() => {
-				const elem = await fixture(keyboardFixture['deprecated'], { viewport });
-				await sendKeysElem(elem, 'press', 'ArrowRight');
-				await expect(elem).to.be.golden();
-			});
-
-			['Space', 'Enter'].forEach((key) => {
-				const keyboardSelectionFixture = {
-					deprecated: html`
-						<d2l-tabs>
-							<d2l-tab-panel text="All Courses">Tab content for All</d2l-tab-panel>
-							<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
-						</d2l-tabs>
-					`
-				};
-				it(`selects on ${key}`, async() => {
-					const elem = await fixture(keyboardSelectionFixture['deprecated'], { viewport });
-					await sendKeysElem(elem, 'press', `ArrowRight+${key}`);
-					await expect(elem).to.be.golden();
-				});
-			});
-		});
-	});
-
-	// remove with GAUD-9963-dropdown-tabs-not-resizing flag clean up
-	describe('max-width (flag off)', () => {
-		before(() => mockFlag(GAUD_9963_FLAG, false));
-		after(() => resetFlag(GAUD_9963_FLAG));
-
-		it('does not expand the tab width beyond 200px when reached on a viewport with enough space to expand all over', async() => {
-			const elem = await fixture(getMaxWidthFixture('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'), { viewport: { width: 1300 } });
-			await expect(elem).to.be.golden();
-		});
-
-		it('does not collapse the tab when the viewport is very small', async() => {
-			const elem = await fixture(getMaxWidthFixture('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'), { viewport: { width: 300 } });
-			await expect(elem).to.be.golden();
-		});
-	});
 });

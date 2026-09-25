@@ -330,13 +330,17 @@ export const codeStyles = css`
 	}
 `;
 
-const getLanguageInfo = elem => {
+const languageAliases = {
+	shell: 'bash'
+};
+
+const getLanguageInfo = (elem, allowAllLanguages) => {
 	const classes = elem.classList;
 	for (let i = 0; i < classes.length; i++) {
 		if (classes[i].startsWith('language-')) {
 			const key = classes[i].substring(9);
 			const desc = codeLanguages.get(key);
-			if (desc) return { key: key, desc: desc };
+			if (desc || allowAllLanguages) return { key: languageAliases[key] || key, desc: desc };
 		}
 	}
 	return { key: 'plain', desc: codeLanguages.get('plain') };
@@ -351,6 +355,7 @@ const languageDependencies = {
 const languagesLoaded = {
 	clike: Promise.resolve(),
 	css: Promise.resolve(),
+	html: Promise.resolve(),
 	javascript: Promise.resolve(),
 	markup: Promise.resolve(),
 	plain: Promise.resolve()
@@ -442,12 +447,13 @@ const getCodeElement = elem => {
 	return elem.querySelector('code');
 };
 
-export async function formatCodeElement(elem) {
+// allowAllLanguages is intended only for development consumers.
+export async function formatCodeElement(elem, { allowAllLanguages = false } = {}) {
 	const code = getCodeElement(elem);
 
 	if (code.className.indexOf('language-') === -1) return;
 
-	const languageInfo = getLanguageInfo(code);
+	const languageInfo = getLanguageInfo(code, allowAllLanguages);
 	const lineNumbers = elem.classList.contains('line-numbers') || code.classList.contains('line-numbers');
 
 	await loadPrism(); // must be loaded before loading plugins or languages
@@ -457,7 +463,7 @@ export async function formatCodeElement(elem) {
 		lineNumbers ? loadPlugin('line-numbers') : null
 	]);
 
-	if (!elem.dataset.language && languageInfo.key !== 'plain') elem.dataset.language = languageInfo.desc;
+	if (!elem.dataset.language && languageInfo.desc && languageInfo.key !== 'plain') elem.dataset.language = languageInfo.desc;
 	Prism.highlightElement(code);
 }
 

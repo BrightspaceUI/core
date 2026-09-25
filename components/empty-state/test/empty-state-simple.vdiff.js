@@ -9,6 +9,7 @@ const xlong = 'There are no assignments to display. Adding additional text here 
 
 const button = primary => html`<d2l-empty-state-action-button ?primary="${primary}" text="Create New Assignment"></d2l-empty-state-action-button>`;
 const link = html`<d2l-empty-state-action-link text="Create New Assignment" href="#"></d2l-empty-state-action-link>`;
+const linkWithTarget = html `<d2l-empty-state-action-link text="Create New Assignment" href="#" target="_blank"></d2l-empty-state-action-link>`;
 
 describe('empty-state-simple', () => {
 
@@ -18,9 +19,11 @@ describe('empty-state-simple', () => {
 			{ name: 'normal-button', template: html`<d2l-empty-state-simple description="${short}">${button()}</d2l-empty-state-simple>` },
 			{ name: 'normal-button-primary-blocked', template: html`<d2l-empty-state-simple description="${short}">${button(true)}</d2l-empty-state-simple>` },
 			{ name: 'normal-link', template: html`<d2l-empty-state-simple description="${short}">${link}</d2l-empty-state-simple>` },
+			{ name: 'normal-link-with-target', template: html`<d2l-empty-state-simple description=${short}>${linkWithTarget}</d2l-empty-state-simple>` },
 			{ name: 'wrap', template: html`<d2l-empty-state-simple description="${xlong}"></d2l-empty-state-simple>` },
 			{ name: 'wrap-button', template: html`<d2l-empty-state-simple description="${long}">${button()}</d2l-empty-state-simple>` },
 			{ name: 'wrap-link', template: html`<d2l-empty-state-simple description="${long}">${link}</d2l-empty-state-simple>` },
+			{ name: 'wrap-link-with-target', template: html`<d2l-empty-state-simple description="${long}">${linkWithTarget}</d2l-empty-state-simple>` },
 			{ name: 'no-description-button', template: html`<d2l-empty-state-simple>${button()}</d2l-empty-state-simple>` },
 			{ name: 'no-description-link', template: html`<d2l-empty-state-simple>${link}</d2l-empty-state-simple>` }
 		].forEach(({ name, template }) => {

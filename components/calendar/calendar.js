@@ -481,8 +481,8 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 
 		const weekdayHeaders = calendarData.daysOfWeekIndex.map((index) => html`
 			<th>
-				<abbr class="d2l-body-small" title="${calendarData.descriptor.calendar.days.long[index]}">
-					${calendarData.descriptor.calendar.days.short[index]}
+				<abbr class="d2l-body-small" title="${calendarData.descriptor.calendar.daysStandAlone.wide[index]}">
+					${calendarData.descriptor.calendar.daysStandAlone.abbreviated[index]}
 				</abbr>
 			</th>
 		`);

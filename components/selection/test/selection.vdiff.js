@@ -7,6 +7,7 @@ import '../selection-select-all-pages.js';
 import '../selection-summary.js';
 import './selection-component.js';
 import { clickElem, expect, fixture, focusElem, hoverElem, html, oneEvent, sendKeysElem } from '@brightspace-ui/testing';
+import { freshness } from '../../../mixins/freshness/freshness-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { nothing } from 'lit';
 
@@ -172,15 +173,25 @@ describe('selection-components', () => {
 	});
 
 	describe('select all', () => {
-		const defaultTemplate = html`<d2l-test-selection><d2l-selection-select-all ></d2l-selection-select-all></d2l-test-selection>`;
+
+		function createSelectionTemplate({ disabled = false, freshness } = {}) {
+			return html`
+				<d2l-test-selection freshness="${ifDefined(freshness)}">
+					<d2l-selection-select-all ?disabled="${disabled}"></d2l-selection-select-all>
+				</d2l-test-selection>
+			`;
+		}
 
 		[
-			{ name: 'default', template: defaultTemplate },
-			{ name: 'disabled', template: html`<d2l-test-selection><d2l-selection-select-all disabled></d2l-selection-select-all></d2l-test-selection>` },
-			{ name: 'focus', template: defaultTemplate, action: focusElem },
-			{ name: 'none-selected', template: defaultTemplate, action: elem => elem.selectionInfo = { state: 'none', keys: [] } },
-			{ name: 'some-selected', template: defaultTemplate, action: elem => elem.selectionInfo = { state: 'some', keys: [] } },
-			{ name: 'all-selected', template: defaultTemplate, action: elem => elem.selectionInfo = { state: 'all', keys: [] } }
+			{ name: 'default', template: createSelectionTemplate() },
+			{ name: 'disabled', template: createSelectionTemplate({ disabled: true }) },
+			{ name: 'focus', template: createSelectionTemplate(), action: focusElem },
+			{ name: 'none-selected', template: createSelectionTemplate(), action: elem => elem.selectionInfo = { state: 'none', keys: [] } },
+			{ name: 'some-selected', template: createSelectionTemplate(), action: elem => elem.selectionInfo = { state: 'some', keys: [] } },
+			{ name: 'all-selected', template: createSelectionTemplate(), action: elem => elem.selectionInfo = { state: 'all', keys: [] } },
+			{ name: 'freshness-fresh', template: createSelectionTemplate({ freshness: freshness.fresh }) },
+			{ name: 'freshness-loading', template: createSelectionTemplate({ freshness: freshness.loading }) },
+			{ name: 'freshness-stale', template: createSelectionTemplate({ freshness: freshness.stale }) }
 		].forEach(({ name, template, action }) => {
 			it(name, async() => {
 				const elem = await fixture(template);
@@ -192,9 +203,9 @@ describe('selection-components', () => {
 	});
 
 	describe('select-all-pages', () => {
-		function createSelectionTemplate(numInputs, selected) {
+		function createSelectionTemplate(numInputs, selected, freshness) {
 			return html`
-				<d2l-test-selection item-count="5500">
+				<d2l-test-selection item-count="5500" freshness="${ifDefined(freshness)}">
 					<d2l-selection-summary></d2l-selection-summary>
 					<d2l-selection-select-all-pages></d2l-selection-select-all-pages>
 					${createInputList(numInputs, selected)}
@@ -206,6 +217,9 @@ describe('selection-components', () => {
 			{ name: 'none-selected', template: createSelectionTemplate(3, [false, false, false]) },
 			{ name: 'some-selected', template: createSelectionTemplate(3, [true, true, false]) },
 			{ name: 'all-selected', template: createSelectionTemplate(3, [true, true, true]) },
+			{ name: 'all-selected-freshness-fresh', template: createSelectionTemplate(3, [true, true, true], freshness.fresh) },
+			{ name: 'all-selected-freshness-loading', template: createSelectionTemplate(3, [true, true, true], freshness.loading) },
+			{ name: 'all-selected-freshness-stale', template: createSelectionTemplate(3, [true, true, true], freshness.stale) },
 			{ name: 'select-all-pages', template: createSelectionTemplate(3, [true, true, true]), action: elem => clickElem(elem.querySelector('d2l-selection-select-all-pages')) },
 			{ name: 'add-item', template: createSelectionTemplate(3, [true, true, true]), action: async(elem) => {
 				await clickElem(elem.querySelector('d2l-selection-select-all-pages'));

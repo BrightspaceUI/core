@@ -1,8 +1,11 @@
 import '../dialog-fullscreen.js';
 import { expect, fixture, html, nextFrame } from '@brightspace-ui/testing';
 import { footer, general, long, tabs, wrapping } from './dialog-shared-contents.js';
+import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { interferingStyleWrapper } from '../../typography/test/typography-shared-contents.js';
+
+const preferNativeFullscreenDialogsFlag = 'GAUD-10336-prefer-native-fullscreen-dialogs';
 
 function createDialog(opts) {
 	const defaults = { content: html`${general}${footer}`, noPadding: false };
@@ -22,10 +25,12 @@ function dispatchFullscreenWithinEvent(elem, state) {
 
 describe('dialog-fullscreen', () => {
 
-	[/*'native', */'custom'].forEach((type) => {
+	['native', 'custom'].forEach((type) => {
 
 		describe(type, () => {
-			before(() => window.D2L.DialogMixin.preferNative = type === 'native');
+
+			before(() => mockFlag(preferNativeFullscreenDialogsFlag, type === 'native'));
+			after(() => resetFlag(preferNativeFullscreenDialogsFlag));
 
 			[
 				{ screen: 'wider', viewport: { width: 1400, height: 700 } },

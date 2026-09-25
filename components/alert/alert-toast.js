@@ -1,8 +1,20 @@
 import './alert.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { getFlag } from '../../helpers/flags.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { styleMap } from 'lit/directives/style-map.js';
+
+let mockedPopoverSupported = null;
+export function mockPopoverSupported(value) { mockedPopoverSupported = value; }
+export function resetPopoverSupported() { mockedPopoverSupported = null; }
+function isPopoverSupported() {
+	return mockedPopoverSupported ?? ('popover' in HTMLElement.prototype);
+}
+
+function usePopover() {
+	return getFlag('GAUD-10337-use-alert-toast-popover', true) && isPopoverSupported();
+}
 
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let activeReduceMotion = reduceMotion;
@@ -88,15 +100,20 @@ class AlertToast extends LitElement {
 		}
 
 		.d2l-alert-toast-container {
+			background-color: transparent; /* override popover default */
+			border: none; /* override popover */
 			border-radius: 0.3rem;
 			box-shadow: 0 0.1rem 0.6rem 0 rgba(0, 0, 0, 0.1);
+			color: var(--d2l-theme-text-color-static-standard);  /* override popover default */
 			display: none;
-			left: 0;
+			inset: auto 0 0 0;  /* override popover default */
 			margin: 0 auto 1.5rem;
 			max-width: 600px;
+			padding: 0; /* override popover */
 			position: fixed;
-			right: 0;
 			width: 100%;
+		}
+		.d2l-alert-toast-container-not-popover {
 			z-index: 10000;
 		}
 
@@ -133,7 +150,7 @@ class AlertToast extends LitElement {
 		}
 
 		.d2l-alert-toast-container[data-state="sliding"] {
-			transition: bottom 600ms ease;
+			transition: inset-block-end 600ms ease;
 		}
 
 		d2l-alert {
@@ -215,9 +232,10 @@ class AlertToast extends LitElement {
 	render() {
 		const spaceBetweenAlerts = this._numAlertsBelow * (this._smallWidth ? TOAST_SPACING_SMALL : TOAST_SPACING);
 		const containerStyles = {
-			bottom: (this._totalSiblingHeightBelow || this._numAlertsBelow) ? `calc(${this._totalSiblingHeightBelow}px + ${spaceBetweenAlerts}rem)` : 0
+			insetBlockEnd: (this._totalSiblingHeightBelow || this._numAlertsBelow) ? `calc(${this._totalSiblingHeightBelow}px + ${spaceBetweenAlerts}rem)` : 0
 		};
 		const containerClasses = {
+			'd2l-alert-toast-container-not-popover': !usePopover(),
 			'd2l-alert-toast-container': true,
 			'd2l-alert-toast-container-close-clicked': this._closeClicked,
 			'd2l-alert-toast-container-lowest': !this._totalSiblingHeightBelow,
@@ -228,18 +246,19 @@ class AlertToast extends LitElement {
 			<div
 				class="${classMap(containerClasses)}"
 				data-state="${this._state}"
+				popover="${ifDefined(usePopover() ? 'manual' : undefined)}"
 				style="${styleMap(containerStyles)}"
-				@transitionend=${this._onTransitionEnd}>
+				@transitionend="${this._onTransitionEnd}">
 				<d2l-alert
-					@blur=${this._onBlur}
+					@blur="${this._onBlur}"
 					button-text="${ifDefined(this.buttonText)}"
-					@d2l-alert-button-press=${this._handleButtonPress}
-					@d2l-alert-close=${this._onCloseClicked}
-					@focus=${this._onFocus}
+					@d2l-alert-button-press="${this._handleButtonPress}"
+					@d2l-alert-close="${this._onCloseClicked}"
+					@focus="${this._onFocus}"
 					?has-close-button="${!this.hideCloseButton}"
 					?hidden="${this._state === states.CLOSED}"
-					@mouseenter=${this._onMouseEnter}
-					@mouseleave=${this._onMouseLeave}
+					@mouseenter="${this._onMouseEnter}"
+					@mouseleave="${this._onMouseLeave}"
 					role="${ifDefined(this._state !== states.CLOSED ? 'alert' : undefined)}"
 					subtext="${ifDefined(this.subtext)}"
 					type="${ifDefined(this.type)}">
@@ -397,6 +416,14 @@ class AlertToast extends LitElement {
 
 	_openChanged(newOpen) {
 		if (newOpen) {
+
+			if (usePopover()) {
+				// wait for popover attribute before managing top-layer (needed for case where toast is open immediately)
+				requestAnimationFrame(() => {
+					if (this.isConnected) this.shadowRoot.querySelector('[popover="manual"]')?.showPopover();
+				});
+			}
+
 			if (this._state === states.CLOSING) {
 				this._state = states.OPENING;
 			} else if (this._state === states.CLOSED) {
@@ -414,6 +441,10 @@ class AlertToast extends LitElement {
 			}
 		} else {
 			if (!this._innerContainer) return;
+
+			if (usePopover()) {
+				this.shadowRoot.querySelector('[popover="manual"]')?.hidePopover();
+			}
 
 			if (activeReduceMotion || this._state === states.PREOPENING) {
 				cancelAnimationFrame(this._preopenFrame);

@@ -26,6 +26,7 @@ export const LoadingCompleteMixin = dedupeMixin((superclass) => class extends su
 	#loadingCompletePromise = !Object.prototype.hasOwnProperty.call(this.constructor.prototype, 'getLoadingComplete')
 		? new Promise(resolve => {
 			const timeout = setTimeout(() => {
+				if (!this.isConnected) return;
 				console.warn(`Failed to load ${this.localName} in ${timeoutMs}ms: resolveLoadingComplete was not called`);
 			}, timeoutMs);
 

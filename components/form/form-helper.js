@@ -1,6 +1,4 @@
 
-import { cssEscape } from '../../helpers/dom.js';
-
 const formElements = {
 	button: true,
 	fieldset: true,
@@ -67,7 +65,7 @@ const _tryGetLabelElement = ele => {
 	}
 	if (ele.id) {
 		const rootNode = ele.getRootNode();
-		return rootNode.querySelector(`label[for="${cssEscape(ele.id)}"]`);
+		return rootNode.querySelector(`label[for="${CSS.escape(ele.id)}"]`);
 	}
 	return null;
 };

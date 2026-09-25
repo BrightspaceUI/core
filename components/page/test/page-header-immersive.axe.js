@@ -4,7 +4,7 @@ import { pageHeaderImmersiveFixtures } from './page-header-immersive-fixtures.js
 describe('d2l-page-header-immersive', () => {
 
 	[
-		{ name: 'actions', template: pageHeaderImmersiveFixtures.actions },
+		{ name: 'actions', template: pageHeaderImmersiveFixtures.actionsTitle },
 		{ name: 'back-custom-text', template: pageHeaderImmersiveFixtures.backCustomText },
 		{ name: 'back-href', template: pageHeaderImmersiveFixtures.backHref },
 		{ name: 'back-only', template: pageHeaderImmersiveFixtures.backOnly },

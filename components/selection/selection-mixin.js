@@ -1,5 +1,6 @@
 import { getFirstFocusableDescendant, getLastFocusableDescendant, getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { CollectionMixin } from '../../mixins/collection/collection-mixin.js';
+import { freshness } from '../../mixins/freshness/freshness-mixin.js';
 import { isComposedAncestor } from '../../helpers/dom.js';
 
 const keyCodes = {
@@ -93,6 +94,14 @@ export const SelectionMixin = superclass => class extends CollectionMixin(superc
 		this.removeEventListener('d2l-selection-change', this._handleSelectionChange);
 		this.removeEventListener('d2l-selection-observer-subscribe', this._handleSelectionObserverSubscribe);
 		this.removeEventListener('d2l-selection-input-subscribe', this._handleSelectionInputSubscribe);
+	}
+
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+
+		if (changedProperties.has('freshness')) {
+			this._updateSelectionObservers();
+		}
 	}
 
 	getSelectionInfo() {
@@ -254,7 +263,10 @@ export const SelectionMixin = superclass => class extends CollectionMixin(superc
 		this._updateObserversRequested = true;
 		setTimeout(() => {
 			const info = this.getSelectionInfo(true);
-			this._selectionObservers.forEach(observer => observer.selectionInfo = info);
+			this._selectionObservers.forEach(observer => {
+				observer.selectionInfo = info;
+				observer.selectionDisabled = (this.freshness === freshness.stale || this.freshness === freshness.loading);
+			});
 			this._updateObserversRequested = false;
 		}, 0);
 	}

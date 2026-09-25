@@ -5,7 +5,6 @@ import { clearDismissible, setDismissible } from '../../helpers/dismissible.js';
 import { findComposedAncestor, getComposedChildren, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, getFirstFocusableDescendant, getFirstFocusableRelative, getNextFocusable, isFocusable } from '../../helpers/focus.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { html } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -25,8 +24,6 @@ window.D2L.DialogMixin.hasNative = (window.HTMLDialogElement !== undefined);
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const abortAction = 'abort';
 const defaultMargin = { top: 75, right: 30, bottom: 30, left: 30 };
-
-const closeDialogWhenDisconnectedFlag = getFlag('GAUD-10113-close-dialog-when-disconnected', true);
 
 export const DialogMixin = superclass => class extends superclass {
 
@@ -107,7 +104,7 @@ export const DialogMixin = superclass => class extends superclass {
 		window.removeEventListener('d2l-mvc-dialog-open', this.#handleMvcDialogOpen);
 
 		// If the dialog is disconnected before the close animation finishes
-		if (this.opened && closeDialogWhenDisconnectedFlag) {
+		if (this.opened) {
 			this._handleClose();
 		}
 	}
@@ -119,6 +116,7 @@ export const DialogMixin = superclass => class extends superclass {
 		const ifrauDialogService = await tryGetIfrauBackdropService();
 		if (this.opened) {
 			if (ifrauDialogService) {
+				this.#ifrauDialogService = ifrauDialogService;
 				this._ifrauContextInfo = await ifrauDialogService.showBackdrop();
 				this._inIframe = true;
 			}
@@ -128,6 +126,7 @@ export const DialogMixin = superclass => class extends superclass {
 				ifrauDialogService.hideBackdrop();
 				this._ifrauContextInfo = null;
 			}
+			this.#ifrauDialogService = null;
 			this._close();
 		}
 	}
@@ -168,6 +167,7 @@ export const DialogMixin = superclass => class extends superclass {
 	}
 
 	#useNativeInitialized = false;
+	#ifrauDialogService = null;
 
 	#handleMvcDialogOpen = () => {
 		// native dialogs on top layer will be stacked on non-native dialogs regardless of z-index
@@ -185,6 +185,7 @@ export const DialogMixin = superclass => class extends superclass {
 	};
 
 	#updateSize = async() => {
+		if (this._inIframe && this.#ifrauDialogService) this._ifrauContextInfo = await this.#ifrauDialogService.getContextInfo();
 		if (this._autoSize) {
 			if (this._ifrauContextInfo) {
 				if (this._ifrauContextInfo.top > defaultMargin.top) {
@@ -583,6 +584,32 @@ export const DialogMixin = superclass => class extends superclass {
 				<d2l-backdrop for-target="${this._dialogId}" ?shown="${this._state === 'showing'}"></d2l-backdrop>`}
 		`;
 
+	}
+
+	_renderContent(content, options) {
+		let tabIndex = undefined;
+		let autoFocus = false;
+		if (this._useNative) {
+			if (!options.hasTitleText) {
+				tabIndex = '-1';
+				autoFocus = true;
+			}
+		} else {
+			tabIndex = !this.focusableContentElemPresent ? '0' : undefined;
+		}
+		return html`<div ?autofocus="${autoFocus}" class="d2l-dialog-content" @pending-state="${ifDefined(options.handleAsyncItemState)}" tabindex="${ifDefined(tabIndex)}">${content}</div>`;
+	}
+
+	_renderHeading(text, options) {
+		let tabIndex = undefined;
+		let autoFocus = false;
+		if (this._useNative) {
+			if (text) {
+				tabIndex = '-1';
+				autoFocus = true;
+			}
+		}
+		return html`<h2 ?autofocus="${autoFocus}" class="${ifDefined(options.class)}" id="${ifDefined(options.id)}" tabindex="${ifDefined(tabIndex)}">${text}</h2>`;
 	}
 
 	_tryApplyFocus(node) {

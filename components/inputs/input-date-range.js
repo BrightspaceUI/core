@@ -10,6 +10,7 @@ import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { InteractiveMixin } from '../../mixins/interactive/interactive-mixin.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
 export function getShiftedEndDate(startValue, endValue, prevStartValue, inclusive) {
@@ -32,7 +33,7 @@ export function getShiftedEndDate(startValue, endValue, prevStartValue, inclusiv
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @fires change - Dispatched when there is a change to selected start date or selected end date. `start-value` and `end-value` correspond to the selected values and are formatted in ISO 8601 calendar date format (`YYYY-MM-DD`).
  */
-class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormElementMixin(LocalizeCoreElement(LitElement))))) {
+class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormElementMixin(PropertyRequiredMixin(LocalizeCoreElement(LitElement)))))) {
 
 	static properties = {
 		/**
@@ -75,7 +76,7 @@ class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormEleme
 		 * ACCESSIBILITY: REQUIRED: Label for the input fieldset that wraps the date inputs
 		 * @type {string}
 		 */
-		label: { type: String, reflect: true },
+		label: { type: String, reflect: true, required: true },
 		/**
 		 * Hides the fieldset label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label.
 		 * @type {boolean}
@@ -156,10 +157,6 @@ class InputDateRange extends InteractiveMixin(FocusMixin(SkeletonMixin(FormEleme
 
 	async firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-
-		if (!this.label) {
-			console.warn('d2l-input-date-range component requires label text');
-		}
 		this.shadowRoot.querySelector('d2l-input-date-time-range-to').setParentNode(this);
 	}
 
