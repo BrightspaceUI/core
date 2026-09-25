@@ -1,6 +1,6 @@
 import '../button/button-subtle.js';
-import { stateSimpleStyles, stateStyles } from './state-styles.js';
 import { html, LitElement } from 'lit';
+import { stateSimpleStyles, stateStyles } from './state-styles.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { StateMixin } from './state-mixin.js';
 

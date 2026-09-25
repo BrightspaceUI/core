@@ -5,9 +5,9 @@ import '../button/button-subtle.js';
 import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import '../dropdown/dropdown-menu.js';
-import '../empty-state/empty-state-action-button.js';
-import '../empty-state/empty-state-action-link.js';
-import '../empty-state/empty-state-simple.js';
+import '../state/state-action-button.js';
+import '../state/state-action-link.js';
+import '../state/state-empty-simple.js';
 import '../expand-collapse/expand-collapse-content.js';
 import '../hierarchical-view/hierarchical-view.js';
 import '../icons/icon.js';
@@ -537,28 +537,28 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		let emptyStateAction = nothing;
 		if (emptyState.actionText && emptyState.actionHref) {
 			emptyStateAction = html`
-				<d2l-empty-state-action-link
+				<d2l-state-action-link
 					href="${emptyState.actionHref}"
 					text="${emptyState.actionText}">
-				</d2l-empty-state-action-link>
+				</d2l-state-action-link>
 			`;
 		}
 		else if (emptyState.actionText) {
 			emptyStateAction = html`
-				<d2l-empty-state-action-button
-					@d2l-empty-state-action="${this._handleEmptyStateAction}"
+				<d2l-state-action-button
+					@d2l-state-action="${this._handleEmptyStateAction}"
 					data-dimension-key="${dimensionKey}"
 					data-type="${emptyState.type}"
 					text="${emptyState.actionText}">
-				</d2l-empty-state-action-button>
+				</d2l-state-action-button>
 			`;
 		}
 		return html`
-			<d2l-empty-state-simple
+			<d2l-state-empty-simple
 				class="d2l-filter-dimension-info-message"
 				description="${emptyState.description}">
 				${emptyStateAction}
-			</d2l-empty-state-simple>
+			</d2l-state-empty-simple>
 		`;
 	}
 
@@ -575,10 +575,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			const emptyState = dimension.setEmptyState
 				? this._createEmptyState(dimension.setEmptyState, dimension.key)
 				: html`
-					<d2l-empty-state-simple
+					<d2l-state-empty-simple
 						class="d2l-filter-dimension-info-message"
 						description="${this.localize('components.filter.noFilters')}">
-					</d2l-empty-state-simple>
+					</d2l-state-empty-simple>
 				`;
 			return html`
 				<div class="d2l-empty-state-container" role="alert">
@@ -597,10 +597,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			const emptyState = dimension.searchEmptyState && count === 0
 				? this._createEmptyState(dimension.searchEmptyState, dimension.key)
 				: html`
-					<d2l-empty-state-simple
+					<d2l-state-empty-simple
 						class="d2l-filter-dimension-info-message"
 						description="${this.localize('components.filter.searchResults', { number: count })}">
-					</d2l-empty-state-simple>
+					</d2l-state-empty-simple>
 				`;
 			searchResults = html`
 				<div class="${classMap(classes)}" role="alert">
