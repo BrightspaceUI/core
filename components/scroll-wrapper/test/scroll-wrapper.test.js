@@ -1,5 +1,5 @@
 import '../demo/scroll-wrapper-test.js';
-import { expect, fixture, focusElem, html, oneEvent } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, focusElem, html, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { SCROLL_AMOUNT } from '../scroll-wrapper.js';
 
@@ -49,6 +49,14 @@ describe('scroll-wrapper', () => {
 			await oneEvent(wrapper._container, 'scrollend');
 			for (const scroller of wrapper._allScrollers)
 				expect(scroller.scrollLeft).to.be.lessThan(10); // scroll left seems to vary based on browser/environment so exact value makes it flaky
+		});
+
+		it('does not scroll when focusing on sticky content', async() => {
+			const wrapper = await getScrollWrapper({ scroll: 150, stickyContent: true }); // scroll 150 to hide button under sticky content;
+			await focusElem(wrapper.querySelector('.sticky button'));
+			await aTimeout(500); // Firefox doesn't release a scroll event, so we cannot wait for one
+			for (const scroller of wrapper._allScrollers)
+				expect(scroller.scrollLeft).to.equal(150);
 		});
 
 	});
