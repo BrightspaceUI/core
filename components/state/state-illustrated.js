@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from 'lit';
-import { stateStyles, stateIllustratedStyles } from './state-styles.js';
+import { stateIllustratedStyles, stateStyles } from './state-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { LoadingCompleteMixin } from '../../mixins/loading-complete/loading-complete-mixin.js';
 import { loadSvg } from '../../generated/state/presetIllustrationLoader.js';
@@ -32,7 +32,7 @@ export class StateIllustrated extends LoadingCompleteMixin(StateMixin(LitElement
 		_titleSmall: { state: true }
 	};
 
-	static styles = [ stateStyles, stateIllustratedStyles];
+	static styles = [stateStyles, stateIllustratedStyles];
 
 	constructor() {
 		super();

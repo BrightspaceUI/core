@@ -1,7 +1,6 @@
 import '../button/button.js';
 import '../button/button-subtle.js';
 import { css, html, LitElement, nothing } from 'lit';
-import { findComposedAncestor } from '../../helpers/dom.js';
 import { FocusMixin } from '../../mixins/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';

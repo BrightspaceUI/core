@@ -1,6 +1,6 @@
 import '../colors/colors.js';
-import { css } from 'lit';
 import { bodyCompactStyles } from '../typography/styles.js';
+import { css } from 'lit';
 import { getFocusRingStyles } from '../../helpers/focus.js';
 
 export const stateStyles = css`

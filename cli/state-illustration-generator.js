@@ -32,7 +32,6 @@ function getSvgs() {
 
 	const files = readdirSync(imagePath);
 
-
 	const svgs = files
 		.filter((file) => {
 			return (path.extname(file) === '.svg');

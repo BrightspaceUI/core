@@ -9,7 +9,7 @@ import { StateMixin } from './state-mixin.js';
  */
 export class StateSimple extends StateMixin(LitElement) {
 
-	static styles = [ stateStyles, stateSimpleStyles];
+	static styles = [stateStyles, stateSimpleStyles];
 
 	render() {
 		return html`
