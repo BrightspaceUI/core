@@ -173,12 +173,14 @@ describe('dropdown-content', () => {
 
 		it('loaded', async() => {
 			elem.openKeyboard();
+			elem.finishLoading();
 			await oneEvent(elem, 'd2l-dropdown-open');
 			await expect(elem).to.be.golden();
 		});
 
 		it('subsequent', async() => {
 			elem.openKeyboard();
+			elem.finishLoading();
 			await oneEvent(elem, 'd2l-dropdown-open');
 			sendKeys('press', 'Escape');
 			await oneEvent(elem, 'd2l-dropdown-close');
@@ -191,12 +193,14 @@ describe('dropdown-content', () => {
 			const contentElem = elem.getContent();
 			await elem.openKeyboard();
 			await sendKeys('press', 'Escape');
+			elem.finishLoading();
 			await waitUntil(() => contentElem._asyncState === asyncStates.loaded);
 			await expect(elem).to.be.golden();
 		});
 
 		it('reset', async() => {
 			elem.openKeyboard();
+			elem.finishLoading();
 			await oneEvent(elem, 'd2l-dropdown-open');
 			sendKeys('press', 'Escape');
 			await oneEvent(elem, 'd2l-dropdown-close');
