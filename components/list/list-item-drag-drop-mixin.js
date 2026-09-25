@@ -855,8 +855,16 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		// simulate drop if over a drop area
 		const touch = e.changedTouches[0];
 		const listItem = this._findListItemFromCoordinates(touch.clientX, touch.clientY);
-		const dropGrid = listItem.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
-		if (dropGrid) dropGrid.dispatchEvent(createDragEvent('drop'));
+		// remove the if when cleaning 'GAUD-10642-improved-mobile-drag-and-drop' and leave the else code block
+		if (!this.#improvedMobileScroll) {
+			const dropGrid = listItem.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
+			if (dropGrid) dropGrid.dispatchEvent(createDragEvent('drop'));
+		} else {
+			if (listItem) {
+				const dropGrid = listItem.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
+				if (dropGrid) dropGrid.dispatchEvent(createDragEvent('drop'));
+			}
+		}
 		// simulate dragend
 		if (this.shadowRoot)
 			this.shadowRoot.querySelector('.d2l-list-item-drag-area').dispatchEvent(createDragEvent('dragend'));
