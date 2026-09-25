@@ -1,26 +1,26 @@
-import { emptyStateIllustratedStyles, emptyStateStyles } from './empty-state-styles.js';
 import { html, LitElement, nothing } from 'lit';
+import { stateIllustratedStyles, stateStyles } from './state-styles.js';
 import { bodyCompactStyles } from '../typography/styles.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { EmptyStateMixin } from './empty-state-mixin.js';
 import { LoadingCompleteMixin } from '../../mixins/loading-complete/loading-complete-mixin.js';
-import { loadSvg } from '../../generated/empty-state/presetIllustrationLoader.js';
+import { loadSvg } from '../../generated/state/presetIllustrationLoader.js';
 import { runAsync } from '../../directives/run-async/run-async.js';
+import { StateMixin } from './state-mixin.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 
 const illustrationAspectRatio = 500 / 330;
 
 /**
- * The `d2l-empty-state-illustrated` component is an empty state component that displays a title and description with an illustration. An empty state action component can be placed inside of the default slot to add an optional action.
- * @slot - Slot for empty state actions
+ * The `d2l-state-illustrated` component is an state component that displays a title and description with an illustration. An state action component can be placed inside of the default slot to add an optional action.
+ * @slot - Slot for state actions
  * @slot illustration - Slot for custom SVG content if `illustration-name` property is not set
  */
-class EmptyStateIllustrated extends LoadingCompleteMixin(EmptyStateMixin(LitElement)) {
+class StateIllustrated extends LoadingCompleteMixin(StateMixin(LitElement)) {
 
 	static properties = {
 		/**
-		 * REQUIRED: A description giving details about the empty state
+		 * REQUIRED: A description giving details about the state
 		 * @type {string}
 		 */
 		description: { type: String, required: true },
@@ -30,7 +30,7 @@ class EmptyStateIllustrated extends LoadingCompleteMixin(EmptyStateMixin(LitElem
 		 */
 		illustrationName: { type: String, attribute: 'illustration-name' },
 		/**
-		 * REQUIRED: A title for the empty state
+		 * REQUIRED: A title for the state
 		 * @type {string}
 		 */
 		titleText: { type: String, attribute: 'title-text', required: true },
@@ -38,7 +38,7 @@ class EmptyStateIllustrated extends LoadingCompleteMixin(EmptyStateMixin(LitElem
 		_titleSmall: { state: true }
 	};
 
-	static styles = [bodyCompactStyles, emptyStateStyles, emptyStateIllustratedStyles];
+	static styles = [bodyCompactStyles, stateStyles, stateIllustratedStyles];
 
 	constructor() {
 		super();
@@ -49,27 +49,27 @@ class EmptyStateIllustrated extends LoadingCompleteMixin(EmptyStateMixin(LitElem
 
 	connectedCallback() {
 		super.connectedCallback();
-		this.addEventListener('d2l-empty-state-illustrated-check', this.#handleEmptyStateIllustratedCheck);
+		this.addEventListener('d2l-state-illustrated-check', this.#handleStateIllustratedCheck);
 		this._resizeObserver.observe(this);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
-		this.removeEventListener('d2l-empty-state-illustrated-check', this.#handleEmptyStateIllustratedCheck);
+		this.removeEventListener('d2l-state-illustrated-check', this.#handleStateIllustratedCheck);
 		this._resizeObserver.disconnect();
 	}
 
 	render() {
 		const titleClass = {
-			'd2l-empty-state-title': true,
-			'd2l-empty-state-title-small': this._titleSmall,
-			'd2l-empty-state-title-large': !this._titleSmall,
+			'd2l-state-title': true,
+			'd2l-state-title-small': this._titleSmall,
+			'd2l-state-title-large': !this._titleSmall,
 		};
 
 		return html`
 			${this.#renderIllustration()}
 			<p class="${classMap(titleClass)}">${this.titleText}</p>
-			<p class="d2l-body-compact d2l-empty-state-description" tabindex="-1">${this.description}</p>
+			<p class="d2l-body-compact d2l-state-description" tabindex="-1">${this.description}</p>
 			<slot class="action-slot"></slot>
 		`;
 	}
@@ -92,12 +92,12 @@ class EmptyStateIllustrated extends LoadingCompleteMixin(EmptyStateMixin(LitElem
 
 		const svg = await loadSvg(illustrationName);
 		if (!svg) setTimeout(() => {
-			throw new Error(`<d2l-empty-state-illustrated-${this._illustratedComponentType}>: Unable to retrieve requested illustration.`);
+			throw new Error(`<d2l-state-illustrated-${this._illustratedComponentType}>: Unable to retrieve requested illustration.`);
 		});
 		return svg ? html`${unsafeSVG(svg.val)}` : nothing;
 	}
 
-	#handleEmptyStateIllustratedCheck(e) {
+	#handleStateIllustratedCheck(e) {
 		e.stopPropagation();
 		e.detail.illustrated = true;
 	}
@@ -126,4 +126,4 @@ class EmptyStateIllustrated extends LoadingCompleteMixin(EmptyStateMixin(LitElem
 
 }
 
-customElements.define('d2l-empty-state-illustrated', EmptyStateIllustrated);
+customElements.define('d2l-state-illustrated', StateIllustrated);
