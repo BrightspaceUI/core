@@ -2,6 +2,7 @@ import '../list.js';
 import { defineCE, expect, fixture, oneEvent } from '@brightspace-ui/testing';
 import { dropLocation, ListItemDragDropMixin, NewPositionEventDetails } from '../list-item-drag-drop-mixin.js';
 import { html, LitElement } from 'lit';
+import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 import { ListItemMixin } from '../list-item-mixin.js';
 
 const tag = defineCE(
@@ -17,6 +18,13 @@ const tag = defineCE(
 		}
 	}
 );
+
+function touchEvent(type, target, x, y) {
+	const event = new Event(type, { bubbles: true, cancelable: true });
+	event.changedTouches = [{ clientX: x, clientY: y }];
+	target.dispatchEvent(event);
+	return event;
+};
 
 describe('ListItemDragDropMixin', () => {
 	it('Sets draggable to false when no key is given', async() => {
@@ -127,6 +135,51 @@ describe('ListItemDragDropMixin', () => {
 			});
 		});
 
+	});
+
+	describe('Mobile drag and drop behavior', () => {
+		describe('GAUD-10642-improved-mobile-drag-and-drop is true', () => {
+			it('touchstart: sets the inline touch-action to none on parent scrolling container', async() => {
+				const scrollingContainer = await fixture(`
+					<div style="overflow: auto; height: 200px;">
+						<d2l-list>
+							<${tag} key="1" draggable style="height: 250px;"></${tag}>
+							<${tag} key="2" draggable style="height: 250px;"></${tag}>
+						</d2l-list>
+					</div>
+				`);
+				const item = scrollingContainer.querySelector(`${tag}[key="1"]`);
+				const dragArea = item.shadowRoot.querySelector('.d2l-list-item-drag-area');
+
+				touchEvent('touchstart', dragArea, 0, 0);
+				await new Promise(r => setTimeout(r, 500)); // exceed touchHoldDuration
+
+				expect(scrollingContainer.style.touchAction).to.equal('none');
+			});
+		});
+
+		describe('GAUD-10642-improved-mobile-drag-and-drop is false', () => {
+			beforeEach(() => mockFlag('GAUD-10642-improved-mobile-drag-and-drop', false));
+			afterEach(() => resetFlag('GAUD-10642-improved-mobile-drag-and-drop'));
+
+			it('touchstart: sets the inline touch-action to none on parent scrolling container', async() => {
+				const scrollingContainer = await fixture(`
+					<div style="overflow: auto; height: 200px;">
+						<d2l-list>
+							<${tag} key="1" draggable style="height: 250px;"></${tag}>
+							<${tag} key="2" draggable style="height: 250px;"></${tag}>
+						</d2l-list>
+					</div>
+				`);
+				const item = scrollingContainer.querySelector(`${tag}[key="1"]`);
+				const dragArea = item.shadowRoot.querySelector('.d2l-list-item-drag-area');
+
+				touchEvent('touchstart', dragArea, 0, 0);
+				await new Promise(r => setTimeout(r, 500)); // exceed touchHoldDuration
+
+				expect(scrollingContainer.style.touchAction).to.equal('');
+			});
+		});
 	});
 });
 
