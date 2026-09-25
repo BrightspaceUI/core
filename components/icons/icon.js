@@ -62,7 +62,7 @@ class Icon extends LoadingCompleteMixin(LitElement) {
 			const fixedSvg = this._fixSvg(svg ? svg.val : undefined);
 
 			this.updateComplete
-				.then(() => new Promise(requestAnimationFrame))
+				.then(() => new Promise(resolve => requestAnimationFrame(resolve)))
 				.then(this.resolveLoadingComplete);
 
 			return fixedSvg;
