@@ -430,6 +430,10 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (this.shadowRoot) this.shadowRoot.querySelector(`#${this._itemDragId}`).activateKeyboardMode();
 	}
 
+	get _isListItemDragAndDropMixin() {
+		return true;
+	}
+
 	#scrollableContainer;
 	#touchAction = '';
 	#improvedMobileScroll = getFlag('GAUD-10642-improved-mobile-drag-and-drop', true);
@@ -564,7 +568,20 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	_findListItemFromCoordinates(x, y) {
 		const listNode = findComposedAncestor(this.parentNode, (node) => node && node.tagName === 'D2L-LIST');
-		return listNode.shadowRoot.elementFromPoint(x, y);
+		// remove this if when cleaning 'GAUD-10642-improved-mobile-drag-and-drop'
+		if (!this.#improvedMobileScroll) {
+			return listNode.shadowRoot.elementFromPoint(x, y);
+		}
+
+		// This is to make sure that in Firefox it looks for the list item
+		// in the shadow DOM (if rendered as part of a template)
+		// or in the light DOM (when using the default slot of a parent element)
+		const node = listNode.getRootNode().elementFromPoint(x, y);
+		if (node?._isListItemDragAndDropMixin) {
+			return node;
+		}
+
+		return null;
 	}
 
 	_findListItemScrollableContainer(listItem) {
