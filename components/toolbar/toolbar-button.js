@@ -44,7 +44,8 @@ class ToolbarButton extends SlottedIconMixin(FocusMixin(ThemeMixin(PropertyRequi
 				aria-label="${this.text}"
 				@click="${this.#handleClick}"
 				tabindex="${this._activeFocusable ? 0 : -1}"
-				title="${this.text}">
+				title="${this.text}"
+				type="button">
 				<div class="background"></div>
 				${this._renderIcon()}
 			</button>
