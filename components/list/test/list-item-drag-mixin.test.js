@@ -19,7 +19,7 @@ const tag = defineCE(
 	}
 );
 
-function touchEvent(type, target, x, y) {
+function touchEvent(type, target, x = 0, y = 0) {
 	const event = new Event(type, { bubbles: true, cancelable: true });
 	event.changedTouches = [{ clientX: x, clientY: y }];
 	target.dispatchEvent(event);
@@ -152,13 +152,12 @@ describe('ListItemDragDropMixin', () => {
 				const dragArea = item.shadowRoot.querySelector('.d2l-list-item-drag-area');
 
 				touchEvent('touchstart', dragArea, 0, 0);
-				await new Promise(r => setTimeout(r, 500)); // exceed touchHoldDuration
+				await aTimeout(500); // exceed touchHoldDuration
 
 				expect(scrollingContainer.style.touchAction).to.equal('none');
 			});
 
 			it('touchend: reverts the inline touch-action on parent scrolling container', async() => {
-
 				const scrollingContainer = await fixture(`
 					<div style="overflow: auto; height: 200px;">
 						<d2l-list>
@@ -172,7 +171,7 @@ describe('ListItemDragDropMixin', () => {
 
 				const item1Rect = item1.getBoundingClientRect();
 				touchEvent('touchstart', dragArea, item1Rect.x + item1Rect.width / 2, item1Rect.y + item1Rect.height / 2);
-				await new Promise(r => setTimeout(r, 500)); // exceed touchHoldDuration
+				await aTimeout(500); // exceed touchHoldDuration
 
 				touchEvent('touchend', dragArea, item1Rect.x + item1Rect.width / 2, item1Rect.y + item1Rect.height / 2);
 
