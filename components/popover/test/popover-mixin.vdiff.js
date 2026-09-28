@@ -17,18 +17,24 @@ const asyncPopoverTag = defineCE(class extends LitElement {
 			<d2l-test-popover async @d2l-popover-async-load="${this.#handlePopoverAsyncLoad}" class="vdiff-target">${content}</d2l-test-popover>
 		`;
 	}
+	finishLoading() {
+		this.#loadingResolve?.();
+	}
 	async reset() {
 		this._loaded = false;
+		this.#loadingPromise = new Promise(resolve => this.#loadingResolve = resolve);
 		this.#resetCallback?.();
 		await this.updateComplete;
 	}
+	#loadingResolve;
+	#loadingPromise = new Promise(resolve => this.#loadingResolve = resolve);
 	#resetCallback;
 	#handleOpen(e) {
 		this.shadowRoot.querySelector('d2l-test-popover').open(e.target);
 	}
 	async #handlePopoverAsyncLoad(e) {
 		this.#resetCallback = e.detail.reset;
-		await new Promise(resolve => setTimeout(resolve, 200));
+		await this.#loadingPromise;
 		this._loaded = true;
 		e.detail.complete();
 	}
@@ -65,12 +71,14 @@ describe('popover-mixin', () => {
 
 		it('loaded', async() => {
 			sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
+			el.finishLoading();
 			await oneEvent(el, 'd2l-popover-open');
 			await expect(el).to.be.golden();
 		});
 
 		it('subsequent', async() => {
 			sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
+			el.finishLoading();
 			await oneEvent(el, 'd2l-popover-open');
 			await sendKeys('press', 'Escape');
 			sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
@@ -80,6 +88,7 @@ describe('popover-mixin', () => {
 
 		it('reset', async() => {
 			sendKeysElem(el.shadowRoot.querySelector('button'), 'press', 'Enter');
+			el.finishLoading();
 			await oneEvent(el, 'd2l-popover-open');
 			await sendKeys('press', 'Escape');
 			await el.reset();

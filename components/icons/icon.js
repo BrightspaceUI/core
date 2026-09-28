@@ -3,11 +3,12 @@ import { css, html, LitElement, noChange } from 'lit';
 import { fixSvg } from './fix-svg.js';
 import { guard } from 'lit/directives/guard.js';
 import { iconStyles } from './icon-styles.js';
+import { LoadingCompleteMixin } from '../../mixins/loading-complete/loading-complete-mixin.js';
 import { loadSvg } from '../../generated/icons/presetIconLoader.js';
 import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import { until } from 'lit/directives/until.js';
 
-class Icon extends LitElement {
+class Icon extends LoadingCompleteMixin(LitElement) {
 
 	static properties = {
 		icon: {
@@ -58,7 +59,13 @@ class Icon extends LitElement {
 				icon = icon.substring(4);
 			}
 			const svg = await loadSvg(icon);
-			return this._fixSvg(svg ? svg.val : undefined);
+			const fixedSvg = this._fixSvg(svg ? svg.val : undefined);
+
+			this.updateComplete
+				.then(() => new Promise(resolve => requestAnimationFrame(resolve)))
+				.then(this.resolveLoadingComplete);
+
+			return fixedSvg;
 		}
 	}
 

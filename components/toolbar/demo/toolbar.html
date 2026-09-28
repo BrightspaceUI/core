@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../../icons/icon-custom.js';
+			import '../toolbar.js';
+			import '../toolbar-button.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-toolbar">
+
+			<h2>Toolbar</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-toolbar label="Editor Toolbar">
+						<d2l-toolbar-button text="Edit" icon="tier1:edit"></d2l-toolbar-button>
+						<d2l-toolbar-button text="Link" icon="tier1:link"></d2l-toolbar-button>
+						<d2l-toolbar-button text="Picture" icon="tier1:pic"></d2l-toolbar-button>
+						<d2l-toolbar-button text="Microphone" icon="tier1:mic"></d2l-toolbar-button>
+						<d2l-toolbar-button text="Volume" icon="tier1:volume"></d2l-toolbar-button>
+						<d2l-toolbar-button text="Accessibility" icon="tier1:accessibility"></d2l-toolbar-button>
+						<d2l-toolbar-button text="Undo" icon="tier1:undo"></d2l-toolbar-button>
+						<d2l-toolbar-button text="Redo" icon="tier1:redo"></d2l-toolbar-button>
+						<d2l-toolbar-button text="Fullscreen" icon="tier1:fullscreen"></d2l-toolbar-button>
+						<d2l-toolbar-button text="Course" icon="tier1:course"></d2l-toolbar-button>
+						<d2l-toolbar-button disabled text="Settings" icon="tier1:gear"></d2l-toolbar-button>
+						<d2l-toolbar-button text="Code">
+							<d2l-icon-custom size="tier1" slot="icon">
+								<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+									<path fill="#494c4e" d="M7 12.923a1 1 0 0 1-.554-.166.983.983 0 0 1-.277-1.373l4-5.94a1 1 0 0 1 1.385-.274.983.983 0 0 1 .277 1.373l-4 5.94a1 1 0 0 1-.833.44zm10.708-3.257l-3 2.97a1.02 1.02 0 0 1-1.42 0 .99.99 0 0 1 0-1.406l2.29-2.267-2.29-2.277a.98.98 0 0 1 0-1.4 1.015 1.015 0 0 1 1.42 0l3 2.97a.99.99 0 0 1 0 1.41zM4.712 11.23a.99.99 0 0 1 0 1.406 1.02 1.02 0 0 1-1.42 0l-3-2.97a.99.99 0 0 1 0-1.406l3-2.97a1.015 1.015 0 0 1 1.42 0 .98.98 0 0 1 0 1.4l-2.29 2.273z"/>
+								</svg>
+							</d2l-icon-custom>
+						</d2l-toolbar-button>
+					</d2l-toolbar>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>Toolbar (theme="dark")</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<div style="background-color: #202122; padding: 8px;">
+						<d2l-toolbar label="Editor Toolbar">
+							<d2l-toolbar-button theme="dark" text="Edit" icon="tier1:edit"></d2l-toolbar-button>
+							<d2l-toolbar-button theme="dark" text="Link" icon="tier1:link"></d2l-toolbar-button>
+							<d2l-toolbar-button theme="dark" text="Picture" icon="tier1:pic"></d2l-toolbar-button>
+							<d2l-toolbar-button theme="dark" text="Microphone" icon="tier1:mic"></d2l-toolbar-button>
+							<d2l-toolbar-button theme="dark" text="Volume" icon="tier1:volume"></d2l-toolbar-button>
+							<d2l-toolbar-button theme="dark" text="Accessibility" icon="tier1:accessibility"></d2l-toolbar-button>
+							<d2l-toolbar-button theme="dark" text="Undo" icon="tier1:undo"></d2l-toolbar-button>
+							<d2l-toolbar-button theme="dark" text="Redo" icon="tier1:redo"></d2l-toolbar-button>
+							<d2l-toolbar-button theme="dark" text="Fullscreen" icon="tier1:fullscreen"></d2l-toolbar-button>
+							<d2l-toolbar-button theme="dark" text="Course" icon="tier1:course"></d2l-toolbar-button>
+							<d2l-toolbar-button theme="dark" disabled text="Settings" icon="tier1:gear"></d2l-toolbar-button>
+							<d2l-toolbar-button theme="dark" text="Code">
+								<d2l-icon-custom size="tier1" slot="icon">
+									<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
+										<path fill="#494c4e" d="M7 12.923a1 1 0 0 1-.554-.166.983.983 0 0 1-.277-1.373l4-5.94a1 1 0 0 1 1.385-.274.983.983 0 0 1 .277 1.373l-4 5.94a1 1 0 0 1-.833.44zm10.708-3.257l-3 2.97a1.02 1.02 0 0 1-1.42 0 .99.99 0 0 1 0-1.406l2.29-2.267-2.29-2.277a.98.98 0 0 1 0-1.4 1.015 1.015 0 0 1 1.42 0l3 2.97a.99.99 0 0 1 0 1.41zM4.712 11.23a.99.99 0 0 1 0 1.406 1.02 1.02 0 0 1-1.42 0l-3-2.97a.99.99 0 0 1 0-1.406l3-2.97a1.015 1.015 0 0 1 1.42 0 .98.98 0 0 1 0 1.4l-2.29 2.273z"/>
+									</svg>
+								</d2l-icon-custom>
+							</d2l-toolbar-button>
+						</d2l-toolbar>
+					</div>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+	</body>
+</html>
