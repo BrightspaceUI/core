@@ -838,7 +838,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_onTouchEnd(e) {
 		if (this._touchTimeoutId) clearTimeout(this._touchTimeoutId);
 		if (!this._touchStarted) return;
-		e.preventDefault();
+		if (e.cancelable) e.preventDefault();
 		this._touchStarted = false;
 		// leave the code inside the if when removing 'GAUD-10642-improved-mobile-drag-and-drop'
 		if (this.#improvedMobileScroll) this.#resetScrollableContainer();
@@ -850,11 +850,9 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (!this.#improvedMobileScroll) {
 			const dropGrid = listItem.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
 			if (dropGrid) dropGrid.dispatchEvent(createDragEvent('drop'));
-		} else {
-			if (listItem) {
-				const dropGrid = listItem.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
-				if (dropGrid) dropGrid.dispatchEvent(createDragEvent('drop'));
-			}
+		} else if (listItem) {
+			const dropGrid = listItem.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
+			if (dropGrid) dropGrid.dispatchEvent(createDragEvent('drop'));
 		}
 		// simulate dragend
 		if (this.shadowRoot)
@@ -871,6 +869,8 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			e.preventDefault();
 		}
 		const touch = e.changedTouches[0];
+		if (this.#improvedMobileScroll) this.#doScroll(touch);
+
 		const listItem = this._findListItemFromCoordinates(touch.clientX, touch.clientY);
 		if (!listItem) return;
 		// simulate host dragenter
@@ -878,8 +878,6 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			listItem.dispatchEvent(createDragEvent('dragenter'));
 			this._currentTouchListItem = listItem;
 		}
-
-		if (this.#improvedMobileScroll) this.#doScroll(touch);
 
 		// get the drop area
 		const dropGrid = listItem.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
