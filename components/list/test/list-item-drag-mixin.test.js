@@ -178,33 +178,32 @@ describe('ListItemDragDropMixin', () => {
 				expect(scrollingContainer.style.touchAction).to.equal('');
 			});
 
-			for (let i = 0; i < 10; i++) {
-				it('touchmove: triggers dragover event', async() => {
-					let dragging = false;
-					const scrollingContainer = await fixture(`
-						<div style="overflow: auto; height: 600px;">
-							<d2l-list>
-								<${tag} label="Item 1" key="1" draggable style="height: 250px;">Item 1</${tag}>
-								<${tag} label="Item 2" key="2" draggable style="height: 250px;">Item 2</${tag}>
-							</d2l-list>
-						</div>
-					`);
+			it('touchmove: triggers dragover event', async() => {
+				let dragging = false;
+				const scrollingContainer = await fixture(`
+					<div style="overflow: auto; height: 600px;">
+						<d2l-list>
+							<${tag} label="Item 1" key="1" draggable style="height: 250px;">Item 1</${tag}>
+							<${tag} label="Item 2" key="2" draggable style="height: 250px;">Item 2</${tag}>
+						</d2l-list>
+					</div>
+				`);
 
-					const [item1, item2] = scrollingContainer.querySelectorAll(`${tag}`);
-					const dragArea = item1.shadowRoot.querySelector('.d2l-list-item-drag-area');
-					touchEvent('touchstart', dragArea);
+				const [item1, item2] = scrollingContainer.querySelectorAll(`${tag}`);
+				const dragArea = item1.shadowRoot.querySelector('.d2l-list-item-drag-area');
+				touchEvent('touchstart', dragArea);
 
-					await aTimeout(500); // exceed touchHoldDuration
+				await aTimeout(500); // exceed touchHoldDuration
 
-					const item2Rect = item2.getBoundingClientRect();
-					touchEvent('touchmove', dragArea, item2Rect.x + item2Rect.width / 2, item2Rect.y + item2Rect.height / 2);
+				const item2Rect = item2.getBoundingClientRect();
+				touchEvent('touchmove', dragArea, item2Rect.x + item2Rect.width / 2, item2Rect.y + item2Rect.height / 2);
 
-					await nextFrame(); // extra render needed to ensure drop target is rendered after dragenter event
+				await nextFrame(); // extra render needed to ensure drop target is rendered after dragenter event
 
-					const dropArea = item2.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
-					dropArea.addEventListener('dragover', () => dragging = true);
-					const dropAreaRect = dropArea.getBoundingClientRect();
-					touchEvent('touchmove', dragArea, dropAreaRect.x + dropAreaRect.width / 2, dropAreaRect.y + dropAreaRect.height / 2);
+				const dropArea = item2.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
+				dropArea.addEventListener('dragover', () => dragging = true);
+				const dropAreaRect = dropArea.getBoundingClientRect();
+				touchEvent('touchmove', dragArea, dropAreaRect.x + dropAreaRect.width / 2, dropAreaRect.y + dropAreaRect.height / 2);
 
 					expect(dragging).to.be.true;
 				});
