@@ -27,7 +27,7 @@ const tooltipInteractiveRoles = {
 };
 
 const isInteractiveTarget = (elem) => {
-	if (elem.nodeType !== Node.ELEMENT_NODE) return false;
+	if (!elem || elem.nodeType !== Node.ELEMENT_NODE) return false;
 	if (!isFocusable(elem, true, false, true)) return false;
 
 	return isInteractive(elem, tooltipInteractiveElements, tooltipInteractiveRoles);
