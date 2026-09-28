@@ -229,6 +229,7 @@ describe('d2l-input-date-time-range', () => {
 			const elem = await fixture(create({ inclusiveDateRange: true }));
 			await changeInnerInputTextDate(elem, startDateSelector, dateInRange);
 			await changeInnerInputTextDate(elem, endDateSelector, dateInRange, true);
+			await waitForBlockDisplay(elem);
 			await nextFrameGolden(elem);
 		});
 
