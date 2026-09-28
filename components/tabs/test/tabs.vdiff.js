@@ -241,13 +241,13 @@ const getMaxWidthFixture = (firstTabText) => {
 async function waitForScrollNext(elem) {
 	const scrollNext = elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container');
 	await waitUntil(() => getComputedStyle(scrollNext).display !== 'none');
-	await new Promise(resolve => requestAnimationFrame(resolve));
+	await nextFrame();
 }
 
 async function waitForScrollPrev(elem) {
 	const scrollPrev = elem.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container');
 	await waitUntil(() => getComputedStyle(scrollPrev).display !== 'none');
-	await new Promise(resolve => requestAnimationFrame(resolve));
+	await nextFrame();
 }
 
 const viewport = { width: 376 };
