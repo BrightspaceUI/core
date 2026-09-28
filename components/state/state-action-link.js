@@ -8,7 +8,7 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
 /**
  * `d2l-state-action-link` is an state action component that can be placed inside of the default slot of state components to add a link action.
  */
-export class StateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(LitElement))) {
+export class StateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(LitElement))) { // Exported to support old empty-state components, once they are removed this can be made internal only
 
 	static properties = {
 		/**
