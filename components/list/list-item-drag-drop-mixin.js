@@ -829,6 +829,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_onTouchCancel() {
 		if (this._touchTimeoutId) clearTimeout(this._touchTimeoutId);
 		this._touchStarted = false;
+		if (this.#improvedMobileScroll) this.#resetScrollableContainer();
 	}
 
 	/**
@@ -840,17 +841,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		e.preventDefault();
 		this._touchStarted = false;
 		// leave the code inside the if when removing 'GAUD-10642-improved-mobile-drag-and-drop'
-		if (this.#improvedMobileScroll) {
-			if (this.#scrollableContainer) {
-				if (this.#touchAction) {
-					this.#scrollableContainer.style.setProperty('touch-action', this.#touchAction);
-				} else {
-					this.#scrollableContainer.style.removeProperty('touch-action');
-				}
-				this.#touchAction = '';
-			}
-			this.#scrollableContainer = undefined;
-		}
+		if (this.#improvedMobileScroll) this.#resetScrollableContainer();
 		this._currentTouchListItem = undefined;
 		// simulate drop if over a drop area
 		const touch = e.changedTouches[0];
@@ -1058,5 +1049,17 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		}
 		const dragState = getDragState();
 		dragState.setActiveDropTarget(this, location);
+	}
+
+	#resetScrollableContainer() {
+		if (this.#scrollableContainer) {
+			if (this.#touchAction) {
+				this.#scrollableContainer.style.setProperty('touch-action', this.#touchAction);
+			} else {
+				this.#scrollableContainer.style.removeProperty('touch-action');
+			}
+			this.#touchAction = '';
+		}
+		this.#scrollableContainer = undefined;
 	}
 };
