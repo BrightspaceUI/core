@@ -205,9 +205,28 @@ describe('ListItemDragDropMixin', () => {
 				const dropAreaRect = dropArea.getBoundingClientRect();
 				touchEvent('touchmove', dragArea, dropAreaRect.x + dropAreaRect.width / 2, dropAreaRect.y + dropAreaRect.height / 2);
 
-					expect(dragging).to.be.true;
-				});
-			}
+				expect(dragging).to.be.true;
+			});
+
+			it('touchcancel: resets the scrollable conainer when touch event is cancelled', async() => {
+				const scrollingContainer = await fixture(`
+					<div style="overflow: auto; height: 200px;">
+						<d2l-list>
+							<${tag} key="1" draggable style="height: 250px;"></${tag}>
+							<${tag} key="2" draggable style="height: 250px;"></${tag}>
+						</d2l-list>
+					</div>
+				`);
+
+				const item = scrollingContainer.querySelector(`${tag}[key="1"]`);
+				const dragArea = item.shadowRoot.querySelector('.d2l-list-item-drag-area');
+
+				touchEvent('touchstart', dragArea);
+				await aTimeout(500); // exceed touchHoldDuration
+				touchEvent('touchcancel', dragArea);
+
+				expect(scrollingContainer.style.touchAction).to.equal('');
+			});
 		});
 
 		describe('GAUD-10642-improved-mobile-drag-and-drop is false', () => {
