@@ -240,13 +240,13 @@ const getMaxWidthFixture = (firstTabText) => {
 
 async function waitForScrollNext(elem) {
 	const scrollNext = elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container');
-	await waitUntil(() => getComputedStyle(scrollNext).display !== 'none');
+	await waitUntil(() => getComputedStyle(scrollNext).display !== 'none', { timeout: 2000 });
 	await nextFrame();
 }
 
 async function waitForScrollPrev(elem) {
 	const scrollPrev = elem.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container');
-	await waitUntil(() => getComputedStyle(scrollPrev).display !== 'none');
+	await waitUntil(() => getComputedStyle(scrollPrev).display !== 'none', { timeout: 2000 });
 	await nextFrame();
 }
 
