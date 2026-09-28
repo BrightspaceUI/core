@@ -138,9 +138,13 @@ describe('ListItemDragDropMixin', () => {
 	});
 
 	describe('Mobile drag and drop behavior', () => {
+		// Leave these tests when cleaning 'GAUD-10642-improved-mobile-drag-and-drop',
+		// just take them out from this inner describe
 		describe('GAUD-10642-improved-mobile-drag-and-drop is true', () => {
-			it('touchstart: sets the inline touch-action to none on parent scrolling container', async() => {
-				const scrollingContainer = await fixture(`
+			let scrollingContainer;
+
+			beforeEach(async() => {
+				scrollingContainer = await fixture(`
 					<div style="overflow: auto; height: 200px;">
 						<d2l-list>
 							<${tag} key="1" draggable style="height: 250px;"></${tag}>
@@ -148,6 +152,11 @@ describe('ListItemDragDropMixin', () => {
 						</d2l-list>
 					</div>
 				`);
+			});
+
+			afterEach(() => scrollingContainer = undefined);
+
+			it('touchstart: sets the inline touch-action to none on parent scrolling container', async() => {
 				const item = scrollingContainer.querySelector(`${tag}[key="1"]`);
 				const dragArea = item.shadowRoot.querySelector('.d2l-list-item-drag-area');
 
@@ -158,14 +167,6 @@ describe('ListItemDragDropMixin', () => {
 			});
 
 			it('touchend: reverts the inline touch-action on parent scrolling container', async() => {
-				const scrollingContainer = await fixture(`
-					<div style="overflow: auto; height: 200px;">
-						<d2l-list>
-							<${tag} label="Item 1" key="1" draggable style="height: 250px;">Item 1</${tag}>
-							<${tag} label="Item 2" key="2" draggable style="height: 250px;">Item 2</${tag}>
-						</d2l-list>
-					</div>
-				`);
 				const [item1] = scrollingContainer.querySelectorAll(`${tag}`);
 				const dragArea = item1.shadowRoot.querySelector('.d2l-list-item-drag-area');
 
@@ -180,7 +181,7 @@ describe('ListItemDragDropMixin', () => {
 
 			it('touchmove: triggers dragover event', async() => {
 				let dragging = false;
-				const scrollingContainer = await fixture(`
+				scrollingContainer = await fixture(`
 					<div style="overflow: auto; height: 600px;">
 						<d2l-list>
 							<${tag} label="Item 1" key="1" draggable style="height: 250px;">Item 1</${tag}>
@@ -191,10 +192,9 @@ describe('ListItemDragDropMixin', () => {
 
 				const [item1, item2] = scrollingContainer.querySelectorAll(`${tag}`);
 				const dragArea = item1.shadowRoot.querySelector('.d2l-list-item-drag-area');
+
 				touchEvent('touchstart', dragArea);
-
 				await aTimeout(500); // exceed touchHoldDuration
-
 				const item2Rect = item2.getBoundingClientRect();
 				touchEvent('touchmove', dragArea, item2Rect.x + item2Rect.width / 2, item2Rect.y + item2Rect.height / 2);
 
@@ -209,15 +209,6 @@ describe('ListItemDragDropMixin', () => {
 			});
 
 			it('touchcancel: resets the scrollable conainer when touch event is cancelled', async() => {
-				const scrollingContainer = await fixture(`
-					<div style="overflow: auto; height: 200px;">
-						<d2l-list>
-							<${tag} key="1" draggable style="height: 250px;"></${tag}>
-							<${tag} key="2" draggable style="height: 250px;"></${tag}>
-						</d2l-list>
-					</div>
-				`);
-
 				const item = scrollingContainer.querySelector(`${tag}[key="1"]`);
 				const dragArea = item.shadowRoot.querySelector('.d2l-list-item-drag-area');
 
@@ -229,6 +220,7 @@ describe('ListItemDragDropMixin', () => {
 			});
 		});
 
+		// remove this test when cleaning 'GAUD-10642-improved-mobile-drag-and-drop'
 		describe('GAUD-10642-improved-mobile-drag-and-drop is false', () => {
 			beforeEach(() => mockFlag('GAUD-10642-improved-mobile-drag-and-drop', false));
 			afterEach(() => resetFlag('GAUD-10642-improved-mobile-drag-and-drop'));
