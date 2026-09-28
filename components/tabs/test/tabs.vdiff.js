@@ -726,7 +726,6 @@ describe('d2l-tabs', () => {
 
 		it('hover with icon when not selected', async() => {
 			const elem = await fixture(slotsFixture);
-			await waitForScrollNext(elem);
 			elem.querySelectorAll('d2l-tab')[1].selected = true;
 			await elem.updateComplete;
 			const listitem = elem.querySelector('d2l-tab');
