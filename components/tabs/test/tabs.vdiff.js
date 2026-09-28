@@ -4,7 +4,7 @@ import '../../icons/icon.js';
 import '../tab.js';
 import '../tabs.js';
 import '../tab-panel.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, sendKeysElem } from '@brightspace-ui/testing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 
 const noPanelSelectedFixture = {
 	deprecated: html`
@@ -238,6 +238,18 @@ const getMaxWidthFixture = (firstTabText) => {
 		`;
 };
 
+async function waitForScrollNext(elem) {
+	const scrollNext = elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container');
+	await waitUntil(() => getComputedStyle(scrollNext).display !== 'none', { timeout: 2000 });
+	await nextFrame();
+}
+
+async function waitForScrollPrev(elem) {
+	const scrollPrev = elem.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container');
+	await waitUntil(() => getComputedStyle(scrollPrev).display !== 'none', { timeout: 2000 });
+	await nextFrame();
+}
+
 const viewport = { width: 376 };
 const useFixture = 'paired';
 
@@ -272,6 +284,7 @@ describe('d2l-tabs', () => {
 
 		it('ellipsis', async() => {
 			const elem = await fixture(ellipsisFixture[useFixture], { viewport });
+			await waitForScrollNext(elem);
 			await expect(elem).to.be.golden();
 		});
 
@@ -365,11 +378,13 @@ describe('d2l-tabs', () => {
 
 		it('shrinks if tabs container\'s width is less than 615px', async() => {
 			const elem = await fixture(getMaxWidthFixture('Long Panel Text That Will Also Have Slot Content'), { viewport: { width: 514 } });
+			await waitForScrollNext(elem);
 			await expect(elem).to.be.golden();
 		});
 
 		it('shows the ellipsis if the tab text and slot content exceed the max width', async() => {
 			const elem = await fixture(getMaxWidthFixture('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'));
+			await waitForScrollNext(elem);
 			await expect(elem).to.be.golden();
 		});
 
@@ -434,39 +449,46 @@ describe('d2l-tabs', () => {
 
 				it('scroll next', async() => {
 					const elem = await fixture(nextFixture[useFixture], { viewport, rtl });
+					await waitForScrollNext(elem);
 					await expect(elem).to.be.golden({ allColorModes: !rtl });
 				});
 
 				it('scrolls next on click', async() => {
 					const elem = await fixture(nextFixture[useFixture], { viewport, rtl });
+					await waitForScrollNext(elem);
 					await clickElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button'));
 					await expect(elem).to.be.golden();
 				});
 
 				it('scroll previous', async() => {
 					const elem = await fixture(previousFixture[useFixture], { viewport, rtl });
+					await waitForScrollPrev(elem);
 					await expect(elem).to.be.golden();
 				});
 
 				it('scrolls previous on click', async() => {
 					const elem = await fixture(previousFixture[useFixture], { viewport, rtl });
+					await waitForScrollPrev(elem);
 					await clickElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container button'));
 					await expect(elem).to.be.golden();
 				});
 
 				it('action slot', async() => {
 					const elem = await fixture(actionSlotOverflowFixture[useFixture], { viewport, rtl });
+					await waitForScrollNext(elem);
 					await expect(elem).to.be.golden();
 				});
 
 				it('focus next', async() => {
 					const elem = await fixture(nextFixture[useFixture], { viewport, rtl });
+					await waitForScrollNext(elem);
 					await focusElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button'));
 					await expect(elem).to.be.golden({ allColorModes: !rtl });
 				});
 
 				it('focus previous', async() => {
 					const elem = await fixture(previousFixture[useFixture], { viewport, rtl });
+					await waitForScrollPrev(elem);
 					await focusElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container button'));
 					await expect(elem).to.be.golden();
 				});
@@ -484,6 +506,7 @@ describe('d2l-tabs', () => {
 		});
 
 		it('initial', async() => {
+			await waitForScrollNext(elem);
 			await expect(elem).to.be.golden();
 		});
 
@@ -675,23 +698,27 @@ describe('d2l-tabs', () => {
 
 		it('default', async() => {
 			const elem = await fixture(slotsFixture);
+			await waitForScrollNext(elem);
 			await expect(elem).to.be.golden();
 		});
 
 		it('focus', async() => {
 			const elem = await fixture(slotsFixture);
+			await waitForScrollNext(elem);
 			await focusElem(elem);
 			await expect(elem).to.be.golden();
 		});
 
 		it('focus both slots', async() => {
 			const elem = await fixture(slotsFixture);
+			await waitForScrollNext(elem);
 			await sendKeysElem(elem, 'press', 'ArrowRight');
 			await expect(elem).to.be.golden();
 		});
 
 		it('hover with icon when selected', async() => {
 			const elem = await fixture(slotsFixture);
+			await waitForScrollNext(elem);
 			const listitem = elem.querySelector('d2l-tab');
 			await hoverElem(listitem);
 			await expect(elem).to.be.golden();
@@ -708,6 +735,7 @@ describe('d2l-tabs', () => {
 
 		it('skeleton', async() => {
 			const elem = await fixture(slotsSkeletonFixture);
+			await waitForScrollNext(elem);
 			await expect(elem).to.be.golden();
 		});
 
