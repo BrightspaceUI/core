@@ -599,7 +599,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 		 * @type {boolean}
 		 */
 		hasForm: { type: Boolean, attribute: 'has-form' },
-		_fixedFooter: { type: Boolean, attribute: '_fixedFooter', reflect: true },
+		_staticFooter: { type: Boolean, attribute: '_static-footer', reflect: true },
 		_formErrorSummary: { type: Array },
 		_hasFooter: { state: true },
 		_isCollapsed: { state: true },
@@ -873,31 +873,31 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 				display: none;
 			}
 
-			:host(:not([_fixedFooter])),
-			:host(:not([_fixedFooter])) > d2l-form {
+			:host([_static-footer]),
+			:host([_static-footer]) > d2l-form {
 				bottom: unset;
 			}
-			:host(:not([_fixedFooter])) .d2l-template-primary-secondary-container {
+			:host([_static-footer]) .d2l-template-primary-secondary-container {
 				min-height: 100vh;
 			}
-			:host(:not([_fixedFooter])) .d2l-template-primary-secondary-content {
+			:host([_static-footer]) .d2l-template-primary-secondary-content {
 				display: grid;
 				flex-grow: 1;
 				grid-template: 1fr auto auto / 1fr;
 			}
-			:host(:not([_fixedFooter])) .d2l-template-primary-secondary-content > * {
+			:host([_static-footer]) .d2l-template-primary-secondary-content > * {
 				grid-column: 1/-1;
 			}
-			:host(:not([_fixedFooter])) main {
+			:host([_static-footer]) main {
 				grid-row: 1 / -1;
 			}
-			:host(:not([_fixedFooter])) .d2l-template-primary-secondary-divider {
+			:host([_static-footer]) .d2l-template-primary-secondary-divider {
 				grid-row: 2 / 3;
 			}
-			:host(:not([_fixedFooter])) .d2l-template-primary-secondary-secondary-container {
+			:host([_static-footer]) .d2l-template-primary-secondary-secondary-container {
 				grid-row: 3 / 4;
 			}
-			:host(:not([_fixedFooter])) :not([data-background-shading="secondary"]) > .d2l-template-primary-secondary-secondary-container {
+			:host([_static-footer]) :not([data-background-shading="secondary"]) > .d2l-template-primary-secondary-secondary-container {
 				background-color: white;
 			}
 
@@ -1043,7 +1043,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 		this.widthType = 'fullscreen';
 
 		this._animateResize = false;
-		this._fixedFooter = true;
+		this._staticFooter = false;
 		this._isCollapsed = false;
 		this._isExpanded = false;
 		this._isMobile = isMobile();
@@ -1187,7 +1187,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 		const desktopDividerSize = divider.offsetWidth;
 		const mobileDividerSize = divider.offsetHeight;
 		const footerSize = this.shadowRoot.querySelector('footer')?.offsetHeight ?? 0;
-		const maxAvailableHeight = this._fixedFooter ? contentRect.height : Math.min(contentRect.height, window.innerHeight - footerSize);
+		const maxAvailableHeight = !this._staticFooter ? contentRect.height : Math.min(contentRect.height, window.innerHeight - footerSize);
 		return {
 			height: contentRect.height,
 			minWidth: desktopMinSize,
@@ -1212,7 +1212,7 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 		const contentRect = entry.target.getBoundingClientRect();
 		const footerSize = this.shadowRoot.querySelector('footer')?.offsetHeight ?? 0;
 		const headerSize = this.shadowRoot.querySelector('header')?.offsetHeight ?? 0;
-		this._fixedFooter = window.innerHeight - footerSize - headerSize >= desktopMinHeight;
+		this._staticFooter = window.innerHeight - footerSize - headerSize < desktopMinHeight;
 		this._contentBounds = this._computeContentBounds(contentRect);
 		this._isMobile = isMobile();
 
