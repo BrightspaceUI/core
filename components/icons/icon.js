@@ -66,6 +66,8 @@ class Icon extends LoadingCompleteMixin(LitElement) {
 				.then(this.resolveLoadingComplete);
 
 			return fixedSvg;
+		} else {
+			this.resolveLoadingComplete();
 		}
 	}
 
