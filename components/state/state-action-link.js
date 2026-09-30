@@ -1,8 +1,10 @@
-import { StateActionLink } from '../state/state-action-link.js';
+import { html, LitElement, nothing } from 'lit';
+import { bodyCompactStyles } from '../typography/styles.js';
+import { FocusMixin } from '../../mixins/focus-mixin.js';
+import { LinkMixin } from '../link/link-mixin.js';
+import { linkStyles } from '../link/link.js';
+import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 
-<<<<<<<< HEAD:components/empty-state/empty-state-action-link.js
-class EmptyStateActionLink extends StateActionLink {}
-========
 /**
  * `d2l-state-action-link` is an state action component that can be placed inside of the default slot of state components to add a link action.
  */
@@ -39,6 +41,5 @@ class StateActionLink extends LinkMixin(FocusMixin(PropertyRequiredMixin(LitElem
 	}
 
 }
->>>>>>>> main:components/state/state-action-link.js
 
 customElements.define('d2l-state-action-link', StateActionLink);
