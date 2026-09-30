@@ -1,3 +1,9 @@
+<<<<<<<< HEAD:components/empty-state/empty-state-illustrated.js
+import { emptyStateStyles } from './empty-state-styles.js';
+import { StateIllustrated } from '../state/state-illustrated.js';
+class EmptyStateIllustrated extends StateIllustrated {
+	static styles = [super.styles, emptyStateStyles];
+========
 import { html, LitElement, nothing } from 'lit';
 import { stateIllustratedStyles, stateStyles } from './state-styles.js';
 import { bodyCompactStyles } from '../typography/styles.js';
@@ -16,7 +22,7 @@ const illustrationAspectRatio = 500 / 330;
  * @slot - Slot for state actions
  * @slot illustration - Slot for custom SVG content if `illustration-name` property is not set
  */
-export class StateIllustrated extends LoadingCompleteMixin(StateMixin(LitElement)) { // Exported to support old empty-state components, once they are removed this can be made internal only
+class StateIllustrated extends LoadingCompleteMixin(StateMixin(LitElement)) {
 
 	static properties = {
 		/**
@@ -124,6 +130,7 @@ export class StateIllustrated extends LoadingCompleteMixin(StateMixin(LitElement
 		return html`<div style="${styleMap(illustrationContainerStyle)}">${asyncVal}</div>`;
 	}
 
+>>>>>>>> main:components/state/state-illustrated.js
 }
 
 customElements.define('d2l-state-illustrated', StateIllustrated);

@@ -1,3 +1,6 @@
+<<<<<<<< HEAD:components/empty-state/empty-state-action-button.js
+import { StateActionButton } from '../state/state-action-button.js';
+========
 import '../button/button.js';
 import '../button/button-subtle.js';
 import { css, html, LitElement, nothing } from 'lit';
@@ -10,7 +13,7 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
  * @fires d2l-state-action - Dispatched when the action button is clicked
  * @fires d2l-state-illustrated-check - Internal event
  */
-export class StateActionButton extends FocusMixin(PropertyRequiredMixin(LitElement)) { // Exported to support old empty-state components, once they are removed this can be made internal only
+class StateActionButton extends FocusMixin(PropertyRequiredMixin(LitElement)) {
 
 	static properties = {
 		/**
@@ -77,12 +80,13 @@ export class StateActionButton extends FocusMixin(PropertyRequiredMixin(LitEleme
 		}
 		return html`${actionButton}`;
 	}
+>>>>>>>> main:components/state/state-action-button.js
 
+class EmptyStateActionButton extends StateActionButton {
 	_handleActionClick(e) {
 		e.stopPropagation();
 		this.dispatchEvent(new CustomEvent('d2l-state-action'));
 	}
-
 }
 
 customElements.define('d2l-state-action-button', StateActionButton);
