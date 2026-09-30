@@ -11,7 +11,7 @@
   "scripts": {
     "build:clean": "node ./cli/clean.js",
     "build:icons": "node ./cli/icon-generator.js",
-    "build:illustrations": "node ./cli/empty-state-illustration-generator.js",
+    "build:illustrations": "node ./cli/state-illustration-generator.js",
     "build:sass": "sass ./test/sass.scss > ./test/sass.output.css",
     "build:wca": "node ./cli/wca.js \"{components,mixins,templates}/**/*.js\"",
     "build": "npm run build:clean && npm run build:icons && npm run build:illustrations && npm run build:sass && npm run build:wca",
