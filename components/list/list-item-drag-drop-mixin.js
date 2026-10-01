@@ -436,7 +436,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 
 	#scrollableContainer;
 	#touchAction = '';
-	#improvedMobileScroll = getFlag('GAUD-10642-improved-mobile-drag-and-drop', true);
+	#improvedMobileDragAndDropFlag = getFlag('GAUD-10642-improved-mobile-drag-and-drop', true);
 
 	_annoucePositionChange(dragTargetKey, dropTargetKey, dropLocation) {
 		/** Dispatched when a draggable list item's position changes in the list. See [Event Details: d2l-list-item-position-change](#event-details%3A-d2l-list-item-position-change). */
@@ -569,7 +569,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_findListItemFromCoordinates(x, y) {
 		const listNode = findComposedAncestor(this.parentNode, (node) => node && node.tagName === 'D2L-LIST');
 		// remove this if when cleaning 'GAUD-10642-improved-mobile-drag-and-drop'
-		if (!this.#improvedMobileScroll) {
+		if (!this.#improvedMobileDragAndDropFlag) {
 			return listNode.shadowRoot.elementFromPoint(x, y);
 		}
 
@@ -829,7 +829,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 	_onTouchCancel() {
 		if (this._touchTimeoutId) clearTimeout(this._touchTimeoutId);
 		this._touchStarted = false;
-		if (this.#improvedMobileScroll) this.#resetScrollableContainer();
+		if (this.#improvedMobileDragAndDropFlag) this.#resetScrollableContainer();
 	}
 
 	/**
@@ -841,13 +841,13 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		if (e.cancelable) e.preventDefault();
 		this._touchStarted = false;
 		// leave the code inside the if when removing 'GAUD-10642-improved-mobile-drag-and-drop'
-		if (this.#improvedMobileScroll) this.#resetScrollableContainer();
+		if (this.#improvedMobileDragAndDropFlag) this.#resetScrollableContainer();
 		this._currentTouchListItem = undefined;
 		// simulate drop if over a drop area
 		const touch = e.changedTouches[0];
 		const listItem = this._findListItemFromCoordinates(touch.clientX, touch.clientY);
 		// remove the if when cleaning 'GAUD-10642-improved-mobile-drag-and-drop' and leave the else code block
-		if (!this.#improvedMobileScroll) {
+		if (!this.#improvedMobileDragAndDropFlag) {
 			const dropGrid = listItem.shadowRoot.querySelector('.d2l-list-item-drag-drop-grid');
 			if (dropGrid) dropGrid.dispatchEvent(createDragEvent('drop'));
 		} else if (listItem) {
@@ -869,7 +869,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			e.preventDefault();
 		}
 		const touch = e.changedTouches[0];
-		if (this.#improvedMobileScroll) this.#doScroll(touch);
+		if (this.#improvedMobileDragAndDropFlag) this.#doScroll(touch);
 
 		const listItem = this._findListItemFromCoordinates(touch.clientX, touch.clientY);
 		if (!listItem) return;
@@ -895,7 +895,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			}
 		}
 		// Delete all of the following code when removing 'GAUD-10642-improved-scroll-in-mobile'
-		if (this.#improvedMobileScroll) return;
+		if (this.#improvedMobileDragAndDropFlag) return;
 		// scroll the viewport if we've reached the end
 		if (touch.clientY > window.innerHeight / 2 && window.innerHeight - touch.clientY < scrollSensitivity) {
 			// scroll down
@@ -914,7 +914,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		this._touchTimeoutId = setTimeout(() => {
 			this._touchStarted = true;
 			// leave the code inside the if when removing 'GAUD-10642-improved-mobile-drag-and-drop'
-			if (this.#improvedMobileScroll) {
+			if (this.#improvedMobileDragAndDropFlag) {
 				// search for scrollable container
 				this.#scrollableContainer = this._findListItemScrollableContainer(this);
 				if (this.#scrollableContainer) {
