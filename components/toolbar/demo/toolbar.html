@@ -90,16 +90,11 @@
 
 		<script>
 			setTimeout(() => {
-				[...document.querySelectorAll('d2l-toolbar-button')].forEach(button => {
-					button.addEventListener('click', e => console.log(e.target));
+				console.log(document.querySelectorAll('d2l-toolbar-button, d2l-toolbar-button-toggle'));
+				[...document.querySelectorAll('d2l-toolbar-button, d2l-toolbar-button-toggle')].forEach(elem => {
+					elem.addEventListener('click', e => console.log(e.target));
 				});
-				[...document.querySelectorAll('d2l-toolbar-button-toggle')].forEach(toggle => {
-					toggle.addEventListener('click', e => {
-						console.log(e.target);
-						e.target.pressed = !e.target.pressed;
-					});
-				});
-			}, 200);
+			}, 500);
 		</script>
 	</body>
 </html>

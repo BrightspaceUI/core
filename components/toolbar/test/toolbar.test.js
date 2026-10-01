@@ -249,6 +249,30 @@ describe('d2l-toolbar-button-toggle', () => {
 			expect(dispatched).to.equal(false);
 		});
 
+		it('sets pressed to true when when enabled and clicked', async() => {
+			const elem = await fixture(createToolbarButtonToggle({ pressed: false }));
+			await clickElem(elem);
+			expect(elem.pressed).to.equal(true);
+		});
+
+		it('does not set pressed to true when when disabled and clicked', async() => {
+			const elem = await fixture(createToolbarButtonToggle({ disabled: true, pressed: false }));
+			await clickElem(elem);
+			expect(elem.pressed).to.equal(false);
+		});
+
+		it('sets pressed to false when when enabled and clicked', async() => {
+			const elem = await fixture(createToolbarButtonToggle({ pressed: true }));
+			await clickElem(elem);
+			expect(elem.pressed).to.equal(false);
+		});
+
+		it('does not set pressed to false when when disabled and clicked', async() => {
+			const elem = await fixture(createToolbarButtonToggle({ disabled: true, pressed: true }));
+			await clickElem(elem);
+			expect(elem.pressed).to.equal(true);
+		});
+
 	});
 
 });

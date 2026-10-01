@@ -96,6 +96,12 @@ class ToolbarButtonToggle extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(T
 		e.stopPropagation();
 		if (this.disabled) return;
 
+		if (this.expandable) {
+			this.expanded = !this.expanded;
+		} else {
+			this.pressed = !this.pressed;
+		}
+
 		/** Dispatched when the toggle is clicked. */
 		this.dispatchEvent(new CustomEvent('click'));
 	}
