@@ -81,7 +81,7 @@ class Toolbar extends PropertyRequiredMixin(LitElement) {
 
 	#getFocusables() {
 		return this.#slotRef.value?.assignedElements({ flatten: true })
-			.filter(elem => elem.tagName === 'D2L-TOOLBAR-BUTTON') ?? [];
+			.filter(elem => elem.isToolbarItem) ?? [];
 	}
 
 	async #handleKeyDown(e) {

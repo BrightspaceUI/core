@@ -1,5 +1,5 @@
 import { clickElem, expect, fixture, html, nextFrame, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
-import { createToolbar, createToolbarButton } from './toolbar-fixtures.js';
+import { createToolbar, createToolbarButton, createToolbarButtonToggle } from './toolbar-fixtures.js';
 
 describe('d2l-toolbar', () => {
 
@@ -120,7 +120,7 @@ describe('d2l-toolbar-button', () => {
 			expect(button.getAttribute('title')).to.equal('Fancy Button');
 		});
 
-		it('renders button with aria-disabled when disabled', async() => {
+		it('renders button with aria-disabled="true" when disabled', async() => {
 			const elem = await fixture(createToolbarButton({ disabled: true }));
 			const button = elem.shadowRoot.querySelector('button');
 			expect(button.getAttribute('aria-disabled')).to.equal('true');
@@ -150,6 +150,100 @@ describe('d2l-toolbar-button', () => {
 		it('does not dispatch the click event when disabled and clicked', async() => {
 			let dispatched = false;
 			const elem = await fixture(createToolbarButton({ disabled: true }));
+			elem.addEventListener('click', () => dispatched = true);
+			await clickElem(elem);
+			expect(dispatched).to.equal(false);
+		});
+
+	});
+
+});
+
+describe('d2l-toolbar-button-toggle', () => {
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-toolbar-button-toggle');
+		});
+
+	});
+
+	describe('general', () => {
+
+		it('renders button with aria-label and title using the text', async() => {
+			const elem = await fixture(createToolbarButtonToggle());
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.getAttribute('aria-label')).to.equal('Fancy Button Toggle');
+			expect(button.getAttribute('title')).to.equal('Fancy Button Toggle');
+		});
+
+		it('renders button with aria-pressed="false" when not pressed', async() => {
+			const elem = await fixture(createToolbarButtonToggle({ pressed: false }));
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.getAttribute('aria-pressed')).to.equal('false');
+		});
+
+		it('renders button with aria-pressed="true" when pressed', async() => {
+			const elem = await fixture(createToolbarButtonToggle({ pressed: true }));
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.getAttribute('aria-pressed')).to.equal('true');
+		});
+
+		it('renders button with aria-disabled="true" when disabled', async() => {
+			const elem = await fixture(createToolbarButtonToggle({ disabled: true }));
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.getAttribute('aria-disabled')).to.equal('true');
+			expect(button.hasAttribute('disabled')).to.equal(false);
+		});
+
+		it('renders button with tabindex="-1" when not active focusable', async() => {
+			const elem = await fixture(createToolbarButtonToggle());
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.getAttribute('tabindex')).to.equal('-1');
+		});
+
+		it('renders button with tabindex="0" when active focusable', async() => {
+			const elem = await fixture(createToolbarButtonToggle());
+			const button = elem.shadowRoot.querySelector('button');
+			elem._activeFocusable = true;
+			await button.updateComplete;
+			expect(button.getAttribute('tabindex')).to.equal('0');
+		});
+
+		it('renders button without aria-expanded when not expandable', async() => {
+			const elem = await fixture(createToolbarButtonToggle());
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.hasAttribute('aria-expanded')).to.equal(false);
+		});
+
+		it('renders button without aria-pressed when expandable', async() => {
+			const elem = await fixture(createToolbarButtonToggle({ expandable: true }));
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.hasAttribute('aria-pressed')).to.equal(false);
+		});
+
+		it('renders button with aria-expanded="false" when expandable and not expanded', async() => {
+			const elem = await fixture(createToolbarButtonToggle({ expandable: true, expanded: false }));
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.getAttribute('aria-expanded')).to.equal('false');
+		});
+
+		it('renders button with aria-expanded="true" when expandable and expanded', async() => {
+			const elem = await fixture(createToolbarButtonToggle({ expandable: true, expanded: true }));
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.getAttribute('aria-expanded')).to.equal('true');
+		});
+
+		it('dispatches the click event when enabled and clicked', async() => {
+			const elem = await fixture(createToolbarButtonToggle());
+			clickElem(elem);
+			await oneEvent(elem, 'click');
+		});
+
+		it('does not dispatch the click event when disabled and clicked', async() => {
+			let dispatched = false;
+			const elem = await fixture(createToolbarButtonToggle({ disabled: true }));
 			elem.addEventListener('click', () => dispatched = true);
 			await clickElem(elem);
 			expect(dispatched).to.equal(false);

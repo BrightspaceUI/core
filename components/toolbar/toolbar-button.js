@@ -4,11 +4,12 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
 import { SlottedIconMixin } from '../icons/slotted-icon-mixin.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 import { toolbarButtonStyles } from './toolbar-item-styles.js';
+import { ToolbarItemMixin } from './toolbar-item-mixin.js';
 
 /**
  * A toolbar button that performs an action
  */
-class ToolbarButton extends SlottedIconMixin(FocusMixin(ThemeMixin(PropertyRequiredMixin(LitElement)))) {
+class ToolbarButton extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(ThemeMixin(PropertyRequiredMixin(LitElement))))) {
 
 	static properties = {
 		/**
@@ -20,8 +21,7 @@ class ToolbarButton extends SlottedIconMixin(FocusMixin(ThemeMixin(PropertyRequi
 		 * ACCESSIBILITY: REQUIRED: Accessible text for the button
 		 * @type {string}
 		 */
-		text: { type: String, required: true },
-		_activeFocusable: { state: true }
+		text: { type: String, required: true }
 	};
 
 	static styles = [super.styles, toolbarButtonStyles];
@@ -30,7 +30,6 @@ class ToolbarButton extends SlottedIconMixin(FocusMixin(ThemeMixin(PropertyRequi
 		super();
 		this.disabled = false;
 		this.text = '';
-		this._activeFocusable = false;
 	}
 
 	static get focusElementSelector() {
@@ -53,7 +52,12 @@ class ToolbarButton extends SlottedIconMixin(FocusMixin(ThemeMixin(PropertyRequi
 	}
 
 	#handleClick(e) {
-		if (this.disabled) e.stopPropagation();
+		e.stopPropagation();
+		//console.log('here');
+		if (this.disabled) return;
+
+		/** Dispatched when the toggle is clicked. */
+		this.dispatchEvent(new CustomEvent('click'));
 	}
 
 }
