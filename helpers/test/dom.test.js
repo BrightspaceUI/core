@@ -3,6 +3,7 @@ import {
 	clearResizeNoopEventListeners,
 	elemIdListAdd,
 	elemIdListRemove,
+	findClosestScrollableAncestor,
 	findComposedAncestor,
 	getBoundingAncestor,
 	getComposedChildren,
@@ -333,6 +334,54 @@ describe('dom', () => {
 			expect(isVisible(elem.querySelector('#parentDisplayNone'), { checkAncestors: false })).to.be.true;
 		});
 
+	});
+
+	describe('findClosestScrollableAncestor', () => {
+		it('finds the closest scrollable container: single level', async() => {
+			const scrollableFixture = await fixture(html`
+				<div id="scrollable" style="overflow: auto; height: 100px;">
+					<div id="content" style="height: 200px;">item 1</div>
+				</div>
+			`);
+			const content = scrollableFixture.querySelector('#content');
+			expect(findClosestScrollableAncestor(content)).to.equal(scrollableFixture);
+		});
+
+		it('finds the closest scrollable container: multiple levels', async() => {
+			const scrollableFixture = await fixture(html`
+				<div id="scrollable" style="overflow: auto; height: 50px;">
+					<div id="ancestor-1">
+						<div id="content" style="height: 200px;">item 1</div>
+					</div>
+				</div>
+			`);
+			const content = scrollableFixture.querySelector('#content');
+			expect(findClosestScrollableAncestor(content)).to.equal(scrollableFixture);
+		});
+
+		it('finds the first scrollable ancestor when nested', async() => {
+			const scrollableFixture = await fixture(html`
+				<div id="scrollable-2" style="overflow: auto; height: 50px;">
+					<div id="scrollable-1" style="overflow: auto; height: 100px;">
+						<div id="content" style="height: 200px;">item 1</div>
+					</div>
+				</div>
+			`);
+			const content = scrollableFixture.querySelector('#content');
+			const scrollable1 = scrollableFixture.querySelector('#scrollable-1');
+
+			expect(findClosestScrollableAncestor(content)).to.equal(scrollable1);
+		});
+
+		it('finds the body as the closest scrollable ancestor', async() => {
+			await fixture(html`
+				<div id="ancestor-1">
+					<div id="content" style="height: 200px;">item 1</div>
+				</div>
+			`);
+			const content = document.querySelector('#content');
+			expect(findClosestScrollableAncestor(content)).to.equal(document.body);
+		});
 	});
 
 	describe('findComposedAncestor', () => {
