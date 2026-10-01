@@ -5,9 +5,9 @@
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
 		<script type="module">
-			import '../empty-state-action-button.js';
-			import '../empty-state-action-link.js';
-			import '../empty-state-illustrated.js';
+			import '../../state/state-action-button.js';
+			import '../../state/state-action-link.js';
+			import '../../state/state-illustrated.js';
 			import '../empty-state-simple.js';
 			import '../../demo/demo-page.js';
 		</script>
@@ -29,7 +29,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-empty-state-simple description="There are no assignments to display.">
-						<d2l-empty-state-action-button text="Create New Assignment"></d2l-empty-state-action-button>
+						<d2l-state-action-button text="Create New Assignment"></d2l-state-action-button>
 					</d2l-empty-state-simple>
 				</template>
 			</d2l-demo-snippet>
@@ -38,7 +38,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-empty-state-simple description="There are no assignments to display.">
-						<d2l-empty-state-action-link text="Create New Assignment" href="https://d2l.com"></d2l-empty-state-action-link>
+						<d2l-state-action-link text="Create New Assignment" href="https://d2l.com"></d2l-state-action-link>
 					</d2l-empty-state-simple>
 				</template>
 			</d2l-demo-snippet>
@@ -47,7 +47,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-empty-state-simple description="There are no assignments to display.">
-						<d2l-empty-state-action-link text="Create New Assignment" href="https://d2l.com" target="_blank"></d2l-empty-state-action-link>
+						<d2l-state-action-link text="Create New Assignment" href="https://d2l.com" target="_blank"></d2l-state-action-link>
 					</d2l-empty-state-simple>
 				</template>
 			</d2l-demo-snippet>
@@ -56,7 +56,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-empty-state-simple description="empty state button">
-						<d2l-empty-state-action-button text="Create New Assignment"></d2l-empty-state-action-button>
+						<d2l-state-action-button text="Create New Assignment"></d2l-state-action-button>
 					</d2l-empty-state-simple>
 				</template>
 			</d2l-demo-snippet>
@@ -65,7 +65,7 @@
 			<d2l-demo-snippet>
 				<template>
 					<d2l-empty-state-simple description="empty state link">
-						<d2l-empty-state-action-link text="Create New Assignment" href="https://d2l.com"></d2l-empty-state-action-link>
+						<d2l-state-action-link text="Create New Assignment" href="https://d2l.com"></d2l-state-action-link>
 					</d2l-empty-state-simple>
 				</template>
 			</d2l-demo-snippet>
@@ -75,34 +75,34 @@
 			<h5>No Action</h5>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-empty-state-illustrated illustration-name="fish-hook" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path."></d2l-empty-state-illustrated>
+					<d2l-state-illustrated illustration-name="fish-hook" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path."></d2l-state-illustrated>
 				</template>
 			</d2l-demo-snippet>
 
 			<h5>Empty State Action Button</h5>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-empty-state-illustrated illustration-name="fish-hook" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path.">
-						<d2l-empty-state-action-button text="Create Learning Paths" primary></d2l-empty-state-action-button>
-					</d2l-empty-state-illustrated>
+					<d2l-state-illustrated illustration-name="fish-hook" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path.">
+						<d2l-state-action-button text="Create Learning Paths" primary></d2l-state-action-button>
+					</d2l-state-illustrated>
 				</template>
 			</d2l-demo-snippet>
 
 			<h5>Empty State Action Link</h5>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-empty-state-illustrated illustration-name="fish-hook" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path.">
-						<d2l-empty-state-action-link text="Create Learning Paths" href="https://d2l.com"></d2l-empty-state-action-link>
-					</d2l-empty-state-illustrated>
+					<d2l-state-illustrated illustration-name="fish-hook" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path.">
+						<d2l-state-action-link text="Create Learning Paths" href="https://d2l.com"></d2l-state-action-link>
+					</d2l-state-illustrated>
 				</template>
 			</d2l-demo-snippet>
 
 			<h5>Empty State Action Link + target</h5>
 			<d2l-demo-snippet>
 				<template>
-					<d2l-empty-state-illustrated illustration-name="fish-hook" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path.">
-						<d2l-empty-state-action-link text="Create Learning Paths" href="https://d2l.com" target="_blank"></d2l-empty-state-action-link>
-					</d2l-empty-state-illustrated>
+					<d2l-state-illustrated illustration-name="fish-hook" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path.">
+						<d2l-state-action-link text="Create Learning Paths" href="https://d2l.com" target="_blank"></d2l-state-action-link>
+					</d2l-state-illustrated>
 				</template>
 			</d2l-demo-snippet>
 

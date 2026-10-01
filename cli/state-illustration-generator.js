@@ -5,9 +5,9 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const imagePath = path.join(__dirname, '../components/empty-state/images');
+const imagePath = path.join(__dirname, '../components/state/images');
 const outputRoot = path.join(__dirname, '../generated');
-const outputPath = path.join(outputRoot, 'empty-state');
+const outputPath = path.join(outputRoot, 'state');
 
 function createLoader(svgs) {
 
@@ -89,7 +89,7 @@ function createCatalogue(svgs) {
 				output += '| &nbsp; | &nbsp; |';
 			} else {
 				const illustrationName = svgs[index];
-				output += `| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/empty-state/images/${illustrationName}.svg?sanitize=true) | ${illustrationName} |`;
+				output += `| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/${illustrationName}.svg?sanitize=true) | ${illustrationName} |`;
 			}
 
 			if (j === numCols - 1) {

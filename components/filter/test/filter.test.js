@@ -231,7 +231,7 @@ describe('d2l-filter', () => {
 		it('set dimension - custom empty state', async() => {
 			const elem = await fixture(singleSetSetEmptyStateDimensionFixture);
 			const emptyState = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
-			const emptyStateAction = emptyState.querySelector('d2l-empty-state-action-button');
+			const emptyStateAction = emptyState.querySelector('d2l-state-action-button');
 			expect(emptyState.description).to.equal('Test description');
 			expect(emptyStateAction.text).to.equal('Click me');
 		});
@@ -256,7 +256,7 @@ describe('d2l-filter', () => {
 
 			const container = elem.shadowRoot.querySelector('.d2l-empty-state-container');
 			const emptyState = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
-			const emptyStateAction = emptyState.querySelector('d2l-empty-state-action-link');
+			const emptyStateAction = emptyState.querySelector('d2l-state-action-link');
 			expect(emptyState.description).to.equal('Test description');
 			expect(emptyStateAction.text).to.equal('Click me');
 			expect(emptyStateAction.href).to.equal('https://d2l.com');
@@ -981,9 +981,9 @@ describe('d2l-filter', () => {
 
 					const eventSpy = spy(elem, 'dispatchEvent');
 					const emptyState = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
-					const emptyStateAction = emptyState.querySelector('d2l-empty-state-action-button');
+					const emptyStateAction = emptyState.querySelector('d2l-state-action-button');
 
-					setTimeout(() => emptyStateAction.dispatchEvent(new CustomEvent('d2l-empty-state-action')));
+					setTimeout(() => emptyStateAction.dispatchEvent(new CustomEvent('d2l-state-action')));
 					const e = await oneEvent(elem, 'd2l-filter-dimension-empty-state-action');
 					expect(e.detail.key).to.equal('dim');
 					expect(e.detail.type).to.equal('search');
@@ -994,9 +994,9 @@ describe('d2l-filter', () => {
 					const elem = await fixture(singleSetSetEmptyStateDimensionFixture);
 					const eventSpy = spy(elem, 'dispatchEvent');
 					const emptyState = elem.shadowRoot.querySelector('.d2l-filter-dimension-info-message');
-					const emptyStateAction = emptyState.querySelector('d2l-empty-state-action-button');
+					const emptyStateAction = emptyState.querySelector('d2l-state-action-button');
 
-					setTimeout(() => emptyStateAction.dispatchEvent(new CustomEvent('d2l-empty-state-action')));
+					setTimeout(() => emptyStateAction.dispatchEvent(new CustomEvent('d2l-state-action')));
 					const e = await oneEvent(elem, 'd2l-filter-dimension-empty-state-action');
 					expect(e.detail.key).to.equal('dim');
 					expect(e.detail.type).to.equal('set');
