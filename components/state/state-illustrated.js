@@ -20,15 +20,15 @@ export class StateIllustrated extends LoadingCompleteMixin(StateMixin(LitElement
 
 	static properties = {
 		/**
-		 * REQUIRED: A description giving details about the state
-		 * @type {string}
-		 */
-		description: { type: String, required: true },
-		/**
 		 * The name of the preset image you would like to display in the component
 		 * @type {string}
 		 */
 		illustrationName: { type: String, attribute: 'illustration-name' },
+		/**
+		 * Apply subtle styles for backgrounds that aren't white
+		 * @type {boolean}
+		 */
+		subtle: { type: Boolean, attribute: 'subtle', reflect: true },
 		/**
 		 * REQUIRED: A title for the state
 		 * @type {string}

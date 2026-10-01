@@ -93,4 +93,10 @@ export const stateIllustratedStyles = css`
 		width: 100%;
 	}
 
+	:host([subtle]) {
+		background-color: var(--d2l-theme-background-color-base);
+		border-radius: 0.3rem;
+		padding: 12px;
+	}
+
 `;

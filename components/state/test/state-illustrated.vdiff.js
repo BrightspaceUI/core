@@ -36,6 +36,17 @@ describe('state-illustrated', () => {
 			});
 		});
 	});
+	it('subtle', async() => {
+		const elem = await fixture(html`<div style="background-color: var(--d2l-theme-background-color-sunken);padding: 18px">
+			<d2l-state-illustrated
+				subtle
+				illustration-name="desert-road"
+				title-text="No Learning Paths Yet"
+				description="Get started by clicking below to create your first learning path.">
+			</d2l-state-illustrated>
+		</div>`);
+		await expect(elem).to.be.golden();
+	});
 
 	it('custom-svg', async() => {
 		const elem = await fixture(html`
