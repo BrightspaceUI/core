@@ -3,7 +3,6 @@ import {
 	clearResizeNoopEventListeners,
 	elemIdListAdd,
 	elemIdListRemove,
-	findClosestScrollableAncestor,
 	findComposedAncestor,
 	getBoundingAncestor,
 	getComposedChildren,
@@ -14,6 +13,7 @@ import {
 	getComposedPreviousElementSibling,
 	getFirstVisibleAncestor,
 	getOffsetParent,
+	getScrollableAncestor,
 	isComposedAncestor,
 	isVisible,
 	querySelectorComposed,
@@ -344,7 +344,7 @@ describe('dom', () => {
 				</div>
 			`);
 			const content = scrollableFixture.querySelector('#content');
-			expect(findClosestScrollableAncestor(content)).to.equal(scrollableFixture);
+			expect(getScrollableAncestor(content)).to.equal(scrollableFixture);
 		});
 
 		it('finds the closest scrollable container: multiple levels', async() => {
@@ -356,7 +356,7 @@ describe('dom', () => {
 				</div>
 			`);
 			const content = scrollableFixture.querySelector('#content');
-			expect(findClosestScrollableAncestor(content)).to.equal(scrollableFixture);
+			expect(getScrollableAncestor(content)).to.equal(scrollableFixture);
 		});
 
 		it('finds the first scrollable ancestor when nested', async() => {
@@ -370,7 +370,7 @@ describe('dom', () => {
 			const content = scrollableFixture.querySelector('#content');
 			const scrollable1 = scrollableFixture.querySelector('#scrollable-1');
 
-			expect(findClosestScrollableAncestor(content)).to.equal(scrollable1);
+			expect(getScrollableAncestor(content)).to.equal(scrollable1);
 		});
 
 		it('finds the body as the closest scrollable ancestor', async() => {
@@ -380,7 +380,7 @@ describe('dom', () => {
 				</div>
 			`);
 			const content = document.querySelector('#content');
-			expect(findClosestScrollableAncestor(content)).to.equal(document.body);
+			expect(getScrollableAncestor(content)).to.equal(document.body);
 		});
 	});
 

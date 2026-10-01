@@ -57,7 +57,7 @@ export function findComposedAncestor(node, predicate) {
 	return null;
 }
 
-export function findClosestScrollableAncestor(node) {
+export function getScrollableAncestor(node) {
 	return findComposedAncestor(node, (el) => {
 		if (el.nodeType !== Node.ELEMENT_NODE) return false;
 		if (el === document.body) return true;

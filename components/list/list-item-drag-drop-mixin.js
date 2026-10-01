@@ -1,6 +1,6 @@
 import './list-item-drag-image.js';
 import { css, html, nothing } from 'lit';
-import { findClosestScrollableAncestor, findComposedAncestor, isComposedAncestor } from '../../helpers/dom.js';
+import { findComposedAncestor, getScrollableAncestor, isComposedAncestor } from '../../helpers/dom.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { dragActions } from './list-item-drag-handle.js';
@@ -903,7 +903,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			// leave the code inside the if when removing 'GAUD-10642-improved-mobile-drag-and-drop'
 			if (this.#improvedMobileDragAndDropFlag) {
 				// search for scrollable container
-				this.#scrollableContainer = findClosestScrollableAncestor(this);
+				this.#scrollableContainer = getScrollableAncestor(this);
 				if (this.#scrollableContainer) {
 					// check if it has the touch-action style already
 					const touchAction = this.#scrollableContainer.style.getPropertyValue('touch-action');
