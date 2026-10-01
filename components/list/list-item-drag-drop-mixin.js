@@ -869,7 +869,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 			e.preventDefault();
 		}
 		const touch = e.changedTouches[0];
-		if (this.#improvedMobileDragAndDropFlag) this.#doScroll(touch);
+		if (this.#improvedMobileDragAndDropFlag) this.#doTouchScroll(touch);
 
 		const listItem = this._findListItemFromCoordinates(touch.clientX, touch.clientY);
 		if (!listItem) return;
@@ -995,16 +995,16 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		return this._dropLocation === dropLocation.above ? html`<div class="d2l-list-item-drag-top-marker">${renderTemplate}</div>` : null;
 	}
 
-	#doScroll(touch) {
+	#doTouchScroll(touch) {
 		if (!touch || !this.#scrollableContainer) return;
 		if (this.#scrollableContainer === document.body) {
-			this.#handleViewPortScrolling(touch);
+			this.#handleViewPortTouchScrolling(touch);
 		} else {
-			this.#handleContainerScrolling(touch);
+			this.#handleContainerTouchScrolling(touch);
 		}
 	}
 
-	#handleContainerScrolling(touch) {
+	#handleContainerTouchScrolling(touch) {
 		// scroll the viewport if we've reached the end
 		const rect = this.#scrollableContainer.getBoundingClientRect();
 		if (rect.bottom - touch.clientY < scrollContainerSensitivity) {
@@ -1016,7 +1016,7 @@ export const ListItemDragDropMixin = superclass => class extends superclass {
 		}
 	}
 
-	#handleViewPortScrolling(touch) {
+	#handleViewPortTouchScrolling(touch) {
 		const height = window.innerHeight;
 		if (touch.clientY > height / 2 && height - touch.clientY < scrollSensitivity) {
 			// scroll down
