@@ -826,9 +826,13 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 			// if date is not in range but we are in a dialog, _focusDate should become min or max date if possible
 			if (!this._dialog) return;
 
-			if (numDaysChange > 0 && getDateFromISODate(this.minValue) > possibleFocusDate) this._focusDate = getDateFromISODate(this.minValue);
-			else if (numDaysChange < 0 && getDateFromISODate(this.maxValue) < possibleFocusDate) this._focusDate = getDateFromISODate(this.maxValue);
-			else return;
+			if (numDaysChange > 0 && this.minValue !== undefined && getDateFromISODate(this.minValue) > possibleFocusDate) {
+				this._focusDate = getDateFromISODate(this.minValue);
+			} else if (numDaysChange < 0 && this.maxValue !== undefined && getDateFromISODate(this.maxValue) < possibleFocusDate) {
+				this._focusDate = getDateFromISODate(this.maxValue);
+			} else {
+				return;
+			}
 			this._keyboardTriggeredMonthChange = true;
 			if (this._focusDate.getMonth() !== this._shownMonth || this._focusDate.getFullYear() !== this._shownYear) {
 				this._shownMonth = this._focusDate.getMonth();
