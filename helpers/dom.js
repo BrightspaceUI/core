@@ -57,6 +57,19 @@ export function findComposedAncestor(node, predicate) {
 	return null;
 }
 
+export function getScrollableAncestor(node) {
+	return findComposedAncestor(node, (el) => {
+		if (el.nodeType !== Node.ELEMENT_NODE) return false;
+		if (el === document.body) return true;
+		const styles = getComputedStyle(el);
+		const overflowY = styles.getPropertyValue('overflow-y');
+		const overflowX = styles.getPropertyValue('overflow-x');
+		const overflow = styles.getPropertyValue('overflow');
+		const overflowValues = ['auto', 'scroll'];
+		return (overflowValues.includes(overflowY) || overflowValues.includes(overflowX) || overflowValues.includes(overflow));
+	});
+}
+
 export function getBoundingAncestor(node) {
 	return findComposedAncestor(node, (node) => {
 		if (node === document.body) return false;
