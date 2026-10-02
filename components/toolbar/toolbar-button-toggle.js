@@ -19,7 +19,7 @@ class ToolbarButtonToggle extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(T
 		 */
 		disabled: { type: Boolean },
 		/**
-		 * Pressed state
+		 * Expandable state
 		 * @type {boolean}
 		 */
 		expandable: { type: Boolean },
