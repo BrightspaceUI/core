@@ -1,3 +1,4 @@
+import '../dialog.js';
 import { defineCE, expect, fixture, nextFrame, oneDefaultPreventedEvent, oneEvent, sendKeys } from '@brightspace-ui/testing';
 import { html, LitElement } from 'lit';
 import { DialogMixin } from '../dialog-mixin.js';
@@ -70,6 +71,26 @@ describe('dialog-mixin', () => {
 			}, 10);
 			await oneEvent(elem, 'd2l-dialog-close');
 			expect(elem.opened).to.be.false;
+		});
+
+		it('should stop propagation of the close event when dialogs are nested', async() => {
+			const elem = await fixture(html`
+				<d2l-dialog id="outer" opened>
+					<d2l-dialog id="inner" opened></d2l-dialog>
+				</d2l-dialog>
+			`);
+			const innerDialog = elem.querySelector('#inner');
+
+			let outerDispatched = false;
+			elem.addEventListener('d2l-dialog-close', () => outerDispatched = true);
+			let innerDispatched = false;
+			innerDialog.addEventListener('d2l-dialog-close', () => innerDispatched = true);
+
+			setTimeout(() => innerDialog._close());
+			await oneEvent(innerDialog, 'd2l-dialog-close');
+
+			expect(innerDispatched).to.be.true;
+			expect(outerDispatched).to.be.false;
 		});
 
 	});
