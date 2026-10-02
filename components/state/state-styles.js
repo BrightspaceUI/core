@@ -96,7 +96,7 @@ export const stateIllustratedStyles = css`
 	:host([subtle]) {
 		background-color: var(--d2l-theme-background-color-base);
 		border-radius: 0.3rem;
-		padding: 12px;
+		padding: 0.6rem;
 	}
 
 `;
