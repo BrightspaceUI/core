@@ -158,6 +158,7 @@ To add the link, place a `d2l-empty-state-action-link` component inside of the d
 
 | Illustration | Name |
 | :---: | :--- |
+| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/access-denied.svg?sanitize=true) | access-denied |
 | ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/assembly-line.svg?sanitize=true) | assembly-line |
 | ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/blueprint.svg?sanitize=true) | blueprint |
 | ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/calendar.svg?sanitize=true) | calendar |
@@ -170,4 +171,5 @@ To add the link, place a `d2l-empty-state-action-link` component inside of the d
 | ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/pipeline.svg?sanitize=true) | pipeline |
 | ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/race.svg?sanitize=true) | race |
 | ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/rockets.svg?sanitize=true) | rockets |
+| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/system-error.svg?sanitize=true) | system-error |
 | ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/tumbleweed.svg?sanitize=true) | tumbleweed |

@@ -11,14 +11,6 @@ import { StateMixin } from '../state/state-mixin.js';
  */
 class EmptyStateSimple extends StateMixin(LitElement) {
 
-	static properties = {
-		/**
-		 * REQUIRED: A description giving details about the empty state
-		 * @type {string}
-		 */
-		description: { type: String, required: true },
-	};
-
 	static styles = [bodyCompactStyles, stateStyles, stateSimpleStyles, emptyStateStyles];
 
 	render() {
