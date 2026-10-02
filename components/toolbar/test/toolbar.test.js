@@ -235,13 +235,13 @@ describe('d2l-toolbar-button-toggle', () => {
 			expect(button.getAttribute('aria-expanded')).to.equal('true');
 		});
 
-		it('dispatches the click event when enabled and clicked', async() => {
+		it('dispatches the d2l-toolbar-button-toggle-change event when enabled and clicked', async() => {
 			const elem = await fixture(createToolbarButtonToggle());
 			clickElem(elem);
-			await oneEvent(elem, 'click');
+			await oneEvent(elem, 'd2l-toolbar-button-toggle-change');
 		});
 
-		it('does not dispatch the click event when disabled and clicked', async() => {
+		it('does not dispatch the d2l-toolbar-button-toggle-change event when disabled and clicked', async() => {
 			let dispatched = false;
 			const elem = await fixture(createToolbarButtonToggle({ disabled: true }));
 			elem.addEventListener('click', () => dispatched = true);

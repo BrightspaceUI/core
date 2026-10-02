@@ -90,11 +90,14 @@
 
 		<script>
 			setTimeout(() => {
-				console.log(document.querySelectorAll('d2l-toolbar-button, d2l-toolbar-button-toggle'));
-				[...document.querySelectorAll('d2l-toolbar-button, d2l-toolbar-button-toggle')].forEach(elem => {
-					elem.addEventListener('click', e => console.log(e.target));
+				[...document.querySelectorAll('d2l-toolbar-button')].forEach(elem => {
+					elem.addEventListener('click', e => console.log(e));
 				});
-			}, 500);
+				[...document.querySelectorAll('d2l-toolbar-button-toggle')].forEach(elem => {
+					elem.addEventListener('d2l-toolbar-button-toggle-change', e => console.log(e));
+				});
+			}, 1000);
 		</script>
 	</body>
 </html>
+
