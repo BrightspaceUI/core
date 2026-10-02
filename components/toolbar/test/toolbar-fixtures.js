@@ -1,6 +1,7 @@
 import '../toolbar.js';
 import '../toolbar-button.js';
 import '../toolbar-button-toggle.js';
+import '../toolbar-separator.js';
 import '../../icons/icon-custom.js';
 import { codeSvg, formatPainterSvg, mathmlEquationSvg } from '../../icons/editor-icons.js';
 import { html } from '@brightspace-ui/testing';
@@ -27,7 +28,7 @@ const icons = [
 ];
 
 export function createDarkContainer({ template } = {}) {
-	return html`<div style="background-color: #161718; display: inline-block; padding: 6px;">${template}</div>`;
+	return html`<div style="background-color: #161718; display: inline-block; line-height: 0; padding: 6px;">${template}</div>`;
 }
 
 export function createToolbar({ itemsTemplate = createToolbarItems() } = {}) {
@@ -56,11 +57,19 @@ export function createToolbarButtonToggle({ disabled = false, expandable = false
 	`;
 }
 
-export function createToolbarItems({ count = 4 } = {}) {
+export function createToolbarItems({ count = 4, separators = false, theme } = {}) {
 	const itemTemplates = [];
 	for (let i = 0; i < count; i++) {
 		itemTemplates.push(createToolbarButton({ icon: icons[i], text: `Fancy ${i + 1}` }));
+		if (separators && i < count - 1) {
+			itemTemplates.push(createToolbarSeparator({ theme }));
+		}
 	}
 	return itemTemplates;
 }
 
+export function createToolbarSeparator({ theme } = {}) {
+	return html`
+		<d2l-toolbar-separator theme="${ifDefined(theme)}"></d2l-toolbar-separator>
+	`;
+}

@@ -1,5 +1,5 @@
 import '../toolbar.js';
-import { createDarkContainer, createToolbar, createToolbarButton, createToolbarButtonToggle, createToolbarItems } from './toolbar-fixtures.js';
+import { createDarkContainer, createToolbar, createToolbarButton, createToolbarButtonToggle, createToolbarItems, createToolbarSeparator } from './toolbar-fixtures.js';
 import { expect, fixture, focusElem, hoverElem } from '@brightspace-ui/testing';
 
 function runItemTest({ action, allColorModes, name, template }) {
@@ -23,7 +23,8 @@ describe('d2l-toolbar', () => {
 	[
 		{ name: 'normal', allColorModes: true, template: createToolbar() },
 		{ name: 'wrapping', template: createToolbar({ itemsTemplate: createToolbarItems({ count: 16 }) }) },
-		{ name: 'rtl', rtl: true, template: createToolbar() }
+		{ name: 'rtl', rtl: true, template: createToolbar() },
+		{ name: 'separators', template: createToolbar({ itemsTemplate: createToolbarItems({ separators: true }) }) }
 	].forEach(({ action, allColorModes, name, rtl, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { rtl });
@@ -96,6 +97,15 @@ describe('d2l-toolbar-button-toggle', () => {
 		{ name: 'dark-theme-expandable-expanded', template: createDarkContainer({ template: createToolbarButtonToggle({ expandable: true, expanded: true, theme: 'dark' }) }) },
 		{ name: 'dark-theme-expandable-expanded-hover', template: createDarkContainer({ template: createToolbarButtonToggle({ expandable: true, expanded: true, theme: 'dark' }) }), action: hoverElemDarkTheme },
 		{ name: 'dark-theme-expandable-expanded-focus', template: createDarkContainer({ template: createToolbarButtonToggle({ expandable: true, expanded: true, theme: 'dark' }) }), action: focusElemDarkTheme }
+	].forEach(runItemTest);
+
+});
+
+describe('d2l-toolbar-separator', () => {
+
+	[
+		{ name: 'normal', allColorModes: true, template: createToolbarSeparator() },
+		{ name: 'dark-theme', template: createDarkContainer({ template: createToolbarSeparator({ theme: 'dark' }) }) }
 	].forEach(runItemTest);
 
 });
