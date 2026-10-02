@@ -276,3 +276,15 @@ describe('d2l-toolbar-button-toggle', () => {
 	});
 
 });
+
+describe('d2l-toolbar-separator', () => {
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-toolbar-separator');
+		});
+
+	});
+
+});

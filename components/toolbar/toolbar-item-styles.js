@@ -46,8 +46,8 @@ export const toolbarButtonStyles = css`
 		border-radius: 4px;
 		height: 100%;
 		position: absolute;
-		transform: scale(0.1, 0.1);
-		transition: background-color 150ms linear, transform 150ms linear;
+		transform: scale(0.89, 0.89);
+		transition: background-color 100ms linear, transform 100ms linear;
 		width: 100%;
 		z-index: -1;
 	}
