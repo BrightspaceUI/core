@@ -1,5 +1,6 @@
 import '../toolbar.js';
 import '../toolbar-button.js';
+import '../toolbar-button-toggle.js';
 import '../../icons/icon-custom.js';
 import { codeSvg, formatPainterSvg, mathmlEquationSvg } from '../../icons/editor-icons.js';
 import { html } from '@brightspace-ui/testing';
@@ -44,6 +45,14 @@ export function createToolbarButton({ disabled = false, icon = icons[15], text =
 		<d2l-toolbar-button ?disabled="${disabled}" icon="${ifDefined(icon.key)}" text="${text}" theme="${ifDefined(theme)}">
 			${icon.template}
 		</d2l-toolbar-button>
+	`;
+}
+
+export function createToolbarButtonToggle({ disabled = false, expandable = false, expanded = false, icon = icons[15], pressed = false, text = 'Fancy Button Toggle', theme } = {}) {
+	return html`
+		<d2l-toolbar-button-toggle ?disabled="${disabled}" ?expandable="${ifDefined(expandable)}" ?expanded="${ifDefined(expanded)}" icon="${ifDefined(icon.key)}" ?pressed="${ifDefined(pressed)}" text="${text}" theme="${ifDefined(theme)}">
+			${icon.template}
+		</d2l-toolbar-button-toggle>
 	`;
 }
 
