@@ -5,10 +5,6 @@ import { DialogMixin } from '../dialog-mixin.js';
 
 const tagName = defineCE(
 	class extends DialogMixin(LitElement) {
-		constructor() {
-			super();
-			this.preferNative = true;
-		}
 		render() {
 			return this._render(html`
 				<div class="d2l-dialog-inner"><div class="d2l-dialog-content"></div></div>
