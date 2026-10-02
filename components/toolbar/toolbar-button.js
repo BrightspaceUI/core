@@ -53,7 +53,6 @@ class ToolbarButton extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(ThemeMi
 
 	#handleClick(e) {
 		e.stopPropagation();
-		//console.log('here');
 		if (this.disabled) return;
 
 		/** Dispatched when the toggle is clicked. */
