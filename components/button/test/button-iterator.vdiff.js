@@ -26,4 +26,9 @@ describe('button-iterator', () => {
 			await expect(elem).to.be.golden({ allColorModes });
 		});
 	});
+
+	it('custom-height', async() => {
+		const elem = await fixture(buttonIteratorFixtures.customHeight);
+		await expect(elem).to.be.golden();
+	});
 });
