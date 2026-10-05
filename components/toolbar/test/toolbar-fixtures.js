@@ -1,14 +1,16 @@
 import '../toolbar.js';
 import '../toolbar-button.js';
 import '../toolbar-button-toggle.js';
+import '../toolbar-dropdown.js';
 import '../toolbar-separator.js';
+import '../../dropdown/dropdown-content.js';
 import '../../icons/icon-custom.js';
-import { codeSvg, formatPainterSvg, mathmlEquationSvg } from '../../icons/editor-icons.js';
-import { html } from '@brightspace-ui/testing';
+import { codeSvg, formatPainterSvg, insertSvg, mathmlEquationSvg, textColorSvg } from '../../icons/editor-icons.js';
+import { html, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
-const icons = [
+export const icons = [
 	{ key: 'tier1:edit' },
 	{ key: 'tier1:link' },
 	{ key: 'tier1:pic' },
@@ -24,18 +26,28 @@ const icons = [
 	{ key: 'tier1:gear' },
 	{ template: html`<d2l-icon-custom size="tier1" slot="icon">${unsafeHTML(formatPainterSvg)}</d2l-icon-custom>` },
 	{ template: html`<d2l-icon-custom size="tier1" slot="icon">${unsafeHTML(mathmlEquationSvg)}</d2l-icon-custom>` },
-	{ template: html`<d2l-icon-custom size="tier1" slot="icon">${unsafeHTML(codeSvg)}</d2l-icon-custom>` }
+	{ template: html`<d2l-icon-custom size="tier1" slot="icon">${unsafeHTML(codeSvg)}</d2l-icon-custom>` },
+	{ template: html`<d2l-icon-custom size="tier1" slot="icon">${unsafeHTML(insertSvg)}</d2l-icon-custom>` },
+	{ template: html`<d2l-icon-custom size="tier1" slot="icon">${unsafeHTML(textColorSvg)}</d2l-icon-custom>` }
 ];
 
 export function createDarkContainer({ template } = {}) {
 	return html`<div style="background-color: #161718; display: inline-block; line-height: 0; padding: 6px;">${template}</div>`;
 }
 
-export function createToolbar({ itemsTemplate = createToolbarItems() } = {}) {
+export function createDropdownContent() {
+	return html`
+		<d2l-dropdown-content class="vdiff-include">
+			<div>Fancy Content!</div>
+		</d2l-dropdown-content>
+	`;
+}
+
+export function createToolbar({ template = createToolbarItems() } = {}) {
 	return html`
 		<div style="width: 400px;">
 			<d2l-toolbar label="Fancy Toolbar">
-				${itemsTemplate}
+				${template}
 			</d2l-toolbar>
 		</div>
 	`;
@@ -46,6 +58,15 @@ export function createToolbarButton({ disabled = false, icon = icons[15], text =
 		<d2l-toolbar-button ?disabled="${disabled}" icon="${ifDefined(icon.key)}" text="${text}" theme="${ifDefined(theme)}">
 			${icon.template}
 		</d2l-toolbar-button>
+	`;
+}
+
+export function createToolbarDropdown({ disabled = false, icon, text = 'Fancy Dropdown', template = createDropdownContent(), theme, valueText } = {}) {
+	return html`
+		<d2l-toolbar-dropdown ?disabled="${disabled}" icon="${ifDefined(icon?.key)}" text="${text}" theme="${ifDefined(theme)}" value-text="${ifDefined(valueText)}">
+			${icon?.template}
+			${template}
+		</d2l-toolbar-dropdown>
 	`;
 }
 
@@ -72,4 +93,9 @@ export function createToolbarSeparator({ theme } = {}) {
 	return html`
 		<d2l-toolbar-separator theme="${ifDefined(theme)}"></d2l-toolbar-separator>
 	`;
+}
+
+export async function openDropdown(elem) {
+	elem.toggleOpen();
+	await oneEvent(elem, 'd2l-dropdown-open');
 }
