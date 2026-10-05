@@ -15,7 +15,7 @@ const keyCodes = Object.freeze({
 });
 
 /**
- * A toolbar button that opens a menu
+ * A toolbar button that opens a dropdown
  */
 class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(ToolbarItemMixin(ThemeMixin(PropertyRequiredMixin(LitElement)))))) {
 
