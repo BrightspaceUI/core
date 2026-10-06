@@ -4,7 +4,7 @@ import { classMap } from 'lit/directives/class-map.js';
 import { DropdownOpenerMixin } from '../dropdown/dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from '../dropdown/dropdown-opener-styles.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
 import { SlottedIconMixin } from '../icons/slotted-icon-mixin.js';
 import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
@@ -34,7 +34,7 @@ class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(To
 		valueText: { type: String, attribute: 'value-text' }
 	};
 
-	static styles = [super.styles, dropdownOpenerStyles, toolbarButtonStyles, css`
+	static styles = [super.styles, dropdownOpenerStyles, offscreenStyles, toolbarButtonStyles, css`
 			:host {
 				font-size: 1rem;
 			}
@@ -90,7 +90,6 @@ class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(To
 		return html`
 			<button
 				aria-disabled="${this.disabled ? 'true' : 'false'}"
-				aria-describedby="${ifDefined(this.valueText ? 'valueText' : undefined)}"
 				aria-label="${this.text}"
 				id="opener"
 				@keydown="${this.#handleKeyDown}"
@@ -98,10 +97,13 @@ class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(To
 				type="button">
 				<div class="background"></div>
 				${this._renderIcon()}
-				${this.valueText ? html`<div id="valueText" class="value-text">${this.valueText}</div>` : nothing}
+				${this.valueText ? html`<div class="value-text">${this.valueText}</div>` : nothing}
 				<d2l-icon icon="tier1:chevron-down-small"></d2l-icon>
 			</button>
-			<d2l-tooltip class="${classMap(tooltipClasses)}" for="opener">${this.text}</d2l-tooltip>
+			<d2l-tooltip class="${classMap(tooltipClasses)}" for="opener">
+				${this.text}
+				<span class="d2l-offscreen">${this.valueText}</span>
+			</d2l-tooltip>
 			<slot></slot>
 		`;
 	}
