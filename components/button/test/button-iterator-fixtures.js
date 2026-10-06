@@ -49,6 +49,7 @@ export async function focusPrevious(elem) {
 export const buttonIteratorFixtures = {
 	default: html`<d2l-button-iterator></d2l-button-iterator>`,
 	custom: html`<d2l-button-iterator previous-text="Go Back" next-text="Go Forward"></d2l-button-iterator>`,
+	customHeight: html`<d2l-button-iterator style="height: 3.1rem"></d2l-button-iterator>`,
 	description: html`<d2l-button-iterator description="Step 1 of 3"></d2l-button-iterator>`,
 	disabled: html`<d2l-button-iterator previous-disabled next-disabled></d2l-button-iterator>`,
 	disabledPrev: html`<d2l-button-iterator previous-disabled></d2l-button-iterator>`,

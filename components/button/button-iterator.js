@@ -60,6 +60,7 @@ class ButtonIterator extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElemen
 			align-items: center;
 			display: flex;
 			gap: 6px;
+			height: 100%;
 			justify-content: space-between;
 		}
 		.description {
