@@ -37,7 +37,7 @@ export function createDarkContainer({ template } = {}) {
 
 export function createDropdownContent() {
 	return html`
-		<d2l-dropdown-content class="vdiff-include">
+		<d2l-dropdown-content align="start" class="vdiff-include" no-pointer>
 			<div>Fancy Content!</div>
 		</d2l-dropdown-content>
 	`;
