@@ -10,7 +10,7 @@ import {
 	icons,
 	openDropdown
 } from './toolbar-fixtures.js';
-import { expect, fixture, focusElem, hoverElem } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, hoverElem, oneEvent } from '@brightspace-ui/testing';
 
 function runItemTest({ action, allColorModes, name, template }) {
 	it(name, async() => {
@@ -18,6 +18,16 @@ function runItemTest({ action, allColorModes, name, template }) {
 		if (action) await action(elem);
 		await expect(elem).to.be.golden({ allColorModes });
 	});
+}
+
+async function focusToolbarItem(elem) {
+	focusElem(elem);
+	await oneEvent(elem, 'd2l-tooltip-show');
+}
+
+async function hoverToolbarItem(elem) {
+	hoverElem(elem);
+	await oneEvent(elem, 'd2l-tooltip-show');
 }
 
 function hoverElemDarkTheme(elem) {
@@ -116,17 +126,17 @@ describe('d2l-toolbar-dropdown', () => {
 	[
 		{ name: 'icon', allColorModes: true, template: createToolbarDropdown({ icon: icons[16] }) },
 		{ name: 'iconset-icon', template: createToolbarDropdown({ icon: { key: 'tier1:mic' } }) },
-		{ name: 'icon-hover', allColorModes: true, template: createToolbarDropdown({ icon: icons[16] }), action: hoverElem },
-		{ name: 'icon-focus', allColorModes: true, template: createToolbarDropdown({ icon: icons[16] }), action: focusElem },
+		{ name: 'icon-hover', allColorModes: true, template: createToolbarDropdown({ icon: icons[16] }), action: hoverToolbarItem },
+		{ name: 'icon-focus', allColorModes: true, template: createToolbarDropdown({ icon: icons[16] }), action: focusToolbarItem },
 		{ name: 'value-text', allColorModes: true, template: createToolbarDropdown({ valueText: 'Amethyst' }) },
-		{ name: 'value-text-hover', allColorModes: true, template: createToolbarDropdown({ valueText: 'Amethyst' }), action: hoverElem },
-		{ name: 'value-text-focus', allColorModes: true, template: createToolbarDropdown({ valueText: 'Amethyst' }), action: focusElem },
+		{ name: 'value-text-hover', allColorModes: true, template: createToolbarDropdown({ valueText: 'Amethyst' }), action: hoverToolbarItem },
+		{ name: 'value-text-focus', allColorModes: true, template: createToolbarDropdown({ valueText: 'Amethyst' }), action: focusToolbarItem },
 		{ name: 'icon-value-text', allColorModes: true, template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst' }) },
-		{ name: 'icon-value-text-hover', allColorModes: true, template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst' }), action: hoverElem },
-		{ name: 'icon-value-text-focus', allColorModes: true, template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst' }), action: focusElem },
+		{ name: 'icon-value-text-hover', allColorModes: true, template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst' }), action: hoverToolbarItem },
+		{ name: 'icon-value-text-focus', allColorModes: true, template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst' }), action: focusToolbarItem },
 		{ name: 'icon-value-text-disabled', allColorModes: true, template: createToolbarDropdown({ disabled: true, icon: icons[17], valueText: 'Amethyst' }) },
-		{ name: 'icon-value-text-disabled-hover', allColorModes: true, template: createToolbarDropdown({ disabled: true, icon: icons[17], valueText: 'Amethyst' }), action: hoverElem },
-		{ name: 'icon-value-text-disabled-focus', allColorModes: true, template: createToolbarDropdown({ disabled: true, icon: icons[17], valueText: 'Amethyst' }), action: focusElem },
+		{ name: 'icon-value-text-disabled-hover', allColorModes: true, template: createToolbarDropdown({ disabled: true, icon: icons[17], valueText: 'Amethyst' }), action: hoverToolbarItem },
+		{ name: 'icon-value-text-disabled-focus', allColorModes: true, template: createToolbarDropdown({ disabled: true, icon: icons[17], valueText: 'Amethyst' }), action: focusToolbarItem },
 		{ name: 'open', template: createToolbarDropdown({ icon: icons[16] }), action: openDropdown },
 		{ name: 'dark-theme-icon-value-text', template: createDarkContainer({ template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst', theme: 'dark' }) }) },
 		{ name: 'dark-theme-icon-value-text-hover', template: createDarkContainer({ template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst', theme: 'dark' }) }), action: hoverElemDarkTheme },

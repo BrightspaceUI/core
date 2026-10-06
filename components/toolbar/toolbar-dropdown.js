@@ -1,4 +1,6 @@
+import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
 import { DropdownOpenerMixin } from '../dropdown/dropdown-opener-mixin.js';
 import { dropdownOpenerStyles } from '../dropdown/dropdown-opener-styles.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
@@ -61,6 +63,9 @@ class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(To
 				background-color: var(--d2l-color-tungsten);
 				transform: scale(1, 1);
 			}
+			.tooltip-hidden {
+				display: none;
+			}
 	`];
 
 	constructor() {
@@ -78,20 +83,25 @@ class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(To
 	}
 
 	render() {
+		const tooltipClasses = {
+			'tooltip-hidden': this.opened,
+			'vdiff-target': true
+		};
 		return html`
 			<button
 				aria-disabled="${this.disabled ? 'true' : 'false'}"
 				aria-describedby="${ifDefined(this.valueText ? 'valueText' : undefined)}"
 				aria-label="${this.text}"
+				id="opener"
 				@keydown="${this.#handleKeyDown}"
 				tabindex="${this._activeFocusable ? 0 : -1}"
-				title="${this.text}"
 				type="button">
 				<div class="background"></div>
 				${this._renderIcon()}
 				${this.valueText ? html`<div id="valueText" class="value-text">${this.valueText}</div>` : nothing}
 				<d2l-icon icon="tier1:chevron-down-small"></d2l-icon>
 			</button>
+			<d2l-tooltip class="${classMap(tooltipClasses)}" for="opener">${this.text}</d2l-tooltip>
 			<slot></slot>
 		`;
 	}
@@ -116,7 +126,7 @@ class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(To
 		// prevent scroll for up & down keys
 		e.preventDefault();
 
-		if (( e.key === 'ArrowDown' && !this.opened) || (e.key === 'ArrowUp' && this.opened)) this.toggleOpen(true);
+		if ((e.key === 'ArrowDown' && !this.opened) || (e.key === 'ArrowUp' && this.opened)) this.toggleOpen(true);
 	}
 
 }
