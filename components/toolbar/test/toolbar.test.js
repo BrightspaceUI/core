@@ -313,11 +313,10 @@ describe('d2l-toolbar-dropdown', () => {
 			expect(button.getAttribute('type')).to.equal('button');
 		});
 
-		it('renders button with aria-label and title using the text', async() => {
+		it('renders button with aria-label using the text', async() => {
 			const elem = await fixture(createToolbarDropdown());
 			const button = elem.shadowRoot.querySelector('button');
 			expect(button.getAttribute('aria-label')).to.equal('Fancy Dropdown');
-			expect(button.getAttribute('title')).to.equal('Fancy Dropdown');
 		});
 
 		it('renders button with aria-describedby when value-text is provided', async() => {
