@@ -9,11 +9,6 @@ import { ThemeMixin } from '../../mixins/theme/theme-mixin.js';
 import { toolbarButtonStyles } from './toolbar-item-styles.js';
 import { ToolbarItemMixin } from './toolbar-item-mixin.js';
 
-const keyCodes = Object.freeze({
-	UP: 38,
-	DOWN: 40
-});
-
 /**
  * A toolbar button that opens a dropdown
  */
@@ -116,12 +111,12 @@ class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(To
 	}
 
 	#handleKeyDown(e) {
-		if (e.keyCode !== keyCodes.UP && e.keyCode !== keyCodes.DOWN) return;
+		if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
 
 		// prevent scroll for up & down keys
 		e.preventDefault();
 
-		if ((e.keyCode === keyCodes.DOWN && !this.opened) || (e.keyCode === keyCodes.UP && this.opened)) this.toggleOpen(true);
+		if (( e.key === 'ArrowDown' && !this.opened) || (e.key === 'ArrowUp' && this.opened)) this.toggleOpen(true);
 	}
 
 }
