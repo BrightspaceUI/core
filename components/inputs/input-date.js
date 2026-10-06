@@ -309,18 +309,13 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		super.updated(changedProperties);
 
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === '_dateTimeDescriptor' || prop === 'value') {
-				this._shownValue = this.value;
-				this._setFormattedValue();
-
-				if (prop === 'value') {
-					this.setFormValue(this.value);
-					this.setValidity({
-						rangeUnderflow: !this.noValidateMinMax && this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
-						rangeOverflow: !this.noValidateMinMax && this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
-					});
-					this.requestValidate(false);
-				}
+			if (prop === 'value') {
+				this.setFormValue(this.value);
+				this.setValidity({
+					rangeUnderflow: !this.noValidateMinMax && this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
+					rangeOverflow: !this.noValidateMinMax && this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
+				});
+				this.requestValidate(false);
 			} else if (prop === 'opened') {
 				if (this.opened) this._open();
 				else this._close();
@@ -333,6 +328,10 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 		if (changedProperties.has('_hiddenContentWidth')) this.style.maxWidth = this.inputTextWidth;
+		if (changedProperties.has('_dateTimeDescriptor') || changedProperties.has('value')) {
+			this._shownValue = this.value;
+			this._setFormattedValue();
+		}
 	}
 
 	async validate() {
