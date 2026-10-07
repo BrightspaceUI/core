@@ -562,7 +562,11 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	}
 
 	_setFormattedValue() {
-		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : '';
+		try {
+			this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : '';
+		} catch {
+			// don't set the value if it's invalid
+		}
 	}
 
 	_updateValueDispatchEvent(dateInISO, setToNow) {
