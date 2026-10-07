@@ -10,11 +10,11 @@ import { ToolbarItemMixin } from './toolbar-item-mixin.js';
 /**
  * A toolbar toggle button that performs an action and supports pressed and expanded states
  */
-class ToolbarButtonToggle extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(ThemeMixin(PropertyRequiredMixin(LitElement))))) {
+class ToolbarToggle extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(ThemeMixin(PropertyRequiredMixin(LitElement))))) {
 
 	static properties = {
 		/**
-		 * Disables the toolbar button
+		 * Disables the toolbar toggle button
 		 * @type {boolean}
 		 */
 		disabled: { type: Boolean },
@@ -34,7 +34,7 @@ class ToolbarButtonToggle extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(T
 		 */
 		pressed: { type: Boolean },
 		/**
-		 * ACCESSIBILITY: REQUIRED: Accessible text for the button
+		 * ACCESSIBILITY: REQUIRED: Accessible text for the toggle button
 		 * @type {string}
 		 */
 		text: { type: String, required: true }
@@ -103,9 +103,9 @@ class ToolbarButtonToggle extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(T
 		}
 
 		/** Dispatched when the pressed state changes. */
-		this.dispatchEvent(new CustomEvent('d2l-toolbar-button-toggle-change'));
+		this.dispatchEvent(new CustomEvent('d2l-toolbar-toggle-change'));
 	}
 
 }
 
-customElements.define('d2l-toolbar-button-toggle', ToolbarButtonToggle);
+customElements.define('d2l-toolbar-toggle', ToolbarToggle);

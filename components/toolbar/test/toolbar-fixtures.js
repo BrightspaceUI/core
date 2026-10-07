@@ -1,8 +1,8 @@
 import '../toolbar.js';
 import '../toolbar-button.js';
-import '../toolbar-button-toggle.js';
 import '../toolbar-dropdown.js';
 import '../toolbar-separator.js';
+import '../toolbar-toggle.js';
 import '../../dropdown/dropdown-content.js';
 import '../../icons/icon-custom.js';
 import { codeSvg, formatPainterSvg, insertSvg, mathmlEquationSvg, textColorSvg } from '../../icons/editor-icons.js';
@@ -70,14 +70,6 @@ export function createToolbarDropdown({ disabled = false, icon, text = 'Fancy Dr
 	`;
 }
 
-export function createToolbarButtonToggle({ disabled = false, expandable = false, expanded = false, icon = icons[15], pressed = false, text = 'Fancy Button Toggle', theme } = {}) {
-	return html`
-		<d2l-toolbar-button-toggle ?disabled="${disabled}" ?expandable="${ifDefined(expandable)}" ?expanded="${ifDefined(expanded)}" icon="${ifDefined(icon.key)}" ?pressed="${ifDefined(pressed)}" text="${text}" theme="${ifDefined(theme)}">
-			${icon.template}
-		</d2l-toolbar-button-toggle>
-	`;
-}
-
 export function createToolbarItems({ count = 4, separators = false, theme } = {}) {
 	const itemTemplates = [];
 	for (let i = 0; i < count; i++) {
@@ -92,6 +84,14 @@ export function createToolbarItems({ count = 4, separators = false, theme } = {}
 export function createToolbarSeparator({ theme } = {}) {
 	return html`
 		<d2l-toolbar-separator theme="${ifDefined(theme)}"></d2l-toolbar-separator>
+	`;
+}
+
+export function createToolbarToggle({ disabled = false, expandable = false, expanded = false, icon = icons[15], pressed = false, text = 'Fancy Toggle', theme } = {}) {
+	return html`
+		<d2l-toolbar-toggle ?disabled="${disabled}" ?expandable="${ifDefined(expandable)}" ?expanded="${ifDefined(expanded)}" icon="${ifDefined(icon.key)}" ?pressed="${ifDefined(pressed)}" text="${text}" theme="${ifDefined(theme)}">
+			${icon.template}
+		</d2l-toolbar-toggle>
 	`;
 }
 
