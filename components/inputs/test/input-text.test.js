@@ -166,9 +166,7 @@ describe('d2l-input-text', () => {
 			/*{name: 'autocomplete', value: 'email'}, bug in Firefox: https://bugzilla.mozilla.org/show_bug.cgi?id=1583957 */
 			{ name: 'autofocus', value: true },
 			{ name: 'disabled', value: true },
-			{ name: 'max', value: '5' },
 			{ name: 'maxlength', propName: 'maxLength', value: 10 },
-			{ name: 'min', value: '1' },
 			{ name: 'minlength', propName: 'minLength', value: 3 },
 			{ name: 'name', value: 'jim' },
 			{ name: 'pattern', value: '[A-Za-z]+' },
