@@ -21,7 +21,7 @@ describe('overflow', () => {
 			expect(declarations).to.equal(overflowHiddenDeclarations.cssText);
 		});
 
-		it('should return line clamping declarations when lines > 0', () => {
+		it('should return line clamping declarations when lines > 1', () => {
 			const declarations = getOverflowDeclarations({ lines: 3 });
 			expect(declarations.cssText).to.equal(set`
 				min-width: 0; /* clamps width of flex items */
@@ -30,7 +30,6 @@ describe('overflow', () => {
 				overflow-clip-margin: 0.2em;
 				overflow-wrap: anywhere;
 				overflow-y: clip;
-				text-overflow: ellipsis;
 				-webkit-box-orient: vertical;
 				-webkit-line-clamp: 3;
 			`);
@@ -45,6 +44,18 @@ describe('overflow', () => {
 				overflow-clip-margin: 1em;
 				overflow-y: visible;
 				text-overflow: ${textOverflow};
+				white-space: nowrap;
+			`);
+		});
+
+		it('should produce overflow ellipsis declarations when lines is 1', () => {
+			const declarations = getOverflowDeclarations({ lines: 1 });
+			expect(declarations.cssText).to.equal(set`
+				min-width: 0; /* clamps width of flex items */
+				overflow-x: clip;
+				overflow-clip-margin: 1em;
+				overflow-y: visible;
+				text-overflow: ellipsis;
 				white-space: nowrap;
 			`);
 		});
