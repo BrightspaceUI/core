@@ -1,8 +1,8 @@
 import {
 	createToolbar,
 	createToolbarButton,
-	createToolbarButtonToggle,
 	createToolbarDropdown,
+	createToolbarToggle,
 	icons
 } from './toolbar-fixtures.js';
 import { expect, fixture, focusElem, hoverElem } from '@brightspace-ui/testing';
@@ -37,33 +37,33 @@ describe('d2l-toolbar-button', () => {
 
 });
 
-describe('d2l-toolbar-button-toggle', () => {
+describe('d2l-toolbar-toggle', () => {
 
 	[
-		{ name: 'normal', template: createToolbarButtonToggle() },
-		{ name: 'hover', template: createToolbarButtonToggle(), action: hoverElem },
-		{ name: 'focus', template: createToolbarButtonToggle(), action: focusElem },
-		{ name: 'disabled', template: createToolbarButtonToggle({ disabled: true }) },
-		{ name: 'disabled-hover', template: createToolbarButtonToggle({ disabled: true }), action: hoverElem },
-		{ name: 'disabled-focus', template: createToolbarButtonToggle({ disabled: true }), action: focusElem },
-		{ name: 'pressed', template: createToolbarButtonToggle({ pressed: true }) },
-		{ name: 'pressed-hover', template: createToolbarButtonToggle({ pressed: true }), action: hoverElem },
-		{ name: 'pressed-focus', template: createToolbarButtonToggle({ pressed: true }), action: focusElem },
-		{ name: 'pressed-disabled', template: createToolbarButtonToggle({ disabled: true, pressed: true }) },
-		{ name: 'pressed-disabled-hover', template: createToolbarButtonToggle({ disabled: true, pressed: true }), action: hoverElem },
-		{ name: 'pressed-disabled-focus', template: createToolbarButtonToggle({ disabled: true, pressed: true }), action: focusElem },
-		{ name: 'expandable', template: createToolbarButtonToggle({ expandable: true }) },
-		{ name: 'expandable-hover', template: createToolbarButtonToggle({ expandable: true }), action: hoverElem },
-		{ name: 'expandable-focus', template: createToolbarButtonToggle({ expandable: true }), action: focusElem },
-		{ name: 'expandable-disabled', template: createToolbarButtonToggle({ disabled: true, expandable: true }) },
-		{ name: 'expandable-disabled-hover', template: createToolbarButtonToggle({ disabled: true, expandable: true }), action: hoverElem },
-		{ name: 'expandable-disabled-focus', template: createToolbarButtonToggle({ disabled: true, expandable: true }), action: focusElem },
-		{ name: 'expandable-expanded', template: createToolbarButtonToggle({ expandable: true, expanded: true }) },
-		{ name: 'expandable-expanded-hover', template: createToolbarButtonToggle({ expandable: true, expanded: true }), action: hoverElem },
-		{ name: 'expandable-expanded-focus', template: createToolbarButtonToggle({ expandable: true, expanded: true }), action: focusElem },
-		{ name: 'expandable-expanded-disabled', template: createToolbarButtonToggle({ disabled: true, expandable: true, expanded: true }) },
-		{ name: 'expandable-expanded-disabled-hover', template: createToolbarButtonToggle({ disabled: true, expandable: true, expanded: true }), action: hoverElem },
-		{ name: 'expandable-expanded-disabled-focus', template: createToolbarButtonToggle({ disabled: true, expandable: true, expanded: true }), action: focusElem }
+		{ name: 'normal', template: createToolbarToggle() },
+		{ name: 'hover', template: createToolbarToggle(), action: hoverElem },
+		{ name: 'focus', template: createToolbarToggle(), action: focusElem },
+		{ name: 'disabled', template: createToolbarToggle({ disabled: true }) },
+		{ name: 'disabled-hover', template: createToolbarToggle({ disabled: true }), action: hoverElem },
+		{ name: 'disabled-focus', template: createToolbarToggle({ disabled: true }), action: focusElem },
+		{ name: 'pressed', template: createToolbarToggle({ pressed: true }) },
+		{ name: 'pressed-hover', template: createToolbarToggle({ pressed: true }), action: hoverElem },
+		{ name: 'pressed-focus', template: createToolbarToggle({ pressed: true }), action: focusElem },
+		{ name: 'pressed-disabled', template: createToolbarToggle({ disabled: true, pressed: true }) },
+		{ name: 'pressed-disabled-hover', template: createToolbarToggle({ disabled: true, pressed: true }), action: hoverElem },
+		{ name: 'pressed-disabled-focus', template: createToolbarToggle({ disabled: true, pressed: true }), action: focusElem },
+		{ name: 'expandable', template: createToolbarToggle({ expandable: true }) },
+		{ name: 'expandable-hover', template: createToolbarToggle({ expandable: true }), action: hoverElem },
+		{ name: 'expandable-focus', template: createToolbarToggle({ expandable: true }), action: focusElem },
+		{ name: 'expandable-disabled', template: createToolbarToggle({ disabled: true, expandable: true }) },
+		{ name: 'expandable-disabled-hover', template: createToolbarToggle({ disabled: true, expandable: true }), action: hoverElem },
+		{ name: 'expandable-disabled-focus', template: createToolbarToggle({ disabled: true, expandable: true }), action: focusElem },
+		{ name: 'expandable-expanded', template: createToolbarToggle({ expandable: true, expanded: true }) },
+		{ name: 'expandable-expanded-hover', template: createToolbarToggle({ expandable: true, expanded: true }), action: hoverElem },
+		{ name: 'expandable-expanded-focus', template: createToolbarToggle({ expandable: true, expanded: true }), action: focusElem },
+		{ name: 'expandable-expanded-disabled', template: createToolbarToggle({ disabled: true, expandable: true, expanded: true }) },
+		{ name: 'expandable-expanded-disabled-hover', template: createToolbarToggle({ disabled: true, expandable: true, expanded: true }), action: hoverElem },
+		{ name: 'expandable-expanded-disabled-focus', template: createToolbarToggle({ disabled: true, expandable: true, expanded: true }), action: focusElem }
 	].forEach(runItemTest);
 
 });
