@@ -86,20 +86,10 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		 */
 		labelHidden: { type: Boolean, attribute: 'label-hidden' },
 		/**
-		 * For number inputs, maximum value
-		 * @type {string}
-		 */
-		max: { type: String },
-		/**
 		 * Imposes an upper character limit
 		 * @type {number}
 		 */
 		maxlength: { type: Number },
-		/**
-		 * For number inputs, minimum value
-		 * @type {string}
-		 */
-		min: { type: String },
 		/**
 		 * Imposes a lower character limit
 		 * @type {number}
@@ -465,9 +455,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 						@input="${this._handleInput}"
 						@invalid="${this._handleInvalid}"
 						@keypress="${this._handleKeypress}"
-						max="${ifDefined(this.max)}"
 						maxlength="${ifDefined(this.maxlength)}"
-						min="${ifDefined(this.min)}"
 						minlength="${ifDefined(this.minlength)}"
 						name="${ifDefined(this.name)}"
 						pattern="${ifDefined(this.pattern)}"
