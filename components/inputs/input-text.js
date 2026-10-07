@@ -328,11 +328,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 
 	/** @ignore */
 	get validationMessage() {
-		if (this.validity.rangeOverflow) {
-			return this.localize('components.form-element.input.number.rangeOverflow', { max: formatNumber(parseFloat(this.max)), maxExclusive: false });
-		} else if (this.validity.rangeUnderflow) {
-			return this.localize('components.form-element.input.number.rangeUnderflow', { min: formatNumber(parseFloat(this.min)), minExclusive: false });
-		} else if (this.validity.tooShort) {
+		if (this.validity.tooShort) {
 			return this.localize('components.form-element.input.text.tooShort', { label: this.label, minlength: formatNumber(this.minlength) });
 		} else if (this.validity.typeMismatch) {
 			if (this.type === 'email') {
@@ -532,6 +528,14 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		});
 	}
 
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('type') && this.type === 'number') {
+			this.type = 'text';
+			console.warn('input-text.js: "number" type is not supported, use d2l-input-number instead. defaultoing to "text"');
+		}
+	}
+
 	#handleBlur = async(e) => {
 		this._focused = false;
 		this.requestValidate(true);
@@ -564,7 +568,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 	}
 
 	_getType() {
-		if (this.type === 'email' || this.type === 'number' || this.type === 'password' || this.type === 'tel' || this.type === 'text' || this.type === 'search' || this.type === 'url') {
+		if (this.type === 'email' || this.type === 'password' || this.type === 'tel' || this.type === 'text' || this.type === 'search' || this.type === 'url') {
 			return this.type;
 		}
 		return 'text';
