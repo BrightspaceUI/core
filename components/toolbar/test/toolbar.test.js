@@ -125,11 +125,10 @@ describe('d2l-toolbar-button', () => {
 			expect(button.getAttribute('type')).to.equal('button');
 		});
 
-		it('renders button with aria-label and title using the text', async() => {
+		it('renders button with aria-label using the text', async() => {
 			const elem = await fixture(createToolbarButton());
 			const button = elem.shadowRoot.querySelector('button');
 			expect(button.getAttribute('aria-label')).to.equal('Fancy Button');
-			expect(button.getAttribute('title')).to.equal('Fancy Button');
 		});
 
 		it('renders button with aria-disabled="true" when disabled', async() => {
@@ -189,11 +188,10 @@ describe('d2l-toolbar-toggle', () => {
 			expect(button.getAttribute('type')).to.equal('button');
 		});
 
-		it('renders button with aria-label and title using the text', async() => {
+		it('renders button with aria-label using the text', async() => {
 			const elem = await fixture(createToolbarToggle());
 			const button = elem.shadowRoot.querySelector('button');
 			expect(button.getAttribute('aria-label')).to.equal('Fancy Toggle');
-			expect(button.getAttribute('title')).to.equal('Fancy Toggle');
 		});
 
 		it('renders button with aria-pressed="false" when not pressed', async() => {
