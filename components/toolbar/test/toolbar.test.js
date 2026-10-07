@@ -1,5 +1,11 @@
 import { clickElem, expect, fixture, html, nextFrame, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
-import { createToolbar, createToolbarButton, createToolbarButtonToggle } from './toolbar-fixtures.js';
+import {
+	createToolbar,
+	createToolbarButton,
+	createToolbarButtonToggle,
+	createToolbarDropdown,
+	openDropdown
+} from './toolbar-fixtures.js';
 
 describe('d2l-toolbar', () => {
 
@@ -113,6 +119,12 @@ describe('d2l-toolbar-button', () => {
 
 	describe('general', () => {
 
+		it('renders button with type="button"', async() => {
+			const elem = await fixture(createToolbarButton());
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.getAttribute('type')).to.equal('button');
+		});
+
 		it('renders button with aria-label and title using the text', async() => {
 			const elem = await fixture(createToolbarButton());
 			const button = elem.shadowRoot.querySelector('button');
@@ -137,7 +149,7 @@ describe('d2l-toolbar-button', () => {
 			const elem = await fixture(createToolbarButton());
 			const button = elem.shadowRoot.querySelector('button');
 			elem._activeFocusable = true;
-			await button.updateComplete;
+			await elem.updateComplete;
 			expect(button.getAttribute('tabindex')).to.equal('0');
 		});
 
@@ -170,6 +182,12 @@ describe('d2l-toolbar-button-toggle', () => {
 	});
 
 	describe('general', () => {
+
+		it('renders button with type="button"', async() => {
+			const elem = await fixture(createToolbarButtonToggle());
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.getAttribute('type')).to.equal('button');
+		});
 
 		it('renders button with aria-label and title using the text', async() => {
 			const elem = await fixture(createToolbarButtonToggle());
@@ -207,7 +225,7 @@ describe('d2l-toolbar-button-toggle', () => {
 			const elem = await fixture(createToolbarButtonToggle());
 			const button = elem.shadowRoot.querySelector('button');
 			elem._activeFocusable = true;
-			await button.updateComplete;
+			await elem.updateComplete;
 			expect(button.getAttribute('tabindex')).to.equal('0');
 		});
 
@@ -271,6 +289,105 @@ describe('d2l-toolbar-button-toggle', () => {
 			const elem = await fixture(createToolbarButtonToggle({ disabled: true, pressed: true }));
 			await clickElem(elem);
 			expect(elem.pressed).to.equal(true);
+		});
+
+	});
+
+});
+
+describe('d2l-toolbar-dropdown', () => {
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-toolbar-dropdown');
+		});
+
+	});
+
+	describe('general', () => {
+
+		it('renders button with type="button"', async() => {
+			const elem = await fixture(createToolbarDropdown());
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.getAttribute('type')).to.equal('button');
+		});
+
+		it('renders button with aria-label using the text', async() => {
+			const elem = await fixture(createToolbarDropdown());
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.getAttribute('aria-label')).to.equal('Fancy Dropdown');
+		});
+
+		it('renders button with aria-disabled="true" when disabled', async() => {
+			const elem = await fixture(createToolbarDropdown({ disabled: true }));
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.getAttribute('aria-disabled')).to.equal('true');
+			expect(button.hasAttribute('disabled')).to.equal(false);
+		});
+
+		it('renders button with tabindex="-1" when not active focusable', async() => {
+			const elem = await fixture(createToolbarDropdown());
+			const button = elem.shadowRoot.querySelector('button');
+			expect(button.getAttribute('tabindex')).to.equal('-1');
+		});
+
+		it('renders button with tabindex="0" when active focusable', async() => {
+			const elem = await fixture(createToolbarDropdown());
+			const button = elem.shadowRoot.querySelector('button');
+			elem._activeFocusable = true;
+			await elem.updateComplete;
+			expect(button.getAttribute('tabindex')).to.equal('0');
+		});
+
+		it('opens the dropdown when closed and button is clicked', async() => {
+			const elem = await fixture(createToolbarDropdown());
+			clickElem(elem);
+			await oneEvent(elem, 'd2l-dropdown-open');
+			expect(elem.opened).to.equal(true);
+		});
+
+		it('closes the dropdown when open and button is clicked', async() => {
+			const elem = await fixture(createToolbarDropdown());
+			await openDropdown(elem);
+			expect(elem.opened).to.equal(true);
+			clickElem(elem);
+			await oneEvent(elem, 'd2l-dropdown-close');
+			expect(elem.opened).to.equal(false);
+		});
+
+		it('opens the dropdown when down arrow is pressed', async() => {
+			const elem = await fixture(createToolbarDropdown());
+			const button = elem.shadowRoot.querySelector('button');
+			sendKeysElem(button, 'press', 'ArrowDown');
+			await oneEvent(elem, 'd2l-dropdown-open');
+			expect(elem.opened).to.equal(true);
+		});
+
+		it('does not open the dropdown when disabled and down arrow is pressed', async() => {
+			const elem = await fixture(createToolbarDropdown({ disabled: true }));
+			const button = elem.shadowRoot.querySelector('button');
+			await sendKeysElem(button, 'press', 'ArrowDown');
+			expect(elem.opened).to.equal(false);
+		});
+
+		it('closes the dropdown when up arrow is pressed', async() => {
+			const elem = await fixture(createToolbarDropdown());
+			const button = elem.shadowRoot.querySelector('button');
+			await openDropdown(elem);
+			expect(elem.opened).to.equal(true);
+			sendKeysElem(button, 'press', 'ArrowUp');
+			await oneEvent(elem, 'd2l-dropdown-close');
+			expect(elem.opened).to.equal(false);
+		});
+
+		it('closes the dropdown when open and button becomes disabled', async() => {
+			const elem = await fixture(createToolbarDropdown());
+			await openDropdown(elem);
+			expect(elem.opened).to.equal(true);
+			elem.disabled = true;
+			await oneEvent(elem, 'd2l-dropdown-close');
+			expect(elem.opened).to.equal(false);
 		});
 
 	});

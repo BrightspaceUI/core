@@ -1,6 +1,16 @@
 import '../toolbar.js';
-import { createDarkContainer, createToolbar, createToolbarButton, createToolbarButtonToggle, createToolbarItems, createToolbarSeparator } from './toolbar-fixtures.js';
-import { expect, fixture, focusElem, hoverElem } from '@brightspace-ui/testing';
+import {
+	createDarkContainer,
+	createToolbar,
+	createToolbarButton,
+	createToolbarButtonToggle,
+	createToolbarDropdown,
+	createToolbarItems,
+	createToolbarSeparator,
+	icons,
+	openDropdown
+} from './toolbar-fixtures.js';
+import { expect, fixture, focusElem, hoverElem, oneEvent } from '@brightspace-ui/testing';
 
 function runItemTest({ action, allColorModes, name, template }) {
 	it(name, async() => {
@@ -8,6 +18,16 @@ function runItemTest({ action, allColorModes, name, template }) {
 		if (action) await action(elem);
 		await expect(elem).to.be.golden({ allColorModes });
 	});
+}
+
+async function focusToolbarItem(elem) {
+	focusElem(elem);
+	await oneEvent(elem, 'd2l-tooltip-show');
+}
+
+async function hoverToolbarItem(elem) {
+	hoverElem(elem);
+	await oneEvent(elem, 'd2l-tooltip-show');
 }
 
 function hoverElemDarkTheme(elem) {
@@ -22,9 +42,9 @@ describe('d2l-toolbar', () => {
 
 	[
 		{ name: 'normal', allColorModes: true, template: createToolbar() },
-		{ name: 'wrapping', template: createToolbar({ itemsTemplate: createToolbarItems({ count: 16 }) }) },
+		{ name: 'wrapping', template: createToolbar({ template: createToolbarItems({ count: 16 }) }) },
 		{ name: 'rtl', rtl: true, template: createToolbar() },
-		{ name: 'separators', template: createToolbar({ itemsTemplate: createToolbarItems({ separators: true }) }) }
+		{ name: 'separators', template: createToolbar({ template: createToolbarItems({ separators: true }) }) }
 	].forEach(({ action, allColorModes, name, rtl, template }) => {
 		it(name, async() => {
 			const elem = await fixture(template, { rtl });
@@ -39,7 +59,7 @@ describe('d2l-toolbar-button', () => {
 
 	[
 		{ name: 'normal', allColorModes: true, template: createToolbarButton() },
-		{ name: 'iconset-icon', template: createToolbarButton({ icon: { key: 'tier1:mic' }, iconTemplate: undefined }) },
+		{ name: 'iconset-icon', template: createToolbarButton({ icon: { key: 'tier1:mic' } }) },
 		{ name: 'hover', allColorModes: true, template: createToolbarButton(), action: hoverElem },
 		{ name: 'focus', allColorModes: true, template: createToolbarButton(), action: focusElem },
 		{ name: 'disabled', allColorModes: true, template: createToolbarButton({ disabled: true }) },
@@ -60,7 +80,7 @@ describe('d2l-toolbar-button-toggle', () => {
 
 	[
 		{ name: 'normal', allColorModes: true, template: createToolbarButtonToggle() },
-		{ name: 'iconset-icon', template: createToolbarButtonToggle({ icon: { key: 'tier1:mic' }, iconTemplate: undefined }) },
+		{ name: 'iconset-icon', template: createToolbarButtonToggle({ icon: { key: 'tier1:mic' } }) },
 		{ name: 'hover', allColorModes: true, template: createToolbarButtonToggle(), action: hoverElem },
 		{ name: 'focus', allColorModes: true, template: createToolbarButtonToggle(), action: focusElem },
 		{ name: 'disabled', allColorModes: true, template: createToolbarButton({ disabled: true }) },
@@ -97,6 +117,30 @@ describe('d2l-toolbar-button-toggle', () => {
 		{ name: 'dark-theme-expandable-expanded', template: createDarkContainer({ template: createToolbarButtonToggle({ expandable: true, expanded: true, theme: 'dark' }) }) },
 		{ name: 'dark-theme-expandable-expanded-hover', template: createDarkContainer({ template: createToolbarButtonToggle({ expandable: true, expanded: true, theme: 'dark' }) }), action: hoverElemDarkTheme },
 		{ name: 'dark-theme-expandable-expanded-focus', template: createDarkContainer({ template: createToolbarButtonToggle({ expandable: true, expanded: true, theme: 'dark' }) }), action: focusElemDarkTheme }
+	].forEach(runItemTest);
+
+});
+
+describe('d2l-toolbar-dropdown', () => {
+
+	[
+		{ name: 'icon', allColorModes: true, template: createToolbarDropdown({ icon: icons[16] }) },
+		{ name: 'iconset-icon', template: createToolbarDropdown({ icon: { key: 'tier1:mic' } }) },
+		{ name: 'icon-hover', allColorModes: true, template: createToolbarDropdown({ icon: icons[16] }), action: hoverToolbarItem },
+		{ name: 'icon-focus', allColorModes: true, template: createToolbarDropdown({ icon: icons[16] }), action: focusToolbarItem },
+		{ name: 'value-text', allColorModes: true, template: createToolbarDropdown({ valueText: 'Amethyst' }) },
+		{ name: 'value-text-hover', allColorModes: true, template: createToolbarDropdown({ valueText: 'Amethyst' }), action: hoverToolbarItem },
+		{ name: 'value-text-focus', allColorModes: true, template: createToolbarDropdown({ valueText: 'Amethyst' }), action: focusToolbarItem },
+		{ name: 'icon-value-text', allColorModes: true, template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst' }) },
+		{ name: 'icon-value-text-hover', allColorModes: true, template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst' }), action: hoverToolbarItem },
+		{ name: 'icon-value-text-focus', allColorModes: true, template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst' }), action: focusToolbarItem },
+		{ name: 'icon-value-text-disabled', allColorModes: true, template: createToolbarDropdown({ disabled: true, icon: icons[17], valueText: 'Amethyst' }) },
+		{ name: 'icon-value-text-disabled-hover', allColorModes: true, template: createToolbarDropdown({ disabled: true, icon: icons[17], valueText: 'Amethyst' }), action: hoverToolbarItem },
+		{ name: 'icon-value-text-disabled-focus', allColorModes: true, template: createToolbarDropdown({ disabled: true, icon: icons[17], valueText: 'Amethyst' }), action: focusToolbarItem },
+		{ name: 'open', template: createToolbarDropdown({ icon: icons[16] }), action: openDropdown },
+		{ name: 'dark-theme-icon-value-text', template: createDarkContainer({ template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst', theme: 'dark' }) }) },
+		{ name: 'dark-theme-icon-value-text-hover', template: createDarkContainer({ template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst', theme: 'dark' }) }), action: hoverElemDarkTheme },
+		{ name: 'dark-theme-icon-value-text-focus', template: createDarkContainer({ template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst', theme: 'dark' }) }), action: focusElemDarkTheme }
 	].forEach(runItemTest);
 
 });

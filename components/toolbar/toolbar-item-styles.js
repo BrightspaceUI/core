@@ -44,11 +44,10 @@ export const toolbarButtonStyles = css`
 	.background {
 		background-color: transparent;
 		border-radius: 4px;
-		height: 100%;
+		inset: 0;
 		position: absolute;
 		transform: scale(0.89, 0.89);
 		transition: background-color 100ms linear, transform 100ms linear;
-		width: 100%;
 		z-index: -1;
 	}
 	${getFocusRingStyles('button')}

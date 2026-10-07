@@ -1,4 +1,10 @@
-import { createToolbar, createToolbarButton, createToolbarButtonToggle } from './toolbar-fixtures.js';
+import {
+	createToolbar,
+	createToolbarButton,
+	createToolbarButtonToggle,
+	createToolbarDropdown,
+	icons
+} from './toolbar-fixtures.js';
 import { expect, fixture, focusElem, hoverElem } from '@brightspace-ui/testing';
 
 describe('d2l-toolbar', () => {
@@ -58,6 +64,31 @@ describe('d2l-toolbar-button-toggle', () => {
 		{ name: 'expandable-expanded-disabled', template: createToolbarButtonToggle({ disabled: true, expandable: true, expanded: true }) },
 		{ name: 'expandable-expanded-disabled-hover', template: createToolbarButtonToggle({ disabled: true, expandable: true, expanded: true }), action: hoverElem },
 		{ name: 'expandable-expanded-disabled-focus', template: createToolbarButtonToggle({ disabled: true, expandable: true, expanded: true }), action: focusElem }
+	].forEach(runItemTest);
+
+});
+
+describe('d2l-toolbar-dropdown', () => {
+
+	[
+		{ name: 'icon', template: createToolbarDropdown({ icon: icons[16] }) },
+		{ name: 'icon-hover', template: createToolbarDropdown({ icon: icons[16] }), action: hoverElem },
+		{ name: 'icon-focus', template: createToolbarDropdown({ icon: icons[16] }), action: focusElem },
+		{ name: 'value-text', template: createToolbarDropdown({ valueText: 'Value Text' }) },
+		{ name: 'value-text-hover', template: createToolbarDropdown({ valueText: 'Value Text' }), action: hoverElem },
+		{ name: 'value-text-focus', template: createToolbarDropdown({ valueText: 'Value Text' }), action: focusElem },
+		{ name: 'icon-value-text', template: createToolbarDropdown({ icon: icons[16], valueText: 'Value Text' }) },
+		{ name: 'icon-value-text-hover', template: createToolbarDropdown({ icon: icons[16], valueText: 'Value Text' }), action: hoverElem },
+		{ name: 'icon-value-text-focus', template: createToolbarDropdown({ icon: icons[16], valueText: 'Value Text' }), action: focusElem },
+		{ name: 'icon-disabled', template: createToolbarDropdown({ disabled: true, icon: icons[16] }) },
+		{ name: 'icon-disabled-hover', template: createToolbarDropdown({ disabled: true, icon: icons[16] }), action: hoverElem },
+		{ name: 'icon-disabled-focus', template: createToolbarDropdown({ disabled: true, icon: icons[16] }), action: focusElem },
+		{ name: 'value-text-disabled', template: createToolbarDropdown({ disabled: true, valueText: 'Value Text' }) },
+		{ name: 'value-text-disabled-hover', template: createToolbarDropdown({ disabled: true, valueText: 'Value Text' }), action: hoverElem },
+		{ name: 'value-text-disabled-focus', template: createToolbarDropdown({ disabled: true, valueText: 'Value Text' }), action: focusElem },
+		{ name: 'icon-value-text-disabled', template: createToolbarDropdown({ disabled: true, icon: icons[16], valueText: 'Value Text' }) },
+		{ name: 'icon-value-text-disabled-hover', template: createToolbarDropdown({ disabled: true, icon: icons[16], valueText: 'Value Text' }), action: hoverElem },
+		{ name: 'icon-value-text-disabled-focus', template: createToolbarDropdown({ disabled: true, icon: icons[16], valueText: 'Value Text' }), action: focusElem }
 	].forEach(runItemTest);
 
 });
