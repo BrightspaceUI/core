@@ -140,7 +140,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		title: { type: String },
 		/**
 		 * The type of the text input
-		 * @type {'text'|'email'|'number'|'password'|'search'|'tel'|'url'}
+		 * @type {'text'|'email'|'password'|'search'|'tel'|'url'}
 		 */
 		type: { type: String },
 		/**
@@ -520,7 +520,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		super.willUpdate(changedProperties);
 		if (changedProperties.has('type') && this.type === 'number') {
 			this.type = 'text';
-			console.warn('input-text.js: "number" type is not supported, use d2l-input-number instead. defaultoing to "text"');
+			console.warn('d2l-input-text: "number" type is not supported, use d2l-input-number instead. Defaulting to "text"');
 		}
 	}
 

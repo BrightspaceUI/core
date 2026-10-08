@@ -68,7 +68,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 | `required` | Boolean | Indicates that a value is required |
 | `size` | Number | Size of the input |
 | `step` | String | For number inputs, sets the step size |
-| `type` | String, default: `text` | Can be one of `text`, `email`, `password`, `tel`, `url`. Type `number` is deprecated, use [d2l-input-number](./input-numeric.md) instead. |
+| `type` | String, default: `text` | Can be one of `text`, `email`, `password`, `tel`, `url` |
 | `unit` | String | Unit associated with the input value, displayed next to input and announced as part of the label |
 | `value` | String, default: `''` | Value of the input |
 
