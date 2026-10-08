@@ -81,7 +81,6 @@ class ToolbarToggle extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(ThemeMi
 			<button
 				aria-disabled="${this.disabled ? 'true' : 'false'}"
 				aria-expanded="${ifDefined(this.expandable ? (this.expanded ? 'true' : 'false') : undefined)}"
-				aria-label="${this.text}"
 				aria-pressed="${ifDefined(!this.expandable ? (this.pressed ? 'true' : 'false') : undefined)}"
 				@click="${this.#handleClick}"
 				id="action-button"
@@ -90,9 +89,7 @@ class ToolbarToggle extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(ThemeMi
 				<div class="background"></div>
 				${this._renderIcon()}
 			</button>
-			<d2l-tooltip class="vdiff-target" for="action-button">
-				<span aria-hidden="true">${this.text}</span>
-			</d2l-tooltip>
+			<d2l-tooltip class="vdiff-target" for="action-button" for-type="label">${this.text}</d2l-tooltip>
 		`;
 	}
 

@@ -41,7 +41,6 @@ class ToolbarButton extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(ThemeMi
 		return html`
 			<button
 				aria-disabled="${this.disabled ? 'true' : 'false'}"
-				aria-label="${this.text}"
 				@click="${this.#handleClick}"
 				id="action-button"
 				tabindex="${this._activeFocusable ? 0 : -1}"
@@ -49,9 +48,7 @@ class ToolbarButton extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(ThemeMi
 				<div class="background"></div>
 				${this._renderIcon()}
 			</button>
-			<d2l-tooltip class="vdiff-target" for="action-button">
-				<span aria-hidden="true">${this.text}</span>
-			</d2l-tooltip>
+			<d2l-tooltip class="vdiff-target" for="action-button" for-type="label">${this.text}</d2l-tooltip>
 		`;
 	}
 
