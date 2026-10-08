@@ -1,4 +1,4 @@
-import { aTimeout, expect, fixture, oneEvent, runConstructor, waitUntil } from '@brightspace-ui/testing';
+import { aTimeout, expect, fixture, focusElem, oneEvent, runConstructor, sendKeys, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { formatISODateInUserCalDescriptor } from '../input-date.js';
 import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
@@ -10,7 +10,7 @@ function dispatchEvent(elem, eventType, composed) {
 		eventType,
 		{ bubbles: true, composed: composed }
 	);
-	elem.dispatchEvent(e);
+	setTimeout(() => elem.dispatchEvent(e), 0);
 }
 
 function getChildElem(elem, selector) {
@@ -134,7 +134,7 @@ describe('d2l-input-date', () => {
 			await elem.updateComplete;
 			const calendarElem = getChildElem(elem, 'd2l-calendar');
 			calendarElem.selectedValue = '2018-03-24';
-			setTimeout(() => dispatchEvent(calendarElem, 'd2l-calendar-selected', false));
+			dispatchEvent(calendarElem, 'd2l-calendar-selected', false);
 			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('2018-03-24');
 		});
@@ -188,7 +188,7 @@ describe('d2l-input-date', () => {
 			const elem = await fixture('<d2l-input-date label="label text" value="2019-02-01"></d2l-input-date>');
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			inputElem.value = '';
-			setTimeout(() => dispatchEvent(inputElem, 'change', false));
+			dispatchEvent(inputElem, 'change', false);
 			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('');
 		});
@@ -242,8 +242,8 @@ describe('d2l-input-date', () => {
 			const elem = await fixture('<d2l-input-date min-value="2020-01-02" value="2020-10-10" label="Date"></d2l-input-date>');
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			inputElem.value = '12/31/2019';
-			setTimeout(() => dispatchEvent(inputElem, 'change', false));
-			setTimeout(() => dispatchEvent(inputElem, 'blur', true));
+			dispatchEvent(inputElem, 'change', false);
+			dispatchEvent(inputElem, 'blur', true);
 			await oneEvent(elem, 'change');
 			await oneEvent(elem, 'blur');
 			await oneEvent(elem, 'invalid-change');
@@ -256,8 +256,8 @@ describe('d2l-input-date', () => {
 			const elem = await fixture('<d2l-input-date max-value="2020-12-02" value="2020-10-10" label="Date"></d2l-input-date>');
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			inputElem.value = '12/31/2021';
-			setTimeout(() => dispatchEvent(inputElem, 'change', false));
-			setTimeout(() => dispatchEvent(inputElem, 'blur', true));
+			dispatchEvent(inputElem, 'change', false);
+			dispatchEvent(inputElem, 'blur', true);
 			await oneEvent(elem, 'change');
 			await oneEvent(elem, 'blur');
 			await oneEvent(elem, 'invalid-change');
@@ -272,7 +272,6 @@ describe('d2l-input-date', () => {
 			inputElem.value = dateInput;
 			dispatchEvent(inputElem, 'change', false);
 			await oneEvent(elem, 'change');
-			await elem.updateComplete;
 			expect(elem.value).to.equal('2019-02-08');
 			expect(elem.invalid).to.be.false;
 			expect(elem.validationError).to.be.null;
@@ -283,10 +282,19 @@ describe('d2l-input-date', () => {
 			const inputElem = getChildElem(elem, 'd2l-input-text');
 			inputElem.value = '';
 			dispatchEvent(inputElem, 'change', false);
-			await elem.updateComplete;
+			await oneEvent(elem, 'change');
 			expect(elem.value).to.equal('');
 			expect(elem.invalid).to.be.false;
 			expect(elem.validationError).to.be.null;
+		});
+		it('should fix value on blur', async() => {
+			const elem = await fixture('<d2l-input-date min-value="2019-01-01" max-value="2020-12-02" label="Date" value="2019-10-01"></d2l-input-date>');
+			const inputElem = elem.shadowRoot.querySelector('d2l-input-text');
+			await focusElem(inputElem);
+			await sendKeysElem(inputElem, 'press', 'Backspace');
+			await sendKeys('press', 'Tab');
+			await aTimeout(100);
+			expect(elem.value).to.equal('2019-10-01');
 		});
 
 		describe('required', () => {
@@ -304,8 +312,8 @@ describe('d2l-input-date', () => {
 				const elem = await fixture('<d2l-input-date min-value="2020-01-02" label="Date" required></d2l-input-date>');
 				const inputElem = getChildElem(elem, 'd2l-input-text');
 				inputElem.value = '12/31/2019';
-				setTimeout(() => dispatchEvent(inputElem, 'change', false));
-				setTimeout(() => dispatchEvent(inputElem, 'blur', true));
+				dispatchEvent(inputElem, 'change', false);
+				dispatchEvent(inputElem, 'blur', true);
 				await oneEvent(elem, 'change');
 				await oneEvent(elem, 'blur');
 				await oneEvent(elem, 'invalid-change');
