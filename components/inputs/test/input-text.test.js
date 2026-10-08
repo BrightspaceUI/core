@@ -109,6 +109,11 @@ describe('d2l-input-text', () => {
 			expect(getInput(elem).type).to.equal('text');
 		});
 
+		it('should defualt "number" type to "text"', async() => {
+			elem.setAttribute('type', 'number');
+			expect(getInput(elem).type).to.equal('text');
+		});
+
 	});
 
 	describe('labelling', () => {
@@ -161,9 +166,7 @@ describe('d2l-input-text', () => {
 			/*{name: 'autocomplete', value: 'email'}, bug in Firefox: https://bugzilla.mozilla.org/show_bug.cgi?id=1583957 */
 			{ name: 'autofocus', value: true },
 			{ name: 'disabled', value: true },
-			{ name: 'max', value: '5' },
 			{ name: 'maxlength', propName: 'maxLength', value: 10 },
-			{ name: 'min', value: '1' },
 			{ name: 'minlength', propName: 'minLength', value: 3 },
 			{ name: 'name', value: 'jim' },
 			{ name: 'pattern', value: '[A-Za-z]+' },
@@ -303,28 +306,6 @@ describe('d2l-input-text', () => {
 			expect(errors).to.empty;
 		});
 
-		it('should be invalid when value is below the min', async() => {
-			const elem = await fixture(normalFixture);
-			elem.type = 'number';
-			elem.min = '10';
-			elem.value = '9';
-			await elem.updateComplete;
-
-			const errors = await elem.validate();
-			expect(errors).to.contain('Number must be greater than or equal to 10.');
-		});
-
-		it('should be invalid when value is above the max', async() => {
-			const elem = await fixture(normalFixture);
-			elem.type = 'number';
-			elem.max = '100';
-			elem.value = '110';
-			await elem.updateComplete;
-
-			const errors = await elem.validate();
-			expect(errors).to.contain('Number must be less than or equal to 100.');
-		});
-
 		it('should be valid when value is between min and max', async() => {
 			const elem = await fixture(normalFixture);
 			elem.type = 'number';
@@ -369,11 +350,11 @@ describe('d2l-input-text', () => {
 	describe('value', () => {
 
 		it('should update after other properties are updated', async() => {
-			const elem = await fixture(html`<d2l-input-text label="label" type="number" value="1"></d2l-input-text>`);
+			const elem = await fixture(html`<d2l-input-text label="label" type="url" value="1"></d2l-input-text>`);
 			const input = getInput(elem);
 			elem.type = 'text';
 			elem.value = 'Text';
-			expect(input.type).to.equal('number');
+			expect(input.type).to.equal('url');
 			expect(input.value).to.equal('1');
 			await elem.updateComplete;
 			expect(input.type).to.equal('text');
@@ -400,13 +381,21 @@ describe('d2l-input-text', () => {
 			expect(elem.value).to.equal('hello');
 		});
 
-		it('should change "value" property when input value is removed by type change', async() => {
-			const elem = await fixture(normalFixture);
-			elem.value = 'hello';
-			elem.type = 'number';
-			await elem.updateComplete;
-			await aTimeout(1);
-			expect(elem.value).to.equal('');
+		[
+			{ type: 'email' },
+			{ type: 'password' },
+			{ type: 'tel' },
+			{ type: 'search' },
+			{ type: 'url' },
+		].forEach(({ type }) => {
+			it('should not change "value" property when input value is removed by type change', async() => {
+				const elem = await fixture(normalFixture);
+				elem.value = 'hello';
+				elem.type = type;
+				await elem.updateComplete;
+				await aTimeout(1);
+				expect(elem.value).to.equal('hello');
+			});
 		});
 
 		it('should NOT fire "change" event because of blur event', async() => {

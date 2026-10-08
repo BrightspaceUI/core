@@ -57,9 +57,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 | `instructions` | String | Additional information relating to how to use the component |
 | `label-hidden` | Boolean | Hides the label visually (moves it to the input's `aria-label` attribute) |
 | `labelled-by` | String | HTML id of an element in the same shadow root which acts as the input's label |
-| `max` | String | For number inputs, maximum value |
 | `maxlength` | Number | Imposes an upper character limit |
-| `min` | String | For number inputs, minimum value |
 | `minlength` | Number | Imposes a lower character limit |
 | `name` | String | Name of the form control. Submitted with the form as part of a name/value pair. |
 | `novalidate` | Boolean | Disables the built-in validation |
@@ -70,7 +68,7 @@ The `<d2l-input-text>` element is a simple wrapper around the native `<input typ
 | `required` | Boolean | Indicates that a value is required |
 | `size` | Number | Size of the input |
 | `step` | String | For number inputs, sets the step size |
-| `type` | String, default: `text` | Can be one of `text`, `email`, `password`, `tel`, `url`. Type `number` is deprecated, use [d2l-input-number](./input-numeric.md) instead. |
+| `type` | String, default: `text` | Can be one of `text`, `email`, `password`, `tel`, `url` |
 | `unit` | String | Unit associated with the input value, displayed next to input and announced as part of the label |
 | `value` | String, default: `''` | Value of the input |
 
