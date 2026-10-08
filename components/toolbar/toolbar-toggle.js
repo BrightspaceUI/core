@@ -1,3 +1,4 @@
+import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -80,15 +81,15 @@ class ToolbarToggle extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(ThemeMi
 			<button
 				aria-disabled="${this.disabled ? 'true' : 'false'}"
 				aria-expanded="${ifDefined(this.expandable ? (this.expanded ? 'true' : 'false') : undefined)}"
-				aria-label="${this.text}"
 				aria-pressed="${ifDefined(!this.expandable ? (this.pressed ? 'true' : 'false') : undefined)}"
 				@click="${this.#handleClick}"
+				id="action-button"
 				tabindex="${this._activeFocusable ? 0 : -1}"
-				title="${this.text}"
 				type="button">
 				<div class="background"></div>
 				${this._renderIcon()}
 			</button>
+			<d2l-tooltip class="vdiff-target" for="action-button" for-type="label">${this.text}</d2l-tooltip>
 		`;
 	}
 

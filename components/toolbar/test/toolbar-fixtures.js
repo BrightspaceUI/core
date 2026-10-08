@@ -55,7 +55,7 @@ export function createToolbar({ template = createToolbarItems() } = {}) {
 
 export function createToolbarButton({ disabled = false, icon = icons[15], text = 'Fancy Button', theme } = {}) {
 	return html`
-		<d2l-toolbar-button ?disabled="${disabled}" icon="${ifDefined(icon.key)}" text="${text}" theme="${ifDefined(theme)}">
+		<d2l-toolbar-button class="vdiff-include" ?disabled="${disabled}" icon="${ifDefined(icon.key)}" text="${text}" theme="${ifDefined(theme)}">
 			${icon.template}
 		</d2l-toolbar-button>
 	`;
@@ -63,7 +63,7 @@ export function createToolbarButton({ disabled = false, icon = icons[15], text =
 
 export function createToolbarDropdown({ disabled = false, icon, text = 'Fancy Dropdown', template = createDropdownContent(), theme, valueText } = {}) {
 	return html`
-		<d2l-toolbar-dropdown ?disabled="${disabled}" icon="${ifDefined(icon?.key)}" text="${text}" theme="${ifDefined(theme)}" value-text="${ifDefined(valueText)}">
+		<d2l-toolbar-dropdown class="vdiff-include" ?disabled="${disabled}" icon="${ifDefined(icon?.key)}" text="${text}" theme="${ifDefined(theme)}" value-text="${ifDefined(valueText)}">
 			${icon?.template}
 			${template}
 		</d2l-toolbar-dropdown>
@@ -89,7 +89,7 @@ export function createToolbarSeparator({ theme } = {}) {
 
 export function createToolbarToggle({ disabled = false, expandable = false, expanded = false, icon = icons[15], pressed = false, text = 'Fancy Toggle', theme } = {}) {
 	return html`
-		<d2l-toolbar-toggle ?disabled="${disabled}" ?expandable="${ifDefined(expandable)}" ?expanded="${ifDefined(expanded)}" icon="${ifDefined(icon.key)}" ?pressed="${ifDefined(pressed)}" text="${text}" theme="${ifDefined(theme)}">
+		<d2l-toolbar-toggle class="vdiff-include" ?disabled="${disabled}" ?expandable="${ifDefined(expandable)}" ?expanded="${ifDefined(expanded)}" icon="${ifDefined(icon.key)}" ?pressed="${ifDefined(pressed)}" text="${text}" theme="${ifDefined(theme)}">
 			${icon.template}
 		</d2l-toolbar-toggle>
 	`;

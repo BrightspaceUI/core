@@ -30,12 +30,12 @@ async function hoverToolbarItem(elem) {
 	await oneEvent(elem, 'd2l-tooltip-show');
 }
 
-function hoverElemDarkTheme(elem) {
-	return hoverElem(elem.querySelector(':first-child'));
+function focusElemDarkTheme(elem) {
+	return focusToolbarItem(elem.querySelector(':first-child'));
 }
 
-function focusElemDarkTheme(elem) {
-	return focusElem(elem.querySelector(':first-child'));
+function hoverElemDarkTheme(elem) {
+	return hoverToolbarItem(elem.querySelector(':first-child'));
 }
 
 describe('d2l-toolbar', () => {
@@ -60,11 +60,11 @@ describe('d2l-toolbar-button', () => {
 	[
 		{ name: 'normal', allColorModes: true, template: createToolbarButton() },
 		{ name: 'iconset-icon', template: createToolbarButton({ icon: { key: 'tier1:mic' } }) },
-		{ name: 'hover', allColorModes: true, template: createToolbarButton(), action: hoverElem },
-		{ name: 'focus', allColorModes: true, template: createToolbarButton(), action: focusElem },
+		{ name: 'hover', allColorModes: true, template: createToolbarButton(), action: hoverToolbarItem },
+		{ name: 'focus', allColorModes: true, template: createToolbarButton(), action: focusToolbarItem },
 		{ name: 'disabled', allColorModes: true, template: createToolbarButton({ disabled: true }) },
-		{ name: 'disabled-hover', allColorModes: true, template: createToolbarButton({ disabled: true }), action: hoverElem },
-		{ name: 'disabled-focus', allColorModes: true, template: createToolbarButton({ disabled: true }), action: focusElem },
+		{ name: 'disabled-hover', allColorModes: true, template: createToolbarButton({ disabled: true }), action: hoverToolbarItem },
+		{ name: 'disabled-focus', allColorModes: true, template: createToolbarButton({ disabled: true }), action: focusToolbarItem },
 		{ name: 'dark-theme', template: createDarkContainer({ template: createToolbarButton({ theme: 'dark' }) }) },
 		{ name: 'dark-theme-iconset-icon', template: createDarkContainer({ template: createToolbarButton({ icon: { key: 'tier1:mic' }, theme: 'dark' }) }) },
 		{ name: 'dark-theme-hover', template: createDarkContainer({ template: createToolbarButton({ theme: 'dark' }) }), action: hoverElemDarkTheme },
@@ -81,23 +81,23 @@ describe('d2l-toolbar-toggle', () => {
 	[
 		{ name: 'normal', allColorModes: true, template: createToolbarToggle() },
 		{ name: 'iconset-icon', template: createToolbarToggle({ icon: { key: 'tier1:mic' } }) },
-		{ name: 'hover', allColorModes: true, template: createToolbarToggle(), action: hoverElem },
-		{ name: 'focus', allColorModes: true, template: createToolbarToggle(), action: focusElem },
+		{ name: 'hover', allColorModes: true, template: createToolbarToggle(), action: hoverToolbarItem },
+		{ name: 'focus', allColorModes: true, template: createToolbarToggle(), action: focusToolbarItem },
 		{ name: 'disabled', allColorModes: true, template: createToolbarToggle({ disabled: true }) },
-		{ name: 'disabled-hover', allColorModes: true, template: createToolbarToggle({ disabled: true }), action: hoverElem },
-		{ name: 'disabled-focus', allColorModes: true, template: createToolbarToggle({ disabled: true }), action: focusElem },
+		{ name: 'disabled-hover', allColorModes: true, template: createToolbarToggle({ disabled: true }), action: hoverToolbarItem },
+		{ name: 'disabled-focus', allColorModes: true, template: createToolbarToggle({ disabled: true }), action: focusToolbarItem },
 		{ name: 'pressed', allColorModes: true, template: createToolbarToggle({ pressed: true }) },
-		{ name: 'pressed-hover', allColorModes: true, template: createToolbarToggle({ pressed: true }), action: hoverElem },
-		{ name: 'pressed-focus', allColorModes: true, template: createToolbarToggle({ pressed: true }), action: focusElem },
+		{ name: 'pressed-hover', allColorModes: true, template: createToolbarToggle({ pressed: true }), action: hoverToolbarItem },
+		{ name: 'pressed-focus', allColorModes: true, template: createToolbarToggle({ pressed: true }), action: focusToolbarItem },
 		{ name: 'pressed-disabled', allColorModes: true, template: createToolbarToggle({ disabled: true, pressed: true }) },
-		{ name: 'pressed-disabled-hover', allColorModes: true, template: createToolbarToggle({ disabled: true, pressed: true }), action: hoverElem },
-		{ name: 'pressed-disabled-focus', allColorModes: true, template: createToolbarToggle({ disabled: true, pressed: true }), action: focusElem },
+		{ name: 'pressed-disabled-hover', allColorModes: true, template: createToolbarToggle({ disabled: true, pressed: true }), action: hoverToolbarItem },
+		{ name: 'pressed-disabled-focus', allColorModes: true, template: createToolbarToggle({ disabled: true, pressed: true }), action: focusToolbarItem },
 		{ name: 'expandable', allColorModes: true, template: createToolbarToggle({ expandable: true }) },
-		{ name: 'expandable-hover', allColorModes: true, template: createToolbarToggle({ expandable: true }), action: hoverElem },
-		{ name: 'expandable-focus', allColorModes: true, template: createToolbarToggle({ expandable: true }), action: focusElem },
+		{ name: 'expandable-hover', allColorModes: true, template: createToolbarToggle({ expandable: true }), action: hoverToolbarItem },
+		{ name: 'expandable-focus', allColorModes: true, template: createToolbarToggle({ expandable: true }), action: focusToolbarItem },
 		{ name: 'expandable-expanded', allColorModes: true, template: createToolbarToggle({ expandable: true, expanded: true }) },
-		{ name: 'expandable-expanded-hover', allColorModes: true, template: createToolbarToggle({ expandable: true, expanded: true }), action: hoverElem },
-		{ name: 'expandable-expanded-focus', allColorModes: true, template: createToolbarToggle({ expandable: true, expanded: true }), action: focusElem },
+		{ name: 'expandable-expanded-hover', allColorModes: true, template: createToolbarToggle({ expandable: true, expanded: true }), action: hoverToolbarItem },
+		{ name: 'expandable-expanded-focus', allColorModes: true, template: createToolbarToggle({ expandable: true, expanded: true }), action: focusToolbarItem },
 		{ name: 'dark-theme', template: createDarkContainer({ template: createToolbarToggle({ theme: 'dark' }) }) },
 		{ name: 'dark-theme-iconset-icon', template: createDarkContainer({ template: createToolbarToggle({ icon: { key: 'tier1:mic' }, theme: 'dark' }) }) },
 		{ name: 'dark-theme-hover', template: createDarkContainer({ template: createToolbarToggle({ theme: 'dark' }) }), action: hoverElemDarkTheme },

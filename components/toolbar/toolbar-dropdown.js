@@ -101,7 +101,7 @@ class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(To
 				<d2l-icon icon="tier1:chevron-down-small"></d2l-icon>
 			</button>
 			<d2l-tooltip class="${classMap(tooltipClasses)}" for="opener">
-				${this.text}
+				<span aria-hidden="true">${this.text}</span>
 				<span class="d2l-offscreen">${this.valueText}</span>
 			</d2l-tooltip>
 			<slot></slot>

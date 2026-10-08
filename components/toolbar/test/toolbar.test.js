@@ -125,11 +125,11 @@ describe('d2l-toolbar-button', () => {
 			expect(button.getAttribute('type')).to.equal('button');
 		});
 
-		it('renders button with aria-label and title using the text', async() => {
+		it('renders button with tooltip type="label" using the text', async() => {
 			const elem = await fixture(createToolbarButton());
-			const button = elem.shadowRoot.querySelector('button');
-			expect(button.getAttribute('aria-label')).to.equal('Fancy Button');
-			expect(button.getAttribute('title')).to.equal('Fancy Button');
+			const tooltip = elem.shadowRoot.querySelector('d2l-tooltip');
+			expect(tooltip.forType).to.equal('label');
+			expect(tooltip.textContent).to.equal('Fancy Button');
 		});
 
 		it('renders button with aria-disabled="true" when disabled', async() => {
@@ -189,11 +189,11 @@ describe('d2l-toolbar-toggle', () => {
 			expect(button.getAttribute('type')).to.equal('button');
 		});
 
-		it('renders button with aria-label and title using the text', async() => {
+		it('renders button with tooltip type="label" using the text', async() => {
 			const elem = await fixture(createToolbarToggle());
-			const button = elem.shadowRoot.querySelector('button');
-			expect(button.getAttribute('aria-label')).to.equal('Fancy Toggle');
-			expect(button.getAttribute('title')).to.equal('Fancy Toggle');
+			const tooltip = elem.shadowRoot.querySelector('d2l-tooltip');
+			expect(tooltip.forType).to.equal('label');
+			expect(tooltip.textContent).to.equal('Fancy Toggle');
 		});
 
 		it('renders button with aria-pressed="false" when not pressed', async() => {
@@ -317,6 +317,18 @@ describe('d2l-toolbar-dropdown', () => {
 			const elem = await fixture(createToolbarDropdown());
 			const button = elem.shadowRoot.querySelector('button');
 			expect(button.getAttribute('aria-label')).to.equal('Fancy Dropdown');
+		});
+
+		it('renders button with tooltip type="descriptor" using the text and value-text', async() => {
+			const elem = await fixture(createToolbarDropdown({ text: 'Color', valueText: 'Amethyst' }));
+			const tooltip = elem.shadowRoot.querySelector('d2l-tooltip');
+			expect(tooltip.forType).to.equal('descriptor');
+			const tooltipLabel = tooltip.querySelector(':first-child');
+			expect(tooltipLabel.textContent).to.equal('Color');
+			expect(tooltipLabel.ariaHidden).to.equal('true');
+			const tooltipValue = tooltip.querySelector(':last-child');
+			expect(tooltipValue.textContent).to.equal('Amethyst');
+			expect(tooltipValue.className).to.equal('d2l-offscreen');
 		});
 
 		it('renders button with aria-disabled="true" when disabled', async() => {

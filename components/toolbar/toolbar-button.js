@@ -1,3 +1,4 @@
+import '../tooltip/tooltip.js';
 import { html, LitElement } from 'lit';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
@@ -40,14 +41,14 @@ class ToolbarButton extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(ThemeMi
 		return html`
 			<button
 				aria-disabled="${this.disabled ? 'true' : 'false'}"
-				aria-label="${this.text}"
 				@click="${this.#handleClick}"
+				id="action-button"
 				tabindex="${this._activeFocusable ? 0 : -1}"
-				title="${this.text}"
 				type="button">
 				<div class="background"></div>
 				${this._renderIcon()}
 			</button>
+			<d2l-tooltip class="vdiff-target" for="action-button" for-type="label">${this.text}</d2l-tooltip>
 		`;
 	}
 
