@@ -175,8 +175,7 @@ export const heading2Svg = `<svg xmlns="http://www.w3.org/2000/svg" width="18" h
 </svg>`;
 
 export const horizontalRuleSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-  <path fill="none" d="M0 0h18v18H0z"/>
-  <path fill="none" stroke="#494c4e" stroke-linecap="round" stroke-width="2" d="M1 9h16"/>
+  <path fill="#494c4e" d="M17 8a1 1 0 1 1 0 2H1a1 1 0 0 1 0-2z"/>
 </svg>`;
 
 export const imageSvg = `<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
@@ -235,21 +234,10 @@ export const lightModeSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="18" 
 </svg>`;
 
 export const lineNumbersSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-  <defs>
-    <clipPath id="a">
-      <path d="M0 0h18v18H0z"/>
-    </clipPath>
-  </defs>
-  <g clip-path="url(#a)">
-    <g>
-      <g>
-        <path d="M2.502 16.001h-2a.5.5 0 1 1 0-1h1.5v-.5h-.5a.5.5 0 0 1 0-1h.5v-.5h-1.5a.5.5 0 1 1 0-1h2a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5Zm0-5h-2a.5.5 0 0 1-.5-.5.471.471 0 0 1 .09-.291s.05-.07.059-.09l.59-.84c.007-.009.67-.94.679-.95a.333.333 0 0 0 .08-.169.252.252 0 0 0-.065-.192.246.246 0 0 0-.178-.077h-.014a.234.234 0 0 0-.192.1.455.455 0 0 0-.035.074.352.352 0 0 1-.04.08.5.5 0 0 1-.809.02.506.506 0 0 1-.085-.433 1.244 1.244 0 0 1 2.42.41 1.3 1.3 0 0 1-.159.61c-.052.078-.864 1.24-.88 1.25h1.039a.5.5 0 1 1 0 1Zm-1-5a.5.5 0 0 1-.5-.5v-2.19l-.281.14a.531.531 0 0 1-.22.05.5.5 0 0 1-.45-.28.509.509 0 0 1 .23-.67l1-.5A.472.472 0 0 1 1.494 2a.478.478 0 0 1 .137.02.514.514 0 0 1 .13.05.019.019 0 0 0 .017.01l.034.029.012.01a.592.592 0 0 1 .047.042.888.888 0 0 1 .08.12.532.532 0 0 1 .051.22v3a.5.5 0 0 1-.5.5Z" fill="#494c4e"/>
-      </g>
-      <path fill="none" stroke="#494c4e" stroke-linecap="round" stroke-width="2" d="M6 9h11"/>
-      <path fill="none" stroke="#494c4e" stroke-linecap="round" stroke-width="2" d="M6 4h6"/>
-      <path fill="none" stroke="#494c4e" stroke-linecap="round" stroke-width="2" d="M6 14h10"/>
-    </g>
-  </g>
+  <path fill="#494c4e" d="M2.502 16.001h-2a.5.5 0 0 1 0-1h1.5v-.5h-.5a.5.5 0 0 1 0-1h.5v-.5h-1.5a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5m0-5h-2a.5.5 0 0 1-.5-.5.47.47 0 0 1 .09-.291s.05-.07.059-.09l.59-.84c.007-.009.67-.94.679-.95a.33.33 0 0 0 .08-.169.25.25 0 0 0-.065-.192.25.25 0 0 0-.178-.077h-.014a.23.23 0 0 0-.192.1.5.5 0 0 0-.035.074.4.4 0 0 1-.04.08.5.5 0 0 1-.894-.413 1.244 1.244 0 0 1 2.42.41 1.3 1.3 0 0 1-.159.61c-.052.078-.864 1.24-.88 1.25h1.039a.5.5 0 0 1 0 1zm-1-5a.5.5 0 0 1-.5-.5v-2.19l-.281.14a.5.5 0 0 1-.67-.23.51.51 0 0 1 .23-.67l1-.5a.47.47 0 0 1 .35-.031q.069.016.13.05a.02.02 0 0 0 .017.01l.034.029.012.01.047.042q.045.057.08.12.05.105.051.22v3a.5.5 0 0 1-.5.5"/>
+  <rect width="8" height="2" x="5" y="3" fill="#494c4e" rx="1"/>
+  <rect width="13" height="2" x="5" y="8" fill="#494c4e" rx="1"/>
+  <path fill="#494c4e" d="M5 14a1 1 0 0 1 1-1h10a1 1 0 1 1 0 2H6a1 1 0 0 1-1-1"/>
 </svg>`;
 
 export const linkSvg = `<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
@@ -346,23 +334,6 @@ export const strikeThroughSvg = `<svg width="18" height="18" xmlns="http://www.w
   <path fill="#494c4e" d="M18 9a1 1 0 0 1-1 1h-4.54A4 4 0 1 1 5 12a1 1 0 0 1 2 0 2 2 0 1 0 2-2H1a1 1 0 0 1 0-2h4.54A4 4 0 1 1 13 6a1 1 0 0 1-2 0 2 2 0 1 0-2 2h8a1 1 0 0 1 1 1z"/>
 </svg>`;
 
-export const stylizedQuoteSvg = `<svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-  <g fill="none" fill-rule="evenodd">
-    <g stroke="#494c4e" stroke-linecap="round" stroke-width=".5">
-      <path d="M3 6h13M3 8h13"/>
-      <g>
-        <path d="M3 10h13M3 12h13"/>
-      </g>
-    </g>
-    <text font-family="Helvetica-Bold, Helvetica" font-size="12" font-weight="bold" letter-spacing=".429" fill="#000">
-      <tspan x="0" y="10">“</tspan>
-    </text>
-    <text transform="rotate(180 14.5 11)" font-family="Helvetica-Bold, Helvetica" font-size="12" font-weight="bold" letter-spacing=".429" fill="#000">
-      <tspan x="11" y="14">“</tspan>
-    </text>
-  </g>
-</svg>`;
-
 export const subscriptSvg = `<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18">
   <path fill="#494c4e" d="M12.714 13.255a.972.972 0 0 1-.1 1.4.713.713 0 0 1-.6.3.908.908 0 0 1-.7-.3l-4.8-5.2-4.8 5.2a.908.908 0 0 1-.7.3.908.908 0 0 1-.7-.3 1.07 1.07 0 0 1-.1-1.4l4.9-5.3-4.8-5.3a.972.972 0 0 1 .1-1.4.972.972 0 0 1 1.4.1l4.8 5.2 4.8-5.2a1.07 1.07 0 0 1 1.4-.1 1.063 1.063 0 0 1 .1 1.4l-5 5.3zm5.3.2v3a.472.472 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h1.5v-.5h-.5a.5.5 0 0 1 0-1h.5v-.5h-1.5a.5.5 0 0 1 0-1h2a.472.472 0 0 1 .5.5z"/>
 </svg>`;
@@ -402,7 +373,12 @@ export const unorderedListSvg = `<svg width="18" height="18" xmlns="http://www.w
 </svg>`;
 
 export const wordCountSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-  <path fill="none" d="M0 0h18v18H0z"/>
-  <path d="M17 14.892H1a1 1 0 010-2h16a1 1 0 110 2zm0-5H1a1 1 0 110-2h16a1 1 0 110 2zM17.502 6h-2a.5.5 0 110-1h1.5v-.5h-.5a.5.5 0 110-1h.5V3h-1.5a.5.5 0 110-1h2a.5.5 0 01.5.5v3a.5.5 0 01-.5.5zm-4 0h-2a.5.5 0 01-.5-.5.476.476 0 01.09-.29c.009-.012.05-.072.059-.09l.59-.84c.007-.009.67-.941.68-.95a.334.334 0 00.08-.17.244.244 0 00-.065-.191.249.249 0 00-.183-.078h-.011a.236.236 0 00-.192.1.472.472 0 00-.035.073.342.342 0 01-.041.08.5.5 0 01-.809.021.506.506 0 01-.085-.435 1.244 1.244 0 012.42.409 1.3 1.3 0 01-.159.61c-.052.078-.864 1.24-.88 1.25h1.041a.5.5 0 110 1zm-5 0a.5.5 0 01-.5-.5V3.31l-.28.14a.544.544 0 01-.22.049.5.5 0 01-.45-.28.508.508 0 01.23-.67l1-.5A.472.472 0 018.492 2a.478.478 0 01.138.021.485.485 0 01.131.05.019.019 0 00.017.01l.049.04c.015.013.03.025.044.039a.9.9 0 01.08.121.537.537 0 01.051.219v3a.5.5 0 01-.5.5z" fill="#494c4e"/>
-  <path fill="none" stroke="#494c4e" stroke-linecap="round" stroke-width="2" d="M1 4h4"/>
+  <g fill="#494c4e" clip-path="url(#a)">
+    <path d="M17 14.892H1a1 1 0 0 1 0-2h16a1 1 0 1 1 0 2m0-5H1a1 1 0 0 1 0-2h16a1 1 0 1 1 0 2M17.502 6h-2a.5.5 0 0 1 0-1h1.5v-.5h-.5a.5.5 0 0 1 0-1h.5V3h-1.5a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5m-4 0h-2a.5.5 0 0 1-.41-.79c.009-.012.05-.072.059-.09l.59-.84c.007-.009.67-.941.68-.95a.33.33 0 0 0 .08-.17.244.244 0 0 0-.248-.269h-.011a.24.24 0 0 0-.192.1 1 1 0 0 0-.035.073.3.3 0 0 1-.041.08.5.5 0 0 1-.894-.414 1.244 1.244 0 1 1 2.261 1.019c-.052.078-.864 1.24-.88 1.25h1.041a.5.5 0 0 1 0 1.001m-5 0a.5.5 0 0 1-.5-.5V3.31l-.28.14a.5.5 0 0 1-.67-.231.51.51 0 0 1 .23-.67l1-.5a.47.47 0 0 1 .348-.028q.07.015.131.05a.02.02 0 0 0 .017.01l.049.04q.023.019.044.039a1 1 0 0 1 .08.121q.049.104.051.219v3a.5.5 0 0 1-.5.5M5 3a1 1 0 0 1 0 2H1a1 1 0 0 1 0-2z"/>
+  </g>
+  <defs>
+    <clipPath id="a">
+      <path fill="#fff" d="M0 0h18v18H0z"/>
+    </clipPath>
+  </defs>
 </svg>`;
