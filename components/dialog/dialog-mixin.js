@@ -104,7 +104,7 @@ export const DialogMixin = superclass => class extends superclass {
 		window.removeEventListener('d2l-mvc-dialog-open', this.#handleMvcDialogOpen);
 
 		// If the dialog is disconnected before the close animation finishes
-		if (this.opened) {
+		if (!this.#closeHandled) {
 			this._handleClose();
 		}
 	}
@@ -168,6 +168,7 @@ export const DialogMixin = superclass => class extends superclass {
 
 	#useNativeInitialized = false;
 	#ifrauDialogService = null;
+	#closeHandled = true;
 
 	#handleMvcDialogOpen = () => {
 		// native dialogs on top layer will be stacked on non-native dialogs regardless of z-index
@@ -391,6 +392,7 @@ export const DialogMixin = superclass => class extends superclass {
 				detail: { action: this._action }
 			}
 		));
+		this.#closeHandled = true;
 	}
 
 	_handleDialogCloseWithinNative(e) {
@@ -449,6 +451,7 @@ export const DialogMixin = superclass => class extends superclass {
 
 	async _open() {
 		if (!this.opened) return;
+		this.#closeHandled = false;
 
 		this._opener = getComposedActiveElement();
 		this._dismissibleId = setDismissible(() => {
