@@ -24,7 +24,7 @@ export default {
 	"components.filter.clearAllAnnounceOverride": "Clearing all filters for: {filterText}",
 	"components.filter.clearAllDescription": "Clear all filters",
 	"components.filter.clearAllDescriptionOverride": "Clear all filters for: {filterText}",
-	"components.filter.clearAnnounce": "Clearing filters for: {filterName}",
+	"components.filter.clearAnnounce": "Clearing filters for: '{filterName}'",
 	"components.filter.clearDescription": "Clear filters for: {filterName}",
 	"components.filter.filterCountDescription":
 		`{number, plural,
