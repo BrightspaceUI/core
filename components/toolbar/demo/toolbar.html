@@ -232,8 +232,10 @@
 				[...document.querySelectorAll('d2l-toolbar-toggle')].forEach(elem => {
 					elem.addEventListener('d2l-toolbar-toggle-change', e => console.log(e));
 				});
+				[...document.querySelectorAll('d2l-toolbar-menu-item')].forEach(elem => {
+					elem.addEventListener('d2l-toolbar-menu-item-select', e => console.log(e));
+				});
 			}, 1000);
 		</script>
 	</body>
 </html>
-

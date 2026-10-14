@@ -19,6 +19,11 @@ class ToolbarMenuItem extends MenuItemMixin(SlottedIconMixin(LitElement)) {
 		`];
 	}
 
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		this.addEventListener('d2l-menu-item-select', this.#handleMenuItemSelect);
+	}
+
 	render() {
 		const itemIconClasses = {
 			'item-icon-container': true,
@@ -32,6 +37,15 @@ class ToolbarMenuItem extends MenuItemMixin(SlottedIconMixin(LitElement)) {
 		`;
 
 	}
+
+	#handleMenuItemSelect = e => {
+		e.stopPropagation();
+
+		// ignore if target is not this item (nested menu case)
+		if (e.target !== this) return;
+
+		this.dispatchEvent(new CustomEvent('d2l-toolbar-menu-item-select'));
+	};
 
 }
 
