@@ -48,6 +48,9 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 				padding-inline-end: 0.3rem;
 				width: 1.2rem;
 			}
+			:host([_render-expand-collapse-slot]:not([expandable])) .d2l-list-expand-collapse {
+				pointer-events: none;
+			}
 			.d2l-list-expand-collapse-action {
 				cursor: pointer;
 				display: block;
@@ -139,7 +142,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 			return nothing;
 		}
 
-		return html`<div class="d2l-list-expand-collapse-action" @click="${this._toggleExpandCollapseAction}">${content || nothing}</div>`;
+		return html`<div class="d2l-list-expand-collapse-action" aria-hidden="true" @click="${this._toggleExpandCollapseAction}">${content || nothing}</div>`;
 	}
 
 	_renderNestedLoadingSpinner() {

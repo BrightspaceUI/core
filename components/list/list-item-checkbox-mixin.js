@@ -191,6 +191,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	_renderCheckboxAction(inner) {
 		return this.selectable ? html`
 			<div class="d2l-checkbox-action"
+				aria-hidden="true"
 				@click="${this._onCheckboxActionClick}"
 				@mouseenter="${this._onMouseEnterSelection}"
 				@mouseleave="${this._onMouseLeaveSelection}">

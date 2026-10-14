@@ -60,6 +60,7 @@ describe('ListItemExpandCollapseMixin', () => {
 				const actionArea = element.shadowRoot.querySelector('.d2l-list-expand-collapse-action');
 				if (test.actionAreaAvailable) {
 					expect(actionArea).to.exist;
+					expect(actionArea.ariaHidden).to.equal('true');
 				} else {
 					expect(actionArea).to.not.exist;
 				}

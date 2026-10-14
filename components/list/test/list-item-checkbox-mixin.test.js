@@ -41,32 +41,44 @@ describe('ListItemCheckboxMixin', () => {
 		}
 	});
 
-	describe('Does not render checkbox or action area when not selectable', () => {
+	describe('checkbox and action area', () => {
 		const cases = [{
 			input: '',
-			expected: { selectable: false, selectionDisabled: false, selected: false }
+			expected: { selectionDisabled: false, selected: false }
 		}, {
 			input: 'selection-disabled',
-			expected: { selectable: false, selectionDisabled: true, selected: false }
+			expected: { selectionDisabled: true, selected: false }
 		}, {
 			input: 'selection-disabled selected',
-			expected: { selectable: false, selectionDisabled: true, selected: true }
+			expected: { selectionDisabled: true, selected: true }
 		}, {
 			input: 'selected',
-			expected: { selectable: false, selectionDisabled: false, selected: true }
+			expected: { selectionDisabled: false, selected: true }
 		}];
-		for (const test of cases) {
-			it(test.input || 'empty', async() => {
-				const element = await fixture(`<${tag} key="1234" ${test.input}></${tag}>`);
-				const actionArea = element.shadowRoot.querySelector('.d2l-checkbox-action');
-				const selectionInput = element.shadowRoot.querySelector('d2l-selection-input');
-				expect(actionArea).to.be.null;
-				expect(selectionInput).to.be.null;
 
-				Object.keys(test.expected).forEach(prop =>
-					expect(element[prop]).to.be.equal(test.expected[prop]));
+		[true, false].forEach(selectable => {
+			const not = selectable ? '' : 'not ';
+			describe(`Does ${not}render checkbox or action area when ${not}selectable`, () => {
+				for (const test of cases) {
+					it(test.input || 'empty', async() => {
+						const element = await fixture(`<${tag} key="1234" ${test.input}${selectable ? ' selectable' : ''}></${tag}>`);
+						const actionArea = element.shadowRoot.querySelector('.d2l-checkbox-action');
+						const selectionInput = element.shadowRoot.querySelector('d2l-selection-input');
+						if (selectable) {
+							expect(actionArea).to.exist;
+							expect(actionArea.ariaHidden).to.equal('true');
+							expect(selectionInput).to.exist;
+						} else {
+							expect(actionArea).to.be.null;
+							expect(selectionInput).to.be.null;
+						}
+						expect(element.selectable).to.be.equal(selectable);
+						Object.keys(test.expected).forEach(prop =>
+							expect(element[prop]).to.be.equal(test.expected[prop]));
+					});
+				}
 			});
-		}
+		});
 	});
 
 	describe('Dispatches custom event when checkbox is checked', () => {
