@@ -1,8 +1,7 @@
 import '../dialog.js';
 import { defineCE, expect, fixture, nextFrame, oneDefaultPreventedEvent, oneEvent, sendKeys } from '@brightspace-ui/testing';
-import { html, LitElement, nothing } from 'lit';
+import { html, LitElement } from 'lit';
 import { DialogMixin } from '../dialog-mixin.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 const tagName = defineCE(
 	class extends DialogMixin(LitElement) {
@@ -10,26 +9,6 @@ const tagName = defineCE(
 			return this._render(html`
 				<div class="d2l-dialog-inner"><div class="d2l-dialog-content"></div></div>
 			`, {});
-		}
-	}
-);
-const consumerTagName = defineCE(
-	class extends LitElement {
-		static properties = {
-			renderDialog: { type: Boolean }
-		};
-		constructor() {
-			super();
-			this.renderDialog = true;
-		}
-		render() {
-			if (this.renderDialog) return unsafeHTML(`<${tagName} opened></${tagName}>`);
-			return nothing;
-		}
-
-		closeAndDisconnect() {
-			this.shadowRoot.querySelector(tagName).opened = false;
-			this.renderDialog = false;
 		}
 	}
 );
