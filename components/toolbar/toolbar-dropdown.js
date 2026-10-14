@@ -87,22 +87,21 @@ class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(To
 			'tooltip-hidden': this.opened,
 			'vdiff-target': true
 		};
-		const label = this.valueText ? `${this.text}: ${this.valueText}` : this.text;
 		return html`
 			<button
 				aria-disabled="${this.disabled ? 'true' : 'false'}"
-				aria-label="${label}"
 				id="opener"
 				@keydown="${this.#handleKeyDown}"
 				tabindex="${this._activeFocusable ? 0 : -1}"
 				type="button">
 				<div class="background"></div>
 				${this._renderIcon()}
-				${this.valueText ? html`<div class="value-text">${this.valueText}</div>` : nothing}
+				${this.valueText ? html`<div aria-hidden="true" class="value-text">${this.valueText}</div>` : nothing}
 				<d2l-icon icon="tier1:chevron-down-small"></d2l-icon>
 			</button>
-			<d2l-tooltip class="${classMap(tooltipClasses)}" for="opener">
-				<span aria-hidden="true">${this.text}</span>
+			<d2l-tooltip class="${classMap(tooltipClasses)}" for="opener" for-type="label">
+				<span>${this.text}</span>
+				<d2l-offscreen>${this.valueText}</d2l-offscreen>
 			</d2l-tooltip>
 			<slot></slot>
 		`;
