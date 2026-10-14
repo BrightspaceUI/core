@@ -1,7 +1,8 @@
 import '../dialog.js';
 import { defineCE, expect, fixture, nextFrame, oneDefaultPreventedEvent, oneEvent, sendKeys } from '@brightspace-ui/testing';
-import { html, LitElement } from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import { DialogMixin } from '../dialog-mixin.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 const tagName = defineCE(
 	class extends DialogMixin(LitElement) {
@@ -9,6 +10,26 @@ const tagName = defineCE(
 			return this._render(html`
 				<div class="d2l-dialog-inner"><div class="d2l-dialog-content"></div></div>
 			`, {});
+		}
+	}
+);
+const consumerTagName = defineCE(
+	class extends LitElement {
+		static properties = {
+			renderDialog: { type: Boolean }
+		};
+		constructor() {
+			super();
+			this.renderDialog = true;
+		}
+		render() {
+			if (this.renderDialog) return unsafeHTML(`<${tagName} opened></${tagName}>`);
+			return nothing;
+		}
+
+		closeAndDisconnect() {
+			this.shadowRoot.querySelector(tagName).opened = false;
+			this.renderDialog = false;
 		}
 	}
 );
@@ -96,26 +117,35 @@ describe('dialog-mixin', () => {
 	});
 
 	describe('on disconnect', () => {
-		it('should close dialog and re-enable body scrolling when disconnected', async() => {
-			const elem = await fixture(`<${tagName} opened></${tagName}>`);
-			await oneEvent(elem, 'd2l-dialog-open');
-			expect(document.body.style.overflow).to.equal('hidden');
 
-			elem.remove();
-			expect(elem.opened).to.be.false;
-			expect(document.body.style.overflow).to.equal('');
-		});
-
-		it('should close dialog and re-enable body scrolling when disconnected for native dialogs', async() => {
+		async function getDialogElement(useNative) {
+			if (!useNative) return fixture(`<${tagName} opened></${tagName}>`);
 			const elem = await fixture(`<${tagName}></${tagName}>`);
 			elem._useNative = true;
 			elem.opened = true;
-			await oneEvent(elem, 'd2l-dialog-open');
-			expect(document.body.style.overflow).to.equal('hidden');
+			return elem;
+		}
 
-			elem.remove();
-			expect(elem.opened).to.be.false;
-			expect(document.body.style.overflow).to.equal('');
+		[true, false].forEach(useNative => {
+			it(`should close dialog and re-enable body scrolling when disconnected${useNative ? ' for native dialogs' : ''}`, async() => {
+				const elem = await getDialogElement(useNative);
+				await oneEvent(elem, 'd2l-dialog-open');
+				expect(document.body.style.overflow).to.equal('hidden');
+
+				elem.remove();
+				expect(elem.opened).to.be.false;
+				expect(document.body.style.overflow).to.equal('');
+			});
+			it(`should re-enable body scrolling when closed and disconnected${useNative ? ' for native dialogs' : ''}`, async() => {
+				const elem = await getDialogElement(useNative);
+				await oneEvent(elem, 'd2l-dialog-open');
+				expect(document.body.style.overflow).to.equal('hidden');
+
+				elem.opened = false;
+				elem.remove();
+				expect(elem.opened).to.be.false;
+				expect(document.body.style.overflow).to.equal('');
+			});
 		});
 	});
 });
