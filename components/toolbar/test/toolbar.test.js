@@ -1,8 +1,10 @@
 import { clickElem, expect, fixture, html, nextFrame, oneEvent, runConstructor, sendKeysElem } from '@brightspace-ui/testing';
 import {
+	createMenu,
 	createToolbar,
 	createToolbarButton,
 	createToolbarDropdown,
+	createToolbarMenuItem,
 	createToolbarToggle,
 	openDropdown
 } from './toolbar-fixtures.js';
@@ -418,8 +420,24 @@ describe('d2l-toolbar-menu-item', () => {
 
 	describe('general', () => {
 
+		it('renders menu-item with role="menuitem"', async() => {
+			const elem = await fixture(createMenu({ template: [createToolbarMenuItem({ text: 'Item 1' })] }));
+			const item = elem.querySelector('d2l-toolbar-menu-item');
+			expect(item.getAttribute('role')).to.equal('menuitem');
+		});
 
+		it('renders menu-item with aria-label using the text', async() => {
+			const elem = await fixture(createMenu({ template: [createToolbarMenuItem({ text: 'Item 1' })] }));
+			const item = elem.querySelector('d2l-toolbar-menu-item');
+			expect(item.getAttribute('aria-label')).to.equal('Item 1');
+		});
 
+		it('dispatches the d2l-toolbar-menu-item-select event when clicked', async() => {
+			const elem = await fixture(createMenu({ template: [createToolbarMenuItem({ text: 'Item 1' })] }));
+			const item = elem.querySelector('d2l-toolbar-menu-item');
+			clickElem(item);
+			await oneEvent(item, 'd2l-toolbar-menu-item-select');
+		});
 
 	});
 
