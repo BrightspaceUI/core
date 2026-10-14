@@ -87,10 +87,11 @@ class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(To
 			'tooltip-hidden': this.opened,
 			'vdiff-target': true
 		};
+		const label = this.valueText ? `${this.text}: ${this.valueText}` : this.text;
 		return html`
 			<button
 				aria-disabled="${this.disabled ? 'true' : 'false'}"
-				aria-label="${this.text}"
+				aria-label="${label}"
 				id="opener"
 				@keydown="${this.#handleKeyDown}"
 				tabindex="${this._activeFocusable ? 0 : -1}"
@@ -102,7 +103,6 @@ class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(To
 			</button>
 			<d2l-tooltip class="${classMap(tooltipClasses)}" for="opener">
 				<span aria-hidden="true">${this.text}</span>
-				<span class="d2l-offscreen">${this.valueText}</span>
 			</d2l-tooltip>
 			<slot></slot>
 		`;
