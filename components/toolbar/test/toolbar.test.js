@@ -313,22 +313,23 @@ describe('d2l-toolbar-dropdown', () => {
 			expect(button.getAttribute('type')).to.equal('button');
 		});
 
-		it('renders button with aria-label using the text', async() => {
+		it('renders button with no aria-label', async() => {
 			const elem = await fixture(createToolbarDropdown());
 			const button = elem.shadowRoot.querySelector('button');
-			expect(button.getAttribute('aria-label')).to.equal('Fancy Dropdown');
+			expect(button.getAttribute('aria-label')).to.be.null;
 		});
 
-		it('renders button with tooltip type="descriptor" using the text and value-text', async() => {
+		it('renders button with tooltip type="label" using the text and value-text', async() => {
 			const elem = await fixture(createToolbarDropdown({ text: 'Color', valueText: 'Amethyst' }));
+			const elemValue = elem.shadowRoot.querySelector('.value-text');
+			expect(elemValue.ariaHidden).to.equal('true');
+
 			const tooltip = elem.shadowRoot.querySelector('d2l-tooltip');
-			expect(tooltip.forType).to.equal('descriptor');
+			expect(tooltip.forType).to.equal('label');
 			const tooltipLabel = tooltip.querySelector(':first-child');
 			expect(tooltipLabel.textContent).to.equal('Color');
-			expect(tooltipLabel.ariaHidden).to.equal('true');
 			const tooltipValue = tooltip.querySelector(':last-child');
 			expect(tooltipValue.textContent).to.equal('Amethyst');
-			expect(tooltipValue.className).to.equal('d2l-offscreen');
 		});
 
 		it('renders button with aria-disabled="true" when disabled', async() => {
