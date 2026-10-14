@@ -44,6 +44,7 @@ class ToolbarMenuItem extends MenuItemMixin(SlottedIconMixin(LitElement)) {
 		// ignore if target is not this item (nested menu case)
 		if (e.target !== this) return;
 
+		/** Dispatched when the toolbar menu item is selected */
 		this.dispatchEvent(new CustomEvent('d2l-toolbar-menu-item-select'));
 	};
 
