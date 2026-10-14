@@ -1,11 +1,13 @@
 import {
+	createMenu,
 	createToolbar,
 	createToolbarButton,
 	createToolbarDropdown,
+	createToolbarMenuItem,
 	createToolbarToggle,
 	icons
 } from './toolbar-fixtures.js';
-import { expect, fixture, focusElem, hoverElem } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, hoverElem, html } from '@brightspace-ui/testing';
 
 describe('d2l-toolbar', () => {
 
@@ -89,6 +91,20 @@ describe('d2l-toolbar-dropdown', () => {
 		{ name: 'icon-value-text-disabled', template: createToolbarDropdown({ disabled: true, icon: icons[16], valueText: 'Value Text' }) },
 		{ name: 'icon-value-text-disabled-hover', template: createToolbarDropdown({ disabled: true, icon: icons[16], valueText: 'Value Text' }), action: hoverElem },
 		{ name: 'icon-value-text-disabled-focus', template: createToolbarDropdown({ disabled: true, icon: icons[16], valueText: 'Value Text' }), action: focusElem }
+	].forEach(runItemTest);
+
+});
+
+describe('d2l-toolbar-menu-item', () => {
+
+	[
+		{ name: 'text', template: createMenu({ template: [createToolbarMenuItem({ text: 'Item 1' })] }) },
+		{ name: 'text-hover', template: createMenu({ template: [createToolbarMenuItem({ text: 'Item 1' })] }), action: elem => hoverElem(elem.querySelector('d2l-toolbar-menu-item')) },
+		{ name: 'text-focus', template: createMenu({ template: [createToolbarMenuItem({ text: 'Item 1' })] }), action: elem => focusElem(elem.querySelector('d2l-toolbar-menu-item')) },
+		{ name: 'text-custom', template: createMenu({ template: [createToolbarMenuItem({ text: 'Heading 1', textTemplate: html`<h1 slot="text" role="none">Heading 1</h1>` })] }) },
+		{ name: 'icon', template: createMenu({ template: [createToolbarMenuItem({ icon: icons[15], text: 'Item 1' })] }) },
+		{ name: 'icon-hover', template: createMenu({ template: [createToolbarMenuItem({ icon: icons[15], text: 'Item 1' })] }), action: elem => hoverElem(elem.querySelector('d2l-toolbar-menu-item')) },
+		{ name: 'icon-focus', template: createMenu({ template: [createToolbarMenuItem({ icon: icons[15], text: 'Item 1' })] }), action: elem => focusElem(elem.querySelector('d2l-toolbar-menu-item')) }
 	].forEach(runItemTest);
 
 });

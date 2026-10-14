@@ -406,6 +406,25 @@ describe('d2l-toolbar-dropdown', () => {
 
 });
 
+describe('d2l-toolbar-menu-item', () => {
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-toolbar-menu-item');
+		});
+
+	});
+
+	describe('general', () => {
+
+
+
+
+	});
+
+});
+
 describe('d2l-toolbar-separator', () => {
 
 	describe('constructor', () => {

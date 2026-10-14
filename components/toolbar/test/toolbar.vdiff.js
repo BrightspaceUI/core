@@ -1,20 +1,22 @@
 import '../toolbar.js';
 import {
 	createDarkContainer,
+	createMenu,
 	createToolbar,
 	createToolbarButton,
 	createToolbarDropdown,
 	createToolbarItems,
+	createToolbarMenuItem,
 	createToolbarSeparator,
 	createToolbarToggle,
 	icons,
 	openDropdown
 } from './toolbar-fixtures.js';
-import { expect, fixture, focusElem, hoverElem, oneEvent } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, hoverElem, html, oneEvent } from '@brightspace-ui/testing';
 
-function runItemTest({ action, allColorModes, name, template }) {
+function runItemTest({ action, allColorModes, name, rtl, template }) {
 	it(name, async() => {
-		const elem = await fixture(template);
+		const elem = await fixture(template, { rtl });
 		if (action) await action(elem);
 		await expect(elem).to.be.golden({ allColorModes });
 	});
@@ -141,6 +143,27 @@ describe('d2l-toolbar-dropdown', () => {
 		{ name: 'dark-theme-icon-value-text', template: createDarkContainer({ template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst', theme: 'dark' }) }) },
 		{ name: 'dark-theme-icon-value-text-hover', template: createDarkContainer({ template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst', theme: 'dark' }) }), action: hoverElemDarkTheme },
 		{ name: 'dark-theme-icon-value-text-focus', template: createDarkContainer({ template: createToolbarDropdown({ icon: icons[17], valueText: 'Amethyst', theme: 'dark' }) }), action: focusElemDarkTheme }
+	].forEach(runItemTest);
+
+});
+
+describe('d2l-toolbar-menu-item', () => {
+
+	[
+		{ name: 'text', allColorModes: true, template: createMenu({ template: [createToolbarMenuItem({ text: 'Item 1' }), createToolbarMenuItem({ text: 'Item 2' })] }) },
+		{ name: 'text-hover', allColorModes: true, template: createMenu({ template: [createToolbarMenuItem({ text: 'Item 1' }), createToolbarMenuItem({ text: 'Item 2' })] }), action: elem => hoverElem(elem.querySelector('d2l-toolbar-menu-item')) },
+		{ name: 'text-focus', allColorModes: true, template: createMenu({ template: [createToolbarMenuItem({ text: 'Item 1' }), createToolbarMenuItem({ text: 'Item 2' })] }), action: elem => focusElem(elem.querySelector('d2l-toolbar-menu-item')) },
+		{ name: 'text-long', template: createMenu({ template: [createToolbarMenuItem({ text: 'ItemWithTextThatIsLongAndUnbreakable' }), createToolbarMenuItem({ text: 'Item 2' })] }) },
+		{ name: 'text-custom', allColorModes: true, template: createMenu({ template: [createToolbarMenuItem({ text: 'Heading 1', textTemplate: html`<h1 slot="text" role="none">Heading 1</h1>` }), createToolbarMenuItem({ text: 'Heading 2', textTemplate: html`<h2 slot="text" role="none">Heading 2</h2>` }), createToolbarMenuItem({ text: 'Heading 3', textTemplate: html`<h3 slot="text" role="none">Heading 3</h3>` })] }) },
+		{ name: 'text-custom-hover', allColorModes: true, template: createMenu({ template: [createToolbarMenuItem({ text: 'Heading 1', textTemplate: html`<h1 slot="text" role="none">Heading 1</h1>` }), createToolbarMenuItem({ text: 'Heading 2', textTemplate: html`<h2 slot="text" role="none">Heading 2</h2>` }), createToolbarMenuItem({ text: 'Heading 3', textTemplate: html`<h3 slot="text" role="none">Heading 3</h3>` })] }), action: elem => hoverElem(elem.querySelector('d2l-toolbar-menu-item')) },
+		{ name: 'text-custom-focus', allColorModes: true, template: createMenu({ template: [createToolbarMenuItem({ text: 'Heading 1', textTemplate: html`<h1 slot="text" role="none">Heading 1</h1>` }), createToolbarMenuItem({ text: 'Heading 2', textTemplate: html`<h2 slot="text" role="none">Heading 2</h2>` }), createToolbarMenuItem({ text: 'Heading 3', textTemplate: html`<h3 slot="text" role="none">Heading 3</h3>` })] }), action: elem => focusElem(elem.querySelector('d2l-toolbar-menu-item')) },
+		{ name: 'nested-menu', template: createMenu({ template: [createToolbarMenuItem({ text: 'Item 1', nestedTemplate: createMenu() }), createToolbarMenuItem({ text: 'Item 2' })] }) },
+		{ name: 'nested-menu-rtl', rtl: true, template: createMenu({ template: [createToolbarMenuItem({ text: 'Item 1', nestedTemplate: createMenu() }), createToolbarMenuItem({ text: 'Item 2' })] }) },
+		{ name: 'icon', allColorModes: true, template: createMenu({ template: [createToolbarMenuItem({ icon: icons[15], text: 'Item 1' }), createToolbarMenuItem({ icon: icons[16], text: 'Item 2' })] }) },
+		{ name: 'icon-rtl', rtl: true, template: createMenu({ template: [createToolbarMenuItem({ icon: icons[15], text: 'Item 1' }), createToolbarMenuItem({ icon: icons[16], text: 'Item 2' })] }) },
+		{ name: 'iconset-icon', template: createMenu({ template: [createToolbarMenuItem({ icon: { key: 'tier1:edit', text: 'Item 1' } }), createToolbarMenuItem({ icon: { key: 'tier1:mic', text: 'Item 1' } })] }) },
+		{ name: 'icon-hover', allColorModes: true, template: createMenu({ template: [createToolbarMenuItem({ icon: icons[15], text: 'Item 1' }), createToolbarMenuItem({ icon: icons[16], text: 'Item 2' })] }), action: elem => hoverElem(elem.querySelector('d2l-toolbar-menu-item')) },
+		{ name: 'icon-focus', allColorModes: true, template: createMenu({ template: [createToolbarMenuItem({ icon: icons[15], text: 'Item 1' }), createToolbarMenuItem({ icon: icons[16], text: 'Item 2' })] }), action: elem => focusElem(elem.querySelector('d2l-toolbar-menu-item')) }
 	].forEach(runItemTest);
 
 });
