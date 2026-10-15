@@ -65,11 +65,19 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 
 		.d2l-dialog-header > div {
 			display: flex;
-			flex-direction: row-reverse;
 		}
 
-		.d2l-dialog-header > div > d2l-button-icon {
+		.abort-button {
+			inset-block-start: 15px; /* padding - 4px */
+			inset-inline-end: 15px; /* padding - 15px */
+			position: absolute;
+			z-index: 1; /* stack abort button on top of header */
+		}
+
+		.abort-button-placeholder {
 			flex: none;
+			height: calc(2rem + 2px); /* match button-icon height */
+			width: calc(2rem + 2px); /* match button-icon width */
 			margin-block: -4px 0;
 			margin-inline: 15px -15px;
 		}
@@ -174,14 +182,15 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 			<div class="d2l-dialog-inner" style=${styleMap(heightOverride)}>
 				<div class="d2l-dialog-header">
 					<div>
-						<d2l-button-icon icon="tier1:close-small" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 						${this._renderHeading(this.titleText, { id: this._titleId, class: 'd2l-heading-3' })}
+						<div class="abort-button-placeholder"></div>
 					</div>
 				</div>
 				${this._renderContent(content, { handleAsyncItemState: this._handleAsyncItemState, hasTitleText: !!this.titleText })}
 				<div class="${classMap(footerClasses)}">
 					<slot name="footer" @slotchange="${this._handleFooterSlotChange}"></slot>
 				</div>
+				<d2l-button-icon class="abort-button" icon="tier1:close-small" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 			</div>
 		`;
 
