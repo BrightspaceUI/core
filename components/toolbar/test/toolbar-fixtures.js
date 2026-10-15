@@ -1,10 +1,12 @@
 import '../toolbar.js';
 import '../toolbar-button.js';
 import '../toolbar-dropdown.js';
+import '../toolbar-menu-item.js';
 import '../toolbar-separator.js';
 import '../toolbar-toggle.js';
 import '../../dropdown/dropdown-content.js';
 import '../../icons/icon-custom.js';
+import '../../menu/menu.js';
 import { codeSvg, formatPainterSvg, insertSvg, mathmlEquationSvg, textColorSvg } from '../../icons/editor-icons.js';
 import { html, oneEvent } from '@brightspace-ui/testing';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -79,6 +81,20 @@ export function createToolbarItems({ count = 4, separators = false, theme } = {}
 		}
 	}
 	return itemTemplates;
+}
+
+export function createMenu({ template } = {}) {
+	return html`<d2l-menu label="Options Menu" style="width: 200px;">${template}</d2l-menu>`;
+}
+
+export function createToolbarMenuItem({ icon, nestedTemplate, textTemplate, text = 'Item' } = {}) {
+	return html`
+		<d2l-toolbar-menu-item icon="${ifDefined(icon?.key)}" text="${text}">
+			${textTemplate}
+			${icon?.template}
+			${nestedTemplate}
+		</d2l-toolbar-menu-item>
+	`;
 }
 
 export function createToolbarSeparator({ theme } = {}) {
