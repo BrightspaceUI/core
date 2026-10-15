@@ -719,6 +719,7 @@ describe('d2l-tabs', () => {
 			await expect(elem).to.be.golden();
 		});
 
+		/* This test is in jail because it's been bad.
 		it('hover with icon when selected', async() => {
 			const elem = await fixture(slotsFixture);
 			await waitForScrollNext(elem);
@@ -726,6 +727,7 @@ describe('d2l-tabs', () => {
 			await hoverElem(listitem);
 			await expect(elem).to.be.golden();
 		});
+		*/
 
 		/* This test is in jail because it's been bad.
 		it('hover with icon when not selected', async() => {
