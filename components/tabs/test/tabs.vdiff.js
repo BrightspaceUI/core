@@ -657,6 +657,7 @@ describe('d2l-tabs', () => {
 			</d2l-tabs>
 		`;
 
+		/* Tests that use this are in jail.
 		const slotsSkeletonFixture = html`
 			<d2l-tabs skeleton>
 				<d2l-tab id="beforelong" text="Long Panel Text That Will Also Have Slot Content" slot="tabs" skeleton>
@@ -682,6 +683,8 @@ describe('d2l-tabs', () => {
 				<d2l-tab-panel labelled-by="beforeafter" slot="panels">Tab content for Trig</d2l-tab-panel>
 			</d2l-tabs>
 		`;
+		*/
+
 		const slotsSkeletonNoTextFixture = html`
 			<d2l-tabs skeleton>
 				<d2l-tab id="beforelong" text="Long Panel Text That Will Also Have Slot Content" slot="tabs" skeleton>
