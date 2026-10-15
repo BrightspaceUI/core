@@ -31,7 +31,7 @@ describe('d2l-link', () => {
 	});
 
 	it('with aria-label', async() => {
-		const elem = await fixture(html`<d2l-link href="https://www.d2l.com" aria-label="Custom accessible label">Link</d2l-link>`);
+		const elem = await fixture(html`<d2l-link href="https://www.d2l.com" aria-label="Link with Custom accessible label">Link</d2l-link>`);
 		await expect(elem).to.be.accessible();
 	});
 
