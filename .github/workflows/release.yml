@@ -30,7 +30,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Semantic Release
-        uses: BrightspaceUI/actions/semantic-release@main
+        uses: BrightspaceUI/actions/semantic-release@GAUD-10791/update-semantic-release-git
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
