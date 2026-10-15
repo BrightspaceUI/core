@@ -77,9 +77,9 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		.abort-button-placeholder {
 			flex: none;
 			height: calc(2rem + 2px); /* match button-icon height */
-			width: calc(2rem + 2px); /* match button-icon width */
 			margin-block: -4px 0;
 			margin-inline: 15px -15px;
+			width: calc(2rem + 2px); /* match button-icon width */
 		}
 
 		.d2l-dialog-content > div {
