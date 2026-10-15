@@ -68,8 +68,8 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 		}
 
 		.abort-button {
-			inset-block-start: 15px; /* padding - 4px */
-			inset-inline-end: 15px; /* padding - 15px */
+			inset-block-start: calc(19px - 4px); /* padding - 4px */
+			inset-inline-end: calc(30px - 15px); /* padding - 15px */
 			position: absolute;
 			z-index: 1; /* stack abort button on top of header */
 		}
@@ -80,6 +80,10 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 			margin-block: -4px 0;
 			margin-inline: 15px -15px;
 			width: calc(2rem + 2px); /* match button-icon width */
+		}
+
+		:host([critical]) .abort-button {
+			inset-block-start: calc(19px - 4px + 0.4rem); /* padding - 4px + 0.4rem (critical) */
 		}
 
 		.d2l-dialog-content > div {
@@ -104,13 +108,18 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 			}
 
 			.abort-button {
-				inset-block-start: 6px; /* padding - 8px */
-				inset-inline-end: 7px; /* padding - 13px */
+				inset-block-start: calc(14px - 8px); /* padding - 8px */
+				inset-inline-end: calc(20px - 13px); /* padding - 13px */
 			}
 
 			.abort-button-placeholder {
 				margin-block: -8px 0;
 				margin-inline: 15px -13px;
+			}
+
+			:host([critical]) .abort-button {
+				inset-block-start: calc(19px - 8px + 0.4rem); /* padding - 8px + 0.4rem (critical) */
+				inset-inline-end: calc(30px - 13px); /* padding - 13px */
 			}
 
 		}
