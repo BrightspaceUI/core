@@ -103,6 +103,16 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 				padding-bottom: 9px;
 			}
 
+			.abort-button {
+				inset-block-start: 6px; /* padding - 8px */
+				inset-inline-end: 7px; /* padding - 13px */
+			}
+
+			.abort-button-placeholder {
+				margin-block: -8px 0;
+				margin-inline: 15px -13px;
+			}
+
 		}
 
 	`];
