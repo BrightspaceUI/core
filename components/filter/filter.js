@@ -29,6 +29,7 @@ import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
+import { getNextFocusable } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -472,6 +473,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 		const clear = html`
 			<d2l-button-subtle
+				class="button-clear"
 				@click="${this._handleClear}"
 				?disabled="${dimension.loading || dimension.appliedCount === 0}"
 				description="${this.localize('components.filter.clearDescription', { filterName: dimension.text })}"
@@ -766,18 +768,18 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 	_handleClear() {
 		const dimension = this._getActiveDimension();
+		announce(this.localize('components.filter.clearAnnounce', { filterName: dimension.text }));
 
 		if (dimension.searchType !== 'none') {
 			this._handleClearSearch(dimension);
 			const searchInput = this.shadowRoot.querySelector('d2l-input-search');
 			if (searchInput) searchInput.value = '';
 		}
-
+		const buttonClear = this.shadowRoot.querySelector('.button-clear');
+		if (this.shadowRoot.activeElement === buttonClear) getNextFocusable(buttonClear, false, true, true).focus();
 		this._performDimensionClear(dimension);
 		this._dispatchChangeEventNow(false);
 		this.requestUpdate();
-
-		announce(this.localize('components.filter.clearAnnounce', { filterName: dimension.text }));
 	}
 
 	_handleClearAll() {
