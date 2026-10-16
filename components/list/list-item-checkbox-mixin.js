@@ -2,6 +2,7 @@ import '../selection/selection-input.js';
 import { css, html, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { isInteractiveInListItemComposedPath } from './list-item-mixin.js';
 import { SelectionInfo } from '../selection/selection-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
@@ -191,7 +192,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 	_renderCheckboxAction(inner) {
 		return this.selectable ? html`
 			<div class="d2l-checkbox-action"
-				aria-hidden="true"
+				aria-hidden="${ifDefined(inner ? undefined : 'true')}"
 				@click="${this._onCheckboxActionClick}"
 				@mouseenter="${this._onMouseEnterSelection}"
 				@mouseleave="${this._onMouseLeaveSelection}">

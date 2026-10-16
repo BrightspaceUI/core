@@ -5,10 +5,17 @@ import { ListItemCheckboxMixin } from '../list-item-checkbox-mixin.js';
 
 const tag = defineCE(
 	class extends ListItemCheckboxMixin(LitElement) {
+		static properties = {
+			noActionContent: { type: Boolean, attribute: 'no-action-content' }
+		};
+		constructor() {
+			super();
+			this.noActionContent = false;
+		}
 		render() {
 			return html`
 				${this._renderCheckbox()}
-				${this._renderCheckboxAction('item label')}
+				${this._renderCheckboxAction(this.noActionContent ? '' : 'item label')}
 			`;
 		}
 	}
@@ -54,6 +61,9 @@ describe('ListItemCheckboxMixin', () => {
 		}, {
 			input: 'selected',
 			expected: { selectionDisabled: false, selected: true }
+		}, {
+			input: 'selected no-action-content',
+			expected: { selectionDisabled: false, selected: true }
 		}];
 
 		[true, false].forEach(selectable => {
@@ -66,7 +76,7 @@ describe('ListItemCheckboxMixin', () => {
 						const selectionInput = element.shadowRoot.querySelector('d2l-selection-input');
 						if (selectable) {
 							expect(actionArea).to.exist;
-							expect(actionArea.ariaHidden).to.equal('true');
+							expect(actionArea.ariaHidden).to.equal(test.input.indexOf('no-action-content') > -1 ? 'true' : null);
 							expect(selectionInput).to.exist;
 						} else {
 							expect(actionArea).to.be.null;
