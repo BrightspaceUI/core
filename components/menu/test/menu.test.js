@@ -250,6 +250,23 @@ describe('d2l-menu', () => {
 			expect(elem.querySelector('#a2').getAttribute('tabindex')).to.equal('-1');
 		});
 
+		it('preserves tabindex on focused item when hiding nested menu', async() => {
+			await focusElem(elem);
+			// Navigate to nested menu item opener to move tabindex(clicking does not change tabindex)
+			await sendKeys('press', 'ArrowDown');
+			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('-1');
+			expect(elem.querySelector('#b1').getAttribute('tabindex')).to.equal('0');
+
+			// Open, then close nested menu
+			sendKeys('press', 'ArrowRight');
+			await oneEvent(elem, 'd2l-hierarchical-view-show-complete');
+			sendKeys('press', 'Escape');
+			await oneEvent(elem, 'd2l-hierarchical-view-hide-complete');
+
+			expect(elem.querySelector('#a1').getAttribute('tabindex')).to.equal('-1');
+			expect(elem.querySelector('#b1').getAttribute('tabindex')).to.equal('0');
+		});
+
 	});
 
 	describe('slots', () => {

@@ -163,7 +163,9 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		}
 	}
 
-	resetFocusables() {
+	resetFocusables(isActiveView) {
+		const focusable = this._getTabFocusable();
+		if (isActiveView && focusable.getRootNode().activeElement === focusable) return;
 		this._getTabFocusable()?.setAttribute('tabindex', '-1');
 	}
 
@@ -281,8 +283,8 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 		if (returnItem) returnItem.setAttribute('text', this.label);
 	}
 
-	_onHideComplete() {
-		this.resetFocusables();
+	_onHideComplete(e) {
+		this.resetFocusables(e.detail.activeView === this);
 		this.active = this.isActive();
 	}
 
