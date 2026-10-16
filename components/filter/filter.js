@@ -24,12 +24,12 @@ import '../tooltip/tooltip.js';
 
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { formatNumber } from '@brightspace-ui/intl/lib/number.js';
-import { getNextFocusable } from '../../helpers/focus.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
@@ -776,7 +776,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			if (searchInput) searchInput.value = '';
 		}
 		const buttonClear = this.shadowRoot.querySelector('.button-clear');
-		if (this.shadowRoot.activeElement === buttonClear) getNextFocusable(buttonClear, false, true, true).focus();
+		if (this.shadowRoot.activeElement === buttonClear) {
+			const focusable = getNextFocusable(buttonClear, false, true, true) ?? getPreviousFocusable(buttonClear, false, true, true);
+			focusable?.focus();
+		}
 		this._performDimensionClear(dimension);
 		this._dispatchChangeEventNow(false);
 		this.requestUpdate();
