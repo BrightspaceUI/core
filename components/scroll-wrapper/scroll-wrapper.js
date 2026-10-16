@@ -6,7 +6,7 @@ import { getFocusRingStyles } from '../../helpers/focus.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 
 const RTL_MULTIPLIER = navigator.userAgent.indexOf('Edge/') > 0 ? 1 : -1; /* legacy-Edge doesn't reverse scrolling in RTL */
-const SCROLL_AMOUNT = 0.8;
+export const SCROLL_AMOUNT = 0.8;
 
 let focusStyleSheet;
 function getFocusStyleSheet() {
@@ -211,6 +211,11 @@ class ScrollWrapper extends LocalizeCoreElement(LitElement) {
 
 		if (changedProperties.has('customScrollers')) this._updateScrollTargets();
 		if (changedProperties.has('_hScrollbar')) this._updateTabIndex();
+		if (changedProperties.has('scrollAreaOffset')) {
+			this._allScrollers.forEach(element => {
+				if (this.scrollAreaOffset) element.style.scrollPaddingInlineStart = `${this.scrollAreaOffset}px`;
+			});
+		};
 	}
 
 	checkScrollbar() {
