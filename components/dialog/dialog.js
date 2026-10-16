@@ -63,11 +63,6 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 			padding-bottom: 15px;
 		}
 
-		.d2l-dialog-header > div {
-			display: flex;
-			flex-direction: row-reverse;
-		}
-
 		.d2l-dialog-header > div > d2l-button-icon {
 			flex: none;
 			margin-block: -4px 0;
@@ -174,8 +169,8 @@ class Dialog extends PropertyRequiredMixin(LocalizeCoreElement(AsyncContainerMix
 			<div class="d2l-dialog-inner" style=${styleMap(heightOverride)}>
 				<div class="d2l-dialog-header">
 					<div>
-						<d2l-button-icon icon="tier1:close-small" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 						${this._renderHeading(this.titleText, { id: this._titleId, class: 'd2l-heading-3' })}
+						<d2l-button-icon icon="tier1:close-small" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
 				${this._renderContent(content, { handleAsyncItemState: this._handleAsyncItemState, hasTitleText: !!this.titleText })}

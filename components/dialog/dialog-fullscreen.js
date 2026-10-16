@@ -49,11 +49,6 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 
 	static styles = [_generateResetStyles(':host'), dialogStyles, heading2Styles, heading3Styles, css`
 
-		.d2l-dialog-header > div {
-			display: flex;
-			flex-direction: row-reverse;
-		}
-
 		.d2l-dialog-footer.d2l-footer-no-content {
 			display: none;
 		}
@@ -260,8 +255,8 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 			<div class="d2l-dialog-inner" style=${styleMap(heightOverride)}>
 				<div class="d2l-dialog-header">
 					<div>
-						<d2l-button-icon icon="${this._icon}" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 						${this._renderHeading(this.titleText, { id: this._titleId, class: this._headerStyle })}
+						<d2l-button-icon icon="${this._icon}" text="${this.localize('components.dialog.close')}" @click="${this._abort}"></d2l-button-icon>
 					</div>
 				</div>
 				${this._renderContent(content, { handleAsyncItemState: this._handleAsyncItemState, hasTitleText: !!this.titleText })}
