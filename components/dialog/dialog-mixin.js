@@ -376,6 +376,7 @@ export const DialogMixin = superclass => class extends superclass {
 	}
 
 	_handleClose() {
+		this.#closeHandled = true;
 		/* reset state if native dialog closes unexpectedly. ex. user highlights
 		text and then hits escape key - this is not caught by our key handler */
 		this._removeHandlers();
@@ -392,7 +393,6 @@ export const DialogMixin = superclass => class extends superclass {
 				detail: { action: this._action }
 			}
 		));
-		this.#closeHandled = true;
 	}
 
 	_handleDialogCloseWithinNative(e) {
