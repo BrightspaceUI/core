@@ -1,5 +1,3 @@
-import { getFlag } from './flags.js';
-
 export function elemIdListAdd(elem, attrName, value) {
 
 	if (elem === undefined || elem === null || !elem.getAttribute || !elem.setAttribute) {
@@ -156,13 +154,10 @@ function getComposedElementSibling(node, { direction = 'next', predicate } = {})
 
 export function getComposedNextAncestorElementSibling(node, { predicate } = {}) {
 
-	const focusableFixFlag = getFlag('GAUD-10260-get-focusable-fix', true);
-
 	let parentNode = getComposedParent(node);
 
 	while (parentNode) {
-		// Clean-up this next line when cleaning up GAUD-10260-get-focusable-fix
-		const nextParentSibling = focusableFixFlag ? getComposedNextElementSibling(parentNode, { predicate }) : parentNode.nextElementSibling;
+		const nextParentSibling = getComposedNextElementSibling(parentNode, { predicate });
 		if (nextParentSibling) return nextParentSibling;
 		parentNode = getComposedParent(parentNode);
 	}
@@ -199,13 +194,10 @@ export function getComposedParent(node) {
 
 export function getComposedPreviousAncestorElementSibling(node, { predicate } = {}) {
 
-	const focusableFixFlag = getFlag('GAUD-10260-get-focusable-fix', true);
-
 	let parentNode = getComposedParent(node);
 
 	while (parentNode) {
-		// Clean-up this next line when cleaning up GAUD-10260-get-focusable-fix
-		const previousParentSibling = focusableFixFlag ? getComposedPreviousElementSibling(parentNode, { predicate }) : parentNode.previousElementSibling;
+		const previousParentSibling = getComposedPreviousElementSibling(parentNode, { predicate });
 		if (previousParentSibling) return previousParentSibling;
 		parentNode = getComposedParent(parentNode);
 	}
