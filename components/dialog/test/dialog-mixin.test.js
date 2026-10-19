@@ -125,6 +125,21 @@ describe('dialog-mixin', () => {
 				expect(elem.opened).to.be.false;
 				expect(document.body.style.overflow).to.equal('');
 			});
+			it(`when disconnected from a listener, should only handle close once${useNative ? ' for native dialogs' : ''}`, async() => {
+				const elem = await getDialogElement(useNative);
+				await oneEvent(elem, 'd2l-dialog-open');
+				expect(document.body.style.overflow).to.equal('hidden');
+				let eventsDispatched = 0;
+				elem.addEventListener('d2l-dialog-close', () => {
+					elem.remove();
+					eventsDispatched++;
+				});
+				elem.opened = false;
+				await oneEvent(document, 'd2l-dialog-close');
+				expect(eventsDispatched).to.equal(1);
+				expect(elem.opened).to.be.false;
+				expect(document.body.style.overflow).to.equal('');
+			});
 		});
 	});
 });
