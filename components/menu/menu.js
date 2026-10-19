@@ -165,8 +165,8 @@ class Menu extends PropertyRequiredMixin(ThemeMixin(HierarchicalViewMixin(LitEle
 
 	resetFocusables(isActiveView) {
 		const focusable = this._getTabFocusable();
-		if (isActiveView && focusable.getRootNode().activeElement === focusable) return;
-		this._getTabFocusable()?.setAttribute('tabindex', '-1');
+		if (!focusable || (isActiveView && focusable.getRootNode().activeElement === focusable)) return;
+		focusable?.setAttribute('tabindex', '-1');
 	}
 
 	_createReturnItem() {
