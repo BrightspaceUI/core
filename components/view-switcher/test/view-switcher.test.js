@@ -59,4 +59,15 @@ describe('d2l-view-switcher', () => {
 		expect(multipleSelected.items[1].selected).to.be.true;
 		expect(multipleSelected.items[2].selected).to.be.false;
 	});
+
+	it('adds text as label when using icons', async() => {
+		const elem = await fixture(html`
+			<d2l-view-switcher>
+				<d2l-view-switcher-button selected key="list" text="list view" icon="tier1:list-view"></d2l-view-switcher-button>
+				<d2l-view-switcher-button key="tile" text="tile view" icon="tier1:tile-view"></d2l-view-switcher-button>
+			</d2l-view-switcher>
+		`);
+		expect(elem.items[0].shadowRoot.querySelector('button').getAttribute('aria-label')).to.equal('list view');
+		expect(elem.items[1].shadowRoot.querySelector('button').getAttribute('aria-label')).to.equal('tile view');
+	});
 });

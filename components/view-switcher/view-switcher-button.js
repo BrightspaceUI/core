@@ -1,16 +1,19 @@
 import '../colors/colors.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement, nothing, unsafeCSS } from 'lit';
 import { buttonStyles } from '../button/button-styles.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getFocusPseudoClass } from '../../helpers/focus.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
 import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
+import { SlottedIconMixin } from '../icons/slotted-icon-mixin.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 /**
  * A button component to be used in d2l-view-switcher.
  * @fires d2l-view-switcher-select - Dispatched when the item is selected
  */
-class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(LitElement)) {
+class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(SlottedIconMixin(LitElement))) {
 
 	static properties = {
 		/**
@@ -58,6 +61,10 @@ class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(LitElement)) {
 			background-color: var(--d2l-color-tungsten);
 			color: #ffffff;
 		}
+		:host([selected]) d2l-icon,
+		:host([selected]) ::slotted(d2l-icon-custom) {
+			color: #ffffff;
+		}
 	`];
 
 	constructor() {
@@ -70,13 +77,20 @@ class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(LitElement)) {
 	}
 
 	render() {
+		const label = this.hasIcon() ? this.text : undefined;
+		const iconPaddingOverride = {
+			paddingInline: this.hasIcon() ? '0.3rem' : undefined
+		};
 		return html`
 			<button
+				aria-label="${ifDefined(label)}"
 				aria-pressed="${this.selected ? 'true' : 'false'}"
 				class="d2l-label-text"
 				@click="${this.#handleClick}"
+				style="${styleMap(iconPaddingOverride)}"
 				type="button">
-				${this.text}
+				${this.hasIcon() ? nothing : this.text}
+				${this._renderIcon()}
 			</button>
 		`;
 	}
