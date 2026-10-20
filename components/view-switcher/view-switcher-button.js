@@ -12,6 +12,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 /**
  * A button component to be used in d2l-view-switcher.
  * @fires d2l-view-switcher-select - Dispatched when the item is selected
+ * @slot icon - Optional slot for a custom icon
  */
 class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(SlottedIconMixin(LitElement))) {
 
@@ -31,6 +32,11 @@ class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(SlottedIconMix
 		 * @type {boolean}
 		 */
 		selected: { type: Boolean, reflect: true },
+		/**
+		 * Hides the text visually
+		 * @type {boolean}
+		 */
+		textHidden: { type: Boolean, attribute: 'text-hidden' }
 	};
 
 	static styles = [labelStyles, buttonStyles, css`
@@ -42,7 +48,8 @@ class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(SlottedIconMix
 		button {
 			background-color: transparent;
 			border-radius: 0.2rem;
-			display: block;
+			column-gap: 0.3rem;
+			display: inline-flex;
 			font-family: inherit;
 			min-height: auto;
 			padding-block: 0.3rem;
@@ -65,6 +72,10 @@ class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(SlottedIconMix
 		:host([selected]) ::slotted(d2l-icon-custom) {
 			color: #ffffff;
 		}
+		:host([selected]:not([text-hidden])) d2l-icon,
+		:host([selected]:not([text-hidden])) ::slotted(d2l-icon-custom) {
+			color: #ffffff;
+		}
 	`];
 
 	constructor() {
@@ -77,9 +88,9 @@ class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(SlottedIconMix
 	}
 
 	render() {
-		const label = this.hasIcon() ? this.text : undefined;
+		const label = this.textHidden ? this.text : undefined;
 		const iconPaddingOverride = {
-			paddingInline: this.hasIcon() ? '0.3rem' : undefined
+			paddingInline: this.textHidden ? '0.3rem' : (this.hasIcon() ? '0.6rem' : undefined)
 		};
 		return html`
 			<button
@@ -89,10 +100,16 @@ class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(SlottedIconMix
 				@click="${this.#handleClick}"
 				style="${styleMap(iconPaddingOverride)}"
 				type="button">
-				${this.hasIcon() ? nothing : this.text}
 				${this._renderIcon()}
+				${this.textHidden ? nothing : this.text}
 			</button>
 		`;
+	}
+
+	willUpdate(changedProperties) {
+		if (changedProperties.has('textHidden') || changedProperties.has('icon') || changedProperties.has('_hasCustomIcon')) {
+			this.textHidden &= this.hasIcon();
+		}
 	}
 
 	get _isSwitcherItem() {
