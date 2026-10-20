@@ -54,6 +54,17 @@ describe('d2l-view-switcher', () => {
 			if (action) await action(elem.items);
 			await expect(elem).to.be.golden();
 		});
+
+		it(`icons-text-hidden-${name}`, async() => {
+			const elem = await fixture(html`
+				<d2l-view-switcher>
+					<d2l-view-switcher-button selected key="list" text="list view" icon="tier1:list-view" text-hidden></d2l-view-switcher-button>
+					<d2l-view-switcher-button key="tile" text="tile view" icon="tier1:tile-view" text-hidden></d2l-view-switcher-button>
+				</d2l-view-switcher>
+			`);
+			if (action) await action(elem.items);
+			await expect(elem).to.be.golden();
+		});
 	});
 
 });
