@@ -81,6 +81,7 @@ class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(SlottedIconMix
 	constructor() {
 		super();
 		this.selected = false;
+		this.textHidden = false;
 	}
 
 	static get focusElementSelector() {
@@ -88,9 +89,10 @@ class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(SlottedIconMix
 	}
 
 	render() {
-		const label = this.textHidden ? this.text : undefined;
+		const hideText = this.textHidden && this.hasIcon();
+		const label = hideText ? this.text : undefined;
 		const iconPaddingOverride = {
-			paddingInline: this.textHidden ? '0.3rem' : (this.hasIcon() ? '0.6rem' : undefined)
+			paddingInline: hideText ? '0.3rem' : (this.hasIcon() ? '0.6rem' : undefined)
 		};
 		return html`
 			<button
@@ -101,15 +103,9 @@ class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(SlottedIconMix
 				style="${styleMap(iconPaddingOverride)}"
 				type="button">
 				${this._renderIcon()}
-				${this.textHidden ? nothing : this.text}
+				${hideText ? nothing : this.text}
 			</button>
 		`;
-	}
-
-	willUpdate(changedProperties) {
-		if (changedProperties.has('textHidden') || changedProperties.has('icon') || changedProperties.has('_hasCustomIcon')) {
-			this.textHidden &= this.hasIcon();
-		}
 	}
 
 	get _isSwitcherItem() {
