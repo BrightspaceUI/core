@@ -163,7 +163,6 @@ class Tooltip extends PopoverMixin(LitElement) {
 		:host([auto-width]) .d2l-tooltip-content {
 			max-width: none;
 			overflow: visible;
-			overflow-wrap: none;
 		}
 		::slotted(ul),
 		::slotted(ol) {
