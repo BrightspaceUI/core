@@ -438,7 +438,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 			const builtDimension = this._buildDimension(dimension);
 			const countBadgeId = `filters-applied-count-${dimension.key}`;
 			const filtersAppliedText = `${this.localize('components.filter.filterCountDescription', { number: dimension.appliedCount })}`;
-			return html`<d2l-menu-item text="${dimension.text}" description="${dimension.text}." aria-describedby="${countBadgeId}">
+			return html`<d2l-menu-item text="${dimension.text}" description="${dimension.text}. ${filtersAppliedText}">
 				<div slot="supporting">
 					<d2l-count-badge id="${countBadgeId}" number="${dimension.appliedCount}" max-digits="2" text="${filtersAppliedText}" hide-zero></d2l-count-badge>
 				</div>
