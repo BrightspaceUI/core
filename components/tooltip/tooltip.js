@@ -65,6 +65,11 @@ class Tooltip extends PopoverMixin(LitElement) {
 		 */
 		align: { type: String, reflect: true },
 		/**
+		 * Let the tooltip adjust to the content width
+		 * @type {boolean}
+		 */
+		autoWidth: { type: Boolean, attribute: 'auto-width', reflect: true },
+		/**
 		 * ADVANCED: Announce the tooltip innerText when applicable (for use with custom elements)
 		 * @type {boolean}
 		 */
@@ -152,6 +157,14 @@ class Tooltip extends PopoverMixin(LitElement) {
 			padding-inline: ${contentHorizontalPadding - contentBorderSize}px;
 			white-space: normal;
 		}
+		:host([auto-width]) {
+			width: auto;
+		}
+		:host([auto-width]) .d2l-tooltip-content {
+			max-width: none;
+			overflow: visible;
+			overflow-wrap: none;
+		}
 		::slotted(ul),
 		::slotted(ol) {
 			padding-inline-start: 1rem;
@@ -167,6 +180,7 @@ class Tooltip extends PopoverMixin(LitElement) {
 	constructor() {
 		super();
 		this.announced = false;
+		this.autoWidth = false;
 		this.closeOnClick = false;
 		this.delay = 300;
 		this.disableFocusLock = false;
@@ -232,9 +246,9 @@ class Tooltip extends PopoverMixin(LitElement) {
 
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
-
-		if (changedProperties.has('align') || changedProperties.has('forceShow') || changedProperties.has('offset') || changedProperties.has('positionLocation')) {
+		if (['align', 'forceShow', 'offset', 'positionLocation', 'autoWidth'].some(prop => changedProperties.has(prop))) {
 			super.configure({
+				autoWidth: this.autoWidth,
 				maxWidth: '350',
 				minWidth: '48',
 				noAutoClose: this.forceShow,

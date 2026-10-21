@@ -60,6 +60,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	static properties = {
 		_async: { type: Boolean },
 		_asyncState: { state: true },
+		_autoWidth: { state: true },
 		_contentHeight: { state: true },
 		_location: { type: String, reflect: true, attribute: '_location' },
 		_margin: { state: true },
@@ -325,6 +326,7 @@ export const PopoverMixin = superclass => class extends superclass {
 			|| properties?.position?.location === positionLocations.inlineEnd) this._margin = 0;
 		else this._margin = 18;
 		this._async = properties?.async ?? false;
+		this._autoWidth = properties?.autoWidth ?? false;
 		this._maxHeight = properties?.maxHeight;
 		this._maxWidth = properties?.maxWidth;
 		this._minHeight = properties?.minHeight;
@@ -819,7 +821,6 @@ export const PopoverMixin = superclass => class extends superclass {
 	}
 
 	#getLocation(spaceAround, spaceAroundScroll, spaceRequired) {
-
 		const preferred = this._preferredPosition;
 		if (!preferred.allowFlip) {
 			return preferred.location;
@@ -1053,9 +1054,9 @@ export const PopoverMixin = superclass => class extends superclass {
 
 			if (this._location === positionLocations.inlineStart) {
 				if (!this._rtl) {
-					position.right = (openerRect.left - this._offset + 7) * -1; // 7 minor adjustment to position pointer at edge of content
+					position.right = this.clientWidth - (openerRect.left - this._offset + 7); // 7 minor adjustment to position pointer at edge of content
 				} else {
-					position.left = (window.innerWidth - openerRect.right + 7 - this._offset - SCROLLBAR_WIDTH) * -1; // 7 minor adjustment to position pointer at edge of content
+					position.left = this.clientWidth - (window.innerWidth - openerRect.right + 7 - this._offset - SCROLLBAR_WIDTH); // 7 minor adjustment to position pointer at edge of content
 				}
 			} else {
 				if (!this._rtl) {
@@ -1099,9 +1100,9 @@ export const PopoverMixin = superclass => class extends superclass {
 
 			if (this._location === positionLocations.inlineStart) {
 				if (!this._rtl) {
-					position.right = (openerRect.left - this._offset) * -1;
+					position.right = this.clientWidth - (openerRect.left - this._offset);
 				} else {
-					position.left = (window.innerWidth - openerRect.right - this._offset - SCROLLBAR_WIDTH) * -1;
+					position.left = this.clientWidth - (window.innerWidth - openerRect.right - this._offset - SCROLLBAR_WIDTH);
 				}
 			} else {
 				if (!this._rtl) {
@@ -1202,6 +1203,12 @@ export const PopoverMixin = superclass => class extends superclass {
 			minWidth: this._minWidth ? `${this._minWidth}px` : undefined,
 			width: this._width ? `${this._width + 2}px` : undefined
 		};
+		if (this._autoWidth) {
+			// if auto-width is set, max-width is set to the available space (i.e. this._width or window width)
+			const isInline = this._location === positionLocations.inlineStart || this._location === positionLocations.inlineEnd;
+			widthStyle.maxWidth = isInline ? widthStyle.width : `${window.innerWidth - 2 * inlineMargin}px`;
+			widthStyle.width = 'auto';
+		}
 
 		const contentStyle = {
 			maxHeight: this._contentHeight ? `${this._contentHeight}px` : undefined,

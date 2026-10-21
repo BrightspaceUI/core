@@ -11,7 +11,7 @@ const longTextNoSpaces = 'Loremipsumdolorsitamet,consecteturadipiscingelit,seddo
 const additionalText = 'Aliquam ut porttitor leo a diam sollicitudin tempor id eu.';
 
 function createTooltip(tooltipOpts, target) {
-	const { content, align, bounded, dark, position, offset, state, wrapped } = {
+	const { content, align, bounded, dark, position, offset, state, wrapped, autoWidth } = {
 		content: 'Lorem ipsum dolor sit amet.',
 		bounded: false,
 		dark: false,
@@ -39,6 +39,7 @@ function createTooltip(tooltipOpts, target) {
 		<d2l-tooltip
 			for="${ifDefined(wrapped ? undefined : 'target')}"
 			align="${ifDefined(align)}"
+			auto-width="${ifDefined(autoWidth)}"
 			position="${ifDefined(position)}"
 			offset="${ifDefined(offset)}"
 			state="${ifDefined(state)}">
@@ -70,6 +71,12 @@ describe('tooltip', () => {
 		{ name: 'position-left', opts: { content: longText, position: 'left', wrapped: true }, targetStyles: { left: mid, top: mid } },
 		{ name: 'position-right-rtl', rtl: true, opts: { content: longText, position: 'right' }, targetStyles: { left: mid, top: mid } },
 		{ name: 'position-left-rtl', rtl: true, opts: { content: longText, position: 'left', wrapped: true }, targetStyles: { left: mid, top: mid } },
+		{ name: 'auto-width-position-top', opts: { autoWidth: true, content: longText, position: 'top' }, targetStyles: { left: mid, top: mid } },
+		{ name: 'auto-width-position-bottom', opts: { autoWidth: true, content: longText, position: 'bottom', wrapped: true }, targetStyles: { left: mid, top: mid } },
+		{ name: 'auto-width-position-right', opts: { autoWidth: true, content: 'very short', position: 'right' }, targetStyles: { left: mid, top: mid } },
+		{ name: 'auto-width-position-left', opts: { autoWidth: true, content: 'very short', position: 'left', wrapped: true }, targetStyles: { left: mid, top: mid } },
+		{ name: 'auto-width-position-right-rtl', rtl: true, opts: { autoWidth: true, content: 'very short', position: 'right' }, targetStyles: { left: mid, top: mid } },
+		{ name: 'auto-width-position-left-rtl', rtl: true, opts: { autoWidth: true, content: 'very short', position: 'left', wrapped: true }, targetStyles: { left: mid, top: mid } },
 		{ name: 'top-left', targetStyles: { left: edge, top: edge } },
 		{ name: 'top-middle', targetStyles: { left: mid, top: edge } },
 		{ name: 'top-right', opts: { wrapped: true }, targetStyles: { right: edge, top: edge } },

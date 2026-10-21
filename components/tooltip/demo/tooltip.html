@@ -113,6 +113,10 @@
 						<option value="start">start</option>
 						<option value="end">end</option>
 					</select>
+					<select id="auto-width">
+						<option value="false" selected>false</option>
+						<option value="true">true</option>
+					</select>
 				</div>
 				<div style="text-align: center;">
 					<d2l-button id="tooltip-position">Tooltip Position</d2l-button>
@@ -127,6 +131,9 @@
 					});
 					demo.querySelector('#align').addEventListener('change', e => {
 						demo.querySelector('d2l-tooltip').align = (e.target.value !== 'center' ? e.target.value : undefined);
+					});
+					demo.querySelector('#auto-width').addEventListener('change', e => {
+						demo.querySelector('d2l-tooltip').autoWidth = (e.target.value === 'true');
 					});
 				</script>
 			</template>
