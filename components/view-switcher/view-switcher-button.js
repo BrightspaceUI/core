@@ -72,10 +72,6 @@ class ViewSwitcherButton extends PropertyRequiredMixin(FocusMixin(SlottedIconMix
 		:host([selected]) ::slotted(d2l-icon-custom) {
 			color: #ffffff;
 		}
-		:host([selected]:not([text-hidden])) d2l-icon,
-		:host([selected]:not([text-hidden])) ::slotted(d2l-icon-custom) {
-			color: #ffffff;
-		}
 	`];
 
 	constructor() {
