@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../components/demo/styles.css" type="text/css">
+		<script type="module">
+			import '../trusted-types.js';
+			import '../../components/demo/demo-page.js';
+			import '../../components/inputs/input-group.js';
+			import '../../components/inputs/input-textarea.js';
+		</script>
+		<style>
+			.d2l-label-text {
+				display: inline-block;
+				padding-block-end: 0.4rem;
+			}
+			select {
+				display: block;
+			}
+			.result {
+				border: 1px solid var(--d2l-theme-border-color-standard);
+				border-radius: 6px;
+				padding: 0.6rem;
+			}
+			d2l-code-view {
+				margin-block-end: 1rem;
+			}
+		</style>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="Trusted Types">
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-input-group>
+						<div>
+							<label class="d2l-label-text" for="policy">Policy</label>
+							<select
+								id="policy">
+								<option value="safe-html">Safe</option>
+								<option value="markdown-html">Markdown</option>
+								<option value="none">None</option>
+							</select>
+						</div>
+						<d2l-input-textarea label="Scary HTML"></d2l-input-textarea>
+						<div>
+							<div class="d2l-label-text">Result</div>
+							<div class="result"></div>
+						</div>
+						<div>
+							<div class="d2l-label-text">Examples</div>
+							<div class="examples"></div>
+						</div>
+					</d2l-input-group>
+
+					<script type="module">
+						import { markdownHtmlPolicy, safeHtmlPolicy } from '../../../helpers/trusted-types.js';
+
+						const inputElem = document.querySelector('d2l-input-textarea');
+						const policyElem = document.querySelector('#policy');
+						const resultElem = document.querySelector('.result');
+
+						/* eslint-disable @stylistic/quotes */
+						inputElem.value = `<div><div onclick="console.log('accesing your ethereum wallet...')"><h3>Scary HTML Heading</h3></div></div>`;
+
+						function updateResult() {
+							const scary = inputElem.value;
+							if (policyElem.value === 'safe-html') resultElem.innerHTML = safeHtmlPolicy.createHTML(scary);
+							else if (policyElem.value === 'markdown-html') resultElem.innerHTML = markdownHtmlPolicy.createHTML(scary);
+							else resultElem.innerHTML = scary;
+						}
+
+						policyElem.addEventListener('change', updateResult);
+						inputElem.addEventListener('change', updateResult);
+
+						updateResult();
+
+						const examplesElem = document.querySelector('.examples');
+						const examples = [
+							'<img src=x onerror=alert(1)//>',
+							'<p>abc<iframe//src=jAva&Tab;script:alert(3)>def</p>',
+						];
+						examples.forEach(example => {
+							const elem = document.createElement('d2l-code-view');
+							elem.textContent = example;
+							examplesElem.appendChild(elem);
+						});
+
+					</script>
+				</template>
+			</d2l-demo-page>
+
+		</d2l-demo-page>
+
+	</body>
+</html>
