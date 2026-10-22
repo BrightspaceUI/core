@@ -1025,13 +1025,13 @@ export const PopoverMixin = superclass => class extends superclass {
 					if (this._preferredPosition.span === positionSpans.end) {
 						position.left = openerRect.left + xAdjustment;
 					} else {
-						position.right = (openerRect.right * -1) + xAdjustment;
+						position.right = this.clientWidth - openerRect.right + xAdjustment;
 					}
 				} else {
 					if (this._preferredPosition.span === positionSpans.end) {
 						position.right = window.innerWidth - openerRect.right + xAdjustment - SCROLLBAR_WIDTH;
 					} else {
-						position.left = (window.innerWidth - openerRect.left - xAdjustment - SCROLLBAR_WIDTH) * -1;
+						position.left = this.clientWidth - (window.innerWidth - openerRect.left - xAdjustment - SCROLLBAR_WIDTH);
 					}
 				}
 			} else {
