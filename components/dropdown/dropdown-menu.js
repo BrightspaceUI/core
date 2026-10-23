@@ -125,7 +125,7 @@ class DropdownMenu extends ThemeMixin(DropdownPopoverMixin(LitElement)) {
 		this.#getMenuElement().focus();
 	}
 
-	#handleMenuResize(e) {
+	#handleMenuResize() {
 
 		if (this._mobile && this.mobileTray) {
 			this.maxHeight = null;
@@ -133,7 +133,7 @@ class DropdownMenu extends ThemeMixin(DropdownPopoverMixin(LitElement)) {
 			this.maxHeight = this.#maxHeightNonTray;
 		}
 
-		this.position(e.detail, { updateLocation: this.#initializingHeight });
+		this.position(undefined, { updateLocation: this.#initializingHeight });
 		this.#initializingHeight = false;
 
 		const menu = this.#getMenuElement();
@@ -152,7 +152,6 @@ class DropdownMenu extends ThemeMixin(DropdownPopoverMixin(LitElement)) {
 		this._closeRadio = false;
 
 		const menu = this.#getMenuElement();
-		menu.resize();
 
 		// If dropdown-menu is opened on first render, do not focus
 		if (this.#initiallyOpenedSuppressFocus) this.#initiallyOpenedSuppressFocus = false;
