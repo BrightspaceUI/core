@@ -98,7 +98,7 @@ export default {
 	"components.input-time-range.startTime": "آغاز کا ٹائم",
 	"components.interactive.instructions": "تعامل کے لیے انٹر دبائیں، باہر نکلنے کے لیے ایسکیپ کریں",
 	"components.link.open-in-new-window": "ایک نئی ونڈو میں کھولیں۔",
-	"components.list.keyboard": "اس <b>فہرست کے </b>اندر فوکس کو منتقل کرنے کے لئے <b>تیر کی </b>چابیاں استعمال کریں، یا 5 سے اوپر یا نیچے منتقل کرنے کے لئے پیج اپ/ڈاؤن استعمال کریں",
+	"components.list.keyboard": "اس <b>فہرست کے</b>اندر فوکس کو منتقل کرنے کے لئے <b>تیر کی</b>چابیاں استعمال کریں، یا 5 سے اوپر یا نیچے منتقل کرنے کے لئے پیج اپ/ڈاؤن استعمال کریں",
 	"components.list-controls.label": "فہرست کے لیے اعمال",
 	"components.list-item.addItem": "آئٹم شامل کریں",
 	"components.list-item-drag-handle.default": "{name} کے لیے آئٹم ایکشن کو دوبارہ ترتیب دیں",
