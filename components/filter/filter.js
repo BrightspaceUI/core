@@ -84,11 +84,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		 */
 		opened: { type: Boolean, reflect: true },
 		/**
-		 * Whether the dropdown opens above the opener
-		 * @type {boolean}
-		 */
-		openAbove: { type: Boolean, attribute: 'open-above' },
-		/**
 		 * Optional override for the button text used for a multi-dimensional filter
 		 * @type {string}
 		 */
@@ -270,7 +265,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 					no-padding-header
 					no-padding
 					?opened="${this.opened}"
-					?open-above="${this.openAbove}"
 					?trap-focus="${!this._isDimensionEmpty(this._dimensions[0])}">
 					${header}
 					${dimensions}
@@ -284,7 +278,6 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 					mobile-breakpoint="768"
 					no-padding-header
 					?opened="${this.opened}"
-					?open-above="${this.openAbove}"
 					trap-focus>
 					${header}
 					<d2l-menu label="${this.localize('components.filter.filters')}">

@@ -97,11 +97,6 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		 */
 		opened: { type: Boolean, reflect: true },
 		/**
-		 * Whether the dropdown opens above the opener
-		 * @type {boolean}
-		 */
-		openAbove: { type: Boolean, attribute: 'open-above' },
-		/**
  		 * Optionally render a d2l-focus-trap around the dropdown content
 		 * @type {boolean}
  		 */
@@ -186,7 +181,6 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 		super();
 		this.async = false;
 		this.opened = false;
-		this.openAbove = false;
 		this.noAutoClose = false;
 		this.noAutoFit = false;
 		this.noAutoFocus = false;
@@ -287,7 +281,7 @@ export const DropdownPopoverMixin = superclass => class extends LocalizeCoreElem
 				noAutoFocus: this.noAutoFocus,
 				noPointer: this.noPointer,
 				offset: (this.verticalOffset !== undefined ? Number.parseInt(this.verticalOffset) : undefined),
-				position: { location: this.openAbove ? 'block-start' : 'block-end', span: this.#adaptPositionSpan(this.align) },
+				position: { location: 'block-end', span: this.#adaptPositionSpan(this.align) },
 				trapFocus: this.trapFocus
 			});
 		}
