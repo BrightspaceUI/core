@@ -1023,7 +1023,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 					<div class="${classMap(colorClasses)}" style="${styleMap(colorStyles)}"></div>
 				</div>` : nothing}
 				<div slot="expand-collapse"
-					aria-hidden="true"
+					aria-hidden=${ifDefined(this.expandable ? undefined : 'true')}
 					class="d2l-list-expand-collapse"
 					@click="${this._toggleExpandCollapse}"
 					@mouseenter="${this._onMouseEnterControl}"
