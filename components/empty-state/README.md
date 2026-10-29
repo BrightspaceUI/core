@@ -162,6 +162,7 @@ To add the link, place a `d2l-empty-state-action-link` component inside of the d
 | ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/assembly-line.svg?sanitize=true) | assembly-line |
 | ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/blueprint.svg?sanitize=true) | blueprint |
 | ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/calendar.svg?sanitize=true) | calendar |
+| ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/cassette-tape.svg?sanitize=true) | cassette-tape |
 | ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/cat-computer.svg?sanitize=true) | cat-computer |
 | ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/checklist.svg?sanitize=true) | checklist |
 | ![](https://raw.githubusercontent.com/BrightspaceUI/core/main/components/state/images/data-tracking.svg?sanitize=true) | data-tracking |
