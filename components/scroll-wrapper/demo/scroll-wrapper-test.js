@@ -1,5 +1,6 @@
 import '../scroll-wrapper.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../../helpers/localize-core-element.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -9,6 +10,7 @@ class TestScrollWrapper extends LocalizeCoreElement(LitElement) {
 		hideActions: { attribute: 'hide-actions', type: Boolean },
 		scroll: { attribute: 'scroll', type: Number },
 		splitScrollers: { attribute: 'split-scrollers', type: Boolean },
+		stickyContent: { attribute: 'sticky-content', type: Boolean, reflect: true },
 		width: { type: Number },
 		_customScrollers: { state: true }
 	};
@@ -31,6 +33,16 @@ class TestScrollWrapper extends LocalizeCoreElement(LitElement) {
 			position: absolute;
 			top: 0;
 		}
+		:host([sticky-content]) .d2l-scroll-wrapper-gradient div {
+			display: inline-block;
+		}
+		.sticky {
+			border-inline-end: 1px solid black;
+			inset-inline-start: 0;
+			position: sticky;
+			position: -webkit-sticky;
+			width: 200px;
+		}
 	`;
 
 	constructor() {
@@ -38,6 +50,7 @@ class TestScrollWrapper extends LocalizeCoreElement(LitElement) {
 		this.hideActions = false;
 		this.scroll = 0;
 		this.splitScrollers = false;
+		this.stickyContent = false;
 		this.width = 300;
 		this._customScrollers = {};
 	}
@@ -63,17 +76,31 @@ class TestScrollWrapper extends LocalizeCoreElement(LitElement) {
 				</div>
 			</div>
 		`;
+		const mainContent = html`
+			<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}">
+				${this.stickyContent ? html`<div class="sticky">
+					<button>Sticky focusable</button>
+				</div>
+				<div class="not-sticky">
+					<button>Another focusable</button>
+				</div>` : nothing}
+			</div>
+		`;
 
 		const contents = this.splitScrollers ? html`
 			${secondaryScroller}
 			<div class="primary">
-				<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>
+				${mainContent}
 			</div>
 			${secondaryScroller}
-		` : html`<div class="d2l-scroll-wrapper-gradient" style="${styleMap(style)}"></div>`;
+		` : html`${mainContent}`;
 
 		return html`
-			<d2l-scroll-wrapper class="vdiff-target" ?hide-actions="${this.hideActions}" .customScrollers="${this._customScrollers}">
+			<d2l-scroll-wrapper
+				class="vdiff-target"
+				?hide-actions="${this.hideActions}"
+				scroll-area-offset=${ifDefined(this.stickyContent ? 200 : undefined)}
+				.customScrollers="${this._customScrollers}">
 				${contents}
 			</d2l-scroll-wrapper>
 		`;
