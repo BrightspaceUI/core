@@ -15,7 +15,9 @@ describe('button-iterator', () => {
 		{ name: 'description', template: buttonIteratorFixtures.description, allColorModes: true },
 		{ name: 'description-small', template: buttonIteratorFixtures.description, width: 500 },
 		{ name: 'disabled', template: buttonIteratorFixtures.disabled, allColorModes: true },
+		{ name: 'disabled-next-focus', template: buttonIteratorFixtures.disabled, action: focusNext },
 		{ name: 'disabled-next-hover', template: buttonIteratorFixtures.disabled, action: hoverNext },
+		{ name: 'disabled-prev-focus', template: buttonIteratorFixtures.disabled, action: focusPrevious },
 		{ name: 'disabled-prev-hover', template: buttonIteratorFixtures.disabled, action: hoverPrevious },
 		{ name: 'next-only', template: buttonIteratorFixtures.nextOnly, allColorModes: true }
 	].forEach(({ name, template, action, width, allColorModes }) => {
