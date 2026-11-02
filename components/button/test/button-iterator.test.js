@@ -47,6 +47,12 @@ describe('d2l-button-iterator', () => {
 			expect(getComposedActiveElement()).to.equal(getPrevious(elem));
 		});
 
+		it('should delegate focus to the previous button when both disabled', async() => {
+			const elem = await fixture(buttonIteratorFixtures.disabled);
+			await focusElem(elem);
+			expect(getComposedActiveElement()).to.equal(getPrevious(elem));
+		});
+
 		it('should delegate focus to the next button when previous disabled', async() => {
 			const elem = await fixture(buttonIteratorFixtures.disabledPrev);
 			await focusElem(elem);
