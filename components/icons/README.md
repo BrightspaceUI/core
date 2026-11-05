@@ -84,7 +84,7 @@ When contributing changes to icons, the SVG files should be properly formatted. 
 - color of SVG elements should be "tungsten" (`#494c4e`)
 
 The best way to have most of these rules applied for you automatically is to put the icon through [SVGOMG](https://jakearchibald.github.io/svgomg/) with these options selected:
-* `Prettify code` - ON
+* `Prettify markup` - ON
 * `Remove viewBox` - OFF
 * `Remove <title>` - ON
 
