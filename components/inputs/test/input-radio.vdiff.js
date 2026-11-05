@@ -2,7 +2,6 @@ import '../input-radio-spacer.js';
 import '../demo/input-radio-label-test.js';
 import '../demo/input-radio-solo-test.js';
 import { expect, fixture, focusElem, html } from '@brightspace-ui/testing';
-import { loadSass, unloadSass } from '../../../test/load-sass.js';
 
 const labelFixture = html`
 	<div>
@@ -14,27 +13,7 @@ const labelFixture = html`
 	</div>
 `;
 
-function createFixture(type, state, checked) {
-	if (type === 'solo') {
-		return html`
-			<d2l-test-input-radio-solo
-				?checked="${checked === 'checked'}"
-				?disabled="${state === 'disabled'}"
-				?invalid="${state === 'invalid'}"></d2l-test-input-radio-solo>
-		`;
-	}
-	return html`
-		<input type="radio" class="d2l-test-input-radio"
-			?checked="${checked === 'checked'}"
-			?disabled="${state === 'disabled'}"
-			aria-invalid="${state === 'invalid' ? 'true' : 'false'}">
-	`;
-}
-
 describe('d2l-input-radio', () => {
-
-	before(loadSass);
-	after(unloadSass);
 
 	[
 		{ name: 'label', template: labelFixture, allColorModes: true },
@@ -48,26 +27,29 @@ describe('d2l-input-radio', () => {
 
 	});
 
-	['solo', 'sass'].forEach(type => {
-		['default', 'disabled', 'invalid'].forEach(state => {
-			['unchecked', 'checked'].forEach(checked => {
+	['default', 'disabled', 'invalid'].forEach(state => {
+		['unchecked', 'checked'].forEach(checked => {
 
-				const name = `${type}-${state}-${checked}`;
-				const radioFixture = createFixture(type, state, checked);
-				it(name, async() => {
-					const elem = await fixture(radioFixture);
-					await expect(elem).to.be.golden({ allColorModes: type === 'solo' });
-				});
-
-				if (state !== 'disabled') {
-					it(`${name}-focus`, async() => {
-						const elem = await fixture(radioFixture);
-						await focusElem(elem);
-						await expect(elem).to.be.golden({ allColorModes: type === 'solo' });
-					});
-				}
-
+			const name = `${state}-${checked}`;
+			const radioFixture = html`
+				<d2l-test-input-radio-solo
+					?checked="${checked === 'checked'}"
+					?disabled="${state === 'disabled'}"
+					?invalid="${state === 'invalid'}"></d2l-test-input-radio-solo>
+			`;
+			it(name, async() => {
+				const elem = await fixture(radioFixture);
+				await expect(elem).to.be.golden({ allColorModes: true });
 			});
+
+			if (state !== 'disabled') {
+				it(`${name}-focus`, async() => {
+					const elem = await fixture(radioFixture);
+					await focusElem(elem);
+					await expect(elem).to.be.golden({ allColorModes: true });
+				});
+			}
+
 		});
 	});
 
