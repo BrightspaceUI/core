@@ -24,6 +24,7 @@ import '../tooltip/tooltip.js';
 
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading4Styles } from '../typography/styles.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { getNextFocusable, getPreviousFocusable } from '../../helpers/focus.js';
 import { getOverflowDeclarations, overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { announce } from '../../helpers/announce.js';
 import { classMap } from 'lit/directives/class-map.js';
@@ -471,6 +472,7 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 		const clear = html`
 			<d2l-button-subtle
+				class="button-clear"
 				@click="${this._handleClear}"
 				?disabled="${dimension.loading || dimension.appliedCount === 0}"
 				description="${this.localize('components.filter.clearDescription', { filterName: dimension.text })}"
@@ -765,18 +767,21 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 
 	_handleClear() {
 		const dimension = this._getActiveDimension();
+		announce(this.localize('components.filter.clearAnnounce', { filterName: dimension.text }));
 
 		if (dimension.searchType !== 'none') {
 			this._handleClearSearch(dimension);
 			const searchInput = this.shadowRoot.querySelector('d2l-input-search');
 			if (searchInput) searchInput.value = '';
 		}
-
+		const buttonClear = this.shadowRoot.querySelector('.button-clear');
+		if (this.shadowRoot.activeElement === buttonClear) {
+			const focusable = getNextFocusable(buttonClear, false, true, true) ?? getPreviousFocusable(buttonClear, false, true, true);
+			focusable?.focus();
+		}
 		this._performDimensionClear(dimension);
 		this._dispatchChangeEventNow(false);
 		this.requestUpdate();
-
-		announce(this.localize('components.filter.clearAnnounce', { filterName: dimension.text }));
 	}
 
 	_handleClearAll() {
