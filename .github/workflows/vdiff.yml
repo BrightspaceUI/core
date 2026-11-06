@@ -1,5 +1,9 @@
 name: vdiff
-on: pull_request
+on:
+  pull_request:
+  push:
+    branches:
+      - main
 
 permissions:
   actions: read
@@ -37,3 +41,27 @@ jobs:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
           aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
+      - name: Notify Slack
+        if: ${{ failure() && github.event_name != 'pull_request' }}
+        uses: Brightspace/third-party-actions@slackapi/slack-github-action
+        with:
+          channel-id: "#gaudi-dev-alerts"
+          payload: >
+            {
+              "username": "BrightspaceUI/core Issue",
+              "icon_emoji": ":brightspaceui:",
+              "unfurl_media": false,
+              "unfurl_links": false,
+              "text": ":fire: vdiff job on `main` branch failed.\nSee ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} for details (trigger: ${{ github.event_name }}, run attempt: ${{ github.run_attempt }})",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":fire: vdiff job on `main` branch failed.\nSee the <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|run logs> for details (trigger: `${{ github.event_name }}`, run attempt: ${{ github.run_attempt }})"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.D2L_SLACK_TOKEN }}
