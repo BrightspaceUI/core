@@ -84,7 +84,7 @@ jobs:
           aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
   publish:
     name: Publish static site
-    if: ${{ github.triggering_actor != 'dependabot[bot]' }}
+    if: ${{ github.event_name == 'pull_request' && github.triggering_actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
