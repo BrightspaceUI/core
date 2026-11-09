@@ -40,7 +40,6 @@ class TestScrollWrapper extends LocalizeCoreElement(LitElement) {
 			border-inline-end: 1px solid black;
 			inset-inline-start: 0;
 			position: sticky;
-			position: -webkit-sticky;
 			width: 200px;
 		}
 	`;
