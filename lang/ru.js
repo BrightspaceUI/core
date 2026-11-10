@@ -1,6 +1,6 @@
 export default {
 	"components.alert.close": "Закрыть предупреждение",
-	"components.backdrop-loading.loadingAnnouncement": "Загрузка",
+	"components.backdrop-loading.loadingAnnouncement": "Загрузка.",
 	"components.backdrop-loading.loadingCompleteAnnouncement": "Загрузка завершена.",
 	"components.backdrop-stale-overlay.message": "Эти данные устарели.",
 	"components.breadcrumbs.breadcrumb": "Хлебная крошка",
@@ -10,7 +10,7 @@ export default {
 	"components.button-split.otherOptions": "Другие варианты",
 	"components.calendar.hasEvents": "Имеет события.",
 	"components.calendar.notSelected": "Не выбрано.",
-	"components.calendar.selected": "Выбран.",
+	"components.calendar.selected": "Выбрано.",
 	"components.calendar.show": "Показать {month}",
 	"components.count-badge.plus": "{number}+",
 	"components.dialog.close": "Закрыть это окно",
@@ -58,6 +58,7 @@ export default {
 	"components.filter-dimension-set-date-text-value.textHours":
 		`{num, plural,
 			=1 {За последний час}
+			one {За последний {num} час}
 			few {За последние {num} часа}
 			many {За последние {num} часов}
 			other {За последние {num} часа}
@@ -93,7 +94,7 @@ export default {
 			other {Число должно быть больше или равно {min}.}
 		}`,
 	"components.form-element.input.text.tooShort": "{label} должно содержать не менее {minlength} символов",
-	"components.form-element.input.url.typeMismatch": "URL неверен",
+	"components.form-element.input.url.typeMismatch": "URL-адрес неверен",
 	"components.form-element.valueMissing": "Обязателен параметр {label}",
 	"components.form-error-summary.errorSummary":
 		`{count, plural,
@@ -134,7 +135,7 @@ export default {
 	"components.input-number.hintDecimalIncorrectPeriod": "Чтобы добавить десятичный разделитель, используйте символ точки «.»",
 	"components.input-number.hintInteger": "Это поле принимает только целые значения (без десятичных знаков)",
 	"components.input-search.clear": "Очистить поиск",
-	"components.input-search.defaultPlaceholder": "Поиск...",
+	"components.input-search.defaultPlaceholder": "Поиск…",
 	"components.input-search.search": "Поиск",
 	"components.input-time-range.endTime": "Время окончания",
 	"components.input-time-range.errorBadInput": "{startLabel} должен предшествовать {endLabel}",
@@ -145,7 +146,7 @@ export default {
 	"components.list-controls.label": "Действия для списка",
 	"components.list-item.addItem": "Добавить элемент",
 	"components.list-item-drag-handle.default": "Действие по изменению порядка элементов для {name}",
-	"components.list-item-drag-handle.keyboard": "Изменить порядок элемента, текущее положение {currentPosition} из {size} . Чтобы переместить этот элемент, нажмите стрелки вверх или вниз.",
+	"components.list-item-drag-handle.keyboard": "Изменить порядок элемента, текущее положение {currentPosition} из {size}. Чтобы переместить этот элемент, нажмите стрелки вверх или вниз.",
 	"components.list-item-drag-handle.side-to-side.keyboard": "Изменение порядка элемента, текущее положение {currentPosition} из {size}. Для перемещения этого элемента нажмите стрелки влево или вправо.",
 	"components.list-item-drag-handle-tooltip.enter-desc": "Переключить режим изменения порядка клавиатуры.",
 	"components.list-item-drag-handle-tooltip.enter-key": "Войти",
@@ -172,7 +173,7 @@ export default {
 	"components.page.side-nav-label": "Сторона",
 	"components.page.side-nav-scrim": "Основной контент в настоящее время скрыт боковой панелью навигации. Закройте панель, чтобы получить доступ к нему.",
 	"components.page.supporting-divider-label": "Опорный разделитель панелей",
-	"components.page.supporting-label": "Вспомогательная панель",
+	"components.page.supporting-label": "Поддерживающий",
 	"components.page.supporting-scrim": "Основной контент в настоящее время скрыт вспомогательной панелью. Закройте панель, чтобы получить доступ к нему.",
 	"components.pageable.info":
 		`{count, plural,
@@ -219,7 +220,7 @@ export default {
 	"components.switch.conditions": "Необходимо соблюдать условия",
 	"components.switch.hidden": "Скрыто",
 	"components.switch.visible": "Видимо",
-	"components.switch.visibleWithPeriod": "Видимый",
+	"components.switch.visibleWithPeriod": "Видимый.",
 	"components.table-col-sort-button.addSortOrder": "Выберите, чтобы добавить порядок сортировки",
 	"components.table-col-sort-button.changeSortOrder": "Выберите, чтобы изменить порядок сортировки",
 	"components.table-col-sort-button.title":
