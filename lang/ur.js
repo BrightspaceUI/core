@@ -180,7 +180,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "مرکوز شدہ ٹیگ کو حذف کریں",
 	"components.tag-list-item.tooltip-title": "کی بورڈ کنٹرول",
 	"components.view-switcher.role-description":
-		`{count,plural,=0{0 آئٹمز کے ساتھ ویو سوئچر} one{{count} آئٹم کے ساتھ ویو سوئچر} other{{count} آئٹمز کے ساتھ ویو سوئچر}}`,
+		`{count, plural, =0 {0 آئٹمز کے ساتھ ویو سوئچر} one {{count} آئٹم کے ساتھ ویو سوئچر} other {{count} آئٹمز کے ساتھ ویو سوئچر}}`,
 	"templates.primary-secondary.divider": "ثانوی پینل ڈیوائیڈر",
 	"templates.primary-secondary.secondary-panel": "ثانوی پینل"
 };
