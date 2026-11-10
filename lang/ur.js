@@ -27,18 +27,33 @@ export default {
 	"components.filter.clearAnnounce": "اس کے لیے فلٹرز صاف کرنا: {filterName}",
 	"components.filter.clearDescription": "اس کے لیے فلٹرز صاف کریں: {filterName}",
 	"components.filter.filterCountDescription":
-		`{number, plural, =0 {کوئی فلٹر لاگو نہیں کیا گیا ہے۔} one {{number} فلٹر لاگو کیا گیا ہے۔} other {{number} فلٹرز لاگو کیے گئے ہیں۔}}`,
+		`{number, plural,
+			=0 {کوئی فلٹر لاگو نہیں کیا گیا ہے۔}
+			one {{number} فلٹر لاگو کیا گیا ہے۔}
+			other {{number} فلٹرز لاگو کیے گئے ہیں۔}
+		}`,
 	"components.filter.filters": "فلٹرز",
 	"components.filter.loading": "فلٹرز لوڈ کر رہا ہے",
 	"components.filter.noFilters": "کوئی فلٹر دستیاب نہیں ہے",
 	"components.filter.searchResults":
-		`{number, plural, =0 {تلاش کے نتائج نہیں} one {{number} تلاش کا نتیجہ} other {{number} تلاش کے نتائج}}`,
+		`{number, plural,
+			=0 {تلاش کے نتائج نہیں}
+			one {{number} تلاش کا نتیجہ}
+			other {{number} تلاش کے نتائج}
+		}`,
 	"components.filter.selectedFirstListLabel": "{headerText}۔ منتخب کردہ فلٹرز پہلے ظاہر ہوتے ہیں۔",
 	"components.filter.singleDimensionDescription": "فلٹر کریں: {filterName}",
 	"components.filter-dimension-set-date-text-value.textDays":
-		`{num, plural, =0 {آج} one {آخری {num} دن} other {آخری {num} دن}}`,
+		`{num, plural,
+			=0 {آج}
+			one {آخری {num} دن}
+			other {آخری {num} دن}
+		}`,
 	"components.filter-dimension-set-date-text-value.textHours":
-		`{num, plural, =1 {آخری گھنٹہ} other {آخری {num} گھنٹے}}`,
+		`{num, plural,
+			=1 {آخری گھنٹہ}
+			other {آخری {num} گھنٹے}
+		}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "پچھلے {num} مہینے",
 	"components.filter-dimension-set-date-time-range-value.label": "{text} ، تاریخوں کو منتخب کرنے کے لئے توسیع کریں",
 	"components.filter-dimension-set-date-time-range-value.text": "اپنی مرضی کے مطابق تاریخ کی حد",
@@ -49,16 +64,34 @@ export default {
 	"components.form-element.defaultFieldLabel": "فیلڈ",
 	"components.form-element.input.email.typeMismatch": "ای میل درست نہیں ہے",
 	"components.form-element.input.number.rangeError":
-		`{minExclusive, select, true {{maxExclusive, select, true {نمبر {min} سے زیادہ اور {max} سے کم ہونا ضروری ہے۔} other {نمبر {min} سے زیادہ اور {max} سے کم یا برابر ہونا ضروری ہے۔}}} other {{maxExclusive, select, true {نمبر {min} سے زیادہ یا برابر اور {max} سے کم ہونا ضروری ہے۔} other {نمبر {min} سے زیادہ یا برابر اور {max} سے کم یا برابر ہونا ضروری ہے۔}}}}`,
+		`{minExclusive, select,
+			true {{maxExclusive, select,
+				true {نمبر {min} سے زیادہ اور {max} سے کم ہونا ضروری ہے۔}
+				other {نمبر {min} سے زیادہ اور {max} سے کم یا برابر ہونا ضروری ہے۔}
+			}}
+			other {{maxExclusive, select,
+				true {نمبر {min} سے زیادہ یا برابر اور {max} سے کم ہونا ضروری ہے۔}
+				other {نمبر {min} سے زیادہ یا برابر اور {max} سے کم یا برابر ہونا ضروری ہے۔}
+			}}
+		}`,
 	"components.form-element.input.number.rangeOverflow":
-		`{maxExclusive, select, true {نمبر {max} سے کم ہونا چاہیے۔} other {نمبر {max} سے کم یا برابر ہونا چاہیے۔}}`,
+		`{maxExclusive, select,
+			true {نمبر {max} سے کم ہونا چاہیے۔}
+			other {نمبر {max} سے کم یا برابر ہونا چاہیے۔}
+		}`,
 	"components.form-element.input.number.rangeUnderflow":
-		`{minExclusive, select, true {نمبر {min} سے زیادہ ہونا چاہیے۔} other {نمبر {min} سے زیادہ یا برابر ہونا ضروری ہے۔}}`,
+		`{minExclusive, select,
+			true {نمبر {min} سے زیادہ ہونا چاہیے۔}
+			other {نمبر {min} سے زیادہ یا برابر ہونا ضروری ہے۔}
+		}`,
 	"components.form-element.input.text.tooShort": "{label} کم از کم {minlength} حروف پر مشتمل ہونا ضروری ہے",
 	"components.form-element.input.url.typeMismatch": "URL درست نہیں ہے",
 	"components.form-element.valueMissing": "{label} درکار ہے",
 	"components.form-error-summary.errorSummary":
-		`{count, plural, one {آپ کی جمع کردہ معلومات میں {count} خرابی پائی گئی} other {آپ کی جمع کردہ معلومات میں {count} خرابیاں پائی گئیں}}`,
+		`{count, plural,
+			one {آپ کی جمع کردہ معلومات میں {count} خرابی پائی گئی}
+			other {آپ کی جمع کردہ معلومات میں {count} خرابیاں پائی گئیں}
+		}`,
 	"components.form-error-summary.text": "غلطی کی تفصیلات کو ٹوگل کریں",
 	"components.input-color.backgroundColor": "پس منظر کا رنگ",
 	"components.input-color.foregroundColor": "پیش منظر کا رنگ",
@@ -132,20 +165,33 @@ export default {
 	"components.page.supporting-label": "Supporting",
 	"components.page.supporting-scrim": "Main content is currently hidden by the Supporting Panel. Close the panel to access.",
 	"components.pageable.info":
-		`{count, plural, one {{countFormatted} آئٹم} other {{countFormatted} آئٹمز}}`,
+		`{count, plural,
+			one {{countFormatted} آئٹم}
+			other {{countFormatted} آئٹمز}
+		}`,
 	"components.pageable.info-with-total":
-		`{totalCount, plural, one {{totalCountFormatted} آئٹم کا {countFormatted}} other {{totalCountFormatted} آئٹمز کا {countFormatted}}}`,
+		`{totalCount, plural,
+			one {{totalCountFormatted} آئٹم کا {countFormatted}}
+			other {{totalCountFormatted} آئٹمز کا {countFormatted}}
+		}`,
 	"components.pager-load-more.action": "مزید لوڈ کریں",
 	"components.pager-load-more.action-with-page-size": "{count} مزید لوڈ کریں",
 	"components.pager-load-more.status-loading": "مزید آئٹمز لوڈ کی جارہی ہیں",
 	"components.scroll-wrapper.scroll-left": "بائیں طرف سکرول کریں",
 	"components.scroll-wrapper.scroll-right": "دائیں طرف سکرول کریں",
 	"components.selection.action-max-hint":
-		`{count, plural, one {جب {countFormatted} سے زائد آئٹم منتخب کیے جائیں تو غیر فعال} other {جب {countFormatted} سے زائد آئٹمز منتخب کیے جائیں تو غیر فعال}}`,
+		`{count, plural,
+			one {جب {countFormatted} سے زائد آئٹم منتخب کیے جائیں تو غیر فعال}
+			other {جب {countFormatted} سے زائد آئٹمز منتخب کیے جائیں تو غیر فعال}
+		}`,
 	"components.selection.action-required-hint": "اس کارروائی کو انجام دینے کے لیے کسی آئٹم کو منتخب کریں",
 	"components.selection.select-all": "تمام منتخب کریں",
 	"components.selection.select-all-items":
-		`{count, plural, =1 {آئٹم منتخب کریں} one {تمام {countFormatted} آئٹم منتخب کریں} other {تمام {countFormatted} آئٹمز منتخب کریں}}`,
+		`{count, plural,
+			=1 {آئٹم منتخب کریں}
+			one {تمام {countFormatted} آئٹم منتخب کریں}
+			other {تمام {countFormatted} آئٹمز منتخب کریں}
+		}`,
 	"components.selection.selected": "{count} منتخب کیا گیا",
 	"components.selection.selected-plus": "{count}+ منتخب کیا گیا",
 	"components.selection-controls.label": "انتخاب کے لیے اقدامات",
@@ -159,7 +205,25 @@ export default {
 	"components.table-col-sort-button.addSortOrder": "سورٹ کریں آرڈر شامل کرنے کے لیے منتخب کریں",
 	"components.table-col-sort-button.changeSortOrder": "سورٹ کریں آرڈر تبدیل کرنے کے لیے منتخب کریں",
 	"components.table-col-sort-button.title":
-		`{sourceType, select, dates {{direction, select, desc {پرانے میں نیا ترتیب دیا گیا} other {پرانے میں نئے سے ترتیب دیا گیا}}} numbers {{direction, select, desc {اعلی سے کم تک ترتیب دیا گیا} other {کم سے اونچا تک ترتیب دیا گیا}}} words {{direction, select, desc {Z سے A تک ترتیب دیا گیا} other {A سے Z تک ترتیب دیا گیا}}} value {ترتیب دیا گیا {selectedMenuItemText}} other {{direction, select, desc {ترتیب دیا گیا نزولِ ترتیب} other {ترتیب دی گئی چڑھائی}}}}`,
+		`{sourceType, select,
+			dates {{direction, select,
+				desc {پرانے میں نیا ترتیب دیا گیا}
+				other {پرانے میں نئے سے ترتیب دیا گیا}
+			}}
+			numbers {{direction, select,
+				desc {اعلی سے کم تک ترتیب دیا گیا}
+				other {کم سے اونچا تک ترتیب دیا گیا}
+			}}
+			words {{direction, select,
+				desc {Z سے A تک ترتیب دیا گیا}
+				other {A سے Z تک ترتیب دیا گیا}
+			}}
+			value {ترتیب دیا گیا {selectedMenuItemText}}
+			other {{direction, select,
+				desc {ترتیب دیا گیا نزولِ ترتیب}
+				other {ترتیب دی گئی چڑھائی}
+			}}
+		}`,
 	"components.table-controls.label": "میز کے لئے اعمال",
 	"components.tabs.next": "آگے اسکرال کریں",
 	"components.tabs.previous": "پیچھے کی طرف اسکرال کریں",
@@ -170,7 +234,11 @@ export default {
 	"components.tag-list.interactive-label": "ٹیگ کی فہرست، {count} آئٹمز",
 	"components.tag-list.num-hidden": "{count} + مزید",
 	"components.tag-list.role-description":
-		`{count, plural, =0 {0 آئٹمز کے ساتھ ٹیگ لسٹ} one {{count} آئٹم کے ساتھ ٹیگ لسٹ} other {{count} آئٹمز کے ساتھ ٹیگ لسٹ}}`,
+		`{count, plural,
+			=0 {0 آئٹمز کے ساتھ ٹیگ لسٹ}
+			one {{count} آئٹم کے ساتھ ٹیگ لسٹ}
+			other {{count} آئٹمز کے ساتھ ٹیگ لسٹ}
+		}`,
 	"components.tag-list.show-less": "کم شو کریں",
 	"components.tag-list.show-more-description": "پوشیدہ ٹیگ لسٹ آئٹمز کو شو کرنے کے لیے منتخب کریں",
 	"components.tag-list-item.role-description": "ٹیگ",
@@ -180,7 +248,11 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "مرکوز شدہ ٹیگ کو حذف کریں",
 	"components.tag-list-item.tooltip-title": "کی بورڈ کنٹرول",
 	"components.view-switcher.role-description":
-		`{count, plural, =0 {0 آئٹمز کے ساتھ ویو سوئچر} one {{count} آئٹم کے ساتھ ویو سوئچر} other {{count} آئٹمز کے ساتھ ویو سوئچر}}`,
+		`{count, plural,
+			=0 {0 آئٹمز کے ساتھ ویو سوئچر}
+			one {{count} آئٹم کے ساتھ ویو سوئچر}
+			other {{count} آئٹمز کے ساتھ ویو سوئچر}
+		}`,
 	"templates.primary-secondary.divider": "ثانوی پینل ڈیوائیڈر",
 	"templates.primary-secondary.secondary-panel": "ثانوی پینل"
 };
