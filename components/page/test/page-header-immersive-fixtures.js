@@ -17,12 +17,10 @@ export function getBackLink(page) {
 }
 
 export const pageHeaderImmersiveActionsDemo = html`
-	<d2l-switch-visibility slot="actions" text-position="hidden"></d2l-switch-visibility>
-	<d2l-overflow-group slot="actions" min-to-show="0">
-		<d2l-button-icon icon="tier1:edit" text="Edit"></d2l-button-icon>
-		<d2l-button-icon icon="tier1:delete" text="Delete"></d2l-button-icon>
-	</d2l-overflow-group>
-	<d2l-button-iterator slot="actions"></d2l-button-iterator>
+	<d2l-switch slot="actions" text="Lumi"></d2l-switch>
+	<d2l-switch-visibility slot="actions" on></d2l-switch-visibility>
+	<d2l-button-icon slot="actions" icon="tier1:edit" text="Edit"></d2l-button-icon>
+	<d2l-button-icon slot="actions" icon="tier1:delete" text="Delete"></d2l-button-icon>
 `;
 
 export const pageHeaderImmersiveCustomTitleDemo = html`<h1 slot="title" style="align-items: center; display: flex; height: 100%; margin: 0;">Custom Title</h1>`;

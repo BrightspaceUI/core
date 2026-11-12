@@ -48,6 +48,7 @@ class PageDemo extends LitElement {
 		demoMode: { type: Boolean, attribute: 'demo-mode' },
 		hasFooter: { type: Boolean, attribute: 'has-footer' },
 		hasImmersiveHeaderActions: { type: Boolean, attribute: 'has-immersive-header-actions' },
+		hasImmersiveHeaderIterator: { type: Boolean, attribute: 'has-immersive-header-iterator' },
 		hasMainHeader: { type: Boolean, attribute: 'has-main-header' },
 		hasSideNavHeader: { type: Boolean, attribute: 'has-side-nav-header' },
 		hasSupportingHeader: { type: Boolean, attribute: 'has-supporting-header' },
@@ -82,6 +83,7 @@ class PageDemo extends LitElement {
 		this.demoMode = false;
 		this.hasFooter = urlParams.has('hasFooter');
 		this.hasImmersiveHeaderActions = urlParams.has('hasImmersiveHeaderActions');
+		this.hasImmersiveHeaderIterator = urlParams.has('hasImmersiveHeaderIterator');
 		this.hasMainHeader = urlParams.has('hasMainHeader');
 		this.hasSideNavHeader = urlParams.has('hasSideNavHeader');
 		this.hasSupportingHeader = urlParams.has('hasSupportingHeader');
@@ -209,6 +211,9 @@ class PageDemo extends LitElement {
 				<d2l-input-fieldset label="Actions">
 					<d2l-switch text="On" data-key="hasImmersiveHeaderActions" @change="${this.#handleVisibilityChange}" ?on="${this.hasImmersiveHeaderActions}"></d2l-switch>
 				</d2l-input-fieldset>
+				<d2l-input-fieldset label="Iterator">
+					<d2l-switch text="On" data-key="hasImmersiveHeaderIterator" @change="${this.#handleVisibilityChange}" ?on="${this.hasImmersiveHeaderIterator}"></d2l-switch>
+				</d2l-input-fieldset>
 			`;
 		}
 		return html`
@@ -291,8 +296,9 @@ class PageDemo extends LitElement {
 		const customTitle = (this.immersiveHeaderTitleType === 'custom') ? pageHeaderImmersiveCustomTitleDemo : nothing;
 		return html`
 			<d2l-page-header-immersive slot="header" back-custom-text="Back to Course" title-text="${ifDefined(titleText)}" subtitle-text="${ifDefined(subtitleText)}">
-				${this.hasImmersiveHeaderActions ? pageHeaderImmersiveActionsDemo : nothing}
 				${customTitle}
+				${this.hasImmersiveHeaderActions ? pageHeaderImmersiveActionsDemo : nothing}
+				${this.hasImmersiveHeaderIterator ? html`<d2l-button-iterator slot="iterator"></d2l-button-iterator>` : nothing}
 			</d2l-page-header-immersive>
 		`;
 	}
