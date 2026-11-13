@@ -400,6 +400,9 @@ class AlertToast extends LitElement {
 	}
 
 	_onStateClosed() {
+		if (usePopover()) {
+			this.shadowRoot.querySelector('[popover="manual"]')?.hidePopover();
+		}
 		this._state = states.CLOSED;
 		this._totalSiblingHeightBelow = 0;
 		this._numAlertsBelow = 0;
@@ -441,10 +444,6 @@ class AlertToast extends LitElement {
 			}
 		} else {
 			if (!this._innerContainer) return;
-
-			if (usePopover()) {
-				this.shadowRoot.querySelector('[popover="manual"]')?.hidePopover();
-			}
 
 			if (activeReduceMotion || this._state === states.PREOPENING) {
 				cancelAnimationFrame(this._preopenFrame);
