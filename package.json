@@ -67,7 +67,7 @@
     "rollup-plugin-copy": "^3",
     "rollup-plugin-delete": "^3",
     "sinon": "^22",
-    "stylelint": "^17",
+    "stylelint": "^18",
     "web-component-analyzer": "^2"
   },
   "dependencies": {
