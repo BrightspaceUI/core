@@ -55,7 +55,6 @@ describe('d2l-filter', () => {
 			await oneEvent(dropdown, 'd2l-dropdown-open');
 			await expect(elem).to.be.accessible({ ignoredRules: [
 				'aria-required-parent', // d2l-list's grid mode does not apply the grid roles because of lack of iOS support
-				'label-content-name-mismatch' // applied count is included in the description and not the label, axe raises tha visible text(i.e. the extra '1') does not match the label
 			] });
 		});
 	});

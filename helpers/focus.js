@@ -9,7 +9,6 @@ import {
 	getFirstVisibleAncestor,
 	isVisible
 } from './dom.js';
-import { getFlag } from './flags.js';
 
 const focusableElements = {
 	a: true,
@@ -134,8 +133,6 @@ export function getLastFocusableDescendant(node, includeHidden) {
 
 export function getPreviousFocusable(node, includeHidden) {
 
-	const focusableFixFlag = getFlag('GAUD-10260-get-focusable-fix', true);
-
 	if (!node) return null;
 
 	if (includeHidden === undefined) includeHidden = false;
@@ -148,8 +145,7 @@ export function getPreviousFocusable(node, includeHidden) {
 			if (focusable) return focusable;
 		}
 
-		// Clean-up this next line when cleaning up GAUD-10260-get-focusable-fix
-		const previousSibling = focusableFixFlag ? getComposedPreviousElementSibling(node) : node.previousElementSibling;
+		const previousSibling = getComposedPreviousElementSibling(node);
 		if (previousSibling) {
 			const siblingFocusable = _getPreviousFocusable(previousSibling, false, false);
 			if (siblingFocusable) return siblingFocusable;
@@ -171,8 +167,6 @@ export function getPreviousFocusable(node, includeHidden) {
 
 export function getNextFocusable(node, includeHidden, ignore, ignoreChildren) {
 
-	const focusableFixFlag = getFlag('GAUD-10260-get-focusable-fix', true);
-
 	if (!node) return null;
 
 	if (includeHidden === undefined) includeHidden = false;
@@ -187,8 +181,7 @@ export function getNextFocusable(node, includeHidden, ignore, ignoreChildren) {
 			if (focusable) return focusable;
 		}
 
-		// Clean-up this next line when cleaning up GAUD-10260-get-focusable-fix
-		const nextSibling = focusableFixFlag ? getComposedNextElementSibling(node) : node.nextElementSibling;
+		const nextSibling = getComposedNextElementSibling(node);
 		if (nextSibling) {
 			const siblingFocusable = _getNextFocusable(nextSibling, false, false);
 			if (siblingFocusable) return siblingFocusable;

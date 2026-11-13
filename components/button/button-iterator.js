@@ -3,7 +3,6 @@ import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { buttonStyles } from './button-styles.js';
-import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
@@ -13,7 +12,7 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
 /**
  * A navigation control for moving sequentially through a set of items.
  */
-class ButtonIterator extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(LitElement))) {
+class ButtonIterator extends PropertyRequiredMixin(LocalizeCoreElement(LitElement)) {
 
 	static properties = {
 		/**
@@ -84,11 +83,11 @@ class ButtonIterator extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElemen
 			min-width: calc(2rem + 2px);
 			padding: 0;
 		}
-		button:not([disabled]):hover,
-		button:not([disabled]):focus {
+		button:not([aria-disabled]):hover,
+		button:not([aria-disabled]):focus {
 			background-color: var(--d2l-theme-background-color-interactive-secondary-hover);
 		}
-		button[disabled] {
+		button[aria-disabled] {
 			cursor: default;
 			opacity: var(--d2l-theme-opacity-disabled-control);
 		}
@@ -102,10 +101,6 @@ class ButtonIterator extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElemen
 		this.nextText = '';
 		this.previousDisabled = false;
 		this.previousText = '';
-	}
-
-	static get focusElementSelector() {
-		return 'button:not([disabled])';
 	}
 
 	render() {
@@ -129,13 +124,21 @@ class ButtonIterator extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElemen
 		`;
 	}
 
+	focus() {
+		if (!this.previousDisabled || this.nextDisabled) {
+			this.shadowRoot.querySelector('button.previous').focus();
+		} else {
+			this.shadowRoot.querySelector('button.next').focus();
+		}
+	}
+
 	#descriptionId = getUniqueId();
 	#previousId = getUniqueId();
 	#nextId = getUniqueId();
 
 	#handleButtonClick(e) {
 		const button = e.currentTarget;
-		if (button.disabled) {
+		if (button.hasAttribute('aria-disabled')) {
 			return;
 		}
 		e.stopPropagation();
@@ -149,25 +152,21 @@ class ButtonIterator extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElemen
 	}
 
 	#renderButton(id, className, icon, text, descriptionId, disabled) {
-		const ariaLabel = disabled ? text : undefined;
-		const tooltip = !disabled ? html`
-			<d2l-tooltip
-				class="vdiff-target"
-				for="${id}"
-				for-type="label"
-				position="bottom">${text}</d2l-tooltip>` : nothing;
 		return html`
 			<button
 				aria-describedby="${ifDefined(descriptionId)}"
-				aria-label="${ifDefined(ariaLabel)}"
+				aria-disabled="${ifDefined(disabled ? 'true' : undefined)}"
 				class="${className}"
 				@click="${this.#handleButtonClick}"
-				?disabled="${disabled}"
 				id="${id}"
 				type="button">
 				<d2l-icon icon="${icon}"></d2l-icon>
 			</button>
-			${tooltip}
+			<d2l-tooltip
+				class="vdiff-target"
+				for="${id}"
+				for-type="label"
+				position="bottom">${text}</d2l-tooltip>
 		`;
 	}
 }

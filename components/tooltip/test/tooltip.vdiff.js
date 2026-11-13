@@ -11,7 +11,7 @@ const longTextNoSpaces = 'Loremipsumdolorsitamet,consecteturadipiscingelit,seddo
 const additionalText = 'Aliquam ut porttitor leo a diam sollicitudin tempor id eu.';
 
 function createTooltip(tooltipOpts, target) {
-	const { content, align, bounded, dark, position, offset, state, wrapped } = {
+	const { content, align, bounded, dark, position, offset, state, wrapped, autoWidth } = {
 		content: 'Lorem ipsum dolor sit amet.',
 		bounded: false,
 		dark: false,
@@ -39,6 +39,7 @@ function createTooltip(tooltipOpts, target) {
 		<d2l-tooltip
 			for="${ifDefined(wrapped ? undefined : 'target')}"
 			align="${ifDefined(align)}"
+			auto-width="${ifDefined(autoWidth)}"
 			position="${ifDefined(position)}"
 			offset="${ifDefined(offset)}"
 			state="${ifDefined(state)}">
@@ -64,12 +65,18 @@ describe('tooltip', () => {
 	const mid = 'calc(50% - 15px)';
 
 	[
-		{ name: 'position-top', opts: { content: longText, position: 'top' }, targetStyles: { left: mid, top: mid } },
-		{ name: 'position-bottom', opts: { content: longText, position: 'bottom', wrapped: true }, targetStyles: { left: mid, top: mid } },
+		{ name: 'position-top', viewport: { width: 700, height: 400 }, opts: { content: longText, position: 'top' }, targetStyles: { left: mid, top: mid } },
+		{ name: 'position-bottom', viewport: { width: 700, height: 400 }, opts: { content: longText, position: 'bottom', wrapped: true }, targetStyles: { left: mid, top: mid } },
 		{ name: 'position-right', opts: { content: longText, position: 'right' }, targetStyles: { left: mid, top: mid } },
 		{ name: 'position-left', opts: { content: longText, position: 'left', wrapped: true }, targetStyles: { left: mid, top: mid } },
 		{ name: 'position-right-rtl', rtl: true, opts: { content: longText, position: 'right' }, targetStyles: { left: mid, top: mid } },
 		{ name: 'position-left-rtl', rtl: true, opts: { content: longText, position: 'left', wrapped: true }, targetStyles: { left: mid, top: mid } },
+		{ name: 'auto-width-position-top', viewport: { width: 700, height: 400 }, opts: { autoWidth: true, content: longText, position: 'top' }, targetStyles: { left: mid, top: mid } },
+		{ name: 'auto-width-position-bottom', viewport: { width: 700, height: 400 }, opts: { autoWidth: true, content: longText, position: 'bottom', wrapped: true }, targetStyles: { left: mid, top: mid } },
+		{ name: 'auto-width-position-right', opts: { autoWidth: true, content: 'very short', position: 'right' }, targetStyles: { left: mid, top: mid } },
+		{ name: 'auto-width-position-left', opts: { autoWidth: true, content: 'very short', position: 'left', wrapped: true }, targetStyles: { left: mid, top: mid } },
+		{ name: 'auto-width-position-right-rtl', rtl: true, opts: { autoWidth: true, content: 'very short', position: 'right' }, targetStyles: { left: mid, top: mid } },
+		{ name: 'auto-width-position-left-rtl', rtl: true, opts: { autoWidth: true, content: 'very short', position: 'left', wrapped: true }, targetStyles: { left: mid, top: mid } },
 		{ name: 'top-left', targetStyles: { left: edge, top: edge } },
 		{ name: 'top-middle', targetStyles: { left: mid, top: edge } },
 		{ name: 'top-right', opts: { wrapped: true }, targetStyles: { right: edge, top: edge } },
@@ -92,9 +99,9 @@ describe('tooltip', () => {
 		{ name: 'dark-background-position-right', opts: { dark: true, content: longText, position: 'right' }, targetStyles: { left: mid, top: mid } },
 		{ name: 'dark-background-position-left', opts: { dark: true, content: longText, position: 'left', wrapped: true }, targetStyles: { left: mid, top: mid } },
 		{ name: 'long-text-wrap', opts: { content: longTextNoSpaces }, targetStyles: { left: mid, top: mid } }
-	].forEach(({ name, opts = {}, targetStyles = {}, rtl }) => {
+	].forEach(({ name, opts = {}, targetStyles = {}, rtl, viewport = { width: 400, height: 400 } }) => {
 		it(name, async() => {
-			const elem = await fixture(createTooltip(opts, targetStyles), { rtl, viewport: { width: 400, height: 400 }, pagePadding: false });
+			const elem = await fixture(createTooltip(opts, targetStyles), { rtl, viewport, pagePadding: false });
 			const tooltip = elem.querySelector('d2l-tooltip');
 			tooltip.show();
 			await oneEvent(tooltip, 'd2l-tooltip-show');

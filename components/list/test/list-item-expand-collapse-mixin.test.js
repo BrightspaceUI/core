@@ -7,10 +7,18 @@ import { ListItemMixin } from '../list-item-mixin.js';
 
 const tag = defineCE(
 	class extends ListItemMixin(ListItemExpandCollapseMixin(ListItemCheckboxMixin(LitElement))) {
+		static properties = {
+			actionHasContent: { type: Boolean }
+		};
+		constructor() {
+			super();
+			this.actionHasContent = false;
+		}
+
 		render() {
 			return html`
 				${this._renderExpandCollapse()}
-				${this._renderExpandCollapseAction()}
+				${this._renderExpandCollapseAction(this.actionHasContent ? html`content` : undefined)}
 				${this._renderNestedLoadingSpinner()}
 			`;
 		}
@@ -35,19 +43,23 @@ describe('ListItemExpandCollapseMixin', () => {
 	describe('Render expand/collapse action area when appropriate', () => {
 		const cases = [{
 			properties: { selectable: false, expandable: true, noPrimaryAction: false },
-			actionAreaAvailable: true
+			actionAreaAvailable: true, actionAreaHidden: true
+		},
+		{
+			properties: { selectable: false, expandable: true, noPrimaryAction: false, actionHasContent: true },
+			actionAreaAvailable: true, actionAreaHidden: false
 		},
 		{
 			properties: { selectable: false, expandable: false, noPrimaryAction: false },
-			actionAreaAvailable: false
+			actionAreaAvailable: false, actionAreaHidden: true
 		},
 		{
 			properties: { selectable: true, expandable: true, noPrimaryAction: false },
-			actionAreaAvailable: false
+			actionAreaAvailable: false, actionAreaHidden: true
 		},
 		{
 			properties: { selectable: false, expandable: true, noPrimaryAction: true },
-			actionAreaAvailable: false
+			actionAreaAvailable: false, actionAreaHidden: true
 		}];
 
 		for (const test of cases) {
@@ -60,6 +72,7 @@ describe('ListItemExpandCollapseMixin', () => {
 				const actionArea = element.shadowRoot.querySelector('.d2l-list-expand-collapse-action');
 				if (test.actionAreaAvailable) {
 					expect(actionArea).to.exist;
+					expect(actionArea.ariaHidden).to.equal(test.actionAreaHidden ? 'true' : null);
 				} else {
 					expect(actionArea).to.not.exist;
 				}

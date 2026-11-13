@@ -1,6 +1,6 @@
 {
   "name": "@brightspace-ui/core",
-  "version": "3.331.3",
+  "version": "3.342.2",
   "description": "A collection of accessible, free, open-source web components for building Brightspace applications",
   "type": "module",
   "repository": "https://github.com/BrightspaceUI/core.git",
@@ -12,9 +12,8 @@
     "build:clean": "node ./cli/clean.js",
     "build:icons": "node ./cli/icon-generator.js",
     "build:illustrations": "node ./cli/state-illustration-generator.js",
-    "build:sass": "sass ./test/sass.scss > ./test/sass.output.css",
     "build:wca": "node ./cli/wca.js \"{components,mixins,templates}/**/*.js\"",
-    "build": "npm run build:clean && npm run build:icons && npm run build:illustrations && npm run build:sass && npm run build:wca",
+    "build": "npm run build:clean && npm run build:icons && npm run build:illustrations && npm run build:wca",
     "build-static": "rollup -c ./rollup/rollup.config.js",
     "lint": "npm run lint:eslint && npm run lint:style",
     "lint:eslint": "eslint .",
@@ -67,7 +66,6 @@
     "rollup": "^4",
     "rollup-plugin-copy": "^3",
     "rollup-plugin-delete": "^3",
-    "sass": "^1",
     "sinon": "^22",
     "stylelint": "^17",
     "web-component-analyzer": "^2"
@@ -76,6 +74,7 @@
     "@brightspace-ui/intl": "^3",
     "@brightspace-ui/lms-context-provider": "^1",
     "@open-wc/dedupe-mixin": "^2",
+    "dompurify": "^3.4.17",
     "ifrau": "^0.42",
     "lit": "^3",
     "prismjs": "^1"

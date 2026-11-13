@@ -47,4 +47,27 @@ describe('d2l-list', () => {
 
 	});
 
+	it('should pass aXe tests for nested list', async() => {
+		const elem = await fixture(html`
+			<d2l-list>
+				<d2l-list-item key="1" label="Introductory Earth Sciences" expandable>
+					Introductory Earth Sciences
+					<d2l-list slot="nested">
+						<d2l-list-item key="1-1" label="Glaciation">
+							<d2l-list-item-content>
+								<div>Glaciation</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+						<d2l-list-item key="1-2" label="Weathering" >
+							<d2l-list-item-content>
+								<div>Weathering</div>
+							</d2l-list-item-content>
+						</d2l-list-item>
+					</d2l-list>
+				</d2l-list-item>
+			</d2l-list>
+		`);
+		await expect(elem).to.be.accessible();
+	});
+
 });

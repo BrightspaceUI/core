@@ -1267,7 +1267,7 @@ describe('d2l-filter', () => {
 
 					expect(menuItemCount.textContent).to.equal(testCase.text);
 					expect(countBadge.text).to.equal(testCase.description);
-					expect(offscreen.description).to.equal('Role.');
+					expect(offscreen.description).to.equal(`Role. ${testCase.description}`);
 				});
 			});
 		});

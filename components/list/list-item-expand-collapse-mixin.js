@@ -2,6 +2,7 @@ import '../button/button-icon.js';
 import '../loading-spinner/loading-spinner.js';
 import { css, html, nothing } from 'lit';
 import { EventSubscriberController } from '../../controllers/subscriber/subscriberControllers.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { isInteractiveInListItemComposedPath } from './list-item-mixin.js';
 import { SkeletonMixin } from '../skeleton/skeleton-mixin.js';
 
@@ -47,6 +48,9 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 				padding-block-start: 0.55rem;
 				padding-inline-end: 0.3rem;
 				width: 1.2rem;
+			}
+			:host([_render-expand-collapse-slot]:not([expandable])) .d2l-list-expand-collapse {
+				pointer-events: none;
 			}
 			.d2l-list-expand-collapse-action {
 				cursor: pointer;
@@ -139,7 +143,7 @@ export const ListItemExpandCollapseMixin = superclass => class extends SkeletonM
 			return nothing;
 		}
 
-		return html`<div class="d2l-list-expand-collapse-action" @click="${this._toggleExpandCollapseAction}">${content || nothing}</div>`;
+		return html`<div class="d2l-list-expand-collapse-action" aria-hidden="${ifDefined(content ? undefined : 'true')}" @click="${this._toggleExpandCollapseAction}">${content || nothing}</div>`;
 	}
 
 	_renderNestedLoadingSpinner() {

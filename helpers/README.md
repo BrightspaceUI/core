@@ -275,6 +275,20 @@ requestIdleCallback((deadline) => {
 }, { timeout: 1000 });
 ```
 
+## Trusted Types
+
+The Trusted Types module provides a polyfill for the browser's TrustedTypes API along with Trusted Type policies. These policies provide a `createHTML` method for creating TrustedHTML objects that can be passed to injection sinks like `innerHTML`.
+
+```js
+import { markdownHtmlPolicy, safeHtmlPolicy } from '@brightspace-ui/core/helpers/trusted-types.js';
+
+// filters HTML string and returns TrustedHTML
+const result = safeHtmlPolicy.createHTML(html);
+
+// filters HTML string for Markdown supported elements and returns TrustedHTML
+const result = markdownHtmlPolicy.createHTML(html);
+```
+
 ## UniqueId
 
 A simple helper that returns a unique id.
