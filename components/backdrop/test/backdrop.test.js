@@ -1,6 +1,5 @@
 import '../backdrop.js';
 import { aTimeout, expect, fixture, focusElem, html, runConstructor } from '@brightspace-ui/testing';
-import { mockFlag } from '../../../helpers/flags.js';
 
 const backdropFixture = html`
 	<div>
@@ -47,7 +46,6 @@ describe('d2l-backdrop', () => {
 	describe('updates for accessibility', () => {
 
 		it('should hide accessible elements', async() => {
-			mockFlag('GAUD-9398-make-backdrop-inert', true);
 			const elem = await fixture(backdropFixture);
 			const backdrop = elem.querySelector('d2l-backdrop');
 			await focusElem(elem.querySelector('#target button'));
@@ -72,30 +70,6 @@ describe('d2l-backdrop', () => {
 				expect(el.getAttribute('aria-hidden')).to.equal('true');
 			}
 			expect(elem.querySelector('#targetSibling').hasAttribute('data-d2l-backdrop-inert')).to.be.true;
-		});
-
-		// Remove alongside GAUD-9398-make-backdrop-inert
-		it('should hide accessible elements(inert disabled)', async() => {
-			mockFlag('GAUD-9398-make-backdrop-inert', false);
-			const elem = await fixture(backdropFixture);
-			const backdrop = elem.querySelector('d2l-backdrop');
-			await focusElem(elem.querySelector('#target button'));
-			backdrop.shown = true;
-			await backdrop.updateComplete;
-
-			expect(backdrop.hasAttribute('inert')).to.be.false;
-			expect(backdrop.getAttribute('aria-hidden')).to.equal('true');
-
-			expect(elem.querySelector('#target').getAttribute('aria-hidden')).to.equal(null);
-			expect(elem.querySelector('#target').parentNode.getAttribute('aria-hidden')).to.equal(null);
-			expect(elem.querySelector('script').getAttribute('aria-hidden')).to.equal(null);
-			expect(elem.querySelector('style').getAttribute('aria-hidden')).to.equal(null);
-
-			for (const selector of ['#targetSibling', '#targetParentSibling', 'a', 'form', 'a.presetAriaHidden', 'div.presetAriaHidden']) {
-				const el = elem.querySelector(selector);
-				if (selector !== '#targetSibling') expect(el.hasAttribute('inert')).to.be.false;
-				expect(el.getAttribute('aria-hidden')).to.equal('true');
-			}
 		});
 
 		it('should not hide accessible elements until focus is inside target', async() => {

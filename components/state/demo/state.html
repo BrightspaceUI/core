@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<script type="module">
+			import '../../demo/demo-page.js';
+			import '../state-action-button.js';
+			import '../state-action-link.js';
+			import '../state-illustrated.js';
+			import '../state-error-simple.js';
+		</script>
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-state">
+
+			<h2>State Error Simple</h2>
+
+			<h5>No Action</h5>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-state-error-simple description="We encountered an error while loading your assignments. Please check your connection and try again."></d2l-state-error-simple>
+				</template>
+			</d2l-demo-snippet>
+
+			<h5>State Error Action Button</h5>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-state-error-simple description="Failed to load assignments.">
+						<d2l-state-action-button text="Retry"></d2l-state-action-button>
+					</d2l-state-error-simple>
+				</template>
+			</d2l-demo-snippet>
+
+			<h5>State Error Action Link</h5>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-state-error-simple description="We encountered an error while loading your assignments. Please check your connection and try again.">
+						<d2l-state-action-link text="Retry" href="https://d2l.com"></d2l-state-action-link>
+					</d2l-state-error-simple>
+				</template>
+			</d2l-demo-snippet>
+
+			<h5>State Error Action Link + target</h5>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-state-error-simple description="Failed to load assignments.">
+						<d2l-state-action-link text="Retry" href="https://d2l.com" target="_blank"></d2l-state-action-link>
+					</d2l-state-error-simple>
+				</template>
+			</d2l-demo-snippet>
+
+			<h5>State Error Action Wraps</h5>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-state-error-simple description="Failed to load assignments." wrap-action>
+						<d2l-state-action-button text="Retry"></d2l-state-action-button>
+					</d2l-state-error-simple>
+					<d2l-state-error-simple description="Failed to load assignments." wrap-action>
+						<d2l-state-action-link text="Retry" href="https://d2l.com" target="_blank"></d2l-state-action-link>
+					</d2l-state-error-simple>
+				</template>
+			</d2l-demo-snippet>
+
+			<h2>State Illustrated</h2>
+
+			<h5>No Action</h5>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-state-illustrated illustration-name="access-denied" title-text="You don't have access to this page" description="Contact your administrator if you think you should be able to view it."></d2l-state-illustrated>
+				</template>
+			</d2l-demo-snippet>
+
+			<h5>Subtle styles</h5>
+			<d2l-demo-snippet>
+				<template>
+					<div style="background-color: var(--d2l-theme-background-color-sunken); padding: 18px;">
+						<d2l-state-illustrated illustration-name="access-denied" title-text="You don't have access to this page" description="Contact your administrator if you think you should be able to view it." subtle></d2l-state-illustrated>
+					</div>
+				</template>
+			</d2l-demo-snippet>
+
+			<h5>State Action Button</h5>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-state-illustrated illustration-name="system-error" title-text="We couldn't load this content" description="Try again. If the problem continues, contact your administrator.">
+						<d2l-state-action-button text="Create Learning Paths" primary></d2l-state-action-button>
+					</d2l-state-illustrated>
+				</template>
+			</d2l-demo-snippet>
+
+			<h5>State Action Link</h5>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-state-illustrated illustration-name="fish-hook" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path.">
+						<d2l-state-action-link text="Create Learning Paths" href="https://d2l.com"></d2l-state-action-link>
+					</d2l-state-illustrated>
+				</template>
+			</d2l-demo-snippet>
+
+			<h5>State Action Link + target</h5>
+			<d2l-demo-snippet>
+				<template>
+					<d2l-state-illustrated illustration-name="fish-hook" title-text="No Learning Paths Yet" description="Get started by clicking below to create your first learning path.">
+						<d2l-state-action-link text="Create Learning Paths" href="https://d2l.com" target="_blank"></d2l-state-action-link>
+					</d2l-state-illustrated>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+	</body>
+</html>

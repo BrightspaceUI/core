@@ -3,11 +3,17 @@ import '../colors/colors.js';
 import '../icons/icon.js';
 import './page-header-custom.js';
 import { bodyCompactStyles, heading3Styles, labelStyles } from '../typography/styles.js';
+import { createRef, ref } from 'lit/directives/ref.js';
 import { css, html, LitElement } from 'lit';
 import { highlightBorderStyles, highlightLinkStyles } from './page-header-styles.js';
+import { classMap } from 'lit/directives/class-map.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
+import { offscreenStyles } from '../offscreen/offscreen.js';
 import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { RequesterMixin } from '../../mixins/provider/provider-mixin.js';
+
+const CONTAINER_GAP = 24;
+const MINIMUM_TITLE_WIDTH = 100;
 
 class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)) {
 
@@ -17,10 +23,12 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		titleText: { attribute: 'title-text', type: String },
 		subtitleText: { attribute: 'subtitle-text', type: String },
 		_error: { state: true },
-		_hasActions: { state: true }
+		_hasActions: { state: true },
+		_hasTitleSlot: { state: true },
+		_titleHidden: { state: true }
 	};
 
-	static styles = [bodyCompactStyles, heading3Styles, labelStyles, highlightBorderStyles, highlightLinkStyles, css`
+	static styles = [bodyCompactStyles, heading3Styles, labelStyles, highlightBorderStyles, highlightLinkStyles, offscreenStyles, css`
 		:host {
 			display: block;
 		}
@@ -31,7 +39,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		.container {
 			align-items: stretch;
 			display: flex;
-			gap: 24px;
+			gap: ${CONTAINER_GAP}px;
 			height: 3.1rem;
 		}
 		.title {
@@ -39,14 +47,20 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 			min-width: 0;
 			width: 100%;
 		}
+		.title-wrapper {
+			height: 100%;
+		}
 		.back,
 		.actions {
 			flex: 0 0 auto;
 		}
 		.title,
-		.actions {
+		.actions.has-title {
 			border-inline-start: 1px solid var(--d2l-color-gypsum);
-			padding-inline-start: 24px;
+		}
+		.title.has-title,
+		.actions.has-title {
+			padding-inline-start: ${CONTAINER_GAP}px;
 		}
 		.title h1 {
 			display: flex;
@@ -74,6 +88,11 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 				display: inline;
 			}
 		}
+		@media (max-width: 360px) {
+			.back-text-short {
+				display: none;
+			}
+		}
 		d2l-alert {
 			margin: 10px auto;
 		}
@@ -86,6 +105,8 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		super();
 		this._error = false;
 		this._hasActions = false;
+		this._hasTitleSlot = false;
+		this._titleHidden = false;
 	}
 
 	connectedCallback() {
@@ -98,20 +119,39 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		}
 	}
 
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this.#resizeObserver.disconnect();
+	}
+
+	firstUpdated(changedProperties) {
+		super.firstUpdated(changedProperties);
+		if (this.#refTitle.value !== undefined) {
+			this.#resizeObserver.observe(this.#refTitle.value);
+		}
+	}
+
 	render() {
 		if (this._error) return this.#renderError();
+		const actionsClasses = {
+			'actions': true,
+			'has-title': this.#hasVisibleTitle()
+		};
 		return html`
 			<d2l-page-header-custom>
 				<div class="container" slot="top">
 					${this.#renderBack()}
 					${this.#renderTitle()}
-					<div class="actions" ?hidden="${!this._hasActions}">
+					<div class="${classMap(actionsClasses)}" ?hidden="${!this._hasActions}">
 						<slot name="actions" @slotchange="${this.#handleActionsSlotChange}"></slot>
 					</div>
 				</div>
 			</d2l-page-header-custom>
 		`;
 	}
+
+	#refTitle = createRef();
+	#resizeObserver = new ResizeObserver((entries) => this.#updateSizes(entries));
 
 	#handleActionsSlotChange(e) {
 		this._hasActions = e.target.assignedNodes({ flatten: true })?.length > 0;
@@ -124,6 +164,18 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 				{ bubbles: false, composed: false }
 			)
 		);
+	}
+
+	#handleTitleSlotChange(e) {
+		this._hasTitleSlot = e.target.assignedNodes({ flatten: true })?.length > 0;
+	}
+
+	#hasTitle() {
+		return this._hasTitleSlot || this.titleText || this.subtitleText;
+	}
+
+	#hasVisibleTitle() {
+		return !this._titleHidden && this.#hasTitle();
 	}
 
 	#renderBack() {
@@ -152,11 +204,36 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		const title = this.titleText ? html`<div class="title-text d2l-heading-3">${this.titleText}</div>` : '';
 		const subtitle = this.subtitleText ? html`<div class="title-text d2l-label-text">${this.subtitleText}</div>` : '';
 		const heading = (title || subtitle) && html`<h1>${title}${subtitle}</h1>`;
+		const titleClasses = {
+			'title': true,
+			'has-title': this.#hasVisibleTitle()
+		};
+		const wrapperClasses = {
+			'title-wrapper': true,
+			'd2l-offscreen': this._titleHidden
+		};
 		return html`
-			<div class="title">
-				<slot name="title">${heading}</slot>
+			<div class="${classMap(titleClasses)}" ${ref(this.#refTitle)}>
+				<div class="${classMap(wrapperClasses)}">
+					<slot name="title" @slotchange="${this.#handleTitleSlotChange}">${heading}</slot>
+				</div>
 			</div>
 		`;
+	}
+
+	#updateSizes(entries) {
+		entries.forEach(entry => {
+			if (entry.target === this.#refTitle.value) {
+				if (this.#hasTitle()) {
+					if (this._titleHidden) {
+						const extraSpace = this._hasActions ? (CONTAINER_GAP * 2 + 1) : (CONTAINER_GAP + 1);
+						this._titleHidden = entry.contentRect.width - extraSpace < MINIMUM_TITLE_WIDTH;
+					} else {
+						this._titleHidden = entry.contentRect.width < MINIMUM_TITLE_WIDTH;
+					}
+				}
+			}
+		});
 	}
 
 }

@@ -70,6 +70,7 @@ const FullData = [
 class FilterLoadMoreDemo extends LitElement {
 
 	static properties = {
+		opened: { type: Boolean, reflect: true },
 		useOverflowGroup: { type: Boolean, attribute: 'use-overflow-group' }
 	};
 
@@ -89,6 +90,7 @@ class FilterLoadMoreDemo extends LitElement {
 		</d2l-filter-overflow-group>`;
 		return html`
 			<d2l-filter
+				?opened="${this.opened}"
 				@d2l-filter-change="${this._handleFilterChange}"
 				@d2l-filter-dimension-load-more=${this._handleLoadMore}
 				@d2l-filter-dimension-search=${this._handleSearch}>

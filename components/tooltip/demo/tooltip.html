@@ -113,11 +113,15 @@
 						<option value="start">start</option>
 						<option value="end">end</option>
 					</select>
+					<select id="auto-width">
+						<option value="false" selected>false</option>
+						<option value="true">true</option>
+					</select>
 				</div>
 				<div style="text-align: center;">
 					<d2l-button id="tooltip-position">Tooltip Position</d2l-button>
 					<d2l-tooltip for="tooltip-position">
-						This tooltip will be positioned according to the above selections for location and alignment.
+						Selected color does not meet contrast requirements
 					</d2l-tooltip>
 				</div>
 				<script data-demo-hide>
@@ -127,6 +131,9 @@
 					});
 					demo.querySelector('#align').addEventListener('change', e => {
 						demo.querySelector('d2l-tooltip').align = (e.target.value !== 'center' ? e.target.value : undefined);
+					});
+					demo.querySelector('#auto-width').addEventListener('change', e => {
+						demo.querySelector('d2l-tooltip').autoWidth = (e.target.value === 'true');
 					});
 				</script>
 			</template>
@@ -139,7 +146,7 @@
 					<d2l-button id="tooltip-boundary">Tooltip boundary</d2l-button>
 					<d2l-tooltip for="tooltip-boundary"
 						boundary="{&quot;top&quot;:0, &quot;bottom&quot;:0, &quot;left&quot;:0, &quot;right&quot;:0}">
-						This tooltip will not expand beyond its boundaries unless it is impossible to fit it inside
+						Selected color does not meet contrast requirements
 					</d2l-tooltip>
 				</div>
 			</template>

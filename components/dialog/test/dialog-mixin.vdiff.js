@@ -1,8 +1,11 @@
 import '../dialog.js';
 import { clickElem, defineCE, expect, fixture, focusElem, html, oneEvent, sendKeys } from '@brightspace-ui/testing';
 import { footer, general } from './dialog-shared-contents.js';
+import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 import { LitElement } from 'lit';
 import { LoadingCompleteMixin } from '../../../mixins/loading-complete/loading-complete-mixin.js';
+
+const preferNativeGeneralDialogsFlag = 'GAUD-10409-prefer-native-general-dialogs';
 
 const delayedTag = defineCE(
 	class extends LoadingCompleteMixin(LitElement) {
@@ -27,10 +30,12 @@ const delayedTag = defineCE(
 
 describe('dialog-mixin', () => {
 
-	[/*'native', */'custom'].forEach((type) => {
+	['native', 'custom'].forEach((type) => {
 
 		describe(type, () => {
-			before(() => window.D2L.DialogMixin.preferNative = type === 'native');
+
+			before(() => mockFlag(preferNativeGeneralDialogsFlag, type === 'native'));
+			after(() => resetFlag(preferNativeGeneralDialogsFlag));
 
 			describe('generic', () => {
 				let dialog;

@@ -84,7 +84,7 @@ npm install @brightspace-ui/core
 
 After cloning the repo, run `npm install` to install dependencies.
 
-Run `npm run build` once, or any time icon or Sass files are changed.
+Run `npm run build` once, or any time icon files are changed.
 
 ### Running the demos
 

@@ -10,7 +10,13 @@ import { _offscreenStyleDeclarations } from '../offscreen/offscreen.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
+import { waitForElem } from '../../helpers/internal/waitForElem.js';
 
+export const asyncStates = Object.freeze({
+	unloaded: 'unloaded',
+	loading: 'loading',
+	loaded: 'loaded'
+});
 export const positionLocations = Object.freeze({
 	blockEnd: 'block-end',
 	blockStart: 'block-start',
@@ -52,6 +58,9 @@ const SCROLLBAR_WIDTH = (() => {
 export const PopoverMixin = superclass => class extends superclass {
 
 	static properties = {
+		_async: { type: Boolean },
+		_asyncState: { state: true },
+		_autoWidth: { state: true },
 		_contentHeight: { state: true },
 		_location: { type: String, reflect: true, attribute: '_location' },
 		_margin: { state: true },
@@ -260,6 +269,7 @@ export const PopoverMixin = superclass => class extends superclass {
 	constructor() {
 		super();
 		this.configure();
+		this._asyncState = asyncStates.unloaded;
 		this._mobile = false;
 		this._showBackdrop = false;
 		this._useNativePopover = isPopoverSupported ? 'manual' : undefined;
@@ -315,6 +325,8 @@ export const PopoverMixin = superclass => class extends superclass {
 		else if (properties?.position?.location === positionLocations.inlineStart
 			|| properties?.position?.location === positionLocations.inlineEnd) this._margin = 0;
 		else this._margin = 18;
+		this._async = properties?.async ?? false;
+		this._autoWidth = properties?.autoWidth ?? false;
 		this._maxHeight = properties?.maxHeight;
 		this._maxWidth = properties?.maxWidth;
 		this._minHeight = properties?.minHeight;
@@ -369,9 +381,19 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		this._dismissibleId = setDismissible(() => this.close());
 
-		this.#focusContent(this);
-
 		this.#addRepositionHandlers();
+
+		if (this._async) {
+			await this.startAsyncLoad();
+			if (!this._opened) return; // could have closed while async loading
+			if (this.#firstOpen) {
+				this.#firstOpen = false;
+				await waitForElem(this.#getContentContainer());
+				await this.position();
+			}
+		}
+
+		this.#focusContent(this);
 
 		/** @ignore */
 		this.dispatchEvent(new CustomEvent('d2l-popover-open', { bubbles: true, composed: true }));
@@ -576,12 +598,44 @@ export const PopoverMixin = superclass => class extends superclass {
 		await this.position();
 	}
 
+	async startAsyncLoad() {
+		if (!this._async || this._asyncState === asyncStates.loaded) return;
+		if (this._asyncState === asyncStates.loading) {
+			return this.#asyncLoadPromise;
+		}
+		this._asyncState = asyncStates.loading;
+
+		this.#asyncLoadPromise = new Promise(resolve => {
+			/** @ignore */
+			this.dispatchEvent(new CustomEvent(
+				'd2l-popover-async-load', {
+					bubbles: false,
+					cancelable: true,
+					composed: false,
+					detail: {
+						complete: resolve,
+						reset: () => {
+							this._asyncState = asyncStates.unloaded;
+							this.#firstOpen = true;
+						}
+					}
+				}
+			));
+		});
+		await this.#asyncLoadPromise;
+
+		this._asyncState = asyncStates.loaded;
+		await this.updateComplete;
+	}
+
 	toggleOpen(opener, applyFocus = true) {
 		if (this._opened) return this.close();
 		else return this.open(opener, (!this._noAutoFocus && applyFocus));
 	}
 
 	#ancestorMutations;
+	#asyncLoadPromise;
+	#firstOpen = true;
 	#ifrauContextInfo;
 	#mediaQueryList;
 
@@ -767,7 +821,6 @@ export const PopoverMixin = superclass => class extends superclass {
 	}
 
 	#getLocation(spaceAround, spaceAroundScroll, spaceRequired) {
-
 		const preferred = this._preferredPosition;
 		if (!preferred.allowFlip) {
 			return preferred.location;
@@ -972,13 +1025,13 @@ export const PopoverMixin = superclass => class extends superclass {
 					if (this._preferredPosition.span === positionSpans.end) {
 						position.left = openerRect.left + xAdjustment;
 					} else {
-						position.right = (openerRect.right * -1) + xAdjustment;
+						position.right = this.clientWidth - openerRect.right + xAdjustment;
 					}
 				} else {
 					if (this._preferredPosition.span === positionSpans.end) {
 						position.right = window.innerWidth - openerRect.right + xAdjustment - SCROLLBAR_WIDTH;
 					} else {
-						position.left = (window.innerWidth - openerRect.left - xAdjustment - SCROLLBAR_WIDTH) * -1;
+						position.left = this.clientWidth - (window.innerWidth - openerRect.left - xAdjustment - SCROLLBAR_WIDTH);
 					}
 				}
 			} else {
@@ -1001,9 +1054,9 @@ export const PopoverMixin = superclass => class extends superclass {
 
 			if (this._location === positionLocations.inlineStart) {
 				if (!this._rtl) {
-					position.right = (openerRect.left - this._offset + 7) * -1; // 7 minor adjustment to position pointer at edge of content
+					position.right = this.clientWidth - (openerRect.left - this._offset + 7); // 7 minor adjustment to position pointer at edge of content
 				} else {
-					position.left = (window.innerWidth - openerRect.right + 7 - this._offset - SCROLLBAR_WIDTH) * -1; // 7 minor adjustment to position pointer at edge of content
+					position.left = this.clientWidth - (window.innerWidth - openerRect.right + 7 - this._offset - SCROLLBAR_WIDTH); // 7 minor adjustment to position pointer at edge of content
 				}
 			} else {
 				if (!this._rtl) {
@@ -1047,9 +1100,9 @@ export const PopoverMixin = superclass => class extends superclass {
 
 			if (this._location === positionLocations.inlineStart) {
 				if (!this._rtl) {
-					position.right = (openerRect.left - this._offset) * -1;
+					position.right = this.clientWidth - (openerRect.left - this._offset);
 				} else {
-					position.left = (window.innerWidth - openerRect.right - this._offset - SCROLLBAR_WIDTH) * -1;
+					position.left = this.clientWidth - (window.innerWidth - openerRect.right - this._offset - SCROLLBAR_WIDTH);
 				}
 			} else {
 				if (!this._rtl) {
@@ -1150,6 +1203,12 @@ export const PopoverMixin = superclass => class extends superclass {
 			minWidth: this._minWidth ? `${this._minWidth}px` : undefined,
 			width: this._width ? `${this._width + 2}px` : undefined
 		};
+		if (this._autoWidth) {
+			// if auto-width is set, max-width is set to the available space (i.e. this._width or window width)
+			const isInline = this._location === positionLocations.inlineStart || this._location === positionLocations.inlineEnd;
+			widthStyle.maxWidth = isInline ? widthStyle.width : `${window.innerWidth - 2 * inlineMargin}px`;
+			widthStyle.width = 'auto';
+		}
 
 		const contentStyle = {
 			maxHeight: this._contentHeight ? `${this._contentHeight}px` : undefined,

@@ -11,7 +11,6 @@ describe('d2l-input-checkbox', () => {
 		{ name: 'slotted label', template: checkboxFixtures.labelSlotted },
 		{ name: 'normal label', template: checkboxFixtures.labelNormal },
 		{ name: 'label hidden', template: checkboxFixtures.labelHidden },
-		{ name: 'aria-label', template: checkboxFixtures.labelAria },
 		{ name: 'disabled', template: checkboxFixtures.disabled },
 		{ name: 'focused', template: checkboxFixtures.unchecked, action: async elem => await focusElem(elem) },
 		{ name: 'inline-help', template: new inlineHelpFixtures().checkbox() }

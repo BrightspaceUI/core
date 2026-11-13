@@ -1,5 +1,5 @@
-import '../empty-state-action-button.js';
-import '../empty-state-action-link.js';
+import '../../state/state-action-button.js';
+import '../../state/state-action-link.js';
 import '../empty-state-simple.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
 
@@ -18,9 +18,9 @@ describe ('d2l-empty-state-simple', () => {
 		const el = await fixture(html`
 			<d2l-empty-state-simple
 				description="There are no assignments to display.">
-				<d2l-empty-state-action-button
+				<d2l-state-action-button
 					text="Create New Assignment">
-				</d2l-empty-state-action-button>
+				</d2l-state-action-button>
 			</d2l-empty-state-simple>
 		`);
 		await expect(el).to.be.accessible();
@@ -30,10 +30,10 @@ describe ('d2l-empty-state-simple', () => {
 		const el = await fixture(html`
 			<d2l-empty-state-simple
 				description="There are no assignments to display.">
-				<d2l-empty-state-action-link
+				<d2l-state-action-link
 					text="Create New Assignment"
 					href="https://d2l.com">
-				</d2l-empty-state-action-link>
+				</d2l-state-action-link>
 			</d2l-empty-state-simple>
 		`);
 		await expect(el).to.be.accessible();

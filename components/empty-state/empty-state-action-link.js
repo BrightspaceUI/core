@@ -1,42 +1,5 @@
-import { html, LitElement, nothing } from 'lit';
-import { bodyCompactStyles } from '../typography/styles.js';
-import { FocusMixin } from '../../mixins/focus-mixin.js';
-import { linkStyles } from '../link/link.js';
-import { PropertyRequiredMixin } from '../../mixins/property-required/property-required-mixin.js';
+import { StateActionLink } from '../state/state-action-link.js';
 
-/**
- * `d2l-empty-state-action-link` is an empty state action component that can be placed inside of the default slot of `empty-state-simple` or `empty-state-illustrated` to add a link action to the component.
- */
-class EmptyStateActionLink extends FocusMixin(PropertyRequiredMixin(LitElement)) {
-
-	static properties = {
-		/**
-		 * REQUIRED: The action text to be used in the subtle button
-		 * @type {string}
-		 */
-		text: { type: String, required: true },
-		/**
-		 * REQUIRED: The action URL or URL fragment of the link
-		 * @type {string}
-		 */
-		href: { type: String, required: true },
-	};
-
-	static styles = [bodyCompactStyles, linkStyles];
-
-	static get focusElementSelector() {
-		return '.d2l-link';
-	}
-
-	render() {
-		const actionLink = this.text && this.href
-			? html`
-				<a class="d2l-body-compact d2l-link" href=${this.href}>${this.text}</a>`
-			: nothing;
-
-		return html`${actionLink}`;
-	}
-
-}
+class EmptyStateActionLink extends StateActionLink {}
 
 customElements.define('d2l-empty-state-action-link', EmptyStateActionLink);

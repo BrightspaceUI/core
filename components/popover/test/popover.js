@@ -6,6 +6,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 class Popover extends PopoverMixin(LitElement) {
 
 	static properties = {
+		async: { type: Boolean },
 		/**
 		 * Margin to include when computing space available.
 		 * @type {number}
@@ -111,6 +112,7 @@ class Popover extends PopoverMixin(LitElement) {
 
 	constructor() {
 		super();
+		this.async = false;
 		this.noAutoClose = false;
 		this.noAutoFocus = false;
 		this.noPointer = false;
@@ -169,6 +171,7 @@ class Popover extends PopoverMixin(LitElement) {
 	willUpdate(changedProperties) {
 		if (changedProperties.has('margin') || changedProperties.has('maxHeight') || changedProperties.has('maxWidth') || changedProperties.has('minHeight') || changedProperties.has('minWidth') || changedProperties.has('noAutoClose') || changedProperties.has('noAutoFocus') || changedProperties.has('positionLocation') || changedProperties.has('positionSpan') || changedProperties.has('trapFocus')) {
 			super.configure({
+				async: this.async,
 				margin: this.margin,
 				maxHeight: this.maxHeight,
 				maxWidth: this.maxWidth,

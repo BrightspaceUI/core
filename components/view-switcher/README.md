@@ -45,6 +45,8 @@ A segmented component to switch between views. Use a view switcher to change bet
 |---|---|---|
 |`key` | String, required | Key for the button. |
 |`text`| String, required  | Text for the button. |
+|`text-hidden`| Boolean, default: `false` | Hides the text visually. Will reset to false unless an icon is set |
+| `icon` | String | [Preset icon key](../../components/icons#preset-icons) (e.g. `tier1:gear`) |
 |`selected`| Boolean, default: `false` | Indicates if the item is selected. |
 
 ### Events

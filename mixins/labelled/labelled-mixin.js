@@ -1,5 +1,4 @@
 
-import { cssEscape } from '../../helpers/dom.js';
 import { PropertyRequiredMixin } from '../property-required/property-required-mixin.js';
 
 const getCommonAncestor = (elem1, elem2) => {
@@ -117,7 +116,7 @@ export const LabelledMixin = superclass => class extends PropertyRequiredMixin(s
 		if (!this.labelledBy) {
 			this._updateLabelElem(null);
 		} else {
-			const labelElem = await waitForElement(this.getRootNode(), `#${cssEscape(this.labelledBy)}`, 3000);
+			const labelElem = await waitForElement(this.getRootNode(), `#${CSS.escape(this.labelledBy)}`, 3000);
 			if (!labelElem) {
 				this._throwError(
 					new Error(`LabelledMixin: "${this.tagName.toLowerCase()}" is labelled-by="${this.labelledBy}", but no such element exists`)
@@ -166,7 +165,7 @@ export const LabelledMixin = superclass => class extends PropertyRequiredMixin(s
 		}
 
 		this._labelObserver = new MutationObserver(() => {
-			const newElem = this.getRootNode().querySelector(`#${cssEscape(this.labelledBy)}`);
+			const newElem = this.getRootNode().querySelector(`#${CSS.escape(this.labelledBy)}`);
 			if (isCustomElement(newElem)) {
 				requestAnimationFrame(() => {
 					// element often sets its label in its own updated(), so we need to wait

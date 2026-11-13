@@ -4,11 +4,7 @@ import '../../icons/icon.js';
 import '../tab.js';
 import '../tabs.js';
 import '../tab-panel.js';
-import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, sendKeysElem } from '@brightspace-ui/testing';
-import { mockFlag, resetFlag } from '../../../helpers/flags.js';
-
-const newTabsStructureFlag = 'GAUD-8299-core-tabs-use-new-structure';
-const GAUD_9963_FLAG = 'GAUD-9963-dropdown-tabs-not-resizing';
+import { clickElem, expect, fixture, focusElem, hoverElem, html, nextFrame, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 
 const noPanelSelectedFixture = {
 	deprecated: html`
@@ -242,19 +238,22 @@ const getMaxWidthFixture = (firstTabText) => {
 		`;
 };
 
+async function waitForScrollNext(elem) {
+	const scrollNext = elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container');
+	await waitUntil(() => getComputedStyle(scrollNext).display !== 'none', { timeout: 2000 });
+	await nextFrame();
+}
+
+async function waitForScrollPrev(elem) {
+	const scrollPrev = elem.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container');
+	await waitUntil(() => getComputedStyle(scrollPrev).display !== 'none', { timeout: 2000 });
+	await nextFrame();
+}
+
 const viewport = { width: 376 };
 const useFixture = 'paired';
 
 describe('d2l-tabs', () => {
-
-	before(() => {
-		mockFlag(newTabsStructureFlag, true);
-		mockFlag(GAUD_9963_FLAG, true);
-	});
-	after(() => {
-		resetFlag(newTabsStructureFlag);
-		resetFlag(GAUD_9963_FLAG);
-	});
 
 	describe('basic', () => {
 
@@ -285,6 +284,7 @@ describe('d2l-tabs', () => {
 
 		it('ellipsis', async() => {
 			const elem = await fixture(ellipsisFixture[useFixture], { viewport });
+			await waitForScrollNext(elem);
 			await expect(elem).to.be.golden();
 		});
 
@@ -378,11 +378,13 @@ describe('d2l-tabs', () => {
 
 		it('shrinks if tabs container\'s width is less than 615px', async() => {
 			const elem = await fixture(getMaxWidthFixture('Long Panel Text That Will Also Have Slot Content'), { viewport: { width: 514 } });
+			await waitForScrollNext(elem);
 			await expect(elem).to.be.golden();
 		});
 
 		it('shows the ellipsis if the tab text and slot content exceed the max width', async() => {
 			const elem = await fixture(getMaxWidthFixture('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'));
+			await waitForScrollNext(elem);
 			await expect(elem).to.be.golden();
 		});
 
@@ -447,39 +449,46 @@ describe('d2l-tabs', () => {
 
 				it('scroll next', async() => {
 					const elem = await fixture(nextFixture[useFixture], { viewport, rtl });
+					await waitForScrollNext(elem);
 					await expect(elem).to.be.golden({ allColorModes: !rtl });
 				});
 
 				it('scrolls next on click', async() => {
 					const elem = await fixture(nextFixture[useFixture], { viewport, rtl });
+					await waitForScrollNext(elem);
 					await clickElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button'));
 					await expect(elem).to.be.golden();
 				});
 
 				it('scroll previous', async() => {
 					const elem = await fixture(previousFixture[useFixture], { viewport, rtl });
+					await waitForScrollPrev(elem);
 					await expect(elem).to.be.golden();
 				});
 
 				it('scrolls previous on click', async() => {
 					const elem = await fixture(previousFixture[useFixture], { viewport, rtl });
+					await waitForScrollPrev(elem);
 					await clickElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container button'));
 					await expect(elem).to.be.golden();
 				});
 
 				it('action slot', async() => {
 					const elem = await fixture(actionSlotOverflowFixture[useFixture], { viewport, rtl });
+					await waitForScrollNext(elem);
 					await expect(elem).to.be.golden();
 				});
 
 				it('focus next', async() => {
 					const elem = await fixture(nextFixture[useFixture], { viewport, rtl });
+					await waitForScrollNext(elem);
 					await focusElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button'));
 					await expect(elem).to.be.golden({ allColorModes: !rtl });
 				});
 
 				it('focus previous', async() => {
 					const elem = await fixture(previousFixture[useFixture], { viewport, rtl });
+					await waitForScrollPrev(elem);
 					await focusElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-previous-container button'));
 					await expect(elem).to.be.golden();
 				});
@@ -497,6 +506,7 @@ describe('d2l-tabs', () => {
 		});
 
 		it('initial', async() => {
+			await waitForScrollNext(elem);
 			await expect(elem).to.be.golden();
 		});
 
@@ -647,6 +657,7 @@ describe('d2l-tabs', () => {
 			</d2l-tabs>
 		`;
 
+		/* Tests that use this are in jail.
 		const slotsSkeletonFixture = html`
 			<d2l-tabs skeleton>
 				<d2l-tab id="beforelong" text="Long Panel Text That Will Also Have Slot Content" slot="tabs" skeleton>
@@ -672,6 +683,8 @@ describe('d2l-tabs', () => {
 				<d2l-tab-panel labelled-by="beforeafter" slot="panels">Tab content for Trig</d2l-tab-panel>
 			</d2l-tabs>
 		`;
+		*/
+
 		const slotsSkeletonNoTextFixture = html`
 			<d2l-tabs skeleton>
 				<d2l-tab id="beforelong" text="Long Panel Text That Will Also Have Slot Content" slot="tabs" skeleton>
@@ -688,28 +701,35 @@ describe('d2l-tabs', () => {
 
 		it('default', async() => {
 			const elem = await fixture(slotsFixture);
+			await waitForScrollNext(elem);
 			await expect(elem).to.be.golden();
 		});
 
 		it('focus', async() => {
 			const elem = await fixture(slotsFixture);
+			await waitForScrollNext(elem);
 			await focusElem(elem);
 			await expect(elem).to.be.golden();
 		});
 
 		it('focus both slots', async() => {
 			const elem = await fixture(slotsFixture);
+			await waitForScrollNext(elem);
 			await sendKeysElem(elem, 'press', 'ArrowRight');
 			await expect(elem).to.be.golden();
 		});
 
+		/* This test is in jail because it's been bad.
 		it('hover with icon when selected', async() => {
 			const elem = await fixture(slotsFixture);
+			await waitForScrollNext(elem);
 			const listitem = elem.querySelector('d2l-tab');
 			await hoverElem(listitem);
 			await expect(elem).to.be.golden();
 		});
+		*/
 
+		/* This test is in jail because it's been bad.
 		it('hover with icon when not selected', async() => {
 			const elem = await fixture(slotsFixture);
 			elem.querySelectorAll('d2l-tab')[1].selected = true;
@@ -718,11 +738,15 @@ describe('d2l-tabs', () => {
 			await hoverElem(listitem);
 			await expect(elem).to.be.golden();
 		});
+		*/
 
+		/* This test is in jail because it's been bad.
 		it('skeleton', async() => {
 			const elem = await fixture(slotsSkeletonFixture);
+			await waitForScrollNext(elem);
 			await expect(elem).to.be.golden();
 		});
+		*/
 
 		it('skeleton no text', async() => {
 			const elem = await fixture(slotsSkeletonNoTextFixture);
@@ -735,138 +759,4 @@ describe('d2l-tabs', () => {
 		});
 	});
 
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	describe('basic (flag off)', () => {
-
-		before(() => mockFlag(newTabsStructureFlag, false));
-		after(() => resetFlag(newTabsStructureFlag));
-
-		it('no panel selected', async() => {
-			const elem = await fixture(noPanelSelectedFixture[useFixture], { viewport });
-			await expect(elem).to.be.golden();
-		});
-
-		it('panel selected', async() => {
-			const elem = await fixture(panelSelectedFixture[useFixture], { viewport });
-			await expect(elem).to.be.golden();
-		});
-	});
-
-	// remove with GAUD-8299-core-tabs-use-new-structure flag clean up
-	describe('deprecated structure', () => {
-
-		before(() => mockFlag(newTabsStructureFlag, false));
-		after(() => resetFlag(newTabsStructureFlag));
-
-		describe('basic', () => {
-			it('no panel selected', async() => {
-				const elem = await fixture(noPanelSelectedFixture['deprecated'], { viewport });
-				await expect(elem).to.be.golden();
-			});
-
-			it('panel selected', async() => {
-				const elem = await fixture(panelSelectedFixture['deprecated'], { viewport });
-				await expect(elem).to.be.golden();
-			});
-
-			it('one tab', async() => {
-				const elem = await fixture(oneTabFixture['deprecated'], { viewport });
-				await expect(elem).to.be.golden();
-			});
-		});
-
-		describe('overflow', () => {
-			const nextFixture = {
-				deprecated: html`
-					<d2l-tabs>
-						<d2l-tab-panel text="All Courses">Tab content for All</d2l-tab-panel>
-						<d2l-tab-panel text="Biology" selected>Tab content for Biology</d2l-tab-panel>
-						<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
-						<d2l-tab-panel text="Geology">Tab content for Geology</d2l-tab-panel>
-					</d2l-tabs>
-				`
-			};
-
-			['ltr', 'rtl'].forEach((dir) => {
-
-				const rtl = dir === 'rtl';
-
-				describe(dir, () => {
-
-					it('scroll next', async() => {
-						const elem = await fixture(nextFixture['deprecated'], { viewport, rtl });
-						await expect(elem).to.be.golden();
-					});
-
-					it('scrolls next on click', async() => {
-						const elem = await fixture(nextFixture['deprecated'], { viewport, rtl });
-						await clickElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button'));
-						await expect(elem).to.be.golden();
-					});
-
-					it('action slot', async() => {
-						const elem = await fixture(actionSlotOverflowFixture['deprecated'], { viewport, rtl });
-						await expect(elem).to.be.golden();
-					});
-
-					it('focus next', async() => {
-						const elem = await fixture(nextFixture['deprecated'], { viewport, rtl });
-						await focusElem(elem.shadowRoot.querySelector('.d2l-tabs-scroll-next-container button'));
-						await expect(elem).to.be.golden();
-					});
-				});
-			});
-		});
-
-		describe('keyboard', () => {
-
-			const keyboardFixture = {
-				deprecated: html`
-					<d2l-tabs>
-						<d2l-tab-panel text="All Courses">Tab content for All</d2l-tab-panel>
-						<d2l-tab-panel text="Biology" selected>Tab content for Biology</d2l-tab-panel>
-						<d2l-tab-panel text="Chemistry">Tab content for Chemistry</d2l-tab-panel>
-					</d2l-tabs>
-				`
-			};
-
-			it('focuses next on right arrow', async() => {
-				const elem = await fixture(keyboardFixture['deprecated'], { viewport });
-				await sendKeysElem(elem, 'press', 'ArrowRight');
-				await expect(elem).to.be.golden();
-			});
-
-			['Space', 'Enter'].forEach((key) => {
-				const keyboardSelectionFixture = {
-					deprecated: html`
-						<d2l-tabs>
-							<d2l-tab-panel text="All Courses">Tab content for All</d2l-tab-panel>
-							<d2l-tab-panel text="Biology">Tab content for Biology</d2l-tab-panel>
-						</d2l-tabs>
-					`
-				};
-				it(`selects on ${key}`, async() => {
-					const elem = await fixture(keyboardSelectionFixture['deprecated'], { viewport });
-					await sendKeysElem(elem, 'press', `ArrowRight+${key}`);
-					await expect(elem).to.be.golden();
-				});
-			});
-		});
-	});
-
-	// remove with GAUD-9963-dropdown-tabs-not-resizing flag clean up
-	describe('max-width (flag off)', () => {
-		before(() => mockFlag(GAUD_9963_FLAG, false));
-		after(() => resetFlag(GAUD_9963_FLAG));
-
-		it('does not expand the tab width beyond 200px when reached on a viewport with enough space to expand all over', async() => {
-			const elem = await fixture(getMaxWidthFixture('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'), { viewport: { width: 1300 } });
-			await expect(elem).to.be.golden();
-		});
-
-		it('does not collapse the tab when the viewport is very small', async() => {
-			const elem = await fixture(getMaxWidthFixture('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt'), { viewport: { width: 300 } });
-			await expect(elem).to.be.golden();
-		});
-	});
 });

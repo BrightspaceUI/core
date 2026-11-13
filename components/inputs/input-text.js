@@ -86,20 +86,10 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		 */
 		labelHidden: { type: Boolean, attribute: 'label-hidden' },
 		/**
-		 * For number inputs, maximum value
-		 * @type {string}
-		 */
-		max: { type: String },
-		/**
 		 * Imposes an upper character limit
 		 * @type {number}
 		 */
 		maxlength: { type: Number },
-		/**
-		 * For number inputs, minimum value
-		 * @type {string}
-		 */
-		min: { type: String },
 		/**
 		 * Imposes a lower character limit
 		 * @type {number}
@@ -150,7 +140,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		title: { type: String },
 		/**
 		 * The type of the text input
-		 * @type {'text'|'email'|'number'|'password'|'search'|'tel'|'url'}
+		 * @type {'text'|'email'|'password'|'search'|'tel'|'url'}
 		 */
 		type: { type: String },
 		/**
@@ -328,11 +318,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 
 	/** @ignore */
 	get validationMessage() {
-		if (this.validity.rangeOverflow) {
-			return this.localize('components.form-element.input.number.rangeOverflow', { max: formatNumber(parseFloat(this.max)), maxExclusive: false });
-		} else if (this.validity.rangeUnderflow) {
-			return this.localize('components.form-element.input.number.rangeUnderflow', { min: formatNumber(parseFloat(this.min)), minExclusive: false });
-		} else if (this.validity.tooShort) {
+		if (this.validity.tooShort) {
 			return this.localize('components.form-element.input.text.tooShort', { label: this.label, minlength: formatNumber(this.minlength) });
 		} else if (this.validity.typeMismatch) {
 			if (this.type === 'email') {
@@ -469,9 +455,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 						@input="${this._handleInput}"
 						@invalid="${this._handleInvalid}"
 						@keypress="${this._handleKeypress}"
-						max="${ifDefined(this.max)}"
 						maxlength="${ifDefined(this.maxlength)}"
-						min="${ifDefined(this.min)}"
 						minlength="${ifDefined(this.minlength)}"
 						name="${ifDefined(this.name)}"
 						pattern="${ifDefined(this.pattern)}"
@@ -532,6 +516,14 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 		});
 	}
 
+	willUpdate(changedProperties) {
+		super.willUpdate(changedProperties);
+		if (changedProperties.has('type') && this.type === 'number') {
+			this.type = 'text';
+			console.warn('d2l-input-text: "number" type is not supported, use d2l-input-number instead. Defaulting to "text"');
+		}
+	}
+
 	#handleBlur = async(e) => {
 		this._focused = false;
 		this.requestValidate(true);
@@ -564,7 +556,7 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 	}
 
 	_getType() {
-		if (this.type === 'email' || this.type === 'number' || this.type === 'password' || this.type === 'tel' || this.type === 'text' || this.type === 'search' || this.type === 'url') {
+		if (this.type === 'email' || this.type === 'password' || this.type === 'tel' || this.type === 'text' || this.type === 'search' || this.type === 'url') {
 			return this.type;
 		}
 		return 'text';

@@ -23,6 +23,7 @@ export const pagePanelStyles = css`
 
 	.header-start,
 	.header-end {
+		align-items: center;
 		display: flex;
 		gap: 6px;
 	}

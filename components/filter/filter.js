@@ -5,8 +5,8 @@ import '../button/button-subtle.js';
 import '../dropdown/dropdown.js';
 import '../dropdown/dropdown-content.js';
 import '../dropdown/dropdown-menu.js';
-import '../empty-state/empty-state-action-button.js';
-import '../empty-state/empty-state-action-link.js';
+import '../state/state-action-button.js';
+import '../state/state-action-link.js';
 import '../empty-state/empty-state-simple.js';
 import '../expand-collapse/expand-collapse-content.js';
 import '../hierarchical-view/hierarchical-view.js';
@@ -436,11 +436,10 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		}
 		return this._dimensions.map((dimension) => {
 			const builtDimension = this._buildDimension(dimension);
-			const countBadgeId = `filters-applied-count-${dimension.key}`;
 			const filtersAppliedText = `${this.localize('components.filter.filterCountDescription', { number: dimension.appliedCount })}`;
-			return html`<d2l-menu-item text="${dimension.text}" description="${dimension.text}." aria-describedby="${countBadgeId}">
+			return html`<d2l-menu-item text="${dimension.text}" description="${dimension.text}. ${filtersAppliedText}">
 				<div slot="supporting">
-					<d2l-count-badge id="${countBadgeId}" number="${dimension.appliedCount}" max-digits="2" text="${filtersAppliedText}" hide-zero></d2l-count-badge>
+					<d2l-count-badge number="${dimension.appliedCount}" max-digits="2" text="${filtersAppliedText}" hide-zero></d2l-count-badge>
 				</div>
 				${builtDimension}
 			</d2l-menu-item>`;
@@ -537,20 +536,20 @@ class Filter extends FocusMixin(LocalizeCoreElement(LitElement)) {
 		let emptyStateAction = nothing;
 		if (emptyState.actionText && emptyState.actionHref) {
 			emptyStateAction = html`
-				<d2l-empty-state-action-link
+				<d2l-state-action-link
 					href="${emptyState.actionHref}"
 					text="${emptyState.actionText}">
-				</d2l-empty-state-action-link>
+				</d2l-state-action-link>
 			`;
 		}
 		else if (emptyState.actionText) {
 			emptyStateAction = html`
-				<d2l-empty-state-action-button
-					@d2l-empty-state-action="${this._handleEmptyStateAction}"
+				<d2l-state-action-button
+					@d2l-state-action="${this._handleEmptyStateAction}"
 					data-dimension-key="${dimensionKey}"
 					data-type="${emptyState.type}"
 					text="${emptyState.actionText}">
-				</d2l-empty-state-action-button>
+				</d2l-state-action-button>
 			`;
 		}
 		return html`

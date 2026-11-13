@@ -1,5 +1,13 @@
 name: CI
-on: pull_request
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
 jobs:
   lint:
     name: Lint
@@ -76,9 +84,12 @@ jobs:
           aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
   publish:
     name: Publish static site
-    if: ${{ github.triggering_actor != 'dependabot[bot]' }}
+    if: ${{ github.event_name == 'pull_request' && github.triggering_actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
       - uses: Brightspace/setup-node@main
@@ -125,3 +136,34 @@ jobs:
             > The build needs to finish before your changes are deployed.
             > Changes to the PR will automatically update the instance.
           post-mode: once
+  notify:
+    name: Notify If Failure
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [lint, axe, unit]
+    if: ${{ failure() && github.event_name != 'pull_request' }}
+    steps:
+      - name: Notify Slack
+        uses: Brightspace/third-party-actions@slackapi/slack-github-action
+        with:
+          channel-id: "#gaudi-dev-alerts"
+          payload: >
+            {
+              "username": "BrightspaceUI/core Issue",
+              "icon_emoji": ":brightspaceui:",
+              "unfurl_media": false,
+              "unfurl_links": false,
+              "text": ":fire: CI job on `main` branch failed.\nSee ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} for details (trigger: ${{ github.event_name }}, run attempt: ${{ github.run_attempt }})",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":fire: CI job on `main` branch failed.\nSee the <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|run logs> for details (trigger: `${{ github.event_name }}`, run attempt: ${{ github.run_attempt }})"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.D2L_SLACK_TOKEN }}
+  

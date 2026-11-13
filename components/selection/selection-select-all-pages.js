@@ -34,6 +34,7 @@ class SelectAllPages extends FocusMixin(LocalizeCoreElement(SelectionObserverMix
 		return html`
 			<d2l-button-subtle
 				@click="${this._handleClick}"
+				?disabled="${this.selectionDisabled}"
 				text="${this.localize('components.selection.select-all-items', { count: this._provider.itemCount, countFormatted: formatNumber(this._provider.itemCount) })}">
 			</d2l-button-subtle>`;
 	}

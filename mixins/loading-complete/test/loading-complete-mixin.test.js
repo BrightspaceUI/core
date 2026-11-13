@@ -1,4 +1,5 @@
-import { aTimeout, defineCE, fixture } from '@brightspace-ui/testing';
+import { aTimeout, defineCE, expect, fixture, nextFrame } from '@brightspace-ui/testing';
+import { stub, useFakeTimers } from 'sinon';
 import { LitElement } from 'lit';
 import { LoadingCompleteMixin } from '../loading-complete-mixin.js';
 
@@ -43,6 +44,12 @@ const componentLevelOverrideTag = defineCE(
 	}
 );
 
+const noResolveTag = defineCE(
+	class extends LoadingCompleteMixin(DummyMixin(LitElement)) {
+
+	}
+);
+
 describe('LoadingCompleteMixin', () => {
 
 	it('inherits existing getLoadingComplete', async() => {
@@ -61,6 +68,37 @@ describe('LoadingCompleteMixin', () => {
 		await fixture(`
 			<${componentLevelOverrideTag}></${componentLevelOverrideTag}>
 		`);
+	});
+
+	describe('console behaviour', () => {
+
+		let clock, warnStub;
+		beforeEach(() => {
+			clock = useFakeTimers({ toFake: ['setTimeout'] });
+			warnStub = stub(console, 'warn');
+
+		});
+
+		afterEach(() => {
+			clock?.restore();
+			warnStub?.restore();
+		});
+
+		it('logs a console warning when resolveLoadingComplete is not called', async() => {
+			fixture(`<${noResolveTag}></${noResolveTag}>`);
+
+			await nextFrame();
+			clock.tick(30000);
+			expect(warnStub).to.be.calledOnce;
+		});
+
+		it('does not log a console warning when resolveLoadingComplete if the element is disconnected', async() => {
+			const elem = await fixture(`<${noResolveTag}></${noResolveTag}>`, { awaitLoadingComplete: false });
+			elem.remove();
+			clock.tick(30000);
+			expect(warnStub).to.not.be.called;
+		});
+
 	});
 
 });

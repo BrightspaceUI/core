@@ -309,18 +309,13 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		super.updated(changedProperties);
 
 		changedProperties.forEach((oldVal, prop) => {
-			if (prop === '_dateTimeDescriptor' || prop === 'value') {
-				this._shownValue = this.value;
-				this._setFormattedValue();
-
-				if (prop === 'value') {
-					this.setFormValue(this.value);
-					this.setValidity({
-						rangeUnderflow: !this.noValidateMinMax && this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
-						rangeOverflow: !this.noValidateMinMax && this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
-					});
-					this.requestValidate(false);
-				}
+			if (prop === 'value') {
+				this.setFormValue(this.value);
+				this.setValidity({
+					rangeUnderflow: !this.noValidateMinMax && this.value && this.minValue && getDateFromISODate(this.value).getTime() < getDateFromISODate(this.minValue).getTime(),
+					rangeOverflow: !this.noValidateMinMax && this.value && this.maxValue && getDateFromISODate(this.value).getTime() > getDateFromISODate(this.maxValue).getTime()
+				});
+				this.requestValidate(false);
 			} else if (prop === 'opened') {
 				if (this.opened) this._open();
 				else this._close();
@@ -333,6 +328,10 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
 		if (changedProperties.has('_hiddenContentWidth')) this.style.maxWidth = this.inputTextWidth;
+		if (changedProperties.has('_dateTimeDescriptor') || changedProperties.has('value')) {
+			this._shownValue = this.value;
+			this._setFormattedValue();
+		}
 	}
 
 	async validate() {
@@ -397,38 +396,31 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		this.requestValidate(true);
 	}
 
-	async _handleChange() {
+	_handleChange() {
 		this._showRevertTooltip = false;
 		const value = this._textInput.value;
 		const isNewVal = value !== this.value;
 		if (!value && !this.required) {
 			if (isNewVal) {
-				await this._updateValueDispatchEvent('');
-				if (this._calendar) {
-					await this.updateComplete;
-					await this._calendar.reset();
-				}
+				this._updateValueDispatchEvent('');
+				this.calendar?.reset();
 			}
 			return;
 		}
-		this._formattedValue = value;
-		await this.updateComplete;
 		try {
 			const date = parseDate(value);
-			await this._updateValueDispatchEvent(formatDateInISO({ year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate() }));
+			this._updateValueDispatchEvent(formatDateInISO({ year: date.getFullYear(), month: (parseInt(date.getMonth()) + 1), date: date.getDate() }));
 		} catch {
 			// leave value the same when invalid input
 			if (isNewVal) this._showRevertTooltip = true;
+			this._textInput.value = this._formattedValue; // Template only reset if property changes, this line forces same prop on live value
 		}
 		this._setFormattedValue(); // keep out here in case parseDate is same date, e.g., user adds invalid text to end of parseable date
-		if (this._calendar) {
-			await this.updateComplete;
-			await this._calendar.reset(true);
-		}
+		this._calendar?.reset(true);
 	}
 
 	async _handleClear() {
-		await this._updateValueDispatchEvent('');
+		this._updateValueDispatchEvent('');
 		if (this._dropdown) {
 			this._dropdown.close();
 		}
@@ -438,7 +430,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	async _handleDateSelected(e) {
 		this._showRevertTooltip = false;
 		const value = e.target.selectedValue;
-		await this._updateValueDispatchEvent(value);
+		this._updateValueDispatchEvent(value);
 		if (this._dropdown) {
 			this._dropdown.close();
 		}
@@ -484,6 +476,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		await this.updateComplete;
 		if (!this.shadowRoot) return;
 		this._calendar = this.shadowRoot.querySelector('d2l-calendar');
+		await this._calendar.reset(true);
 		this._dropdown = this.shadowRoot.querySelector('d2l-dropdown-content');
 		await this._calendar.updateComplete;
 	}
@@ -534,7 +527,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 
 	async _handleSetToToday(_, setToNow) {
 		const date = getToday();
-		await this._updateValueDispatchEvent(formatDateInISO(date), setToNow);
+		this._updateValueDispatchEvent(formatDateInISO(date), setToNow);
 		if (this._dropdown) {
 			this._dropdown.close();
 		}
@@ -543,9 +536,8 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 
 	async _open() {
 		if (this.disabled || this.skeleton) return;
+		this._handleChange();
 		if (!this._dropdownFirstOpened || !this._dropdown) await this._handleFirstDropdownOpen();
-
-		await this._handleChange();
 
 		// on small screens, only open calendar if calendar icon is selected,
 		// otherwise only open text input
@@ -570,10 +562,14 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 	}
 
 	_setFormattedValue() {
-		this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : '';
+		try {
+			this._formattedValue = this._shownValue ? formatISODateInUserCalDescriptor(this._shownValue) : '';
+		} catch {
+			// don't set the value if it's invalid
+		}
 	}
 
-	async _updateValueDispatchEvent(dateInISO, setToNow) {
+	_updateValueDispatchEvent(dateInISO, setToNow) {
 		// prevent validation from happening multiple times for same change,
 		// except for now button that affects time
 		if (!setToNow && dateInISO === this._shownValue) return;

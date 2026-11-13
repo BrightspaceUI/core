@@ -1,5 +1,3 @@
-import { cssEscape } from '../../helpers/dom.js';
-
 class BaseController {
 	constructor(host, name, options = {}) {
 		if (!host || !name) throw new TypeError('SubscriberController: missing host or subscription name');
@@ -211,7 +209,7 @@ export class IdSubscriberController extends BaseSubscriber {
 	}
 
 	_updateRegistry(registryId) {
-		const registryComponent = this._host.getRootNode().querySelector(`#${cssEscape(registryId)}`) || undefined;
+		const registryComponent = this._host.getRootNode().querySelector(`#${CSS.escape(registryId)}`) || undefined;
 
 		if (this._registries.get(registryId) === registryComponent) return registryComponent;
 

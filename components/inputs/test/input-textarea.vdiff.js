@@ -1,6 +1,5 @@
 import '../input-textarea.js';
 import { expect, fixture, focusElem, hoverElem, hoverElemAt, html } from '@brightspace-ui/testing';
-import { loadSass, unloadSass } from '../../../test/load-sass.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
 
 const viewport = { width: 376 };
@@ -75,47 +74,15 @@ describe('d2l-input-textarea', () => {
 
 	});
 
-	describe('sass', () => {
-
-		before(loadSass);
-		after(unloadSass);
-
-		const sassBasicFixture = html`<textarea class="d2l-test-input-textarea">text</textarea>`;
-		const sassPlaceholderFixture = html`<textarea class="d2l-test-input-textarea" placeholder="placeholder"></textarea>`;
-		const sassInvalidFixture = html`<textarea class="d2l-test-input-textarea" aria-invalid="true">invalid</textarea>`;
-
-		[
-			{ name: 'basic', template: sassBasicFixture },
-			{ name: 'basic-focus', template: sassBasicFixture, action: async(elem) => focusElem(elem) },
-			{ name: 'disabled', template: html`<textarea class="d2l-test-input-textarea" disabled>text disabled</textarea>` },
-			{ name: 'placeholder', template: sassPlaceholderFixture },
-			{ name: 'placeholder-focus', template: sassPlaceholderFixture, action: async(elem) => focusElem(elem) },
-			{ name: 'placeholder-disabled', template: html`<textarea class="d2l-test-input-textarea" disabled placeholder="placeholder disabled"></textarea>` },
-			{ name: 'invalid', template: sassInvalidFixture },
-			{ name: 'invalid-focus', template: sassInvalidFixture, action: async(elem) => focusElem(elem) },
-			{ name: 'invalid-disabled', template: html`<textarea class="d2l-test-input-textarea" disabled aria-invalid="true">invalid disabled</textarea>` },
-			{ name: 'invalid-rtl', template: sassInvalidFixture, rtl: true }
-		].forEach(({ name, template, action, rtl }) => {
-
-			it(name, async() => {
-				const elem = await fixture(template, { rtl, viewport });
-				if (action) await action(elem);
-				await expect(elem).to.be.golden();
-			});
-
-		});
-
-		it('mirror does not add additional container height', async() => {
-			const elem = await fixture(html`
-				<div style="border: 1px solid; max-height: 300px; overflow: scroll;">
-					<d2l-input-textarea label="Label" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."></d2l-input-textarea>
-				</div>
-			`, { viewport });
-			// scroll to bottom
-			elem.scrollTop = elem.scrollHeight;
-			await expect(elem).to.be.golden();
-		});
-
+	it('mirror-no-extra-height', async() => {
+		const elem = await fixture(html`
+			<div style="border: 1px solid; max-height: 300px; overflow: scroll;">
+				<d2l-input-textarea label="Label" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."></d2l-input-textarea>
+			</div>
+		`, { viewport });
+		// scroll to bottom
+		elem.scrollTop = elem.scrollHeight;
+		await expect(elem).to.be.golden();
 	});
 
 });

@@ -1,5 +1,14 @@
 import { css, unsafeCSS } from 'lit';
-import { getComposedChildren, getComposedParent, getFirstVisibleAncestor, getNextAncestorSibling, getPreviousAncestorSibling, isVisible } from './dom.js';
+import {
+	getComposedChildren,
+	getComposedNextAncestorElementSibling,
+	getComposedNextElementSibling,
+	getComposedParent,
+	getComposedPreviousAncestorElementSibling,
+	getComposedPreviousElementSibling,
+	getFirstVisibleAncestor,
+	isVisible
+} from './dom.js';
 
 const focusableElements = {
 	a: true,
@@ -123,6 +132,7 @@ export function getLastFocusableDescendant(node, includeHidden) {
 }
 
 export function getPreviousFocusable(node, includeHidden) {
+
 	if (!node) return null;
 
 	if (includeHidden === undefined) includeHidden = false;
@@ -135,14 +145,14 @@ export function getPreviousFocusable(node, includeHidden) {
 			if (focusable) return focusable;
 		}
 
-		const previousSibling = node.previousElementSibling;
+		const previousSibling = getComposedPreviousElementSibling(node);
 		if (previousSibling) {
 			const siblingFocusable = _getPreviousFocusable(previousSibling, false, false);
 			if (siblingFocusable) return siblingFocusable;
 			return null;
 		}
 
-		const previousAncestorSibling = getPreviousAncestorSibling(node);
+		const previousAncestorSibling = getComposedPreviousAncestorElementSibling(node);
 		if (previousAncestorSibling) {
 			const parentSibingFocusable = _getPreviousFocusable(previousAncestorSibling, false, false);
 			if (parentSibingFocusable) return parentSibingFocusable;
@@ -171,14 +181,14 @@ export function getNextFocusable(node, includeHidden, ignore, ignoreChildren) {
 			if (focusable) return focusable;
 		}
 
-		const nextSibling = node.nextElementSibling;
+		const nextSibling = getComposedNextElementSibling(node);
 		if (nextSibling) {
 			const siblingFocusable = _getNextFocusable(nextSibling, false, false);
 			if (siblingFocusable) return siblingFocusable;
 			return null;
 		}
 
-		const nextParentSibling = getNextAncestorSibling(node);
+		const nextParentSibling = getComposedNextAncestorElementSibling(node);
 		if (nextParentSibling) {
 			const parentSibingFocusable = _getNextFocusable(nextParentSibling, false, false);
 			if (parentSibingFocusable) return parentSibingFocusable;
@@ -210,7 +220,7 @@ export function getPreviousFocusableAncestor(node, includeHidden, includeTabbabl
 
 export function isFocusable(node, includeHidden, includeTabbablesOnly, includeDisabled) {
 
-	if (!node || node.nodeType !== 1 || (!includeDisabled && node.disabled)) return false;
+	if (!node || node.nodeType !== Node.ELEMENT_NODE || (!includeDisabled && node.disabled)) return false;
 
 	if (includeTabbablesOnly === undefined) includeTabbablesOnly = true;
 

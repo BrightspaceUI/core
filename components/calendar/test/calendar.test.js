@@ -1,3 +1,4 @@
+import '../../dropdown/dropdown-content.js';
 import { aTimeout, clickElem, expect, fixture, html, oneEvent, runConstructor, sendKeysElem, waitUntil } from '@brightspace-ui/testing';
 import { checkIfDatesEqual,
 	getDatesInMonthArray,
@@ -12,6 +13,7 @@ import { getDocumentLocaleSettings } from '@brightspace-ui/intl/lib/common.js';
 import sinon from 'sinon';
 
 const normalFixture = html`<d2l-calendar selected-value="2015-09-02"></d2l-calendar>`;
+const dialogFixture = html`<d2l-dropdown-content><d2l-calendar selected-value="2015-09-02"></d2l-calendar></d2l-dropdown-content>`;
 
 describe('d2l-calendar', () => {
 	const documentLocaleSettings = getDocumentLocaleSettings();
@@ -368,6 +370,43 @@ describe('d2l-calendar', () => {
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 
+		it('has correct _focusDate when user uses right arrow from a focused date and in dialog', async() => {
+			const content = await fixture(dialogFixture);
+			const calendar = content.querySelector('d2l-calendar');
+			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+			setTimeout(() => dispatchKeyEvent(el, 39));
+			await oneEvent(el, 'keydown');
+			await calendar.updateComplete;
+
+			const expectedFocusDate = new Date(2015, 8, 3);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+		});
+
+		it('has correct _focusDate when user uses right arrow from a focused date with max-value', async() => {
+			const calendar = await fixture(normalFixture);
+			calendar.maxValue = '2015-09-02';
+			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+			setTimeout(() => dispatchKeyEvent(el, 39));
+			await oneEvent(el, 'keydown');
+			await calendar.updateComplete;
+
+			const expectedFocusDate = new Date(2015, 8, 2);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+		});
+
+		it('has correct _focusDate when user uses right arrow from a focused date with max-value and in dialog', async() => {
+			const content = await fixture(dialogFixture);
+			const calendar = content.querySelector('d2l-calendar');
+			calendar.maxValue = '2015-09-02';
+			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+			setTimeout(() => dispatchKeyEvent(el, 39));
+			await oneEvent(el, 'keydown');
+			await calendar.updateComplete;
+
+			const expectedFocusDate = new Date(2015, 8, 2);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+		});
+
 		it('has correct _focusDate when user uses left arrow from a focused date', async() => {
 			const calendar = await fixture(normalFixture);
 			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
@@ -376,6 +415,43 @@ describe('d2l-calendar', () => {
 			await calendar.updateComplete;
 
 			const expectedFocusDate = new Date(2015, 8, 1);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+		});
+
+		it('has correct _focusDate when user uses left arrow from a focused date and in dialog', async() => {
+			const content = await fixture(dialogFixture);
+			const calendar = content.querySelector('d2l-calendar');
+			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+			setTimeout(() => dispatchKeyEvent(el, 37));
+			await oneEvent(el, 'keydown');
+			await calendar.updateComplete;
+
+			const expectedFocusDate = new Date(2015, 8, 1);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+		});
+
+		it('has correct _focusDate when user uses left arrow from a focused date with min-value', async() => {
+			const calendar = await fixture(normalFixture);
+			calendar.minValue = '2015-09-02';
+			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+			setTimeout(() => dispatchKeyEvent(el, 37));
+			await oneEvent(el, 'keydown');
+			await calendar.updateComplete;
+
+			const expectedFocusDate = new Date(2015, 8, 2);
+			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
+		});
+
+		it('has correct _focusDate when user uses left arrow from a focused date with min-value and in dialog', async() => {
+			const content = await fixture(dialogFixture);
+			const calendar = content.querySelector('d2l-calendar');
+			calendar.minValue = '2015-09-02';
+			const el = calendar.shadowRoot.querySelector('td[data-date="2"]');
+			setTimeout(() => dispatchKeyEvent(el, 37));
+			await oneEvent(el, 'keydown');
+			await calendar.updateComplete;
+
+			const expectedFocusDate = new Date(2015, 8, 2);
 			expect(calendar._focusDate).to.deep.equal(expectedFocusDate);
 		});
 

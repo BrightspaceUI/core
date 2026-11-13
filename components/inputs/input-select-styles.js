@@ -38,7 +38,7 @@ function _getSelectFocusStyles(selector) {
  * A private helper method that should not be used by general consumers
  */
 export function _generateSelectStyles(selector) {
-	if (!_isValidCssSelector(selector)) return '';
+	if (!_isValidCssSelector(selector)) return;
 	const finalSelector = unsafeCSS(selector);
 	const selectFocusStyles = _getSelectFocusStyles(finalSelector);
 
@@ -62,7 +62,6 @@ export function _generateSelectStyles(selector) {
 			font-size: 0.8rem;
 			font-weight: 400;
 			height: auto;
-			letter-spacing: 0.02rem;
 			line-height: 1.2rem;
 			margin: 0;
 			max-height: calc(2rem + 2px);

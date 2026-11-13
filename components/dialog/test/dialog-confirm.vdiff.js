@@ -1,15 +1,12 @@
 import '../../button/button.js';
 import '../dialog-confirm.js';
 import { expect, fixture, html } from '@brightspace-ui/testing';
-import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 import { interferingStyleWrapper } from '../../typography/test/typography-shared-contents.js';
 
 const buttons = html`
 	<d2l-button slot="footer" primary>Yes</d2l-button>
 	<d2l-button slot="footer" id="cancel">No</d2l-button>
 `;
-
-const preferNativeConfirmDialogsFlag = 'GAUD-9644-prefer-native-confirm-dialogs';
 
 const confirmDialog = html`
 	<d2l-dialog-confirm id="confirm" title-text="Title" text="Are you sure?" opened>
@@ -19,89 +16,81 @@ const confirmDialog = html`
 
 describe('dialog-confirm', () => {
 
-	['native', 'custom'].forEach((type) => {
-
-		describe(type, () => {
-			before(() => mockFlag(preferNativeConfirmDialogsFlag, type === 'native'));
-			after(() => resetFlag(preferNativeConfirmDialogsFlag));
-
+	[
+		{ screen: 'wide', viewport: { width: 800, height: 500 } },
+		{ screen: 'narrow', viewport: { width: 600, height: 500 } }
+	].forEach(({ screen, viewport }) => {
+		describe(screen, () => {
 			[
-				{ screen: 'wide', viewport: { width: 800, height: 500 } },
-				{ screen: 'narrow', viewport: { width: 600, height: 500 } }
-			].forEach(({ screen, viewport }) => {
-				describe(screen, () => {
-					[
-						{ name: 'opened', template: confirmDialog },
-						{ name: 'rtl', rtl: true, template: confirmDialog },
-					].forEach(({ name, template, rtl }) => {
-						it(name, async() => {
-							await fixture(template, { viewport, rtl });
-							await expect(document).to.be.golden();
-						});
-					});
+				{ name: 'opened', template: confirmDialog },
+				{ name: 'rtl', rtl: true, template: confirmDialog },
+			].forEach(({ name, template, rtl }) => {
+				it(name, async() => {
+					await fixture(template, { viewport, rtl });
+					await expect(document).to.be.golden();
 				});
 			});
-
-			describe('internal', () => {
-
-				[
-					{ name: 'short', allColorModes: true, template: confirmDialog },
-					{ name: 'critical', allColorModes: true, template: html`<d2l-dialog-confirm title-text="Title" text="Are you sure?" opened critical>${buttons}</d2l-dialog-confirm>` },
-					{ name: 'long-title', template: html`
-						<d2l-dialog-confirm title-text="A title that is really long and should wrap onto a second line." text="Are you sure?" opened>
-							${buttons}
-						</d2l-dialog-confirm>
-					` },
-					{ name: 'no-title', template: html`<d2l-dialog-confirm text="Are you sure?" opened>${buttons}</d2l-dialog-confirm>` },
-					{ name: 'long-text', template: html`
-						<d2l-dialog-confirm title-text="Title" text="Some confirm dialog content that should wrap onto a second line?" opened>
-							${buttons}
-						</d2l-dialog-confirm>
-					` },
-					{ name: 'long-buttons', template: html`
-						<d2l-dialog-confirm title-text="Title" text="Are you sure?" opened>
-							<d2l-button slot="footer" primary>A really long workflow button.</d2l-button>
-							<d2l-button slot="footer" id="cancel">Another really long workflow button.</d2l-button>
-						</d2l-dialog-confirm>
-					` },
-					{ name: 'multiple-paragraphs', template: html`
-						<d2l-dialog-confirm title-text="Title" .text="${'Paragraph 1\nParagraph 2'}" opened>
-							${buttons}
-						</d2l-dialog-confirm>
-					` },
-					{ name: 'multiple-paragraphs-2', template: html`
-						<d2l-dialog-confirm title-text="Title" .text="${'Paragraph 1\r\nParagraph 2'}" opened>
-							${buttons}
-						</d2l-dialog-confirm>
-					` },
-					{ name: 'slighty-larger-critical', template: html`
-						<d2l-dialog-confirm title-text="Title" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore." opened critical>
-							<d2l-button slot="footer" primary>OK</d2l-button>
-						</d2l-dialog-confirm>
-					` },
-					{ name: 'overflow', template: html`
-						<d2l-dialog-confirm title-text="Title" .text="${'Lorem ipsum dolor sit amet, consectetur adipiscing.\nSed do eiusmod tempor incididunt ut labore et dolore.\nUt enim ad minim veniam, quis nostrud exercitation.\nDuis aute irure dolor in reprehenderit voluptate.\nExcepteur sint occaecat cupidatat non proident sunt.\nSunt in culpa qui officia deserunt mollit anim id est.\nNam libero tempore cum soluta nobis eligendi optio.\nItaque earum rerum hic tenetur a sapiente delectus.'}" opened>
-							${buttons}
-						</d2l-dialog-confirm>
-					` }
-				].forEach(({ name, allColorModes, template }) => {
-					it(name, async() => {
-						const elem = await fixture(template, { viewport: { width: 800, height: 500 } });
-						await expect(elem).to.be.golden({ allColorModes });
-					});
-				});
-			});
-
-			it('reset-styles', async() => {
-				const dialog = html`
-					<d2l-dialog-confirm title-text="Title" text="Are you sure? Like be extra sure because there's no going back." opened>
-						${buttons}
-					</d2l-dialog-confirm>
-				`;
-				await fixture(interferingStyleWrapper(dialog));
-				await expect(document).to.be.golden();
-			});
-
 		});
 	});
+
+	describe('internal', () => {
+
+		[
+			{ name: 'short', allColorModes: true, template: confirmDialog },
+			{ name: 'critical', allColorModes: true, template: html`<d2l-dialog-confirm title-text="Title" text="Are you sure?" opened critical>${buttons}</d2l-dialog-confirm>` },
+			{ name: 'long-title', template: html`
+				<d2l-dialog-confirm title-text="A title that is really long and should wrap onto a second line." text="Are you sure?" opened>
+					${buttons}
+				</d2l-dialog-confirm>
+			` },
+			{ name: 'no-title', template: html`<d2l-dialog-confirm text="Are you sure?" opened>${buttons}</d2l-dialog-confirm>` },
+			{ name: 'long-text', template: html`
+				<d2l-dialog-confirm title-text="Title" text="Some confirm dialog content that should wrap onto a second line?" opened>
+					${buttons}
+				</d2l-dialog-confirm>
+			` },
+			{ name: 'long-buttons', template: html`
+				<d2l-dialog-confirm title-text="Title" text="Are you sure?" opened>
+					<d2l-button slot="footer" primary>A really long workflow button.</d2l-button>
+					<d2l-button slot="footer" id="cancel">Another really long workflow button.</d2l-button>
+				</d2l-dialog-confirm>
+			` },
+			{ name: 'multiple-paragraphs', template: html`
+				<d2l-dialog-confirm title-text="Title" .text="${'Paragraph 1\nParagraph 2'}" opened>
+					${buttons}
+				</d2l-dialog-confirm>
+			` },
+			{ name: 'multiple-paragraphs-2', template: html`
+				<d2l-dialog-confirm title-text="Title" .text="${'Paragraph 1\r\nParagraph 2'}" opened>
+					${buttons}
+				</d2l-dialog-confirm>
+			` },
+			{ name: 'slighty-larger-critical', template: html`
+				<d2l-dialog-confirm title-text="Title" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore." opened critical>
+					<d2l-button slot="footer" primary>OK</d2l-button>
+				</d2l-dialog-confirm>
+			` },
+			{ name: 'overflow', template: html`
+				<d2l-dialog-confirm title-text="Title" .text="${'Lorem ipsum dolor sit amet, consectetur adipiscing.\nSed do eiusmod tempor incididunt ut labore et dolore.\nUt enim ad minim veniam, quis nostrud exercitation.\nDuis aute irure dolor in reprehenderit voluptate.\nExcepteur sint occaecat cupidatat non proident sunt.\nSunt in culpa qui officia deserunt mollit anim id est.\nNam libero tempore cum soluta nobis eligendi optio.\nItaque earum rerum hic tenetur a sapiente delectus.'}" opened>
+					${buttons}
+				</d2l-dialog-confirm>
+			` }
+		].forEach(({ name, allColorModes, template }) => {
+			it(name, async() => {
+				const elem = await fixture(template, { viewport: { width: 800, height: 500 } });
+				await expect(elem).to.be.golden({ allColorModes });
+			});
+		});
+	});
+
+	it('reset-styles', async() => {
+		const dialog = html`
+			<d2l-dialog-confirm title-text="Title" text="Are you sure? Like be extra sure because there's no going back." opened>
+				${buttons}
+			</d2l-dialog-confirm>
+		`;
+		await fixture(interferingStyleWrapper(dialog));
+		await expect(document).to.be.golden();
+	});
+
 });

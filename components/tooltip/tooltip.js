@@ -1,5 +1,5 @@
 import { css, html, LitElement } from 'lit';
-import { cssEscape, elemIdListAdd, elemIdListRemove, isComposedAncestor } from '../../helpers/dom.js';
+import { elemIdListAdd, elemIdListRemove, isComposedAncestor } from '../../helpers/dom.js';
 import { getComposedActiveElement, isFocusable } from '../../helpers/focus.js';
 import { interactiveElements, interactiveRoles, isInteractive } from '../../helpers/interactive.js';
 import { announce } from '../../helpers/announce.js';
@@ -27,7 +27,7 @@ const tooltipInteractiveRoles = {
 };
 
 const isInteractiveTarget = (elem) => {
-	if (elem.nodeType !== Node.ELEMENT_NODE) return false;
+	if (!elem || elem.nodeType !== Node.ELEMENT_NODE) return false;
 	if (!isFocusable(elem, true, false, true)) return false;
 
 	return isInteractive(elem, tooltipInteractiveElements, tooltipInteractiveRoles);
@@ -64,6 +64,11 @@ class Tooltip extends PopoverMixin(LitElement) {
 		 * @type {'start'|'end'}
 		 */
 		align: { type: String, reflect: true },
+		/**
+		 * Let the tooltip adjust to the content width
+		 * @type {boolean}
+		 */
+		autoWidth: { type: Boolean, attribute: 'auto-width', reflect: true },
 		/**
 		 * ADVANCED: Announce the tooltip innerText when applicable (for use with custom elements)
 		 * @type {boolean}
@@ -152,6 +157,13 @@ class Tooltip extends PopoverMixin(LitElement) {
 			padding-inline: ${contentHorizontalPadding - contentBorderSize}px;
 			white-space: normal;
 		}
+		:host([auto-width]) {
+			width: auto;
+		}
+		:host([auto-width]) .d2l-tooltip-content {
+			max-width: none;
+			overflow: visible;
+		}
 		::slotted(ul),
 		::slotted(ol) {
 			padding-inline-start: 1rem;
@@ -167,6 +179,7 @@ class Tooltip extends PopoverMixin(LitElement) {
 	constructor() {
 		super();
 		this.announced = false;
+		this.autoWidth = false;
 		this.closeOnClick = false;
 		this.delay = 300;
 		this.disableFocusLock = false;
@@ -232,9 +245,9 @@ class Tooltip extends PopoverMixin(LitElement) {
 
 	willUpdate(changedProperties) {
 		super.willUpdate(changedProperties);
-
-		if (changedProperties.has('align') || changedProperties.has('forceShow') || changedProperties.has('offset') || changedProperties.has('positionLocation')) {
+		if (['align', 'forceShow', 'offset', 'positionLocation', 'autoWidth'].some(prop => changedProperties.has(prop))) {
 			super.configure({
+				autoWidth: this.autoWidth,
 				maxWidth: '350',
 				minWidth: '48',
 				noAutoClose: this.forceShow,
@@ -398,7 +411,7 @@ class Tooltip extends PopoverMixin(LitElement) {
 
 		let target;
 		if (this.for) {
-			const targetSelector = `#${cssEscape(this.for)}`;
+			const targetSelector = `#${CSS.escape(this.for)}`;
 			target = ownerRoot.querySelector(targetSelector);
 			target = (target || ownerRoot?.host?.querySelector(targetSelector)) ?? null;
 		} else {

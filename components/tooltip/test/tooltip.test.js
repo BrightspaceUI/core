@@ -109,6 +109,21 @@ describe('d2l-tooltip', () => {
 			expect(tooltip._getTarget()).to.be.null;
 		});
 
+		it('should not error if target is not found while announced', async() => {
+			const elem = await fixture(html`<d2l-tooltip for="unknown" announced>Tooltip</d2l-tooltip>`);
+
+			let unhandledRejectionReason;
+			const handleUnhandledRejection = event => unhandledRejectionReason = event.reason;
+			window.addEventListener('unhandledrejection', handleUnhandledRejection);
+
+			elem.show();
+			await oneEvent(elem, 'd2l-tooltip-show');
+			await aTimeout(100);
+			expect(unhandledRejectionReason).to.be.undefined;
+
+			window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+		});
+
 	});
 
 	describe('implicit target', () => {

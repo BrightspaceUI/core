@@ -52,7 +52,7 @@ describe('d2l-button-subtle', () => {
 	});
 
 	it('aria-label', async() => {
-		const el = await fixture(html`<d2l-button-subtle text="Subtle Button" aria-label="Custom Label"></d2l-button-subtle>`);
+		const el = await fixture(html`<d2l-button-subtle text="Subtle Button" aria-label="Custom Label for Subtle Button"></d2l-button-subtle>`);
 		await expect(el).to.be.accessible();
 	});
 

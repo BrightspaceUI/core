@@ -257,11 +257,6 @@ Selecting a tab in the tab bar causes the related tab panel to be displayed. Tab
 |--|--|--|
 | `labelled-by` | String, required | Id of the tab that labels this panel |
 | `no-padding` | Boolean | Used to opt out of default padding/whitespace around the panel |
-| `text` | String | DEPRECATED: The text used for the tab, as well as labelling the panel. Required if not using d2l-tab/d2l-tab-panel implementation. |
-| `selected` | Boolean | DEPRECATED: Use to select the tab. Do NOT set if using the d2l-tab/d2l-tab-panel implementation. |
-
-### Events
-- `d2l-tab-panel-selected`: DEPRECATED: Dispatched when a tab is selected
 <!-- docs: end hidden content -->
 
 ## Accessibility

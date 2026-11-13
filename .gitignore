@@ -3,7 +3,6 @@ generated/
 node_modules/
 .vdiff/
 lang/fr-on.js
-test/sass.output.css
 .DS_Store
 custom-elements.json
 d2l-test-report.json
