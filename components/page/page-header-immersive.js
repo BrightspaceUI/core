@@ -149,7 +149,6 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 
 	firstUpdated(changedProperties) {
 		super.firstUpdated(changedProperties);
-		//this.#resizeObserver.observe(this.#refActions.value);
 		this.#resizeObserver.observe(this.#refBack.value);
 		this.#resizeObserver.observe(this.#refContainer.value);
 		this.#resizeObserver.observe(this.#refIterator.value);
@@ -176,7 +175,6 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 	#containerWidth = undefined;
 	#iteratorWidth = 0;
 	#titleWidth = 0;
-	#refActions = createRef();
 	#refBack = createRef();
 	#refContainer = createRef();
 	#refIterator = createRef();
@@ -216,13 +214,27 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 	async #recalculateAction(node) {
 		await waitForElem(node);
 
+		const isSwitch = (node.tagName === 'D2L-SWITCH' || node.tagName === 'D2L-SWITCH-VISIBILITY');
+		const expectedResizeCount = isSwitch ? 3 : 1;
+		let count = 0;
 		return new Promise(resolve => {
 			const observer = new ResizeObserver((entries) => {
 				// TODO: handle action being completely hidden
 				const width = Math.ceil(entries[0].contentRect.width);
-				node.dataset.width = width;
-				observer.disconnect();
-				resolve();
+				count++;
+				if (count === 1) {
+					node.dataset.width = width;
+					if (isSwitch) {
+						node.textPosition = 'hidden';
+					}
+				} else if (count === 2 && isSwitch) {
+					node.dataset.slimWidth = width;
+					node.textPosition = 'end';
+				}
+				if (count === expectedResizeCount) {
+					observer.disconnect();
+					resolve();
+				}
 			});
 			observer.observe(node);
 		});
@@ -234,7 +246,6 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		this.#actions = nodes || [];
 		this._hasActions = this.#actions.length > 0;
 		this._recalculatingActions = true;
-		await this.updateComplete;
 		const promises = [];
 		this.#actions.forEach((node) => {
 			promises.push(this.#recalculateAction(node));
@@ -269,13 +280,41 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 			gap = ACTION_GAP;
 		}
 
+		//console.log('initial actions', actionsTotal, available);
+
+		// first try to slim down
+		let actionSlimIndex = 100;
+		if (actionsTotal > available) {
+			for (let i = this.#actions.length - 1; i >= 0; i--) {
+				const action = this.#actions[i];
+				const actionWidth = parseFloat(action.dataset.width) || 0;
+				const slimWidth = parseFloat(action.dataset.slimWidth) || 0;
+				if (slimWidth > 0 && actionWidth > slimWidth) {
+					actionsTotal -= (actionWidth - slimWidth);
+					action.setAttribute('text-position', 'hidden');
+					if (actionsTotal <= available || i === 0) {
+						actionSlimIndex = i;
+						break;
+					}
+				}
+			}
+			console.log('actions after slimming', actionsTotal, available);
+		}
+		for (let i = 0; i < actionSlimIndex && i < this.#actions.length; i++) {
+			const action = this.#actions[i];
+			if (action.hasAttribute('data-slim-width')) {
+				action.setAttribute('text-position', 'end');
+			}
+		}
+
+		// then try to chomp
 		this._actionChompIndex = 100;
 		if (actionsTotal > available) {
 			actionsTotal += (42 + ACTION_GAP); // make room for overflow menu
 			for (let i = this.#actions.length - 1; i >= 0; i--) {
 				const action = this.#actions[i];
-				const actionWidth = parseFloat(action.dataset.width) || 0;
-				actionsTotal -= (actionWidth + ACTION_GAP);
+				const actionWidth = action.hasAttribute('data-slim-width') ? parseFloat(action.dataset.slimWidth) : parseFloat(action.dataset.width);
+				actionsTotal = actionsTotal - (actionWidth + ACTION_GAP);
 				action.setAttribute('hidden', 'hidden');
 				if (actionsTotal <= available || i === 0) {
 					this._actionChompIndex = i;
@@ -327,7 +366,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		`;
 		return html`
 			<div class="${classMap(actionsIteratorWrapperClasses)}" ?hidden="${!this._hasActions && !this._hasIterator}">
-				<div class="${classMap(actionsClasses)}" ?hidden="${!this._hasActions}" style="${styleMap(actionsStyle)}" ${ref(this.#refActions)}>
+				<div class="${classMap(actionsClasses)}" ?hidden="${!this._hasActions}" style="${styleMap(actionsStyle)}">
 					<slot name="actions" @slotchange="${this.#handleActionsSlotChange}"></slot>
 					${overflowMenu}
 				</div>
@@ -383,10 +422,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 
 	#updateSizes(entries) {
 		entries.forEach(entry => {
-			if (entry.target === this.#refActions.value) {
-				//this.#actionsWidth = entry.contentRect.width;
-				//console.log('actionsWidth', entry.contentRect.width);
-			} else if (entry.target === this.#refBack.value) {
+			if (entry.target === this.#refBack.value) {
 				this.#backWidth = Math.ceil(entry.contentRect.width);
 			} else if (entry.target === this.#refContainer.value) {
 				this.#containerWidth = Math.floor(entry.contentRect.width);
@@ -404,9 +440,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 				this.#titleWidth = Math.ceil(entry.contentRect.width);
 			}
 		});
-		//const availableWidth = this.#containerWidth - (this.#backWidth + this.#titleWidth + this.#iteratorWidth);
 		console.log('resize', {
-			/*available: availableWidth,*/
 			back: this.#backWidth,
 			container: this.#containerWidth,
 			iterator: this.#iteratorWidth,
