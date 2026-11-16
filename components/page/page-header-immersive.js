@@ -216,13 +216,27 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 	async #recalculateAction(node) {
 		await waitForElem(node);
 
+		const isSwitch = (node.tagName === 'D2L-SWITCH' || node.tagName === 'D2L-SWITCH-VISIBILITY');
+		const expectedResizeCount = isSwitch ? 3 : 1;
+		let count = 0;
 		return new Promise(resolve => {
 			const observer = new ResizeObserver((entries) => {
 				// TODO: handle action being completely hidden
 				const width = Math.ceil(entries[0].contentRect.width);
-				node.dataset.width = width;
-				observer.disconnect();
-				resolve();
+				count++;
+				if (count === 1) {
+					node.dataset.width = width;
+					if (isSwitch) {
+						node.textPosition = 'hidden';
+					}
+				} else if (count === 2 && isSwitch) {
+					node.dataset.slimWidth = width;
+					node.textPosition = 'end';
+				}
+				if (count === expectedResizeCount) {
+					observer.disconnect();
+					resolve();
+				}
 			});
 			observer.observe(node);
 		});
@@ -234,7 +248,6 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		this.#actions = nodes || [];
 		this._hasActions = this.#actions.length > 0;
 		this._recalculatingActions = true;
-		await this.updateComplete;
 		const promises = [];
 		this.#actions.forEach((node) => {
 			promises.push(this.#recalculateAction(node));
@@ -269,13 +282,41 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 			gap = ACTION_GAP;
 		}
 
+		//console.log('initial actions', actionsTotal, available);
+
+		// first try to slim down
+		let actionSlimIndex = 100;
+		if (actionsTotal > available) {
+			for (let i = this.#actions.length - 1; i >= 0; i--) {
+				const action = this.#actions[i];
+				const actionWidth = parseFloat(action.dataset.width) || 0;
+				const slimWidth = parseFloat(action.dataset.slimWidth) || 0;
+				if (slimWidth > 0 && actionWidth > slimWidth) {
+					actionsTotal -= (actionWidth - slimWidth);
+					action.setAttribute('text-position', 'hidden');
+					if (actionsTotal <= available || i === 0) {
+						actionSlimIndex = i;
+						break;
+					}
+				}
+			}
+			console.log('actions after slimming', actionsTotal, available);
+		}
+		for (let i = 0; i < actionSlimIndex && i < this.#actions.length; i++) {
+			const action = this.#actions[i];
+			if (action.hasAttribute('data-slim-width')) {
+				action.setAttribute('text-position', 'end');
+			}
+		}
+
+		// then try to chomp
 		this._actionChompIndex = 100;
 		if (actionsTotal > available) {
 			actionsTotal += (42 + ACTION_GAP); // make room for overflow menu
 			for (let i = this.#actions.length - 1; i >= 0; i--) {
 				const action = this.#actions[i];
-				const actionWidth = parseFloat(action.dataset.width) || 0;
-				actionsTotal -= (actionWidth + ACTION_GAP);
+				const actionWidth = action.hasAttribute('data-slim-width') ? parseFloat(action.dataset.slimWidth) : parseFloat(action.dataset.width);
+				actionsTotal = actionsTotal - (actionWidth + ACTION_GAP);
 				action.setAttribute('hidden', 'hidden');
 				if (actionsTotal <= available || i === 0) {
 					this._actionChompIndex = i;
