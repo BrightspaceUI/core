@@ -6,14 +6,13 @@ import '../menu/menu-item-checkbox.js';
 import './page-header-custom.js';
 import { bodyCompactStyles, heading3Styles, labelStyles } from '../typography/styles.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { highlightBorderStyles, highlightLinkStyles } from './page-header-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { RequesterMixin } from '../../mixins/provider/provider-mixin.js';
-import { styleMap } from 'lit/directives/style-map.js';
 import { waitForElem } from '../../helpers/internal/waitForElem.js';
 
 const ACTION_GAP = 12;
