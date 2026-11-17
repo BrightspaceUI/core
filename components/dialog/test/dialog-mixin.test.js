@@ -73,6 +73,28 @@ describe('dialog-mixin', () => {
 			expect(elem.opened).to.be.false;
 		});
 
+		it('should stop propagation of the open event when dialogs are nested', async() => {
+			const elem = await fixture(html`
+				<d2l-dialog id="outer" opened>
+					<d2l-dialog id="inner"></d2l-dialog>
+				</d2l-dialog>
+			`);
+
+			const innerDialog = elem.querySelector('#inner');
+
+			let outerCalled = false;
+			elem.addEventListener('d2l-dialog-open', e => outerCalled = (e.target === innerDialog));
+
+			let innerCalled = false;
+			innerDialog.addEventListener('d2l-dialog-open', () => innerCalled = true);
+
+			setTimeout(() => innerDialog.opened = true);
+			await oneEvent(innerDialog, 'd2l-dialog-open');
+
+			expect(innerCalled).to.be.true;
+			expect(outerCalled).to.be.false;
+		});
+
 		it('should stop propagation of the close event when dialogs are nested', async() => {
 			const elem = await fixture(html`
 				<d2l-dialog id="outer" opened>
