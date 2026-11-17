@@ -47,7 +47,7 @@
 											<p>Shiver me timbers to go on account lookout wherry doubloon chase. Belay yo-ho-ho keelhaul squiffy black spot yardarm spyglass sheet transom heave to.</p>
 											<p>Trysail Sail ho Corsair red ensign hulk smartly boom jib rum gangway. Case shot Shiver me timbers gangplank crack Jennys tea cup ballast Blimey lee snow crow's nest rutters. Fluke jib scourge of the seven seas boatswain schooner gaff booty Jack Tar transom spirits.</p>
 										</d2l-dropdown-content>
-									</d2l-dropdown-button-subtle>	
+									</d2l-dropdown-button-subtle>
 									<d2l-filter>
 										<d2l-filter-dimension-set key="course" text="Course" select-all>
 											<d2l-filter-dimension-set-value key="art" text="Art"></d2l-filter-dimension-set-value>
@@ -74,14 +74,15 @@
 					</d2l-dialog>
 
 					<script>
-						document.querySelector('#openParent').addEventListener('click', async() => {
-							const action = await document.querySelector('#parentDialog').open();
-							console.log('parent dialog action:', action);
-						});
-						document.querySelector('#openChild').addEventListener('click', async() => {
-							const action = await document.querySelector('#childDialog').open();
-							console.log('child dialog action:', action);
-						});
+						const parentDialog = document.querySelector('#parentDialog');
+						const childDialog = document.querySelector('#childDialog');
+						document.querySelector('#openParent').addEventListener('click', async() => parentDialog.open());
+						parentDialog.addEventListener('d2l-dialog-open', () => console.log('parent dialog opened'));
+						parentDialog.addEventListener('d2l-dialog-close', e => console.log('parent dialog closed', e.detail.action));
+
+						document.querySelector('#openChild').addEventListener('click', async() => childDialog.open());
+						childDialog.addEventListener('d2l-dialog-open', () => console.log('child dialog opened'));
+						childDialog.addEventListener('d2l-dialog-close', e => console.log('child dialog closed', e.detail.action));
 					</script>
 				</template>
 			</d2l-demo-snippet>

@@ -394,18 +394,15 @@ export const DialogMixin = superclass => class extends superclass {
 		));
 	}
 
-	_handleDialogCloseWithinNative(e) {
+	_handleDialogCloseWithin(e) {
+		if (!this._useNative) this._nestedShowing = false;
 		// prevent close event from bubbling and closing parent dialogs
 		e.stopPropagation();
 	}
 
-	_handleDialogCloseWithinNonNative(e) {
-		this._nestedShowing = false;
-		e.stopPropagation();
-	}
-
-	_handleDialogOpenWithinNonNative(e) {
-		this._nestedShowing = true;
+	_handleDialogOpenWithin(e) {
+		if (!this._useNative) this._nestedShowing = true;
+		// prevent open event from bubbling and running load logic in ancestors
 		e.stopPropagation();
 	}
 
@@ -566,7 +563,8 @@ export const DialogMixin = superclass => class extends superclass {
 				class="${classMap(dialogOuterClasses)}"
 				@click="${this._handleClick}"
 				@close="${this._handleClose}"
-				@d2l-dialog-close="${this._handleDialogCloseWithinNative}"
+				@d2l-dialog-close="${this._handleDialogCloseWithin}"
+				@d2l-dialog-open="${this._handleDialogOpenWithin}"
 				@d2l-fullscreen-within="${this._handleFullscreenWithin}"
 				id="${this._dialogId}"
 				@keydown="${this._handleKeyDown}"
@@ -579,8 +577,8 @@ export const DialogMixin = superclass => class extends superclass {
 				aria-labelledby="${info.labelId}"
 				class="${classMap(dialogOuterClasses)}"
 				@click="${this._handleClick}"
-				@d2l-dialog-close="${this._handleDialogCloseWithinNonNative}"
-				@d2l-dialog-open="${this._handleDialogOpenWithinNonNative}"
+				@d2l-dialog-close="${this._handleDialogCloseWithin}"
+				@d2l-dialog-open="${this._handleDialogOpenWithin}"
 				@d2l-fullscreen-within="${this._handleFullscreenWithin}"
 				id="${this._dialogId}"
 				role="${info.role}"
