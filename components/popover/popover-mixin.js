@@ -8,6 +8,7 @@ import { css, html, nothing } from 'lit';
 import { getComposedActiveElement, getFirstFocusableDescendant, getPreviousFocusableAncestor } from '../../helpers/focus.js';
 import { _offscreenStyleDeclarations } from '../offscreen/offscreen.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getFlag } from '../../helpers/flags.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { tryGetIfrauBackdropService } from '../../helpers/ifrauBackdropService.js';
 import { waitForElem } from '../../helpers/internal/waitForElem.js';
@@ -674,16 +675,22 @@ export const PopoverMixin = superclass => class extends superclass {
 
 		// todo: try to use relatedTarget instead - this logic is largely copied as-is from dropdown simply to mitigate risk of this fragile code
 		setTimeout(() => {
+
+			const activeElement = getComposedActiveElement();
+
+			// remove usingNativeDialogs when cleaning up GAUD-10409-prefer-native-general-dialogs and GAUD-10336-prefer-native-fullscreen-dialogs
+			const usingNativeDialogs = getFlag('GAUD-10409-prefer-native-general-dialogs', true) || getFlag('GAUD-10336-prefer-native-fullscreen-dialogs', true);
+
 			// we ignore focusable ancestors othrwise the popover will close when user clicks empty space inside the popover
 			if (!this._opened
 				|| this._noAutoClose
 				|| !document.activeElement
 				|| document.activeElement === this._previousFocusableAncestor
-				|| document.activeElement === document.body) {
+				|| document.activeElement === document.body
+				|| (activeElement.tagName === 'DIALOG' && usingNativeDialogs)) {
 				return;
 			}
 
-			const activeElement = getComposedActiveElement();
 			if (isComposedAncestor(this, activeElement)
 				|| isComposedAncestor(this._opener, activeElement)
 				|| activeElement === this._previousFocusableAncestor) {

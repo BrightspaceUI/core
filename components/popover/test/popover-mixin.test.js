@@ -1,5 +1,5 @@
 import './popover.js';
-import { aTimeout, expect, fixture, focusElem, html, nextFrame, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { aTimeout, clickElem, expect, fixture, focusElem, html, nextFrame, oneEvent, runConstructor } from '@brightspace-ui/testing';
 
 describe('popover-mixin', () => {
 
@@ -133,6 +133,28 @@ describe('popover-mixin', () => {
 			setTimeout(() => popover.querySelector('span').click());
 			await aTimeout(100);
 			expect(popover.opened).to.be.true;
+		});
+
+		it('should not close when non-interactive element inside popover within a native dialog is clicked', async() => {
+			const dialog = await fixture(html`
+				<dialog>
+					<button id="opener"></button>
+					<d2l-test-popover>
+						<button>shiny</button>
+						<span>apple</span>
+					</d2l-test-popover>
+				</dialog>
+			`);
+			dialog.showModal();
+
+			const nestedOpener = dialog.querySelector('#opener');
+			const nestedPopover = dialog.querySelector('d2l-test-popover');
+
+			setTimeout(() => nestedPopover.open(nestedOpener));
+			await oneEvent(nestedPopover, 'd2l-popover-open');
+
+			await clickElem(nestedPopover.querySelector('span'));
+			expect(nestedPopover.opened).to.be.true;
 		});
 
 		it('should not close when opener receives focus', async() => {

@@ -1,6 +1,7 @@
 import '../selection/selection-input.js';
 import { css, html, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { getFlag } from '../../helpers/flags.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { isInteractiveInListItemComposedPath } from './list-item-mixin.js';
@@ -149,6 +150,14 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 		}
 	}
 
+	_onMouseDownSelection(e) {
+		// remove this line when cleaning up GAUD-10409-prefer-native-general-dialogs and GAUD-10336-prefer-native-fullscreen-dialogs
+		if (!getFlag('GAUD-10409-prefer-native-general-dialogs', true) || !getFlag('GAUD-10336-prefer-native-fullscreen-dialogs', true)) return;
+
+		// prevent focus from moving to dialog or body elements when user clicks non-focusable selection overlay
+		e.preventDefault();
+	}
+
 	_onMouseEnterSelection() {
 		this._hoveringSelection = !this.selectionDisabled;
 	}
@@ -194,6 +203,7 @@ export const ListItemCheckboxMixin = superclass => class extends SkeletonMixin(s
 			<div class="d2l-checkbox-action"
 				aria-hidden="${ifDefined(inner ? undefined : 'true')}"
 				@click="${this._onCheckboxActionClick}"
+				@mousedown="${this._onMouseDownSelection}"
 				@mouseenter="${this._onMouseEnterSelection}"
 				@mouseleave="${this._onMouseLeaveSelection}">
 				${inner}
