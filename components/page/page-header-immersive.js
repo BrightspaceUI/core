@@ -18,7 +18,7 @@ import { waitForElem } from '../../helpers/internal/waitForElem.js';
 
 const ACTION_GAP = 12;
 const CONTAINER_GAP = 24;
-const MINIMUM_TITLE_WIDTH = 100;
+const MINIMUM_TITLE_WIDTH = 42;
 
 class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)) {
 
@@ -32,8 +32,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		_hasActions: { state: true },
 		_hasIterator: { state: true },
 		_hasTitleSlot: { state: true },
-		_recalculatingActions: { state: true },
-		_titleHidden: { state: true }
+		_recalculatingActions: { state: true }
 	};
 
 	static styles = [bodyCompactStyles, heading3Styles, labelStyles, highlightBorderStyles, highlightLinkStyles, offscreenStyles, css`
@@ -54,7 +53,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		}
 		.title {
 			flex: 1 1 auto;
-			min-width: 0;
+			min-width: ${MINIMUM_TITLE_WIDTH}px;
 		}
 		.title-wrapper {
 			height: 100%;
@@ -67,7 +66,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		.actions-iterator-wrapper.has-title {
 			border-inline-start: 1px solid var(--d2l-color-gypsum);
 		}
-		.title.has-title,
+		.title,
 		.actions-iterator-wrapper.has-title {
 			padding-inline-start: ${CONTAINER_GAP}px;
 		}
@@ -129,7 +128,6 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		this._hasIterator = false;
 		this._hasTitleSlot = false;
 		this._recalculatingActions = true;
-		this._titleHidden = false;
 	}
 
 	connectedCallback() {
@@ -207,10 +205,6 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		return !!(this._hasTitleSlot || this.titleText || this.subtitleText);
 	}
 
-	#hasVisibleTitle() {
-		return !this._titleHidden && this.#hasTitle();
-	}
-
 	async #recalculateAction(node) {
 		await waitForElem(node);
 
@@ -266,10 +260,11 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		}
 
 		const actionGaps = (this.#iteratorWidth > 0) ? 1 : 0;
-		const containerGaps = (this.#hasVisibleTitle()) ? 3 : 2;
-		const borders = (this.#hasVisibleTitle()) ? 2 : 1;
-		const available = (this.#containerWidth - this.#backWidth - this.#iteratorWidth) - (actionGaps * ACTION_GAP + containerGaps * CONTAINER_GAP + borders);
-		//console.log(`actionGaps: ${actionGaps}, containerGaps: ${containerGaps}, borders: ${borders}, hasVisibleTitle: ${this.#hasVisibleTitle()}`);
+		const containerGaps = (this.#hasTitle()) ? 4 : 2;
+		const borders = (this.#hasTitle()) ? 2 : 1;
+		const titleWidth = this.#hasTitle() ? MINIMUM_TITLE_WIDTH : 0;
+		const available = (this.#containerWidth - this.#backWidth - titleWidth - this.#iteratorWidth) - (actionGaps * ACTION_GAP + containerGaps * CONTAINER_GAP + borders);
+		//console.log(`actionGaps: ${actionGaps}, containerGaps: ${containerGaps}, borders: ${borders}`);
 
 		let actionsTotal = 0;
 		let gap = 0;
@@ -343,7 +338,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		};
 		const actionsIteratorWrapperClasses = {
 			'actions-iterator-wrapper': true,
-			'has-title': this.#hasVisibleTitle()
+			'has-title': this.#hasTitle()
 		};
 		const overflowItems = this.#actions.slice(this._actionChompIndex)
 			.map((action) => {
@@ -404,12 +399,10 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		const subtitle = this.subtitleText ? html`<div class="title-text d2l-label-text">${this.subtitleText}</div>` : '';
 		const heading = (title || subtitle) && html`<h1>${title}${subtitle}</h1>`;
 		const titleClasses = {
-			'title': true,
-			'has-title': this.#hasVisibleTitle()
+			'title': true
 		};
 		const wrapperClasses = {
-			'title-wrapper': true,
-			'd2l-offscreen': this._titleHidden
+			'title-wrapper': true
 		};
 		return html`
 			<div class="${classMap(titleClasses)}" ${ref(this.#refTitle)}>
@@ -429,14 +422,6 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 			} else if (entry.target === this.#refIterator.value) {
 				this.#iteratorWidth = Math.ceil(entry.contentRect.width);
 			} else if (entry.target === this.#refTitle.value) {
-				if (this.#hasTitle()) {
-					if (this._titleHidden) {
-						const extraSpace = (this._hasActions || this._hasIterator) ? (CONTAINER_GAP * 2 + 1) : (CONTAINER_GAP + 1);
-						this._titleHidden = entry.contentRect.width - extraSpace < MINIMUM_TITLE_WIDTH;
-					} else {
-						this._titleHidden = entry.contentRect.width < MINIMUM_TITLE_WIDTH;
-					}
-				}
 				this.#titleWidth = Math.ceil(entry.contentRect.width);
 			}
 		});
