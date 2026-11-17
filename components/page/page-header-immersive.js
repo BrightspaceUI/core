@@ -262,8 +262,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		const actionGaps = (this.#iteratorWidth > 0) ? 1 : 0;
 		const containerGaps = (this.#hasTitle()) ? 4 : 2;
 		const borders = (this.#hasTitle()) ? 2 : 1;
-		const titleWidth = this.#hasTitle() ? MINIMUM_TITLE_WIDTH : 0;
-		const available = (this.#containerWidth - this.#backWidth - titleWidth - this.#iteratorWidth) - (actionGaps * ACTION_GAP + containerGaps * CONTAINER_GAP + borders);
+		const available = ((this.#containerWidth - this.#backWidth - this.#iteratorWidth) - (actionGaps * ACTION_GAP + containerGaps * CONTAINER_GAP + borders)) * 0.5;
 		//console.log(`actionGaps: ${actionGaps}, containerGaps: ${containerGaps}, borders: ${borders}`);
 
 		let actionsTotal = 0;
@@ -306,12 +305,12 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		this._actionChompIndex = 100;
 		if (actionsTotal > available) {
 			actionsTotal += (42 + ACTION_GAP); // make room for overflow menu
-			for (let i = this.#actions.length - 1; i >= 0; i--) {
+			for (let i = this.#actions.length - 1; i >= 1; i--) {
 				const action = this.#actions[i];
 				const actionWidth = action.hasAttribute('data-slim-width') ? parseFloat(action.dataset.slimWidth) : parseFloat(action.dataset.width);
 				actionsTotal = actionsTotal - (actionWidth + ACTION_GAP);
 				action.setAttribute('hidden', 'hidden');
-				if (actionsTotal <= available || i === 0) {
+				if (actionsTotal <= available || i === 1) {
 					this._actionChompIndex = i;
 					break;
 				}
