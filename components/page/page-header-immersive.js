@@ -303,8 +303,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		// then try to chomp
 		this._actionChompIndex = 100;
 		if (actionsTotal > available) {
-			actionsTotal += (42 + ACTION_GAP); // make room for overflow menu
-			for (let i = this.#actions.length - 1; i >= 1; i--) {
+			for (let i = this.#actions.length - 1; i >= 0; i--) {
 				const action = this.#actions[i];
 				const actionWidth = action.hasAttribute('data-slim-width') ? parseFloat(action.dataset.slimWidth) : parseFloat(action.dataset.width);
 				actionsTotal = actionsTotal - (actionWidth + ACTION_GAP);
