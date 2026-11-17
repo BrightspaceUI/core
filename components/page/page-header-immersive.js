@@ -168,7 +168,6 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 
 	#actions = [];
 	#actionsComplete = false;
-	#actionsWidth = undefined;
 	#backWidth = undefined;
 	#containerWidth = undefined;
 	#iteratorWidth = 0;
@@ -328,9 +327,6 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 	}
 
 	#renderActionsIterator() {
-		const actionsStyle = {
-			width: this.#actionsWidth !== undefined ? `${this.#actionsWidth}px` : 'auto'
-		};
 		const actionsClasses = {
 			'actions': true,
 			'defined': (!this._recalculatingActions)
@@ -360,7 +356,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		`;
 		return html`
 			<div class="${classMap(actionsIteratorWrapperClasses)}" ?hidden="${!this._hasActions && !this._hasIterator}">
-				<div class="${classMap(actionsClasses)}" ?hidden="${!this._hasActions}" style="${styleMap(actionsStyle)}">
+				<div class="${classMap(actionsClasses)}" ?hidden="${!this._hasActions}">
 					<slot name="actions" @slotchange="${this.#handleActionsSlotChange}"></slot>
 					${overflowMenu}
 				</div>
