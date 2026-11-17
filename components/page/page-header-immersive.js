@@ -6,18 +6,18 @@ import '../menu/menu-item-checkbox.js';
 import './page-header-custom.js';
 import { bodyCompactStyles, heading3Styles, labelStyles } from '../typography/styles.js';
 import { createRef, ref } from 'lit/directives/ref.js';
-import { css, html, LitElement } from 'lit';
+import { css, html, LitElement, nothing } from 'lit';
 import { highlightBorderStyles, highlightLinkStyles } from './page-header-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
-import { overflowEllipsisDeclarations } from '../../helpers/overflow.js';
 import { RequesterMixin } from '../../mixins/provider/provider-mixin.js';
 import { waitForElem } from '../../helpers/internal/waitForElem.js';
 
 const ACTION_GAP = 12;
 const CONTAINER_GAP = 24;
-const MINIMUM_TITLE_WIDTH = 42;
+const MINIMUM_TITLE_WIDTH = 30;
 
 class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)) {
 
@@ -31,7 +31,8 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		_hasActions: { state: true },
 		_hasIterator: { state: true },
 		_hasTitleSlot: { state: true },
-		_recalculatingActions: { state: true }
+		_recalculatingActions: { state: true },
+		_titleOverflowing: { state: true }
 	};
 
 	static styles = [bodyCompactStyles, heading3Styles, labelStyles, highlightBorderStyles, highlightLinkStyles, offscreenStyles, css`
@@ -53,6 +54,14 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		.title {
 			flex: 1 1 auto;
 			min-width: ${MINIMUM_TITLE_WIDTH}px;
+			position: relative;
+		}
+		#title-overflow {
+			inset-block-start: 50%;
+			inset-inline-end: 0;
+			box-shadow: 0 0 10px 10px rgba(255, 255, 255);
+			position: absolute;
+			transform: translateY(-50%);
 		}
 		.title-wrapper {
 			height: 100%;
@@ -115,7 +124,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 			margin: 10px auto;
 		}
 		.title-text {
-			${overflowEllipsisDeclarations}
+			${getOverflowDeclarations({ textOverflow: 'clip' })}
 		}
 	`];
 
@@ -127,6 +136,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		this._hasIterator = false;
 		this._hasTitleSlot = false;
 		this._recalculatingActions = true;
+		this._titleOverflowing = false;
 	}
 
 	connectedCallback() {
@@ -170,7 +180,6 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 	#backWidth = undefined;
 	#containerWidth = undefined;
 	#iteratorWidth = 0;
-	#titleWidth = 0;
 	#refBack = createRef();
 	#refContainer = createRef();
 	#refIterator = createRef();
@@ -397,10 +406,19 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		const wrapperClasses = {
 			'title-wrapper': true
 		};
+		const overflow = this._titleOverflowing ?
+			html`
+				<button id="title-overflow" aria-hidden="true" aria-label="title overflow tooltip">&hellip;</button>
+				<d2l-tooltip for="title-overflow">
+					${this.titleText}<br>
+					${this.subtitleText}
+				</d2l-tooltip>
+			` : nothing;
 		return html`
 			<div class="${classMap(titleClasses)}" ${ref(this.#refTitle)}>
 				<div class="${classMap(wrapperClasses)}">
 					<slot name="title" @slotchange="${this.#handleTitleSlotChange}">${heading}</slot>
+					${overflow}
 				</div>
 			</div>
 		`;
@@ -415,14 +433,16 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 			} else if (entry.target === this.#refIterator.value) {
 				this.#iteratorWidth = Math.ceil(entry.contentRect.width);
 			} else if (entry.target === this.#refTitle.value) {
-				this.#titleWidth = Math.ceil(entry.contentRect.width);
+				const title = this.#refTitle.value.querySelector('.d2l-heading-3');
+				const subtitle = this.#refTitle.value.querySelector('.d2l-label-text');
+				this._titleOverflowing = title.scrollWidth > title.clientWidth || subtitle.scrollWidth > subtitle.clientWidth;
+				//console.log('title', title.scrollWidth, title.clientWidth, title.scrollWidth > title.clientWidth, subtitle.scrollWidth > subtitle.clientWidth);
 			}
 		});
 		console.log('resize', {
 			back: this.#backWidth,
 			container: this.#containerWidth,
-			iterator: this.#iteratorWidth,
-			title: this.#titleWidth
+			iterator: this.#iteratorWidth
 		});
 		this.#recalculateEverything();
 	}
