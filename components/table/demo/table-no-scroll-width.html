@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>d2l-table-wrapper _no-scroll-width flicker</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<style>
+			body {
+				padding: 0 1rem;
+			}
+			.controls {
+				background-color: white;
+				border-bottom: 1px solid var(--d2l-color-mica);
+				display: flex;
+				flex-wrap: wrap;
+				font-size: 0.8rem;
+				gap: 0.5rem 1.5rem;
+				padding-block: 0.75rem;
+				position: sticky;
+				top: 0;
+				z-index: 10;
+			}
+			.controls label {
+				align-items: center;
+				display: flex;
+				gap: 0.5rem;
+			}
+			.stats {
+				font-family: monospace;
+				white-space: pre;
+			}
+			#spacer {
+				align-items: center;
+				display: flex;
+				height: 150vh;
+				justify-content: center;
+			}
+			#spacer[hidden] {
+				display: none;
+			}
+			d2l-table-no-scroll-width-demo {
+				display: block;
+				outline: 1px dashed var(--d2l-color-cinnabar);
+				margin-block: 1rem;
+			}
+		</style>
+		<script type="module">
+			import { html, LitElement } from 'lit';
+			import { tableStyles } from '../table-wrapper.js';
+
+			const urlParams = new URLSearchParams(window.location.search);
+			// Must be applied before the table renders, so it has never intersected the viewport
+			history.scrollRestoration = 'manual';
+			document.querySelector('#spacer').hidden = !urlParams.has('offscreen');
+
+			// Same table found in the d2l-page demo
+			class TableNoScrollWidthDemo extends LitElement {
+				static styles = tableStyles;
+				render() {
+					return html`
+						<d2l-table-wrapper sticky-headers sticky-headers-scroll-wrapper>
+							<table class="d2l-table">
+								<thead>
+									<tr>
+										<th>Student</th>
+										<th>Assignment 1</th>
+										<th>Assignment 2</th>
+										<th>Final Exam</th>
+										<th>Total</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr><th scope="row">Alice Johnson</th><td>92</td><td>88</td><td>95</td><td>91.7</td></tr>
+									<tr><th scope="row">Bob Smith</th><td>85</td><td>79</td><td>82</td><td>82.0</td></tr>
+									<tr><th scope="row">Carol Davis</th><td>78</td><td>91</td><td>87</td><td>85.3</td></tr>
+									<tr><th scope="row">David Lee</th><td>95</td><td>93</td><td>90</td><td>92.7</td></tr>
+									<tr><th scope="row">Emily Chen</th><td>88</td><td>84</td><td>91</td><td>87.7</td></tr>
+								</tbody>
+							</table>
+						</d2l-table-wrapper>
+					`;
+				}
+			}
+			customElements.define('d2l-table-no-scroll-width-demo', TableNoScrollWidthDemo);
+
+			const demo = document.querySelector('d2l-table-no-scroll-width-demo');
+			const widthInput = document.querySelector('#width');
+			const widthValue = document.querySelector('#width-value');
+			const offscreen = document.querySelector('#offscreen');
+			const stats = document.querySelector('#stats');
+
+			widthInput.value = urlParams.get('width') ?? widthInput.value;
+			offscreen.checked = urlParams.has('offscreen');
+
+			let toggles = 0;
+			let wrapper, table;
+
+			function updateUrl() {
+				const params = new URLSearchParams({ width: widthInput.value });
+				if (offscreen.checked) params.set('offscreen', '');
+				history.replaceState(null, '', `?${params}`);
+			}
+
+			function updateStats() {
+				if (!wrapper) return;
+				const noScrollWidth = wrapper.hasAttribute('_no-scroll-width');
+				stats.textContent = [
+					`_no-scroll-width: ${String(noScrollWidth).padEnd(5)}  toggles: ${toggles}`,
+					`table height:     ${table.offsetHeight}px`
+				].join('\n');
+			}
+
+			function applySettings() {
+				demo.style.width = `${widthInput.value}px`;
+				widthValue.textContent = `${widthInput.value}px`;
+				updateUrl();
+			}
+
+			widthInput.addEventListener('input', applySettings);
+			offscreen.addEventListener('change', () => {
+				updateUrl();
+				window.location.reload();
+			});
+			document.querySelector('#reset').addEventListener('click', () => {
+				toggles = 0;
+				updateStats();
+			});
+			applySettings();
+
+			await demo.updateComplete;
+			wrapper = demo.shadowRoot.querySelector('d2l-table-wrapper');
+			await wrapper.updateComplete;
+			table = wrapper.querySelector('table');
+
+			new MutationObserver(records => {
+				toggles += records.length;
+				updateStats();
+			}).observe(wrapper, { attributes: true, attributeFilter: ['_no-scroll-width'] });
+			new ResizeObserver(updateStats).observe(table);
+			updateStats();
+		</script>
+	</head>
+	<body>
+		<div class="controls">
+			<label>
+				Table width
+				<input id="width" type="range" min="370" max="410" step="1" value="388">
+				<span id="width-value"></span>
+			</label>
+			<label><input id="offscreen" type="checkbox"> Start with table offscreen (reloads)</label>
+			<button id="reset">Reset counts</button>
+			<div id="stats" class="stats"></div>
+		</div>
+		<div id="spacer" hidden>Scroll down to the table</div>
+		<d2l-table-no-scroll-width-demo></d2l-table-no-scroll-width-demo>
+		<div style="align-items: end; display: flex; height: 500px;">End of Content</div>
+	</body>
+</html>
