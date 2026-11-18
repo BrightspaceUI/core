@@ -23,7 +23,7 @@ class ListDemoNav extends LitElement {
 			max-width: 400px;
 		}
 		d2l-icon {
-			margin-right: 0.7rem;
+			margin-inline-end: 0.7rem;
 		}
 		d2l-tooltip-help {
 			padding: 5px;

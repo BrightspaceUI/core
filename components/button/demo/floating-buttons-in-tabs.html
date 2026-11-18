@@ -16,7 +16,7 @@
 				list-style: none;
 				margin-bottom: 0;
 				margin-top: 0;
-				padding-left: 0;
+				padding-inline-start: 0;
 			}
 			.vui-tabmenu::after, .vui-tabmenu::before {
 				content: " ";
@@ -27,7 +27,7 @@
 			}
 			.vui-tabmenu > .vui-tabmenu-item {
 				display: block;
-				float: left;
+				float: inline-start;
 				margin-bottom: -1px;
 				overflow: hidden;
 				position: relative;
@@ -38,12 +38,12 @@
 				color: #a2a2a2;
 				display: block;
 				line-height: 1.428571429;
-				margin-right: 2px;
+				margin-inline-end: 2px;
 				padding: 10px 15px;
 				position: relative;
 			}
 			.vui-tabmenu > .vui-tabmenu-item:last-child > a {
-				margin-right: 0;
+				margin-inline-end: 0;
 			}
 			.vui-tabmenu > .vui-tabmenu-item > a:hover {
 				color: #666666;
@@ -60,8 +60,8 @@
 				background-color: #bababa;
 				display: block;
 				height: 16px;
+				inset-inline-end: -3px;
 				position: absolute;
-				right: -3px;
 				top: 10px;
 				width: 1px;
 			}
@@ -75,14 +75,10 @@
 				border: 1px solid #00617f;
 				display: block;
 				height: 2px;
-				left: -1px;
+				inset-inline-start: -1px;
 				position: absolute;
 				top: -1px;
 				width: 100%;
-			}
-			[dir="rtl"] .vui-tabmenu > .vui-tabmenu-item-select:last-child > a > .vui-tabmenu-item-blue,
-			[dir="rtl"] .vui-tabmenu > .vui-tabmenu-item-select > a > .vui-tabmenu-item-blue {
-				right: -1px;
 			}
 			.d2l-textblock {
 				margin-bottom: 0;
