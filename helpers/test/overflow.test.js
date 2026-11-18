@@ -41,7 +41,7 @@ describe('overflow', () => {
 			expect(declarations.cssText).to.equal(set`
 				min-width: 0; /* clamps width of flex items */
 				overflow-x: clip;
-				overflow-clip-margin: 1em;
+				overflow-clip-margin: 0;
 				overflow-y: visible;
 				text-overflow: ${textOverflow};
 				white-space: nowrap;

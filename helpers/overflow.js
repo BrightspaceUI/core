@@ -20,7 +20,7 @@ export function getOverflowDeclarations({ textOverflow = '', lines = 1, lit = tr
 			-webkit-box-orient: vertical;
 			-webkit-line-clamp: ${lines};`
 			: set`
-			overflow-clip-margin: 1em;
+			overflow-clip-margin: ${textOverflow === 'clip' ? '0' : '1em'};
 			${textOverflow
 				? set`
 				overflow-y: visible;
