@@ -34,7 +34,7 @@ class ButtonCopy extends FocusMixin(ButtonCopyMixin(LitElement)) {
 			<d2l-button-icon
 				?disabled="${this.disabled}"
 				icon="${this._recentCopySuccessful ? 'tier1:check' : 'tier1:copy'}"
-				text="${this.text ?? this.localize('intl-common:actions:copy')}"
+				text="${this.text ?? this.localizeCommon('actions:copy')}"
 				@click="${this._handleClick}">
 			</d2l-button-icon>
 			${this._renderToast()}
