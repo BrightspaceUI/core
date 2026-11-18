@@ -154,7 +154,7 @@ this.localizeHTML('octopus', {
 
 ### Common Resources
 
-Some resources are common and shared across D2L applications. To use these, set the `loadCommon` option:
+Some localization resources are common and shared across D2L applications. To use these resources, set the `loadCommon` option:
 
 ```javascript
 static get localizeConfig() {
@@ -164,11 +164,21 @@ static get localizeConfig() {
 }
 ```
 
+#### localizeCommon
+
+The localized value of [these common terms](https://github.com/BrightspaceUI/intl/blob/main/lang/en.js) can be accessed using `localizeCommon(name)`, where `intl-common:` is omitted from the term name.
+
+Example:
+
+```javascript
+const value = localizer.localizeCommon('actions:copy'); // -> Copy in en-US
+```
+
 #### localizeCharacter
 
 The localized value of the following characters can be accessed using `localizeCharacter(char)`:
-* `'` (apostrophe)
 * `&` (ampersand)
+* `'` (apostrophe)
 * `*` (asterisk)
 * `\` (backslash)
 * `:` (colon)
@@ -182,7 +192,7 @@ The localized value of the following characters can be accessed using `localizeC
 * `"` (quotation mark)
 
 ```javascript
-this.localizeCharacter('&'); // -> 'ampersand' in en-US
+const value = this.localizeCharacter('&'); // -> 'ampersand' in en-US
 ```
 
 ## Off-Stack Language Overrides
