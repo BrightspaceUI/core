@@ -22,7 +22,7 @@ describe('d2l-button-copy', () => {
 		it('button text defaults to localized "Copy" string', async() => {
 			const el = await fixture(html`<d2l-button-copy></d2l-button-copy>`);
 			const buttonIcon = el.shadowRoot.querySelector('d2l-button-icon');
-			expect(buttonIcon.text).to.equal(el.localize('intl-common:actions:copy'));
+			expect(buttonIcon.text).to.equal(el.localizeCommon('actions:copy'));
 		});
 
 		it('button text can be set via text attribute', async() => {

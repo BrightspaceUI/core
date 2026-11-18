@@ -35,7 +35,7 @@ class BackdropStaleOverlay extends LocalizeCoreElement(LitElement) {
 
 	render() {
 		const message = this.text || this.localize('components.backdrop-stale-overlay.message');
-		const buttonText = this.buttonText || this.localize('intl-common:actions:reload');;
+		const buttonText = this.buttonText || this.localizeCommon('actions:reload');;
 
 		return html`
 			<p class="d2l-body-compact">${message}</p>
