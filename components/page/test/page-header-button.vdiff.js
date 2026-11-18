@@ -5,10 +5,8 @@ describe('d2l-page-header-button', () => {
 
 	[
 		{ name: 'icon-text', template: pageHeaderButtonFixtures.iconText },
-		{ name: 'disabled', template: pageHeaderButtonFixtures.disabled },
 		{ name: 'flip', template: pageHeaderButtonFixtures.flipIcon },
-		{ name: 'text-hidden', template: pageHeaderButtonFixtures.textHidden, tooltip: [true, true] },
-		{ name: 'text-hidden-disabled', template: pageHeaderButtonFixtures.textHiddenDisabled, tooltip: [true, false] },
+		{ name: 'text-hidden', template: pageHeaderButtonFixtures.textHidden, tooltip: true },
 	].forEach(({ name, template, tooltip }) => {
 		describe(name, () => {
 
@@ -22,7 +20,7 @@ describe('d2l-page-header-button', () => {
 			});
 
 			it('hover', async() => {
-				if (tooltip[0]) {
+				if (tooltip) {
 					hoverElem(elem);
 					await oneEvent(elem, 'd2l-tooltip-show');
 				} else {
@@ -32,7 +30,7 @@ describe('d2l-page-header-button', () => {
 			});
 
 			it('focus', async() => {
-				if (tooltip[1]) {
+				if (tooltip) {
 					focusElem(elem);
 					await oneEvent(elem, 'd2l-tooltip-show');
 				} else {

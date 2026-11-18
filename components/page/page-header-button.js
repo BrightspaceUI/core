@@ -1,4 +1,3 @@
-import '../colors/colors.js';
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
@@ -13,11 +12,6 @@ import { ifDefined } from 'lit/directives/if-defined.js';
 class PageHeaderButton extends FocusMixin(LitElement) {
 
 	static properties = {
-		/**
-		 * Disables the button
-		 * @type {boolean}
-		 */
-		disabled: { reflect: true, type: Boolean },
 		/**
 		 * REQUIRED: Preset icon key (e.g. "tier1:gear")
 		 * @type {string}
@@ -57,10 +51,8 @@ class PageHeaderButton extends FocusMixin(LitElement) {
 
 	constructor() {
 		super();
-		this.disabled = false;
 		this.iconPosition = 'start';
 		this.textHidden = false;
-		this.tooltipPosition = 'bottom';
 	}
 
 	static get focusElementSelector() {
@@ -69,11 +61,10 @@ class PageHeaderButton extends FocusMixin(LitElement) {
 
 	render() {
 		const { ariaLabel, id, text, tooltip } = this.#getRenderSettings();
-		const highlightBorder = !this.disabled ? html`<span class="d2l-page-header-highlight-border"></span>` : nothing;
 		const icon = html`<d2l-icon icon="${this.icon}"></d2l-icon>`;
 		return html`
-			<button class="d2l-page-header-highlight-button" id="${ifDefined(id)}" ?disabled="${this.disabled}" aria-label="${ifDefined(ariaLabel)}" type="button">
-				${highlightBorder}
+			<button class="d2l-page-header-highlight-button" id="${ifDefined(id)}" aria-label="${ifDefined(ariaLabel)}" type="button">
+				<span class="d2l-page-header-highlight-border"></span>
 				${this.iconPosition === 'start' ? icon : nothing}
 				${text}
 				${this.iconPosition === 'end' ? icon : nothing}
