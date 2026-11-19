@@ -103,20 +103,16 @@ class Card extends LitElement {
 		}
 
 		a {
-			bottom: -1px;
 			display: block;
-			left: -1px;
+			inset-block: -1px;
+			inset-inline: -1px;
 			outline: none;
 			position: absolute;
-			right: -1px;
-			top: -1px;
 			z-index: 1;
 		}
 		:host([subtle]) a {
-			bottom: 0;
-			left: 0;
-			right: 0;
-			top: 0;
+			inset-block: 0;
+			inset-inline: 0;
 		}
 
 		:host(:hover) a {

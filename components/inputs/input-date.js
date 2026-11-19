@@ -101,8 +101,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 		d2l-icon {
 			--d2l-icon-height: 0.8rem;
 			--d2l-icon-width: 0.8rem;
-			margin-left: 0.6rem;
-			margin-right: 0.6rem;
+			margin-inline: 0.6rem;
 		}
 		:host([disabled]) d2l-icon {
 			opacity: 0.5;
@@ -118,7 +117,7 @@ class InputDate extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMixin(
 			width: auto;
 		}
 		.d2l-input-date-hidden-text > div {
-			padding-left: 2rem; /* simulates space taken up by the icon */
+			padding-inline-start: 2rem; /* simulates space taken up by the icon */
 		}
 		d2l-calendar {
 			padding: 0.25rem 0.6rem;

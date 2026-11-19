@@ -134,9 +134,8 @@ class CollapsiblePanel extends SkeletonMixin(FocusMixin(LitElement)) {
 			box-shadow: var(--d2l-theme-shadow-attached);
 		}
 		:host([type="inline"]) .d2l-collapsible-panel {
-			border-left: none;
+			border-inline: none;
 			border-radius: 0;
-			border-right: none;
 			outline-offset: -2px;
 		}
 		:host([type="inline"]) .d2l-collapsible-panel.no-bottom-border {

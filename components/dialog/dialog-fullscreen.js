@@ -129,8 +129,7 @@ class DialogFullscreen extends PropertyRequiredMixin(LocalizeCoreElement(AsyncCo
 				dialog.d2l-dialog-outer,
 				div.d2l-dialog-outer {
 					/* center the dialog */
-					margin-left: auto;
-					margin-right: auto;
+					margin-inline: auto;
 				}
 			}
 

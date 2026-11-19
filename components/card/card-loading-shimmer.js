@@ -35,7 +35,7 @@ class CardLoadingShimmer extends LitElement {
 			background-color: var(--d2l-color-regolith);
 			content: "";
 			height: 100%;
-			left: 0;
+			inset-inline-start: 0;
 			position: absolute;
 			top: 0;
 			width: 100%;

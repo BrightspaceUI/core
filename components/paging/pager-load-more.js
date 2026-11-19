@@ -59,7 +59,7 @@ class LoadMore extends PageableSubscriberMixin(FocusMixin(LocalizeCoreElement(Li
 			color: var(--d2l-theme-text-color-interactive-default);
 		}
 		.separator {
-			border-right: 1px solid var(--d2l-theme-border-color-standard);
+			border-inline-end: 1px solid var(--d2l-theme-border-color-standard);
 			height: 0.8rem;
 		}
 		.info {

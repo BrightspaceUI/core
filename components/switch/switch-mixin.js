@@ -88,7 +88,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			box-sizing: border-box;
 			display: inline-block;
 			height: 1.1rem;
-			left: -0.1rem;
+			inset-inline-start: -0.1rem;
 			position: absolute;
 			top: -0.95rem;
 			width: 1.1rem;
@@ -99,16 +99,11 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 		:host([dir="rtl"][on]) .d2l-switch-toggle > div {
 			right: 0.3rem;
 		}
-		:host([dir="rtl"]) .d2l-switch-toggle > div {
-			left: auto;
-			right: -0.1rem;
-		}
 		:host([on]) .d2l-switch-toggle {
-			transform: translateX(1.2rem);
+			transform: translateX(calc(1.2rem * var(--d2l-length-factor, 1)));
 		}
 		:host([dir="rtl"][on]) .d2l-switch-toggle {
 			right: -0.2rem;
-			transform: translateX(-1.2rem);
 		}
 		d2l-icon, d2l-icon-custom {
 			height: 0.8rem;
@@ -120,11 +115,7 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			transition: transform 150ms ease-out;
 		}
 		.d2l-switch-icon-on {
-			margin-right: 0.65rem;
-		}
-		:host([dir="rtl"]) .d2l-switch-icon-on {
-			margin-left: 0.65rem;
-			margin-right: 0;
+			margin-inline-end: 0.65rem;
 		}
 		:host([on]) .d2l-switch-icon-on > d2l-icon,
 		:host([on]) .d2l-switch-icon-on > d2l-icon-custom {
