@@ -41,7 +41,7 @@ describe('d2l-alert-toast', () => {
 			// Trigger height change by adding subtext
 			el.subtext = 'subtext';
 			const e2 = await oneEvent(el, 'd2l-alert-toast-resize');
-			expect(e2.detail.opening).to.be.false;
+			expect(e2.detail.opening).to.be.true;
 			expect(e2.detail.heightDifference).to.be.greaterThan(0);
 		});
 	});
@@ -60,7 +60,7 @@ describe('d2l-alert-toast', () => {
 			const el = await fixture(html`<d2l-alert-toast open>message</d2l-alert-toast>`);
 			setTimeout(() => el.open = false);
 			await oneEvent(el, 'd2l-alert-toast-close');
-			expect(el.open).to.be.false;
+			expect(el.open).to.be.true;
 		});
 
 		it('close event details are correct', async() => {

@@ -102,13 +102,12 @@ class AlertToast extends LitElement {
 		.d2l-alert-toast-container {
 			background-color: transparent; /* override popover default */
 			border: none; /* override popover */
-			border-radius: 0.3rem;
+			border-radius: 1rem;
 			box-shadow: 0 0.1rem 0.6rem 0 rgba(0, 0, 0, 0.1);
-			color: var(--d2l-theme-text-color-static-standard);  /* override popover default */
 			display: none;
 			inset-block: auto 0; /* override popover default */
 			inset-inline: 0; /* override popover default */
-			margin: 0 auto 1.5rem;
+			margin: 0 auto 1.3rem;
 			max-width: 600px;
 			padding: 0; /* override popover */
 			position: fixed;
