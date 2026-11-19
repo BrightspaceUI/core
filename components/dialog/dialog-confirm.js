@@ -40,8 +40,10 @@ class DialogConfirm extends LocalizeCoreElement(DialogMixin(LitElement)) {
 
 		${getFocusRingStyles(pseudoClass => `.d2l-dialog-content:${pseudoClass} > div`, { extraStyles: css`
 
-			--d2l-focus-ring-offset: -1px; border-radius: 6px;`
-		})}
+			--d2l-focus-ring-offset: -1px;
+			border-radius: 6px;
+		` })} /* stylelint-disable-line @stylistic/indentation */
+
 		.d2l-dialog-content:focus,
 		.d2l-dialog-content:focus-visible {
 			outline: none;

@@ -29,7 +29,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			--d2l-hierarchical-view-height-transition: height 300ms linear;
 			box-sizing: border-box;
 			display: none;
-			left: 0;
+			left: 0; /* stylelint-disable-line property-layout-mappings */
 			overflow: hidden;
 			position: relative;
 			-webkit-transition: var(--d2l-hierarchical-view-height-transition);
@@ -38,7 +38,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 		}
 		:host([child-view]) {
 			display: none;
-			left: 100%;
+			left: 100%; /* stylelint-disable-line property-layout-mappings */
 			position: absolute;
 			top: 0;
 		}
@@ -57,6 +57,8 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			-webkit-animation: hide-child-view-animation forwards 300ms linear;
 			animation: hide-child-view-animation 300ms forwards linear;
 		}
+
+		/* stylelint-disable property-layout-mappings */
 		@media (prefers-reduced-motion: reduce) {
 			:host {
 				-webkit-transition: none;
@@ -89,6 +91,7 @@ export const HierarchicalViewMixin = superclass => class extends superclass {
 			0% { left: -100%; }
 			100% { left: 0; }
 		}
+		/* stylelint-enable property-layout-mappings */
 	`;
 
 	constructor() {

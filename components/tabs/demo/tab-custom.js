@@ -18,9 +18,13 @@ class TabCustom extends TabMixin(LitElement) {
 				margin-inline-start: 0;
 			}
 			${getFocusRingStyles(
-				pseudoClass => `:host(:${pseudoClass}) .d2l-tab-custom-content`,
-				{ extraStyles: css`border-radius: 0.3rem; color: var(--d2l-color-celestine);` }
-			)}
+				pseudoClass => `:host(:${pseudoClass}) .d2l-tab-custom-content`, {
+					extraStyles: css`
+						border-radius: 0.3rem;
+						color: var(--d2l-color-celestine);
+					`
+				}
+			)} /* stylelint-disable-line @stylistic/indentation */
 		`];
 
 		super.styles && styles.unshift(super.styles);

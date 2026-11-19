@@ -94,16 +94,16 @@ export const SwitchMixin = superclass => class extends FocusMixin(RtlMixin(super
 			width: 1.1rem;
 		}
 		:host([on]) .d2l-switch-toggle > div {
-			left: 0.1rem;
+			left: 0.1rem; /* stylelint-disable-line property-layout-mappings */
 		}
 		:host([dir="rtl"][on]) .d2l-switch-toggle > div {
-			right: 0.3rem;
+			right: 0.3rem; /* stylelint-disable-line property-layout-mappings */
 		}
 		:host([on]) .d2l-switch-toggle {
 			transform: translateX(calc(1.2rem * var(--d2l-length-factor, 1)));
 		}
 		:host([dir="rtl"][on]) .d2l-switch-toggle {
-			right: -0.2rem;
+			right: -0.2rem; /* stylelint-disable-line property-layout-mappings */
 		}
 		d2l-icon, d2l-icon-custom {
 			height: 0.8rem;

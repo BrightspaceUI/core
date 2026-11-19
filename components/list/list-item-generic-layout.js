@@ -141,10 +141,12 @@ class ListItemGenericLayout extends LitElement {
 			grid-column: color-start / content-start;
 		}
 
+		/* stylelint-disable selector-no-invalid */
 		::slotted([slot="control-action"]) ~ ::slotted([slot="content"]),
 		::slotted([slot="outside-control-action"]) ~ ::slotted([slot="content"]) {
 			pointer-events: unset;
 		}
+		/* stylelint-enable selector-no-invalid */
 
 		slot[name="actions"] {
 			white-space: nowrap;

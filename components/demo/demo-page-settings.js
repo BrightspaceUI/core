@@ -26,7 +26,7 @@ class DemoPageSettings extends LitElement {
 		:host {
 			display: block;
 		}
-		:host[hidden] {
+		:host([hidden]) {
 			display: none;
 		}
 		d2l-collapsible-panel {

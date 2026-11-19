@@ -74,7 +74,7 @@ class ListItemDragImage extends LocalizeCoreElement(SkeletonMixin(LitElement)) {
 			border-radius: 0.7rem;
 			box-sizing: border-box;
 			color: white;
-			left: 26px;
+			left: 26px; /* stylelint-disable-line property-layout-mappings */
 			min-width: 1.4rem;
 			padding: 0.25rem 0.4rem;
 			position: absolute;
@@ -83,7 +83,7 @@ class ListItemDragImage extends LocalizeCoreElement(SkeletonMixin(LitElement)) {
 			z-index: 998; /* must be higher than the skeleton z-index */
 		}
 		.count:dir(rtl) {
-			left: 14px;
+			left: 14px; /* stylelint-disable-line property-layout-mappings */
 		}
 	`];
 

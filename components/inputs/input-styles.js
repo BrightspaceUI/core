@@ -180,9 +180,7 @@ export function _generateInputStyles(selector, focusSelector) {
 				color: FieldText;
 				forced-color-adjust: none;
 			}
-			${focusSelector ? css`${unsafeCSS(focusSelector)} {
-				border-color: Highlight;
-			}` : css``}
+			${focusSelector ? css`${unsafeCSS(focusSelector)} { border-color: Highlight; }` : css``}
 		}
 	`;
 }
