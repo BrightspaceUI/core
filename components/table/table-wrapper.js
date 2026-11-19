@@ -5,6 +5,7 @@ import { css, html, LitElement, nothing } from 'lit';
 import { freshness, FreshnessMixin } from '../../mixins/freshness/freshness-mixin.js';
 import { cssSizes } from '../inputs/input-checkbox-styles.js';
 import { getComposedParent } from '../../helpers/dom.js';
+import { getFlag } from '../../helpers/flags.js';
 import { isPopoverSupported } from '../popover/popover-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
@@ -643,7 +644,7 @@ export class TableWrapper extends FreshnessMixin(PageableMixin(SelectionMixin(Li
 	}
 
 	_syncColumnWidths() {
-		if (!this._table || (this.#syncColumnWidthsCount > 0 && !this.#hasIntersected)) return;
+		if (!this._table || (getFlag('table-wrapper-prevent-jitter', true) && this.#syncColumnWidthsCount > 0 && !this.#hasIntersected)) return;
 		this.#syncColumnWidthsCount++;
 		const head = this._table.querySelector('thead');
 		const body = this._table.querySelector('tbody');
