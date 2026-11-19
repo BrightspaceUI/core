@@ -83,9 +83,9 @@ class DemoSnippet extends LitElement {
 		d2l-dropdown.settings-dropdown {
 			background-color: var(--d2l-theme-background-color-base);
 			border-radius: 6px;
+			inset-inline-end: 1rem;
 			outline: 1px solid var(--d2l-color-celestine-minus-1);
 			position: fixed;
-			right: 1rem;
 			top: -0.25rem;
 			translate: 0 -1.5rem;
 			z-index: 9999; /* stack on top of sticky headers */

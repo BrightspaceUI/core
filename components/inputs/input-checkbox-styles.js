@@ -95,7 +95,7 @@ export const _generateInputCheckboxStyles = (selector) => {
 				content: "";
 				display: block;
 				height: ${cssSizes.inputBoxSize}rem;
-				left: 50%;
+				inset-inline-start: 50%;
 				position: absolute;
 				top: 50%;
 				transform: translate(-50%, -50%);

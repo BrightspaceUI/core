@@ -189,7 +189,7 @@ export const codeStyles = css`
 		-moz-tab-size: 4;
 		-o-tab-size: 4;
 		tab-size: 4;
-		text-align: left;
+		text-align: left; /* stylelint-disable-line value-keyword-layout-mappings */
 	}
 
 	pre[class*="language-"].d2l-code::before {
@@ -198,7 +198,7 @@ export const codeStyles = css`
 		font-family: "Lato", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 		margin: 0.1rem 0.4rem;
 		position: absolute;
-		right: 0;
+		right: 0; /* stylelint-disable-line property-layout-mappings */
 		top: 0;
 	}
 
@@ -261,7 +261,7 @@ export const codeStyles = css`
 
 	pre[class*="language-"].d2l-code.line-numbers {
 		counter-reset: linenumber;
-		padding-left: 3.8em;
+		padding-left: 3.8em; /* stylelint-disable-line property-layout-mappings */
 		position: relative;
 	}
 
@@ -275,7 +275,7 @@ export const codeStyles = css`
 		border-bottom-right-radius: 6px;
 		border-top-right-radius: 6px;
 		font-size: 100%;
-		left: -3.8em;
+		left: -3.8em; /* stylelint-disable-line property-layout-mappings */
 		letter-spacing: -1px;
 		pointer-events: none;
 		position: absolute;
@@ -296,8 +296,8 @@ export const codeStyles = css`
 		color: var(--d2l-code-line-numbers);
 		content: counter(linenumber);
 		display: block;
-		padding-right: 0.8em;
-		text-align: right;
+		padding-right: 0.8em; /* stylelint-disable-line property-layout-mappings */
+		text-align: right; /* stylelint-disable-line value-keyword-layout-mappings */
 	}
 
 	span.inline-color-wrapper {

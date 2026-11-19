@@ -612,12 +612,10 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 	static styles = css`
 		:host,
 		:host > d2l-form {
-			bottom: 0;
-			left: 0;
+			inset-block: 0;
+			inset-inline: 0;
 			overflow: hidden;
 			position: absolute;
-			right: 0;
-			top: 0;
 		}
 
 		:host([hidden]) {
@@ -939,9 +937,9 @@ class TemplatePrimarySecondary extends LocalizeCoreElement(LitElement) {
 				border-radius: 0.25rem 0.25rem 0 0;
 				bottom: 0;
 				display: flex;
+				inset-inline-end: 0;
 				justify-content: center;
 				position: absolute;
-				right: 0;
 			}
 			.d2l-template-primary-secondary-divider:hover .d2l-template-primary-secondary-divider-handle-mobile,
 			.d2l-template-primary-secondary-divider:focus .d2l-template-primary-secondary-divider-handle-mobile {

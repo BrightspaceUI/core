@@ -28,9 +28,10 @@ function _getSelectFocusStyles(selector) {
 				--d2l-focus-ring-offset: -2px;`,
 			preferContrastMediaQueryExtraStyles: css`box-shadow: none;`
 		}),
-		ariaInvalid: getFocusVisibleStyles(ariaInvalidSelector, (selector) => css`${selector} {
-			outline-color: var(--d2l-theme-status-color-error);
-		}`)
+		ariaInvalid: getFocusVisibleStyles(
+			ariaInvalidSelector,
+			(selector) => css`${selector} { outline-color: var(--d2l-theme-status-color-error); }`
+		)
 	};
 }
 

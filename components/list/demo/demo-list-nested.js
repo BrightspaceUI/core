@@ -42,7 +42,7 @@ class ListDemoNested extends LitElement {
 
 	static styles = [css`
 		.secondary-actions {
-			padding-right: 6px;
+			padding-inline-end: 6px;
 		}
 	`];
 

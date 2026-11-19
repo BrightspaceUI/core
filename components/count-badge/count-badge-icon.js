@@ -25,8 +25,7 @@ class CountBadgeIcon extends FocusMixin(CountBadgeMixin(LitElement)) {
 		:host {
 			display: inline-block;
 			/* symmetrical padding to prevent overflows for most numbers */
-			padding-left: 0.5rem;
-			padding-right: 0.5rem;
+			padding-inline: 0.5rem;
 			position: relative;
 		}
 

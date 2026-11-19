@@ -104,9 +104,8 @@ export class SelectionControls extends PageableSubscriberMixin(SelectionObserver
 			text-align: end;
 		}
 		.d2l-sticky-edge {
-			left: 0;
+			inset-inline: 0;
 			position: absolute;
-			right: 0;
 			top: -1px;
 		}
 	`;

@@ -230,10 +230,10 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			transform: translateY(-50%);
 		}
 		.d2l-input-inside-before {
-			left: 0;
+			left: 0; /* stylelint-disable-line property-layout-mappings */
 		}
 		.d2l-input-inside-after {
-			right: 0;
+			right: 0; /* stylelint-disable-line property-layout-mappings */
 		}
 		.d2l-input-unit {
 			color: var(--d2l-theme-text-color-static-faint);
@@ -241,13 +241,13 @@ class InputText extends InputInlineHelpMixin(PropertyRequiredMixin(FocusMixin(La
 			margin-top: 0.05rem;
 		}
 		.d2l-input-inside-before .d2l-input-unit {
-			margin-left: 12px;
-			margin-right: 6px;
+			margin-left: 12px; /* stylelint-disable-line property-layout-mappings */
+			margin-right: 6px; /* stylelint-disable-line property-layout-mappings */
 		}
 		.d2l-input-inside-after .d2l-input-unit {
 			display: inline-block;
-			margin-left: 6px;
-			margin-right: 12px;
+			margin-left: 6px; /* stylelint-disable-line property-layout-mappings */
+			margin-right: 12px; /* stylelint-disable-line property-layout-mappings */
 		}
 		:host([disabled]) .d2l-input-unit {
 			opacity: var(--d2l-theme-opacity-disabled-control);
