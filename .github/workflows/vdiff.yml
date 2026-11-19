@@ -43,7 +43,7 @@ jobs:
           aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           aws-session-token: ${{secrets.AWS_SESSION_TOKEN}}
       - name: Notify Slack
-        if: ${{ failure() && github.event_name == 'pull_request' }}
+        if: ${{ failure() && github.event_name != 'pull_request' }}
         uses: Brightspace/third-party-actions@slackapi/slack-github-action
         with:
           channel-id: "#gaudi-dev-alerts"

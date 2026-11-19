@@ -141,7 +141,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     needs: [lint, axe, unit]
-    if: ${{ failure() && github.event_name == 'pull_request' }}
+    if: ${{ failure() && github.event_name != 'pull_request' }}
     steps:
       - name: Notify Slack
         uses: Brightspace/third-party-actions@slackapi/slack-github-action
