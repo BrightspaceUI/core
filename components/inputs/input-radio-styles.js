@@ -164,7 +164,7 @@ export function _generateRadioStyles(selector, containerSelector) {
 				margin-inline-end: 0.5rem;
 				margin-inline-start: -1.7rem;
 			}
-		` : css``}
+		` : css``} /* stylelint-disable-line @stylistic/indentation */
 	`;
 
 }

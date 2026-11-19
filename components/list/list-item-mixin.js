@@ -143,7 +143,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 				flex: none;
 				width: 14rem;
 			}
-			:host[hidden] {
+			:host([hidden]) {
 				display: none;
 			}
 

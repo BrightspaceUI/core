@@ -75,7 +75,7 @@ class CardFooterLink extends FocusMixin(LitElement) {
 			display: inline-block;
 			position: relative;
 		}
-		:host[hidden] {
+		:host([hidden]) {
 			display: none;
 		}
 		a {

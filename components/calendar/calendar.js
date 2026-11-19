@@ -238,13 +238,13 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 		}
 
 		.d2l-calendar-next .d2l-calendar-title .d2l-heading-4 {
-			padding-left: 20px;
-			padding-right: 0;
+			padding-left: 20px; /* stylelint-disable-line property-layout-mappings */
+			padding-right: 0; /* stylelint-disable-line property-layout-mappings */
 		}
 
 		.d2l-calendar-prev .d2l-calendar-title .d2l-heading-4 {
-			padding-left: 0;
-			padding-right: 20px;
+			padding-left: 0; /* stylelint-disable-line property-layout-mappings */
+			padding-right: 20px; /* stylelint-disable-line property-layout-mappings */
 		}
 
 		.d2l-calendar-next-updown .d2l-calendar-title .d2l-heading-4 {
@@ -305,7 +305,7 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 		}
 
 		.d2l-calendar-next .d2l-calendar-date {
-			left: 10px;
+			left: 10px; /* stylelint-disable-line property-layout-mappings */
 		}
 
 		.d2l-calendar-next-updown .d2l-calendar-date {
@@ -313,7 +313,7 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 		}
 
 		.d2l-calendar-prev .d2l-calendar-date {
-			left: -10px;
+			left: -10px; /* stylelint-disable-line property-layout-mappings */
 		}
 
 		.d2l-calendar-prev-updown .d2l-calendar-date {
