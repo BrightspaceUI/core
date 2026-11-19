@@ -14,6 +14,7 @@ export const styles = css`
 		display: none;
 	}
 	:host .d2l-code-view-code {
+		direction: ltr;
 		font-size: 14px;
 	}
 	:host .d2l-code-view-code::before {
@@ -21,10 +22,10 @@ export const styles = css`
 		color: var(--d2l-color-tungsten);
 		content: attr(data-language);
 		font-size: 0.7rem;
+		inset-inline-end: 0;
 		margin: 0 0.4rem;
 		padding: 0;
 		position: absolute;
-		right: 0;
 		top: 0;
 	}
 	:host([hide-language]) .d2l-code-view-code::before {
