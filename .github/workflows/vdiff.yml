@@ -27,6 +27,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: vdiff Tests
+        id: vdiff
         uses: BrightspaceUI/actions/vdiff@main
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -48,20 +49,21 @@ jobs:
           channel-id: "#gaudi-dev-alerts"
           payload: >
             {
-              "username": "BrightspaceUI/core Issue",
+              "username": "BrightspaceUI/core Visual Diff Failure",
               "icon_emoji": ":brightspaceui:",
               "unfurl_media": false,
               "unfurl_links": false,
-              "text": ":fire: vdiff job on `main` branch failed.\nSee ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} for details (trigger: ${{ github.event_name }}, run attempt: ${{ github.run_attempt }})",
+              "text": ":information_source: vdiff job on `main` branch failed. See ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}${{ env.REPORT_URL && format(' or {0}', env.REPORT_URL) || '' }} for details.",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": ":fire: vdiff job on `main` branch failed.\nSee the <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|run logs> for details (trigger: `${{ github.event_name }}`, run attempt: ${{ github.run_attempt }})"
+                    "text": ":information_source: vdiff job on `main` branch failed. See the <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|run logs>${{ env.REPORT_URL && format(' or the <{0}|vdiff report>', env.REPORT_URL) || '' }} for details."
                   }
                 }
               ]
             }
         env:
+          REPORT_URL: ${{ steps.vdiff.outputs.report-url }}
           SLACK_BOT_TOKEN: ${{ secrets.D2L_SLACK_TOKEN }}
