@@ -125,16 +125,14 @@ export const CountBadgeMixin = superclass => class extends LocalizeCoreElement(S
 			border-radius: 0.55rem;
 			font-size: 0.6rem;
 			line-height: 0.9rem;
-			padding-left: 0.3rem;
-			padding-right: 0.3rem;
+			padding-inline: 0.3rem;
 		}
 
 		:host([size="large"]) .d2l-count-badge-number {
 			border-radius: 0.7rem;
 			font-size: 0.8rem;
 			line-height: 1.2rem;
-			padding-left: 0.4rem;
-			padding-right: 0.4rem;
+			padding-inline: 0.4rem;
 		}
 	`];
 

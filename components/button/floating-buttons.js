@@ -35,11 +35,10 @@ class FloatingButtons extends LoadingCompleteMixin(LitElement) {
 		}
 
 		:host([_floating]) {
-			bottom: -10px;
-			left: 0;
+			inset-block-end: -10px;
+			inset-inline: 0;
 			position: -webkit-sticky;
 			position: sticky;
-			right: 0;
 			z-index: 997;
 		}
 

@@ -272,8 +272,7 @@ class Calendar extends LocalizeCoreElement(LitElement) {
 			justify-content: center;
 			letter-spacing: inherit;
 			line-height: inherit;
-			margin-left: auto;
-			margin-right: auto;
+			margin-inline: auto;
 			opacity: 0;
 			outline-offset: -1px;
 			padding: 3px;

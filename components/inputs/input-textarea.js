@@ -120,7 +120,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 		}
 		textarea.d2l-input {
 			height: 100%;
-			left: 0;
+			inset-inline-start: 0;
 			line-height: 1rem;
 			position: absolute;
 			resize: none;
@@ -144,8 +144,7 @@ class InputTextArea extends InputInlineHelpMixin(FocusMixin(LabelledMixin(FormEl
 		}
 		:host([no-border][no-padding]) textarea.d2l-input:hover,
 		:host([no-border][no-padding]) textarea.d2l-input:focus {
-			border-left-width: 1px;
-			border-right-width: 1px;
+			border-inline-width: 1px;
 		}
 		.d2l-input-textarea-mirror[aria-invalid="true"] {
 			padding-inline-end: calc(18px + 0.8rem);

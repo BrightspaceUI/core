@@ -130,8 +130,7 @@ class List extends FreshnessMixin(PageableMixin(SelectionMixin(LitElement))) {
 			margin-top: 10px;
 		}
 		:host([extend-separators]) slot[name="pager"]::slotted(*) {
-			margin-left: 0.9rem;
-			margin-right: 0.9rem;
+			margin-inline: 0.9rem;
 		}
 		:host([_breakpoint="1"]) {
 			--d2l-list-item-illustration-max-height: 3.55rem;

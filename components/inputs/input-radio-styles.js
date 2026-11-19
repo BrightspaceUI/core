@@ -110,7 +110,7 @@ export function _generateRadioStyles(selector, containerSelector) {
 				content: "";
 				display: block;
 				height: 1.2rem;
-				left: 50%;
+				inset-inline-start: 50%;
 				mask-image: var(--d2l-input-radio-check-image);
 				mask-position: center center;
 				mask-repeat: no-repeat;

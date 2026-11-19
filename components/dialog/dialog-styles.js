@@ -57,9 +57,8 @@ export const dialogStyles = css`
 	}
 
 	div.d2l-dialog-outer {
-		left: 0;
+		inset-inline: 0;
 		margin: auto;
-		right: 0;
 		width: 300px;
 		z-index: 1000;
 	}

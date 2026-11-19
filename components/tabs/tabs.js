@@ -77,8 +77,8 @@ class Tabs extends LocalizeCoreElement(ArrowKeysMixin(SkeletonMixin(LitElement))
 		.d2l-tabs-container {
 			box-sizing: border-box;
 			flex: auto;
-			margin-left: -3px;
-			padding-left: 3px;
+			margin-inline-start: -3px;
+			padding-inline-start: 3px;
 			position: relative;
 			-webkit-transition: max-width 200ms ease-in;
 			transition: max-width 200ms ease-in;
