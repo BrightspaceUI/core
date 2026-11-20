@@ -1,5 +1,4 @@
 import { css, html, LitElement } from 'lit';
-import { getFlag } from '../../helpers/flags.js';
 
 /**
  * A button container component for button toggles.
@@ -53,18 +52,6 @@ class ButtonToggle extends LitElement {
 		`;
 	}
 
-	// remove with "button-toggle-no-change-event-on-prop-update" flag
-	updated(changedProperties) {
-		super.updated(changedProperties);
-
-		if (changedProperties.get('pressed') === undefined) return;
-
-		if (!getFlag('button-toggle-no-change-event-on-prop-update', true)) {
-			/** Dispatched when the pressed state changes */
-			this.dispatchEvent(new CustomEvent('d2l-button-toggle-change'));
-		}
-	}
-
 	focus() {
 		if (!this.hasUpdated) {
 			this.#focusOnFirstRender = true;
@@ -106,10 +93,9 @@ class ButtonToggle extends LitElement {
 		this.pressed = newPressed;
 		await this.updateComplete;
 		this.focus();
-		if (getFlag('button-toggle-no-change-event-on-prop-update', true)) {
-			/** Dispatched when the pressed state changes */
-			this.dispatchEvent(new CustomEvent('d2l-button-toggle-change'));
-		}
+
+		/** Dispatched when the pressed state changes */
+		this.dispatchEvent(new CustomEvent('d2l-button-toggle-change'));
 	}
 
 }
