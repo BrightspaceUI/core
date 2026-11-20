@@ -1,5 +1,5 @@
 import '../input-date-time.js';
-import { expect, fixture, focusElem, html, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
+import { expect, fixture, focusElem, html, nextFrame, oneEvent, sendKeys, sendKeysElem } from '@brightspace-ui/testing';
 import { reset, useFakeTimers } from 'sinon';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inlineHelpFixtures } from './input-shared-content.js';
@@ -169,6 +169,7 @@ describe('d2l-input-date-time', () => {
 			const textInput = elem.shadowRoot.querySelector('d2l-input-time').shadowRoot.querySelector('input');
 			sendKeysElem(textInput, 'press', 'Enter');
 			await oneEvent(elem, 'd2l-dropdown-open');
+			await nextFrame();
 			await expect(elem).to.be.golden();
 		});
 	});
