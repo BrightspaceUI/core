@@ -5,6 +5,7 @@ import { css, html, LitElement, nothing } from 'lit';
 import { freshness, FreshnessMixin } from '../../mixins/freshness/freshness-mixin.js';
 import { cssSizes } from '../inputs/input-checkbox-styles.js';
 import { getComposedParent } from '../../helpers/dom.js';
+import { getFlag } from '../../helpers/flags.js';
 import { isPopoverSupported } from '../popover/popover-mixin.js';
 import { PageableMixin } from '../paging/pageable-mixin.js';
 import { SelectionMixin } from '../selection/selection-mixin.js';
@@ -433,9 +434,15 @@ export class TableWrapper extends FreshnessMixin(PageableMixin(SelectionMixin(Li
 		}
 	}
 
+	getSyncColumnWidthsCount() {
+		return this.#syncColumnWidthsCount;
+	}
+
 	#hasIntersected = false;
 
 	#noScrollWidthTimeout = null;
+
+	#syncColumnWidthsCount = 0;
 
 	_applyClassNames() {
 		if (!this._table) return;
@@ -566,21 +573,19 @@ export class TableWrapper extends FreshnessMixin(PageableMixin(SelectionMixin(Li
 		// observes when visibility of <table> changes to catch cases
 		// where table is initially hidden (which would cause first/last
 		// row classes to be unset) but then becomes shown
-		if (typeof(IntersectionObserver) === 'function') {
-			if (this._tableIntersectionObserver === null) {
-				this._tableIntersectionObserver = new IntersectionObserver((entries) => {
-					entries.forEach((entry) => {
-						if (entry.isIntersecting) {
-							this.#hasIntersected = true;
-							this._handleTableChange();
-						}
-					});
+		if (this._tableIntersectionObserver === null) {
+			this._tableIntersectionObserver = new IntersectionObserver((entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						this.#hasIntersected = true;
+						this._handleTableChange();
+					}
 				});
-			} else {
-				this._tableIntersectionObserver.disconnect();
-			}
-			this._tableIntersectionObserver.observe(this._table);
+			});
+		} else {
+			this._tableIntersectionObserver.disconnect();
 		}
+		this._tableIntersectionObserver.observe(this._table);
 
 		if (!this._tableResizeObserver) this._tableResizeObserver = new ResizeObserver(entries => this._syncColumnWidths(entries));
 		this._tableResizeObserver.observe(this._table);
@@ -639,7 +644,8 @@ export class TableWrapper extends FreshnessMixin(PageableMixin(SelectionMixin(Li
 	}
 
 	_syncColumnWidths() {
-		if (!this._table) return;
+		if (!this._table || (getFlag('table-wrapper-prevent-jitter', true) && this.#syncColumnWidthsCount > 0 && !this.#hasIntersected)) return;
+		this.#syncColumnWidthsCount++;
 		const head = this._table.querySelector('thead');
 		const body = this._table.querySelector('tbody');
 
