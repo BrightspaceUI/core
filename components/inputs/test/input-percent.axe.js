@@ -36,6 +36,11 @@ describe('d2l-input-percent', () => {
 		await expect(elem).to.be.accessible();
 	});
 
+	it('description', async() => {
+		const elem = await fixture(html`<d2l-input-percent label="label" description="description"></d2l-input-percent>`);
+		await expect(elem).to.be.accessible();
+	});
+
 	it('focused', async() => {
 		const elem = await fixture(html`<d2l-input-percent label="label"></d2l-input-percent>`);
 		setTimeout(() => elem.focus());
