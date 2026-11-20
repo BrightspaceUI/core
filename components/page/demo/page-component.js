@@ -34,6 +34,7 @@ import '../page-supporting.js';
 import './page-header-full.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { pageHeaderImmersiveActionsDemo, pageHeaderImmersiveCustomTitleDemo } from '../test/page-header-immersive-fixtures.js';
+import { _forceLegacyBrowserMode } from '../page.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { inputLabelStyles } from '../../inputs/input-label-styles.js';
 import { panelStateStorageKey } from '../page.js';
@@ -54,6 +55,7 @@ class PageDemo extends LitElement {
 		header: { type: String, attribute: 'header' },
 		immersiveHeaderTitleType: { type: String, attribute: 'immersive-header-title-type' },
 		layout: { type: String, attribute: 'layout' },
+		legacyBrowserMode: { type: String, attribute: 'legacy-browser-mode' },
 		widthType: { type: String, attribute: 'width-type' },
 		_mainDialogOpened: { state: true },
 		_mainToastOpened: { state: true },
@@ -88,6 +90,8 @@ class PageDemo extends LitElement {
 		this.header = urlParams.get('header') || 'full';
 		this.immersiveHeaderTitleType = urlParams.get('immersiveHeaderTitleType') || 'title-subtitle';
 		this.layout = urlParams.get('layout') || 'main-only';
+		this.legacyBrowserMode = urlParams.has('legacyBrowserMode');
+		if (this.legacyBrowserMode) _forceLegacyBrowserMode(true);
 		this.widthType = urlParams.get('widthType') || 'normal';
 		this._mainDialogOpened = false;
 		this._mainToastOpened = false;
@@ -128,6 +132,13 @@ class PageDemo extends LitElement {
 	#handleLayoutChange(e) {
 		this.layout = e.target.value;
 		this.#updateUrlParam('layout', this.layout);
+	}
+
+	#handleLegacyBrowserModeChange(e) {
+		this.legacyBrowserMode = e.target.on;
+		_forceLegacyBrowserMode(this.legacyBrowserMode);
+		this.#updateUrlParamBool('legacyBrowserMode', this.legacyBrowserMode);
+		this.shadowRoot.querySelector('d2l-page')?.requestUpdate();
 	}
 
 	#handleMainDialogClose() {
@@ -258,6 +269,9 @@ class PageDemo extends LitElement {
 								${this.layout === 'side-nav' ? html`<d2l-switch text="Side Nav" data-key="hasSideNavHeader" @change="${this.#handleVisibilityChange}" ?on="${this.hasSideNavHeader}"></d2l-switch>` : nothing}
 								${this.layout === 'supporting' ? html`<d2l-switch text="Supporting" data-key="hasSupportingHeader" @change="${this.#handleVisibilityChange}" ?on="${this.hasSupportingHeader}"></d2l-switch>` : nothing}
 							</d2l-input-fieldset>
+							<d2l-input-fieldset label="Legacy Browser Mode">
+								<d2l-switch text="On" @change="${this.#handleLegacyBrowserModeChange}" ?on="${this.legacyBrowserMode}"></d2l-switch>
+              </d2l-input-fieldset>
 							<d2l-input-fieldset label="State Storage">
 								<d2l-button-subtle text="Clear" @click="${this.#handleClearStateStorage}"></d2l-button-subtle>
 							</d2l-input-fieldset>
