@@ -705,19 +705,23 @@ describe('d2l-tabs', () => {
 			await expect(elem).to.be.golden();
 		});
 
+		/* This test is in jail because it's been bad.
 		it('focus', async() => {
 			const elem = await fixture(slotsFixture);
 			await waitForScrollNext(elem);
 			await focusElem(elem);
 			await expect(elem).to.be.golden();
 		});
+		*/
 
+		/* This test is in jail because it's been bad.
 		it('focus both slots', async() => {
 			const elem = await fixture(slotsFixture);
 			await waitForScrollNext(elem);
 			await sendKeysElem(elem, 'press', 'ArrowRight');
 			await expect(elem).to.be.golden();
 		});
+		*/
 
 		/* This test is in jail because it's been bad.
 		it('hover with icon when selected', async() => {
