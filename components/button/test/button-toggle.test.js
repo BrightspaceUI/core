@@ -1,13 +1,7 @@
 import { buttonToggleFixtures, clickActiveButton } from './button-toggle-fixtures.js';
 import { expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
-import { mockFlag, resetFlag } from '../../../helpers/flags.js';
 
 describe('d2l-button-toggle', () => {
-
-	// remove with "button-toggle-no-change-event-on-prop-update" flag
-	afterEach(() => {
-		resetFlag('button-toggle-no-change-event-on-prop-update');
-	});
 
 	describe('constructor', () => {
 
@@ -38,27 +32,6 @@ describe('d2l-button-toggle', () => {
 			let dispatched = false;
 			el.addEventListener('d2l-button-toggle-change', () => dispatched = true);
 			el.pressed = false;
-			await el.updateComplete;
-			expect(dispatched).to.equal(false);
-		});
-
-		// remove with "button-toggle-no-change-event-on-prop-update" flag
-		it('dispatches "d2l-button-toggle-change" event when "pressed" property is updated and flag is OFF', async() => {
-			mockFlag('button-toggle-no-change-event-on-prop-update', false);
-			const el = await fixture(buttonToggleFixtures.iconPressed);
-			let dispatched = false;
-			el.addEventListener('d2l-button-toggle-change', () => dispatched = true);
-			el.pressed = false;
-			await el.updateComplete;
-			expect(dispatched).to.equal(true);
-		});
-
-		// remove test with "button-toggle-no-change-event-on-prop-update" flag
-		it('does not dispatch "d2l-button-toggle-change" event initially', async() => {
-			let dispatched = false;
-			const el = document.createElement('d2l-button-toggle');
-			el.addEventListener('d2l-button-toggle-change', () => dispatched = true);
-			document.body.appendChild(el);
 			await el.updateComplete;
 			expect(dispatched).to.equal(false);
 		});
