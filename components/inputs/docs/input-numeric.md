@@ -37,6 +37,7 @@ The `<d2l-input-number>` element is similar to `<d2l-input-text>`, except it's i
 | `label` | String, required | Explicitly defined label for the element. |
 | `autocomplete` | String | Specifies which types of values [can be autofilled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by the browser. |
 | `autofocus` | Boolean, default: `false` | When set, will automatically place focus on the input. |
+| `description` | String | Additional information communicated to screenreader users when focusing on the input. |
 | `disabled` | Boolean, default: `false` | Disables the input. |
 | `input-width` | String, default: `4rem` | Restricts the maximum width of the input box without restricting the width of the label. |
 | `label-hidden` | Boolean, default: `false` | Hides the label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label. |
@@ -99,6 +100,7 @@ The `<d2l-input-percent>` element is similar to `<d2l-input-number>`, except it 
 |---|---|---|
 | `label` | String, required | Explicitly defined label for the element. |
 | `autofocus` | Boolean, default: `false` | When set, will automatically place focus on the input. |
+| `description` | String | Additional information communicated to screenreader users when focusing on the input. |
 | `disabled` | Boolean, default: `false` | Disables the input. |
 | `input-width` | String, default: `4rem` | Restricts the maximum width of the input box without restricting the width of the label. |
 | `label-hidden` | Boolean, default: `false` | Hides the label visually. Hidden labels are still read by screen readers so make sure to set an appropriate label. |

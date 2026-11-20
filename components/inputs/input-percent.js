@@ -22,6 +22,11 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 		// eslint-disable-next-line lit/no-native-attributes
 		autofocus: { type: Boolean },
 		/**
+		 * ACCESSIBILITY: Additional information communicated to screenreader users when focusing on the input
+		 * @type {string}
+		 */
+		description: { type: String },
+		/**
 		 * Disables the input
 		 * @type {boolean}
 		 */
@@ -96,6 +101,7 @@ class InputPercent extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMix
 				?autofocus="${this.autofocus}"
 				@change="${this._handleChange}"
 				class="vdiff-target"
+				description=${ifDefined(this.description)}
 				?disabled="${this.disabled}"
 				.forceInvalid="${this.invalid}"
 				input-width="${ifDefined(this.inputWidth)}"
