@@ -311,6 +311,8 @@ class InputDateTime extends FocusMixin(LabelledMixin(SkeletonMixin(FormElementMi
 		const dateInput = this.shadowRoot.querySelector('d2l-input-date');
 		const timeInput = this.shadowRoot.querySelector('d2l-input-time');
 
+		await Promise.all([dateInput?.updateComplete, timeInput?.updateComplete]);
+
 		const errors = await Promise.all([
 			dateInput.validate(),
 			timeInput ? timeInput.validate() : Promise.resolve([]),
