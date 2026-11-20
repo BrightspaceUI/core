@@ -173,6 +173,27 @@ describe('d2l-input-date-time', () => {
 				expect(errors.length).to.equal(1);
 			});
 
+			['d2l-input-date', 'd2l-input-time'].forEach(pendingSelector => {
+				it(`should wait for ${pendingSelector} to finish updating before validating children`, async() => {
+					const elem = await fixture(valueFixture);
+					const pendingInput = getChildElem(elem, pendingSelector);
+					let finishUpdate;
+					sinon.stub(pendingInput, 'getUpdateComplete').returns(new Promise(resolve => finishUpdate = resolve));
+					const dateValidate = sinon.spy(getChildElem(elem, 'd2l-input-date'), 'validate');
+					const timeValidate = sinon.spy(getChildElem(elem, 'd2l-input-time'), 'validate');
+
+					const validatePromise = elem.validate();
+					await aTimeout(0);
+					expect(dateValidate.callCount).to.equal(0);
+					expect(timeValidate.callCount).to.equal(0);
+
+					finishUpdate(true);
+					await validatePromise;
+					expect(dateValidate.callCount).to.equal(1);
+					expect(timeValidate.callCount).to.equal(1);
+				});
+			});
+
 		});
 	});
 
