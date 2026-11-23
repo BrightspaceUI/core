@@ -1,5 +1,5 @@
 import '../tooltip.js';
-import { aTimeout, defineCE, expect, fixture, focusElem, html, oneEvent, runConstructor, sendKeys } from '@brightspace-ui/testing';
+import { aTimeout, defineCE, expect, fixture, focusElem, hoverElem, html, oneEvent, runConstructor, sendKeys } from '@brightspace-ui/testing';
 import { LitElement } from 'lit';
 
 const basicFixture = html`
@@ -7,6 +7,9 @@ const basicFixture = html`
 		<div id="implicit-target" tabindex="-1" role="button">
 			<button id="explicit-target">Hover me for tips</button>
 			<d2l-tooltip for="explicit-target" for-type="descriptor">If I got a problem then a problem's got a problem.</d2l-tooltip>
+		</div>
+		<div style="margin-top: 100px">
+			<button id="another-element">Another Button</button>
 		</div>
 	</div>
 `;
@@ -18,13 +21,28 @@ const labelFixture = html`
 	</div>
 `;
 
+const elementTag = defineCE(class Iterator extends LitElement {
+	render() {
+		return html`
+			<div style="padding: 20px;">
+				<button id="prev" type="button">Prev</button>
+				<button id="next" type="button">Next</button>
+				<d2l-tooltip for="prev">Previous</d2l-tooltip>
+				<d2l-tooltip for="next">Next</d2l-tooltip>
+			</div>
+		`;
+	}
+});
+
 describe('d2l-tooltip', () => {
 
-	let tooltipFixture, tooltip;
+	let anotherElement, target, tooltipFixture, tooltip;
 
 	beforeEach(async() => {
 		tooltipFixture = await fixture(basicFixture);
-		tooltip = tooltipFixture.querySelector('d2l-tooltip');
+		target = tooltipFixture.querySelector('#explicit-target');
+		anotherElement = tooltipFixture.querySelector('#another-element');
+		tooltip = tooltipFixture.querySelector('d2l-tooltip[for="explicit-target"]');
 	});
 
 	describe('accessibility', () => {
@@ -45,14 +63,10 @@ describe('d2l-tooltip', () => {
 		});
 
 		it('should add aria-describedby to its target if for-type is \'descriptor\'', async() => {
-			const target = tooltipFixture.querySelector('#explicit-target');
-			const tooltip = tooltipFixture.querySelector('d2l-tooltip');
 			expect(target.getAttribute('aria-describedby')).to.equal(tooltip.id);
 		});
 
 		it('should remove aria-describedby from its target when tooltip is removed', async() => {
-			const target = tooltipFixture.querySelector('#explicit-target');
-			const tooltip = tooltipFixture.querySelector('d2l-tooltip');
 			tooltip.remove();
 			expect(target.hasAttribute('aria-describedby')).to.be.false;
 		});
@@ -91,20 +105,17 @@ describe('d2l-tooltip', () => {
 	describe('explicit target', () => {
 
 		it('should find target using for attribute', () => {
-			const expectedTarget = tooltipFixture.querySelector('#explicit-target');
-			expect(tooltip._getTarget()).to.equal(expectedTarget);
+			expect(tooltip._getTarget()).to.equal(target);
 		});
 
 		it('should update target if current target is removed', async() => {
-			const expectedTarget = tooltipFixture.querySelector('#explicit-target');
-			expectedTarget.remove();
+			target.remove();
 			await aTimeout(1);
 			expect(tooltip._getTarget()).to.be.null;
 		});
 
 		it('should update target if current target id changes', async() => {
-			const expectedTarget = tooltipFixture.querySelector('#explicit-target');
-			expectedTarget.id = '';
+			target.id = '';
 			await aTimeout(1);
 			expect(tooltip._getTarget()).to.be.null;
 		});
@@ -142,53 +153,47 @@ describe('d2l-tooltip', () => {
 	describe('show-hide', () => {
 
 		it('should show when target is focused', async() => {
-			await focusElem(tooltipFixture.querySelector('#explicit-target'));
+			focusElem(target);
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
 			expect(tooltip.showing).to.be.true;
 		});
 
-		it('should show event when target is hovered', async() => {
-			tooltipFixture.querySelector('#explicit-target').dispatchEvent(new Event('mouseenter'));
+		it('should show when target is hovered', async() => {
+			hoverElem(target);
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
 			expect(tooltip.showing).to.be.true;
 		});
 
 		it('should hide from blur when target is focused', async() => {
-			const target = tooltipFixture.querySelector('#explicit-target');
 			await focusElem(target);
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
 
-			setTimeout(() => target.blur());
+			sendKeys('press', 'Tab');
 			await oneEvent(tooltipFixture, 'd2l-tooltip-hide');
 			expect(tooltip.showing).to.be.false;
 		});
 
 		it('should hide from mouseleave when target is hovered', async() => {
-			const target = tooltipFixture.querySelector('#explicit-target');
-			target.dispatchEvent(new Event('mouseenter'));
+			hoverElem(target);
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
 
-			setTimeout(() => target.dispatchEvent(new Event('mouseleave')));
+			hoverElem(anotherElement);
 			await oneEvent(tooltipFixture, 'd2l-tooltip-hide');
 			expect(tooltip.showing).to.be.false;
 		});
 
 		it('should not hide from mouseleave when target is focused', async() => {
-
-			const target = tooltipFixture.querySelector('#explicit-target');
-			target.dispatchEvent(new Event('mouseenter'));
+			hoverElem(target);
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
 			await focusElem(target);
 
-			target.dispatchEvent(new Event('mouseleave'));
+			hoverElem(anotherElement);
 			await aTimeout(100);
 			expect(tooltip.showing).to.be.true;
 		});
 
 		it('should not hide from blur when target is hovered', async() => {
-
-			const target = tooltipFixture.querySelector('#explicit-target');
-			target.dispatchEvent(new Event('mouseenter'));
+			hoverElem(target);
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
 			await focusElem(target);
 
@@ -197,19 +202,34 @@ describe('d2l-tooltip', () => {
 			expect(tooltip.showing).to.be.true;
 		});
 
+		it('should hide when another tooltip is shown when tooltip is hovered within a custom element', async() => {
+			const elem = await fixture(`<${elementTag}></${elementTag}>`);
+			const prev = elem.shadowRoot.querySelector('#prev');
+			const prevTooltip = elem.shadowRoot.querySelector('d2l-tooltip[for="prev"]');
+			const next = elem.shadowRoot.querySelector('#next');
+			focusElem(prev);
+			await oneEvent(elem, 'd2l-tooltip-show');
+
+			prevTooltip.dispatchEvent(new Event('mouseenter'));
+
+			focusElem(next);
+			await oneEvent(elem, 'd2l-tooltip-show');
+
+			expect(prevTooltip.showing).to.be.false;
+		});
+
 		[
 			{ case: 'hovered and focused', hover: true, focus: true },
 			{ case: 'hovered', hover: true, focus: false },
 			{ case: 'focused', hover: false, focus: true }
 		].forEach((testCase) => {
 			it(`should hide when ESC key is pressed while ${testCase.case}`, async() => {
-				const target = tooltipFixture.querySelector('#explicit-target');
 				setTimeout(() => {
 					if (testCase.focus) {
 						focusElem(target);
 					}
 					if (testCase.hover) {
-						target.dispatchEvent(new Event('mouseenter'));
+						hoverElem(target);
 					}
 				}, 0);
 				await oneEvent(tooltipFixture, 'd2l-tooltip-show');
@@ -222,8 +242,6 @@ describe('d2l-tooltip', () => {
 		});
 
 		it('should show if added to a target that already has focus', async() => {
-
-			const target = tooltipFixture.querySelector('#explicit-target');
 			await focusElem(target);
 
 			const dynamicTooltip = document.createElement('d2l-tooltip');
@@ -254,8 +272,6 @@ describe('d2l-tooltip', () => {
 		});
 
 		it('should not show if added to a disabled target that already has focus', async() => {
-
-			const target = tooltipFixture.querySelector('#explicit-target');
 			target.disabled = true;
 			await focusElem(target);
 
@@ -268,7 +284,6 @@ describe('d2l-tooltip', () => {
 		});
 
 		it('should show after the tooltip is disconnected and reconnected', async() => {
-			const target = tooltipFixture.querySelector('#explicit-target');
 			const parentElement = target.parentElement;
 
 			// remove the tooltip from the dom
@@ -292,7 +307,6 @@ describe('d2l-tooltip', () => {
 		it('should not show if hover is lost before tooltip delay finishes', async() => {
 			let shown = false;
 			oneEvent(tooltipFixture, 'd2l-tooltip-show').then(() => shown = true);
-			const target = tooltipFixture.querySelector('#explicit-target');
 			target.dispatchEvent(new Event('mouseenter'));
 			await aTimeout(tooltip.delay / 2);
 			target.dispatchEvent(new Event('mouseleave'));
@@ -305,7 +319,6 @@ describe('d2l-tooltip', () => {
 		it('should not show if hover is gained and lost multiple times before tooltip delay finishes', async() => {
 			let shown = false;
 			oneEvent(tooltipFixture, 'd2l-tooltip-show').then(() => shown = true);
-			const target = tooltipFixture.querySelector('#explicit-target');
 			for (let i = 0; i < 5; i++) {
 				target.dispatchEvent(new Event('mouseenter'));
 				await aTimeout(tooltip.delay / 2);
@@ -318,7 +331,6 @@ describe('d2l-tooltip', () => {
 		});
 
 		it('should show if hover is maintained for the tooltip delay', async() => {
-			const target = tooltipFixture.querySelector('#explicit-target');
 			target.dispatchEvent(new Event('mouseenter'));
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
 			expect(tooltip.showing).to.be.true;
@@ -369,7 +381,6 @@ describe('d2l-tooltip', () => {
 		});
 
 		it('should not hide when ESC key is pressed', async() => {
-
 			await sendKeys('press', 'Escape');
 			await aTimeout(100);
 
@@ -385,13 +396,11 @@ describe('d2l-tooltip', () => {
 		});
 
 		it('should hide on mouseleave even when focused', async() => {
-
-			const target = tooltipFixture.querySelector('#explicit-target');
-			target.dispatchEvent(new Event('mouseenter'));
+			hoverElem(target);
 			await oneEvent(tooltipFixture, 'd2l-tooltip-show');
 			await focusElem(target);
 
-			setTimeout(() => target.dispatchEvent(new Event('mouseleave')));
+			hoverElem(anotherElement);
 			await oneEvent(tooltipFixture, 'd2l-tooltip-hide');
 			expect(tooltip.showing).to.be.false;
 		});

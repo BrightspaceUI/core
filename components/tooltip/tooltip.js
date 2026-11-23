@@ -264,6 +264,7 @@ class Tooltip extends PopoverMixin(LitElement) {
 
 	hide() {
 		this.#isHovering = false;
+		this.#isHoveringTooltip = false;
 		this.#isFocusing = false;
 		this.#updateShowing();
 	}
