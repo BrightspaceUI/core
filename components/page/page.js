@@ -626,7 +626,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 				aria-label="${this.localize('components.page.footer-region-label')}"
 				class="${classMap(footerContainerClasses)}"
 				?hidden="${!this._slotVisibility['footer']}">
-				${fixedFooter ? footerContents : this.#renderFloatingButtons(footerContents)}	
+				${fixedFooter ? footerContents : this.#renderFloatingButtons(footerContents)}
 			</div>
 		`;
 	}

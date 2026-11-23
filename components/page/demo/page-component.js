@@ -312,7 +312,7 @@ class PageDemo extends LitElement {
 					</d2l-filter>
 					<d2l-button slot="header-end" primary @click="${this.#handleMainDialogOpen}">New Assignment</d2l-button>
 				` : nothing	}
-				
+
 				${this.#renderDemoMainControls()}
 
 				<h3>List with Sticky Controls (extend-separators)</h3>
