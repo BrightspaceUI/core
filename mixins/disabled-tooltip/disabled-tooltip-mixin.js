@@ -25,23 +25,16 @@ export const DisabledTooltipMixin = superclass => class extends superclass {
 		return ifDefined(this.disabled && this.disabledTooltip ? 'true' : undefined);
 	}
 
-	get _controlId() {
-		if (!this.#controlId) this.#controlId = getUniqueId();
-		return this.#controlId;
-	}
-
 	get _disabled() {
 		return this.disabled && !this.disabledTooltip;
 	}
 
-	#controlId = null;
-
-	_renderDisabledTooltip({ align = undefined, forceShow = false, position = undefined } = {}) {
+	_renderDisabledTooltip(controlId, { align = undefined, forceShow = false, position = undefined } = {}) {
 		if (!this.disabled || !this.disabledTooltip) return nothing;
 		return html`<d2l-tooltip
 			align=${ifDefined(align)}
 			class="vdiff-target"
-			for="${this._controlId}"
+			for="${controlId}"
 			?force-show=${forceShow}
 			position=${ifDefined(position)}>
 			${this.disabledTooltip}

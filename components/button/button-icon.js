@@ -133,7 +133,6 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 	constructor() {
 		super();
 		this.translucent = false;
-
 		/** @internal */
 		this._describedById = getUniqueId();
 		this._iconRequired = true;
@@ -155,16 +154,18 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 				formmethod="${ifDefined(this.formmethod)}"
 				?formnovalidate="${this.formnovalidate}"
 				formtarget="${ifDefined(this.formtarget)}"
-				id="${this._controlId}"
+				id="${this.#buttonId}"
 				name="${ifDefined(this.name)}"
 				title="${ifDefined(this.text)}"
 				type="${this._getType()}">
 				${this._renderIcon()}
 		</button>
 		${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
-		${this._renderDisabledTooltip()}
+		${this._renderDisabledTooltip(this.#buttonId)}
 		`;
 	}
+
+	#buttonId = getUniqueId();
 
 }
 

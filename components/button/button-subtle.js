@@ -190,7 +190,7 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 				formmethod="${ifDefined(this.formmethod)}"
 				?formnovalidate="${this.formnovalidate}"
 				formtarget="${ifDefined(this.formtarget)}"
-				id="${this._controlId}"
+				id="${this.#buttonId}"
 				name="${ifDefined(this.name)}"
 				type="${this._getType()}">
 				${this._renderIcon()}
@@ -200,9 +200,11 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 				</span>
 			</button>
 			${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
-			${this._renderDisabledTooltip()}
+			${this._renderDisabledTooltip(this.#buttonId)}
 		`;
 	}
+
+	#buttonId = getUniqueId();
 
 }
 
