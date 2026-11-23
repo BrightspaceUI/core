@@ -1,6 +1,7 @@
+import { DisabledTooltipMixin } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 
-export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
+export const ButtonMixin = superclass => class extends DisabledTooltipMixin(FocusMixin(superclass)) {
 
 	static properties = {
 		/**
@@ -25,16 +26,6 @@ export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 		 * @type {'true' | 'false'}
 		 */
 		expanded: { type: String, reflect: true, attribute: 'expanded' },
-		/**
-		 * Disables the button
-		 * @type {boolean}
-		 */
-		disabled: { type: Boolean, reflect: true },
-		/**
-		 * Tooltip text when disabled
-		 * @type {string}
-		 */
-		disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
 		/**
 		 * @ignore
 		 */
@@ -71,34 +62,12 @@ export const ButtonMixin = superclass => class extends FocusMixin(superclass) {
 
 	constructor() {
 		super();
-		this.disabled = false;
 
 		/** @ignore */
 		this.autofocus = false;
 
 		/** @ignore */
 		this.type = 'button';
-	}
-
-	/**
-	 * @attr disabled - Disables the button
-	 */
-	get disabled() { return this._disabled; }
-	set disabled(value) {
-		const oldValue = this._disabled;
-		this._disabled = value;
-		this.requestUpdate('disabled', oldValue);
-	}
-
-	/**
-	 * @attr disabled-tooltip - Tooltip text when disabled
-	 * @type {string}
-	 */
-	get disabledTooltip() { return this._disabledTooltip; }
-	set disabledTooltip(value) {
-		const oldValue = this._disabledTooltip;
-		this._disabledTooltip = value;
-		this.requestUpdate('disabledTooltip', oldValue);
 	}
 
 	static get focusElementSelector() {
