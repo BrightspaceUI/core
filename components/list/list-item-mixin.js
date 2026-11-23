@@ -882,6 +882,7 @@ export const ListItemMixin = superclass => class extends composeMixins(
 
 	_onFocusIn(e) {
 		e.stopPropagation(); // prevent _focusing from being set on the parent
+		this.dispatchEvent(new CustomEvent('d2l-list-item-focusin', { bubbles: true, composed: true, detail: { target: e.target } }));
 		this._focusing = true;
 		if (this.role !== 'row' || !tabPressed || hasDisplayedKeyboardTooltip) return;
 		this._displayKeyboardTooltip = true;
