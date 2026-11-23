@@ -98,6 +98,7 @@ describe('d2l-input-time', () => {
 			const elem = await fixture(create({ disabled: true, opened: true }), { viewport });
 			elem.removeAttribute('disabled');
 			await oneEvent(elem, 'd2l-dropdown-open');
+			await nextFrame();
 			await expect(elem).to.be.golden();
 		});
 
