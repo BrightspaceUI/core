@@ -78,9 +78,6 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 			margin: 0;
 		}
 		${getFocusRingStyles('.title h1')}
-		.title-overflow {
-			mask-image: linear-gradient(to right, white calc(100% - 20px), transparent 100%);
-		}
 		.actions,
 		.actions-iterator-wrapper {
 			align-items: center;
@@ -120,7 +117,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 			margin: 10px auto;
 		}
 		.title-text {
-			${getOverflowDeclarations({ textOverflow: 'clip' })}
+			${getOverflowDeclarations({ textOverflow: 'ellipsis' })}
 		}
 	`];
 
@@ -393,16 +390,9 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 	}
 
 	#renderTitle() {
-		const headingClasses = {
-			'title-overflow': this._titleOverflowing
-		};
 		const title = this.titleText ? html`<div class="title-text d2l-heading-3">${this.titleText}</div>` : '';
 		const subtitle = this.subtitleText ? html`<div class="title-text d2l-label-text">${this.subtitleText}</div>` : '';
-		const heading = (title || subtitle) && html`
-			<h1 id="title-heading" tabindex="${ifDefined(this._titleOverflowing ? 0 : undefined)}">
-				<div class="${classMap(headingClasses)}">${title}${subtitle}</div>
-			</h1>
-		`;
+		const heading = (title || subtitle) && html`<h1 id="title-heading" tabindex="${ifDefined(this._titleOverflowing ? 0 : undefined)}">${title}${subtitle}</div></h1>`;
 		const overflow = this._titleOverflowing ? html`<d2l-tooltip for="title-heading" for-type="label">${this.titleText}<br>${this.subtitleText}</d2l-tooltip>` : nothing;
 		return html`
 			<div id="title" class="title" ${ref(this.#refTitle)}>
