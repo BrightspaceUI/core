@@ -166,8 +166,6 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 		super();
 		this.iconRight = false;
 		this.slim = false;
-
-		this._buttonId = getUniqueId();
 		this._describedById = getUniqueId();
 	}
 
@@ -179,20 +177,20 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 		return html`
 			<button
 				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
-				aria-disabled="${ifDefined(this.disabled && this.disabledTooltip ? 'true' : undefined)}"
+				aria-disabled="${this._ariaDisabled}"
 				aria-expanded="${ifDefined(this.expanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${ifDefined(this.ariaLabel)}"
 				?autofocus="${this.autofocus}"
 				class="${classMap(buttonClasses)}"
-				?disabled="${this.disabled && !this.disabledTooltip}"
+				?disabled="${this._disabled}"
 				form="${ifDefined(this.form)}"
 				formaction="${ifDefined(this.formaction)}"
 				formenctype="${ifDefined(this.formenctype)}"
 				formmethod="${ifDefined(this.formmethod)}"
 				?formnovalidate="${this.formnovalidate}"
 				formtarget="${ifDefined(this.formtarget)}"
-				id="${this._buttonId}"
+				id="${this.#buttonId}"
 				name="${ifDefined(this.name)}"
 				type="${this._getType()}">
 				${this._renderIcon()}
@@ -202,9 +200,11 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 				</span>
 			</button>
 			${this.description ? html`<span id="${this._describedById}" hidden>${this.description}</span>` : null}
-			${this.disabled && this.disabledTooltip ? html`<d2l-tooltip class="vdiff-target" for="${this._buttonId}">${this.disabledTooltip}</d2l-tooltip>` : ''}
+			${this._renderDisabledTooltip(this.#buttonId)}
 		`;
 	}
+
+	#buttonId = getUniqueId();
 
 }
 

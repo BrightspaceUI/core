@@ -6,6 +6,7 @@ import '../icons/icon.js';
 import '../menu/menu.js';
 import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { DisabledTooltipMixin } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
@@ -14,7 +15,7 @@ import { PropertyRequiredMixin } from '../../mixins/property-required/property-r
 /**
  * A split button that provides a main action button and slot for a menu.
  */
-class ButtonSplit extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(LitElement))) {
+class ButtonSplit extends DisabledTooltipMixin(FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(LitElement)))) {
 
 	static properties = {
 		/**
@@ -22,16 +23,6 @@ class ButtonSplit extends FocusMixin(PropertyRequiredMixin(LocalizeCoreElement(L
 		 * @type {string}
 		 */
 		description: { type: String },
-		/**
-		 * Disables the main action and dropdown opener buttons
-		 * @type {boolean}
-		 */
-		disabled: { type: Boolean, reflect: true },
-		/**
-		 * Tooltip text when disabled
-		 * @type {string}
-		 */
-		disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
 		/**
 		 * REQUIRED: Key of the main action
 		 * @type {string}
