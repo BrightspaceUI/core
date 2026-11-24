@@ -253,7 +253,7 @@ export default {
 	"components.table-controls.label": "Gníomhartha don tábla",
 	"components.tabs.next": "Scrolláil ar Aghaidh",
 	"components.tabs.previous": "Scrollaigh Siar",
-	"components.tag-list.clear": "Cliceáil, brúigh backspace, nó brúigh an eochair \"Scrios\" chun mír {value} a bhaint",
+	"components.tag-list.clear": "Cliceáil, brúigh backspace, nó brúigh an eochair “Scrios” chun mír {value} a bhaint",
 	"components.tag-list.clear-all": "Glan gach rud",
 	"components.tag-list.cleared-all": "Baineadh gach mír liosta clibeanna",
 	"components.tag-list.cleared-item": "Baineadh mír liosta clibeanna {value}",
