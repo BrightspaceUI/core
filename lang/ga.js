@@ -202,7 +202,7 @@ export default {
 	"components.scroll-wrapper.scroll-right": "Scrollaigh ar dheis",
 	"components.selection.action-max-hint":
 		`{count, plural,
-			=2 {Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted}mhír}
+			=2 {Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted} mhír}
 			one {Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted} mhír}
 			few {Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted} mhír}
 			many {Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted} mhír}
