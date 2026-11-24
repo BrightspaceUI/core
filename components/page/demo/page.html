@@ -5,6 +5,38 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="../../demo/styles.css" type="text/css">
+		<style>
+			/* Styling document scrollbar for POC */
+			html[data-demo-scrollbars-thin] {
+				scrollbar-color: var(--d2l-color-galena) rgba(255, 255, 255, 0.4);
+				scrollbar-width: thin;
+			}
+			html[data-demo-scrollbars-thin]::-webkit-scrollbar {
+				width: 8px;
+			}
+			html[data-demo-scrollbars-thin]::-webkit-scrollbar-track {
+				background: rgba(255, 255, 255, 0.4);
+			}
+			html[data-demo-scrollbars-thin]::-webkit-scrollbar-thumb {
+				background: var(--d2l-color-galena);
+				border-radius: 4px;
+			}
+			html[data-demo-scrollbars-thin]::-webkit-scrollbar-thumb:hover {
+				background: var(--d2l-color-tungsten);
+			}
+			html[data-demo-scrollbars-auto-hide]:not([data-demo-scrollbars-revealed]):not([data-demo-scrollbars-scrolling]) {
+				scrollbar-color: transparent transparent;
+			}
+			html[data-demo-scrollbars-auto-hide]:not([data-demo-scrollbars-revealed]):not([data-demo-scrollbars-scrolling])::-webkit-scrollbar-thumb,
+			html[data-demo-scrollbars-auto-hide]:not([data-demo-scrollbars-revealed]):not([data-demo-scrollbars-scrolling])::-webkit-scrollbar-track {
+				background: transparent;
+			}
+			/* scrollbar-color is inherited, so stop it leaking from the document into the panels */
+			html[data-demo-scrollbars-thin] body,
+			html[data-demo-scrollbars-auto-hide] body {
+				scrollbar-color: auto;
+			}
+		</style>
 		<script type="module">
 			import '../../demo/demo-page.js';
 			import './page-component.js';

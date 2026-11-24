@@ -41,6 +41,7 @@ import { selectStyles } from '../../inputs/input-select-styles.js';
 import { tableStyles } from '../../table/table-wrapper.js';
 
 const DEMO_STATE_STORAGE_KEY = 'core-demo';
+const BODY_SCROLLBAR_HOVER_STRIP_WIDTH = 12;
 
 class PageDemo extends LitElement {
 
@@ -54,6 +55,12 @@ class PageDemo extends LitElement {
 		header: { type: String, attribute: 'header' },
 		immersiveHeaderTitleType: { type: String, attribute: 'immersive-header-title-type' },
 		layout: { type: String, attribute: 'layout' },
+		bodyScrollbarsAutoHide: { type: Boolean, attribute: 'body-scrollbars-auto-hide' },
+		bodyScrollbarsScrollTimeout: { type: Number, attribute: 'body-scrollbars-scroll-timeout' },
+		bodyScrollbarsThin: { type: Boolean, attribute: 'body-scrollbars-thin' },
+		panelScrollbarsAutoHide: { type: Boolean, attribute: 'panel-scrollbars-auto-hide' },
+		panelScrollbarsScrollTimeout: { type: Number, attribute: 'panel-scrollbars-scroll-timeout' },
+		panelScrollbarsThin: { type: Boolean, attribute: 'panel-scrollbars-thin' },
 		widthType: { type: String, attribute: 'width-type' },
 		_mainDialogOpened: { state: true },
 		_mainToastOpened: { state: true },
@@ -74,6 +81,19 @@ class PageDemo extends LitElement {
 			flex-wrap: wrap;
 			gap: 1rem;
 		}
+		.poc-options {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 1rem;
+			padding: 0.75rem;
+		}
+		.body-scrollbar-hover-strip {
+			inset-block: 0;
+			position: fixed;
+			right: 0;
+			width: ${BODY_SCROLLBAR_HOVER_STRIP_WIDTH}px;
+			z-index: 1000;
+		}
 	`];
 
 	constructor() {
@@ -88,6 +108,12 @@ class PageDemo extends LitElement {
 		this.header = urlParams.get('header') || 'full';
 		this.immersiveHeaderTitleType = urlParams.get('immersiveHeaderTitleType') || 'title-subtitle';
 		this.layout = urlParams.get('layout') || 'main-only';
+		this.bodyScrollbarsAutoHide = urlParams.has('bodyScrollbarsAutoHide');
+		this.bodyScrollbarsScrollTimeout = Number(urlParams.get('bodyScrollbarsScrollTimeout') ?? 1000);
+		this.bodyScrollbarsThin = urlParams.has('bodyScrollbarsThin');
+		this.panelScrollbarsAutoHide = urlParams.has('panelScrollbarsAutoHide');
+		this.panelScrollbarsScrollTimeout = Number(urlParams.get('panelScrollbarsScrollTimeout') ?? 1000);
+		this.panelScrollbarsThin = urlParams.has('panelScrollbarsThin');
 		this.widthType = urlParams.get('widthType') || 'normal';
 		this._mainDialogOpened = false;
 		this._mainToastOpened = false;
@@ -99,16 +125,69 @@ class PageDemo extends LitElement {
 		this._supportingToastOpened = false;
 	}
 
+	connectedCallback() {
+		super.connectedCallback();
+		document.addEventListener('pointerover', this.#handleDocumentPointerOver);
+		document.addEventListener('pointerout', this.#handleDocumentPointerOut);
+		window.addEventListener('scroll', this.#handleWindowScroll, { passive: true });
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		document.removeEventListener('pointerover', this.#handleDocumentPointerOver);
+		document.removeEventListener('pointerout', this.#handleDocumentPointerOut);
+		window.removeEventListener('scroll', this.#handleWindowScroll);
+		clearTimeout(this.#bodyScrollingTimeout);
+	}
+
 	render() {
 		return html`
-			<d2l-page state-storage-key="${DEMO_STATE_STORAGE_KEY}" width-type="${this.widthType}">
+			<d2l-page state-storage-key="${DEMO_STATE_STORAGE_KEY}" width-type="${this.widthType}" ?panel-scrollbars-auto-hide="${this.panelScrollbarsAutoHide}" ?panel-scrollbars-thin="${this.panelScrollbarsThin}" panel-scrollbars-scroll-timeout="${this.panelScrollbarsScrollTimeout}">
 				${this.#renderHeader()}
 				${this.#renderSideNavPanel()}
 				${this.#renderMainPanel()}
 				${this.#renderSupportingPanel()}
 				${this.#renderFooter()}
 			</d2l-page>
+			${this.bodyScrollbarsAutoHide ? html`<div class="body-scrollbar-hover-strip" @pointerenter="${this.#handleBodyScrollbarStripEnter}" @pointerleave="${this.#handleBodyScrollbarStripLeave}"></div>` : nothing}
 		`;
+	}
+
+	updated() {
+		// The document scrollbar is styled by the demo page (see page.html)
+		document.documentElement.toggleAttribute('data-demo-scrollbars-auto-hide', this.bodyScrollbarsAutoHide);
+		document.documentElement.toggleAttribute('data-demo-scrollbars-thin', this.bodyScrollbarsThin);
+	}
+
+	#bodyScrollingTimeout;
+
+	#handleDocumentPointerOut = (e) => {
+		if (e.buttons !== 0 || e.relatedTarget) return;
+		// Left the window (e.g. off the scrollbar's outer edge)
+		document.documentElement.removeAttribute('data-demo-scrollbars-revealed');
+	};
+
+	#handleDocumentPointerOver = (e) => {
+		// Events over the document scrollbar (if dispatched) target <html> outside its client area
+		if (e.target === document.documentElement && e.clientX >= document.documentElement.clientWidth) {
+			document.documentElement.toggleAttribute('data-demo-scrollbars-revealed', true);
+		}
+	};
+
+	#handleWindowScroll = () => {
+		document.documentElement.toggleAttribute('data-demo-scrollbars-scrolling', true);
+		clearTimeout(this.#bodyScrollingTimeout);
+		this.#bodyScrollingTimeout = setTimeout(() => document.documentElement.removeAttribute('data-demo-scrollbars-scrolling'), this.bodyScrollbarsScrollTimeout);
+	};
+
+	#handleBodyScrollbarStripEnter() {
+		document.documentElement.toggleAttribute('data-demo-scrollbars-revealed', true);
+	}
+
+	#handleBodyScrollbarStripLeave(e) {
+		// Keep revealed while dragging or when moving onto the scrollbar
+		if (e.buttons !== 0 || e.offsetX >= e.currentTarget.offsetWidth) return;
+		document.documentElement.removeAttribute('data-demo-scrollbars-revealed');
 	}
 
 	#handleClearStateStorage() {
@@ -141,6 +220,12 @@ class PageDemo extends LitElement {
 
 	#handleMainToastClose() {
 		this._mainToastOpened = false;
+	}
+
+	#handleScrollTimeoutChange(e) {
+		const key = e.target.dataset.key;
+		this[key] = e.target.value ?? 0;
+		this.#updateUrlParam(key, this[key]);
 	}
 
 	#handleSideNavDialogClose() {
@@ -230,6 +315,10 @@ class PageDemo extends LitElement {
 	#renderDemoMainControls() {
 		if (!this.demoMode) return nothing;
 		return html`
+			<div class="poc-options">
+				${this.#renderDemoScrollbarControls('Body Scrollbar', 'body')}
+				${this.#renderDemoScrollbarControls('Panel Scrollbars', 'panel')}
+			</div>
 			<d2l-collapsible-panel panel-title="Demo Settings" expanded heading-style="3">
 				<d2l-input-group>
 					<d2l-input-fieldset label="Page" label-style="heading">
@@ -267,6 +356,25 @@ class PageDemo extends LitElement {
 				</d2l-input-group>
 				<d2l-demo-page-settings panel-title="Environment Settings"></d2l-demo-page-settings>
 			</d2l-collapsible-panel>
+		`;
+	}
+
+	#renderDemoScrollbarControls(label, prefix) {
+		const thinKey = `${prefix}ScrollbarsThin`;
+		const autoHideKey = `${prefix}ScrollbarsAutoHide`;
+		const timeoutKey = `${prefix}ScrollbarsScrollTimeout`;
+		return html`
+			<d2l-input-fieldset label="${label}" label-style="heading">
+				<div class="horizontal-fields">
+					<d2l-input-fieldset label="Options">
+						<d2l-switch text="Thin" data-key="${thinKey}" @change="${this.#handleVisibilityChange}" ?on="${this[thinKey]}"></d2l-switch>
+						<d2l-switch text="Appear on Hover &amp; Scroll" data-key="${autoHideKey}" @change="${this.#handleVisibilityChange}" ?on="${this[autoHideKey]}"></d2l-switch>
+					</d2l-input-fieldset>
+					${this[autoHideKey] ? html`
+						<d2l-input-number label="Scroll Timeout (ms)" data-key="${timeoutKey}" value="${this[timeoutKey]}" min="0" max-fraction-digits="0" @change="${this.#handleScrollTimeoutChange}"></d2l-input-number>
+					` : nothing}
+				</div>
+			</d2l-input-fieldset>
 		`;
 	}
 
