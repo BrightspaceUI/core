@@ -9,7 +9,9 @@ import { createRef, ref } from 'lit/directives/ref.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { highlightBorderStyles, highlightLinkStyles } from './page-header-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { getFocusRingStyles } from '../../helpers/focus.js';
 import { getOverflowDeclarations } from '../../helpers/overflow.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { LocalizeCoreElement } from '../../helpers/localize-core-element.js';
 import { offscreenStyles } from '../offscreen/offscreen.js';
 import { RequesterMixin } from '../../mixins/provider/provider-mixin.js';
@@ -54,17 +56,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 		.title {
 			flex: 1 1 auto;
 			min-width: ${MINIMUM_TITLE_WIDTH}px;
-			position: relative;
-		}
-		#title-overflow {
-			inset-block-start: 50%;
-			inset-inline-end: 0;
-			box-shadow: 0 0 10px 10px rgba(255, 255, 255);
-			position: absolute;
-			transform: translateY(-50%);
-		}
-		.title-wrapper {
-			height: 100%;
+			padding-block: 5px;
 		}
 		.back,
 		.actions-iterator-wrapper {
@@ -84,6 +76,10 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 			height: 100%;
 			justify-content: center;
 			margin: 0;
+		}
+		${getFocusRingStyles('.title h1')}
+		.title-overflow {
+			mask-image: linear-gradient(to right, white calc(100% - 20px), transparent 100%);
 		}
 		.actions,
 		.actions-iterator-wrapper {
@@ -397,29 +393,21 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 	}
 
 	#renderTitle() {
+		const headingClasses = {
+			'title-overflow': this._titleOverflowing
+		};
 		const title = this.titleText ? html`<div class="title-text d2l-heading-3">${this.titleText}</div>` : '';
 		const subtitle = this.subtitleText ? html`<div class="title-text d2l-label-text">${this.subtitleText}</div>` : '';
-		const heading = (title || subtitle) && html`<h1>${title}${subtitle}</h1>`;
-		const titleClasses = {
-			'title': true
-		};
-		const wrapperClasses = {
-			'title-wrapper': true
-		};
-		const overflow = this._titleOverflowing ?
-			html`
-				<button id="title-overflow" aria-hidden="true" aria-label="title overflow tooltip">&hellip;</button>
-				<d2l-tooltip for="title-overflow">
-					${this.titleText}<br>
-					${this.subtitleText}
-				</d2l-tooltip>
-			` : nothing;
+		const heading = (title || subtitle) && html`
+			<h1 id="title-heading" tabindex="${ifDefined(this._titleOverflowing ? 0 : undefined)}">
+				<div class="${classMap(headingClasses)}">${title}${subtitle}</div>
+			</h1>
+		`;
+		const overflow = this._titleOverflowing ? html`<d2l-tooltip for="title-heading" for-type="label">${this.titleText}<br>${this.subtitleText}</d2l-tooltip>` : nothing;
 		return html`
-			<div class="${classMap(titleClasses)}" ${ref(this.#refTitle)}>
-				<div class="${classMap(wrapperClasses)}">
-					<slot name="title" @slotchange="${this.#handleTitleSlotChange}">${heading}</slot>
-					${overflow}
-				</div>
+			<div id="title" class="title" ${ref(this.#refTitle)}>
+				<slot name="title" @slotchange="${this.#handleTitleSlotChange}">${heading}</slot>
+				${overflow}
 			</div>
 		`;
 	}
