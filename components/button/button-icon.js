@@ -142,7 +142,7 @@ class ButtonIcon extends SlottedIconMixin(PropertyRequiredMixin(ThemeMixin(Butto
 		return html`
 			<button
 				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
-				aria-disabled="${this._ariaDisabled}"
+				aria-disabled="${this._ariaDisabledAttribute}"
 				aria-expanded="${ifDefined(this.expanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${this.ariaLabel ? this.ariaLabel : ifDefined(this.text)}"

@@ -1,5 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { _isValidCssSelector } from '../../helpers/internal/css.js';
+import { getDisabledTooltipMaskStyles } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
 import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
 
 registerSemanticVariableForSvgImageUrl(
@@ -32,8 +33,8 @@ function _getRadioStyleSelectors(inputSelectors) {
 			${s}[aria-invalid="true"]
 		`)),
 		disabled: parseAndJoin(inputSelectors.map(s => `
-			${s}:disabled,
-			${s}.d2l-disabled
+			${s}:not(.d2l-input-radio-disabled-tooltip):disabled,
+			${s}:not(.d2l-input-radio-disabled-tooltip).d2l-disabled
 		`)),
 		disabledTooltip: parseAndJoin(inputSelectors.map(s => `
 			${s}.d2l-input-radio-disabled-tooltip.d2l-hovering,
@@ -88,13 +89,10 @@ export function _generateRadioStyles(selector, containerSelector) {
 		${selectors.disabled} {
 			opacity: var(--d2l-theme-opacity-disabled-control);
 		}
-
-		${selectors.disabledTooltip} {
-			background-blend-mode: lighten;
-			background-color: var(--d2l-theme-background-color-interactive-faint-disabled);
-			opacity: 1;
+		.d2l-input-radio-disabled-tooltip {
+			border-color: var(--d2l-theme-border-color-disabled);
 		}
-
+		${getDisabledTooltipMaskStyles(css`.d2l-input-radio-disabled-tooltip`)}
 		@media (prefers-contrast: more) {
 			${selectors.simple} {
 				background-color: Canvas;
@@ -124,11 +122,6 @@ export function _generateRadioStyles(selector, containerSelector) {
 			${selectors.invalid} {
 				--d2l-input-radio-border-color-hover-focus: var(--d2l-theme-status-color-error);
 				border-color: var(--d2l-theme-status-color-error);
-			}
-
-			${selectors.disabledTooltip} {
-				background-blend-mode: initial;
-				background-color: Canvas;
 			}
 		}
 
