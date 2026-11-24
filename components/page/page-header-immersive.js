@@ -413,8 +413,7 @@ class PageHeaderImmersive extends RequesterMixin(LocalizeCoreElement(LitElement)
 			} else if (entry.target === this.#refTitle.value) {
 				const title = this.#refTitle.value.querySelector('.d2l-heading-3');
 				const subtitle = this.#refTitle.value.querySelector('.d2l-label-text');
-				this._titleOverflowing = title.scrollWidth > title.clientWidth || subtitle.scrollWidth > subtitle.clientWidth;
-				//console.log('title', title.scrollWidth, title.clientWidth, title.scrollWidth > title.clientWidth, subtitle.scrollWidth > subtitle.clientWidth);
+				this._titleOverflowing = (title && title.scrollWidth > title.clientWidth) || (subtitle && subtitle.scrollWidth > subtitle.clientWidth);
 			}
 		});
 		console.log('resize', {
