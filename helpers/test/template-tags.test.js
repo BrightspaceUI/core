@@ -1,6 +1,7 @@
 import { expect } from '@brightspace-ui/testing';
 import { set } from '../template-tags.js';
 
+/* eslint-disable @stylistic/indent */
 describe('template-tags', () => {
 
 	describe('set', () => {
@@ -71,3 +72,4 @@ baz`
 		});
 	});
 });
+/* eslint-enable @stylistic/indent */
