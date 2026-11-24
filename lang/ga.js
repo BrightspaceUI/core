@@ -181,6 +181,6 @@ export default {
 	"components.tag-list-item.tooltip-title": "Rialuithe Méarchláir",
 	"components.view-switcher.role-description":
 		`{count, plural, =0 {Malartóir Amhairc ina bhfuil 0 mír} =2 {Malartóir Amhairc ina bhfuil {count} míreanna} one {Malartóir Amhairc ina bhfuil {count} mhír} few {Malartóir Amhairc ina bhfuil {count} míreanna} many {Malartóir Amhairc ina bhfuil {count} míreanna} other {Malartóir Amhairc ina bhfuil {count} míreanna}}`,
-	"templates.primary-secondary.divider": "Deighilteoir an Phainéil Thánaistigh ",
+	"templates.primary-secondary.divider": "Deighilteoir an Phainéil Thánaistigh",
 	"templates.primary-secondary.secondary-panel": "Painéal tánaisteach"
 };
