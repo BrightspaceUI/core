@@ -22,7 +22,7 @@ const HINT_TYPES = {
 // US137000 - prevent Lit default converter from converting undefined to 0
 const numberConverter = {
 	fromAttribute: (attr) => { return !attr ? undefined : Number(attr); },
-	toAttribute:  (prop) => { return String(prop); }
+	toAttribute: (prop) => { return String(prop); }
 };
 
 function formatValue(value, options, numDecimalDigits) {

@@ -17,7 +17,7 @@ function _getInputBaseStyleDelegates(selector, focusSelector) {
 			${focusSelector ? `${focusSelector},` : ''}
 			${selector}:${focusClass}:not(:disabled),
 			${selector}:hover:not(:disabled)`,
-		style:  fullSelector => css`
+		style: fullSelector => css`
 			${fullSelector} {
 				border-color: var(--d2l-theme-border-color-focus);
 				border-width: 2px;
