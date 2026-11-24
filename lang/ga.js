@@ -27,18 +27,18 @@ export default {
 	"components.filter.clearAnnounce": "Scagairí a ghlanadh le haghaidh: {filterName}",
 	"components.filter.clearDescription": "Glan scagairí le haghaidh: {filterName}",
 	"components.filter.filterCountDescription":
-		`{number,plural,=0{Níor cuireadh aon scagaire i bhfeidhm.} one{{number} scagaire curtha i bhfeidhm.} two{{number} scagaire curtha i bhfeidhm.} few{{number} scagaire curtha i bhfeidhm.} many{{number} scagaire curtha i bhfeidhm.} other{{number} scagairí curtha i bhfeidhm.}}`,
+		`{number, plural, =0 {Níor cuireadh aon scagaire i bhfeidhm.} one {{number} scagaire curtha i bhfeidhm.} two {{number} scagaire curtha i bhfeidhm.} few {{number} scagaire curtha i bhfeidhm.} many {{number} scagaire curtha i bhfeidhm.} other {{number} scagairí curtha i bhfeidhm.}}`,
 	"components.filter.filters": "Scagairí",
 	"components.filter.loading": "Scagairí á luchtú",
 	"components.filter.noFilters": "Gan scagairí ar fáil",
 	"components.filter.searchResults":
-		`{number,plural,one{{number} toradh cuardaigh} =0{Gan torthaí cuardaigh} two{{number} thoradh cuardaigh} few{{number} thoradh cuardaigh} many{{number} dtoradh cuardaigh} other{{number} torthaí cuardaigh}}`,
+		`{number, plural, =0 {Gan torthaí cuardaigh} one {{number} toradh cuardaigh} two {{number} thoradh cuardaigh} few {{number} thoradh cuardaigh} many {{number} dtoradh cuardaigh} other {{number} torthaí cuardaigh}}`,
 	"components.filter.selectedFirstListLabel": "{headerText}. Taispeántar na scagairí roghnaithe ar dtús.",
 	"components.filter.singleDimensionDescription": "Scag de réir: {filterName}",
 	"components.filter-dimension-set-date-text-value.textDays":
-		`{num,plural,one{An lá {num} dheireanach} few{Na {num} lá dheireanacha} many{Na {num} lá dheireanacha} =0{Inniu} =2{Na {num} lá dheireanacha} other{Na {num} lá dheireanacha}}`,
+		`{num, plural, =0 {Inniu} =2 {Na {num} lá dheireanacha} one {An lá {num} dheireanach} few {Na {num} lá dheireanacha} many {Na {num} lá dheireanacha} other {Na {num} lá dheireanacha}}`,
 	"components.filter-dimension-set-date-text-value.textHours":
-		`{num,plural,few{Na {num} uair an chloig dheireanacha} many{Na {num} uair an chloig dheireanacha} =1{An uair dheireanach} =2{Na {num} uair an chloig dheireanacha} other{Na {num} uair an chloig dheireanacha}}`,
+		`{num, plural, =1 {An uair dheireanach} =2 {Na {num} uair an chloig dheireanacha} few {Na {num} uair an chloig dheireanacha} many {Na {num} uair an chloig dheireanacha} other {Na {num} uair an chloig dheireanacha}}`,
 	"components.filter-dimension-set-date-text-value.textMonths": "{num} mhí anuas",
 	"components.filter-dimension-set-date-time-range-value.label": "{text}, leathnaigh chun dátaí a roghnú",
 	"components.filter-dimension-set-date-time-range-value.text": "Raon dáta saincheaptha",
@@ -49,16 +49,16 @@ export default {
 	"components.form-element.defaultFieldLabel": "Réimse",
 	"components.form-element.input.email.typeMismatch": "Níl an ríomhphost bailí",
 	"components.form-element.input.number.rangeError":
-		`{minExclusive,select,true{{maxExclusive,select,true{Caithfidh an uimhir a bheith níos mó ná {min} agus níos lú ná {max}.} other{Caithfidh an uimhir a bheith níos mó ná {min} agus níos lú ná nó cothrom le {max}.}}} other{{maxExclusive,select,true{Caithfidh an uimhir a bheith níos mó ná nó cothrom le {min} agus níos lú ná {max}.} other{Caithfidh an uimhir a bheith níos mó ná nó cothrom le {min} agus níos lú ná nó cothrom le {max}.}}}}`,
+		`{minExclusive, select, true {{maxExclusive, select, true {Caithfidh an uimhir a bheith níos mó ná {min} agus níos lú ná {max}.} other {Caithfidh an uimhir a bheith níos mó ná {min} agus níos lú ná nó cothrom le {max}.}}} other {{maxExclusive, select, true {Caithfidh an uimhir a bheith níos mó ná nó cothrom le {min} agus níos lú ná {max}.} other {Caithfidh an uimhir a bheith níos mó ná nó cothrom le {min} agus níos lú ná nó cothrom le {max}.}}}}`,
 	"components.form-element.input.number.rangeOverflow":
-		`{maxExclusive,select,true{Caithfidh an uimhir a bheith níos lú ná {max}.} other{Caithfidh an uimhir a bheith níos lú ná nó cothrom le {max}.}}`,
+		`{maxExclusive, select, true {Caithfidh an uimhir a bheith níos lú ná {max}.} other {Caithfidh an uimhir a bheith níos lú ná nó cothrom le {max}.}}`,
 	"components.form-element.input.number.rangeUnderflow":
-		`{minExclusive,select,true{Caithfidh an uimhir a bheith níos mó ná {min}.} other{Caithfidh an uimhir a bheith níos mó ná nó cothrom le {min}.}}`,
+		`{minExclusive, select, true {Caithfidh an uimhir a bheith níos mó ná {min}.} other {Caithfidh an uimhir a bheith níos mó ná nó cothrom le {min}.}}`,
 	"components.form-element.input.text.tooShort": "Ní mór {label} a bheith ar a laghad {minlength} carachtair",
 	"components.form-element.input.url.typeMismatch": "Níl an URL bailí",
 	"components.form-element.valueMissing": "Tá {label} riachtanach",
 	"components.form-error-summary.errorSummary":
-		`{count,plural,one{Fuarthas {count} earráid san fhaisnéis a chuir tú isteach} few{Fuarthas {count} earráidí san fhaisnéis a chuir tú isteach} many{Fuarthas {count} earráidí san fhaisnéis a chuir tú isteach} =2{Fuarthas {count} earráidí san fhaisnéis a chuir tú isteach} other{Fuarthas {count} earráidí san fhaisnéis a chuir tú isteach}}`,
+		`{count, plural, =2 {Fuarthas {count} earráidí san fhaisnéis a chuir tú isteach} one {Fuarthas {count} earráid san fhaisnéis a chuir tú isteach} few {Fuarthas {count} earráidí san fhaisnéis a chuir tú isteach} many {Fuarthas {count} earráidí san fhaisnéis a chuir tú isteach} other {Fuarthas {count} earráidí san fhaisnéis a chuir tú isteach}}`,
 	"components.form-error-summary.text": "Scoránaigh mionsonraí earráide",
 	"components.input-color.backgroundColor": "Dath Cúlra",
 	"components.input-color.foregroundColor": "Dath Réamhra",
@@ -132,20 +132,20 @@ export default {
 	"components.page.supporting-label": "Tacaíocht",
 	"components.page.supporting-scrim": "Tá an príomhábhar faoi cheilt ag an bPainéal Tacaíochta faoi láthair. Dún an painéal chun rochtain a fháil.",
 	"components.pageable.info":
-		`{count,plural,one{{countFormatted} mír} few{{countFormatted} míreanna} many{{countFormatted} míreanna} =2{{countFormatted} míreanna} other{{countFormatted} míreanna}}`,
+		`{count, plural, =2 {{countFormatted} míreanna} one {{countFormatted} mír} few {{countFormatted} míreanna} many {{countFormatted} míreanna} other {{countFormatted} míreanna}}`,
 	"components.pageable.info-with-total":
-		`{totalCount,plural,one{{countFormatted} as {totalCountFormatted} mhír} few{{countFormatted} as {totalCountFormatted} míreanna} many{{countFormatted} as{totalCountFormatted} míreanna} =2{{countFormatted} as{totalCountFormatted} míreanna} other{{countFormatted} as{totalCountFormatted} míreanna}}`,
+		`{totalCount, plural, =2 {{countFormatted} as{totalCountFormatted} míreanna} one {{countFormatted} as {totalCountFormatted} mhír} few {{countFormatted} as {totalCountFormatted} míreanna} many {{countFormatted} as{totalCountFormatted} míreanna} other {{countFormatted} as{totalCountFormatted} míreanna}}`,
 	"components.pager-load-more.action": "Luchtaigh Tuilleadh",
 	"components.pager-load-more.action-with-page-size": "Luchtaigh {count} níos mó",
 	"components.pager-load-more.status-loading": "Tuilleadh earraí á luchtú",
 	"components.scroll-wrapper.scroll-left": "Scrollaigh ar chlé",
 	"components.scroll-wrapper.scroll-right": "Scrollaigh ar dheis",
 	"components.selection.action-max-hint":
-		`{count,plural,one{Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted} mhír} few{Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted} mhír} many{Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted} mhír} =2{Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted}mhír} other{Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted} mhír}}`,
+		`{count, plural, =2 {Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted}mhír} one {Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted} mhír} few {Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted} mhír} many {Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted} mhír} other {Díchumasaithe nuair a roghnaítear níos mó ná {countFormatted} mhír}}`,
 	"components.selection.action-required-hint": "Roghnaigh mír chun an gníomh seo a dhéanamh",
 	"components.selection.select-all": "Roghnaigh Uile",
 	"components.selection.select-all-items":
-		`{count,plural,few{Roghnaigh na {countFormatted} mír go léir} many{Roghnaigh na {countFormatted} mír go léir} =1{Roghnaigh mír} =2{Roghnaigh na {countFormatted} mír go léir} other{Roghnaigh na {countFormatted} mír go léir}}`,
+		`{count, plural, =1 {Roghnaigh mír} =2 {Roghnaigh na {countFormatted} mír go léir} few {Roghnaigh na {countFormatted} mír go léir} many {Roghnaigh na {countFormatted} mír go léir} other {Roghnaigh na {countFormatted} mír go léir}}`,
 	"components.selection.selected": "{count} roghnaithe",
 	"components.selection.selected-plus": "{count}+ roghnaithe",
 	"components.selection-controls.label": "Gníomhartha le haghaidh roghnaithe",
@@ -159,7 +159,7 @@ export default {
 	"components.table-col-sort-button.addSortOrder": "Roghnaigh chun ordú sórtála a chur leis",
 	"components.table-col-sort-button.changeSortOrder": "Roghnaigh chun ordú sórtála a athrú",
 	"components.table-col-sort-button.title":
-		`{sourceType,select,dates{{direction,select,desc{Sórtáilte ó nua go sean} other{Sórtáilte ó shean go nua}}} numbers{{direction,select,desc{Sórtáilte ó ard go híseal} other{Sórtáilte ó íseal go hard}}} words{{direction,select,desc{Sórtáilte ó Z go A} other{Sórtáilte ó A go Z}}} value{Sórtáilte: {selectedMenuItemText}} other{{direction,select,desc{Sórtáilte in ord íslitheach} other{Sórtáilte in ord ardaitheach}}}}`,
+		`{sourceType, select, dates {{direction, select, desc {Sórtáilte ó nua go sean} other {Sórtáilte ó shean go nua}}} numbers {{direction, select, desc {Sórtáilte ó ard go híseal} other {Sórtáilte ó íseal go hard}}} words {{direction, select, desc {Sórtáilte ó Z go A} other {Sórtáilte ó A go Z}}} value {Sórtáilte: {selectedMenuItemText}} other {{direction, select, desc {Sórtáilte in ord íslitheach} other {Sórtáilte in ord ardaitheach}}}}`,
 	"components.table-controls.label": "Gníomhartha don tábla",
 	"components.tabs.next": "Scrolláil ar Aghaidh",
 	"components.tabs.previous": "Scrollaigh Siar",
@@ -170,7 +170,7 @@ export default {
 	"components.tag-list.interactive-label": "Liosta Clibeanna, {count} míreanna",
 	"components.tag-list.num-hidden": "+ {count} eile",
 	"components.tag-list.role-description":
-		`{count,plural,one{Liosta Clibeanna ina bhfuil {count} mhír} few{Liosta Clibeanna ina bhfuil {count} míreanna} many{Liosta Clibeanna ina bhfuil {count} míreanna} =0{Liosta Clibeanna ina bhfuil 0 mír} =2{Liosta Clibeanna ina bhfuil {count} míreanna} other{Liosta Clibeanna ina bhfuil {count} míreanna}}`,
+		`{count, plural, =0 {Liosta Clibeanna ina bhfuil 0 mír} =2 {Liosta Clibeanna ina bhfuil {count} míreanna} one {Liosta Clibeanna ina bhfuil {count} mhír} few {Liosta Clibeanna ina bhfuil {count} míreanna} many {Liosta Clibeanna ina bhfuil {count} míreanna} other {Liosta Clibeanna ina bhfuil {count} míreanna}}`,
 	"components.tag-list.show-less": "Taispeáin níos lú",
 	"components.tag-list.show-more-description": "Roghnaigh chun míreanna liosta clibeanna i bhfolach a thaispeáint",
 	"components.tag-list-item.role-description": "Clib",
@@ -180,7 +180,7 @@ export default {
 	"components.tag-list-item.tooltip-delete-key-desc": "Scrios an clib fócais",
 	"components.tag-list-item.tooltip-title": "Rialuithe Méarchláir",
 	"components.view-switcher.role-description":
-		`{count,plural,one{Malartóir Amhairc ina bhfuil {count} mhír} few{Malartóir Amhairc ina bhfuil {count} míreanna} many{Malartóir Amhairc ina bhfuil {count} míreanna} =0{Malartóir Amhairc ina bhfuil 0 mír} =2{Malartóir Amhairc ina bhfuil {count} míreanna} other{Malartóir Amhairc ina bhfuil {count} míreanna}}`,
+		`{count, plural, =0 {Malartóir Amhairc ina bhfuil 0 mír} =2 {Malartóir Amhairc ina bhfuil {count} míreanna} one {Malartóir Amhairc ina bhfuil {count} mhír} few {Malartóir Amhairc ina bhfuil {count} míreanna} many {Malartóir Amhairc ina bhfuil {count} míreanna} other {Malartóir Amhairc ina bhfuil {count} míreanna}}`,
 	"templates.primary-secondary.divider": "Deighilteoir an Phainéil Thánaistigh ",
 	"templates.primary-secondary.secondary-panel": "Painéal tánaisteach"
 };
