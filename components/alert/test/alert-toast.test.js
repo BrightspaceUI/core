@@ -1,5 +1,5 @@
-import '../alert-toast.js';
 import { clickElem, expect, fixture, html, oneEvent, runConstructor } from '@brightspace-ui/testing';
+import { disableReducedMotionForTesting, restoreReducedMotionForTesting } from '../alert-toast.js';
 import sinon from 'sinon';
 
 describe('d2l-alert-toast', () => {
@@ -69,6 +69,34 @@ describe('d2l-alert-toast', () => {
 			const e = await oneEvent(el, 'd2l-alert-toast-close');
 			expect(e.detail.closing).to.be.true;
 			expect(e.detail.heightDifference).to.be.below(0);
+		});
+
+		it('closeComplete promise on event resolves once closed', async() => {
+			const el = await fixture(html`<d2l-alert-toast open>message</d2l-alert-toast>`);
+			el.open = false;
+			const e = await oneEvent(el, 'd2l-alert-toast-close');
+			await e.detail.closeComplete;
+			await el.updateComplete;
+			expect(el.shadowRoot.querySelector('d2l-alert').hidden).to.be.true;
+		});
+
+		describe('with motion', () => {
+			afterEach(() => restoreReducedMotionForTesting());
+
+			it('closeComplete promise on event resolves when reopened mid-close', async() => {
+				const el = await fixture(html`<d2l-alert-toast open>message</d2l-alert-toast>`);
+				disableReducedMotionForTesting();
+				el.open = false;
+
+				let fulfilled = false;
+				const e = await oneEvent(el, 'd2l-alert-toast-close');
+				e.detail.closeComplete.then(() => fulfilled = true);
+				expect(fulfilled).to.be.false;
+
+				el.open = true;
+				await e.detail.closeComplete;
+				expect(fulfilled).to.be.true;
+			});
 		});
 
 		describe('auto-close timing & pause', () => {

@@ -41,7 +41,7 @@ let ALERT_HAS_HOVER = false; // if this alert or sibling alert is hovered on
  *  A component for communicating important information relating to the state of the system and the user's work flow, displayed as a pop-up at the bottom of the screen that automatically dismisses itself by default.
  * @slot - Default content placed inside of the component
  * @fires d2l-alert-toast-button-press - Dispatched when the toast's action button is clicked
- * @fires d2l-alert-toast-close - Dispatched when the toast is closed
+ * @fires d2l-alert-toast-close - Dispatched when the toast is closed. The `detail` contains a `closeComplete` promise that resolves when the toast's animation completes or it is reopened.
  */
 class AlertToast extends LitElement {
 
@@ -403,6 +403,7 @@ class AlertToast extends LitElement {
 		this._totalSiblingHeightBelow = 0;
 		this._numAlertsBelow = 0;
 		this._closeClicked = false;
+		this._closeCompleteResolve?.();
 	}
 
 	_onTransitionEnd() {
@@ -425,6 +426,8 @@ class AlertToast extends LitElement {
 
 			if (this._state === states.CLOSING) {
 				this._state = states.OPENING;
+				// Make sure to resolve the previous closeComplete promise if we are reopening mid-close
+				this._closeCompleteResolve?.();
 			} else if (this._state === states.CLOSED) {
 				if (!activeReduceMotion) {
 					this._state = states.PREOPENING;
@@ -440,6 +443,8 @@ class AlertToast extends LitElement {
 			}
 		} else {
 			if (!this._innerContainer) return;
+
+			const closeComplete = new Promise(resolve => this._closeCompleteResolve = resolve);
 
 			if (activeReduceMotion || this._state === states.PREOPENING) {
 				cancelAnimationFrame(this._preopenFrame);
@@ -461,7 +466,7 @@ class AlertToast extends LitElement {
 					'd2l-alert-toast-close', {
 						bubbles: true,
 						composed: true,
-						detail: { bottom, heightDifference: -this._height, opening: false, closing: true }
+						detail: { bottom, closeComplete, heightDifference: -this._height, opening: false, closing: true }
 					}
 				));
 			});
