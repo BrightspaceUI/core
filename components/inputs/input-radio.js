@@ -136,7 +136,7 @@ class InputRadio extends DisabledTooltipMixin(InputInlineHelpMixin(SkeletonMixin
 				<div
 					aria-checked="${this._checked}"
 					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
-					aria-disabled="${this._ariaDisabledAttribute}"
+					aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}"
 					aria-invalid="${ifDefined(this._invalid ? 'true' : undefined)}"
 					aria-labelledby="${this.#labelId}"
 					class="${classMap(radioClasses)}"

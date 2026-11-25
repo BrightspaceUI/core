@@ -33,13 +33,8 @@ function _getRadioStyleSelectors(inputSelectors) {
 			${s}[aria-invalid="true"]
 		`)),
 		disabled: parseAndJoin(inputSelectors.map(s => `
-			${s}:not(.d2l-input-radio-disabled-tooltip):disabled,
-			${s}:not(.d2l-input-radio-disabled-tooltip).d2l-disabled
-		`)),
-		disabledTooltip: parseAndJoin(inputSelectors.map(s => `
-			${s}.d2l-input-radio-disabled-tooltip.d2l-hovering,
-			${s}.d2l-input-radio-disabled-tooltip:hover,
-			${s}.d2l-input-radio-disabled-tooltip:focus
+			${s}:disabled,
+			${s}.d2l-disabled
 		`))
 	};
 }
