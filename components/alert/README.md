@@ -147,7 +147,7 @@ Use a toast alert to provide feedback about an operation the user has just initi
 |`type`| String, default: `'default'` | The type of the alert being displayed. Can be one of  `default`, `critical`, `success` , `warning` |
 
 ### Events
-* `d2l-alert-toast-close`: dispatched when the toast is closed
+* `d2l-alert-toast-close`: dispatched when the toast is closed. The `detail` contains a `closeComplete` promise that resolves when the toast's animation completes or it is reopened.
 <!-- docs: end hidden content -->
 
 ### Multiple Toast Alerts

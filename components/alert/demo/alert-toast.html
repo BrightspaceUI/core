@@ -98,8 +98,10 @@
 		console.log('d2l-alert-toast-button-press', e);
 	});
 
-	document.body.addEventListener('d2l-alert-toast-close', (e) => {
+	document.body.addEventListener('d2l-alert-toast-close', async(e) => {
 		console.log('d2l-alert-toast-close', e);
+		await e.detail.closeComplete;
+		console.log('d2l-alert-toast-close animation complete', e.target);
 	});
 </script>
 
