@@ -2,8 +2,8 @@ import '../expand-collapse/expand-collapse-content.js';
 import '../tooltip/tooltip.js';
 import { _generateInputCheckboxStyles, cssSizes } from './input-checkbox-styles.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { disabledTooltipMaskStyles, DisabledTooltipMixin } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { DisabledTooltipMixin } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -67,7 +67,7 @@ class InputCheckbox extends DisabledTooltipMixin(FocusMixin(FormElementMixin(Inp
 		_isHovered: { state: true },
 	};
 
-	static styles = [super.styles, checkboxStyles, offscreenStyles,
+	static styles = [super.styles, checkboxStyles, disabledTooltipMaskStyles, offscreenStyles,
 		css`
 			:host {
 				display: block;
@@ -160,7 +160,7 @@ class InputCheckbox extends DisabledTooltipMixin(FocusMixin(FormElementMixin(Inp
 					aria-expanded="${ifDefined(ariaExpanded)}"
 					aria-label="${ifDefined(ariaLabel)}"
 					@change="${this.#handleChange}"
-					class="d2l-input-checkbox"
+					class="d2l-input-checkbox d2l-disabled-tooltip"
 					@click="${this.#handleClick}"
 					.checked="${this.checked}"
 					?disabled="${this._disabled || this.skeleton}"

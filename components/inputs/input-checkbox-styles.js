@@ -1,6 +1,5 @@
 import { css, unsafeCSS } from 'lit';
 import { _isValidCssSelector } from '../../helpers/internal/css.js';
-import { getDisabledTooltipMaskStyles } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
 import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
 
 registerSemanticVariableForSvgImageUrl(
@@ -77,7 +76,6 @@ export const _generateInputCheckboxStyles = (selector) => {
 			--d2l-disabled-tooltip-mask-inset: 2px;
 			border-color: var(--d2l-theme-border-color-disabled);
 		}
-		${getDisabledTooltipMaskStyles(selectorCSS)}
 		@media (forced-colors: active) {
 			${selectorCSS}:checked,
 			${selectorCSS}:indeterminate {

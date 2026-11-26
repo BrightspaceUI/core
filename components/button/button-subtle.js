@@ -1,10 +1,10 @@
 import '../icons/icon.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, unsafeCSS } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
-import { getDisabledTooltipMaskStyles } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
+import { disabledTooltipMaskStyles } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
@@ -49,7 +49,7 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 		text: { type: String, reflect: true }
 	};
 
-	static styles = [super.styles, labelStyles, buttonStyles,
+	static styles = [super.styles, labelStyles, buttonStyles, disabledTooltipMaskStyles,
 		css`
 			:host {
 				--d2l-count-badge-background-color: var(--d2l-theme-background-color-interactive-primary-default);
@@ -155,7 +155,6 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 			.d2l-button-subtle-content-wrapper slot {
 				color: var(--d2l-theme-text-color-static-standard);
 			}
-			${getDisabledTooltipMaskStyles(unsafeCSS('button'))}
 		`
 	];
 
@@ -169,7 +168,8 @@ class ButtonSubtle extends SlottedIconMixin(ButtonMixin(LitElement)) {
 	render() {
 		const buttonClasses = {
 			'd2l-button-subtle-has-icon': this.hasIcon(),
-			'd2l-label-text': true
+			'd2l-label-text': true,
+			'd2l-disabled-tooltip': true
 		};
 		return html`
 			<button

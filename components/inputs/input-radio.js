@@ -123,7 +123,7 @@ class InputRadio extends DisabledTooltipMixin(InputInlineHelpMixin(SkeletonMixin
 		};
 		const radioClasses = {
 			'd2l-input-radio': true,
-			'd2l-input-radio-disabled-tooltip': this._hasDisabledTooltip,
+			'd2l-disabled-tooltip': this._hasDisabledTooltip,
 			'd2l-disabled': this.focusDisabled && !this.skeleton,
 			'd2l-hovering': this._isHovered && !this.focusDisabled,
 			'd2l-skeletize': true

@@ -1,23 +1,21 @@
 import { css, html, nothing } from 'lit';
 import { ifDefined } from 'lit/directives/if-defined.js';
 
-export function getDisabledTooltipMaskStyles(selector) {
-	return css`
-		:host([disabled]) ${selector} {
-			cursor: default;
-			opacity: 1;
-			position: relative;
-		}
-		:host([disabled]) ${selector}::before {
-			background-color: var(--d2l-theme-background-color-base);
-			border-radius: inherit;
-			content: "";
-			inset: var(--d2l-disabled-tooltip-mask-inset, 0);
-			opacity: var(--d2l-theme-opacity-disabled-control);
-			position: absolute;
-		}
-	`;
-}
+export const disabledTooltipMaskStyles = css`
+	:host([disabled]) .d2l-disabled-tooltip {
+		cursor: default;
+		opacity: 1;
+		position: relative;
+	}
+	:host([disabled]) .d2l-disabled-tooltip::before {
+		background-color: var(--d2l-theme-background-color-base);
+		border-radius: inherit;
+		content: "";
+		inset: var(--d2l-disabled-tooltip-mask-inset, 0);
+		opacity: var(--d2l-theme-opacity-disabled-control);
+		position: absolute;
+	}
+`;
 export const DisabledTooltipMixin = superclass => class extends superclass {
 	static properties = {
 		/**

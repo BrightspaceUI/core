@@ -96,7 +96,7 @@ class Input extends DisabledTooltipMixin(SkeletonMixin(LabelledMixin(LitElement)
 				'd2l-skeletize': true,
 				'd2l-hovering': this.hovering,
 				'd2l-disabled': this.disabled,
-				'd2l-input-radio-disabled-tooltip': this._hasDisabledTooltip
+				'd2l-disabled-tooltip': this._hasDisabledTooltip
 			};
 			return html`
 				<div

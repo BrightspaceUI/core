@@ -1,6 +1,6 @@
 import { css, unsafeCSS } from 'lit';
 import { _isValidCssSelector } from '../../helpers/internal/css.js';
-import { getDisabledTooltipMaskStyles } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
+import { disabledTooltipMaskStyles } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
 import { registerSemanticVariableForSvgImageUrl } from '../colors/colors.js';
 
 registerSemanticVariableForSvgImageUrl(
@@ -52,6 +52,7 @@ export function _generateRadioStyles(selector, containerSelector) {
 	const selectors = _getRadioStyleSelectors(inputSelectors);
 
 	return css`
+		${disabledTooltipMaskStyles}
 		${selectors.simple} {
 			-webkit-appearance: none;
 			-moz-appearance: none;
@@ -87,7 +88,6 @@ export function _generateRadioStyles(selector, containerSelector) {
 		.d2l-input-radio-disabled-tooltip {
 			border-color: var(--d2l-theme-border-color-disabled);
 		}
-		${getDisabledTooltipMaskStyles(css`.d2l-input-radio-disabled-tooltip`)}
 		@media (prefers-contrast: more) {
 			${selectors.simple} {
 				background-color: Canvas;
