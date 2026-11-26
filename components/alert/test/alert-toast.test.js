@@ -76,7 +76,7 @@ describe('d2l-alert-toast', () => {
 			el.open = false;
 			const e = await oneEvent(el, 'd2l-alert-toast-close');
 			await e.detail.closeComplete;
-			await el.updateComplete;
+			expect(el._state).to.equal('closed');
 			expect(el.shadowRoot.querySelector('d2l-alert').hidden).to.be.true;
 		});
 
@@ -92,10 +92,12 @@ describe('d2l-alert-toast', () => {
 				const e = await oneEvent(el, 'd2l-alert-toast-close');
 				e.detail.closeComplete.then(() => fulfilled = true);
 				expect(fulfilled).to.be.false;
+				expect(el._state).to.equal('closing');
 
 				el.open = true;
 				await e.detail.closeComplete;
 				expect(fulfilled).to.be.true;
+				expect(el._state).to.equal('opening');
 			});
 		});
 
