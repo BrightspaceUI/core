@@ -2,6 +2,7 @@ import '../expand-collapse/expand-collapse-content.js';
 import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { DisabledTooltipMixin } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
@@ -16,7 +17,7 @@ import { styleMap } from 'lit/directives/style-map.js';
  * @slot inline-help - Help text that will appear below the input. Use this only when other helpful cues are not sufficient, such as a carefully-worded label.
  * @slot supporting - Supporting information which will appear below and be aligned with the input.
  */
-class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyRequiredMixin(LitElement)))) {
+class InputRadio extends DisabledTooltipMixin(InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyRequiredMixin(LitElement))))) {
 
 	static properties = {
 		/**
@@ -29,16 +30,6 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 		 * @type {string}
 		 */
 		description: { type: String },
-		/**
-		 * Disables the input
-		 * @type {boolean}
-		 */
-		disabled: { type: Boolean, reflect: true },
-		/**
-		 * Tooltip text displayed when the input is disabled
-		 * @type {string}
-		 */
-		disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
 		/**
 		 * REQUIRED: Label for the input
 		 * @type {string}
@@ -132,16 +123,14 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 		};
 		const radioClasses = {
 			'd2l-input-radio': true,
-			'd2l-input-radio-disabled-tooltip': this.disabled && this.disabledTooltip,
+			'd2l-disabled-tooltip': this._hasDisabledTooltip,
 			'd2l-disabled': this.focusDisabled && !this.skeleton,
 			'd2l-hovering': this._isHovered && !this.focusDisabled,
 			'd2l-skeletize': true
 		};
 		const description = this.description ? html`<div id="${this.#descriptionId}" hidden>${this.description}</div>` : nothing;
 		const ariaDescribedByIds = `${this.description ? this.#descriptionId : ''} ${this._hasInlineHelp ? this.#inlineHelpId : ''}`.trim();
-		const disabledTooltip = this.disabled && this.disabledTooltip ?
-			html`<d2l-tooltip align="start" class="vdiff-target" for="${this.#inputId}" ?force-show="${this._isHovered}" position="top">${this.disabledTooltip}</d2l-tooltip>` :
-			nothing;
+
 		return html`
 			<div class="${classMap(labelClasses)}" style="${styleMap(labelStyles)}" @mouseover="${this.#handleMouseOver}" @mouseout="${this.#handleMouseOut}">
 				<div
@@ -158,7 +147,7 @@ class InputRadio extends InputInlineHelpMixin(SkeletonMixin(FocusMixin(PropertyR
 			</div>
 			${this._renderInlineHelp(this.#inlineHelpId)}
 			${description}
-			${disabledTooltip}
+			${this._renderDisabledTooltip(this.#inputId, { align: 'start', forceShow: this._isHovered && !this.skeleton, position: 'top' })}
 			<d2l-expand-collapse-content ?expanded="${supportingContentVisible}">
 				<div class="d2l-input-radio-supporting" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
 			</d2l-expand-collapse-content>

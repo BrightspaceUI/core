@@ -4,6 +4,7 @@ import '../tooltip/tooltip.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { _generateLinkStyles } from './link-styles.js';
 import { classMap } from 'lit/directives/class-map.js';
+import { DisabledTooltipMixin } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { getOverflowDeclarations } from '../../helpers/overflow.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
@@ -17,7 +18,7 @@ export const linkStyles = _generateLinkStyles('.d2l-link', true);
  * This component can be used just like the native anchor tag.
  * @slot - The content (e.g., text) that when selected causes navigation
  */
-class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
+class Link extends DisabledTooltipMixin(LocalizeCoreElement(FocusMixin(LitElement))) {
 
 	static properties = {
 		/**
@@ -25,16 +26,6 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		 * @type {string}
 		 */
 		ariaLabel: { type: String, attribute: 'aria-label' },
-		/**
-		 * Disables the link
-		 * @type {boolean}
-		 */
-		disabled: { type: Boolean, reflect: true },
-		/**
-		 * Tooltip text when disabled
-		 * @type {string}
-		 */
-		disabledTooltip: { type: String, attribute: 'disabled-tooltip', reflect: true },
 		/**
 		 * Download a URL instead of navigating to it
 		 * @type {boolean}
@@ -154,10 +145,6 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 		const newWindowElements = (this.target === '_blank')
 			? html`<span id="new-window"><span style="font-size: 0;">&nbsp;</span><d2l-icon icon="tier1:new-window"></d2l-icon></span><span class="d2l-offscreen">${this.localize('components.link.open-in-new-window')}</span>`
 			: nothing;
-		const disabledTooltip = this.disabled && this.disabledTooltip
-			? html`<d2l-tooltip class="vdiff-target" for="${this.#linkId}">${this.disabledTooltip}</d2l-tooltip>`
-			: nothing;
-
 		/*
 		* NOTICE:
 		* All html template whitespace within this component is critical to proper rendering and wrapping.
@@ -175,7 +162,8 @@ class Link extends LocalizeCoreElement(FocusMixin(LitElement)) {
 				target="${ifDefined(this.target)}"
 				><span
 					class="d2l-link-content"
-					style="${styles ?? nothing}"><slot></slot></span>${newWindowElements}</a>${disabledTooltip}`;
+					style="${styles ?? nothing}"><slot></slot></span>${newWindowElements}</a>
+					${this._renderDisabledTooltip(this.#linkId)}`;
 	}
 
 	#linkId = getUniqueId();

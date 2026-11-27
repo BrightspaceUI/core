@@ -2,6 +2,7 @@ import '../expand-collapse/expand-collapse-content.js';
 import '../tooltip/tooltip.js';
 import { _generateInputCheckboxStyles, cssSizes } from './input-checkbox-styles.js';
 import { css, html, LitElement, nothing } from 'lit';
+import { disabledTooltipMaskStyles, DisabledTooltipMixin } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { FocusMixin } from '../../mixins/focus/focus-mixin.js';
 import { FormElementMixin } from '../form/form-element-mixin.js';
@@ -19,7 +20,7 @@ export const checkboxStyles = _generateInputCheckboxStyles('input[type="checkbox
  * @slot supporting - Supporting information which will appear below and be aligned with the checkbox.
  * @fires change - Dispatched when the checkbox's state changes
  */
-class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(SkeletonMixin(LitElement)))) {
+class InputCheckbox extends DisabledTooltipMixin(FocusMixin(FormElementMixin(InputInlineHelpMixin(SkeletonMixin(LitElement))))) {
 
 	static properties = {
 		/**
@@ -37,11 +38,6 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 		 * @type {boolean}
 		 */
 		disabled: { type: Boolean },
-		/**
-		 * Tooltip text when disabled
-		 * @type {string}
-		 */
-		disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
 		/**
 		 * Sets checkbox to an indeterminate state
 		 * @type {boolean}
@@ -71,7 +67,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 		_isHovered: { state: true },
 	};
 
-	static styles = [super.styles, checkboxStyles, offscreenStyles,
+	static styles = [super.styles, checkboxStyles, disabledTooltipMaskStyles, offscreenStyles,
 		css`
 			:host {
 				display: block;
@@ -153,25 +149,21 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 		const ariaExpanded = this._hasSupporting && this.supportingHiddenWhenUnchecked ? (supportingContentVisible ? 'true' : 'false') : undefined;
 		const ariaLabel = (this.label && this.labelHidden) ? this.label : undefined;
 		const label = (this.label && !this.labelHidden) ? this.label : nothing;
-		const disabled = this.disabled || this.skeleton;
 		const offscreenContainer = this.description ? html`<div class="d2l-offscreen" id="${this.#descriptionId}">${this.description}</div>` : null;
 		const ariaDescribedByIds = `${this.description ? this.#descriptionId : ''} ${this._hasInlineHelp ? this.#inlineHelpId : ''}`.trim();
-		const disabledTooltip = disabled && this.disabledTooltip ?
-			html`<d2l-tooltip align="start" class="vdiff-target" for="${this.#inputId}" ?force-show="${this._isHovered}" position="top">${this.disabledTooltip}</d2l-tooltip>` :
-			nothing;
 		return html`
 			<label @mouseleave="${this.#handleMouseLeave}" @mouseenter="${this.#handleMouseEnter}">
 				<span class="d2l-input-checkbox-wrapper d2l-skeletize"><input
 					aria-checked="${ifDefined(ariaChecked)}"
 					aria-describedby="${ifDefined(ariaDescribedByIds.length > 0 ? ariaDescribedByIds : undefined)}"
-					aria-disabled="${ifDefined(disabled && this.disabledTooltip ? 'true' : undefined)}"
+					aria-disabled="${this._ariaDisabledAttribute}"
 					aria-expanded="${ifDefined(ariaExpanded)}"
 					aria-label="${ifDefined(ariaLabel)}"
 					@change="${this.#handleChange}"
-					class="d2l-input-checkbox"
+					class="d2l-input-checkbox d2l-disabled-tooltip"
 					@click="${this.#handleClick}"
 					.checked="${this.checked}"
-					?disabled="${disabled && !this.disabledTooltip}"
+					?disabled="${this._disabled || this.skeleton}"
 					id="${this.#inputId}"
 					.indeterminate="${this.indeterminate}"
 					name="${ifDefined(this.name)}"
@@ -180,7 +172,7 @@ class InputCheckbox extends FormElementMixin(InputInlineHelpMixin(FocusMixin(Ske
 			</label>
 			${this._renderInlineHelp(this.#inlineHelpId)}
 			${offscreenContainer}
-			${disabledTooltip}
+			${this._renderDisabledTooltip(this.#inputId, { align: 'start', forceShow: this._isHovered && !this.skeleton, position: 'top' })}
 			<d2l-expand-collapse-content ?expanded="${supportingContentVisible}">
 				<div class="d2l-input-checkbox-supporting" @change="${this.#handleSupportingChange}"><slot name="supporting" @slotchange="${this.#handleSupportingSlotChange}"></slot></div>
 			</d2l-expand-collapse-content>

@@ -1,7 +1,8 @@
 import '../inputs/input-checkbox.js';
 import '../tooltip/tooltip.js';
-import { css, html, LitElement, nothing } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
+import { DisabledTooltipMixin } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { LabelledMixin } from '../../mixins/labelled/labelled-mixin.js';
@@ -17,7 +18,7 @@ const keyCodes = {
  * @fires d2l-selection-change - Dispatched when the selected state changes
  * @fires d2l-selection-input-subscribe - Internal event
  */
-class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
+class Input extends DisabledTooltipMixin(SkeletonMixin(LabelledMixin(LitElement))) {
 
 	static properties = {
 		/**
@@ -25,16 +26,6 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 		 * @type {boolean}
 		 */
 		selected: { type: Boolean, reflect: true },
-		/**
-		 * Disables the input
-		 * @type {boolean}
-		 */
-		disabled: { type: Boolean, reflect: true },
-		/**
-		 * Tooltip text when disabled
-		 * @type {string}
-		 */
-		disabledTooltip: { type: String, attribute: 'disabled-tooltip' },
 		/**
 		 * Private. Force hovering state of input
 		 * @ignore
@@ -105,14 +96,11 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 				'd2l-skeletize': true,
 				'd2l-hovering': this.hovering,
 				'd2l-disabled': this.disabled,
-				'd2l-input-radio-disabled-tooltip': this.disabled && this.disabledTooltip
+				'd2l-disabled-tooltip': this._hasDisabledTooltip
 			};
-			const disabledTooltip = this.disabled && this.disabledTooltip ?
-				html`<d2l-tooltip align="start" class="vdiff-include" for="${this.#inputId}" ?force-show="${this.hovering}" position="top">${this.disabledTooltip}</d2l-tooltip>` :
-				nothing;
 			return html`
 				<div
-					aria-disabled="${ifDefined(this.disabled)}"
+					aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}"
 					aria-label="${this.label}"
 					aria-checked="${this.selected ? 'true' : 'false'}"
 					class="${classMap(radioClasses)}"
@@ -122,7 +110,7 @@ class Input extends SkeletonMixin(LabelledMixin(LitElement)) {
 					@keyup="${this._handleRadioKeyUp}"
 					role="radio"
 					tabindex="${ifDefined(this.focusDisabled ? undefined : 0)}"></div>
-					${disabledTooltip}
+					${this._renderDisabledTooltip(this.#inputId, { align: 'start', forceShow: this._isHovered && !this.skeleton, position: 'top' })}
 			`;
 		} else {
 			return html`

@@ -4,7 +4,7 @@ import { DisabledTooltipMixin } from '../disabled-tooltip-mixin.js';
 class DisabledTooltipTest extends DisabledTooltipMixin(LitElement) {
 	render() {
 		return html`<button
-			aria-disabled="${this._ariaDisabled}"
+			aria-disabled="${this._ariaDisabledAttribute}"
 			id="${this._controlId}"
 			?disabled="${this._disabled}">
 			Control

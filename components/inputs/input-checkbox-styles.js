@@ -30,18 +30,11 @@ export const _generateInputCheckboxStyles = (selector) => {
 	const selectorCSS = unsafeCSS(selector);
 	return css`
 		${selectorCSS} {
-			--d2l-input-checkbox-background-image: none;
 			--d2l-input-checkbox-background-color: var(--d2l-theme-background-color-interactive-faint-default);
-			--d2l-input-checkbox-background-image-disabled:
-				linear-gradient(
-					var(--d2l-theme-background-color-interactive-faint-disabled),
-					var(--d2l-theme-background-color-interactive-faint-disabled)
-				),
-				var(--d2l-input-checkbox-background-image);
 			-webkit-appearance: none;
 			-moz-appearance: none;
 			appearance: none;
-			background-image: var(--d2l-input-checkbox-background-image);
+			background-image: none;
 			background-position: center center;
 			background-repeat: no-repeat;
 			background-size: ${cssSizes.inputBoxSize}rem ${cssSizes.inputBoxSize}rem;
@@ -56,10 +49,10 @@ export const _generateInputCheckboxStyles = (selector) => {
 			width: ${cssSizes.inputBoxSize}rem;
 		}
 		${selectorCSS}:checked {
-			--d2l-input-checkbox-background-image: var(--d2l-input-checkbox-check-image);
+			background-image: var(--d2l-input-checkbox-check-image);
 		}
 		${selectorCSS}:indeterminate {
-			--d2l-input-checkbox-background-image: var(--d2l-input-checkbox-indeterminate-image);
+			background-image: var(--d2l-input-checkbox-indeterminate-image);
 		}
 		${selectorCSS},
 		${selectorCSS}:hover:disabled {
@@ -80,7 +73,7 @@ export const _generateInputCheckboxStyles = (selector) => {
 		}
 		${selectorCSS}:disabled,
 		${selectorCSS}:where([aria-disabled="true"]) {
-			background-image: var(--d2l-input-checkbox-background-image-disabled);
+			--d2l-disabled-tooltip-mask-inset: 2px;
 			border-color: var(--d2l-theme-border-color-disabled);
 		}
 		@media (forced-colors: active) {

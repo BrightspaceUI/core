@@ -3,6 +3,7 @@ import '../tooltip/tooltip.js';
 import { css, html, LitElement } from 'lit';
 import { ButtonMixin } from './button-mixin.js';
 import { buttonStyles } from './button-styles.js';
+import { disabledTooltipMaskStyles } from '../../mixins/disabled-tooltip/disabled-tooltip-mixin.js';
 import { getUniqueId } from '../../helpers/uniqueId.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import { labelStyles } from '../typography/styles.js';
@@ -27,7 +28,7 @@ class Button extends ButtonMixin(LitElement) {
 		primary: { type: Boolean, reflect: true }
 	};
 
-	static styles = [labelStyles, buttonStyles,
+	static styles = [labelStyles, buttonStyles, disabledTooltipMaskStyles,
 		css`
 			:host {
 				display: inline-block;
@@ -68,15 +69,6 @@ class Button extends ButtonMixin(LitElement) {
 				cursor: default;
 				position: relative;
 			}
-			:host([disabled]) button::before {
-				background-color: var(--d2l-theme-background-color-base);
-				border-radius: inherit;
-				content: "";
-				inset: 0;
-				opacity: var(--d2l-theme-opacity-disabled-control);
-				position: absolute;
-			}
-
 			:host([primary]) button,
 			:host([primary]) button[disabled]:hover,
 			:host([primary]) button[disabled]:focus,
@@ -104,12 +96,12 @@ class Button extends ButtonMixin(LitElement) {
 		return html`
 			<button
 				aria-describedby="${ifDefined(this.description ? this._describedById : undefined)}"
-				aria-disabled="${this._ariaDisabled}"
+				aria-disabled="${this._ariaDisabledAttribute}"
 				aria-expanded="${ifDefined(this.expanded)}"
 				aria-haspopup="${ifDefined(this.ariaHaspopup)}"
 				aria-label="${ifDefined(this.ariaLabel)}"
 				?autofocus="${this.autofocus}"
-				class="d2l-label-text"
+				class="d2l-label-text d2l-disabled-tooltip"
 				?disabled="${this._disabled}"
 				form="${ifDefined(this.form)}"
 				formaction="${ifDefined(this.formaction)}"
