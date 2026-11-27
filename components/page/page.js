@@ -1,4 +1,5 @@
 import '../button/floating-buttons.js';
+import '../colors/colors.js';
 import { css, html, LitElement, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map.js';
 import { DIVIDER_WIDTH } from './page-divider-internal.js';
@@ -28,6 +29,12 @@ const overlayModeQuery = window.matchMedia(`(max-width: ${OVERLAY_MODE_BREAKPOIN
 const mobileModeQuery = window.matchMedia(`(max-width: ${MOBILE_MODE_BREAKPOINT}px)`);
 
 export const HIDE_ARROWS_BREAKPOINT = 400;
+
+const SCROLLBAR_HOVER_STRIP_WIDTH = 12;
+
+//export const isWindows = window.navigator.userAgent.indexOf('Windows') > -1;
+//export const isMobile = window.navigator.userAgent.indexOf('mobile') > -1;
+//const customScroll = isWindows && !isMobile;
 
 class PanelStateController {
 	constructor(host, panelConfigs) {
@@ -165,6 +172,21 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 	static properties = {
 		/**
+		 * For POC: Hide the panel scrollbars until the scrollbar area is hovered or the panel is scrolled
+		 * @type {boolean}
+		 */
+		panelScrollbarsAutoHide: { type: Boolean, attribute: 'panel-scrollbars-auto-hide' },
+		/**
+		 * For POC: Use thinner custom panel scrollbars
+		 * @type {boolean}
+		 */
+		panelScrollbarsThin: { type: Boolean, attribute: 'panel-scrollbars-thin' },
+		/**
+		 * For POC: How long (ms) auto-hidden panel scrollbars stay revealed after scrolling stops
+		 * @type {number}
+		 */
+		panelScrollbarsScrollTimeout: { type: Number, attribute: 'panel-scrollbars-scroll-timeout' },
+		/**
 		 * Key used to optionally store page state across reloads (using localStorage). Different pages should use different keys.
 		 * Currently, this includes panel state info.
 		 * @type {string}
@@ -181,6 +203,8 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		_footerHeight: { state: true },
 		_inOverlayMode: { state: true },
 		_inMobileMode: { state: true },
+		_revealedScrollbar: { state: true },
+		_scrollingScrollbar: { state: true },
 		_slotVisibility: { state: true }
 	};
 
@@ -364,16 +388,68 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 				z-index: 15; /* To be over d2l-page-* panel headers and sticky content of our core components */
 			}
 		}
+
+		/* POC - Thin Panel Scrollbars - Copied primary-secondary for now */
+		.page.panel-scrollbars-thin .side-nav-panel-content,
+		.page.panel-scrollbars-thin .supporting-panel-content {
+			scrollbar-color: var(--d2l-color-galena) rgba(255, 255, 255, 0.4);
+			scrollbar-width: thin;
+		}
+		.page.panel-scrollbars-thin .side-nav-panel-content::-webkit-scrollbar,
+		.page.panel-scrollbars-thin .supporting-panel-content::-webkit-scrollbar {
+			width: 8px;
+		}
+		.page.panel-scrollbars-thin .side-nav-panel-content::-webkit-scrollbar-track,
+		.page.panel-scrollbars-thin .supporting-panel-content::-webkit-scrollbar-track {
+			background: rgba(255, 255, 255, 0.4);
+		}
+		.page.panel-scrollbars-thin .side-nav-panel-content::-webkit-scrollbar-thumb,
+		.page.panel-scrollbars-thin .supporting-panel-content::-webkit-scrollbar-thumb {
+			background: var(--d2l-color-galena);
+			border-radius: 4px;
+		}
+		.page.panel-scrollbars-thin .side-nav-panel-content::-webkit-scrollbar-thumb:hover,
+		.page.panel-scrollbars-thin .supporting-panel-content::-webkit-scrollbar-thumb:hover {
+			background: var(--d2l-color-tungsten);
+		}
+
+		/* POC - Auto-hide Panel Scrollbars - Revealed on scrollbar area hover or while scrolling */
+		.page.panel-scrollbars-auto-hide .side-nav-panel:not(.scrollbar-revealed):not(.scrollbar-scrolling) .side-nav-panel-content,
+		.page.panel-scrollbars-auto-hide .supporting-panel:not(.scrollbar-revealed):not(.scrollbar-scrolling) .supporting-panel-content {
+			scrollbar-color: transparent transparent;
+		}
+		.page.panel-scrollbars-auto-hide .side-nav-panel:not(.scrollbar-revealed):not(.scrollbar-scrolling) .side-nav-panel-content::-webkit-scrollbar-thumb,
+		.page.panel-scrollbars-auto-hide .supporting-panel:not(.scrollbar-revealed):not(.scrollbar-scrolling) .supporting-panel-content::-webkit-scrollbar-thumb,
+		.page.panel-scrollbars-auto-hide .side-nav-panel:not(.scrollbar-revealed):not(.scrollbar-scrolling) .side-nav-panel-content::-webkit-scrollbar-track,
+		.page.panel-scrollbars-auto-hide .supporting-panel:not(.scrollbar-revealed):not(.scrollbar-scrolling) .supporting-panel-content::-webkit-scrollbar-track {
+			background: transparent;
+		}
+		.scrollbar-hover-strip {
+			bottom: 0;
+			height: 100vh; /* Taller than the scroller, which clips it */
+			margin-block-start: -100vh; /* Takes no layout space or scrollable height */
+			margin-inline-start: auto;
+			position: sticky;
+			width: ${SCROLLBAR_HOVER_STRIP_WIDTH}px;
+		}
+		.collapsed .scrollbar-hover-strip {
+			display: none;
+		}
 	`;
 
 	constructor() {
 		super();
 
+		this.panelScrollbarsAutoHide = false;
+		this.panelScrollbarsThin = false;
+		this.panelScrollbarsScrollTimeout = 1000;
 		this.widthType = 'normal';
 		this._contentWidth = 0;
 		this._headerHeight = 0;
 		this._headerIsSticky = false;
 		this._footerHeight = 0;
+		this._revealedScrollbar = null;
+		this._scrollingScrollbar = null;
 		this._panelState = new PanelStateController(this, {
 			'side-nav': { collapsed: false, minSize: PANEL_MIN_WIDTH },
 			'side-nav-overlay': { collapsed: true, minSize: PANEL_MIN_WIDTH },
@@ -388,8 +464,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 					this._headerHeight = entry.target.offsetHeight;
 					this.style.setProperty('--d2l-page-header-height-measured', `${this._headerHeight}px`);
 
-					const height = this._headerIsSticky ? this._headerHeight : 0;
-					this.style.setProperty('--d2l-page-header-height', `${height}px`);
+					this.#updateHeaderMetrics();
 					this._panelState.updateMaxSize('supporting-mobile', this.#getMaxDrawerHeight());
 				} else if (entry.target.classList.contains('footer')) {
 					this._footerHeight = entry.target.classList.contains('fixed-footer') ? entry.target.offsetHeight : 0;
@@ -441,6 +516,7 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 		overlayModeQuery.removeEventListener('change', this.#handleOverlayModeChange);
 		mobileModeQuery.removeEventListener('change', this.#handleMobileModeChange);
+		clearTimeout(this.#scrollingTimeout);
 	}
 
 	firstUpdated() {
@@ -459,7 +535,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 
 		const pageClasses = {
 			'page': true,
-			'header-sticky': this._headerIsSticky
+			'header-sticky': this._headerIsSticky,
+			'panel-scrollbars-auto-hide': this.panelScrollbarsAutoHide,
+			'panel-scrollbars-thin': this.panelScrollbarsThin
 		};
 		const contentClasses = {
 			'content': true,
@@ -487,9 +565,13 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		if (changedProperties.has('_contentWidth') && changedProperties.get('_contentWidth') === 0 && this._contentWidth > 0) {
 			this.#initializePanelSizes();
 		}
+		if (changedProperties.has('_headerIsSticky')) {
+			this.#updateHeaderMetrics();
+		}
 	}
 
 	#resizeObserver;
+	#scrollingTimeout;
 	#stateStorageKey;
 
 	#handleMobileModeChange = (e) => {
@@ -564,9 +646,41 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		this._panelState.setCollapsed(panelKey, !collapsed, { animate });
 	};
 
+	#handlePanelContentScroll(e) {
+		if (!this.panelScrollbarsAutoHide) return;
+		this._scrollingScrollbar = e.target.dataset.panelKey;
+		clearTimeout(this.#scrollingTimeout);
+		this.#scrollingTimeout = setTimeout(() => this._scrollingScrollbar = null, this.panelScrollbarsScrollTimeout);
+	}
+
+	#handlePanelPointerLeave(e) {
+		// Keep revealed while dragging the scrollbar thumb
+		if (e.buttons !== 0 || this._revealedScrollbar !== e.currentTarget.dataset.panelKey) return;
+		this._revealedScrollbar = null;
+	}
+
+	#handlePanelPointerOver(e) {
+		if (e.buttons !== 0) return;
+		// Events over the scrollbar itself target the scroller outside its client area
+		const content = e.currentTarget.firstElementChild;
+		if (e.target === content && (e.offsetX < 0 || e.offsetX >= content.clientWidth)) this._revealedScrollbar = e.currentTarget.dataset.panelKey;
+	}
+
 	#handleScrimClick() {
 		this._panelState.setCollapsed('side-nav-overlay', true);
 		this._panelState.setCollapsed('supporting-overlay', true);
+	}
+
+	#handleScrollbarHoverStripEnter(e) {
+		this._revealedScrollbar = e.currentTarget.dataset.panelKey;
+	}
+
+	#handleScrollbarHoverStripLeave(e) {
+		if (e.buttons !== 0) return;
+		const strip = e.currentTarget;
+		// Moving onto the scrollbar keeps it revealed
+		const towardsScrollbar = getComputedStyle(strip).direction === 'rtl' ? e.offsetX < 0 : e.offsetX >= strip.offsetWidth;
+		if (!towardsScrollbar && this._revealedScrollbar === strip.dataset.panelKey) this._revealedScrollbar = null;
 	}
 
 	#handleSlotVisibilityChange(e) {
@@ -641,19 +755,30 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		`;
 	}
 
+	#renderScrollbarHoverStrip(panelKey) {
+		if (!this.panelScrollbarsAutoHide) return nothing;
+		return html`<div class="scrollbar-hover-strip" data-panel-key="${panelKey}" @pointerenter="${this.#handleScrollbarHoverStripEnter}" @pointerleave="${this.#handleScrollbarHoverStripLeave}"></div>`;
+	}
+
 	#renderSideNavPanel(panelKey) {
 		const classes = {
 			'side-nav-panel': true,
 			'animate': this._panelState.getAnimate(panelKey),
-			'collapsed': this._panelState.getSize(panelKey) === 0 // Collapsed and not being dragged
+			'collapsed': this._panelState.getSize(panelKey) === 0, // Collapsed and not being dragged
+			'scrollbar-revealed': this._revealedScrollbar === panelKey,
+			'scrollbar-scrolling': this._scrollingScrollbar === panelKey
 		};
 		return html`
 			<nav class="side-nav" ?hidden="${!this._slotVisibility['side-nav']}" aria-label="${this.localize('components.page.side-nav-label')}">
 				<div
 					class="${classMap(classes)}"
-					style=${styleMap({ width: `${this._panelState.getSize(panelKey)}px` })}>
-					<div class="side-nav-panel-content" style=${styleMap({ width: `${this._panelState.getTrueSize(panelKey)}px` })}>
+					data-panel-key="${panelKey}"
+					style=${styleMap({ width: `${this._panelState.getSize(panelKey)}px` })}
+					@pointerleave="${this.#handlePanelPointerLeave}"
+					@pointerover="${this.panelScrollbarsAutoHide ? this.#handlePanelPointerOver : nothing}">
+					<div class="side-nav-panel-content" data-panel-key="${panelKey}" style=${styleMap({ width: `${this._panelState.getTrueSize(panelKey)}px` })} @scroll="${this.#handlePanelContentScroll}">
 						<slot name="side-nav" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+						${this.#renderScrollbarHoverStrip(panelKey)}
 					</div>
 				</div>
 				${!this._slotVisibility['side-nav'] ? nothing :
@@ -666,7 +791,9 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 		const classes = {
 			'supporting-panel': true,
 			'animate': this._panelState.getAnimate(panelKey),
-			'collapsed': this._panelState.getSize(panelKey) === 0 // Collapsed and not being dragged
+			'collapsed': this._panelState.getSize(panelKey) === 0, // Collapsed and not being dragged
+			'scrollbar-revealed': this._revealedScrollbar === panelKey,
+			'scrollbar-scrolling': this._scrollingScrollbar === panelKey
 		};
 		return html`
 			<aside class="supporting" ?hidden="${!this._slotVisibility['supporting']}" aria-label="${this.localize('components.page.supporting-label')}">
@@ -674,13 +801,21 @@ class Page extends ProviderMixin(LocalizeCoreElement(LitElement)) {
 					this.#renderDivider(panelKey, this.localize('components.page.supporting-divider-label'), 'end')}
 				<div
 					class="${classMap(classes)}"
-					style=${styleMap({ width: `${this._panelState.getSize(panelKey)}px` })}>
-					<div class="supporting-panel-content" style=${styleMap({ width: `${this._panelState.getTrueSize(panelKey)}px` })}>
+					data-panel-key="${panelKey}"
+					style=${styleMap({ width: `${this._panelState.getSize(panelKey)}px` })}
+					@pointerleave="${this.#handlePanelPointerLeave}"
+					@pointerover="${this.panelScrollbarsAutoHide ? this.#handlePanelPointerOver : nothing}">
+					<div class="supporting-panel-content" data-panel-key="${panelKey}" style=${styleMap({ width: `${this._panelState.getTrueSize(panelKey)}px` })} @scroll="${this.#handlePanelContentScroll}">
 						<slot name="supporting" @slotchange="${this.#handleSlotVisibilityChange}"></slot>
+						${this.#renderScrollbarHoverStrip(panelKey)}
 					</div>
 				</div>
 			</aside>
 		`;
+	}
+
+	#updateHeaderMetrics() {
+		this.style.setProperty('--d2l-page-header-height', `${this._headerIsSticky ? this._headerHeight : 0}px`);
 	}
 
 }
