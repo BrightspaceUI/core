@@ -4,6 +4,7 @@ import {
 	createToolbar,
 	createToolbarButton,
 	createToolbarDropdown,
+	createToolbarLink,
 	createToolbarMenuItem,
 	createToolbarToggle,
 	openDropdown
@@ -105,6 +106,108 @@ describe('d2l-toolbar', () => {
 			});
 		});
 
+	});
+
+});
+
+describe('d2l-toolbar-link', () => {
+
+	describe('constructor', () => {
+
+		it('should construct', () => {
+			runConstructor('d2l-toolbar-link');
+		});
+
+	});
+
+	describe('general', () => {
+
+		it('binds href to the anchor without a new-window description by default', async() => {
+			const elem = await fixture(createToolbarLink({ href: 'https://www.d2l.com' }));
+			const anchor = elem.shadowRoot.querySelector('a');
+			expect(anchor.getAttribute('href')).to.equal('https://www.d2l.com');
+			expect(anchor.hasAttribute('target')).to.be.false;
+			expect(anchor.hasAttribute('aria-description')).to.be.false;
+		});
+
+		it('labels the anchor with the tooltip text', async() => {
+			const elem = await fixture(createToolbarLink());
+			const anchor = elem.shadowRoot.querySelector('a');
+			const tooltip = elem.shadowRoot.querySelector('d2l-tooltip');
+			expect(tooltip.forType).to.equal('label');
+			expect(tooltip.textContent).to.equal('Open link');
+			expect(anchor.getAttribute('aria-labelledby')).to.equal(tooltip.id);
+		});
+
+		it('describes and isolates new-tab navigation', async() => {
+			const elem = await fixture(createToolbarLink({ target: '_blank' }), { lang: 'en' });
+			const anchor = elem.shadowRoot.querySelector('a');
+			expect(anchor.target).to.equal('_blank');
+			expect(anchor.relList.contains('noopener')).to.be.true;
+			expect(anchor.relList.contains('noreferrer')).to.be.true;
+			expect(anchor.getAttribute('aria-description')).to.equal('Opens in a new window.');
+		});
+
+		it('removes the destination while disabled and restores it when re-enabled', async() => {
+			const elem = await fixture(createToolbarLink({ disabled: true, href: 'https://www.d2l.com', target: '_blank' }));
+			const anchor = elem.shadowRoot.querySelector('a');
+			expect(anchor.hasAttribute('href')).to.be.false;
+			expect(anchor.hasAttribute('aria-description')).to.be.false;
+			expect(anchor.getAttribute('role')).to.equal('link');
+			expect(anchor.getAttribute('aria-disabled')).to.equal('true');
+
+			elem.disabled = false;
+			await elem.updateComplete;
+
+			expect(anchor.getAttribute('href')).to.equal('https://www.d2l.com');
+			expect(anchor.hasAttribute('role')).to.be.false;
+			expect(anchor.hasAttribute('aria-disabled')).to.be.false;
+		});
+
+	});
+
+	it('moves arrow-key focus from a button to the link', async() => {
+		const elem = await fixture(createToolbar({ template: [createToolbarButton(), createToolbarLink()] }));
+		const button = elem.querySelector('d2l-toolbar-button');
+		const link = elem.querySelector('d2l-toolbar-link');
+		const anchor = link.shadowRoot.querySelector('a');
+		expect(anchor.tabIndex).to.equal(-1);
+
+		sendKeysElem(button, 'press', 'ArrowRight');
+		await oneEvent(link, 'focusin');
+
+		expect(link.shadowRoot.activeElement === anchor).to.be.true;
+		expect(anchor.tabIndex).to.equal(0);
+		expect(button.shadowRoot.querySelector('button').tabIndex).to.equal(-1);
+	});
+
+	it('keeps a disabled link focusable but suppresses click events', async() => {
+		const elem = await fixture(createToolbar({ template: createToolbarLink({ disabled: true, target: '_blank' }) }));
+		const link = elem.querySelector('d2l-toolbar-link');
+		const anchor = link.shadowRoot.querySelector('a');
+		let clicked = false;
+		link.addEventListener('click', () => clicked = true);
+
+		await clickElem(anchor);
+
+		expect(anchor.tabIndex).to.equal(0);
+		expect(clicked).to.be.false;
+	});
+
+	it('allows a consumer to cancel native link navigation', async() => {
+		const elem = await fixture(createToolbarLink());
+		const anchor = elem.shadowRoot.querySelector('a');
+		const originalHash = window.location.hash;
+		let clicked = false;
+		elem.addEventListener('click', event => {
+			event.preventDefault();
+			clicked = true;
+		});
+
+		await clickElem(anchor);
+
+		expect(clicked).to.be.true;
+		expect(window.location.hash).to.equal(originalHash);
 	});
 
 });

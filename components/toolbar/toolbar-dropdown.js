@@ -38,7 +38,7 @@ class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(To
 			:host {
 				font-size: 1rem;
 			}
-			button {
+			.item {
 				align-items: center;
 				display: flex;
 				font-size: 0.7rem;
@@ -49,17 +49,17 @@ class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(To
 				text-align: start;
 				width: 100%;
 			}
-			button > .value-text {
+			.item > .value-text {
 				flex: auto;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
 			}
-			button[aria-expanded="true"] .background {
+			.item[aria-expanded="true"] .background {
 				background-color: var(--d2l-theme-background-color-interactive-secondary-default);
 				transform: scale(1, 1);
 			}
-			:host([theme="dark"]) button[aria-expanded="true"] .background {
+			:host([theme="dark"]) .item[aria-expanded="true"] .background {
 				background-color: var(--d2l-color-tungsten);
 				transform: scale(1, 1);
 			}
@@ -90,6 +90,7 @@ class ToolbarDropdown extends FocusMixin(DropdownOpenerMixin(SlottedIconMixin(To
 		return html`
 			<button
 				aria-disabled="${this.disabled ? 'true' : 'false'}"
+				class="item"
 				id="opener"
 				@keydown="${this.#handleKeyDown}"
 				tabindex="${this._activeFocusable ? 0 : -1}"

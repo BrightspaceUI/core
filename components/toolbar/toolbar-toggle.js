@@ -42,23 +42,23 @@ class ToolbarToggle extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(ThemeMi
 	};
 
 	static styles = [super.styles, toolbarButtonStyles, css`
-		button[aria-pressed="true"] > .background {
+		.item[aria-pressed="true"] > .background {
 			background-color: var(--d2l-color-celestine-plus-2);
 			transform: scale(1, 1);
 		}
-		button[aria-pressed="true"]:hover > .background {
+		.item[aria-pressed="true"]:hover > .background {
 			background-color: #dbf5ff; /* not a daylight color */
 		}
-		button[aria-pressed="true"] ::slotted(d2l-icon-custom),
-		button[aria-pressed="true"] d2l-icon {
+		.item[aria-pressed="true"] ::slotted(d2l-icon-custom),
+		.item[aria-pressed="true"] d2l-icon {
 			fill: var(--d2l-color-celestine);
 		}
-		:host([theme="dark"]) button[aria-pressed="true"] > .background,
-		:host([theme="dark"]) button[aria-pressed="true"]:hover > .background {
+		:host([theme="dark"]) .item[aria-pressed="true"] > .background,
+		:host([theme="dark"]) .item[aria-pressed="true"]:hover > .background {
 			background-color: var(--d2l-color-tungsten);
 		}
-		:host([theme="dark"]) button[aria-pressed="true"] ::slotted(d2l-icon-custom),
-		:host([theme="dark"]) button[aria-pressed="true"] d2l-icon {
+		:host([theme="dark"]) .item[aria-pressed="true"] ::slotted(d2l-icon-custom),
+		:host([theme="dark"]) .item[aria-pressed="true"] d2l-icon {
 			fill: var(--d2l-color-regolith);
 		}
 	`];
@@ -82,6 +82,7 @@ class ToolbarToggle extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(ThemeMi
 				aria-disabled="${this.disabled ? 'true' : 'false'}"
 				aria-expanded="${ifDefined(this.expandable ? (this.expanded ? 'true' : 'false') : undefined)}"
 				aria-pressed="${ifDefined(!this.expandable ? (this.pressed ? 'true' : 'false') : undefined)}"
+				class="item"
 				@click="${this.#handleClick}"
 				id="action-button"
 				tabindex="${this._activeFocusable ? 0 : -1}"

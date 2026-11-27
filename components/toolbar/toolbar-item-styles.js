@@ -9,7 +9,7 @@ export const toolbarButtonStyles = css`
 	:host([hidden]) {
 		display: none;
 	}
-	button {
+	.item {
 		--d2l-focus-ring-offset: 0;
 		align-items: center;
 		background-color: transparent;
@@ -50,28 +50,28 @@ export const toolbarButtonStyles = css`
 		transition: background-color 100ms linear, transform 100ms linear;
 		z-index: -1;
 	}
-	${getFocusRingStyles('button')}
+	${getFocusRingStyles('.item')}
 	@supports not selector(:focus-visible) {
-		button:hover > .background,
-		button:focus > .background {
+		.item:hover > .background,
+		.item:focus > .background {
 			background-color: var(--d2l-theme-background-color-interactive-secondary-default);
 			transform: scale(1, 1);
 		}
 	}
 	@supports selector(:focus-visible) {
-		button:hover > .background,
-		button:focus-visible > .background {
+		.item:hover > .background,
+		.item:focus-visible > .background {
 			background-color: var(--d2l-theme-background-color-interactive-secondary-default);
 			transform: scale(1, 1);
 		}
 	}
-	button[disabled],
-	button[aria-disabled="true"] {
+	.item[disabled],
+	.item[aria-disabled="true"] {
 		cursor: default;
 		opacity: var(--d2l-theme-opacity-disabled-control);
 	}
-	button[disabled]:hover,
-	button[disabled]:focus {
+	.item[disabled]:hover,
+	.item[disabled]:focus {
 		background-color: transparent;
 		fill: var(--d2l-theme-text-color-static-standard);
 	}
@@ -82,18 +82,18 @@ export const toolbarButtonStyles = css`
 	}
 
 	@supports not selector(:focus-visible) {
-		:host([theme="dark"]) button:hover > .background,
-		:host([theme="dark"]) button:focus > .background {
+		:host([theme="dark"]) .item:hover > .background,
+		:host([theme="dark"]) .item:focus > .background {
 			background-color: var(--d2l-color-tungsten);
 		}
 	}
 	@supports selector(:focus-visible) {
-		:host([theme="dark"]) button:hover > .background,
-		:host([theme="dark"]) button:focus-visible > .background {
+		:host([theme="dark"]) .item:hover > .background,
+		:host([theme="dark"]) .item:focus-visible > .background {
 			background-color: var(--d2l-color-tungsten);
 		}
 	}
-	:host([theme="dark"]) button,
+	:host([theme="dark"]) .item,
 	:host([theme="dark"]) ::slotted(d2l-icon-custom),
 	:host([theme="dark"]) d2l-icon {
 		color: var(--d2l-color-regolith);
