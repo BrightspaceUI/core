@@ -3,6 +3,7 @@ import {
 	createToolbar,
 	createToolbarButton,
 	createToolbarDropdown,
+	createToolbarLink,
 	createToolbarMenuItem,
 	createToolbarToggle,
 	icons
@@ -35,6 +36,20 @@ describe('d2l-toolbar-button', () => {
 		{ name: 'disabled', template: createToolbarButton({ disabled: true }) },
 		{ name: 'disabled-hover', template: createToolbarButton({ disabled: true }), action: hoverElem },
 		{ name: 'disabled-focus', template: createToolbarButton({ disabled: true }), action: focusElem }
+	].forEach(runItemTest);
+
+});
+
+describe('d2l-toolbar-link', () => {
+
+	[
+		{ name: 'normal', template: createToolbarLink() },
+		{ name: 'hover', template: createToolbarLink(), action: hoverElem },
+		{ name: 'focus', template: createToolbarLink(), action: focusElem },
+		{ name: 'disabled', template: createToolbarLink({ disabled: true }) },
+		{ name: 'disabled-hover', template: createToolbarLink({ disabled: true }), action: hoverElem },
+		{ name: 'disabled-focus', template: createToolbarLink({ disabled: true }), action: focusElem },
+		{ name: 'new-tab-focus', template: createToolbarLink({ target: '_blank' }), action: focusElem }
 	].forEach(runItemTest);
 
 });

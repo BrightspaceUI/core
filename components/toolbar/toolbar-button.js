@@ -41,6 +41,7 @@ class ToolbarButton extends SlottedIconMixin(FocusMixin(ToolbarItemMixin(ThemeMi
 		return html`
 			<button
 				aria-disabled="${this.disabled ? 'true' : 'false'}"
+				class="toolbar-control"
 				@click="${this.#handleClick}"
 				id="action-button"
 				tabindex="${this._activeFocusable ? 0 : -1}"

@@ -1,6 +1,7 @@
 import '../toolbar.js';
 import '../toolbar-button.js';
 import '../toolbar-dropdown.js';
+import '../toolbar-link.js';
 import '../toolbar-menu-item.js';
 import '../toolbar-separator.js';
 import '../toolbar-toggle.js';
@@ -69,6 +70,14 @@ export function createToolbarDropdown({ disabled = false, icon, text = 'Fancy Dr
 			${icon?.template}
 			${template}
 		</d2l-toolbar-dropdown>
+	`;
+}
+
+export function createToolbarLink({ disabled = false, href = '#toolbar-link-destination', icon = { key: 'tier1:new-window' }, target, theme } = {}) {
+	return html`
+		<d2l-toolbar-link class="vdiff-include" ?disabled="${disabled}" href="${href}" icon="${ifDefined(icon.key)}" target="${ifDefined(target)}" text="Open link" theme="${ifDefined(theme)}">
+			${icon.template}
+		</d2l-toolbar-link>
 	`;
 }
 

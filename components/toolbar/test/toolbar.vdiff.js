@@ -6,6 +6,7 @@ import {
 	createToolbarButton,
 	createToolbarDropdown,
 	createToolbarItems,
+	createToolbarLink,
 	createToolbarMenuItem,
 	createToolbarSeparator,
 	createToolbarToggle,
@@ -74,6 +75,25 @@ describe('d2l-toolbar-button', () => {
 		{ name: 'dark-theme-disabled', template: createDarkContainer({ template: createToolbarButton({ disabled: true, theme: 'dark' }) }) },
 		{ name: 'dark-theme-disabled-hover', template: createDarkContainer({ template: createToolbarButton({ disabled: true, theme: 'dark' }) }), action: hoverElemDarkTheme },
 		{ name: 'dark-theme-disabled-focus', template: createDarkContainer({ template: createToolbarButton({ disabled: true, theme: 'dark' }) }), action: focusElemDarkTheme }
+	].forEach(runItemTest);
+
+});
+
+describe('d2l-toolbar-link', () => {
+
+	[
+		{ name: 'normal', allColorModes: true, template: createToolbarLink() },
+		{ name: 'hover', allColorModes: true, template: createToolbarLink(), action: hoverToolbarItem },
+		{ name: 'focus', allColorModes: true, template: createToolbarLink(), action: focusToolbarItem },
+		{ name: 'disabled', allColorModes: true, template: createToolbarLink({ disabled: true }) },
+		{ name: 'disabled-hover', allColorModes: true, template: createToolbarLink({ disabled: true }), action: hoverToolbarItem },
+		{ name: 'disabled-focus', allColorModes: true, template: createToolbarLink({ disabled: true }), action: focusToolbarItem },
+		{ name: 'dark-theme', template: createDarkContainer({ template: createToolbarLink({ theme: 'dark' }) }) },
+		{ name: 'dark-theme-hover', template: createDarkContainer({ template: createToolbarLink({ theme: 'dark' }) }), action: hoverElemDarkTheme },
+		{ name: 'dark-theme-focus', template: createDarkContainer({ template: createToolbarLink({ theme: 'dark' }) }), action: focusElemDarkTheme },
+		{ name: 'dark-theme-disabled', template: createDarkContainer({ template: createToolbarLink({ disabled: true, theme: 'dark' }) }) },
+		{ name: 'dark-theme-disabled-hover', template: createDarkContainer({ template: createToolbarLink({ disabled: true, theme: 'dark' }) }), action: hoverElemDarkTheme },
+		{ name: 'dark-theme-disabled-focus', template: createDarkContainer({ template: createToolbarLink({ disabled: true, theme: 'dark' }) }), action: focusElemDarkTheme }
 	].forEach(runItemTest);
 
 });
