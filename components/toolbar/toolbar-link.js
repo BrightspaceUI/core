@@ -43,7 +43,7 @@ class ToolbarLink extends LocalizeCoreElement(SlottedIconMixin(FocusMixin(Toolba
 			<a
 				aria-description="${ifDefined(opensInNewWindow ? this.localize('components.link.open-in-new-window') : undefined)}"
 				aria-disabled="${ifDefined(this.disabled ? 'true' : undefined)}"
-				class="toolbar-control"
+				class="item"
 				@click="${this.#handleClick}"
 				href="${ifDefined(this.disabled ? undefined : this.href)}"
 				id="action-link"
